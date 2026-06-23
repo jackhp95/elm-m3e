@@ -426,13 +426,14 @@ snackbarSection =
         { anchor = "snackbar"
         , title = "Snackbar"
         , tagline = "Brief, low-emphasis feedback at the bottom of the screen, optionally with one action."
-        , whenToUse = "use a Snackbar for transient confirmations ('Saved', 'Undo'). Note: <m3e-snackbar> is an imperative singleton — the fully-wired declarative/port presentation is tracked as an open issue; the builder below is the shared description."
+        , whenToUse = "use a Snackbar for transient confirmations ('Saved', 'Undo'). <m3e-snackbar> is an imperative singleton; Ui.Snackbar.view renders a declarative <avt-snackbar> wrapper (shipped with the library) that drives it. Trigger one below:"
         , demo =
             div [ class "w-full max-w-md" ]
-                [ Snackbar.new "Photo saved to album"
-                    |> Snackbar.withAction "Undo"
-                    |> Snackbar.withDismissible True
-                    |> Snackbar.view
+                [ Html.node "m3e-button"
+                    [ attribute "variant" "filled"
+                    , attribute "onclick" "avtSnackbarShow({message:'Photo saved to album',action:'Undo',dismissible:true})"
+                    ]
+                    [ text "Show snackbar" ]
                 ]
         , source = """
 import Ui.Snackbar as Snackbar

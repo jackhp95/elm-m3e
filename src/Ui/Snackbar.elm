@@ -210,11 +210,13 @@ withDuration ms (Snackbar cfg) =
 
 
 {-| Render the snackbar as an `<avt-snackbar>` custom element. The
-wrapper element calls `M3eSnackbar.open(…)` on connect / attribute
-change.
+wrapper element calls `M3eSnackbar.open(…)` on connect, so render it
+(via `Maybe` state) when you want a snackbar shown.
 
-**v1 gap:** the `<avt-snackbar>` custom element is not yet implemented
-in JS. See the module header.
+The wrapper ships with the library at `js/avt-snackbar.js` — include it
+in your bundle after `@m3e/web` (it needs the global `M3eSnackbar` the
+snackbar element registers). Action presses dispatch a bubbling
+`avt-snackbar-action` event carrying `detail.id` (see the module header).
 
 -}
 view : Snackbar msg -> Html msg
