@@ -1,33 +1,25 @@
-module M3e.Select exposing
-    ( component
-    , required
-    , onChange, onToggle, onBeforeinput, onInput
-    , arrowSlot, valueSlot
-    )
+module M3e.Select exposing (arrowSlot, component, name, onBeforeinput, onChange, onInput, onToggle, required, valueSlot)
 
-{-| A form control that allows users to select a value from a set of predefined options.
-
+{-| 
+A form control that allows users to select a value from a set of predefined options.
 
 ## Component
 
 @docs component
 
-
 ### Attributes
 
-@docs required
-
+@docs name, required
 
 ### Events
 
 @docs onChange, onToggle, onBeforeinput, onInput
 
-
 ### Slots
 
 @docs arrowSlot, valueSlot
-
 -}
+
 
 import Html
 import Html.Attributes
@@ -39,25 +31,27 @@ import Json.Encode
 {-| A form control that allows users to select a value from a set of predefined options.
 
 **Events:**
-
-  - `change`: Dispatched when the selected state changes.
-  - `toggle`: No description
-  - `beforeinput`: Dispatched before the selected state changes.
-  - `input`: Dispatched when the selected state changes.
+- `change`: Dispatched when the selected state changes.
+- `toggle`: No description
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
 
 **Slots:**
-
-  - `arrow`: Renders the dropdown arrow.
-  - `value`: Renders the selected value(s).
-
+- `arrow`: Renders the dropdown arrow.
+- `value`: Renders the selected value(s).
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-select" attributes children
 
 
-{-| Whether the element is required. (default: `false`)
--}
+{-| The name that identifies the element when submitting the associated form. -}
+name : String -> Html.Attribute msg
+name val_ =
+    Html.Attributes.attribute "name" val_
+
+
+{-| Whether the element is required. (default: `false`) -}
 required : Bool -> Html.Attribute msg
 required val_ =
     Html.Attributes.property "required" (Json.Encode.bool val_)
@@ -70,7 +64,6 @@ required val_ =
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
 
 For the control's current value, use the `targetValue` decoder from `M3e.Common`, e.g. `onChange (Json.Decode.map ValueChanged M3e.Common.targetValue)`.
-
 -}
 onChange : Json.Decode.Decoder msg -> Html.Attribute msg
 onChange decoder =
@@ -82,7 +75,6 @@ onChange decoder =
 **Payload type:** `ToggleEvent`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
-
 -}
 onToggle : Json.Decode.Decoder msg -> Html.Attribute msg
 onToggle decoder =
@@ -96,7 +88,6 @@ onToggle decoder =
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
 
 For the control's current value, use the `targetValue` decoder from `M3e.Common`, e.g. `onBeforeinput (Json.Decode.map ValueChanged M3e.Common.targetValue)`.
-
 -}
 onBeforeinput : Json.Decode.Decoder msg -> Html.Attribute msg
 onBeforeinput decoder =
@@ -110,22 +101,19 @@ onBeforeinput decoder =
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
 
 For the control's current value, use the `targetValue` decoder from `M3e.Common`, e.g. `onInput (Json.Decode.map ValueChanged M3e.Common.targetValue)`.
-
 -}
 onInput : Json.Decode.Decoder msg -> Html.Attribute msg
 onInput decoder =
     Html.Events.on "input" decoder
 
 
-{-| Renders the dropdown arrow.
--}
+{-| Renders the dropdown arrow. -}
 arrowSlot : Html.Attribute msg
 arrowSlot =
     Html.Attributes.attribute "slot" "arrow"
 
 
-{-| Renders the selected value(s).
--}
+{-| Renders the selected value(s). -}
 valueSlot : Html.Attribute msg
 valueSlot =
     Html.Attributes.attribute "slot" "value"

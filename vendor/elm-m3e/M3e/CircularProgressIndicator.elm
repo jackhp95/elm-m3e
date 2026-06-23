@@ -1,21 +1,17 @@
-module M3e.CircularProgressIndicator exposing
-    ( component
-    , value
-    )
+module M3e.CircularProgressIndicator exposing (Variant(..), component, value, variant)
 
-{-| A circular indicator of progress and activity.
-
+{-| 
+A circular indicator of progress and activity.
 
 ## Component
 
 @docs component
 
-
 ### Attributes
 
-@docs value
-
+@docs value, Variant, variant
 -}
+
 
 import Html
 import Html.Attributes
@@ -24,17 +20,36 @@ import Html.Attributes
 {-| A circular indicator of progress and activity.
 
 **Component Info:**
-
-  - **Extends:** `ProgressElementIndicatorBase` from `/src/progress-indicator/ProgressElementIndicatorBase`
-
+- **Extends:** `ProgressElementIndicatorBase` from `/src/progress-indicator/ProgressElementIndicatorBase`
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-circular-progress-indicator" attributes children
 
 
-{-| A fractional value, between 0 and `max`, indicating progress. (default: `0`)
--}
+{-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
 value : String -> Html.Attribute msg
 value =
     Html.Attributes.value
+
+
+{-| Values for the `variant` attribute. -}
+type Variant
+    = Flat
+    | Wavy
+
+
+{-| The appearance of the indicator. (default: `"flat"`) -}
+variant : Variant -> Html.Attribute msg
+variant val_ =
+    Html.Attributes.attribute "variant" (variantToString val_)
+
+
+variantToString : Variant -> String
+variantToString val_ =
+    case val_ of
+        Flat ->
+            "flat"
+    
+        Wavy ->
+            "wavy"

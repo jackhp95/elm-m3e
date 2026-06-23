@@ -99,23 +99,23 @@ view children (ScrollContainer cfg) =
 
               else
                 Nothing
-            , Just (M3e.ScrollContainer.dividers (dividersToString cfg.dividers))
+            , Just (M3e.ScrollContainer.dividers (dividersToM3e cfg.dividers))
             ]
         )
         children
 
 
-dividersToString : Dividers -> String
-dividersToString d =
+dividersToM3e : Dividers -> M3e.ScrollContainer.Dividers
+dividersToM3e d =
     case d of
         Both ->
-            "both"
+            M3e.ScrollContainer.AboveBelow
 
         Top ->
-            "top"
+            M3e.ScrollContainer.Above
 
         Bottom ->
-            "bottom"
+            M3e.ScrollContainer.Below
 
         None ->
-            "none"
+            M3e.ScrollContainer.None

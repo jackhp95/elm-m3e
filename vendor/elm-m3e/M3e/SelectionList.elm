@@ -1,23 +1,24 @@
-module M3e.SelectionList exposing
-    ( component
-    , onChange, onBeforeinput, onInput
-    )
+module M3e.SelectionList exposing (Variant(..), component, name, onBeforeinput, onChange, onInput, variant)
 
-{-| A list of selectable options.
-
+{-| 
+A list of selectable options.
 
 ## Component
 
 @docs component
 
+### Attributes
+
+@docs Variant, variant, name
 
 ### Events
 
 @docs onChange, onBeforeinput, onInput
-
 -}
 
+
 import Html
+import Html.Attributes
 import Html.Events
 import Json.Decode
 
@@ -25,19 +26,44 @@ import Json.Decode
 {-| A list of selectable options.
 
 **Component Info:**
-
-  - **Extends:** `M3eListElement` from `/src/list/ListElement`
+- **Extends:** `M3eListElement` from `/src/list/ListElement`
 
 **Events:**
-
-  - `change`: Dispatched when the selected state of an option changes.
-  - `beforeinput`: Dispatched before the selected state of an option changes.
-  - `input`: Dispatched when the selected state of an option changes.
-
+- `change`: Dispatched when the selected state of an option changes.
+- `beforeinput`: Dispatched before the selected state of an option changes.
+- `input`: Dispatched when the selected state of an option changes.
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-selection-list" attributes children
+
+
+{-| Values for the `variant` attribute. -}
+type Variant
+    = Segmented
+    | Standard
+
+
+{-| The appearance variant of the list. (default: `"standard"`) -}
+variant : Variant -> Html.Attribute msg
+variant val_ =
+    Html.Attributes.attribute "variant" (variantToString val_)
+
+
+variantToString : Variant -> String
+variantToString val_ =
+    case val_ of
+        Segmented ->
+            "segmented"
+    
+        Standard ->
+            "standard"
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name : String -> Html.Attribute msg
+name val_ =
+    Html.Attributes.attribute "name" val_
 
 
 {-| Dispatched when the selected state of an option changes.
@@ -47,7 +73,6 @@ component attributes children =
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
 
 For the control's current value, use the `targetValue` decoder from `M3e.Common`, e.g. `onChange (Json.Decode.map ValueChanged M3e.Common.targetValue)`.
-
 -}
 onChange : Json.Decode.Decoder msg -> Html.Attribute msg
 onChange decoder =
@@ -59,7 +84,6 @@ onChange decoder =
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
 
 For the control's current value, use the `targetValue` decoder from `M3e.Common`, e.g. `onBeforeinput (Json.Decode.map ValueChanged M3e.Common.targetValue)`.
-
 -}
 onBeforeinput : Json.Decode.Decoder msg -> Html.Attribute msg
 onBeforeinput decoder =
@@ -71,7 +95,6 @@ onBeforeinput decoder =
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
 
 For the control's current value, use the `targetValue` decoder from `M3e.Common`, e.g. `onInput (Json.Decode.map ValueChanged M3e.Common.targetValue)`.
-
 -}
 onInput : Json.Decode.Decoder msg -> Html.Attribute msg
 onInput decoder =

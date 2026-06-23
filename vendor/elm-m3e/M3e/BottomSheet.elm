@@ -1,40 +1,32 @@
-module M3e.BottomSheet exposing
-    ( component
-    , handle, handleLabel, hideable, hideFriction, modal, open
-    , onOpening, onClosing, onCancel, onOpened, onClosed
-    , headerSlot
-    )
+module M3e.BottomSheet exposing (component, handle, handleLabel, headerSlot, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open)
 
-{-| A sheet used to show secondary content anchored to the bottom of the screen.
-
+{-| 
+A sheet used to show secondary content anchored to the bottom of the screen.
 
 ## Component
 
 @docs component
 
-
 ### Attributes
 
 @docs handle, handleLabel, hideable, hideFriction, modal, open
-
 
 ### Events
 
 @docs onOpening, onClosing, onCancel, onOpened, onClosed
 
-
 ### Slots
 
 @docs headerSlot
-
 
 ### Omitted Attributes
 
 The following attribute setters were omitted because Elm cannot pass DOM element references:
 
-  - `detents`: string[]
+- `detents`: string[]
 
 -}
+
 
 import Html
 import Html.Attributes
@@ -46,17 +38,14 @@ import Json.Encode
 {-| A sheet used to show secondary content anchored to the bottom of the screen.
 
 **Events:**
-
-  - `opening`: Dispatched when the sheet begins to open.
-  - `closing`: Dispatched when the sheet begins to close.
-  - `cancel`: Dispatched when the sheet is cancelled.
-  - `opened`: Dispatched when the sheet has opened.
-  - `closed`: Dispatched when the sheet has closed.
+- `opening`: Dispatched when the sheet begins to open.
+- `closing`: Dispatched when the sheet begins to close.
+- `cancel`: Dispatched when the sheet is cancelled.
+- `opened`: Dispatched when the sheet has opened.
+- `closed`: Dispatched when the sheet has closed.
 
 **Slots:**
-
-  - `header`: Renders the header of the sheet.
-
+- `header`: Renders the header of the sheet.
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -71,36 +60,31 @@ handle val_ =
     Html.Attributes.property "handle" (Json.Encode.bool val_)
 
 
-{-| The accessible label given to the drag handle. (default: `"Drag handle"`)
--}
+{-| The accessible label given to the drag handle. (default: `"Drag handle"`) -}
 handleLabel : String -> Html.Attribute msg
 handleLabel val_ =
     Html.Attributes.attribute "handle-label" val_
 
 
-{-| Whether the bottom sheet can hide when its swiped down. (default: `false`)
--}
+{-| Whether the bottom sheet can hide when its swiped down. (default: `false`) -}
 hideable : Bool -> Html.Attribute msg
 hideable val_ =
     Html.Attributes.property "hideable" (Json.Encode.bool val_)
 
 
-{-| The friction coefficient to hide the sheet. (default: `0.5`)
--}
+{-| The friction coefficient to hide the sheet. (default: `0.5`) -}
 hideFriction : Float -> Html.Attribute msg
 hideFriction val_ =
     Html.Attributes.property "hide-friction" (Json.Encode.float val_)
 
 
-{-| Whether the bottom sheet behaves as modal. (default: `false`)
--}
+{-| Whether the bottom sheet behaves as modal. (default: `false`) -}
 modal : Bool -> Html.Attribute msg
 modal val_ =
     Html.Attributes.property "modal" (Json.Encode.bool val_)
 
 
-{-| Whether the bottom sheet is open. (default: `false`)
--}
+{-| Whether the bottom sheet is open. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
@@ -111,7 +95,6 @@ open val_ =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
-
 -}
 onOpening : Json.Decode.Decoder msg -> Html.Attribute msg
 onOpening decoder =
@@ -123,7 +106,6 @@ onOpening decoder =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
-
 -}
 onClosing : Json.Decode.Decoder msg -> Html.Attribute msg
 onClosing decoder =
@@ -135,7 +117,6 @@ onClosing decoder =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
-
 -}
 onCancel : Json.Decode.Decoder msg -> Html.Attribute msg
 onCancel decoder =
@@ -145,7 +126,6 @@ onCancel decoder =
 {-| Dispatched when the sheet has opened.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
-
 -}
 onOpened : Json.Decode.Decoder msg -> Html.Attribute msg
 onOpened decoder =
@@ -155,15 +135,13 @@ onOpened decoder =
 {-| Dispatched when the sheet has closed.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
-
 -}
 onClosed : Json.Decode.Decoder msg -> Html.Attribute msg
 onClosed decoder =
     Html.Events.on "closed" decoder
 
 
-{-| Renders the header of the sheet.
--}
+{-| Renders the header of the sheet. -}
 headerSlot : Html.Attribute msg
 headerSlot =
     Html.Attributes.attribute "slot" "header"

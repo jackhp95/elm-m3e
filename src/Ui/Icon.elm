@@ -156,7 +156,7 @@ view (Icon cfg) =
         (List.filterMap identity
             [ Maybe.map (toFloat >> M3e.Icon.opticalSize) cfg.opticalSize
             , Maybe.map (weightToString >> M3e.Icon.weight) cfg.weight
-            , Maybe.map (gradeToString >> M3e.Icon.grade) cfg.grade
+            , Maybe.map (gradeToM3e >> M3e.Icon.grade) cfg.grade
             , if cfg.filled then
                 Just (M3e.Icon.filled True)
 
@@ -186,14 +186,14 @@ weightToString w =
             "700"
 
 
-gradeToString : Grade -> String
-gradeToString g =
+gradeToM3e : Grade -> M3e.Icon.Grade
+gradeToM3e g =
     case g of
         LowGrade ->
-            "-25"
+            M3e.Icon.Low
 
         NormalGrade ->
-            "0"
+            M3e.Icon.Medium
 
         HighGrade ->
-            "200"
+            M3e.Icon.High

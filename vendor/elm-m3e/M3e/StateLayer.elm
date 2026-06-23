@@ -1,29 +1,24 @@
-module M3e.StateLayer exposing
-    ( component
-    , disableHover
-    )
+module M3e.StateLayer exposing (component, disableHover)
 
-{-| Provides focus and hover state layer treatment for an interactive element.
-
+{-| 
+Provides focus and hover state layer treatment for an interactive element.
 
 ## Component
 
 @docs component
 
-
 ### Attributes
 
 @docs disableHover
-
 -}
+
 
 import Html
 import Html.Attributes
 import Json.Encode
 
 
-{-| Provides focus and hover state layer treatment for an interactive element.
--}
+{-| Provides focus and hover state layer treatment for an interactive element. -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-state-layer" attributes children
