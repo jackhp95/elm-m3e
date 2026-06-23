@@ -1,0 +1,12 @@
+{
+  "name": "m3e-builder",
+  "version": "0.1.0",
+  "description": "Ui.* — type-safe Make-Impossible-States-Impossible Elm builder layer over the @m3e/web Material 3 Expressive web components.",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "elm": "0.19.1-6",
+    "elm-format": "0.8.7"
+  }
+}
