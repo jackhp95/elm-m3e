@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@m3e/web": "^2.5.12",
-    "@netlify/functions": "^5.2.0",
-    "tailwind-m3e-web": "github:jackhp95/tailwind-m3e-web"
+    "@netlify/functions": "^5.2.0"
   }
 }

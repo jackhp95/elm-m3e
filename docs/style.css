@@ -1,10 +1,11 @@
 /* Tailwind v4 + matraic m3e token/utility bridge. Zero hand-written CSS rules. */
 @import "tailwindcss";
 
-/* M3 design tokens (seed -> ref -> sys -> @theme keys) */
-@import "tailwind-m3e-web";
+/* M3 design tokens (seed -> ref -> sys -> @theme keys).
+   Vendored from the private jackhp95/tailwind-m3e-web repo (see vendor/). */
+@import "./vendor/tailwind-m3e-web/src/index.css";
 /* Per-component CSS-variable utility setters for @m3e/web */
-@import "tailwind-m3e-web/utilities";
+@import "./vendor/tailwind-m3e-web/generated/utilities.css";
 
 /* Scan the docs routes and the Ui.* library for utility classes. */
 @source "./app";
