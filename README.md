@@ -6,9 +6,9 @@ components. Typed-to-child slots, builders with required collaborators, one
 module per documented m3e component — invalid compositions don't compile, and
 there are no silent no-ops.
 
-> **Status: v0.1 foundation.** 8 component modules compile against the
-> generated bindings and are documented on the live site. 47 more are parked
-> behind a binding-completeness pass (see [Issues](#known-gaps--issues)).
+> **Status: v0.1.** All 54 component modules compile against the generated
+> bindings — the complete library. 8 have detailed pages on the live docs
+> site; per-component docs for the rest are in progress.
 
 ## Architecture
 
@@ -33,17 +33,19 @@ Design principles (see the `docs-design-*.md` specs at the repo root):
 
 | Path | What |
 |------|------|
-| `src/Ui/` | The library. Modules that compile against the bindings today. |
+| `src/Ui/` | The library — all 54 component modules (compile against the bindings). |
 | `vendor/elm-m3e/` | Vendored `M3e.*` bindings (`jackhp95/elm-m3e`). See `VENDORED_FROM.txt`. |
-| `parked/Ui/` | Backlog: modules awaiting the binding-completeness pass. Not compiled. |
 | `docs/` | The documentation site — an elm-pages app (the live, deployed page). |
 | `docs-design-*.md` | The authoritative MISI design specs. |
 | `elm.json` | Library compile target (`application`; source = `src` + vendored bindings). |
 
-## Live components (v0.1)
+## Components
 
+All 54 `Ui.*` modules compile. Documented in detail on the site so far:
 `Shape` · `Icon` · `Avatar` · `Skeleton` · `ScrollContainer` · `Snackbar` ·
-`Theme` · `Size`
+`Theme` · `Size`. The rest (buttons, cards, dialogs, nav, chips, fabs, form
+controls, sliders, date/time pickers, tooltips, …) compile and are usable;
+per-component docs are in progress.
 
 ## Documentation site
 
@@ -88,16 +90,19 @@ consume both as source for now — add to your app's `elm.json`:
 (`compass-social` will wire this up. Publishing to the registry is tracked in
 the issues.)
 
-## Known gaps & issues
+## Resolved & remaining
 
-- **Binding-completeness drift** (headline): `Ui.*` was written against
-  per-value M3e setters (`M3e.Button.variantFilled`), but the current bindings
-  expose a single `M3e.Common.variant` enum setter, and `variant`/`size`
-  enumerations are not yet emitted. This blocks the 47 parked modules.
+- **Binding completeness — fixed.** `elm-cem` now resolves TS string-literal
+  aliases to real per-component Elm enums and exposes shared attributes
+  per-component, so `M3e.Button.variant : Variant -> Attribute` and
+  `M3e.Button.disabled` exist. The whole `Ui.*` layer was migrated onto the
+  typed enums; all 54 modules compile.
 - `Ui.Table` was **removed** — m3e ships no table element.
-- `Search`/`Calendar`/`DatePicker`/`TimePicker` need thin re-wraps (ISO-8601
-  `String` at the boundary, no date-lib dependency).
+- `Search`/`Calendar`/`DatePicker`/`TimePicker` are thin wrappers of the actual
+  elements; date/time values are ISO-8601 `String`s (no date-lib dependency).
 - `Snackbar` is an imperative singleton; the declarative/port presentation is
-  pending.
+  still pending (the builder is documented; full wiring tracked in issues).
+- **In progress:** per-component documentation pages for the modules beyond the
+  initial 8; publishing `elm-m3e` + `m3e-builder` to the Elm registry.
 
 See the repo's GitHub issues for the full, tracked list.
