@@ -138,7 +138,12 @@ statusBanner =
 sidebar : Html msg
 sidebar =
     nav [ class "lg:sticky lg:top-12 h-max" ]
-        [ p [ class "text-label-large uppercase tracking-wide text-on-surface-variant" ] [ text "Components" ]
+        [ a
+            [ href "/reference"
+            , class "mb-5 block rounded-lg bg-primary px-4 py-2.5 text-label-large font-medium text-on-primary hover:opacity-90"
+            ]
+            [ text "Full reference — all 54 →" ]
+        , p [ class "text-label-large uppercase tracking-wide text-on-surface-variant" ] [ text "Documented" ]
         , ul [ class "mt-3 space-y-1" ]
             (List.map navItem
                 [ ( "shape", "Shape" )

@@ -4,7 +4,8 @@
   "scripts": {
     "build:css": "tailwindcss -i ./style.css -o ./public/style.css --minify",
     "build:m3e": "esbuild m3e-entry.js --bundle --format=esm --minify --outfile=public/m3e.js",
-    "build:assets": "npm run build:css && npm run build:m3e",
+    "build:reference": "node scripts/extract-reference.mjs",
+    "build:assets": "npm run build:css && npm run build:m3e && npm run build:reference",
     "start": "npm run build:assets && elm-pages dev",
     "build": "npm run build:assets && elm-pages build"
   },
