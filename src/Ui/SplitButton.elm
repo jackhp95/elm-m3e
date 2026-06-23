@@ -140,13 +140,13 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Elevated ->
-            (M3e.SplitButton.variant M3e.SplitButton.Elevated)
+            M3e.SplitButton.variant M3e.SplitButton.Elevated
 
         Filled ->
-            (M3e.SplitButton.variant M3e.SplitButton.Filled)
+            M3e.SplitButton.variant M3e.SplitButton.Filled
 
         Tonal ->
-            (M3e.SplitButton.variant M3e.SplitButton.Tonal)
+            M3e.SplitButton.variant M3e.SplitButton.Tonal
 
         Outlined ->
             Attr.attribute "variant" "outlined"

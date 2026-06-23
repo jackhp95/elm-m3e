@@ -3,7 +3,7 @@ module Ui.Chip exposing
     , assist, suggestion, filter, input
     , withSelected, withDisabled, withElevated, withIcon, withHref
     , view
-    , Set, set, withId, withChip, withChips, setOnChange
+    , Set, filterSet, inputSet, genericSet, withId, withChip, withChips
     , viewSet
     )
 
@@ -49,7 +49,7 @@ A set holds chips of a single kind — a filter set holds only filter chips, an
 input set only input chips — so a heterogeneous set (which the M3e wrappers
 can't represent) is a compile error rather than a silent downgrade.
 
-@docs Set, set, withId, withChip, withChips, setOnChange
+@docs Set, filterSet, inputSet, genericSet, withId, withChip, withChips
 
 
 # Render set
@@ -252,9 +252,29 @@ withHref url (Chip cfg) =
     Chip { cfg | href = Just url }
 
 
-set : Set kind msg
-set =
-    Set { id = Nothing, chips = [], onChange = Nothing }
+{-| A filter set — holds only [`filter`](#filter) chips and renders into a
+`FilterChipSet` wrapper, regardless of contents (an empty filter set still
+renders the filter wrapper).
+-}
+filterSet : List (Chip Filter msg) -> Set Filter msg
+filterSet chips =
+    Set { id = Nothing, chips = chips, wrapper = M3e.FilterChipSet.component }
+
+
+{-| An input set — holds only [`input`](#input) chips and renders into an
+`InputChipSet` wrapper, regardless of contents.
+-}
+inputSet : List (Chip Input msg) -> Set Input msg
+inputSet chips =
+    Set { id = Nothing, chips = chips, wrapper = M3e.InputChipSet.component }
+
+
+{-| A generic set for [`assist`](#assist) / [`suggestion`](#suggestion) chips,
+rendered into the basic `ChipSet` wrapper.
+-}
+genericSet : List (Chip Generic msg) -> Set Generic msg
+genericSet chips =
+    Set { id = Nothing, chips = chips, wrapper = M3e.ChipSet.component }
 
 
 type Set kind msg
@@ -264,7 +284,7 @@ type Set kind msg
 type alias SetConfig kind msg =
     { id : Maybe String
     , chips : List (Chip kind msg)
-    , onChange : Maybe (String -> msg)
+    , wrapper : List (Html.Attribute msg) -> List (Html msg) -> Html msg
     }
 
 
@@ -281,11 +301,6 @@ withChip c (Set cfg) =
 withChips : List (Chip kind msg) -> Set kind msg -> Set kind msg
 withChips cs (Set cfg) =
     Set { cfg | chips = cfg.chips ++ cs }
-
-
-setOnChange : (String -> msg) -> Set kind msg -> Set kind msg
-setOnChange handler (Set cfg) =
-    Set { cfg | onChange = Just handler }
 
 
 view : Chip kind msg -> Html msg
@@ -380,10 +395,10 @@ linkOrClick hrefAttr clickAttr cfg =
             Maybe.map clickAttr cfg.onClick
 
 
-{-| Render a chip set. The set's kind determines the wrapper: a filter set uses
-`FilterChipSet`, an input set uses `InputChipSet`, and a generic
-(assist/suggestion) set uses the basic `ChipSet`. The phantom kind guarantees the
-chips are homogeneous, so the wrapper choice is unambiguous.
+{-| Render a chip set. The wrapper element was fixed by the set constructor
+([`filterSet`](#filterSet) → `FilterChipSet`, [`inputSet`](#inputSet) →
+`InputChipSet`, [`genericSet`](#genericSet) → `ChipSet`), so it's correct
+regardless of contents — an empty set still renders its declared wrapper.
 -}
 viewSet : Set kind msg -> Html msg
 viewSet (Set cfg) =
@@ -391,22 +406,5 @@ viewSet (Set cfg) =
         baseAttrs : List (Html.Attribute msg)
         baseAttrs =
             List.filterMap identity [ Maybe.map Attr.id cfg.id ]
-
-        wrapper : List (Html.Attribute msg) -> List (Html msg) -> Html msg
-        wrapper =
-            case List.head cfg.chips of
-                Just (Chip c) ->
-                    case c.kind of
-                        FilterKind ->
-                            M3e.FilterChipSet.component
-
-                        InputKind ->
-                            M3e.InputChipSet.component
-
-                        _ ->
-                            M3e.ChipSet.component
-
-                Nothing ->
-                    M3e.ChipSet.component
     in
-    wrapper baseAttrs (List.map view cfg.chips)
+    cfg.wrapper baseAttrs (List.map view cfg.chips)

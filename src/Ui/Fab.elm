@@ -173,38 +173,38 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Primary ->
-            (M3e.Fab.variant M3e.Fab.Primary)
+            M3e.Fab.variant M3e.Fab.Primary
 
         PrimaryContainer ->
-            (M3e.Fab.variant M3e.Fab.PrimaryContainer)
+            M3e.Fab.variant M3e.Fab.PrimaryContainer
 
         Secondary ->
-            (M3e.Fab.variant M3e.Fab.Secondary)
+            M3e.Fab.variant M3e.Fab.Secondary
 
         SecondaryContainer ->
-            (M3e.Fab.variant M3e.Fab.SecondaryContainer)
+            M3e.Fab.variant M3e.Fab.SecondaryContainer
 
         Tertiary ->
-            (M3e.Fab.variant M3e.Fab.Tertiary)
+            M3e.Fab.variant M3e.Fab.Tertiary
 
         TertiaryContainer ->
-            (M3e.Fab.variant M3e.Fab.TertiaryContainer)
+            M3e.Fab.variant M3e.Fab.TertiaryContainer
 
         Surface ->
-            (M3e.Fab.variant M3e.Fab.Surface)
+            M3e.Fab.variant M3e.Fab.Surface
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         Small ->
-            (M3e.Fab.size M3e.Fab.Small)
+            M3e.Fab.size M3e.Fab.Small
 
         Medium ->
-            (M3e.Fab.size M3e.Fab.Medium)
+            M3e.Fab.size M3e.Fab.Medium
 
         Large ->
-            (M3e.Fab.size M3e.Fab.Large)
+            M3e.Fab.size M3e.Fab.Large
 
 
 wiringAttrs : Maybe (Wiring msg) -> List (Html.Attribute msg)

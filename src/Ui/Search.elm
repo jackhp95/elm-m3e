@@ -308,8 +308,19 @@ searchViewOpenAttrs state =
 
         ExplicitOpen onChange flag ->
             [ Just (M3e.SearchView.open flag)
-            , Just (M3e.SearchView.onToggle (Decode.succeed (onChange (not flag))))
+            , Just (M3e.SearchView.onToggle (toggleDecoder onChange))
             ]
+
+
+{-| Decode the actual new open state from the `toggle` (ToggleEvent)
+payload rather than blindly negating the last-known flag. `ToggleEvent`
+carries `newState`, which is `"open"` when expanded and `"closed"`
+otherwise.
+-}
+toggleDecoder : (Bool -> msg) -> Decode.Decoder msg
+toggleDecoder onChange =
+    Decode.at [ "newState" ] Decode.string
+        |> Decode.map (\state -> onChange (state == "open"))
 
 
 resultsList : List (Ui.List.Item msg) -> Html msg

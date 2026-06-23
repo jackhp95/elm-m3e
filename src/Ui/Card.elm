@@ -29,8 +29,9 @@ module's slot setters:
 | Buttons | `withActions` | `List (Ui.Button.Button msg)` |
 | (Footer extension) | `withFooter` | `Html msg` |
 
-The actions slot is **typed to action buttons only** — a toggle button
-in the actions row is not standard m3 and is therefore unrepresentable.
+The actions slot takes `Ui.Button.Button msg` values — action buttons by
+convention (a selection toggle in a card's actions row isn't standard m3,
+though the type doesn't forbid it).
 Other slots accept `Html msg` because Material describes cards as
 "flexible layouts" containing "anything from images to headlines to
 lists."
@@ -54,11 +55,8 @@ A richer card — media at the top, two-line title, one action:
         |> Ui.Card.withSubhead "Updated 2 hours ago"
         |> Ui.Card.withBody (text "All checks passing.")
         |> Ui.Card.withActions
-            [ Ui.Button.button
-                { label = "View details"
-                , variant = Ui.Button.Text
-                , onClick = ViewScorecardRequested
-                }
+            [ Ui.Button.new { label = "View details", variant = Ui.Button.Text }
+                |> Ui.Button.withOnClick ViewScorecardRequested
             ]
         |> Ui.Card.view
 
@@ -212,19 +210,17 @@ withBody body (Card cfg) =
 
 {-| Set the actions row — buttons that act on the card's content.
 
-The list is **typed to `Ui.Button.Button Ui.Button.Action msg`** — that
-is, action buttons created by `Ui.Button.button` or
-`Ui.Button.buttonLink`. A `Ui.Button.toggle` value will not type-check
-here, because a selection toggle in a card's actions row is not standard
-Material guidance.
+The list takes `Ui.Button.Button msg` values — action buttons by
+convention (a selection toggle in a card's actions row isn't standard
+Material guidance, though the type doesn't forbid it).
 
     Ui.Card.new Ui.Card.Outlined
         |> Ui.Card.withHeadline "Save changes?"
         |> Ui.Card.withActions
-            [ Ui.Button.button
-                { label = "Discard", variant = Ui.Button.Text, onClick = Discarded }
-            , Ui.Button.button
-                { label = "Save", variant = Ui.Button.Filled, onClick = Saved }
+            [ Ui.Button.new { label = "Discard", variant = Ui.Button.Text }
+                |> Ui.Button.withOnClick Discarded
+            , Ui.Button.new { label = "Save", variant = Ui.Button.Filled }
+                |> Ui.Button.withOnClick Saved
             ]
 
 -}
@@ -339,10 +335,10 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Elevated ->
-            (M3e.Card.variant M3e.Card.Elevated)
+            M3e.Card.variant M3e.Card.Elevated
 
         Filled ->
-            (M3e.Card.variant M3e.Card.Filled)
+            M3e.Card.variant M3e.Card.Filled
 
         Outlined ->
-            (M3e.Card.variant M3e.Card.Outlined)
+            M3e.Card.variant M3e.Card.Outlined

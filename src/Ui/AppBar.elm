@@ -160,7 +160,7 @@ sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         Small ->
-            (M3e.AppBar.size M3e.AppBar.Small)
+            M3e.AppBar.size M3e.AppBar.Small
 
         Medium ->
             Attr.attribute "size" "medium"

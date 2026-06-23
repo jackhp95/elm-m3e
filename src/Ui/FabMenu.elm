@@ -143,10 +143,10 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Primary ->
-            (M3e.FabMenu.variant M3e.FabMenu.Primary)
+            M3e.FabMenu.variant M3e.FabMenu.Primary
 
         Secondary ->
-            (M3e.FabMenu.variant M3e.FabMenu.Secondary)
+            M3e.FabMenu.variant M3e.FabMenu.Secondary
 
         Tertiary ->
-            (M3e.FabMenu.variant M3e.FabMenu.Tertiary)
+            M3e.FabMenu.variant M3e.FabMenu.Tertiary

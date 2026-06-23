@@ -317,7 +317,7 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Standard ->
-            (M3e.List.variant M3e.List.Standard)
+            M3e.List.variant M3e.List.Standard
 
         Segmented ->
-            (M3e.List.variant M3e.List.Segmented)
+            M3e.List.variant M3e.List.Segmented

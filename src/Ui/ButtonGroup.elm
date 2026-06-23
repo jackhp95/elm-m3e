@@ -106,16 +106,16 @@ sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         ExtraSmall ->
-            (M3e.ButtonGroup.size M3e.ButtonGroup.ExtraSmall)
+            M3e.ButtonGroup.size M3e.ButtonGroup.ExtraSmall
 
         Small ->
-            (M3e.ButtonGroup.size M3e.ButtonGroup.Small)
+            M3e.ButtonGroup.size M3e.ButtonGroup.Small
 
         Medium ->
-            (M3e.ButtonGroup.size M3e.ButtonGroup.Medium)
+            M3e.ButtonGroup.size M3e.ButtonGroup.Medium
 
         Large ->
-            (M3e.ButtonGroup.size M3e.ButtonGroup.Large)
+            M3e.ButtonGroup.size M3e.ButtonGroup.Large
 
         ExtraLarge ->
-            (M3e.ButtonGroup.size M3e.ButtonGroup.ExtraLarge)
+            M3e.ButtonGroup.size M3e.ButtonGroup.ExtraLarge

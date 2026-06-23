@@ -326,48 +326,48 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Standard ->
-            (M3e.IconButton.variant M3e.IconButton.Standard)
+            M3e.IconButton.variant M3e.IconButton.Standard
 
         Filled ->
-            (M3e.IconButton.variant M3e.IconButton.Filled)
+            M3e.IconButton.variant M3e.IconButton.Filled
 
         Tonal ->
-            (M3e.IconButton.variant M3e.IconButton.Tonal)
+            M3e.IconButton.variant M3e.IconButton.Tonal
 
         Outlined ->
-            (M3e.IconButton.variant M3e.IconButton.Outlined)
+            M3e.IconButton.variant M3e.IconButton.Outlined
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         ExtraSmall ->
-            (M3e.IconButton.size M3e.IconButton.ExtraSmall)
+            M3e.IconButton.size M3e.IconButton.ExtraSmall
 
         Small ->
-            (M3e.IconButton.size M3e.IconButton.Small)
+            M3e.IconButton.size M3e.IconButton.Small
 
         Medium ->
-            (M3e.IconButton.size M3e.IconButton.Medium)
+            M3e.IconButton.size M3e.IconButton.Medium
 
         Large ->
-            (M3e.IconButton.size M3e.IconButton.Large)
+            M3e.IconButton.size M3e.IconButton.Large
 
         ExtraLarge ->
-            (M3e.IconButton.size M3e.IconButton.ExtraLarge)
+            M3e.IconButton.size M3e.IconButton.ExtraLarge
 
 
 widthAttr : Width -> Html.Attribute msg
 widthAttr w =
     case w of
         Narrow ->
-            (M3e.IconButton.width M3e.IconButton.Narrow)
+            M3e.IconButton.width M3e.IconButton.Narrow
 
         Default ->
-            (M3e.IconButton.width M3e.IconButton.Default)
+            M3e.IconButton.width M3e.IconButton.Default
 
         Wide ->
-            (M3e.IconButton.width M3e.IconButton.Wide)
+            M3e.IconButton.width M3e.IconButton.Wide
 
 
 shapeAttr : Maybe Shape -> List (Html.Attribute msg)
@@ -377,10 +377,10 @@ shapeAttr shape =
             []
 
         Just Round ->
-            [ (M3e.IconButton.shape M3e.IconButton.Rounded) ]
+            [ M3e.IconButton.shape M3e.IconButton.Rounded ]
 
         Just Square ->
-            [ (M3e.IconButton.shape M3e.IconButton.Square) ]
+            [ M3e.IconButton.shape M3e.IconButton.Square ]
 
 
 disabledAttrs : DisabledState -> List (Html.Attribute msg)

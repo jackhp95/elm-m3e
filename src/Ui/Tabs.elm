@@ -160,7 +160,7 @@ iconPart icon =
             []
 
         Just i ->
-            [ Ui.Icon.view i ]
+            [ Html.span [ M3e.Tab.iconSlot ] [ Ui.Icon.view i ] ]
 
 
 badgePart : Maybe String -> List (Html msg)

@@ -1,10 +1,12 @@
 module Ui.Theme exposing (Theme(..), toAttribute)
 
-{-| Shared theme tokens for `Ui.*` builders.
+{-| A semantic color role to apply to a subtree.
 
-A `Theme` selects the color role applied to a component. Components map
-the theme to the project's standard `t-*` CSS classes (the same tokens
-Mercury uses), so theme propagation works the same way across libraries.
+`toAttribute role` tags an element with a `t-{role}` class (e.g.
+`t-primary`). Those role classes are a small CSS convention your
+application provides — define them to retint the subtree (for example by
+remapping the M3 `--md-sys-color-*` custom properties under each `t-*`
+selector). The library only emits the class; it ships no CSS of its own.
 
 -}
 

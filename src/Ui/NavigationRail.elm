@@ -210,7 +210,7 @@ itemView cfg (Item it) =
         , HtmlEvents.onClick (cfg.onChange it.value)
         ]
         (List.concat
-            [ [ Ui.Icon.view it.icon ]
+            [ [ Html.span [ M3e.NavMenuItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
             , labelText it.label
             , badgeText it.badge
             ]
@@ -224,7 +224,7 @@ labelText label =
             []
 
         Just l ->
-            [ Html.text l ]
+            [ Html.span [ M3e.NavMenuItem.labelSlot ] [ Html.text l ] ]
 
 
 badgeText : Maybe String -> List (Html msg)
@@ -234,17 +234,17 @@ badgeText badge =
             []
 
         Just b ->
-            [ Html.span [ Attr.attribute "slot" "badge" ] [ Html.text b ] ]
+            [ Html.span [ M3e.NavMenuItem.badgeSlot ] [ Html.text b ] ]
 
 
 modeAttr : Mode -> Html.Attribute msg
 modeAttr m =
     case m of
         Compact ->
-            (M3e.NavRail.mode M3e.NavRail.Compact)
+            M3e.NavRail.mode M3e.NavRail.Compact
 
         Expanded ->
-            (M3e.NavRail.mode M3e.NavRail.Expanded)
+            M3e.NavRail.mode M3e.NavRail.Expanded
 
         Auto ->
-            (M3e.NavRail.mode M3e.NavRail.Auto)
+            M3e.NavRail.mode M3e.NavRail.Auto

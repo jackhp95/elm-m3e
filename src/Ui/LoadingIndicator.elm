@@ -86,7 +86,7 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Uncontained ->
-            (M3e.LoadingIndicator.variant M3e.LoadingIndicator.Uncontained)
+            M3e.LoadingIndicator.variant M3e.LoadingIndicator.Uncontained
 
         Contained ->
-            (M3e.LoadingIndicator.variant M3e.LoadingIndicator.Contained)
+            M3e.LoadingIndicator.variant M3e.LoadingIndicator.Contained

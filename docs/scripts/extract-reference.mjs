@@ -23,7 +23,7 @@ function tidy(s) {
   return s
     .split("\n")
     .map((l) => l.trim())
-    .filter((l) => !l.startsWith("@docs") && l !== "#" && !/^#\s/.test(l))
+    .filter((l) => !l.startsWith("@docs") && !l.startsWith("@figma-code-connect") && l !== "#" && !/^#\s/.test(l))
     .join("\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();

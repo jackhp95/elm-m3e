@@ -45,10 +45,10 @@ A confirmation dialog with two actions:
         }
         |> Ui.Dialog.withBody (text "Your unsaved edits will be lost.")
         |> Ui.Dialog.withActions
-            [ Ui.Button.button
-                { label = "Keep editing", variant = Ui.Button.Text, onClick = ConfirmDiscardClosed }
-            , Ui.Button.button
-                { label = "Discard", variant = Ui.Button.Filled, onClick = DiscardConfirmed }
+            [ Ui.Button.new { label = "Keep editing", variant = Ui.Button.Text }
+                |> Ui.Button.withOnClick ConfirmDiscardClosed
+            , Ui.Button.new { label = "Discard", variant = Ui.Button.Filled }
+                |> Ui.Button.withOnClick DiscardConfirmed
             ]
         |> Ui.Dialog.view
 
@@ -159,12 +159,14 @@ withBody body (Dialog cfg) =
     Dialog { cfg | body = Just body }
 
 
-{-| Set the actions row. Typed to `Ui.Button.Button Action msg` —
-toggles are not standard in dialog actions and are unrepresentable here.
+{-| Set the actions row. Takes `Ui.Button.Button msg` values — action
+buttons by convention (toggles aren't standard in dialog actions).
 
     |> Ui.Dialog.withActions
-        [ Ui.Button.button { label = "Cancel", variant = Ui.Button.Text, onClick = ... }
-        , Ui.Button.button { label = "Confirm", variant = Ui.Button.Filled, onClick = ... }
+        [ Ui.Button.new { label = "Cancel", variant = Ui.Button.Text }
+            |> Ui.Button.withOnClick CancelClicked
+        , Ui.Button.new { label = "Confirm", variant = Ui.Button.Filled }
+            |> Ui.Button.withOnClick ConfirmClicked
         ]
 
 -}

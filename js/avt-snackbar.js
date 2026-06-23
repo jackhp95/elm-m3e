@@ -45,8 +45,9 @@ class AvtSnackbar extends HTMLElement {
     const closeLabel = this.getAttribute("close-label");
     if (closeLabel) options.closeLabel = closeLabel;
 
-    if (action) M.open(message, action, dismissible, options);
-    else M.open(message, dismissible, options);
+    // Always pass the action slot explicitly (undefined when absent) so a
+    // no-action toast doesn't shift `dismissible` into the `action` argument.
+    M.open(message, action || undefined, dismissible, options);
   }
 }
 

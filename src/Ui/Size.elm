@@ -1,27 +1,19 @@
-module Ui.Size exposing (Size(..), toString)
+module Ui.Size exposing (Size(..))
 
-{-| Shared size tokens for `Ui.*` builders.
+{-| A small shared size scale for `Ui.*` builders that expose one.
 
-Components translate this to their underlying M3e atom's `size` attribute
-string.
+Each component maps a `Size` to its own element's size attribute; the
+mapping lives in the component (different elements name their sizes
+differently), so there is no stringly-typed conversion here.
+
+@docs Size
 
 -}
 
 
+{-| A shared three-step size scale.
+-}
 type Size
     = Small
     | Medium
     | Large
-
-
-toString : Size -> String
-toString size =
-    case size of
-        Small ->
-            "small"
-
-        Medium ->
-            "medium"
-
-        Large ->
-            "large"

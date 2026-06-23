@@ -338,38 +338,38 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Elevated ->
-            (M3e.Button.variant M3e.Button.Elevated)
+            M3e.Button.variant M3e.Button.Elevated
 
         Filled ->
-            (M3e.Button.variant M3e.Button.Filled)
+            M3e.Button.variant M3e.Button.Filled
 
         Tonal ->
-            (M3e.Button.variant M3e.Button.Tonal)
+            M3e.Button.variant M3e.Button.Tonal
 
         Outlined ->
-            (M3e.Button.variant M3e.Button.Outlined)
+            M3e.Button.variant M3e.Button.Outlined
 
         Text ->
-            (M3e.Button.variant M3e.Button.Text)
+            M3e.Button.variant M3e.Button.Text
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         ExtraSmall ->
-            (M3e.Button.size M3e.Button.ExtraSmall)
+            M3e.Button.size M3e.Button.ExtraSmall
 
         Small ->
-            (M3e.Button.size M3e.Button.Small)
+            M3e.Button.size M3e.Button.Small
 
         Medium ->
-            (M3e.Button.size M3e.Button.Medium)
+            M3e.Button.size M3e.Button.Medium
 
         Large ->
-            (M3e.Button.size M3e.Button.Large)
+            M3e.Button.size M3e.Button.Large
 
         ExtraLarge ->
-            (M3e.Button.size M3e.Button.ExtraLarge)
+            M3e.Button.size M3e.Button.ExtraLarge
 
 
 shapeAttr : Maybe Shape -> List (Html.Attribute msg)
@@ -379,10 +379,10 @@ shapeAttr shape =
             []
 
         Just Round ->
-            [ (M3e.Button.shape M3e.Button.Rounded) ]
+            [ M3e.Button.shape M3e.Button.Rounded ]
 
         Just Square ->
-            [ (M3e.Button.shape M3e.Button.Square) ]
+            [ M3e.Button.shape M3e.Button.Square ]
 
 
 disabledAttrs : DisabledState -> List (Html.Attribute msg)

@@ -58,7 +58,8 @@ A rich tooltip with explanation and an action:
         , content = explainerHtml
         }
         |> Ui.Tooltip.withActions
-            [ Ui.Button.button { label = "Learn more", variant = Ui.Button.Text, onClick = … }
+            [ Ui.Button.new { label = "Learn more", variant = Ui.Button.Text }
+                |> Ui.Button.withOnClick LearnMoreClicked
             ]
         |> Ui.Tooltip.view
 
@@ -246,13 +247,13 @@ plainPositionAttr : Position -> Html.Attribute msg
 plainPositionAttr p =
     case p of
         Above ->
-            (M3e.Tooltip.position M3e.Tooltip.Above)
+            M3e.Tooltip.position M3e.Tooltip.Above
 
         Below ->
-            (M3e.Tooltip.position M3e.Tooltip.Below)
+            M3e.Tooltip.position M3e.Tooltip.Below
 
         Before ->
-            (M3e.Tooltip.position M3e.Tooltip.Before)
+            M3e.Tooltip.position M3e.Tooltip.Before
 
         After ->
             Attr.attribute "position" "after"
@@ -262,10 +263,10 @@ richPositionAttr : Position -> Html.Attribute msg
 richPositionAttr p =
     case p of
         Above ->
-            (M3e.RichTooltip.position M3e.RichTooltip.AboveAfter)
+            M3e.RichTooltip.position M3e.RichTooltip.AboveAfter
 
         Below ->
-            (M3e.RichTooltip.position M3e.RichTooltip.BelowBefore)
+            M3e.RichTooltip.position M3e.RichTooltip.BelowBefore
 
         Before ->
             Attr.attribute "position" "before"

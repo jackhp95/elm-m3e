@@ -572,10 +572,10 @@ formFieldVariantAttr : Variant -> Html.Attribute msg
 formFieldVariantAttr v =
     case v of
         Filled ->
-            (M3e.FormField.variant M3e.FormField.Filled)
+            M3e.FormField.variant M3e.FormField.Filled
 
         Outlined ->
-            (M3e.FormField.variant M3e.FormField.Outlined)
+            M3e.FormField.variant M3e.FormField.Outlined
 
 
 inputTypeString : InputType -> String

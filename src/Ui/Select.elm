@@ -261,13 +261,13 @@ selectElement cfg =
             , Just (M3e.Select.disabled cfg.disabled)
             ]
         )
-        (List.indexedMap (optionView cfg) cfg.options)
+        (List.map (optionView cfg) cfg.options)
 
 
-optionView : Config value msg -> Int -> Option value -> Html msg
-optionView cfg index (Option opt) =
+optionView : Config value msg -> Option value -> Html msg
+optionView cfg (Option opt) =
     M3e.Option.component
-        [ M3e.Option.value (String.fromInt index)
+        [ M3e.Option.value opt.label
         , M3e.Option.selected (cfg.isSelected opt.value)
         , M3e.Option.disabled cfg.disabled
         , HtmlEvents.onClick (cfg.onOptionClick opt.value)

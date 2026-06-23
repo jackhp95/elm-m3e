@@ -3,8 +3,10 @@ module Route.Index exposing (ActionData, Data, Model, Msg, route)
 {-| Documentation home for `m3e-builder` — the type-safe, MISI Elm builder
 layer (`Ui.*`) over matraic's `@m3e/web` Material 3 Expressive web components.
 
-Every example below is written with the **real library modules**, so the Elm
-compiler type-checks the whole page.
+Every component example below is written with the **real library modules** and
+type-checked by the compiler. (The Snackbar trigger is plain JS — it's an
+imperative API — and the Theme demo's tint relies on app-provided `t-*` CSS, so
+those two illustrate rather than run.)
 -}
 
 import BackendTask exposing (BackendTask)
@@ -456,7 +458,7 @@ themeSection =
         { anchor = "theme"
         , title = "Theme"
         , tagline = "Apply a Material color role to a subtree as a typed attribute, instead of hand-picking token classes."
-        , whenToUse = "use Theme.toAttribute to scope a semantic color role (primary, tertiary, danger…) to a region of the page."
+        , whenToUse = "use Theme.toAttribute to scope a semantic color role to a region. It tags the subtree with a `t-{role}` class your app's CSS styles (the library ships no CSS); the swatches below show the M3 role colors each maps to."
         , demo =
             div [ class "grid grid-cols-1 sm:grid-cols-3 gap-4 w-full" ]
                 [ themedPanel "Primary" Theme.Primary
@@ -479,13 +481,35 @@ themedPanel label role =
         , class "rounded-xl border border-outline-variant bg-surface-container p-5"
         ]
         [ div [ class "flex items-center gap-3" ]
-            [ Shape.new |> Shape.withClass "block w-10 h-10 bg-primary rounded-md-corner-large" |> Shape.view
+            [ Shape.new |> Shape.withClass ("block w-10 h-10 rounded-md-corner-large " ++ roleSwatch role) |> Shape.view
             , div []
                 [ p [ class "text-title-small text-on-surface" ] [ text label ]
-                , p [ class "text-body-small text-on-surface-variant" ] [ text "role" ]
+                , p [ class "text-body-small text-on-surface-variant" ] [ text "t-role class" ]
                 ]
             ]
         ]
+
+
+roleSwatch : Theme.Theme -> String
+roleSwatch role =
+    case role of
+        Theme.Primary ->
+            "bg-primary"
+
+        Theme.Secondary ->
+            "bg-secondary"
+
+        Theme.Tertiary ->
+            "bg-tertiary"
+
+        Theme.Neutral ->
+            "bg-surface-variant"
+
+        Theme.Danger ->
+            "bg-error"
+
+        Theme.Warning ->
+            "bg-tertiary-container"
 
 
 
@@ -497,12 +521,14 @@ sizeSection =
     section [ id "size", class "scroll-mt-12 border-t border-outline-variant pt-12" ]
         [ h2 [ class "text-headline-medium font-semibold text-on-surface" ] [ text "Size" ]
         , p [ class "mt-2 max-w-2xl text-body-large text-on-surface-variant" ]
-            [ text "A shared size scale used across components — a typed enum (no stringly-typed sizes). Render to the m3e attribute value with Ui.Size.toString." ]
+            [ text "A small shared size scale (Small | Medium | Large) for components that expose one. Each component maps it to its own element's size — no stringly-typed conversion." ]
         , codeBlock """
 import Ui.Size as Size
 
--- Size is a typed enum shared by sizeable components.
-Size.toString chosenSize
+-- a typed value, passed to a component's withSize:
+chosenSize : Size.Size
+chosenSize =
+    Size.Large
 """
         ]
 

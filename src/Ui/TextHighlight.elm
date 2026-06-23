@@ -131,10 +131,10 @@ toM3eMode : MatchMode -> Html.Attribute msg
 toM3eMode m =
     case m of
         Contains ->
-            (M3e.TextHighlight.mode M3e.TextHighlight.Contains)
+            M3e.TextHighlight.mode M3e.TextHighlight.Contains
 
         StartsWith ->
-            (M3e.TextHighlight.mode M3e.TextHighlight.StartsWith)
+            M3e.TextHighlight.mode M3e.TextHighlight.StartsWith
 
         EndsWith ->
-            (M3e.TextHighlight.mode M3e.TextHighlight.EndsWith)
+            M3e.TextHighlight.mode M3e.TextHighlight.EndsWith
