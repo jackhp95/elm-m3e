@@ -1,4 +1,4 @@
-module M3e.TreeItem exposing (component, iconSlot, labelSlot, onClick, onClosed, onClosing, onOpened, onOpening, open, openToggleIconSlot, selectedIconSlot, toggleIconSlot)
+module M3e.TreeItem exposing (component, disabled, iconSlot, indeterminate, labelSlot, onClick, onClosed, onClosing, onOpened, onOpening, open, openToggleIconSlot, selected, selectedIconSlot, toggleIconSlot)
 
 {-| 
 An expandable item in a tree.
@@ -9,7 +9,7 @@ An expandable item in a tree.
 
 ### Attributes
 
-@docs open
+@docs disabled, indeterminate, open, selected
 
 ### Events
 
@@ -49,10 +49,28 @@ component attributes children =
     Html.node "m3e-tree-item" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`) -}
+indeterminate : Bool -> Html.Attribute msg
+indeterminate val_ =
+    Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
+
+
 {-| Whether the item is expanded. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
+
+
+{-| Whether the item is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| Dispatched when the item begins to open.

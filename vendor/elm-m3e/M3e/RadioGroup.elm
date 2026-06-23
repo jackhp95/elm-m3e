@@ -1,4 +1,4 @@
-module M3e.RadioGroup exposing (ariaInvalid, component, name, onBeforeinput, onChange, onInput, required)
+module M3e.RadioGroup exposing (ariaInvalid, component, disabled, name, onBeforeinput, onChange, onInput, required)
 
 {-| 
 A container for a set of radio buttons.
@@ -9,7 +9,7 @@ A container for a set of radio buttons.
 
 ### Attributes
 
-@docs ariaInvalid, name, required
+@docs ariaInvalid, disabled, name, required
 
 ### Events
 
@@ -40,6 +40,12 @@ component attributes children =
 ariaInvalid : String -> Html.Attribute msg
 ariaInvalid val_ =
     Html.Attributes.attribute "aria-invalid" val_
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| The name that identifies the element when submitting the associated form. -}

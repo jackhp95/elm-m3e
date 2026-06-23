@@ -1,4 +1,4 @@
-module M3e.Step exposing (completed, component, doneIconSlot, editIconSlot, editable, errorIconSlot, errorSlot, hintSlot, iconSlot, invalid, onBeforeinput, onChange, onClick, onInput, optional)
+module M3e.Step exposing (completed, component, disabled, doneIconSlot, editIconSlot, editable, errorIconSlot, errorSlot, for, hintSlot, iconSlot, invalid, onBeforeinput, onChange, onClick, onInput, optional, selected)
 
 {-| 
 A step in a wizard-like workflow.
@@ -9,7 +9,7 @@ A step in a wizard-like workflow.
 
 ### Attributes
 
-@docs completed, editable, optional, invalid
+@docs completed, disabled, editable, for, optional, selected, invalid
 
 ### Events
 
@@ -55,16 +55,34 @@ completed val_ =
     Html.Attributes.property "completed" (Json.Encode.bool val_)
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
 {-| Whether the step is editable and users can return to it after completion. (default: `false`) -}
 editable : Bool -> Html.Attribute msg
 editable val_ =
     Html.Attributes.property "editable" (Json.Encode.bool val_)
 
 
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_
+
+
 {-| Whether the step is optional. (default: `false`) -}
 optional : Bool -> Html.Attribute msg
 optional val_ =
     Html.Attributes.property "optional" (Json.Encode.bool val_)
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| Whether the step has an error. (default: `false`) -}

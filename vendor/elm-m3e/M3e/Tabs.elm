@@ -1,4 +1,4 @@
-module M3e.Tabs exposing (HeaderPosition(..), Variant(..), component, disablePagination, headerPosition, nextIconSlot, onBeforeinput, onChange, onInput, panelSlot, prevIconSlot, stretch, variant)
+module M3e.Tabs exposing (HeaderPosition(..), Variant(..), component, disablePagination, headerPosition, nextIconSlot, nextPageLabel, onBeforeinput, onChange, onInput, panelSlot, prevIconSlot, previousPageLabel, stretch, variant)
 
 {-| 
 Organizes content into separate views where only one view can be visible at a time.
@@ -9,7 +9,7 @@ Organizes content into separate views where only one view can be visible at a ti
 
 ### Attributes
 
-@docs disablePagination, HeaderPosition, headerPosition, stretch, Variant, variant
+@docs disablePagination, HeaderPosition, headerPosition, nextPageLabel, previousPageLabel, stretch, Variant, variant
 
 ### Events
 
@@ -71,6 +71,18 @@ headerPositionToString val_ =
     
         Before ->
             "before"
+
+
+{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
+nextPageLabel : String -> Html.Attribute msg
+nextPageLabel val_ =
+    Html.Attributes.attribute "next-page-label" val_
+
+
+{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
+previousPageLabel : String -> Html.Attribute msg
+previousPageLabel val_ =
+    Html.Attributes.attribute "previous-page-label" val_
 
 
 {-| Whether tabs are stretched to fill the header. (default: `false`) -}

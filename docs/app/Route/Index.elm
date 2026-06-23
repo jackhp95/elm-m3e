@@ -124,11 +124,13 @@ statusBanner =
     div [ class "mt-8 rounded-xl border border-outline-variant bg-surface-container-low p-5" ]
         [ p [ class "text-title-medium font-medium text-on-surface" ] [ text "v0.1 — early foundation" ]
         , p [ class "mt-1 text-body-medium text-on-surface-variant" ]
-            [ text "8 component modules compile cleanly against the "
+            [ text "17 modules now compile against the "
             , code [ class "rounded bg-surface-container px-1 text-body-small" ] [ text "elm-m3e" ]
-            , text " bindings and are documented below. 47 more are parked pending a binding-completeness pass (the generated bindings currently expose a single shared "
-            , code [ class "rounded bg-surface-container px-1 text-body-small" ] [ text "M3e.Common.variant" ]
-            , text " enum setter rather than the per-value setters the builder layer was written against). Tracked in the repo issues."
+            , text " bindings (the 8 documented below, plus 9 newly unblocked). The generator ("
+            , code [ class "rounded bg-surface-container px-1 text-body-small" ] [ text "elm-cem" ]
+            , text ") now resolves TS aliases to real per-component enums ("
+            , code [ class "rounded bg-surface-container px-1 text-body-small" ] [ text "variant : Variant -> Attribute" ]
+            , text ") and exposes shared attributes per-component. The remaining 37 parked modules call per-value setters and need the mechanical migration to the typed enums. Tracked in the repo issues."
             ]
         ]
 
@@ -510,10 +512,10 @@ statusSection =
         , p [ class "mt-2 max-w-2xl text-body-large text-on-surface-variant" ]
             [ text "The honest current state of the standalone library." ]
         , div [ class "mt-6 grid gap-4 sm:grid-cols-2" ]
-            [ statusCard "Live (8)" "Shape · Icon · Avatar · Skeleton · ScrollContainer · Snackbar · Theme · Size — compile against elm-m3e and are documented above."
-            , statusCard "Parked (47)" "Button, Card, Dialog, Chip, the nav family, form controls, fabs… await the binding-completeness pass."
+            [ statusCard "Compiling (17)" "The 8 documented above, plus Badge, Carousel, Disclosure, Divider, Menu, NavigationDrawer, Slide, SplitPane, Tabs — newly unblocked by the typed-enum + per-component binding fix."
+            , statusCard "Parked (37)" "Button, Card, Dialog, Chip, fabs, form controls… call per-value setters (variantFilled) and now need the mechanical migration to the typed enum (variant Filled)."
             , statusCard "Removed" "Ui.Table — m3e ships no table element, so it does not belong in a library that wraps m3e."
-            , statusCard "Next" "Repoint the builder layer onto M3e.Common's enum setters, then port the parked modules one m3e doc-page at a time, mirroring matraic's docs."
+            , statusCard "Generator fixed" "elm-cem now resolves TS string-literal aliases to real per-component Elm enums and emits shared attributes per-component — benefiting every binding library."
             ]
         ]
 

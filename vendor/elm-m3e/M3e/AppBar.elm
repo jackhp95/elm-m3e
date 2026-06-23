@@ -1,4 +1,4 @@
-module M3e.AppBar exposing (Size(..), component, leadingIconSlot, leadingSlot, size, subtitleSlot, titleSlot, trailingIconSlot, trailingSlot)
+module M3e.AppBar exposing (Size(..), centered, component, for, leadingIconSlot, leadingSlot, size, subtitleSlot, titleSlot, trailingIconSlot, trailingSlot)
 
 {-| 
 A bar, placed a the top of a screen, used to help users navigate through an application.
@@ -9,7 +9,7 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 
 ### Attributes
 
-@docs Size, size
+@docs centered, for, Size, size
 
 ### Slots
 
@@ -19,6 +19,7 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 
 import Html
 import Html.Attributes
+import Json.Encode
 
 
 {-| A bar, placed a the top of a screen, used to help users navigate through an application.
@@ -34,6 +35,18 @@ import Html.Attributes
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-app-bar" attributes children
+
+
+{-| Whether the title and subtitle are centered. (default: `false`) -}
+centered : Bool -> Html.Attribute msg
+centered val_ =
+    Html.Attributes.property "centered" (Json.Encode.bool val_)
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_
 
 
 {-| Values for the `size` attribute. -}

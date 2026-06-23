@@ -1,4 +1,4 @@
-module M3e.Badge exposing (Position(..), Size(..), component, position, size)
+module M3e.Badge exposing (Position(..), Size(..), component, for, position, size)
 
 {-| 
 A visual indicator used to label content.
@@ -9,7 +9,7 @@ A visual indicator used to label content.
 
 ### Attributes
 
-@docs Size, size, Position, position
+@docs Size, size, Position, position, for
 -}
 
 
@@ -93,3 +93,9 @@ positionToString val_ =
     
         BelowBefore ->
             "below-before"
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_

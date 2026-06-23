@@ -1,4 +1,4 @@
-module M3e.IconButton exposing (Shape(..), Size(..), Variant(..), Width(..), component, name, onBeforeinput, onChange, onClick, onInput, selectedSlot, shape, size, value, variant, width)
+module M3e.IconButton exposing (Shape(..), Size(..), Type(..), Variant(..), Width(..), component, disabled, disabledInteractive, download, href, name, onBeforeinput, onChange, onClick, onInput, rel, selected, selectedSlot, shape, size, target, toggle, type_, value, variant, width)
 
 {-| 
 An icon button users interact with to perform a supplementary action.
@@ -9,7 +9,7 @@ An icon button users interact with to perform a supplementary action.
 
 ### Attributes
 
-@docs name, Shape, shape, Size, size, value, Variant, variant, Width, width
+@docs disabled, disabledInteractive, download, href, name, rel, selected, Shape, shape, Size, size, target, toggle, Type, type_, value, Variant, variant, Width, width
 
 ### Events
 
@@ -25,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An icon button users interact with to perform a supplementary action.
@@ -43,10 +44,46 @@ component attributes children =
     Html.node "m3e-icon-button" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive : Bool -> Html.Attribute msg
+disabledInteractive val_ =
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download : String -> Html.Attribute msg
+download val_ =
+    Html.Attributes.attribute "download" val_
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> Html.Attribute msg
+href val_ =
+    Html.Attributes.attribute "href" val_
+
+
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> Html.Attribute msg
+rel val_ =
+    Html.Attributes.attribute "rel" val_
+
+
+{-| Whether the toggle button is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| Values for the `shape` attribute. -}
@@ -103,6 +140,44 @@ sizeToString val_ =
     
         Small ->
             "small"
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> Html.Attribute msg
+target val_ =
+    Html.Attributes.attribute "target" val_
+
+
+{-| Whether the button will toggle between selected and unselected states. (default: `false`) -}
+toggle : Bool -> Html.Attribute msg
+toggle val_ =
+    Html.Attributes.property "toggle" (Json.Encode.bool val_)
+
+
+{-| Values for the `type` attribute. -}
+type Type
+    = Button
+    | Reset
+    | Submit
+
+
+{-| The type of the element. (default: `"button"`) -}
+type_ : Type -> Html.Attribute msg
+type_ val_ =
+    Html.Attributes.attribute "type" (typeToString val_)
+
+
+typeToString : Type -> String
+typeToString val_ =
+    case val_ of
+        Button ->
+            "button"
+    
+        Reset ->
+            "reset"
+    
+        Submit ->
+            "submit"
 
 
 {-| The value associated with the element's name when it's submitted with form data. -}

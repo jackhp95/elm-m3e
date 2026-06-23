@@ -1,4 +1,4 @@
-module M3e.Autocomplete exposing (Filter(..), autoActivate, component, filter, hideLoading, hideNoData, loading, loadingLabel, loadingSlot, noDataLabel, noDataSlot, onChange, onQuery, onToggle, required)
+module M3e.Autocomplete exposing (Filter(..), autoActivate, caseSensitive, component, filter, for, hideLoading, hideNoData, hideSelectionIndicator, loading, loadingLabel, loadingSlot, noDataLabel, noDataSlot, onChange, onQuery, onToggle, panelClass, required)
 
 {-| 
 Enhances a text input with suggested options.
@@ -9,7 +9,7 @@ Enhances a text input with suggested options.
 
 ### Attributes
 
-@docs autoActivate, Filter, filter, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, required
+@docs autoActivate, caseSensitive, Filter, filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
 
 ### Events
 
@@ -57,6 +57,12 @@ autoActivate val_ =
     Html.Attributes.property "auto-activate" (Json.Encode.bool val_)
 
 
+{-| Whether filtering is case sensitive. (default: `false`) -}
+caseSensitive : Bool -> Html.Attribute msg
+caseSensitive val_ =
+    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
+
+
 {-| Values for the `filter` attribute. -}
 type Filter
     = Contains
@@ -85,6 +91,12 @@ filterToString val_ =
     
         StartsWith ->
             "starts-with"
+
+
+{-| Whether to hide the selection indicator. (default: `false`) -}
+hideSelectionIndicator : Bool -> Html.Attribute msg
+hideSelectionIndicator val_ =
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
 
 
 {-| Whether to hide the menu when loading options. (default: `false`) -}
@@ -117,10 +129,22 @@ noDataLabel val_ =
     Html.Attributes.attribute "no-data-label" val_
 
 
+{-| Class or list of classes to be applied to the autocomplete's overlay panel. (default: `""`) -}
+panelClass : String -> Html.Attribute msg
+panelClass val_ =
+    Html.Attributes.attribute "panel-class" val_
+
+
 {-| Whether the user is required to make a selection when interacting with the autocomplete. (default: `false`) -}
 required : Bool -> Html.Attribute msg
 required val_ =
     Html.Attributes.property "required" (Json.Encode.bool val_)
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_
 
 
 {-| Dispatched when the committed value changes due to selecting an option or clearing the input.

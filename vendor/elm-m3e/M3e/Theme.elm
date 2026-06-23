@@ -1,4 +1,4 @@
-module M3e.Theme exposing (Contrast(..), Motion(..), Variant(..), component, contrast, density, motion, onChange, strongFocus, variant)
+module M3e.Theme exposing (Contrast(..), Motion(..), Scheme(..), Variant(..), color, component, contrast, density, motion, onChange, scheme, strongFocus, variant)
 
 {-| 
 A non-visual element responsible for application-level theming.
@@ -9,7 +9,7 @@ A non-visual element responsible for application-level theming.
 
 ### Attributes
 
-@docs Contrast, contrast, density, strongFocus, Variant, variant, Motion, motion
+@docs color, Contrast, contrast, density, Scheme, scheme, strongFocus, Variant, variant, Motion, motion
 
 ### Events
 
@@ -32,6 +32,12 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-theme" attributes children
+
+
+{-| The hex color from which to derive dynamic color palettes. (default: `"#6750A4"`) -}
+color : String -> Html.Attribute msg
+color val_ =
+    Html.Attributes.attribute "color" val_
 
 
 {-| Values for the `contrast` attribute. -}
@@ -64,6 +70,32 @@ contrastToString val_ =
 density : Float -> Html.Attribute msg
 density val_ =
     Html.Attributes.property "density" (Json.Encode.float val_)
+
+
+{-| Values for the `scheme` attribute. -}
+type Scheme
+    = Auto
+    | Dark
+    | Light
+
+
+{-| The color scheme of the theme. (default: `"auto"`) -}
+scheme : Scheme -> Html.Attribute msg
+scheme val_ =
+    Html.Attributes.attribute "scheme" (schemeToString val_)
+
+
+schemeToString : Scheme -> String
+schemeToString val_ =
+    case val_ of
+        Auto ->
+            "auto"
+    
+        Dark ->
+            "dark"
+    
+        Light ->
+            "light"
 
 
 {-| Whether to enable strong focus indicators. (default: `false`) -}

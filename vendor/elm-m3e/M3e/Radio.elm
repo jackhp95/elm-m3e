@@ -1,4 +1,4 @@
-module M3e.Radio exposing (component, name, onBeforeinput, onChange, onClick, onInput, required, value)
+module M3e.Radio exposing (checked, component, disabled, name, onBeforeinput, onChange, onClick, onInput, required, value)
 
 {-| 
 A radio button that allows a user to select one option from a set of options.
@@ -9,7 +9,7 @@ A radio button that allows a user to select one option from a set of options.
 
 ### Attributes
 
-@docs name, required, value
+@docs checked, disabled, name, required, value
 
 ### Events
 
@@ -21,6 +21,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A radio button that allows a user to select one option from a set of options.
@@ -34,6 +35,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-radio" attributes children
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked : Bool -> Html.Attribute msg
+checked =
+    Html.Attributes.checked
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| The name that identifies the element when submitting the associated form. -}

@@ -1,4 +1,4 @@
-module M3e.FilterChip exposing (Variant(..), component, iconSlot, onBeforeinput, onChange, onClick, onInput, trailingIconSlot, value, variant)
+module M3e.FilterChip exposing (Variant(..), component, disabled, disabledInteractive, iconSlot, onBeforeinput, onChange, onClick, onInput, selected, trailingIconSlot, value, variant)
 
 {-| 
 A chip users interact with to select/deselect options.
@@ -9,7 +9,7 @@ A chip users interact with to select/deselect options.
 
 ### Attributes
 
-@docs value, Variant, variant
+@docs disabled, disabledInteractive, selected, value, Variant, variant
 
 ### Events
 
@@ -25,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A chip users interact with to select/deselect options.
@@ -45,6 +46,24 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-filter-chip" attributes children
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive : Bool -> Html.Attribute msg
+disabledInteractive val_ =
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| A string representing the value of the chip. -}

@@ -1,4 +1,4 @@
-module M3e.SearchBar exposing (component, inputSlot, leadingSlot, onClear, trailingSlot)
+module M3e.SearchBar exposing (clearLabel, clearable, component, inputSlot, leadingSlot, onClear, trailingSlot)
 
 {-| 
 A bar that provides a prominent entry point for search.
@@ -6,6 +6,10 @@ A bar that provides a prominent entry point for search.
 ## Component
 
 @docs component
+
+### Attributes
+
+@docs clearable, clearLabel
 
 ### Events
 
@@ -21,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A bar that provides a prominent entry point for search.
@@ -36,6 +41,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-search-bar" attributes children
+
+
+{-| Whether the bar presents a button used to clear the search term. (default: `false`) -}
+clearable : Bool -> Html.Attribute msg
+clearable val_ =
+    Html.Attributes.property "clearable" (Json.Encode.bool val_)
+
+
+{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
+clearLabel : String -> Html.Attribute msg
+clearLabel val_ =
+    Html.Attributes.attribute "clear-label" val_
 
 
 {-| Dispatched when the search term is cleared.

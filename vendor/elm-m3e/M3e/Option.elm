@@ -1,4 +1,4 @@
-module M3e.Option exposing (HighlightMode(..), component, disableHighlight, highlightMode, value)
+module M3e.Option exposing (HighlightMode(..), component, disableHighlight, disabled, highlightMode, selected, term, value)
 
 {-| 
 An option that can be selected.
@@ -9,7 +9,7 @@ An option that can be selected.
 
 ### Attributes
 
-@docs disableHighlight, HighlightMode, highlightMode, value
+@docs disabled, disableHighlight, HighlightMode, highlightMode, selected, term, value
 -}
 
 
@@ -22,6 +22,12 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-option" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Whether text highlighting is disabled. (default: `false`) -}
@@ -54,6 +60,18 @@ highlightModeToString val_ =
     
         StartsWith ->
             "starts-with"
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
+
+
+{-| The search term to highlight. (default: `""`) -}
+term : String -> Html.Attribute msg
+term val_ =
+    Html.Attributes.attribute "term" val_
 
 
 {-| A string representing the value of the option. -}

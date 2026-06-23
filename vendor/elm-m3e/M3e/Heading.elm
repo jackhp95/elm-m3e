@@ -1,4 +1,4 @@
-module M3e.Heading exposing (Size(..), Variant(..), component, emphasized, size, variant)
+module M3e.Heading exposing (Size(..), Variant(..), component, emphasized, level, size, variant)
 
 {-| 
 A heading to a page or section.
@@ -9,7 +9,7 @@ A heading to a page or section.
 
 ### Attributes
 
-@docs emphasized, Size, size, Variant, variant
+@docs emphasized, level, Size, size, Variant, variant
 -}
 
 
@@ -28,6 +28,12 @@ component attributes children =
 emphasized : Bool -> Html.Attribute msg
 emphasized val_ =
     Html.Attributes.property "emphasized" (Json.Encode.bool val_)
+
+
+{-| The accessibility level of the heading. -}
+level : String -> Html.Attribute msg
+level val_ =
+    Html.Attributes.attribute "level" val_
 
 
 {-| Values for the `size` attribute. -}

@@ -1,4 +1,4 @@
-module M3e.InputChipSet exposing (component, inputSlot, name, onChange, required)
+module M3e.InputChipSet exposing (component, disabled, inputSlot, name, onChange, required, vertical)
 
 {-| 
 A container that transforms user input into a cohesive set of interactive chips, supporting entry, editing, and removal of discrete values.
@@ -9,7 +9,7 @@ A container that transforms user input into a cohesive set of interactive chips,
 
 ### Attributes
 
-@docs name, required
+@docs disabled, name, required, vertical
 
 ### Events
 
@@ -44,6 +44,12 @@ component attributes children =
     Html.node "m3e-input-chip-set" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> Html.Attribute msg
 name val_ =
@@ -54,6 +60,12 @@ name val_ =
 required : Bool -> Html.Attribute msg
 required val_ =
     Html.Attributes.property "required" (Json.Encode.bool val_)
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> Html.Attribute msg
+vertical val_ =
+    Html.Attributes.property "vertical" (Json.Encode.bool val_)
 
 
 {-| Dispatched when a chip is added to, or removed from, the set.

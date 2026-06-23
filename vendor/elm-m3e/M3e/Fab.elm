@@ -1,4 +1,4 @@
-module M3e.Fab exposing (Size(..), Variant(..), closeIconSlot, component, extended, labelSlot, lowered, name, onClick, size, value, variant)
+module M3e.Fab exposing (Size(..), Type(..), Variant(..), closeIconSlot, component, disabled, disabledInteractive, download, extended, href, labelSlot, lowered, name, onClick, rel, size, target, type_, value, variant)
 
 {-| 
 A floating action button (FAB) used to present important actions.
@@ -9,7 +9,7 @@ A floating action button (FAB) used to present important actions.
 
 ### Attributes
 
-@docs extended, lowered, name, Size, size, value, Variant, variant
+@docs disabled, disabledInteractive, download, extended, href, lowered, name, rel, Size, size, target, Type, type_, value, Variant, variant
 
 ### Events
 
@@ -42,10 +42,34 @@ component attributes children =
     Html.node "m3e-fab" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive : Bool -> Html.Attribute msg
+disabledInteractive val_ =
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download : String -> Html.Attribute msg
+download val_ =
+    Html.Attributes.attribute "download" val_
+
+
 {-| Whether the button is extended to show the label. (default: `false`) -}
 extended : Bool -> Html.Attribute msg
 extended val_ =
     Html.Attributes.property "extended" (Json.Encode.bool val_)
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> Html.Attribute msg
+href val_ =
+    Html.Attributes.attribute "href" val_
 
 
 {-| Whether to present a lowered elevation. (default: `false`) -}
@@ -58,6 +82,12 @@ lowered val_ =
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> Html.Attribute msg
+rel val_ =
+    Html.Attributes.attribute "rel" val_
 
 
 {-| Values for the `size` attribute. -}
@@ -84,6 +114,38 @@ sizeToString val_ =
     
         Small ->
             "small"
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> Html.Attribute msg
+target val_ =
+    Html.Attributes.attribute "target" val_
+
+
+{-| Values for the `type` attribute. -}
+type Type
+    = Button
+    | Reset
+    | Submit
+
+
+{-| The type of the element. (default: `"button"`) -}
+type_ : Type -> Html.Attribute msg
+type_ val_ =
+    Html.Attributes.attribute "type" (typeToString val_)
+
+
+typeToString : Type -> String
+typeToString val_ =
+    case val_ of
+        Button ->
+            "button"
+    
+        Reset ->
+            "reset"
+    
+        Submit ->
+            "submit"
 
 
 {-| The value associated with the element's name when it's submitted with form data. -}

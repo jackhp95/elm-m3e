@@ -1,4 +1,4 @@
-module M3e.BottomSheet exposing (component, handle, handleLabel, headerSlot, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open)
+module M3e.BottomSheet exposing (component, detent, handle, handleLabel, headerSlot, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open, overshootLimit)
 
 {-| 
 A sheet used to show secondary content anchored to the bottom of the screen.
@@ -9,7 +9,7 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 
 ### Attributes
 
-@docs handle, handleLabel, hideable, hideFriction, modal, open
+@docs detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit
 
 ### Events
 
@@ -52,6 +52,12 @@ component attributes children =
     Html.node "m3e-bottom-sheet" attributes children
 
 
+{-| The zero‑based index of the detent the sheet should open to. (default: `0`) -}
+detent : Float -> Html.Attribute msg
+detent val_ =
+    Html.Attributes.property "detent" (Json.Encode.float val_)
+
+
 {-| Whether to display a drag handle and enable the top region of the sheet as a gesture
 surface for dragging between detents. (default: `false`)
 -}
@@ -88,6 +94,12 @@ modal val_ =
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
+
+
+{-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`) -}
+overshootLimit : Float -> Html.Attribute msg
+overshootLimit val_ =
+    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
 
 
 {-| Dispatched when the sheet begins to open.

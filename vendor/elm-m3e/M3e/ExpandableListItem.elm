@@ -1,4 +1,4 @@
-module M3e.ExpandableListItem exposing (component, itemsSlot, leadingSlot, onClosed, onClosing, onOpened, onOpening, open, overlineSlot, supportingTextSlot, toggleIconSlot, trailingSlot)
+module M3e.ExpandableListItem exposing (component, disabled, itemsSlot, leadingSlot, onClosed, onClosing, onOpened, onOpening, open, overlineSlot, supportingTextSlot, toggleIconSlot, trailingSlot)
 
 {-| 
 An item in a list that can be expanded to show more items.
@@ -9,7 +9,7 @@ An item in a list that can be expanded to show more items.
 
 ### Attributes
 
-@docs open
+@docs disabled, open
 
 ### Events
 
@@ -50,6 +50,12 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-expandable-list-item" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Whether the item is expanded. (default: `false`) -}

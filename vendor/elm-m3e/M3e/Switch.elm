@@ -1,4 +1,4 @@
-module M3e.Switch exposing (Icons(..), component, icons, name, onBeforeinput, onChange, onClick, onInput, value)
+module M3e.Switch exposing (Icons(..), checked, component, disabled, icons, name, onBeforeinput, onChange, onClick, onInput, value)
 
 {-| 
 An on/off control that can be toggled by clicking.
@@ -9,7 +9,7 @@ An on/off control that can be toggled by clicking.
 
 ### Attributes
 
-@docs Icons, icons, name, value
+@docs checked, disabled, Icons, icons, name, value
 
 ### Events
 
@@ -21,6 +21,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An on/off control that can be toggled by clicking.
@@ -34,6 +35,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-switch" attributes children
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked : Bool -> Html.Attribute msg
+checked =
+    Html.Attributes.checked
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Values for the `icons` attribute. -}

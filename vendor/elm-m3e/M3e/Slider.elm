@@ -1,4 +1,4 @@
-module M3e.Slider exposing (Size(..), component, discrete, labelled, onBeforeinput, onChange, onInput, size)
+module M3e.Slider exposing (Size(..), component, disabled, discrete, labelled, maxAttr, minAttr, onBeforeinput, onChange, onInput, size, step)
 
 {-| 
 Allows for the selection of numeric values from a range.
@@ -9,7 +9,7 @@ Allows for the selection of numeric values from a range.
 
 ### Attributes
 
-@docs discrete, labelled, Size, size
+@docs disabled, discrete, labelled, maxAttr, minAttr, step, Size, size
 
 ### Events
 
@@ -36,6 +36,12 @@ component attributes children =
     Html.node "m3e-slider" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
 {-| Whether to show tick marks. (default: `false`) -}
 discrete : Bool -> Html.Attribute msg
 discrete val_ =
@@ -46,6 +52,24 @@ discrete val_ =
 labelled : Bool -> Html.Attribute msg
 labelled val_ =
     Html.Attributes.property "labelled" (Json.Encode.bool val_)
+
+
+{-| The maximum allowable value. (default: `100`) -}
+maxAttr : Float -> Html.Attribute msg
+maxAttr val_ =
+    Html.Attributes.property "max" (Json.Encode.float val_)
+
+
+{-| The minimum allowable value. (default: `0`) -}
+minAttr : Float -> Html.Attribute msg
+minAttr val_ =
+    Html.Attributes.property "min" (Json.Encode.float val_)
+
+
+{-| The value at which the thumb will snap. (default: `1`) -}
+step : Float -> Html.Attribute msg
+step val_ =
+    Html.Attributes.property "step" (Json.Encode.float val_)
 
 
 {-| Values for the `size` attribute. -}

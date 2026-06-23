@@ -1,4 +1,4 @@
-module M3e.Toc exposing (component, maxDepth, overlineSlot, titleSlot)
+module M3e.Toc exposing (component, for, maxDepth, overlineSlot, titleSlot)
 
 {-| 
 A table of contents that provides in-page scroll navigation.
@@ -9,7 +9,7 @@ A table of contents that provides in-page scroll navigation.
 
 ### Attributes
 
-@docs maxDepth
+@docs for, maxDepth
 
 ### Slots
 
@@ -31,6 +31,12 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-toc" attributes children
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_
 
 
 {-| The maximum depth of the table of contents. (default: `2`) -}

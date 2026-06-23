@@ -1,4 +1,4 @@
-module M3e.Tab exposing (component, iconSlot, onBeforeinput, onChange, onClick, onInput)
+module M3e.Tab exposing (component, disabled, for, iconSlot, onBeforeinput, onChange, onClick, onInput, selected)
 
 {-| 
 An interactive element that, when activated, presents an associated tab panel.
@@ -6,6 +6,10 @@ An interactive element that, when activated, presents an associated tab panel.
 ## Component
 
 @docs component
+
+### Attributes
+
+@docs disabled, for, selected
 
 ### Events
 
@@ -21,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An interactive element that, when activated, presents an associated tab panel.
@@ -37,6 +42,24 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-tab" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| Dispatched before the selected state changes.

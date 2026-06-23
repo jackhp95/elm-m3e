@@ -1,4 +1,4 @@
-module M3e.ListAction exposing (component, leadingSlot, onClick, overlineSlot, supportingTextSlot, trailingSlot)
+module M3e.ListAction exposing (component, disabled, download, href, leadingSlot, onClick, overlineSlot, rel, supportingTextSlot, target, trailingSlot)
 
 {-| 
 An item in a list that performs an action.
@@ -6,6 +6,10 @@ An item in a list that performs an action.
 ## Component
 
 @docs component
+
+### Attributes
+
+@docs disabled, download, href, rel, target
 
 ### Events
 
@@ -21,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An item in a list that performs an action.
@@ -40,6 +45,36 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-list-action" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download : String -> Html.Attribute msg
+download val_ =
+    Html.Attributes.attribute "download" val_
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> Html.Attribute msg
+href val_ =
+    Html.Attributes.attribute "href" val_
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> Html.Attribute msg
+rel val_ =
+    Html.Attributes.attribute "rel" val_
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> Html.Attribute msg
+target val_ =
+    Html.Attributes.attribute "target" val_
 
 
 {-| Dispatched when the element is clicked.

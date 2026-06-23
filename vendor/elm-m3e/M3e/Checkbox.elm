@@ -1,4 +1,4 @@
-module M3e.Checkbox exposing (component, name, onBeforeinput, onChange, onClick, onInput, onInvalid, required, value)
+module M3e.Checkbox exposing (checked, component, disabled, indeterminate, name, onBeforeinput, onChange, onClick, onInput, onInvalid, required, value)
 
 {-| 
 A checkbox that allows a user to select one or more options from a limited number of choices.
@@ -9,7 +9,7 @@ A checkbox that allows a user to select one or more options from a limited numbe
 
 ### Attributes
 
-@docs name, required, value
+@docs checked, disabled, indeterminate, name, required, value
 
 ### Events
 
@@ -36,6 +36,24 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-checkbox" attributes children
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked : Bool -> Html.Attribute msg
+checked =
+    Html.Attributes.checked
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element's checked state is indeterminate. (default: `false`) -}
+indeterminate : Bool -> Html.Attribute msg
+indeterminate val_ =
+    Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
 
 
 {-| The name that identifies the element when submitting the associated form. -}

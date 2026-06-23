@@ -1,4 +1,4 @@
-module M3e.SplitPane exposing (Orientation(..), component, endSlot, name, onBeforeinput, onChange, onInput, orientation, startSlot, value, wrapDetents)
+module M3e.SplitPane exposing (Orientation(..), component, disabled, endSlot, label, maxAttr, minAttr, name, onBeforeinput, onChange, onInput, orientation, overshootLimit, startSlot, step, value, wrapDetents)
 
 {-| 
 A dual-view layout that separates content with a movable drag handle.
@@ -9,7 +9,7 @@ A dual-view layout that separates content with a movable drag handle.
 
 ### Attributes
 
-@docs Orientation, orientation, value, wrapDetents, name
+@docs label, maxAttr, minAttr, Orientation, orientation, overshootLimit, step, value, wrapDetents, name, disabled
 
 ### Events
 
@@ -51,6 +51,24 @@ component attributes children =
     Html.node "m3e-split-pane" attributes children
 
 
+{-| The accessible label given to the movable drag handle. (default: `"Resize panes"`) -}
+label : String -> Html.Attribute msg
+label val_ =
+    Html.Attributes.attribute "label" val_
+
+
+{-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`) -}
+maxAttr : Float -> Html.Attribute msg
+maxAttr val_ =
+    Html.Attributes.property "max" (Json.Encode.float val_)
+
+
+{-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`) -}
+minAttr : Float -> Html.Attribute msg
+minAttr val_ =
+    Html.Attributes.property "min" (Json.Encode.float val_)
+
+
 {-| Values for the `orientation` attribute. -}
 type Orientation
     = Auto
@@ -77,6 +95,18 @@ orientationToString val_ =
             "vertical"
 
 
+{-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`) -}
+overshootLimit : Float -> Html.Attribute msg
+overshootLimit val_ =
+    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
+
+
+{-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`) -}
+step : Float -> Html.Attribute msg
+step val_ =
+    Html.Attributes.property "step" (Json.Encode.float val_)
+
+
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
 value : String -> Html.Attribute msg
 value =
@@ -93,6 +123,12 @@ wrapDetents val_ =
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the user finishes adjusting the drag handle.

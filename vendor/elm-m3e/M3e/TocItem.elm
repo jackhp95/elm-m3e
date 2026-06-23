@@ -1,4 +1,4 @@
-module M3e.TocItem exposing (component, onClick)
+module M3e.TocItem exposing (component, disabled, onClick, selected)
 
 {-| 
 An item in a table of contents.
@@ -7,6 +7,10 @@ An item in a table of contents.
 
 @docs component
 
+### Attributes
+
+@docs disabled, selected
+
 ### Events
 
 @docs onClick
@@ -14,8 +18,10 @@ An item in a table of contents.
 
 
 import Html
+import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An item in a table of contents.
@@ -26,6 +32,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-toc-item" attributes children
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| Dispatched when the element is clicked.

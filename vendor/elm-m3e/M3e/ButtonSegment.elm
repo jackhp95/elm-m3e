@@ -1,4 +1,4 @@
-module M3e.ButtonSegment exposing (component, iconSlot, onBeforeinput, onChange, onClick, onInput, value)
+module M3e.ButtonSegment exposing (checked, component, disabled, iconSlot, onBeforeinput, onChange, onClick, onInput, value)
 
 {-| 
 A option that can be selected within a segmented button.
@@ -9,7 +9,7 @@ A option that can be selected within a segmented button.
 
 ### Attributes
 
-@docs value
+@docs checked, disabled, value
 
 ### Events
 
@@ -25,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A option that can be selected within a segmented button.
@@ -41,6 +42,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-button-segment" attributes children
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked : Bool -> Html.Attribute msg
+checked =
+    Html.Attributes.checked
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| A string representing the value of the segment. (default: `"on"`) -}

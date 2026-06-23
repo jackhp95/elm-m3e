@@ -1,4 +1,4 @@
-module M3e.TextHighlight exposing (Mode(..), component, mode, onHighlight)
+module M3e.TextHighlight exposing (Mode(..), caseSensitive, component, disabled, mode, onHighlight, term)
 
 {-| 
 Highlights text which matches a given search term.
@@ -9,7 +9,7 @@ Highlights text which matches a given search term.
 
 ### Attributes
 
-@docs Mode, mode
+@docs caseSensitive, disabled, Mode, mode, term
 
 ### Events
 
@@ -21,6 +21,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| Highlights text which matches a given search term.
@@ -31,6 +32,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-text-highlight" attributes children
+
+
+{-| Whether matching is case sensitive. (default: `false`) -}
+caseSensitive : Bool -> Html.Attribute msg
+caseSensitive val_ =
+    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether text highlighting is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Values for the `mode` attribute. -}
@@ -57,6 +70,12 @@ modeToString val_ =
     
         StartsWith ->
             "starts-with"
+
+
+{-| The term to highlight. (default: `""`) -}
+term : String -> Html.Attribute msg
+term val_ =
+    Html.Attributes.attribute "term" val_
 
 
 {-| Dispatched when content is highlighted.

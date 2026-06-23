@@ -1,4 +1,4 @@
-module M3e.Card exposing (Orientation(..), Variant(..), actionable, actionsSlot, component, contentSlot, footerSlot, headerSlot, inline, name, onClick, orientation, value, variant)
+module M3e.Card exposing (Orientation(..), Type(..), Variant(..), actionable, actionsSlot, component, contentSlot, disabled, disabledInteractive, download, footerSlot, headerSlot, href, inline, name, onClick, orientation, rel, target, type_, value, variant)
 
 {-| 
 A content container for text, images (or other media), and actions in the context of a single subject.
@@ -9,7 +9,7 @@ A content container for text, images (or other media), and actions in the contex
 
 ### Attributes
 
-@docs actionable, inline, Orientation, orientation, Variant, variant, name, value
+@docs actionable, inline, Orientation, orientation, Variant, variant, href, target, rel, download, name, value, Type, type_, disabledInteractive, disabled
 
 ### Events
 
@@ -104,6 +104,32 @@ variantToString val_ =
             "outlined"
 
 
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> Html.Attribute msg
+href val_ =
+    Html.Attributes.attribute "href" val_
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> Html.Attribute msg
+target val_ =
+    Html.Attributes.attribute "target" val_
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> Html.Attribute msg
+rel val_ =
+    Html.Attributes.attribute "rel" val_
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded,
+optionally specifying the new name of the file. (default: `null`)
+-}
+download : String -> Html.Attribute msg
+download val_ =
+    Html.Attributes.attribute "download" val_
+
+
 {-| The name of the element, submitted as a pair with the element's `value`
 as part of form data, when the element is used to submit a form.
 -}
@@ -116,6 +142,44 @@ name val_ =
 value : String -> Html.Attribute msg
 value =
     Html.Attributes.value
+
+
+{-| Values for the `type` attribute. -}
+type Type
+    = Button
+    | Reset
+    | Submit
+
+
+{-| The type of the element. (default: `"button"`) -}
+type_ : Type -> Html.Attribute msg
+type_ val_ =
+    Html.Attributes.attribute "type" (typeToString val_)
+
+
+typeToString : Type -> String
+typeToString val_ =
+    case val_ of
+        Button ->
+            "button"
+    
+        Reset ->
+            "reset"
+    
+        Submit ->
+            "submit"
+
+
+{-| Whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive : Bool -> Html.Attribute msg
+disabledInteractive val_ =
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the element is clicked.

@@ -1,4 +1,4 @@
-module M3e.ListOption exposing (component, leadingSlot, onBeforeinput, onChange, onClick, onInput, overlineSlot, supportingTextSlot, trailingSlot, value)
+module M3e.ListOption exposing (component, disabled, leadingSlot, onBeforeinput, onChange, onClick, onInput, overlineSlot, selected, supportingTextSlot, trailingSlot, value)
 
 {-| 
 A selectable option in a list.
@@ -9,7 +9,7 @@ A selectable option in a list.
 
 ### Attributes
 
-@docs value
+@docs disabled, selected, value
 
 ### Events
 
@@ -25,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A selectable option in a list.
@@ -47,6 +48,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-list-option" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| A string representing the value of the option. -}

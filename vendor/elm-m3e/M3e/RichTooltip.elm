@@ -1,4 +1,4 @@
-module M3e.RichTooltip exposing (Position(..), actionsSlot, component, onBeforetoggle, onToggle, position, subheadSlot)
+module M3e.RichTooltip exposing (Position(..), TouchGestures(..), actionsSlot, component, disabled, for, hideDelay, onBeforetoggle, onToggle, position, showDelay, subheadSlot, touchGestures)
 
 {-| 
 Provides contextual details for a control, such as explaining the value or purpose of a feature.
@@ -9,7 +9,7 @@ Provides contextual details for a control, such as explaining the value or purpo
 
 ### Attributes
 
-@docs Position, position
+@docs disabled, for, hideDelay, Position, position, showDelay, TouchGestures, touchGestures
 
 ### Events
 
@@ -25,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| Provides contextual details for a control, such as explaining the value or purpose of a feature.
@@ -43,6 +44,24 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-rich-tooltip" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for val_ =
+    Html.Attributes.attribute "for" val_
+
+
+{-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
+hideDelay : Float -> Html.Attribute msg
+hideDelay val_ =
+    Html.Attributes.property "hide-delay" (Json.Encode.float val_)
 
 
 {-| Values for the `position` attribute. -}
@@ -89,6 +108,38 @@ positionToString val_ =
     
         BelowBefore ->
             "below-before"
+
+
+{-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
+showDelay : Float -> Html.Attribute msg
+showDelay val_ =
+    Html.Attributes.property "show-delay" (Json.Encode.float val_)
+
+
+{-| Values for the `touch-gestures` attribute. -}
+type TouchGestures
+    = Auto
+    | Off
+    | On
+
+
+{-| The mode in which to handle touch gestures. (default: `"auto"`) -}
+touchGestures : TouchGestures -> Html.Attribute msg
+touchGestures val_ =
+    Html.Attributes.attribute "touch-gestures" (touchGesturesToString val_)
+
+
+touchGesturesToString : TouchGestures -> String
+touchGesturesToString val_ =
+    case val_ of
+        Auto ->
+            "auto"
+    
+        Off ->
+            "off"
+    
+        On ->
+            "on"
 
 
 {-| Dispatched before the toggle state changes.

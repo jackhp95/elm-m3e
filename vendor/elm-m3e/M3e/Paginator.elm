@@ -1,4 +1,4 @@
-module M3e.Paginator exposing (PageSizeVariant(..), component, firstPageIconSlot, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageIconSlot, lastPageLabel, length, nextPageIconSlot, onPage, pageIndex, pageSize, pageSizeVariant, pageSizes, previousPageIconSlot, showFirstLastButtons)
+module M3e.Paginator exposing (PageSizeVariant(..), component, disabled, firstPageIconSlot, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageIconSlot, lastPageLabel, length, nextPageIconSlot, nextPageLabel, onPage, pageIndex, pageSize, pageSizeVariant, pageSizes, previousPageIconSlot, previousPageLabel, showFirstLastButtons)
 
 {-| 
 Provides navigation for paged information, typically used with a table.
@@ -9,7 +9,7 @@ Provides navigation for paged information, typically used with a table.
 
 ### Attributes
 
-@docs firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, pageIndex, pageSize, pageSizes, PageSizeVariant, pageSizeVariant, showFirstLastButtons
+@docs disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, PageSizeVariant, pageSizeVariant, previousPageLabel, showFirstLastButtons
 
 ### Events
 
@@ -44,6 +44,12 @@ component attributes children =
     Html.node "m3e-paginator" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
 {-| The accessible label given to the button used to move to the first page. (default: `"First page"`) -}
 firstPageLabel : String -> Html.Attribute msg
 firstPageLabel val_ =
@@ -72,6 +78,12 @@ lastPageLabel val_ =
 length : Float -> Html.Attribute msg
 length val_ =
     Html.Attributes.property "length" (Json.Encode.float val_)
+
+
+{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
+nextPageLabel : String -> Html.Attribute msg
+nextPageLabel val_ =
+    Html.Attributes.attribute "next-page-label" val_
 
 
 {-| The zero-based page index of the displayed list of items. (default: `0`) -}
@@ -112,6 +124,12 @@ pageSizeVariantToString val_ =
     
         Outlined ->
             "outlined"
+
+
+{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
+previousPageLabel : String -> Html.Attribute msg
+previousPageLabel val_ =
+    Html.Attributes.attribute "previous-page-label" val_
 
 
 {-| Whether to show first/last buttons. (default: `false`) -}

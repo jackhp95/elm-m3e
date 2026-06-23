@@ -1,4 +1,4 @@
-module M3e.Dialog exposing (actionsSlot, alert, closeIconSlot, component, disableClose, headerSlot, noFocusTrap, onCancel, onClosed, onClosing, onOpened, onOpening, open)
+module M3e.Dialog exposing (actionsSlot, alert, closeIconSlot, closeLabel, component, disableClose, dismissible, headerSlot, noFocusTrap, onCancel, onClosed, onClosing, onOpened, onOpening, open)
 
 {-| 
 A dialog that provides important prompts in a user flow.
@@ -9,7 +9,7 @@ A dialog that provides important prompts in a user flow.
 
 ### Attributes
 
-@docs alert, disableClose, noFocusTrap, open
+@docs alert, closeLabel, disableClose, dismissible, noFocusTrap, open
 
 ### Events
 
@@ -53,10 +53,22 @@ alert val_ =
     Html.Attributes.property "alert" (Json.Encode.bool val_)
 
 
+{-| The accessible label given to the button used to dismiss the dialog. (default: `"Close"`) -}
+closeLabel : String -> Html.Attribute msg
+closeLabel val_ =
+    Html.Attributes.attribute "close-label" val_
+
+
 {-| Whether users cannot click the backdrop or press ESC to dismiss the dialog. (default: `false`) -}
 disableClose : Bool -> Html.Attribute msg
 disableClose val_ =
     Html.Attributes.property "disable-close" (Json.Encode.bool val_)
+
+
+{-| Whether a button is presented that can be used to close the dialog. (default: `false`) -}
+dismissible : Bool -> Html.Attribute msg
+dismissible val_ =
+    Html.Attributes.property "dismissible" (Json.Encode.bool val_)
 
 
 {-| Whether to disable focus trapping, which keeps keyboard `Tab` navigation within the dialog. (default: `false`) -}

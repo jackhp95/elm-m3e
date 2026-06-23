@@ -1,4 +1,4 @@
-module M3e.Tree exposing (cascade, component, onChange)
+module M3e.Tree exposing (cascade, component, multi, onChange)
 
 {-| 
 Presents hierarchical data in a tree structure.
@@ -9,7 +9,7 @@ Presents hierarchical data in a tree structure.
 
 ### Attributes
 
-@docs cascade
+@docs multi, cascade
 
 ### Events
 
@@ -32,6 +32,12 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-tree" attributes children
+
+
+{-| Whether multiple items can be selected. (default: `false`) -}
+multi : Bool -> Html.Attribute msg
+multi val_ =
+    Html.Attributes.property "multi" (Json.Encode.bool val_)
 
 
 {-| Whether multiple item selection cascades to child items. (default: `false`) -}

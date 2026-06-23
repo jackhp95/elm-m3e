@@ -1,4 +1,4 @@
-module M3e.NavMenuItem exposing (badgeSlot, component, iconSlot, labelSlot, onClick, onClosed, onClosing, onOpened, onOpening, open, selectedIconSlot, toggleIconSlot)
+module M3e.NavMenuItem exposing (badgeSlot, component, disabled, iconSlot, labelSlot, onClick, onClosed, onClosing, onOpened, onOpening, open, selected, selectedIconSlot, toggleIconSlot)
 
 {-| 
 An expandable item, selectable item within a navigation menu.
@@ -9,7 +9,7 @@ An expandable item, selectable item within a navigation menu.
 
 ### Attributes
 
-@docs open
+@docs disabled, open, selected
 
 ### Events
 
@@ -49,10 +49,22 @@ component attributes children =
     Html.node "m3e-nav-menu-item" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
 {-| Whether the item is expanded. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
+
+
+{-| Whether the item is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
 
 
 {-| Dispatched when the item begins to open.

@@ -1,4 +1,4 @@
-module M3e.InputChip exposing (Variant(..), avatarSlot, component, iconSlot, onClick, onRemove, removable, removeIconSlot, removeLabel, trailingIconSlot, value, variant)
+module M3e.InputChip exposing (Variant(..), avatarSlot, component, disabled, disabledInteractive, iconSlot, onClick, onRemove, removable, removeIconSlot, removeLabel, trailingIconSlot, value, variant)
 
 {-| 
 A chip which represents a discrete piece of information entered by a user.
@@ -9,7 +9,7 @@ A chip which represents a discrete piece of information entered by a user.
 
 ### Attributes
 
-@docs removable, removeLabel, value, Variant, variant
+@docs disabled, disabledInteractive, removable, removeLabel, value, Variant, variant
 
 ### Events
 
@@ -46,6 +46,18 @@ import Json.Encode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-input-chip" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive : Bool -> Html.Attribute msg
+disabledInteractive val_ =
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
 
 
 {-| Whether the chip is removable. (default: `false`) -}

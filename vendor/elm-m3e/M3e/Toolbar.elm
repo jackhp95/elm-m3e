@@ -1,4 +1,4 @@
-module M3e.Toolbar exposing (Shape(..), Variant(..), component, elevated, shape, variant)
+module M3e.Toolbar exposing (Shape(..), Variant(..), component, elevated, shape, variant, vertical)
 
 {-| 
 Presents frequently used actions relevant to the current page.
@@ -9,7 +9,7 @@ Presents frequently used actions relevant to the current page.
 
 ### Attributes
 
-@docs elevated, Shape, shape, Variant, variant
+@docs elevated, Shape, shape, Variant, variant, vertical
 -}
 
 
@@ -72,3 +72,9 @@ variantToString val_ =
     
         Vibrant ->
             "vibrant"
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> Html.Attribute msg
+vertical val_ =
+    Html.Attributes.property "vertical" (Json.Encode.bool val_)

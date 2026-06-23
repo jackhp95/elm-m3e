@@ -1,4 +1,4 @@
-module M3e.Select exposing (arrowSlot, component, name, onBeforeinput, onChange, onInput, onToggle, required, valueSlot)
+module M3e.Select exposing (arrowSlot, component, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, onToggle, panelClass, required, valueSlot)
 
 {-| 
 A form control that allows users to select a value from a set of predefined options.
@@ -9,7 +9,7 @@ A form control that allows users to select a value from a set of predefined opti
 
 ### Attributes
 
-@docs name, required
+@docs disabled, hideSelectionIndicator, multi, name, panelClass, required
 
 ### Events
 
@@ -45,10 +45,34 @@ component attributes children =
     Html.node "m3e-select" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether to hide the selection indicator for single select options. (default: `false`) -}
+hideSelectionIndicator : Bool -> Html.Attribute msg
+hideSelectionIndicator val_ =
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+
+
+{-| Whether multiple options can be selected. (default: `false`) -}
+multi : Bool -> Html.Attribute msg
+multi val_ =
+    Html.Attributes.property "multi" (Json.Encode.bool val_)
+
+
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
+
+
+{-| Class or list of classes to be applied to the select's overlay panel. (default: `""`) -}
+panelClass : String -> Html.Attribute msg
+panelClass val_ =
+    Html.Attributes.attribute "panel-class" val_
 
 
 {-| Whether the element is required. (default: `false`) -}

@@ -1,4 +1,4 @@
-module M3e.YearView exposing (component, onActiveChange, onChange)
+module M3e.YearView exposing (activeDate, component, date, maxDate, minDate, onActiveChange, onChange, today)
 
 {-| 
 An internal component used to display a single year in a calendar.
@@ -7,6 +7,10 @@ An internal component used to display a single year in a calendar.
 
 @docs component
 
+### Attributes
+
+@docs today, date, activeDate, minDate, maxDate
+
 ### Events
 
 @docs onChange, onActiveChange
@@ -14,6 +18,7 @@ An internal component used to display a single year in a calendar.
 
 
 import Html
+import Html.Attributes
 import Html.Events
 import Json.Decode
 
@@ -30,6 +35,36 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-year-view" attributes children
+
+
+{-| Today's date. (default: `new Date()`) -}
+today : String -> Html.Attribute msg
+today val_ =
+    Html.Attributes.attribute "today" val_
+
+
+{-| The selected date. (default: `null`) -}
+date : String -> Html.Attribute msg
+date val_ =
+    Html.Attributes.attribute "date" val_
+
+
+{-| The active date. (default: `new Date()`) -}
+activeDate : String -> Html.Attribute msg
+activeDate val_ =
+    Html.Attributes.attribute "active-date" val_
+
+
+{-| The minimum date that can be selected. (default: `null`) -}
+minDate : String -> Html.Attribute msg
+minDate val_ =
+    Html.Attributes.attribute "min-date" val_
+
+
+{-| The maximum date that can be selected. (default: `null`) -}
+maxDate : String -> Html.Attribute msg
+maxDate val_ =
+    Html.Attributes.attribute "max-date" val_
 
 
 {-| Listen for `change` events.

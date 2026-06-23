@@ -1,4 +1,4 @@
-module M3e.FilterChipSet exposing (component, name, onBeforeinput, onChange, onInput)
+module M3e.FilterChipSet exposing (component, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, vertical)
 
 {-| 
 A container that organizes filter chips into a cohesive group, enabling selection and
@@ -10,7 +10,7 @@ deselection of values used to refine content or trigger contextual behavior.
 
 ### Attributes
 
-@docs name
+@docs disabled, hideSelectionIndicator, multi, name, vertical
 
 ### Events
 
@@ -22,6 +22,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A container that organizes filter chips into a cohesive group, enabling selection and
@@ -40,10 +41,34 @@ component attributes children =
     Html.node "m3e-filter-chip-set" attributes children
 
 
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether to hide the selection indicator. (default: `false`) -}
+hideSelectionIndicator : Bool -> Html.Attribute msg
+hideSelectionIndicator val_ =
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+
+
+{-| Whether multiple chips can be selected. (default: `false`) -}
+multi : Bool -> Html.Attribute msg
+multi val_ =
+    Html.Attributes.property "multi" (Json.Encode.bool val_)
+
+
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> Html.Attribute msg
+vertical val_ =
+    Html.Attributes.property "vertical" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the selected state of a chip changes.

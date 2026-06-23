@@ -1,4 +1,4 @@
-module M3e.ProgressElementIndicatorBase exposing (Variant(..), component, value, variant)
+module M3e.ProgressElementIndicatorBase exposing (Variant(..), component, maxAttr, value, variant)
 
 {-| 
 A base implementation for an element used to convey progress. This class must be inherited.
@@ -9,12 +9,13 @@ A base implementation for an element used to convey progress. This class must be
 
 ### Attributes
 
-@docs value, Variant, variant
+@docs value, maxAttr, Variant, variant
 -}
 
 
 import Html
 import Html.Attributes
+import Json.Encode
 
 
 {-| A base implementation for an element used to convey progress. This class must be inherited. -}
@@ -27,6 +28,12 @@ component attributes children =
 value : String -> Html.Attribute msg
 value =
     Html.Attributes.value
+
+
+{-| The maximum progress value. (default: `100`) -}
+maxAttr : Float -> Html.Attribute msg
+maxAttr val_ =
+    Html.Attributes.property "max" (Json.Encode.float val_)
 
 
 {-| Values for the `variant` attribute. -}

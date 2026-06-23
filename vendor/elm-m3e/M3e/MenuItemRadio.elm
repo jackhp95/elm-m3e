@@ -1,4 +1,4 @@
-module M3e.MenuItemRadio exposing (component, iconSlot, onClick, trailingIconSlot)
+module M3e.MenuItemRadio exposing (checked, component, disabled, iconSlot, onClick, trailingIconSlot)
 
 {-| 
 An item of a menu which supports a mutually exclusive checkable state.
@@ -6,6 +6,10 @@ An item of a menu which supports a mutually exclusive checkable state.
 ## Component
 
 @docs component
+
+### Attributes
+
+@docs disabled, checked
 
 ### Events
 
@@ -21,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An item of a menu which supports a mutually exclusive checkable state.
@@ -38,6 +43,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-menu-item-radio" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked : Bool -> Html.Attribute msg
+checked =
+    Html.Attributes.checked
 
 
 {-| Dispatched when the element is clicked.

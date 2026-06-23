@@ -1,4 +1,4 @@
-module M3e.FloatingPanel exposing (component, onBeforetoggle, onToggle)
+module M3e.FloatingPanel exposing (ScrollStrategy(..), anchorOffset, component, fitAnchorWidth, onBeforetoggle, onToggle, scrollStrategy)
 
 {-| 
 A lightweight, generic floating surface used to present content above the page.
@@ -7,6 +7,10 @@ A lightweight, generic floating surface used to present content above the page.
 
 @docs component
 
+### Attributes
+
+@docs ScrollStrategy, scrollStrategy, fitAnchorWidth, anchorOffset
+
 ### Events
 
 @docs onBeforetoggle, onToggle
@@ -14,8 +18,10 @@ A lightweight, generic floating surface used to present content above the page.
 
 
 import Html
+import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A lightweight, generic floating surface used to present content above the page.
@@ -27,6 +33,40 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-floating-panel" attributes children
+
+
+{-| Values for the `scroll-strategy` attribute. -}
+type ScrollStrategy
+    = Hide
+    | Reposition
+
+
+{-| The strategy that controls how the panel behaves when its trigger scrolls. (default: `"hide"`) -}
+scrollStrategy : ScrollStrategy -> Html.Attribute msg
+scrollStrategy val_ =
+    Html.Attributes.attribute "scroll-strategy" (scrollStrategyToString val_)
+
+
+scrollStrategyToString : ScrollStrategy -> String
+scrollStrategyToString val_ =
+    case val_ of
+        Hide ->
+            "hide"
+    
+        Reposition ->
+            "reposition"
+
+
+{-| Whether the panel's width should match its anchor's width. (default: `false`) -}
+fitAnchorWidth : Bool -> Html.Attribute msg
+fitAnchorWidth val_ =
+    Html.Attributes.property "fit-anchor-width" (Json.Encode.bool val_)
+
+
+{-| The logical margin, in pixels, between the panel and its anchor. (default: `0`) -}
+anchorOffset : Float -> Html.Attribute msg
+anchorOffset val_ =
+    Html.Attributes.property "anchor-offset" (Json.Encode.float val_)
 
 
 {-| Dispatched before the toggle state changes.

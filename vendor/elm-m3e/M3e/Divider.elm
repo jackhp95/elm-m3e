@@ -1,4 +1,4 @@
-module M3e.Divider exposing (component, inset, insetEnd, insetStart)
+module M3e.Divider exposing (component, inset, insetEnd, insetStart, vertical)
 
 {-| 
 A thin line that separates content in lists or other containers.
@@ -9,7 +9,7 @@ A thin line that separates content in lists or other containers.
 
 ### Attributes
 
-@docs inset, insetStart, insetEnd
+@docs inset, insetStart, insetEnd, vertical
 -}
 
 
@@ -40,3 +40,9 @@ insetStart val_ =
 insetEnd : Bool -> Html.Attribute msg
 insetEnd val_ =
     Html.Attributes.property "inset-end" (Json.Encode.bool val_)
+
+
+{-| Whether the divider is vertically aligned with adjacent content. (default: `false`) -}
+vertical : Bool -> Html.Attribute msg
+vertical val_ =
+    Html.Attributes.property "vertical" (Json.Encode.bool val_)

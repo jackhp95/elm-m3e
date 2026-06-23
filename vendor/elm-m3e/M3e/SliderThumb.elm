@@ -1,4 +1,4 @@
-module M3e.SliderThumb exposing (component, name, onBeforeinput, onChange, onClick, onInput, onValueChange, value)
+module M3e.SliderThumb exposing (component, disabled, name, onBeforeinput, onChange, onClick, onInput, onValueChange, value)
 
 {-| 
 A thumb used to select a value in a slider.
@@ -9,7 +9,7 @@ A thumb used to select a value in a slider.
 
 ### Attributes
 
-@docs name, value
+@docs disabled, name, value
 
 ### Events
 
@@ -21,6 +21,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A thumb used to select a value in a slider.
@@ -35,6 +36,12 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-slider-thumb" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| The name that identifies the element when submitting the associated form. -}

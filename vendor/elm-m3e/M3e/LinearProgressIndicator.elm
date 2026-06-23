@@ -1,4 +1,4 @@
-module M3e.LinearProgressIndicator exposing (Mode(..), Variant(..), bufferValue, component, mode, value, variant)
+module M3e.LinearProgressIndicator exposing (Mode(..), Variant(..), bufferValue, component, maxAttr, mode, value, variant)
 
 {-| 
 A horizontal bar for indicating progress and activity.
@@ -9,7 +9,7 @@ A horizontal bar for indicating progress and activity.
 
 ### Attributes
 
-@docs bufferValue, Mode, mode, value, Variant, variant
+@docs bufferValue, maxAttr, Mode, mode, value, Variant, variant
 -}
 
 
@@ -32,6 +32,12 @@ component attributes children =
 bufferValue : Float -> Html.Attribute msg
 bufferValue val_ =
     Html.Attributes.property "buffer-value" (Json.Encode.float val_)
+
+
+{-| The maximum progress value. (default: `100`) -}
+maxAttr : Float -> Html.Attribute msg
+maxAttr val_ =
+    Html.Attributes.property "max" (Json.Encode.float val_)
 
 
 {-| Values for the `mode` attribute. -}

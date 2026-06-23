@@ -1,4 +1,4 @@
-module M3e.SearchView exposing (Mode(..), closedLeadingSlot, closedTrailingSlot, component, contained, hideSearchIcon, inputSlot, mode, onBeforetoggle, onClear, onQuery, onToggle, open, openLeadingSlot, openTrailingSlot)
+module M3e.SearchView exposing (Mode(..), clearLabel, closeLabel, closedLeadingSlot, closedTrailingSlot, component, contained, hideSearchIcon, inputSlot, mode, onBeforetoggle, onClear, onQuery, onToggle, open, openLeadingSlot, openTrailingSlot)
 
 {-| 
 A surface that presents suggestions and results for a search.
@@ -9,7 +9,7 @@ A surface that presents suggestions and results for a search.
 
 ### Attributes
 
-@docs contained, Mode, mode, open, hideSearchIcon
+@docs contained, Mode, mode, open, clearLabel, closeLabel, hideSearchIcon
 
 ### Events
 
@@ -84,6 +84,18 @@ modeToString val_ =
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
+
+
+{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
+clearLabel : String -> Html.Attribute msg
+clearLabel val_ =
+    Html.Attributes.attribute "clear-label" val_
+
+
+{-| The accessible label given to the button used to collapse the view. (default: `"Close"`) -}
+closeLabel : String -> Html.Attribute msg
+closeLabel val_ =
+    Html.Attributes.attribute "close-label" val_
 
 
 {-| Whether to hide the search icon. (default: `false`) -}

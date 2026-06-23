@@ -1,4 +1,4 @@
-module M3e.SelectionList exposing (Variant(..), component, name, onBeforeinput, onChange, onInput, variant)
+module M3e.SelectionList exposing (Variant(..), component, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, variant)
 
 {-| 
 A list of selectable options.
@@ -9,7 +9,7 @@ A list of selectable options.
 
 ### Attributes
 
-@docs Variant, variant, name
+@docs hideSelectionIndicator, multi, Variant, variant, name, disabled
 
 ### Events
 
@@ -21,6 +21,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A list of selectable options.
@@ -36,6 +37,18 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-selection-list" attributes children
+
+
+{-| Whether to hide the selection indicator. (default: `false`) -}
+hideSelectionIndicator : Bool -> Html.Attribute msg
+hideSelectionIndicator val_ =
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+
+
+{-| Whether multiple items can be selected. (default: `false`) -}
+multi : Bool -> Html.Attribute msg
+multi val_ =
+    Html.Attributes.property "multi" (Json.Encode.bool val_)
 
 
 {-| Values for the `variant` attribute. -}
@@ -64,6 +77,12 @@ variantToString val_ =
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the selected state of an option changes.

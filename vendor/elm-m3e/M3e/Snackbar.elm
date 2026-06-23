@@ -1,4 +1,4 @@
-module M3e.Snackbar exposing (action, closeIconSlot, component, duration, onBeforetoggle, onToggle)
+module M3e.Snackbar exposing (action, closeIconSlot, closeLabel, component, dismissible, duration, onBeforetoggle, onToggle)
 
 {-| 
 Presents short updates about application processes at the bottom of the screen.
@@ -9,7 +9,7 @@ Presents short updates about application processes at the bottom of the screen.
 
 ### Attributes
 
-@docs action, duration
+@docs action, closeLabel, dismissible, duration
 
 ### Events
 
@@ -46,6 +46,18 @@ component attributes children =
 action : String -> Html.Attribute msg
 action val_ =
     Html.Attributes.attribute "action" val_
+
+
+{-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`) -}
+closeLabel : String -> Html.Attribute msg
+closeLabel val_ =
+    Html.Attributes.attribute "close-label" val_
+
+
+{-| Whether a button is presented that can be used to close the snackbar. (default: `false`) -}
+dismissible : Bool -> Html.Attribute msg
+dismissible val_ =
+    Html.Attributes.property "dismissible" (Json.Encode.bool val_)
 
 
 {-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`) -}

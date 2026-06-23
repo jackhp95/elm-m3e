@@ -1,4 +1,4 @@
-module M3e.NavItem exposing (Orientation(..), component, iconSlot, onBeforeinput, onChange, onClick, onInput, orientation, selectedIconSlot)
+module M3e.NavItem exposing (Orientation(..), component, disabled, disabledInteractive, download, href, iconSlot, onBeforeinput, onChange, onClick, onInput, orientation, rel, selected, selectedIconSlot, target)
 
 {-| 
 An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
@@ -9,7 +9,7 @@ An item, placed in a navigation bar or rail, used to navigate to destinations in
 
 ### Attributes
 
-@docs Orientation, orientation
+@docs disabled, disabledInteractive, download, href, Orientation, orientation, rel, selected, target
 
 ### Events
 
@@ -25,6 +25,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
@@ -42,6 +43,30 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-nav-item" attributes children
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive : Bool -> Html.Attribute msg
+disabledInteractive val_ =
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download : String -> Html.Attribute msg
+download val_ =
+    Html.Attributes.attribute "download" val_
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> Html.Attribute msg
+href val_ =
+    Html.Attributes.attribute "href" val_
 
 
 {-| Values for the `orientation` attribute. -}
@@ -64,6 +89,24 @@ orientationToString val_ =
     
         Vertical ->
             "vertical"
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> Html.Attribute msg
+rel val_ =
+    Html.Attributes.attribute "rel" val_
+
+
+{-| A value indicating whether the element is selected. (default: `false`) -}
+selected : Bool -> Html.Attribute msg
+selected =
+    Html.Attributes.selected
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> Html.Attribute msg
+target val_ =
+    Html.Attributes.attribute "target" val_
 
 
 {-| Dispatched before the selected state changes.

@@ -1,4 +1,4 @@
-module M3e.MenuItemElementBase exposing (component, onClick)
+module M3e.MenuItemElementBase exposing (component, disabled, onClick)
 
 {-| 
 A base implementation for an item of a menu. This class must be inherited.
@@ -7,6 +7,10 @@ A base implementation for an item of a menu. This class must be inherited.
 
 @docs component
 
+### Attributes
+
+@docs disabled
+
 ### Events
 
 @docs onClick
@@ -14,8 +18,10 @@ A base implementation for an item of a menu. This class must be inherited.
 
 
 import Html
+import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A base implementation for an item of a menu. This class must be inherited.
@@ -26,6 +32,12 @@ import Json.Decode
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "div" attributes children
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
 {-| Listen for `click` events.

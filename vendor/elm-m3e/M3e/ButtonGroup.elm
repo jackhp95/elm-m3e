@@ -1,4 +1,4 @@
-module M3e.ButtonGroup exposing (Size(..), Variant(..), component, size, variant)
+module M3e.ButtonGroup exposing (Size(..), Variant(..), component, multi, size, variant)
 
 {-| 
 Organizes buttons and adds interactions between them.
@@ -9,18 +9,25 @@ Organizes buttons and adds interactions between them.
 
 ### Attributes
 
-@docs Size, size, Variant, variant
+@docs multi, Size, size, Variant, variant
 -}
 
 
 import Html
 import Html.Attributes
+import Json.Encode
 
 
 {-| Organizes buttons and adds interactions between them. -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-button-group" attributes children
+
+
+{-| Whether multiple toggle buttons can be selected. (default: `false`) -}
+multi : Bool -> Html.Attribute msg
+multi val_ =
+    Html.Attributes.property "multi" (Json.Encode.bool val_)
 
 
 {-| Values for the `size` attribute. -}
