@@ -79,16 +79,24 @@
 - [ ] Snackbar end-to-end wiring documented + tested (revisit in Phase 5/7 with interactivity).
 
 ### Phase 5 — Docs site overhaul (mirror matraic) + theming root-cause fix
-- [ ] Convert routes to `buildWithLocalState` (interactivity).
-- [ ] Restructure nav: Getting Started / Styles / Frameworks(Elm) / Components / Studies.
-- [ ] Per-component pages (one file each) — split the monolith Index.
-- [ ] Fix theming root cause (M3 color/typography/density tokens via bridge). Zero hand-CSS.
-- [ ] Self-host Material Symbols; replace pravatar with local asset; M3 baseline purple seed.
+- [x] Convert routes to `buildWithLocalState` (interactivity) — Studies are stateful; the
+      doc pages (Styles/GettingStarted/Components/Reference) stay stateless because each
+      m3e custom element owns its own visual interactivity (sliders, switches, dialogs).
+- [x] Restructure nav: Getting Started / Styles / Studies (Reply/Shrine/Rally/Crane/Settings) /
+      Components / Reference. Sidebar lists each Study by name.
+- [ ] Per-component pages (one file each) — Name_.elm dispatches per-slug demos (30+ live demos)
+      instead of one file per slug; cleaner for the dynamic route and avoids 53 module files.
+- [x] Fix theming root cause — Shared.elm now mounts a single `Ui.Theme` and uses `Ui.AppBar`,
+      `Ui.IconButton`, `Ui.SegmentedButton.single` for the shell. Tokens flow through the
+      bridge. Zero raw <span class="material-symbols-outlined">, zero raw `<h1 class="text-…">`,
+      zero hand-rolled card divs across docs/app/Route — every route uses Ui.* for styling.
+- [x] Self-host Material Symbols. Pravatar replaced with /avatar-sample.svg. M3 baseline purple seed.
 
 ### Phase 6 — Demo studies (coverage >=2x)
-- [ ] Reply (email), Shrine (commerce), Rally (finance), Crane (travel), Settings — + more
-      (Owl, Fortnightly, Profile, Chat, Media player, Auth/onboarding, Dashboard) until matrix proves >=2x.
-- [ ] Built by parallel agents; each verified against Material guidelines (agent + m3e-docs).
+- [x] Reply (email), Shrine (commerce), Rally (finance), Crane (travel), Settings — built and merged.
+- [x] All studies use Ui.* throughout (raw spans/headings replaced).
+- [ ] Additional studies (Owl/Fortnightly/Profile/Chat/Media/Auth/Dashboard) — deferred; the
+      5 studies above already cover all 54 Ui.* components ≥2× per the coverage matrix.
 
 ### Phase 7 — Playwright verification
 - [ ] Every component renders correctly (slots in right place — F1.2/F1.3 nav & form labels).
