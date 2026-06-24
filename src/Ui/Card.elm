@@ -251,23 +251,42 @@ view (Card cfg) =
     M3e.Card.component
         [ variantAttr cfg.variant ]
         (List.concat
-            [ headerSection cfg
-            , bodySection cfg.body
+            [ mediaSection cfg.media
+            , contentSection cfg
             , actionsSection cfg.actions
             , footerSection cfg.footer
             ]
         )
 
 
-headerSection : Config msg -> List (Html msg)
-headerSection cfg =
+{-| The media (image/video) rides the `header` slot — that is what `m3e-card`
+styles as the full-bleed media region (`::slotted(img[slot=header])`). It is
+the only thing in `header`; the title block lives in `content` below.
+-}
+mediaSection : Maybe (Html msg) -> List (Html msg)
+mediaSection media =
+    case media of
+        Nothing ->
+            []
+
+        Just m ->
+            [ Html.div [ M3e.Card.headerSlot ] [ m ] ]
+
+
+{-| The card's text block — headline, subhead, then body — all in the
+`content` slot (the padded supporting-text region). Keeping the headline and
+subhead here (not in `header`, which is the media slot) is what stops them
+being clipped behind the media on a media card.
+-}
+contentSection : Config msg -> List (Html msg)
+contentSection cfg =
     let
         parts : List (Html msg)
         parts =
             List.filterMap identity
-                [ Maybe.map renderMedia cfg.media
-                , Maybe.map renderHeadline cfg.headline
+                [ Maybe.map renderHeadline cfg.headline
                 , Maybe.map renderSubhead cfg.subhead
+                , cfg.body
                 ]
     in
     case parts of
@@ -275,12 +294,7 @@ headerSection cfg =
             []
 
         _ ->
-            [ Html.div [ M3e.Card.headerSlot ] parts ]
-
-
-renderMedia : Html msg -> Html msg
-renderMedia media =
-    Html.div [] [ media ]
+            [ Html.div [ M3e.Card.contentSlot ] parts ]
 
 
 renderHeadline : String -> Html msg
@@ -291,16 +305,6 @@ renderHeadline text =
 renderSubhead : String -> Html msg
 renderSubhead text =
     Html.p [] [ Html.text text ]
-
-
-bodySection : Maybe (Html msg) -> List (Html msg)
-bodySection body =
-    case body of
-        Nothing ->
-            []
-
-        Just b ->
-            [ Html.div [ M3e.Card.contentSlot ] [ b ] ]
 
 
 actionsSection : List (Ui.Button.Button msg) -> List (Html msg)
