@@ -1,8 +1,8 @@
 module Ui.ButtonGroup exposing
     ( ButtonGroup
-    , Size(..)
+    , Size(..), Variant(..)
     , new
-    , withSize, withMulti
+    , withSize, withMulti, withVariant
     , view
     )
 
@@ -23,7 +23,7 @@ provides connected visual treatment (shared rounded ends, no gaps).
 
 # Configuration
 
-@docs Size
+@docs Size, Variant
 
 
 # Constructor
@@ -33,7 +33,7 @@ provides connected visual treatment (shared rounded ends, no gaps).
 
 # Modifiers
 
-@docs withSize, withMulti
+@docs withSize, withMulti, withVariant
 
 
 # Render
@@ -56,6 +56,7 @@ type ButtonGroup msg
 type alias Config msg =
     { size : Size
     , multi : Bool
+    , variant : Variant
     , buttons : List (Ui.Button.Button msg)
     }
 
@@ -70,11 +71,20 @@ type Size
     | ExtraLarge
 
 
+{-| Group variant. `Connected` gives the M3 Expressive connected
+treatment (shared rounded ends, no gaps); `Standard` is the default
+separated row.
+-}
+type Variant
+    = Standard
+    | Connected
+
+
 {-| Construct a button group.
 -}
 new : List (Ui.Button.Button msg) -> ButtonGroup msg
 new buttons =
-    ButtonGroup { size = Medium, multi = False, buttons = buttons }
+    ButtonGroup { size = Medium, multi = False, variant = Standard, buttons = buttons }
 
 
 {-| Set the size for all buttons in the group.
@@ -91,6 +101,14 @@ withMulti b (ButtonGroup cfg) =
     ButtonGroup { cfg | multi = b }
 
 
+{-| Set the variant. Use `Connected` for the M3 Expressive connected
+button row.
+-}
+withVariant : Variant -> ButtonGroup msg -> ButtonGroup msg
+withVariant v (ButtonGroup cfg) =
+    ButtonGroup { cfg | variant = v }
+
+
 {-| Render the button group.
 -}
 view : ButtonGroup msg -> Html msg
@@ -98,8 +116,19 @@ view (ButtonGroup cfg) =
     M3e.ButtonGroup.component
         [ sizeAttr cfg.size
         , M3e.ButtonGroup.multi cfg.multi
+        , variantAttr cfg.variant
         ]
         (List.map Ui.Button.view cfg.buttons)
+
+
+variantAttr : Variant -> Html.Attribute msg
+variantAttr v =
+    case v of
+        Standard ->
+            M3e.ButtonGroup.variant M3e.ButtonGroup.Standard
+
+        Connected ->
+            M3e.ButtonGroup.variant M3e.ButtonGroup.Connected
 
 
 sizeAttr : Size -> Html.Attribute msg

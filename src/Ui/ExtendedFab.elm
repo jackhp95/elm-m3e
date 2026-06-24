@@ -169,7 +169,7 @@ view (ExtendedFab cfg) =
             ]
         )
         [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Ui.Icon.view cfg.icon ]
-        , Html.text cfg.label
+        , Html.span [ M3e.Fab.labelSlot ] [ Html.text cfg.label ]
         ]
 
 
