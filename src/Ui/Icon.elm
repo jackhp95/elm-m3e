@@ -153,18 +153,19 @@ it call `a11y` and project it themselves.
 view : Icon msg -> Html msg
 view (Icon cfg) =
     M3e.Icon.component
-        (List.filterMap identity
-            [ Maybe.map (toFloat >> M3e.Icon.opticalSize) cfg.opticalSize
-            , Maybe.map (weightToString >> M3e.Icon.weight) cfg.weight
-            , Maybe.map (gradeToM3e >> M3e.Icon.grade) cfg.grade
-            , if cfg.filled then
-                Just (M3e.Icon.filled True)
+        (M3e.Icon.name cfg.name
+            :: List.filterMap identity
+                [ Maybe.map (toFloat >> M3e.Icon.opticalSize) cfg.opticalSize
+                , Maybe.map (weightToString >> M3e.Icon.weight) cfg.weight
+                , Maybe.map (gradeToM3e >> M3e.Icon.grade) cfg.grade
+                , if cfg.filled then
+                    Just (M3e.Icon.filled True)
 
-              else
-                Nothing
-            ]
+                  else
+                    Nothing
+                ]
         )
-        [ Html.text cfg.name ]
+        []
 
 
 weightToString : Weight -> String
