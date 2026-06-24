@@ -48,8 +48,14 @@ Ordered newest-first within each section.
   - at minimum default these to no outline (the form-field `variant` is wrong
     for non-text controls).
   - Whatever the choice, make Switch/Slider/RadioButton/Select **consistent**.
-- **Status:** logged; not yet fixed (touches several modules + their tests +
-  the Phase-3 "always emit a form-field label" decision).
+- **Resolved:** added `withVisibleLabel : Bool` (default `True`, non-breaking)
+  to **Switch, Slider, RadioButton, and Checkbox** — `False` renders the bare
+  control with the label as `aria-label`, no form-field. Applied across the
+  Settings + Reply studies. (Checkbox had the same bug — it surfaced in the
+  Reply study as a broken outlined "Select <subject>" box on every row.)
+- **Still open (design):** whether the *default* should be bare for
+  non-text controls (an outlined field around a switch/checkbox is arguably
+  never right). Left as default-wrapped for now to stay non-breaking.
 
 ## API gaps (couldn't express a real, in-spec use case)
 

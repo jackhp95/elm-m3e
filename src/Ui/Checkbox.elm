@@ -1,7 +1,7 @@
 module Ui.Checkbox exposing
     ( Checkbox, Boolean, Tristate
     , boolean, tristate
-    , withId, withHelp, withError, withRequired, withDisabled
+    , withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
     , view
     )
 
@@ -97,7 +97,7 @@ With help text and an error message:
 
 # Modifiers
 
-@docs withId, withHelp, withError, withRequired, withDisabled
+@docs withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
 
 
 # Render
@@ -148,6 +148,7 @@ type alias Config msg =
     , error : Maybe (Html msg)
     , required : Bool
     , disabled : Bool
+    , visibleLabel : Bool
     }
 
 
@@ -216,6 +217,7 @@ baseConfig label state onChange =
     , error = Nothing
     , required = False
     , disabled = False
+    , visibleLabel = True
     }
 
 
@@ -267,6 +269,20 @@ withDisabled disabled (Checkbox cfg) =
     Checkbox { cfg | disabled = disabled }
 
 
+{-| Whether to render the visible label and the surrounding `m3e-form-field`
+chrome (default `True`).
+
+Set `False` for a **bare** checkbox — just the box, with the label kept as an
+`aria-label`. Use this when the checkbox sits in a row/list item that already
+provides its own visible label (e.g. selecting a list row), so the label isn't
+shown twice and the box isn't wrapped in a text-field outline.
+
+-}
+withVisibleLabel : Bool -> Checkbox kind msg -> Checkbox kind msg
+withVisibleLabel visible (Checkbox cfg) =
+    Checkbox { cfg | visibleLabel = visible }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -276,15 +292,19 @@ Use this as the final step of the builder pipeline.
 -}
 view : Checkbox kind msg -> Html msg
 view (Checkbox cfg) =
-    M3e.FormField.component
-        []
-        (List.concat
-            [ [ checkboxElement cfg
-              , labelElement cfg
-              ]
-            , subscriptElements cfg
-            ]
-        )
+    if cfg.visibleLabel then
+        M3e.FormField.component
+            []
+            (List.concat
+                [ [ checkboxElement cfg
+                  , labelElement cfg
+                  ]
+                , subscriptElements cfg
+                ]
+            )
+
+    else
+        checkboxElement cfg
 
 
 controlId : Config msg -> String
@@ -300,13 +320,20 @@ controlId cfg =
 checkboxElement : Config msg -> Html msg
 checkboxElement cfg =
     M3e.Checkbox.component
-        [ Attr.id (controlId cfg)
-        , M3e.Checkbox.checked (isChecked cfg.state)
-        , M3e.Checkbox.indeterminate (isIndeterminate cfg.state)
-        , M3e.Checkbox.disabled cfg.disabled
-        , M3e.Checkbox.required cfg.required
-        , M3e.Checkbox.onChange (changeDecoder cfg.onChange)
-        ]
+        (List.filterMap identity
+            [ Just (Attr.id (controlId cfg))
+            , Just (M3e.Checkbox.checked (isChecked cfg.state))
+            , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
+            , Just (M3e.Checkbox.disabled cfg.disabled)
+            , Just (M3e.Checkbox.required cfg.required)
+            , if cfg.visibleLabel then
+                Nothing
+
+              else
+                Just (Attr.attribute "aria-label" cfg.label)
+            , Just (M3e.Checkbox.onChange (changeDecoder cfg.onChange))
+            ]
+        )
         []
 
 

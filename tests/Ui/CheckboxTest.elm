@@ -52,4 +52,15 @@ suite =
                         , Query.find [ Selector.tag "m3e-checkbox" ]
                             >> Query.has [ Selector.id "sub-1" ]
                         ]
+        , test "withVisibleLabel False renders a bare checkbox (no form-field, label as aria-label)" <|
+            \_ ->
+                Ui.Checkbox.boolean { label = "Select row", checked = False, onChange = always () }
+                    |> Ui.Checkbox.withVisibleLabel False
+                    |> Ui.Checkbox.view
+                    |> Query.fromHtml
+                    |> Expect.all
+                        [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                        , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                        , Query.has [ Selector.tag "m3e-checkbox", Selector.attribute (Attr.attribute "aria-label" "Select row") ]
+                        ]
         ]
