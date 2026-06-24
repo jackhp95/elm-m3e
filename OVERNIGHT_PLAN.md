@@ -65,20 +65,18 @@
   - [ ] slot-type discipline rule(s) as feasible
 - [ ] Run review across src AND docs AND demos; drive to zero.
 
-### Phase 3 — Library correctness & Material-exactness (verification agents vs m3e-docs)
-- [ ] F15 Avatar.extractInitials fallback for non-letter input.
-- [ ] Remove/replace all `ds-*` classes (Card/Dialog/BottomSheet/SideSheet/Tooltip/Shape).
-- [ ] F8 List split (`Ui.List.item` vs `Ui.List.actionItem`) — no render-path-from-modifier.
-- [ ] Un-park Disclosure → `Disclosure.single`/`Disclosure.accordion`, fix magic id (F16).
-- [ ] F12 Select option-value key; F14 cosmetics; 34-site `Attr.attribute` audit.
-- [ ] Remove non-Material `Ui.Theme` `t-*` contract → remap to M3 tokens (ADR).
-- [ ] Resolve `Ui.Size` vs per-component sizes per Material spec (ADR).
-- [ ] Verification agents cross-check EVERY component's emitted markup vs m3e-docs CEM.
+### Phase 3 — Library correctness & Material-exactness — ✅ DONE (7 TDD agents, all merged)
+- [x] 6 CRITICAL slot bugs (AppBar, NavBar, NavRail, SideSheet, BottomSheet, SplitButton/FabMenu).
+- [x] 13 HIGH + 12 MEDIUM + 4 LOW deltas fixed (form-field labels, Paginator page-index, Tabs/Tooltip
+      slots, Dialog full-screen removed, RadioButton name, SegmentedButton standalone, Select native label, etc.)
+- [x] F15 Avatar.extractInitials fallback. [x] all `ds-*` removed. [x] F8 List item/actionItem split.
+- [x] Disclosure un-parked → single/accordion, magic id removed. [x] raw Attr.attribute audit.
+- [x] Theme: non-Material `t-*` removed → wraps `<m3e-theme>` (ADR 0001). [x] Ui.Size retired into Heading (ADR 0002).
+- [ ] **STILL TODO: independent verification agent re-checks all 53 emitted markups vs m3e-docs CEM (Phase 7).**
 
-### Phase 4 — Test suite (TDD, elm-test)
-- [ ] `tests/` project; unit/fuzz tests for all pure logic (Avatar initials, Snackbar encode,
-      Badge count, Select, Size, Theme, Disclosure, List, every builder's invariants).
-- [ ] Snackbar end-to-end wiring documented + tested.
+### Phase 4 — Test suite — ✅ logic done (150 tests pass; one test file per fixed module)
+- [x] tests/ project (elm-explorations/test 2.2.1). 36 test files, 150 tests, all green.
+- [ ] Snackbar end-to-end wiring documented + tested (revisit in Phase 5/7 with interactivity).
 
 ### Phase 5 — Docs site overhaul (mirror matraic) + theming root-cause fix
 - [ ] Convert routes to `buildWithLocalState` (interactivity).
@@ -151,6 +149,22 @@
 - **Paginator**: fix `pageIndex`→`page-index` (M3e.Paginator.pageIndex).
 - **Dialog.withFullScreen**: remove (not a CEM attr; silent no-op).
 - **Carousel/Slide**: keep both; put items in slide-group default slot correctly.
+
+### KNOWN BREAKAGE to fix in Phase 5 (expected, from the library refactor)
+- `docs/app/Route/Index.elm` references the REMOVED `Ui.Size` and the OLD `Ui.Theme` (`Theme(..)`,
+  `toAttribute`). Docs/app will NOT compile until migrated to the new APIs in Phase 5. This is expected.
+- New library APIs the docs/demos MUST use: `Ui.Theme.view`/`with*` (wraps m3e-theme), `Ui.Heading.Size`,
+  `Ui.List.item`/`actionItem`, `Ui.Disclosure.single`/`accordion`, `Ui.SegmentedButton` standalone,
+  `Ui.Dialog` no `withFullScreen`, `Ui.ButtonGroup.withVariant`, `Ui.Shape.withName`, `Ui.SplitButton.withTriggerLabel`,
+  `Ui.FabMenu.withId`, `Ui.BottomSheet.withModal`/`withHeader`.
+
+### WORKTREE GOTCHA (remember every compaction)
+Agent `isolation: worktree` branches from OLD main (f8379d3), NOT my working branch — so agents do
+NOT see merged progress, and re-add the elm.json test-deps block (merges clean, identical). For work
+that must SEE current src (e.g. run elm-review against the fixed library, migrate docs), use a
+NON-isolated agent on the current branch, run ALONE (no parallel, to avoid elm-stuff races). For
+self-contained work (library module fixes w/ inline-fixture tests, custom elm-review rule TDD), worktree
+isolation is fine and merges cleanly.
 
 ### Refined execution order
 Phase 2 (review scaffold) + Phase 4 scaffold (tests/) → Phase 3 library fixes via TDD (criticals→high→
