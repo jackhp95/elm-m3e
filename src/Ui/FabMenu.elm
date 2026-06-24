@@ -2,7 +2,7 @@ module Ui.FabMenu exposing
     ( FabMenu, Item
     , Variant(..)
     , new, item
-    , withItemLabel
+    , withItemLabel, withId
     , view
     )
 
@@ -33,7 +33,7 @@ single primary action, prefer `Ui.Fab`.
 
 # Modifiers
 
-@docs withItemLabel
+@docs withItemLabel, withId
 
 
 # Render
@@ -44,8 +44,11 @@ single primary action, prefer `Ui.Fab`.
 
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Html.Events as HtmlEvents
+import Json.Decode
+import M3e.Fab
 import M3e.FabMenu
+import M3e.FabMenuTrigger
+import M3e.MenuItem
 import Ui.Icon
 
 
@@ -65,6 +68,7 @@ type alias MenuConfig msg =
     { triggerIcon : Ui.Icon.Icon msg
     , triggerLabel : String
     , variant : Variant
+    , menuId : String
     , items : List (Item msg)
     }
 
@@ -98,6 +102,7 @@ new c =
         { triggerIcon = c.triggerIcon
         , triggerLabel = c.triggerLabel
         , variant = c.variant
+        , menuId = "fab-menu"
         , items = c.items
         }
 
@@ -116,25 +121,46 @@ withItemLabel label (Item cfg) =
     Item { cfg | label = label }
 
 
+{-| Override the DOM id used to link the trigger to the menu (via the
+trigger's `for` attribute). Defaults to `"fab-menu"`. Set a unique id
+when rendering more than one FAB menu on a page.
+-}
+withId : String -> FabMenu msg -> FabMenu msg
+withId menuId (FabMenu cfg) =
+    FabMenu { cfg | menuId = menuId }
+
+
 {-| Render the FAB menu.
+
+Emits an opener (`m3e-fab` carrying the trigger icon plus a nested
+`m3e-fab-menu-trigger` whose `for` references the menu) followed by the
+`m3e-fab-menu` container holding the actions as `m3e-menu-item`s.
+
 -}
 view : FabMenu msg -> Html msg
 view (FabMenu cfg) =
-    M3e.FabMenu.component
-        [ variantAttr cfg.variant
-        , Attr.attribute "aria-label" cfg.triggerLabel
+    Html.div []
+        [ M3e.Fab.component
+            [ Attr.attribute "aria-label" cfg.triggerLabel ]
+            [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Ui.Icon.view cfg.triggerIcon ]
+            , M3e.FabMenuTrigger.component
+                [ M3e.FabMenuTrigger.for cfg.menuId ]
+                []
+            ]
+        , M3e.FabMenu.component
+            [ Attr.id cfg.menuId
+            , variantAttr cfg.variant
+            ]
+            (List.map itemView cfg.items)
         ]
-        (List.map itemView cfg.items)
 
 
 itemView : Item msg -> Html msg
 itemView (Item cfg) =
-    Html.button
-        [ HtmlEvents.onClick cfg.onClick
-        , Attr.attribute "aria-label" cfg.label
-        , Attr.title cfg.label
-        ]
-        [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Ui.Icon.view cfg.icon ]
+    M3e.MenuItem.component
+        [ M3e.MenuItem.onClick (Json.Decode.succeed cfg.onClick) ]
+        [ Html.span [ M3e.MenuItem.iconSlot, Attr.attribute "aria-hidden" "true" ]
+            [ Ui.Icon.view cfg.icon ]
         , Html.text cfg.label
         ]
 

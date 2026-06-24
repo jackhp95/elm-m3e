@@ -2,7 +2,7 @@ module Ui.SplitButton exposing
     ( SplitButton
     , Variant(..)
     , new
-    , withVariant, withDisabled
+    , withVariant, withDisabled, withTriggerLabel
     , view
     )
 
@@ -30,7 +30,7 @@ with a dropdown trigger for related actions. Mirrors the Material 3
 
 # Modifiers
 
-@docs withVariant, withDisabled
+@docs withVariant, withDisabled, withTriggerLabel
 
 
 # Render
@@ -58,6 +58,7 @@ type alias Config msg =
     , onPrimaryClick : msg
     , onTriggerClick : msg
     , trailingIcon : Ui.Icon.Icon msg
+    , triggerLabel : String
     , disabled : Bool
     }
 
@@ -98,6 +99,7 @@ new c =
         , onPrimaryClick = c.onPrimaryClick
         , onTriggerClick = c.onTriggerClick
         , trailingIcon = c.trailingIcon
+        , triggerLabel = "More actions"
         , disabled = False
         }
 
@@ -116,6 +118,14 @@ withDisabled b (SplitButton cfg) =
     SplitButton { cfg | disabled = b }
 
 
+{-| Override the accessible label on the trigger (dropdown) half.
+Defaults to `"More actions"`.
+-}
+withTriggerLabel : String -> SplitButton msg -> SplitButton msg
+withTriggerLabel label (SplitButton cfg) =
+    SplitButton { cfg | triggerLabel = label }
+
+
 {-| Render the split button.
 -}
 view : SplitButton msg -> Html msg
@@ -123,14 +133,16 @@ view (SplitButton cfg) =
     M3e.SplitButton.component
         [ variantAttr cfg.variant ]
         [ Html.button
-            [ HtmlEvents.onClick cfg.onPrimaryClick
+            [ M3e.SplitButton.leadingButtonSlot
+            , HtmlEvents.onClick cfg.onPrimaryClick
             , Attr.disabled cfg.disabled
             ]
             [ Html.text cfg.label ]
         , Html.button
-            [ HtmlEvents.onClick cfg.onTriggerClick
+            [ M3e.SplitButton.trailingButtonSlot
+            , HtmlEvents.onClick cfg.onTriggerClick
             , Attr.disabled cfg.disabled
-            , Attr.attribute "aria-label" "More actions"
+            , Attr.attribute "aria-label" cfg.triggerLabel
             ]
             [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Ui.Icon.view cfg.trailingIcon ] ]
         ]
@@ -149,4 +161,4 @@ variantAttr v =
             M3e.SplitButton.variant M3e.SplitButton.Tonal
 
         Outlined ->
-            Attr.attribute "variant" "outlined"
+            M3e.SplitButton.variant M3e.SplitButton.Outlined
