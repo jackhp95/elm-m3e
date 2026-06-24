@@ -4,12 +4,16 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, h1, p, section, text)
-import Html.Attributes exposing (attribute, class, style)
+import Html exposing (Html, div, p, section, text)
+import Html.Attributes exposing (class, style)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Button as Button
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -65,12 +69,21 @@ demoBar scaleValue =
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Html.node "m3e-button"
-                            [ attribute "variant" "filled" ]
-                            [ text "Action" ]
+                        Button.new { label = "Action", variant = Button.Filled }
+                            |> Button.view
                     )
             )
         ]
+
+
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Density")
+        |> Heading.view
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -79,16 +92,22 @@ view _ _ =
     , body =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
-                [ h1 [ class "text-display-small font-semibold text-on-surface" ] [ text "Density" ]
+                [ pageHeading
                 , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
                     [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
                 ]
-            , section [ class "space-y-6 rounded-md-corner-large border border-outline-variant bg-surface-container-low p-6" ]
-                [ demoBar 0
-                , demoBar -1
-                , demoBar -2
-                , demoBar -3
-                ]
+            , Divider.new |> Divider.view
+            , Card.new Card.Outlined
+                |> Card.withHeadline "Density scale, 0 to -3"
+                |> Card.withBody
+                    (div [ class "space-y-6" ]
+                        [ demoBar 0
+                        , demoBar -1
+                        , demoBar -2
+                        , demoBar -3
+                        ]
+                    )
+                |> Card.view
             ]
         ]
     }

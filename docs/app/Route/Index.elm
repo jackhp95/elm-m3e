@@ -13,13 +13,17 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, a, code, div, h1, h2, h3, p, section, span, text)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, code, div, p, section, text)
+import Html.Attributes exposing (class)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import Ui.Avatar as Avatar
+import Ui.Button as Button
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import Ui.Icon as Icon
 import Ui.Shape as Shape
 import UrlPath
@@ -81,7 +85,9 @@ view _ _ =
     , body =
         [ div [ class "mx-auto max-w-5xl space-y-16" ]
             [ hero
+            , Divider.new |> Divider.view
             , highlights
+            , Divider.new |> Divider.view
             , statusGrid
             ]
         ]
@@ -93,28 +99,28 @@ hero =
     section [ class "space-y-5" ]
         [ p [ class "text-label-large uppercase tracking-wide text-primary" ]
             [ text "elm-m3e · m3e-builder" ]
-        , h1 [ class "text-display-small font-semibold text-on-surface" ]
-            [ text "Type-safe Material 3 Expressive for Elm" ]
+        , Heading.new
+            |> Heading.withLevel 1
+            |> Heading.withVariant Heading.Display
+            |> Heading.withSize Heading.Small
+            |> Heading.withContent (text "Type-safe Material 3 Expressive for Elm")
+            |> Heading.view
         , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
             [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
             , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "@m3e/web" ]
             , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
             ]
         , div [ class "flex flex-wrap items-center gap-3 pt-2" ]
-            [ a
-                [ href "/getting-started/installation"
-                , class "rounded-full bg-primary px-5 py-2.5 text-label-large font-medium text-on-primary no-underline hover:opacity-90"
-                ]
-                [ text "Get started" ]
-            , a
-                [ href "/reference"
-                , class "rounded-full border border-outline px-5 py-2.5 text-label-large font-medium text-on-surface no-underline hover:bg-surface-container"
-                ]
-                [ text "Browse the API reference" ]
+            [ Button.new { label = "Get started", variant = Button.Filled }
+                |> Button.withHref "/getting-started/installation"
+                |> Button.view
+            , Button.new { label = "Browse the API reference", variant = Button.Outlined }
+                |> Button.withHref "/reference"
+                |> Button.view
             ]
         , div [ class "flex items-center gap-3 pt-4" ]
-            [ div [ class "text-xl" ] [ Avatar.image { url = "/avatar-sample.svg", alt = "Sample avatar" } |> Avatar.view ]
-            , div [ class "flex gap-3 text-2xl text-primary" ]
+            [ Avatar.image { url = "/avatar-sample.svg", alt = "Sample avatar" } |> Avatar.view
+            , div [ class "flex gap-3" ]
                 [ Shape.new |> Shape.withClass "block w-10 h-10 bg-primary rounded-md-corner-large" |> Shape.view
                 , Shape.new |> Shape.withClass "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" |> Shape.view
                 , Shape.new |> Shape.withClass "block w-10 h-10 bg-secondary-container rounded-full" |> Shape.view
@@ -123,34 +129,51 @@ hero =
         ]
 
 
+sectionHeading : String -> Html msg
+sectionHeading label =
+    Heading.new
+        |> Heading.withLevel 2
+        |> Heading.withVariant Heading.Headline
+        |> Heading.withSize Heading.Medium
+        |> Heading.withContent (text label)
+        |> Heading.view
+
+
 highlights : Html msg
 highlights =
-    section [ class "space-y-6 border-t border-outline-variant pt-12" ]
-        [ h2 [ class "text-headline-medium font-semibold text-on-surface" ] [ text "Why elm-m3e" ]
+    section [ class "space-y-6" ]
+        [ sectionHeading "Why elm-m3e"
         , div [ class "grid gap-4 sm:grid-cols-3" ]
-            [ highlightCard "verified" "Type-safe slots"
+            [ highlightCard "verified"
+                "Type-safe slots"
                 "Containers take typed children — an icon slot can only hold a Ui.Icon. Invalid compositions are compile errors, not runtime no-ops."
-            , highlightCard "category" "One module per component"
+            , highlightCard "category"
+                "One module per component"
                 "53 Ui.* modules mirroring matraic's @m3e/web catalogue, each a small builder with required collaborators."
-            , highlightCard "palette" "Real M3 tokens"
+            , highlightCard "palette"
+                "Real M3 tokens"
                 "Dynamic color, density, contrast, motion and the full type scale flow from a single <m3e-theme> — switch them live in the app bar."
             ]
         ]
 
 
 highlightCard : String -> String -> String -> Html msg
-highlightCard icon title body =
-    div [ class "rounded-md-corner-large border border-outline-variant bg-surface-container-low p-5" ]
-        [ div [ class "text-3xl text-primary" ] [ Icon.material icon |> Icon.view ]
-        , h3 [ class "mt-3 text-title-medium font-medium text-on-surface" ] [ text title ]
-        , p [ class "mt-1 text-body-medium text-on-surface-variant" ] [ text body ]
-        ]
+highlightCard iconName title body =
+    Card.new Card.Outlined
+        |> Card.withHeadline title
+        |> Card.withBody
+            (div [ class "flex gap-3" ]
+                [ Icon.material iconName |> Icon.view
+                , p [ class "text-body-medium text-on-surface-variant" ] [ text body ]
+                ]
+            )
+        |> Card.view
 
 
 statusGrid : Html msg
 statusGrid =
-    section [ class "space-y-6 border-t border-outline-variant pt-12" ]
-        [ h2 [ class "text-headline-medium font-semibold text-on-surface" ] [ text "Status & roadmap" ]
+    section [ class "space-y-6" ]
+        [ sectionHeading "Status & roadmap"
         , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
             [ text "The honest current state of the standalone library." ]
         , div [ class "grid gap-4 sm:grid-cols-2" ]
@@ -164,7 +187,7 @@ statusGrid =
 
 statusCard : String -> String -> Html msg
 statusCard title body =
-    div [ class "rounded-md-corner-large border border-outline-variant bg-surface-container-low p-5" ]
-        [ h3 [ class "text-title-medium font-medium text-on-surface" ] [ text title ]
-        , p [ class "mt-1 text-body-medium text-on-surface-variant" ] [ text body ]
-        ]
+    Card.new Card.Outlined
+        |> Card.withHeadline title
+        |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text body ])
+        |> Card.view

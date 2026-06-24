@@ -533,8 +533,9 @@ railItem mailbox =
 -}
 viewBottomNav : Model -> Html Msg
 viewBottomNav model =
-    div [ class "border-t border-outline-variant bg-surface-container-low md:hidden" ]
-        [ NavigationBar.new
+    div [ class "bg-surface-container-low md:hidden" ]
+        [ Divider.new |> Divider.view
+        , NavigationBar.new
             { items = List.map barItem [ Inbox, Starred, Sent, Drafts ]
             , selected = Just model.mailbox
             , onChange = SelectMailbox
@@ -688,7 +689,7 @@ listDivider =
 emptyState : String -> Html Msg
 emptyState query =
     div [ class "flex flex-col items-center gap-2 px-6 py-16 text-center text-on-surface-variant" ]
-        [ span [ class "material-symbols-outlined text-on-surface-variant", attribute "aria-hidden" "true" ] [ text "mail" ]
+        [ Icon.material "mail" |> Icon.view
         , p [ class "text-body-medium" ]
             [ text
                 (if String.isEmpty (String.trim query) then

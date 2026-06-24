@@ -2,7 +2,12 @@ import { defineConfig } from "vite";
 import adapter from "elm-pages/adapter/netlify.js";
 
 export default {
-  vite: defineConfig({}),
+  vite: defineConfig({
+    server: {
+      // Needed for cloudflared trycloudflare.com tunnels during local preview.
+      allowedHosts: [".trycloudflare.com"],
+    },
+  }),
   adapter,
   headTagsTemplate(context) {
     // style.css (Tailwind + m3e bridge) and m3e.js (@m3e/web custom-element

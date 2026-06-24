@@ -482,7 +482,8 @@ accountPanel model =
                     [ text "Pro plan" ]
                 ]
             ]
-        , groupCard "security" "Security"
+        , groupCard "security"
+            "Security"
             [ controlRow "Two-factor authentication"
                 (Just "Require a verification code on every sign-in.")
                 (Ui.Switch.new
@@ -499,7 +500,8 @@ accountPanel model =
 
 notificationsPanel : Model -> Html Msg
 notificationsPanel model =
-    groupCard "notifications" "Notification channels"
+    groupCard "notifications"
+        "Notification channels"
         [ controlRow "Push notifications"
             (Just "Alerts on this device.")
             (channelSwitch "Push notifications" model.pushEnabled PushToggled)
@@ -523,7 +525,8 @@ channelSwitch label checked onChange =
 appearancePanel : Model -> Html Msg
 appearancePanel model =
     div [ class "flex flex-col gap-4" ]
-        [ groupCard "palette" "Theme"
+        [ groupCard "palette"
+            "Theme"
             [ controlRow "Color scheme"
                 (Just "Choose how the interface looks. Applies instantly.")
                 (Ui.RadioButton.group
@@ -553,7 +556,8 @@ appearancePanel model =
                     |> Ui.SegmentedButton.view
                 )
             ]
-        , groupCard "tune" "Display"
+        , groupCard "tune"
+            "Display"
             [ controlRow "Brightness"
                 (Just (String.fromInt (round model.brightness) ++ "%"))
                 (div [ class "w-full sm:w-72" ]
@@ -579,7 +583,8 @@ appearancePanel model =
                     |> Ui.Switch.view
                 )
             ]
-        , groupCard "language" "Region"
+        , groupCard "language"
+            "Region"
             [ controlRow "Language" Nothing (languageSelect model)
             , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
             , controlRow "Timezone" Nothing (timezoneSelect model)
@@ -628,7 +633,8 @@ timezoneSelect model =
 privacyPanel : Model -> Html Msg
 privacyPanel model =
     div [ class "flex flex-col gap-4" ]
-        [ groupCard "lock" "Privacy"
+        [ groupCard "lock"
+            "Privacy"
             [ controlRow "Usage analytics"
                 (Just "Share anonymized usage data to help improve the product.")
                 (div [ class "flex items-center gap-2" ]

@@ -72,7 +72,8 @@ import View exposing (View)
 -- DOMAIN ---------------------------------------------------------------------
 
 
-{-| A department drives the left navigation rail. -}
+{-| A department drives the left navigation rail.
+-}
 type Department
     = All
     | Apparel
@@ -117,7 +118,8 @@ departmentIcon dept =
             "diamond"
 
 
-{-| A finer-grained category, multi-selectable via the filter chip row. -}
+{-| A finer-grained category, multi-selectable via the filter chip row.
+-}
 type Category
     = Tops
     | Outerwear
@@ -159,7 +161,8 @@ categoryKey =
     categoryLabel
 
 
-{-| Department a category belongs to (so the rail and chips agree). -}
+{-| Department a category belongs to (so the rail and chips agree).
+-}
 categoryDepartment : Category -> Department
 categoryDepartment cat =
     case cat of
@@ -256,7 +259,8 @@ categoriesForDepartment dept =
             List.filter (\cat -> categoryDepartment cat == dept) allCategories
 
 
-{-| The bag is a quantity per product id. -}
+{-| The bag is a quantity per product id.
+-}
 type alias Cart =
     Dict Int Int
 
@@ -645,7 +649,7 @@ viewCarousel =
         slideCard ( title, swatch, icon ) =
             div
                 [ class ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch) ]
-                [ span [ class "material-symbols-outlined text-2xl", attribute "aria-hidden" "true" ] [ text icon ]
+                [ Icon.material icon |> Icon.view
                 , span [ class "text-title-medium font-medium" ] [ text title ]
                 ]
     in
@@ -734,7 +738,7 @@ viewControls model =
 viewResultsBar : Model -> List Product -> Html Msg
 viewResultsBar _ filtered =
     div [ class "flex items-center gap-2 text-on-surface-variant" ]
-        [ span [ class "material-symbols-outlined text-base", attribute "aria-hidden" "true" ] [ text "inventory_2" ]
+        [ Icon.material "inventory_2" |> Icon.view
         , Heading.new
             |> Heading.withVariant Heading.Title
             |> Heading.withSize Heading.Small
@@ -772,7 +776,7 @@ viewCatalog : Model -> List Product -> Html Msg
 viewCatalog model filtered =
     if List.isEmpty filtered then
         div [ class "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant" ]
-            [ span [ class "material-symbols-outlined text-4xl", attribute "aria-hidden" "true" ] [ text "sentiment_dissatisfied" ]
+            [ Icon.material "sentiment_dissatisfied" |> Icon.view
             , text "No products match these filters."
             ]
 
@@ -794,9 +798,7 @@ productMedia product =
         |> Shape.withName product.shape
         |> Shape.withClass ("flex h-36 items-center justify-center " ++ product.swatch)
         |> Shape.withContent
-            [ span [ class "material-symbols-outlined text-4xl text-on-surface", attribute "aria-hidden" "true" ]
-                [ text (categoryGlyph product.category) ]
-            ]
+            [ Icon.material (categoryGlyph product.category) |> Icon.view ]
         |> Shape.view
 
 
@@ -928,7 +930,7 @@ viewCartSheet model =
         body =
             if List.isEmpty items then
                 div [ class "flex flex-col items-center gap-2 py-8 text-on-surface-variant" ]
-                    [ span [ class "material-symbols-outlined text-4xl", attribute "aria-hidden" "true" ] [ text "shopping_bag" ]
+                    [ Icon.material "shopping_bag" |> Icon.view
                     , text "Your bag is empty."
                     ]
 
@@ -974,9 +976,7 @@ viewCartRow ( product, qty ) =
             |> Shape.withName product.shape
             |> Shape.withClass ("flex h-10 w-10 items-center justify-center " ++ product.swatch)
             |> Shape.withContent
-                [ span [ class "material-symbols-outlined text-base text-on-surface", attribute "aria-hidden" "true" ]
-                    [ text (categoryGlyph product.category) ]
-                ]
+                [ Icon.material (categoryGlyph product.category) |> Icon.view ]
             |> Shape.view
         , div [ class "flex min-w-0 flex-1 flex-col" ]
             [ span [ class "truncate text-body-large text-on-surface" ] [ text product.name ]
@@ -1037,9 +1037,7 @@ viewDetailDialog model =
                                     (\i ->
                                         [ div
                                             [ class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch) ]
-                                            [ span [ class "material-symbols-outlined text-5xl text-on-surface", attribute "aria-hidden" "true" ]
-                                                [ text (galleryGlyph product.category i) ]
-                                            ]
+                                            [ Icon.material (galleryGlyph product.category i) |> Icon.view ]
                                         ]
                                     )
                             )

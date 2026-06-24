@@ -4,12 +4,15 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, h1, h2, p, section, text)
+import Html exposing (Html, code, div, p, section, text)
 import Html.Attributes exposing (class)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -53,7 +56,8 @@ head _ =
         |> Seo.website
 
 
-{-| (label, bg utility, on-color utility) for each M3 color role pair. -}
+{-| (label, bg utility, on-color utility) for each M3 color role pair.
+-}
 roles : List ( String, String, String )
 roles =
     [ ( "Primary", "bg-primary", "text-on-primary" )
@@ -75,8 +79,28 @@ swatch : ( String, String, String ) -> Html msg
 swatch ( label, bg, on ) =
     div [ class ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on) ]
         [ Html.span [ class "text-label-large font-medium" ] [ text label ]
-        , Html.code [ class "text-body-small opacity-80" ] [ text bg ]
+        , code [ class "text-body-small opacity-80" ] [ text bg ]
         ]
+
+
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Color")
+        |> Heading.view
+
+
+sectionHeading : String -> Html msg
+sectionHeading label =
+    Heading.new
+        |> Heading.withLevel 2
+        |> Heading.withVariant Heading.Headline
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text label)
+        |> Heading.view
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -85,15 +109,37 @@ view _ _ =
     , body =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
-                [ h1 [ class "text-display-small font-semibold text-on-surface" ] [ text "Color" ]
+                [ pageHeading
                 , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
                     [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
                 ]
+            , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
-                [ h2 [ class "text-headline-small font-semibold text-on-surface" ] [ text "Color roles" ]
+                [ sectionHeading "Color roles"
                 , div [ class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" ]
                     (List.map swatch roles)
+                ]
+            , Divider.new |> Divider.view
+            , section [ class "space-y-3" ]
+                [ sectionHeading "Dynamic color"
+                , p [ class "max-w-2xl text-body-medium text-on-surface-variant" ]
+                    [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                ]
+            , Divider.new |> Divider.view
+            , section [ class "space-y-3" ]
+                [ sectionHeading "Forced colors"
+                , p [ class "max-w-2xl text-body-medium text-on-surface-variant" ]
+                    [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                , forcedColorsCard
                 ]
             ]
         ]
     }
+
+
+forcedColorsCard : Html msg
+forcedColorsCard =
+    Card.new Card.Outlined
+        |> Card.withHeadline "Test it"
+        |> Card.withBody (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
+        |> Card.view
