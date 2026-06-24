@@ -213,7 +213,7 @@ view (NavigationDrawer cfg) =
             , Just (modeAttr cfg)
             ]
         )
-        [ M3e.NavMenu.component []
+        [ M3e.NavMenu.component [ panelSlot cfg ]
             (List.map (itemView cfg) cfg.items)
         ]
 
@@ -262,24 +262,39 @@ sideAttr cfg =
             M3e.DrawerContainer.end True
 
 
+{-| Project the nav-menu into the drawer's `start`/`end` panel slot (per
+`cfg.side`) — the default slot is the main content region, not the panel.
+-}
+panelSlot : DrawerConfig value msg -> Html.Attribute msg
+panelSlot cfg =
+    case cfg.side of
+        Start ->
+            M3e.DrawerContainer.startSlot
+
+        End ->
+            M3e.DrawerContainer.endSlot
+
+
+{-| Emit the panel's display mode via the typed binding (`over` for modal,
+`side` for an inline drawer) on the matching edge.
+-}
 modeAttr : DrawerConfig value msg -> Html.Attribute msg
 modeAttr cfg =
-    let
-        attrName : String
-        attrName =
-            case cfg.side of
-                Start ->
-                    "start-mode"
+    case cfg.side of
+        Start ->
+            M3e.DrawerContainer.startMode
+                (if cfg.modal then
+                    M3e.DrawerContainer.StartModeOver
 
-                End ->
-                    "end-mode"
+                 else
+                    M3e.DrawerContainer.StartModeSide
+                )
 
-        value : String
-        value =
-            if cfg.modal then
-                "over"
+        End ->
+            M3e.DrawerContainer.endMode
+                (if cfg.modal then
+                    M3e.DrawerContainer.EndModeOver
 
-            else
-                "side"
-    in
-    Attr.attribute attrName value
+                 else
+                    M3e.DrawerContainer.EndModeSide
+                )
