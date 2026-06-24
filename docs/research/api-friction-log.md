@@ -72,6 +72,26 @@ Ordered newest-first within each section.
   component the underlying library doesn't have). `Ui.Slide` (the real
   `m3e-slide-group` utility) stays.
 
+### F10 — builders must be styling-free + expose escape hatches (PRINCIPLE)
+- **Hit:** while fixing the Card media/title slotting I baked
+  `class "text-title-medium"` into the builder. Wrong.
+- **Rule (binding, Layer 4):** a `Ui.*` builder **never** bakes styling
+  (no Tailwind/token classes by default); its **only** deps are the generated
+  `M3e.*` modules (+ other `Ui.*` for composition); and it **exposes escape
+  hatches** for customization.
+- **Canonical pattern (set by `Ui.Card`):**
+  - `withAttributes : List (Attribute msg)` → appended to the host element;
+    structural attrs (e.g. `variant`) emitted *after* so callers can't clobber.
+  - Typed slots take **builder types** (`withHeadline : Ui.Heading`), which are
+    introspectable (composition), with a parallel `with*EscapeHatchHtml :
+    Html msg` for raw cases. The M3 typescale comes from the wrapped element
+    (e.g. `m3e-heading`), not a baked class.
+  - Terse text via `Ui.Heading.{display,headline,title,label} : String ->
+    Heading` keeps call sites one-liners.
+- **Library-wide TODO:** audit every other builder for (a) baked styling to
+  strip, (b) a missing `withAttributes` host hatch, (c) opaque-`Html` slots that
+  should become typed builder inputs + `EscapeHatchHtml`. (Tracked as a task.)
+
 ## API gaps (couldn't express a real, in-spec use case)
 
 ### F2 — `Ui.NavigationDrawer` couldn't model the real nav-menu tree (EXTENDED)
