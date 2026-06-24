@@ -71,4 +71,21 @@ suite =
                         |> Query.fromHtml
                         |> Query.has [ Selector.tag "m3e-switch", Selector.attribute (Attr.attribute "aria-label" "Reduce motion") ]
             ]
+        , describe "withAttributes (dual-root host)"
+            [ test "labeled mode: caller class lands on the m3e-form-field wrapper" <|
+                \_ ->
+                    Ui.Switch.new { label = "Dark mode", checked = False, onChange = always () }
+                        |> Ui.Switch.withAttributes [ Attr.class "w-full" ]
+                        |> Ui.Switch.view
+                        |> Query.fromHtml
+                        |> Query.has [ Selector.tag "m3e-form-field", Selector.classes [ "w-full" ] ]
+            , test "bare mode: caller class lands on the m3e-switch control" <|
+                \_ ->
+                    Ui.Switch.new { label = "Dark mode", checked = False, onChange = always () }
+                        |> Ui.Switch.withVisibleLabel False
+                        |> Ui.Switch.withAttributes [ Attr.class "w-full" ]
+                        |> Ui.Switch.view
+                        |> Query.fromHtml
+                        |> Query.has [ Selector.tag "m3e-switch", Selector.classes [ "w-full" ] ]
+            ]
         ]
