@@ -2,6 +2,7 @@ module Ui.Avatar exposing
     ( Avatar, image, initials, icon
     , withId
     , view
+    , extractInitials
     )
 
 {-| Typed builder for M3 avatars. Wraps `M3e.Avatar`.
@@ -25,6 +26,11 @@ required, supplied by one of three explicit constructors matching the M3
 # Render
 
 @docs view
+
+
+# Internals (exposed for testing)
+
+@docs extractInitials
 
 @figma-code-connect node=<https://www.figma.com/design/cbhz1J779WAI7gYkjCQwS0/Avetta---ADS-Material-Rebrand?node-id=70620-97> entry=initials valueProp=Label
 
@@ -84,23 +90,56 @@ withId id (Avatar cfg) =
     Avatar { cfg | id = Just id }
 
 
+{-| Derive avatar text from a full name.
+
+Takes the first character of each of the first two words, upper-cased — so
+`"Jack Peterson"` yields `"JP"`. The characters are kept regardless of class,
+so non-letter names still render: `"123"` yields `"12"` (the first character of
+its single word, plus the leading characters when there is only one word).
+
+Whenever the result would otherwise be empty — an empty or whitespace-only
+name — a safe fallback glyph (`"?"`) is returned instead, so an avatar is
+never the empty colored circle this module is designed to avoid.
+
+-}
 extractInitials : String -> String
 extractInitials name =
-    name
-        |> String.words
-        |> List.take 2
-        |> List.filterMap (String.left 1 >> stringToMaybe)
-        |> String.concat
-        |> String.toUpper
+    let
+        wordsList : List String
+        wordsList =
+            String.words name
+
+        initialsFromWords : String
+        initialsFromWords =
+            case wordsList of
+                [] ->
+                    ""
+
+                [ single ] ->
+                    -- A single word (e.g. "123" or "Jack"): take its first two
+                    -- characters so single-token labels are not reduced to one
+                    -- glyph.
+                    String.left 2 single
+
+                _ ->
+                    wordsList
+                        |> List.take 2
+                        |> List.map (String.left 1)
+                        |> String.concat
+    in
+    case String.toUpper initialsFromWords of
+        "" ->
+            fallbackGlyph
+
+        upper ->
+            upper
 
 
-stringToMaybe : String -> Maybe String
-stringToMaybe s =
-    if String.isEmpty s then
-        Nothing
-
-    else
-        Just s
+{-| The glyph used when a name carries no usable characters at all.
+-}
+fallbackGlyph : String
+fallbackGlyph =
+    "?"
 
 
 view : Avatar msg -> Html msg

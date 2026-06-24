@@ -1,7 +1,9 @@
 module Ui.Heading exposing
     ( Heading, new
     , withId, withContent
-    , Variant(..), withVariant, withSize, withLevel
+    , Variant(..), withVariant
+    , Size(..), withSize
+    , withLevel, clampLevel
     , view
     )
 
@@ -20,7 +22,21 @@ module Ui.Heading exposing
 
 # Variants
 
-@docs Variant, withVariant, withSize, withLevel
+@docs Variant, withVariant
+
+
+# Size
+
+`Ui.Heading` owns its own three-step size scale (matching the `m3e-heading`
+`size` enum `small | medium | large`). Material defines sizes per component, so
+there is no shared cross-component size type.
+
+@docs Size, withSize
+
+
+# Level
+
+@docs withLevel, clampLevel
 
 
 # Render
@@ -33,18 +49,30 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Extra
 import M3e.Heading
-import Ui.Size exposing (Size)
 
 
 type Heading msg
     = Heading (Config msg)
 
 
+{-| The appearance variant of the heading, mirroring the `m3e-heading`
+`variant` enum.
+-}
 type Variant
     = Display
     | Headline
     | Title
     | Label
+
+
+{-| The heading's three-step size scale, mirroring the `m3e-heading` `size`
+enum (`small | medium | large`). The element's own default is `medium`, applied
+when no size is set.
+-}
+type Size
+    = Small
+    | Medium
+    | Large
 
 
 type alias Config msg =
@@ -56,12 +84,15 @@ type alias Config msg =
     }
 
 
+{-| A new heading. The default variant is `Display`, matching the CEM
+`m3e-heading` default.
+-}
 new : Heading msg
 new =
     Heading
         { id = Nothing
         , content = Nothing
-        , variant = Headline
+        , variant = Display
         , size = Nothing
         , level = Nothing
         }
@@ -87,9 +118,19 @@ withSize size (Heading cfg) =
     Heading { cfg | size = Just size }
 
 
+{-| Set the heading's accessibility level. The CEM constrains `m3e-heading`'s
+`level` to `1..6`, so the value is clamped into that range.
+-}
 withLevel : Int -> Heading msg -> Heading msg
 withLevel level (Heading cfg) =
-    Heading { cfg | level = Just level }
+    Heading { cfg | level = Just (clampLevel level) }
+
+
+{-| Clamp a heading level into the CEM-permitted `1..6` range.
+-}
+clampLevel : Int -> Int
+clampLevel level =
+    clamp 1 6 level
 
 
 toM3eHeadingVariant : Variant -> M3e.Heading.Variant
@@ -108,16 +149,16 @@ toM3eHeadingVariant variant =
             M3e.Heading.Label
 
 
-toM3eHeadingSize : Ui.Size.Size -> M3e.Heading.Size
+toM3eHeadingSize : Size -> M3e.Heading.Size
 toM3eHeadingSize s =
     case s of
-        Ui.Size.Small ->
+        Small ->
             M3e.Heading.Small
 
-        Ui.Size.Medium ->
+        Medium ->
             M3e.Heading.Medium
 
-        Ui.Size.Large ->
+        Large ->
             M3e.Heading.Large
 
 
