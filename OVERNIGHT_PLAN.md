@@ -119,6 +119,40 @@
 
 ## Running discovery log (append anything found mid-flight)
 
+### Session 2026-06-24 (interactive → autonomous) — diagnosis, shell rebuild, builder pattern
+Driven by the user clarifying the stack/layers (see memory `stack-and-layers`) and the
+**styling-free builder** principle. All committed to `main`; `docs/research/api-friction-log.md`
+holds F1–F10. Net changes this session:
+- **F1 — icon root cause (the big one):** `Ui.Icon` passed the glyph as child text; `<m3e-icon>`
+  reads it from the `name` attribute → every icon was invisible site-wide. One-line fix. This was
+  ~90% of why the site "looked unstyled." The deviation it exposed: **Phase 7 (browser verification)
+  was never done** — compiler + `Test.Html` can't catch attribute-vs-child or property-driven bugs.
+- **Shell rebuilt on real primitives:** `Ui.NavigationDrawer` extended with a hierarchical `tree`
+  shape (groups + `a[href]` leaves + `withContent`), wrapping `m3e-drawer-container`/`m3e-nav-menu`;
+  the docs shell now uses it (collapsible icon nav + rounded content pane), light scheme default.
+- **F7 — form-field wrapper:** `Ui.Switch/Slider/RadioButton/Checkbox` always boxed themselves in
+  `m3e-form-field variant=outlined` (double-label overlap in Settings/Reply). Added
+  `withVisibleLabel` bare mode; applied in studies.
+- **Carousel removed** — out of scope (matraic `@m3e/web` has none). Studies' "featured" rows are
+  plain Tailwind scroll rows now. **Documented set = 52** `Ui.*` components.
+- **F10 — styling-free builder pattern (canonical, set by `Ui.Card`):** no baked styling; deps =
+  `M3e.*` + `Ui.*` only; `withAttributes` host hatch (structural attrs win); typed slots take
+  builder types (`withHeadline : Ui.Heading`) + `with*EscapeHatchHtml`; added `Ui.Heading.{display,
+  headline,title,label}` presets. `Ui.Card` + `Ui.Toc` done (Toc was the ONLY baked-styling module).
+- **Visual pass (Phase 7) DONE** for every route — all render cleanly; defects found were all fixed
+  (icon squish/shrink-0, Shrine card overflow, Crane/Rally via the Card header→content slot fix).
+- **Tests:** 157 pass (Carousel test removed; bare-mode + tree tests added). Docs compile + render.
+
+### Remaining (tracked as tasks; for continuation)
+- **F10 library-wide rollout** (task #10): add `withAttributes` to the other ~50 builders + convert
+  opaque-`Html` slots to typed inputs + `EscapeHatchHtml` per builder. A per-builder audit is being
+  generated to `docs/research/builder-audit.md` to drive this (mechanical-safe vs tricky cases).
+- **F8** (task #6): drive the component reference pages from `elm make --docs` instead of the custom
+  `extract-reference.mjs`.
+- Phases 8–10 of this plan (package-ready branch, CI gate, ADRs) still open.
+
+
+
 ### Phase 1 research complete — durable reports in `docs/research/`:
 - `material-spec-deltas.md` — 35/53 modules DELTA: **6 CRITICAL, 13 HIGH, 12 MEDIUM, 4 LOW**.
 - `matraic-site-map.md` + `visual-gap.md` — tokens fully wired in tailwind-m3e-web bridge;
