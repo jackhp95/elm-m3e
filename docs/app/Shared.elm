@@ -22,9 +22,9 @@ import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import Ui.AppBar as AppBar
 import Ui.Card as Card
-import Ui.Divider as Divider
 import Ui.Icon as Icon
 import Ui.IconButton as IconButton
+import Ui.NavigationDrawer as NavigationDrawer
 import Ui.SegmentedButton as SegmentedButton
 import Ui.Theme as Theme
 import UrlPath exposing (UrlPath)
@@ -99,7 +99,7 @@ init :
     -> ( Model, Effect Msg )
 init _ _ =
     ( { showMenu = False
-      , scheme = Theme.Auto
+      , scheme = Theme.Light
       , seed = "#6750A4"
       , contrast = Theme.Standard
       , density = 0
@@ -175,14 +175,11 @@ view _ page model toMsg pageView =
             |> Theme.withDensity model.density
             |> Theme.view
                 [ Html.div
-                    [ class "grid min-h-screen grid-rows-[auto_1fr] bg-surface text-on-surface"
+                    [ class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface"
                     , attribute "dir" (directionAttr model.dir)
                     ]
                     [ Html.map toMsg (appShellBar model)
-                    , Html.div [ class "grid grid-cols-1 md:grid-cols-[16rem_1fr] min-h-0" ]
-                        [ Html.map toMsg (sidebar model page)
-                        , Html.main_ [ class "min-w-0 px-6 py-10 md:px-10" ] pageView.body
-                        ]
+                    , drawerShell page pageView.body
                     ]
                 ]
         ]
@@ -216,7 +213,7 @@ appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
-        [ AppBar.new "elm-m3e"
+        [ AppBar.new "elm-m3e — Material 3 Expressive for Elm"
             |> AppBar.withId "docs-app-bar"
             |> AppBar.withSize AppBar.Small
             |> AppBar.withLeading (menuButton model)
@@ -416,12 +413,13 @@ directionSegmented model =
 
 
 type alias NavSection =
-    { title : String, items : List ( String, String ) }
+    { title : String, icon : String, items : List ( String, String ) }
 
 
 navSections : List NavSection
 navSections =
     [ { title = "Getting Started"
+      , icon = "rocket_launch"
       , items =
             [ ( "/getting-started/overview", "Overview" )
             , ( "/getting-started/installation", "Installation" )
@@ -429,6 +427,7 @@ navSections =
             ]
       }
     , { title = "Styles"
+      , icon = "palette"
       , items =
             [ ( "/styles/color", "Color" )
             , ( "/styles/typography", "Typography" )
@@ -438,6 +437,7 @@ navSections =
             ]
       }
     , { title = "Studies"
+      , icon = "auto_awesome"
       , items =
             [ ( "/studies", "Overview" )
             , ( "/studies/reply", "Reply" )
@@ -450,87 +450,68 @@ navSections =
     ]
 
 
-sidebar : Model -> { path : UrlPath, route : Maybe Route } -> Html Msg
-sidebar model page =
+{-| The whole below-app-bar shell: a side `m3e-drawer-container` (via
+`Ui.NavigationDrawer`) whose `start` panel is the hierarchical nav-menu and
+whose content region holds the page body. The rounded floating content pane
+and the panel chrome come from the primitive — no hand-styled surfaces.
+
+The nav is pure `a[href]` links (no messages), so this is `Html msg`, letting
+the page body keep its own message type without a `Html.map`.
+
+-}
+drawerShell : { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
+drawerShell page body =
     let
         currentPath =
             normalizePath (UrlPath.toAbsolute page.path)
     in
-    Html.nav
-        [ class
-            ("md:block md:sticky md:top-[57px] md:h-[calc(100vh-57px)] overflow-y-auto border-r border-outline-variant bg-surface-container-low px-3 py-4 "
-                ++ (if model.showMenu then
-                        "block"
-
-                    else
-                        "hidden"
-                   )
-            )
-        ]
-        (List.intersperse sidebarDivider
-            (List.map (navGroup currentPath) navSections
-                ++ [ componentsGroup currentPath
-                   , navGroup currentPath
-                        { title = "Reference"
-                        , items = [ ( "/reference", "Full API reference" ) ]
-                        }
-                   ]
-            )
-        )
+    NavigationDrawer.tree
+        |> NavigationDrawer.withId "docs-drawer"
+        |> NavigationDrawer.withEntries (navEntries currentPath)
+        |> NavigationDrawer.withContent
+            [ Html.div [ class "mx-auto max-w-5xl px-6 py-10 md:px-12" ] body ]
+        |> NavigationDrawer.view
 
 
-sidebarDivider : Html Msg
-sidebarDivider =
-    Html.div [ class "my-2 px-2" ]
-        [ Divider.new |> Divider.view ]
+navEntries : String -> List (NavigationDrawer.Entry msg)
+navEntries currentPath =
+    List.map (sectionEntry currentPath) navSections
+        ++ [ componentsEntry currentPath
+           , groupEntry currentPath
+                "menu_book"
+                "Reference"
+                [ ( "/reference", "Full API reference" ) ]
+           ]
 
 
-navGroup : String -> NavSection -> Html Msg
-navGroup currentPath section =
-    Html.div []
-        [ Html.p [ class "px-3 pb-1 text-label-large font-medium uppercase tracking-wide text-on-surface-variant" ]
-            [ Html.text section.title ]
-        , Html.ul [ class "space-y-0.5" ]
-            (List.map (navLink currentPath) section.items)
-        ]
+sectionEntry : String -> NavSection -> NavigationDrawer.Entry msg
+sectionEntry currentPath section =
+    groupEntry currentPath section.icon section.title section.items
 
 
-componentsGroup : String -> Html Msg
-componentsGroup currentPath =
-    Html.div []
-        [ Html.p [ class "px-3 pb-1 text-label-large font-medium uppercase tracking-wide text-on-surface-variant" ]
-            [ Html.text "Components" ]
-        , Html.ul [ class "max-h-72 space-y-0.5 overflow-y-auto pr-1" ]
-            (List.map
-                (\( slug, label ) ->
-                    navLink currentPath ( "/components/" ++ slug, label )
-                )
-                componentList
-            )
-        ]
+componentsEntry : String -> NavigationDrawer.Entry msg
+componentsEntry currentPath =
+    groupEntry currentPath
+        "grid_view"
+        "Components"
+        (List.map (\( slug, label ) -> ( "/components/" ++ slug, label )) componentList)
 
 
-navLink : String -> ( String, String ) -> Html Msg
-navLink currentPath ( path, label ) =
-    let
-        active =
-            currentPath == path
-    in
-    Html.li []
-        [ Html.a
-            [ href path
-            , class
-                ("block rounded-full px-3 py-1.5 text-body-medium no-underline "
-                    ++ (if active then
-                            "bg-secondary-container text-on-secondary-container font-medium"
+{-| One collapsible group, expanded when it contains the current route.
+-}
+groupEntry : String -> String -> String -> List ( String, String ) -> NavigationDrawer.Entry msg
+groupEntry currentPath glyph title items =
+    NavigationDrawer.group title
+        |> NavigationDrawer.withEntryIcon (Icon.material glyph)
+        |> NavigationDrawer.withEntryOpen (List.any (\( path, _ ) -> path == currentPath) items)
+        |> NavigationDrawer.withEntryChildren (List.map (linkEntry currentPath) items)
 
-                        else
-                            "text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
-                       )
-                )
-            ]
-            [ Html.text label ]
-        ]
+
+linkEntry : String -> ( String, String ) -> NavigationDrawer.Entry msg
+linkEntry currentPath ( path, label ) =
+    NavigationDrawer.link label
+        |> NavigationDrawer.withEntryHref path
+        |> NavigationDrawer.withEntrySelected (path == currentPath)
 
 
 {-| (slug, label) for every documented component, kept in sync with
