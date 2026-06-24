@@ -57,18 +57,20 @@ Ordered newest-first within each section.
   non-text controls (an outlined field around a switch/checkbox is arguably
   never right). Left as default-wrapped for now to stay non-breaking.
 
-### F9 — `Ui.Carousel` renders blank (slides collapse to 0×0)
-- **Hit:** the Carousel component page and the Crane "Featured destinations"
-  carousel render **empty**. `Ui.Carousel.view` emits `m3e-slide-group` with
-  `m3e-slide` children correctly, and each slide's *content* has size
-  (e.g. 192×128), but the `m3e-slide` **host collapses to 0×0**, so nothing is
-  laid out in the track.
-- **Why (likely):** `m3e-slide-group` sizes its slides via configuration the
-  wrapper doesn't set (e.g. a `slides-per-page` / slide-width attribute), so
-  slides default to zero width. Needs confirmation against the CEM.
-- **Status:** open — a real library rendering bug (same family as F1: type-
-  correct, compiles, only visible in a browser). Filed as task #8. Add a
-  Playwright check for Carousel once fixed.
+### F9 — Carousel is out of scope (REMOVED, not fixed)
+- **Hit:** the Carousel component page and Crane's "Featured destinations"
+  rendered **empty** — `Ui.Carousel` emitted `m3e-slide-group`/`m3e-slide`
+  correctly and the slide *content* had size, but the `m3e-slide` host
+  collapsed to 0×0.
+- **Resolution:** **`@m3e/web` (matraic) does not provide a Carousel** — it's
+  outside the component set we support. So `Ui.Carousel` was removed entirely
+  (module + test + nav/reference entries + component demo), and the Crane /
+  Shrine "featured" rows were rebuilt as a plain Tailwind horizontal scroll
+  row (`flex gap-4 overflow-x-auto`) of existing card builders — layout only.
+- **Layer note:** this is the "identify the right layer" lesson — the fix
+  wasn't in the builder or the atom, it was a **scope** decision (don't wrap a
+  component the underlying library doesn't have). `Ui.Slide` (the real
+  `m3e-slide-group` utility) stays.
 
 ## API gaps (couldn't express a real, in-spec use case)
 

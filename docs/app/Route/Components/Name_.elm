@@ -29,7 +29,6 @@ import Ui.Button as Button
 import Ui.ButtonGroup as ButtonGroup
 import Ui.Calendar as Calendar
 import Ui.Card as Card
-import Ui.Carousel as Carousel
 import Ui.Checkbox as Checkbox
 import Ui.Chip as Chip
 import Ui.DatePicker as DatePicker
@@ -580,20 +579,6 @@ demoSections slug =
                             , Button.new { label = "Dismiss", variant = Button.Text }
                             ]
                         |> Card.view
-                    )
-                ]
-            ]
-
-        "carousel" ->
-            [ usage
-                [ sub "Basic"
-                    (Carousel.new
-                        [ Shape.new |> Shape.withName M3e.Shape.Circle |> Shape.withClass "block h-32 w-48 bg-primary-container" |> Shape.view
-                        , Shape.new |> Shape.withName M3e.Shape.Flower |> Shape.withClass "block h-32 w-48 bg-secondary-container" |> Shape.view
-                        , Shape.new |> Shape.withName M3e.Shape.Pill |> Shape.withClass "block h-32 w-48 bg-tertiary-container" |> Shape.view
-                        , Shape.new |> Shape.withName M3e.Shape.Heart |> Shape.withClass "block h-32 w-48 bg-primary-container" |> Shape.view
-                        ]
-                        |> Carousel.view
                     )
                 ]
             ]

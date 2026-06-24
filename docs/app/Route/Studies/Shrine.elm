@@ -8,7 +8,7 @@ set of components the coverage matrix assigns to the Shrine study (column 2):
 
 AppBar, NavigationRail, Slide, Button, IconButton, ButtonGroup,
 SegmentedButton, Slider, Chip, Select, Card, Dialog, BottomSheet, List,
-Carousel, Badge, Snackbar, Skeleton, Icon, Heading, Shape, Theme, Size
+Badge, Snackbar, Skeleton, Icon, Heading, Shape, Theme, Size
 (responsive grid columns), Divider.
 
 Real product UX:
@@ -48,7 +48,6 @@ import Ui.BottomSheet as BottomSheet
 import Ui.Button as Button
 import Ui.ButtonGroup as ButtonGroup
 import Ui.Card as Card
-import Ui.Carousel as Carousel
 import Ui.Chip as Chip
 import Ui.Dialog as Dialog
 import Ui.Divider as Divider
@@ -653,9 +652,8 @@ viewCarousel =
                 , span [ class "text-title-medium font-medium" ] [ text title ]
                 ]
     in
-    Carousel.new (List.map slideCard featured)
-        |> Carousel.withId "shrine-carousel"
-        |> Carousel.view
+    div [ class "flex gap-4 overflow-x-auto pb-2" ]
+        (List.map slideCard featured)
 
 
 viewRail : Model -> Html Msg

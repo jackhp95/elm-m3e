@@ -528,7 +528,6 @@ componentList =
     , ( "buttongroup", "Button Group" )
     , ( "calendar", "Calendar" )
     , ( "card", "Card" )
-    , ( "carousel", "Carousel" )
     , ( "checkbox", "Checkbox" )
     , ( "chip", "Chips" )
     , ( "datepicker", "Date Picker" )

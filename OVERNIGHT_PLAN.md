@@ -156,7 +156,10 @@
 - **RadioButton**: thread a shared auto-derived `name` onto group + radios.
 - **Paginator**: fix `pageIndex`→`page-index` (M3e.Paginator.pageIndex).
 - **Dialog.withFullScreen**: remove (not a CEM attr; silent no-op).
-- **Carousel/Slide**: keep both; put items in slide-group default slot correctly.
+- **Carousel**: REMOVED — `@m3e/web` (matraic) has no Carousel, so it's out of scope
+  (module + test + nav/reference/demo deleted). **Slide** (the real `m3e-slide-group`
+  utility) is kept; the Crane/Shrine "featured" rows now use a plain Tailwind
+  horizontal scroll row instead. Documented set is 52 `Ui.*` components, not 53.
 
 ### KNOWN BREAKAGE to fix in Phase 5 (expected, from the library refactor)
 - `docs/app/Route/Index.elm` references the REMOVED `Ui.Size` and the OLD `Ui.Theme` (`Theme(..)`,

@@ -4,7 +4,7 @@ module Route.Studies.Crane exposing (ActionData, Data, Model, Msg, route)
 
 A tabbed travel browser (Fly / Sleep / Eat) with a real search form
 (date/time pickers, passengers, a one-way/round-trip toggle, and a destination
-search with autocomplete-style suggestions), a carousel of featured
+search with autocomplete-style suggestions), a scrolling row of featured
 destinations, a responsive grid of destination cards, a Plan-trip FAB menu, and
 an itinerary bottom sheet. The whole surface is wrapped in its own expressive
 "Crane purple" `<m3e-theme>` so it reads as a distinct product, not docs chrome.
@@ -35,7 +35,6 @@ import Ui.Badge as Badge
 import Ui.BottomSheet as BottomSheet
 import Ui.Button as Button
 import Ui.Card as Card
-import Ui.Carousel as Carousel
 import Ui.DatePicker as DatePicker
 import Ui.Divider as Divider
 import Ui.FabMenu as FabMenu
@@ -344,7 +343,7 @@ intro =
             |> Heading.withContent (text "Crane")
             |> Heading.view
         , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
-            [ text "An expressive travel app: switch between Fly, Sleep, and Eat, set your trip, search fares, and browse a carousel of featured destinations — all composed from elm-m3e components under their own Crane-purple theme." ]
+            [ text "An expressive travel app: switch between Fly, Sleep, and Eat, set your trip, search fares, and browse a scrolling row of featured destinations — all composed from elm-m3e components under their own Crane-purple theme." ]
         ]
 
 
@@ -639,9 +638,8 @@ featuredCarousel model =
             |> Heading.withLevel 3
             |> Heading.withContent (text "Featured destinations")
             |> Heading.view
-        , Carousel.new (List.map (featuredSlide model) featured)
-            |> Carousel.withId "crane-featured"
-            |> Carousel.view
+        , div [ class "flex gap-4 overflow-x-auto pb-2" ]
+            (List.map (featuredSlide model) featured)
         ]
 
 
@@ -651,7 +649,7 @@ featuredSlide model d =
         favorited =
             Set.member d.id model.favorites
     in
-    div [ class "relative flex h-44 w-64 flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container" ]
+    div [ class "relative flex h-44 w-64 shrink-0 flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container" ]
         [ div [ class "absolute -right-6 -top-6 opacity-60" ]
             [ Shape.new
                 |> Shape.withName d.shape
