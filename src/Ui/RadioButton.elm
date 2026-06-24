@@ -238,22 +238,45 @@ view (RadioGroup cfg) =
         )
 
 
+{-| The group's `id`: the caller's `withId` if present, else a stable
+slug derived from the label.
+-}
+controlId : Config value msg -> String
+controlId cfg =
+    case cfg.id of
+        Just id ->
+            id
+
+        Nothing ->
+            slugify cfg.label
+
+
+{-| The shared `name` threaded onto the group and every child radio.
+Native grouping, keyboard arrow-navigation, and form submission all
+depend on every radio sharing a single `name`. Derived from the same
+stable id so it's deterministic and override-friendly.
+-}
+groupName : Config value msg -> String
+groupName cfg =
+    controlId cfg
+
+
 groupElement : Config value msg -> Html msg
 groupElement cfg =
     M3e.RadioGroup.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.RadioGroup.disabled cfg.disabled)
-            , Just (M3e.RadioGroup.required cfg.required)
-            ]
-        )
+        [ Attr.id (controlId cfg)
+        , M3e.RadioGroup.name (groupName cfg)
+        , M3e.RadioGroup.disabled cfg.disabled
+        , M3e.RadioGroup.required cfg.required
+        ]
         (List.map (renderOption cfg) cfg.options)
 
 
 renderOption : Config value msg -> Option value -> Html msg
 renderOption cfg (Option opt) =
     M3e.Radio.component
-        [ M3e.Radio.checked (cfg.selected == Just opt.value)
+        [ M3e.Radio.name (groupName cfg)
+        , M3e.Radio.checked (cfg.selected == Just opt.value)
         , M3e.Radio.disabled cfg.disabled
         , HtmlEvents.onClick (cfg.onChange opt.value)
         ]
@@ -263,11 +286,9 @@ renderOption cfg (Option opt) =
 labelElement : Config value msg -> Html msg
 labelElement cfg =
     Html.label
-        (List.filterMap identity
-            -- FormField has no label slot; the label is a default-slot child.
-            [ Maybe.map Attr.for cfg.id
-            ]
-        )
+        [ Attr.attribute "slot" "label"
+        , Attr.for (controlId cfg)
+        ]
         [ Html.text cfg.label ]
 
 
@@ -282,3 +303,31 @@ subscriptElements cfg =
 
         ( Nothing, Nothing ) ->
             []
+
+
+{-| Derive a stable, deterministic id/name from the label text so the
+`<label slot="label" for="...">` can anchor the group and so the group
+and its radios share a `name` even without an explicit `withId`.
+-}
+slugify : String -> String
+slugify label =
+    let
+        slug : String
+        slug =
+            label
+                |> String.toLower
+                |> String.toList
+                |> List.map
+                    (\c ->
+                        if Char.isAlphaNum c then
+                            c
+
+                        else
+                            '-'
+                    )
+                |> String.fromList
+                |> String.split "-"
+                |> List.filter (not << String.isEmpty)
+                |> String.join "-"
+    in
+    "uif-" ++ slug

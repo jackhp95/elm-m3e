@@ -464,14 +464,22 @@ view (TextField cfg) =
         )
 
 
+controlId : Config msg -> String
+controlId cfg =
+    case cfg.id of
+        Just id ->
+            id
+
+        Nothing ->
+            slugify cfg.label
+
+
 labelElement : Config msg -> Html msg
 labelElement cfg =
     Html.label
-        (List.filterMap identity
-            -- FormField has no label slot; the label is a default-slot child.
-            [ Maybe.map Attr.for cfg.id
-            ]
-        )
+        [ Attr.attribute "slot" "label"
+        , Attr.for (controlId cfg)
+        ]
         [ Html.text cfg.label ]
 
 
@@ -488,7 +496,7 @@ inputElement cfg =
 singleLineAttrs : Config msg -> List (Html.Attribute msg)
 singleLineAttrs cfg =
     List.filterMap identity
-        [ Maybe.map Attr.id cfg.id
+        [ Just (Attr.id (controlId cfg))
         , Just (Attr.type_ (inputTypeString cfg.inputType))
         , Just (Attr.value cfg.value)
         , Maybe.map Attr.placeholder cfg.placeholder
@@ -523,7 +531,7 @@ multilineElement cfg =
 multilineAttrs : Config msg -> List (Html.Attribute msg)
 multilineAttrs cfg =
     List.filterMap identity
-        [ Maybe.map Attr.id cfg.id
+        [ Just (Attr.id (controlId cfg))
         , Just (Attr.value cfg.value)
         , Maybe.map Attr.placeholder cfg.placeholder
         , Maybe.map Attr.maxlength cfg.maxLength
@@ -576,6 +584,34 @@ formFieldVariantAttr v =
 
         Outlined ->
             M3e.FormField.variant M3e.FormField.Outlined
+
+
+{-| Derive a stable, deterministic control id from the label text so the
+`<label slot="label" for="...">` can anchor the control even when the
+caller hasn't supplied an explicit `withId`.
+-}
+slugify : String -> String
+slugify label =
+    let
+        slug : String
+        slug =
+            label
+                |> String.toLower
+                |> String.toList
+                |> List.map
+                    (\c ->
+                        if Char.isAlphaNum c then
+                            c
+
+                        else
+                            '-'
+                    )
+                |> String.fromList
+                |> String.split "-"
+                |> List.filter (not << String.isEmpty)
+                |> String.join "-"
+    in
+    "uif-" ++ slug
 
 
 inputTypeString : InputType -> String
