@@ -130,7 +130,7 @@ view (AppBar cfg) =
         )
         (List.concat
             [ leadingSlot cfg.leading
-            , [ Html.span [] [ Html.text cfg.title ] ]
+            , [ Html.span [ M3e.AppBar.titleSlot ] [ Html.text cfg.title ] ]
             , trailingSlot cfg.trailing
             ]
         )
@@ -143,7 +143,7 @@ leadingSlot leading =
             []
 
         Just html ->
-            [ Html.span [ Attr.attribute "slot" "leading" ] [ html ] ]
+            [ Html.span [ M3e.AppBar.leadingSlot ] [ html ] ]
 
 
 trailingSlot : List (Html msg) -> List (Html msg)
@@ -153,7 +153,7 @@ trailingSlot items =
             []
 
         _ ->
-            [ Html.span [ Attr.attribute "slot" "trailing" ] items ]
+            [ Html.span [ M3e.AppBar.trailingSlot ] items ]
 
 
 sizeAttr : Size -> Html.Attribute msg
@@ -163,7 +163,7 @@ sizeAttr s =
             M3e.AppBar.size M3e.AppBar.Small
 
         Medium ->
-            Attr.attribute "size" "medium"
+            M3e.AppBar.size M3e.AppBar.Medium
 
         Large ->
-            Attr.attribute "size" "large"
+            M3e.AppBar.size M3e.AppBar.Large

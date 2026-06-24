@@ -112,4 +112,49 @@
 - [ ] Merge working branch → main; resolve conflicts; clean tree; final verification report.
 
 ## Running discovery log (append anything found mid-flight)
-- (none yet)
+
+### Phase 1 research complete — durable reports in `docs/research/`:
+- `material-spec-deltas.md` — 35/53 modules DELTA: **6 CRITICAL, 13 HIGH, 12 MEDIUM, 4 LOW**.
+- `matraic-site-map.md` + `visual-gap.md` — tokens fully wired in tailwind-m3e-web bridge;
+  root cause = `app/Shared.elm` is the elm-pages starter STUB (no M3 app shell). Fix = real
+  themed app bar + sidebar in Shared, single `<m3e-theme>` owner, body M3 base layer,
+  theme/density/dark/direction controls, multi-page IA.
+- `elm-review-rules.md` — community set + 5 custom rules (PreferBadgeCount, NoActionlessButton,
+  NoRawAttributeInUi, NoProprietaryDsClasses, NoUntypedSlot) with TDD seeds + review/ setup.
+- `component-coverage-matrix.md` — **13 studies**, all 54 components >=2x confirmed:
+  Reply, Shrine, Rally, Crane, Settings, Owl, Fortnightly, Profile, Chat, Media, Auth, Tasks, Dashboard.
+
+### THE 6 CRITICAL RENDERING BUGS (fix first, TDD via Test.Html):
+1. AppBar.elm:133 — title has no slot → dropped. Use `M3e.AppBar.titleSlot`.
+2. NavigationBar.elm — emits `m3e-nav-menu-item` (wrong) inside nav-bar; label/badge slots don't exist.
+   Use `M3e.NavItem`, label→default slot, badge composed in content (no badge slot).
+3. NavigationRail.elm — same as NavBar.
+4. SideSheet.elm:229,241 — body/actions in default slot not start/end → panel empty. Use start/endSlot; wire onClose.
+5. BottomSheet.elm:155-166 — `open` never emitted (never opens); onClose never wired. Emit open, wire onClosed/onCancel.
+6. SplitButton.elm:122-136 — buttons have no slot → not projected. Use leadingButtonSlot/trailingButtonSlot.
+   FabMenu.elm:121-139 — raw <button> children + no trigger + triggerIcon dropped. Use m3e-menu-item + m3e-fab-menu-trigger.
+
+### Judgement calls I'm locking (human-flagged deltas — user said use judgement, most-correct):
+- **Form-field labels** (TextField/Select/Checkbox/RadioButton/Switch/Slider/TimePicker/SegmentedButton):
+  emit `<label slot="label" for="<id>">` + always auto-generate a stable control id. For `m3e-select`
+  use its native `label` attr (drop the form-field double-wrap).
+- **ExtendedFab**: KEEP the ergonomic split (documented M3 page, like the Button MISI carve-out) but fix
+  label to use `M3e.Fab.labelSlot`.
+- **SegmentedButton**: render standalone (NOT inside m3e-form-field); label via project layout if needed.
+- **ScrollContainer / TextHighlight / Slide / `<m3e-slide>`**: these DO ship in @m3e/web (real vendor
+  bindings) — KEEP, but rewrite doc comments to state they're utility elements outside the documented-53 set.
+- **Theme**: delete `t-*`. Add faithful `Ui.Theme` wrapping `<m3e-theme>` (seed/scheme/variant/contrast/
+  density/strongFocus/motion/onChange + themed subtree). Rename Danger→Error, drop Neutral. ADR.
+- **Size**: retire shared `Ui.Size`; fold 3-step size into `Ui.Heading`; keep per-component sizes (already
+  match CEM enums + align defaults to CEM). ADR.
+- **RadioButton**: thread a shared auto-derived `name` onto group + radios.
+- **Paginator**: fix `pageIndex`→`page-index` (M3e.Paginator.pageIndex).
+- **Dialog.withFullScreen**: remove (not a CEM attr; silent no-op).
+- **Carousel/Slide**: keep both; put items in slide-group default slot correctly.
+
+### Refined execution order
+Phase 2 (review scaffold) + Phase 4 scaffold (tests/) → Phase 3 library fixes via TDD (criticals→high→
+med/low, incl. Theme/Size refactor + Disclosure unpark + List split) → custom review rules green →
+Phase 5 docs shell/theming/IA → Phase 6 demos (parallel agents, worktrees, AFTER API stable) →
+Phase 7 playwright → Phase 8 package-ready → Phase 9 CI → Phase 10 finalize+merge.
+API-CHANGING fixes (Theme, Size, List split, Disclosure, SegmentedButton, Select) MUST land before demos.
