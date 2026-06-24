@@ -108,6 +108,20 @@ Ordered newest-first within each section.
 
 ---
 
+## Docs-generation opportunities
+
+### F8 — drive the component reference pages from `elm make --docs`
+- **Context:** the per-component pages currently get their API content from a
+  custom extractor (`docs/scripts/extract-reference.mjs`).
+- **Better:** the library already has good inline module docs + `@docs`
+  markers, so `elm make --docs docs.json` emits **structured** docs JSON
+  (every exposed type/value with its comment, type signature, and the `@docs`
+  ordering). Feed that shape to the generator instead of a bespoke parser —
+  single source of truth, stays correct as the API evolves, and it's the same
+  artifact Phase 8 (package-readiness) needs anyway.
+- **Action:** generate `docs.json` from the library elm.json and have the
+  Components route render from it. (Filed as a task.)
+
 ## Tooling / DX papercuts
 
 ### F5 — the dev server does not rebuild Tailwind
