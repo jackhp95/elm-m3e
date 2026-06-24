@@ -57,6 +57,19 @@ Ordered newest-first within each section.
   non-text controls (an outlined field around a switch/checkbox is arguably
   never right). Left as default-wrapped for now to stay non-breaking.
 
+### F9 — `Ui.Carousel` renders blank (slides collapse to 0×0)
+- **Hit:** the Carousel component page and the Crane "Featured destinations"
+  carousel render **empty**. `Ui.Carousel.view` emits `m3e-slide-group` with
+  `m3e-slide` children correctly, and each slide's *content* has size
+  (e.g. 192×128), but the `m3e-slide` **host collapses to 0×0**, so nothing is
+  laid out in the track.
+- **Why (likely):** `m3e-slide-group` sizes its slides via configuration the
+  wrapper doesn't set (e.g. a `slides-per-page` / slide-width attribute), so
+  slides default to zero width. Needs confirmation against the CEM.
+- **Status:** open — a real library rendering bug (same family as F1: type-
+  correct, compiles, only visible in a browser). Filed as task #8. Add a
+  Playwright check for Carousel once fixed.
+
 ## API gaps (couldn't express a real, in-spec use case)
 
 ### F2 — `Ui.NavigationDrawer` couldn't model the real nav-menu tree (EXTENDED)
