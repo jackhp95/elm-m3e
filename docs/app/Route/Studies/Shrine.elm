@@ -875,8 +875,6 @@ viewProductCard model product =
             [ Button.new { label = "Add to bag", variant = Button.Filled }
                 |> Button.withLeadingIcon (Icon.material "add_shopping_cart")
                 |> Button.withOnClick (AddedToBag product.id 1)
-            , Button.new { label = "Details", variant = Button.Text }
-                |> Button.withOnClick (ProductOpened product.id)
             ]
         |> Card.view
 

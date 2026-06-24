@@ -163,7 +163,7 @@ highlightCard iconName title body =
         |> Card.withHeadline (Heading.title title)
         |> Card.withBody
             (div [ class "flex gap-3" ]
-                [ Icon.material iconName |> Icon.view
+                [ Html.span [ class "shrink-0 text-primary" ] [ Icon.material iconName |> Icon.view ]
                 , p [ class "text-body-medium text-on-surface-variant" ] [ text body ]
                 ]
             )
