@@ -1,9 +1,9 @@
 module Route.Components.Name_ exposing (ActionData, Data, Model, Msg, route)
 
 {-| Dynamic per-component documentation page, mirroring matraic's component
-pages. One route per slug in `data/reference.json`: overview + a reserved live
-demo region + the extracted API table. Rich per-component demos come in a later
-phase (a generic default demo placeholder is shown for now).
+pages. One route per slug in `data/reference.json`: page title, intro prose,
+import statement, live demo sections (Usage / Variants / etc.), and the
+extracted API table.
 -}
 
 import BackendTask exposing (BackendTask)
@@ -11,13 +11,48 @@ import BackendTask.File
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, a, code, div, h1, h2, p, section, span, text)
-import Html.Attributes exposing (attribute, class, href)
+import Html exposing (Html, code, div, p, pre, section, text)
+import Html.Attributes exposing (class)
 import Json.Decode as Decode
+import M3e.Shape
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.AppBar as AppBar
+import Ui.Avatar as Avatar
+import Ui.Badge as Badge
+import Ui.Breadcrumb as Breadcrumb
+import Ui.Button as Button
+import Ui.ButtonGroup as ButtonGroup
+import Ui.Card as Card
+import Ui.Checkbox as Checkbox
+import Ui.Chip as Chip
+import Ui.Divider as Divider
+import Ui.ExtendedFab as ExtendedFab
+import Ui.Fab as Fab
+import Ui.Heading as Heading
+import Ui.Icon as Icon
+import Ui.IconButton as IconButton
+import Ui.List as L
+import Ui.LoadingIndicator as LoadingIndicator
+import Ui.Menu as Menu
+import Ui.NavigationBar as NavigationBar
+import Ui.NavigationRail as NavigationRail
+import Ui.Paginator as Paginator
+import Ui.Progress as Progress
+import Ui.RadioButton as RadioButton
+import Ui.Search as Search
+import Ui.SegmentedButton as SegmentedButton
+import Ui.Select as Select
+import Ui.Shape as Shape
+import Ui.Skeleton as Skeleton
+import Ui.Slider as Slider
+import Ui.Snackbar as Snackbar
+import Ui.Switch as Switch
+import Ui.Tabs as Tabs
+import Ui.TextField as TextField
+import Ui.Toolbar as Toolbar
 import UrlPath
 import View exposing (View)
 
@@ -131,44 +166,57 @@ view app _ =
     { title = "Ui." ++ c.name ++ " · elm-m3e"
     , body =
         [ div [ class "mx-auto max-w-4xl space-y-10" ]
-            [ section [ class "space-y-3" ]
-                [ p [ class "text-label-large uppercase tracking-wide text-primary" ]
-                    [ a [ href "/reference", class "no-underline hover:underline" ] [ text "Components" ] ]
-                , h1 [ class "text-display-small font-semibold text-on-surface" ]
-                    [ text ("Ui." ++ c.name) ]
-                , prose "max-w-2xl text-body-large text-on-surface-variant" c.overview
-                , div [ class "flex flex-wrap items-center gap-3 pt-1" ]
-                    [ code [ class "rounded bg-surface-container px-2 py-1 text-body-medium" ]
-                        [ text ("import Ui." ++ c.name ++ " as " ++ c.name) ]
-                    ]
-                ]
-            , demoRegion c
-            , apiSection c
+            [ headerBlock c
+            , importBlock c
+            , demoBlock c
+            , apiBlock c
             ]
         ]
     }
 
 
-demoRegion : Component -> Html msg
-demoRegion c =
+
+-- HEADER + IMPORT + API ------------------------------------------------------
+
+
+headerBlock : Component -> Html (PagesMsg Msg)
+headerBlock c =
     section [ class "space-y-3" ]
-        [ h2 [ class "text-headline-small font-semibold text-on-surface" ] [ text "Demo" ]
-        , div
-            [ class "grid min-h-40 place-items-center rounded-md-corner-large border border-dashed border-outline-variant bg-surface-container-lowest p-8 text-center" ]
-            [ div [ class "space-y-2" ]
-                [ span [ class "material-symbols-outlined text-4xl text-on-surface-variant", attribute "aria-hidden" "true" ]
-                    [ text "widgets" ]
-                , p [ class "text-body-medium text-on-surface-variant" ]
-                    [ text ("A live " ++ c.name ++ " demo lands here in a later phase.") ]
-                ]
-            ]
+        [ Heading.new
+            |> Heading.withLevel 1
+            |> Heading.withVariant Heading.Display
+            |> Heading.withSize Heading.Small
+            |> Heading.withContent (text ("Ui." ++ c.name))
+            |> Heading.view
+        , prose "max-w-2xl text-body-large text-on-surface-variant" c.overview
         ]
 
 
-apiSection : Component -> Html msg
-apiSection c =
+importBlock : Component -> Html msg
+importBlock c =
+    section [ class "space-y-3" ]
+        [ sectionHeading "Import"
+        , codeBlock ("import Ui." ++ c.name ++ " as " ++ c.name)
+        ]
+
+
+demoBlock : Component -> Html (PagesMsg Msg)
+demoBlock c =
+    let
+        sections =
+            demoSections c.slug
+    in
+    if List.isEmpty sections then
+        text ""
+
+    else
+        div [ class "space-y-8" ] (List.map demoSection sections)
+
+
+apiBlock : Component -> Html msg
+apiBlock c =
     section [ class "space-y-4" ]
-        [ h2 [ class "text-headline-small font-semibold text-on-surface" ] [ text "API" ]
+        [ sectionHeading "API"
         , div [ class "space-y-3" ] (List.map memberRow c.members)
         ]
 
@@ -186,18 +234,60 @@ memberRow m =
             else
                 m.name ++ " : " ++ m.signature
     in
-    div [ class "rounded-md-corner-medium border border-outline-variant bg-surface-container-lowest p-4" ]
-        [ Html.pre [ class "overflow-x-auto text-body-small text-on-surface" ]
-            [ code [] [ text sig ] ]
-        , if m.doc == "" then
-            text ""
+    Card.new Card.Outlined
+        |> Card.withBody
+            (div []
+                [ Html.pre [ class "overflow-x-auto text-body-small text-on-surface" ]
+                    [ code [] [ text sig ] ]
+                , if m.doc == "" then
+                    text ""
 
-          else
-            prose "mt-2 text-body-small text-on-surface-variant" m.doc
+                  else
+                    prose "mt-2 text-body-small text-on-surface-variant" m.doc
+                ]
+            )
+        |> Card.view
+
+
+
+-- DEMO HELPERS ---------------------------------------------------------------
+
+
+type alias DemoSection msg =
+    { title : String, body : Html msg }
+
+
+sectionHeading : String -> Html msg
+sectionHeading label =
+    Heading.new
+        |> Heading.withLevel 2
+        |> Heading.withVariant Heading.Headline
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text label)
+        |> Heading.view
+
+
+demoSection : DemoSection (PagesMsg Msg) -> Html (PagesMsg Msg)
+demoSection ds =
+    section [ class "space-y-3" ]
+        [ sectionHeading ds.title
+        , Card.new Card.Outlined
+            |> Card.withBody (div [ class "flex flex-wrap items-center gap-4" ] [ ds.body ])
+            |> Card.view
         ]
 
 
-{-| Render \\n\\n-separated text as paragraphs. -}
+codeBlock : String -> Html msg
+codeBlock s =
+    pre [ class "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface" ]
+        [ code [] [ text (String.trim s) ] ]
+
+
+usage : Html msg -> DemoSection msg
+usage body =
+    { title = "Usage", body = body }
+
+
 prose : String -> String -> Html msg
 prose cls s =
     div [ class cls ]
@@ -206,3 +296,440 @@ prose cls s =
             |> List.filter (\para -> String.trim para /= "")
             |> List.map (\para -> p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ])
         )
+
+
+noOp : a -> PagesMsg Msg
+noOp _ =
+    PagesMsg.noOp
+
+
+
+-- DEMOS PER COMPONENT --------------------------------------------------------
+
+
+demoSections : String -> List (DemoSection (PagesMsg Msg))
+demoSections slug =
+    case slug of
+        "appbar" ->
+            [ usage
+                (AppBar.new "Inbox"
+                    |> AppBar.withLeading
+                        (IconButton.new { icon = Icon.material "menu", label = "Open menu", variant = IconButton.Standard }
+                            |> IconButton.view
+                        )
+                    |> AppBar.withTrailing
+                        [ IconButton.new { icon = Icon.material "search", label = "Search", variant = IconButton.Standard } |> IconButton.view
+                        , IconButton.new { icon = Icon.material "more_vert", label = "More", variant = IconButton.Standard } |> IconButton.view
+                        ]
+                    |> AppBar.view
+                )
+            ]
+
+        "avatar" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-3" ]
+                        [ Avatar.image { url = "/avatar-sample.svg", alt = "Sample" } |> Avatar.view
+                        , Avatar.initials "Jane Reed" |> Avatar.view
+                        , Avatar.initials "AB" |> Avatar.view
+                        ]
+              }
+            ]
+
+        "badge" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-6" ]
+                        [ div [ class "relative" ] [ Icon.material "notifications" |> Icon.view, Badge.dot |> Badge.view ]
+                        , div [ class "relative" ] [ Icon.material "inbox" |> Icon.view, Badge.count 5 |> Badge.view ]
+                        , div [ class "relative" ] [ Icon.material "shopping_bag" |> Icon.view, Badge.label "New" |> Badge.view ]
+                        ]
+              }
+            ]
+
+        "breadcrumb" ->
+            [ usage
+                (Breadcrumb.new
+                    |> Breadcrumb.withItems
+                        [ Breadcrumb.link (text "Home") "#"
+                        , Breadcrumb.link (text "Components") "#"
+                        , Breadcrumb.current (text "Breadcrumb")
+                        ]
+                    |> Breadcrumb.view
+                )
+            ]
+
+        "button" ->
+            [ usage (Button.new { label = "Press me", variant = Button.Filled } |> Button.view)
+            , { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap gap-2" ]
+                        [ Button.new { label = "Elevated", variant = Button.Elevated } |> Button.view
+                        , Button.new { label = "Filled", variant = Button.Filled } |> Button.view
+                        , Button.new { label = "Tonal", variant = Button.Tonal } |> Button.view
+                        , Button.new { label = "Outlined", variant = Button.Outlined } |> Button.view
+                        , Button.new { label = "Text", variant = Button.Text } |> Button.view
+                        ]
+              }
+            , { title = "With icons"
+              , body =
+                    div [ class "flex flex-wrap gap-2" ]
+                        [ Button.new { label = "Add", variant = Button.Filled }
+                            |> Button.withLeadingIcon (Icon.material "add")
+                            |> Button.view
+                        , Button.new { label = "Open", variant = Button.Outlined }
+                            |> Button.withTrailingIcon (Icon.material "open_in_new")
+                            |> Button.view
+                        ]
+              }
+            ]
+
+        "buttongroup" ->
+            [ usage
+                (ButtonGroup.new
+                    [ Button.new { label = "One", variant = Button.Filled }
+                    , Button.new { label = "Two", variant = Button.Filled }
+                    , Button.new { label = "Three", variant = Button.Filled }
+                    ]
+                    |> ButtonGroup.view
+                )
+            ]
+
+        "card" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full" ]
+                        [ Card.new Card.Elevated
+                            |> Card.withHeadline "Elevated"
+                            |> Card.withBody (text "Raised shadow surface, highest emphasis.")
+                            |> Card.view
+                        , Card.new Card.Filled
+                            |> Card.withHeadline "Filled"
+                            |> Card.withBody (text "Solid tonal surface, medium emphasis.")
+                            |> Card.view
+                        , Card.new Card.Outlined
+                            |> Card.withHeadline "Outlined"
+                            |> Card.withBody (text "Bordered, no fill, lowest emphasis.")
+                            |> Card.view
+                        ]
+              }
+            ]
+
+        "checkbox" ->
+            [ { title = "States"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-6" ]
+                        [ Checkbox.boolean { label = "Unchecked", checked = False, onChange = noOp }
+                            |> Checkbox.view
+                        , Checkbox.boolean { label = "Checked", checked = True, onChange = noOp }
+                            |> Checkbox.view
+                        ]
+              }
+            ]
+
+        "chip" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-2" ]
+                        [ Chip.assist { id = "demo-chip-assist", label = text "Assist", onClick = PagesMsg.noOp } |> Chip.view
+                        , Chip.suggestion { id = "demo-chip-suggestion", label = text "Suggestion", onClick = PagesMsg.noOp } |> Chip.view
+                        , Chip.filter { id = "demo-chip-filter", label = text "Filter", onToggle = PagesMsg.noOp } |> Chip.view
+                        ]
+              }
+            ]
+
+        "divider" ->
+            [ { title = "Orientations"
+              , body =
+                    div [ class "w-full space-y-4" ]
+                        [ Divider.new |> Divider.view
+                        , Divider.new |> Divider.withInsetStart True |> Divider.view
+                        ]
+              }
+            ]
+
+        "extendedfab" ->
+            [ usage
+                (ExtendedFab.new { icon = Icon.material "edit", label = "Compose", variant = ExtendedFab.Primary }
+                    |> ExtendedFab.view
+                )
+            ]
+
+        "fab" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-4" ]
+                        [ Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Primary } |> Fab.view
+                        , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Secondary } |> Fab.view
+                        , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Tertiary } |> Fab.view
+                        , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Surface } |> Fab.view
+                        ]
+              }
+            ]
+
+        "heading" ->
+            [ { title = "Variants × sizes"
+              , body =
+                    div [ class "w-full space-y-2" ]
+                        [ headingDemo Heading.Display Heading.Large "Display Large"
+                        , headingDemo Heading.Headline Heading.Medium "Headline Medium"
+                        , headingDemo Heading.Title Heading.Medium "Title Medium"
+                        , headingDemo Heading.Label Heading.Large "Label Large"
+                        ]
+              }
+            ]
+
+        "icon" ->
+            [ { title = "Material symbols"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-4 text-3xl" ]
+                        [ Icon.material "home" |> Icon.view
+                        , Icon.material "favorite" |> Icon.withFilled True |> Icon.view
+                        , Icon.material "settings" |> Icon.view
+                        , Icon.material "notifications" |> Icon.view
+                        , Icon.material "search" |> Icon.view
+                        ]
+              }
+            ]
+
+        "iconbutton" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-2" ]
+                        [ IconButton.new { icon = Icon.material "favorite", label = "Like", variant = IconButton.Standard } |> IconButton.view
+                        , IconButton.new { icon = Icon.material "favorite", label = "Like", variant = IconButton.Filled } |> IconButton.view
+                        , IconButton.new { icon = Icon.material "favorite", label = "Like", variant = IconButton.Tonal } |> IconButton.view
+                        , IconButton.new { icon = Icon.material "favorite", label = "Like", variant = IconButton.Outlined } |> IconButton.view
+                        ]
+              }
+            ]
+
+        "list" ->
+            [ usage
+                (L.new
+                    [ L.item "First item"
+                    , L.item "Second item"
+                    , L.item "Third item"
+                    ]
+                    |> L.view
+                )
+            ]
+
+        "loadingindicator" ->
+            [ usage (LoadingIndicator.new |> LoadingIndicator.view) ]
+
+        "menu" ->
+            [ usage
+                (Menu.new
+                    [ Menu.item "Refresh" PagesMsg.noOp
+                    , Menu.item "Settings" PagesMsg.noOp
+                    , Menu.item "Sign out" PagesMsg.noOp
+                    ]
+                    |> Menu.view
+                )
+            ]
+
+        "navigationbar" ->
+            [ usage
+                (NavigationBar.new
+                    { items =
+                        [ NavigationBar.item { value = "home", icon = Icon.material "home" } |> NavigationBar.withItemLabel "Home"
+                        , NavigationBar.item { value = "search", icon = Icon.material "search" } |> NavigationBar.withItemLabel "Search"
+                        , NavigationBar.item { value = "saved", icon = Icon.material "bookmark" } |> NavigationBar.withItemLabel "Saved"
+                        ]
+                    , selected = Just "home"
+                    , onChange = noOp
+                    }
+                    |> NavigationBar.view
+                )
+            ]
+
+        "navigationrail" ->
+            [ usage
+                (NavigationRail.new
+                    { items =
+                        [ NavigationRail.item { value = "home", icon = Icon.material "home" } |> NavigationRail.withItemLabel "Home"
+                        , NavigationRail.item { value = "search", icon = Icon.material "search" } |> NavigationRail.withItemLabel "Search"
+                        , NavigationRail.item { value = "saved", icon = Icon.material "bookmark" } |> NavigationRail.withItemLabel "Saved"
+                        ]
+                    , selected = Just "home"
+                    , onChange = noOp
+                    }
+                    |> NavigationRail.view
+                )
+            ]
+
+        "paginator" ->
+            [ usage
+                (Paginator.new
+                    |> Paginator.withLength 53
+                    |> Paginator.withDefaultPage 0
+                    |> Paginator.view
+                )
+            ]
+
+        "progress" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-6" ]
+                        [ Progress.linear 60 |> Progress.view
+                        , Progress.circular 40 |> Progress.view
+                        ]
+              }
+            ]
+
+        "radiobutton" ->
+            [ usage
+                (RadioButton.group
+                    { label = "Billing cycle"
+                    , options =
+                        [ RadioButton.option { value = "monthly", label = "Monthly" }
+                        , RadioButton.option { value = "yearly", label = "Yearly" }
+                        ]
+                    , selected = Just "monthly"
+                    , onChange = noOp
+                    }
+                    |> RadioButton.view
+                )
+            ]
+
+        "search" ->
+            [ usage
+                (Search.bar
+                    |> Search.withPlaceholder "Search the docs"
+                    |> Search.view
+                )
+            ]
+
+        "segmentedbutton" ->
+            [ usage
+                (SegmentedButton.single
+                    { label = "Layout"
+                    , segments =
+                        [ SegmentedButton.segment { value = "grid", label = "Grid" }
+                        , SegmentedButton.segment { value = "list", label = "List" }
+                        ]
+                    , selected = Just "grid"
+                    , onChange = noOp
+                    }
+                    |> SegmentedButton.view
+                )
+            ]
+
+        "select" ->
+            [ usage
+                (Select.single
+                    { label = "Sort by"
+                    , options =
+                        [ Select.option { value = "recent", label = "Most recent" }
+                        , Select.option { value = "oldest", label = "Oldest" }
+                        , Select.option { value = "name", label = "By name" }
+                        ]
+                    , selected = Just "recent"
+                    , onChange = noOp
+                    }
+                    |> Select.view
+                )
+            ]
+
+        "shape" ->
+            [ { title = "Decorative shapes"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-4" ]
+                        [ Shape.new |> Shape.withName M3e.Shape.Circle |> Shape.withClass "block w-16 h-16 bg-primary-container" |> Shape.view
+                        , Shape.new |> Shape.withName M3e.Shape.Flower |> Shape.withClass "block w-16 h-16 bg-secondary-container" |> Shape.view
+                        , Shape.new |> Shape.withName M3e.Shape.Pill |> Shape.withClass "block w-24 h-16 bg-tertiary-container" |> Shape.view
+                        , Shape.new |> Shape.withName M3e.Shape.Heart |> Shape.withClass "block w-16 h-16 bg-error-container" |> Shape.view
+                        ]
+              }
+            ]
+
+        "skeleton" ->
+            [ usage
+                (div [ class "flex w-full flex-col gap-2" ]
+                    [ Skeleton.new |> Skeleton.withClass "h-5 w-2/3" |> Skeleton.view
+                    , Skeleton.new |> Skeleton.withClass "h-5 w-1/2" |> Skeleton.view
+                    , Skeleton.new |> Skeleton.withClass "h-32 w-full" |> Skeleton.view
+                    ]
+                )
+            ]
+
+        "slider" ->
+            [ usage
+                (Slider.value { label = "Volume", value = 35, onChange = noOp }
+                    |> Slider.view
+                )
+            ]
+
+        "snackbar" ->
+            [ usage (Snackbar.new "Message sent" |> Snackbar.view) ]
+
+        "switch" ->
+            [ { title = "States"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-6" ]
+                        [ Switch.new { label = "Off", checked = False, onChange = noOp } |> Switch.view
+                        , Switch.new { label = "On", checked = True, onChange = noOp } |> Switch.view
+                        ]
+              }
+            ]
+
+        "tabs" ->
+            [ usage
+                (Tabs.new
+                    { tabs =
+                        [ Tabs.tab { value = "overview", label = "Overview" }
+                        , Tabs.tab { value = "specs", label = "Specs" }
+                        , Tabs.tab { value = "reviews", label = "Reviews" }
+                        ]
+                    , selected = "overview"
+                    , onChange = noOp
+                    }
+                    |> Tabs.view
+                )
+            ]
+
+        "textfield" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "w-full max-w-md space-y-4" ]
+                        [ TextField.text { label = "Name", value = "", variant = TextField.Filled, onChange = noOp } |> TextField.view
+                        , TextField.text { label = "Email", value = "", variant = TextField.Outlined, onChange = noOp }
+                            |> TextField.withEmailValidator
+                            |> TextField.view
+                        ]
+              }
+            ]
+
+        "theme" ->
+            [ { title = "About"
+              , body =
+                    p [ class "text-body-medium" ]
+                        [ text "Ui.Theme wraps "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "<m3e-theme>" ]
+                        , text ". A single instance owns the dynamic-color scheme, contrast, density, and motion for its subtree — the docs shell mounts it once at the root, which you're inside now. Try the settings popover in the app bar."
+                        ]
+              }
+            ]
+
+        "toolbar" ->
+            [ usage
+                (Toolbar.new
+                    [ Button.new { label = "Save", variant = Button.Filled }
+                    , Button.new { label = "Discard", variant = Button.Text }
+                    ]
+                    |> Toolbar.view
+                )
+            ]
+
+        _ ->
+            []
+
+
+headingDemo : Heading.Variant -> Heading.Size -> String -> Html msg
+headingDemo variant size label =
+    Heading.new
+        |> Heading.withVariant variant
+        |> Heading.withSize size
+        |> Heading.withContent (text label)
+        |> Heading.view

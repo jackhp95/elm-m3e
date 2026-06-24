@@ -4,12 +4,15 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, h1, h2, li, p, section, text, ul)
+import Html exposing (Html, div, li, p, section, text, ul)
 import Html.Attributes exposing (class)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -61,27 +64,53 @@ supportRow browser note =
         ]
 
 
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Browser Support")
+        |> Heading.view
+
+
+sectionHeading : String -> Html msg
+sectionHeading label =
+    Heading.new
+        |> Heading.withLevel 2
+        |> Heading.withVariant Heading.Headline
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text label)
+        |> Heading.view
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Browser Support · elm-m3e"
     , body =
         [ div [ class "mx-auto max-w-3xl space-y-8" ]
             [ section [ class "space-y-3" ]
-                [ h1 [ class "text-display-small font-semibold text-on-surface" ] [ text "Browser Support" ]
+                [ pageHeading
                 , p [ class "text-body-large text-on-surface-variant" ]
                     [ text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                 ]
-            , section [ class "space-y-2" ]
-                [ h2 [ class "text-headline-small font-semibold text-on-surface" ] [ text "Supported browsers" ]
-                , ul [ class "rounded-md-corner-large border border-outline-variant bg-surface-container-low px-5 py-2" ]
-                    [ supportRow "Chrome / Edge" "Latest 2 versions"
-                    , supportRow "Firefox" "Latest 2 versions"
-                    , supportRow "Safari" "Latest 2 versions"
-                    , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
-                    ]
-                ]
+            , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
-                [ h2 [ class "text-headline-small font-semibold text-on-surface" ] [ text "Platform features used" ]
+                [ sectionHeading "Supported browsers"
+                , Card.new Card.Outlined
+                    |> Card.withBody
+                        (ul [ class "px-2" ]
+                            [ supportRow "Chrome / Edge" "Latest 2 versions"
+                            , supportRow "Firefox" "Latest 2 versions"
+                            , supportRow "Safari" "Latest 2 versions"
+                            , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
+                            ]
+                        )
+                    |> Card.view
+                ]
+            , Divider.new |> Divider.view
+            , section [ class "space-y-3" ]
+                [ sectionHeading "Platform features used"
                 , ul [ class "list-disc space-y-1.5 pl-5 text-body-medium text-on-surface-variant" ]
                     [ li [] [ text "Custom Elements v1 and Shadow DOM for the @m3e/web components." ]
                     , li [] [ text "ES modules for component registration (no-bundler import-map usage is also supported upstream)." ]

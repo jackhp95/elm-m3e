@@ -4,12 +4,15 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, h1, p, section, text)
+import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -81,18 +84,43 @@ row ( cls, label ) =
         ]
 
 
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Typography")
+        |> Heading.view
+
+
+sectionHeading : String -> Html msg
+sectionHeading label =
+    Heading.new
+        |> Heading.withLevel 2
+        |> Heading.withVariant Heading.Headline
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text label)
+        |> Heading.view
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Typography · elm-m3e"
     , body =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
-                [ h1 [ class "text-display-small font-semibold text-on-surface" ] [ text "Typography" ]
+                [ pageHeading
                 , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
                     [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
                 ]
-            , section [ class "rounded-md-corner-large border border-outline-variant bg-surface-container-low px-5 py-2" ]
-                (List.map row scale)
+            , Divider.new |> Divider.view
+            , section [ class "space-y-3" ]
+                [ sectionHeading "The scale, live"
+                , Card.new Card.Outlined
+                    |> Card.withBody (div [ class "px-2" ] (List.map row scale))
+                    |> Card.view
+                ]
             ]
         ]
     }

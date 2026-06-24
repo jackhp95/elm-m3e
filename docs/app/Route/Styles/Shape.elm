@@ -4,12 +4,15 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, h1, p, section, text)
+import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import Ui.Shape as Shape
 import UrlPath
 import View exposing (View)
@@ -74,18 +77,31 @@ swatch ( cls, label ) =
         ]
 
 
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Shape")
+        |> Heading.view
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Shape · elm-m3e"
     , body =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
-                [ h1 [ class "text-display-small font-semibold text-on-surface" ] [ text "Shape" ]
+                [ pageHeading
                 , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
                     [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. Ui.Shape renders a decorative <m3e-shape> surface that respects it." ]
                 ]
-            , section [ class "rounded-md-corner-large border border-outline-variant bg-surface-container-low p-8" ]
-                [ div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps) ]
+            , Divider.new |> Divider.view
+            , Card.new Card.Outlined
+                |> Card.withHeadline "Corner scale"
+                |> Card.withBody (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps))
+                |> Card.view
             ]
         ]
     }

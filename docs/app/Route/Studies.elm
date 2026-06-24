@@ -1,19 +1,24 @@
 module Route.Studies exposing (ActionData, Data, Model, Msg, route)
 
-{-| Landing page for the Studies area — composed, real-world demos. The
-individual study pages are built in a later phase; this lists and links them.
+{-| Landing page for the Studies area — composed, real-world demos showing
+many `Ui.*` components working together. The five studies are interactive
+routes that the sidebar already links to; this page is the gallery.
 -}
 
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, h1, h3, p, section, span, text)
-import Html.Attributes exposing (attribute, class)
+import Html exposing (Html, div, p, section, text)
+import Html.Attributes exposing (class)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Button as Button
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -59,24 +64,38 @@ head _ =
 
 studies : List ( String, String, String )
 studies =
-    [ ( "dashboard", "Settings dashboard", "App bar, nav rail, cards, switches, and sliders composed into a settings surface." )
-    , ( "checkout", "Checkout flow", "A multi-step stepper with form fields, selects, and a confirmation dialog." )
-    , ( "inbox", "Message inbox", "List items, avatars, badges, and a snackbar for transient confirmations." )
-    , ( "media", "Media gallery", "Carousel, shapes, skeletons, and a bottom sheet of details." )
+    [ ( "reply", "Reply", "A Material 3 email / inbox client — nav family, app bar with search, message list, split-pane reading view, compose bottom sheet, and snackbar." )
+    , ( "shrine", "Shrine", "A boutique storefront — filter chips, segmented view toggles, price slider, product cards with shape-clipped media, cart bottom sheet, and item dialog." )
+    , ( "rally", "Rally", "A finance dashboard — tabs, account cards, transaction list, paginator, and live budget meters via progress indicators." )
+    , ( "crane", "Crane", "A travel destination browser — carousel of hero shots, date picker, segmented party-size, image gallery, and segmented amenity filters." )
+    , ( "settings", "Settings", "A Material 3 system settings surface — list/sublist navigation, switches, sliders, and a profile card." )
     ]
 
 
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Studies")
+        |> Heading.view
+
+
 studyCard : ( String, String, String ) -> Html msg
-studyCard ( _, title, body ) =
-    div [ class "flex flex-col gap-2 rounded-md-corner-large border border-outline-variant bg-surface-container-low p-5" ]
-        [ div [ class "flex items-center gap-2" ]
-            [ span [ class "material-symbols-outlined text-primary", attribute "aria-hidden" "true" ] [ text "science" ]
-            , h3 [ class "text-title-medium font-medium text-on-surface" ] [ text title ]
+studyCard ( slug, title, body ) =
+    let
+        href =
+            "/studies/" ++ slug
+    in
+    Card.new Card.Elevated
+        |> Card.withHeadline title
+        |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text body ])
+        |> Card.withActions
+            [ Button.new { label = "Open " ++ title, variant = Button.Filled }
+                |> Button.withHref href
             ]
-        , p [ class "text-body-medium text-on-surface-variant" ] [ text body ]
-        , span [ class "mt-1 w-max rounded-full bg-surface-container-high px-2 py-0.5 text-label-small text-on-surface-variant" ]
-            [ text "Coming soon" ]
-        ]
+        |> Card.view
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -85,10 +104,11 @@ view _ _ =
     , body =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
-                [ h1 [ class "text-display-small font-semibold text-on-surface" ] [ text "Studies" ]
+                [ pageHeading
                 , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
-                    [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. The pages below are scaffolded; the interactive builds land in a later phase." ]
+                    [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
                 ]
+            , Divider.new |> Divider.view
             , section [ class "grid gap-4 sm:grid-cols-2" ]
                 (List.map studyCard studies)
             ]

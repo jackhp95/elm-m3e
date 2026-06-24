@@ -1,6 +1,6 @@
 module Route.Reference exposing (ActionData, Data, Model, Msg, route)
 
-{-| Complete API reference for every Ui.* module, extracted from the library
+{-| Complete API reference for every Ui.\* module, extracted from the library
 source at build time (scripts/extract-reference.mjs -> data/reference.json).
 Accurate by construction — module overviews plus every exposed member's
 signature and doc comment.
@@ -11,13 +11,16 @@ import BackendTask.File
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, a, code, div, h1, h2, p, section, text)
+import Html exposing (Html, a, code, div, p, section, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.Card as Card
+import Ui.Divider as Divider
+import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -98,12 +101,22 @@ head _ =
         |> Seo.website
 
 
+pageHeading : Html msg
+pageHeading =
+    Heading.new
+        |> Heading.withLevel 1
+        |> Heading.withVariant Heading.Display
+        |> Heading.withSize Heading.Small
+        |> Heading.withContent (text "Component reference")
+        |> Heading.view
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
         [ div [ class "mx-auto max-w-5xl" ]
-            [ h1 [ class "text-display-small font-semibold" ] [ text "Component reference" ]
+            [ pageHeading
             , p [ class "mt-2 max-w-2xl text-body-large text-on-surface-variant" ]
                 [ text "Every "
                 , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "Ui.*" ]
@@ -123,7 +136,7 @@ indexGrid components =
             (\c ->
                 a
                     [ href ("#" ++ c.slug)
-                    , class "rounded-full border border-outline px-3 py-1 text-label-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                    , class "rounded-full border border-outline px-3 py-1 text-label-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
                     ]
                     [ text c.name ]
             )
@@ -133,11 +146,16 @@ indexGrid components =
 
 componentBlock : Component -> Html msg
 componentBlock c =
-    section [ id c.slug, class "scroll-mt-6 border-t border-outline-variant pt-8" ]
-        [ h2 [ class "text-headline-small font-semibold" ]
-            [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
-        , prose "mt-2 max-w-2xl text-body-medium text-on-surface-variant" c.overview
-        , div [ class "mt-5 space-y-4" ] (List.map memberRow c.members)
+    section [ id c.slug, class "scroll-mt-6 space-y-4" ]
+        [ Divider.new |> Divider.view
+        , Heading.new
+            |> Heading.withLevel 2
+            |> Heading.withVariant Heading.Headline
+            |> Heading.withSize Heading.Small
+            |> Heading.withContent (code [ class "text-primary" ] [ text ("Ui." ++ c.name) ])
+            |> Heading.view
+        , prose "max-w-2xl text-body-medium text-on-surface-variant" c.overview
+        , div [ class "space-y-3" ] (List.map memberRow c.members)
         ]
 
 
@@ -154,14 +172,18 @@ memberRow m =
             else
                 m.name ++ " : " ++ m.signature
     in
-    div [ class "rounded-lg border border-outline-variant bg-surface-container-lowest p-4" ]
-        [ pre_ sig
-        , if m.doc == "" then
-            text ""
+    Card.new Card.Outlined
+        |> Card.withBody
+            (div []
+                [ pre_ sig
+                , if m.doc == "" then
+                    text ""
 
-          else
-            prose "mt-2 text-body-small text-on-surface-variant" m.doc
-        ]
+                  else
+                    prose "mt-2 text-body-small text-on-surface-variant" m.doc
+                ]
+            )
+        |> Card.view
 
 
 pre_ : String -> Html msg
