@@ -1,7 +1,7 @@
 module Ui.List exposing
     ( Listing, Item
     , Variant(..)
-    , new, item
+    , new, item, actionItem
     , withVariant, withId
     , withItemLeadingIcon, withItemTrailingIcon, withItemOverline
     , withItemSupporting, withItemOnClick, withItemDisabled
@@ -21,8 +21,13 @@ call sites.
 # Required-by-design
 
   - `new` — takes the list of items.
-  - `item` — each item requires `headline` text and optional
-    decorations / click handler attached via `withItem*` setters.
+  - `item` — a static, non-interactive row (`<m3e-list-item>`). Required
+    `headline` text plus optional decorations via `withItem*` setters.
+  - `actionItem` — an interactive row (`<m3e-list-item-button>`). Pair
+    with [`withItemOnClick`](#withItemOnClick) to handle activation.
+
+The rendered element is chosen at the **call site** by which constructor
+you use — never inferred from whether a modifier happens to be present.
 
 
 # Quick example
@@ -51,7 +56,7 @@ call sites.
 
 # Constructors
 
-@docs new, item
+@docs new, item, actionItem
 
 
 # List-level modifiers
@@ -118,6 +123,7 @@ type alias ItemConfig msg =
     , trailingIcon : Maybe (Ui.Icon.Icon msg)
     , onClick : Maybe msg
     , disabled : Bool
+    , interactive : Bool
     }
 
 
@@ -136,10 +142,16 @@ new items =
         }
 
 
-{-| Construct a list item with required headline text.
+{-| Construct a static, non-interactive list item (`<m3e-list-item>`)
+with required headline text.
 
     Ui.List.item "Inbox"
         |> Ui.List.withItemLeadingIcon (Ui.Icon.fontAwesome Icon.FontAwesome.inbox)
+
+A static item has no activation affordance — `withItemOnClick` and
+`withItemDisabled` are no-ops on it (the underlying `<m3e-list-item>`
+element neither dispatches clicks nor honours `disabled`). Use
+[`actionItem`](#actionItem) for an interactive row.
 
 -}
 item : String -> Item msg
@@ -152,6 +164,31 @@ item headline =
         , trailingIcon = Nothing
         , onClick = Nothing
         , disabled = False
+        , interactive = False
+        }
+
+
+{-| Construct an interactive list item (`<m3e-list-item-button>`) with
+required headline text. Pair with [`withItemOnClick`](#withItemOnClick)
+to handle activation, and [`withItemDisabled`](#withItemDisabled) to
+disable it.
+
+    Ui.List.actionItem "Open settings"
+        |> Ui.List.withItemLeadingIcon (Ui.Icon.fontAwesome Icon.FontAwesome.gear)
+        |> Ui.List.withItemOnClick OpenSettings
+
+-}
+actionItem : String -> Item msg
+actionItem headline =
+    Item
+        { headline = headline
+        , overline = Nothing
+        , supporting = Nothing
+        , leadingIcon = Nothing
+        , trailingIcon = Nothing
+        , onClick = Nothing
+        , disabled = False
+        , interactive = True
         }
 
 
@@ -205,15 +242,17 @@ withItemSupporting text (Item cfg) =
     Item { cfg | supporting = Just text }
 
 
-{-| Wire a click handler — turns the item into an interactive row
-(renders as `<m3e-list-item-button>` instead of `<m3e-list-item>`).
+{-| Wire a click handler. Only meaningful on an [`actionItem`](#actionItem)
+(`<m3e-list-item-button>`); on a static [`item`](#item) it is ignored,
+since `<m3e-list-item>` is non-interactive.
 -}
 withItemOnClick : msg -> Item msg -> Item msg
 withItemOnClick msg (Item cfg) =
     Item { cfg | onClick = Just msg }
 
 
-{-| Mark the item disabled.
+{-| Mark the item disabled. Only meaningful on an
+[`actionItem`](#actionItem); static [`item`](#item) rows ignore it.
 -}
 withItemDisabled : Bool -> Item msg -> Item msg
 withItemDisabled b (Item cfg) =
@@ -239,27 +278,23 @@ view (Listing cfg) =
 
 itemView : Item msg -> Html msg
 itemView (Item cfg) =
-    case cfg.onClick of
-        Just msg ->
-            M3e.ListItemButton.component
-                (itemBaseAttrs cfg
-                    ++ [ HtmlEvents.onClick msg ]
-                )
-                (itemChildren cfg)
+    if cfg.interactive then
+        M3e.ListItemButton.component
+            (List.filterMap identity
+                [ if cfg.disabled then
+                    Just (M3e.ListItemButton.disabled True)
 
-        Nothing ->
-            M3e.ListItem.component
-                (itemBaseAttrs cfg)
-                (itemChildren cfg)
-
-
-itemBaseAttrs : ItemConfig msg -> List (Html.Attribute msg)
-itemBaseAttrs cfg =
-    if cfg.disabled then
-        [ Attr.disabled True ]
+                  else
+                    Nothing
+                , Maybe.map HtmlEvents.onClick cfg.onClick
+                ]
+            )
+            (itemChildren cfg)
 
     else
-        []
+        -- `<m3e-list-item>` is non-interactive and has no `disabled`
+        -- attribute, so neither onClick nor disabled is emitted here.
+        M3e.ListItem.component [] (itemChildren cfg)
 
 
 itemChildren : ItemConfig msg -> List (Html msg)

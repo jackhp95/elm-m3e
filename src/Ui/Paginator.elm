@@ -148,7 +148,7 @@ pageAttrs state =
             []
 
         DefaultPage pageIndex ->
-            [ Just (Attr.attribute "pageIndex" (String.fromInt pageIndex)) ]
+            [ Just (M3e.Paginator.pageIndex (toFloat pageIndex)) ]
 
         ExplicitPage onPage pageIndex ->
             [ Just (M3e.Paginator.pageIndex (toFloat pageIndex))

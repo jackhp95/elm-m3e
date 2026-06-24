@@ -9,6 +9,10 @@ module Ui.Toc exposing
 `M3e.Toc`. Pair with a content area whose id you pass to `withFor`;
 m3e auto-generates the TOC items by walking that subtree's headings.
 
+Note: `view` emits a `ui-toc-auto-width` CSS class. That is a project
+layout class (not a Material/CEM attribute) used to size the TOC column;
+it has no effect on the underlying `<m3e-toc>` element's behaviour.
+
     div []
         [ Ui.Toc.new
             |> Ui.Toc.withId "page-toc"

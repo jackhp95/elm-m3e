@@ -5,8 +5,15 @@ module Ui.ScrollContainer exposing
     , view
     )
 
-{-| Typed builder for an M3 scroll container. Wraps
+{-| Typed builder for `<m3e-scroll-container>`. Wraps
 `M3e.ScrollContainer`.
+
+**Utility element — outside the documented Material component set.**
+`m3e-scroll-container` is not one of the 53 documented Material 3
+components; it ships only as a vendor binding (`M3e.ScrollContainer`) as
+a layout helper. It is kept here for parity with the vendor surface, but
+it does not correspond to a documented Material component, so it sits
+outside the "one module per documented component" map.
 
 A vertically scrollable area that shows dividers above and below
 content when scrolled, providing a visual cue that more content exists.

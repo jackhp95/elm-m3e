@@ -88,7 +88,6 @@ A richer card — media at the top, two-line title, one action:
 -}
 
 import Html exposing (Html)
-import Html.Attributes as Attr
 import M3e.Card
 import Ui.Button
 
@@ -281,17 +280,17 @@ headerSection cfg =
 
 renderMedia : Html msg -> Html msg
 renderMedia media =
-    Html.div [ Attr.class "ds-card-media" ] [ media ]
+    Html.div [] [ media ]
 
 
 renderHeadline : String -> Html msg
 renderHeadline text =
-    Html.h3 [ Attr.class "ds-card-headline" ] [ Html.text text ]
+    Html.h3 [] [ Html.text text ]
 
 
 renderSubhead : String -> Html msg
 renderSubhead text =
-    Html.p [ Attr.class "ds-card-subhead" ] [ Html.text text ]
+    Html.p [] [ Html.text text ]
 
 
 bodySection : Maybe (Html msg) -> List (Html msg)
@@ -312,7 +311,7 @@ actionsSection actions =
 
         _ ->
             [ Html.div
-                [ M3e.Card.actionsSlot, Attr.class "ds-card-actions" ]
+                [ M3e.Card.actionsSlot ]
                 (List.map Ui.Button.view actions)
             ]
 
