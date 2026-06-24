@@ -162,9 +162,9 @@ bar =
 `Ui.List.Item`s via `Ui.List`.
 
     Ui.Search.results
-        [ Ui.List.item "Acme Supplies"
+        [ Ui.List.actionItem "Acme Supplies"
             |> Ui.List.withItemOnClick (ResultClicked "acme")
-        , Ui.List.item "Acme West"
+        , Ui.List.actionItem "Acme West"
             |> Ui.List.withItemOnClick (ResultClicked "acmewest")
         ]
         |> Ui.Search.withId "global-search"
@@ -301,7 +301,7 @@ searchViewOpenAttrs state =
             []
 
         DefaultOpen True ->
-            [ Just (Attr.attribute "open" "true") ]
+            [ Just (M3e.SearchView.open True) ]
 
         DefaultOpen False ->
             []

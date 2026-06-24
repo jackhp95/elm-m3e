@@ -1,17 +1,26 @@
 module Ui.Shape exposing
     ( Shape, new
-    , withId, withClass, withContent
+    , Name
+    , withId, withName, withClass, withContent
     , view
     )
 
-{-| Typed builder for M3 shapes. Wraps `M3e.Shape`. Shape sizing comes
-from utility classes (height/width); pass them via `withClass`.
+{-| Typed builder for `<m3e-shape>`. Wraps `M3e.Shape`.
+
+The element clips its slotted content to a named Material 3 shape. Pick
+the shape with [`withName`](#withName) (the element's own `name`
+attribute), and size it the way you size any element — Material spacing
+tokens or a layout class of your own.
 
     Ui.Shape.new
-        |> Ui.Shape.withId "circle"
-        |> Ui.Shape.withClass "ds-w-16"
-        |> Ui.Shape.withClass "ds-h-16"
+        |> Ui.Shape.withId "avatar-clip"
+        |> Ui.Shape.withName M3e.Shape.Circle
+        |> Ui.Shape.withContent
+            [ Html.img [ Html.Attributes.src "/avatar.jpg" ] [] ]
         |> Ui.Shape.view
+
+`withClass` remains available for project layout/sizing classes, but the
+shape itself comes from `withName`, not from a proprietary `ds-*` class.
 
 
 # Construction
@@ -19,9 +28,14 @@ from utility classes (height/width); pass them via `withClass`.
 @docs Shape, new
 
 
+# Shape name
+
+@docs Name
+
+
 # Modifiers
 
-@docs withId, withClass, withContent
+@docs withId, withName, withClass, withContent
 
 
 # Render
@@ -39,8 +53,17 @@ type Shape msg
     = Shape (Config msg)
 
 
+{-| The set of Material 3 shape names, re-exported from `M3e.Shape`.
+Construct values with the `M3e.Shape` constructors (e.g.
+`M3e.Shape.Circle`).
+-}
+type alias Name =
+    M3e.Shape.Name
+
+
 type alias Config msg =
     { id : Maybe String
+    , name : Maybe Name
     , classes : List String
     , content : List (Html msg)
     }
@@ -48,12 +71,23 @@ type alias Config msg =
 
 new : Shape msg
 new =
-    Shape { id = Nothing, classes = [], content = [] }
+    Shape { id = Nothing, name = Nothing, classes = [], content = [] }
 
 
 withId : String -> Shape msg -> Shape msg
 withId id (Shape cfg) =
     Shape { cfg | id = Just id }
+
+
+{-| Set the Material 3 shape the element clips its content to.
+
+    Ui.Shape.new
+        |> Ui.Shape.withName M3e.Shape.Circle
+
+-}
+withName : Name -> Shape msg -> Shape msg
+withName name (Shape cfg) =
+    Shape { cfg | name = Just name }
 
 
 withClass : String -> Shape msg -> Shape msg
@@ -69,7 +103,10 @@ withContent content (Shape cfg) =
 view : Shape msg -> Html msg
 view (Shape cfg) =
     M3e.Shape.component
-        (List.filterMap identity [ Maybe.map Attr.id cfg.id ]
+        (List.filterMap identity
+            [ Maybe.map Attr.id cfg.id
+            , Maybe.map M3e.Shape.name cfg.name
+            ]
             ++ List.map Attr.class cfg.classes
         )
         cfg.content

@@ -101,6 +101,6 @@ view (SplitPane cfg) =
             , Just (M3e.SplitPane.orientation (toM3eOrientation cfg.orientation))
             ]
         )
-        [ M3e.ContentPane.component [] cfg.start
-        , M3e.ContentPane.component [] cfg.end
+        [ M3e.ContentPane.component [ M3e.SplitPane.startSlot ] cfg.start
+        , M3e.ContentPane.component [ M3e.SplitPane.endSlot ] cfg.end
         ]

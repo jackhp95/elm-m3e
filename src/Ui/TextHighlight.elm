@@ -6,7 +6,14 @@ module Ui.TextHighlight exposing
     , view
     )
 
-{-| Typed builder for M3 text highlighting. Wraps `M3e.TextHighlight`.
+{-| Typed builder for `<m3e-text-highlight>`. Wraps `M3e.TextHighlight`.
+
+**Utility element — outside the documented Material component set.**
+`m3e-text-highlight` is not one of the 53 documented Material 3
+components; it ships only as a vendor binding (`M3e.TextHighlight`) as a
+text-rendering helper. It is kept here for parity with the vendor
+surface, but it does not correspond to a documented Material component,
+so it sits outside the "one module per documented component" map.
 
 Visually emphasizes substrings matching a search term inside arbitrary
 text content — useful for search results, autocomplete suggestions, and

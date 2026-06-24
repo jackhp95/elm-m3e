@@ -211,7 +211,7 @@ selectionAttrs state stepId =
 
         DefaultSelection selectedId ->
             if selectedId == stepId then
-                [ Just (Attr.attribute "selected" "true") ]
+                [ Just (M3e.Step.selected True) ]
 
             else
                 []
