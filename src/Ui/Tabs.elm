@@ -39,6 +39,7 @@ section switching.
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
+import M3e.Badge
 import M3e.Tab
 import M3e.Tabs
 import Ui.Icon
@@ -163,6 +164,10 @@ iconPart icon =
             [ Html.span [ M3e.Tab.iconSlot ] [ Ui.Icon.view i ] ]
 
 
+{-| There is no `badge` slot on `m3e-tab` (only `(default)` and `icon`);
+compose the count as an `m3e-badge` element beside the label in the
+default content instead.
+-}
 badgePart : Maybe String -> List (Html msg)
 badgePart badge =
     case badge of
@@ -170,4 +175,4 @@ badgePart badge =
             []
 
         Just b ->
-            [ Html.span [ Attr.attribute "slot" "badge" ] [ Html.text b ] ]
+            [ M3e.Badge.component [] [ Html.text b ] ]

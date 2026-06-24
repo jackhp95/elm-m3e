@@ -87,8 +87,9 @@ typed end-to-end.
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
+import M3e.Badge
 import M3e.NavBar
-import M3e.NavMenuItem
+import M3e.NavItem
 import Ui.Icon
 
 
@@ -218,18 +219,20 @@ view (NavigationBar cfg) =
 
 itemView : BarConfig value msg -> Item value msg -> Html msg
 itemView cfg (Item it) =
-    M3e.NavMenuItem.component
-        [ M3e.NavMenuItem.selected (cfg.selected == Just it.value)
+    M3e.NavItem.component
+        [ M3e.NavItem.selected (cfg.selected == Just it.value)
         , HtmlEvents.onClick (cfg.onChange it.value)
         ]
         (List.concat
-            [ [ Html.span [ M3e.NavMenuItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
+            [ [ Html.span [ M3e.NavItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
             , labelText it.label
             , badgeText it.badge
             ]
         )
 
 
+{-| The label rides the default slot — `m3e-nav-item` has no `label` slot.
+-}
 labelText : Maybe String -> List (Html msg)
 labelText label =
     case label of
@@ -237,9 +240,12 @@ labelText label =
             []
 
         Just l ->
-            [ Html.span [ M3e.NavMenuItem.labelSlot ] [ Html.text l ] ]
+            [ Html.text l ]
 
 
+{-| There is no `badge` slot on `m3e-nav-item`; compose the count as an
+`m3e-badge` element inside the item's default content instead.
+-}
 badgeText : Maybe String -> List (Html msg)
 badgeText badge =
     case badge of
@@ -247,7 +253,7 @@ badgeText badge =
             []
 
         Just b ->
-            [ Html.span [ M3e.NavMenuItem.badgeSlot ] [ Html.text b ] ]
+            [ M3e.Badge.component [] [ Html.text b ] ]
 
 
 modeAttr : Mode -> Html.Attribute msg
