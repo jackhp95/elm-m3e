@@ -184,9 +184,11 @@ view (Stepper cfg) =
 viewStepHeader : Config msg -> Step msg -> Html msg
 viewStepHeader cfg (Step s) =
     let
+        prefix : String
         prefix =
             Maybe.withDefault "stepper" cfg.id
 
+        stepId : String
         stepId =
             prefix ++ "-step-" ++ s.id
     in

@@ -143,7 +143,6 @@ A multi-line description that auto-grows between 3 and 8 rows:
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import Json.Decode as Decode
 import M3e.FormField
 import M3e.TextareaAutosize
 

@@ -300,15 +300,13 @@ controlId cfg =
 checkboxElement : Config msg -> Html msg
 checkboxElement cfg =
     M3e.Checkbox.component
-        (List.filterMap identity
-            [ Just (Attr.id (controlId cfg))
-            , Just (M3e.Checkbox.checked (isChecked cfg.state))
-            , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
-            , Just (M3e.Checkbox.disabled cfg.disabled)
-            , Just (M3e.Checkbox.required cfg.required)
-            , Just (M3e.Checkbox.onChange (changeDecoder cfg.onChange))
-            ]
-        )
+        [ Attr.id (controlId cfg)
+        , M3e.Checkbox.checked (isChecked cfg.state)
+        , M3e.Checkbox.indeterminate (isIndeterminate cfg.state)
+        , M3e.Checkbox.disabled cfg.disabled
+        , M3e.Checkbox.required cfg.required
+        , M3e.Checkbox.onChange (changeDecoder cfg.onChange)
+        ]
         []
 
 

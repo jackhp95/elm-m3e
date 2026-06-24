@@ -337,7 +337,7 @@ inputElement : Config msg -> Html msg
 inputElement cfg =
     Html.input
         (List.filterMap identity
-            [ Just (Attr.attribute "slot" "input")
+            [ Just M3e.SearchView.inputSlot
             , Just (Attr.type_ "search")
             , Maybe.map (Tuple.first >> Attr.value) cfg.query
             , Maybe.map (Tuple.second >> HtmlEvents.onInput) cfg.query
