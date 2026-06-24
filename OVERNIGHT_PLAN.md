@@ -144,9 +144,11 @@ holds F1–F10. Net changes this session:
 - **Tests:** 157 pass (Carousel test removed; bare-mode + tree tests added). Docs compile + render.
 
 ### Remaining (tracked as tasks; for continuation)
-- **F10 library-wide rollout** (task #10): add `withAttributes` to the other ~50 builders + convert
-  opaque-`Html` slots to typed inputs + `EscapeHatchHtml` per builder. A per-builder audit is being
-  generated to `docs/research/builder-audit.md` to drive this (mechanical-safe vs tricky cases).
+- **F10 `withAttributes` rollout — DONE: all 52 builders** now expose the host escape hatch
+  (`docs/research/builder-audit.md` drove it: 34 mechanical + 14 tricky via verified sub-agents).
+  0 baked styling. STILL OPEN (judgment-heavy, non-blocking): convert opaque-`Html` slots to typed
+  inputs + `EscapeHatchHtml` (AppBar leading/trailing, Breadcrumb/Chip labels); deprecate
+  `Shape.withClass`/`Skeleton.withClass` in favor of `withAttributes`.
 - **F8** (task #6): drive the component reference pages from `elm make --docs` instead of the custom
   `extract-reference.mjs`.
 - Phases 8–10 of this plan (package-ready branch, CI gate, ADRs) still open.

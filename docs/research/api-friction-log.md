@@ -88,9 +88,18 @@ Ordered newest-first within each section.
     (e.g. `m3e-heading`), not a baked class.
   - Terse text via `Ui.Heading.{display,headline,title,label} : String ->
     Heading` keeps call sites one-liners.
-- **Library-wide TODO:** audit every other builder for (a) baked styling to
-  strip, (b) a missing `withAttributes` host hatch, (c) opaque-`Html` slots that
-  should become typed builder inputs + `EscapeHatchHtml`. (Tracked as a task.)
+- **Rollout status:**
+  - (a) baked styling — **done**: audit found 0 bakers except `Ui.Toc` (fixed).
+    `Ui.Shape`/`Ui.Skeleton` expose a caller-owned `withClass` (not baked) that
+    now overlaps `withAttributes` — deprecation candidate.
+  - (b) `withAttributes` host hatch — **DONE: all 52 builders** (Card/Toc by
+    hand; 34 mechanical + 14 tricky via verified sub-agents). See
+    `docs/research/builder-audit.md` for the per-builder host decisions. Chip
+    needed a parallel `withSetAttributes` (two opaque types). A few internal
+    `Config` records were parameterized to `Config msg`.
+  - (c) opaque-`Html` slots → typed builder inputs + `EscapeHatchHtml` —
+    **still open** (per-builder judgment): `AppBar.leading/trailing`,
+    `Breadcrumb` item label, `Chip` label are the main candidates. Not blockers.
 
 ## API gaps (couldn't express a real, in-spec use case)
 
