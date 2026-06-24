@@ -43,6 +43,21 @@ suite =
                 card
                     |> Query.fromHtml
                     |> Query.has [ Selector.attribute (slotAttr "actions") ]
+        , test "withAttributes lands a caller class on the m3e-card host" <|
+            \_ ->
+                Ui.Card.new Ui.Card.Outlined
+                    |> Ui.Card.withAttributes [ Html.Attributes.class "h-full" ]
+                    |> Ui.Card.view
+                    |> Query.fromHtml
+                    |> Query.has [ Selector.tag "m3e-card", Selector.classes [ "h-full" ] ]
+        , test "the structural variant attribute survives caller withAttributes" <|
+            \_ ->
+                -- a caller can't clobber `variant` (structural attrs are emitted last)
+                Ui.Card.new Ui.Card.Outlined
+                    |> Ui.Card.withAttributes [ Html.Attributes.attribute "variant" "filled" ]
+                    |> Ui.Card.view
+                    |> Query.fromHtml
+                    |> Query.has [ Selector.tag "m3e-card", Selector.attribute (Html.Attributes.attribute "variant" "outlined") ]
         ]
 
 
