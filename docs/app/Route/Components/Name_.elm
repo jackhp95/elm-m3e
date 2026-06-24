@@ -45,6 +45,7 @@ import Ui.List as L
 import Ui.LoadingIndicator as LoadingIndicator
 import Ui.Menu as Menu
 import Ui.NavigationBar as NavigationBar
+import Ui.NavigationDrawer as NavigationDrawer
 import Ui.NavigationRail as NavigationRail
 import Ui.Paginator as Paginator
 import Ui.Progress as Progress
@@ -642,6 +643,22 @@ demoSections slug =
                     , onChange = noOp
                     }
                     |> NavigationBar.view
+                )
+            ]
+
+        "navigationdrawer" ->
+            [ usage
+                (NavigationDrawer.new
+                    { items =
+                        [ NavigationDrawer.item { value = "inbox", icon = Icon.material "inbox" } |> NavigationDrawer.withItemLabel "Inbox"
+                        , NavigationDrawer.item { value = "starred", icon = Icon.material "star" } |> NavigationDrawer.withItemLabel "Starred"
+                        , NavigationDrawer.item { value = "trash", icon = Icon.material "delete" } |> NavigationDrawer.withItemLabel "Trash"
+                        ]
+                    , selected = Just "inbox"
+                    , onChange = noOp
+                    }
+                    |> NavigationDrawer.withModal False
+                    |> NavigationDrawer.view
                 )
             ]
 
