@@ -1,5 +1,6 @@
 module Ui.Heading exposing
     ( Heading, new
+    , display, headline, title, label
     , withId, withContent
     , Variant(..), withVariant
     , Size(..), withSize
@@ -13,6 +14,17 @@ module Ui.Heading exposing
 # Construction
 
 @docs Heading, new
+
+
+# Text presets
+
+Terse constructors for the common "styled text" case — each sets the matching
+variant and wraps a plain `String` as the content, so a call site stays a
+one-liner (`Ui.Heading.title "Featured"`) while the M3 typescale still comes
+from the `m3e-heading` element (no baked classes). Refine further with the
+`with*` modifiers (`withSize`, `withLevel`, …) as needed.
+
+@docs display, headline, title, label
 
 
 # Identity and content
@@ -96,6 +108,34 @@ new =
         , size = Nothing
         , level = Nothing
         }
+
+
+{-| A `Display` heading from a plain string (the largest typescale).
+-}
+display : String -> Heading msg
+display text =
+    new |> withVariant Display |> withContent (Html.text text)
+
+
+{-| A `Headline` heading from a plain string.
+-}
+headline : String -> Heading msg
+headline text =
+    new |> withVariant Headline |> withContent (Html.text text)
+
+
+{-| A `Title` heading from a plain string — the common card/section title.
+-}
+title : String -> Heading msg
+title text =
+    new |> withVariant Title |> withContent (Html.text text)
+
+
+{-| A `Label` heading from a plain string — small UI label / secondary text.
+-}
+label : String -> Heading msg
+label text =
+    new |> withVariant Label |> withContent (Html.text text)
 
 
 withId : String -> Heading msg -> Heading msg

@@ -98,7 +98,7 @@ view _ _ =
                 ]
             , Divider.new |> Divider.view
             , Card.new Card.Outlined
-                |> Card.withHeadline "Density scale, 0 to -3"
+                |> Card.withHeadline (Heading.title "Density scale, 0 to -3")
                 |> Card.withBody
                     (div [ class "space-y-6" ]
                         [ demoBar 0

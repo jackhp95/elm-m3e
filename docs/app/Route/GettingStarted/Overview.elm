@@ -91,7 +91,7 @@ highlights =
 highlightCard : ( String, String, String ) -> Html msg
 highlightCard ( iconName, title, body ) =
     Card.new Card.Filled
-        |> Card.withHeadline title
+        |> Card.withHeadline (Heading.title title)
         |> Card.withBody
             (div [ class "flex gap-3" ]
                 [ Html.span [ class "shrink-0 text-primary" ] [ Icon.material iconName |> Icon.view ]

@@ -2,7 +2,8 @@ module Ui.Card exposing
     ( Card
     , Variant(..)
     , new
-    , withMedia, withHeadline, withSubhead, withBody, withActions, withFooter
+    , withAttributes
+    , withMedia, withHeadline, withHeadlineEscapeHatchHtml, withSubhead, withSubheadEscapeHatchHtml, withBody, withActions, withFooter
     , view
     )
 
@@ -23,8 +24,8 @@ module's slot setters:
 | ------------------ | -------------- | ----------------------------------------------- |
 | Container | `new` | `Variant -> Card msg` (required) |
 | Image / media | `withMedia` | `Html msg` |
-| Headline | `withHeadline` | `String` |
-| Subhead | `withSubhead` | `String` |
+| Headline | `withHeadline` | `Ui.Heading msg` |
+| Subhead | `withSubhead` | `Ui.Heading msg` |
 | Supporting text | `withBody` | `Html msg` |
 | Buttons | `withActions` | `List (Ui.Button.Button msg)` |
 | (Footer extension) | `withFooter` | `Html msg` |
@@ -42,7 +43,7 @@ lists."
 A minimal card — variant + headline + body:
 
     Ui.Card.new Ui.Card.Outlined
-        |> Ui.Card.withHeadline "Pending audits"
+        |> Ui.Card.withHeadline (Ui.Heading.title "Pending audits")
         |> Ui.Card.withBody (text "5 audits awaiting your review.")
         |> Ui.Card.view
 
@@ -51,8 +52,8 @@ A richer card — media at the top, two-line title, one action:
     Ui.Card.new Ui.Card.Elevated
         |> Ui.Card.withMedia
             (img [ src "/cover.jpg", alt "" ] [])
-        |> Ui.Card.withHeadline "Compliance scorecard"
-        |> Ui.Card.withSubhead "Updated 2 hours ago"
+        |> Ui.Card.withHeadline (Ui.Heading.title "Compliance scorecard")
+        |> Ui.Card.withSubhead (Ui.Heading.label "Updated 2 hours ago")
         |> Ui.Card.withBody (text "All checks passing.")
         |> Ui.Card.withActions
             [ Ui.Button.new { label = "View details", variant = Ui.Button.Text }
@@ -78,7 +79,8 @@ A richer card — media at the top, two-line title, one action:
 
 # Modifiers
 
-@docs withMedia, withHeadline, withSubhead, withBody, withActions, withFooter
+@docs withAttributes
+@docs withMedia, withHeadline, withHeadlineEscapeHatchHtml, withSubhead, withSubheadEscapeHatchHtml, withBody, withActions, withFooter
 
 
 # Render
@@ -87,9 +89,10 @@ A richer card — media at the top, two-line title, one action:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import M3e.Card
 import Ui.Button
+import Ui.Heading
 
 
 
@@ -104,9 +107,10 @@ type Card msg
 
 type alias Config msg =
     { variant : Variant
+    , attributes : List (Attribute msg)
     , media : Maybe (Html msg)
-    , headline : Maybe String
-    , subhead : Maybe String
+    , headline : Maybe (Html msg)
+    , subhead : Maybe (Html msg)
     , body : Maybe (Html msg)
     , actions : List (Ui.Button.Button msg)
     , footer : Maybe (Html msg)
@@ -145,6 +149,7 @@ new : Variant -> Card msg
 new variant =
     Card
         { variant = variant
+        , attributes = []
         , media = Nothing
         , headline = Nothing
         , subhead = Nothing
@@ -170,28 +175,58 @@ withMedia media (Card cfg) =
     Card { cfg | media = Just media }
 
 
-{-| Set the headline — the primary title of the card. Per Material
-guidance, keep it short and descriptive.
+{-| Append attributes to the underlying `<m3e-card>` host element — the
+escape hatch for styling the card itself (`class`, `data-*`, `aria-*`, extra
+handlers, …). The card's own structural attributes (e.g. `variant`) are
+emitted after these, so a stray caller attribute can't break the contract.
 
     Ui.Card.new Ui.Card.Outlined
-        |> Ui.Card.withHeadline "Compliance scorecard"
+        |> Ui.Card.withAttributes [ class "h-full" ]
 
 -}
-withHeadline : String -> Card msg -> Card msg
-withHeadline headline (Card cfg) =
+withAttributes : List (Attribute msg) -> Card msg -> Card msg
+withAttributes attributes (Card cfg) =
+    Card { cfg | attributes = cfg.attributes ++ attributes }
+
+
+{-| Set the headline — the primary title of the card — as a typed
+`Ui.Heading`. The M3 typescale comes from the `m3e-heading` element itself;
+use `Ui.Heading.title` for the common case.
+
+    Ui.Card.new Ui.Card.Outlined
+        |> Ui.Card.withHeadline (Ui.Heading.title "Compliance scorecard")
+
+-}
+withHeadline : Ui.Heading.Heading msg -> Card msg -> Card msg
+withHeadline heading (Card cfg) =
+    Card { cfg | headline = Just (Ui.Heading.view heading) }
+
+
+{-| Escape hatch: set the headline to arbitrary `Html` when a `Ui.Heading`
+is too restrictive.
+-}
+withHeadlineEscapeHatchHtml : Html msg -> Card msg -> Card msg
+withHeadlineEscapeHatchHtml headline (Card cfg) =
     Card { cfg | headline = Just headline }
 
 
-{-| Set the subhead — secondary text rendered immediately below the
-headline. Use for context (e.g. last-updated time, parent category).
+{-| Set the subhead — secondary text below the headline — as a typed
+`Ui.Heading` (commonly `Ui.Heading.label`).
 
     Ui.Card.new Ui.Card.Outlined
-        |> Ui.Card.withHeadline "Compliance scorecard"
-        |> Ui.Card.withSubhead "Updated 2 hours ago"
+        |> Ui.Card.withHeadline (Ui.Heading.title "Compliance scorecard")
+        |> Ui.Card.withSubhead (Ui.Heading.label "Updated 2 hours ago")
 
 -}
-withSubhead : String -> Card msg -> Card msg
-withSubhead subhead (Card cfg) =
+withSubhead : Ui.Heading.Heading msg -> Card msg -> Card msg
+withSubhead heading (Card cfg) =
+    Card { cfg | subhead = Just (Ui.Heading.view heading) }
+
+
+{-| Escape hatch: set the subhead to arbitrary `Html`.
+-}
+withSubheadEscapeHatchHtml : Html msg -> Card msg -> Card msg
+withSubheadEscapeHatchHtml subhead (Card cfg) =
     Card { cfg | subhead = Just subhead }
 
 
@@ -249,7 +284,7 @@ pipeline.
 view : Card msg -> Html msg
 view (Card cfg) =
     M3e.Card.component
-        [ variantAttr cfg.variant ]
+        (cfg.attributes ++ [ variantAttr cfg.variant ])
         (List.concat
             [ mediaSection cfg.media
             , contentSection cfg
@@ -284,8 +319,8 @@ contentSection cfg =
         parts : List (Html msg)
         parts =
             List.filterMap identity
-                [ Maybe.map renderHeadline cfg.headline
-                , Maybe.map renderSubhead cfg.subhead
+                [ cfg.headline
+                , cfg.subhead
                 , cfg.body
                 ]
     in
@@ -295,16 +330,6 @@ contentSection cfg =
 
         _ ->
             [ Html.div [ M3e.Card.contentSlot ] parts ]
-
-
-renderHeadline : String -> Html msg
-renderHeadline text =
-    Html.h3 [] [ Html.text text ]
-
-
-renderSubhead : String -> Html msg
-renderSubhead text =
-    Html.p [] [ Html.text text ]
 
 
 actionsSection : List (Ui.Button.Button msg) -> List (Html msg)

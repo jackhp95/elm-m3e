@@ -160,7 +160,7 @@ highlights =
 highlightCard : String -> String -> String -> Html msg
 highlightCard iconName title body =
     Card.new Card.Outlined
-        |> Card.withHeadline title
+        |> Card.withHeadline (Heading.title title)
         |> Card.withBody
             (div [ class "flex gap-3" ]
                 [ Icon.material iconName |> Icon.view
@@ -188,6 +188,6 @@ statusGrid =
 statusCard : String -> String -> Html msg
 statusCard title body =
     Card.new Card.Outlined
-        |> Card.withHeadline title
+        |> Card.withHeadline (Heading.title title)
         |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text body ])
         |> Card.view

@@ -805,8 +805,8 @@ overviewCard =
             totalBudget budgetCategories
     in
     Card.new Card.Filled
-        |> Card.withHeadline "March overview"
-        |> Card.withSubhead (formatMoney spent ++ " of " ++ formatMoney budget ++ " spent")
+        |> Card.withHeadline (Heading.title "March overview")
+        |> Card.withSubhead (Heading.label (formatMoney spent ++ " of " ++ formatMoney budget ++ " spent"))
         |> Card.withBody
             (div [ class "flex items-center gap-6" ]
                 [ div [ class "relative grid place-items-center" ]
@@ -839,9 +839,9 @@ budgetCard category =
             isOverBudget category
     in
     Card.new Card.Outlined
-        |> Card.withHeadline category.label
+        |> Card.withHeadline (Heading.title category.label)
         |> Card.withSubhead
-            (formatMoney category.spentCents ++ " of " ++ formatMoney category.budgetCents)
+            (Heading.label (formatMoney category.spentCents ++ " of " ++ formatMoney category.budgetCents))
         |> Card.withBody
             (div [ class "space-y-2" ]
                 [ div [ class "flex items-center gap-2" ]

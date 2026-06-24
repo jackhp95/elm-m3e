@@ -7,6 +7,7 @@ import Test.Html.Query as Query
 import Test.Html.Selector as Selector
 import Ui.Button
 import Ui.Card
+import Ui.Heading
 
 
 suite : Test
@@ -54,8 +55,8 @@ card : Html.Html msg
 card =
     Ui.Card.new Ui.Card.Elevated
         |> Ui.Card.withMedia (text "media")
-        |> Ui.Card.withHeadline "Title"
-        |> Ui.Card.withSubhead "Sub"
+        |> Ui.Card.withHeadline (Ui.Heading.title "Title")
+        |> Ui.Card.withSubhead (Ui.Heading.label "Sub")
         |> Ui.Card.withActions
             [ Ui.Button.new { label = "Go", variant = Ui.Button.Text } ]
         |> Ui.Card.view

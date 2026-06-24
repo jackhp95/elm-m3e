@@ -22,6 +22,7 @@ import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import Ui.AppBar as AppBar
 import Ui.Card as Card
+import Ui.Heading as Heading
 import Ui.Icon as Icon
 import Ui.IconButton as IconButton
 import Ui.NavigationDrawer as NavigationDrawer
@@ -306,7 +307,7 @@ settingsPanel : Model -> Html Msg
 settingsPanel model =
     Html.div [ class "absolute right-0 top-12 z-40 w-72" ]
         [ Card.new Card.Filled
-            |> Card.withHeadline "Theme settings"
+            |> Card.withHeadline (Heading.title "Theme settings")
             |> Card.withBody (settingsBody model)
             |> Card.view
         ]

@@ -89,7 +89,7 @@ studyCard ( slug, title, body ) =
             "/studies/" ++ slug
     in
     Card.new Card.Elevated
-        |> Card.withHeadline title
+        |> Card.withHeadline (Heading.title title)
         |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text body ])
         |> Card.withActions
             [ Button.new { label = "Open " ++ title, variant = Button.Filled }

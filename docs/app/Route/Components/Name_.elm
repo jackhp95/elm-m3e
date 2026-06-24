@@ -556,23 +556,23 @@ demoSections slug =
                 [ sub "Variants"
                     (div [ class "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full" ]
                         [ Card.new Card.Elevated
-                            |> Card.withHeadline "Elevated"
+                            |> Card.withHeadline (Heading.title "Elevated")
                             |> Card.withBody (text "Raised shadow surface, highest emphasis.")
                             |> Card.view
                         , Card.new Card.Filled
-                            |> Card.withHeadline "Filled"
+                            |> Card.withHeadline (Heading.title "Filled")
                             |> Card.withBody (text "Solid tonal surface, medium emphasis.")
                             |> Card.view
                         , Card.new Card.Outlined
-                            |> Card.withHeadline "Outlined"
+                            |> Card.withHeadline (Heading.title "Outlined")
                             |> Card.withBody (text "Bordered, no fill, lowest emphasis.")
                             |> Card.view
                         ]
                     )
                 , sub "Anatomy"
                     (Card.new Card.Outlined
-                        |> Card.withHeadline "Compliance scorecard"
-                        |> Card.withSubhead "Updated 2 hours ago"
+                        |> Card.withHeadline (Heading.title "Compliance scorecard")
+                        |> Card.withSubhead (Heading.label "Updated 2 hours ago")
                         |> Card.withBody (text "Supporting body text gives context to the headline.")
                         |> Card.withActions
                             [ Button.new { label = "Review", variant = Button.Filled }

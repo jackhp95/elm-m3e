@@ -731,8 +731,8 @@ destinationCard model d =
     in
     Card.new Card.Elevated
         |> Card.withMedia media
-        |> Card.withHeadline d.name
-        |> Card.withSubhead (d.country ++ " · " ++ d.price)
+        |> Card.withHeadline (Heading.title d.name)
+        |> Card.withSubhead (Heading.label (d.country ++ " · " ++ d.price))
         |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text d.blurb ])
         |> Card.withActions
             [ Button.new { label = "Itinerary", variant = Button.Text }

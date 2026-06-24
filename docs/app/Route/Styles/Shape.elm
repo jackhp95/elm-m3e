@@ -99,7 +99,7 @@ view _ _ =
                 ]
             , Divider.new |> Divider.view
             , Card.new Card.Outlined
-                |> Card.withHeadline "Corner scale"
+                |> Card.withHeadline (Heading.title "Corner scale")
                 |> Card.withBody (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps))
                 |> Card.view
             ]
