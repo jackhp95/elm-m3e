@@ -2,6 +2,7 @@ module Ui.Divider exposing
     ( Divider
     , Orientation(..)
     , new
+    , withAttributes
     , withOrientation, withInset, withInsetStart, withInsetEnd
     , view
     )
@@ -27,6 +28,11 @@ content. Mirrors the Material 3 [Divider][m3] surface.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withOrientation, withInset, withInsetStart, withInsetEnd
@@ -38,18 +44,19 @@ content. Mirrors the Material 3 [Divider][m3] surface.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import M3e.Divider
 
 
 {-| A divider.
 -}
 type Divider msg
-    = Divider Config
+    = Divider (Config msg)
 
 
-type alias Config =
+type alias Config msg =
     { orientation : Orientation
+    , attributes : List (Attribute msg)
     , inset : Bool
     , insetStart : Bool
     , insetEnd : Bool
@@ -69,10 +76,20 @@ new : Divider msg
 new =
     Divider
         { orientation = Horizontal
+        , attributes = []
         , inset = False
         , insetStart = False
         , insetEnd = False
         }
+
+
+{-| Append attributes to the underlying `<m3e-divider>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Divider msg -> Divider msg
+withAttributes attributes (Divider cfg) =
+    Divider { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the divider orientation.
@@ -108,9 +125,11 @@ withInsetEnd b (Divider cfg) =
 view : Divider msg -> Html msg
 view (Divider cfg) =
     M3e.Divider.component
-        [ M3e.Divider.vertical (cfg.orientation == Vertical)
-        , M3e.Divider.inset cfg.inset
-        , M3e.Divider.insetStart cfg.insetStart
-        , M3e.Divider.insetEnd cfg.insetEnd
-        ]
+        (cfg.attributes
+            ++ [ M3e.Divider.vertical (cfg.orientation == Vertical)
+               , M3e.Divider.inset cfg.inset
+               , M3e.Divider.insetStart cfg.insetStart
+               , M3e.Divider.insetEnd cfg.insetEnd
+               ]
+        )
         []

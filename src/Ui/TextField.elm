@@ -2,6 +2,7 @@ module Ui.TextField exposing
     ( TextField, SingleLine, MultiLine
     , Variant(..)
     , text, password, multiline
+    , withAttributes
     , withId, withPlaceholder, withHelp, withError
     , withRequired, withDisabled, withReadonly
     , withPrefix, withSuffix, withMaxLength
@@ -117,6 +118,11 @@ A multi-line description that auto-grows between 3 and 8 rows:
 @docs text, password, multiline
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Shared modifiers
 
 @docs withId, withPlaceholder, withHelp, withError
@@ -140,7 +146,7 @@ A multi-line description that auto-grows between 3 and 8 rows:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.FormField
@@ -175,6 +181,7 @@ type MultiLine
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , value : String
     , variant : Variant
@@ -271,6 +278,7 @@ baseConfig :
     -> Config msg
 baseConfig c kind inputType =
     { id = Nothing
+    , attributes = []
     , label = c.label
     , value = c.value
     , variant = c.variant
@@ -294,6 +302,15 @@ baseConfig c kind inputType =
 
 
 -- SHARED MODIFIERS -------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-form-field>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> TextField kind msg -> TextField kind msg
+withAttributes attributes (TextField cfg) =
+    TextField { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying input. Useful for analytics
@@ -452,7 +469,7 @@ withRows rows (TextField cfg) =
 view : TextField kind msg -> Html msg
 view (TextField cfg) =
     M3e.FormField.component
-        [ formFieldVariantAttr cfg.variant ]
+        (cfg.attributes ++ [ formFieldVariantAttr cfg.variant ])
         (List.concat
             [ [ labelElement cfg ]
             , prefixSlot cfg.prefix

@@ -2,6 +2,7 @@ module Ui.AppBar exposing
     ( AppBar
     , Size(..)
     , new
+    , withAttributes
     , withId, withSize, withCentered, withLeading, withTrailing
     , view
     )
@@ -28,6 +29,11 @@ Material 3 [App bars][m3] surface.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withSize, withCentered, withLeading, withTrailing
@@ -39,7 +45,7 @@ Material 3 [App bars][m3] surface.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.AppBar
 
@@ -52,6 +58,7 @@ type AppBar msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , title : String
     , size : Size
     , centered : Bool
@@ -74,12 +81,22 @@ new : String -> AppBar msg
 new title =
     AppBar
         { id = Nothing
+        , attributes = []
         , title = title
         , size = Small
         , centered = False
         , leading = Nothing
         , trailing = []
         }
+
+
+{-| Append attributes to the underlying `<m3e-app-bar>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> AppBar msg -> AppBar msg
+withAttributes attributes (AppBar cfg) =
+    AppBar { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -122,11 +139,12 @@ withTrailing items (AppBar cfg) =
 view : AppBar msg -> Html msg
 view (AppBar cfg) =
     M3e.AppBar.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (sizeAttr cfg.size)
-            , Just (M3e.AppBar.centered cfg.centered)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (sizeAttr cfg.size)
+                , Just (M3e.AppBar.centered cfg.centered)
+                ]
         )
         (List.concat
             [ leadingSlot cfg.leading

@@ -2,6 +2,7 @@ module Ui.NavigationRail exposing
     ( NavigationRail, Item
     , Mode(..)
     , new, item
+    , withAttributes
     , withId, withMode, withItemLabel, withItemBadge
     , view
     )
@@ -60,6 +61,11 @@ Selection state stays typed end-to-end.
 @docs new, item
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withMode, withItemLabel, withItemBadge
@@ -71,7 +77,7 @@ Selection state stays typed end-to-end.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Badge
@@ -106,6 +112,7 @@ type Mode
 
 type alias RailConfig value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , mode : Mode
     , items : List (Item value msg)
     , selected : Maybe value
@@ -136,6 +143,7 @@ new :
 new c =
     NavigationRail
         { id = Nothing
+        , attributes = []
         , mode = Auto
         , items = c.items
         , selected = c.selected
@@ -157,6 +165,15 @@ item c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-…>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> NavigationRail value msg -> NavigationRail value msg
+withAttributes attributes (NavigationRail cfg) =
+    NavigationRail { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-nav-rail>`.
@@ -196,10 +213,11 @@ withItemBadge badge (Item cfg) =
 view : NavigationRail value msg -> Html msg
 view (NavigationRail cfg) =
     M3e.NavRail.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (modeAttr cfg.mode)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (modeAttr cfg.mode)
+                ]
         )
         (List.map (itemView cfg) cfg.items)
 

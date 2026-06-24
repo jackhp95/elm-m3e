@@ -1,5 +1,6 @@
 module Ui.Badge exposing
     ( Badge, dot, count, label
+    , withAttributes
     , withId, withFor
     , view
     )
@@ -21,6 +22,11 @@ are enforced by construction rather than by settable-but-ignored modifiers:
 @docs Badge, dot, count, label
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withFor
@@ -34,7 +40,7 @@ are enforced by construction rather than by settable-but-ignored modifiers:
 
 -}
 
-import Html exposing (Html, text)
+import Html exposing (Attribute, Html, text)
 import Html.Attributes as Attr
 import Html.Extra
 import M3e.Badge
@@ -46,6 +52,7 @@ type Badge msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , content : Maybe (Html msg)
     , size : M3e.Badge.Size
     , for : Maybe String
@@ -56,7 +63,7 @@ type alias Config msg =
 -}
 dot : Badge msg
 dot =
-    Badge { id = Nothing, content = Nothing, size = M3e.Badge.Small, for = Nothing }
+    Badge { id = Nothing, attributes = [], content = Nothing, size = M3e.Badge.Small, for = Nothing }
 
 
 {-| A large numeric badge. Applies the M3 "999+" truncation: counts above 999
@@ -64,14 +71,14 @@ render as `999+` (the spec caps the badge at 4 characters including the `+`).
 -}
 count : Int -> Badge msg
 count n =
-    Badge { id = Nothing, content = Just (text (countLabel n)), size = M3e.Badge.Large, for = Nothing }
+    Badge { id = Nothing, attributes = [], content = Just (text (countLabel n)), size = M3e.Badge.Large, for = Nothing }
 
 
 {-| A large badge displaying short status text — the M3 "large" type.
 -}
 label : String -> Badge msg
 label content =
-    Badge { id = Nothing, content = Just (text content), size = M3e.Badge.Large, for = Nothing }
+    Badge { id = Nothing, attributes = [], content = Just (text content), size = M3e.Badge.Large, for = Nothing }
 
 
 countLabel : Int -> String
@@ -81,6 +88,15 @@ countLabel n =
 
     else
         String.fromInt n
+
+
+{-| Append attributes to the underlying `<m3e-badge>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Badge msg -> Badge msg
+withAttributes attributes (Badge cfg) =
+    Badge { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Badge msg -> Badge msg
@@ -98,10 +114,11 @@ withFor forId (Badge cfg) =
 view : Badge msg -> Html msg
 view (Badge cfg) =
     M3e.Badge.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.Badge.size cfg.size)
-            , Maybe.map M3e.Badge.for cfg.for
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.Badge.size cfg.size)
+                , Maybe.map M3e.Badge.for cfg.for
+                ]
         )
         [ Html.Extra.viewMaybe identity cfg.content ]

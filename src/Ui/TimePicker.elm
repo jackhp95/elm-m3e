@@ -1,6 +1,7 @@
 module Ui.TimePicker exposing
     ( TimePicker
     , new
+    , withAttributes
     , withId, withMin, withMax, withStep, withRequired, withDisabled
     , withHelp, withError
     , view
@@ -50,6 +51,11 @@ module will graduate to using it without changing its public surface.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withMin, withMax, withStep, withRequired, withDisabled
@@ -62,7 +68,7 @@ module will graduate to using it without changing its public surface.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.FormField
@@ -80,6 +86,7 @@ type TimePicker msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , value : String
     , onChange : String -> msg
@@ -105,6 +112,7 @@ new :
 new c =
     TimePicker
         { id = Nothing
+        , attributes = []
         , label = c.label
         , value = c.value
         , onChange = c.onChange
@@ -120,6 +128,15 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-form-field>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> TimePicker msg -> TimePicker msg
+withAttributes attributes (TimePicker cfg) =
+    TimePicker { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` on the underlying input.
@@ -188,7 +205,7 @@ withError e (TimePicker cfg) =
 view : TimePicker msg -> Html msg
 view (TimePicker cfg) =
     M3e.FormField.component
-        []
+        cfg.attributes
         (List.concat
             [ [ labelElement cfg
               , inputElement cfg

@@ -1,6 +1,7 @@
 module Ui.Toolbar exposing
     ( Toolbar
     , new
+    , withAttributes
     , withId, withElevated, withVertical
     , view
     )
@@ -42,6 +43,11 @@ The actions list is typed to `Ui.Button.Button msg` (any button kind).
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withElevated, withVertical
@@ -53,7 +59,7 @@ The actions list is typed to `Ui.Button.Button msg` (any button kind).
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Toolbar
 import Ui.Button
@@ -71,6 +77,7 @@ type Toolbar msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , elevated : Bool
     , vertical : Bool
     , actions : List (Ui.Button.Button msg)
@@ -87,6 +94,7 @@ new : List (Ui.Button.Button msg) -> Toolbar msg
 new actions =
     Toolbar
         { id = Nothing
+        , attributes = []
         , elevated = False
         , vertical = False
         , actions = actions
@@ -95,6 +103,15 @@ new actions =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-toolbar>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Toolbar msg -> Toolbar msg
+withAttributes attributes (Toolbar cfg) =
+    Toolbar { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -127,10 +144,11 @@ withVertical b (Toolbar cfg) =
 view : Toolbar msg -> Html msg
 view (Toolbar cfg) =
     M3e.Toolbar.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.Toolbar.elevated cfg.elevated)
-            , Just (M3e.Toolbar.vertical cfg.vertical)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.Toolbar.elevated cfg.elevated)
+                , Just (M3e.Toolbar.vertical cfg.vertical)
+                ]
         )
         (List.map Ui.Button.view cfg.actions)

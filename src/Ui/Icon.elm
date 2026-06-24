@@ -1,6 +1,7 @@
 module Ui.Icon exposing
     ( Icon
     , material
+    , withAttributes
     , Weight(..), Grade(..)
     , withA11y, withFilled, withOpticalSize, withWeight, withGrade
     , a11y, view
@@ -34,6 +35,11 @@ full Material Symbols surface without a separate wrapper.
 @docs material
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Weight and grade
 
 @docs Weight, Grade
@@ -50,7 +56,7 @@ full Material Symbols surface without a separate wrapper.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import M3e.Icon
 
 
@@ -62,6 +68,7 @@ type Icon msg
 
 type alias Config msg =
     { name : String
+    , attributes : List (Attribute msg)
     , filled : Bool
     , a11y : Maybe (Html msg)
     , opticalSize : Maybe Int
@@ -94,12 +101,22 @@ material : String -> Icon msg
 material name =
     Icon
         { name = name
+        , attributes = []
         , filled = False
         , a11y = Nothing
         , opticalSize = Nothing
         , weight = Nothing
         , grade = Nothing
         }
+
+
+{-| Append attributes to the underlying `<m3e-icon>` host element — the
+escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Icon msg -> Icon msg
+withAttributes attributes (Icon cfg) =
+    Icon { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Attach an accessible label. Containers that render the icon as a
@@ -153,17 +170,19 @@ it call `a11y` and project it themselves.
 view : Icon msg -> Html msg
 view (Icon cfg) =
     M3e.Icon.component
-        (M3e.Icon.name cfg.name
-            :: List.filterMap identity
-                [ Maybe.map (toFloat >> M3e.Icon.opticalSize) cfg.opticalSize
-                , Maybe.map (weightToString >> M3e.Icon.weight) cfg.weight
-                , Maybe.map (gradeToM3e >> M3e.Icon.grade) cfg.grade
-                , if cfg.filled then
-                    Just (M3e.Icon.filled True)
+        (cfg.attributes
+            ++ (M3e.Icon.name cfg.name
+                    :: List.filterMap identity
+                        [ Maybe.map (toFloat >> M3e.Icon.opticalSize) cfg.opticalSize
+                        , Maybe.map (weightToString >> M3e.Icon.weight) cfg.weight
+                        , Maybe.map (gradeToM3e >> M3e.Icon.grade) cfg.grade
+                        , if cfg.filled then
+                            Just (M3e.Icon.filled True)
 
-                  else
-                    Nothing
-                ]
+                          else
+                            Nothing
+                        ]
+               )
         )
         []
 

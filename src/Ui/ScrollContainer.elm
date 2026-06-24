@@ -1,5 +1,6 @@
 module Ui.ScrollContainer exposing
     ( ScrollContainer, new
+    , withAttributes
     , withId, withThin
     , Dividers(..), withDividers
     , view
@@ -29,6 +30,11 @@ content when scrolled, providing a visual cue that more content exists.
 @docs ScrollContainer, new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withThin
@@ -45,13 +51,13 @@ content when scrolled, providing a visual cue that more content exists.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.ScrollContainer
 
 
 type ScrollContainer msg
-    = ScrollContainer Config
+    = ScrollContainer (Config msg)
 
 
 {-| Which dividers to show when content is scrolled.
@@ -63,8 +69,9 @@ type Dividers
     | None
 
 
-type alias Config =
+type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , thin : Bool
     , dividers : Dividers
     }
@@ -74,9 +81,19 @@ new : ScrollContainer msg
 new =
     ScrollContainer
         { id = Nothing
+        , attributes = []
         , thin = False
         , dividers = Both
         }
+
+
+{-| Append attributes to the underlying `<m3e-…>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> ScrollContainer msg -> ScrollContainer msg
+withAttributes attributes (ScrollContainer cfg) =
+    ScrollContainer { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> ScrollContainer msg -> ScrollContainer msg
@@ -99,15 +116,16 @@ withDividers d (ScrollContainer cfg) =
 view : List (Html msg) -> ScrollContainer msg -> Html msg
 view children (ScrollContainer cfg) =
     M3e.ScrollContainer.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , if cfg.thin then
-                Just (M3e.ScrollContainer.thin True)
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , if cfg.thin then
+                    Just (M3e.ScrollContainer.thin True)
 
-              else
-                Nothing
-            , Just (M3e.ScrollContainer.dividers (dividersToM3e cfg.dividers))
-            ]
+                  else
+                    Nothing
+                , Just (M3e.ScrollContainer.dividers (dividersToM3e cfg.dividers))
+                ]
         )
         children
 

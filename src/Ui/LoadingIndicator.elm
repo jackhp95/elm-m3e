@@ -2,6 +2,7 @@ module Ui.LoadingIndicator exposing
     ( LoadingIndicator
     , Variant(..)
     , new
+    , withAttributes
     , withVariant
     , view
     )
@@ -31,6 +32,11 @@ under 5 seconds. For determinate progress, see `Ui.Progress`.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withVariant
@@ -42,14 +48,20 @@ under 5 seconds. For determinate progress, see `Ui.Progress`.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import M3e.LoadingIndicator
 
 
 {-| A loading indicator.
 -}
 type LoadingIndicator msg
-    = LoadingIndicator { variant : Variant }
+    = LoadingIndicator (Config msg)
+
+
+type alias Config msg =
+    { attributes : List (Attribute msg)
+    , variant : Variant
+    }
 
 
 {-| Variant — uncontained (inline) or contained (with surface).
@@ -63,7 +75,16 @@ type Variant
 -}
 new : LoadingIndicator msg
 new =
-    LoadingIndicator { variant = Uncontained }
+    LoadingIndicator { attributes = [], variant = Uncontained }
+
+
+{-| Append attributes to the underlying `<m3e-loading-indicator>` host element
+— the escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> LoadingIndicator msg -> LoadingIndicator msg
+withAttributes attributes (LoadingIndicator cfg) =
+    LoadingIndicator { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the variant.
@@ -78,7 +99,7 @@ withVariant v (LoadingIndicator cfg) =
 view : LoadingIndicator msg -> Html msg
 view (LoadingIndicator cfg) =
     M3e.LoadingIndicator.component
-        [ variantAttr cfg.variant ]
+        (cfg.attributes ++ [ variantAttr cfg.variant ])
         []
 
 

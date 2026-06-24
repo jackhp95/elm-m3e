@@ -1,6 +1,7 @@
 module Ui.Tabs exposing
     ( Tabs, Tab
     , new, tab
+    , withAttributes
     , withId, withStretch, withTabIcon, withTabBadge
     , view
     )
@@ -25,6 +26,11 @@ section switching.
 @docs new, tab
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withStretch, withTabIcon, withTabBadge
@@ -36,7 +42,7 @@ section switching.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Badge
@@ -59,6 +65,7 @@ type Tab value msg
 
 type alias TabsConfig value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , stretch : Bool
     , tabs : List (Tab value msg)
     , selected : value
@@ -85,6 +92,7 @@ new :
 new c =
     Tabs
         { id = Nothing
+        , attributes = []
         , stretch = False
         , tabs = c.tabs
         , selected = c.selected
@@ -97,6 +105,15 @@ new c =
 tab : { value : value, label : String } -> Tab value msg
 tab c =
     Tab { value = c.value, label = c.label, icon = Nothing, badge = Nothing }
+
+
+{-| Append attributes to the underlying `<m3e-tabs>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Tabs value msg -> Tabs value msg
+withAttributes attributes (Tabs cfg) =
+    Tabs { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -132,10 +149,11 @@ withTabBadge badge (Tab cfg) =
 view : Tabs value msg -> Html msg
 view (Tabs cfg) =
     M3e.Tabs.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.Tabs.stretch cfg.stretch)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.Tabs.stretch cfg.stretch)
+                ]
         )
         (List.map (tabView cfg) cfg.tabs)
 

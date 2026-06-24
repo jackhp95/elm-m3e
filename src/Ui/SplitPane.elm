@@ -1,5 +1,6 @@
 module Ui.SplitPane exposing
     ( SplitPane, new
+    , withAttributes
     , withId, withStart, withEnd
     , Orientation(..), withOrientation
     , view
@@ -12,6 +13,11 @@ panes; each is wrapped in `M3e.ContentPane` automatically.
 # Construction
 
 @docs SplitPane, new
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Modifiers
@@ -30,7 +36,7 @@ panes; each is wrapped in `M3e.ContentPane` automatically.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.ContentPane
 import M3e.SplitPane
@@ -47,6 +53,7 @@ type Orientation
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , start : List (Html msg)
     , end : List (Html msg)
     , orientation : Orientation
@@ -57,10 +64,20 @@ new : SplitPane msg
 new =
     SplitPane
         { id = Nothing
+        , attributes = []
         , start = []
         , end = []
         , orientation = Horizontal
         }
+
+
+{-| Append attributes to the underlying `<m3e-split-pane>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> SplitPane msg -> SplitPane msg
+withAttributes attributes (SplitPane cfg) =
+    SplitPane { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> SplitPane msg -> SplitPane msg
@@ -96,10 +113,11 @@ toM3eOrientation orientation =
 view : SplitPane msg -> Html msg
 view (SplitPane cfg) =
     M3e.SplitPane.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.SplitPane.orientation (toM3eOrientation cfg.orientation))
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.SplitPane.orientation (toM3eOrientation cfg.orientation))
+                ]
         )
         [ M3e.ContentPane.component [ M3e.SplitPane.startSlot ] cfg.start
         , M3e.ContentPane.component [ M3e.SplitPane.endSlot ] cfg.end

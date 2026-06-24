@@ -1,6 +1,7 @@
 module Ui.BottomSheet exposing
     ( BottomSheet
     , new
+    , withAttributes
     , withId, withHeader, withBody, withActions, withHandle, withHideable, withModal
     , view
     )
@@ -46,6 +47,11 @@ and the element's `closed`/`cancel` events are wired back to `onClose`.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withHeader, withBody, withActions, withHandle, withHideable, withModal
@@ -57,7 +63,7 @@ and the element's `closed`/`cancel` events are wired back to `onClose`.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.BottomSheet
@@ -77,6 +83,7 @@ type BottomSheet msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , open : Bool
     , onClose : msg
     , header : Maybe (Html msg)
@@ -98,6 +105,7 @@ new : { open : Bool, onClose : msg } -> BottomSheet msg
 new c =
     BottomSheet
         { id = Nothing
+        , attributes = []
         , open = c.open
         , onClose = c.onClose
         , header = Nothing
@@ -111,6 +119,15 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-bottom-sheet>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> BottomSheet msg -> BottomSheet msg
+withAttributes attributes (BottomSheet cfg) =
+    BottomSheet { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -180,15 +197,16 @@ view (BottomSheet cfg) =
 
     else
         M3e.BottomSheet.component
-            (List.filterMap identity
-                [ Maybe.map Attr.id cfg.id
-                , Just (M3e.BottomSheet.open True)
-                , Just (M3e.BottomSheet.handle cfg.handle)
-                , Just (M3e.BottomSheet.hideable cfg.hideable)
-                , Just (M3e.BottomSheet.modal cfg.modal)
-                , Just (M3e.BottomSheet.onClosed (Decode.succeed cfg.onClose))
-                , Just (M3e.BottomSheet.onCancel (Decode.succeed cfg.onClose))
-                ]
+            (cfg.attributes
+                ++ List.filterMap identity
+                    [ Maybe.map Attr.id cfg.id
+                    , Just (M3e.BottomSheet.open True)
+                    , Just (M3e.BottomSheet.handle cfg.handle)
+                    , Just (M3e.BottomSheet.hideable cfg.hideable)
+                    , Just (M3e.BottomSheet.modal cfg.modal)
+                    , Just (M3e.BottomSheet.onClosed (Decode.succeed cfg.onClose))
+                    , Just (M3e.BottomSheet.onCancel (Decode.succeed cfg.onClose))
+                    ]
             )
             (List.concat
                 [ headerElement cfg.header

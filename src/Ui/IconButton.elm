@@ -2,6 +2,7 @@ module Ui.IconButton exposing
     ( IconButton
     , Variant(..), Size(..), Shape(..), Width(..), DisabledState(..)
     , new
+    , withAttributes
     , withSize, withShape, withWidth, withDisabled
     , withOnClick, withHref, withToggle
     , view
@@ -91,6 +92,11 @@ unselected, filled glyph when selected. Pass the _unselected_ glyph in
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withSize, withShape, withWidth, withDisabled
@@ -107,7 +113,7 @@ unselected, filled glyph when selected. Pass the _unselected_ glyph in
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
@@ -127,6 +133,7 @@ type IconButton msg
 
 type alias Config msg =
     { icon : Ui.Icon.Icon msg
+    , attributes : List (Attribute msg)
     , label : String
     , variant : Variant
     , size : Size
@@ -202,6 +209,7 @@ new :
 new c =
     IconButton
         { icon = c.icon
+        , attributes = []
         , label = c.label
         , variant = c.variant
         , size = Small
@@ -214,6 +222,15 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-icon-button>` host element — the
+escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> IconButton msg -> IconButton msg
+withAttributes attributes (IconButton cfg) =
+    IconButton { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the container size.
@@ -286,17 +303,18 @@ withToggle c (IconButton cfg) =
 view : IconButton msg -> Html msg
 view (IconButton cfg) =
     M3e.IconButton.component
-        (List.concat
-            [ [ Attr.attribute "aria-label" cfg.label
-              , Attr.title cfg.label
-              , variantAttr cfg.variant
-              , sizeAttr cfg.size
-              , widthAttr cfg.width
-              ]
-            , shapeAttr cfg.shape
-            , disabledAttrs cfg.disabled
-            , wiringAttrs cfg.wiring
-            ]
+        (cfg.attributes
+            ++ List.concat
+                [ [ Attr.attribute "aria-label" cfg.label
+                  , Attr.title cfg.label
+                  , variantAttr cfg.variant
+                  , sizeAttr cfg.size
+                  , widthAttr cfg.width
+                  ]
+                , shapeAttr cfg.shape
+                , disabledAttrs cfg.disabled
+                , wiringAttrs cfg.wiring
+                ]
         )
         [ renderIcon (currentIcon cfg) ]
 

@@ -1,5 +1,6 @@
 module Ui.Avatar exposing
     ( Avatar, image, initials, icon
+    , withAttributes
     , withId
     , view
     , extractInitials
@@ -16,6 +17,11 @@ required, supplied by one of three explicit constructors matching the M3
 # Construction
 
 @docs Avatar, image, initials, icon
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Identity
@@ -36,7 +42,7 @@ required, supplied by one of three explicit constructors matching the M3
 
 -}
 
-import Html exposing (Html, text)
+import Html exposing (Attribute, Html, text)
 import Html.Attributes as Attr
 import Html.Extra
 import M3e.Avatar
@@ -49,6 +55,7 @@ type Avatar msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , content : Maybe (Html msg)
     }
 
@@ -83,6 +90,15 @@ icon : Ui.Icon.Icon msg -> Avatar msg
 icon glyph =
     new
         |> withContent (Ui.Icon.view glyph)
+
+
+{-| Append attributes to the underlying `<m3e-avatar>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Avatar msg -> Avatar msg
+withAttributes attributes (Avatar cfg) =
+    Avatar { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Avatar msg -> Avatar msg
@@ -145,7 +161,7 @@ fallbackGlyph =
 view : Avatar msg -> Html msg
 view (Avatar cfg) =
     M3e.Avatar.component
-        (List.filterMap identity [ Maybe.map Attr.id cfg.id ])
+        (cfg.attributes ++ List.filterMap identity [ Maybe.map Attr.id cfg.id ])
         [ Html.Extra.viewMaybe identity cfg.content ]
 
 
@@ -155,7 +171,7 @@ view (Avatar cfg) =
 
 new : Avatar msg
 new =
-    Avatar { id = Nothing, content = Nothing }
+    Avatar { id = Nothing, attributes = [], content = Nothing }
 
 
 {-| Set the avatar's content. Module-internal: the three public constructors

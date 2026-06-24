@@ -2,6 +2,7 @@ module Ui.Button exposing
     ( Button
     , Variant(..), Size(..), Shape(..), DisabledState(..)
     , new
+    , withAttributes
     , withSize, withShape, withDisabled, withLeadingIcon, withTrailingIcon
     , withOnClick, withHref, withToggle
     , view
@@ -87,6 +88,11 @@ Toggle — show/hide archived records:
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withSize, withShape, withDisabled, withLeadingIcon, withTrailingIcon
@@ -103,7 +109,7 @@ Toggle — show/hide archived records:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
@@ -124,6 +130,7 @@ type Button msg
 type alias Config msg =
     { label : String
     , variant : Variant
+    , attributes : List (Attribute msg)
     , size : Size
     , shape : Maybe Shape
     , disabled : DisabledState
@@ -200,6 +207,7 @@ new c =
     Button
         { label = c.label
         , variant = c.variant
+        , attributes = []
         , size = Small
         , shape = Nothing
         , disabled = Enabled
@@ -211,6 +219,15 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-button>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Button msg -> Button msg
+withAttributes attributes (Button cfg) =
+    Button { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the container size.
@@ -288,14 +305,15 @@ withToggle c (Button cfg) =
 view : Button msg -> Html msg
 view (Button cfg) =
     M3e.Button.component
-        (List.concat
-            [ [ variantAttr cfg.variant
-              , sizeAttr cfg.size
-              ]
-            , shapeAttr cfg.shape
-            , disabledAttrs cfg.disabled
-            , wiringAttrs cfg.wiring
-            ]
+        (cfg.attributes
+            ++ List.concat
+                [ [ variantAttr cfg.variant
+                  , sizeAttr cfg.size
+                  ]
+                , shapeAttr cfg.shape
+                , disabledAttrs cfg.disabled
+                , wiringAttrs cfg.wiring
+                ]
         )
         (List.concat
             [ leadingSlot cfg.leadingIcon

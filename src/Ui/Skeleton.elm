@@ -1,5 +1,6 @@
 module Ui.Skeleton exposing
     ( Skeleton, new
+    , withAttributes
     , withId, withClass
     , view
     )
@@ -16,6 +17,11 @@ to pass through utility classes.
 @docs Skeleton, new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withClass
@@ -27,24 +33,34 @@ to pass through utility classes.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Skeleton
 
 
 type Skeleton msg
-    = Skeleton Config
+    = Skeleton (Config msg)
 
 
-type alias Config =
+type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , classes : List String
     }
 
 
 new : Skeleton msg
 new =
-    Skeleton { id = Nothing, classes = [] }
+    Skeleton { id = Nothing, attributes = [], classes = [] }
+
+
+{-| Append attributes to the underlying `<m3e-…>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Skeleton msg -> Skeleton msg
+withAttributes attributes (Skeleton cfg) =
+    Skeleton { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Skeleton msg -> Skeleton msg
@@ -60,8 +76,9 @@ withClass cls (Skeleton cfg) =
 view : Skeleton msg -> Html msg
 view (Skeleton cfg) =
     M3e.Skeleton.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id ]
             ++ List.map Attr.class cfg.classes
         )
         []

@@ -2,6 +2,7 @@ module Ui.List exposing
     ( Listing, Item
     , Variant(..)
     , new, item, actionItem
+    , withAttributes
     , withVariant, withId
     , withItemLeadingIcon, withItemTrailingIcon, withItemOverline
     , withItemSupporting, withItemOnClick, withItemDisabled
@@ -59,6 +60,11 @@ you use — never inferred from whether a modifier happens to be present.
 @docs new, item, actionItem
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # List-level modifiers
 
 @docs withVariant, withId
@@ -76,7 +82,7 @@ you use — never inferred from whether a modifier happens to be present.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.List
@@ -110,6 +116,7 @@ type Variant
 
 type alias ListConfig msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , variant : Variant
     , items : List (Item msg)
     }
@@ -137,6 +144,7 @@ new : List (Item msg) -> Listing msg
 new items =
     Listing
         { id = Nothing
+        , attributes = []
         , variant = Standard
         , items = items
         }
@@ -194,6 +202,15 @@ actionItem headline =
 
 
 -- LIST-LEVEL MODIFIERS ---------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-list>` host element — the
+escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Listing msg -> Listing msg
+withAttributes attributes (Listing cfg) =
+    Listing { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the list's visual variant.
@@ -268,10 +285,11 @@ withItemDisabled b (Item cfg) =
 view : Listing msg -> Html msg
 view (Listing cfg) =
     M3e.List.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (variantAttr cfg.variant)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (variantAttr cfg.variant)
+                ]
         )
         (List.map itemView cfg.items)
 

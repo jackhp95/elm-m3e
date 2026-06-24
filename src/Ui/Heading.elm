@@ -1,5 +1,6 @@
 module Ui.Heading exposing
     ( Heading, new
+    , withAttributes
     , display, headline, title, label
     , withId, withContent
     , Variant(..), withVariant
@@ -14,6 +15,11 @@ module Ui.Heading exposing
 # Construction
 
 @docs Heading, new
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Text presets
@@ -57,7 +63,7 @@ there is no shared cross-component size type.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Extra
 import M3e.Heading
@@ -89,6 +95,7 @@ type Size
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , content : Maybe (Html msg)
     , variant : Variant
     , size : Maybe Size
@@ -103,6 +110,7 @@ new : Heading msg
 new =
     Heading
         { id = Nothing
+        , attributes = []
         , content = Nothing
         , variant = Display
         , size = Nothing
@@ -136,6 +144,15 @@ title text =
 label : String -> Heading msg
 label text =
     new |> withVariant Label |> withContent (Html.text text)
+
+
+{-| Append attributes to the underlying `<m3e-heading>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Heading msg -> Heading msg
+withAttributes attributes (Heading cfg) =
+    Heading { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Heading msg -> Heading msg
@@ -205,11 +222,12 @@ toM3eHeadingSize s =
 view : Heading msg -> Html msg
 view (Heading cfg) =
     M3e.Heading.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.Heading.variant (toM3eHeadingVariant cfg.variant))
-            , Maybe.map (toM3eHeadingSize >> M3e.Heading.size) cfg.size
-            , Maybe.map (String.fromInt >> M3e.Heading.level) cfg.level
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.Heading.variant (toM3eHeadingVariant cfg.variant))
+                , Maybe.map (toM3eHeadingSize >> M3e.Heading.size) cfg.size
+                , Maybe.map (String.fromInt >> M3e.Heading.level) cfg.level
+                ]
         )
         [ Html.Extra.viewMaybe identity cfg.content ]

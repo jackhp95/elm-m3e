@@ -1,6 +1,7 @@
 module Ui.Shape exposing
     ( Shape, new
     , Name
+    , withAttributes
     , withId, withName, withClass, withContent
     , view
     )
@@ -33,6 +34,11 @@ shape itself comes from `withName`, not from a proprietary `ds-*` class.
 @docs Name
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withName, withClass, withContent
@@ -44,7 +50,7 @@ shape itself comes from `withName`, not from a proprietary `ds-*` class.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Shape
 
@@ -63,6 +69,7 @@ type alias Name =
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , name : Maybe Name
     , classes : List String
     , content : List (Html msg)
@@ -71,7 +78,16 @@ type alias Config msg =
 
 new : Shape msg
 new =
-    Shape { id = Nothing, name = Nothing, classes = [], content = [] }
+    Shape { id = Nothing, attributes = [], name = Nothing, classes = [], content = [] }
+
+
+{-| Append attributes to the underlying `<m3e-…>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Shape msg -> Shape msg
+withAttributes attributes (Shape cfg) =
+    Shape { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Shape msg -> Shape msg
@@ -103,10 +119,11 @@ withContent content (Shape cfg) =
 view : Shape msg -> Html msg
 view (Shape cfg) =
     M3e.Shape.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Maybe.map M3e.Shape.name cfg.name
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Maybe.map M3e.Shape.name cfg.name
+                ]
             ++ List.map Attr.class cfg.classes
         )
         cfg.content

@@ -1,6 +1,7 @@
 module Ui.Menu exposing
     ( Menu, Item
     , new, item
+    , withAttributes
     , withId, withSubmenu, withItemIcon, withItemHref, withItemDisabled
     , view
     )
@@ -43,6 +44,11 @@ For a form-control single/multi-select dropdown, see `Ui.Select`.
 @docs new, item
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withSubmenu, withItemIcon, withItemHref, withItemDisabled
@@ -54,7 +60,7 @@ For a form-control single/multi-select dropdown, see `Ui.Select`.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Menu
@@ -80,6 +86,7 @@ type Item msg
 
 type alias MenuConfig msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , submenu : Bool
     , items : List (Item msg)
     }
@@ -102,7 +109,7 @@ type alias ItemConfig msg =
 -}
 new : List (Item msg) -> Menu msg
 new items =
-    Menu { id = Nothing, submenu = False, items = items }
+    Menu { id = Nothing, attributes = [], submenu = False, items = items }
 
 
 {-| Construct a menu item.
@@ -120,6 +127,15 @@ item label msg =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-menu>` host element — the
+escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Menu msg -> Menu msg
+withAttributes attributes (Menu cfg) =
+    Menu { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-menu>`.
@@ -166,10 +182,11 @@ withItemDisabled b (Item cfg) =
 view : Menu msg -> Html msg
 view (Menu cfg) =
     M3e.Menu.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.Menu.submenu cfg.submenu)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.Menu.submenu cfg.submenu)
+                ]
         )
         (List.map itemView cfg.items)
 

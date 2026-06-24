@@ -1,5 +1,6 @@
 module Ui.Breadcrumb exposing
     ( Breadcrumb, new
+    , withAttributes
     , withId
     , Item, item, link, current, withItem, withItems
     , view
@@ -13,6 +14,11 @@ present location, non-clickable).
 # Construction
 
 @docs Breadcrumb, new
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Identity
@@ -31,7 +37,7 @@ present location, non-clickable).
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Breadcrumb
 import M3e.BreadcrumbItem
@@ -51,13 +57,23 @@ type Item msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , items : List (Item msg)
     }
 
 
 new : Breadcrumb msg
 new =
-    Breadcrumb { id = Nothing, items = [] }
+    Breadcrumb { id = Nothing, attributes = [], items = [] }
+
+
+{-| Append attributes to the underlying `<m3e-breadcrumb>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Breadcrumb msg -> Breadcrumb msg
+withAttributes attributes (Breadcrumb cfg) =
+    Breadcrumb { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Breadcrumb msg -> Breadcrumb msg
@@ -93,7 +109,7 @@ withItems is (Breadcrumb cfg) =
 view : Breadcrumb msg -> Html msg
 view (Breadcrumb cfg) =
     M3e.Breadcrumb.component
-        (List.filterMap identity [ Maybe.map Attr.id cfg.id ])
+        (cfg.attributes ++ List.filterMap identity [ Maybe.map Attr.id cfg.id ])
         (List.map viewItem cfg.items)
 
 

@@ -1,6 +1,7 @@
 module Ui.Dialog exposing
     ( Dialog
     , new
+    , withAttributes
     , withId, withBody, withActions
     , withDismissible, withAlert
     , view
@@ -70,6 +71,11 @@ An alert dialog (semantic role):
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withBody, withActions
@@ -82,7 +88,7 @@ An alert dialog (semantic role):
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Dialog
@@ -101,6 +107,7 @@ type Dialog msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , title : String
     , open : Bool
     , onClose : msg
@@ -129,6 +136,7 @@ new : { title : String, open : Bool, onClose : msg } -> Dialog msg
 new c =
     Dialog
         { id = Nothing
+        , attributes = []
         , title = c.title
         , open = c.open
         , onClose = c.onClose
@@ -141,6 +149,15 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-dialog>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Dialog msg -> Dialog msg
+withAttributes attributes (Dialog cfg) =
+    Dialog { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -208,14 +225,15 @@ view (Dialog cfg) =
 
     else
         M3e.Dialog.component
-            (List.filterMap identity
-                [ Maybe.map Attr.id cfg.id
-                , Just (M3e.Dialog.open "true")
-                , Just (M3e.Dialog.alert cfg.alert)
-                , Just (M3e.Dialog.dismissible cfg.dismissible)
-                , Just (M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
-                , Just (M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
-                ]
+            (cfg.attributes
+                ++ List.filterMap identity
+                    [ Maybe.map Attr.id cfg.id
+                    , Just (M3e.Dialog.open "true")
+                    , Just (M3e.Dialog.alert cfg.alert)
+                    , Just (M3e.Dialog.dismissible cfg.dismissible)
+                    , Just (M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
+                    , Just (M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
+                    ]
             )
             (List.concat
                 [ [ titleElement cfg ]

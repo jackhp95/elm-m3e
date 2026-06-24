@@ -1,6 +1,7 @@
 module Ui.DatePicker exposing
     ( DatePicker, new
     , Variant(..)
+    , withAttributes
     , withId, withVariant, withRange
     , withMin, withMax
     , withClearable
@@ -44,6 +45,11 @@ A date-range picker:
 @docs Variant
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withVariant, withRange
@@ -58,7 +64,7 @@ A date-range picker:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode
 import M3e.Common
@@ -86,6 +92,7 @@ type Variant
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , onChange : String -> msg
     , variant : Variant
     , range : Bool
@@ -109,6 +116,7 @@ new : (String -> msg) -> DatePicker msg
 new onChange =
     DatePicker
         { id = Nothing
+        , attributes = []
         , onChange = onChange
         , variant = Auto
         , range = False
@@ -123,6 +131,15 @@ new onChange =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-datepicker>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> DatePicker msg -> DatePicker msg
+withAttributes attributes (DatePicker cfg) =
+    DatePicker { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -197,18 +214,19 @@ withDismissLabel s (DatePicker cfg) =
 view : DatePicker msg -> Html msg
 view (DatePicker cfg) =
     M3e.Datepicker.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.Datepicker.variant (toVariant cfg.variant))
-            , Just (M3e.Datepicker.range cfg.range)
-            , Just (M3e.Datepicker.clearable cfg.clearable)
-            , Maybe.map M3e.Datepicker.minDate cfg.min
-            , Maybe.map M3e.Datepicker.maxDate cfg.max
-            , Maybe.map M3e.Datepicker.label cfg.label
-            , Maybe.map M3e.Datepicker.confirmLabel cfg.confirmLabel
-            , Maybe.map M3e.Datepicker.dismissLabel cfg.dismissLabel
-            , Just (M3e.Datepicker.onChange (Json.Decode.map cfg.onChange M3e.Common.targetValue))
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.Datepicker.variant (toVariant cfg.variant))
+                , Just (M3e.Datepicker.range cfg.range)
+                , Just (M3e.Datepicker.clearable cfg.clearable)
+                , Maybe.map M3e.Datepicker.minDate cfg.min
+                , Maybe.map M3e.Datepicker.maxDate cfg.max
+                , Maybe.map M3e.Datepicker.label cfg.label
+                , Maybe.map M3e.Datepicker.confirmLabel cfg.confirmLabel
+                , Maybe.map M3e.Datepicker.dismissLabel cfg.dismissLabel
+                , Just (M3e.Datepicker.onChange (Json.Decode.map cfg.onChange M3e.Common.targetValue))
+                ]
         )
         []
 

@@ -2,6 +2,7 @@ module Ui.Fab exposing
     ( Fab
     , Variant(..), Size(..)
     , new
+    , withAttributes
     , withSize, withLowered, withDisabled
     , withOnClick, withHref
     , view
@@ -32,6 +33,11 @@ opens a menu, see `Ui.FabMenu`.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withSize, withLowered, withDisabled
@@ -48,7 +54,7 @@ opens a menu, see `Ui.FabMenu`.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Fab
@@ -64,6 +70,7 @@ type Fab msg
 type alias Config msg =
     { icon : Ui.Icon.Icon msg
     , label : String
+    , attributes : List (Attribute msg)
     , variant : Variant
     , size : Size
     , lowered : Bool
@@ -107,12 +114,22 @@ new c =
     Fab
         { icon = c.icon
         , label = c.label
+        , attributes = []
         , variant = c.variant
         , size = Medium
         , lowered = False
         , disabled = False
         , wiring = Nothing
         }
+
+
+{-| Append attributes to the underlying `<m3e-fab>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Fab msg -> Fab msg
+withAttributes attributes (Fab cfg) =
+    Fab { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the size.
@@ -156,7 +173,8 @@ view : Fab msg -> Html msg
 view (Fab cfg) =
     M3e.Fab.component
         (List.concat
-            [ [ Attr.attribute "aria-label" cfg.label
+            [ cfg.attributes
+            , [ Attr.attribute "aria-label" cfg.label
               , Attr.title cfg.label
               , variantAttr cfg.variant
               , sizeAttr cfg.size

@@ -1,5 +1,6 @@
 module Ui.Calendar exposing
     ( Calendar, new
+    , withAttributes
     , withId
     , withDate, withMinDate, withMaxDate
     , withRangeStart, withRangeEnd
@@ -29,6 +30,11 @@ date's ISO string from the element's `change` event.
 # Construction
 
 @docs Calendar, new
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Identity
@@ -67,7 +73,7 @@ date's ISO string from the element's `change` event.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode
 import M3e.Calendar
@@ -88,6 +94,7 @@ type StartView
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , date : Maybe String
     , minDate : Maybe String
     , maxDate : Maybe String
@@ -104,6 +111,7 @@ new : Calendar msg
 new =
     Calendar
         { id = Nothing
+        , attributes = []
         , date = Nothing
         , minDate = Nothing
         , maxDate = Nothing
@@ -114,6 +122,15 @@ new =
         , onChange = Nothing
         , header = Nothing
         }
+
+
+{-| Append attributes to the underlying `<m3e-calendar>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Calendar msg -> Calendar msg
+withAttributes attributes (Calendar cfg) =
+    Calendar { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Calendar msg -> Calendar msg
@@ -189,17 +206,18 @@ withHeader h (Calendar cfg) =
 view : Calendar msg -> Html msg
 view (Calendar cfg) =
     M3e.Calendar.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Maybe.map M3e.Calendar.date cfg.date
-            , Maybe.map M3e.Calendar.minDate cfg.minDate
-            , Maybe.map M3e.Calendar.maxDate cfg.maxDate
-            , Maybe.map M3e.Calendar.rangeStart cfg.rangeStart
-            , Maybe.map M3e.Calendar.rangeEnd cfg.rangeEnd
-            , Maybe.map (toStartView >> M3e.Calendar.startView) cfg.startView
-            , Maybe.map M3e.Calendar.startAt cfg.startAt
-            , Maybe.map changeListener cfg.onChange
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Maybe.map M3e.Calendar.date cfg.date
+                , Maybe.map M3e.Calendar.minDate cfg.minDate
+                , Maybe.map M3e.Calendar.maxDate cfg.maxDate
+                , Maybe.map M3e.Calendar.rangeStart cfg.rangeStart
+                , Maybe.map M3e.Calendar.rangeEnd cfg.rangeEnd
+                , Maybe.map (toStartView >> M3e.Calendar.startView) cfg.startView
+                , Maybe.map M3e.Calendar.startAt cfg.startAt
+                , Maybe.map changeListener cfg.onChange
+                ]
         )
         (headerChildren cfg)
 

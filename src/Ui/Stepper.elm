@@ -1,5 +1,6 @@
 module Ui.Stepper exposing
     ( Stepper, new
+    , withAttributes
     , withId
     , Step, step, withStep, withSteps, withCompleted, withOptional
     , withVertical, withLinear
@@ -24,6 +25,11 @@ Two ways to drive selection:
 # Construction
 
 @docs Stepper, new
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Identity
@@ -52,7 +58,7 @@ Two ways to drive selection:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Step
@@ -76,6 +82,7 @@ type SelectionState msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , steps : List (Step msg)
     , vertical : Bool
     , linear : Bool
@@ -96,11 +103,21 @@ new : Stepper msg
 new =
     Stepper
         { id = Nothing
+        , attributes = []
         , steps = []
         , vertical = False
         , linear = False
         , selection = NoSelection
         }
+
+
+{-| Append attributes to the underlying `<m3e-stepper>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Stepper msg -> Stepper msg
+withAttributes attributes (Stepper cfg) =
+    Stepper { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Stepper msg -> Stepper msg
@@ -162,19 +179,20 @@ withExplicitSelectedState onSelect stepId (Stepper cfg) =
 view : Stepper msg -> Html msg
 view (Stepper cfg) =
     M3e.Stepper.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , if cfg.vertical then
-                Just (M3e.Stepper.orientation M3e.Stepper.Vertical)
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , if cfg.vertical then
+                    Just (M3e.Stepper.orientation M3e.Stepper.Vertical)
 
-              else
-                Nothing
-            , if cfg.linear then
-                Just (M3e.Stepper.linear True)
+                  else
+                    Nothing
+                , if cfg.linear then
+                    Just (M3e.Stepper.linear True)
 
-              else
-                Nothing
-            ]
+                  else
+                    Nothing
+                ]
         )
         (List.map (viewStepHeader cfg) cfg.steps
             ++ List.map viewStepPanel cfg.steps

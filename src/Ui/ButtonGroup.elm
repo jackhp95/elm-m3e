@@ -2,6 +2,7 @@ module Ui.ButtonGroup exposing
     ( ButtonGroup
     , Size(..), Variant(..)
     , new
+    , withAttributes
     , withSize, withMulti, withVariant
     , view
     )
@@ -31,6 +32,11 @@ provides connected visual treatment (shared rounded ends, no gaps).
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withSize, withMulti, withVariant
@@ -42,7 +48,7 @@ provides connected visual treatment (shared rounded ends, no gaps).
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import M3e.ButtonGroup
 import Ui.Button
 
@@ -55,6 +61,7 @@ type ButtonGroup msg
 
 type alias Config msg =
     { size : Size
+    , attributes : List (Attribute msg)
     , multi : Bool
     , variant : Variant
     , buttons : List (Ui.Button.Button msg)
@@ -84,7 +91,16 @@ type Variant
 -}
 new : List (Ui.Button.Button msg) -> ButtonGroup msg
 new buttons =
-    ButtonGroup { size = Medium, multi = False, variant = Standard, buttons = buttons }
+    ButtonGroup { size = Medium, attributes = [], multi = False, variant = Standard, buttons = buttons }
+
+
+{-| Append attributes to the underlying `<m3e-button-group>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> ButtonGroup msg -> ButtonGroup msg
+withAttributes attributes (ButtonGroup cfg) =
+    ButtonGroup { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the size for all buttons in the group.
@@ -114,10 +130,12 @@ withVariant v (ButtonGroup cfg) =
 view : ButtonGroup msg -> Html msg
 view (ButtonGroup cfg) =
     M3e.ButtonGroup.component
-        [ sizeAttr cfg.size
-        , M3e.ButtonGroup.multi cfg.multi
-        , variantAttr cfg.variant
-        ]
+        (cfg.attributes
+            ++ [ sizeAttr cfg.size
+               , M3e.ButtonGroup.multi cfg.multi
+               , variantAttr cfg.variant
+               ]
+        )
         (List.map Ui.Button.view cfg.buttons)
 
 

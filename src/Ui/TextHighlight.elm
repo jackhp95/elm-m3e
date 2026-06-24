@@ -1,5 +1,6 @@
 module Ui.TextHighlight exposing
     ( TextHighlight, new
+    , withAttributes
     , withTerm
     , MatchMode(..), withMode
     , withCaseSensitive, withDisabled
@@ -29,6 +30,11 @@ filtered list rows.
 @docs TextHighlight, new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Search term
 
 @docs withTerm
@@ -50,12 +56,12 @@ filtered list rows.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import M3e.TextHighlight
 
 
 type TextHighlight msg
-    = TextHighlight Config
+    = TextHighlight (Config msg)
 
 
 {-| How the term is matched against the content.
@@ -66,8 +72,9 @@ type MatchMode
     | EndsWith
 
 
-type alias Config =
-    { term : Maybe String
+type alias Config msg =
+    { attributes : List (Attribute msg)
+    , term : Maybe String
     , mode : MatchMode
     , caseSensitive : Bool
     , disabled : Bool
@@ -77,11 +84,21 @@ type alias Config =
 new : TextHighlight msg
 new =
     TextHighlight
-        { term = Nothing
+        { attributes = []
+        , term = Nothing
         , mode = Contains
         , caseSensitive = False
         , disabled = False
         }
+
+
+{-| Append attributes to the underlying `<m3e-text-highlight>` host element —
+the escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> TextHighlight msg -> TextHighlight msg
+withAttributes attributes (TextHighlight cfg) =
+    TextHighlight { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the search term to highlight.
@@ -116,20 +133,21 @@ matching substrings inside the children's text content.
 view : List (Html msg) -> TextHighlight msg -> Html msg
 view children (TextHighlight cfg) =
     M3e.TextHighlight.component
-        (List.filterMap identity
-            [ Maybe.map M3e.TextHighlight.term cfg.term
-            , Just (toM3eMode cfg.mode)
-            , if cfg.caseSensitive then
-                Just (M3e.TextHighlight.caseSensitive True)
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map M3e.TextHighlight.term cfg.term
+                , Just (toM3eMode cfg.mode)
+                , if cfg.caseSensitive then
+                    Just (M3e.TextHighlight.caseSensitive True)
 
-              else
-                Nothing
-            , if cfg.disabled then
-                Just (M3e.TextHighlight.disabled True)
+                  else
+                    Nothing
+                , if cfg.disabled then
+                    Just (M3e.TextHighlight.disabled True)
 
-              else
-                Nothing
-            ]
+                  else
+                    Nothing
+                ]
         )
         children
 

@@ -2,6 +2,7 @@ module Ui.SideSheet exposing
     ( SideSheet
     , Side(..)
     , new
+    , withAttributes
     , withId, withBody, withActions, withSide, withModal
     , view
     )
@@ -53,6 +54,11 @@ Same shape as `Ui.Dialog` / `Ui.BottomSheet`.
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withBody, withActions, withSide, withModal
@@ -64,7 +70,7 @@ Same shape as `Ui.Dialog` / `Ui.BottomSheet`.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.DrawerContainer
@@ -90,6 +96,7 @@ type Side
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , open : Bool
     , onClose : msg
     , side : Side
@@ -109,6 +116,7 @@ new : { open : Bool, onClose : msg } -> SideSheet msg
 new c =
     SideSheet
         { id = Nothing
+        , attributes = []
         , open = c.open
         , onClose = c.onClose
         , side = End
@@ -120,6 +128,15 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-drawer-container>` host element —
+the escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> SideSheet msg -> SideSheet msg
+withAttributes attributes (SideSheet cfg) =
+    SideSheet { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -174,12 +191,13 @@ view (SideSheet cfg) =
 
     else
         M3e.DrawerContainer.component
-            (List.filterMap identity
-                [ Maybe.map Attr.id cfg.id
-                , Just (sideAttr cfg)
-                , Just (modeAttr cfg)
-                , Just (M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
-                ]
+            (cfg.attributes
+                ++ List.filterMap identity
+                    [ Maybe.map Attr.id cfg.id
+                    , Just (sideAttr cfg)
+                    , Just (modeAttr cfg)
+                    , Just (M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
+                    ]
             )
             [ panelElement cfg ]
 

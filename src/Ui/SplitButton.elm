@@ -2,6 +2,7 @@ module Ui.SplitButton exposing
     ( SplitButton
     , Variant(..)
     , new
+    , withAttributes
     , withVariant, withDisabled, withTriggerLabel
     , view
     )
@@ -28,6 +29,11 @@ with a dropdown trigger for related actions. Mirrors the Material 3
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withVariant, withDisabled, withTriggerLabel
@@ -39,7 +45,7 @@ with a dropdown trigger for related actions. Mirrors the Material 3
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.SplitButton
@@ -54,6 +60,7 @@ type SplitButton msg
 
 type alias Config msg =
     { label : String
+    , attributes : List (Attribute msg)
     , variant : Variant
     , onPrimaryClick : msg
     , onTriggerClick : msg
@@ -95,6 +102,7 @@ new :
 new c =
     SplitButton
         { label = c.label
+        , attributes = []
         , variant = Filled
         , onPrimaryClick = c.onPrimaryClick
         , onTriggerClick = c.onTriggerClick
@@ -102,6 +110,15 @@ new c =
         , triggerLabel = "More actions"
         , disabled = False
         }
+
+
+{-| Append attributes to the underlying `<m3e-split-button>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> SplitButton msg -> SplitButton msg
+withAttributes attributes (SplitButton cfg) =
+    SplitButton { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the variant.
@@ -131,7 +148,7 @@ withTriggerLabel label (SplitButton cfg) =
 view : SplitButton msg -> Html msg
 view (SplitButton cfg) =
     M3e.SplitButton.component
-        [ variantAttr cfg.variant ]
+        (cfg.attributes ++ [ variantAttr cfg.variant ])
         [ Html.button
             [ M3e.SplitButton.leadingButtonSlot
             , HtmlEvents.onClick cfg.onPrimaryClick

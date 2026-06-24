@@ -2,6 +2,7 @@ module Ui.NavigationDrawer exposing
     ( NavigationDrawer, Item, Entry
     , Side(..)
     , new, item, tree, group, link
+    , withAttributes
     , withId, withSide, withModal, withItemLabel, withItemBadge, withContent, withEntries
     , withEntryIcon, withEntryHref, withEntryTarget, withEntrySelected, withEntryOpen, withEntryBadge, withEntryChildren
     , view
@@ -84,6 +85,11 @@ For compact viewports use `Ui.NavigationBar`; for medium viewports use
 @docs new, item, tree, group, link
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withSide, withModal, withItemLabel, withItemBadge, withContent, withEntries
@@ -96,7 +102,7 @@ For compact viewports use `Ui.NavigationBar`; for medium viewports use
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.DrawerContainer
@@ -137,6 +143,7 @@ type Side
 
 type alias DrawerConfig value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , side : Side
     , modal : Bool
     , items : List (Item value msg)
@@ -182,6 +189,7 @@ new :
 new c =
     NavigationDrawer
         { id = Nothing
+        , attributes = []
         , side = Start
         , modal = True
         , items = c.items
@@ -212,6 +220,7 @@ tree : NavigationDrawer value msg
 tree =
     NavigationDrawer
         { id = Nothing
+        , attributes = []
         , side = Start
         , modal = False
         , items = []
@@ -257,6 +266,15 @@ link label =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-…>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> NavigationDrawer value msg -> NavigationDrawer value msg
+withAttributes attributes (NavigationDrawer cfg) =
+    NavigationDrawer { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -368,11 +386,12 @@ withEntryChildren children (Entry cfg) =
 view : NavigationDrawer value msg -> Html msg
 view (NavigationDrawer cfg) =
     M3e.DrawerContainer.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (sideAttr cfg)
-            , Just (modeAttr cfg)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (sideAttr cfg)
+                , Just (modeAttr cfg)
+                ]
         )
         (M3e.NavMenu.component [ panelSlot cfg ]
             (List.map (flatItemView cfg) cfg.items

@@ -2,6 +2,7 @@ module Ui.NavigationBar exposing
     ( NavigationBar, Item
     , Mode(..)
     , new, item
+    , withAttributes
     , withId, withMode, withItemLabel, withItemBadge
     , view
     )
@@ -73,6 +74,11 @@ typed end-to-end.
 @docs new, item
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withMode, withItemLabel, withItemBadge
@@ -84,7 +90,7 @@ typed end-to-end.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Badge
@@ -119,6 +125,7 @@ type Mode
 
 type alias BarConfig value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , mode : Mode
     , items : List (Item value msg)
     , selected : Maybe value
@@ -149,6 +156,7 @@ new :
 new c =
     NavigationBar
         { id = Nothing
+        , attributes = []
         , mode = Auto
         , items = c.items
         , selected = c.selected
@@ -170,6 +178,15 @@ item c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the underlying `<m3e-nav-bar>` host element — the
+escape hatch for styling the component itself. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> NavigationBar value msg -> NavigationBar value msg
+withAttributes attributes (NavigationBar cfg) =
+    NavigationBar { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-nav-bar>`.
@@ -209,10 +226,11 @@ withItemBadge badge (Item cfg) =
 view : NavigationBar value msg -> Html msg
 view (NavigationBar cfg) =
     M3e.NavBar.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (modeAttr cfg.mode)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (modeAttr cfg.mode)
+                ]
         )
         (List.map (itemView cfg) cfg.items)
 

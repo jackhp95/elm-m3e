@@ -1,5 +1,6 @@
 module Ui.Paginator exposing
     ( Paginator, new
+    , withAttributes
     , withId, withLength
     , withFirstLastButtons, withHidePageSize, withPageSizes, withDisabled
     , withDefaultPage, withExplicitPageState
@@ -23,6 +24,11 @@ Two ways to drive page state:
 @docs Paginator, new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Identity and size
 
 @docs withId, withLength
@@ -44,7 +50,7 @@ Two ways to drive page state:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Paginator
@@ -62,6 +68,7 @@ type PageState msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , length : Int
     , state : PageState msg
     , firstLast : Bool
@@ -75,6 +82,7 @@ new : Paginator msg
 new =
     Paginator
         { id = Nothing
+        , attributes = []
         , length = 0
         , state = NoPage
         , firstLast = False
@@ -82,6 +90,15 @@ new =
         , pageSizes = Nothing
         , disabled = False
         }
+
+
+{-| Append attributes to the underlying `<m3e-…>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Paginator msg -> Paginator msg
+withAttributes attributes (Paginator cfg) =
+    Paginator { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Paginator msg -> Paginator msg
@@ -127,16 +144,17 @@ withExplicitPageState onPage pageIndex (Paginator cfg) =
 view : Paginator msg -> Html msg
 view (Paginator cfg) =
     M3e.Paginator.component
-        (List.filterMap identity
-            ([ Maybe.map Attr.id cfg.id
-             , Just (M3e.Paginator.length (toFloat cfg.length))
-             , Just (M3e.Paginator.showFirstLastButtons cfg.firstLast)
-             , Just (M3e.Paginator.hidePageSize cfg.hidePageSize)
-             , Just (M3e.Paginator.disabled cfg.disabled)
-             , Maybe.map M3e.Paginator.pageSizes cfg.pageSizes
-             ]
-                ++ pageAttrs cfg.state
-            )
+        (cfg.attributes
+            ++ List.filterMap identity
+                ([ Maybe.map Attr.id cfg.id
+                 , Just (M3e.Paginator.length (toFloat cfg.length))
+                 , Just (M3e.Paginator.showFirstLastButtons cfg.firstLast)
+                 , Just (M3e.Paginator.hidePageSize cfg.hidePageSize)
+                 , Just (M3e.Paginator.disabled cfg.disabled)
+                 , Maybe.map M3e.Paginator.pageSizes cfg.pageSizes
+                 ]
+                    ++ pageAttrs cfg.state
+                )
         )
         []
 

@@ -2,6 +2,7 @@ module Ui.ExtendedFab exposing
     ( ExtendedFab
     , Variant(..), Size(..)
     , new
+    , withAttributes
     , withSize, withLowered, withDisabled
     , withOnClick, withHref
     , view
@@ -36,6 +37,11 @@ extended-FAB as a variant on the regular FAB element).
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withSize, withLowered, withDisabled
@@ -52,7 +58,7 @@ extended-FAB as a variant on the regular FAB element).
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Fab
@@ -68,6 +74,7 @@ type ExtendedFab msg
 type alias Config msg =
     { icon : Ui.Icon.Icon msg
     , label : String
+    , attributes : List (Attribute msg)
     , variant : Variant
     , size : Size
     , lowered : Bool
@@ -110,12 +117,22 @@ new c =
     ExtendedFab
         { icon = c.icon
         , label = c.label
+        , attributes = []
         , variant = c.variant
         , size = Medium
         , lowered = False
         , disabled = False
         , wiring = Nothing
         }
+
+
+{-| Append attributes to the underlying `<m3e-fab>` host element — the escape
+hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> ExtendedFab msg -> ExtendedFab msg
+withAttributes attributes (ExtendedFab cfg) =
+    ExtendedFab { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the size.
@@ -159,7 +176,8 @@ view : ExtendedFab msg -> Html msg
 view (ExtendedFab cfg) =
     M3e.Fab.component
         (List.concat
-            [ [ M3e.Fab.extended True
+            [ cfg.attributes
+            , [ M3e.Fab.extended True
               , variantAttr cfg.variant
               , sizeAttr cfg.size
               , M3e.Fab.lowered cfg.lowered

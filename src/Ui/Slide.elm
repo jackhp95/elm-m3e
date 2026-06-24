@@ -1,5 +1,6 @@
 module Ui.Slide exposing
     ( Slide, new
+    , withAttributes
     , withId, withVertical, withDisabled
     , withSlides
     , view
@@ -18,6 +19,11 @@ an `M3e.SlideGroup`).
 @docs Slide, new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withVertical, withDisabled
@@ -34,7 +40,7 @@ an `M3e.SlideGroup`).
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Slide
 import M3e.SlideGroup
@@ -46,6 +52,7 @@ type Slide msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , slides : List (List (Html msg))
     , vertical : Bool
     , disabled : Bool
@@ -54,7 +61,16 @@ type alias Config msg =
 
 new : Slide msg
 new =
-    Slide { id = Nothing, slides = [], vertical = False, disabled = False }
+    Slide { id = Nothing, attributes = [], slides = [], vertical = False, disabled = False }
+
+
+{-| Append attributes to the underlying `<m3e-slide-group>` host element — the
+escape hatch for styling the component itself. Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Slide msg -> Slide msg
+withAttributes attributes (Slide cfg) =
+    Slide { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Slide msg -> Slide msg
@@ -82,11 +98,12 @@ withSlides ss (Slide cfg) =
 view : Slide msg -> Html msg
 view (Slide cfg) =
     M3e.SlideGroup.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.SlideGroup.vertical cfg.vertical)
-            , Just (M3e.SlideGroup.disabled cfg.disabled)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.SlideGroup.vertical cfg.vertical)
+                , Just (M3e.SlideGroup.disabled cfg.disabled)
+                ]
         )
         (List.map viewSlide cfg.slides)
 
