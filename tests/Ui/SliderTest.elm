@@ -63,4 +63,17 @@ suite =
                         , Query.find [ Selector.tag "m3e-slider" ]
                             >> Query.has [ Selector.id "vol" ]
                         ]
+        , describe "withVisibleLabel False (bare mode)"
+            [ test "renders no m3e-form-field and no visible label, keeps aria-label" <|
+                \_ ->
+                    Ui.Slider.value { label = "Brightness", value = 50, onChange = always () }
+                        |> Ui.Slider.withVisibleLabel False
+                        |> Ui.Slider.view
+                        |> Query.fromHtml
+                        |> Expect.all
+                            [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                            , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                            , Query.has [ Selector.tag "m3e-slider", Selector.attribute (Attr.attribute "aria-label" "Brightness") ]
+                            ]
+            ]
         ]

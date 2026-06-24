@@ -1,7 +1,7 @@
 module Ui.Switch exposing
     ( Switch
     , new
-    , withId, withHelp, withError, withDisabled, withHandleIcons
+    , withId, withHelp, withError, withDisabled, withHandleIcons, withVisibleLabel
     , view
     )
 
@@ -85,7 +85,7 @@ With help text:
 
 # Modifiers
 
-@docs withId, withHelp, withError, withDisabled, withHandleIcons
+@docs withId, withHelp, withError, withDisabled, withHandleIcons, withVisibleLabel
 
 
 # Render
@@ -120,6 +120,7 @@ type alias Config msg =
     , error : Maybe (Html msg)
     , disabled : Bool
     , handleIcons : Bool
+    , visibleLabel : Bool
     }
 
 
@@ -150,6 +151,7 @@ new c =
         , error = Nothing
         , disabled = False
         , handleIcons = False
+        , visibleLabel = True
         }
 
 
@@ -196,23 +198,43 @@ withHandleIcons enabled (Switch cfg) =
     Switch { cfg | handleIcons = enabled }
 
 
+{-| Whether to render the visible label and the surrounding `m3e-form-field`
+chrome (default `True`).
+
+Set `False` for a **bare** switch — just the toggle, with the label kept as an
+`aria-label` for assistive tech. Use this when the switch sits in a row that
+already provides its own visible label (e.g. a settings list), so the label
+isn't shown twice and the toggle isn't boxed in a text-field outline.
+
+-}
+withVisibleLabel : Bool -> Switch msg -> Switch msg
+withVisibleLabel visible (Switch cfg) =
+    Switch { cfg | visibleLabel = visible }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the switch (wrapped in its form-field chrome) to `Html`.
+{-| Render the switch to `Html`. With a visible label (the default) it is
+wrapped in `m3e-form-field` chrome; in bare mode (`withVisibleLabel False`)
+it renders as just the toggle with an `aria-label`.
 -}
 view : Switch msg -> Html msg
 view (Switch cfg) =
-    M3e.FormField.component
-        []
-        (List.concat
-            [ [ switchElement cfg
-              , labelElement cfg
-              ]
-            , subscriptElements cfg
-            ]
-        )
+    if cfg.visibleLabel then
+        M3e.FormField.component
+            []
+            (List.concat
+                [ [ switchElement cfg
+                  , labelElement cfg
+                  ]
+                , subscriptElements cfg
+                ]
+            )
+
+    else
+        switchElement cfg
 
 
 controlId : Config msg -> String
@@ -237,6 +259,11 @@ switchElement cfg =
 
               else
                 Nothing
+            , if cfg.visibleLabel then
+                Nothing
+
+              else
+                Just (Attr.attribute "aria-label" cfg.label)
             , Just (M3e.Switch.onChange (changeDecoder cfg.onChange))
             ]
         )

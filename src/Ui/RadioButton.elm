@@ -1,7 +1,7 @@
 module Ui.RadioButton exposing
     ( RadioGroup, Option
     , group, option
-    , withId, withHelp, withError, withRequired, withDisabled
+    , withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
     , view
     )
 
@@ -84,7 +84,7 @@ Records and custom union types both work; functions do not.
 
 # Modifiers
 
-@docs withId, withHelp, withError, withRequired, withDisabled
+@docs withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
 
 
 # Render
@@ -128,6 +128,7 @@ type alias Config value msg =
     , error : Maybe (Html msg)
     , required : Bool
     , disabled : Bool
+    , visibleLabel : Bool
     }
 
 
@@ -167,6 +168,7 @@ group c =
         , error = Nothing
         , required = False
         , disabled = False
+        , visibleLabel = True
         }
 
 
@@ -219,6 +221,20 @@ withDisabled disabled (RadioGroup cfg) =
     RadioGroup { cfg | disabled = disabled }
 
 
+{-| Whether to render the visible group label and the surrounding
+`m3e-form-field` chrome (default `True`).
+
+Set `False` for a **bare** group — just the radios, with the group label kept
+as an `aria-label` on `m3e-radio-group`. Use this when the group sits in a row
+that already provides its own visible label, so the label isn't shown twice
+and the radios aren't boxed in a text-field outline.
+
+-}
+withVisibleLabel : Bool -> RadioGroup value msg -> RadioGroup value msg
+withVisibleLabel visible (RadioGroup cfg) =
+    RadioGroup { cfg | visibleLabel = visible }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -227,15 +243,19 @@ withDisabled disabled (RadioGroup cfg) =
 -}
 view : RadioGroup value msg -> Html msg
 view (RadioGroup cfg) =
-    M3e.FormField.component
-        []
-        (List.concat
-            [ [ groupElement cfg
-              , labelElement cfg
-              ]
-            , subscriptElements cfg
-            ]
-        )
+    if cfg.visibleLabel then
+        M3e.FormField.component
+            []
+            (List.concat
+                [ [ groupElement cfg
+                  , labelElement cfg
+                  ]
+                , subscriptElements cfg
+                ]
+            )
+
+    else
+        groupElement cfg
 
 
 {-| The group's `id`: the caller's `withId` if present, else a stable
@@ -264,11 +284,18 @@ groupName cfg =
 groupElement : Config value msg -> Html msg
 groupElement cfg =
     M3e.RadioGroup.component
-        [ Attr.id (controlId cfg)
-        , M3e.RadioGroup.name (groupName cfg)
-        , M3e.RadioGroup.disabled cfg.disabled
-        , M3e.RadioGroup.required cfg.required
-        ]
+        (List.filterMap identity
+            [ Just (Attr.id (controlId cfg))
+            , Just (M3e.RadioGroup.name (groupName cfg))
+            , Just (M3e.RadioGroup.disabled cfg.disabled)
+            , Just (M3e.RadioGroup.required cfg.required)
+            , if cfg.visibleLabel then
+                Nothing
+
+              else
+                Just (Attr.attribute "aria-label" cfg.label)
+            ]
+        )
         (List.map (renderOption cfg) cfg.options)
 
 

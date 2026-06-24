@@ -28,6 +28,29 @@ Ordered newest-first within each section.
 
 ---
 
+### F7 — Switch / Slider / RadioButton force an outlined form-field wrapper
+- **Hit:** in the Settings study every toggle row renders with the control
+  crammed into an **outlined box with a floating label that overlaps the
+  control** (e.g. "Reduce motion", "Color scheme", "Brightness"). Because the
+  study's row already shows the label on the left, you also get a **double
+  label**.
+- **Why:** `Ui.Switch`/`Ui.Slider`/`Ui.RadioButton` always wrap themselves in
+  `<m3e-form-field variant="outlined">` + `<label slot="label">`. That's the
+  text-field affordance — an outlined container is correct for a text input,
+  but drawing it around a switch/slider/radio (and floating a label into it)
+  is not standard M3 and looks broken in a labeled row. `Ui.Select` does the
+  right thing (bare, native `label` attr) — the others are inconsistent.
+- **Suggested (needs a deliberate API decision):**
+  - Don't wrap toggles in `m3e-form-field` at all, **or**
+  - add a "bare / label-suppressed" mode so a control used inside a row that
+    already provides its label can render just the control (the row's label
+    can associate via `for`), **or**
+  - at minimum default these to no outline (the form-field `variant` is wrong
+    for non-text controls).
+  - Whatever the choice, make Switch/Slider/RadioButton/Select **consistent**.
+- **Status:** logged; not yet fixed (touches several modules + their tests +
+  the Phase-3 "always emit a form-field label" decision).
+
 ## API gaps (couldn't express a real, in-spec use case)
 
 ### F2 — `Ui.NavigationDrawer` couldn't model the real nav-menu tree (EXTENDED)
@@ -90,8 +113,13 @@ Ordered newest-first within each section.
   or document the `build:css` step prominently in the docs README / a dev
   script that runs both.
 
-### F6 — `Test.Html` `Query.find` vs `Query.findAll` (self-inflicted, but worth a note)
-- **Hit:** `Query.find` on a selector matching 2 anchors errored ("found 2").
-- **Note:** expected behavior, but the error is only obvious once you know
-  `find` requires exactly 1. Minor; just a reminder to reach for `findAll` +
-  `count`/`index` when a selector is non-unique.
+### F6 — `Test.Html` `Query.find`/`findAll` only search descendants, never the root
+- **Hit (a):** `Query.find` on a selector matching 2 anchors errored ("found 2").
+- **Hit (b):** when a control renders **bare** (the element is the root of the
+  fragment, e.g. `withVisibleLabel False`), `Query.find [tag "m3e-switch"]`
+  returns **0** — `find`/`findAll` traverse *descendants only*, so the root
+  node is never matched. Assert the root with `Query.has [...]` directly on the
+  `Query.fromHtml` result instead.
+- **Note:** both are expected Test.Html semantics, but easy to trip on. Reach
+  for `findAll` + `count`/`index` for non-unique selectors, and `has` (not
+  `find`) when the thing you're checking is the root element.

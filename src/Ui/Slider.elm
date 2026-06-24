@@ -2,7 +2,7 @@ module Ui.Slider exposing
     ( Slider, Single, Range
     , value, range
     , withId, withMin, withMax, withStep, withDiscrete, withDisabled
-    , withHelp, withError, withLabelled
+    , withHelp, withError, withLabelled, withVisibleLabel
     , view
     )
 
@@ -76,7 +76,7 @@ A price-range filter:
 # Modifiers
 
 @docs withId, withMin, withMax, withStep, withDiscrete, withDisabled
-@docs withHelp, withError, withLabelled
+@docs withHelp, withError, withLabelled, withVisibleLabel
 
 
 # Render
@@ -128,6 +128,7 @@ type alias Config msg =
     , disabled : Bool
     , help : Maybe (Html msg)
     , error : Maybe (Html msg)
+    , visibleLabel : Bool
     }
 
 
@@ -186,6 +187,7 @@ baseConfig label thumbs =
     , disabled = False
     , help = Nothing
     , error = Nothing
+    , visibleLabel = True
     }
 
 
@@ -257,6 +259,20 @@ withError e (Slider cfg) =
     Slider { cfg | error = Just e }
 
 
+{-| Whether to render the visible label and the surrounding `m3e-form-field`
+chrome (default `True`).
+
+Set `False` for a **bare** slider — just the track, with the label kept as an
+`aria-label`. Use this when the slider sits in a row that already provides its
+own visible label, so the label isn't shown twice and the track isn't boxed in
+a text-field outline.
+
+-}
+withVisibleLabel : Bool -> Slider kind msg -> Slider kind msg
+withVisibleLabel visible (Slider cfg) =
+    Slider { cfg | visibleLabel = visible }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -265,15 +281,19 @@ withError e (Slider cfg) =
 -}
 view : Slider kind msg -> Html msg
 view (Slider cfg) =
-    M3e.FormField.component
-        []
-        (List.concat
-            [ [ sliderElement cfg
-              , labelElement cfg
-              ]
-            , subscriptElements cfg
-            ]
-        )
+    if cfg.visibleLabel then
+        M3e.FormField.component
+            []
+            (List.concat
+                [ [ sliderElement cfg
+                  , labelElement cfg
+                  ]
+                , subscriptElements cfg
+                ]
+            )
+
+    else
+        sliderElement cfg
 
 
 controlId : Config msg -> String
@@ -297,6 +317,11 @@ sliderElement cfg =
             , Just (M3e.Slider.discrete cfg.discrete)
             , Just (M3e.Slider.labelled cfg.labelled)
             , Just (M3e.Slider.disabled cfg.disabled)
+            , if cfg.visibleLabel then
+                Nothing
+
+              else
+                Just (Attr.attribute "aria-label" cfg.label)
             ]
         )
         (thumbsElements cfg.thumbs)

@@ -492,6 +492,7 @@ accountPanel model =
                     , onChange = TwoFactorToggled
                     }
                     |> Ui.Switch.withHandleIcons True
+                    |> Ui.Switch.withVisibleLabel False
                     |> Ui.Switch.view
                 )
             ]
@@ -519,6 +520,7 @@ notificationsPanel model =
 channelSwitch : String -> Bool -> (Bool -> Msg) -> Html Msg
 channelSwitch label checked onChange =
     Ui.Switch.new { label = label, checked = checked, onChange = onChange }
+        |> Ui.Switch.withVisibleLabel False
         |> Ui.Switch.view
 
 
@@ -539,6 +541,7 @@ appearancePanel model =
                     , selected = Just model.theme
                     , onChange = ThemeChosen
                     }
+                    |> Ui.RadioButton.withVisibleLabel False
                     |> Ui.RadioButton.view
                 )
             , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
@@ -569,6 +572,7 @@ appearancePanel model =
                         |> Ui.Slider.withMin 0
                         |> Ui.Slider.withMax 100
                         |> Ui.Slider.withStep 1
+                        |> Ui.Slider.withVisibleLabel False
                         |> Ui.Slider.view
                     ]
                 )
@@ -580,6 +584,7 @@ appearancePanel model =
                     , checked = model.reduceMotion
                     , onChange = ReduceMotionToggled
                     }
+                    |> Ui.Switch.withVisibleLabel False
                     |> Ui.Switch.view
                 )
             ]
@@ -644,6 +649,7 @@ privacyPanel model =
                         , checked = model.telemetry
                         , onChange = TelemetryToggled
                         }
+                        |> Ui.Switch.withVisibleLabel False
                         |> Ui.Switch.view
                     ]
                 )
@@ -655,6 +661,7 @@ privacyPanel model =
                     , checked = model.personalizedAds
                     , onChange = PersonalizedAdsToggled
                     }
+                    |> Ui.Switch.withVisibleLabel False
                     |> Ui.Switch.view
                 )
             ]
@@ -758,6 +765,7 @@ developerPanel model =
                 , checked = model.developerMode
                 , onChange = DeveloperModeToggled
                 }
+                |> Ui.Switch.withVisibleLabel False
                 |> Ui.Switch.view
             )
         ]

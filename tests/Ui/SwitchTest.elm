@@ -52,4 +52,23 @@ suite =
                         , Query.find [ Selector.tag "m3e-switch" ]
                             >> Query.has [ Selector.id "dm" ]
                         ]
+        , describe "withVisibleLabel False (bare mode)"
+            [ test "renders no m3e-form-field and no visible label" <|
+                \_ ->
+                    Ui.Switch.new { label = "Reduce motion", checked = False, onChange = always () }
+                        |> Ui.Switch.withVisibleLabel False
+                        |> Ui.Switch.view
+                        |> Query.fromHtml
+                        |> Expect.all
+                            [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                            , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                            ]
+            , test "keeps the label as aria-label on the bare control" <|
+                \_ ->
+                    Ui.Switch.new { label = "Reduce motion", checked = False, onChange = always () }
+                        |> Ui.Switch.withVisibleLabel False
+                        |> Ui.Switch.view
+                        |> Query.fromHtml
+                        |> Query.has [ Selector.tag "m3e-switch", Selector.attribute (Attr.attribute "aria-label" "Reduce motion") ]
+            ]
         ]

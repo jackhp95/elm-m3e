@@ -77,4 +77,17 @@ suite =
                             >> Query.each
                                 (Query.has [ Selector.attribute (Attr.name "bc") ])
                         ]
+        , describe "withVisibleLabel False (bare mode)"
+            [ test "renders no m3e-form-field and no visible label, keeps aria-label on the group" <|
+                \_ ->
+                    pricing
+                        |> Ui.RadioButton.withVisibleLabel False
+                        |> Ui.RadioButton.view
+                        |> Query.fromHtml
+                        |> Expect.all
+                            [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                            , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                            , Query.has [ Selector.tag "m3e-radio-group", Selector.attribute (Attr.attribute "aria-label" "Billing cycle") ]
+                            ]
+            ]
         ]
