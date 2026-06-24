@@ -11,7 +11,7 @@ import BackendTask.File
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, a, code, div, h1, h2, h3, p, section, span, text)
+import Html exposing (Html, a, code, div, h1, h2, p, section, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import Pages.Url
@@ -102,23 +102,15 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
-        [ Html.node "m3e-theme"
-            [ Html.Attributes.attribute "color" "#6750A4"
-            , Html.Attributes.attribute "scheme" "auto"
-            , class "block min-h-screen bg-surface text-on-surface"
-            ]
-            [ div [ class "mx-auto max-w-5xl px-6 py-12" ]
-                [ p [ class "text-label-large uppercase tracking-wide text-primary" ]
-                    [ a [ href "/", class "hover:underline" ] [ text "← elm-m3e" ] ]
-                , h1 [ class "mt-2 text-display-small font-semibold" ] [ text "Component reference" ]
-                , p [ class "mt-2 max-w-2xl text-body-large text-on-surface-variant" ]
-                    [ text "Every "
-                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "Ui.*" ]
-                    , text " module, its overview, and every exposed value — extracted from the library source at build time."
-                    ]
-                , indexGrid app.data
-                , div [ class "mt-12 space-y-12" ] (List.map componentBlock app.data)
+        [ div [ class "mx-auto max-w-5xl" ]
+            [ h1 [ class "text-display-small font-semibold" ] [ text "Component reference" ]
+            , p [ class "mt-2 max-w-2xl text-body-large text-on-surface-variant" ]
+                [ text "Every "
+                , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "Ui.*" ]
+                , text " module, its overview, and every exposed value — extracted from the library source at build time."
                 ]
+            , indexGrid app.data
+            , div [ class "mt-12 space-y-12" ] (List.map componentBlock app.data)
             ]
         ]
     }

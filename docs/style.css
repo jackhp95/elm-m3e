@@ -1,4 +1,4 @@
-/* Tailwind v4 + matraic m3e token/utility bridge. Zero hand-written CSS rules. */
+/* Tailwind v4 + matraic m3e token/utility bridge. */
 @import "tailwindcss";
 
 /* M3 design tokens (seed -> ref -> sys -> @theme keys).
@@ -10,3 +10,54 @@
 /* Scan the docs routes and the Ui.* library for utility classes. */
 @source "./app";
 @source "../src";
+
+/* Self-hosted Material Symbols Outlined (woff2 bundled in public/, served at
+   site root). Replaces the Google Fonts <link>. The variable axes (opsz, wght,
+   FILL, GRAD) ride on the same file; @m3e/web sets them via font-variation. */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: block;
+  src: url("/material-symbols-outlined.woff2") format("woff2");
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+/* M3 document base: the shell's <m3e-theme> cascades --md-sys-color-* /
+   --md-sys-typescale-* onto every descendant, but the bare <html>/<body>
+   outside that subtree needs the surface + type scale too, or the viewport
+   background and overscroll bleed white. (visual-gap.md P0.) */
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: Roboto, "Helvetica Neue", system-ui, -apple-system, sans-serif;
+    font-size: var(--md-sys-typescale-body-large-font-size);
+    line-height: var(--md-sys-typescale-body-large-line-height);
+    letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  }
+}
