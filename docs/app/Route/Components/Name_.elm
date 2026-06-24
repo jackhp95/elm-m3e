@@ -19,19 +19,40 @@ import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import Ui.AppBar as AppBar
 import Ui.Avatar as Avatar
 import Ui.Badge as Badge
+import Ui.Breadcrumb as Breadcrumb
 import Ui.Button as Button
+import Ui.ButtonGroup as ButtonGroup
 import Ui.Card as Card
+import Ui.Checkbox as Checkbox
+import Ui.Chip as Chip
 import Ui.Divider as Divider
+import Ui.ExtendedFab as ExtendedFab
+import Ui.Fab as Fab
 import Ui.Heading as Heading
 import Ui.Icon as Icon
 import Ui.IconButton as IconButton
+import Ui.List as L
 import Ui.LoadingIndicator as LoadingIndicator
+import Ui.Menu as Menu
+import Ui.NavigationBar as NavigationBar
+import Ui.NavigationRail as NavigationRail
+import Ui.Paginator as Paginator
 import Ui.Progress as Progress
+import Ui.RadioButton as RadioButton
+import Ui.Search as Search
+import Ui.SegmentedButton as SegmentedButton
+import Ui.Select as Select
 import Ui.Shape as Shape
 import Ui.Skeleton as Skeleton
+import Ui.Slider as Slider
 import Ui.Snackbar as Snackbar
+import Ui.Switch as Switch
+import Ui.Tabs as Tabs
+import Ui.TextField as TextField
+import Ui.Toolbar as Toolbar
 import UrlPath
 import View exposing (View)
 
@@ -289,6 +310,21 @@ noOp _ =
 demoSections : String -> List (DemoSection (PagesMsg Msg))
 demoSections slug =
     case slug of
+        "appbar" ->
+            [ usage
+                (AppBar.new "Inbox"
+                    |> AppBar.withLeading
+                        (IconButton.new { icon = Icon.material "menu", label = "Open menu", variant = IconButton.Standard }
+                            |> IconButton.view
+                        )
+                    |> AppBar.withTrailing
+                        [ IconButton.new { icon = Icon.material "search", label = "Search", variant = IconButton.Standard } |> IconButton.view
+                        , IconButton.new { icon = Icon.material "more_vert", label = "More", variant = IconButton.Standard } |> IconButton.view
+                        ]
+                    |> AppBar.view
+                )
+            ]
+
         "avatar" ->
             [ { title = "Variants"
               , body =
@@ -309,6 +345,18 @@ demoSections slug =
                         , div [ class "relative" ] [ Icon.material "shopping_bag" |> Icon.view, Badge.label "New" |> Badge.view ]
                         ]
               }
+            ]
+
+        "breadcrumb" ->
+            [ usage
+                (Breadcrumb.new
+                    |> Breadcrumb.withItems
+                        [ Breadcrumb.link (text "Home") "#"
+                        , Breadcrumb.link (text "Components") "#"
+                        , Breadcrumb.current (text "Breadcrumb")
+                        ]
+                    |> Breadcrumb.view
+                )
             ]
 
         "button" ->
@@ -336,6 +384,17 @@ demoSections slug =
               }
             ]
 
+        "buttongroup" ->
+            [ usage
+                (ButtonGroup.new
+                    [ Button.new { label = "One", variant = Button.Filled }
+                    , Button.new { label = "Two", variant = Button.Filled }
+                    , Button.new { label = "Three", variant = Button.Filled }
+                    ]
+                    |> ButtonGroup.view
+                )
+            ]
+
         "card" ->
             [ { title = "Variants"
               , body =
@@ -356,12 +415,54 @@ demoSections slug =
               }
             ]
 
+        "checkbox" ->
+            [ { title = "States"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-6" ]
+                        [ Checkbox.boolean { label = "Unchecked", checked = False, onChange = noOp }
+                            |> Checkbox.view
+                        , Checkbox.boolean { label = "Checked", checked = True, onChange = noOp }
+                            |> Checkbox.view
+                        ]
+              }
+            ]
+
+        "chip" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-2" ]
+                        [ Chip.assist { id = "demo-chip-assist", label = text "Assist", onClick = PagesMsg.noOp } |> Chip.view
+                        , Chip.suggestion { id = "demo-chip-suggestion", label = text "Suggestion", onClick = PagesMsg.noOp } |> Chip.view
+                        , Chip.filter { id = "demo-chip-filter", label = text "Filter", onToggle = PagesMsg.noOp } |> Chip.view
+                        ]
+              }
+            ]
+
         "divider" ->
             [ { title = "Orientations"
               , body =
                     div [ class "w-full space-y-4" ]
                         [ Divider.new |> Divider.view
                         , Divider.new |> Divider.withInsetStart True |> Divider.view
+                        ]
+              }
+            ]
+
+        "extendedfab" ->
+            [ usage
+                (ExtendedFab.new { icon = Icon.material "edit", label = "Compose", variant = ExtendedFab.Primary }
+                    |> ExtendedFab.view
+                )
+            ]
+
+        "fab" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-4" ]
+                        [ Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Primary } |> Fab.view
+                        , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Secondary } |> Fab.view
+                        , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Tertiary } |> Fab.view
+                        , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Surface } |> Fab.view
                         ]
               }
             ]
@@ -403,8 +504,69 @@ demoSections slug =
               }
             ]
 
+        "list" ->
+            [ usage
+                (L.new
+                    [ L.item "First item"
+                    , L.item "Second item"
+                    , L.item "Third item"
+                    ]
+                    |> L.view
+                )
+            ]
+
         "loadingindicator" ->
             [ usage (LoadingIndicator.new |> LoadingIndicator.view) ]
+
+        "menu" ->
+            [ usage
+                (Menu.new
+                    [ Menu.item "Refresh" PagesMsg.noOp
+                    , Menu.item "Settings" PagesMsg.noOp
+                    , Menu.item "Sign out" PagesMsg.noOp
+                    ]
+                    |> Menu.view
+                )
+            ]
+
+        "navigationbar" ->
+            [ usage
+                (NavigationBar.new
+                    { items =
+                        [ NavigationBar.item { value = "home", icon = Icon.material "home" } |> NavigationBar.withItemLabel "Home"
+                        , NavigationBar.item { value = "search", icon = Icon.material "search" } |> NavigationBar.withItemLabel "Search"
+                        , NavigationBar.item { value = "saved", icon = Icon.material "bookmark" } |> NavigationBar.withItemLabel "Saved"
+                        ]
+                    , selected = Just "home"
+                    , onChange = noOp
+                    }
+                    |> NavigationBar.view
+                )
+            ]
+
+        "navigationrail" ->
+            [ usage
+                (NavigationRail.new
+                    { items =
+                        [ NavigationRail.item { value = "home", icon = Icon.material "home" } |> NavigationRail.withItemLabel "Home"
+                        , NavigationRail.item { value = "search", icon = Icon.material "search" } |> NavigationRail.withItemLabel "Search"
+                        , NavigationRail.item { value = "saved", icon = Icon.material "bookmark" } |> NavigationRail.withItemLabel "Saved"
+                        ]
+                    , selected = Just "home"
+                    , onChange = noOp
+                    }
+                    |> NavigationRail.view
+                )
+            ]
+
+        "paginator" ->
+            [ usage
+                (Paginator.new
+                    |> Paginator.withLength 53
+                    |> Paginator.withDefaultPage 0
+                    |> Paginator.view
+                )
+            ]
 
         "progress" ->
             [ { title = "Variants"
@@ -414,6 +576,60 @@ demoSections slug =
                         , Progress.circular 40 |> Progress.view
                         ]
               }
+            ]
+
+        "radiobutton" ->
+            [ usage
+                (RadioButton.group
+                    { label = "Billing cycle"
+                    , options =
+                        [ RadioButton.option { value = "monthly", label = "Monthly" }
+                        , RadioButton.option { value = "yearly", label = "Yearly" }
+                        ]
+                    , selected = Just "monthly"
+                    , onChange = noOp
+                    }
+                    |> RadioButton.view
+                )
+            ]
+
+        "search" ->
+            [ usage
+                (Search.bar
+                    |> Search.withPlaceholder "Search the docs"
+                    |> Search.view
+                )
+            ]
+
+        "segmentedbutton" ->
+            [ usage
+                (SegmentedButton.single
+                    { label = "Layout"
+                    , segments =
+                        [ SegmentedButton.segment { value = "grid", label = "Grid" }
+                        , SegmentedButton.segment { value = "list", label = "List" }
+                        ]
+                    , selected = Just "grid"
+                    , onChange = noOp
+                    }
+                    |> SegmentedButton.view
+                )
+            ]
+
+        "select" ->
+            [ usage
+                (Select.single
+                    { label = "Sort by"
+                    , options =
+                        [ Select.option { value = "recent", label = "Most recent" }
+                        , Select.option { value = "oldest", label = "Oldest" }
+                        , Select.option { value = "name", label = "By name" }
+                        ]
+                    , selected = Just "recent"
+                    , onChange = noOp
+                    }
+                    |> Select.view
+                )
             ]
 
         "shape" ->
@@ -438,8 +654,52 @@ demoSections slug =
                 )
             ]
 
+        "slider" ->
+            [ usage
+                (Slider.value { label = "Volume", value = 35, onChange = noOp }
+                    |> Slider.view
+                )
+            ]
+
         "snackbar" ->
             [ usage (Snackbar.new "Message sent" |> Snackbar.view) ]
+
+        "switch" ->
+            [ { title = "States"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-6" ]
+                        [ Switch.new { label = "Off", checked = False, onChange = noOp } |> Switch.view
+                        , Switch.new { label = "On", checked = True, onChange = noOp } |> Switch.view
+                        ]
+              }
+            ]
+
+        "tabs" ->
+            [ usage
+                (Tabs.new
+                    { tabs =
+                        [ Tabs.tab { value = "overview", label = "Overview" }
+                        , Tabs.tab { value = "specs", label = "Specs" }
+                        , Tabs.tab { value = "reviews", label = "Reviews" }
+                        ]
+                    , selected = "overview"
+                    , onChange = noOp
+                    }
+                    |> Tabs.view
+                )
+            ]
+
+        "textfield" ->
+            [ { title = "Variants"
+              , body =
+                    div [ class "w-full max-w-md space-y-4" ]
+                        [ TextField.text { label = "Name", value = "", variant = TextField.Filled, onChange = noOp } |> TextField.view
+                        , TextField.text { label = "Email", value = "", variant = TextField.Outlined, onChange = noOp }
+                            |> TextField.withEmailValidator
+                            |> TextField.view
+                        ]
+              }
+            ]
 
         "theme" ->
             [ { title = "About"
@@ -450,6 +710,16 @@ demoSections slug =
                         , text ". A single instance owns the dynamic-color scheme, contrast, density, and motion for its subtree — the docs shell mounts it once at the root, which you're inside now. Try the settings popover in the app bar."
                         ]
               }
+            ]
+
+        "toolbar" ->
+            [ usage
+                (Toolbar.new
+                    [ Button.new { label = "Save", variant = Button.Filled }
+                    , Button.new { label = "Discard", variant = Button.Text }
+                    ]
+                    |> Toolbar.view
+                )
             ]
 
         _ ->
