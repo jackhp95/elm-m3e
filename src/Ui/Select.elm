@@ -86,7 +86,6 @@ Same pattern as `Ui.RadioButton`: selection state stays typed end-to-end.
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.FormField
 import M3e.Option
 import M3e.Select
 
@@ -237,18 +236,23 @@ withError e (Select cfg) =
 
 
 {-| Render the select to `Html`.
+
+`m3e-select` is a self-contained form control: it carries its own
+`label` (a native attribute, not a `<label>` element) and is **not**
+wrapped in `m3e-form-field` — form-field has no `label` slot and
+double-wrapping a control that already provides field chrome produces a
+broken nested-field surface. Help/error text, when present, renders as a
+sibling under a plain layout `div`.
+
 -}
 view : Select kind value msg -> Html msg
 view (Select cfg) =
-    M3e.FormField.component
-        []
-        (List.concat
-            [ [ selectElement cfg
-              , labelElement cfg
-              ]
-            , subscriptElements cfg
-            ]
-        )
+    case subscriptElement cfg of
+        Nothing ->
+            selectElement cfg
+
+        Just subscript ->
+            Html.div [] [ selectElement cfg, subscript ]
 
 
 selectElement : Config value msg -> Html msg
@@ -256,6 +260,7 @@ selectElement cfg =
     M3e.Select.component
         (List.filterMap identity
             [ Maybe.map Attr.id cfg.id
+            , Just (Attr.attribute "label" cfg.label)
             , Just (M3e.Select.multi cfg.multiAttr)
             , Just (M3e.Select.required cfg.required)
             , Just (M3e.Select.disabled cfg.disabled)
@@ -266,9 +271,13 @@ selectElement cfg =
 
 optionView : Config value msg -> Option value -> Html msg
 optionView cfg (Option opt) =
+    -- No `value` binding: the previous code bound the native `value`
+    -- attribute to the display label, so two options sharing a label
+    -- collided. Selection is driven entirely by `selected` (the
+    -- `selected` attr) and `onClick`, keeping option identity typed in
+    -- Elm rather than smuggled through a stringly-typed DOM value.
     M3e.Option.component
-        [ M3e.Option.value opt.label
-        , M3e.Option.selected (cfg.isSelected opt.value)
+        [ M3e.Option.selected (cfg.isSelected opt.value)
         , M3e.Option.disabled cfg.disabled
         , HtmlEvents.onClick (cfg.onOptionClick opt.value)
         ]
@@ -284,25 +293,14 @@ toggleInList v list =
         v :: list
 
 
-labelElement : Config value msg -> Html msg
-labelElement cfg =
-    Html.label
-        (List.filterMap identity
-            -- FormField has no label slot; the label is a default-slot child.
-            [ Maybe.map Attr.for cfg.id
-            ]
-        )
-        [ Html.text cfg.label ]
-
-
-subscriptElements : Config value msg -> List (Html msg)
-subscriptElements cfg =
+subscriptElement : Config value msg -> Maybe (Html msg)
+subscriptElement cfg =
     case ( cfg.error, cfg.help ) of
         ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
+            Just (Html.span [] [ err ])
 
         ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
+            Just (Html.span [] [ help ])
 
         ( Nothing, Nothing ) ->
-            []
+            Nothing

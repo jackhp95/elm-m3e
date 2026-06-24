@@ -102,7 +102,6 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.ButtonSegment
-import M3e.FormField
 import M3e.SegmentedButton
 
 
@@ -242,14 +241,20 @@ withDisabled disabled (SegmentedButton cfg) =
 
 
 {-| Render the segmented button group to `Html`.
+
+`m3e-segmented-button` exposes only a default slot (its segments) — it
+is **not** a form-field control and must not be wrapped in
+`m3e-form-field` (whose label/hint/error slots it cannot satisfy).
+Instead the label and optional help/error render in a plain layout
+`div` _around_ the standalone element.
+
 -}
 view : SegmentedButton kind value msg -> Html msg
 view (SegmentedButton cfg) =
-    M3e.FormField.component
-        []
+    Html.div []
         (List.concat
-            [ [ groupElement cfg
-              , labelElement cfg
+            [ [ labelElement cfg
+              , groupElement cfg
               ]
             , subscriptElements cfg
             ]
@@ -289,12 +294,11 @@ toggleInList value list =
 
 labelElement : Config value msg -> Html msg
 labelElement cfg =
+    -- A plain layout label, not a form-field slot: this element is not a
+    -- form-field control. `id`, when supplied, anchors the label to the
+    -- group element via `for`.
     Html.label
-        (List.filterMap identity
-            -- FormField has no label slot; the label is a default-slot child.
-            [ Maybe.map Attr.for cfg.id
-            ]
-        )
+        (List.filterMap identity [ Maybe.map Attr.for cfg.id ])
         [ Html.text cfg.label ]
 
 
@@ -302,10 +306,10 @@ subscriptElements : Config value msg -> List (Html msg)
 subscriptElements cfg =
     case ( cfg.error, cfg.help ) of
         ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
+            [ Html.span [] [ err ] ]
 
         ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
+            [ Html.span [] [ help ] ]
 
         ( Nothing, Nothing ) ->
             []

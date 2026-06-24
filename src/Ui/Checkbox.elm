@@ -287,11 +287,21 @@ view (Checkbox cfg) =
         )
 
 
+controlId : Config msg -> String
+controlId cfg =
+    case cfg.id of
+        Just id ->
+            id
+
+        Nothing ->
+            slugify cfg.label
+
+
 checkboxElement : Config msg -> Html msg
 checkboxElement cfg =
     M3e.Checkbox.component
         (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
+            [ Just (Attr.id (controlId cfg))
             , Just (M3e.Checkbox.checked (isChecked cfg.state))
             , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
             , Just (M3e.Checkbox.disabled cfg.disabled)
@@ -305,11 +315,9 @@ checkboxElement cfg =
 labelElement : Config msg -> Html msg
 labelElement cfg =
     Html.label
-        (List.filterMap identity
-            -- FormField has no label slot; the label is a default-slot child.
-            [ Maybe.map Attr.for cfg.id
-            ]
-        )
+        [ Attr.attribute "slot" "label"
+        , Attr.for (controlId cfg)
+        ]
         [ Html.text cfg.label ]
 
 
@@ -351,3 +359,31 @@ changeDecoder : (Bool -> msg) -> Decode.Decoder msg
 changeDecoder toMsg =
     Decode.at [ "target", "checked" ] Decode.bool
         |> Decode.map toMsg
+
+
+{-| Derive a stable, deterministic control id from the label text so the
+`<label slot="label" for="...">` can anchor the control even when the
+caller hasn't supplied an explicit `withId`.
+-}
+slugify : String -> String
+slugify label =
+    let
+        slug : String
+        slug =
+            label
+                |> String.toLower
+                |> String.toList
+                |> List.map
+                    (\c ->
+                        if Char.isAlphaNum c then
+                            c
+
+                        else
+                            '-'
+                    )
+                |> String.fromList
+                |> String.split "-"
+                |> List.filter (not << String.isEmpty)
+                |> String.join "-"
+    in
+    "uif-" ++ slug

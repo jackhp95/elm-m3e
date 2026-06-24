@@ -276,11 +276,21 @@ view (Slider cfg) =
         )
 
 
+controlId : Config msg -> String
+controlId cfg =
+    case cfg.id of
+        Just id ->
+            id
+
+        Nothing ->
+            slugify cfg.label
+
+
 sliderElement : Config msg -> Html msg
 sliderElement cfg =
     M3e.Slider.component
         (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
+            [ Just (Attr.id (controlId cfg))
             , Maybe.map M3e.Slider.minAttr cfg.min
             , Maybe.map M3e.Slider.maxAttr cfg.max
             , Maybe.map M3e.Slider.step cfg.step
@@ -307,7 +317,7 @@ thumbsElements thumbs =
 thumbView : Float -> (Float -> msg) -> Html msg
 thumbView v toMsg =
     M3e.SliderThumb.component
-        [ Attr.attribute "value" (String.fromFloat v)
+        [ M3e.SliderThumb.value (String.fromFloat v)
         , M3e.SliderThumb.onInput (floatDecoder toMsg)
         ]
         []
@@ -320,14 +330,40 @@ floatDecoder toMsg =
         |> Decode.map toMsg
 
 
+{-| Derive a stable, deterministic control id from the label text so the
+`<label slot="label" for="...">` can anchor the control even when the
+caller hasn't supplied an explicit `withId`.
+-}
+slugify : String -> String
+slugify label =
+    let
+        slug : String
+        slug =
+            label
+                |> String.toLower
+                |> String.toList
+                |> List.map
+                    (\c ->
+                        if Char.isAlphaNum c then
+                            c
+
+                        else
+                            '-'
+                    )
+                |> String.fromList
+                |> String.split "-"
+                |> List.filter (not << String.isEmpty)
+                |> String.join "-"
+    in
+    "uif-" ++ slug
+
+
 labelElement : Config msg -> Html msg
 labelElement cfg =
     Html.label
-        (List.filterMap identity
-            -- FormField has no label slot; the label is a default-slot child.
-            [ Maybe.map Attr.for cfg.id
-            ]
-        )
+        [ Attr.attribute "slot" "label"
+        , Attr.for (controlId cfg)
+        ]
         [ Html.text cfg.label ]
 
 
