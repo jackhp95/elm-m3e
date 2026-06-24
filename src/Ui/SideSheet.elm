@@ -66,6 +66,7 @@ Same shape as `Ui.Dialog` / `Ui.BottomSheet`.
 
 import Html exposing (Html)
 import Html.Attributes as Attr
+import Json.Decode as Decode
 import M3e.DrawerContainer
 import Ui.Button
 
@@ -177,13 +178,10 @@ view (SideSheet cfg) =
                 [ Maybe.map Attr.id cfg.id
                 , Just (sideAttr cfg)
                 , Just (modeAttr cfg)
+                , Just (M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
                 ]
             )
-            (List.concat
-                [ bodyElement cfg.body
-                , actionsElement cfg.actions
-                ]
-            )
+            [ panelElement cfg ]
 
 
 sideAttr : Config msg -> Html.Attribute msg
@@ -199,45 +197,51 @@ sideAttr cfg =
 modeAttr : Config msg -> Html.Attribute msg
 modeAttr cfg =
     let
-        attrName : String
-        attrName =
-            case cfg.side of
-                Start ->
-                    "start-mode"
-
-                End ->
-                    "end-mode"
-
-        value : String
-        value =
+        mode : ( M3e.DrawerContainer.StartMode, M3e.DrawerContainer.EndMode )
+        mode =
             if cfg.modal then
-                "over"
+                ( M3e.DrawerContainer.StartModeOver, M3e.DrawerContainer.EndModeOver )
 
             else
-                "side"
+                ( M3e.DrawerContainer.StartModeSide, M3e.DrawerContainer.EndModeSide )
     in
-    Attr.attribute attrName value
+    case cfg.side of
+        Start ->
+            M3e.DrawerContainer.startMode (Tuple.first mode)
+
+        End ->
+            M3e.DrawerContainer.endMode (Tuple.second mode)
 
 
-bodyElement : Maybe (Html msg) -> List (Html msg)
-bodyElement body =
+{-| The panel content — body + actions — routed into the slot matching
+the configured side (`start` or `end`). The default slot is reserved
+for the host's main content, which callers compose themselves.
+-}
+panelElement : Config msg -> Html msg
+panelElement cfg =
+    Html.div [ slotAttr cfg ]
+        (List.concat
+            [ bodyContent cfg.body
+            , List.map Ui.Button.view cfg.actions
+            ]
+        )
+
+
+slotAttr : Config msg -> Html.Attribute msg
+slotAttr cfg =
+    case cfg.side of
+        Start ->
+            M3e.DrawerContainer.startSlot
+
+        End ->
+            M3e.DrawerContainer.endSlot
+
+
+bodyContent : Maybe (Html msg) -> List (Html msg)
+bodyContent body =
     case body of
         Nothing ->
             []
 
         Just b ->
-            [ Html.div [ Attr.class "ds-side-sheet-body" ] [ b ] ]
-
-
-actionsElement :
-    List (Ui.Button.Button msg)
-    -> List (Html msg)
-actionsElement actions =
-    case actions of
-        [] ->
-            []
-
-        _ ->
-            [ Html.div [ Attr.class "ds-side-sheet-actions" ]
-                (List.map Ui.Button.view actions)
-            ]
+            [ b ]

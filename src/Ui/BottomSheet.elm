@@ -1,7 +1,7 @@
 module Ui.BottomSheet exposing
     ( BottomSheet
     , new
-    , withId, withBody, withActions, withHandle, withHideable
+    , withId, withHeader, withBody, withActions, withHandle, withHideable, withModal
     , view
     )
 
@@ -19,7 +19,8 @@ modal flows.
 # Open state is caller-owned
 
 Same shape as `Ui.Dialog`: pass `open : Bool`, supply an `onClose`
-handler. Rendering is pure.
+handler. Rendering is pure — the `open` attribute drives the element,
+and the element's `closed`/`cancel` events are wired back to `onClose`.
 
 
 # Required-by-design
@@ -47,7 +48,7 @@ handler. Rendering is pure.
 
 # Modifiers
 
-@docs withId, withBody, withActions, withHandle, withHideable
+@docs withId, withHeader, withBody, withActions, withHandle, withHideable, withModal
 
 
 # Render
@@ -58,7 +59,9 @@ handler. Rendering is pure.
 
 import Html exposing (Html)
 import Html.Attributes as Attr
+import Json.Decode as Decode
 import M3e.BottomSheet
+import M3e.BottomSheetAction
 import Ui.Button
 
 
@@ -76,10 +79,12 @@ type alias Config msg =
     { id : Maybe String
     , open : Bool
     , onClose : msg
+    , header : Maybe (Html msg)
     , body : Maybe (Html msg)
     , actions : List (Ui.Button.Button msg)
     , handle : Bool
     , hideable : Bool
+    , modal : Bool
     }
 
 
@@ -95,10 +100,12 @@ new c =
         { id = Nothing
         , open = c.open
         , onClose = c.onClose
+        , header = Nothing
         , body = Nothing
         , actions = []
         , handle = True
         , hideable = True
+        , modal = False
         }
 
 
@@ -113,14 +120,22 @@ withId id (BottomSheet cfg) =
     BottomSheet { cfg | id = Just id }
 
 
-{-| Set the sheet's body content.
+{-| Set the sheet's header content (rendered in the `header` slot).
+-}
+withHeader : Html msg -> BottomSheet msg -> BottomSheet msg
+withHeader header (BottomSheet cfg) =
+    BottomSheet { cfg | header = Just header }
+
+
+{-| Set the sheet's body content (rendered in the default slot).
 -}
 withBody : Html msg -> BottomSheet msg -> BottomSheet msg
 withBody body (BottomSheet cfg) =
     BottomSheet { cfg | body = Just body }
 
 
-{-| Set the actions row.
+{-| Set the actions. Each is rendered as an `<m3e-bottom-sheet-action>`
+element so that activating it closes the parent sheet.
 -}
 withActions :
     List (Ui.Button.Button msg)
@@ -145,6 +160,13 @@ withHideable b (BottomSheet cfg) =
     BottomSheet { cfg | hideable = b }
 
 
+{-| Make the sheet modal (overlays content with a scrim). Default `False`.
+-}
+withModal : Bool -> BottomSheet msg -> BottomSheet msg
+withModal b (BottomSheet cfg) =
+    BottomSheet { cfg | modal = b }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -160,15 +182,30 @@ view (BottomSheet cfg) =
         M3e.BottomSheet.component
             (List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
+                , Just (M3e.BottomSheet.open True)
                 , Just (M3e.BottomSheet.handle cfg.handle)
                 , Just (M3e.BottomSheet.hideable cfg.hideable)
+                , Just (M3e.BottomSheet.modal cfg.modal)
+                , Just (M3e.BottomSheet.onClosed (Decode.succeed cfg.onClose))
+                , Just (M3e.BottomSheet.onCancel (Decode.succeed cfg.onClose))
                 ]
             )
             (List.concat
-                [ bodyElement cfg.body
+                [ headerElement cfg.header
+                , bodyElement cfg.body
                 , actionsElement cfg.actions
                 ]
             )
+
+
+headerElement : Maybe (Html msg) -> List (Html msg)
+headerElement header =
+    case header of
+        Nothing ->
+            []
+
+        Just h ->
+            [ Html.div [ M3e.BottomSheet.headerSlot ] [ h ] ]
 
 
 bodyElement : Maybe (Html msg) -> List (Html msg)
@@ -178,18 +215,15 @@ bodyElement body =
             []
 
         Just b ->
-            [ Html.div [ Attr.class "ds-bottom-sheet-body" ] [ b ] ]
+            [ b ]
 
 
 actionsElement :
     List (Ui.Button.Button msg)
     -> List (Html msg)
 actionsElement actions =
-    case actions of
-        [] ->
-            []
-
-        _ ->
-            [ Html.div [ Attr.class "ds-bottom-sheet-actions" ]
-                (List.map Ui.Button.view actions)
-            ]
+    List.map
+        (\button ->
+            M3e.BottomSheetAction.component [] [ Ui.Button.view button ]
+        )
+        actions

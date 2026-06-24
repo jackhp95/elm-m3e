@@ -256,7 +256,7 @@ plainPositionAttr p =
             M3e.Tooltip.position M3e.Tooltip.Before
 
         After ->
-            Attr.attribute "position" "after"
+            M3e.Tooltip.position M3e.Tooltip.After
 
 
 richPositionAttr : Position -> Html.Attribute msg
@@ -269,10 +269,10 @@ richPositionAttr p =
             M3e.RichTooltip.position M3e.RichTooltip.BelowBefore
 
         Before ->
-            Attr.attribute "position" "before"
+            M3e.RichTooltip.position M3e.RichTooltip.Before
 
         After ->
-            Attr.attribute "position" "after"
+            M3e.RichTooltip.position M3e.RichTooltip.After
 
 
 actionsElement :
@@ -284,6 +284,6 @@ actionsElement actions =
             []
 
         _ ->
-            [ Html.div [ Attr.class "ds-tooltip-actions" ]
+            [ Html.div [ M3e.RichTooltip.actionsSlot ]
                 (List.map Ui.Button.view actions)
             ]
