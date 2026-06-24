@@ -12,7 +12,7 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (Html, code, div, p, pre, section, text)
-import Html.Attributes exposing (class)
+import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
 import M3e.Shape
 import Pages.Url
@@ -22,15 +22,22 @@ import Shared
 import Ui.AppBar as AppBar
 import Ui.Avatar as Avatar
 import Ui.Badge as Badge
+import Ui.BottomSheet as BottomSheet
 import Ui.Breadcrumb as Breadcrumb
 import Ui.Button as Button
 import Ui.ButtonGroup as ButtonGroup
+import Ui.Calendar as Calendar
 import Ui.Card as Card
+import Ui.Carousel as Carousel
 import Ui.Checkbox as Checkbox
 import Ui.Chip as Chip
+import Ui.DatePicker as DatePicker
+import Ui.Dialog as Dialog
+import Ui.Disclosure as Disclosure
 import Ui.Divider as Divider
 import Ui.ExtendedFab as ExtendedFab
 import Ui.Fab as Fab
+import Ui.FabMenu as FabMenu
 import Ui.Heading as Heading
 import Ui.Icon as Icon
 import Ui.IconButton as IconButton
@@ -42,17 +49,27 @@ import Ui.NavigationRail as NavigationRail
 import Ui.Paginator as Paginator
 import Ui.Progress as Progress
 import Ui.RadioButton as RadioButton
+import Ui.ScrollContainer as ScrollContainer
 import Ui.Search as Search
 import Ui.SegmentedButton as SegmentedButton
 import Ui.Select as Select
 import Ui.Shape as Shape
+import Ui.SideSheet as SideSheet
 import Ui.Skeleton as Skeleton
+import Ui.Slide as Slide
 import Ui.Slider as Slider
 import Ui.Snackbar as Snackbar
+import Ui.SplitButton as SplitButton
+import Ui.SplitPane as SplitPane
+import Ui.Stepper as Stepper
 import Ui.Switch as Switch
 import Ui.Tabs as Tabs
 import Ui.TextField as TextField
+import Ui.TextHighlight as TextHighlight
+import Ui.TimePicker as TimePicker
+import Ui.Toc as Toc
 import Ui.Toolbar as Toolbar
+import Ui.Tooltip as Tooltip
 import UrlPath
 import View exposing (View)
 
@@ -347,6 +364,19 @@ demoSections slug =
               }
             ]
 
+        "bottomsheet" ->
+            [ { title = "Inline preview"
+              , body =
+                    p [ class "text-body-medium text-on-surface-variant" ]
+                        [ text "Bottom sheets render at the bottom of the viewport and are normally hidden until opened. In a real app, "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "Ui.BottomSheet.new { open, onClose }" ]
+                        , text " is driven by app state with "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "withHeader/withBody/withActions" ]
+                        , text ". See the Reply study for a working compose-mail bottom sheet."
+                        ]
+              }
+            ]
+
         "breadcrumb" ->
             [ usage
                 (Breadcrumb.new
@@ -395,6 +425,16 @@ demoSections slug =
                 )
             ]
 
+        "calendar" ->
+            [ usage
+                (Calendar.new
+                    |> Calendar.withDate "2026-06-24"
+                    |> Calendar.withMinDate "2026-01-01"
+                    |> Calendar.withMaxDate "2026-12-31"
+                    |> Calendar.view
+                )
+            ]
+
         "card" ->
             [ { title = "Variants"
               , body =
@@ -413,6 +453,18 @@ demoSections slug =
                             |> Card.view
                         ]
               }
+            ]
+
+        "carousel" ->
+            [ usage
+                (Carousel.new
+                    [ Shape.new |> Shape.withName M3e.Shape.Circle |> Shape.withClass "block h-32 w-48 bg-primary-container" |> Shape.view
+                    , Shape.new |> Shape.withName M3e.Shape.Flower |> Shape.withClass "block h-32 w-48 bg-secondary-container" |> Shape.view
+                    , Shape.new |> Shape.withName M3e.Shape.Pill |> Shape.withClass "block h-32 w-48 bg-tertiary-container" |> Shape.view
+                    , Shape.new |> Shape.withName M3e.Shape.Heart |> Shape.withClass "block h-32 w-48 bg-primary-container" |> Shape.view
+                    ]
+                    |> Carousel.view
+                )
             ]
 
         "checkbox" ->
@@ -435,6 +487,39 @@ demoSections slug =
                         , Chip.suggestion { id = "demo-chip-suggestion", label = text "Suggestion", onClick = PagesMsg.noOp } |> Chip.view
                         , Chip.filter { id = "demo-chip-filter", label = text "Filter", onToggle = PagesMsg.noOp } |> Chip.view
                         ]
+              }
+            ]
+
+        "datepicker" ->
+            [ usage
+                (DatePicker.new (\_ -> PagesMsg.noOp)
+                    |> DatePicker.view
+                )
+            ]
+
+        "dialog" ->
+            [ { title = "Inline preview"
+              , body =
+                    p [ class "text-body-medium text-on-surface-variant" ]
+                        [ text "Dialogs render on top of the viewport and are normally hidden until opened. "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "Ui.Dialog.new { title, open, onClose }" ]
+                        , text " supports "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "withBody" ]
+                        , text " and "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "withActions" ]
+                        , text ". See the Reply study (archive confirm) or Shrine (product details) for working examples."
+                        ]
+              }
+            ]
+
+        "disclosure" ->
+            [ { title = "Single panel"
+              , body =
+                    Disclosure.single
+                        "demo-disclosure"
+                        (text "Show more")
+                        [ p [ class "text-body-medium" ] [ text "Expandable content lives here. Tap the headline to toggle." ] ]
+                        |> Disclosure.view
               }
             ]
 
@@ -465,6 +550,22 @@ demoSections slug =
                         , Fab.new { icon = Icon.material "add", label = "Add", variant = Fab.Surface } |> Fab.view
                         ]
               }
+            ]
+
+        "fabmenu" ->
+            [ usage
+                (FabMenu.new
+                    { triggerIcon = Icon.material "menu"
+                    , triggerLabel = "Open actions"
+                    , variant = FabMenu.Primary
+                    , items =
+                        [ FabMenu.item { icon = Icon.material "edit", label = "Compose", onClick = PagesMsg.noOp }
+                        , FabMenu.item { icon = Icon.material "image", label = "Add photo", onClick = PagesMsg.noOp }
+                        , FabMenu.item { icon = Icon.material "videocam", label = "Record video", onClick = PagesMsg.noOp }
+                        ]
+                    }
+                    |> FabMenu.view
+                )
             ]
 
         "heading" ->
@@ -576,6 +677,80 @@ demoSections slug =
                         , Progress.circular 40 |> Progress.view
                         ]
               }
+            ]
+
+        "scrollcontainer" ->
+            [ usage
+                (ScrollContainer.new
+                    |> ScrollContainer.withDividers ScrollContainer.Both
+                    |> ScrollContainer.view
+                        [ div [ class "h-32 overflow-auto p-3 text-body-medium" ]
+                            [ p [] [ text "Item 1" ]
+                            , p [] [ text "Item 2" ]
+                            , p [] [ text "Item 3" ]
+                            , p [] [ text "Item 4" ]
+                            , p [] [ text "Item 5" ]
+                            , p [] [ text "Item 6" ]
+                            , p [] [ text "Item 7" ]
+                            ]
+                        ]
+                )
+            ]
+
+        "sidesheet" ->
+            [ { title = "Inline preview"
+              , body =
+                    p [ class "text-body-medium text-on-surface-variant" ]
+                        [ text "Side sheets anchor to the start or end edge of the viewport. "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "Ui.SideSheet.new { open, onClose }" ]
+                        , text " supports "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "withHeader/withBody/withActions" ]
+                        , text "; modality is opt-in. See Reply or Settings for live wiring."
+                        ]
+              }
+            ]
+
+        "slide" ->
+            [ usage
+                (Slide.new
+                    |> Slide.withId "demo-slide"
+                    |> Slide.view
+                )
+            ]
+
+        "splitbutton" ->
+            [ usage
+                (SplitButton.new
+                    { label = "Save"
+                    , onPrimaryClick = PagesMsg.noOp
+                    , onTriggerClick = PagesMsg.noOp
+                    , trailingIcon = Icon.material "arrow_drop_down"
+                    }
+                    |> SplitButton.view
+                )
+            ]
+
+        "splitpane" ->
+            [ usage
+                (SplitPane.new
+                    |> SplitPane.withStart
+                        [ p [ class "p-4 text-body-medium" ] [ text "Start pane" ] ]
+                    |> SplitPane.withEnd
+                        [ p [ class "p-4 text-body-medium" ] [ text "End pane" ] ]
+                    |> SplitPane.view
+                )
+            ]
+
+        "stepper" ->
+            [ usage
+                (Stepper.new
+                    |> Stepper.withSteps
+                        [ Stepper.step "demo-step-1" (text "Account") []
+                        , Stepper.step "demo-step-2" (text "Profile") []
+                        , Stepper.step "demo-step-3" (text "Confirm") []
+                        ]
+                    |> Stepper.view
+                )
             ]
 
         "radiobutton" ->
@@ -701,6 +876,15 @@ demoSections slug =
               }
             ]
 
+        "texthighlight" ->
+            [ usage
+                (TextHighlight.new
+                    |> TextHighlight.withTerm "highlight"
+                    |> TextHighlight.view
+                        [ text "Ui.TextHighlight wraps any inline content and highlights every occurrence of a search term." ]
+                )
+            ]
+
         "theme" ->
             [ { title = "About"
               , body =
@@ -712,6 +896,18 @@ demoSections slug =
               }
             ]
 
+        "timepicker" ->
+            [ usage
+                (TimePicker.new { label = "Meeting time", value = "14:30", onChange = noOp }
+                    |> TimePicker.view
+                )
+            ]
+
+        "toc" ->
+            [ usage
+                (Toc.new |> Toc.view)
+            ]
+
         "toolbar" ->
             [ usage
                 (Toolbar.new
@@ -720,6 +916,20 @@ demoSections slug =
                     ]
                     |> Toolbar.view
                 )
+            ]
+
+        "tooltip" ->
+            [ { title = "Plain tooltip"
+              , body =
+                    div [ class "flex flex-wrap items-center gap-3" ]
+                        [ Html.span [ Attr.id "tooltip-anchor-demo" ]
+                            [ IconButton.new { icon = Icon.material "refresh", label = "Refresh", variant = IconButton.Tonal }
+                                |> IconButton.view
+                            ]
+                        , Tooltip.plain { anchorId = "tooltip-anchor-demo", label = "Refresh data" }
+                            |> Tooltip.view
+                        ]
+              }
             ]
 
         _ ->
