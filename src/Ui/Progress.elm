@@ -1,6 +1,7 @@
 module Ui.Progress exposing
     ( Progress, linear, circular, indeterminate
     , Shape(..)
+    , withAttributes
     , withId, withMax
     , view
     )
@@ -33,6 +34,11 @@ determinate constructors (`linear`/`circular`) require a value, and
 @docs Shape
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Identity and values
 
 @docs withId, withMax
@@ -61,14 +67,14 @@ constructor, not a distinct render path a Figma node can carry.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.CircularProgressIndicator
 import M3e.LinearProgressIndicator
 
 
 type Progress msg
-    = Progress Config
+    = Progress (Config msg)
 
 
 type Shape
@@ -76,8 +82,9 @@ type Shape
     | Circular
 
 
-type alias Config =
+type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , shape : Shape
     , value : Maybe Int
     , max : Int
@@ -88,14 +95,14 @@ type alias Config =
 -}
 linear : Int -> Progress msg
 linear value =
-    Progress { id = Nothing, shape = Linear, value = Just value, max = 100 }
+    Progress { id = Nothing, attributes = [], shape = Linear, value = Just value, max = 100 }
 
 
 {-| A determinate circular indicator showing `value` out of `withMax` (default 100).
 -}
 circular : Int -> Progress msg
 circular value =
-    Progress { id = Nothing, shape = Circular, value = Just value, max = 100 }
+    Progress { id = Nothing, attributes = [], shape = Circular, value = Just value, max = 100 }
 
 
 {-| An indeterminate (animated, no value) indicator of the given `Shape`. The
@@ -103,7 +110,16 @@ only no-value path — determinate indicators always carry a value.
 -}
 indeterminate : Shape -> Progress msg
 indeterminate shape =
-    Progress { id = Nothing, shape = shape, value = Nothing, max = 100 }
+    Progress { id = Nothing, attributes = [], shape = shape, value = Nothing, max = 100 }
+
+
+{-| Append attributes to the rendered host — `<m3e-linear-progress>` for a
+linear shape, `<m3e-circular-progress>` for a circular one. Structural
+attributes are emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Progress msg -> Progress msg
+withAttributes attributes (Progress cfg) =
+    Progress { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withId : String -> Progress msg -> Progress msg
@@ -120,13 +136,13 @@ view : Progress msg -> Html msg
 view (Progress cfg) =
     case cfg.shape of
         Linear ->
-            M3e.LinearProgressIndicator.component (attrsLinear cfg) []
+            M3e.LinearProgressIndicator.component (cfg.attributes ++ attrsLinear cfg) []
 
         Circular ->
-            M3e.CircularProgressIndicator.component (attrsCircular cfg) []
+            M3e.CircularProgressIndicator.component (cfg.attributes ++ attrsCircular cfg) []
 
 
-attrsLinear : Config -> List (Html.Attribute msg)
+attrsLinear : Config msg -> List (Html.Attribute msg)
 attrsLinear cfg =
     List.filterMap identity
         [ Maybe.map Attr.id cfg.id
@@ -140,7 +156,7 @@ attrsLinear cfg =
         ]
 
 
-attrsCircular : Config -> List (Html.Attribute msg)
+attrsCircular : Config msg -> List (Html.Attribute msg)
 attrsCircular cfg =
     List.filterMap identity
         [ Maybe.map Attr.id cfg.id

@@ -1,9 +1,11 @@
 module Ui.Chip exposing
     ( Chip, Filter, Input, Generic
     , assist, suggestion, filter, input
+    , withAttributes
     , withSelected, withDisabled, withElevated, withIcon, withHref
     , view
     , Set, filterSet, inputSet, genericSet, withId, withChip, withChips
+    , withSetAttributes
     , viewSet
     )
 
@@ -33,6 +35,11 @@ visual axis is outlined (default) vs [`withElevated`](#withElevated), per spec.
 @docs assist, suggestion, filter, input
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Chip modifiers
 
 @docs withSelected, withDisabled, withElevated, withIcon, withHref
@@ -50,6 +57,7 @@ input set only input chips — so a heterogeneous set (which the M3e wrappers
 can't represent) is a compile error rather than a silent downgrade.
 
 @docs Set, filterSet, inputSet, genericSet, withId, withChip, withChips
+@docs withSetAttributes
 
 
 # Render set
@@ -75,7 +83,7 @@ no-op placeholder. Leading icons (`withIcon`), the outlined/elevated style axis
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.AssistChip
@@ -124,6 +132,7 @@ type Kind
 
 type alias ChipConfig msg =
     { id : String
+    , attributes : List (Attribute msg)
     , kind : Kind
     , label : Html msg
     , onClick : Maybe msg
@@ -140,6 +149,7 @@ type alias ChipConfig msg =
 defaultChip : String -> Kind -> Html msg -> ChipConfig msg
 defaultChip id kind label =
     { id = id
+    , attributes = []
     , kind = kind
     , label = label
     , onClick = Nothing
@@ -203,6 +213,16 @@ input { id, label, onRemove } =
     Chip { base | onRemove = Just onRemove }
 
 
+{-| Append attributes to the per-kind chip element (`<m3e-assist-chip>`,
+`<m3e-suggestion-chip>`, `<m3e-filter-chip>`, or `<m3e-input-chip>`). Structural
+attributes are emitted after these, so callers can't clobber them. For a chip
+_set_, style the wrapper with [`withSetAttributes`](#withSetAttributes).
+-}
+withAttributes : List (Attribute msg) -> Chip kind msg -> Chip kind msg
+withAttributes attributes (Chip cfg) =
+    Chip { cfg | attributes = cfg.attributes ++ attributes }
+
+
 {-| Mark a filter chip selected. Filter-only.
 
 @figma-code-connect prop=Selected bool component=Filter
@@ -258,7 +278,7 @@ renders the filter wrapper).
 -}
 filterSet : List (Chip Filter msg) -> Set Filter msg
 filterSet chips =
-    Set { id = Nothing, chips = chips, wrapper = M3e.FilterChipSet.component }
+    Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.FilterChipSet.component }
 
 
 {-| An input set — holds only [`input`](#input) chips and renders into an
@@ -266,7 +286,7 @@ filterSet chips =
 -}
 inputSet : List (Chip Input msg) -> Set Input msg
 inputSet chips =
-    Set { id = Nothing, chips = chips, wrapper = M3e.InputChipSet.component }
+    Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.InputChipSet.component }
 
 
 {-| A generic set for [`assist`](#assist) / [`suggestion`](#suggestion) chips,
@@ -274,7 +294,7 @@ rendered into the basic `ChipSet` wrapper.
 -}
 genericSet : List (Chip Generic msg) -> Set Generic msg
 genericSet chips =
-    Set { id = Nothing, chips = chips, wrapper = M3e.ChipSet.component }
+    Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.ChipSet.component }
 
 
 type Set kind msg
@@ -283,6 +303,7 @@ type Set kind msg
 
 type alias SetConfig kind msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , chips : List (Chip kind msg)
     , wrapper : List (Html.Attribute msg) -> List (Html msg) -> Html msg
     }
@@ -291,6 +312,16 @@ type alias SetConfig kind msg =
 withId : String -> Set kind msg -> Set kind msg
 withId id (Set cfg) =
     Set { cfg | id = Just id }
+
+
+{-| Append attributes to the chip-set wrapper element
+(`<m3e-filter-chip-set>` / `<m3e-input-chip-set>` / `<m3e-chip-set>`).
+Structural attributes are emitted after these, so callers can't clobber them.
+For a single chip, style its element with [`withAttributes`](#withAttributes).
+-}
+withSetAttributes : List (Attribute msg) -> Set kind msg -> Set kind msg
+withSetAttributes attributes (Set cfg) =
+    Set { cfg | attributes = cfg.attributes ++ attributes }
 
 
 withChip : Chip kind msg -> Set kind msg -> Set kind msg
@@ -326,47 +357,51 @@ view (Chip cfg) =
     case cfg.kind of
         Assist ->
             M3e.AssistChip.component
-                (List.filterMap identity
-                    [ Just (Attr.id cfg.id)
-                    , Just (genericStyle cfg.elevated (M3e.AssistChip.variant M3e.AssistChip.Elevated) (M3e.AssistChip.variant M3e.AssistChip.Outlined))
-                    , Just (M3e.AssistChip.disabled cfg.disabled)
-                    , linkOrClick M3e.AssistChip.href (on M3e.AssistChip.onClick) cfg
-                    ]
+                (cfg.attributes
+                    ++ List.filterMap identity
+                        [ Just (Attr.id cfg.id)
+                        , Just (genericStyle cfg.elevated (M3e.AssistChip.variant M3e.AssistChip.Elevated) (M3e.AssistChip.variant M3e.AssistChip.Outlined))
+                        , Just (M3e.AssistChip.disabled cfg.disabled)
+                        , linkOrClick M3e.AssistChip.href (on M3e.AssistChip.onClick) cfg
+                        ]
                 )
                 children
 
         Suggestion ->
             M3e.SuggestionChip.component
-                (List.filterMap identity
-                    [ Just (Attr.id cfg.id)
-                    , Just (genericStyle cfg.elevated (M3e.SuggestionChip.variant M3e.SuggestionChip.Elevated) (M3e.SuggestionChip.variant M3e.SuggestionChip.Outlined))
-                    , Just (M3e.SuggestionChip.disabled cfg.disabled)
-                    , linkOrClick M3e.SuggestionChip.href (on M3e.SuggestionChip.onClick) cfg
-                    ]
+                (cfg.attributes
+                    ++ List.filterMap identity
+                        [ Just (Attr.id cfg.id)
+                        , Just (genericStyle cfg.elevated (M3e.SuggestionChip.variant M3e.SuggestionChip.Elevated) (M3e.SuggestionChip.variant M3e.SuggestionChip.Outlined))
+                        , Just (M3e.SuggestionChip.disabled cfg.disabled)
+                        , linkOrClick M3e.SuggestionChip.href (on M3e.SuggestionChip.onClick) cfg
+                        ]
                 )
                 children
 
         FilterKind ->
             M3e.FilterChip.component
-                (List.filterMap identity
-                    [ Just (Attr.id cfg.id)
-                    , Just (genericStyle cfg.elevated (M3e.FilterChip.variant M3e.FilterChip.Elevated) (M3e.FilterChip.variant M3e.FilterChip.Outlined))
-                    , Just (M3e.FilterChip.selected cfg.selected)
-                    , Just (M3e.FilterChip.disabled cfg.disabled)
-                    , Maybe.map (on M3e.FilterChip.onChange) cfg.onToggle
-                    ]
+                (cfg.attributes
+                    ++ List.filterMap identity
+                        [ Just (Attr.id cfg.id)
+                        , Just (genericStyle cfg.elevated (M3e.FilterChip.variant M3e.FilterChip.Elevated) (M3e.FilterChip.variant M3e.FilterChip.Outlined))
+                        , Just (M3e.FilterChip.selected cfg.selected)
+                        , Just (M3e.FilterChip.disabled cfg.disabled)
+                        , Maybe.map (on M3e.FilterChip.onChange) cfg.onToggle
+                        ]
                 )
                 children
 
         InputKind ->
             M3e.InputChip.component
-                (List.filterMap identity
-                    [ Just (Attr.id cfg.id)
-                    , Just (genericStyle cfg.elevated (M3e.InputChip.variant M3e.InputChip.Elevated) (M3e.InputChip.variant M3e.InputChip.Outlined))
-                    , Just (M3e.InputChip.removable True)
-                    , Just (M3e.InputChip.disabled cfg.disabled)
-                    , Maybe.map (on M3e.InputChip.onRemove) cfg.onRemove
-                    ]
+                (cfg.attributes
+                    ++ List.filterMap identity
+                        [ Just (Attr.id cfg.id)
+                        , Just (genericStyle cfg.elevated (M3e.InputChip.variant M3e.InputChip.Elevated) (M3e.InputChip.variant M3e.InputChip.Outlined))
+                        , Just (M3e.InputChip.removable True)
+                        , Just (M3e.InputChip.disabled cfg.disabled)
+                        , Maybe.map (on M3e.InputChip.onRemove) cfg.onRemove
+                        ]
                 )
                 children
 
@@ -405,6 +440,6 @@ viewSet (Set cfg) =
     let
         baseAttrs : List (Html.Attribute msg)
         baseAttrs =
-            List.filterMap identity [ Maybe.map Attr.id cfg.id ]
+            cfg.attributes ++ List.filterMap identity [ Maybe.map Attr.id cfg.id ]
     in
     cfg.wrapper baseAttrs (List.map view cfg.chips)

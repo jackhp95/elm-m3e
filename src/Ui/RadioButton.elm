@@ -1,6 +1,7 @@
 module Ui.RadioButton exposing
     ( RadioGroup, Option
     , group, option
+    , withAttributes
     , withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
     , view
     )
@@ -82,6 +83,11 @@ Records and custom union types both work; functions do not.
 @docs group, option
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
@@ -93,7 +99,7 @@ Records and custom union types both work; functions do not.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.FormField
@@ -120,6 +126,7 @@ type Option value
 
 type alias Config value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , options : List (Option value)
     , selected : Maybe value
@@ -160,6 +167,7 @@ group :
 group c =
     RadioGroup
         { id = Nothing
+        , attributes = []
         , label = c.label
         , options = c.options
         , selected = c.selected
@@ -184,6 +192,17 @@ option =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the rendered root host. With a visible label (the
+default) that root is the `<m3e-form-field>` wrapper; in bare mode
+(`withVisibleLabel False`) it is the `<m3e-radio-group>` control itself. The
+builder's structural attributes are emitted after these, so callers can't
+clobber them.
+-}
+withAttributes : List (Attribute msg) -> RadioGroup value msg -> RadioGroup value msg
+withAttributes attributes (RadioGroup cfg) =
+    RadioGroup { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-radio-group>`.
@@ -245,9 +264,9 @@ view : RadioGroup value msg -> Html msg
 view (RadioGroup cfg) =
     if cfg.visibleLabel then
         M3e.FormField.component
-            []
+            cfg.attributes
             (List.concat
-                [ [ groupElement cfg
+                [ [ groupElement [] cfg
                   , labelElement cfg
                   ]
                 , subscriptElements cfg
@@ -255,7 +274,7 @@ view (RadioGroup cfg) =
             )
 
     else
-        groupElement cfg
+        groupElement cfg.attributes cfg
 
 
 {-| The group's `id`: the caller's `withId` if present, else a stable
@@ -281,20 +300,21 @@ groupName cfg =
     controlId cfg
 
 
-groupElement : Config value msg -> Html msg
-groupElement cfg =
+groupElement : List (Attribute msg) -> Config value msg -> Html msg
+groupElement extraAttrs cfg =
     M3e.RadioGroup.component
-        (List.filterMap identity
-            [ Just (Attr.id (controlId cfg))
-            , Just (M3e.RadioGroup.name (groupName cfg))
-            , Just (M3e.RadioGroup.disabled cfg.disabled)
-            , Just (M3e.RadioGroup.required cfg.required)
-            , if cfg.visibleLabel then
-                Nothing
+        (extraAttrs
+            ++ List.filterMap identity
+                [ Just (Attr.id (controlId cfg))
+                , Just (M3e.RadioGroup.name (groupName cfg))
+                , Just (M3e.RadioGroup.disabled cfg.disabled)
+                , Just (M3e.RadioGroup.required cfg.required)
+                , if cfg.visibleLabel then
+                    Nothing
 
-              else
-                Just (Attr.attribute "aria-label" cfg.label)
-            ]
+                  else
+                    Just (Attr.attribute "aria-label" cfg.label)
+                ]
         )
         (List.map (renderOption cfg) cfg.options)
 

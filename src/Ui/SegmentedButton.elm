@@ -1,6 +1,7 @@
 module Ui.SegmentedButton exposing
     ( SegmentedButton, Segment, Single, Multi
     , single, multi, segment
+    , withAttributes
     , withId, withHelp, withError, withDisabled
     , view
     )
@@ -87,6 +88,11 @@ Multi-select:
 @docs single, multi, segment
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withHelp, withError, withDisabled
@@ -98,7 +104,7 @@ Multi-select:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.ButtonSegment
@@ -136,6 +142,7 @@ type Segment value
 
 type alias Config value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , segments : List (Segment value)
     , isSelected : value -> Bool
@@ -163,6 +170,7 @@ single :
 single c =
     SegmentedButton
         { id = Nothing
+        , attributes = []
         , label = c.label
         , segments = c.segments
         , isSelected = \v -> c.selected == Just v
@@ -186,6 +194,7 @@ multi :
 multi c =
     SegmentedButton
         { id = Nothing
+        , attributes = []
         , label = c.label
         , segments = c.segments
         , isSelected = \v -> List.member v c.selected
@@ -206,6 +215,15 @@ segment =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the `<m3e-segmented-button>` control (not the plain
+layout wrapper that also holds the label and help/error subscripts). Structural
+attributes are emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> SegmentedButton kind value msg -> SegmentedButton kind value msg
+withAttributes attributes (SegmentedButton cfg) =
+    SegmentedButton { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-segmented-button>`.
@@ -264,11 +282,12 @@ view (SegmentedButton cfg) =
 groupElement : Config value msg -> Html msg
 groupElement cfg =
     M3e.SegmentedButton.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.SegmentedButton.disabled cfg.disabled)
-            , Just (M3e.SegmentedButton.multi cfg.multiAttr)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.SegmentedButton.disabled cfg.disabled)
+                , Just (M3e.SegmentedButton.multi cfg.multiAttr)
+                ]
         )
         (List.map (segmentView cfg) cfg.segments)
 

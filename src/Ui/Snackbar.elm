@@ -1,6 +1,7 @@
 module Ui.Snackbar exposing
     ( Snackbar
     , new
+    , withAttributes
     , withId, withAction, withDismissible, withCloseLabel, withDuration
     , view
     , encode
@@ -119,6 +120,11 @@ Imperative (fire-and-forget; caller-owned port):
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withAction, withDismissible, withCloseLabel, withDuration
@@ -135,7 +141,7 @@ Imperative (fire-and-forget; caller-owned port):
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Encode as Encode
 
@@ -143,11 +149,12 @@ import Json.Encode as Encode
 {-| A snackbar.
 -}
 type Snackbar msg
-    = Snackbar Config
+    = Snackbar (Config msg)
 
 
-type alias Config =
+type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , message : String
     , action : Maybe String
     , dismissible : Bool
@@ -162,12 +169,23 @@ new : String -> Snackbar msg
 new message =
     Snackbar
         { id = Nothing
+        , attributes = []
         , message = message
         , action = Nothing
         , dismissible = False
         , closeLabel = Nothing
         , duration = Nothing
         }
+
+
+{-| Append attributes to the rendered `<avt-snackbar>` node (the declarative
+[`view`](#view) path only — the imperative [`encode`](#encode) path has no host
+and ignores these). Structural attributes are emitted after these, so callers
+can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Snackbar msg -> Snackbar msg
+withAttributes attributes (Snackbar cfg) =
+    Snackbar { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute. Useful when wiring an `actionId` for the
@@ -222,18 +240,19 @@ snackbar element registers). Action presses dispatch a bubbling
 view : Snackbar msg -> Html msg
 view (Snackbar cfg) =
     Html.node "avt-snackbar"
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (Attr.attribute "message" cfg.message)
-            , Maybe.map (Attr.attribute "action") cfg.action
-            , if cfg.dismissible then
-                Just (Attr.attribute "dismissible" "true")
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (Attr.attribute "message" cfg.message)
+                , Maybe.map (Attr.attribute "action") cfg.action
+                , if cfg.dismissible then
+                    Just (Attr.attribute "dismissible" "true")
 
-              else
-                Nothing
-            , Maybe.map (Attr.attribute "close-label") cfg.closeLabel
-            , Maybe.map (Attr.attribute "duration" << String.fromInt) cfg.duration
-            ]
+                  else
+                    Nothing
+                , Maybe.map (Attr.attribute "close-label") cfg.closeLabel
+                , Maybe.map (Attr.attribute "duration" << String.fromInt) cfg.duration
+                ]
         )
         []
 

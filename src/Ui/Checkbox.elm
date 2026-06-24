@@ -1,6 +1,7 @@
 module Ui.Checkbox exposing
     ( Checkbox, Boolean, Tristate
     , boolean, tristate
+    , withAttributes
     , withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
     , view
     )
@@ -95,6 +96,11 @@ With help text and an error message:
 @docs boolean, tristate
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
@@ -106,7 +112,7 @@ With help text and an error message:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Checkbox
@@ -141,6 +147,7 @@ type Tristate
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , state : State
     , onChange : Bool -> msg
@@ -210,6 +217,7 @@ tristate c =
 baseConfig : String -> State -> (Bool -> msg) -> Config msg
 baseConfig label state onChange =
     { id = Nothing
+    , attributes = []
     , label = label
     , state = state
     , onChange = onChange
@@ -223,6 +231,17 @@ baseConfig label state onChange =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the rendered root host. With a visible label (the
+default) that root is the `<m3e-form-field>` wrapper; in bare mode
+(`withVisibleLabel False`) it is the `<m3e-checkbox>` control itself. The
+builder's structural attributes are emitted after these, so callers can't
+clobber them.
+-}
+withAttributes : List (Attribute msg) -> Checkbox kind msg -> Checkbox kind msg
+withAttributes attributes (Checkbox cfg) =
+    Checkbox { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-checkbox>`. Useful for
@@ -294,9 +313,9 @@ view : Checkbox kind msg -> Html msg
 view (Checkbox cfg) =
     if cfg.visibleLabel then
         M3e.FormField.component
-            []
+            cfg.attributes
             (List.concat
-                [ [ checkboxElement cfg
+                [ [ checkboxElement [] cfg
                   , labelElement cfg
                   ]
                 , subscriptElements cfg
@@ -304,7 +323,7 @@ view (Checkbox cfg) =
             )
 
     else
-        checkboxElement cfg
+        checkboxElement cfg.attributes cfg
 
 
 controlId : Config msg -> String
@@ -317,22 +336,23 @@ controlId cfg =
             slugify cfg.label
 
 
-checkboxElement : Config msg -> Html msg
-checkboxElement cfg =
+checkboxElement : List (Attribute msg) -> Config msg -> Html msg
+checkboxElement extraAttrs cfg =
     M3e.Checkbox.component
-        (List.filterMap identity
-            [ Just (Attr.id (controlId cfg))
-            , Just (M3e.Checkbox.checked (isChecked cfg.state))
-            , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
-            , Just (M3e.Checkbox.disabled cfg.disabled)
-            , Just (M3e.Checkbox.required cfg.required)
-            , if cfg.visibleLabel then
-                Nothing
+        (extraAttrs
+            ++ List.filterMap identity
+                [ Just (Attr.id (controlId cfg))
+                , Just (M3e.Checkbox.checked (isChecked cfg.state))
+                , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
+                , Just (M3e.Checkbox.disabled cfg.disabled)
+                , Just (M3e.Checkbox.required cfg.required)
+                , if cfg.visibleLabel then
+                    Nothing
 
-              else
-                Just (Attr.attribute "aria-label" cfg.label)
-            , Just (M3e.Checkbox.onChange (changeDecoder cfg.onChange))
-            ]
+                  else
+                    Just (Attr.attribute "aria-label" cfg.label)
+                , Just (M3e.Checkbox.onChange (changeDecoder cfg.onChange))
+                ]
         )
         []
 

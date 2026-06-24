@@ -1,6 +1,7 @@
 module Ui.Select exposing
     ( Select, Option, Single, Multi
     , single, multi, option
+    , withAttributes
     , withId, withRequired, withDisabled, withHelp, withError
     , view
     )
@@ -72,6 +73,11 @@ Same pattern as `Ui.RadioButton`: selection state stays typed end-to-end.
 @docs single, multi, option
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withRequired, withDisabled, withHelp, withError
@@ -83,7 +89,7 @@ Same pattern as `Ui.RadioButton`: selection state stays typed end-to-end.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Option
@@ -121,6 +127,7 @@ type Option value
 
 type alias Config value msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , options : List (Option value)
     , isSelected : value -> Bool
@@ -149,6 +156,7 @@ single :
 single c =
     Select
         { id = Nothing
+        , attributes = []
         , label = c.label
         , options = c.options
         , isSelected = \v -> c.selected == Just v
@@ -173,6 +181,7 @@ multi :
 multi c =
     Select
         { id = Nothing
+        , attributes = []
         , label = c.label
         , options = c.options
         , isSelected = \v -> List.member v c.selected
@@ -194,6 +203,15 @@ option =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the `<m3e-select>` control (not the optional subscript
+wrapper that may also hold help/error text). Structural attributes are emitted
+after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Select kind value msg -> Select kind value msg
+withAttributes attributes (Select cfg) =
+    Select { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -258,13 +276,14 @@ view (Select cfg) =
 selectElement : Config value msg -> Html msg
 selectElement cfg =
     M3e.Select.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (Attr.attribute "label" cfg.label)
-            , Just (M3e.Select.multi cfg.multiAttr)
-            , Just (M3e.Select.required cfg.required)
-            , Just (M3e.Select.disabled cfg.disabled)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (Attr.attribute "label" cfg.label)
+                , Just (M3e.Select.multi cfg.multiAttr)
+                , Just (M3e.Select.required cfg.required)
+                , Just (M3e.Select.disabled cfg.disabled)
+                ]
         )
         (List.map (optionView cfg) cfg.options)
 

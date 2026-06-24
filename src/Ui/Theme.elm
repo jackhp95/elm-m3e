@@ -1,5 +1,6 @@
 module Ui.Theme exposing
     ( Theme, new
+    , withAttributes
     , withSeedColor
     , Scheme(..), withScheme
     , Variant(..), withVariant
@@ -26,6 +27,11 @@ theming mechanism is the element, and the tokens it cascades.
 # Construction
 
 @docs Theme, new
+
+
+# Host attributes
+
+@docs withAttributes
 
 
 # Seed color
@@ -69,7 +75,7 @@ theming mechanism is the element, and the tokens it cascades.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Json.Decode
 import M3e.Theme
 
@@ -121,6 +127,7 @@ type Motion
 
 type alias Config msg =
     { seedColor : Maybe String
+    , attributes : List (Attribute msg)
     , scheme : Maybe Scheme
     , variant : Maybe Variant
     , contrast : Maybe Contrast
@@ -139,6 +146,7 @@ new : Theme msg
 new =
     Theme
         { seedColor = Nothing
+        , attributes = []
         , scheme = Nothing
         , variant = Nothing
         , contrast = Nothing
@@ -147,6 +155,16 @@ new =
         , motion = Nothing
         , onChange = Nothing
         }
+
+
+{-| Append attributes to the rendered `<m3e-theme>` provider element. Although
+the theme is a non-visual token provider, this is still useful for `data-*`,
+`id`, and event hooks. Structural attributes are emitted after these, so callers
+can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Theme msg -> Theme msg
+withAttributes attributes (Theme cfg) =
+    Theme { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the hex seed color from which the dynamic palettes are derived
@@ -212,16 +230,17 @@ attributes.
 view : List (Html msg) -> Theme msg -> Html msg
 view children (Theme cfg) =
     M3e.Theme.component
-        (List.filterMap identity
-            [ Maybe.map M3e.Theme.color cfg.seedColor
-            , Maybe.map (toM3eScheme >> M3e.Theme.scheme) cfg.scheme
-            , Maybe.map (toM3eVariant >> M3e.Theme.variant) cfg.variant
-            , Maybe.map (toM3eContrast >> M3e.Theme.contrast) cfg.contrast
-            , Maybe.map M3e.Theme.density cfg.density
-            , Maybe.map M3e.Theme.strongFocus cfg.strongFocus
-            , Maybe.map (toM3eMotion >> M3e.Theme.motion) cfg.motion
-            , Maybe.map M3e.Theme.onChange cfg.onChange
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map M3e.Theme.color cfg.seedColor
+                , Maybe.map (toM3eScheme >> M3e.Theme.scheme) cfg.scheme
+                , Maybe.map (toM3eVariant >> M3e.Theme.variant) cfg.variant
+                , Maybe.map (toM3eContrast >> M3e.Theme.contrast) cfg.contrast
+                , Maybe.map M3e.Theme.density cfg.density
+                , Maybe.map M3e.Theme.strongFocus cfg.strongFocus
+                , Maybe.map (toM3eMotion >> M3e.Theme.motion) cfg.motion
+                , Maybe.map M3e.Theme.onChange cfg.onChange
+                ]
         )
         children
 

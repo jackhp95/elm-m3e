@@ -1,6 +1,7 @@
 module Ui.Switch exposing
     ( Switch
     , new
+    , withAttributes
     , withId, withHelp, withError, withDisabled, withHandleIcons, withVisibleLabel
     , view
     )
@@ -83,6 +84,11 @@ With help text:
 @docs new
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withHelp, withError, withDisabled, withHandleIcons, withVisibleLabel
@@ -94,7 +100,7 @@ With help text:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.FormField
@@ -113,6 +119,7 @@ type Switch msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , checked : Bool
     , onChange : Bool -> msg
@@ -144,6 +151,7 @@ new : { label : String, checked : Bool, onChange : Bool -> msg } -> Switch msg
 new c =
     Switch
         { id = Nothing
+        , attributes = []
         , label = c.label
         , checked = c.checked
         , onChange = c.onChange
@@ -157,6 +165,17 @@ new c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the rendered root host. With a visible label (the
+default) that root is the `<m3e-form-field>` wrapper; in bare mode
+(`withVisibleLabel False`) it is the `<m3e-switch>` control itself. The
+builder's structural attributes are emitted after these, so callers can't
+clobber them.
+-}
+withAttributes : List (Attribute msg) -> Switch msg -> Switch msg
+withAttributes attributes (Switch cfg) =
+    Switch { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute on the underlying `<m3e-switch>`.
@@ -224,9 +243,9 @@ view : Switch msg -> Html msg
 view (Switch cfg) =
     if cfg.visibleLabel then
         M3e.FormField.component
-            []
+            cfg.attributes
             (List.concat
-                [ [ switchElement cfg
+                [ [ switchElement [] cfg
                   , labelElement cfg
                   ]
                 , subscriptElements cfg
@@ -234,7 +253,7 @@ view (Switch cfg) =
             )
 
     else
-        switchElement cfg
+        switchElement cfg.attributes cfg
 
 
 controlId : Config msg -> String
@@ -247,25 +266,26 @@ controlId cfg =
             slugify cfg.label
 
 
-switchElement : Config msg -> Html msg
-switchElement cfg =
+switchElement : List (Attribute msg) -> Config msg -> Html msg
+switchElement extraAttrs cfg =
     M3e.Switch.component
-        (List.filterMap identity
-            [ Just (Attr.id (controlId cfg))
-            , Just (M3e.Switch.checked cfg.checked)
-            , Just (M3e.Switch.disabled cfg.disabled)
-            , if cfg.handleIcons then
-                Just (M3e.Switch.icons M3e.Switch.Both)
+        (extraAttrs
+            ++ List.filterMap identity
+                [ Just (Attr.id (controlId cfg))
+                , Just (M3e.Switch.checked cfg.checked)
+                , Just (M3e.Switch.disabled cfg.disabled)
+                , if cfg.handleIcons then
+                    Just (M3e.Switch.icons M3e.Switch.Both)
 
-              else
-                Nothing
-            , if cfg.visibleLabel then
-                Nothing
+                  else
+                    Nothing
+                , if cfg.visibleLabel then
+                    Nothing
 
-              else
-                Just (Attr.attribute "aria-label" cfg.label)
-            , Just (M3e.Switch.onChange (changeDecoder cfg.onChange))
-            ]
+                  else
+                    Just (Attr.attribute "aria-label" cfg.label)
+                , Just (M3e.Switch.onChange (changeDecoder cfg.onChange))
+                ]
         )
         []
 

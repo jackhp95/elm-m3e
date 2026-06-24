@@ -2,6 +2,7 @@ module Ui.FabMenu exposing
     ( FabMenu, Item
     , Variant(..)
     , new, item
+    , withAttributes
     , withItemLabel, withId
     , view
     )
@@ -31,6 +32,11 @@ single primary action, prefer `Ui.Fab`.
 @docs new, item
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withItemLabel, withId
@@ -42,7 +48,7 @@ single primary action, prefer `Ui.Fab`.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode
 import M3e.Fab
@@ -69,6 +75,7 @@ type alias MenuConfig msg =
     , triggerLabel : String
     , variant : Variant
     , menuId : String
+    , attributes : List (Attribute msg)
     , items : List (Item msg)
     }
 
@@ -103,6 +110,7 @@ new c =
         , triggerLabel = c.triggerLabel
         , variant = c.variant
         , menuId = "fab-menu"
+        , attributes = []
         , items = c.items
         }
 
@@ -112,6 +120,15 @@ new c =
 item : { icon : Ui.Icon.Icon msg, label : String, onClick : msg } -> Item msg
 item =
     Item
+
+
+{-| Append attributes to the wrapper `<div>` around the FAB trigger and menu —
+the escape hatch for positioning/styling the whole menu unit. The trigger's own
+structural attributes are unaffected.
+-}
+withAttributes : List (Attribute msg) -> FabMenu msg -> FabMenu msg
+withAttributes attributes (FabMenu cfg) =
+    FabMenu { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the visible label on a FAB menu item.
@@ -139,7 +156,7 @@ Emits an opener (`m3e-fab` carrying the trigger icon plus a nested
 -}
 view : FabMenu msg -> Html msg
 view (FabMenu cfg) =
-    Html.div []
+    Html.div cfg.attributes
         [ M3e.Fab.component
             [ Attr.attribute "aria-label" cfg.triggerLabel ]
             [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Ui.Icon.view cfg.triggerIcon ]

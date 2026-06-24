@@ -2,6 +2,7 @@ module Ui.Disclosure exposing
     ( Disclosure
     , single, accordion
     , Section, section
+    , withAttributes
     , withOpen, withDisabled, withOnToggle, withHideToggle
     , withSectionOpen, withSectionOnToggle
     , withMulti
@@ -42,6 +43,11 @@ content lands in the panel's default slot.
 @docs Section, section
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Single-panel configuration
 
 @docs withOpen, withDisabled, withOnToggle, withHideToggle
@@ -63,7 +69,7 @@ content lands in the panel's default slot.
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Accordion
@@ -75,7 +81,7 @@ import M3e.ExpansionPanel
 -}
 type Disclosure msg
     = Single (Panel msg)
-    | Accordion AccordionConfig (List (Section msg))
+    | Accordion (AccordionConfig msg) (List (Section msg))
 
 
 {-| One collapsible surface inside an accordion. Build with
@@ -87,6 +93,7 @@ type Section msg
 
 type alias Panel msg =
     { id : String
+    , attributes : List (Attribute msg)
     , headline : Html msg
     , content : List (Html msg)
     , open : Bool
@@ -96,8 +103,9 @@ type alias Panel msg =
     }
 
 
-type alias AccordionConfig =
+type alias AccordionConfig msg =
     { id : String
+    , attributes : List (Attribute msg)
     , multi : Bool
     }
 
@@ -141,7 +149,7 @@ simultaneous expansion with [`withMulti`](#withMulti).
 -}
 accordion : String -> List (Section msg) -> Disclosure msg
 accordion id_ sections =
-    Accordion { id = id_, multi = False } sections
+    Accordion { id = id_, attributes = [], multi = False } sections
 
 
 {-| A panel inside an accordion. The id is required and distinct from the
@@ -155,6 +163,7 @@ section id_ headline content =
 newPanel : String -> Html msg -> List (Html msg) -> Panel msg
 newPanel id_ headline content =
     { id = id_
+    , attributes = []
     , headline = headline
     , content = content
     , open = False
@@ -162,6 +171,25 @@ newPanel id_ headline content =
     , hideToggle = False
     , onToggle = Nothing
     }
+
+
+
+-- HOST ATTRIBUTES
+
+
+{-| Append attributes to the rendered root host — the `<m3e-expansion-panel>`
+of a [`single`](#single) disclosure, or the `<m3e-accordion>` wrapper of an
+[`accordion`](#accordion). Structural attributes are emitted after these, so
+callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Disclosure msg -> Disclosure msg
+withAttributes attributes disclosure =
+    case disclosure of
+        Single p ->
+            Single { p | attributes = p.attributes ++ attributes }
+
+        Accordion cfg sections ->
+            Accordion { cfg | attributes = cfg.attributes ++ attributes } sections
 
 
 
@@ -257,16 +285,18 @@ view disclosure =
 
         Accordion cfg sections ->
             M3e.Accordion.component
-                [ Attr.id cfg.id
-                , M3e.Accordion.multi cfg.multi
-                ]
+                (cfg.attributes
+                    ++ [ Attr.id cfg.id
+                       , M3e.Accordion.multi cfg.multi
+                       ]
+                )
                 (List.map (\(Section p) -> viewPanel p) sections)
 
 
 viewPanel : Panel msg -> Html msg
 viewPanel p =
     M3e.ExpansionPanel.component
-        (Attr.id p.id :: panelAttrs p)
+        (p.attributes ++ Attr.id p.id :: panelAttrs p)
         (Html.span [ M3e.ExpansionPanel.headerSlot ] [ p.headline ]
             :: p.content
         )

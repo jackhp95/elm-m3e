@@ -2,6 +2,7 @@ module Ui.Tooltip exposing
     ( Tooltip, Plain, Rich
     , Position(..)
     , plain, rich
+    , withAttributes
     , withId, withPosition, withHideDelay, withActions
     , view
     )
@@ -79,6 +80,11 @@ A rich tooltip with explanation and an action:
 @docs plain, rich
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withPosition, withHideDelay, withActions
@@ -90,7 +96,7 @@ A rich tooltip with explanation and an action:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.RichTooltip
 import M3e.Tooltip
@@ -130,6 +136,7 @@ type Position
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , anchorId : String
     , kind : Kind msg
     , position : Maybe Position
@@ -153,6 +160,7 @@ plain : { anchorId : String, label : String } -> Tooltip Plain msg
 plain c =
     Tooltip
         { id = Nothing
+        , attributes = []
         , anchorId = c.anchorId
         , kind = PlainKind c.label
         , position = Nothing
@@ -167,6 +175,7 @@ rich : { anchorId : String, content : Html msg } -> Tooltip Rich msg
 rich c =
     Tooltip
         { id = Nothing
+        , attributes = []
         , anchorId = c.anchorId
         , kind = RichKind c.content
         , position = Nothing
@@ -177,6 +186,15 @@ rich c =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the rendered tooltip host — `<m3e-tooltip>` for a
+plain tooltip, `<m3e-rich-tooltip>` for a rich one. Structural attributes are
+emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Tooltip kind msg -> Tooltip kind msg
+withAttributes attributes (Tooltip cfg) =
+    Tooltip { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` on the tooltip element.
@@ -222,23 +240,25 @@ view (Tooltip cfg) =
     case cfg.kind of
         PlainKind label ->
             M3e.Tooltip.component
-                (List.filterMap identity
-                    [ Maybe.map Attr.id cfg.id
-                    , Just (M3e.Tooltip.for cfg.anchorId)
-                    , Maybe.map plainPositionAttr cfg.position
-                    , Maybe.map (M3e.Tooltip.hideDelay << toFloat) cfg.hideDelay
-                    ]
+                (cfg.attributes
+                    ++ List.filterMap identity
+                        [ Maybe.map Attr.id cfg.id
+                        , Just (M3e.Tooltip.for cfg.anchorId)
+                        , Maybe.map plainPositionAttr cfg.position
+                        , Maybe.map (M3e.Tooltip.hideDelay << toFloat) cfg.hideDelay
+                        ]
                 )
                 [ Html.text label ]
 
         RichKind content ->
             M3e.RichTooltip.component
-                (List.filterMap identity
-                    [ Maybe.map Attr.id cfg.id
-                    , Just (M3e.RichTooltip.for cfg.anchorId)
-                    , Maybe.map richPositionAttr cfg.position
-                    , Maybe.map (M3e.RichTooltip.hideDelay << toFloat) cfg.hideDelay
-                    ]
+                (cfg.attributes
+                    ++ List.filterMap identity
+                        [ Maybe.map Attr.id cfg.id
+                        , Just (M3e.RichTooltip.for cfg.anchorId)
+                        , Maybe.map richPositionAttr cfg.position
+                        , Maybe.map (M3e.RichTooltip.hideDelay << toFloat) cfg.hideDelay
+                        ]
                 )
                 (content :: actionsElement cfg.actions)
 

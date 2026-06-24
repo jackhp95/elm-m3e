@@ -1,6 +1,7 @@
 module Ui.Search exposing
     ( Search, Bar, Results
     , bar, results
+    , withAttributes
     , withId, withQuery, withPlaceholder
     , withClearable
     , withDefaultOpen, withExplicitOpenState
@@ -56,6 +57,11 @@ caller-side wiring for the magnifying glass. `withQuery` wires the input's
 @docs bar, results
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Identity, query, placeholder
 
 @docs withId, withQuery, withPlaceholder
@@ -77,7 +83,7 @@ caller-side wiring for the magnifying glass. `withQuery` wires the input's
 
 -}
 
-import Html exposing (Html, span)
+import Html exposing (Attribute, Html, span)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
@@ -123,6 +129,7 @@ type OpenState msg
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , mode : Mode
     , query : Maybe ( String, String -> msg )
     , items : List (Ui.List.Item msg)
@@ -149,6 +156,7 @@ bar : Search Bar msg
 bar =
     Search
         { id = Nothing
+        , attributes = []
         , mode = BarMode
         , query = Nothing
         , items = []
@@ -177,6 +185,7 @@ results : List (Ui.List.Item msg) -> Search Results msg
 results items =
     Search
         { id = Nothing
+        , attributes = []
         , mode = ResultsMode
         , query = Nothing
         , items = items
@@ -188,6 +197,15 @@ results items =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the rendered surface host — `<m3e-search-bar>` for
+[`bar`](#bar), `<m3e-search-view>` for [`results`](#results). Structural
+attributes are emitted after these, so callers can't clobber them.
+-}
+withAttributes : List (Attribute msg) -> Search kind msg -> Search kind msg
+withAttributes attributes (Search cfg) =
+    Search { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Attach a DOM id to the rendered surface. Required for testing and for
@@ -263,10 +281,11 @@ view (Search cfg) =
 viewSearchBar : Config msg -> Html msg
 viewSearchBar cfg =
     M3e.SearchBar.component
-        (List.filterMap identity
-            [ Maybe.map Attr.id cfg.id
-            , Just (M3e.SearchBar.clearable cfg.clearable)
-            ]
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (M3e.SearchBar.clearable cfg.clearable)
+                ]
         )
         [ defaultLeading, inputElement cfg ]
 
@@ -284,10 +303,11 @@ defaultLeading =
 viewSearchView : Config msg -> Html msg
 viewSearchView cfg =
     M3e.SearchView.component
-        (List.filterMap identity
-            (Maybe.map Attr.id cfg.id
-                :: searchViewOpenAttrs cfg.openState
-            )
+        (cfg.attributes
+            ++ List.filterMap identity
+                (Maybe.map Attr.id cfg.id
+                    :: searchViewOpenAttrs cfg.openState
+                )
         )
         [ inputElement cfg
         , resultsList cfg.items

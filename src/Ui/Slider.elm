@@ -1,6 +1,7 @@
 module Ui.Slider exposing
     ( Slider, Single, Range
     , value, range
+    , withAttributes
     , withId, withMin, withMax, withStep, withDiscrete, withDisabled
     , withHelp, withError, withLabelled, withVisibleLabel
     , view
@@ -73,6 +74,11 @@ A price-range filter:
 @docs value, range
 
 
+# Host attributes
+
+@docs withAttributes
+
+
 # Modifiers
 
 @docs withId, withMin, withMax, withStep, withDiscrete, withDisabled
@@ -85,7 +91,7 @@ A price-range filter:
 
 -}
 
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.FormField
@@ -118,6 +124,7 @@ type Range
 
 type alias Config msg =
     { id : Maybe String
+    , attributes : List (Attribute msg)
     , label : String
     , thumbs : Thumbs msg
     , min : Maybe Float
@@ -177,6 +184,7 @@ range c =
 baseConfig : String -> Thumbs msg -> Config msg
 baseConfig label thumbs =
     { id = Nothing
+    , attributes = []
     , label = label
     , thumbs = thumbs
     , min = Nothing
@@ -193,6 +201,17 @@ baseConfig label thumbs =
 
 
 -- MODIFIERS --------------------------------------------------------------
+
+
+{-| Append attributes to the rendered root host. With a visible label (the
+default) that root is the `<m3e-form-field>` wrapper; in bare mode
+(`withVisibleLabel False`) it is the `<m3e-slider>` control itself. The
+builder's structural attributes are emitted after these, so callers can't
+clobber them.
+-}
+withAttributes : List (Attribute msg) -> Slider kind msg -> Slider kind msg
+withAttributes attributes (Slider cfg) =
+    Slider { cfg | attributes = cfg.attributes ++ attributes }
 
 
 {-| Set the `id` attribute.
@@ -283,9 +302,9 @@ view : Slider kind msg -> Html msg
 view (Slider cfg) =
     if cfg.visibleLabel then
         M3e.FormField.component
-            []
+            cfg.attributes
             (List.concat
-                [ [ sliderElement cfg
+                [ [ sliderElement [] cfg
                   , labelElement cfg
                   ]
                 , subscriptElements cfg
@@ -293,7 +312,7 @@ view (Slider cfg) =
             )
 
     else
-        sliderElement cfg
+        sliderElement cfg.attributes cfg
 
 
 controlId : Config msg -> String
@@ -306,23 +325,24 @@ controlId cfg =
             slugify cfg.label
 
 
-sliderElement : Config msg -> Html msg
-sliderElement cfg =
+sliderElement : List (Attribute msg) -> Config msg -> Html msg
+sliderElement extraAttrs cfg =
     M3e.Slider.component
-        (List.filterMap identity
-            [ Just (Attr.id (controlId cfg))
-            , Maybe.map M3e.Slider.minAttr cfg.min
-            , Maybe.map M3e.Slider.maxAttr cfg.max
-            , Maybe.map M3e.Slider.step cfg.step
-            , Just (M3e.Slider.discrete cfg.discrete)
-            , Just (M3e.Slider.labelled cfg.labelled)
-            , Just (M3e.Slider.disabled cfg.disabled)
-            , if cfg.visibleLabel then
-                Nothing
+        (extraAttrs
+            ++ List.filterMap identity
+                [ Just (Attr.id (controlId cfg))
+                , Maybe.map M3e.Slider.minAttr cfg.min
+                , Maybe.map M3e.Slider.maxAttr cfg.max
+                , Maybe.map M3e.Slider.step cfg.step
+                , Just (M3e.Slider.discrete cfg.discrete)
+                , Just (M3e.Slider.labelled cfg.labelled)
+                , Just (M3e.Slider.disabled cfg.disabled)
+                , if cfg.visibleLabel then
+                    Nothing
 
-              else
-                Just (Attr.attribute "aria-label" cfg.label)
-            ]
+                  else
+                    Just (Attr.attribute "aria-label" cfg.label)
+                ]
         )
         (thumbsElements cfg.thumbs)
 
