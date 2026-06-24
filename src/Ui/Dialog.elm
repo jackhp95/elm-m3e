@@ -2,7 +2,7 @@ module Ui.Dialog exposing
     ( Dialog
     , new
     , withId, withBody, withActions
-    , withDismissible, withAlert, withFullScreen
+    , withDismissible, withAlert
     , view
     )
 
@@ -73,7 +73,7 @@ An alert dialog (semantic role):
 # Modifiers
 
 @docs withId, withBody, withActions
-@docs withDismissible, withAlert, withFullScreen
+@docs withDismissible, withAlert
 
 
 # Render
@@ -108,7 +108,6 @@ type alias Config msg =
     , actions : List (Ui.Button.Button msg)
     , dismissible : Bool
     , alert : Bool
-    , fullScreen : Bool
     }
 
 
@@ -137,7 +136,6 @@ new c =
         , actions = []
         , dismissible = True
         , alert = False
-        , fullScreen = False
         }
 
 
@@ -196,14 +194,6 @@ withAlert b (Dialog cfg) =
     Dialog { cfg | alert = b }
 
 
-{-| Switch to full-screen mode (m3's second dialog type). Use for
-dialogs that contain a complete task workflow.
--}
-withFullScreen : Bool -> Dialog msg -> Dialog msg
-withFullScreen b (Dialog cfg) =
-    Dialog { cfg | fullScreen = b }
-
-
 
 -- RENDER -----------------------------------------------------------------
 
@@ -223,7 +213,6 @@ view (Dialog cfg) =
                 , Just (M3e.Dialog.open "true")
                 , Just (M3e.Dialog.alert cfg.alert)
                 , Just (M3e.Dialog.dismissible cfg.dismissible)
-                , maybeAttr cfg.fullScreen (Attr.attribute "full-screen" "true")
                 , Just (M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
                 , Just (M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
                 ]
@@ -236,22 +225,9 @@ view (Dialog cfg) =
             )
 
 
-maybeAttr : Bool -> Html.Attribute msg -> Maybe (Html.Attribute msg)
-maybeAttr b a =
-    if b then
-        Just a
-
-    else
-        Nothing
-
-
 titleElement : Config msg -> Html msg
 titleElement cfg =
-    Html.h2
-        [ M3e.Dialog.headerSlot
-        , Attr.class "ds-dialog-headline"
-        ]
-        [ Html.text cfg.title ]
+    Html.h2 [ M3e.Dialog.headerSlot ] [ Html.text cfg.title ]
 
 
 bodyElement : Maybe (Html msg) -> List (Html msg)
@@ -261,7 +237,7 @@ bodyElement body =
             []
 
         Just b ->
-            [ Html.div [ Attr.class "ds-dialog-body" ] [ b ] ]
+            [ b ]
 
 
 actionsElement :
@@ -273,7 +249,6 @@ actionsElement actions =
             []
 
         _ ->
-            [ Html.div
-                [ M3e.Dialog.actionsSlot, Attr.class "ds-dialog-actions" ]
+            [ Html.div [ M3e.Dialog.actionsSlot ]
                 (List.map Ui.Button.view actions)
             ]
