@@ -5,6 +5,7 @@ module Ui.Button exposing
     , withAttributes
     , withSize, withShape, withDisabled, withLeadingIcon, withTrailingIcon
     , withOnClick, withHref, withToggle
+    , withTarget, withRel, withDownload
     , view
     )
 
@@ -103,6 +104,15 @@ Toggle — show/hide archived records:
 @docs withOnClick, withHref, withToggle
 
 
+# Link-only modifiers
+
+These setters are only meaningful in combination with `withHref` — they
+mirror the corresponding `<a>` attributes. They are silently ignored
+when the button has any other (or no) action wiring.
+
+@docs withTarget, withRel, withDownload
+
+
 # Render
 
 @docs view
@@ -137,6 +147,9 @@ type alias Config msg =
     , leadingIcon : Maybe (Ui.Icon.Icon msg)
     , trailingIcon : Maybe (Ui.Icon.Icon msg)
     , wiring : Maybe (Wiring msg)
+    , target : Maybe String
+    , rel : Maybe String
+    , download : Maybe String
     }
 
 
@@ -214,6 +227,9 @@ new c =
         , leadingIcon = Nothing
         , trailingIcon = Nothing
         , wiring = Nothing
+        , target = Nothing
+        , rel = Nothing
+        , download = Nothing
         }
 
 
@@ -297,6 +313,35 @@ withToggle c (Button cfg) =
 
 
 
+-- LINK-ONLY MODIFIERS ----------------------------------------------------
+
+
+{-| Set the link's `target` attribute (e.g. `"_blank"`). Only meaningful
+when the button is wired with `withHref`; silently ignored otherwise.
+-}
+withTarget : String -> Button msg -> Button msg
+withTarget target (Button cfg) =
+    Button { cfg | target = Just target }
+
+
+{-| Set the link's `rel` attribute (e.g. `"noreferrer noopener"`). Only
+meaningful when the button is wired with `withHref`; silently ignored
+otherwise.
+-}
+withRel : String -> Button msg -> Button msg
+withRel rel (Button cfg) =
+    Button { cfg | rel = Just rel }
+
+
+{-| Set the link's `download` attribute. Only meaningful when the button
+is wired with `withHref`; silently ignored otherwise.
+-}
+withDownload : String -> Button msg -> Button msg
+withDownload download (Button cfg) =
+    Button { cfg | download = Just download }
+
+
+
 -- RENDER -----------------------------------------------------------------
 
 
@@ -312,7 +357,7 @@ view (Button cfg) =
                   ]
                 , shapeAttr cfg.shape
                 , disabledAttrs cfg.disabled
-                , wiringAttrs cfg.wiring
+                , wiringAttrs cfg
                 ]
         )
         (List.concat
@@ -416,9 +461,9 @@ disabledAttrs d =
             [ M3e.Button.disabledInteractive True ]
 
 
-wiringAttrs : Maybe (Wiring msg) -> List (Html.Attribute msg)
-wiringAttrs maybeWiring =
-    case maybeWiring of
+wiringAttrs : Config msg -> List (Html.Attribute msg)
+wiringAttrs cfg =
+    case cfg.wiring of
         Nothing ->
             []
 
@@ -426,13 +471,22 @@ wiringAttrs maybeWiring =
             [ HtmlEvents.onClick msg ]
 
         Just (WireHref href) ->
-            [ M3e.Button.href href ]
+            M3e.Button.href href :: linkAttrs cfg
 
         Just (WireToggle { selected, onChange }) ->
             [ M3e.Button.toggle True
             , M3e.Button.selected selected
             , M3e.Button.onChange (toggleChangeDecoder onChange)
             ]
+
+
+linkAttrs : Config msg -> List (Html.Attribute msg)
+linkAttrs cfg =
+    List.filterMap identity
+        [ Maybe.map M3e.Button.target cfg.target
+        , Maybe.map M3e.Button.rel cfg.rel
+        , Maybe.map M3e.Button.download cfg.download
+        ]
 
 
 toggleChangeDecoder : (Bool -> msg) -> Decode.Decoder msg

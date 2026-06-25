@@ -94,6 +94,8 @@ studyCard ( slug, title, body ) =
         |> Card.withActions
             [ Button.new { label = "Open " ++ title, variant = Button.Filled }
                 |> Button.withHref href
+                |> Button.withTarget "_blank"
+                |> Button.withRel "noreferrer noopener"
             ]
         |> Card.view
 

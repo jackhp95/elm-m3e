@@ -223,14 +223,35 @@ view :
     -> View msg
     -> { body : List (Html msg), title : String }
 view _ page model toMsg pageView =
+    let
+        themed children =
+            Theme.new
+                |> Theme.withSeedColor model.seed
+                |> Theme.withScheme model.scheme
+                |> Theme.withContrast model.contrast
+                |> Theme.withDensity model.density
+                |> Theme.view children
+
+        absolutePath =
+            UrlPath.toAbsolute page.path
+    in
     { title = pageView.title
     , body =
-        [ Theme.new
-            |> Theme.withSeedColor model.seed
-            |> Theme.withScheme model.scheme
-            |> Theme.withContrast model.contrast
-            |> Theme.withDensity model.density
-            |> Theme.view
+        if String.startsWith "/studies/" absolutePath then
+            -- Individual study routes (`/studies/<slug>`) take the full
+            -- viewport; they already include their own m3e nav chrome, so
+            -- skip the docs shell to avoid double-nav.
+            [ themed
+                [ Html.div
+                    [ class "min-h-screen bg-surface text-on-surface"
+                    , attribute "dir" (directionAttr model.dir)
+                    ]
+                    pageView.body
+                ]
+            ]
+
+        else
+            [ themed
                 [ Html.div
                     [ class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface"
                     , attribute "dir" (directionAttr model.dir)
@@ -239,7 +260,7 @@ view _ page model toMsg pageView =
                     , drawerShell toMsg model page pageView.body
                     ]
                 ]
-        ]
+            ]
     }
 
 
