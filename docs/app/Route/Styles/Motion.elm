@@ -82,13 +82,13 @@ view _ _ =
         [ div [ class "mx-auto max-w-3xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
                 ]
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "Schemes"
-                , ul [ class "list-disc space-y-1.5 pl-5 text-body-medium text-on-surface-variant" ]
+                , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                     [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
                     , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
                     ]
@@ -96,7 +96,7 @@ view _ _ =
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "Token families"
-                , ul [ class "list-disc space-y-1.5 pl-5 text-body-medium text-on-surface-variant" ]
+                , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                     [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
                     , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
                     ]

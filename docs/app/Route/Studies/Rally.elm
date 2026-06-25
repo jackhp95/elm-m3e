@@ -611,8 +611,8 @@ accountSection index group =
     Disclosure.section group.id
         (div [ class "flex w-full items-center gap-3" ]
             [ Icon.view (Icon.material group.icon)
-            , span [ class "text-title-medium font-medium" ] [ text group.label ]
-            , span [ class "ml-auto text-title-medium tabular-nums text-on-surface-variant" ]
+            , span [ class "text-title-md font-medium" ] [ text group.label ]
+            , span [ class "ml-auto text-title-md tabular-nums text-on-surface-variant" ]
                 [ text (formatMoney (groupTotalCents group)) ]
             ]
         )
@@ -644,7 +644,7 @@ transactionsSection model =
     in
     div [ class "space-y-4" ]
         [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
-            [ span [ class "text-title-medium font-medium" ] [ text "Recent transactions" ]
+            [ span [ class "text-title-md font-medium" ] [ text "Recent transactions" ]
             , div [ class "w-full min-w-0 flex-1 sm:w-auto sm:min-w-[16rem] sm:max-w-sm" ]
                 [ Search.bar
                     |> Search.withId "rally-txn-search"
@@ -655,7 +655,7 @@ transactionsSection model =
                 ]
             ]
         , if List.isEmpty matches then
-            div [ class "rounded-md-corner-medium bg-surface-container px-4 py-8 text-center text-body-medium text-on-surface-variant" ]
+            div [ class "rounded-md-corner-medium bg-surface-container px-4 py-8 text-center text-body-md text-on-surface-variant" ]
                 [ text ("No transactions match \"" ++ model.query ++ "\".") ]
 
           else
@@ -685,12 +685,12 @@ transactionRow query txn =
     div [ class "flex items-center gap-3 bg-surface-container-low px-4 py-3" ]
         [ span [ class "text-on-surface-variant" ] [ Icon.view (categoryIcon txn.category) ]
         , div [ class "min-w-0 flex-1" ]
-            [ div [ class "truncate text-body-large" ]
+            [ div [ class "truncate text-body-lg" ]
                 [ TextHighlight.new
                     |> TextHighlight.withTerm query
                     |> TextHighlight.view [ text txn.merchant ]
                 ]
-            , span [ class "block text-body-small text-on-surface-variant" ]
+            , span [ class "block text-body-sm text-on-surface-variant" ]
                 [ text (txn.dateLabel ++ " · " ++ txn.category) ]
             ]
         , span
@@ -742,7 +742,7 @@ billsPanel =
                 |> List_.view
             ]
         , div [ class "space-y-4" ]
-            [ span [ class "text-title-medium font-medium" ] [ text "Due-date calendar" ]
+            [ span [ class "text-title-md font-medium" ] [ text "Due-date calendar" ]
             , div [ class "rounded-md-corner-large bg-surface-container p-2" ]
                 [ Calendar.new
                     |> Calendar.withId "rally-bill-calendar"
@@ -820,13 +820,13 @@ overviewCard =
                             |> Progress.withId "rally-overview-ring"
                             |> Progress.view
                         ]
-                    , span [ class "absolute text-title-large font-medium tabular-nums" ]
+                    , span [ class "absolute text-title-lg font-medium tabular-nums" ]
                         [ text (String.fromInt percent ++ "%") ]
                     ]
                 , div [ class "min-w-0 flex-1 space-y-1" ]
-                    [ span [ class "block text-body-medium text-on-surface-variant" ]
+                    [ span [ class "block text-body-md text-on-surface-variant" ]
                         [ text "Remaining this month" ]
-                    , span [ class "block text-headline-small font-medium tabular-nums" ]
+                    , span [ class "block text-headline-sm font-medium tabular-nums" ]
                         [ text (formatMoney (budget - spent)) ]
                     ]
                 ]
@@ -851,7 +851,7 @@ budgetCard category =
             (div [ class "space-y-2" ]
                 [ div [ class "flex items-center gap-2" ]
                     [ Icon.view (Icon.material category.icon)
-                    , span [ class "ml-auto text-label-large tabular-nums" ]
+                    , span [ class "ml-auto text-label-lg tabular-nums" ]
                         [ text (String.fromInt percent ++ "%") ]
                     ]
                 , span
@@ -868,7 +868,7 @@ budgetCard category =
                         |> Progress.view
                     ]
                 , if over then
-                    span [ class "block text-label-medium text-error" ]
+                    span [ class "block text-label-md text-error" ]
                         [ text ("Over by " ++ formatMoney (category.spentCents - category.budgetCents)) ]
 
                   else
@@ -881,7 +881,7 @@ budgetCard category =
 categoryDetail : Html Msg
 categoryDetail =
     div [ class "space-y-3" ]
-        [ span [ class "text-title-medium font-medium" ] [ text "Category detail" ]
+        [ span [ class "text-title-md font-medium" ] [ text "Category detail" ]
         , Disclosure.accordion "rally-budget-detail"
             (List.map budgetDetailSection budgetCategories)
             |> Disclosure.view
@@ -893,8 +893,8 @@ budgetDetailSection category =
     Disclosure.section ("rally-detail-" ++ category.id)
         (div [ class "flex w-full items-center gap-3" ]
             [ Icon.view (Icon.material category.icon)
-            , span [ class "text-title-small font-medium" ] [ text category.label ]
-            , span [ class "ml-auto text-label-large tabular-nums text-on-surface-variant" ]
+            , span [ class "text-title-sm font-medium" ] [ text category.label ]
+            , span [ class "ml-auto text-label-lg tabular-nums text-on-surface-variant" ]
                 [ text (String.fromInt (budgetPercent category) ++ "%") ]
             ]
         )
@@ -960,7 +960,7 @@ sectionHeading title subtitle =
             |> Heading.withLevel 2
             |> Heading.withContent (text title)
             |> Heading.view
-        , span [ class "block text-body-medium text-on-surface-variant" ] [ text subtitle ]
+        , span [ class "block text-body-md text-on-surface-variant" ] [ text subtitle ]
         ]
 
 

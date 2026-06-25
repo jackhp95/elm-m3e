@@ -97,7 +97,7 @@ view _ _ =
 hero : Html msg
 hero =
     section [ class "space-y-5" ]
-        [ p [ class "text-label-large uppercase tracking-wide text-primary" ]
+        [ p [ class "text-label-lg uppercase tracking-wide text-primary" ]
             [ text "elm-m3e · m3e-builder" ]
         , Heading.new
             |> Heading.withLevel 1
@@ -105,9 +105,9 @@ hero =
             |> Heading.withSize Heading.Small
             |> Heading.withContent (text "Type-safe Material 3 Expressive for Elm")
             |> Heading.view
-        , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+        , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
             [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
-            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "@m3e/web" ]
+            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
             , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
             ]
         , div [ class "flex flex-wrap items-center gap-3 pt-2" ]
@@ -164,7 +164,7 @@ highlightCard iconName title body =
         |> Card.withBody
             (div [ class "flex gap-3" ]
                 [ Html.span [ class "shrink-0 text-primary" ] [ Icon.material iconName |> Icon.view ]
-                , p [ class "text-body-medium text-on-surface-variant" ] [ text body ]
+                , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
                 ]
             )
         |> Card.view
@@ -174,7 +174,7 @@ statusGrid : Html msg
 statusGrid =
     section [ class "space-y-6" ]
         [ sectionHeading "Status & roadmap"
-        , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+        , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
             [ text "The honest current state of the standalone library." ]
         , div [ class "grid gap-4 sm:grid-cols-2" ]
             [ statusCard "Complete (53)" "Every Ui.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
@@ -189,5 +189,5 @@ statusCard : String -> String -> Html msg
 statusCard title body =
     Card.new Card.Outlined
         |> Card.withHeadline (Heading.title title)
-        |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text body ])
+        |> Card.withBody (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
         |> Card.view

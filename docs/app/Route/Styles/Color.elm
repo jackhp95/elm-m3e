@@ -78,8 +78,8 @@ roles =
 swatch : ( String, String, String ) -> Html msg
 swatch ( label, bg, on ) =
     div [ class ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on) ]
-        [ Html.span [ class "text-label-large font-medium" ] [ text label ]
-        , code [ class "text-body-small opacity-80" ] [ text bg ]
+        [ Html.span [ class "text-label-lg font-medium" ] [ text label ]
+        , code [ class "text-body-sm opacity-80" ] [ text bg ]
         ]
 
 
@@ -110,7 +110,7 @@ view _ _ =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
                 ]
             , Divider.new |> Divider.view
@@ -122,13 +122,13 @@ view _ _ =
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "Dynamic color"
-                , p [ class "max-w-2xl text-body-medium text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
                     [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
                 ]
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "Forced colors"
-                , p [ class "max-w-2xl text-body-medium text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
                     [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
                 , forcedColorsCard
                 ]

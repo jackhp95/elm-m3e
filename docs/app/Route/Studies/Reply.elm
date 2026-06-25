@@ -757,7 +757,7 @@ emptyState : String -> Html Msg
 emptyState query =
     div [ class "flex flex-col items-center gap-2 px-6 py-16 text-center text-on-surface-variant" ]
         [ Icon.material "mail" |> Icon.view
-        , p [ class "text-body-medium" ]
+        , p [ class "text-body-md" ]
             [ text
                 (if String.isEmpty (String.trim query) then
                     "No conversations here."
@@ -812,7 +812,7 @@ messageRow model message =
             [ div [ class "flex items-baseline justify-between gap-2" ]
                 [ span
                     [ class
-                        ("truncate text-title-small "
+                        ("truncate text-title-sm "
                             ++ (if message.unread then
                                     "font-semibold text-on-surface"
 
@@ -822,11 +822,11 @@ messageRow model message =
                         )
                     ]
                     [ text message.sender ]
-                , span [ class "shrink-0 text-label-small text-on-surface-variant" ] [ text message.time ]
+                , span [ class "shrink-0 text-label-sm text-on-surface-variant" ] [ text message.time ]
                 ]
             , div
                 [ class
-                    ("truncate text-body-medium "
+                    ("truncate text-body-md "
                         ++ (if message.unread then
                                 "font-medium text-on-surface"
 
@@ -836,7 +836,7 @@ messageRow model message =
                     )
                 ]
                 [ text message.subject ]
-            , p [ class "mt-0.5 line-clamp-1 text-body-small text-on-surface-variant" ] [ text message.preview ]
+            , p [ class "mt-0.5 line-clamp-1 text-body-sm text-on-surface-variant" ] [ text message.preview ]
             ]
         , div [ class "flex flex-col items-center gap-1" ]
             [ div [ attribute "id" starId ]
@@ -897,11 +897,11 @@ readingPane message =
                         |> Avatar.withId "reply-reading-avatar"
                         |> Avatar.view
                     , div [ class "min-w-0 flex-1" ]
-                        [ div [ class "text-title-small font-medium text-on-surface" ] [ text message.sender ]
-                        , div [ class "text-body-small text-on-surface-variant" ] [ text ("to me · " ++ message.time) ]
+                        [ div [ class "text-title-sm font-medium text-on-surface" ] [ text message.sender ]
+                        , div [ class "text-body-sm text-on-surface-variant" ] [ text ("to me · " ++ message.time) ]
                         ]
                     ]
-                , p [ class "whitespace-pre-line text-body-large leading-relaxed text-on-surface" ] [ text message.body ]
+                , p [ class "whitespace-pre-line text-body-lg leading-relaxed text-on-surface" ] [ text message.body ]
                 , Divider.new |> Divider.view
                 , div [ class "flex flex-wrap gap-2" ]
                     [ Button.new { label = "Reply", variant = Button.Filled }

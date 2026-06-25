@@ -90,7 +90,7 @@ studyCard ( slug, title, body ) =
     in
     Card.new Card.Elevated
         |> Card.withHeadline (Heading.title title)
-        |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text body ])
+        |> Card.withBody (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
         |> Card.withActions
             [ Button.new { label = "Open " ++ title, variant = Button.Filled }
                 |> Button.withHref href
@@ -107,7 +107,7 @@ view _ _ =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
                 ]
             , Divider.new |> Divider.view

@@ -648,7 +648,7 @@ viewCarousel =
             div
                 [ class ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch) ]
                 [ Icon.material icon |> Icon.view
-                , span [ class "text-title-medium font-medium" ] [ text title ]
+                , span [ class "text-title-md font-medium" ] [ text title ]
                 ]
     in
     div [ class "-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0" ]
@@ -725,7 +725,7 @@ viewControls model =
             , viewModeControl
             ]
         , div [ class "max-w-md" ]
-            [ span [ class "text-label-medium text-on-surface-variant" ]
+            [ span [ class "text-label-md text-on-surface-variant" ]
                 [ text ("Up to " ++ formatPrice model.maxPrice) ]
             , priceSlider
             ]
@@ -918,7 +918,7 @@ viewCartSheet model =
                     |> Heading.withLevel 2
                     |> Heading.withContent (text "Your bag")
                     |> Heading.view
-                , span [ class "text-label-large text-on-surface-variant" ]
+                , span [ class "text-label-lg text-on-surface-variant" ]
                     [ text (String.fromInt (cartCount model.cart) ++ " items") ]
                 ]
 
@@ -934,8 +934,8 @@ viewCartSheet model =
                     (List.map viewCartRow items
                         ++ [ Divider.new |> Divider.view
                            , div [ class "flex items-center justify-between pt-1" ]
-                                [ span [ class "text-title-medium text-on-surface" ] [ text "Subtotal" ]
-                                , span [ class "text-title-medium font-medium text-primary" ]
+                                [ span [ class "text-title-md text-on-surface" ] [ text "Subtotal" ]
+                                , span [ class "text-title-md font-medium text-primary" ]
                                     [ text (formatPrice (cartSubtotal model.cart)) ]
                                 ]
                            ]
@@ -974,8 +974,8 @@ viewCartRow ( product, qty ) =
                 [ Icon.material (categoryGlyph product.category) |> Icon.view ]
             |> Shape.view
         , div [ class "flex min-w-0 flex-1 flex-col" ]
-            [ span [ class "truncate text-body-large text-on-surface" ] [ text product.name ]
-            , span [ class "text-label-medium text-on-surface-variant" ]
+            [ span [ class "truncate text-body-lg text-on-surface" ] [ text product.name ]
+            , span [ class "text-label-md text-on-surface-variant" ]
                 [ text (formatPrice product.price ++ " each") ]
             ]
         , div [ class "flex items-center gap-1" ]
@@ -987,7 +987,7 @@ viewCartRow ( product, qty ) =
                 |> IconButton.withSize IconButton.ExtraSmall
                 |> IconButton.withOnClick (QuantityChanged product.id (qty - 1))
                 |> IconButton.view
-            , span [ class "w-6 text-center text-body-large text-on-surface" ] [ text (String.fromInt qty) ]
+            , span [ class "w-6 text-center text-body-lg text-on-surface" ] [ text (String.fromInt qty) ]
             , IconButton.new
                 { icon = Icon.material "add"
                 , label = "Increase quantity"
@@ -1086,7 +1086,7 @@ viewDetailDialog model =
                                 |> Heading.withLevel 3
                                 |> Heading.withContent (span [ class "text-primary" ] [ text (formatPrice product.price) ])
                                 |> Heading.view
-                            , span [ class "text-label-large text-on-surface-variant" ]
+                            , span [ class "text-label-lg text-on-surface-variant" ]
                                 [ text (categoryLabel product.category) ]
                             ]
                         , sizeSelect

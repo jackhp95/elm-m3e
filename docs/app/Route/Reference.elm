@@ -117,9 +117,9 @@ view app _ =
     , body =
         [ div [ class "mx-auto max-w-5xl" ]
             [ pageHeading
-            , p [ class "mt-2 max-w-2xl text-body-large text-on-surface-variant" ]
+            , p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
                 [ text "Every "
-                , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "Ui.*" ]
+                , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
                 , text " module, its overview, and every exposed value — extracted from the library source at build time."
                 ]
             , indexGrid app.data
@@ -136,7 +136,7 @@ indexGrid components =
             (\c ->
                 a
                     [ href ("#" ++ c.slug)
-                    , class "rounded-full border border-outline px-3 py-1 text-label-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
+                    , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
                     ]
                     [ text c.name ]
             )
@@ -154,7 +154,7 @@ componentBlock c =
             |> Heading.withSize Heading.Small
             |> Heading.withContent (code [ class "text-primary" ] [ text ("Ui." ++ c.name) ])
             |> Heading.view
-        , prose "max-w-2xl text-body-medium text-on-surface-variant" c.overview
+        , prose "max-w-2xl text-body-md text-on-surface-variant" c.overview
         , div [ class "space-y-3" ] (List.map memberRow c.members)
         ]
 
@@ -180,7 +180,7 @@ memberRow m =
                     text ""
 
                   else
-                    prose "mt-2 text-body-small text-on-surface-variant" m.doc
+                    prose "mt-2 text-body-sm text-on-surface-variant" m.doc
                 ]
             )
         |> Card.view
@@ -188,7 +188,7 @@ memberRow m =
 
 pre_ : String -> Html msg
 pre_ s =
-    Html.pre [ class "overflow-x-auto text-body-small text-on-surface" ]
+    Html.pre [ class "overflow-x-auto text-body-sm text-on-surface" ]
         [ code [] [ text s ] ]
 
 

@@ -71,7 +71,7 @@ steps =
 
 swatch : ( String, String ) -> Html msg
 swatch ( cls, label ) =
-    div [ class "flex flex-col items-center gap-2 text-label-small text-on-surface-variant" ]
+    div [ class "flex flex-col items-center gap-2 text-label-sm text-on-surface-variant" ]
         [ Shape.new |> Shape.withClass ("block w-16 h-16 bg-primary-container " ++ cls) |> Shape.view
         , text label
         ]
@@ -94,7 +94,7 @@ view _ _ =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. Ui.Shape renders a decorative <m3e-shape> surface that respects it." ]
                 ]
             , Divider.new |> Divider.view

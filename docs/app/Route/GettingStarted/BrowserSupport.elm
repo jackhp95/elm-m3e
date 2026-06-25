@@ -59,8 +59,8 @@ head _ =
 supportRow : String -> String -> Html msg
 supportRow browser note =
     li [ class "flex items-baseline justify-between gap-4 border-b border-outline-variant py-2.5 last:border-0" ]
-        [ Html.span [ class "text-title-small text-on-surface" ] [ text browser ]
-        , Html.span [ class "text-body-medium text-on-surface-variant" ] [ text note ]
+        [ Html.span [ class "text-title-sm text-on-surface" ] [ text browser ]
+        , Html.span [ class "text-body-md text-on-surface-variant" ] [ text note ]
         ]
 
 
@@ -91,7 +91,7 @@ view _ _ =
         [ div [ class "mx-auto max-w-3xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "text-body-large text-on-surface-variant" ]
+                , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                 ]
             , Divider.new |> Divider.view
@@ -111,7 +111,7 @@ view _ _ =
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "Platform features used"
-                , ul [ class "list-disc space-y-1.5 pl-5 text-body-medium text-on-surface-variant" ]
+                , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                     [ li [] [ text "Custom Elements v1 and Shadow DOM for the @m3e/web components." ]
                     , li [] [ text "ES modules for component registration (no-bundler import-map usage is also supported upstream)." ]
                     , li [] [ text "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode." ]

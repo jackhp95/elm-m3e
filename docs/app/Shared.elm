@@ -453,7 +453,7 @@ seedColorInput : Model -> Html Msg
 seedColorInput model =
     Html.div [ class "space-y-1.5" ]
         [ Html.label
-            [ Attr.for "docs-seed", class "block text-label-medium text-on-surface-variant" ]
+            [ Attr.for "docs-seed", class "block text-label-md text-on-surface-variant" ]
             [ Html.text "Source color" ]
         , Html.div [ class "flex items-center gap-3" ]
             [ Html.input
@@ -465,7 +465,7 @@ seedColorInput model =
                 , attribute "aria-label" "Source color"
                 ]
                 []
-            , Html.code [ class "text-body-small text-on-surface-variant" ] [ Html.text model.seed ]
+            , Html.code [ class "text-body-sm text-on-surface-variant" ] [ Html.text model.seed ]
             ]
         ]
 
