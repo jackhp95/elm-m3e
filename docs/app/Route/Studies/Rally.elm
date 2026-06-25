@@ -447,20 +447,25 @@ view _ _ model =
 
 dashboard : Model -> Html Msg
 dashboard model =
+    -- Below `md`, the `Ui.Tabs` row is the primary navigation, so the rail
+    -- (which duplicates it) is hidden — that frees the full viewport width
+    -- for the cards, transactions list, and Paginator on phones.
     div [ class "flex min-h-[40rem]" ]
-        [ rail model
-        , Divider.new
-            |> Divider.withOrientation Divider.Vertical
-            |> Divider.view
+        [ div [ class "hidden md:flex" ]
+            [ rail model
+            , Divider.new
+                |> Divider.withOrientation Divider.Vertical
+                |> Divider.view
+            ]
         , div [ class "flex min-w-0 flex-1 flex-col" ]
             [ appBar model
-            , div [ class "border-b border-outline-variant px-4 pt-2" ]
+            , div [ class "border-b border-outline-variant px-2 pt-2 sm:px-4" ]
                 [ tabsBar model ]
             , ScrollContainer.new
                 |> ScrollContainer.withThin True
                 |> ScrollContainer.withDividers ScrollContainer.None
                 |> ScrollContainer.view
-                    [ div [ class "p-4 sm:p-6" ] [ tabPanel model ] ]
+                    [ div [ class "p-3 sm:p-6" ] [ tabPanel model ] ]
             , snackbarSlot model
             ]
         ]
@@ -568,7 +573,9 @@ tabsBar model =
         , selected = model.tab
         , onChange = TabSelected
         }
-        |> Tabs.withStretch True
+        -- Stretch fills wide viewports, but on mobile we want the tabs row
+        -- to scroll horizontally rather than crush three icon+label+badge
+        -- tabs into a 343 px gutter. m3e-tabs handles overflow scrolling.
         |> Tabs.view
 
 
@@ -640,7 +647,7 @@ transactionsSection model =
     div [ class "space-y-4" ]
         [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
             [ span [ class "text-title-medium font-medium" ] [ text "Recent transactions" ]
-            , div [ class "min-w-[16rem] flex-1 sm:max-w-sm" ]
+            , div [ class "w-full min-w-0 flex-1 sm:w-auto sm:min-w-[16rem] sm:max-w-sm" ]
                 [ Search.bar
                     |> Search.withId "rally-txn-search"
                     |> Search.withQuery model.query QueryChanged
@@ -783,7 +790,7 @@ budgetsPanel model =
     div [ class "space-y-6" ]
         [ sectionHeading "Budgets" "How this month's spending tracks against plan."
         , overviewCard
-        , div [ class "grid gap-4 sm:grid-cols-2" ]
+        , div [ class "grid gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
             (List.map budgetCard budgetCategories)
         , Divider.new |> Divider.view
         , categoryDetail
@@ -808,8 +815,8 @@ overviewCard =
         |> Card.withHeadline (Heading.title "March overview")
         |> Card.withSubhead (Heading.label (formatMoney spent ++ " of " ++ formatMoney budget ++ " spent"))
         |> Card.withBody
-            (div [ class "flex items-center gap-6" ]
-                [ div [ class "relative grid place-items-center" ]
+            (div [ class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6" ]
+                [ div [ class "relative grid place-items-center self-center sm:self-auto" ]
                     [ span [ class "text-primary" ]
                         [ Progress.circular percent
                             |> Progress.withId "rally-overview-ring"
@@ -818,7 +825,7 @@ overviewCard =
                     , span [ class "absolute text-title-large font-medium tabular-nums" ]
                         [ text (String.fromInt percent ++ "%") ]
                     ]
-                , div [ class "flex-1 space-y-1" ]
+                , div [ class "min-w-0 flex-1 space-y-1" ]
                     [ span [ class "block text-body-medium text-on-surface-variant" ]
                         [ text "Remaining this month" ]
                     , span [ class "block text-headline-small font-medium tabular-nums" ]
