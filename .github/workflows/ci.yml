@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  library:
+    name: Library — format, test, review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # Cache elm-stuff to avoid recompiling the standard library every run.
+      - name: Cache root elm-stuff
+        uses: actions/cache@v4
+        with:
+          path: elm-stuff
+          key: ${{ runner.os }}-elm-root-${{ hashFiles('elm.json') }}
+
+      - name: Cache tests elm-stuff
+        uses: actions/cache@v4
+        with:
+          path: tests/elm-stuff
+          key: ${{ runner.os }}-elm-tests-${{ hashFiles('elm.json') }}
+
+      - name: Cache review elm-stuff
+        uses: actions/cache@v4
+        with:
+          path: review/elm-stuff
+          key: ${{ runner.os }}-elm-review-${{ hashFiles('review/elm.json', 'review/src/**/*.elm') }}
+
+      - name: Install root deps (elm, elm-format, elm-test)
+        run: npm ci
+
+      - name: elm-format --validate (src + tests + review)
+        run: node_modules/.bin/elm-format --validate src/ tests/ review/src/
+
+      - name: elm-test
+        run: node_modules/.bin/elm-test
+
+      - name: elm-review
+        # docs/ provides elm-review (root doesn't have it as a direct dep).
+        run: |
+          cd docs && npm ci
+          cd ..
+          docs/node_modules/.bin/elm-review
+
+  docs:
+    name: Docs — reference pipeline + production build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Cache scratch docs-gen elm-stuff
+        uses: actions/cache@v4
+        with:
+          # The reference pipeline materializes a scratch package project at
+          # /tmp/m3e-docs-gen each run; caching its elm-stuff between runs
+          # keeps `elm make --docs` fast.
+          path: /tmp/m3e-docs-gen/elm-stuff
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/Ui/**/*.elm', 'vendor/elm-m3e/M3e/**/*.elm') }}
+
+      - name: Install docs deps
+        run: cd docs && npm ci
+
+      # `elm make --docs` (the reference pipeline) is run by build:reference,
+      # which fails hard if any exposed value lacks a doc comment — locks in
+      # the F8 discipline.
+      - name: build:reference (elm make --docs pipeline)
+        run: cd docs && npm run build:reference
+
+      - name: Full production build (elm-pages + Netlify adapter)
+        run: cd docs && npm run build

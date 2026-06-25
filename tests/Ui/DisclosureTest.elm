@@ -111,9 +111,11 @@ suite =
             [ test "two independent single disclosures keep their own ids (no collision)" <|
                 \_ ->
                     let
+                        a : Disclosure.Disclosure msg
                         a =
                             Disclosure.single "one" (Html.text "One") [ Html.text "1" ]
 
+                        b : Disclosure.Disclosure msg
                         b =
                             Disclosure.single "two" (Html.text "Two") [ Html.text "2" ]
                     in

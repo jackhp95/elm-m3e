@@ -50,6 +50,7 @@ suite =
             , fuzz Fuzz.string "any non-empty name produces non-empty avatar content" <|
                 \s ->
                     let
+                        trimmed : String
                         trimmed =
                             String.trim s
                     in
