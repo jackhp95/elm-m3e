@@ -42,6 +42,80 @@
     "opsz" 24;
 }
 
+/* pablohirafuji/elm-syntax-highlight emits numbered token classes
+   (.elmsh1 … .elmsh7) plus a couple of state classes. Map them to M3
+   color tokens so light + dark schemes adapt automatically.
+   Reference (Monokai-ish convention):
+     .elmsh1 — comments
+     .elmsh2 — strings
+     .elmsh3 — keywords (if, case, let, module …)
+     .elmsh4 — types and built-ins
+     .elmsh5 — function declarations
+     .elmsh6 — literals / operators
+     .elmsh7 — numbers
+*/
+@layer components {
+  pre.elmsh,
+  code.elmsh {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    font-family: inherit;
+  }
+
+  .elmsh1 {
+    color: var(--md-sys-color-on-surface-variant);
+    font-style: italic;
+  }
+
+  .elmsh2 {
+    color: var(--md-sys-color-secondary);
+  }
+
+  .elmsh3 {
+    color: var(--md-sys-color-primary);
+    font-weight: 500;
+  }
+
+  .elmsh4 {
+    color: var(--md-sys-color-tertiary);
+  }
+
+  .elmsh5 {
+    color: var(--md-sys-color-primary);
+  }
+
+  .elmsh6 {
+    color: var(--md-sys-color-secondary);
+  }
+
+  .elmsh7 {
+    color: var(--md-sys-color-secondary);
+  }
+
+  .elmsh-hl {
+    background: color-mix(in oklab, var(--md-sys-color-primary) 12%, transparent);
+  }
+
+  .elmsh-add {
+    background: color-mix(in oklab, var(--md-sys-color-tertiary-container) 60%, transparent);
+  }
+
+  .elmsh-del {
+    background: color-mix(in oklab, var(--md-sys-color-error-container) 60%, transparent);
+  }
+
+  .elmsh-strong {
+    font-weight: 600;
+  }
+
+  .elmsh-emphasis {
+    font-style: italic;
+  }
+}
+
 /* M3 document base: the shell's <m3e-theme> cascades --md-sys-color-* /
    --md-sys-typescale-* onto every descendant, but the bare <html>/<body>
    outside that subtree needs the surface + type scale too, or the viewport

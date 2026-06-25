@@ -20,6 +20,7 @@ import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import SyntaxHighlight
 import Ui.AppBar as AppBar
 import Ui.Avatar as Avatar
 import Ui.Badge as Badge
@@ -335,8 +336,26 @@ subView s =
 
 codeBlock : String -> Html msg
 codeBlock s =
-    pre [ class "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface" ]
-        [ code [] [ text (String.trim s) ] ]
+    let
+        trimmed : String
+        trimmed =
+            String.trim s
+
+        -- SyntaxHighlight.toBlockHtml emits its own <pre class="elmsh">, so we
+        -- wrap it in a <div> (not <pre>) to keep the surface styling without
+        -- emitting invalid pre-inside-pre markup.
+        wrapperClass : String
+        wrapperClass =
+            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface"
+    in
+    case SyntaxHighlight.elm trimmed of
+        Ok highlighted ->
+            div [ class wrapperClass ]
+                [ SyntaxHighlight.toBlockHtml Nothing highlighted ]
+
+        Err _ ->
+            pre [ class wrapperClass ]
+                [ code [] [ text trimmed ] ]
 
 
 prose : String -> String -> Html msg

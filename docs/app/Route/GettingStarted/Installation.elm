@@ -10,6 +10,7 @@ import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
+import SyntaxHighlight
 import Ui.Divider as Divider
 import Ui.Heading as Heading
 import UrlPath
@@ -55,10 +56,51 @@ head _ =
         |> Seo.website
 
 
-code_ : String -> Html msg
-code_ s =
-    pre [ class "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface" ]
-        [ code [] [ text (String.trim s) ] ]
+type Lang
+    = Elm
+    | Json
+    | Shell
+    | NoLang
+
+
+code_ : Lang -> String -> Html msg
+code_ lang s =
+    let
+        trimmed : String
+        trimmed =
+            String.trim s
+
+        wrapperClass : String
+        wrapperClass =
+            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface"
+
+        parsed : Result () SyntaxHighlight.HCode
+        parsed =
+            -- elm-syntax-highlight doesn't ship a shell parser, so fall back to noLang
+            -- (still wraps everything in .elmsh spans so the surface styling stays consistent).
+            case lang of
+                Elm ->
+                    SyntaxHighlight.elm trimmed |> Result.mapError (always ())
+
+                Json ->
+                    SyntaxHighlight.json trimmed |> Result.mapError (always ())
+
+                Shell ->
+                    SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
+
+                NoLang ->
+                    SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
+    in
+    case parsed of
+        Ok highlighted ->
+            -- SyntaxHighlight.toBlockHtml emits <pre class="elmsh">, so the
+            -- outer wrapper is a <div> to keep the markup valid.
+            div [ class wrapperClass ]
+                [ SyntaxHighlight.toBlockHtml Nothing highlighted ]
+
+        Err _ ->
+            pre [ class wrapperClass ]
+                [ code [] [ text trimmed ] ]
 
 
 pageHeading : Html msg
@@ -96,7 +138,7 @@ view _ _ =
                 [ stepHeading "1. Add the Elm source"
                 , p [ class "text-body-medium text-on-surface-variant" ]
                     [ text "Copy the Ui.* (and supporting M3e.*) modules into your project and add them to elm.json source-directories:" ]
-                , code_ """
+                , code_ Json """
 {
   "source-directories": [ "src", "vendor/elm-m3e" ]
 }
@@ -107,7 +149,7 @@ view _ _ =
                 [ stepHeading "2. Register the web components"
                 , p [ class "text-body-medium text-on-surface-variant" ]
                     [ text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
-                , code_ """
+                , code_ Shell """
 npm i @m3e/web
 
 // m3e-entry.js
@@ -119,7 +161,7 @@ import "@m3e/web/all";
                 [ stepHeading "3. Import the token + utility bridge"
                 , p [ class "text-body-medium text-on-surface-variant" ]
                     [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-large, rounded-md-corner-large, …):" ]
-                , code_ """
+                , code_ NoLang """
 /* style.css */
 @import "tailwindcss";
 @import "tailwind-m3e-web/src/index.css";
@@ -131,7 +173,7 @@ import "@m3e/web/all";
                 [ stepHeading "4. Wrap your app in a theme"
                 , p [ class "text-body-medium text-on-surface-variant" ]
                     [ text "A single Ui.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
-                , code_ """
+                , code_ Elm """
 import Ui.Theme as Theme
 
 Theme.new
