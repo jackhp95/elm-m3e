@@ -1,6 +1,8 @@
 module Ui.SegmentedButtonTest exposing (suite)
 
 import Expect
+import Html.Attributes as Attr
+import M3e.ButtonSegment
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -48,4 +50,20 @@ suite =
                     |> Query.fromHtml
                     |> Query.findAll [ Selector.tag "m3e-button-segment" ]
                     |> Query.count (Expect.equal 2)
+        , test "each segment emits a submission value" <|
+            \_ ->
+                viewSeg
+                    |> Ui.SegmentedButton.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.attribute (M3e.ButtonSegment.value "Day") ]
+        , test "label association is via aria-label on the group (not a fragile for)" <|
+            \_ ->
+                viewSeg
+                    |> Ui.SegmentedButton.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-segmented-button"
+                        , Selector.attribute (Attr.attribute "aria-label" "View")
+                        ]
         ]

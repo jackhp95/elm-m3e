@@ -3,7 +3,7 @@ module Ui.Dialog exposing
     , new
     , withAttributes
     , withId, withBody, withActions
-    , withDismissible, withAlert
+    , withDismissible, withCloseButton, withAlert
     , view
     )
 
@@ -79,7 +79,7 @@ An alert dialog (semantic role):
 # Modifiers
 
 @docs withId, withBody, withActions
-@docs withDismissible, withAlert
+@docs withDismissible, withCloseButton, withAlert
 
 
 # Render
@@ -114,6 +114,7 @@ type alias Config msg =
     , body : Maybe (Html msg)
     , actions : List (Ui.Button.Button msg)
     , dismissible : Bool
+    , closeButton : Bool
     , alert : Bool
     }
 
@@ -143,6 +144,7 @@ new c =
         , body = Nothing
         , actions = []
         , dismissible = True
+        , closeButton = False
         , alert = False
         }
 
@@ -196,10 +198,28 @@ withActions actions (Dialog cfg) =
 {-| Toggle whether the dialog can be dismissed by Escape / scrim click.
 Default `True`. Set `False` for dialogs that require an explicit action
 choice (delete confirmations, etc.).
+
+This wires the underlying element's `disable-close` attribute (inverted):
+`withDismissible False` emits `disable-close`, blocking both backdrop
+click and the Escape key.
+
 -}
 withDismissible : Bool -> Dialog msg -> Dialog msg
 withDismissible b (Dialog cfg) =
     Dialog { cfg | dismissible = b }
+
+
+{-| Show a built-in close button in the dialog chrome. Default `False`.
+
+This wires the underlying element's `dismissible` attribute, which —
+despite the name — controls _only_ whether a close **button** is
+presented. Escape / scrim dismissal is governed separately by
+`withDismissible`.
+
+-}
+withCloseButton : Bool -> Dialog msg -> Dialog msg
+withCloseButton b (Dialog cfg) =
+    Dialog { cfg | closeButton = b }
 
 
 {-| Mark the dialog as an alert (sets ARIA `role=alertdialog`).
@@ -230,7 +250,8 @@ view (Dialog cfg) =
                     [ Maybe.map Attr.id cfg.id
                     , Just (M3e.Dialog.open "true")
                     , Just (M3e.Dialog.alert cfg.alert)
-                    , Just (M3e.Dialog.dismissible cfg.dismissible)
+                    , Just (M3e.Dialog.dismissible cfg.closeButton)
+                    , Just (M3e.Dialog.disableClose (not cfg.dismissible))
                     , Just (M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
                     , Just (M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
                     ]

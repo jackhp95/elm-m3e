@@ -285,6 +285,7 @@ groupElement cfg =
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
+                , Just (Attr.attribute "aria-label" cfg.label)
                 , Just (M3e.SegmentedButton.disabled cfg.disabled)
                 , Just (M3e.SegmentedButton.multi cfg.multiAttr)
                 ]
@@ -297,6 +298,7 @@ segmentView cfg (Segment seg) =
     M3e.ButtonSegment.component
         [ M3e.ButtonSegment.checked (cfg.isSelected seg.value)
         , M3e.ButtonSegment.disabled cfg.disabled
+        , M3e.ButtonSegment.value seg.label
         , HtmlEvents.onClick (cfg.onSegmentClick seg.value)
         ]
         [ Html.text seg.label ]
@@ -314,10 +316,12 @@ toggleInList value list =
 labelElement : Config value msg -> Html msg
 labelElement cfg =
     -- A plain layout label, not a form-field slot: this element is not a
-    -- form-field control. `id`, when supplied, anchors the label to the
-    -- group element via `for`.
+    -- form-field control. We deliberately omit `for`: `<m3e-segmented-button>`
+    -- is a custom element, not a labelable form control, so a `for`
+    -- association is invalid/fragile. The accessible name is instead
+    -- carried by `aria-label` on the group element (see `groupElement`).
     Html.label
-        (List.filterMap identity [ Maybe.map Attr.for cfg.id ])
+        []
         [ Html.text cfg.label ]
 
 
