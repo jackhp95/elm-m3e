@@ -120,14 +120,18 @@ withCentered b (AppBar cfg) =
     AppBar { cfg | centered = b }
 
 
-{-| Set the leading affordance (typically a back/menu icon button).
+{-| Set the leading affordance — typically a `Ui.IconButton` rendered to Html
+(`|> Ui.IconButton.view`), but this slot is naturally heterogeneous (e.g. a
+brand icon, an avatar, a drawer toggle), so it stays `Html msg`.
 -}
 withLeading : Html msg -> AppBar msg -> AppBar msg
 withLeading html (AppBar cfg) =
     AppBar { cfg | leading = Just html }
 
 
-{-| Set trailing actions.
+{-| Set the trailing actions. Compose `Ui.IconButton`s (with `withHref` /
+`withTarget` for link actions), `Ui.Search`/`Ui.Avatar`/etc.; the slot is
+naturally heterogeneous so it stays `List (Html msg)`.
 -}
 withTrailing : List (Html msg) -> AppBar msg -> AppBar msg
 withTrailing items (AppBar cfg) =

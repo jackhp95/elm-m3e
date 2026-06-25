@@ -5,6 +5,7 @@ module Ui.IconButton exposing
     , withAttributes
     , withSize, withShape, withWidth, withDisabled
     , withOnClick, withHref, withToggle
+    , withTarget, withRel, withDownload
     , view
     )
 
@@ -107,6 +108,11 @@ unselected, filled glyph when selected. Pass the _unselected_ glyph in
 @docs withOnClick, withHref, withToggle
 
 
+# Anchor refinements (only meaningful with `withHref`)
+
+@docs withTarget, withRel, withDownload
+
+
 # Render
 
 @docs view
@@ -141,6 +147,9 @@ type alias Config msg =
     , width : Width
     , disabled : DisabledState
     , wiring : Maybe (Wiring msg)
+    , anchorTarget : Maybe String
+    , anchorRel : Maybe String
+    , anchorDownload : Maybe String
     }
 
 
@@ -217,6 +226,9 @@ new c =
         , width = Default
         , disabled = Enabled
         , wiring = Nothing
+        , anchorTarget = Nothing
+        , anchorRel = Nothing
+        , anchorDownload = Nothing
         }
 
 
@@ -294,6 +306,30 @@ withToggle c (IconButton cfg) =
     IconButton { cfg | wiring = Just (WireToggle c) }
 
 
+{-| Set the anchor `target` (e.g. `"_blank"`). Only emitted when the button is
+wired as a link via `withHref`; ignored under `withOnClick`/`withToggle`.
+-}
+withTarget : String -> IconButton msg -> IconButton msg
+withTarget target (IconButton cfg) =
+    IconButton { cfg | anchorTarget = Just target }
+
+
+{-| Set the anchor `rel` (e.g. `"noreferrer noopener"`). Only emitted with
+`withHref`.
+-}
+withRel : String -> IconButton msg -> IconButton msg
+withRel rel (IconButton cfg) =
+    IconButton { cfg | anchorRel = Just rel }
+
+
+{-| Set the anchor `download` attribute (an empty string requests the default
+filename). Only emitted with `withHref`.
+-}
+withDownload : String -> IconButton msg -> IconButton msg
+withDownload download (IconButton cfg) =
+    IconButton { cfg | anchorDownload = Just download }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -313,7 +349,7 @@ view (IconButton cfg) =
                   ]
                 , shapeAttr cfg.shape
                 , disabledAttrs cfg.disabled
-                , wiringAttrs cfg.wiring
+                , wiringAttrs cfg
                 ]
         )
         [ renderIcon (currentIcon cfg) ]
@@ -414,9 +450,9 @@ disabledAttrs d =
             [ M3e.IconButton.disabledInteractive True ]
 
 
-wiringAttrs : Maybe (Wiring msg) -> List (Html.Attribute msg)
-wiringAttrs maybeWiring =
-    case maybeWiring of
+wiringAttrs : Config msg -> List (Html.Attribute msg)
+wiringAttrs cfg =
+    case cfg.wiring of
         Nothing ->
             []
 
@@ -424,7 +460,12 @@ wiringAttrs maybeWiring =
             [ HtmlEvents.onClick msg ]
 
         Just (WireHref href) ->
-            [ M3e.IconButton.href href ]
+            M3e.IconButton.href href
+                :: List.filterMap identity
+                    [ Maybe.map M3e.IconButton.target cfg.anchorTarget
+                    , Maybe.map M3e.IconButton.rel cfg.anchorRel
+                    , Maybe.map M3e.IconButton.download cfg.anchorDownload
+                    ]
 
         Just (WireToggle { selected, onChange }) ->
             [ M3e.IconButton.toggle True

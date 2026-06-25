@@ -72,6 +72,26 @@ Ordered newest-first within each section.
   component the underlying library doesn't have). `Ui.Slide` (the real
   `m3e-slide-group` utility) stays.
 
+### F11 — heterogeneous chrome slots legitimately stay `Html msg`
+- **Hit:** the audit flagged `AppBar.leading`/`trailing` (and `Breadcrumb`/`Chip`
+  labels) as candidates for typed-slot conversion. For AppBar I started typing
+  them as `Ui.IconButton` (with an `EscapeHatchHtml` parallel), then real call
+  sites pushed back: Rally puts a brand `<span>+Icon` in leading; Reply trailing
+  is `[Search, IconButton, Avatar]`. These slots are inherently heterogeneous,
+  not "a list of one builder type."
+- **Rule (refines F10):** typed slots apply where the slotted alternatives form
+  an enumerable set we want to enforce (`Card.headline : Ui.Heading`,
+  `Card.actions : List Ui.Button`, `IconButton.icon : Ui.Icon`). Slots whose
+  semantic is **"arbitrary author content"** — like `Card.media`/`body`/`footer`
+  or `AppBar.leading`/`trailing` — should stay `Html msg` as the primary type.
+  Naming such a slot `*EscapeHatchHtml` is misleading: `Html` is the *natural*
+  shape there, not an opt-out.
+- **What still drove value:** the related Q1=(c) win — added `withTarget`,
+  `withRel`, `withDownload` to `Ui.IconButton` (it already had `withHref`).
+  Now an "external github link" *is* a `Ui.IconButton` (no `<a>` wrapper), and
+  composes cleanly into `AppBar.trailing`'s `List (Html msg)` via `|> view`.
+  Reverted the AppBar typed conversion; kept the IconButton anchor surface.
+
 ### F10 — builders must be styling-free + expose escape hatches (PRINCIPLE)
 - **Hit:** while fixing the Card media/title slotting I baked
   `class "text-title-medium"` into the builder. Wrong.

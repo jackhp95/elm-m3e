@@ -229,33 +229,27 @@ appShellBar model =
 
 menuButton : Model -> Html Msg
 menuButton _ =
-    Html.div [ class "md:hidden" ]
-        [ IconButton.new
-            { icon = Icon.material "menu"
-            , label = "Toggle navigation"
-            , variant = IconButton.Standard
-            }
-            |> IconButton.withOnClick MenuClicked
-            |> IconButton.view
-        ]
+    IconButton.new
+        { icon = Icon.material "menu"
+        , label = "Toggle navigation"
+        , variant = IconButton.Standard
+        }
+        |> IconButton.withOnClick MenuClicked
+        |> IconButton.withAttributes [ class "md:hidden" ]
+        |> IconButton.view
 
 
 githubLink : Html Msg
 githubLink =
-    Html.a
-        [ href "https://github.com/jackhp95/m3e-builder"
-        , attribute "target" "_blank"
-        , attribute "rel" "noreferrer"
-        , class "no-underline"
-        , attribute "aria-label" "GitHub repository"
-        ]
-        [ IconButton.new
-            { icon = Icon.material "code"
-            , label = "GitHub repository"
-            , variant = IconButton.Standard
-            }
-            |> IconButton.view
-        ]
+    IconButton.new
+        { icon = Icon.material "code"
+        , label = "GitHub repository"
+        , variant = IconButton.Standard
+        }
+        |> IconButton.withHref "https://github.com/jackhp95/m3e-builder"
+        |> IconButton.withTarget "_blank"
+        |> IconButton.withRel "noreferrer noopener"
+        |> IconButton.view
 
 
 schemeQuickToggle : Model -> Html Msg
