@@ -80,6 +80,8 @@ import M3e.Calendar
 import M3e.Common
 
 
+{-| The calendar opaque type. Build via `new`.
+-}
 type Calendar msg
     = Calendar (Config msg)
 
@@ -107,6 +109,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh calendar with no selection or constraints.
+-}
 new : Calendar msg
 new =
     Calendar
@@ -133,6 +137,8 @@ withAttributes attributes (Calendar cfg) =
     Calendar { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Calendar msg -> Calendar msg
 withId id (Calendar cfg) =
     Calendar { cfg | id = Just id }
@@ -203,6 +209,8 @@ withHeader h (Calendar cfg) =
     Calendar { cfg | header = Just h }
 
 
+{-| Render the calendar.
+-}
 view : Calendar msg -> Html msg
 view (Calendar cfg) =
     M3e.Calendar.component

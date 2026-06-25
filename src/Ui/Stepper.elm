@@ -66,10 +66,14 @@ import M3e.StepPanel
 import M3e.Stepper
 
 
+{-| The stepper opaque type. Build via `new`.
+-}
 type Stepper msg
     = Stepper (Config msg)
 
 
+{-| A single step. Build via `step`.
+-}
 type Step msg
     = Step (StepConfig msg)
 
@@ -99,6 +103,8 @@ type alias StepConfig msg =
     }
 
 
+{-| Construct a fresh stepper with no steps and no selection.
+-}
 new : Stepper msg
 new =
     Stepper
@@ -120,11 +126,15 @@ withAttributes attributes (Stepper cfg) =
     Stepper { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Stepper msg -> Stepper msg
 withId id (Stepper cfg) =
     Stepper { cfg | id = Just id }
 
 
+{-| Construct a step from an id, label, and panel content.
+-}
 step : String -> Html msg -> List (Html msg) -> Step msg
 step id label content =
     Step
@@ -136,46 +146,66 @@ step id label content =
         }
 
 
+{-| Mark a step as completed.
+-}
 withCompleted : Bool -> Step msg -> Step msg
 withCompleted flag (Step cfg) =
     Step { cfg | completed = flag }
 
 
+{-| Mark a step as optional.
+-}
 withOptional : Bool -> Step msg -> Step msg
 withOptional flag (Step cfg) =
     Step { cfg | optional = flag }
 
 
+{-| Append a single step.
+-}
 withStep : Step msg -> Stepper msg -> Stepper msg
 withStep s (Stepper cfg) =
     Stepper { cfg | steps = cfg.steps ++ [ s ] }
 
 
+{-| Append a list of steps.
+-}
 withSteps : List (Step msg) -> Stepper msg -> Stepper msg
 withSteps ss (Stepper cfg) =
     Stepper { cfg | steps = cfg.steps ++ ss }
 
 
+{-| Set the vertical orientation.
+-}
 withVertical : Bool -> Stepper msg -> Stepper msg
 withVertical flag (Stepper cfg) =
     Stepper { cfg | vertical = flag }
 
 
+{-| Require steps to be completed in order.
+-}
 withLinear : Bool -> Stepper msg -> Stepper msg
 withLinear flag (Stepper cfg) =
     Stepper { cfg | linear = flag }
 
 
+{-| Uncontrolled: set the initially selected step id; the DOM owns state
+thereafter.
+-}
 withDefaultSelected : String -> Stepper msg -> Stepper msg
 withDefaultSelected stepId (Stepper cfg) =
     Stepper { cfg | selection = DefaultSelection stepId }
 
 
+{-| Controlled: the caller owns the selected step id and handles selection
+changes.
+-}
 withExplicitSelectedState : (String -> msg) -> String -> Stepper msg -> Stepper msg
 withExplicitSelectedState onSelect stepId (Stepper cfg) =
     Stepper { cfg | selection = ExplicitSelection onSelect stepId }
 
 
+{-| Render the stepper.
+-}
 view : Stepper msg -> Html msg
 view (Stepper cfg) =
     M3e.Stepper.component

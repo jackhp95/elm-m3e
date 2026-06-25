@@ -174,17 +174,26 @@ Ordered newest-first within each section.
 
 ## Docs-generation opportunities
 
-### F8 — drive the component reference pages from `elm make --docs`
-- **Context:** the per-component pages currently get their API content from a
-  custom extractor (`docs/scripts/extract-reference.mjs`).
-- **Better:** the library already has good inline module docs + `@docs`
-  markers, so `elm make --docs docs.json` emits **structured** docs JSON
-  (every exposed type/value with its comment, type signature, and the `@docs`
-  ordering). Feed that shape to the generator instead of a bespoke parser —
-  single source of truth, stays correct as the API evolves, and it's the same
-  artifact Phase 8 (package-readiness) needs anyway.
-- **Action:** generate `docs.json` from the library elm.json and have the
-  Components route render from it. (Filed as a task.)
+### F8 — drive the component reference pages from `elm make --docs` — DONE
+- **Context:** the per-component pages got their API content from a heuristic
+  extractor that scanned Elm source with regex.
+- **Resolved:** `docs/scripts/extract-reference.mjs` now sets up a scratch
+  package project (symlinks to `src/Ui` + `vendor/elm-m3e/M3e`, generated
+  `elm.json` listing all 52 Ui modules as `exposed-modules`), runs
+  `elm make --docs docs.json` there, and maps the structured output to the
+  existing `reference.json` schema. Type signatures come from the elm compiler
+  (not regex); every value has a doc comment (the compiler enforces it).
+- **Surfaced (fixed):** the switch revealed **98 missing doc comments across
+  17 modules** that the heuristic silently glossed over. All filled in
+  (mostly trivial 1-line `{-| Set the X. -}` modifiers; a few non-obvious got
+  more useful descriptions). `elm make --docs` now succeeds, 0 errors.
+- **Bonus:** member count jumped from the heuristic's count to **632 members
+  across 52 modules** — the pipeline catches everything the heuristic missed.
+  Same artifact Phase 8 (package-readiness) will need; this is half of that
+  work landed early.
+- **Caveat:** the scratch elm.json uses `vendor/elm-m3e/M3e/*` as part of the
+  package's own `src/` (via symlink). For a real publishable package, the M3e
+  atoms must become a published dep — that's the remaining Phase 8 work.
 
 ## Tooling / DX papercuts
 

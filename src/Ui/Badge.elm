@@ -46,6 +46,8 @@ import Html.Extra
 import M3e.Badge
 
 
+{-| The badge opaque type. Build via `dot`, `count`, or `label`.
+-}
 type Badge msg
     = Badge (Config msg)
 
@@ -99,6 +101,8 @@ withAttributes attributes (Badge cfg) =
     Badge { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Badge msg -> Badge msg
 withId id (Badge cfg) =
     Badge { cfg | id = Just id }
@@ -111,6 +115,8 @@ withFor forId (Badge cfg) =
     Badge { cfg | for = Just forId }
 
 
+{-| Render the badge.
+-}
 view : Badge msg -> Html msg
 view (Badge cfg) =
     M3e.Badge.component

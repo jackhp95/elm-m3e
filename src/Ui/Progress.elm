@@ -73,10 +73,15 @@ import M3e.CircularProgressIndicator
 import M3e.LinearProgressIndicator
 
 
+{-| The progress indicator opaque type. Build via `linear`, `circular`, or
+`indeterminate`.
+-}
 type Progress msg
     = Progress (Config msg)
 
 
+{-| Progress indicator shape.
+-}
 type Shape
     = Linear
     | Circular
@@ -122,16 +127,22 @@ withAttributes attributes (Progress cfg) =
     Progress { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Progress msg -> Progress msg
 withId id (Progress cfg) =
     Progress { cfg | id = Just id }
 
 
+{-| Set the maximum value the indicator measures against. Default 100.
+-}
 withMax : Int -> Progress msg -> Progress msg
 withMax max (Progress cfg) =
     Progress { cfg | max = max }
 
 
+{-| Render the progress indicator.
+-}
 view : Progress msg -> Html msg
 view (Progress cfg) =
     case cfg.shape of

@@ -327,6 +327,8 @@ genericSet chips =
     Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.ChipSet.component }
 
 
+{-| A typed chip set. Build via `filterSet`, `inputSet`, or `genericSet`.
+-}
 type Set kind msg
     = Set (SetConfig kind msg)
 
@@ -339,6 +341,8 @@ type alias SetConfig kind msg =
     }
 
 
+{-| Set the chip set's `id` attribute.
+-}
 withId : String -> Set kind msg -> Set kind msg
 withId id (Set cfg) =
     Set { cfg | id = Just id }
@@ -354,16 +358,22 @@ withSetAttributes attributes (Set cfg) =
     Set { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Append a single chip to the set.
+-}
 withChip : Chip kind msg -> Set kind msg -> Set kind msg
 withChip c (Set cfg) =
     Set { cfg | chips = cfg.chips ++ [ c ] }
 
 
+{-| Append a list of chips to the set.
+-}
 withChips : List (Chip kind msg) -> Set kind msg -> Set kind msg
 withChips cs (Set cfg) =
     Set { cfg | chips = cfg.chips ++ cs }
 
 
+{-| Render a chip on its own (outside a set).
+-}
 view : Chip kind msg -> Html msg
 view (Chip cfg) =
     let

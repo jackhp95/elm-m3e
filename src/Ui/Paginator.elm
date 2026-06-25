@@ -56,6 +56,8 @@ import Json.Decode as Decode
 import M3e.Paginator
 
 
+{-| The paginator opaque type. Build via `new`.
+-}
 type Paginator msg
     = Paginator (Config msg)
 
@@ -78,6 +80,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh paginator (length 0, no page state).
+-}
 new : Paginator msg
 new =
     Paginator
@@ -101,46 +105,64 @@ withAttributes attributes (Paginator cfg) =
     Paginator { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Paginator msg -> Paginator msg
 withId id (Paginator cfg) =
     Paginator { cfg | id = Just id }
 
 
+{-| Set the total number of items being paginated.
+-}
 withLength : Int -> Paginator msg -> Paginator msg
 withLength length (Paginator cfg) =
     Paginator { cfg | length = length }
 
 
+{-| Toggle the first/last page jump buttons.
+-}
 withFirstLastButtons : Bool -> Paginator msg -> Paginator msg
 withFirstLastButtons flag (Paginator cfg) =
     Paginator { cfg | firstLast = flag }
 
 
+{-| Hide the page-size selector.
+-}
 withHidePageSize : Bool -> Paginator msg -> Paginator msg
 withHidePageSize flag (Paginator cfg) =
     Paginator { cfg | hidePageSize = flag }
 
 
+{-| Set the available page sizes (as the element's space-separated string).
+-}
 withPageSizes : String -> Paginator msg -> Paginator msg
 withPageSizes sizes (Paginator cfg) =
     Paginator { cfg | pageSizes = Just sizes }
 
 
+{-| Disable the paginator.
+-}
 withDisabled : Bool -> Paginator msg -> Paginator msg
 withDisabled flag (Paginator cfg) =
     Paginator { cfg | disabled = flag }
 
 
+{-| Uncontrolled: set the initial page index; the DOM owns state thereafter.
+-}
 withDefaultPage : Int -> Paginator msg -> Paginator msg
 withDefaultPage pageIndex (Paginator cfg) =
     Paginator { cfg | state = DefaultPage pageIndex }
 
 
+{-| Controlled: the caller owns the current page index and handles page changes.
+-}
 withExplicitPageState : (Int -> msg) -> Int -> Paginator msg -> Paginator msg
 withExplicitPageState onPage pageIndex (Paginator cfg) =
     Paginator { cfg | state = ExplicitPage onPage pageIndex }
 
 
+{-| Render the paginator.
+-}
 view : Paginator msg -> Html msg
 view (Paginator cfg) =
     M3e.Paginator.component

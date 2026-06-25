@@ -42,10 +42,14 @@ import M3e.ContentPane
 import M3e.SplitPane
 
 
+{-| The split pane opaque type. Build via `new`.
+-}
 type SplitPane msg
     = SplitPane (Config msg)
 
 
+{-| Split pane layout orientation.
+-}
 type Orientation
     = Horizontal
     | Vertical
@@ -60,6 +64,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh, horizontal split pane with empty start/end slots.
+-}
 new : SplitPane msg
 new =
     SplitPane
@@ -80,21 +86,29 @@ withAttributes attributes (SplitPane cfg) =
     SplitPane { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> SplitPane msg -> SplitPane msg
 withId id (SplitPane cfg) =
     SplitPane { cfg | id = Just id }
 
 
+{-| Set the content for the start pane.
+-}
 withStart : List (Html msg) -> SplitPane msg -> SplitPane msg
 withStart html (SplitPane cfg) =
     SplitPane { cfg | start = html }
 
 
+{-| Set the content for the end pane.
+-}
 withEnd : List (Html msg) -> SplitPane msg -> SplitPane msg
 withEnd html (SplitPane cfg) =
     SplitPane { cfg | end = html }
 
 
+{-| Set the split pane orientation.
+-}
 withOrientation : Orientation -> SplitPane msg -> SplitPane msg
 withOrientation orientation (SplitPane cfg) =
     SplitPane { cfg | orientation = orientation }
@@ -110,6 +124,8 @@ toM3eOrientation orientation =
             M3e.SplitPane.Vertical
 
 
+{-| Render the split pane.
+-}
 view : SplitPane msg -> Html msg
 view (SplitPane cfg) =
     M3e.SplitPane.component

@@ -38,6 +38,8 @@ import Html.Attributes as Attr
 import M3e.Skeleton
 
 
+{-| The skeleton opaque type. Build via `new`.
+-}
 type Skeleton msg
     = Skeleton (Config msg)
 
@@ -49,6 +51,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh skeleton placeholder.
+-}
 new : Skeleton msg
 new =
     Skeleton { id = Nothing, attributes = [], classes = [] }
@@ -63,16 +67,22 @@ withAttributes attributes (Skeleton cfg) =
     Skeleton { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Skeleton msg -> Skeleton msg
 withId id (Skeleton cfg) =
     Skeleton { cfg | id = Just id }
 
 
+{-| Append a CSS class (typically a Tailwind size utility).
+-}
 withClass : String -> Skeleton msg -> Skeleton msg
 withClass cls (Skeleton cfg) =
     Skeleton { cfg | classes = cls :: cfg.classes }
 
 
+{-| Render the skeleton.
+-}
 view : Skeleton msg -> Html msg
 view (Skeleton cfg) =
     M3e.Skeleton.component

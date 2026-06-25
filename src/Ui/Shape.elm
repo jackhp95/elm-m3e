@@ -55,6 +55,8 @@ import Html.Attributes as Attr
 import M3e.Shape
 
 
+{-| The shape opaque type. Build via `new`.
+-}
 type Shape msg
     = Shape (Config msg)
 
@@ -76,6 +78,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh shape with no name and no content.
+-}
 new : Shape msg
 new =
     Shape { id = Nothing, attributes = [], name = Nothing, classes = [], content = [] }
@@ -90,6 +94,8 @@ withAttributes attributes (Shape cfg) =
     Shape { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Shape msg -> Shape msg
 withId id (Shape cfg) =
     Shape { cfg | id = Just id }
@@ -106,16 +112,22 @@ withName name (Shape cfg) =
     Shape { cfg | name = Just name }
 
 
+{-| Append a CSS class (e.g. for project layout/sizing).
+-}
 withClass : String -> Shape msg -> Shape msg
 withClass cls (Shape cfg) =
     Shape { cfg | classes = cls :: cfg.classes }
 
 
+{-| Set the content clipped to the shape.
+-}
 withContent : List (Html msg) -> Shape msg -> Shape msg
 withContent content (Shape cfg) =
     Shape { cfg | content = content }
 
 
+{-| Render the shape.
+-}
 view : Shape msg -> Html msg
 view (Shape cfg) =
     M3e.Shape.component

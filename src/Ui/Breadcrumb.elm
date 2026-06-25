@@ -47,10 +47,14 @@ import M3e.Breadcrumb
 import M3e.BreadcrumbItem
 
 
+{-| The breadcrumb opaque type. Build via `new`.
+-}
 type Breadcrumb msg
     = Breadcrumb (Config msg)
 
 
+{-| A single crumb. Build via `item`, `link`, or `current`.
+-}
 type Item msg
     = Item
         { label : Html msg
@@ -66,6 +70,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh breadcrumb with no items.
+-}
 new : Breadcrumb msg
 new =
     Breadcrumb { id = Nothing, attributes = [], items = [] }
@@ -80,6 +86,8 @@ withAttributes attributes (Breadcrumb cfg) =
     Breadcrumb { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Breadcrumb msg -> Breadcrumb msg
 withId id (Breadcrumb cfg) =
     Breadcrumb { cfg | id = Just id }
@@ -127,16 +135,22 @@ currentEscapeHatchHtml label =
     Item { label = label, href = Nothing, isCurrent = True }
 
 
+{-| Append a single crumb.
+-}
 withItem : Item msg -> Breadcrumb msg -> Breadcrumb msg
 withItem i (Breadcrumb cfg) =
     Breadcrumb { cfg | items = cfg.items ++ [ i ] }
 
 
+{-| Append a list of crumbs.
+-}
 withItems : List (Item msg) -> Breadcrumb msg -> Breadcrumb msg
 withItems is (Breadcrumb cfg) =
     Breadcrumb { cfg | items = cfg.items ++ is }
 
 
+{-| Render the breadcrumb.
+-}
 view : Breadcrumb msg -> Html msg
 view (Breadcrumb cfg) =
     M3e.Breadcrumb.component

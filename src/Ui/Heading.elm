@@ -69,6 +69,9 @@ import Html.Extra
 import M3e.Heading
 
 
+{-| The heading opaque type. Build via `new` or a text preset (`display`,
+`headline`, `title`, `label`).
+-}
 type Heading msg
     = Heading (Config msg)
 
@@ -155,21 +158,29 @@ withAttributes attributes (Heading cfg) =
     Heading { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Heading msg -> Heading msg
 withId id (Heading cfg) =
     Heading { cfg | id = Just id }
 
 
+{-| Set the heading's content (arbitrary `Html`).
+-}
 withContent : Html msg -> Heading msg -> Heading msg
 withContent content (Heading cfg) =
     Heading { cfg | content = Just content }
 
 
+{-| Set the heading variant (`Display`, `Headline`, `Title`, `Label`).
+-}
 withVariant : Variant -> Heading msg -> Heading msg
 withVariant variant (Heading cfg) =
     Heading { cfg | variant = variant }
 
 
+{-| Set the heading size (`Small`, `Medium`, `Large`).
+-}
 withSize : Size -> Heading msg -> Heading msg
 withSize size (Heading cfg) =
     Heading { cfg | size = Just size }
@@ -219,6 +230,8 @@ toM3eHeadingSize s =
             M3e.Heading.Large
 
 
+{-| Render the heading.
+-}
 view : Heading msg -> Html msg
 view (Heading cfg) =
     M3e.Heading.component

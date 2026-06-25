@@ -56,6 +56,8 @@ import Html.Attributes as Attr
 import M3e.ScrollContainer
 
 
+{-| The scroll container opaque type. Build via `new`.
+-}
 type ScrollContainer msg
     = ScrollContainer (Config msg)
 
@@ -77,6 +79,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh scroll container with default scrollbars and both dividers.
+-}
 new : ScrollContainer msg
 new =
     ScrollContainer
@@ -96,6 +100,8 @@ withAttributes attributes (ScrollContainer cfg) =
     ScrollContainer { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> ScrollContainer msg -> ScrollContainer msg
 withId id (ScrollContainer cfg) =
     ScrollContainer { cfg | id = Just id }
@@ -108,11 +114,15 @@ withThin flag (ScrollContainer cfg) =
     ScrollContainer { cfg | thin = flag }
 
 
+{-| Choose which dividers appear when content is scrolled.
+-}
 withDividers : Dividers -> ScrollContainer msg -> ScrollContainer msg
 withDividers d (ScrollContainer cfg) =
     ScrollContainer { cfg | dividers = d }
 
 
+{-| Render the scroll container around the given children.
+-}
 view : List (Html msg) -> ScrollContainer msg -> Html msg
 view children (ScrollContainer cfg) =
     M3e.ScrollContainer.component

@@ -49,6 +49,8 @@ import M3e.Avatar
 import Ui.Icon
 
 
+{-| The avatar opaque type. Build via `image`, `initials`, or `icon`.
+-}
 type Avatar msg
     = Avatar (Config msg)
 
@@ -101,6 +103,8 @@ withAttributes attributes (Avatar cfg) =
     Avatar { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Avatar msg -> Avatar msg
 withId id (Avatar cfg) =
     Avatar { cfg | id = Just id }
@@ -158,6 +162,8 @@ fallbackGlyph =
     "?"
 
 
+{-| Render the avatar.
+-}
 view : Avatar msg -> Html msg
 view (Avatar cfg) =
     M3e.Avatar.component

@@ -80,6 +80,8 @@ import Json.Decode
 import M3e.Theme
 
 
+{-| The theme opaque type. Build via `new`.
+-}
 type Theme msg
     = Theme (Config msg)
 

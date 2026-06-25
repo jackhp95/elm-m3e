@@ -57,6 +57,8 @@ import Html.Attributes as Attr
 import M3e.Toc
 
 
+{-| The TOC opaque type. Build via `new`.
+-}
 type Toc msg
     = Toc (Config msg)
 
@@ -71,6 +73,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh TOC with no target or slots configured.
+-}
 new : Toc msg
 new =
     Toc
@@ -92,6 +96,8 @@ withAttributes attributes (Toc cfg) =
     Toc { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Toc msg -> Toc msg
 withId id (Toc cfg) =
     Toc { cfg | id = Just id }
@@ -112,16 +118,22 @@ withMaxDepth depth (Toc cfg) =
     Toc { cfg | maxDepth = Just depth }
 
 
+{-| Set the content rendered in the TOC's `title` slot.
+-}
 withTitle : Html msg -> Toc msg -> Toc msg
 withTitle title (Toc cfg) =
     Toc { cfg | title = Just title }
 
 
+{-| Set the content rendered in the TOC's `overline` slot.
+-}
 withOverline : Html msg -> Toc msg -> Toc msg
 withOverline overline (Toc cfg) =
     Toc { cfg | overline = Just overline }
 
 
+{-| Render the TOC.
+-}
 view : Toc msg -> Html msg
 view (Toc cfg) =
     M3e.Toc.component

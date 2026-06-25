@@ -46,6 +46,8 @@ import M3e.Slide
 import M3e.SlideGroup
 
 
+{-| The slide group opaque type. Build via `new`.
+-}
 type Slide msg
     = Slide (Config msg)
 
@@ -59,6 +61,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh slide group with no slides.
+-}
 new : Slide msg
 new =
     Slide { id = Nothing, attributes = [], slides = [], vertical = False, disabled = False }
@@ -73,16 +77,22 @@ withAttributes attributes (Slide cfg) =
     Slide { cfg | attributes = cfg.attributes ++ attributes }
 
 
+{-| Set the `id` attribute.
+-}
 withId : String -> Slide msg -> Slide msg
 withId id (Slide cfg) =
     Slide { cfg | id = Just id }
 
 
+{-| Set the vertical orientation.
+-}
 withVertical : Bool -> Slide msg -> Slide msg
 withVertical flag (Slide cfg) =
     Slide { cfg | vertical = flag }
 
 
+{-| Disable the slide group.
+-}
 withDisabled : Bool -> Slide msg -> Slide msg
 withDisabled flag (Slide cfg) =
     Slide { cfg | disabled = flag }
@@ -95,6 +105,8 @@ withSlides ss (Slide cfg) =
     Slide { cfg | slides = ss }
 
 
+{-| Render the slide group.
+-}
 view : Slide msg -> Html msg
 view (Slide cfg) =
     M3e.SlideGroup.component

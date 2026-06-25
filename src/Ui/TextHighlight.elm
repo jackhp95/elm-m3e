@@ -60,6 +60,8 @@ import Html exposing (Attribute, Html)
 import M3e.TextHighlight
 
 
+{-| The text highlight opaque type. Build via `new`.
+-}
 type TextHighlight msg
     = TextHighlight (Config msg)
 
@@ -81,6 +83,8 @@ type alias Config msg =
     }
 
 
+{-| Construct a fresh text highlight with no term (a no-op until set).
+-}
 new : TextHighlight msg
 new =
     TextHighlight
@@ -122,6 +126,8 @@ withCaseSensitive flag (TextHighlight cfg) =
     TextHighlight { cfg | caseSensitive = flag }
 
 
+{-| Disable highlighting (renders the children unaltered).
+-}
 withDisabled : Bool -> TextHighlight msg -> TextHighlight msg
 withDisabled flag (TextHighlight cfg) =
     TextHighlight { cfg | disabled = flag }

@@ -1,86 +1,156 @@
-// Extract a component reference from the Ui.* library source: each module's
-// overview doc-comment plus every exposed member's type signature and doc.
-// Output: docs/data/reference.json (consumed by Route.Reference via BackendTask).
-// Accurate by construction — pulled straight from the compiled source.
+// Build the component reference (`docs/data/reference.json`) from native
+// `elm make --docs docs.json` output.
+//
+// Why: the previous heuristic scanned Elm source with regex (fragile to
+// multi-line signatures, comment placement quirks, and silently glossed over
+// missing doc comments). `elm make --docs` is the elm compiler's own pipeline:
+// it enforces a doc comment on every exposed value and produces type signatures
+// it actually type-checked. Single source of truth; same artifact Phase 8
+// (package-readiness) needs anyway.
+//
+// How: the library can't be a real package today (M3e.* isn't a published
+// dep), so this script sets up a scratch package project at /tmp/m3e-docs-gen
+// with symlinks to `src/Ui` and `vendor/elm-m3e/M3e`, runs `elm make --docs`
+// there, then maps the produced `docs.json` to the existing `reference.json`
+// schema consumed by Route.Reference and Route.Components.Name_.
+
 import fs from "fs";
 import path from "path";
+import { execSync } from "child_process";
 import { fileURLToPath } from "url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const SRC = path.resolve(here, "../../src/Ui");
+const REPO = path.resolve(here, "../..");
+const SRC_UI = path.resolve(REPO, "src/Ui");
+const SRC_M3E = path.resolve(REPO, "vendor/elm-m3e/M3e");
 const OUT = path.resolve(here, "../data/reference.json");
+const ELM_BIN = path.resolve(REPO, "docs/node_modules/.bin/elm");
 
-function firstDocComment(src, fromIndex) {
-  const start = src.indexOf("{-|", fromIndex);
-  if (start === -1) return "";
-  const end = src.indexOf("-}", start);
-  if (end === -1) return "";
-  return tidy(src.slice(start + 3, end));
+const SCRATCH = "/tmp/m3e-docs-gen";
+
+// 1. Build a fresh scratch package project (idempotent).
+function setupScratch() {
+  fs.rmSync(SCRATCH, { recursive: true, force: true });
+  fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
+  fs.symlinkSync(SRC_UI, path.join(SCRATCH, "src/Ui"));
+  fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
+
+  const exposed = fs
+    .readdirSync(SRC_UI)
+    .filter((f) => f.endsWith(".elm"))
+    .map((f) => "Ui." + f.replace(/\.elm$/, ""))
+    .sort();
+
+  const elmJson = {
+    type: "package",
+    name: "jackhp95/elm-m3e",
+    summary: "Material 3 Expressive — typed Elm builders over @m3e/web.",
+    license: "BSD-3-Clause",
+    version: "1.0.0",
+    "exposed-modules": exposed,
+    "elm-version": "0.19.0 <= v < 0.20.0",
+    dependencies: {
+      "elm/browser": "1.0.0 <= v < 2.0.0",
+      "elm/core": "1.0.0 <= v < 2.0.0",
+      "elm/html": "1.0.0 <= v < 2.0.0",
+      "elm/json": "1.0.0 <= v < 2.0.0",
+      "elm/time": "1.0.0 <= v < 2.0.0",
+      "elm-community/html-extra": "3.0.0 <= v < 4.0.0",
+      "elm-community/list-extra": "8.0.0 <= v < 9.0.0",
+      "elm-community/maybe-extra": "5.0.0 <= v < 6.0.0",
+    },
+    "test-dependencies": {},
+  };
+  fs.writeFileSync(path.join(SCRATCH, "elm.json"), JSON.stringify(elmJson, null, 2));
 }
 
-// Strip @docs lines and collapse whitespace into readable prose.
-function tidy(s) {
-  return s
-    .split("\n")
-    .map((l) => l.trim())
-    .filter((l) => !l.startsWith("@docs") && !l.startsWith("@figma-code-connect") && l !== "#" && !/^#\s/.test(l))
-    .join("\n")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
-
-function parseExposing(src) {
-  const m = src.match(/^module\s+[\w.]+\s+exposing\s*\(([\s\S]*?)\)\s*$/m);
-  if (!m) return [];
-  return m[1]
-    .split(",")
-    .map((s) => (s.match(/[A-Za-z0-9_]+/) || [""])[0])
-    .filter(Boolean);
-}
-
-function memberDoc(lines, annIdx) {
-  let k = annIdx - 1;
-  while (k >= 0 && lines[k].trim() === "") k--;
-  if (k < 0 || !lines[k].includes("-}")) return "";
-  let s = k;
-  while (s >= 0 && !lines[s].includes("{-|")) s--;
-  if (s < 0) return "";
-  return tidy(lines.slice(s, k + 1).join("\n").replace("{-|", "").replace("-}", ""));
-}
-
-const components = [];
-for (const file of fs.readdirSync(SRC).filter((f) => f.endsWith(".elm")).sort()) {
-  const name = file.replace(/\.elm$/, "");
-  const src = fs.readFileSync(path.join(SRC, file), "utf8");
-  const lines = src.split("\n");
-  const moduleAt = src.indexOf("module");
-  const overview = firstDocComment(src, moduleAt);
-
-  const members = [];
-  for (const nm of parseExposing(src)) {
-    if (!/^[a-z]/.test(nm)) {
-      // a type (possibly with constructors)
-      const idx = lines.findIndex((l) => new RegExp("^type\\s+(alias\\s+)?" + nm + "\\b").test(l));
-      members.push({ name: nm, kind: "type", signature: "", doc: idx === -1 ? "" : memberDoc(lines, idx) });
-      continue;
-    }
-    const idx = lines.findIndex((l) => new RegExp("^" + nm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\s*:").test(l));
-    let signature = "";
-    let doc = "";
-    if (idx !== -1) {
-      const sig = [lines[idx]];
-      for (let j = idx + 1; j < lines.length; j++) {
-        if (/^\S/.test(lines[j])) break;
-        sig.push(lines[j]);
-      }
-      signature = sig.join(" ").replace(/\s+/g, " ").replace(new RegExp("^" + nm + "\\s*:\\s*"), "").trim();
-      doc = memberDoc(lines, idx);
-    }
-    members.push({ name: nm, kind: "value", signature, doc });
+// 2. Run `elm make --docs docs.json` in the scratch project. Any missing
+//    doc-comment / unresolved @docs reference is a hard error here.
+function buildDocsJson() {
+  try {
+    execSync(`${ELM_BIN} make --docs docs.json`, { cwd: SCRATCH, stdio: "pipe" });
+  } catch (e) {
+    process.stderr.write(e.stdout?.toString() || "");
+    process.stderr.write(e.stderr?.toString() || "");
+    throw new Error("elm make --docs failed in " + SCRATCH);
   }
-  components.push({ name, slug: name.toLowerCase(), overview, members });
+  return JSON.parse(fs.readFileSync(path.join(SCRATCH, "docs.json"), "utf8"));
 }
+
+// 3. Extract the module overview prose: everything in `comment` before the
+//    first `# <section>` header or `@docs` line. Collapse internal blank runs.
+function overview(comment) {
+  const lines = comment.replace(/\r\n/g, "\n").split("\n");
+  const out = [];
+  for (const raw of lines) {
+    const l = raw.replace(/\s+$/, "");
+    if (/^@docs\b/.test(l.trim())) break;
+    if (/^#\s/.test(l)) break;
+    out.push(l);
+  }
+  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+// 4. Order members by their first appearance in the module comment's `@docs`
+//    sections (docs.json sorts each array alphabetically, but the @docs order
+//    is what the rendered page should reflect). Anything not referenced by
+//    @docs falls to the end in alphabetical order.
+function memberOrder(comment) {
+  const names = [];
+  for (const line of comment.split("\n")) {
+    const m = line.match(/^@docs\s+(.+)$/);
+    if (!m) continue;
+    for (const tok of m[1].split(",")) {
+      const n = tok.trim().split(/\s+/)[0];
+      if (n) names.push(n);
+    }
+  }
+  return names;
+}
+
+// 5. Build the per-module reference record. `kind`: type for unions and
+//    aliases; value for everything else. Signature on values is the elm type
+//    (multi-line collapsed to a single line by docs.json already).
+function moduleEntry(mod) {
+  const name = mod.name.replace(/^Ui\./, "");
+  const slug = name.toLowerCase();
+  const byName = new Map();
+  for (const u of mod.unions || []) {
+    byName.set(u.name, { name: u.name, kind: "type", signature: "", doc: (u.comment || "").trim() });
+  }
+  for (const a of mod.aliases || []) {
+    byName.set(a.name, { name: a.name, kind: "type", signature: "", doc: (a.comment || "").trim() });
+  }
+  for (const v of mod.values || []) {
+    byName.set(v.name, { name: v.name, kind: "value", signature: v.type || "", doc: (v.comment || "").trim() });
+  }
+
+  const ordered = memberOrder(mod.comment || "");
+  const members = [];
+  const seen = new Set();
+  for (const n of ordered) {
+    if (byName.has(n) && !seen.has(n)) {
+      members.push(byName.get(n));
+      seen.add(n);
+    }
+  }
+  for (const n of [...byName.keys()].sort()) {
+    if (!seen.has(n)) members.push(byName.get(n));
+  }
+  return { name, slug, overview: overview(mod.comment || ""), members };
+}
+
+// ----- run -----
+setupScratch();
+const modules = buildDocsJson();
+const components = modules
+  .filter((m) => /^Ui\./.test(m.name))
+  .map(moduleEntry)
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, JSON.stringify(components));
-console.log(`reference: ${components.length} components, ${components.reduce((n, c) => n + c.members.length, 0)} members -> data/reference.json`);
+const totalMembers = components.reduce((n, c) => n + c.members.length, 0);
+console.log(
+  `reference (via elm make --docs): ${components.length} components, ${totalMembers} members -> data/reference.json`
+);
