@@ -121,6 +121,36 @@ Ordered newest-first within each section.
     **still open** (per-builder judgment): `AppBar.leading/trailing`,
     `Breadcrumb` item label, `Chip` label are the main candidates. Not blockers.
 
+### F11 — slot API: no `Html.text` assumption, no presumptive `<span>` wrapper
+User directives (reference impl: **`Ui.AppBar`**; to roll out library-wide after review):
+1. **No `Html.text`.** Any field that was a `String` the builder wrapped via
+   `Html.text` becomes `Html msg` or a typed `Ui.*` builder. The builder never
+   decides "this is a text node."
+2. **No presumptive `<span>` wrapper.** A slot setter must not wrap the caller's
+   content in a builder-created `Html.span [slot] […]`. The builder owns only the
+   slot **attribute**, injected onto the element actually rendered.
+- **The pattern (AppBar):** a slot is stored as `Slotted msg = Attribute msg ->
+  Html msg` ("give me the slot attr, I yield the element"). Two fillers:
+  - **typed**: `withTitle : Ui.Heading` / `withLeadingIconButton : Ui.IconButton`
+    — `fromBuilder addAttrs view builder slot = view (addAttrs [slot] builder)`.
+    Works because the typed builder exposes `withAttributes` (F10) to inject the slot.
+  - **element escape hatch**: `with…HtmlElementEscapeHatch tag attrs children` —
+    `fromElement tag attrs children slot = tag (slot :: attrs) children`. Caller
+    picks the element; builder prepends the slot attr.
+- **Choices I made (review these):**
+  - `AppBar.new` no longer takes a required title — title is an optional slot
+    (consistent with every other slot; an icon-only bar is valid).
+  - title/subtitle are typed as `Ui.Heading` (typescale from `m3e-heading`),
+    with an element escape hatch for non-heading cases.
+  - list slots (trailing) are filled by **repeated** `withTrailing*` calls
+    (typed or escape-hatch), appended in order — no `List` argument.
+  - naming follows the user's example: `with<Slot>HtmlElementEscapeHatch`.
+- **Library-wide implication (big):** every slot in every builder gets this
+  treatment — typed setter(s) + an `…HtmlElementEscapeHatch`, and every
+  `String`+`Html.text` content field becomes `Html msg`/typed. This is a large
+  public-API reshape; the AppBar reference is committed for review BEFORE the
+  sweep (a wrong 52-module slot redesign is very expensive). Filed as a task.
+
 ## API gaps (couldn't express a real, in-spec use case)
 
 ### F2 — `Ui.NavigationDrawer` couldn't model the real nav-menu tree (EXTENDED)
