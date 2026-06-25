@@ -567,7 +567,7 @@ viewShrine model =
                 }
                 catalog
     in
-    div [ class "mx-auto flex max-w-6xl flex-col gap-6" ]
+    div [ class "mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8" ]
         [ viewAppBar model
         , viewCarousel
         , div [ class "flex gap-4" ]
@@ -652,7 +652,7 @@ viewCarousel =
                 , span [ class "text-title-medium font-medium" ] [ text title ]
                 ]
     in
-    div [ class "flex gap-4 overflow-x-auto pb-2" ]
+    div [ class "-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0" ]
         (List.map slideCard featured)
 
 
@@ -720,7 +720,7 @@ viewControls model =
                 |> Slider.view
     in
     div [ class "flex flex-col gap-4" ]
-        [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
+        [ div [ class "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between" ]
             [ Chip.filterSet chips
                 |> Chip.withId "shrine-filters"
                 |> Chip.viewSet
