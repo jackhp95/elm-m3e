@@ -338,7 +338,9 @@ view _ _ model =
 
 page : Model -> Html Msg
 page model =
-    div [ class "mx-auto flex max-w-5xl flex-col gap-6 rounded-md-corner-large bg-surface p-4 sm:p-6" ]
+    -- Outer `px-4 py-6 sm:px-6 sm:py-8` lives in `Shared.view` for every
+    -- study route, so the page wrapper here only needs to constrain width.
+    div [ class "mx-auto flex max-w-5xl flex-col gap-6 rounded-md-corner-large bg-surface" ]
         [ breadcrumbBar model
         , div [ class "flex flex-col gap-6 md:flex-row md:items-start" ]
             [ railColumn model
