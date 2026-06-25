@@ -1,0 +1,110 @@
+import { test, expect, Locator } from "@playwright/test";
+
+/**
+ * Runtime contract tests — assert the things `Test.Html` structurally cannot:
+ * shadow DOM content, DOM properties, and the accessibility tree.
+ *
+ * Each test navigates to a docs component page (which renders the real `Ui.*`
+ * module) and waits for the custom elements to upgrade.
+ */
+
+/** Wait until a custom element tag is defined (upgraded) in the page. */
+async function waitDefined(page: import("@playwright/test").Page, tag: string) {
+  await page.waitForFunction((t) => !!customElements.get(t), tag);
+}
+
+// The component-page content lives in the `.max-w-4xl` container; the app-bar /
+// settings shell (which legitimately uses form-fields) sits outside it. Scope
+// component assertions to the content so shell chrome doesn't pollute them.
+const CONTENT = ".max-w-4xl";
+
+test.describe("F1 — icon renders a glyph (shadow DOM, not a dropped text child)", () => {
+  test("every m3e-icon is upgraded and carries a non-empty name", async ({ page }) => {
+    await page.goto("/components/icon");
+    await waitDefined(page, "m3e-icon");
+
+    const icons = page.locator(`${CONTENT} m3e-icon`);
+    const count = await icons.count();
+    expect(count, "icon page should render icons").toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const icon = icons.nth(i);
+      // The F1 bug: glyph came from a text *child*, which <m3e-icon> drops —
+      // the glyph must ride the `name` attribute and the element must upgrade
+      // (have a shadowRoot) so the shadow `.icon` can render it.
+      const name = await icon.getAttribute("name");
+      expect(name, "icon must have a name attribute").toBeTruthy();
+      const hasShadow = await icon.evaluate((el) => !!el.shadowRoot);
+      expect(hasShadow, "m3e-icon must be upgraded (shadowRoot present)").toBe(true);
+    }
+  });
+});
+
+test.describe("F7 — toggle controls render bare (no self-wrapped m3e-form-field)", () => {
+  test("switch demos are bare m3e-switch with an accessible name", async ({ page }) => {
+    await page.goto("/components/switch");
+    await waitDefined(page, "m3e-switch");
+
+    const switches = page.locator(`${CONTENT} m3e-switch`);
+    const count = await switches.count();
+    expect(count, "switch page should render switches").toBeGreaterThan(0);
+
+    for (let i = 0; i < count; i++) {
+      const sw = switches.nth(i);
+      // No m3e-form-field ancestor within the demo content — the F7 fix.
+      const wrapped = await sw.evaluate(
+        (el) => !!el.closest("m3e-form-field")
+      );
+      expect(wrapped, "a bare switch must not sit inside m3e-form-field").toBe(false);
+      // Accessible name comes from aria-label now that the control is bare.
+      const ariaLabel = await sw.getAttribute("aria-label");
+      expect(ariaLabel, "bare switch must carry an aria-label").toBeTruthy();
+    }
+  });
+
+  test("the bare switch is exposed to the a11y tree as a switch role with its label", async ({
+    page,
+  }) => {
+    await page.goto("/components/switch");
+    await waitDefined(page, "m3e-switch");
+    // Accessible-name-from-aria-label is an accessibility-tree fact: invisible
+    // to Test.Html, asserted here via the role query.
+    await expect(
+      page.getByRole("switch", { name: "On" }).first()
+    ).toBeVisible();
+  });
+});
+
+test.describe("F4 — boolean element state lives in DOM properties (invisible to Test.Html)", () => {
+  test("a checked switch reflects checked === true as a property", async ({ page }) => {
+    await page.goto("/components/switch");
+    await waitDefined(page, "m3e-switch");
+
+    // The "On" demo switch is constructed checked=True. `checked` is a DOM
+    // *property* (Html.Attributes.property), which Test.Html cannot read.
+    const on = page.getByRole("switch", { name: "On" }).first();
+    await expect(on).toBeVisible();
+    const checked = await on.evaluate(
+      (el) => (el as unknown as { checked: boolean }).checked
+    );
+    expect(checked, "the On switch must have checked === true at runtime").toBe(true);
+  });
+});
+
+test.describe("smoke — component pages mount without console errors", () => {
+  for (const slug of ["icon", "switch", "checkbox", "button", "card"]) {
+    test(`/components/${slug} renders its host elements`, async ({ page }) => {
+      const errors: string[] = [];
+      page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+      await page.goto(`/components/${slug}`);
+      // At least one upgraded custom element on the page.
+      const upgraded = await page.evaluate(() =>
+        [...document.querySelectorAll("*")].some(
+          (el) => el.tagName.startsWith("M3E-") && !!(el as HTMLElement).shadowRoot
+        )
+      );
+      expect(upgraded, `${slug} page should mount at least one m3e element`).toBe(true);
+      expect(errors, `${slug} page console errors`).toEqual([]);
+    });
+  }
+});
