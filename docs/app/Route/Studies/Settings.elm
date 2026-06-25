@@ -473,11 +473,11 @@ controlRow label supporting control =
 accountPanel : Model -> Html Msg
 accountPanel model =
     div [ class "flex flex-col gap-4" ]
-        [ section [ class "flex items-center gap-4 rounded-md-corner-large bg-surface-container-low p-5" ]
+        [ section [ class "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4" ]
             [ Html.map never (Ui.Avatar.view (Ui.Avatar.initials "Jack Peterson"))
             , div [ class "flex min-w-0 flex-col" ]
                 [ Html.span [ class "text-title-medium text-on-surface" ] [ text "Jack Peterson" ]
-                , Html.span [ class "text-body-medium text-on-surface-variant" ] [ text "jack.peterson@avetta.com" ]
+                , Html.span [ class "text-body-medium text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
                 , Html.span [ class "mt-1 w-max rounded-full bg-secondary-container px-2 py-0.5 text-label-small text-on-secondary-container" ]
                     [ text "Pro plan" ]
                 ]
