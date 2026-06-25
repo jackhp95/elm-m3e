@@ -566,7 +566,7 @@ drawerShell toMsg model page body =
         |> NavigationDrawer.withOnChange (\open -> toMsg (MenuChanged open))
         |> NavigationDrawer.withEntries (navEntries currentPath)
         |> NavigationDrawer.withContent
-            [ Html.div [ class "mx-auto max-w-5xl px-6 py-10 md:px-12" ] body ]
+            [ Html.div [ class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12" ] body ]
         |> NavigationDrawer.view
 
 

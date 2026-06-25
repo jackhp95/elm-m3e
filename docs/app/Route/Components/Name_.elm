@@ -256,8 +256,7 @@ memberRow m =
     Card.new Card.Outlined
         |> Card.withBody
             (div []
-                [ Html.pre [ class "overflow-x-auto text-body-small text-on-surface" ]
-                    [ code [] [ text sig ] ]
+                [ highlightedElm "overflow-x-auto text-body-small text-on-surface" sig
                 , if m.doc == "" then
                     text ""
 
@@ -336,17 +335,23 @@ subView s =
 
 codeBlock : String -> Html msg
 codeBlock s =
+    highlightedElm
+        "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface"
+        s
+
+
+{-| Render an Elm snippet with `SyntaxHighlight` token colors, wrapped in a
+`<div>` carrying `wrapperClass` for surface styling. `SyntaxHighlight.toBlockHtml`
+emits its own `<pre class="elmsh">`, so we wrap in a `<div>` (not `<pre>`) to
+avoid invalid pre-inside-pre markup. Falls back to a plain `<pre>` if the
+lexer can't parse the input.
+-}
+highlightedElm : String -> String -> Html msg
+highlightedElm wrapperClass s =
     let
         trimmed : String
         trimmed =
             String.trim s
-
-        -- SyntaxHighlight.toBlockHtml emits its own <pre class="elmsh">, so we
-        -- wrap it in a <div> (not <pre>) to keep the surface styling without
-        -- emitting invalid pre-inside-pre markup.
-        wrapperClass : String
-        wrapperClass =
-            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface"
     in
     case SyntaxHighlight.elm trimmed of
         Ok highlighted ->
@@ -358,14 +363,124 @@ codeBlock s =
                 [ code [] [ text trimmed ] ]
 
 
+{-| A block parsed out of a doc-comment string: either a prose paragraph or a
+fenced/indented code snippet (rendered with Elm highlighting).
+-}
+type DocBlock
+    = ProseBlock String
+    | CodeDocBlock String
+
+
+{-| Render a doc-comment string. Paragraphs are split on blank lines; any
+paragraph whose every non-blank line is indented 4+ spaces (the Markdown
+indented-code convention Elm doc comments use), or that is wrapped in \``fences, becomes a highlighted code card. The common leading indent is stripped
+before highlighting. Everything else stays prose (`whitespace-pre-line\`), so
+2-space Markdown bullet lists are left untouched.
+-}
 prose : String -> String -> Html msg
 prose cls s =
     div [ class cls ]
         (s
             |> String.split "\n\n"
-            |> List.filter (\para -> String.trim para /= "")
-            |> List.map (\para -> p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ])
+            |> List.filterMap classifyDocChunk
+            |> List.map renderDocBlock
         )
+
+
+renderDocBlock : DocBlock -> Html msg
+renderDocBlock block =
+    case block of
+        ProseBlock para ->
+            p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ]
+
+        CodeDocBlock src ->
+            div [ class "mt-2 first:mt-0" ] [ codeBlock src ]
+
+
+classifyDocChunk : String -> Maybe DocBlock
+classifyDocChunk chunk =
+    let
+        lines : List String
+        lines =
+            dropBlankEdges (String.lines chunk)
+
+        nonBlank : List String
+        nonBlank =
+            List.filter (\l -> String.trim l /= "") lines
+    in
+    if List.isEmpty nonBlank then
+        Nothing
+
+    else if isFenced nonBlank then
+        Just (CodeDocBlock (stripFences lines))
+
+    else if List.all (String.startsWith "    ") nonBlank then
+        Just (CodeDocBlock (stripCommonIndent lines))
+
+    else
+        Just (ProseBlock (String.join "\n" lines))
+
+
+isFenced : List String -> Bool
+isFenced nonBlank =
+    case nonBlank of
+        first :: _ ->
+            String.startsWith "```" (String.trimLeft first)
+
+        [] ->
+            False
+
+
+stripFences : List String -> String
+stripFences lines =
+    lines
+        |> List.filter (\l -> not (String.startsWith "```" (String.trimLeft l)))
+        |> String.join "\n"
+        |> String.trim
+
+
+stripCommonIndent : List String -> String
+stripCommonIndent lines =
+    let
+        indentOf : String -> Int
+        indentOf l =
+            String.length l - String.length (String.trimLeft l)
+
+        minIndent : Int
+        minIndent =
+            lines
+                |> List.filter (\l -> String.trim l /= "")
+                |> List.map indentOf
+                |> List.minimum
+                |> Maybe.withDefault 0
+    in
+    lines
+        |> List.map (String.dropLeft minIndent)
+        |> String.join "\n"
+        |> String.trim
+
+
+dropBlankEdges : List String -> List String
+dropBlankEdges lines =
+    lines
+        |> dropWhileBlank
+        |> List.reverse
+        |> dropWhileBlank
+        |> List.reverse
+
+
+dropWhileBlank : List String -> List String
+dropWhileBlank lines =
+    case lines of
+        l :: rest ->
+            if String.trim l == "" then
+                dropWhileBlank rest
+
+            else
+                lines
+
+        [] ->
+            []
 
 
 noOp : a -> PagesMsg Msg
