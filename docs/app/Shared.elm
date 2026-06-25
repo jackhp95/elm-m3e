@@ -61,8 +61,18 @@ type alias Model =
     }
 
 
-{-| The Tailwind `md` breakpoint — drives the responsive nav-drawer mode and
-the visibility of the hamburger / app-bar settings popover overflow.
+{-| The Tailwind `md` breakpoint — kept in Elm only because the drawer's
+`start` is a Lit JS property, not CSS state.
+
+Hiding/showing chrome (the hamburger, the settings popover layout) is pure
+Tailwind — `class "md:hidden"` etc. The hold-out is `m3e-drawer-container`:
+its open state lives in a `@property({ type: Boolean, reflect: true }) start`
+on the custom element, and the `.start` panel sits inside the element's
+shadow DOM (no `::part` exposure). CSS can't reach in to flip it
+responsively, so Elm has to know the viewport to set the initial value at
+hydration and re-set it on the mobile↔desktop transition (`auto` mode
+only autoCloses going side→over; never autoOpens going over→side).
+
 -}
 mdBreakpointPx : Int
 mdBreakpointPx =
@@ -132,6 +142,7 @@ init flags _ =
 
 {-| Read `flags.width` (passed by docs/index.ts on the client). Falls back to
 a desktop-leaning width so server-rendered HTML defaults to the side drawer.
+See `mdBreakpointPx` for why this can't be a pure-CSS concern.
 -}
 initialViewportWidth : Pages.Flags.Flags -> Int
 initialViewportWidth flags =
@@ -181,6 +192,12 @@ update msg model =
             ( { model | dir = dir }, Effect.none )
 
 
+{-| Watch viewport width specifically to re-open the side drawer when the
+user crosses from mobile to desktop. m3e-drawer-container's `mode=auto`
+autoCloses going side→over (caught via `withOnChange`), but it doesn't
+autoOpen going over→side — so without this subscription, a closed drawer
+on mobile stays closed (no sidebar) after resizing up.
+-}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
     Browser.Events.onResize (\w _ -> ViewportResized w)
