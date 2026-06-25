@@ -4,7 +4,9 @@ module Ui.Disclosure exposing
     , Section, section
     , withAttributes
     , withOpen, withDisabled, withOnToggle, withHideToggle
+    , withPanelActions, withToggleIcon
     , withSectionOpen, withSectionOnToggle
+    , withSectionActions, withSectionToggleIcon
     , withMulti
     , view
     )
@@ -51,11 +53,13 @@ content lands in the panel's default slot.
 # Single-panel configuration
 
 @docs withOpen, withDisabled, withOnToggle, withHideToggle
+@docs withPanelActions, withToggleIcon
 
 
 # Per-section configuration
 
 @docs withSectionOpen, withSectionOnToggle
+@docs withSectionActions, withSectionToggleIcon
 
 
 # Accordion configuration
@@ -74,6 +78,7 @@ import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Accordion
 import M3e.ExpansionPanel
+import Ui.Icon
 
 
 {-| A configured disclosure. Build one with [`single`](#single) or
@@ -100,6 +105,8 @@ type alias Panel msg =
     , disabled : Bool
     , hideToggle : Bool
     , onToggle : Maybe (Bool -> msg)
+    , actions : List (Html msg)
+    , toggleIcon : Maybe (Ui.Icon.Icon msg)
     }
 
 
@@ -170,6 +177,8 @@ newPanel id_ headline content =
     , disabled = False
     , hideToggle = False
     , onToggle = Nothing
+    , actions = []
+    , toggleIcon = Nothing
     }
 
 
@@ -226,6 +235,23 @@ withOnToggle handler =
     mapSinglePanel (\p -> { p | onToggle = Just handler })
 
 
+{-| Fill a `single` panel's `actions` slot with arbitrary content (e.g.
+buttons shown in the panel's action row). No-op on an `accordion` — drive
+its panels per-section with [`withSectionActions`](#withSectionActions).
+-}
+withPanelActions : List (Html msg) -> Disclosure msg -> Disclosure msg
+withPanelActions actions =
+    mapSinglePanel (\p -> { p | actions = actions })
+
+
+{-| Provide a custom `toggle-icon` for a `single` panel's expansion control.
+No-op on an `accordion` — use [`withSectionToggleIcon`](#withSectionToggleIcon).
+-}
+withToggleIcon : Ui.Icon.Icon msg -> Disclosure msg -> Disclosure msg
+withToggleIcon icon =
+    mapSinglePanel (\p -> { p | toggleIcon = Just icon })
+
+
 mapSinglePanel : (Panel msg -> Panel msg) -> Disclosure msg -> Disclosure msg
 mapSinglePanel f disclosure =
     case disclosure of
@@ -252,6 +278,20 @@ withSectionOpen flag (Section p) =
 withSectionOnToggle : (Bool -> msg) -> Section msg -> Section msg
 withSectionOnToggle handler (Section p) =
     Section { p | onToggle = Just handler }
+
+
+{-| Fill a section panel's `actions` slot with arbitrary content.
+-}
+withSectionActions : List (Html msg) -> Section msg -> Section msg
+withSectionActions actions (Section p) =
+    Section { p | actions = actions }
+
+
+{-| Provide a custom `toggle-icon` for a section panel's expansion control.
+-}
+withSectionToggleIcon : Ui.Icon.Icon msg -> Section msg -> Section msg
+withSectionToggleIcon icon (Section p) =
+    Section { p | toggleIcon = Just icon }
 
 
 
@@ -297,9 +337,38 @@ viewPanel : Panel msg -> Html msg
 viewPanel p =
     M3e.ExpansionPanel.component
         (p.attributes ++ Attr.id p.id :: panelAttrs p)
-        (Html.span [ M3e.ExpansionPanel.headerSlot ] [ p.headline ]
-            :: p.content
+        (List.concat
+            [ [ Html.span [ M3e.ExpansionPanel.headerSlot ] [ p.headline ] ]
+            , toggleIconElement p.toggleIcon
+            , p.content
+            , actionsElement p.actions
+            ]
         )
+
+
+toggleIconElement : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+toggleIconElement toggleIcon =
+    case toggleIcon of
+        Nothing ->
+            []
+
+        Just icon ->
+            [ Html.span
+                [ M3e.ExpansionPanel.toggleIconSlot
+                , Attr.attribute "aria-hidden" "true"
+                ]
+                [ Ui.Icon.view icon ]
+            ]
+
+
+actionsElement : List (Html msg) -> List (Html msg)
+actionsElement actions =
+    case actions of
+        [] ->
+            []
+
+        _ ->
+            [ Html.div [ M3e.ExpansionPanel.actionsSlot ] actions ]
 
 
 panelAttrs : Panel msg -> List (Html.Attribute msg)

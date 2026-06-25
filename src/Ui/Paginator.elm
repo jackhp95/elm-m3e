@@ -4,6 +4,7 @@ module Ui.Paginator exposing
     , withId, withLength
     , withFirstLastButtons, withHidePageSize, withPageSizes, withDisabled
     , withDefaultPage, withExplicitPageState
+    , withFirstPageIcon, withPreviousPageIcon, withNextPageIcon, withLastPageIcon
     , view
     )
 
@@ -44,6 +45,11 @@ Two ways to drive page state:
 @docs withDefaultPage, withExplicitPageState
 
 
+# Navigation icons
+
+@docs withFirstPageIcon, withPreviousPageIcon, withNextPageIcon, withLastPageIcon
+
+
 # Render
 
 @docs view
@@ -54,6 +60,7 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Paginator
+import Ui.Icon
 
 
 {-| The paginator opaque type. Build via `new`.
@@ -77,6 +84,10 @@ type alias Config msg =
     , hidePageSize : Bool
     , pageSizes : Maybe String
     , disabled : Bool
+    , firstPageIcon : Maybe (Ui.Icon.Icon msg)
+    , previousPageIcon : Maybe (Ui.Icon.Icon msg)
+    , nextPageIcon : Maybe (Ui.Icon.Icon msg)
+    , lastPageIcon : Maybe (Ui.Icon.Icon msg)
     }
 
 
@@ -93,6 +104,10 @@ new =
         , hidePageSize = False
         , pageSizes = Nothing
         , disabled = False
+        , firstPageIcon = Nothing
+        , previousPageIcon = Nothing
+        , nextPageIcon = Nothing
+        , lastPageIcon = Nothing
         }
 
 
@@ -161,6 +176,34 @@ withExplicitPageState onPage pageIndex (Paginator cfg) =
     Paginator { cfg | state = ExplicitPage onPage pageIndex }
 
 
+{-| Provide a custom icon for the first-page button (`first-page-icon` slot).
+-}
+withFirstPageIcon : Ui.Icon.Icon msg -> Paginator msg -> Paginator msg
+withFirstPageIcon icon (Paginator cfg) =
+    Paginator { cfg | firstPageIcon = Just icon }
+
+
+{-| Provide a custom icon for the previous-page button (`previous-page-icon` slot).
+-}
+withPreviousPageIcon : Ui.Icon.Icon msg -> Paginator msg -> Paginator msg
+withPreviousPageIcon icon (Paginator cfg) =
+    Paginator { cfg | previousPageIcon = Just icon }
+
+
+{-| Provide a custom icon for the next-page button (`next-page-icon` slot).
+-}
+withNextPageIcon : Ui.Icon.Icon msg -> Paginator msg -> Paginator msg
+withNextPageIcon icon (Paginator cfg) =
+    Paginator { cfg | nextPageIcon = Just icon }
+
+
+{-| Provide a custom icon for the last-page button (`last-page-icon` slot).
+-}
+withLastPageIcon : Ui.Icon.Icon msg -> Paginator msg -> Paginator msg
+withLastPageIcon icon (Paginator cfg) =
+    Paginator { cfg | lastPageIcon = Just icon }
+
+
 {-| Render the paginator.
 -}
 view : Paginator msg -> Html msg
@@ -178,7 +221,22 @@ view (Paginator cfg) =
                     ++ pageAttrs cfg.state
                 )
         )
-        []
+        (List.filterMap identity
+            [ Maybe.map (slottedIcon M3e.Paginator.firstPageIconSlot) cfg.firstPageIcon
+            , Maybe.map (slottedIcon M3e.Paginator.previousPageIconSlot) cfg.previousPageIcon
+            , Maybe.map (slottedIcon M3e.Paginator.nextPageIconSlot) cfg.nextPageIcon
+            , Maybe.map (slottedIcon M3e.Paginator.lastPageIconSlot) cfg.lastPageIcon
+            ]
+        )
+
+
+slottedIcon : Html.Attribute msg -> Ui.Icon.Icon msg -> Html msg
+slottedIcon slotAttr icon =
+    Html.span
+        [ slotAttr
+        , Attr.attribute "aria-hidden" "true"
+        ]
+        [ Ui.Icon.view icon ]
 
 
 pageAttrs : PageState msg -> List (Maybe (Html.Attribute msg))

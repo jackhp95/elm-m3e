@@ -9,6 +9,7 @@ import Test.Html.Query as Query
 import Test.Html.Selector as Selector
 import Ui.Button
 import Ui.Dialog
+import Ui.Icon
 
 
 suite : Test
@@ -103,6 +104,22 @@ suite =
                         [ Selector.tag "m3e-dialog"
                         , Selector.attribute (M3e.Dialog.dismissible True)
                         ]
+        , test "withCloseIcon emits the close-icon slot" <|
+            \_ ->
+                dialog
+                    |> Ui.Dialog.withCloseButton True
+                    |> Ui.Dialog.withCloseIcon (Ui.Icon.material "close")
+                    |> Ui.Dialog.view
+                    |> Query.fromHtml
+                    |> Query.find [ Selector.attribute (Attr.attribute "slot" "close-icon") ]
+                    |> Query.has [ Selector.tag "m3e-icon" ]
+        , test "no close-icon slot when unset" <|
+            \_ ->
+                dialog
+                    |> Ui.Dialog.view
+                    |> Query.fromHtml
+                    |> Query.findAll [ Selector.attribute (Attr.attribute "slot" "close-icon") ]
+                    |> Query.count (Expect.equal 0)
         ]
 
 

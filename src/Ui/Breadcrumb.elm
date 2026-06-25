@@ -2,8 +2,10 @@ module Ui.Breadcrumb exposing
     ( Breadcrumb, new
     , withAttributes
     , withId
+    , withSeparator
     , Item, item, link, current
     , itemEscapeHatchHtml, linkEscapeHatchHtml, currentEscapeHatchHtml
+    , withItemIcon
     , withItem, withItems
     , view
     )
@@ -28,10 +30,16 @@ present location, non-clickable).
 @docs withId
 
 
+# Separator
+
+@docs withSeparator
+
+
 # Items
 
 @docs Item, item, link, current
 @docs itemEscapeHatchHtml, linkEscapeHatchHtml, currentEscapeHatchHtml
+@docs withItemIcon
 @docs withItem, withItems
 
 
@@ -45,6 +53,7 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Breadcrumb
 import M3e.BreadcrumbItem
+import Ui.Icon
 
 
 {-| The breadcrumb opaque type. Build via `new`.
@@ -60,12 +69,14 @@ type Item msg
         { label : Html msg
         , href : Maybe String
         , isCurrent : Bool
+        , icon : Maybe (Ui.Icon.Icon msg)
         }
 
 
 type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
+    , separator : Maybe (Html msg)
     , items : List (Item msg)
     }
 
@@ -74,7 +85,7 @@ type alias Config msg =
 -}
 new : Breadcrumb msg
 new =
-    Breadcrumb { id = Nothing, attributes = [], items = [] }
+    Breadcrumb { id = Nothing, attributes = [], separator = Nothing, items = [] }
 
 
 {-| Append attributes to the underlying `<m3e-breadcrumb>` host element — the
@@ -93,46 +104,60 @@ withId id (Breadcrumb cfg) =
     Breadcrumb { cfg | id = Just id }
 
 
+{-| Provide custom content for the `separator` slot rendered between crumbs.
+-}
+withSeparator : Html msg -> Breadcrumb msg -> Breadcrumb msg
+withSeparator separator (Breadcrumb cfg) =
+    Breadcrumb { cfg | separator = Just separator }
+
+
 {-| A trail item (not the current location) from plain text.
 -}
 item : String -> Item msg
 item label =
-    Item { label = Html.text label, href = Nothing, isCurrent = False }
+    Item { label = Html.text label, href = Nothing, isCurrent = False, icon = Nothing }
 
 
 {-| A clickable trail item from plain text and its target href.
 -}
 link : String -> String -> Item msg
 link label href =
-    Item { label = Html.text label, href = Just href, isCurrent = False }
+    Item { label = Html.text label, href = Just href, isCurrent = False, icon = Nothing }
 
 
 {-| The current (non-clickable) crumb from plain text.
 -}
 current : String -> Item msg
 current label =
-    Item { label = Html.text label, href = Nothing, isCurrent = True }
+    Item { label = Html.text label, href = Nothing, isCurrent = True, icon = Nothing }
 
 
 {-| Escape hatch: `item` from arbitrary `Html` (e.g. an icon + text).
 -}
 itemEscapeHatchHtml : Html msg -> Item msg
 itemEscapeHatchHtml label =
-    Item { label = label, href = Nothing, isCurrent = False }
+    Item { label = label, href = Nothing, isCurrent = False, icon = Nothing }
 
 
 {-| Escape hatch: `link` from arbitrary `Html` and a target href.
 -}
 linkEscapeHatchHtml : Html msg -> String -> Item msg
 linkEscapeHatchHtml label href =
-    Item { label = label, href = Just href, isCurrent = False }
+    Item { label = label, href = Just href, isCurrent = False, icon = Nothing }
 
 
 {-| Escape hatch: `current` crumb from arbitrary `Html`.
 -}
 currentEscapeHatchHtml : Html msg -> Item msg
 currentEscapeHatchHtml label =
-    Item { label = label, href = Nothing, isCurrent = True }
+    Item { label = label, href = Nothing, isCurrent = True, icon = Nothing }
+
+
+{-| Attach a leading icon (the item's `icon` slot) to a crumb.
+-}
+withItemIcon : Ui.Icon.Icon msg -> Item msg -> Item msg
+withItemIcon icon (Item i) =
+    Item { i | icon = Just icon }
 
 
 {-| Append a single crumb.
@@ -155,7 +180,17 @@ view : Breadcrumb msg -> Html msg
 view (Breadcrumb cfg) =
     M3e.Breadcrumb.component
         (cfg.attributes ++ List.filterMap identity [ Maybe.map Attr.id cfg.id ])
-        (List.map viewItem cfg.items)
+        (separatorChildren cfg.separator ++ List.map viewItem cfg.items)
+
+
+separatorChildren : Maybe (Html msg) -> List (Html msg)
+separatorChildren separator =
+    case separator of
+        Nothing ->
+            []
+
+        Just content ->
+            [ Html.span [ M3e.Breadcrumb.separatorSlot ] [ content ] ]
 
 
 viewItem : Item msg -> Html msg
@@ -170,4 +205,19 @@ viewItem (Item i) =
                 Nothing
             ]
         )
-        [ i.label ]
+        (iconChildren i.icon ++ [ i.label ])
+
+
+iconChildren : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+iconChildren icon =
+    case icon of
+        Nothing ->
+            []
+
+        Just i ->
+            [ Html.span
+                [ M3e.BreadcrumbItem.iconSlot
+                , Attr.attribute "aria-hidden" "true"
+                ]
+                [ Ui.Icon.view i ]
+            ]

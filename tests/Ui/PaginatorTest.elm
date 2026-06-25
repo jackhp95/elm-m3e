@@ -1,9 +1,11 @@
 module Ui.PaginatorTest exposing (suite)
 
+import Expect
 import Html.Attributes
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
+import Ui.Icon
 import Ui.Paginator
 
 
@@ -26,5 +28,35 @@ suite =
                     |> Query.hasNot
                         [ Selector.attribute
                             (Html.Attributes.attribute "pageIndex" "3")
+                        ]
+        , test "withFirstPageIcon/withLastPageIcon emit their page-icon slots" <|
+            \_ ->
+                Ui.Paginator.new
+                    |> Ui.Paginator.withFirstPageIcon (Ui.Icon.material "first_page")
+                    |> Ui.Paginator.withLastPageIcon (Ui.Icon.material "last_page")
+                    |> Ui.Paginator.view
+                    |> Query.fromHtml
+                    |> Expect.all
+                        [ Query.findAll
+                            [ Selector.attribute (Html.Attributes.attribute "slot" "first-page-icon") ]
+                            >> Query.count (Expect.equal 1)
+                        , Query.findAll
+                            [ Selector.attribute (Html.Attributes.attribute "slot" "last-page-icon") ]
+                            >> Query.count (Expect.equal 1)
+                        ]
+        , test "withPreviousPageIcon/withNextPageIcon emit their page-icon slots" <|
+            \_ ->
+                Ui.Paginator.new
+                    |> Ui.Paginator.withPreviousPageIcon (Ui.Icon.material "chevron_left")
+                    |> Ui.Paginator.withNextPageIcon (Ui.Icon.material "chevron_right")
+                    |> Ui.Paginator.view
+                    |> Query.fromHtml
+                    |> Expect.all
+                        [ Query.findAll
+                            [ Selector.attribute (Html.Attributes.attribute "slot" "previous-page-icon") ]
+                            >> Query.count (Expect.equal 1)
+                        , Query.findAll
+                            [ Selector.attribute (Html.Attributes.attribute "slot" "next-page-icon") ]
+                            >> Query.count (Expect.equal 1)
                         ]
         ]

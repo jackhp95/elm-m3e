@@ -3,7 +3,7 @@ module Ui.Tooltip exposing
     , Position(..)
     , plain, rich
     , withAttributes
-    , withId, withPosition, withHideDelay, withActions
+    , withId, withPosition, withHideDelay, withSubhead, withActions
     , view
     )
 
@@ -87,7 +87,7 @@ A rich tooltip with explanation and an action:
 
 # Modifiers
 
-@docs withId, withPosition, withHideDelay, withActions
+@docs withId, withPosition, withHideDelay, withSubhead, withActions
 
 
 # Render
@@ -141,6 +141,7 @@ type alias Config msg =
     , kind : Kind msg
     , position : Maybe Position
     , hideDelay : Maybe Int
+    , subhead : Maybe (Html msg)
     , actions : List (Ui.Button.Button msg)
     }
 
@@ -165,6 +166,7 @@ plain c =
         , kind = PlainKind c.label
         , position = Nothing
         , hideDelay = Nothing
+        , subhead = Nothing
         , actions = []
         }
 
@@ -180,6 +182,7 @@ rich c =
         , kind = RichKind c.content
         , position = Nothing
         , hideDelay = Nothing
+        , subhead = Nothing
         , actions = []
         }
 
@@ -216,6 +219,15 @@ withPosition p (Tooltip cfg) =
 withHideDelay : Int -> Tooltip kind msg -> Tooltip kind msg
 withHideDelay ms (Tooltip cfg) =
     Tooltip { cfg | hideDelay = Just ms }
+
+
+{-| Set the `subhead` slot of a rich tooltip. Compile-error on plain
+tooltips (plain tooltips have no subhead per m3 spec), mirroring
+`withActions`.
+-}
+withSubhead : Html msg -> Tooltip Rich msg -> Tooltip Rich msg
+withSubhead subhead (Tooltip cfg) =
+    Tooltip { cfg | subhead = Just subhead }
 
 
 {-| Add actions to a rich tooltip. Compile-error on plain tooltips
@@ -260,7 +272,9 @@ view (Tooltip cfg) =
                         , Maybe.map (M3e.RichTooltip.hideDelay << toFloat) cfg.hideDelay
                         ]
                 )
-                (content :: actionsElement cfg.actions)
+                (subheadElement cfg.subhead
+                    ++ (content :: actionsElement cfg.actions)
+                )
 
 
 plainPositionAttr : Position -> Html.Attribute msg
@@ -293,6 +307,16 @@ richPositionAttr p =
 
         After ->
             M3e.RichTooltip.position M3e.RichTooltip.After
+
+
+subheadElement : Maybe (Html msg) -> List (Html msg)
+subheadElement subhead =
+    case subhead of
+        Nothing ->
+            []
+
+        Just content ->
+            [ Html.div [ M3e.RichTooltip.subheadSlot ] [ content ] ]
 
 
 actionsElement :

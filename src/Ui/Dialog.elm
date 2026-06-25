@@ -3,7 +3,7 @@ module Ui.Dialog exposing
     , new
     , withAttributes
     , withId, withBody, withActions
-    , withDismissible, withCloseButton, withAlert
+    , withDismissible, withCloseButton, withCloseIcon, withAlert
     , view
     )
 
@@ -79,7 +79,7 @@ An alert dialog (semantic role):
 # Modifiers
 
 @docs withId, withBody, withActions
-@docs withDismissible, withCloseButton, withAlert
+@docs withDismissible, withCloseButton, withCloseIcon, withAlert
 
 
 # Render
@@ -93,6 +93,7 @@ import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Dialog
 import Ui.Button
+import Ui.Icon
 
 
 
@@ -115,6 +116,7 @@ type alias Config msg =
     , actions : List (Ui.Button.Button msg)
     , dismissible : Bool
     , closeButton : Bool
+    , closeIcon : Maybe (Ui.Icon.Icon msg)
     , alert : Bool
     }
 
@@ -145,6 +147,7 @@ new c =
         , actions = []
         , dismissible = True
         , closeButton = False
+        , closeIcon = Nothing
         , alert = False
         }
 
@@ -222,6 +225,15 @@ withCloseButton b (Dialog cfg) =
     Dialog { cfg | closeButton = b }
 
 
+{-| Provide a custom icon for the built-in close button (`close-icon` slot).
+Only meaningful alongside `withCloseButton True`, which presents the button
+this icon fills.
+-}
+withCloseIcon : Ui.Icon.Icon msg -> Dialog msg -> Dialog msg
+withCloseIcon icon (Dialog cfg) =
+    Dialog { cfg | closeIcon = Just icon }
+
+
 {-| Mark the dialog as an alert (sets ARIA `role=alertdialog`).
 Use for messages that interrupt the user about an important state
 change (failure, irreversible action).
@@ -258,10 +270,26 @@ view (Dialog cfg) =
             )
             (List.concat
                 [ [ titleElement cfg ]
+                , closeIconElement cfg.closeIcon
                 , bodyElement cfg.body
                 , actionsElement cfg.actions
                 ]
             )
+
+
+closeIconElement : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+closeIconElement closeIcon =
+    case closeIcon of
+        Nothing ->
+            []
+
+        Just icon ->
+            [ Html.span
+                [ M3e.Dialog.closeIconSlot
+                , Attr.attribute "aria-hidden" "true"
+                ]
+                [ Ui.Icon.view icon ]
+            ]
 
 
 titleElement : Config msg -> Html msg

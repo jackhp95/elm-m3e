@@ -3,7 +3,7 @@ module Ui.NavigationBar exposing
     , Mode(..)
     , new, item
     , withAttributes
-    , withId, withMode, withItemLabel, withItemBadge
+    , withId, withMode, withItemLabel, withItemBadge, withItemSelectedIcon
     , view
     )
 
@@ -81,7 +81,7 @@ typed end-to-end.
 
 # Modifiers
 
-@docs withId, withMode, withItemLabel, withItemBadge
+@docs withId, withMode, withItemLabel, withItemBadge, withItemSelectedIcon
 
 
 # Render
@@ -136,6 +136,7 @@ type alias BarConfig value msg =
 type alias ItemConfig value msg =
     { value : value
     , icon : Ui.Icon.Icon msg
+    , selectedIcon : Maybe (Ui.Icon.Icon msg)
     , label : Maybe String
     , badge : Maybe String
     }
@@ -171,6 +172,7 @@ item c =
     Item
         { value = c.value
         , icon = c.icon
+        , selectedIcon = Nothing
         , label = Nothing
         , badge = Nothing
         }
@@ -217,6 +219,14 @@ withItemBadge badge (Item cfg) =
     Item { cfg | badge = Just badge }
 
 
+{-| Give an item a distinct glyph for its active state (the `selected-icon`
+slot). Shown in place of `icon` while the item is selected.
+-}
+withItemSelectedIcon : Ui.Icon.Icon msg -> Item value msg -> Item value msg
+withItemSelectedIcon icon (Item cfg) =
+    Item { cfg | selectedIcon = Just icon }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -243,10 +253,23 @@ itemView cfg (Item it) =
         ]
         (List.concat
             [ [ Html.span [ M3e.NavItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
+            , selectedIconSlot it.selectedIcon
             , labelText it.label
             , badgeText it.badge
             ]
         )
+
+
+{-| Render the `selected-icon` slot when an item supplies a distinct active glyph.
+-}
+selectedIconSlot : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+selectedIconSlot icon =
+    case icon of
+        Nothing ->
+            []
+
+        Just i ->
+            [ Html.span [ M3e.NavItem.selectedIconSlot ] [ Ui.Icon.view i ] ]
 
 
 {-| The label rides the default slot — `m3e-nav-item` has no `label` slot.
