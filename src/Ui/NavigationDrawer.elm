@@ -1,9 +1,10 @@
 module Ui.NavigationDrawer exposing
     ( NavigationDrawer, Item, Entry
-    , Side(..)
+    , Side(..), Mode(..)
     , new, item, tree, group, link
     , withAttributes
-    , withId, withSide, withModal, withItemLabel, withItemBadge, withContent, withEntries
+    , withId, withSide, withModal, withMode, withOpen, withOnChange
+    , withItemLabel, withItemBadge, withContent, withEntries
     , withEntryIcon, withEntryHref, withEntryTarget, withEntrySelected, withEntryOpen, withEntryBadge, withEntryChildren
     , view
     )
@@ -77,7 +78,7 @@ For compact viewports use `Ui.NavigationBar`; for medium viewports use
 
 # Configuration
 
-@docs Side
+@docs Side, Mode
 
 
 # Constructors
@@ -92,7 +93,8 @@ For compact viewports use `Ui.NavigationBar`; for medium viewports use
 
 # Modifiers
 
-@docs withId, withSide, withModal, withItemLabel, withItemBadge, withContent, withEntries
+@docs withId, withSide, withModal, withMode, withOpen, withOnChange
+@docs withItemLabel, withItemBadge, withContent, withEntries
 @docs withEntryIcon, withEntryHref, withEntryTarget, withEntrySelected, withEntryOpen, withEntryBadge, withEntryChildren
 
 
@@ -105,6 +107,7 @@ For compact viewports use `Ui.NavigationBar`; for medium viewports use
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
+import Json.Decode as Decode
 import M3e.DrawerContainer
 import M3e.NavMenu
 import M3e.NavMenuItem
@@ -141,11 +144,33 @@ type Side
     | End
 
 
+{-| How the drawer relates to the content.
+
+  - **`Side`** — pinned inline; the drawer is always visible and consumes
+    layout width.
+  - **`Over`** — modal overlay; the drawer floats above content with a scrim.
+  - **`Auto`** — `m3e-drawer-container` switches between `Side` (medium and
+    larger breakpoints) and `Over` (small breakpoints) on its own. The
+    natural choice for a responsive app shell; pair with `withOpen` and
+    `withOnChange` to track the open state across the auto-switch.
+
+If both `withMode` and `withModal` are called, `withMode` wins.
+
+-}
+type Mode
+    = ModeSide
+    | ModeOver
+    | ModeAuto
+
+
 type alias DrawerConfig value msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , side : Side
     , modal : Bool
+    , mode : Maybe Mode
+    , open : Bool
+    , onScrimChange : Maybe (Bool -> msg)
     , items : List (Item value msg)
     , selected : Maybe value
     , onChange : Maybe (value -> msg)
@@ -192,6 +217,9 @@ new c =
         , attributes = []
         , side = Start
         , modal = True
+        , mode = Nothing
+        , open = True
+        , onScrimChange = Nothing
         , items = c.items
         , selected = c.selected
         , onChange = Just c.onChange
@@ -223,6 +251,9 @@ tree =
         , attributes = []
         , side = Start
         , modal = False
+        , mode = Nothing
+        , open = True
+        , onScrimChange = Nothing
         , items = []
         , selected = Nothing
         , onChange = Nothing
@@ -291,11 +322,42 @@ withSide s (NavigationDrawer cfg) =
     NavigationDrawer { cfg | side = s }
 
 
-{-| Modal (overlay) vs side (inline/permanent) mode.
+{-| Modal (overlay) vs side (inline/permanent) mode. Convenience kept for the
+flat-shape consumers; for the responsive app-shell case prefer `withMode Auto`.
 -}
 withModal : Bool -> NavigationDrawer value msg -> NavigationDrawer value msg
 withModal b (NavigationDrawer cfg) =
     NavigationDrawer { cfg | modal = b }
+
+
+{-| Set the drawer's display mode explicitly. Supersedes `withModal` when set.
+Use `ModeAuto` for a responsive app shell — the underlying
+`m3e-drawer-container` observes breakpoints and switches between side (medium+)
+and over (small) on its own.
+-}
+withMode : Mode -> NavigationDrawer value msg -> NavigationDrawer value msg
+withMode m (NavigationDrawer cfg) =
+    NavigationDrawer { cfg | mode = Just m }
+
+
+{-| Drive the drawer's open state from outside. Defaults to `True` (always
+open) — the right shape for a permanent side drawer. For an `Auto` shell, pass
+`isMobile then showMenu else True` so the drawer is closed-by-default on
+mobile and toggled by the app bar's menu button.
+-}
+withOpen : Bool -> NavigationDrawer value msg -> NavigationDrawer value msg
+withOpen o (NavigationDrawer cfg) =
+    NavigationDrawer { cfg | open = o }
+
+
+{-| Receive open-state changes the user makes outside Elm (tapping the
+modal scrim, hitting Escape). The handler gets the drawer's new open state;
+typically wire it to a `MenuClosed`/`MenuOpened` `Msg` that flips the same
+state `withOpen` reads from.
+-}
+withOnChange : (Bool -> msg) -> NavigationDrawer value msg -> NavigationDrawer value msg
+withOnChange handler (NavigationDrawer cfg) =
+    NavigationDrawer { cfg | onScrimChange = Just handler }
 
 
 {-| Add a label to a flat item.
@@ -391,6 +453,7 @@ view (NavigationDrawer cfg) =
                 [ Maybe.map Attr.id cfg.id
                 , Just (sideAttr cfg)
                 , Just (modeAttr cfg)
+                , Maybe.map (M3e.DrawerContainer.onChange << scrimChangeDecoder cfg.side) cfg.onScrimChange
                 ]
         )
         (M3e.NavMenu.component [ panelSlot cfg ]
@@ -487,10 +550,29 @@ sideAttr : DrawerConfig value msg -> Html.Attribute msg
 sideAttr cfg =
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.start True
+            M3e.DrawerContainer.start cfg.open
 
         End ->
-            M3e.DrawerContainer.end True
+            M3e.DrawerContainer.end cfg.open
+
+
+{-| Decode the change event into a `(Bool -> msg)` handler. The
+`m3e-drawer-container` flips its `start` / `end` boolean property when the
+user closes via scrim/escape; read the relevant side's property off the event
+target.
+-}
+scrimChangeDecoder : Side -> (Bool -> msg) -> Decode.Decoder msg
+scrimChangeDecoder side toMsg =
+    let
+        propPath =
+            case side of
+                Start ->
+                    [ "target", "start" ]
+
+                End ->
+                    [ "target", "end" ]
+    in
+    Decode.at propPath Decode.bool |> Decode.map toMsg
 
 
 {-| Project the nav-menu into the drawer's `start`/`end` panel slot (per
@@ -506,26 +588,49 @@ panelSlot cfg =
             M3e.DrawerContainer.endSlot
 
 
-{-| Emit the panel's display mode via the typed binding (`over` for modal,
-`side` for an inline drawer) on the matching edge.
+{-| Emit the panel's display mode via the typed binding (`auto`/`side`/`over`)
+on the matching edge. Honours `cfg.mode` when set; otherwise derives from the
+legacy `cfg.modal` flag.
 -}
 modeAttr : DrawerConfig value msg -> Html.Attribute msg
 modeAttr cfg =
+    let
+        effective : Mode
+        effective =
+            case cfg.mode of
+                Just m ->
+                    m
+
+                Nothing ->
+                    if cfg.modal then
+                        ModeOver
+
+                    else
+                        ModeSide
+    in
     case cfg.side of
         Start ->
             M3e.DrawerContainer.startMode
-                (if cfg.modal then
-                    M3e.DrawerContainer.StartModeOver
+                (case effective of
+                    ModeAuto ->
+                        M3e.DrawerContainer.StartModeAuto
 
-                 else
-                    M3e.DrawerContainer.StartModeSide
+                    ModeOver ->
+                        M3e.DrawerContainer.StartModeOver
+
+                    ModeSide ->
+                        M3e.DrawerContainer.StartModeSide
                 )
 
         End ->
             M3e.DrawerContainer.endMode
-                (if cfg.modal then
-                    M3e.DrawerContainer.EndModeOver
+                (case effective of
+                    ModeAuto ->
+                        M3e.DrawerContainer.EndModeAuto
 
-                 else
-                    M3e.DrawerContainer.EndModeSide
+                    ModeOver ->
+                        M3e.DrawerContainer.EndModeOver
+
+                    ModeSide ->
+                        M3e.DrawerContainer.EndModeSide
                 )

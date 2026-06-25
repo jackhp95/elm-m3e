@@ -11,11 +11,13 @@ toggle through `Ui.SegmentedButton`.
 -}
 
 import BackendTask exposing (BackendTask)
+import Browser.Events
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class, href)
 import Html.Events
+import Json.Decode as Decode
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Route exposing (Route)
@@ -49,6 +51,7 @@ template =
 
 type alias Model =
     { showMenu : Bool
+    , viewportWidth : Int
     , scheme : Theme.Scheme
     , seed : String
     , contrast : Theme.Contrast
@@ -56,6 +59,19 @@ type alias Model =
     , dir : Direction
     , settingsOpen : Bool
     }
+
+
+{-| The Tailwind `md` breakpoint — drives the responsive nav-drawer mode and
+the visibility of the hamburger / app-bar settings popover overflow.
+-}
+mdBreakpointPx : Int
+mdBreakpointPx =
+    768
+
+
+isMobile : Model -> Bool
+isMobile model =
+    model.viewportWidth < mdBreakpointPx
 
 
 {-| Text direction toggle (drives the `dir` attribute on the shell).
@@ -73,6 +89,8 @@ type Msg
     = SharedMsg SharedMsg
     | MenuClicked
     | CloseMenu
+    | MenuChanged Bool
+    | ViewportResized Int
     | ToggleSettings
     | SetScheme Theme.Scheme
     | SetSeed String
@@ -98,8 +116,9 @@ init :
             , pageUrl : Maybe PageUrl
             }
     -> ( Model, Effect Msg )
-init _ _ =
+init flags _ =
     ( { showMenu = False
+      , viewportWidth = initialViewportWidth flags
       , scheme = Theme.Light
       , seed = "#6750A4"
       , contrast = Theme.Standard
@@ -109,6 +128,20 @@ init _ _ =
       }
     , Effect.none
     )
+
+
+{-| Read `flags.width` (passed by docs/index.ts on the client). Falls back to
+a desktop-leaning width so server-rendered HTML defaults to the side drawer.
+-}
+initialViewportWidth : Pages.Flags.Flags -> Int
+initialViewportWidth flags =
+    case flags of
+        Pages.Flags.BrowserFlags raw ->
+            Decode.decodeValue (Decode.field "width" Decode.int) raw
+                |> Result.withDefault 1024
+
+        Pages.Flags.PreRenderFlags ->
+            1024
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -122,6 +155,12 @@ update msg model =
 
         CloseMenu ->
             ( { model | showMenu = False }, Effect.none )
+
+        MenuChanged open ->
+            ( { model | showMenu = open }, Effect.none )
+
+        ViewportResized w ->
+            ( { model | viewportWidth = w }, Effect.none )
 
         ToggleSettings ->
             ( { model | settingsOpen = not model.settingsOpen }, Effect.none )
@@ -144,7 +183,7 @@ update msg model =
 
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
-    Sub.none
+    Browser.Events.onResize (\w _ -> ViewportResized w)
 
 
 data : BackendTask FatalError Data
@@ -180,7 +219,7 @@ view _ page model toMsg pageView =
                     , attribute "dir" (directionAttr model.dir)
                     ]
                     [ Html.map toMsg (appShellBar model)
-                    , drawerShell page pageView.body
+                    , drawerShell toMsg model page pageView.body
                     ]
                 ]
         ]
@@ -454,14 +493,17 @@ The nav is pure `a[href]` links (no messages), so this is `Html msg`, letting
 the page body keep its own message type without a `Html.map`.
 
 -}
-drawerShell : { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
-drawerShell page body =
+drawerShell : (Msg -> msg) -> Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
+drawerShell toMsg model page body =
     let
         currentPath =
             normalizePath (UrlPath.toAbsolute page.path)
     in
     NavigationDrawer.tree
         |> NavigationDrawer.withId "docs-drawer"
+        |> NavigationDrawer.withMode NavigationDrawer.ModeAuto
+        |> NavigationDrawer.withOpen (not (isMobile model) || model.showMenu)
+        |> NavigationDrawer.withOnChange (\open -> toMsg (MenuChanged open))
         |> NavigationDrawer.withEntries (navEntries currentPath)
         |> NavigationDrawer.withContent
             [ Html.div [ class "mx-auto max-w-5xl px-6 py-10 md:px-12" ] body ]

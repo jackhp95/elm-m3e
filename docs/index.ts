@@ -14,7 +14,9 @@ const config: ElmPagesInit = {
     console.log("App loaded", app);
   },
   flags: function () {
-    return "You can decode this in Shared.elm using Json.Decode.string!";
+    // Shared.elm reads `width` to pick the initial drawer mode (side vs over)
+    // before Browser.Events.onResize takes over.
+    return { width: typeof window !== "undefined" ? window.innerWidth : 1024 };
   },
 };
 
