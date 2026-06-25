@@ -3,7 +3,7 @@ module Ui.AppBar exposing
     , Size(..)
     , new
     , withAttributes
-    , withId, withSize, withCentered, withLeading, withTrailing
+    , withId, withSize, withCentered, withSubtitle, withLeading, withTrailing
     , view
     )
 
@@ -36,7 +36,7 @@ Material 3 [App bars][m3] surface.
 
 # Modifiers
 
-@docs withId, withSize, withCentered, withLeading, withTrailing
+@docs withId, withSize, withCentered, withSubtitle, withLeading, withTrailing
 
 
 # Render
@@ -60,6 +60,7 @@ type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , title : String
+    , subtitle : Maybe String
     , size : Size
     , centered : Bool
     , leading : Maybe (Html msg)
@@ -83,6 +84,7 @@ new title =
         { id = Nothing
         , attributes = []
         , title = title
+        , subtitle = Nothing
         , size = Small
         , centered = False
         , leading = Nothing
@@ -120,6 +122,15 @@ withCentered b (AppBar cfg) =
     AppBar { cfg | centered = b }
 
 
+{-| Set a subtitle. Rides the `subtitle` slot of `m3e-app-bar`; the element
+stacks it under the title at the proper M3 typescale. Prefer this over
+dash-separating a long title (which would overflow on narrow viewports).
+-}
+withSubtitle : String -> AppBar msg -> AppBar msg
+withSubtitle s (AppBar cfg) =
+    AppBar { cfg | subtitle = Just s }
+
+
 {-| Set the leading affordance — typically a `Ui.IconButton` rendered to Html
 (`|> Ui.IconButton.view`), but this slot is naturally heterogeneous (e.g. a
 brand icon, an avatar, a drawer toggle), so it stays `Html msg`.
@@ -153,6 +164,7 @@ view (AppBar cfg) =
         (List.concat
             [ leadingSlot cfg.leading
             , [ Html.span [ M3e.AppBar.titleSlot ] [ Html.text cfg.title ] ]
+            , subtitleSlot cfg.subtitle
             , trailingSlot cfg.trailing
             ]
         )
@@ -168,14 +180,24 @@ leadingSlot leading =
             [ Html.span [ M3e.AppBar.leadingSlot ] [ html ] ]
 
 
+{-| Each trailing item rides its own `<span slot="trailing">`. The m3e-app-bar
+shadow template lays multiple slotted children out as a flex row in its
+`.trailing-icon` wrapper; wrapping them all in a single span here would defeat
+that and stack them vertically.
+-}
 trailingSlot : List (Html msg) -> List (Html msg)
 trailingSlot items =
-    case items of
-        [] ->
+    List.map (\item -> Html.span [ M3e.AppBar.trailingSlot ] [ item ]) items
+
+
+subtitleSlot : Maybe String -> List (Html msg)
+subtitleSlot subtitle =
+    case subtitle of
+        Nothing ->
             []
 
-        _ ->
-            [ Html.span [ M3e.AppBar.trailingSlot ] items ]
+        Just s ->
+            [ Html.span [ M3e.AppBar.subtitleSlot ] [ Html.text s ] ]
 
 
 sizeAttr : Size -> Html.Attribute msg

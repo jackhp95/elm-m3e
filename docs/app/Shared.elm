@@ -18,6 +18,8 @@ import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class, href)
 import Html.Events
 import Json.Decode as Decode
+import M3e.DrawerToggle
+import M3e.IconButton
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Route exposing (Route)
@@ -253,7 +255,8 @@ appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
-        [ AppBar.new "elm-m3e — Material 3 Expressive for Elm"
+        [ AppBar.new "elm-m3e"
+            |> AppBar.withSubtitle "Material 3 Expressive for Elm"
             |> AppBar.withId "docs-app-bar"
             |> AppBar.withSize AppBar.Small
             |> AppBar.withLeading (menuButton model)
@@ -266,16 +269,27 @@ appShellBar model =
         ]
 
 
+{-| The mobile hamburger. Rendered directly with `m3e-icon-button` so we can
+nest `m3e-drawer-toggle` inside — that's the matraic-canonical wiring (the
+toggle finds the drawer by id and toggles its open state, no Elm round-trip).
+`Ui.IconButton` doesn't expose extra-child slotting, so we drop down to the
+generated atoms for this one-off shell case.
+-}
 menuButton : Model -> Html Msg
 menuButton _ =
-    IconButton.new
-        { icon = Icon.material "menu"
-        , label = "Toggle navigation"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withOnClick MenuClicked
-        |> IconButton.withAttributes [ class "md:hidden" ]
-        |> IconButton.view
+    M3e.IconButton.component
+        [ Attr.attribute "aria-label" "Toggle navigation"
+        , Attr.title "Toggle navigation"
+        , M3e.IconButton.variant M3e.IconButton.Standard
+        , M3e.IconButton.size M3e.IconButton.Small
+        , class "md:hidden"
+        ]
+        [ Html.span [ Attr.attribute "aria-hidden" "true" ]
+            [ Icon.material "menu" |> Icon.view ]
+        , M3e.DrawerToggle.component
+            [ M3e.DrawerToggle.for "docs-drawer" ]
+            []
+        ]
 
 
 githubLink : Html Msg
