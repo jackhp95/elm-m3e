@@ -361,9 +361,9 @@ breadcrumbBar model =
     div [ class "flex flex-col gap-1" ]
         [ Ui.Breadcrumb.new
             |> Ui.Breadcrumb.withItems
-                [ Ui.Breadcrumb.link (text "Settings") "/studies/settings"
-                , Ui.Breadcrumb.link (text (sectionTitle model.section)) "/studies/settings"
-                , Ui.Breadcrumb.current (text "Permissions")
+                [ Ui.Breadcrumb.link "Settings" "/studies/settings"
+                , Ui.Breadcrumb.link (sectionTitle model.section) "/studies/settings"
+                , Ui.Breadcrumb.current "Permissions"
                 ]
             |> Ui.Breadcrumb.view
         , Ui.Heading.new

@@ -2,7 +2,9 @@ module Ui.Breadcrumb exposing
     ( Breadcrumb, new
     , withAttributes
     , withId
-    , Item, item, link, current, withItem, withItems
+    , Item, item, link, current
+    , itemEscapeHatchHtml, linkEscapeHatchHtml, currentEscapeHatchHtml
+    , withItem, withItems
     , view
     )
 
@@ -28,7 +30,9 @@ present location, non-clickable).
 
 # Items
 
-@docs Item, item, link, current, withItem, withItems
+@docs Item, item, link, current
+@docs itemEscapeHatchHtml, linkEscapeHatchHtml, currentEscapeHatchHtml
+@docs withItem, withItems
 
 
 # Render
@@ -81,18 +85,45 @@ withId id (Breadcrumb cfg) =
     Breadcrumb { cfg | id = Just id }
 
 
-item : Html msg -> Item msg
+{-| A trail item (not the current location) from plain text.
+-}
+item : String -> Item msg
 item label =
+    Item { label = Html.text label, href = Nothing, isCurrent = False }
+
+
+{-| A clickable trail item from plain text and its target href.
+-}
+link : String -> String -> Item msg
+link label href =
+    Item { label = Html.text label, href = Just href, isCurrent = False }
+
+
+{-| The current (non-clickable) crumb from plain text.
+-}
+current : String -> Item msg
+current label =
+    Item { label = Html.text label, href = Nothing, isCurrent = True }
+
+
+{-| Escape hatch: `item` from arbitrary `Html` (e.g. an icon + text).
+-}
+itemEscapeHatchHtml : Html msg -> Item msg
+itemEscapeHatchHtml label =
     Item { label = label, href = Nothing, isCurrent = False }
 
 
-link : Html msg -> String -> Item msg
-link label href =
+{-| Escape hatch: `link` from arbitrary `Html` and a target href.
+-}
+linkEscapeHatchHtml : Html msg -> String -> Item msg
+linkEscapeHatchHtml label href =
     Item { label = label, href = Just href, isCurrent = False }
 
 
-current : Html msg -> Item msg
-current label =
+{-| Escape hatch: `current` crumb from arbitrary `Html`.
+-}
+currentEscapeHatchHtml : Html msg -> Item msg
+currentEscapeHatchHtml label =
     Item { label = label, href = Nothing, isCurrent = True }
 
 

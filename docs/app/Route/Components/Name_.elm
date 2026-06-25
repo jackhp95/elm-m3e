@@ -466,9 +466,9 @@ demoSections slug =
                 [ sub "Basic"
                     (Breadcrumb.new
                         |> Breadcrumb.withItems
-                            [ Breadcrumb.link (text "Home") "#"
-                            , Breadcrumb.link (text "Components") "#"
-                            , Breadcrumb.current (text "Breadcrumb")
+                            [ Breadcrumb.link "Home" "#"
+                            , Breadcrumb.link "Components" "#"
+                            , Breadcrumb.current "Breadcrumb"
                             ]
                         |> Breadcrumb.view
                     )
