@@ -451,7 +451,7 @@ view (NavigationDrawer cfg) =
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (sideAttr cfg)
+                , sideAttr cfg
                 , Just (modeAttr cfg)
                 , Maybe.map (M3e.DrawerContainer.onChange << scrimChangeDecoder cfg.side) cfg.onScrimChange
                 ]
@@ -546,14 +546,24 @@ badgeText badge =
             [ Html.span [ M3e.NavMenuItem.badgeSlot ] [ Html.text b ] ]
 
 
-sideAttr : DrawerConfig value msg -> Html.Attribute msg
+{-| Emit the `start` / `end` open state as an HTML **attribute** (presence =
+open, absent = closed). Bypasses the property-reflection path the binding's
+`M3e.DrawerContainer.start` uses — the drawer-container's CSS selectors key
+off `:host([start])`, so attribute presence is the reliable control surface
+across Elm re-renders.
+-}
+sideAttr : DrawerConfig value msg -> Maybe (Html.Attribute msg)
 sideAttr cfg =
-    case cfg.side of
-        Start ->
-            M3e.DrawerContainer.start cfg.open
+    if cfg.open then
+        case cfg.side of
+            Start ->
+                Just (Attr.attribute "start" "")
 
-        End ->
-            M3e.DrawerContainer.end cfg.open
+            End ->
+                Just (Attr.attribute "end" "")
+
+    else
+        Nothing
 
 
 {-| Decode the change event into a `(Bool -> msg)` handler. The

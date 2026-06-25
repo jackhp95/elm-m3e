@@ -18,8 +18,6 @@ import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class, href)
 import Html.Events
 import Json.Decode as Decode
-import M3e.DrawerToggle
-import M3e.IconButton
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Route exposing (Route)
@@ -269,27 +267,27 @@ appShellBar model =
         ]
 
 
-{-| The mobile hamburger. Rendered directly with `m3e-icon-button` so we can
-nest `m3e-drawer-toggle` inside — that's the matraic-canonical wiring (the
-toggle finds the drawer by id and toggles its open state, no Elm round-trip).
-`Ui.IconButton` doesn't expose extra-child slotting, so we drop down to the
-generated atoms for this one-off shell case.
+{-| The mobile hamburger. Drives the drawer through `MenuClicked` → showMenu →
+`drawerShell`'s `withOpen`, which now emits `start` as an HTML attribute so
+the drawer-container's CSS selectors actually react.
+
+Why not `m3e-drawer-toggle`? Its `_toggleDrawer` does
+`this.control.closest("m3e-drawer-container")` to find its target — our app
+bar sits in a SIBLING of the drawer-container, not a descendant, so the
+canonical toggle silently no-ops here. The Elm round-trip is the right call
+until the shell layout puts the app bar inside the drawer.
+
 -}
 menuButton : Model -> Html Msg
 menuButton _ =
-    M3e.IconButton.component
-        [ Attr.attribute "aria-label" "Toggle navigation"
-        , Attr.title "Toggle navigation"
-        , M3e.IconButton.variant M3e.IconButton.Standard
-        , M3e.IconButton.size M3e.IconButton.Small
-        , class "md:hidden"
-        ]
-        [ Html.span [ Attr.attribute "aria-hidden" "true" ]
-            [ Icon.material "menu" |> Icon.view ]
-        , M3e.DrawerToggle.component
-            [ M3e.DrawerToggle.for "docs-drawer" ]
-            []
-        ]
+    IconButton.new
+        { icon = Icon.material "menu"
+        , label = "Toggle navigation"
+        , variant = IconButton.Standard
+        }
+        |> IconButton.withOnClick MenuClicked
+        |> IconButton.withAttributes [ class "md:hidden" ]
+        |> IconButton.view
 
 
 githubLink : Html Msg
@@ -352,7 +350,10 @@ settingsTrigger model =
 
 settingsPanel : Model -> Html Msg
 settingsPanel model =
-    Html.div [ class "absolute left-2 right-2 top-12 z-40 sm:left-auto sm:right-0 sm:w-72" ]
+    -- `fixed` anchors to the viewport. With `absolute`, the nearest positioned
+    -- ancestor was the tiny icon-button-wrapper (~40px wide), which made
+    -- `left-2 right-2` resolve to a 24px-wide column — the "narrow" complaint.
+    Html.div [ class "fixed left-2 right-2 top-14 z-40 sm:left-auto sm:right-2 sm:w-72" ]
         [ Card.new Card.Filled
             |> Card.withHeadline (Heading.title "Theme settings")
             |> Card.withBody (settingsBody model)
