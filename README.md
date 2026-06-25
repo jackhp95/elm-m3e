@@ -6,7 +6,7 @@ components. Typed-to-child slots, builders with required collaborators, one
 module per documented m3e component — invalid compositions don't compile, and
 there are no silent no-ops.
 
-> **Status: v0.1.** All 54 component modules compile against the generated
+> **Status: v0.1.** All 52 component modules compile against the generated
 > bindings — the complete library. 8 have detailed pages on the live docs
 > site; per-component docs for the rest are in progress.
 
@@ -33,7 +33,7 @@ Design principles (see the `docs-design-*.md` specs at the repo root):
 
 | Path | What |
 |------|------|
-| `src/Ui/` | The library — all 54 component modules (compile against the bindings). |
+| `src/Ui/` | The library — all 52 component modules (compile against the bindings). |
 | `vendor/elm-m3e/` | Vendored `M3e.*` bindings (`jackhp95/elm-m3e`). See `VENDORED_FROM.txt`. |
 | `docs/` | The documentation site — an elm-pages app (the live, deployed page). |
 | `docs-design-*.md` | The authoritative MISI design specs. |
@@ -41,7 +41,7 @@ Design principles (see the `docs-design-*.md` specs at the repo root):
 
 ## Components
 
-All 54 `Ui.*` modules compile. Documented in detail on the site so far:
+All 52 `Ui.*` modules compile. Documented in detail on the site so far:
 `Shape` · `Icon` · `Avatar` · `Skeleton` · `ScrollContainer` · `Snackbar` ·
 `Theme` · `Size`. The rest (buttons, cards, dialogs, nav, chips, fabs, form
 controls, sliders, date/time pickers, tooltips, …) compile and are usable;
@@ -96,13 +96,34 @@ the issues.)
   aliases to real per-component Elm enums and exposes shared attributes
   per-component, so `M3e.Button.variant : Variant -> Attribute` and
   `M3e.Button.disabled` exist. The whole `Ui.*` layer was migrated onto the
-  typed enums; all 54 modules compile.
+  typed enums; all 52 modules compile.
 - `Ui.Table` was **removed** — m3e ships no table element.
 - `Search`/`Calendar`/`DatePicker`/`TimePicker` are thin wrappers of the actual
   elements; date/time values are ISO-8601 `String`s (no date-lib dependency).
 - `Snackbar` is an imperative singleton; the declarative/port presentation is
   still pending (the builder is documented; full wiring tracked in issues).
+- `Ui.Carousel` was **removed** — matraic's `@m3e/web` ships no carousel
+  element (only `<m3e-slide-group>`, exposed as `Ui.Slide`). See
+  [ADR 0003](docs/adr/0003-remove-carousel.md).
+- **Styling-free builders** (the canonical Layer-4 pattern): no baked
+  classes, `withAttributes` host hatch on every builder, typed slots where
+  alternatives are enumerable + `EscapeHatchHtml` for raw cases. See
+  [ADR 0004](docs/adr/0004-styling-free-builders.md) and
+  [ADR 0005](docs/adr/0005-heterogeneous-chrome-slots.md) for the
+  heterogeneous-slot carve-out.
 - **In progress:** per-component documentation pages for the modules beyond the
-  initial 8; publishing `elm-m3e` + `m3e-builder` to the Elm registry.
+  initial 8; publishing `elm-m3e` + `m3e-builder` to the Elm registry (see
+  [publish runbook](docs/research/publish-runbook.md)).
+
+## Further reading
+
+- [`docs/adr/`](docs/adr/) — architecture decision records.
+- [`docs/research/api-friction-log.md`](docs/research/api-friction-log.md) —
+  stubbed toes while dogfooding the library: bugs, API gaps, test blind
+  spots, layer-attribution notes (F1–F11).
+- [`docs/research/builder-audit.md`](docs/research/builder-audit.md) —
+  per-builder host map driving the `withAttributes` rollout (52/52 covered).
+- [`docs/research/publish-runbook.md`](docs/research/publish-runbook.md) —
+  what stands between today's `application` elm.json and a registry release.
 
 See the repo's GitHub issues for the full, tracked list.
