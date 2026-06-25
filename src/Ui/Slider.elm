@@ -3,7 +3,7 @@ module Ui.Slider exposing
     , value, range
     , withAttributes
     , withId, withMin, withMax, withStep, withDiscrete, withDisabled
-    , withHelp, withError, withLabelled, withVisibleLabel
+    , withLabelled
     , view
     )
 
@@ -63,6 +63,21 @@ A price-range filter:
         |> Ui.Slider.withDiscrete True
         |> Ui.Slider.view
 
+A slider renders **bare** (just the track, with its `label` kept as an
+`aria-label`). For a visible label and supporting/error text, compose it with
+[`Ui.Field`](Ui-Field):
+
+    Ui.Field.new "Volume"
+        |> Ui.Field.withHint (text "Applies to all media playback.")
+        |> Ui.Field.view
+            (Ui.Slider.value
+                { label = "Volume"
+                , value = state.volume
+                , onChange = VolumeChanged
+                }
+                |> Ui.Slider.view
+            )
+
 
 # Type
 
@@ -82,7 +97,7 @@ A price-range filter:
 # Modifiers
 
 @docs withId, withMin, withMax, withStep, withDiscrete, withDisabled
-@docs withHelp, withError, withLabelled, withVisibleLabel
+@docs withLabelled
 
 
 # Render
@@ -94,7 +109,6 @@ A price-range filter:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.FormField
 import M3e.Slider
 import M3e.SliderThumb
 
@@ -133,9 +147,6 @@ type alias Config msg =
     , discrete : Bool
     , labelled : Bool
     , disabled : Bool
-    , help : Maybe (Html msg)
-    , error : Maybe (Html msg)
-    , visibleLabel : Bool
     }
 
 
@@ -193,9 +204,6 @@ baseConfig label thumbs =
     , discrete = False
     , labelled = True
     , disabled = False
-    , help = Nothing
-    , error = Nothing
-    , visibleLabel = True
     }
 
 
@@ -203,11 +211,8 @@ baseConfig label thumbs =
 -- MODIFIERS --------------------------------------------------------------
 
 
-{-| Append attributes to the rendered root host. With a visible label (the
-default) that root is the `<m3e-form-field>` wrapper; in bare mode
-(`withVisibleLabel False`) it is the `<m3e-slider>` control itself. The
-builder's structural attributes are emitted after these, so callers can't
-clobber them.
+{-| Append attributes to the rendered `<m3e-slider>`. The builder's structural
+attributes are emitted after these, so callers can't clobber them.
 -}
 withAttributes : List (Attribute msg) -> Slider kind msg -> Slider kind msg
 withAttributes attributes (Slider cfg) =
@@ -264,55 +269,16 @@ withDisabled b (Slider cfg) =
     Slider { cfg | disabled = b }
 
 
-{-| Set help text rendered beneath the slider.
--}
-withHelp : Html msg -> Slider kind msg -> Slider kind msg
-withHelp h (Slider cfg) =
-    Slider { cfg | help = Just h }
-
-
-{-| Set an error message. Replaces help text.
--}
-withError : Html msg -> Slider kind msg -> Slider kind msg
-withError e (Slider cfg) =
-    Slider { cfg | error = Just e }
-
-
-{-| Whether to render the visible label and the surrounding `m3e-form-field`
-chrome (default `True`).
-
-Set `False` for a **bare** slider — just the track, with the label kept as an
-`aria-label`. Use this when the slider sits in a row that already provides its
-own visible label, so the label isn't shown twice and the track isn't boxed in
-a text-field outline.
-
--}
-withVisibleLabel : Bool -> Slider kind msg -> Slider kind msg
-withVisibleLabel visible (Slider cfg) =
-    Slider { cfg | visibleLabel = visible }
-
-
 
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the slider to `Html`.
+{-| Render the slider to `Html` — a bare `<m3e-slider>` with its `label` as an
+`aria-label`. Wrap it in [`Ui.Field`](Ui-Field) for a visible label / subscript.
 -}
 view : Slider kind msg -> Html msg
 view (Slider cfg) =
-    if cfg.visibleLabel then
-        M3e.FormField.component
-            cfg.attributes
-            (List.concat
-                [ [ sliderElement [] cfg
-                  , labelElement cfg
-                  ]
-                , subscriptElements cfg
-                ]
-            )
-
-    else
-        sliderElement cfg.attributes cfg
+    sliderElement cfg.attributes cfg
 
 
 controlId : Config msg -> String
@@ -337,11 +303,7 @@ sliderElement extraAttrs cfg =
                 , Just (M3e.Slider.discrete cfg.discrete)
                 , Just (M3e.Slider.labelled cfg.labelled)
                 , Just (M3e.Slider.disabled cfg.disabled)
-                , if cfg.visibleLabel then
-                    Nothing
-
-                  else
-                    Just (Attr.attribute "aria-label" cfg.label)
+                , Just (Attr.attribute "aria-label" cfg.label)
                 ]
         )
         (thumbsElements cfg.thumbs)
@@ -401,25 +363,3 @@ slugify label =
                 |> String.join "-"
     in
     "uif-" ++ slug
-
-
-labelElement : Config msg -> Html msg
-labelElement cfg =
-    Html.label
-        [ Attr.attribute "slot" "label"
-        , Attr.for (controlId cfg)
-        ]
-        [ Html.text cfg.label ]
-
-
-subscriptElements : Config msg -> List (Html msg)
-subscriptElements cfg =
-    case ( cfg.error, cfg.help ) of
-        ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
-
-        ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
-
-        ( Nothing, Nothing ) ->
-            []

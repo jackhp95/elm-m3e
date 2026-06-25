@@ -2,7 +2,7 @@ module Ui.RadioButton exposing
     ( RadioGroup, Option
     , group, option
     , withAttributes
-    , withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
+    , withId, withRequired, withDisabled
     , view
     )
 
@@ -72,6 +72,25 @@ selection state stays typed end-to-end:
 option's value to `selected` to determine which radio renders checked.
 Records and custom union types both work; functions do not.
 
+A radio group renders **bare** (just the `<m3e-radio-group>` and its radios,
+with the group `label` kept as an `aria-label` on the group). For a visible
+group label and supporting/error text, compose it with [`Ui.Field`](Ui-Field):
+
+    Ui.Field.new "Billing cycle"
+        |> Ui.Field.withHint (text "You can change this anytime.")
+        |> Ui.Field.view
+            (Ui.RadioButton.group
+                { label = "Billing cycle"
+                , options =
+                    [ Ui.RadioButton.option { value = Monthly, label = "Monthly" }
+                    , Ui.RadioButton.option { value = Yearly, label = "Yearly" }
+                    ]
+                , selected = selected
+                , onChange = PricingChanged
+                }
+                |> Ui.RadioButton.view
+            )
+
 
 # Type
 
@@ -90,7 +109,7 @@ Records and custom union types both work; functions do not.
 
 # Modifiers
 
-@docs withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
+@docs withId, withRequired, withDisabled
 
 
 # Render
@@ -102,7 +121,6 @@ Records and custom union types both work; functions do not.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.FormField
 import M3e.Radio
 import M3e.RadioGroup
 
@@ -131,11 +149,8 @@ type alias Config value msg =
     , options : List (Option value)
     , selected : Maybe value
     , onChange : value -> msg
-    , help : Maybe (Html msg)
-    , error : Maybe (Html msg)
     , required : Bool
     , disabled : Bool
-    , visibleLabel : Bool
     }
 
 
@@ -172,11 +187,8 @@ group c =
         , options = c.options
         , selected = c.selected
         , onChange = c.onChange
-        , help = Nothing
-        , error = Nothing
         , required = False
         , disabled = False
-        , visibleLabel = True
         }
 
 
@@ -194,11 +206,8 @@ option =
 -- MODIFIERS --------------------------------------------------------------
 
 
-{-| Append attributes to the rendered root host. With a visible label (the
-default) that root is the `<m3e-form-field>` wrapper; in bare mode
-(`withVisibleLabel False`) it is the `<m3e-radio-group>` control itself. The
-builder's structural attributes are emitted after these, so callers can't
-clobber them.
+{-| Append attributes to the rendered `<m3e-radio-group>`. The builder's
+structural attributes are emitted after these, so callers can't clobber them.
 -}
 withAttributes : List (Attribute msg) -> RadioGroup value msg -> RadioGroup value msg
 withAttributes attributes (RadioGroup cfg) =
@@ -210,20 +219,6 @@ withAttributes attributes (RadioGroup cfg) =
 withId : String -> RadioGroup value msg -> RadioGroup value msg
 withId id (RadioGroup cfg) =
     RadioGroup { cfg | id = Just id }
-
-
-{-| Set help text rendered beneath the group.
--}
-withHelp : Html msg -> RadioGroup value msg -> RadioGroup value msg
-withHelp help (RadioGroup cfg) =
-    RadioGroup { cfg | help = Just help }
-
-
-{-| Set an error message. Replaces help text when both are present.
--}
-withError : Html msg -> RadioGroup value msg -> RadioGroup value msg
-withError error (RadioGroup cfg) =
-    RadioGroup { cfg | error = Just error }
 
 
 {-| Mark the group as required for form submission.
@@ -240,41 +235,17 @@ withDisabled disabled (RadioGroup cfg) =
     RadioGroup { cfg | disabled = disabled }
 
 
-{-| Whether to render the visible group label and the surrounding
-`m3e-form-field` chrome (default `True`).
-
-Set `False` for a **bare** group — just the radios, with the group label kept
-as an `aria-label` on `m3e-radio-group`. Use this when the group sits in a row
-that already provides its own visible label, so the label isn't shown twice
-and the radios aren't boxed in a text-field outline.
-
--}
-withVisibleLabel : Bool -> RadioGroup value msg -> RadioGroup value msg
-withVisibleLabel visible (RadioGroup cfg) =
-    RadioGroup { cfg | visibleLabel = visible }
-
-
 
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the radio group (wrapped in its form-field chrome) to `Html`.
+{-| Render the radio group to `Html` — a bare `<m3e-radio-group>` with its group
+`label` as an `aria-label`. Wrap it in [`Ui.Field`](Ui-Field) for a visible
+group label / subscript.
 -}
 view : RadioGroup value msg -> Html msg
 view (RadioGroup cfg) =
-    if cfg.visibleLabel then
-        M3e.FormField.component
-            cfg.attributes
-            (List.concat
-                [ [ groupElement [] cfg
-                  , labelElement cfg
-                  ]
-                , subscriptElements cfg
-                ]
-            )
-
-    else
-        groupElement cfg.attributes cfg
+    groupElement cfg.attributes cfg
 
 
 {-| The group's `id`: the caller's `withId` if present, else a stable
@@ -309,11 +280,7 @@ groupElement extraAttrs cfg =
                 , Just (M3e.RadioGroup.name (groupName cfg))
                 , Just (M3e.RadioGroup.disabled cfg.disabled)
                 , Just (M3e.RadioGroup.required cfg.required)
-                , if cfg.visibleLabel then
-                    Nothing
-
-                  else
-                    Just (Attr.attribute "aria-label" cfg.label)
+                , Just (Attr.attribute "aria-label" cfg.label)
                 ]
         )
         (List.map (renderOption cfg) cfg.options)
@@ -328,28 +295,6 @@ renderOption cfg (Option opt) =
         , HtmlEvents.onClick (cfg.onChange opt.value)
         ]
         [ Html.text opt.label ]
-
-
-labelElement : Config value msg -> Html msg
-labelElement cfg =
-    Html.label
-        [ Attr.attribute "slot" "label"
-        , Attr.for (controlId cfg)
-        ]
-        [ Html.text cfg.label ]
-
-
-subscriptElements : Config value msg -> List (Html msg)
-subscriptElements cfg =
-    case ( cfg.error, cfg.help ) of
-        ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
-
-        ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
-
-        ( Nothing, Nothing ) ->
-            []
 
 
 {-| Derive a stable, deterministic id/name from the label text so the

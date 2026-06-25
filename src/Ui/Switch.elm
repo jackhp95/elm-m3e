@@ -2,7 +2,7 @@ module Ui.Switch exposing
     ( Switch
     , new
     , withAttributes
-    , withId, withHelp, withError, withDisabled, withHandleIcons, withVisibleLabel
+    , withId, withDisabled, withHandleIcons
     , view
     )
 
@@ -63,15 +63,20 @@ With handle icons (more glanceable):
         |> Ui.Switch.withHandleIcons True
         |> Ui.Switch.view
 
-With help text:
+A switch renders **bare** (just the toggle, with its `label` kept as an
+`aria-label`). For a visible label and supporting/error text, compose it with
+[`Ui.Field`](Ui-Field):
 
-    Ui.Switch.new
-        { label = "Auto-renew subscription"
-        , checked = state.autoRenew
-        , onChange = AutoRenewToggled
-        }
-        |> Ui.Switch.withHelp (text "Charges your card 7 days before expiry.")
-        |> Ui.Switch.view
+    Ui.Field.new "Auto-renew subscription"
+        |> Ui.Field.withHint (text "Charges your card 7 days before expiry.")
+        |> Ui.Field.view
+            (Ui.Switch.new
+                { label = "Auto-renew subscription"
+                , checked = state.autoRenew
+                , onChange = AutoRenewToggled
+                }
+                |> Ui.Switch.view
+            )
 
 
 # Type
@@ -91,7 +96,7 @@ With help text:
 
 # Modifiers
 
-@docs withId, withHelp, withError, withDisabled, withHandleIcons, withVisibleLabel
+@docs withId, withDisabled, withHandleIcons
 
 
 # Render
@@ -103,7 +108,6 @@ With help text:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.FormField
 import M3e.Switch
 
 
@@ -123,11 +127,8 @@ type alias Config msg =
     , label : String
     , checked : Bool
     , onChange : Bool -> msg
-    , help : Maybe (Html msg)
-    , error : Maybe (Html msg)
     , disabled : Bool
     , handleIcons : Bool
-    , visibleLabel : Bool
     }
 
 
@@ -155,11 +156,8 @@ new c =
         , label = c.label
         , checked = c.checked
         , onChange = c.onChange
-        , help = Nothing
-        , error = Nothing
         , disabled = False
         , handleIcons = False
-        , visibleLabel = True
         }
 
 
@@ -167,11 +165,8 @@ new c =
 -- MODIFIERS --------------------------------------------------------------
 
 
-{-| Append attributes to the rendered root host. With a visible label (the
-default) that root is the `<m3e-form-field>` wrapper; in bare mode
-(`withVisibleLabel False`) it is the `<m3e-switch>` control itself. The
-builder's structural attributes are emitted after these, so callers can't
-clobber them.
+{-| Append attributes to the rendered `<m3e-switch>`. The builder's structural
+attributes are emitted after these, so callers can't clobber them.
 -}
 withAttributes : List (Attribute msg) -> Switch msg -> Switch msg
 withAttributes attributes (Switch cfg) =
@@ -183,21 +178,6 @@ withAttributes attributes (Switch cfg) =
 withId : String -> Switch msg -> Switch msg
 withId id (Switch cfg) =
     Switch { cfg | id = Just id }
-
-
-{-| Set help text rendered beneath the switch.
--}
-withHelp : Html msg -> Switch msg -> Switch msg
-withHelp help (Switch cfg) =
-    Switch { cfg | help = Just help }
-
-
-{-| Set an error message. When set, the field renders in its error
-visual style and the error message replaces help text.
--}
-withError : Html msg -> Switch msg -> Switch msg
-withError error (Switch cfg) =
-    Switch { cfg | error = Just error }
 
 
 {-| Mark the switch as disabled — non-interactive.
@@ -217,43 +197,17 @@ withHandleIcons enabled (Switch cfg) =
     Switch { cfg | handleIcons = enabled }
 
 
-{-| Whether to render the visible label and the surrounding `m3e-form-field`
-chrome (default `True`).
-
-Set `False` for a **bare** switch — just the toggle, with the label kept as an
-`aria-label` for assistive tech. Use this when the switch sits in a row that
-already provides its own visible label (e.g. a settings list), so the label
-isn't shown twice and the toggle isn't boxed in a text-field outline.
-
--}
-withVisibleLabel : Bool -> Switch msg -> Switch msg
-withVisibleLabel visible (Switch cfg) =
-    Switch { cfg | visibleLabel = visible }
-
 
 
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the switch to `Html`. With a visible label (the default) it is
-wrapped in `m3e-form-field` chrome; in bare mode (`withVisibleLabel False`)
-it renders as just the toggle with an `aria-label`.
+{-| Render the switch to `Html` — a bare `<m3e-switch>` with its `label` as an
+`aria-label`. Wrap it in [`Ui.Field`](Ui-Field) for a visible label / subscript.
 -}
 view : Switch msg -> Html msg
 view (Switch cfg) =
-    if cfg.visibleLabel then
-        M3e.FormField.component
-            cfg.attributes
-            (List.concat
-                [ [ switchElement [] cfg
-                  , labelElement cfg
-                  ]
-                , subscriptElements cfg
-                ]
-            )
-
-    else
-        switchElement cfg.attributes cfg
+    switchElement cfg.attributes cfg
 
 
 controlId : Config msg -> String
@@ -279,37 +233,11 @@ switchElement extraAttrs cfg =
 
                   else
                     Nothing
-                , if cfg.visibleLabel then
-                    Nothing
-
-                  else
-                    Just (Attr.attribute "aria-label" cfg.label)
+                , Just (Attr.attribute "aria-label" cfg.label)
                 , Just (M3e.Switch.onChange (changeDecoder cfg.onChange))
                 ]
         )
         []
-
-
-labelElement : Config msg -> Html msg
-labelElement cfg =
-    Html.label
-        [ Attr.attribute "slot" "label"
-        , Attr.for (controlId cfg)
-        ]
-        [ Html.text cfg.label ]
-
-
-subscriptElements : Config msg -> List (Html msg)
-subscriptElements cfg =
-    case ( cfg.error, cfg.help ) of
-        ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
-
-        ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
-
-        ( Nothing, Nothing ) ->
-            []
 
 
 changeDecoder : (Bool -> msg) -> Decode.Decoder msg

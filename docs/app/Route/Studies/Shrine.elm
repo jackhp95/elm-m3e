@@ -715,7 +715,6 @@ viewControls model =
                 |> Slider.withStep 5
                 |> Slider.withDiscrete True
                 |> Slider.withLabelled True
-                |> Slider.withVisibleLabel False
                 |> Slider.view
     in
     div [ class "flex flex-col gap-4" ]

@@ -799,7 +799,6 @@ messageRow model message =
                 , onChange = ToggleChecked message.id
                 }
                 |> Checkbox.withId ("reply-check-" ++ String.fromInt message.id)
-                |> Checkbox.withVisibleLabel False
                 |> Checkbox.view
             ]
         , Avatar.initials message.sender

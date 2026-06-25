@@ -2,7 +2,7 @@ module Ui.Checkbox exposing
     ( Checkbox, Boolean, Tristate
     , boolean, tristate
     , withAttributes
-    , withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
+    , withId, withRequired, withDisabled
     , view
     )
 
@@ -46,11 +46,10 @@ Every constructor requires:
     user's interaction.
 
 
-# Form chrome modifiers
+# Required marker
 
-`withHelp`, `withError`, `withRequired` decorate the surrounding
-`<m3e-form-field>`. Setting both `withHelp` and `withError` is allowed
-— `withError` takes visual precedence at render time.
+`withRequired` sets the underlying control's `required` property (used for
+form submission and the field's required marker when composed with `Ui.Field`).
 
 
 # Quick examples
@@ -74,16 +73,20 @@ A tristate "select all" checkbox in a parent row:
         }
         |> Ui.Checkbox.view
 
-With help text and an error message:
+A checkbox renders **bare** (just the box, with its `label` kept as an
+`aria-label`). For a visible label and supporting/error text, compose it with
+[`Ui.Field`](Ui-Field):
 
-    Ui.Checkbox.boolean
-        { label = "Subscribe to product updates"
-        , checked = state.subscribed
-        , onChange = SubscribeToggled
-        }
-        |> Ui.Checkbox.withHelp (text "We'll email you no more than once a week.")
-        |> Ui.Checkbox.withError (text "Subscription requires a verified email.")
-        |> Ui.Checkbox.view
+    Ui.Field.new "Subscribe to product updates"
+        |> Ui.Field.withHint (text "We'll email you no more than once a week.")
+        |> Ui.Field.view
+            (Ui.Checkbox.boolean
+                { label = "Subscribe to product updates"
+                , checked = state.subscribed
+                , onChange = SubscribeToggled
+                }
+                |> Ui.Checkbox.view
+            )
 
 
 # Type
@@ -103,7 +106,7 @@ With help text and an error message:
 
 # Modifiers
 
-@docs withId, withHelp, withError, withRequired, withDisabled, withVisibleLabel
+@docs withId, withRequired, withDisabled
 
 
 # Render
@@ -116,7 +119,6 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Checkbox
-import M3e.FormField
 
 
 
@@ -151,11 +153,8 @@ type alias Config msg =
     , label : String
     , state : State
     , onChange : Bool -> msg
-    , help : Maybe (Html msg)
-    , error : Maybe (Html msg)
     , required : Bool
     , disabled : Bool
-    , visibleLabel : Bool
     }
 
 
@@ -221,11 +220,8 @@ baseConfig label state onChange =
     , label = label
     , state = state
     , onChange = onChange
-    , help = Nothing
-    , error = Nothing
     , required = False
     , disabled = False
-    , visibleLabel = True
     }
 
 
@@ -233,11 +229,8 @@ baseConfig label state onChange =
 -- MODIFIERS --------------------------------------------------------------
 
 
-{-| Append attributes to the rendered root host. With a visible label (the
-default) that root is the `<m3e-form-field>` wrapper; in bare mode
-(`withVisibleLabel False`) it is the `<m3e-checkbox>` control itself. The
-builder's structural attributes are emitted after these, so callers can't
-clobber them.
+{-| Append attributes to the rendered `<m3e-checkbox>`. The builder's structural
+attributes are emitted after these, so callers can't clobber them.
 -}
 withAttributes : List (Attribute msg) -> Checkbox kind msg -> Checkbox kind msg
 withAttributes attributes (Checkbox cfg) =
@@ -252,29 +245,9 @@ withId id (Checkbox cfg) =
     Checkbox { cfg | id = Just id }
 
 
-{-| Set help text rendered beneath the field.
-
-    |> Ui.Checkbox.withHelp (text "We'll email you no more than once a week.")
-
--}
-withHelp : Html msg -> Checkbox kind msg -> Checkbox kind msg
-withHelp help (Checkbox cfg) =
-    Checkbox { cfg | help = Just help }
-
-
-{-| Set an error message. When set, the field renders in its error
-visual style and the error message replaces help text.
-
-    |> Ui.Checkbox.withError (text "Subscription requires a verified email.")
-
--}
-withError : Html msg -> Checkbox kind msg -> Checkbox kind msg
-withError error (Checkbox cfg) =
-    Checkbox { cfg | error = Just error }
-
-
 {-| Mark the checkbox as required for form submission. Affects the
-field's visual marker and the underlying control's `required` property.
+underlying control's `required` property (and the required marker when
+composed with `Ui.Field`).
 -}
 withRequired : Bool -> Checkbox kind msg -> Checkbox kind msg
 withRequired required (Checkbox cfg) =
@@ -288,42 +261,17 @@ withDisabled disabled (Checkbox cfg) =
     Checkbox { cfg | disabled = disabled }
 
 
-{-| Whether to render the visible label and the surrounding `m3e-form-field`
-chrome (default `True`).
-
-Set `False` for a **bare** checkbox — just the box, with the label kept as an
-`aria-label`. Use this when the checkbox sits in a row/list item that already
-provides its own visible label (e.g. selecting a list row), so the label isn't
-shown twice and the box isn't wrapped in a text-field outline.
-
--}
-withVisibleLabel : Bool -> Checkbox kind msg -> Checkbox kind msg
-withVisibleLabel visible (Checkbox cfg) =
-    Checkbox { cfg | visibleLabel = visible }
-
-
 
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the checkbox (wrapped in its form-field chrome) to `Html`.
-Use this as the final step of the builder pipeline.
+{-| Render the checkbox to `Html` — a bare `<m3e-checkbox>` with its `label` as
+an `aria-label`. Wrap it in [`Ui.Field`](Ui-Field) for a visible label /
+subscript.
 -}
 view : Checkbox kind msg -> Html msg
 view (Checkbox cfg) =
-    if cfg.visibleLabel then
-        M3e.FormField.component
-            cfg.attributes
-            (List.concat
-                [ [ checkboxElement [] cfg
-                  , labelElement cfg
-                  ]
-                , subscriptElements cfg
-                ]
-            )
-
-    else
-        checkboxElement cfg.attributes cfg
+    checkboxElement cfg.attributes cfg
 
 
 controlId : Config msg -> String
@@ -346,38 +294,11 @@ checkboxElement extraAttrs cfg =
                 , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
                 , Just (M3e.Checkbox.disabled cfg.disabled)
                 , Just (M3e.Checkbox.required cfg.required)
-                , if cfg.visibleLabel then
-                    Nothing
-
-                  else
-                    Just (Attr.attribute "aria-label" cfg.label)
+                , Just (Attr.attribute "aria-label" cfg.label)
                 , Just (M3e.Checkbox.onChange (changeDecoder cfg.onChange))
                 ]
         )
         []
-
-
-labelElement : Config msg -> Html msg
-labelElement cfg =
-    Html.label
-        [ Attr.attribute "slot" "label"
-        , Attr.for (controlId cfg)
-        ]
-        [ Html.text cfg.label ]
-
-
-subscriptElements : Config msg -> List (Html msg)
-subscriptElements cfg =
-    -- Error takes visual precedence over help when both are set.
-    case ( cfg.error, cfg.help ) of
-        ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
-
-        ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
-
-        ( Nothing, Nothing ) ->
-            []
 
 
 isChecked : State -> Bool
