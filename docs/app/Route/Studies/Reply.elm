@@ -5,9 +5,11 @@ module Route.Studies.Reply exposing (ActionData, Data, Model, Msg, route)
 A responsive mail client that composes a large slice of the elm-m3e
 library the way Google's "Reply" Material Study does:
 
-  - A **NavigationDrawer** (large screens) / **NavigationRail** (medium) /
-    **NavigationBar** (compact) trio switches mailboxes. The swap is driven
-    by responsive breakpoints (the "Size" concern in the coverage matrix).
+  - A **NavigationRail** in `Expanded` mode (large screens, drawer-shaped:
+    icon + label) / `Compact` mode (medium, icons only) / **NavigationBar**
+    (compact viewports, bottom-mounted) trio switches mailboxes. The swap
+    is driven by responsive breakpoints — the "Size" concern in the
+    coverage matrix.
   - An **AppBar** holds a **Search** field, a notifications **IconButton**
     with a **Badge** (unread count), and the user **Avatar**.
   - The message **List** uses **Avatar** rows, a leading multi-select
@@ -50,7 +52,6 @@ import Ui.Icon as Icon
 import Ui.IconButton as IconButton
 import Ui.Menu as Menu
 import Ui.NavigationBar as NavigationBar
-import Ui.NavigationDrawer as NavigationDrawer
 import Ui.NavigationRail as NavigationRail
 import Ui.ScrollContainer as ScrollContainer
 import Ui.Search as Search
@@ -443,13 +444,13 @@ viewApp model =
         |> Theme.withVariant Theme.Vibrant
         |> Theme.withScheme Theme.Light
         |> Theme.view
-            [ div [ class "flex h-[calc(100vh-8rem)] min-h-[36rem] overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface-container-lowest text-on-surface" ]
+            [ div [ class "flex h-[100dvh] w-full overflow-hidden bg-surface-container-lowest text-on-surface md:h-[calc(100vh-2rem)] md:min-h-[36rem] md:rounded-md-corner-large md:border md:border-outline-variant" ]
                 [ viewSideNav model
                 , div [ class "relative flex min-w-0 flex-1 flex-col" ]
                     [ viewAppBar model
-                    , div [ class "min-h-0 flex-1" ] [ viewMain model ]
+                    , div [ class "min-h-0 flex-1 overflow-hidden" ] [ viewMain model ]
                     , viewBottomNav model
-                    , viewComposeFab
+                    , viewComposeFab model
                     , viewCompose model
                     , viewSnackbar model
                     ]
@@ -460,55 +461,47 @@ viewApp model =
 {-| Drawer on large screens, rail on medium. Hidden on compact (the
 NavigationBar takes over at the bottom). This swap is the responsive "Size"
 concern from the coverage matrix.
+
+The lg "drawer" is an `NavigationRail` in `Expanded` mode (the rail's wide
+variant) rather than a real `m3e-drawer-container` — the drawer-container
+primitive wraps its content (slot-based layout), so dropping it as a sibling
+of the list/detail collapses to zero height. The expanded rail gives the
+same shape (icon + label, full destination labels) without that constraint.
+A persistent `NavigationDrawer` shell would require restructuring the entire
+study so the inbox lives in the drawer's content slot.
+
+`contents` on the outer wrapper collapses it for layout so the visible rail
+sits as a direct flex child of the app shell.
+
 -}
 viewSideNav : Model -> Html Msg
 viewSideNav model =
-    div []
-        [ -- Large screens: full navigation drawer
+    div [ class "contents" ]
+        [ -- Large screens: expanded rail (drawer-like; icon + label per item)
           div [ class "hidden h-full border-r border-outline-variant bg-surface-container-low lg:block" ]
-            [ navDrawer model ]
-        , -- Medium screens: compact navigation rail
+            [ navRail NavigationRail.Expanded model ]
+        , -- Medium screens: compact navigation rail (icons only)
           div [ class "hidden h-full border-r border-outline-variant bg-surface-container-low md:block lg:hidden" ]
-            [ navRail model ]
+            [ navRail NavigationRail.Compact model ]
         ]
 
 
-navDrawer : Model -> Html Msg
-navDrawer model =
-    NavigationDrawer.new
-        { items = List.map drawerItem allMailboxes
-        , selected = Just model.mailbox
-        , onChange = SelectMailbox
-        }
-        |> NavigationDrawer.withId "reply-drawer"
-        |> NavigationDrawer.view
-
-
-drawerItem : Mailbox -> NavigationDrawer.Item Mailbox Msg
-drawerItem mailbox =
-    let
-        base =
-            NavigationDrawer.item
-                { value = mailbox
-                , icon = Icon.material (mailboxIcon mailbox)
-                }
-                |> NavigationDrawer.withItemLabel (mailboxLabel mailbox)
-    in
-    if unreadCount mailbox > 0 then
-        NavigationDrawer.withItemBadge (String.fromInt (unreadCount mailbox)) base
-
-    else
-        base
-
-
-navRail : Model -> Html Msg
-navRail model =
+navRail : NavigationRail.Mode -> Model -> Html Msg
+navRail mode model =
     NavigationRail.new
         { items = List.map railItem allMailboxes
         , selected = Just model.mailbox
         , onChange = SelectMailbox
         }
-        |> NavigationRail.withId "reply-rail"
+        |> NavigationRail.withId
+            (case mode of
+                NavigationRail.Expanded ->
+                    "reply-rail-expanded"
+
+                _ ->
+                    "reply-rail-compact"
+            )
+        |> NavigationRail.withMode mode
         |> NavigationRail.view
 
 
@@ -529,11 +522,21 @@ railItem mailbox =
         base
 
 
-{-| Compact-only bottom navigation bar.
+{-| Compact-only bottom navigation bar. Hidden when the reading pane is open
+on compact so the message body owns the full viewport.
 -}
 viewBottomNav : Model -> Html Msg
 viewBottomNav model =
-    div [ class "bg-surface-container-low md:hidden" ]
+    let
+        hideWhenReading =
+            case model.selected of
+                Just _ ->
+                    "hidden"
+
+                Nothing ->
+                    ""
+    in
+    div [ class ("bg-surface-container-low md:hidden " ++ hideWhenReading) ]
         [ Divider.new |> Divider.view
         , NavigationBar.new
             { items = List.map barItem [ Inbox, Starred, Sent, Drafts ]
@@ -568,18 +571,74 @@ barItem mailbox =
 
 viewAppBar : Model -> Html Msg
 viewAppBar model =
-    AppBar.new (mailboxLabel model.mailbox)
+    AppBar.new (appBarTitle model)
         |> AppBar.withId "reply-appbar"
         |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeading menuLeading
+        |> AppBar.withLeading (leadingControl model)
         |> AppBar.withTrailing
-            [ searchBar model
+            [ -- Search occupies most of the trailing slot at md+; hidden on
+              -- compact (a search icon button replaces it).
+              div [ class "hidden md:block min-w-0 max-w-md flex-1" ]
+                [ searchBar model ]
+            , div [ class "md:hidden" ] [ compactSearchButton ]
             , notificationsButton
             , Avatar.initials "Jane Reed"
                 |> Avatar.withId "reply-user-avatar"
                 |> Avatar.view
             ]
         |> AppBar.view
+
+
+{-| On compact, when a message is selected the reading pane replaces the list
+and the app bar title becomes the conversation subject (truncated) — feels
+more like a native mail client. On md+ the title is the mailbox label.
+-}
+appBarTitle : Model -> String
+appBarTitle model =
+    case ( model.selected, model.selected |> Maybe.andThen findMessage ) of
+        ( Just _, Just message ) ->
+            message.subject
+
+        _ ->
+            mailboxLabel model.mailbox
+
+
+{-| Compact: a back arrow when a message is open, otherwise the menu icon.
+At md+ this is always the menu icon.
+-}
+leadingControl : Model -> Html Msg
+leadingControl model =
+    case model.selected of
+        Just _ ->
+            div []
+                [ -- Back arrow only on compact; the desktop SplitPane keeps the list visible.
+                  div [ class "md:hidden" ] [ backLeading ]
+                , div [ class "hidden md:block" ] [ menuLeading ]
+                ]
+
+        Nothing ->
+            menuLeading
+
+
+backLeading : Html Msg
+backLeading =
+    IconButton.new
+        { icon = Icon.material "arrow_back"
+        , label = "Back to inbox"
+        , variant = IconButton.Standard
+        }
+        |> IconButton.withOnClick CloseReadingPane
+        |> IconButton.view
+
+
+compactSearchButton : Html Msg
+compactSearchButton =
+    IconButton.new
+        { icon = Icon.material "search"
+        , label = "Search mail"
+        , variant = IconButton.Standard
+        }
+        |> IconButton.view
 
 
 menuLeading : Html Msg
@@ -596,14 +655,12 @@ menuLeading =
 
 searchBar : Model -> Html Msg
 searchBar model =
-    div [ class "min-w-0 max-w-md flex-1" ]
-        [ Search.bar
-            |> Search.withId "reply-search"
-            |> Search.withPlaceholder "Search mail"
-            |> Search.withQuery model.query SetQuery
-            |> Search.withClearable True
-            |> Search.view
-        ]
+    Search.bar
+        |> Search.withId "reply-search"
+        |> Search.withPlaceholder "Search mail"
+        |> Search.withQuery model.query SetQuery
+        |> Search.withClearable True
+        |> Search.view
 
 
 notificationsButton : Html Msg
@@ -639,11 +696,18 @@ viewMain model =
         Just id ->
             case findMessage id of
                 Just message ->
-                    SplitPane.new
-                        |> SplitPane.withId "reply-splitpane"
-                        |> SplitPane.withStart [ messageListPane model ]
-                        |> SplitPane.withEnd [ readingPane message ]
-                        |> SplitPane.view
+                    div [ class "h-full" ]
+                        [ -- md+: SplitPane keeps list visible alongside the reading pane.
+                          div [ class "hidden h-full md:block" ]
+                            [ SplitPane.new
+                                |> SplitPane.withId "reply-splitpane"
+                                |> SplitPane.withStart [ messageListPane model ]
+                                |> SplitPane.withEnd [ readingPane message ]
+                                |> SplitPane.view
+                            ]
+                        , -- Compact: reading pane stacks over the list — single column.
+                          div [ class "h-full md:hidden" ] [ readingPane message ]
+                        ]
 
                 Nothing ->
                     messageListPane model
@@ -815,7 +879,7 @@ readingPane message =
     ScrollContainer.new
         |> ScrollContainer.withId "reply-reading-scroll"
         |> ScrollContainer.view
-            [ div [ class "flex flex-col gap-4 p-6" ]
+            [ div [ class "flex flex-col gap-4 p-4 md:p-6" ]
                 [ div [ class "flex items-start justify-between gap-3" ]
                     [ Heading.new
                         |> Heading.withVariant Heading.Headline
@@ -854,7 +918,8 @@ readingPane message =
 readingActions : Html Msg
 readingActions =
     div [ class "flex shrink-0 items-center gap-1" ]
-        [ closeReadingButton
+        [ -- The compact app bar already has a back arrow; hide the close button there.
+          div [ class "hidden md:block" ] [ closeReadingButton ]
         , archiveButton
         , overflowMenu
         ]
@@ -920,9 +985,21 @@ overflowMenu =
 -- COMPOSE
 
 
-viewComposeFab : Html Msg
-viewComposeFab =
-    div [ class "absolute bottom-6 right-6 z-10" ]
+viewComposeFab : Model -> Html Msg
+viewComposeFab model =
+    -- Hide the FAB while the reading pane covers the screen on compact — the
+    -- inline Reply/Forward buttons own that flow there and the FAB would
+    -- collide with them. md+ keeps the FAB visible regardless.
+    let
+        compactHide =
+            case model.selected of
+                Just _ ->
+                    "hidden md:block"
+
+                Nothing ->
+                    ""
+    in
+    div [ class ("absolute bottom-20 right-4 z-10 md:bottom-6 md:right-6 " ++ compactHide) ]
         [ Fab.new
             { icon = Icon.material "edit"
             , label = "Compose"
@@ -939,6 +1016,15 @@ viewCompose model =
         |> BottomSheet.withId "reply-compose"
         |> BottomSheet.withModal True
         |> BottomSheet.withHandle True
+        |> BottomSheet.withAttributes
+            -- Without explicit detents the m3e-bottom-sheet opens to a 16px
+            -- peek and waits for a drag gesture; on a touch-less test page
+            -- that hides the compose form entirely. Three detents matches
+            -- the m3e example (`fit half full`) and the property `detent: 2`
+            -- snaps to the full-height detent on open.
+            [ attribute "detents" "fit half full"
+            , attribute "detent" "2"
+            ]
         |> BottomSheet.withHeader
             (Heading.new
                 |> Heading.withVariant Heading.Title
