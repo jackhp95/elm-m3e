@@ -3,7 +3,11 @@ module Ui.AppBar exposing
     , Size(..)
     , new
     , withAttributes
-    , withId, withSize, withCentered, withSubtitle, withLeading, withTrailing
+    , withId, withSize, withCentered
+    , withTitle, withTitleHtmlElementEscapeHatch
+    , withSubtitle, withSubtitleHtmlElementEscapeHatch
+    , withLeadingIconButton, withLeadingHtmlElementEscapeHatch
+    , withTrailingIconButton, withTrailingHtmlElementEscapeHatch
     , view
     )
 
@@ -12,6 +16,25 @@ title, navigation affordances, and contextual actions. Mirrors the
 Material 3 [App bars][m3] surface.
 
 [m3]: https://m3.material.io/components/app-bars/overview
+
+
+# Slots are attribute-injected, never wrapped
+
+Each slot setter owns only the slot **attribute** (`slot="title"`, etc.) — it
+never wraps your content in a builder-chosen element. There are two ways to
+fill a slot, and both put the slot attribute on the element you actually
+render (so it projects directly, with no stray `<span>`):
+
+  - **typed** (`withTitle`, `withLeadingIconButton`, …) — pass a `Ui.*`
+    builder; the slot attribute is injected via that builder's own
+    `withAttributes`, then it renders its own element.
+  - **element escape hatch** (`with…HtmlElementEscapeHatch tag attrs children`)
+    — pass an element constructor (`Html.div`, `Html.a`, …), its attributes,
+    and its children; the slot attribute is prepended to `attrs` and the
+    element is rendered as `tag (slot :: attrs) children`.
+
+Content is `Html msg` / `Ui.*` throughout — never a `String` the builder
+secretly wraps in a text node.
 
 
 # Type
@@ -36,7 +59,11 @@ Material 3 [App bars][m3] surface.
 
 # Modifiers
 
-@docs withId, withSize, withCentered, withSubtitle, withLeading, withTrailing
+@docs withId, withSize, withCentered
+@docs withTitle, withTitleHtmlElementEscapeHatch
+@docs withSubtitle, withSubtitleHtmlElementEscapeHatch
+@docs withLeadingIconButton, withLeadingHtmlElementEscapeHatch
+@docs withTrailingIconButton, withTrailingHtmlElementEscapeHatch
 
 
 # Render
@@ -48,6 +75,8 @@ Material 3 [App bars][m3] surface.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.AppBar
+import Ui.Heading
+import Ui.IconButton
 
 
 {-| An app bar.
@@ -56,15 +85,23 @@ type AppBar msg
     = AppBar (Config msg)
 
 
+{-| A slot-fillable child: given the slot attribute the app bar wants to put
+on it, it produces the element carrying that attribute. This is how a slot is
+filled without a wrapper — the attribute lands on the caller's real element.
+-}
+type alias Slotted msg =
+    Attribute msg -> Html msg
+
+
 type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
-    , title : String
-    , subtitle : Maybe String
+    , title : Maybe (Slotted msg)
+    , subtitle : Maybe (Slotted msg)
     , size : Size
     , centered : Bool
-    , leading : Maybe (Html msg)
-    , trailing : List (Html msg)
+    , leading : Maybe (Slotted msg)
+    , trailing : List (Slotted msg)
     }
 
 
@@ -76,14 +113,15 @@ type Size
     | Large
 
 
-{-| Construct an app bar with the given title.
+{-| Construct an app bar. Fill slots with the `with*` modifiers — every slot is
+optional.
 -}
-new : String -> AppBar msg
-new title =
+new : AppBar msg
+new =
     AppBar
         { id = Nothing
         , attributes = []
-        , title = title
+        , title = Nothing
         , subtitle = Nothing
         , size = Small
         , centered = False
@@ -122,31 +160,105 @@ withCentered b (AppBar cfg) =
     AppBar { cfg | centered = b }
 
 
-{-| Set a subtitle. Rides the `subtitle` slot of `m3e-app-bar`; the element
-stacks it under the title at the proper M3 typescale. Prefer this over
-dash-separating a long title (which would overflow on narrow viewports).
+
+-- SLOT HELPERS -----------------------------------------------------------
+
+
+{-| Fill a slot from a typed builder: inject the slot attribute via the
+builder's `withAttributes`, then render it.
 -}
-withSubtitle : String -> AppBar msg -> AppBar msg
-withSubtitle s (AppBar cfg) =
-    AppBar { cfg | subtitle = Just s }
+fromBuilder : (List (Attribute msg) -> b -> b) -> (b -> Html msg) -> b -> Slotted msg
+fromBuilder addAttrs render builder slot =
+    render (addAttrs [ slot ] builder)
 
 
-{-| Set the leading affordance — typically a `Ui.IconButton` rendered to Html
-(`|> Ui.IconButton.view`), but this slot is naturally heterogeneous (e.g. a
-brand icon, an avatar, a drawer toggle), so it stays `Html msg`.
+{-| Fill a slot from a caller-provided element: prepend the slot attribute to
+the caller's attributes and render their element.
 -}
-withLeading : Html msg -> AppBar msg -> AppBar msg
-withLeading html (AppBar cfg) =
-    AppBar { cfg | leading = Just html }
+fromElement : (List (Attribute msg) -> List (Html msg) -> Html msg) -> List (Attribute msg) -> List (Html msg) -> Slotted msg
+fromElement tag attrs children slot =
+    tag (slot :: attrs) children
 
 
-{-| Set the trailing actions. Compose `Ui.IconButton`s (with `withHref` /
-`withTarget` for link actions), `Ui.Search`/`Ui.Avatar`/etc.; the slot is
-naturally heterogeneous so it stays `List (Html msg)`.
+
+-- TITLE / SUBTITLE -------------------------------------------------------
+
+
+{-| Set the title from a `Ui.Heading` (the M3 title typescale comes from the
+`m3e-heading` element). The slot attribute is injected onto the heading.
 -}
-withTrailing : List (Html msg) -> AppBar msg -> AppBar msg
-withTrailing items (AppBar cfg) =
-    AppBar { cfg | trailing = items }
+withTitle : Ui.Heading.Heading msg -> AppBar msg -> AppBar msg
+withTitle heading (AppBar cfg) =
+    AppBar { cfg | title = Just (fromBuilder Ui.Heading.withAttributes Ui.Heading.view heading) }
+
+
+{-| Set the title from an arbitrary element (`tag attrs children`). The slot
+attribute is prepended to `attrs`.
+-}
+withTitleHtmlElementEscapeHatch : (List (Attribute msg) -> List (Html msg) -> Html msg) -> List (Attribute msg) -> List (Html msg) -> AppBar msg -> AppBar msg
+withTitleHtmlElementEscapeHatch tag attrs children (AppBar cfg) =
+    AppBar { cfg | title = Just (fromElement tag attrs children) }
+
+
+{-| Set the subtitle from a `Ui.Heading`. Rides the `subtitle` slot; the
+element stacks it under the title at the proper M3 typescale.
+-}
+withSubtitle : Ui.Heading.Heading msg -> AppBar msg -> AppBar msg
+withSubtitle heading (AppBar cfg) =
+    AppBar { cfg | subtitle = Just (fromBuilder Ui.Heading.withAttributes Ui.Heading.view heading) }
+
+
+{-| Set the subtitle from an arbitrary element.
+-}
+withSubtitleHtmlElementEscapeHatch : (List (Attribute msg) -> List (Html msg) -> Html msg) -> List (Attribute msg) -> List (Html msg) -> AppBar msg -> AppBar msg
+withSubtitleHtmlElementEscapeHatch tag attrs children (AppBar cfg) =
+    AppBar { cfg | subtitle = Just (fromElement tag attrs children) }
+
+
+
+-- LEADING ----------------------------------------------------------------
+
+
+{-| Set the leading affordance from a `Ui.IconButton` (the common case — a
+menu / back / drawer-toggle button). The slot attribute is injected onto the
+icon button.
+-}
+withLeadingIconButton : Ui.IconButton.IconButton msg -> AppBar msg -> AppBar msg
+withLeadingIconButton iconButton (AppBar cfg) =
+    AppBar { cfg | leading = Just (fromBuilder Ui.IconButton.withAttributes Ui.IconButton.view iconButton) }
+
+
+{-| Set the leading affordance from an arbitrary element — for the heterogeneous
+cases (a brand mark, an avatar, a responsive wrapper). The slot attribute is
+prepended to `attrs`.
+-}
+withLeadingHtmlElementEscapeHatch : (List (Attribute msg) -> List (Html msg) -> Html msg) -> List (Attribute msg) -> List (Html msg) -> AppBar msg -> AppBar msg
+withLeadingHtmlElementEscapeHatch tag attrs children (AppBar cfg) =
+    AppBar { cfg | leading = Just (fromElement tag attrs children) }
+
+
+
+-- TRAILING (appends) -----------------------------------------------------
+
+
+{-| Append a trailing action from a `Ui.IconButton`. Call once per action; the
+`m3e-app-bar` lays multiple trailing children out as a flex row.
+-}
+withTrailingIconButton : Ui.IconButton.IconButton msg -> AppBar msg -> AppBar msg
+withTrailingIconButton iconButton (AppBar cfg) =
+    AppBar { cfg | trailing = cfg.trailing ++ [ fromBuilder Ui.IconButton.withAttributes Ui.IconButton.view iconButton ] }
+
+
+{-| Append a trailing action from an arbitrary element (e.g. a `Ui.Search`, a
+`Ui.Avatar`, or an `<a>` link wrapping an icon button).
+-}
+withTrailingHtmlElementEscapeHatch : (List (Attribute msg) -> List (Html msg) -> Html msg) -> List (Attribute msg) -> List (Html msg) -> AppBar msg -> AppBar msg
+withTrailingHtmlElementEscapeHatch tag attrs children (AppBar cfg) =
+    AppBar { cfg | trailing = cfg.trailing ++ [ fromElement tag attrs children ] }
+
+
+
+-- RENDER -----------------------------------------------------------------
 
 
 {-| Render the app bar.
@@ -162,42 +274,22 @@ view (AppBar cfg) =
                 ]
         )
         (List.concat
-            [ leadingSlot cfg.leading
-            , [ Html.span [ M3e.AppBar.titleSlot ] [ Html.text cfg.title ] ]
-            , subtitleSlot cfg.subtitle
-            , trailingSlot cfg.trailing
+            [ slotInto M3e.AppBar.leadingSlot cfg.leading
+            , slotInto M3e.AppBar.titleSlot cfg.title
+            , slotInto M3e.AppBar.subtitleSlot cfg.subtitle
+            , List.map (\fill -> fill M3e.AppBar.trailingSlot) cfg.trailing
             ]
         )
 
 
-leadingSlot : Maybe (Html msg) -> List (Html msg)
-leadingSlot leading =
-    case leading of
+slotInto : Attribute msg -> Maybe (Slotted msg) -> List (Html msg)
+slotInto slot maybeFill =
+    case maybeFill of
+        Just fill ->
+            [ fill slot ]
+
         Nothing ->
             []
-
-        Just html ->
-            [ Html.span [ M3e.AppBar.leadingSlot ] [ html ] ]
-
-
-{-| Each trailing item rides its own `<span slot="trailing">`. The m3e-app-bar
-shadow template lays multiple slotted children out as a flex row in its
-`.trailing-icon` wrapper; wrapping them all in a single span here would defeat
-that and stack them vertically.
--}
-trailingSlot : List (Html msg) -> List (Html msg)
-trailingSlot items =
-    List.map (\item -> Html.span [ M3e.AppBar.trailingSlot ] [ item ]) items
-
-
-subtitleSlot : Maybe String -> List (Html msg)
-subtitleSlot subtitle =
-    case subtitle of
-        Nothing ->
-            []
-
-        Just s ->
-            [ Html.span [ M3e.AppBar.subtitleSlot ] [ Html.text s ] ]
 
 
 sizeAttr : Size -> Html.Attribute msg

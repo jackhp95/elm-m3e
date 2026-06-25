@@ -397,31 +397,29 @@ demoSections slug =
         "appbar" ->
             [ usage
                 [ sub "Basic"
-                    (AppBar.new "Inbox"
-                        |> AppBar.withLeading
-                            (IconButton.new { icon = Icon.material "menu", label = "Open menu", variant = IconButton.Standard }
-                                |> IconButton.view
-                            )
-                        |> AppBar.withTrailing
-                            [ IconButton.new { icon = Icon.material "search", label = "Search", variant = IconButton.Standard } |> IconButton.view
-                            , IconButton.new { icon = Icon.material "more_vert", label = "More", variant = IconButton.Standard } |> IconButton.view
-                            ]
+                    (AppBar.new
+                        |> AppBar.withTitle (Heading.title "Inbox")
+                        |> AppBar.withLeadingIconButton
+                            (IconButton.new { icon = Icon.material "menu", label = "Open menu", variant = IconButton.Standard })
+                        |> AppBar.withTrailingIconButton
+                            (IconButton.new { icon = Icon.material "search", label = "Search", variant = IconButton.Standard })
+                        |> AppBar.withTrailingIconButton
+                            (IconButton.new { icon = Icon.material "more_vert", label = "More", variant = IconButton.Standard })
                         |> AppBar.view
                     )
                 , sub "Sizes"
                     (div [ class "w-full space-y-3" ]
-                        [ AppBar.new "Small" |> AppBar.withSize AppBar.Small |> AppBar.view
-                        , AppBar.new "Medium" |> AppBar.withSize AppBar.Medium |> AppBar.view
-                        , AppBar.new "Large" |> AppBar.withSize AppBar.Large |> AppBar.view
+                        [ AppBar.new |> AppBar.withTitle (Heading.title "Small") |> AppBar.withSize AppBar.Small |> AppBar.view
+                        , AppBar.new |> AppBar.withTitle (Heading.title "Medium") |> AppBar.withSize AppBar.Medium |> AppBar.view
+                        , AppBar.new |> AppBar.withTitle (Heading.title "Large") |> AppBar.withSize AppBar.Large |> AppBar.view
                         ]
                     )
                 , sub "Centered title"
-                    (AppBar.new "Profile"
+                    (AppBar.new
+                        |> AppBar.withTitle (Heading.title "Profile")
                         |> AppBar.withCentered True
-                        |> AppBar.withLeading
-                            (IconButton.new { icon = Icon.material "arrow_back", label = "Back", variant = IconButton.Standard }
-                                |> IconButton.view
-                            )
+                        |> AppBar.withLeadingIconButton
+                            (IconButton.new { icon = Icon.material "arrow_back", label = "Back", variant = IconButton.Standard })
                         |> AppBar.view
                     )
                 ]

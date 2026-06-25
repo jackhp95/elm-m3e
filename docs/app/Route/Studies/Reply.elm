@@ -571,18 +571,21 @@ barItem mailbox =
 
 viewAppBar : Model -> Html Msg
 viewAppBar model =
-    AppBar.new (appBarTitle model)
+    AppBar.new
+        |> AppBar.withTitle (Heading.title (appBarTitle model))
         |> AppBar.withId "reply-appbar"
         |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeading (leadingControl model)
-        |> AppBar.withTrailing
-            [ -- Search occupies most of the trailing slot at md+; hidden on
-              -- compact (a search icon button replaces it).
-              div [ class "hidden md:block min-w-0 max-w-md flex-1" ]
-                [ searchBar model ]
-            , div [ class "md:hidden" ] [ compactSearchButton ]
-            , notificationsButton
-            , Avatar.initials "Jane Reed"
+        |> AppBar.withLeadingHtmlElementEscapeHatch Html.div [] [ leadingControl model ]
+        -- Search occupies most of the trailing slot at md+; hidden on
+        -- compact (a search icon button replaces it).
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div
+            [ class "hidden md:block min-w-0 max-w-md flex-1" ]
+            [ searchBar model ]
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [ class "md:hidden" ] [ compactSearchButton ]
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ notificationsButton ]
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div
+            []
+            [ Avatar.initials "Jane Reed"
                 |> Avatar.withId "reply-user-avatar"
                 |> Avatar.view
             ]

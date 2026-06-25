@@ -612,26 +612,25 @@ viewAppBar model =
                     text ""
                 ]
     in
-    AppBar.new "Shrine"
+    AppBar.new
+        |> AppBar.withTitle (Heading.title "Shrine")
         |> AppBar.withId "shrine-appbar"
         |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeading
+        |> AppBar.withLeadingIconButton
             (IconButton.new
                 { icon = Icon.material "menu"
                 , label = "Menu"
                 , variant = IconButton.Standard
                 }
-                |> IconButton.view
             )
-        |> AppBar.withTrailing
-            [ IconButton.new
+        |> AppBar.withTrailingIconButton
+            (IconButton.new
                 { icon = Icon.material "search"
                 , label = "Search"
                 , variant = IconButton.Standard
                 }
-                |> IconButton.view
-            , cartButton
-            ]
+            )
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ cartButton ]
         |> AppBar.view
 
 

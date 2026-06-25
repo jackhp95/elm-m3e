@@ -493,15 +493,13 @@ rail model =
 
 appBar : Model -> Html Msg
 appBar model =
-    AppBar.new "Rally"
-        |> AppBar.withLeading
-            (span [ class "px-2 text-primary" ]
-                [ Icon.view (Icon.material "savings" |> Icon.withFilled True) ]
-            )
-        |> AppBar.withTrailing
-            [ monthSelect model
-            , refreshButton model
-            ]
+    AppBar.new
+        |> AppBar.withTitle (Heading.title "Rally")
+        |> AppBar.withLeadingHtmlElementEscapeHatch Html.span
+            [ class "px-2 text-primary" ]
+            [ Icon.view (Icon.material "savings" |> Icon.withFilled True) ]
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ monthSelect model ]
+        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ refreshButton model ]
         |> AppBar.view
 
 

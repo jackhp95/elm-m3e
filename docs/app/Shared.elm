@@ -298,16 +298,15 @@ appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
-        [ AppBar.new "elm-m3e"
-            |> AppBar.withSubtitle "Material 3 Expressive for Elm"
+        [ AppBar.new
             |> AppBar.withId "docs-app-bar"
             |> AppBar.withSize AppBar.Small
-            |> AppBar.withLeading (menuButton model)
-            |> AppBar.withTrailing
-                [ schemeQuickToggle model
-                , settingsTrigger model
-                , githubLink
-                ]
+            |> AppBar.withTitle (Heading.title "elm-m3e")
+            |> AppBar.withSubtitle (Heading.label "Material 3 Expressive for Elm")
+            |> AppBar.withLeadingIconButton (menuButton model)
+            |> AppBar.withTrailingIconButton (schemeQuickToggle model)
+            |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [ class "relative" ] (settingsTriggerChildren model)
+            |> AppBar.withTrailingIconButton githubLink
             |> AppBar.view
         ]
 
@@ -323,7 +322,7 @@ canonical toggle silently no-ops here. The Elm round-trip is the right call
 until the shell layout puts the app bar inside the drawer.
 
 -}
-menuButton : Model -> Html Msg
+menuButton : Model -> IconButton.IconButton Msg
 menuButton _ =
     IconButton.new
         { icon = Icon.material "menu"
@@ -332,10 +331,9 @@ menuButton _ =
         }
         |> IconButton.withOnClick MenuClicked
         |> IconButton.withAttributes [ class "md:hidden" ]
-        |> IconButton.view
 
 
-githubLink : Html Msg
+githubLink : IconButton.IconButton Msg
 githubLink =
     IconButton.new
         { icon = Icon.material "code"
@@ -345,10 +343,9 @@ githubLink =
         |> IconButton.withHref "https://github.com/jackhp95/m3e-builder"
         |> IconButton.withTarget "_blank"
         |> IconButton.withRel "noreferrer noopener"
-        |> IconButton.view
 
 
-schemeQuickToggle : Model -> Html Msg
+schemeQuickToggle : Model -> IconButton.IconButton Msg
 schemeQuickToggle model =
     let
         ( next, iconName, label ) =
@@ -368,29 +365,32 @@ schemeQuickToggle model =
         , variant = IconButton.Standard
         }
         |> IconButton.withOnClick (SetScheme next)
-        |> IconButton.view
 
 
 
 -- SETTINGS POPOVER (anchored to a relative-positioned wrapper)
 
 
-settingsTrigger : Model -> Html Msg
-settingsTrigger model =
-    Html.div [ class "relative" ]
-        [ IconButton.new
-            { icon = Icon.material "tune"
-            , label = "Theme settings"
-            , variant = IconButton.Standard
-            }
-            |> IconButton.withOnClick ToggleSettings
-            |> IconButton.view
-        , if model.settingsOpen then
-            settingsPanel model
+{-| The trailing settings control is a `relative` wrapper (so the popover can
+anchor) holding the trigger icon button + the popover. It's projected into the
+app bar's trailing slot via `withTrailingHtmlElementEscapeHatch Html.div`, so
+these are just the wrapper's children.
+-}
+settingsTriggerChildren : Model -> List (Html Msg)
+settingsTriggerChildren model =
+    [ IconButton.new
+        { icon = Icon.material "tune"
+        , label = "Theme settings"
+        , variant = IconButton.Standard
+        }
+        |> IconButton.withOnClick ToggleSettings
+        |> IconButton.view
+    , if model.settingsOpen then
+        settingsPanel model
 
-          else
-            Html.text ""
-        ]
+      else
+        Html.text ""
+    ]
 
 
 settingsPanel : Model -> Html Msg
