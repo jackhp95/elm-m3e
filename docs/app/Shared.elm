@@ -338,7 +338,7 @@ settingsTrigger model =
 
 settingsPanel : Model -> Html Msg
 settingsPanel model =
-    Html.div [ class "absolute right-0 top-12 z-40 w-72" ]
+    Html.div [ class "absolute left-2 right-2 top-12 z-40 sm:left-auto sm:right-0 sm:w-72" ]
         [ Card.new Card.Filled
             |> Card.withHeadline (Heading.title "Theme settings")
             |> Card.withBody (settingsBody model)
