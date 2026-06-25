@@ -616,13 +616,13 @@ demoSections slug =
         "chip" ->
             [ usage
                 [ sub "Assist"
-                    (Chip.assist { id = "demo-chip-assist", label = text "Assist", onClick = PagesMsg.noOp } |> Chip.view)
+                    (Chip.assist { id = "demo-chip-assist", label = "Assist", onClick = PagesMsg.noOp } |> Chip.view)
                 , sub "Suggestion"
-                    (Chip.suggestion { id = "demo-chip-suggestion", label = text "Suggestion", onClick = PagesMsg.noOp } |> Chip.view)
+                    (Chip.suggestion { id = "demo-chip-suggestion", label = "Suggestion", onClick = PagesMsg.noOp } |> Chip.view)
                 , sub "Filter"
-                    (Chip.filter { id = "demo-chip-filter", label = text "Filter", onToggle = PagesMsg.noOp } |> Chip.view)
+                    (Chip.filter { id = "demo-chip-filter", label = "Filter", onToggle = PagesMsg.noOp } |> Chip.view)
                 , sub "Input"
-                    (Chip.input { id = "demo-chip-input", label = text "Input", onRemove = PagesMsg.noOp } |> Chip.view)
+                    (Chip.input { id = "demo-chip-input", label = "Input", onRemove = PagesMsg.noOp } |> Chip.view)
                 ]
             ]
 

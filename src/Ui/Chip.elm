@@ -1,6 +1,7 @@
 module Ui.Chip exposing
     ( Chip, Filter, Input, Generic
     , assist, suggestion, filter, input
+    , assistEscapeHatchHtml, suggestionEscapeHatchHtml, filterEscapeHatchHtml, inputEscapeHatchHtml
     , withAttributes
     , withSelected, withDisabled, withElevated, withIcon, withHref
     , view
@@ -33,6 +34,7 @@ visual axis is outlined (default) vs [`withElevated`](#withElevated), per spec.
 
 @docs Chip, Filter, Input, Generic
 @docs assist, suggestion, filter, input
+@docs assistEscapeHatchHtml, suggestionEscapeHatchHtml, filterEscapeHatchHtml, inputEscapeHatchHtml
 
 
 # Host attributes
@@ -165,8 +167,15 @@ defaultChip id kind label =
 
 {-| A button-like assist chip.
 -}
-assist : { id : String, label : Html msg, onClick : msg } -> Chip Generic msg
+assist : { id : String, label : String, onClick : msg } -> Chip Generic msg
 assist { id, label, onClick } =
+    assistEscapeHatchHtml { id = id, label = Html.text label, onClick = onClick }
+
+
+{-| Escape hatch: `assist` with an arbitrary-`Html` label (e.g. icon + text).
+-}
+assistEscapeHatchHtml : { id : String, label : Html msg, onClick : msg } -> Chip Generic msg
+assistEscapeHatchHtml { id, label, onClick } =
     let
         base : ChipConfig msg
         base =
@@ -177,8 +186,15 @@ assist { id, label, onClick } =
 
 {-| A suggestion chip (a dynamically-generated action).
 -}
-suggestion : { id : String, label : Html msg, onClick : msg } -> Chip Generic msg
+suggestion : { id : String, label : String, onClick : msg } -> Chip Generic msg
 suggestion { id, label, onClick } =
+    suggestionEscapeHatchHtml { id = id, label = Html.text label, onClick = onClick }
+
+
+{-| Escape hatch: `suggestion` with an arbitrary-`Html` label.
+-}
+suggestionEscapeHatchHtml : { id : String, label : Html msg, onClick : msg } -> Chip Generic msg
+suggestionEscapeHatchHtml { id, label, onClick } =
     let
         base : ChipConfig msg
         base =
@@ -190,8 +206,15 @@ suggestion { id, label, onClick } =
 {-| A filter chip — a toggle. Pair with [`withSelected`](#withSelected) to drive
 the selected state.
 -}
-filter : { id : String, label : Html msg, onToggle : msg } -> Chip Filter msg
+filter : { id : String, label : String, onToggle : msg } -> Chip Filter msg
 filter { id, label, onToggle } =
+    filterEscapeHatchHtml { id = id, label = Html.text label, onToggle = onToggle }
+
+
+{-| Escape hatch: `filter` with an arbitrary-`Html` label.
+-}
+filterEscapeHatchHtml : { id : String, label : Html msg, onToggle : msg } -> Chip Filter msg
+filterEscapeHatchHtml { id, label, onToggle } =
     let
         base : ChipConfig msg
         base =
@@ -203,8 +226,15 @@ filter { id, label, onToggle } =
 {-| An input chip representing an entity. The trailing remove affordance is
 required per spec, so `onRemove` is a constructor argument.
 -}
-input : { id : String, label : Html msg, onRemove : msg } -> Chip Input msg
+input : { id : String, label : String, onRemove : msg } -> Chip Input msg
 input { id, label, onRemove } =
+    inputEscapeHatchHtml { id = id, label = Html.text label, onRemove = onRemove }
+
+
+{-| Escape hatch: `input` chip with an arbitrary-`Html` label.
+-}
+inputEscapeHatchHtml : { id : String, label : Html msg, onRemove : msg } -> Chip Input msg
+inputEscapeHatchHtml { id, label, onRemove } =
     let
         base : ChipConfig msg
         base =

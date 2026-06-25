@@ -685,7 +685,7 @@ viewControls model =
                     (\cat ->
                         Chip.filter
                             { id = "chip-" ++ categoryKey cat
-                            , label = text (categoryLabel cat)
+                            , label = categoryLabel cat
                             , onToggle = CategoryToggled cat
                             }
                             |> Chip.withSelected (List.member cat model.categories)
