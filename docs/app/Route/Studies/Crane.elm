@@ -326,7 +326,7 @@ view _ _ model =
 
 page : Model -> Html Msg
 page model =
-    div [ class "mx-auto max-w-5xl space-y-6" ]
+    div [ class "mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8" ]
         [ intro
         , craneApp model
         ]
@@ -359,7 +359,7 @@ craneApp model =
         |> Theme.view
             [ div [ class "overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface" ]
                 [ appHeader model
-                , div [ class "space-y-8 p-5 sm:p-6" ]
+                , div [ class "space-y-6 p-4 sm:space-y-8 sm:p-6" ]
                     [ searchForm model
                     , featuredCarousel model
                     , resultsSection model
@@ -371,12 +371,12 @@ craneApp model =
 
 appHeader : Model -> Html Msg
 appHeader model =
-    div [ class "flex flex-col gap-4 bg-surface-container-low p-5 sm:p-6" ]
-        [ div [ class "flex items-center justify-between gap-3" ]
-            [ div [ class "flex items-center gap-2" ]
+    div [ class "flex flex-col gap-3 bg-surface-container-low p-4 sm:gap-4 sm:p-6" ]
+        [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
+            [ div [ class "flex min-w-0 items-center gap-2" ]
                 [ Shape.new
                     |> Shape.withName M3e.Shape.Sunny
-                    |> Shape.withClass "size-8 bg-primary text-on-primary grid place-items-center"
+                    |> Shape.withClass "size-8 shrink-0 bg-primary text-on-primary grid place-items-center"
                     |> Shape.withContent [ Icon.view (Icon.material "explore") ]
                     |> Shape.view
                 , Heading.new
@@ -388,7 +388,8 @@ appHeader model =
                 ]
             , planTripMenu model
             ]
-        , categoryTabs model
+        , div [ class "-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" ]
+            [ categoryTabs model ]
         ]
 
 
@@ -439,7 +440,8 @@ searchForm model =
                 |> Heading.withLevel 3
                 |> Heading.withContent (text "Find your trip")
                 |> Heading.view
-            , tripTypeToggle model
+            , div [ class "-mx-1 overflow-x-auto px-1" ]
+                [ tripTypeToggle model ]
             ]
         , div [ class "grid gap-4 sm:grid-cols-2 lg:grid-cols-4" ]
             [ destinationField model
@@ -447,7 +449,7 @@ searchForm model =
             , departField model
             , returnOrTimeField model
             ]
-        , div [ class "flex items-center gap-3" ]
+        , div [ class "flex flex-wrap items-center gap-3" ]
             [ searchButton model
             , if model.searching then
                 searchingIndicator
@@ -492,9 +494,9 @@ destinationField model =
                     ]
                 ]
     in
-    div [ class "relative flex flex-col gap-1.5" ]
+    div [ class "relative flex min-w-0 flex-col gap-1.5" ]
         [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Where to" ]
-        , div [ class "flex items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2" ]
+        , div [ class "flex min-h-12 items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2.5" ]
             [ Icon.view (Icon.material "search")
             , Html.input
                 [ class "min-w-0 flex-1 bg-transparent text-body-large text-on-surface outline-none placeholder:text-on-surface-variant"
@@ -558,8 +560,14 @@ passengersField model =
 
 departField : Model -> Html Msg
 departField model =
-    div [ class "flex flex-col gap-1.5" ]
+    div [ class "flex min-w-0 flex-col gap-1.5" ]
         [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Depart" ]
+        , dateTrigger
+            { targetId = "crane-depart"
+            , label = "Depart"
+            , value = model.depart
+            , icon = "flight_takeoff"
+            }
         , DatePicker.new SetDepart
             |> DatePicker.withId "crane-depart"
             |> DatePicker.withLabel "Depart"
@@ -572,8 +580,14 @@ returnOrTimeField : Model -> Html Msg
 returnOrTimeField model =
     case model.tripType of
         RoundTrip ->
-            div [ class "flex flex-col gap-1.5" ]
+            div [ class "flex min-w-0 flex-col gap-1.5" ]
                 [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Return" ]
+                , dateTrigger
+                    { targetId = "crane-return"
+                    , label = "Return"
+                    , value = model.return
+                    , icon = "event"
+                    }
                 , DatePicker.new SetReturn
                     |> DatePicker.withId "crane-return"
                     |> DatePicker.withLabel "Return"
@@ -583,14 +597,40 @@ returnOrTimeField model =
                 ]
 
         OneWay ->
-            TimePicker.new
-                { label = "Preferred departure time"
-                , value = model.time
-                , onChange = SetTime
-                }
-                |> TimePicker.withId "crane-time"
-                |> TimePicker.withStep 300
-                |> TimePicker.view
+            div [ class "flex min-w-0 flex-col gap-1.5" ]
+                [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Departure time" ]
+                , TimePicker.new
+                    { label = "Preferred departure time"
+                    , value = model.time
+                    , onChange = SetTime
+                    }
+                    |> TimePicker.withId "crane-time"
+                    |> TimePicker.withStep 300
+                    |> TimePicker.view
+                ]
+
+
+{-| A visible, tappable trigger that opens the linked `m3e-datepicker` popover.
+
+The DatePicker primitive in this codebase renders the picker as a popover-only
+element that has no in-flow size of its own; on narrow viewports the field
+would otherwise look empty. This button gives the user a visible 48px-tall
+target that displays the current ISO value and opens the picker using the
+standard HTML popover invoker pattern (`popovertarget`).
+
+-}
+dateTrigger : { targetId : String, label : String, value : String, icon : String } -> Html Msg
+dateTrigger { targetId, label, value, icon } =
+    Html.button
+        [ class "flex min-h-12 w-full items-center gap-2 rounded-md-corner-medium border border-outline-variant bg-surface-container px-3 py-2 text-left text-body-large text-on-surface hover:bg-surface-container-high"
+        , attribute "type" "button"
+        , attribute "popovertarget" targetId
+        , attribute "aria-label" (label ++ " " ++ value)
+        ]
+        [ Icon.view (Icon.material icon)
+        , span [ class "min-w-0 flex-1 truncate" ] [ text value ]
+        , Icon.view (Icon.material "expand_more")
+        ]
 
 
 searchButton : Model -> Html Msg
@@ -638,7 +678,7 @@ featuredCarousel model =
             |> Heading.withLevel 3
             |> Heading.withContent (text "Featured destinations")
             |> Heading.view
-        , div [ class "flex gap-4 overflow-x-auto pb-2" ]
+        , div [ class "-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:gap-4 sm:px-0", attribute "aria-label" "Featured destinations carousel" ]
             (List.map (featuredSlide model) featured)
         ]
 
@@ -649,7 +689,7 @@ featuredSlide model d =
         favorited =
             Set.member d.id model.favorites
     in
-    div [ class "relative flex h-44 w-64 shrink-0 flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container" ]
+    div [ class "relative flex h-44 w-56 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container sm:w-64" ]
         [ div [ class "absolute -right-6 -top-6 opacity-60" ]
             [ Shape.new
                 |> Shape.withName d.shape
@@ -719,8 +759,8 @@ destinationCard model d =
                     |> Shape.withClass "size-20 bg-primary text-on-primary grid place-items-center"
                     |> Shape.withContent [ Icon.view (Icon.material (categoryIcon d.category)) ]
                     |> Shape.view
-                , div [ class "absolute left-2 top-2", attribute "id" (badgeAnchor d) ]
-                    [ span [ class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-small text-on-surface" ]
+                , div [ class "absolute left-2 top-2 flex items-center gap-1" ]
+                    [ span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-small text-on-surface" ]
                         [ text ("★ " ++ d.rating) ]
                     , Badge.label "Top rated"
                         |> Badge.withFor (badgeAnchor d)
