@@ -1,0 +1,55 @@
+module M3e.ShapeTest exposing (suite)
+
+import Cem.M3e.Shape
+import Expect
+import M3e.Node as Node
+import M3e.Renderable as Renderable
+import M3e.Shape as Shape
+import Test exposing (Test, describe, test)
+
+
+{-| Build a universally-typed content item via `fromNode` (the prototype exposes
+this; in the published package it lives in an unexposed Internal module).
+-}
+item : String -> Renderable.Renderable any msg
+item tag =
+    Renderable.fromNode (Node.element tag [] [])
+
+
+nodeWith : List (Shape.Option msg) -> List (Renderable.Renderable any msg) -> Node.Node msg
+nodeWith opts content =
+    Shape.view { content = content } opts |> Renderable.toNode
+
+
+suite : Test
+suite =
+    describe "M3e.Shape — view-style port"
+        [ test "renders <m3e-shape>" <|
+            \_ ->
+                nodeWith [] []
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-shape")
+        , test "no content → zero children" <|
+            \_ ->
+                nodeWith [] []
+                    |> Node.childrenOf
+                    |> List.length
+                    |> Expect.equal 0
+        , test "one content item → one child" <|
+            \_ ->
+                nodeWith [] [ item "img" ]
+                    |> Node.childrenOf
+                    |> List.length
+                    |> Expect.equal 1
+        , test "two content items → two children" <|
+            \_ ->
+                nodeWith [] [ item "img", item "span" ]
+                    |> Node.childrenOf
+                    |> List.length
+                    |> Expect.equal 2
+        , test "name option does not crash (rawAttr — not introspectable)" <|
+            \_ ->
+                nodeWith [ Shape.name Cem.M3e.Shape.Circle ] []
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-shape")
+        ]

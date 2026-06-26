@@ -1,0 +1,149 @@
+module M3e.Heading exposing
+    ( Variant(..), Size(..), Option
+    , view
+    , size, emphasized, level
+    )
+
+{-| `<m3e-heading>` — a Material 3 typescale heading.
+
+Spec (per docs/CONVENTIONS.md):
+
+  - Required:   { label : String, variant : Variant }
+                (label is visible text → it IS the accessible name; no separate
+                a11y field. Variant is mutually exclusive — required sum field.)
+  - Options:    size, emphasized, level
+  - Slots:      default slot ← text content (label as Node.text child)
+  - Properties: emphasized — via Node.property (Cem uses Html.Attributes.property)
+  - Attrs:      variant, size, level — via Node.rawAttr (Cem uses Html.Attributes.attribute)
+  - Escape:     none (leaf — content is fixed string)
+  - Tag:        heading
+
+The `level` option is clamped to the CEM-permitted range 1..6 (same as
+`Ui.Heading.clampLevel`).
+
+-}
+
+import Cem.M3e.Heading as Cem
+import Json.Encode as Encode
+import M3e.Node as Node
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+
+
+{-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
+-}
+type Variant
+    = Display
+    | Headline
+    | Title
+    | Label
+
+
+{-| Three-step size scale. Mirrors `m3e-heading` `size` enum. Default `Medium`.
+-}
+type Size
+    = Small
+    | Medium
+    | Large
+
+
+type Option msg
+    = SizeOpt Size
+    | Emphasized Bool
+    | Level Int
+
+
+{-| Set the heading size (`Small`, `Medium`, `Large`). Default `Medium`.
+-}
+size : Size -> Option msg
+size =
+    SizeOpt
+
+
+{-| Toggle the emphasized typescale (default `False`). When `True`, the heading
+uses M3's emphasized type tokens for extra prominence. Maps to the `emphasized`
+DOM property.
+-}
+emphasized : Bool -> Option msg
+emphasized =
+    Emphasized
+
+
+{-| Set the accessibility level (clamped to 1..6). Maps to the `level`
+attribute.
+-}
+level : Int -> Option msg
+level =
+    Level
+
+
+type alias Config =
+    { size : Maybe Size
+    , emphasized : Bool
+    , level : Maybe Int
+    }
+
+
+apply : Option msg -> Config -> Config
+apply opt c =
+    case opt of
+        SizeOpt s ->
+            { c | size = Just s }
+
+        Emphasized b ->
+            { c | emphasized = b }
+
+        Level l ->
+            { c | level = Just (clamp 1 6 l) }
+
+
+view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | heading : Supported } msg
+view req opts =
+    let
+        c =
+            List.foldl apply
+                { size = Nothing
+                , emphasized = False
+                , level = Nothing
+                }
+                opts
+    in
+    Renderable.fromNode
+        (Node.element "m3e-heading"
+            (List.filterMap identity
+                [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
+                , Maybe.map (\s -> Node.rawAttr (Cem.size (toCemSize s))) c.size
+                , if c.emphasized then Just (Node.property "emphasized" (Encode.bool True)) else Nothing
+                , Maybe.map (\l -> Node.rawAttr (Cem.level (String.fromInt l))) c.level
+                ]
+            )
+            [ Node.text req.label ]
+        )
+
+
+toCemVariant : Variant -> Cem.Variant
+toCemVariant v =
+    case v of
+        Display ->
+            Cem.Display
+
+        Headline ->
+            Cem.Headline
+
+        Title ->
+            Cem.Title
+
+        Label ->
+            Cem.Label
+
+
+toCemSize : Size -> Cem.Size
+toCemSize s =
+    case s of
+        Small ->
+            Cem.Small
+
+        Medium ->
+            Cem.Medium
+
+        Large ->
+            Cem.Large
