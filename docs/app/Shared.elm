@@ -242,15 +242,13 @@ view _ page model toMsg pageView =
             -- viewport; they already include their own m3e nav chrome, so
             -- skip the docs shell to avoid double-nav.
             --
-            -- The outer `px-4 py-6 sm:px-6 sm:py-8` frame is lifted here so
-            -- every study gets the same gutter and breathing room — no need
-            -- for each study to duplicate the same padding. Studies that
-            -- want full-bleed app chrome (Reply, Rally) still read fine,
-            -- because their internal rounded "app frame" is what hits the
-            -- gutter, not a flat wall of content.
+            -- Full-bleed: no outer gutter. These are app clones — their own
+            -- internal layout (app bars, frames, content padding) owns the
+            -- spacing, so the study content reaches the viewport edges like a
+            -- real app rather than sitting inside a docs gutter.
             [ themed
                 [ Html.div
-                    [ class "min-h-screen bg-surface px-4 py-6 text-on-surface sm:px-6 sm:py-8"
+                    [ class "min-h-screen bg-surface text-on-surface"
                     , attribute "dir" (directionAttr model.dir)
                     ]
                     pageView.body
