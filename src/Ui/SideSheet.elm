@@ -3,7 +3,7 @@ module Ui.SideSheet exposing
     , Side(..)
     , new
     , withAttributes
-    , withId, withBody, withActions, withSide, withModal
+    , withId, withBody, withActions, withSide, withModal, withContent
     , view
     )
 
@@ -18,9 +18,10 @@ viewport. It can be **modal** (overlays content with a scrim) or
 
 Note: m3e ships side-sheets via `<m3e-drawer-container>` rather than a
 dedicated `<m3e-side-sheet>`. This module renders the drawer with the
-appropriate side + mode attributes. The full host-layout
-DrawerContainer integration (split with main content) is a known v1
-gap; callers wrap their page composition themselves.
+appropriate side + mode attributes. Project your page's main content
+into the container with [`withContent`](#withContent) so the sheet
+sits beside (or overlays) it and the element manages the push/overlay
+and open/close transitions.
 
 
 # Open state is caller-owned
@@ -36,6 +37,7 @@ Same shape as `Ui.Dialog` / `Ui.BottomSheet`.
         }
         |> Ui.SideSheet.withSide Ui.SideSheet.End
         |> Ui.SideSheet.withBody filtersForm
+        |> Ui.SideSheet.withContent [ pageBody ]
         |> Ui.SideSheet.view
 
 
@@ -61,7 +63,7 @@ Same shape as `Ui.Dialog` / `Ui.BottomSheet`.
 
 # Modifiers
 
-@docs withId, withBody, withActions, withSide, withModal
+@docs withId, withBody, withActions, withSide, withModal, withContent
 
 
 # Render
@@ -103,6 +105,7 @@ type alias Config msg =
     , modal : Bool
     , body : Maybe (Html msg)
     , actions : List (Ui.Button.Button msg)
+    , content : List (Html msg)
     }
 
 
@@ -123,6 +126,7 @@ new c =
         , modal = True
         , body = Nothing
         , actions = []
+        , content = []
         }
 
 
@@ -178,6 +182,15 @@ withModal b (SideSheet cfg) =
     SideSheet { cfg | modal = b }
 
 
+{-| Project the host's main page content into the drawer container's default
+slot, so the sheet sits beside it (non-modal) or overlays it with a scrim
+(modal) and the element manages the layout + open/close transitions.
+-}
+withContent : List (Html msg) -> SideSheet msg -> SideSheet msg
+withContent content (SideSheet cfg) =
+    SideSheet { cfg | content = content }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -186,30 +199,29 @@ withModal b (SideSheet cfg) =
 -}
 view : SideSheet msg -> Html msg
 view (SideSheet cfg) =
-    if not cfg.open then
-        Html.text ""
+    -- Always render the container so the projected main content (default slot)
+    -- persists and the element animates open/close. `open` is a controlled
+    -- property on the configured side.
+    M3e.DrawerContainer.component
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , Just (openAttr cfg)
+                , Just (modeAttr cfg)
+                , Just (M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
+                ]
+        )
+        (panelElement cfg :: cfg.content)
 
-    else
-        M3e.DrawerContainer.component
-            (cfg.attributes
-                ++ List.filterMap identity
-                    [ Maybe.map Attr.id cfg.id
-                    , Just (sideAttr cfg)
-                    , Just (modeAttr cfg)
-                    , Just (M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
-                    ]
-            )
-            [ panelElement cfg ]
 
-
-sideAttr : Config msg -> Html.Attribute msg
-sideAttr cfg =
+openAttr : Config msg -> Html.Attribute msg
+openAttr cfg =
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.start True
+            M3e.DrawerContainer.start cfg.open
 
         End ->
-            M3e.DrawerContainer.end True
+            M3e.DrawerContainer.end cfg.open
 
 
 modeAttr : Config msg -> Html.Attribute msg

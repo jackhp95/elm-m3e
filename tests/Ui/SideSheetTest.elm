@@ -74,6 +74,26 @@ suite =
                         [ Selector.tag "m3e-drawer-container"
                         , Selector.attribute (Attr.attribute "end-mode" "over")
                         ]
+        , test "withContent projects main content into the container default slot" <|
+            \_ ->
+                Ui.SideSheet.new { open = True, onClose = () }
+                    |> Ui.SideSheet.withBody (Html.text "sheet body")
+                    |> Ui.SideSheet.withContent [ Html.main_ [] [ Html.text "page" ] ]
+                    |> Ui.SideSheet.view
+                    |> Query.fromHtml
+                    |> Query.find [ Selector.tag "main" ]
+                    |> Query.has [ Selector.text "page" ]
+        , test "still renders the container (with content) when closed" <|
+            \_ ->
+                Ui.SideSheet.new { open = False, onClose = () }
+                    |> Ui.SideSheet.withContent [ Html.main_ [] [ Html.text "page" ] ]
+                    |> Ui.SideSheet.view
+                    |> Query.fromHtml
+                    |> Expect.all
+                        [ Query.has [ Selector.tag "m3e-drawer-container" ]
+                        , Query.find [ Selector.tag "main" ]
+                            >> Query.has [ Selector.text "page" ]
+                        ]
         ]
 
 
