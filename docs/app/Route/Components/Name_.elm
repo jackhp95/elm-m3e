@@ -16,6 +16,9 @@ import Html exposing (Html, code, div, p, pre, section, text)
 import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
 import M3e.Shape
+import Markdown.Block as Block
+import Markdown.Parser
+import Markdown.Renderer
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -381,12 +384,97 @@ before highlighting. Everything else stays prose (`whitespace-pre-line\`), so
 -}
 prose : String -> String -> Html msg
 prose cls s =
-    div [ class cls ]
-        (s
-            |> String.split "\n\n"
-            |> List.filterMap classifyDocChunk
-            |> List.map renderDocBlock
-        )
+    div [ class cls ] (renderMarkdown s)
+
+
+{-| Render a doc-comment string as Markdown → HTML (inline code, reference
+links, emphasis, lists, indented/fenced code blocks all become real elements).
+Code blocks reuse the Elm `codeBlock` highlighter. Falls back to the plain
+paragraph/indent-code rendering if the Markdown parser rejects the input.
+-}
+renderMarkdown : String -> List (Html msg)
+renderMarkdown raw =
+    case Markdown.Parser.parse raw of
+        Ok blocks ->
+            case Markdown.Renderer.render docRenderer blocks of
+                Ok rendered ->
+                    rendered
+
+                Err _ ->
+                    fallbackProse raw
+
+        Err _ ->
+            fallbackProse raw
+
+
+fallbackProse : String -> List (Html msg)
+fallbackProse s =
+    s
+        |> String.split "\n\n"
+        |> List.filterMap classifyDocChunk
+        |> List.map renderDocBlock
+
+
+{-| Markdown renderer with M3 styling, built by overriding the default HTML
+renderer. Inline code gets the surface-container chip; links the primary color;
+code blocks the Elm syntax highlighter; lists and headings M3 typescale.
+-}
+docRenderer : Markdown.Renderer.Renderer (Html msg)
+docRenderer =
+    let
+        base : Markdown.Renderer.Renderer (Html msg)
+        base =
+            Markdown.Renderer.defaultHtmlRenderer
+    in
+    { base
+        | paragraph = p [ class "mt-3 first:mt-0" ]
+        , codeSpan =
+            \str ->
+                code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text str ]
+        , link =
+            \{ destination } children ->
+                Html.a
+                    [ Attr.href destination
+                    , class "text-primary underline underline-offset-2 hover:no-underline"
+                    ]
+                    children
+        , codeBlock =
+            \{ body } -> div [ class "mt-3 first:mt-0" ] [ codeBlock body ]
+        , unorderedList =
+            \items ->
+                Html.ul [ class "mt-3 first:mt-0 list-disc space-y-1 pl-5" ]
+                    (List.map
+                        (\(Block.ListItem _ kids) ->
+                            Html.li [ class "marker:text-on-surface-variant" ] kids
+                        )
+                        items
+                    )
+        , orderedList =
+            \startIndex items ->
+                Html.ol
+                    [ class "mt-3 first:mt-0 list-decimal space-y-1 pl-5"
+                    , Attr.start startIndex
+                    ]
+                    (List.map (Html.li [ class "marker:text-on-surface-variant" ]) items)
+        , heading =
+            \{ level, children } ->
+                let
+                    sizeClass : String
+                    sizeClass =
+                        case level of
+                            Block.H1 ->
+                                "text-title-lg"
+
+                            Block.H2 ->
+                                "text-title-md"
+
+                            _ ->
+                                "text-title-sm"
+                in
+                Html.div
+                    [ class ("mt-4 first:mt-0 font-medium text-on-surface " ++ sizeClass) ]
+                    children
+    }
 
 
 renderDocBlock : DocBlock -> Html msg
