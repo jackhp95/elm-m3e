@@ -20,6 +20,7 @@ import Html.Events
 import Json.Decode as Decode
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
+import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import Ui.AppBar as AppBar
@@ -129,7 +130,7 @@ init :
 init flags _ =
     ( { showMenu = False
       , viewportWidth = initialViewportWidth flags
-      , scheme = Theme.Light
+      , scheme = schemeFromFlags flags
       , seed = "#6750A4"
       , contrast = Theme.Standard
       , density = 0
@@ -155,6 +156,51 @@ initialViewportWidth flags =
             1024
 
 
+{-| The initial color scheme: the value persisted in `localStorage` (passed by
+`index.ts` as `flags.scheme`), else **Auto** — follow the OS light/dark setting.
+-}
+schemeFromFlags : Pages.Flags.Flags -> Theme.Scheme
+schemeFromFlags flags =
+    case flags of
+        Pages.Flags.BrowserFlags raw ->
+            Decode.decodeValue (Decode.field "scheme" Decode.string) raw
+                |> Result.toMaybe
+                |> Maybe.andThen schemeFromString
+                |> Maybe.withDefault Theme.Auto
+
+        Pages.Flags.PreRenderFlags ->
+            Theme.Auto
+
+
+schemeToString : Theme.Scheme -> String
+schemeToString scheme =
+    case scheme of
+        Theme.Auto ->
+            "auto"
+
+        Theme.Light ->
+            "light"
+
+        Theme.Dark ->
+            "dark"
+
+
+schemeFromString : String -> Maybe Theme.Scheme
+schemeFromString s =
+    case s of
+        "auto" ->
+            Just Theme.Auto
+
+        "light" ->
+            Just Theme.Light
+
+        "dark" ->
+            Just Theme.Dark
+
+        _ ->
+            Nothing
+
+
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
@@ -177,7 +223,9 @@ update msg model =
             ( { model | settingsOpen = not model.settingsOpen }, Effect.none )
 
         SetScheme scheme ->
-            ( { model | scheme = scheme }, Effect.none )
+            ( { model | scheme = scheme }
+            , Effect.fromCmd (Ports.storeScheme (schemeToString scheme))
+            )
 
         SetSeed seed ->
             ( { model | seed = seed }, Effect.none )
