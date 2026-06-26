@@ -578,6 +578,7 @@ target.
 scrimChangeDecoder : Side -> (Bool -> msg) -> Decode.Decoder msg
 scrimChangeDecoder side toMsg =
     let
+        propPath : List String
         propPath =
             case side of
                 Start ->

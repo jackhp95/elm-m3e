@@ -358,6 +358,7 @@ the label (which may collide — prefer `withId`).
 subscriptId : Config value msg -> String
 subscriptId cfg =
     let
+        base : String
         base =
             case cfg.id of
                 Just id ->

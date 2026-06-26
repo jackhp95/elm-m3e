@@ -289,15 +289,14 @@ checkboxElement : List (Attribute msg) -> Config msg -> Html msg
 checkboxElement extraAttrs cfg =
     M3e.Checkbox.component
         (extraAttrs
-            ++ List.filterMap identity
-                [ Just (Attr.id (controlId cfg))
-                , Just (M3e.Checkbox.checked (isChecked cfg.state))
-                , Just (M3e.Checkbox.indeterminate (isIndeterminate cfg.state))
-                , Just (M3e.Checkbox.disabled cfg.disabled)
-                , Just (M3e.Checkbox.required cfg.required)
-                , Just (Attr.attribute "aria-label" cfg.label)
-                , Just (M3e.Checkbox.onChange (changeDecoder cfg.onChange))
-                ]
+            ++ [ Attr.id (controlId cfg)
+               , M3e.Checkbox.checked (isChecked cfg.state)
+               , M3e.Checkbox.indeterminate (isIndeterminate cfg.state)
+               , M3e.Checkbox.disabled cfg.disabled
+               , M3e.Checkbox.required cfg.required
+               , Attr.attribute "aria-label" cfg.label
+               , M3e.Checkbox.onChange (changeDecoder cfg.onChange)
+               ]
         )
         []
 

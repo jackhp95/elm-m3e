@@ -280,13 +280,12 @@ groupElement : List (Attribute msg) -> Config value msg -> Html msg
 groupElement extraAttrs cfg =
     M3e.RadioGroup.component
         (extraAttrs
-            ++ List.filterMap identity
-                [ Just (Attr.id (controlId cfg))
-                , Just (M3e.RadioGroup.name (groupName cfg))
-                , Just (M3e.RadioGroup.disabled cfg.disabled)
-                , Just (M3e.RadioGroup.required cfg.required)
-                , Just (Attr.attribute "aria-label" cfg.label)
-                ]
+            ++ [ Attr.id (controlId cfg)
+               , M3e.RadioGroup.name (groupName cfg)
+               , M3e.RadioGroup.disabled cfg.disabled
+               , M3e.RadioGroup.required cfg.required
+               , Attr.attribute "aria-label" cfg.label
+               ]
         )
         (List.map (renderOption cfg) cfg.options)
 

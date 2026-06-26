@@ -444,7 +444,9 @@ viewStepPanel cfg ((Step s) as fullStep) =
 {-| The `<m3e-step-panel>` actions slot is `slot="actions"`. The generated
 `M3e.StepPanel.actionsSlot` binding emits `slot="actions-"` (a stray trailing
 dash from the CEM), which would mis-slot, so the correct value is written
-directly here.
+directly here. This raw slot is the one `NoUntypedSlot` suppression on record
+(`review/suppressed/`); it can be replaced with the typed helper once the
+upstream binding is fixed (jackhp95/m3e#1).
 -}
 panelActionsPart : List (Html msg) -> List (Html msg)
 panelActionsPart actions =
