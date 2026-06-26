@@ -32,7 +32,9 @@ export default defineConfig({
   webServer: {
     command: "npm start -- --port 1239",
     url: baseURL,
-    reuseExistingServer: true,
-    timeout: 180_000,
+    // Locally, reuse a dev server already on :1239 (instant). In CI, always
+    // start fresh and allow for a cold elm compile.
+    reuseExistingServer: !process.env.CI,
+    timeout: 300_000,
   },
 });

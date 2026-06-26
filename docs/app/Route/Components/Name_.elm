@@ -39,6 +39,7 @@ import Ui.Divider as Divider
 import Ui.ExtendedFab as ExtendedFab
 import Ui.Fab as Fab
 import Ui.FabMenu as FabMenu
+import Ui.Field as Field
 import Ui.Heading as Heading
 import Ui.Icon as Icon
 import Ui.IconButton as IconButton
@@ -66,6 +67,7 @@ import Ui.SplitPane as SplitPane
 import Ui.Stepper as Stepper
 import Ui.Switch as Switch
 import Ui.Tabs as Tabs
+import Ui.Text as Text
 import Ui.TextField as TextField
 import Ui.TextHighlight as TextHighlight
 import Ui.TimePicker as TimePicker
@@ -1524,6 +1526,49 @@ demoSections slug =
                             ]
                         , Tooltip.plain { anchorId = "tooltip-anchor-demo", label = "Refresh data" }
                             |> Tooltip.view
+                        ]
+                    )
+                ]
+            ]
+
+        "field" ->
+            [ usage
+                [ sub "Switch in a labeled field"
+                    (Field.new "Reduce motion"
+                        |> Field.withHint (text "Minimizes non-essential animation.")
+                        |> Field.view
+                            (Switch.new
+                                { label = "Reduce motion", checked = True, onChange = noOp }
+                                |> Switch.view
+                            )
+                    )
+                , sub "Outlined variant with error"
+                    (Field.new "Project name"
+                        |> Field.withVariant Field.Outlined
+                        |> Field.withError (text "Already taken.")
+                        |> Field.view
+                            (Html.input
+                                [ Attr.id "uif-project-name", Attr.value "atlas" ]
+                                []
+                            )
+                    )
+                ]
+            ]
+
+        "text" ->
+            [ usage
+                [ sub "Body roles"
+                    (div [ class "w-full space-y-2" ]
+                        [ Text.bodyLarge "Body large — default running text." |> Text.view
+                        , Text.bodyMedium "Body medium — secondary copy." |> Text.view
+                        , Text.bodySmall "Body small — captions and footnotes." |> Text.view
+                        ]
+                    )
+                , sub "Label roles"
+                    (div [ class "flex flex-wrap items-center gap-4" ]
+                        [ Text.labelLarge "Label large" |> Text.view
+                        , Text.labelMedium "Label medium" |> Text.view
+                        , Text.labelSmall "Label small" |> Text.view
                         ]
                     )
                 ]

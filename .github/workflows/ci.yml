@@ -85,3 +85,33 @@ jobs:
 
       - name: Full production build (elm-pages + Netlify adapter)
         run: cd docs && npm run build
+
+  harness:
+    name: Docs — Playwright runtime contract harness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Cache scratch docs-gen elm-stuff
+        uses: actions/cache@v4
+        with:
+          path: /tmp/m3e-docs-gen/elm-stuff
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/Ui/**/*.elm', 'vendor/elm-m3e/M3e/**/*.elm') }}
+
+      - name: Install docs deps
+        run: cd docs && npm ci
+
+      - name: Install Playwright Chromium
+        run: cd docs && npx playwright install --with-deps chromium
+
+      # The harness's webServer boots `npm start` on :1239 itself, then asserts
+      # the runtime contract (shadow DOM / DOM properties / a11y / interaction)
+      # that Test.Html structurally cannot — see tests/README.md.
+      - name: Run contract harness
+        run: cd docs && npm run test:browser
