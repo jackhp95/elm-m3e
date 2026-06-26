@@ -3,6 +3,8 @@ module Ui.Toolbar exposing
     , new
     , withAttributes
     , withId, withElevated, withVertical
+    , Shape(..), withShape
+    , Variant(..), withVariant
     , withIconButtons, withExtraContent
     , view
     )
@@ -54,6 +56,12 @@ The actions list is typed to `Ui.Button.Button msg` (any button kind).
 @docs withId, withElevated, withVertical
 
 
+# Appearance
+
+@docs Shape, withShape
+@docs Variant, withVariant
+
+
 # Extra content
 
 `new` takes labeled `Ui.Button`s. To add the common dense case —
@@ -87,11 +95,30 @@ type Toolbar msg
     = Toolbar (Config msg)
 
 
+{-| The shape of the toolbar, mirroring the `m3e-toolbar` `shape` enum.
+`Square` is the element default; `Rounded` softens the corners.
+-}
+type Shape
+    = Square
+    | Rounded
+
+
+{-| The appearance variant of the toolbar, mirroring the `m3e-toolbar`
+`variant` enum. `Standard` is the element default; `Vibrant` uses a more
+saturated container color.
+-}
+type Variant
+    = Standard
+    | Vibrant
+
+
 type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , elevated : Bool
     , vertical : Bool
+    , shape : Shape
+    , variant : Variant
     , actions : List (Ui.Button.Button msg)
     , iconButtons : List (Ui.IconButton.IconButton msg)
     , extraContent : List (Html msg)
@@ -111,6 +138,8 @@ new actions =
         , attributes = []
         , elevated = False
         , vertical = False
+        , shape = Square
+        , variant = Standard
         , actions = actions
         , iconButtons = []
         , extraContent = []
@@ -153,6 +182,22 @@ withVertical b (Toolbar cfg) =
     Toolbar { cfg | vertical = b }
 
 
+{-| Set the toolbar shape — the `shape` attribute (default `Square`).
+`Rounded` softens the toolbar's corners.
+-}
+withShape : Shape -> Toolbar msg -> Toolbar msg
+withShape shape (Toolbar cfg) =
+    Toolbar { cfg | shape = shape }
+
+
+{-| Set the appearance variant — the `variant` attribute (default
+`Standard`). `Vibrant` uses a more saturated container color.
+-}
+withVariant : Variant -> Toolbar msg -> Toolbar msg
+withVariant variant (Toolbar cfg) =
+    Toolbar { cfg | variant = variant }
+
+
 {-| Append icon buttons (in order) into the toolbar's default slot, after
 the buttons from `new`. Calls accumulate.
 -}
@@ -174,6 +219,26 @@ withExtraContent extraContent (Toolbar cfg) =
 -- RENDER -----------------------------------------------------------------
 
 
+toM3eShape : Shape -> M3e.Toolbar.Shape
+toM3eShape shape =
+    case shape of
+        Square ->
+            M3e.Toolbar.Square
+
+        Rounded ->
+            M3e.Toolbar.Rounded
+
+
+toM3eVariant : Variant -> M3e.Toolbar.Variant
+toM3eVariant variant =
+    case variant of
+        Standard ->
+            M3e.Toolbar.Standard
+
+        Vibrant ->
+            M3e.Toolbar.Vibrant
+
+
 {-| Render the toolbar.
 -}
 view : Toolbar msg -> Html msg
@@ -184,6 +249,8 @@ view (Toolbar cfg) =
                 [ Maybe.map Attr.id cfg.id
                 , Just (M3e.Toolbar.elevated cfg.elevated)
                 , Just (M3e.Toolbar.vertical cfg.vertical)
+                , Just (M3e.Toolbar.shape (toM3eShape cfg.shape))
+                , Just (M3e.Toolbar.variant (toM3eVariant cfg.variant))
                 ]
         )
         (List.concat

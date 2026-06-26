@@ -102,6 +102,26 @@ suite =
                         , Selector.attribute (Attr.attribute "for" "media-panel-1")
                         ]
                     |> Query.count (Expect.equal 1)
+        , test "withVariant emits the variant attribute" <|
+            \_ ->
+                tabs
+                    |> Ui.Tabs.withVariant Ui.Tabs.Primary
+                    |> Ui.Tabs.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-tabs"
+                        , Selector.attribute (Attr.attribute "variant" "primary")
+                        ]
+        , test "withHeaderPosition emits the header-position attribute" <|
+            \_ ->
+                tabs
+                    |> Ui.Tabs.withHeaderPosition Ui.Tabs.After
+                    |> Ui.Tabs.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-tabs"
+                        , Selector.attribute (Attr.attribute "header-position" "after")
+                        ]
         , test "withNextIcon / withPrevIcon emit the pagination icon slots" <|
             \_ ->
                 let

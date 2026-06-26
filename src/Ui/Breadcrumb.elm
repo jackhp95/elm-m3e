@@ -2,10 +2,12 @@ module Ui.Breadcrumb exposing
     ( Breadcrumb, new
     , withAttributes
     , withId
+    , withWrap
     , withSeparator
     , Item, item, link, current
     , itemEscapeHatchHtml, linkEscapeHatchHtml, currentEscapeHatchHtml
     , withItemIcon
+    , withItemTarget, withItemRel, withItemDownload, withItemDisabled
     , withItem, withItems
     , view
     )
@@ -45,6 +47,11 @@ Only typed `Item` values can go in. Each item is either an `item`/`link`
 @docs withId
 
 
+# Host layout
+
+@docs withWrap
+
+
 # Separator
 
 @docs withSeparator
@@ -55,6 +62,7 @@ Only typed `Item` values can go in. Each item is either an `item`/`link`
 @docs Item, item, link, current
 @docs itemEscapeHatchHtml, linkEscapeHatchHtml, currentEscapeHatchHtml
 @docs withItemIcon
+@docs withItemTarget, withItemRel, withItemDownload, withItemDisabled
 @docs withItem, withItems
 
 
@@ -85,12 +93,17 @@ type Item msg
         , href : Maybe String
         , isCurrent : Bool
         , icon : Maybe (Ui.Icon.Icon msg)
+        , target : Maybe String
+        , rel : Maybe String
+        , download : Maybe String
+        , disabled : Bool
         }
 
 
 type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
+    , wrap : Bool
     , separator : Maybe (Html msg)
     , items : List (Item msg)
     }
@@ -100,7 +113,7 @@ type alias Config msg =
 -}
 new : Breadcrumb msg
 new =
-    Breadcrumb { id = Nothing, attributes = [], separator = Nothing, items = [] }
+    Breadcrumb { id = Nothing, attributes = [], wrap = False, separator = Nothing, items = [] }
 
 
 {-| Append attributes to the underlying `<m3e-breadcrumb>` host element — the
@@ -119,6 +132,15 @@ withId id (Breadcrumb cfg) =
     Breadcrumb { cfg | id = Just id }
 
 
+{-| Allow crumbs to wrap onto a new line when the trail is too wide
+(`wrap` on `<m3e-breadcrumb>`, default false). By default the trail stays
+on a single line.
+-}
+withWrap : Bool -> Breadcrumb msg -> Breadcrumb msg
+withWrap flag (Breadcrumb cfg) =
+    Breadcrumb { cfg | wrap = flag }
+
+
 {-| Replace the glyph rendered between crumbs via the `separator` slot.
 Omit this to keep `m3e-breadcrumb`'s default separator.
 -}
@@ -132,7 +154,7 @@ that has no destination of its own.
 -}
 item : String -> Item msg
 item label =
-    Item { label = Html.text label, href = Nothing, isCurrent = False, icon = Nothing }
+    Item { label = Html.text label, href = Nothing, isCurrent = False, icon = Nothing, target = Nothing, rel = Nothing, download = Nothing, disabled = False }
 
 
 {-| A clickable trail item from plain text and its target `href` — the
@@ -140,7 +162,7 @@ usual crumb for an ancestor page.
 -}
 link : String -> String -> Item msg
 link label href =
-    Item { label = Html.text label, href = Just href, isCurrent = False, icon = Nothing }
+    Item { label = Html.text label, href = Just href, isCurrent = False, icon = Nothing, target = Nothing, rel = Nothing, download = Nothing, disabled = False }
 
 
 {-| The present location as the last crumb. Sets `current` on the
@@ -149,28 +171,28 @@ end of the path. Use exactly one per trail.
 -}
 current : String -> Item msg
 current label =
-    Item { label = Html.text label, href = Nothing, isCurrent = True, icon = Nothing }
+    Item { label = Html.text label, href = Nothing, isCurrent = True, icon = Nothing, target = Nothing, rel = Nothing, download = Nothing, disabled = False }
 
 
 {-| Escape hatch: `item` from arbitrary `Html` (e.g. an icon + text).
 -}
 itemEscapeHatchHtml : Html msg -> Item msg
 itemEscapeHatchHtml label =
-    Item { label = label, href = Nothing, isCurrent = False, icon = Nothing }
+    Item { label = label, href = Nothing, isCurrent = False, icon = Nothing, target = Nothing, rel = Nothing, download = Nothing, disabled = False }
 
 
 {-| Escape hatch: `link` from arbitrary `Html` and a target href.
 -}
 linkEscapeHatchHtml : Html msg -> String -> Item msg
 linkEscapeHatchHtml label href =
-    Item { label = label, href = Just href, isCurrent = False, icon = Nothing }
+    Item { label = label, href = Just href, isCurrent = False, icon = Nothing, target = Nothing, rel = Nothing, download = Nothing, disabled = False }
 
 
 {-| Escape hatch: `current` crumb from arbitrary `Html`.
 -}
 currentEscapeHatchHtml : Html msg -> Item msg
 currentEscapeHatchHtml label =
-    Item { label = label, href = Nothing, isCurrent = True, icon = Nothing }
+    Item { label = label, href = Nothing, isCurrent = True, icon = Nothing, target = Nothing, rel = Nothing, download = Nothing, disabled = False }
 
 
 {-| Attach a leading icon, rendered before the label in the item's `icon`
@@ -179,6 +201,43 @@ slot. Emitted `aria-hidden`, so keep the label meaningful on its own.
 withItemIcon : Ui.Icon.Icon msg -> Item msg -> Item msg
 withItemIcon icon (Item i) =
     Item { i | icon = Just icon }
+
+
+{-| Set the `target` of the crumb's internal link button (e.g. `"_blank"`),
+mirroring an anchor's `target` (m3e `target` on `<m3e-breadcrumb-item>`,
+default `""`). Only meaningful on a `link` crumb.
+-}
+withItemTarget : String -> Item msg -> Item msg
+withItemTarget target (Item i) =
+    Item { i | target = Just target }
+
+
+{-| Set the `rel` of the crumb's internal link button (e.g.
+`"noreferrer noopener"`), describing the relationship between the link
+target and the document (m3e `rel` on `<m3e-breadcrumb-item>`, default
+`""`). Only meaningful on a `link` crumb.
+-}
+withItemRel : String -> Item msg -> Item msg
+withItemRel rel (Item i) =
+    Item { i | rel = Just rel }
+
+
+{-| Request that the crumb's link target be downloaded rather than
+navigated to, optionally naming the file (m3e `download` on
+`<m3e-breadcrumb-item>`, default unset). An empty string requests the
+default filename. Only meaningful on a `link` crumb.
+-}
+withItemDownload : String -> Item msg -> Item msg
+withItemDownload download (Item i) =
+    Item { i | download = Just download }
+
+
+{-| Disable the crumb (`disabled` on `<m3e-breadcrumb-item>`, default
+false). The item renders but its internal button is inert.
+-}
+withItemDisabled : Bool -> Item msg -> Item msg
+withItemDisabled flag (Item i) =
+    Item { i | disabled = flag }
 
 
 {-| Append a single crumb.
@@ -200,7 +259,16 @@ withItems is (Breadcrumb cfg) =
 view : Breadcrumb msg -> Html msg
 view (Breadcrumb cfg) =
     M3e.Breadcrumb.component
-        (cfg.attributes ++ List.filterMap identity [ Maybe.map Attr.id cfg.id ])
+        (cfg.attributes
+            ++ List.filterMap identity
+                [ Maybe.map Attr.id cfg.id
+                , if cfg.wrap then
+                    Just (M3e.Breadcrumb.wrap True)
+
+                  else
+                    Nothing
+                ]
+        )
         (separatorChildren cfg.separator ++ List.map viewItem cfg.items)
 
 
@@ -219,6 +287,14 @@ viewItem (Item i) =
     M3e.BreadcrumbItem.component
         (List.filterMap identity
             [ Maybe.map M3e.BreadcrumbItem.href i.href
+            , Maybe.map M3e.BreadcrumbItem.target i.target
+            , Maybe.map M3e.BreadcrumbItem.rel i.rel
+            , Maybe.map M3e.BreadcrumbItem.download i.download
+            , if i.disabled then
+                Just (M3e.BreadcrumbItem.disabled True)
+
+              else
+                Nothing
             , if i.isCurrent then
                 Just (M3e.BreadcrumbItem.current M3e.BreadcrumbItem.True)
 

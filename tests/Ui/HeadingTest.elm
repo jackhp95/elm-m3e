@@ -9,6 +9,7 @@ import Expect
 import Fuzz
 import Html
 import Html.Attributes
+import M3e.Heading
 import Test exposing (Test, describe, fuzz, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -49,6 +50,13 @@ suite =
                         |> Query.fromHtml
                         |> Query.has [ Selector.attribute (htmlAttr "size" "large") ]
             ]
+        , test "withEmphasized True emits the emphasized property" <|
+            \_ ->
+                Ui.Heading.new
+                    |> Ui.Heading.withEmphasized True
+                    |> Ui.Heading.view
+                    |> Query.fromHtml
+                    |> Query.has [ Selector.attribute (M3e.Heading.emphasized True) ]
         , describe "withLevel clamps to the CEM 1..6 range"
             [ test "level below 1 clamps to 1" <|
                 \_ ->

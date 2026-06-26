@@ -3,8 +3,10 @@ module Ui.Stepper exposing
     , withAttributes
     , withId
     , Step, step, withStep, withSteps, withCompleted, withOptional
+    , withStepDisabled, withStepEditable
     , withStepIcon, withStepHint, withStepError, withStepActions
     , withVertical, withLinear
+    , HeaderPosition(..), withHeaderPosition
     , withDefaultSelected, withExplicitSelectedState
     , view
     )
@@ -46,6 +48,7 @@ Two ways to drive selection:
 # Steps
 
 @docs Step, step, withStep, withSteps, withCompleted, withOptional
+@docs withStepDisabled, withStepEditable
 
 
 # Step decoration & actions
@@ -61,6 +64,7 @@ navigation).
 # Layout
 
 @docs withVertical, withLinear
+@docs HeaderPosition, withHeaderPosition
 
 
 # Selection (hybrid)
@@ -101,12 +105,25 @@ type SelectionState msg
     | ExplicitSelection (String -> msg) String
 
 
+{-| Where the step header sits relative to its content, when the stepper is
+oriented horizontally (the m3e `header-position` attribute).
+
+  - **HeaderAbove** — the header runs above the panel content (the m3e default).
+  - **HeaderBelow** — the header runs below the panel content.
+
+-}
+type HeaderPosition
+    = HeaderAbove
+    | HeaderBelow
+
+
 type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , steps : List (Step msg)
     , vertical : Bool
     , linear : Bool
+    , headerPosition : Maybe HeaderPosition
     , selection : SelectionState msg
     }
 
@@ -117,6 +134,8 @@ type alias StepConfig msg =
     , content : List (Html msg)
     , completed : Bool
     , optional : Bool
+    , disabled : Bool
+    , editable : Bool
     , icon : Maybe (Ui.Icon.Icon msg)
     , hint : Maybe (Html msg)
     , error : Maybe (Html msg)
@@ -134,6 +153,7 @@ new =
         , steps = []
         , vertical = False
         , linear = False
+        , headerPosition = Nothing
         , selection = NoSelection
         }
 
@@ -169,6 +189,8 @@ step id label content =
         , content = content
         , completed = False
         , optional = False
+        , disabled = False
+        , editable = False
         , icon = Nothing
         , hint = Nothing
         , error = Nothing
@@ -189,6 +211,23 @@ withCompleted flag (Step cfg) =
 withOptional : Bool -> Step msg -> Step msg
 withOptional flag (Step cfg) =
     Step { cfg | optional = flag }
+
+
+{-| Disable a step (`disabled` on `<m3e-step>`, default false). A disabled
+step is shown but cannot be selected.
+-}
+withStepDisabled : Bool -> Step msg -> Step msg
+withStepDisabled flag (Step cfg) =
+    Step { cfg | disabled = flag }
+
+
+{-| Mark a step editable (`editable` on `<m3e-step>`, default false): once
+completed, users can return to it. A completed editable step swaps its
+indicator for the `edit-icon`.
+-}
+withStepEditable : Bool -> Step msg -> Step msg
+withStepEditable flag (Step cfg) =
+    Step { cfg | editable = flag }
 
 
 {-| Set a custom marker icon for the step, slotted into the `<m3e-step>` `icon`
@@ -256,6 +295,15 @@ withLinear flag (Stepper cfg) =
     Stepper { cfg | linear = flag }
 
 
+{-| Set where the step header sits relative to the panel content, when the
+stepper is oriented horizontally (the m3e `header-position` attribute).
+Defaults to `HeaderAbove`.
+-}
+withHeaderPosition : HeaderPosition -> Stepper msg -> Stepper msg
+withHeaderPosition position (Stepper cfg) =
+    Stepper { cfg | headerPosition = Just position }
+
+
 {-| Uncontrolled: set the initially selected step id; the DOM owns state
 thereafter.
 -}
@@ -290,6 +338,7 @@ view (Stepper cfg) =
 
                   else
                     Nothing
+                , Maybe.map (toHeaderPosition >> M3e.Stepper.headerPosition) cfg.headerPosition
                 ]
         )
         (List.map (viewStepHeader cfg) cfg.steps
@@ -316,6 +365,16 @@ viewStepHeader cfg ((Step s) as fullStep) =
              , Just (M3e.Step.for (panelDomId cfg fullStep))
              , Just (M3e.Step.completed s.completed)
              , Just (M3e.Step.optional s.optional)
+             , if s.disabled then
+                Just (M3e.Step.disabled True)
+
+               else
+                Nothing
+             , if s.editable then
+                Just (M3e.Step.editable True)
+
+               else
+                Nothing
              , if s.error == Nothing then
                 Nothing
 
@@ -395,3 +454,13 @@ panelActionsPart actions =
 
         _ ->
             [ Html.div [ Attr.attribute "slot" "actions" ] actions ]
+
+
+toHeaderPosition : HeaderPosition -> M3e.Stepper.HeaderPosition
+toHeaderPosition position =
+    case position of
+        HeaderAbove ->
+            M3e.Stepper.Above
+
+        HeaderBelow ->
+            M3e.Stepper.HeaderPositionBelow

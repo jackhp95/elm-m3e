@@ -5,6 +5,7 @@ module Ui.Heading exposing
     , withId, withContent
     , Variant(..), withVariant
     , Size(..), withSize
+    , withEmphasized
     , withLevel, clampLevel
     , view
     )
@@ -50,6 +51,11 @@ from the `m3e-heading` element (no baked classes). Refine further with the
 there is no shared cross-component size type.
 
 @docs Size, withSize
+
+
+# Emphasis
+
+@docs withEmphasized
 
 
 # Level
@@ -102,6 +108,7 @@ type alias Config msg =
     , content : Maybe (Html msg)
     , variant : Variant
     , size : Maybe Size
+    , emphasized : Bool
     , level : Maybe Int
     }
 
@@ -117,6 +124,7 @@ new =
         , content = Nothing
         , variant = Display
         , size = Nothing
+        , emphasized = False
         , level = Nothing
         }
 
@@ -186,6 +194,15 @@ withSize size (Heading cfg) =
     Heading { cfg | size = Just size }
 
 
+{-| Toggle the emphasized typescale — the `emphasized` attribute (default
+`False`). When `True`, the heading uses M3's emphasized type tokens for extra
+prominence.
+-}
+withEmphasized : Bool -> Heading msg -> Heading msg
+withEmphasized b (Heading cfg) =
+    Heading { cfg | emphasized = b }
+
+
 {-| Set the heading's accessibility level. The CEM constrains `m3e-heading`'s
 `level` to `1..6`, so the value is clamped into that range.
 -}
@@ -240,6 +257,7 @@ view (Heading cfg) =
                 [ Maybe.map Attr.id cfg.id
                 , Just (M3e.Heading.variant (toM3eHeadingVariant cfg.variant))
                 , Maybe.map (toM3eHeadingSize >> M3e.Heading.size) cfg.size
+                , Just (M3e.Heading.emphasized cfg.emphasized)
                 , Maybe.map (String.fromInt >> M3e.Heading.level) cfg.level
                 ]
         )

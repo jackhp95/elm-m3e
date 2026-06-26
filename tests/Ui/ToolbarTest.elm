@@ -56,4 +56,24 @@ suite =
                     |> Query.fromHtml
                     |> Query.findAll [ Selector.tag "hr" ]
                     |> Query.count (Expect.equal 1)
+        , test "withShape emits the shape attribute" <|
+            \_ ->
+                Ui.Toolbar.new buttons
+                    |> Ui.Toolbar.withShape Ui.Toolbar.Rounded
+                    |> Ui.Toolbar.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-toolbar"
+                        , Selector.attribute (Attr.attribute "shape" "rounded")
+                        ]
+        , test "withVariant emits the variant attribute" <|
+            \_ ->
+                Ui.Toolbar.new buttons
+                    |> Ui.Toolbar.withVariant Ui.Toolbar.Vibrant
+                    |> Ui.Toolbar.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-toolbar"
+                        , Selector.attribute (Attr.attribute "variant" "vibrant")
+                        ]
         ]

@@ -91,6 +91,34 @@ suite =
                     |> Query.find [ Selector.tag "m3e-step-panel" ]
                     |> Query.findAll [ Selector.attribute (Html.Attributes.attribute "slot" "actions") ]
                     |> Query.count (Expect.equal 1)
+        , test "withStepDisabled and withStepEditable emit on the m3e-step" <|
+            \_ ->
+                Ui.Stepper.new
+                    |> Ui.Stepper.withId "wizard"
+                    |> Ui.Stepper.withStep
+                        (Ui.Stepper.step "one" (Html.text "One") []
+                            |> Ui.Stepper.withStepDisabled True
+                            |> Ui.Stepper.withStepEditable True
+                        )
+                    |> Ui.Stepper.view
+                    |> Query.fromHtml
+                    |> Query.find [ Selector.tag "m3e-step" ]
+                    |> Query.has
+                        [ Selector.attribute (M3e.Step.disabled True)
+                        , Selector.attribute (M3e.Step.editable True)
+                        ]
+        , test "withHeaderPosition emits header-position on the m3e-stepper" <|
+            \_ ->
+                Ui.Stepper.new
+                    |> Ui.Stepper.withId "wizard"
+                    |> Ui.Stepper.withHeaderPosition Ui.Stepper.HeaderBelow
+                    |> Ui.Stepper.withStep (Ui.Stepper.step "one" (Html.text "One") [])
+                    |> Ui.Stepper.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-stepper"
+                        , Selector.attribute (Html.Attributes.attribute "header-position" "below")
+                        ]
         , test "step is associated to its panel by for/id" <|
             \_ ->
                 let

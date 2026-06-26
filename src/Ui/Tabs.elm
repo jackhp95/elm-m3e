@@ -3,6 +3,8 @@ module Ui.Tabs exposing
     , new, tab
     , withAttributes
     , withId, withStretch, withTabIcon, withTabBadge
+    , Variant(..), withVariant
+    , HeaderPosition(..), withHeaderPosition
     , withPanel
     , withNextIcon, withPrevIcon
     , view
@@ -36,6 +38,12 @@ section switching.
 # Modifiers
 
 @docs withId, withStretch, withTabIcon, withTabBadge
+
+
+# Appearance
+
+@docs Variant, withVariant
+@docs HeaderPosition, withHeaderPosition
 
 
 # Panels
@@ -82,10 +90,30 @@ type Tab value msg
     = Tab (TabConfig value msg)
 
 
+{-| The appearance variant of the tabs, mirroring the `m3e-tabs` `variant`
+enum. `Secondary` (the element default) is a subtler presentation with a
+thinner active indicator; `Primary` emphasizes the indicator and shape.
+-}
+type Variant
+    = Primary
+    | Secondary
+
+
+{-| Where the tab headers sit relative to their panels, mirroring the
+`m3e-tabs` `header-position` enum. `Before` (the element default) places the
+header strip ahead of the panels; `After` places it after.
+-}
+type HeaderPosition
+    = Before
+    | After
+
+
 type alias TabsConfig value msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , stretch : Bool
+    , variant : Variant
+    , headerPosition : HeaderPosition
     , tabs : List (Tab value msg)
     , selected : value
     , onChange : value -> msg
@@ -116,6 +144,8 @@ new c =
         { id = Nothing
         , attributes = []
         , stretch = False
+        , variant = Secondary
+        , headerPosition = Before
         , tabs = c.tabs
         , selected = c.selected
         , onChange = c.onChange
@@ -160,6 +190,24 @@ container evenly.
 withStretch : Bool -> Tabs value msg -> Tabs value msg
 withStretch b (Tabs cfg) =
     Tabs { cfg | stretch = b }
+
+
+{-| Set the appearance variant — the `variant` attribute (default
+`Secondary`, a subtler strip). `Primary` emphasizes the active indicator and
+shape styling for more prominent navigation.
+-}
+withVariant : Variant -> Tabs value msg -> Tabs value msg
+withVariant variant (Tabs cfg) =
+    Tabs { cfg | variant = variant }
+
+
+{-| Set where the header strip sits relative to its panels — the
+`header-position` attribute (default `Before`, the strip ahead of the panels).
+`After` places the strip after the panels.
+-}
+withHeaderPosition : HeaderPosition -> Tabs value msg -> Tabs value msg
+withHeaderPosition headerPosition (Tabs cfg) =
+    Tabs { cfg | headerPosition = headerPosition }
 
 
 {-| Add an icon before the tab's label — rides the `icon` slot of `m3e-tab`.
@@ -211,12 +259,34 @@ view (Tabs cfg) =
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , Just (M3e.Tabs.stretch cfg.stretch)
+                , Just (M3e.Tabs.variant (toM3eVariant cfg.variant))
+                , Just (M3e.Tabs.headerPosition (toM3eHeaderPosition cfg.headerPosition))
                 ]
         )
         (List.indexedMap (tabView cfg) cfg.tabs
             ++ List.filterMap identity (List.indexedMap (panelView cfg) cfg.tabs)
             ++ paginationIcons cfg
         )
+
+
+toM3eVariant : Variant -> M3e.Tabs.Variant
+toM3eVariant variant =
+    case variant of
+        Primary ->
+            M3e.Tabs.Primary
+
+        Secondary ->
+            M3e.Tabs.Secondary
+
+
+toM3eHeaderPosition : HeaderPosition -> M3e.Tabs.HeaderPosition
+toM3eHeaderPosition headerPosition =
+    case headerPosition of
+        Before ->
+            M3e.Tabs.Before
+
+        After ->
+            M3e.Tabs.After
 
 
 {-| The `for`/`id` value linking a tab to its panel

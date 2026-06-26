@@ -5,6 +5,9 @@ module Ui.Calendar exposing
     , withDate, withMinDate, withMaxDate
     , withRangeStart, withRangeEnd
     , StartView(..), withStartView, withStartAt
+    , withPreviousMonthLabel, withNextMonthLabel
+    , withPreviousYearLabel, withNextYearLabel
+    , withPreviousMultiYearLabel, withNextMultiYearLabel
     , withOnChange
     , withHeader
     , view
@@ -59,6 +62,13 @@ date's ISO string from the element's `change` event.
 @docs StartView, withStartView, withStartAt
 
 
+# Navigation labels
+
+@docs withPreviousMonthLabel, withNextMonthLabel
+@docs withPreviousYearLabel, withNextYearLabel
+@docs withPreviousMultiYearLabel, withNextMultiYearLabel
+
+
 # Events
 
 @docs withOnChange
@@ -111,6 +121,12 @@ type alias Config msg =
     , rangeEnd : Maybe String
     , startView : Maybe StartView
     , startAt : Maybe String
+    , previousMonthLabel : Maybe String
+    , nextMonthLabel : Maybe String
+    , previousYearLabel : Maybe String
+    , nextYearLabel : Maybe String
+    , previousMultiYearLabel : Maybe String
+    , nextMultiYearLabel : Maybe String
     , onChange : Maybe (String -> msg)
     , header : Maybe (Html msg)
     }
@@ -131,6 +147,12 @@ new =
         , rangeEnd = Nothing
         , startView = Nothing
         , startAt = Nothing
+        , previousMonthLabel = Nothing
+        , nextMonthLabel = Nothing
+        , previousYearLabel = Nothing
+        , nextYearLabel = Nothing
+        , previousMultiYearLabel = Nothing
+        , nextMultiYearLabel = Nothing
         , onChange = Nothing
         , header = Nothing
         }
@@ -207,6 +229,62 @@ withStartAt d (Calendar cfg) =
     Calendar { cfg | startAt = Just d }
 
 
+{-| Set the accessible label for the previous-month navigation button (the
+m3e `previous-month-label` attribute, default `"Previous month"`). Use to
+localise the calendar's screen-reader labels.
+-}
+withPreviousMonthLabel : String -> Calendar msg -> Calendar msg
+withPreviousMonthLabel label (Calendar cfg) =
+    Calendar { cfg | previousMonthLabel = Just label }
+
+
+{-| Set the accessible label for the next-month navigation button (the m3e
+`next-month-label` attribute, default `"Next month"`). Use to localise the
+calendar's screen-reader labels.
+-}
+withNextMonthLabel : String -> Calendar msg -> Calendar msg
+withNextMonthLabel label (Calendar cfg) =
+    Calendar { cfg | nextMonthLabel = Just label }
+
+
+{-| Set the accessible label for the previous-year navigation button (the
+m3e `previous-year-label` attribute, default `"Previous year"`). Use to
+localise the calendar's screen-reader labels.
+-}
+withPreviousYearLabel : String -> Calendar msg -> Calendar msg
+withPreviousYearLabel label (Calendar cfg) =
+    Calendar { cfg | previousYearLabel = Just label }
+
+
+{-| Set the accessible label for the next-year navigation button (the m3e
+`next-year-label` attribute, default `"Next year"`). Use to localise the
+calendar's screen-reader labels.
+-}
+withNextYearLabel : String -> Calendar msg -> Calendar msg
+withNextYearLabel label (Calendar cfg) =
+    Calendar { cfg | nextYearLabel = Just label }
+
+
+{-| Set the accessible label for the button that pages to the previous span
+of years in the multi-year view (the m3e `previous-multi-year-label`
+attribute, default `"Previous 24 years"`). Use to localise the calendar's
+screen-reader labels.
+-}
+withPreviousMultiYearLabel : String -> Calendar msg -> Calendar msg
+withPreviousMultiYearLabel label (Calendar cfg) =
+    Calendar { cfg | previousMultiYearLabel = Just label }
+
+
+{-| Set the accessible label for the button that pages to the next span of
+years in the multi-year view (the m3e `next-multi-year-label` attribute,
+default `"Next 24 years"`). Use to localise the calendar's screen-reader
+labels.
+-}
+withNextMultiYearLabel : String -> Calendar msg -> Calendar msg
+withNextMultiYearLabel label (Calendar cfg) =
+    Calendar { cfg | nextMultiYearLabel = Just label }
+
+
 {-| Handler called when the user selects a date. Receives the selected
 date as an ISO-8601 string from the element's `change` event.
 -}
@@ -238,6 +316,12 @@ view (Calendar cfg) =
                 , Maybe.map M3e.Calendar.rangeEnd cfg.rangeEnd
                 , Maybe.map (toStartView >> M3e.Calendar.startView) cfg.startView
                 , Maybe.map M3e.Calendar.startAt cfg.startAt
+                , Maybe.map M3e.Calendar.previousMonthLabel cfg.previousMonthLabel
+                , Maybe.map M3e.Calendar.nextMonthLabel cfg.nextMonthLabel
+                , Maybe.map M3e.Calendar.previousYearLabel cfg.previousYearLabel
+                , Maybe.map M3e.Calendar.nextYearLabel cfg.nextYearLabel
+                , Maybe.map M3e.Calendar.previousMultiYearLabel cfg.previousMultiYearLabel
+                , Maybe.map M3e.Calendar.nextMultiYearLabel cfg.nextMultiYearLabel
                 , Maybe.map changeListener cfg.onChange
                 ]
         )

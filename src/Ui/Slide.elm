@@ -1,7 +1,8 @@
 module Ui.Slide exposing
     ( Slide, new
     , withAttributes
-    , withId, withVertical, withDisabled
+    , withId, withVertical, withDisabled, withThreshold
+    , withNextIcon, withPrevIcon
     , withSlides
     , view
     )
@@ -31,7 +32,12 @@ an `M3e.SlideGroup`).
 
 # Modifiers
 
-@docs withId, withVertical, withDisabled
+@docs withId, withVertical, withDisabled, withThreshold
+
+
+# Navigation icons
+
+@docs withNextIcon, withPrevIcon
 
 
 # Slides
@@ -49,6 +55,7 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Slide
 import M3e.SlideGroup
+import Ui.Icon
 
 
 {-| The slide group opaque type. Build via `new`.
@@ -63,6 +70,9 @@ type alias Config msg =
     , slides : List (List (Html msg))
     , vertical : Bool
     , disabled : Bool
+    , threshold : Maybe Float
+    , nextIcon : Maybe (Ui.Icon.Icon msg)
+    , prevIcon : Maybe (Ui.Icon.Icon msg)
     }
 
 
@@ -70,7 +80,16 @@ type alias Config msg =
 -}
 new : Slide msg
 new =
-    Slide { id = Nothing, attributes = [], slides = [], vertical = False, disabled = False }
+    Slide
+        { id = Nothing
+        , attributes = []
+        , slides = []
+        , vertical = False
+        , disabled = False
+        , threshold = Nothing
+        , nextIcon = Nothing
+        , prevIcon = Nothing
+        }
 
 
 {-| Append attributes to the underlying `<m3e-slide-group>` host element — the
@@ -105,6 +124,31 @@ withDisabled flag (Slide cfg) =
     Slide { cfg | disabled = flag }
 
 
+{-| Set the scroll threshold, in pixels, at which the pagination controls
+begin to show (`threshold` on `<m3e-slide-group>`, default 0). Below the
+threshold the content fits and the buttons stay hidden.
+-}
+withThreshold : Float -> Slide msg -> Slide msg
+withThreshold px (Slide cfg) =
+    Slide { cfg | threshold = Just px }
+
+
+{-| Replace the glyph on the next-page button via the `next-icon` slot.
+Omit to keep `m3e-slide-group`'s default icon.
+-}
+withNextIcon : Ui.Icon.Icon msg -> Slide msg -> Slide msg
+withNextIcon icon (Slide cfg) =
+    Slide { cfg | nextIcon = Just icon }
+
+
+{-| Replace the glyph on the previous-page button via the `prev-icon` slot.
+Omit to keep `m3e-slide-group`'s default icon.
+-}
+withPrevIcon : Ui.Icon.Icon msg -> Slide msg -> Slide msg
+withPrevIcon icon (Slide cfg) =
+    Slide { cfg | prevIcon = Just icon }
+
+
 {-| Set the slides. Each entry is a list of Html children for one slide.
 -}
 withSlides : List (List (Html msg)) -> Slide msg -> Slide msg
@@ -122,9 +166,28 @@ view (Slide cfg) =
                 [ Maybe.map Attr.id cfg.id
                 , Just (M3e.SlideGroup.vertical cfg.vertical)
                 , Just (M3e.SlideGroup.disabled cfg.disabled)
+                , Maybe.map M3e.SlideGroup.threshold cfg.threshold
                 ]
         )
-        (List.map viewSlide cfg.slides)
+        (iconSlotChildren M3e.SlideGroup.prevIconSlot cfg.prevIcon
+            ++ iconSlotChildren M3e.SlideGroup.nextIconSlot cfg.nextIcon
+            ++ List.map viewSlide cfg.slides
+        )
+
+
+iconSlotChildren : Html.Attribute msg -> Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+iconSlotChildren slot icon =
+    case icon of
+        Nothing ->
+            []
+
+        Just i ->
+            [ Html.span
+                [ slot
+                , Attr.attribute "aria-hidden" "true"
+                ]
+                [ Ui.Icon.view i ]
+            ]
 
 
 viewSlide : List (Html msg) -> Html msg
