@@ -125,7 +125,7 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
-import M3e.Button
+import Cem.M3e.Button
 import Ui.Icon
 
 
@@ -366,7 +366,7 @@ withDownload download (Button cfg) =
 -}
 view : Button msg -> Html msg
 view (Button cfg) =
-    M3e.Button.component
+    Cem.M3e.Button.component
         (cfg.attributes
             ++ List.concat
                 [ [ variantAttr cfg.variant
@@ -393,7 +393,7 @@ leadingSlot icon =
             []
 
         Just i ->
-            [ slottedIcon M3e.Button.iconSlot i ]
+            [ slottedIcon Cem.M3e.Button.iconSlot i ]
 
 
 trailingSlot : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
@@ -403,7 +403,7 @@ trailingSlot icon =
             []
 
         Just i ->
-            [ slottedIcon M3e.Button.trailingIconSlot i ]
+            [ slottedIcon Cem.M3e.Button.trailingIconSlot i ]
 
 
 slottedIcon : Html.Attribute msg -> Ui.Icon.Icon msg -> Html msg
@@ -419,38 +419,38 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Elevated ->
-            M3e.Button.variant M3e.Button.Elevated
+            Cem.M3e.Button.variant Cem.M3e.Button.Elevated
 
         Filled ->
-            M3e.Button.variant M3e.Button.Filled
+            Cem.M3e.Button.variant Cem.M3e.Button.Filled
 
         Tonal ->
-            M3e.Button.variant M3e.Button.Tonal
+            Cem.M3e.Button.variant Cem.M3e.Button.Tonal
 
         Outlined ->
-            M3e.Button.variant M3e.Button.Outlined
+            Cem.M3e.Button.variant Cem.M3e.Button.Outlined
 
         Text ->
-            M3e.Button.variant M3e.Button.Text
+            Cem.M3e.Button.variant Cem.M3e.Button.Text
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         ExtraSmall ->
-            M3e.Button.size M3e.Button.ExtraSmall
+            Cem.M3e.Button.size Cem.M3e.Button.ExtraSmall
 
         Small ->
-            M3e.Button.size M3e.Button.Small
+            Cem.M3e.Button.size Cem.M3e.Button.Small
 
         Medium ->
-            M3e.Button.size M3e.Button.Medium
+            Cem.M3e.Button.size Cem.M3e.Button.Medium
 
         Large ->
-            M3e.Button.size M3e.Button.Large
+            Cem.M3e.Button.size Cem.M3e.Button.Large
 
         ExtraLarge ->
-            M3e.Button.size M3e.Button.ExtraLarge
+            Cem.M3e.Button.size Cem.M3e.Button.ExtraLarge
 
 
 shapeAttr : Maybe Shape -> List (Html.Attribute msg)
@@ -460,10 +460,10 @@ shapeAttr shape =
             []
 
         Just Round ->
-            [ M3e.Button.shape M3e.Button.Rounded ]
+            [ Cem.M3e.Button.shape Cem.M3e.Button.Rounded ]
 
         Just Square ->
-            [ M3e.Button.shape M3e.Button.Square ]
+            [ Cem.M3e.Button.shape Cem.M3e.Button.Square ]
 
 
 disabledAttrs : DisabledState -> List (Html.Attribute msg)
@@ -473,10 +473,10 @@ disabledAttrs d =
             []
 
         Disabled ->
-            [ M3e.Button.disabled True ]
+            [ Cem.M3e.Button.disabled True ]
 
         DisabledInteractive ->
-            [ M3e.Button.disabledInteractive True ]
+            [ Cem.M3e.Button.disabledInteractive True ]
 
 
 wiringAttrs : Config msg -> List (Html.Attribute msg)
@@ -489,21 +489,21 @@ wiringAttrs cfg =
             [ HtmlEvents.onClick msg ]
 
         Just (WireHref href) ->
-            M3e.Button.href href :: linkAttrs cfg
+            Cem.M3e.Button.href href :: linkAttrs cfg
 
         Just (WireToggle { selected, onChange }) ->
-            [ M3e.Button.toggle True
-            , M3e.Button.selected selected
-            , M3e.Button.onChange (toggleChangeDecoder onChange)
+            [ Cem.M3e.Button.toggle True
+            , Cem.M3e.Button.selected selected
+            , Cem.M3e.Button.onChange (toggleChangeDecoder onChange)
             ]
 
 
 linkAttrs : Config msg -> List (Html.Attribute msg)
 linkAttrs cfg =
     List.filterMap identity
-        [ Maybe.map M3e.Button.target cfg.target
-        , Maybe.map M3e.Button.rel cfg.rel
-        , Maybe.map M3e.Button.download cfg.download
+        [ Maybe.map Cem.M3e.Button.target cfg.target
+        , Maybe.map Cem.M3e.Button.rel cfg.rel
+        , Maybe.map Cem.M3e.Button.download cfg.download
         ]
 
 

@@ -17,9 +17,9 @@ Two explicit constructors pick the surface, and the phantom `kind`
 parameter makes each surface's modifiers type-checked rather than silently
 ignored:
 
-  - [`bar`](#bar) → `M3e.SearchBar`. Always-visible chrome. Accepts
+  - [`bar`](#bar) → `Cem.M3e.SearchBar`. Always-visible chrome. Accepts
     [`withClearable`](#withClearable); has no open state.
-  - [`results`](#results) → `M3e.SearchView` (bar + results panel rendered
+  - [`results`](#results) → `Cem.M3e.SearchView` (bar + results panel rendered
     via `Ui.List`). Accepts [`withDefaultOpen`](#withDefaultOpen) /
     [`withExplicitOpenState`](#withExplicitOpenState); has no clearable
     button (the input's native `x` clears the value).
@@ -38,7 +38,7 @@ caller-side wiring for the magnifying glass. `withQuery` wires the input's
     future `withResultPanel : Html msg` could land — kept narrow for now.
   - **Leading/trailing slot overrides aren't exposed.** The SearchBar
     auto-injects a Material `search` icon into the leading slot
-    (`M3e.SearchBar` itself doesn't render one). The SearchView
+    (`Cem.M3e.SearchBar` itself doesn't render one). The SearchView
     auto-renders its own search icon unless
     `hideSearchIcon` is set, so we skip the injection there. A future
     `withLeading` / `withTrailing` can land if callers need overrides.
@@ -87,8 +87,8 @@ import Html exposing (Attribute, Html, span)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
-import M3e.SearchBar
-import M3e.SearchView
+import Cem.M3e.SearchBar
+import Cem.M3e.SearchView
 import Ui.Icon
 import Ui.List
 
@@ -104,13 +104,13 @@ type Search kind msg
     = Search (Config msg)
 
 
-{-| Phantom tag for the [`bar`](#bar) surface (`M3e.SearchBar`).
+{-| Phantom tag for the [`bar`](#bar) surface (`Cem.M3e.SearchBar`).
 -}
 type Bar
     = Bar Never
 
 
-{-| Phantom tag for the [`results`](#results) surface (`M3e.SearchView`).
+{-| Phantom tag for the [`results`](#results) surface (`Cem.M3e.SearchView`).
 -}
 type Results
     = Results Never
@@ -283,11 +283,11 @@ view (Search cfg) =
 
 viewSearchBar : Config msg -> Html msg
 viewSearchBar cfg =
-    M3e.SearchBar.component
+    Cem.M3e.SearchBar.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.SearchBar.clearable cfg.clearable)
+                , Just (Cem.M3e.SearchBar.clearable cfg.clearable)
                 ]
         )
         [ defaultLeading, inputElement cfg ]
@@ -295,7 +295,7 @@ viewSearchBar cfg =
 
 defaultLeading : Html msg
 defaultLeading =
-    span [ M3e.SearchBar.leadingSlot ]
+    span [ Cem.M3e.SearchBar.leadingSlot ]
         [ Ui.Icon.view (Ui.Icon.material "search") ]
 
 
@@ -305,7 +305,7 @@ defaultLeading =
 
 viewSearchView : Config msg -> Html msg
 viewSearchView cfg =
-    M3e.SearchView.component
+    Cem.M3e.SearchView.component
         (cfg.attributes
             ++ List.filterMap identity
                 (Maybe.map Attr.id cfg.id
@@ -324,14 +324,14 @@ searchViewOpenAttrs state =
             []
 
         DefaultOpen True ->
-            [ Just (M3e.SearchView.open True) ]
+            [ Just (Cem.M3e.SearchView.open True) ]
 
         DefaultOpen False ->
             []
 
         ExplicitOpen onChange flag ->
-            [ Just (M3e.SearchView.open flag)
-            , Just (M3e.SearchView.onToggle (toggleDecoder onChange))
+            [ Just (Cem.M3e.SearchView.open flag)
+            , Just (Cem.M3e.SearchView.onToggle (toggleDecoder onChange))
             ]
 
 
@@ -360,7 +360,7 @@ inputElement : Config msg -> Html msg
 inputElement cfg =
     Html.input
         (List.filterMap identity
-            [ Just M3e.SearchView.inputSlot
+            [ Just Cem.M3e.SearchView.inputSlot
             , Just (Attr.type_ "search")
             , Maybe.map (Tuple.first >> Attr.value) cfg.query
             , Maybe.map (Tuple.second >> HtmlEvents.onInput) cfg.query

@@ -1,7 +1,7 @@
 module Ui.ShapeTest exposing (suite)
 
 import Html.Attributes
-import M3e.Shape
+import Cem.M3e.Shape
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -14,7 +14,7 @@ suite =
         [ test "withName projects the typed shape name onto the element" <|
             \_ ->
                 Ui.Shape.new
-                    |> Ui.Shape.withName M3e.Shape.Circle
+                    |> Ui.Shape.withName Cem.M3e.Shape.Circle
                     |> Ui.Shape.view
                     |> Query.fromHtml
                     |> Query.has

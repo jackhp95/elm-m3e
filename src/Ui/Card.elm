@@ -97,7 +97,7 @@ A richer card — media at the top, two-line title, one action:
 -}
 
 import Html exposing (Attribute, Html)
-import M3e.Card
+import Cem.M3e.Card
 import Ui.Button
 import Ui.Heading
 
@@ -290,7 +290,7 @@ pipeline.
 -}
 view : Card msg -> Html msg
 view (Card cfg) =
-    M3e.Card.component
+    Cem.M3e.Card.component
         (cfg.attributes ++ [ variantAttr cfg.variant ])
         (List.concat
             [ mediaSection cfg.media
@@ -312,7 +312,7 @@ mediaSection media =
             []
 
         Just m ->
-            [ Html.div [ M3e.Card.headerSlot ] [ m ] ]
+            [ Html.div [ Cem.M3e.Card.headerSlot ] [ m ] ]
 
 
 {-| The card's text block — headline, subhead, then body — all in the
@@ -336,7 +336,7 @@ contentSection cfg =
             []
 
         _ ->
-            [ Html.div [ M3e.Card.contentSlot ] parts ]
+            [ Html.div [ Cem.M3e.Card.contentSlot ] parts ]
 
 
 actionsSection : List (Ui.Button.Button msg) -> List (Html msg)
@@ -347,7 +347,7 @@ actionsSection actions =
 
         _ ->
             [ Html.div
-                [ M3e.Card.actionsSlot ]
+                [ Cem.M3e.Card.actionsSlot ]
                 (List.map Ui.Button.view actions)
             ]
 
@@ -359,7 +359,7 @@ footerSection footer =
             []
 
         Just f ->
-            [ Html.div [ M3e.Card.footerSlot ] [ f ] ]
+            [ Html.div [ Cem.M3e.Card.footerSlot ] [ f ] ]
 
 
 
@@ -370,10 +370,10 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Elevated ->
-            M3e.Card.variant M3e.Card.Elevated
+            Cem.M3e.Card.variant Cem.M3e.Card.Elevated
 
         Filled ->
-            M3e.Card.variant M3e.Card.Filled
+            Cem.M3e.Card.variant Cem.M3e.Card.Filled
 
         Outlined ->
-            M3e.Card.variant M3e.Card.Outlined
+            Cem.M3e.Card.variant Cem.M3e.Card.Outlined

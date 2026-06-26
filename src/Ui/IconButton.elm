@@ -129,7 +129,7 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
-import M3e.IconButton
+import Cem.M3e.IconButton
 import Ui.Icon
 
 
@@ -358,7 +358,7 @@ withExtraContent content (IconButton cfg) =
 -}
 view : IconButton msg -> Html msg
 view (IconButton cfg) =
-    M3e.IconButton.component
+    Cem.M3e.IconButton.component
         (cfg.attributes
             ++ List.concat
                 [ [ Attr.attribute "aria-label" cfg.label
@@ -400,48 +400,48 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Standard ->
-            M3e.IconButton.variant M3e.IconButton.Standard
+            Cem.M3e.IconButton.variant Cem.M3e.IconButton.Standard
 
         Filled ->
-            M3e.IconButton.variant M3e.IconButton.Filled
+            Cem.M3e.IconButton.variant Cem.M3e.IconButton.Filled
 
         Tonal ->
-            M3e.IconButton.variant M3e.IconButton.Tonal
+            Cem.M3e.IconButton.variant Cem.M3e.IconButton.Tonal
 
         Outlined ->
-            M3e.IconButton.variant M3e.IconButton.Outlined
+            Cem.M3e.IconButton.variant Cem.M3e.IconButton.Outlined
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         ExtraSmall ->
-            M3e.IconButton.size M3e.IconButton.ExtraSmall
+            Cem.M3e.IconButton.size Cem.M3e.IconButton.ExtraSmall
 
         Small ->
-            M3e.IconButton.size M3e.IconButton.Small
+            Cem.M3e.IconButton.size Cem.M3e.IconButton.Small
 
         Medium ->
-            M3e.IconButton.size M3e.IconButton.Medium
+            Cem.M3e.IconButton.size Cem.M3e.IconButton.Medium
 
         Large ->
-            M3e.IconButton.size M3e.IconButton.Large
+            Cem.M3e.IconButton.size Cem.M3e.IconButton.Large
 
         ExtraLarge ->
-            M3e.IconButton.size M3e.IconButton.ExtraLarge
+            Cem.M3e.IconButton.size Cem.M3e.IconButton.ExtraLarge
 
 
 widthAttr : Width -> Html.Attribute msg
 widthAttr w =
     case w of
         Narrow ->
-            M3e.IconButton.width M3e.IconButton.Narrow
+            Cem.M3e.IconButton.width Cem.M3e.IconButton.Narrow
 
         Default ->
-            M3e.IconButton.width M3e.IconButton.Default
+            Cem.M3e.IconButton.width Cem.M3e.IconButton.Default
 
         Wide ->
-            M3e.IconButton.width M3e.IconButton.Wide
+            Cem.M3e.IconButton.width Cem.M3e.IconButton.Wide
 
 
 shapeAttr : Maybe Shape -> List (Html.Attribute msg)
@@ -451,10 +451,10 @@ shapeAttr shape =
             []
 
         Just Round ->
-            [ M3e.IconButton.shape M3e.IconButton.Rounded ]
+            [ Cem.M3e.IconButton.shape Cem.M3e.IconButton.Rounded ]
 
         Just Square ->
-            [ M3e.IconButton.shape M3e.IconButton.Square ]
+            [ Cem.M3e.IconButton.shape Cem.M3e.IconButton.Square ]
 
 
 disabledAttrs : DisabledState -> List (Html.Attribute msg)
@@ -464,10 +464,10 @@ disabledAttrs d =
             []
 
         Disabled ->
-            [ M3e.IconButton.disabled True ]
+            [ Cem.M3e.IconButton.disabled True ]
 
         DisabledInteractive ->
-            [ M3e.IconButton.disabledInteractive True ]
+            [ Cem.M3e.IconButton.disabledInteractive True ]
 
 
 wiringAttrs : Config msg -> List (Html.Attribute msg)
@@ -480,17 +480,17 @@ wiringAttrs cfg =
             [ HtmlEvents.onClick msg ]
 
         Just (WireHref href) ->
-            M3e.IconButton.href href
+            Cem.M3e.IconButton.href href
                 :: List.filterMap identity
-                    [ Maybe.map M3e.IconButton.target cfg.anchorTarget
-                    , Maybe.map M3e.IconButton.rel cfg.anchorRel
-                    , Maybe.map M3e.IconButton.download cfg.anchorDownload
+                    [ Maybe.map Cem.M3e.IconButton.target cfg.anchorTarget
+                    , Maybe.map Cem.M3e.IconButton.rel cfg.anchorRel
+                    , Maybe.map Cem.M3e.IconButton.download cfg.anchorDownload
                     ]
 
         Just (WireToggle { selected, onChange }) ->
-            [ M3e.IconButton.toggle True
-            , M3e.IconButton.selected selected
-            , M3e.IconButton.onChange (toggleChangeDecoder onChange)
+            [ Cem.M3e.IconButton.toggle True
+            , Cem.M3e.IconButton.selected selected
+            , Cem.M3e.IconButton.onChange (toggleChangeDecoder onChange)
             ]
 
 

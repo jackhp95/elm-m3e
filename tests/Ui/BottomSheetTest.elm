@@ -3,7 +3,7 @@ module Ui.BottomSheetTest exposing (suite)
 import Expect
 import Html
 import Html.Attributes as Attr
-import M3e.BottomSheet
+import Cem.M3e.BottomSheet
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -22,7 +22,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-bottom-sheet"
-                        , Selector.attribute (M3e.BottomSheet.open True)
+                        , Selector.attribute (Cem.M3e.BottomSheet.open True)
                         ]
         , test "renders nothing when closed" <|
             \_ ->
@@ -116,7 +116,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-bottom-sheet"
-                        , Selector.attribute (M3e.BottomSheet.modal True)
+                        , Selector.attribute (Cem.M3e.BottomSheet.modal True)
                         ]
         ]
 

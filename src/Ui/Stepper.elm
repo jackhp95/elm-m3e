@@ -81,9 +81,9 @@ navigation).
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Step
-import M3e.StepPanel
-import M3e.Stepper
+import Cem.M3e.Step
+import Cem.M3e.StepPanel
+import Cem.M3e.Stepper
 import Ui.Icon
 
 
@@ -258,7 +258,7 @@ withStepError error (Step cfg) =
 {-| Set the step panel's actions bar — the prev/next/reset navigation region,
 slotted into the `<m3e-step-panel>` `actions` slot. Compose `Ui.Button`s
 wrapping `<m3e-stepper-previous>` / `<m3e-stepper-next>` / `<m3e-stepper-reset>`
-(see `M3e.StepperPrevious` / `M3e.StepperReset`) for stepper-driven navigation.
+(see `Cem.M3e.StepperPrevious` / `Cem.M3e.StepperReset`) for stepper-driven navigation.
 -}
 withStepActions : List (Html msg) -> Step msg -> Step msg
 withStepActions actions (Step cfg) =
@@ -324,21 +324,21 @@ withExplicitSelectedState onSelect stepId (Stepper cfg) =
 -}
 view : Stepper msg -> Html msg
 view (Stepper cfg) =
-    M3e.Stepper.component
+    Cem.M3e.Stepper.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , if cfg.vertical then
-                    Just (M3e.Stepper.orientation M3e.Stepper.Vertical)
+                    Just (Cem.M3e.Stepper.orientation Cem.M3e.Stepper.Vertical)
 
                   else
                     Nothing
                 , if cfg.linear then
-                    Just (M3e.Stepper.linear True)
+                    Just (Cem.M3e.Stepper.linear True)
 
                   else
                     Nothing
-                , Maybe.map (toHeaderPosition >> M3e.Stepper.headerPosition) cfg.headerPosition
+                , Maybe.map (toHeaderPosition >> Cem.M3e.Stepper.headerPosition) cfg.headerPosition
                 ]
         )
         (List.map (viewStepHeader cfg) cfg.steps
@@ -358,20 +358,20 @@ panelDomId cfg (Step s) =
 
 viewStepHeader : Config msg -> Step msg -> Html msg
 viewStepHeader cfg ((Step s) as fullStep) =
-    M3e.Step.component
+    Cem.M3e.Step.component
         (List.filterMap identity
-            ([ Just M3e.Stepper.stepSlot
+            ([ Just Cem.M3e.Stepper.stepSlot
              , Just (Attr.id (stepDomId cfg fullStep))
-             , Just (M3e.Step.for (panelDomId cfg fullStep))
-             , Just (M3e.Step.completed s.completed)
-             , Just (M3e.Step.optional s.optional)
+             , Just (Cem.M3e.Step.for (panelDomId cfg fullStep))
+             , Just (Cem.M3e.Step.completed s.completed)
+             , Just (Cem.M3e.Step.optional s.optional)
              , if s.disabled then
-                Just (M3e.Step.disabled True)
+                Just (Cem.M3e.Step.disabled True)
 
                else
                 Nothing
              , if s.editable then
-                Just (M3e.Step.editable True)
+                Just (Cem.M3e.Step.editable True)
 
                else
                 Nothing
@@ -379,7 +379,7 @@ viewStepHeader cfg ((Step s) as fullStep) =
                 Nothing
 
                else
-                Just (M3e.Step.invalid True)
+                Just (Cem.M3e.Step.invalid True)
              ]
                 ++ selectionAttrs cfg.selection s.id
             )
@@ -387,8 +387,8 @@ viewStepHeader cfg ((Step s) as fullStep) =
         (List.concat
             [ stepIconPart s.icon
             , [ s.label ]
-            , slotPart M3e.Step.hintSlot s.hint
-            , slotPart M3e.Step.errorSlot s.error
+            , slotPart Cem.M3e.Step.hintSlot s.hint
+            , slotPart Cem.M3e.Step.errorSlot s.error
             ]
         )
 
@@ -400,7 +400,7 @@ stepIconPart icon =
             []
 
         Just i ->
-            [ Html.span [ M3e.Step.iconSlot ] [ Ui.Icon.view i ] ]
+            [ Html.span [ Cem.M3e.Step.iconSlot ] [ Ui.Icon.view i ] ]
 
 
 slotPart : Html.Attribute msg -> Maybe (Html msg) -> List (Html msg)
@@ -421,28 +421,28 @@ selectionAttrs state stepId =
 
         DefaultSelection selectedId ->
             if selectedId == stepId then
-                [ Just (M3e.Step.selected True) ]
+                [ Just (Cem.M3e.Step.selected True) ]
 
             else
                 []
 
         ExplicitSelection onSelect selectedId ->
-            [ Just (M3e.Step.selected (selectedId == stepId))
-            , Just (M3e.Step.onClick (Decode.succeed (onSelect stepId)))
+            [ Just (Cem.M3e.Step.selected (selectedId == stepId))
+            , Just (Cem.M3e.Step.onClick (Decode.succeed (onSelect stepId)))
             ]
 
 
 viewStepPanel : Config msg -> Step msg -> Html msg
 viewStepPanel cfg ((Step s) as fullStep) =
-    M3e.StepPanel.component
-        [ M3e.Stepper.panelSlot
+    Cem.M3e.StepPanel.component
+        [ Cem.M3e.Stepper.panelSlot
         , Attr.id (panelDomId cfg fullStep)
         ]
         (s.content ++ panelActionsPart s.actions)
 
 
 {-| The `<m3e-step-panel>` actions slot is `slot="actions"`. The generated
-`M3e.StepPanel.actionsSlot` binding emits `slot="actions-"` (a stray trailing
+`Cem.M3e.StepPanel.actionsSlot` binding emits `slot="actions-"` (a stray trailing
 dash from the CEM), which would mis-slot, so the correct value is written
 directly here. This raw slot is the one `NoUntypedSlot` suppression on record
 (`review/suppressed/`); it can be replaced with the typed helper once the
@@ -458,11 +458,11 @@ panelActionsPart actions =
             [ Html.div [ Attr.attribute "slot" "actions" ] actions ]
 
 
-toHeaderPosition : HeaderPosition -> M3e.Stepper.HeaderPosition
+toHeaderPosition : HeaderPosition -> Cem.M3e.Stepper.HeaderPosition
 toHeaderPosition position =
     case position of
         HeaderAbove ->
-            M3e.Stepper.Above
+            Cem.M3e.Stepper.Above
 
         HeaderBelow ->
-            M3e.Stepper.HeaderPositionBelow
+            Cem.M3e.Stepper.HeaderPositionBelow

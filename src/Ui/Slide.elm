@@ -9,15 +9,15 @@ module Ui.Slide exposing
 
 {-| Typed builder for an M3 slide group — directional pagination controls
 for scrolling through overflowing content. The previous/next buttons surface
-only when the content overflows. Wraps `M3e.SlideGroup` and `M3e.Slide`;
+only when the content overflows. Wraps `Cem.M3e.SlideGroup` and `Cem.M3e.Slide`;
 each slide is plain `Html msg` content — no separate slide type needed.
 
 Reach for a slide group for directional content paging. To switch between
 peer views use tabs; to page through data use a paginator; for an ordered
 multi-step flow use `Ui.Stepper`.
 
-A single slide is degenerate but valid (renders one `M3e.Slide` inside
-an `M3e.SlideGroup`).
+A single slide is degenerate but valid (renders one `Cem.M3e.Slide` inside
+an `Cem.M3e.SlideGroup`).
 
 
 # Construction
@@ -53,8 +53,8 @@ an `M3e.SlideGroup`).
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.Slide
-import M3e.SlideGroup
+import Cem.M3e.Slide
+import Cem.M3e.SlideGroup
 import Ui.Icon
 
 
@@ -160,17 +160,17 @@ withSlides ss (Slide cfg) =
 -}
 view : Slide msg -> Html msg
 view (Slide cfg) =
-    M3e.SlideGroup.component
+    Cem.M3e.SlideGroup.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.SlideGroup.vertical cfg.vertical)
-                , Just (M3e.SlideGroup.disabled cfg.disabled)
-                , Maybe.map M3e.SlideGroup.threshold cfg.threshold
+                , Just (Cem.M3e.SlideGroup.vertical cfg.vertical)
+                , Just (Cem.M3e.SlideGroup.disabled cfg.disabled)
+                , Maybe.map Cem.M3e.SlideGroup.threshold cfg.threshold
                 ]
         )
-        (iconSlotChildren M3e.SlideGroup.prevIconSlot cfg.prevIcon
-            ++ iconSlotChildren M3e.SlideGroup.nextIconSlot cfg.nextIcon
+        (iconSlotChildren Cem.M3e.SlideGroup.prevIconSlot cfg.prevIcon
+            ++ iconSlotChildren Cem.M3e.SlideGroup.nextIconSlot cfg.nextIcon
             ++ List.map viewSlide cfg.slides
         )
 
@@ -192,4 +192,4 @@ iconSlotChildren slot icon =
 
 viewSlide : List (Html msg) -> Html msg
 viewSlide content =
-    M3e.Slide.component [] content
+    Cem.M3e.Slide.component [] content

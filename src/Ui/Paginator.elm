@@ -71,7 +71,7 @@ Two ways to drive page state:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Paginator
+import Cem.M3e.Paginator
 import Ui.Icon
 
 
@@ -226,24 +226,24 @@ withLastPageIcon icon (Paginator cfg) =
 -}
 view : Paginator msg -> Html msg
 view (Paginator cfg) =
-    M3e.Paginator.component
+    Cem.M3e.Paginator.component
         (cfg.attributes
             ++ List.filterMap identity
                 ([ Maybe.map Attr.id cfg.id
-                 , Just (M3e.Paginator.length (toFloat cfg.length))
-                 , Just (M3e.Paginator.showFirstLastButtons cfg.firstLast)
-                 , Just (M3e.Paginator.hidePageSize cfg.hidePageSize)
-                 , Just (M3e.Paginator.disabled cfg.disabled)
-                 , Maybe.map M3e.Paginator.pageSizes cfg.pageSizes
+                 , Just (Cem.M3e.Paginator.length (toFloat cfg.length))
+                 , Just (Cem.M3e.Paginator.showFirstLastButtons cfg.firstLast)
+                 , Just (Cem.M3e.Paginator.hidePageSize cfg.hidePageSize)
+                 , Just (Cem.M3e.Paginator.disabled cfg.disabled)
+                 , Maybe.map Cem.M3e.Paginator.pageSizes cfg.pageSizes
                  ]
                     ++ pageAttrs cfg.state
                 )
         )
         (List.filterMap identity
-            [ Maybe.map (slottedIcon M3e.Paginator.firstPageIconSlot) cfg.firstPageIcon
-            , Maybe.map (slottedIcon M3e.Paginator.previousPageIconSlot) cfg.previousPageIcon
-            , Maybe.map (slottedIcon M3e.Paginator.nextPageIconSlot) cfg.nextPageIcon
-            , Maybe.map (slottedIcon M3e.Paginator.lastPageIconSlot) cfg.lastPageIcon
+            [ Maybe.map (slottedIcon Cem.M3e.Paginator.firstPageIconSlot) cfg.firstPageIcon
+            , Maybe.map (slottedIcon Cem.M3e.Paginator.previousPageIconSlot) cfg.previousPageIcon
+            , Maybe.map (slottedIcon Cem.M3e.Paginator.nextPageIconSlot) cfg.nextPageIcon
+            , Maybe.map (slottedIcon Cem.M3e.Paginator.lastPageIconSlot) cfg.lastPageIcon
             ]
         )
 
@@ -264,12 +264,12 @@ pageAttrs state =
             []
 
         DefaultPage pageIndex ->
-            [ Just (M3e.Paginator.pageIndex (toFloat pageIndex)) ]
+            [ Just (Cem.M3e.Paginator.pageIndex (toFloat pageIndex)) ]
 
         ExplicitPage onPage pageIndex ->
-            [ Just (M3e.Paginator.pageIndex (toFloat pageIndex))
+            [ Just (Cem.M3e.Paginator.pageIndex (toFloat pageIndex))
             , Just
-                (M3e.Paginator.onPage
+                (Cem.M3e.Paginator.onPage
                     (Decode.at [ "detail", "pageIndex" ] Decode.int
                         |> Decode.map onPage
                     )

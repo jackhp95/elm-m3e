@@ -122,8 +122,8 @@ group label and supporting/error text, compose it with [`Ui.Field`](Ui-Field):
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.Radio
-import M3e.RadioGroup
+import Cem.M3e.Radio
+import Cem.M3e.RadioGroup
 
 
 
@@ -278,12 +278,12 @@ groupName cfg =
 
 groupElement : List (Attribute msg) -> Config value msg -> Html msg
 groupElement extraAttrs cfg =
-    M3e.RadioGroup.component
+    Cem.M3e.RadioGroup.component
         (extraAttrs
             ++ [ Attr.id (controlId cfg)
-               , M3e.RadioGroup.name (groupName cfg)
-               , M3e.RadioGroup.disabled cfg.disabled
-               , M3e.RadioGroup.required cfg.required
+               , Cem.M3e.RadioGroup.name (groupName cfg)
+               , Cem.M3e.RadioGroup.disabled cfg.disabled
+               , Cem.M3e.RadioGroup.required cfg.required
                , Attr.attribute "aria-label" cfg.label
                ]
         )
@@ -292,10 +292,10 @@ groupElement extraAttrs cfg =
 
 renderOption : Config value msg -> Option value -> Html msg
 renderOption cfg (Option opt) =
-    M3e.Radio.component
-        [ M3e.Radio.name (groupName cfg)
-        , M3e.Radio.checked (cfg.selected == Just opt.value)
-        , M3e.Radio.disabled cfg.disabled
+    Cem.M3e.Radio.component
+        [ Cem.M3e.Radio.name (groupName cfg)
+        , Cem.M3e.Radio.checked (cfg.selected == Just opt.value)
+        , Cem.M3e.Radio.disabled cfg.disabled
         , HtmlEvents.onClick (cfg.onChange opt.value)
         ]
         [ Html.text opt.label ]

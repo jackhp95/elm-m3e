@@ -19,7 +19,7 @@ surface.
 Reach for this for date entry in a form. For an always-visible inline
 month/year surface, use [`Ui.Calendar`](Ui-Calendar) instead.
 
-This is a thin wrapper over what `M3e.Datepicker` actually exposes. The
+This is a thin wrapper over what `Cem.M3e.Datepicker` actually exposes. The
 selected value is **not** a typed attribute: it rides the element's
 `change` event, so `withOnChange` hands you the current value as an
 ISO-8601 (`"YYYY-MM-DD"`) string. Optional `min`/`max` bounds are passed
@@ -71,8 +71,8 @@ A date-range picker:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode
-import M3e.Common
-import M3e.Datepicker
+import Cem.M3e.Common
+import Cem.M3e.Datepicker
 
 
 
@@ -226,32 +226,32 @@ withDismissLabel s (DatePicker cfg) =
 -}
 view : DatePicker msg -> Html msg
 view (DatePicker cfg) =
-    M3e.Datepicker.component
+    Cem.M3e.Datepicker.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.Datepicker.variant (toVariant cfg.variant))
-                , Just (M3e.Datepicker.range cfg.range)
-                , Just (M3e.Datepicker.clearable cfg.clearable)
-                , Maybe.map M3e.Datepicker.minDate cfg.min
-                , Maybe.map M3e.Datepicker.maxDate cfg.max
-                , Maybe.map M3e.Datepicker.label cfg.label
-                , Maybe.map M3e.Datepicker.confirmLabel cfg.confirmLabel
-                , Maybe.map M3e.Datepicker.dismissLabel cfg.dismissLabel
-                , Just (M3e.Datepicker.onChange (Json.Decode.map cfg.onChange M3e.Common.targetValue))
+                , Just (Cem.M3e.Datepicker.variant (toVariant cfg.variant))
+                , Just (Cem.M3e.Datepicker.range cfg.range)
+                , Just (Cem.M3e.Datepicker.clearable cfg.clearable)
+                , Maybe.map Cem.M3e.Datepicker.minDate cfg.min
+                , Maybe.map Cem.M3e.Datepicker.maxDate cfg.max
+                , Maybe.map Cem.M3e.Datepicker.label cfg.label
+                , Maybe.map Cem.M3e.Datepicker.confirmLabel cfg.confirmLabel
+                , Maybe.map Cem.M3e.Datepicker.dismissLabel cfg.dismissLabel
+                , Just (Cem.M3e.Datepicker.onChange (Json.Decode.map cfg.onChange Cem.M3e.Common.targetValue))
                 ]
         )
         []
 
 
-toVariant : Variant -> M3e.Datepicker.Variant
+toVariant : Variant -> Cem.M3e.Datepicker.Variant
 toVariant v =
     case v of
         Docked ->
-            M3e.Datepicker.Docked
+            Cem.M3e.Datepicker.Docked
 
         Modal ->
-            M3e.Datepicker.Modal
+            Cem.M3e.Datepicker.Modal
 
         Auto ->
-            M3e.Datepicker.Auto
+            Cem.M3e.Datepicker.Auto

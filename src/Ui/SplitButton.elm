@@ -53,7 +53,7 @@ set of primary actions, prefer `Ui.FabMenu`.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.SplitButton
+import Cem.M3e.SplitButton
 import Ui.Icon
 
 
@@ -153,16 +153,16 @@ withTriggerLabel label (SplitButton cfg) =
 -}
 view : SplitButton msg -> Html msg
 view (SplitButton cfg) =
-    M3e.SplitButton.component
+    Cem.M3e.SplitButton.component
         (cfg.attributes ++ [ variantAttr cfg.variant ])
         [ Html.button
-            [ M3e.SplitButton.leadingButtonSlot
+            [ Cem.M3e.SplitButton.leadingButtonSlot
             , HtmlEvents.onClick cfg.onPrimaryClick
             , Attr.disabled cfg.disabled
             ]
             [ Html.text cfg.label ]
         , Html.button
-            [ M3e.SplitButton.trailingButtonSlot
+            [ Cem.M3e.SplitButton.trailingButtonSlot
             , HtmlEvents.onClick cfg.onTriggerClick
             , Attr.disabled cfg.disabled
             , Attr.attribute "aria-label" cfg.triggerLabel
@@ -175,13 +175,13 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Elevated ->
-            M3e.SplitButton.variant M3e.SplitButton.Elevated
+            Cem.M3e.SplitButton.variant Cem.M3e.SplitButton.Elevated
 
         Filled ->
-            M3e.SplitButton.variant M3e.SplitButton.Filled
+            Cem.M3e.SplitButton.variant Cem.M3e.SplitButton.Filled
 
         Tonal ->
-            M3e.SplitButton.variant M3e.SplitButton.Tonal
+            Cem.M3e.SplitButton.variant Cem.M3e.SplitButton.Tonal
 
         Outlined ->
-            M3e.SplitButton.variant M3e.SplitButton.Outlined
+            Cem.M3e.SplitButton.variant Cem.M3e.SplitButton.Outlined

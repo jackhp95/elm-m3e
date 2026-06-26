@@ -98,8 +98,8 @@ A rich tooltip with explanation and an action:
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.RichTooltip
-import M3e.Tooltip
+import Cem.M3e.RichTooltip
+import Cem.M3e.Tooltip
 import Ui.Button
 
 
@@ -258,25 +258,25 @@ view : Tooltip kind msg -> Html msg
 view (Tooltip cfg) =
     case cfg.kind of
         PlainKind label ->
-            M3e.Tooltip.component
+            Cem.M3e.Tooltip.component
                 (cfg.attributes
                     ++ List.filterMap identity
                         [ Maybe.map Attr.id cfg.id
-                        , Just (M3e.Tooltip.for cfg.anchorId)
+                        , Just (Cem.M3e.Tooltip.for cfg.anchorId)
                         , Maybe.map plainPositionAttr cfg.position
-                        , Maybe.map (M3e.Tooltip.hideDelay << toFloat) cfg.hideDelay
+                        , Maybe.map (Cem.M3e.Tooltip.hideDelay << toFloat) cfg.hideDelay
                         ]
                 )
                 [ Html.text label ]
 
         RichKind content ->
-            M3e.RichTooltip.component
+            Cem.M3e.RichTooltip.component
                 (cfg.attributes
                     ++ List.filterMap identity
                         [ Maybe.map Attr.id cfg.id
-                        , Just (M3e.RichTooltip.for cfg.anchorId)
+                        , Just (Cem.M3e.RichTooltip.for cfg.anchorId)
                         , Maybe.map richPositionAttr cfg.position
-                        , Maybe.map (M3e.RichTooltip.hideDelay << toFloat) cfg.hideDelay
+                        , Maybe.map (Cem.M3e.RichTooltip.hideDelay << toFloat) cfg.hideDelay
                         ]
                 )
                 (subheadElement cfg.subhead
@@ -288,32 +288,32 @@ plainPositionAttr : Position -> Html.Attribute msg
 plainPositionAttr p =
     case p of
         Above ->
-            M3e.Tooltip.position M3e.Tooltip.Above
+            Cem.M3e.Tooltip.position Cem.M3e.Tooltip.Above
 
         Below ->
-            M3e.Tooltip.position M3e.Tooltip.Below
+            Cem.M3e.Tooltip.position Cem.M3e.Tooltip.Below
 
         Before ->
-            M3e.Tooltip.position M3e.Tooltip.Before
+            Cem.M3e.Tooltip.position Cem.M3e.Tooltip.Before
 
         After ->
-            M3e.Tooltip.position M3e.Tooltip.After
+            Cem.M3e.Tooltip.position Cem.M3e.Tooltip.After
 
 
 richPositionAttr : Position -> Html.Attribute msg
 richPositionAttr p =
     case p of
         Above ->
-            M3e.RichTooltip.position M3e.RichTooltip.AboveAfter
+            Cem.M3e.RichTooltip.position Cem.M3e.RichTooltip.AboveAfter
 
         Below ->
-            M3e.RichTooltip.position M3e.RichTooltip.BelowBefore
+            Cem.M3e.RichTooltip.position Cem.M3e.RichTooltip.BelowBefore
 
         Before ->
-            M3e.RichTooltip.position M3e.RichTooltip.Before
+            Cem.M3e.RichTooltip.position Cem.M3e.RichTooltip.Before
 
         After ->
-            M3e.RichTooltip.position M3e.RichTooltip.After
+            Cem.M3e.RichTooltip.position Cem.M3e.RichTooltip.After
 
 
 subheadElement : Maybe (Html msg) -> List (Html msg)
@@ -323,7 +323,7 @@ subheadElement subhead =
             []
 
         Just content ->
-            [ Html.div [ M3e.RichTooltip.subheadSlot ] [ content ] ]
+            [ Html.div [ Cem.M3e.RichTooltip.subheadSlot ] [ content ] ]
 
 
 actionsElement :
@@ -335,6 +335,6 @@ actionsElement actions =
             []
 
         _ ->
-            [ Html.div [ M3e.RichTooltip.actionsSlot ]
+            [ Html.div [ Cem.M3e.RichTooltip.actionsSlot ]
                 (List.map Ui.Button.view actions)
             ]

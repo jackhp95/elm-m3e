@@ -29,7 +29,7 @@ suite =
                     |> Query.findAll [ Selector.tag "m3e-slide" ]
                     |> Query.count (Expect.equal 2)
         , test "withThreshold wires the threshold property without disturbing structure" <|
-            -- `threshold` is a float DOM *property* (M3e.SlideGroup.threshold);
+            -- `threshold` is a float DOM *property* (Cem.M3e.SlideGroup.threshold);
             -- Test.Html.Selector can only match string/bool facts, so the value
             -- itself is not assertable here. This exercises the code path and
             -- confirms the slide-group still renders its slides.

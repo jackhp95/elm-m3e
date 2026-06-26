@@ -12,7 +12,7 @@ suite =
     describe "Ui.Search"
         [ test "results withDefaultOpen True does NOT emit the raw open=\"true\" string attribute" <|
             \_ ->
-                -- The typed M3e.SearchView.open sets the `open` DOM *property*,
+                -- The typed Cem.M3e.SearchView.open sets the `open` DOM *property*,
                 -- which never renders as a literal attribute. The old raw
                 -- `Attr.attribute "open" "true"` did. Asserting the literal
                 -- attribute is absent pins the typed binding.

@@ -121,12 +121,12 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
-import M3e.Menu
-import M3e.MenuItem
-import M3e.MenuItemCheckbox
-import M3e.MenuItemGroup
-import M3e.MenuItemRadio
-import M3e.MenuTrigger
+import Cem.M3e.Menu
+import Cem.M3e.MenuItem
+import Cem.M3e.MenuItemCheckbox
+import Cem.M3e.MenuItemGroup
+import Cem.M3e.MenuItemRadio
+import Cem.M3e.MenuTrigger
 import Ui.Icon
 import Ui.IconButton
 
@@ -329,7 +329,7 @@ menu.
 -}
 triggerFor : String -> Html msg
 triggerFor menuId =
-    M3e.MenuTrigger.component [ M3e.MenuTrigger.for menuId ] []
+    Cem.M3e.MenuTrigger.component [ Cem.M3e.MenuTrigger.for menuId ] []
 
 
 {-| Render a convenience icon-button trigger (with the nested marker) alongside
@@ -461,11 +461,11 @@ view (Menu cfg) =
 
 menuElement : MenuConfig msg -> Maybe String -> Html msg
 menuElement cfg menuId =
-    M3e.Menu.component
+    Cem.M3e.Menu.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id menuId
-                , Just (M3e.Menu.submenu cfg.submenu)
+                , Just (Cem.M3e.Menu.submenu cfg.submenu)
                 , Maybe.map positionXAttr cfg.positionX
                 , Maybe.map positionYAttr cfg.positionY
                 , Maybe.map onToggleAttr cfg.onToggle
@@ -476,32 +476,32 @@ menuElement cfg menuId =
 
 positionXAttr : PositionX -> Attribute msg
 positionXAttr p =
-    M3e.Menu.positionX
+    Cem.M3e.Menu.positionX
         (case p of
             After ->
-                M3e.Menu.After
+                Cem.M3e.Menu.After
 
             Before ->
-                M3e.Menu.Before
+                Cem.M3e.Menu.Before
         )
 
 
 positionYAttr : PositionY -> Attribute msg
 positionYAttr p =
-    M3e.Menu.positionY
+    Cem.M3e.Menu.positionY
         (case p of
             Above ->
-                M3e.Menu.Above
+                Cem.M3e.Menu.Above
 
             Below ->
-                M3e.Menu.Below
+                Cem.M3e.Menu.Below
         )
 
 
 onToggleAttr : (Bool -> msg) -> Attribute msg
 onToggleAttr toMsg =
     -- m3e-menu dispatches a standard ToggleEvent; `newState` is "open"/"closed".
-    M3e.Menu.onToggle
+    Cem.M3e.Menu.onToggle
         (Decode.at [ "newState" ] Decode.string
             |> Decode.map (\s -> toMsg (s == "open"))
         )
@@ -530,33 +530,33 @@ itemView : Item msg -> Html msg
 itemView item_ =
     case item_ of
         Group g ->
-            M3e.MenuItemGroup.component []
+            Cem.M3e.MenuItemGroup.component []
                 (groupLabel g.label :: List.map itemView g.items)
 
         Item cfg ->
             case cfg.kind of
                 Standard onClick ->
-                    M3e.MenuItem.component
+                    Cem.M3e.MenuItem.component
                         (List.filterMap identity
-                            [ Maybe.map M3e.MenuItem.href cfg.href
-                            , Just (M3e.MenuItem.disabled cfg.disabled)
+                            [ Maybe.map Cem.M3e.MenuItem.href cfg.href
+                            , Just (Cem.M3e.MenuItem.disabled cfg.disabled)
                             , Just (HtmlEvents.onClick onClick)
                             ]
                         )
                         (itemChildren cfg)
 
                 Checkbox data ->
-                    M3e.MenuItemCheckbox.component
-                        [ M3e.MenuItemCheckbox.checked data.checked
-                        , M3e.MenuItemCheckbox.disabled cfg.disabled
+                    Cem.M3e.MenuItemCheckbox.component
+                        [ Cem.M3e.MenuItemCheckbox.checked data.checked
+                        , Cem.M3e.MenuItemCheckbox.disabled cfg.disabled
                         , HtmlEvents.onClick (data.onChange (not data.checked))
                         ]
                         (itemChildren cfg)
 
                 Radio data ->
-                    M3e.MenuItemRadio.component
-                        [ M3e.MenuItemRadio.checked data.selected
-                        , M3e.MenuItemRadio.disabled cfg.disabled
+                    Cem.M3e.MenuItemRadio.component
+                        [ Cem.M3e.MenuItemRadio.checked data.selected
+                        , Cem.M3e.MenuItemRadio.disabled cfg.disabled
                         , HtmlEvents.onClick data.onClick
                         ]
                         (itemChildren cfg)
@@ -586,7 +586,7 @@ iconSlot icon =
             []
 
         Just i ->
-            [ Html.span [ M3e.MenuItem.iconSlot ] [ Ui.Icon.view i ] ]
+            [ Html.span [ Cem.M3e.MenuItem.iconSlot ] [ Ui.Icon.view i ] ]
 
 
 trailingIconSlot : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
@@ -596,4 +596,4 @@ trailingIconSlot icon =
             []
 
         Just i ->
-            [ Html.span [ M3e.MenuItem.trailingIconSlot ] [ Ui.Icon.view i ] ]
+            [ Html.span [ Cem.M3e.MenuItem.trailingIconSlot ] [ Ui.Icon.view i ] ]

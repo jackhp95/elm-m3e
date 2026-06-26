@@ -82,7 +82,7 @@ A toggle in a labeled field (rare — usually a bare control is correct):
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.FormField
+import Cem.M3e.FormField
 
 
 
@@ -235,12 +235,12 @@ form-field's default slot.
 -}
 view : Html msg -> Field msg -> Html msg
 view control (Field cfg) =
-    M3e.FormField.component
+    Cem.M3e.FormField.component
         (cfg.attributes ++ structuralAttributes cfg)
         (List.concat
             [ [ labelElement cfg ]
-            , slottedMaybe M3e.FormField.prefixSlot cfg.prefix
-            , slottedMaybe M3e.FormField.suffixSlot cfg.suffix
+            , slottedMaybe Cem.M3e.FormField.prefixSlot cfg.prefix
+            , slottedMaybe Cem.M3e.FormField.suffixSlot cfg.suffix
             , [ control ]
             , subscriptElements cfg
             ]
@@ -250,28 +250,28 @@ view control (Field cfg) =
 structuralAttributes : Config msg -> List (Attribute msg)
 structuralAttributes cfg =
     List.filterMap identity
-        [ Just (M3e.FormField.variant (toFormFieldVariant cfg.variant))
+        [ Just (Cem.M3e.FormField.variant (toFormFieldVariant cfg.variant))
         , if cfg.hideRequiredMarker then
-            Just (M3e.FormField.hideRequiredMarker True)
+            Just (Cem.M3e.FormField.hideRequiredMarker True)
 
           else
             Nothing
         , if cfg.floatAlways then
-            Just (M3e.FormField.floatLabel M3e.FormField.FloatLabelAlways)
+            Just (Cem.M3e.FormField.floatLabel Cem.M3e.FormField.FloatLabelAlways)
 
           else
             Nothing
         ]
 
 
-toFormFieldVariant : Variant -> M3e.FormField.Variant
+toFormFieldVariant : Variant -> Cem.M3e.FormField.Variant
 toFormFieldVariant v =
     case v of
         Filled ->
-            M3e.FormField.Filled
+            Cem.M3e.FormField.Filled
 
         Outlined ->
-            M3e.FormField.Outlined
+            Cem.M3e.FormField.Outlined
 
 
 labelElement : Config msg -> Html msg
@@ -288,10 +288,10 @@ subscriptElements cfg =
     -- Error takes visual precedence over hint when both are set.
     case ( cfg.error, cfg.hint ) of
         ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
+            [ Html.span [ Cem.M3e.FormField.errorSlot ] [ err ] ]
 
         ( Nothing, Just hint ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ hint ] ]
+            [ Html.span [ Cem.M3e.FormField.hintSlot ] [ hint ] ]
 
         ( Nothing, Nothing ) ->
             []

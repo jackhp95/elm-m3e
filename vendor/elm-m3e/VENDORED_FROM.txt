@@ -1,1 +1,6 @@
 f1fefe8dbb8cb2dc2adfff403e6497c12ba4872c
+
+--- LOCAL RE-NAMESPACE (2026-06-26) ---
+Modules re-namespaced M3e.* -> Cem.M3e.* in this repo (ADR 0006), freeing M3e.* for
+the library layer. Upstream elm-cem still emits M3e.*; retargeting it to emit Cem.M3e.*
+(and to emit M3e.Node IR) is the deferred "bigger cem refactor".

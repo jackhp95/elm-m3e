@@ -74,8 +74,8 @@ Only typed `Item` values can go in. Each item is either an `item`/`link`
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.Breadcrumb
-import M3e.BreadcrumbItem
+import Cem.M3e.Breadcrumb
+import Cem.M3e.BreadcrumbItem
 import Ui.Icon
 
 
@@ -258,12 +258,12 @@ withItems is (Breadcrumb cfg) =
 -}
 view : Breadcrumb msg -> Html msg
 view (Breadcrumb cfg) =
-    M3e.Breadcrumb.component
+    Cem.M3e.Breadcrumb.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , if cfg.wrap then
-                    Just (M3e.Breadcrumb.wrap True)
+                    Just (Cem.M3e.Breadcrumb.wrap True)
 
                   else
                     Nothing
@@ -279,24 +279,24 @@ separatorChildren separator =
             []
 
         Just content ->
-            [ Html.span [ M3e.Breadcrumb.separatorSlot ] [ content ] ]
+            [ Html.span [ Cem.M3e.Breadcrumb.separatorSlot ] [ content ] ]
 
 
 viewItem : Item msg -> Html msg
 viewItem (Item i) =
-    M3e.BreadcrumbItem.component
+    Cem.M3e.BreadcrumbItem.component
         (List.filterMap identity
-            [ Maybe.map M3e.BreadcrumbItem.href i.href
-            , Maybe.map M3e.BreadcrumbItem.target i.target
-            , Maybe.map M3e.BreadcrumbItem.rel i.rel
-            , Maybe.map M3e.BreadcrumbItem.download i.download
+            [ Maybe.map Cem.M3e.BreadcrumbItem.href i.href
+            , Maybe.map Cem.M3e.BreadcrumbItem.target i.target
+            , Maybe.map Cem.M3e.BreadcrumbItem.rel i.rel
+            , Maybe.map Cem.M3e.BreadcrumbItem.download i.download
             , if i.disabled then
-                Just (M3e.BreadcrumbItem.disabled True)
+                Just (Cem.M3e.BreadcrumbItem.disabled True)
 
               else
                 Nothing
             , if i.isCurrent then
-                Just (M3e.BreadcrumbItem.current M3e.BreadcrumbItem.True)
+                Just (Cem.M3e.BreadcrumbItem.current Cem.M3e.BreadcrumbItem.True)
 
               else
                 Nothing
@@ -313,7 +313,7 @@ iconChildren icon =
 
         Just i ->
             [ Html.span
-                [ M3e.BreadcrumbItem.iconSlot
+                [ Cem.M3e.BreadcrumbItem.iconSlot
                 , Attr.attribute "aria-hidden" "true"
                 ]
                 [ Ui.Icon.view i ]

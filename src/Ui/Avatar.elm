@@ -6,9 +6,9 @@ module Ui.Avatar exposing
     , extractInitials
     )
 
-{-| Typed builder for M3 avatars. Wraps `M3e.Avatar`.
+{-| Typed builder for M3 avatars. Wraps `Cem.M3e.Avatar`.
 
-`M3e.Avatar` has no fallback glyph — it renders only its children — so an
+`Cem.M3e.Avatar` has no fallback glyph — it renders only its children — so an
 avatar with no content is just an empty colored circle. Content is therefore
 required, supplied by one of three explicit constructors matching the M3
 "image / icon / initials" framing.
@@ -45,7 +45,7 @@ required, supplied by one of three explicit constructors matching the M3
 import Html exposing (Attribute, Html, text)
 import Html.Attributes as Attr
 import Html.Extra
-import M3e.Avatar
+import Cem.M3e.Avatar
 import Ui.Icon
 
 
@@ -167,7 +167,7 @@ fallbackGlyph =
 -}
 view : Avatar msg -> Html msg
 view (Avatar cfg) =
-    M3e.Avatar.component
+    Cem.M3e.Avatar.component
         (cfg.attributes ++ List.filterMap identity [ Maybe.map Attr.id cfg.id ])
         [ Html.Extra.viewMaybe identity cfg.content ]
 

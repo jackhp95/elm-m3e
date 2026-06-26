@@ -58,7 +58,7 @@ for a FAB that expands into several related actions, see `Ui.FabMenu`.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.Fab
+import Cem.M3e.Fab
 import Ui.Icon
 
 
@@ -173,15 +173,15 @@ withHref href (Fab cfg) =
 -}
 view : Fab msg -> Html msg
 view (Fab cfg) =
-    M3e.Fab.component
+    Cem.M3e.Fab.component
         (List.concat
             [ cfg.attributes
             , [ Attr.attribute "aria-label" cfg.label
               , Attr.title cfg.label
               , variantAttr cfg.variant
               , sizeAttr cfg.size
-              , M3e.Fab.lowered cfg.lowered
-              , M3e.Fab.disabled cfg.disabled
+              , Cem.M3e.Fab.lowered cfg.lowered
+              , Cem.M3e.Fab.disabled cfg.disabled
               ]
             , wiringAttrs cfg.wiring
             ]
@@ -193,38 +193,38 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Primary ->
-            M3e.Fab.variant M3e.Fab.Primary
+            Cem.M3e.Fab.variant Cem.M3e.Fab.Primary
 
         PrimaryContainer ->
-            M3e.Fab.variant M3e.Fab.PrimaryContainer
+            Cem.M3e.Fab.variant Cem.M3e.Fab.PrimaryContainer
 
         Secondary ->
-            M3e.Fab.variant M3e.Fab.Secondary
+            Cem.M3e.Fab.variant Cem.M3e.Fab.Secondary
 
         SecondaryContainer ->
-            M3e.Fab.variant M3e.Fab.SecondaryContainer
+            Cem.M3e.Fab.variant Cem.M3e.Fab.SecondaryContainer
 
         Tertiary ->
-            M3e.Fab.variant M3e.Fab.Tertiary
+            Cem.M3e.Fab.variant Cem.M3e.Fab.Tertiary
 
         TertiaryContainer ->
-            M3e.Fab.variant M3e.Fab.TertiaryContainer
+            Cem.M3e.Fab.variant Cem.M3e.Fab.TertiaryContainer
 
         Surface ->
-            M3e.Fab.variant M3e.Fab.Surface
+            Cem.M3e.Fab.variant Cem.M3e.Fab.Surface
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         Small ->
-            M3e.Fab.size M3e.Fab.Small
+            Cem.M3e.Fab.size Cem.M3e.Fab.Small
 
         Medium ->
-            M3e.Fab.size M3e.Fab.Medium
+            Cem.M3e.Fab.size Cem.M3e.Fab.Medium
 
         Large ->
-            M3e.Fab.size M3e.Fab.Large
+            Cem.M3e.Fab.size Cem.M3e.Fab.Large
 
 
 wiringAttrs : Maybe (Wiring msg) -> List (Html.Attribute msg)
@@ -237,4 +237,4 @@ wiringAttrs maybeWiring =
             [ HtmlEvents.onClick msg ]
 
         Just (WireHref href) ->
-            [ M3e.Fab.href href ]
+            [ Cem.M3e.Fab.href href ]

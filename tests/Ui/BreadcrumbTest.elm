@@ -2,8 +2,8 @@ module Ui.BreadcrumbTest exposing (suite)
 
 import Expect
 import Html.Attributes as Attr
-import M3e.Breadcrumb
-import M3e.BreadcrumbItem
+import Cem.M3e.Breadcrumb
+import Cem.M3e.BreadcrumbItem
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -54,7 +54,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-breadcrumb"
-                        , Selector.attribute (M3e.Breadcrumb.wrap True)
+                        , Selector.attribute (Cem.M3e.Breadcrumb.wrap True)
                         ]
         , test "per-item link attrs emit target/rel/download/disabled" <|
             \_ ->
@@ -73,7 +73,7 @@ suite =
                         [ Query.has [ Selector.attribute (Attr.attribute "target" "_blank") ]
                         , Query.has [ Selector.attribute (Attr.attribute "rel" "noopener") ]
                         , Query.has [ Selector.attribute (Attr.attribute "download" "home.html") ]
-                        , Query.has [ Selector.attribute (M3e.BreadcrumbItem.disabled True) ]
+                        , Query.has [ Selector.attribute (Cem.M3e.BreadcrumbItem.disabled True) ]
                         ]
         , test "no icon/separator slots when unset" <|
             \_ ->

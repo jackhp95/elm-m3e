@@ -80,7 +80,7 @@ buttons (from `new`) ++ icon buttons ++ extra content.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.Toolbar
+import Cem.M3e.Toolbar
 import Ui.Button
 import Ui.IconButton
 
@@ -219,38 +219,38 @@ withExtraContent extraContent (Toolbar cfg) =
 -- RENDER -----------------------------------------------------------------
 
 
-toM3eShape : Shape -> M3e.Toolbar.Shape
+toM3eShape : Shape -> Cem.M3e.Toolbar.Shape
 toM3eShape shape =
     case shape of
         Square ->
-            M3e.Toolbar.Square
+            Cem.M3e.Toolbar.Square
 
         Rounded ->
-            M3e.Toolbar.Rounded
+            Cem.M3e.Toolbar.Rounded
 
 
-toM3eVariant : Variant -> M3e.Toolbar.Variant
+toM3eVariant : Variant -> Cem.M3e.Toolbar.Variant
 toM3eVariant variant =
     case variant of
         Standard ->
-            M3e.Toolbar.Standard
+            Cem.M3e.Toolbar.Standard
 
         Vibrant ->
-            M3e.Toolbar.Vibrant
+            Cem.M3e.Toolbar.Vibrant
 
 
 {-| Render the toolbar.
 -}
 view : Toolbar msg -> Html msg
 view (Toolbar cfg) =
-    M3e.Toolbar.component
+    Cem.M3e.Toolbar.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.Toolbar.elevated cfg.elevated)
-                , Just (M3e.Toolbar.vertical cfg.vertical)
-                , Just (M3e.Toolbar.shape (toM3eShape cfg.shape))
-                , Just (M3e.Toolbar.variant (toM3eVariant cfg.variant))
+                , Just (Cem.M3e.Toolbar.elevated cfg.elevated)
+                , Just (Cem.M3e.Toolbar.vertical cfg.vertical)
+                , Just (Cem.M3e.Toolbar.shape (toM3eShape cfg.shape))
+                , Just (Cem.M3e.Toolbar.variant (toM3eVariant cfg.variant))
                 ]
         )
         (List.concat

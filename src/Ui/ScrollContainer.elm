@@ -7,11 +7,11 @@ module Ui.ScrollContainer exposing
     )
 
 {-| Typed builder for `<m3e-scroll-container>`. Wraps
-`M3e.ScrollContainer`.
+`Cem.M3e.ScrollContainer`.
 
 **Utility element — outside the documented Material component set.**
 `m3e-scroll-container` is not one of the 53 documented Material 3
-components; it ships only as a vendor binding (`M3e.ScrollContainer`) as
+components; it ships only as a vendor binding (`Cem.M3e.ScrollContainer`) as
 a layout helper. It is kept here for parity with the vendor surface, but
 it does not correspond to a documented Material component, so it sits
 outside the "one module per documented component" map.
@@ -53,7 +53,7 @@ content when scrolled, providing a visual cue that more content exists.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.ScrollContainer
+import Cem.M3e.ScrollContainer
 
 
 {-| The scroll container opaque type. Build via `new`.
@@ -131,32 +131,32 @@ withDividers d (ScrollContainer cfg) =
 -}
 view : List (Html msg) -> ScrollContainer msg -> Html msg
 view children (ScrollContainer cfg) =
-    M3e.ScrollContainer.component
+    Cem.M3e.ScrollContainer.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , if cfg.thin then
-                    Just (M3e.ScrollContainer.thin True)
+                    Just (Cem.M3e.ScrollContainer.thin True)
 
                   else
                     Nothing
-                , Just (M3e.ScrollContainer.dividers (dividersToM3e cfg.dividers))
+                , Just (Cem.M3e.ScrollContainer.dividers (dividersToM3e cfg.dividers))
                 ]
         )
         children
 
 
-dividersToM3e : Dividers -> M3e.ScrollContainer.Dividers
+dividersToM3e : Dividers -> Cem.M3e.ScrollContainer.Dividers
 dividersToM3e d =
     case d of
         Both ->
-            M3e.ScrollContainer.AboveBelow
+            Cem.M3e.ScrollContainer.AboveBelow
 
         Top ->
-            M3e.ScrollContainer.Above
+            Cem.M3e.ScrollContainer.Above
 
         Bottom ->
-            M3e.ScrollContainer.Below
+            Cem.M3e.ScrollContainer.Below
 
         None ->
-            M3e.ScrollContainer.None
+            Cem.M3e.ScrollContainer.None

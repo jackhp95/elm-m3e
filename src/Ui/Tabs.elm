@@ -71,10 +71,10 @@ strip-only behaviour.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.Badge
-import M3e.Tab
-import M3e.TabPanel
-import M3e.Tabs
+import Cem.M3e.Badge
+import Cem.M3e.Tab
+import Cem.M3e.TabPanel
+import Cem.M3e.Tabs
 import Ui.Icon
 
 
@@ -254,13 +254,13 @@ withPrevIcon icon (Tabs cfg) =
 -}
 view : Tabs value msg -> Html msg
 view (Tabs cfg) =
-    M3e.Tabs.component
+    Cem.M3e.Tabs.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.Tabs.stretch cfg.stretch)
-                , Just (M3e.Tabs.variant (toM3eVariant cfg.variant))
-                , Just (M3e.Tabs.headerPosition (toM3eHeaderPosition cfg.headerPosition))
+                , Just (Cem.M3e.Tabs.stretch cfg.stretch)
+                , Just (Cem.M3e.Tabs.variant (toM3eVariant cfg.variant))
+                , Just (Cem.M3e.Tabs.headerPosition (toM3eHeaderPosition cfg.headerPosition))
                 ]
         )
         (List.indexedMap (tabView cfg) cfg.tabs
@@ -269,24 +269,24 @@ view (Tabs cfg) =
         )
 
 
-toM3eVariant : Variant -> M3e.Tabs.Variant
+toM3eVariant : Variant -> Cem.M3e.Tabs.Variant
 toM3eVariant variant =
     case variant of
         Primary ->
-            M3e.Tabs.Primary
+            Cem.M3e.Tabs.Primary
 
         Secondary ->
-            M3e.Tabs.Secondary
+            Cem.M3e.Tabs.Secondary
 
 
-toM3eHeaderPosition : HeaderPosition -> M3e.Tabs.HeaderPosition
+toM3eHeaderPosition : HeaderPosition -> Cem.M3e.Tabs.HeaderPosition
 toM3eHeaderPosition headerPosition =
     case headerPosition of
         Before ->
-            M3e.Tabs.Before
+            Cem.M3e.Tabs.Before
 
         After ->
-            M3e.Tabs.After
+            Cem.M3e.Tabs.After
 
 
 {-| The `for`/`id` value linking a tab to its panel
@@ -299,13 +299,13 @@ panelId cfg index =
 
 tabView : TabsConfig value msg -> Int -> Tab value msg -> Html msg
 tabView cfg index (Tab t) =
-    M3e.Tab.component
-        ([ M3e.Tab.selected (cfg.selected == t.value)
+    Cem.M3e.Tab.component
+        ([ Cem.M3e.Tab.selected (cfg.selected == t.value)
          , HtmlEvents.onClick (cfg.onChange t.value)
          ]
             ++ (case t.panel of
                     Just _ ->
-                        [ M3e.Tab.for (panelId cfg index) ]
+                        [ Cem.M3e.Tab.for (panelId cfg index) ]
 
                     Nothing ->
                         []
@@ -323,9 +323,9 @@ panelView : TabsConfig value msg -> Int -> Tab value msg -> Maybe (Html msg)
 panelView cfg index (Tab t) =
     Maybe.map
         (\panel ->
-            M3e.TabPanel.component
+            Cem.M3e.TabPanel.component
                 [ Attr.id (panelId cfg index)
-                , M3e.Tabs.panelSlot
+                , Cem.M3e.Tabs.panelSlot
                 ]
                 [ panel ]
         )
@@ -336,10 +336,10 @@ paginationIcons : TabsConfig value msg -> List (Html msg)
 paginationIcons cfg =
     List.filterMap identity
         [ Maybe.map
-            (\i -> Html.span [ M3e.Tabs.prevIconSlot ] [ Ui.Icon.view i ])
+            (\i -> Html.span [ Cem.M3e.Tabs.prevIconSlot ] [ Ui.Icon.view i ])
             cfg.prevIcon
         , Maybe.map
-            (\i -> Html.span [ M3e.Tabs.nextIconSlot ] [ Ui.Icon.view i ])
+            (\i -> Html.span [ Cem.M3e.Tabs.nextIconSlot ] [ Ui.Icon.view i ])
             cfg.nextIcon
         ]
 
@@ -351,7 +351,7 @@ iconPart icon =
             []
 
         Just i ->
-            [ Html.span [ M3e.Tab.iconSlot ] [ Ui.Icon.view i ] ]
+            [ Html.span [ Cem.M3e.Tab.iconSlot ] [ Ui.Icon.view i ] ]
 
 
 {-| There is no `badge` slot on `m3e-tab` (only `(default)` and `icon`);
@@ -365,4 +365,4 @@ badgePart badge =
             []
 
         Just b ->
-            [ M3e.Badge.component [] [ Html.text b ] ]
+            [ Cem.M3e.Badge.component [] [ Html.text b ] ]

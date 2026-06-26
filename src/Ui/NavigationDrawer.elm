@@ -110,9 +110,9 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import Json.Decode as Decode
-import M3e.DrawerContainer
-import M3e.NavMenu
-import M3e.NavMenuItem
+import Cem.M3e.DrawerContainer
+import Cem.M3e.NavMenu
+import Cem.M3e.NavMenuItem
 import Ui.Icon
 
 
@@ -451,16 +451,16 @@ withEntryChildren children (Entry cfg) =
 -}
 view : NavigationDrawer value msg -> Html msg
 view (NavigationDrawer cfg) =
-    M3e.DrawerContainer.component
+    Cem.M3e.DrawerContainer.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , sideAttr cfg
                 , Just (modeAttr cfg)
-                , Maybe.map (M3e.DrawerContainer.onChange << scrimChangeDecoder cfg.side) cfg.onScrimChange
+                , Maybe.map (Cem.M3e.DrawerContainer.onChange << scrimChangeDecoder cfg.side) cfg.onScrimChange
                 ]
         )
-        (M3e.NavMenu.component [ panelSlot cfg ]
+        (Cem.M3e.NavMenu.component [ panelSlot cfg ]
             (List.map (flatItemView cfg) cfg.items
                 ++ List.map entryView cfg.entries
             )
@@ -470,14 +470,14 @@ view (NavigationDrawer cfg) =
 
 flatItemView : DrawerConfig value msg -> Item value msg -> Html msg
 flatItemView cfg (Item it) =
-    M3e.NavMenuItem.component
+    Cem.M3e.NavMenuItem.component
         (List.filterMap identity
-            [ Just (M3e.NavMenuItem.selected (cfg.selected == Just it.value))
+            [ Just (Cem.M3e.NavMenuItem.selected (cfg.selected == Just it.value))
             , Maybe.map (\f -> HtmlEvents.onClick (f it.value)) cfg.onChange
             ]
         )
         (List.concat
-            [ [ Html.span [ M3e.NavMenuItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
+            [ [ Html.span [ Cem.M3e.NavMenuItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
             , labelText it.label
             , badgeText it.badge
             ]
@@ -486,11 +486,11 @@ flatItemView cfg (Item it) =
 
 entryView : Entry msg -> Html msg
 entryView (Entry e) =
-    M3e.NavMenuItem.component
+    Cem.M3e.NavMenuItem.component
         (List.filterMap identity
-            [ Just (M3e.NavMenuItem.selected e.selected)
+            [ Just (Cem.M3e.NavMenuItem.selected e.selected)
             , if e.open then
-                Just (M3e.NavMenuItem.open True)
+                Just (Cem.M3e.NavMenuItem.open True)
 
               else
                 Nothing
@@ -499,7 +499,7 @@ entryView (Entry e) =
         (List.concat
             [ case e.icon of
                 Just ic ->
-                    [ Html.span [ M3e.NavMenuItem.iconSlot ] [ Ui.Icon.view ic ] ]
+                    [ Html.span [ Cem.M3e.NavMenuItem.iconSlot ] [ Ui.Icon.view ic ] ]
 
                 Nothing ->
                     []
@@ -519,7 +519,7 @@ entryLabel e =
         Just href ->
             Html.a
                 (List.filterMap identity
-                    [ Just M3e.NavMenuItem.labelSlot
+                    [ Just Cem.M3e.NavMenuItem.labelSlot
                     , Just (Attr.href href)
                     , Maybe.map (Attr.attribute "target") e.target
                     ]
@@ -527,7 +527,7 @@ entryLabel e =
                 [ Html.text e.label ]
 
         Nothing ->
-            Html.span [ M3e.NavMenuItem.labelSlot ] [ Html.text e.label ]
+            Html.span [ Cem.M3e.NavMenuItem.labelSlot ] [ Html.text e.label ]
 
 
 labelText : Maybe String -> List (Html msg)
@@ -537,7 +537,7 @@ labelText label =
             []
 
         Just l ->
-            [ Html.span [ M3e.NavMenuItem.labelSlot ] [ Html.text l ] ]
+            [ Html.span [ Cem.M3e.NavMenuItem.labelSlot ] [ Html.text l ] ]
 
 
 badgeText : Maybe String -> List (Html msg)
@@ -547,12 +547,12 @@ badgeText badge =
             []
 
         Just b ->
-            [ Html.span [ M3e.NavMenuItem.badgeSlot ] [ Html.text b ] ]
+            [ Html.span [ Cem.M3e.NavMenuItem.badgeSlot ] [ Html.text b ] ]
 
 
 {-| Emit the `start` / `end` open state as an HTML **attribute** (presence =
 open, absent = closed). Bypasses the property-reflection path the binding's
-`M3e.DrawerContainer.start` uses — the drawer-container's CSS selectors key
+`Cem.M3e.DrawerContainer.start` uses — the drawer-container's CSS selectors key
 off `:host([start])`, so attribute presence is the reliable control surface
 across Elm re-renders.
 -}
@@ -597,10 +597,10 @@ panelSlot : DrawerConfig value msg -> Html.Attribute msg
 panelSlot cfg =
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.startSlot
+            Cem.M3e.DrawerContainer.startSlot
 
         End ->
-            M3e.DrawerContainer.endSlot
+            Cem.M3e.DrawerContainer.endSlot
 
 
 {-| Emit the panel's display mode via the typed binding (`auto`/`side`/`over`)
@@ -625,27 +625,27 @@ modeAttr cfg =
     in
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.startMode
+            Cem.M3e.DrawerContainer.startMode
                 (case effective of
                     ModeAuto ->
-                        M3e.DrawerContainer.StartModeAuto
+                        Cem.M3e.DrawerContainer.StartModeAuto
 
                     ModeOver ->
-                        M3e.DrawerContainer.StartModeOver
+                        Cem.M3e.DrawerContainer.StartModeOver
 
                     ModeSide ->
-                        M3e.DrawerContainer.StartModeSide
+                        Cem.M3e.DrawerContainer.StartModeSide
                 )
 
         End ->
-            M3e.DrawerContainer.endMode
+            Cem.M3e.DrawerContainer.endMode
                 (case effective of
                     ModeAuto ->
-                        M3e.DrawerContainer.EndModeAuto
+                        Cem.M3e.DrawerContainer.EndModeAuto
 
                     ModeOver ->
-                        M3e.DrawerContainer.EndModeOver
+                        Cem.M3e.DrawerContainer.EndModeOver
 
                     ModeSide ->
-                        M3e.DrawerContainer.EndModeSide
+                        Cem.M3e.DrawerContainer.EndModeSide
                 )

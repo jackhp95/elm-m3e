@@ -95,9 +95,9 @@ typed end-to-end.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.Badge
-import M3e.NavBar
-import M3e.NavItem
+import Cem.M3e.Badge
+import Cem.M3e.NavBar
+import Cem.M3e.NavItem
 import Ui.Icon
 
 
@@ -239,7 +239,7 @@ withItemSelectedIcon icon (Item cfg) =
 -}
 view : NavigationBar value msg -> Html msg
 view (NavigationBar cfg) =
-    M3e.NavBar.component
+    Cem.M3e.NavBar.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
@@ -251,12 +251,12 @@ view (NavigationBar cfg) =
 
 itemView : BarConfig value msg -> Item value msg -> Html msg
 itemView cfg (Item it) =
-    M3e.NavItem.component
-        [ M3e.NavItem.selected (cfg.selected == Just it.value)
+    Cem.M3e.NavItem.component
+        [ Cem.M3e.NavItem.selected (cfg.selected == Just it.value)
         , HtmlEvents.onClick (cfg.onChange it.value)
         ]
         (List.concat
-            [ [ Html.span [ M3e.NavItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
+            [ [ Html.span [ Cem.M3e.NavItem.iconSlot ] [ Ui.Icon.view it.icon ] ]
             , selectedIconSlot it.selectedIcon
             , labelText it.label
             , badgeText it.badge
@@ -273,7 +273,7 @@ selectedIconSlot icon =
             []
 
         Just i ->
-            [ Html.span [ M3e.NavItem.selectedIconSlot ] [ Ui.Icon.view i ] ]
+            [ Html.span [ Cem.M3e.NavItem.selectedIconSlot ] [ Ui.Icon.view i ] ]
 
 
 {-| The label rides the default slot — `m3e-nav-item` has no `label` slot.
@@ -298,17 +298,17 @@ badgeText badge =
             []
 
         Just b ->
-            [ M3e.Badge.component [] [ Html.text b ] ]
+            [ Cem.M3e.Badge.component [] [ Html.text b ] ]
 
 
 modeAttr : Mode -> Html.Attribute msg
 modeAttr m =
     case m of
         Compact ->
-            M3e.NavBar.mode M3e.NavBar.Compact
+            Cem.M3e.NavBar.mode Cem.M3e.NavBar.Compact
 
         Expanded ->
-            M3e.NavBar.mode M3e.NavBar.Expanded
+            Cem.M3e.NavBar.mode Cem.M3e.NavBar.Expanded
 
         Auto ->
-            M3e.NavBar.mode M3e.NavBar.Auto
+            Cem.M3e.NavBar.mode Cem.M3e.NavBar.Auto

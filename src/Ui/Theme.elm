@@ -82,7 +82,7 @@ theming mechanism is the element, and the tokens it cascades.
 
 import Html exposing (Attribute, Html)
 import Json.Decode
-import M3e.Theme
+import Cem.M3e.Theme
 
 
 {-| The theme opaque type. Build via `new`.
@@ -243,84 +243,84 @@ attributes.
 -}
 view : List (Html msg) -> Theme msg -> Html msg
 view children (Theme cfg) =
-    M3e.Theme.component
+    Cem.M3e.Theme.component
         (cfg.attributes
             ++ List.filterMap identity
-                [ Maybe.map M3e.Theme.color cfg.seedColor
-                , Maybe.map (toM3eScheme >> M3e.Theme.scheme) cfg.scheme
-                , Maybe.map (toM3eVariant >> M3e.Theme.variant) cfg.variant
-                , Maybe.map (toM3eContrast >> M3e.Theme.contrast) cfg.contrast
-                , Maybe.map M3e.Theme.density cfg.density
-                , Maybe.map M3e.Theme.strongFocus cfg.strongFocus
-                , Maybe.map (toM3eMotion >> M3e.Theme.motion) cfg.motion
-                , Maybe.map M3e.Theme.onChange cfg.onChange
+                [ Maybe.map Cem.M3e.Theme.color cfg.seedColor
+                , Maybe.map (toM3eScheme >> Cem.M3e.Theme.scheme) cfg.scheme
+                , Maybe.map (toM3eVariant >> Cem.M3e.Theme.variant) cfg.variant
+                , Maybe.map (toM3eContrast >> Cem.M3e.Theme.contrast) cfg.contrast
+                , Maybe.map Cem.M3e.Theme.density cfg.density
+                , Maybe.map Cem.M3e.Theme.strongFocus cfg.strongFocus
+                , Maybe.map (toM3eMotion >> Cem.M3e.Theme.motion) cfg.motion
+                , Maybe.map Cem.M3e.Theme.onChange cfg.onChange
                 ]
         )
         children
 
 
-toM3eScheme : Scheme -> M3e.Theme.Scheme
+toM3eScheme : Scheme -> Cem.M3e.Theme.Scheme
 toM3eScheme scheme =
     case scheme of
         Auto ->
-            M3e.Theme.Auto
+            Cem.M3e.Theme.Auto
 
         Light ->
-            M3e.Theme.Light
+            Cem.M3e.Theme.Light
 
         Dark ->
-            M3e.Theme.Dark
+            Cem.M3e.Theme.Dark
 
 
-toM3eVariant : Variant -> M3e.Theme.Variant
+toM3eVariant : Variant -> Cem.M3e.Theme.Variant
 toM3eVariant variant =
     case variant of
         Content ->
-            M3e.Theme.Content
+            Cem.M3e.Theme.Content
 
         Vibrant ->
-            M3e.Theme.Vibrant
+            Cem.M3e.Theme.Vibrant
 
         Expressive ->
-            M3e.Theme.VariantExpressive
+            Cem.M3e.Theme.VariantExpressive
 
         Monochrome ->
-            M3e.Theme.Monochrome
+            Cem.M3e.Theme.Monochrome
 
         Neutral ->
-            M3e.Theme.Neutral
+            Cem.M3e.Theme.Neutral
 
         TonalSpot ->
-            M3e.Theme.TonalSpot
+            Cem.M3e.Theme.TonalSpot
 
         Fidelity ->
-            M3e.Theme.Fidelity
+            Cem.M3e.Theme.Fidelity
 
         Rainbow ->
-            M3e.Theme.Rainbow
+            Cem.M3e.Theme.Rainbow
 
         FruitSalad ->
-            M3e.Theme.FruitSalad
+            Cem.M3e.Theme.FruitSalad
 
 
-toM3eContrast : Contrast -> M3e.Theme.Contrast
+toM3eContrast : Contrast -> Cem.M3e.Theme.Contrast
 toM3eContrast contrast =
     case contrast of
         Medium ->
-            M3e.Theme.Medium
+            Cem.M3e.Theme.Medium
 
         Standard ->
-            M3e.Theme.ContrastStandard
+            Cem.M3e.Theme.ContrastStandard
 
         High ->
-            M3e.Theme.High
+            Cem.M3e.Theme.High
 
 
-toM3eMotion : Motion -> M3e.Theme.Motion
+toM3eMotion : Motion -> Cem.M3e.Theme.Motion
 toM3eMotion motion =
     case motion of
         MotionStandard ->
-            M3e.Theme.MotionStandard
+            Cem.M3e.Theme.MotionStandard
 
         MotionExpressive ->
-            M3e.Theme.MotionExpressive
+            Cem.M3e.Theme.MotionExpressive

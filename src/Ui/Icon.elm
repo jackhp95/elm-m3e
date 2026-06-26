@@ -57,7 +57,7 @@ full Material Symbols surface without a separate wrapper.
 -}
 
 import Html exposing (Attribute, Html)
-import M3e.Icon
+import Cem.M3e.Icon
 
 
 {-| An m3e Material Symbols icon.
@@ -176,15 +176,15 @@ it call `a11y` and project it themselves.
 -}
 view : Icon msg -> Html msg
 view (Icon cfg) =
-    M3e.Icon.component
+    Cem.M3e.Icon.component
         (cfg.attributes
-            ++ (M3e.Icon.name cfg.name
+            ++ (Cem.M3e.Icon.name cfg.name
                     :: List.filterMap identity
-                        [ Maybe.map (toFloat >> M3e.Icon.opticalSize) cfg.opticalSize
-                        , Maybe.map (weightToString >> M3e.Icon.weight) cfg.weight
-                        , Maybe.map (gradeToM3e >> M3e.Icon.grade) cfg.grade
+                        [ Maybe.map (toFloat >> Cem.M3e.Icon.opticalSize) cfg.opticalSize
+                        , Maybe.map (weightToString >> Cem.M3e.Icon.weight) cfg.weight
+                        , Maybe.map (gradeToM3e >> Cem.M3e.Icon.grade) cfg.grade
                         , if cfg.filled then
-                            Just (M3e.Icon.filled True)
+                            Just (Cem.M3e.Icon.filled True)
 
                           else
                             Nothing
@@ -213,14 +213,14 @@ weightToString w =
             "700"
 
 
-gradeToM3e : Grade -> M3e.Icon.Grade
+gradeToM3e : Grade -> Cem.M3e.Icon.Grade
 gradeToM3e g =
     case g of
         LowGrade ->
-            M3e.Icon.Low
+            Cem.M3e.Icon.Low
 
         NormalGrade ->
-            M3e.Icon.Medium
+            Cem.M3e.Icon.Medium
 
         HighGrade ->
-            M3e.Icon.High
+            Cem.M3e.Icon.High

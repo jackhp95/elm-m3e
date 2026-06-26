@@ -7,7 +7,7 @@ module Ui.Progress exposing
     )
 
 {-| Typed builder for the M3 `progress-indicator` element family. Merges
-`M3e.CircularProgressIndicator` and `M3e.LinearProgressIndicator` under
+`Cem.M3e.CircularProgressIndicator` and `Cem.M3e.LinearProgressIndicator` under
 one type; `view` dispatches based on `Shape`.
 
 Use a progress indicator when the wait conveys progress through a task or
@@ -76,8 +76,8 @@ constructor, not a distinct render path a Figma node can carry.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.CircularProgressIndicator
-import M3e.LinearProgressIndicator
+import Cem.M3e.CircularProgressIndicator
+import Cem.M3e.LinearProgressIndicator
 
 
 {-| The progress indicator opaque type. Build via `linear`, `circular`, or
@@ -158,23 +158,23 @@ view : Progress msg -> Html msg
 view (Progress cfg) =
     case cfg.shape of
         Linear ->
-            M3e.LinearProgressIndicator.component (cfg.attributes ++ attrsLinear cfg) []
+            Cem.M3e.LinearProgressIndicator.component (cfg.attributes ++ attrsLinear cfg) []
 
         Circular ->
-            M3e.CircularProgressIndicator.component (cfg.attributes ++ attrsCircular cfg) []
+            Cem.M3e.CircularProgressIndicator.component (cfg.attributes ++ attrsCircular cfg) []
 
 
 attrsLinear : Config msg -> List (Html.Attribute msg)
 attrsLinear cfg =
     List.filterMap identity
         [ Maybe.map Attr.id cfg.id
-        , Just (M3e.LinearProgressIndicator.maxAttr (toFloat cfg.max))
+        , Just (Cem.M3e.LinearProgressIndicator.maxAttr (toFloat cfg.max))
         , case cfg.value of
             Just v ->
-                Just (M3e.LinearProgressIndicator.value (String.fromInt v))
+                Just (Cem.M3e.LinearProgressIndicator.value (String.fromInt v))
 
             Nothing ->
-                Just (M3e.LinearProgressIndicator.mode M3e.LinearProgressIndicator.Indeterminate)
+                Just (Cem.M3e.LinearProgressIndicator.mode Cem.M3e.LinearProgressIndicator.Indeterminate)
         ]
 
 
@@ -182,11 +182,11 @@ attrsCircular : Config msg -> List (Html.Attribute msg)
 attrsCircular cfg =
     List.filterMap identity
         [ Maybe.map Attr.id cfg.id
-        , Just (M3e.CircularProgressIndicator.maxAttr (toFloat cfg.max))
+        , Just (Cem.M3e.CircularProgressIndicator.maxAttr (toFloat cfg.max))
         , case cfg.value of
             Just v ->
-                Just (M3e.CircularProgressIndicator.value (String.fromInt v))
+                Just (Cem.M3e.CircularProgressIndicator.value (String.fromInt v))
 
             Nothing ->
-                Just (M3e.CircularProgressIndicator.indeterminate True)
+                Just (Cem.M3e.CircularProgressIndicator.indeterminate True)
         ]

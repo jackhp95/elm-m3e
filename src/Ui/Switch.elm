@@ -108,7 +108,7 @@ A switch renders **bare** (just the toggle, with its `label` kept as an
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Switch
+import Cem.M3e.Switch
 
 
 
@@ -221,19 +221,19 @@ controlId cfg =
 
 switchElement : List (Attribute msg) -> Config msg -> Html msg
 switchElement extraAttrs cfg =
-    M3e.Switch.component
+    Cem.M3e.Switch.component
         (extraAttrs
             ++ List.filterMap identity
                 [ Just (Attr.id (controlId cfg))
-                , Just (M3e.Switch.checked cfg.checked)
-                , Just (M3e.Switch.disabled cfg.disabled)
+                , Just (Cem.M3e.Switch.checked cfg.checked)
+                , Just (Cem.M3e.Switch.disabled cfg.disabled)
                 , if cfg.handleIcons then
-                    Just (M3e.Switch.icons M3e.Switch.Both)
+                    Just (Cem.M3e.Switch.icons Cem.M3e.Switch.Both)
 
                   else
                     Nothing
                 , Just (Attr.attribute "aria-label" cfg.label)
-                , Just (M3e.Switch.onChange (changeDecoder cfg.onChange))
+                , Just (Cem.M3e.Switch.onChange (changeDecoder cfg.onChange))
                 ]
         )
         []

@@ -8,7 +8,7 @@ module Ui.SplitPane exposing
 
 {-| Typed builder for `<m3e-split-pane>` — a resizable two-pane layout with
 a movable drag handle between the panes. Granular slot setters for the two
-panes; each is wrapped in `M3e.ContentPane` automatically.
+panes; each is wrapped in `Cem.M3e.ContentPane` automatically.
 
 Reach for a split pane when the user needs to resize how space is divided
 between two adjacent regions (a list/detail layout, an editor/preview).
@@ -50,8 +50,8 @@ place rather than resizing them.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.ContentPane
-import M3e.SplitPane
+import Cem.M3e.ContentPane
+import Cem.M3e.SplitPane
 
 
 {-| The split pane opaque type. Build via `new`.
@@ -136,27 +136,27 @@ withOrientation orientation (SplitPane cfg) =
     SplitPane { cfg | orientation = orientation }
 
 
-toM3eOrientation : Orientation -> M3e.SplitPane.Orientation
+toM3eOrientation : Orientation -> Cem.M3e.SplitPane.Orientation
 toM3eOrientation orientation =
     case orientation of
         Horizontal ->
-            M3e.SplitPane.Horizontal
+            Cem.M3e.SplitPane.Horizontal
 
         Vertical ->
-            M3e.SplitPane.Vertical
+            Cem.M3e.SplitPane.Vertical
 
 
 {-| Render the split pane.
 -}
 view : SplitPane msg -> Html msg
 view (SplitPane cfg) =
-    M3e.SplitPane.component
+    Cem.M3e.SplitPane.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.SplitPane.orientation (toM3eOrientation cfg.orientation))
+                , Just (Cem.M3e.SplitPane.orientation (toM3eOrientation cfg.orientation))
                 ]
         )
-        [ M3e.ContentPane.component [ M3e.SplitPane.startSlot ] cfg.start
-        , M3e.ContentPane.component [ M3e.SplitPane.endSlot ] cfg.end
+        [ Cem.M3e.ContentPane.component [ Cem.M3e.SplitPane.startSlot ] cfg.start
+        , Cem.M3e.ContentPane.component [ Cem.M3e.SplitPane.endSlot ] cfg.end
         ]

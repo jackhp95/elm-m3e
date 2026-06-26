@@ -49,7 +49,7 @@ provides connected visual treatment (shared rounded ends, no gaps).
 -}
 
 import Html exposing (Attribute, Html)
-import M3e.ButtonGroup
+import Cem.M3e.ButtonGroup
 import Ui.Button
 
 
@@ -132,10 +132,10 @@ withVariant v (ButtonGroup cfg) =
 -}
 view : ButtonGroup msg -> Html msg
 view (ButtonGroup cfg) =
-    M3e.ButtonGroup.component
+    Cem.M3e.ButtonGroup.component
         (cfg.attributes
             ++ [ sizeAttr cfg.size
-               , M3e.ButtonGroup.multi cfg.multi
+               , Cem.M3e.ButtonGroup.multi cfg.multi
                , variantAttr cfg.variant
                ]
         )
@@ -146,26 +146,26 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Standard ->
-            M3e.ButtonGroup.variant M3e.ButtonGroup.Standard
+            Cem.M3e.ButtonGroup.variant Cem.M3e.ButtonGroup.Standard
 
         Connected ->
-            M3e.ButtonGroup.variant M3e.ButtonGroup.Connected
+            Cem.M3e.ButtonGroup.variant Cem.M3e.ButtonGroup.Connected
 
 
 sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         ExtraSmall ->
-            M3e.ButtonGroup.size M3e.ButtonGroup.ExtraSmall
+            Cem.M3e.ButtonGroup.size Cem.M3e.ButtonGroup.ExtraSmall
 
         Small ->
-            M3e.ButtonGroup.size M3e.ButtonGroup.Small
+            Cem.M3e.ButtonGroup.size Cem.M3e.ButtonGroup.Small
 
         Medium ->
-            M3e.ButtonGroup.size M3e.ButtonGroup.Medium
+            Cem.M3e.ButtonGroup.size Cem.M3e.ButtonGroup.Medium
 
         Large ->
-            M3e.ButtonGroup.size M3e.ButtonGroup.Large
+            Cem.M3e.ButtonGroup.size Cem.M3e.ButtonGroup.Large
 
         ExtraLarge ->
-            M3e.ButtonGroup.size M3e.ButtonGroup.ExtraLarge
+            Cem.M3e.ButtonGroup.size Cem.M3e.ButtonGroup.ExtraLarge

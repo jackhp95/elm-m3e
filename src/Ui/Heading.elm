@@ -10,7 +10,7 @@ module Ui.Heading exposing
     , view
     )
 
-{-| Typed builder for M3 headings. Wraps `M3e.Heading`.
+{-| Typed builder for M3 headings. Wraps `Cem.M3e.Heading`.
 
 
 # Construction
@@ -72,7 +72,7 @@ there is no shared cross-component size type.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Extra
-import M3e.Heading
+import Cem.M3e.Heading
 
 
 {-| The heading opaque type. Build via `new` or a text preset (`display`,
@@ -218,47 +218,47 @@ clampLevel level =
     clamp 1 6 level
 
 
-toM3eHeadingVariant : Variant -> M3e.Heading.Variant
+toM3eHeadingVariant : Variant -> Cem.M3e.Heading.Variant
 toM3eHeadingVariant variant =
     case variant of
         Display ->
-            M3e.Heading.Display
+            Cem.M3e.Heading.Display
 
         Headline ->
-            M3e.Heading.Headline
+            Cem.M3e.Heading.Headline
 
         Title ->
-            M3e.Heading.Title
+            Cem.M3e.Heading.Title
 
         Label ->
-            M3e.Heading.Label
+            Cem.M3e.Heading.Label
 
 
-toM3eHeadingSize : Size -> M3e.Heading.Size
+toM3eHeadingSize : Size -> Cem.M3e.Heading.Size
 toM3eHeadingSize s =
     case s of
         Small ->
-            M3e.Heading.Small
+            Cem.M3e.Heading.Small
 
         Medium ->
-            M3e.Heading.Medium
+            Cem.M3e.Heading.Medium
 
         Large ->
-            M3e.Heading.Large
+            Cem.M3e.Heading.Large
 
 
 {-| Render the heading.
 -}
 view : Heading msg -> Html msg
 view (Heading cfg) =
-    M3e.Heading.component
+    Cem.M3e.Heading.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.Heading.variant (toM3eHeadingVariant cfg.variant))
-                , Maybe.map (toM3eHeadingSize >> M3e.Heading.size) cfg.size
-                , Just (M3e.Heading.emphasized cfg.emphasized)
-                , Maybe.map (String.fromInt >> M3e.Heading.level) cfg.level
+                , Just (Cem.M3e.Heading.variant (toM3eHeadingVariant cfg.variant))
+                , Maybe.map (toM3eHeadingSize >> Cem.M3e.Heading.size) cfg.size
+                , Just (Cem.M3e.Heading.emphasized cfg.emphasized)
+                , Maybe.map (String.fromInt >> Cem.M3e.Heading.level) cfg.level
                 ]
         )
         [ Html.Extra.viewMaybe identity cfg.content ]

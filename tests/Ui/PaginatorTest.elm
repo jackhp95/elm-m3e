@@ -15,7 +15,7 @@ suite =
         [ test "withDefaultPage does NOT emit the ignored camelCase pageIndex attribute" <|
             \_ ->
                 -- The CEM attribute is `page-index`, set via the typed
-                -- `M3e.Paginator.pageIndex` DOM *property* (matching the
+                -- `Cem.M3e.Paginator.pageIndex` DOM *property* (matching the
                 -- ExplicitPage branch). The old raw `Attr.attribute
                 -- \"pageIndex\" \"3\"` emitted a camelCase string attribute
                 -- the element silently ignores. Pin its absence.

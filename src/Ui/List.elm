@@ -116,12 +116,12 @@ you use — never inferred from whether a modifier happens to be present.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.Divider
-import M3e.ExpandableListItem
-import M3e.List
-import M3e.ListItem
-import M3e.ListItemButton
-import M3e.ListOption
+import Cem.M3e.Divider
+import Cem.M3e.ExpandableListItem
+import Cem.M3e.List
+import Cem.M3e.ListItem
+import Cem.M3e.ListItemButton
+import Cem.M3e.ListOption
 import Ui.Icon
 
 
@@ -517,7 +517,7 @@ withItemChildren children =
 -}
 view : Listing msg -> Html msg
 view (Listing cfg) =
-    M3e.List.component
+    Cem.M3e.List.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
@@ -531,7 +531,7 @@ itemViewWith : List (Attribute msg) -> Item msg -> Html msg
 itemViewWith extra item_ =
     case item_ of
         DividerItem attrs ->
-            M3e.Divider.component (extra ++ attrs) []
+            Cem.M3e.Divider.component (extra ++ attrs) []
 
         Item cfg ->
             case cfg.kind of
@@ -539,18 +539,18 @@ itemViewWith extra item_ =
                     -- `<m3e-list-item>` is non-interactive and has no
                     -- `disabled` attribute, so neither onClick nor disabled
                     -- is emitted here.
-                    M3e.ListItem.component extra (decorationChildren True cfg)
+                    Cem.M3e.ListItem.component extra (decorationChildren True cfg)
 
                 Action ->
-                    M3e.ListItemButton.component (extra ++ actionAttrs cfg)
+                    Cem.M3e.ListItemButton.component (extra ++ actionAttrs cfg)
                         (decorationChildren True cfg)
 
                 Selectable data ->
-                    M3e.ListOption.component (extra ++ optionAttrs cfg data)
+                    Cem.M3e.ListOption.component (extra ++ optionAttrs cfg data)
                         (decorationChildren True cfg)
 
                 Expandable data ->
-                    M3e.ExpandableListItem.component (extra ++ expandableAttrs cfg data)
+                    Cem.M3e.ExpandableListItem.component (extra ++ expandableAttrs cfg data)
                         (decorationChildren False cfg ++ nestedChildren data)
 
 
@@ -558,7 +558,7 @@ actionAttrs : ItemConfig msg -> List (Attribute msg)
 actionAttrs cfg =
     List.filterMap identity
         [ if cfg.disabled then
-            Just (M3e.ListItemButton.disabled True)
+            Just (Cem.M3e.ListItemButton.disabled True)
 
           else
             Nothing
@@ -569,10 +569,10 @@ actionAttrs cfg =
 optionAttrs : ItemConfig msg -> SelectableData msg -> List (Attribute msg)
 optionAttrs cfg data =
     List.filterMap identity
-        [ Just (M3e.ListOption.selected data.selected)
-        , Maybe.map M3e.ListOption.value data.value
+        [ Just (Cem.M3e.ListOption.selected data.selected)
+        , Maybe.map Cem.M3e.ListOption.value data.value
         , if cfg.disabled then
-            Just (M3e.ListOption.disabled True)
+            Just (Cem.M3e.ListOption.disabled True)
 
           else
             Nothing
@@ -589,12 +589,12 @@ expandableAttrs : ItemConfig msg -> ExpandableData msg -> List (Attribute msg)
 expandableAttrs cfg data =
     List.filterMap identity
         [ if data.open then
-            Just (M3e.ExpandableListItem.open True)
+            Just (Cem.M3e.ExpandableListItem.open True)
 
           else
             Nothing
         , if cfg.disabled then
-            Just (M3e.ExpandableListItem.disabled True)
+            Just (Cem.M3e.ExpandableListItem.disabled True)
 
           else
             Nothing
@@ -603,7 +603,7 @@ expandableAttrs cfg data =
 
 nestedChildren : ExpandableData msg -> List (Html msg)
 nestedChildren data =
-    List.map (itemViewWith [ M3e.ExpandableListItem.itemsSlot ]) data.items
+    List.map (itemViewWith [ Cem.M3e.ExpandableListItem.itemsSlot ]) data.items
 
 
 decorationChildren : Bool -> ItemConfig msg -> List (Html msg)
@@ -625,10 +625,10 @@ leadingChildren : ItemConfig msg -> List (Html msg)
 leadingChildren cfg =
     case ( cfg.leadingHtml, cfg.leadingIcon ) of
         ( Just html, _ ) ->
-            [ Html.span [ M3e.ListItem.leadingSlot ] [ html ] ]
+            [ Html.span [ Cem.M3e.ListItem.leadingSlot ] [ html ] ]
 
         ( Nothing, Just icon ) ->
-            [ Html.span [ M3e.ListItem.leadingSlot ] [ Ui.Icon.view icon ] ]
+            [ Html.span [ Cem.M3e.ListItem.leadingSlot ] [ Ui.Icon.view icon ] ]
 
         ( Nothing, Nothing ) ->
             []
@@ -638,10 +638,10 @@ trailingChildren : ItemConfig msg -> List (Html msg)
 trailingChildren cfg =
     case ( cfg.trailingHtml, cfg.trailingIcon ) of
         ( Just html, _ ) ->
-            [ Html.span [ M3e.ListItem.trailingSlot ] [ html ] ]
+            [ Html.span [ Cem.M3e.ListItem.trailingSlot ] [ html ] ]
 
         ( Nothing, Just icon ) ->
-            [ Html.span [ M3e.ListItem.trailingSlot ] [ Ui.Icon.view icon ] ]
+            [ Html.span [ Cem.M3e.ListItem.trailingSlot ] [ Ui.Icon.view icon ] ]
 
         ( Nothing, Nothing ) ->
             []
@@ -654,7 +654,7 @@ overlineSlot text =
             []
 
         Just t ->
-            [ Html.span [ M3e.ListItem.overlineSlot ] [ Html.text t ] ]
+            [ Html.span [ Cem.M3e.ListItem.overlineSlot ] [ Html.text t ] ]
 
 
 supportingSlot : Maybe String -> List (Html msg)
@@ -664,14 +664,14 @@ supportingSlot text =
             []
 
         Just t ->
-            [ Html.span [ M3e.ListItem.supportingTextSlot ] [ Html.text t ] ]
+            [ Html.span [ Cem.M3e.ListItem.supportingTextSlot ] [ Html.text t ] ]
 
 
 variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Standard ->
-            M3e.List.variant M3e.List.Standard
+            Cem.M3e.List.variant Cem.M3e.List.Standard
 
         Segmented ->
-            M3e.List.variant M3e.List.Segmented
+            Cem.M3e.List.variant Cem.M3e.List.Segmented

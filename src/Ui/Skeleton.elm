@@ -10,7 +10,7 @@ module Ui.Skeleton exposing
 
 {-| Typed builder for `<m3e-skeleton>` — a placeholder surface that mimics
 content layout while it loads, preserving layout stability and fading out
-when content arrives. Wraps `M3e.Skeleton`.
+when content arrives. Wraps `Cem.M3e.Skeleton`.
 
 Reach for a skeleton when a whole region is loading and you want to hold its
 shape; for an expressive short-wait spinner use `Ui.LoadingIndicator`, and
@@ -60,7 +60,7 @@ to pass through utility classes.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.Skeleton
+import Cem.M3e.Skeleton
 
 
 {-| The skeleton opaque type. Build via `new`.
@@ -190,47 +190,47 @@ withContent content (Skeleton cfg) =
 -}
 view : Skeleton msg -> Html msg
 view (Skeleton cfg) =
-    M3e.Skeleton.component
+    Cem.M3e.Skeleton.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , if cfg.loaded then
-                    Just (M3e.Skeleton.loaded True)
+                    Just (Cem.M3e.Skeleton.loaded True)
 
                   else
                     Nothing
-                , Maybe.map (M3e.Skeleton.shape << shapeToM3e) cfg.shape
-                , Maybe.map (M3e.Skeleton.animation << animationToM3e) cfg.animation
+                , Maybe.map (Cem.M3e.Skeleton.shape << shapeToM3e) cfg.shape
+                , Maybe.map (Cem.M3e.Skeleton.animation << animationToM3e) cfg.animation
                 ]
             ++ List.map Attr.class cfg.classes
         )
         cfg.content
 
 
-shapeToM3e : Shape -> M3e.Skeleton.Shape
+shapeToM3e : Shape -> Cem.M3e.Skeleton.Shape
 shapeToM3e shape =
     case shape of
         Auto ->
-            M3e.Skeleton.Auto
+            Cem.M3e.Skeleton.Auto
 
         Circular ->
-            M3e.Skeleton.Circular
+            Cem.M3e.Skeleton.Circular
 
         Rounded ->
-            M3e.Skeleton.Rounded
+            Cem.M3e.Skeleton.Rounded
 
         Square ->
-            M3e.Skeleton.Square
+            Cem.M3e.Skeleton.Square
 
 
-animationToM3e : Animation -> M3e.Skeleton.Animation
+animationToM3e : Animation -> Cem.M3e.Skeleton.Animation
 animationToM3e animation =
     case animation of
         None ->
-            M3e.Skeleton.None
+            Cem.M3e.Skeleton.None
 
         Pulse ->
-            M3e.Skeleton.Pulse
+            Cem.M3e.Skeleton.Pulse
 
         Wave ->
-            M3e.Skeleton.Wave
+            Cem.M3e.Skeleton.Wave

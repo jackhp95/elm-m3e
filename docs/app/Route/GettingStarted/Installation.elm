@@ -137,7 +137,7 @@ view _ _ =
             , section [ class "space-y-3" ]
                 [ stepHeading "1. Add the Elm source"
                 , p [ class "text-body-md text-on-surface-variant" ]
-                    [ text "Copy the Ui.* (and supporting M3e.*) modules into your project and add them to elm.json source-directories:" ]
+                    [ text "Copy the Ui.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
                 , code_ Json """
 {
   "source-directories": [ "src", "vendor/elm-m3e" ]

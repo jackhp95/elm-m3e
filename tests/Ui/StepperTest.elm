@@ -3,7 +3,7 @@ module Ui.StepperTest exposing (suite)
 import Expect
 import Html
 import Html.Attributes
-import M3e.Step
+import Cem.M3e.Step
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -36,7 +36,7 @@ suite =
     describe "Ui.Stepper"
         [ test "withDefaultSelected does NOT emit the raw selected=\"true\" string attribute" <|
             \_ ->
-                -- The typed M3e.Step.selected sets the `selected` DOM
+                -- The typed Cem.M3e.Step.selected sets the `selected` DOM
                 -- property; the old raw `Attr.attribute \"selected\" \"true\"`
                 -- emitted a literal attribute the element ignores.
                 Ui.Stepper.new
@@ -80,7 +80,7 @@ suite =
                     , \r ->
                         r
                             |> Query.find [ Selector.tag "m3e-step" ]
-                            |> Query.has [ Selector.attribute (M3e.Step.invalid True) ]
+                            |> Query.has [ Selector.attribute (Cem.M3e.Step.invalid True) ]
                     ]
                     rendered
         , test "withStepActions slots an actions bar (slot=actions, not actions-) into the m3e-step-panel" <|
@@ -104,8 +104,8 @@ suite =
                     |> Query.fromHtml
                     |> Query.find [ Selector.tag "m3e-step" ]
                     |> Query.has
-                        [ Selector.attribute (M3e.Step.disabled True)
-                        , Selector.attribute (M3e.Step.editable True)
+                        [ Selector.attribute (Cem.M3e.Step.disabled True)
+                        , Selector.attribute (Cem.M3e.Step.editable True)
                         ]
         , test "withHeaderPosition emits header-position on the m3e-stepper" <|
             \_ ->

@@ -63,7 +63,7 @@ Size or otherwise style the TOC column from the call site via
 
 import Html exposing (Attribute, Html, span)
 import Html.Attributes as Attr
-import M3e.Toc
+import Cem.M3e.Toc
 
 
 {-| The TOC opaque type. Build via `new`.
@@ -148,16 +148,16 @@ withOverline overline (Toc cfg) =
 -}
 view : Toc msg -> Html msg
 view (Toc cfg) =
-    M3e.Toc.component
+    Cem.M3e.Toc.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Maybe.map M3e.Toc.for cfg.for
-                , Maybe.map (toFloat >> M3e.Toc.maxDepth) cfg.maxDepth
+                , Maybe.map Cem.M3e.Toc.for cfg.for
+                , Maybe.map (toFloat >> Cem.M3e.Toc.maxDepth) cfg.maxDepth
                 ]
         )
         (List.filterMap identity
-            [ Maybe.map (\o -> span [ M3e.Toc.overlineSlot ] [ o ]) cfg.overline
-            , Maybe.map (\t -> span [ M3e.Toc.titleSlot ] [ t ]) cfg.title
+            [ Maybe.map (\o -> span [ Cem.M3e.Toc.overlineSlot ] [ o ]) cfg.overline
+            , Maybe.map (\t -> span [ Cem.M3e.Toc.titleSlot ] [ t ]) cfg.title
             ]
         )

@@ -6,7 +6,7 @@ module Ui.Badge exposing
     , view
     )
 
-{-| Typed builder for M3 badges. Wraps `M3e.Badge`.
+{-| Typed builder for M3 badges. Wraps `Cem.M3e.Badge`.
 
 A badge is a compact count or dot attached to an icon or item — use it for
 unread counts, presence, or short status emphasis. For a dismissible message
@@ -61,7 +61,7 @@ relative to the anchor:
 import Html exposing (Attribute, Html, text)
 import Html.Attributes as Attr
 import Html.Extra
-import M3e.Badge
+import Cem.M3e.Badge
 
 
 {-| The badge opaque type. Build via `dot`, `count`, or `label`.
@@ -89,7 +89,7 @@ type alias Config msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , content : Maybe (Html msg)
-    , size : M3e.Badge.Size
+    , size : Cem.M3e.Badge.Size
     , for : Maybe String
     , position : Position
     }
@@ -99,7 +99,7 @@ type alias Config msg =
 -}
 dot : Badge msg
 dot =
-    Badge { id = Nothing, attributes = [], content = Nothing, size = M3e.Badge.Small, for = Nothing, position = AboveAfter }
+    Badge { id = Nothing, attributes = [], content = Nothing, size = Cem.M3e.Badge.Small, for = Nothing, position = AboveAfter }
 
 
 {-| A large numeric badge. Applies the M3 "999+" truncation: counts above 999
@@ -107,14 +107,14 @@ render as `999+` (the spec caps the badge at 4 characters including the `+`).
 -}
 count : Int -> Badge msg
 count n =
-    Badge { id = Nothing, attributes = [], content = Just (text (countLabel n)), size = M3e.Badge.Large, for = Nothing, position = AboveAfter }
+    Badge { id = Nothing, attributes = [], content = Just (text (countLabel n)), size = Cem.M3e.Badge.Large, for = Nothing, position = AboveAfter }
 
 
 {-| A large badge displaying short status text — the M3 "large" type.
 -}
 label : String -> Badge msg
 label content =
-    Badge { id = Nothing, attributes = [], content = Just (text content), size = M3e.Badge.Large, for = Nothing, position = AboveAfter }
+    Badge { id = Nothing, attributes = [], content = Just (text content), size = Cem.M3e.Badge.Large, for = Nothing, position = AboveAfter }
 
 
 countLabel : Int -> String
@@ -161,32 +161,32 @@ withPosition position (Badge cfg) =
     Badge { cfg | position = position }
 
 
-toM3ePosition : Position -> M3e.Badge.Position
+toM3ePosition : Position -> Cem.M3e.Badge.Position
 toM3ePosition position =
     case position of
         Above ->
-            M3e.Badge.Above
+            Cem.M3e.Badge.Above
 
         AboveAfter ->
-            M3e.Badge.AboveAfter
+            Cem.M3e.Badge.AboveAfter
 
         AboveBefore ->
-            M3e.Badge.AboveBefore
+            Cem.M3e.Badge.AboveBefore
 
         After ->
-            M3e.Badge.After
+            Cem.M3e.Badge.After
 
         Before ->
-            M3e.Badge.Before
+            Cem.M3e.Badge.Before
 
         Below ->
-            M3e.Badge.Below
+            Cem.M3e.Badge.Below
 
         BelowAfter ->
-            M3e.Badge.BelowAfter
+            Cem.M3e.Badge.BelowAfter
 
         BelowBefore ->
-            M3e.Badge.BelowBefore
+            Cem.M3e.Badge.BelowBefore
 
 
 {-| Render the badge to `Html` — a `<m3e-badge>` carrying its content (for
@@ -194,13 +194,13 @@ toM3ePosition position =
 -}
 view : Badge msg -> Html msg
 view (Badge cfg) =
-    M3e.Badge.component
+    Cem.M3e.Badge.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Just (M3e.Badge.size cfg.size)
-                , Just (M3e.Badge.position (toM3ePosition cfg.position))
-                , Maybe.map M3e.Badge.for cfg.for
+                , Just (Cem.M3e.Badge.size cfg.size)
+                , Just (Cem.M3e.Badge.position (toM3ePosition cfg.position))
+                , Maybe.map Cem.M3e.Badge.for cfg.for
                 ]
         )
         [ Html.Extra.viewMaybe identity cfg.content ]

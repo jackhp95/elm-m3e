@@ -15,7 +15,7 @@ import Head.Seo as Seo
 import Html exposing (Html, code, div, p, pre, section, text)
 import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
-import M3e.Shape
+import Cem.M3e.Shape
 import Markdown.Block as Block
 import Markdown.Parser
 import Markdown.Renderer
@@ -1316,10 +1316,10 @@ demoSections slug =
             [ usage
                 [ sub "Decorative shapes"
                     (div [ class "flex flex-wrap items-center gap-4" ]
-                        [ Shape.new |> Shape.withName M3e.Shape.Circle |> Shape.withClass "block w-16 h-16 bg-primary-container" |> Shape.view
-                        , Shape.new |> Shape.withName M3e.Shape.Flower |> Shape.withClass "block w-16 h-16 bg-secondary-container" |> Shape.view
-                        , Shape.new |> Shape.withName M3e.Shape.Pill |> Shape.withClass "block w-24 h-16 bg-tertiary-container" |> Shape.view
-                        , Shape.new |> Shape.withName M3e.Shape.Heart |> Shape.withClass "block w-16 h-16 bg-error-container" |> Shape.view
+                        [ Shape.new |> Shape.withName Cem.M3e.Shape.Circle |> Shape.withClass "block w-16 h-16 bg-primary-container" |> Shape.view
+                        , Shape.new |> Shape.withName Cem.M3e.Shape.Flower |> Shape.withClass "block w-16 h-16 bg-secondary-container" |> Shape.view
+                        , Shape.new |> Shape.withName Cem.M3e.Shape.Pill |> Shape.withClass "block w-24 h-16 bg-tertiary-container" |> Shape.view
+                        , Shape.new |> Shape.withName Cem.M3e.Shape.Heart |> Shape.withClass "block w-16 h-16 bg-error-container" |> Shape.view
                         ]
                     )
                 , sub "Corner-radius scale"

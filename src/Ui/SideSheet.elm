@@ -79,7 +79,7 @@ Same shape as `Ui.Dialog` / `Ui.BottomSheet`.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.DrawerContainer
+import Cem.M3e.DrawerContainer
 import Ui.Button
 
 
@@ -208,13 +208,13 @@ view (SideSheet cfg) =
     -- Always render the container so the projected main content (default slot)
     -- persists and the element animates open/close. `open` is a controlled
     -- property on the configured side.
-    M3e.DrawerContainer.component
+    Cem.M3e.DrawerContainer.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , Just (openAttr cfg)
                 , Just (modeAttr cfg)
-                , Just (M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
+                , Just (Cem.M3e.DrawerContainer.onChange (Decode.succeed cfg.onClose))
                 ]
         )
         (panelElement cfg :: cfg.content)
@@ -224,29 +224,29 @@ openAttr : Config msg -> Html.Attribute msg
 openAttr cfg =
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.start cfg.open
+            Cem.M3e.DrawerContainer.start cfg.open
 
         End ->
-            M3e.DrawerContainer.end cfg.open
+            Cem.M3e.DrawerContainer.end cfg.open
 
 
 modeAttr : Config msg -> Html.Attribute msg
 modeAttr cfg =
     let
-        mode : ( M3e.DrawerContainer.StartMode, M3e.DrawerContainer.EndMode )
+        mode : ( Cem.M3e.DrawerContainer.StartMode, Cem.M3e.DrawerContainer.EndMode )
         mode =
             if cfg.modal then
-                ( M3e.DrawerContainer.StartModeOver, M3e.DrawerContainer.EndModeOver )
+                ( Cem.M3e.DrawerContainer.StartModeOver, Cem.M3e.DrawerContainer.EndModeOver )
 
             else
-                ( M3e.DrawerContainer.StartModeSide, M3e.DrawerContainer.EndModeSide )
+                ( Cem.M3e.DrawerContainer.StartModeSide, Cem.M3e.DrawerContainer.EndModeSide )
     in
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.startMode (Tuple.first mode)
+            Cem.M3e.DrawerContainer.startMode (Tuple.first mode)
 
         End ->
-            M3e.DrawerContainer.endMode (Tuple.second mode)
+            Cem.M3e.DrawerContainer.endMode (Tuple.second mode)
 
 
 {-| The panel content — body + actions — routed into the slot matching
@@ -267,10 +267,10 @@ slotAttr : Config msg -> Html.Attribute msg
 slotAttr cfg =
     case cfg.side of
         Start ->
-            M3e.DrawerContainer.startSlot
+            Cem.M3e.DrawerContainer.startSlot
 
         End ->
-            M3e.DrawerContainer.endSlot
+            Cem.M3e.DrawerContainer.endSlot
 
 
 bodyContent : Maybe (Html msg) -> List (Html msg)

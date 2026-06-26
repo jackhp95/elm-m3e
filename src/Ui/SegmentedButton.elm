@@ -123,8 +123,8 @@ Multi-select:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.ButtonSegment
-import M3e.SegmentedButton
+import Cem.M3e.ButtonSegment
+import Cem.M3e.SegmentedButton
 
 
 
@@ -298,13 +298,13 @@ view (SegmentedButton cfg) =
 
 groupElement : Config value msg -> Html msg
 groupElement cfg =
-    M3e.SegmentedButton.component
+    Cem.M3e.SegmentedButton.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , Just (Attr.attribute "aria-label" cfg.label)
-                , Just (M3e.SegmentedButton.disabled cfg.disabled)
-                , Just (M3e.SegmentedButton.multi cfg.multiAttr)
+                , Just (Cem.M3e.SegmentedButton.disabled cfg.disabled)
+                , Just (Cem.M3e.SegmentedButton.multi cfg.multiAttr)
                 ]
         )
         (List.map (segmentView cfg) cfg.segments)
@@ -312,14 +312,14 @@ groupElement cfg =
 
 segmentView : Config value msg -> Segment value -> Html msg
 segmentView cfg (Segment seg) =
-    M3e.ButtonSegment.component
-        [ M3e.ButtonSegment.checked (cfg.isSelected seg.value)
-        , M3e.ButtonSegment.disabled cfg.disabled
+    Cem.M3e.ButtonSegment.component
+        [ Cem.M3e.ButtonSegment.checked (cfg.isSelected seg.value)
+        , Cem.M3e.ButtonSegment.disabled cfg.disabled
 
         -- Selection is Elm-controlled via onClick; this DOM `value` is never
         -- read (no form-submission path is exposed). We mirror the label as a
         -- readable default. See the module doc's "Selection is Elm-controlled".
-        , M3e.ButtonSegment.value seg.label
+        , Cem.M3e.ButtonSegment.value seg.label
         , HtmlEvents.onClick (cfg.onSegmentClick seg.value)
         ]
         [ Html.text seg.label ]

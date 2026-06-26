@@ -72,8 +72,8 @@ and the element's `closed`/`cancel` events are wired back to `onClose`.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.BottomSheet
-import M3e.BottomSheetAction
+import Cem.M3e.BottomSheet
+import Cem.M3e.BottomSheetAction
 import Ui.Button
 
 
@@ -211,7 +211,7 @@ length).
 
 Defaults to `[]` (no detents), in which case the sheet behaves as a simple
 open/hidden surface. When detents are set the sheet snaps to the nearest one on
-release. Note: the `string[]` setter is omitted from the `M3e.BottomSheet`
+release. Note: the `string[]` setter is omitted from the `Cem.M3e.BottomSheet`
 binding (Elm can't pass it as a property), so this writes the space-delimited
 attribute directly.
 
@@ -253,23 +253,23 @@ view (BottomSheet cfg) =
         Html.text ""
 
     else
-        M3e.BottomSheet.component
+        Cem.M3e.BottomSheet.component
             (cfg.attributes
                 ++ List.filterMap identity
                     [ Maybe.map Attr.id cfg.id
-                    , Just (M3e.BottomSheet.open True)
-                    , Just (M3e.BottomSheet.handle cfg.handle)
-                    , Just (M3e.BottomSheet.hideable cfg.hideable)
-                    , Just (M3e.BottomSheet.modal cfg.modal)
+                    , Just (Cem.M3e.BottomSheet.open True)
+                    , Just (Cem.M3e.BottomSheet.handle cfg.handle)
+                    , Just (Cem.M3e.BottomSheet.hideable cfg.hideable)
+                    , Just (Cem.M3e.BottomSheet.modal cfg.modal)
                     , if List.isEmpty cfg.detents then
                         Nothing
 
                       else
                         Just (Attr.attribute "detents" (String.join " " cfg.detents))
-                    , Maybe.map M3e.BottomSheet.hideFriction cfg.hideFriction
-                    , Maybe.map M3e.BottomSheet.overshootLimit cfg.overshootLimit
-                    , Just (M3e.BottomSheet.onClosed (Decode.succeed cfg.onClose))
-                    , Just (M3e.BottomSheet.onCancel (Decode.succeed cfg.onClose))
+                    , Maybe.map Cem.M3e.BottomSheet.hideFriction cfg.hideFriction
+                    , Maybe.map Cem.M3e.BottomSheet.overshootLimit cfg.overshootLimit
+                    , Just (Cem.M3e.BottomSheet.onClosed (Decode.succeed cfg.onClose))
+                    , Just (Cem.M3e.BottomSheet.onCancel (Decode.succeed cfg.onClose))
                     ]
             )
             (List.concat
@@ -287,7 +287,7 @@ headerElement header =
             []
 
         Just h ->
-            [ Html.div [ M3e.BottomSheet.headerSlot ] [ h ] ]
+            [ Html.div [ Cem.M3e.BottomSheet.headerSlot ] [ h ] ]
 
 
 bodyElement : Maybe (Html msg) -> List (Html msg)
@@ -308,7 +308,7 @@ actionsElement actions =
         (\button ->
             button
                 |> Ui.Button.withExtraContent
-                    [ M3e.BottomSheetAction.component [] [] ]
+                    [ Cem.M3e.BottomSheetAction.component [] [] ]
                 |> Ui.Button.view
         )
         actions

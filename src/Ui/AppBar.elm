@@ -80,7 +80,7 @@ secretly wraps in a text node.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.AppBar
+import Cem.M3e.AppBar
 import Ui.Heading
 import Ui.IconButton
 
@@ -274,19 +274,19 @@ withTrailingHtmlElementEscapeHatch tag attrs children (AppBar cfg) =
 -}
 view : AppBar msg -> Html msg
 view (AppBar cfg) =
-    M3e.AppBar.component
+    Cem.M3e.AppBar.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , Just (sizeAttr cfg.size)
-                , Just (M3e.AppBar.centered cfg.centered)
+                , Just (Cem.M3e.AppBar.centered cfg.centered)
                 ]
         )
         (List.concat
-            [ slotInto M3e.AppBar.leadingSlot cfg.leading
-            , slotInto M3e.AppBar.titleSlot cfg.title
-            , slotInto M3e.AppBar.subtitleSlot cfg.subtitle
-            , List.map (\fill -> fill M3e.AppBar.trailingSlot) cfg.trailing
+            [ slotInto Cem.M3e.AppBar.leadingSlot cfg.leading
+            , slotInto Cem.M3e.AppBar.titleSlot cfg.title
+            , slotInto Cem.M3e.AppBar.subtitleSlot cfg.subtitle
+            , List.map (\fill -> fill Cem.M3e.AppBar.trailingSlot) cfg.trailing
             ]
         )
 
@@ -305,10 +305,10 @@ sizeAttr : Size -> Html.Attribute msg
 sizeAttr s =
     case s of
         Small ->
-            M3e.AppBar.size M3e.AppBar.Small
+            Cem.M3e.AppBar.size Cem.M3e.AppBar.Small
 
         Medium ->
-            M3e.AppBar.size M3e.AppBar.Medium
+            Cem.M3e.AppBar.size Cem.M3e.AppBar.Medium
 
         Large ->
-            M3e.AppBar.size M3e.AppBar.Large
+            Cem.M3e.AppBar.size Cem.M3e.AppBar.Large

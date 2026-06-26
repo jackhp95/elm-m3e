@@ -92,8 +92,8 @@ Same pattern as `Ui.RadioButton`: selection state stays typed end-to-end.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.Option
-import M3e.Select
+import Cem.M3e.Option
+import Cem.M3e.Select
 
 
 
@@ -300,14 +300,14 @@ view (Select cfg) =
 
 selectElement : Maybe String -> Config value msg -> Html msg
 selectElement describedBy cfg =
-    M3e.Select.component
+    Cem.M3e.Select.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
                 , Just (Attr.attribute "label" cfg.label)
-                , Just (M3e.Select.multi cfg.multiAttr)
-                , Just (M3e.Select.required cfg.required)
-                , Just (M3e.Select.disabled cfg.disabled)
+                , Just (Cem.M3e.Select.multi cfg.multiAttr)
+                , Just (Cem.M3e.Select.required cfg.required)
+                , Just (Cem.M3e.Select.disabled cfg.disabled)
                 , Maybe.map (Attr.attribute "aria-describedby") describedBy
                 ]
         )
@@ -321,9 +321,9 @@ optionView cfg (Option opt) =
     -- collided. Selection is driven entirely by `selected` (the
     -- `selected` attr) and `onClick`, keeping option identity typed in
     -- Elm rather than smuggled through a stringly-typed DOM value.
-    M3e.Option.component
-        [ M3e.Option.selected (cfg.isSelected opt.value)
-        , M3e.Option.disabled cfg.disabled
+    Cem.M3e.Option.component
+        [ Cem.M3e.Option.selected (cfg.isSelected opt.value)
+        , Cem.M3e.Option.disabled cfg.disabled
         , HtmlEvents.onClick (cfg.onOptionClick opt.value)
         ]
         [ Html.text opt.label ]

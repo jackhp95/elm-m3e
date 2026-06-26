@@ -13,7 +13,7 @@ module Ui.Calendar exposing
     , view
     )
 
-{-| Typed builder for an M3 calendar widget. Wraps `M3e.Calendar`.
+{-| Typed builder for an M3 calendar widget. Wraps `Cem.M3e.Calendar`.
 
 A standalone, always-visible date-selection surface with month, year, and
 multi-year views, supporting single-date and range selection plus min/max
@@ -88,8 +88,8 @@ date's ISO string from the element's `change` event.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode
-import M3e.Calendar
-import M3e.Common
+import Cem.M3e.Calendar
+import Cem.M3e.Common
 
 
 {-| The calendar opaque type. Build via `new`.
@@ -305,23 +305,23 @@ withHeader h (Calendar cfg) =
 -}
 view : Calendar msg -> Html msg
 view (Calendar cfg) =
-    M3e.Calendar.component
+    Cem.M3e.Calendar.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Maybe.map M3e.Calendar.date cfg.date
-                , Maybe.map M3e.Calendar.minDate cfg.minDate
-                , Maybe.map M3e.Calendar.maxDate cfg.maxDate
-                , Maybe.map M3e.Calendar.rangeStart cfg.rangeStart
-                , Maybe.map M3e.Calendar.rangeEnd cfg.rangeEnd
-                , Maybe.map (toStartView >> M3e.Calendar.startView) cfg.startView
-                , Maybe.map M3e.Calendar.startAt cfg.startAt
-                , Maybe.map M3e.Calendar.previousMonthLabel cfg.previousMonthLabel
-                , Maybe.map M3e.Calendar.nextMonthLabel cfg.nextMonthLabel
-                , Maybe.map M3e.Calendar.previousYearLabel cfg.previousYearLabel
-                , Maybe.map M3e.Calendar.nextYearLabel cfg.nextYearLabel
-                , Maybe.map M3e.Calendar.previousMultiYearLabel cfg.previousMultiYearLabel
-                , Maybe.map M3e.Calendar.nextMultiYearLabel cfg.nextMultiYearLabel
+                , Maybe.map Cem.M3e.Calendar.date cfg.date
+                , Maybe.map Cem.M3e.Calendar.minDate cfg.minDate
+                , Maybe.map Cem.M3e.Calendar.maxDate cfg.maxDate
+                , Maybe.map Cem.M3e.Calendar.rangeStart cfg.rangeStart
+                , Maybe.map Cem.M3e.Calendar.rangeEnd cfg.rangeEnd
+                , Maybe.map (toStartView >> Cem.M3e.Calendar.startView) cfg.startView
+                , Maybe.map Cem.M3e.Calendar.startAt cfg.startAt
+                , Maybe.map Cem.M3e.Calendar.previousMonthLabel cfg.previousMonthLabel
+                , Maybe.map Cem.M3e.Calendar.nextMonthLabel cfg.nextMonthLabel
+                , Maybe.map Cem.M3e.Calendar.previousYearLabel cfg.previousYearLabel
+                , Maybe.map Cem.M3e.Calendar.nextYearLabel cfg.nextYearLabel
+                , Maybe.map Cem.M3e.Calendar.previousMultiYearLabel cfg.previousMultiYearLabel
+                , Maybe.map Cem.M3e.Calendar.nextMultiYearLabel cfg.nextMultiYearLabel
                 , Maybe.map changeListener cfg.onChange
                 ]
         )
@@ -332,7 +332,7 @@ headerChildren : Config msg -> List (Html msg)
 headerChildren cfg =
     case cfg.header of
         Just h ->
-            [ Html.span [ M3e.Calendar.headerSlot ] [ h ] ]
+            [ Html.span [ Cem.M3e.Calendar.headerSlot ] [ h ] ]
 
         Nothing ->
             []
@@ -340,17 +340,17 @@ headerChildren cfg =
 
 changeListener : (String -> msg) -> Html.Attribute msg
 changeListener onChange =
-    M3e.Calendar.onChange (Json.Decode.map onChange M3e.Common.targetValue)
+    Cem.M3e.Calendar.onChange (Json.Decode.map onChange Cem.M3e.Common.targetValue)
 
 
-toStartView : StartView -> M3e.Calendar.StartView
+toStartView : StartView -> Cem.M3e.Calendar.StartView
 toStartView sv =
     case sv of
         MonthView ->
-            M3e.Calendar.Month
+            Cem.M3e.Calendar.Month
 
         YearView ->
-            M3e.Calendar.Year
+            Cem.M3e.Calendar.Year
 
         MultiYearView ->
-            M3e.Calendar.MultiYear
+            Cem.M3e.Calendar.MultiYear

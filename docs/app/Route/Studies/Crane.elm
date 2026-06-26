@@ -23,7 +23,7 @@ import Head.Seo as Seo
 import Html exposing (Html, div, p, section, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
-import M3e.Shape
+import Cem.M3e.Shape
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import Process
@@ -115,16 +115,16 @@ type alias Destination =
 
 destinations : List Destination
 destinations =
-    [ { id = "den-pasar", name = "Denpasar", country = "Indonesia", category = Fly, rating = "4.8", price = "$680", blurb = "Direct flights to Bali's coast.", shape = M3e.Shape.Sunny, featured = True }
-    , { id = "cordoba", name = "Córdoba", country = "Argentina", category = Fly, rating = "4.6", price = "$540", blurb = "Andean foothills and old-town plazas.", shape = M3e.Shape.Boom, featured = True }
-    , { id = "khumbu", name = "Khumbu Valley", country = "Nepal", category = Fly, rating = "4.9", price = "$1,120", blurb = "Gateway to the high Himalaya.", shape = M3e.Shape.Pentagon, featured = True }
-    , { id = "mali", name = "Mali", country = "West Africa", category = Fly, rating = "4.5", price = "$870", blurb = "Saharan trade routes and river towns.", shape = M3e.Shape.Diamond, featured = False }
-    , { id = "ushuaia-lodge", name = "Ushuaia Lodge", country = "Argentina", category = Sleep, rating = "4.7", price = "$210/nt", blurb = "End-of-the-world cabins by the Beagle Channel.", shape = M3e.Shape.SoftBurst, featured = True }
-    , { id = "kyoto-ryokan", name = "Kyoto Ryokan", country = "Japan", category = Sleep, rating = "4.9", price = "$340/nt", blurb = "Tatami rooms and a private onsen.", shape = M3e.Shape.Flower, featured = False }
-    , { id = "tulum-bungalow", name = "Tulum Bungalow", country = "Mexico", category = Sleep, rating = "4.4", price = "$185/nt", blurb = "Palapa roofs steps from the reef.", shape = M3e.Shape.Semicircle, featured = False }
-    , { id = "san-sebastian", name = "San Sebastián", country = "Spain", category = Eat, rating = "4.9", price = "Pintxos", blurb = "The world's densest cluster of stars.", shape = M3e.Shape.Burst, featured = True }
-    , { id = "oaxaca", name = "Oaxaca", country = "Mexico", category = Eat, rating = "4.8", price = "Mole", blurb = "Seven moles and mezcal at dusk.", shape = M3e.Shape.Puffy, featured = False }
-    , { id = "lyon", name = "Lyon", country = "France", category = Eat, rating = "4.7", price = "Bouchon", blurb = "Bouchons and the bistro tradition.", shape = M3e.Shape.Gem, featured = False }
+    [ { id = "den-pasar", name = "Denpasar", country = "Indonesia", category = Fly, rating = "4.8", price = "$680", blurb = "Direct flights to Bali's coast.", shape = Cem.M3e.Shape.Sunny, featured = True }
+    , { id = "cordoba", name = "Córdoba", country = "Argentina", category = Fly, rating = "4.6", price = "$540", blurb = "Andean foothills and old-town plazas.", shape = Cem.M3e.Shape.Boom, featured = True }
+    , { id = "khumbu", name = "Khumbu Valley", country = "Nepal", category = Fly, rating = "4.9", price = "$1,120", blurb = "Gateway to the high Himalaya.", shape = Cem.M3e.Shape.Pentagon, featured = True }
+    , { id = "mali", name = "Mali", country = "West Africa", category = Fly, rating = "4.5", price = "$870", blurb = "Saharan trade routes and river towns.", shape = Cem.M3e.Shape.Diamond, featured = False }
+    , { id = "ushuaia-lodge", name = "Ushuaia Lodge", country = "Argentina", category = Sleep, rating = "4.7", price = "$210/nt", blurb = "End-of-the-world cabins by the Beagle Channel.", shape = Cem.M3e.Shape.SoftBurst, featured = True }
+    , { id = "kyoto-ryokan", name = "Kyoto Ryokan", country = "Japan", category = Sleep, rating = "4.9", price = "$340/nt", blurb = "Tatami rooms and a private onsen.", shape = Cem.M3e.Shape.Flower, featured = False }
+    , { id = "tulum-bungalow", name = "Tulum Bungalow", country = "Mexico", category = Sleep, rating = "4.4", price = "$185/nt", blurb = "Palapa roofs steps from the reef.", shape = Cem.M3e.Shape.Semicircle, featured = False }
+    , { id = "san-sebastian", name = "San Sebastián", country = "Spain", category = Eat, rating = "4.9", price = "Pintxos", blurb = "The world's densest cluster of stars.", shape = Cem.M3e.Shape.Burst, featured = True }
+    , { id = "oaxaca", name = "Oaxaca", country = "Mexico", category = Eat, rating = "4.8", price = "Mole", blurb = "Seven moles and mezcal at dusk.", shape = Cem.M3e.Shape.Puffy, featured = False }
+    , { id = "lyon", name = "Lyon", country = "France", category = Eat, rating = "4.7", price = "Bouchon", blurb = "Bouchons and the bistro tradition.", shape = Cem.M3e.Shape.Gem, featured = False }
     ]
 
 
@@ -375,7 +375,7 @@ appHeader model =
         [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
             [ div [ class "flex min-w-0 items-center gap-2" ]
                 [ Shape.new
-                    |> Shape.withName M3e.Shape.Sunny
+                    |> Shape.withName Cem.M3e.Shape.Sunny
                     |> Shape.withClass "size-8 shrink-0 bg-primary text-on-primary grid place-items-center"
                     |> Shape.withContent [ Icon.view (Icon.material "explore") ]
                     |> Shape.view

@@ -149,7 +149,7 @@ A multi-line description that auto-grows between 3 and 8 rows:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.TextareaAutosize
+import Cem.M3e.TextareaAutosize
 import Ui.Field
 
 
@@ -560,9 +560,9 @@ multilineElement cfg =
             textareaNode
 
         Just bounds ->
-            M3e.TextareaAutosize.component
-                [ M3e.TextareaAutosize.minRows (toFloat bounds.min)
-                , M3e.TextareaAutosize.maxRows (toFloat bounds.max)
+            Cem.M3e.TextareaAutosize.component
+                [ Cem.M3e.TextareaAutosize.minRows (toFloat bounds.min)
+                , Cem.M3e.TextareaAutosize.maxRows (toFloat bounds.max)
                 ]
                 [ textareaNode ]
 

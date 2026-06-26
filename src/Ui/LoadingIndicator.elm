@@ -63,7 +63,7 @@ Within the "Feedback & status" family:
 -}
 
 import Html exposing (Attribute, Html)
-import M3e.LoadingIndicator
+import Cem.M3e.LoadingIndicator
 
 
 {-| A loading indicator, built with `new` and configured with `with*`
@@ -116,7 +116,7 @@ withVariant v (LoadingIndicator cfg) =
 -}
 view : LoadingIndicator msg -> Html msg
 view (LoadingIndicator cfg) =
-    M3e.LoadingIndicator.component
+    Cem.M3e.LoadingIndicator.component
         (cfg.attributes ++ [ variantAttr cfg.variant ])
         []
 
@@ -125,7 +125,7 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Uncontained ->
-            M3e.LoadingIndicator.variant M3e.LoadingIndicator.Uncontained
+            Cem.M3e.LoadingIndicator.variant Cem.M3e.LoadingIndicator.Uncontained
 
         Contained ->
-            M3e.LoadingIndicator.variant M3e.LoadingIndicator.Contained
+            Cem.M3e.LoadingIndicator.variant Cem.M3e.LoadingIndicator.Contained

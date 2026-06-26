@@ -81,8 +81,8 @@ content lands in the panel's default slot.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Accordion
-import M3e.ExpansionPanel
+import Cem.M3e.Accordion
+import Cem.M3e.ExpansionPanel
 import Ui.Icon
 
 
@@ -332,10 +332,10 @@ view disclosure =
             viewPanel p
 
         Accordion cfg sections ->
-            M3e.Accordion.component
+            Cem.M3e.Accordion.component
                 (cfg.attributes
                     ++ [ Attr.id cfg.id
-                       , M3e.Accordion.multi cfg.multi
+                       , Cem.M3e.Accordion.multi cfg.multi
                        ]
                 )
                 (List.map (\(Section p) -> viewPanel p) sections)
@@ -343,10 +343,10 @@ view disclosure =
 
 viewPanel : Panel msg -> Html msg
 viewPanel p =
-    M3e.ExpansionPanel.component
+    Cem.M3e.ExpansionPanel.component
         (p.attributes ++ Attr.id p.id :: panelAttrs p)
         (List.concat
-            [ [ Html.span [ M3e.ExpansionPanel.headerSlot ] [ p.headline ] ]
+            [ [ Html.span [ Cem.M3e.ExpansionPanel.headerSlot ] [ p.headline ] ]
             , toggleIconElement p.toggleIcon
             , p.content
             , actionsElement p.actions
@@ -362,7 +362,7 @@ toggleIconElement toggleIcon =
 
         Just icon ->
             [ Html.span
-                [ M3e.ExpansionPanel.toggleIconSlot
+                [ Cem.M3e.ExpansionPanel.toggleIconSlot
                 , Attr.attribute "aria-hidden" "true"
                 ]
                 [ Ui.Icon.view icon ]
@@ -376,17 +376,17 @@ actionsElement actions =
             []
 
         _ ->
-            [ Html.div [ M3e.ExpansionPanel.actionsSlot ] actions ]
+            [ Html.div [ Cem.M3e.ExpansionPanel.actionsSlot ] actions ]
 
 
 panelAttrs : Panel msg -> List (Html.Attribute msg)
 panelAttrs p =
     List.filterMap identity
-        [ boolAttr M3e.ExpansionPanel.open p.open
-        , boolAttr M3e.ExpansionPanel.disabled p.disabled
-        , boolAttr M3e.ExpansionPanel.hideToggle p.hideToggle
-        , Maybe.map (\h -> M3e.ExpansionPanel.onOpened (Decode.succeed (h True))) p.onToggle
-        , Maybe.map (\h -> M3e.ExpansionPanel.onClosed (Decode.succeed (h False))) p.onToggle
+        [ boolAttr Cem.M3e.ExpansionPanel.open p.open
+        , boolAttr Cem.M3e.ExpansionPanel.disabled p.disabled
+        , boolAttr Cem.M3e.ExpansionPanel.hideToggle p.hideToggle
+        , Maybe.map (\h -> Cem.M3e.ExpansionPanel.onOpened (Decode.succeed (h True))) p.onToggle
+        , Maybe.map (\h -> Cem.M3e.ExpansionPanel.onClosed (Decode.succeed (h False))) p.onToggle
         ]
 
 

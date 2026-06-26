@@ -3,7 +3,7 @@ module Ui.DialogTest exposing (suite)
 import Expect
 import Html
 import Html.Attributes as Attr
-import M3e.Dialog
+import Cem.M3e.Dialog
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -73,7 +73,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-dialog"
-                        , Selector.attribute (M3e.Dialog.disableClose False)
+                        , Selector.attribute (Cem.M3e.Dialog.disableClose False)
                         ]
         , test "withDismissible False emits disable-close (blocks Escape/scrim)" <|
             \_ ->
@@ -83,7 +83,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-dialog"
-                        , Selector.attribute (M3e.Dialog.disableClose True)
+                        , Selector.attribute (Cem.M3e.Dialog.disableClose True)
                         ]
         , test "no close button by default (dismissible attr is False)" <|
             \_ ->
@@ -92,7 +92,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-dialog"
-                        , Selector.attribute (M3e.Dialog.dismissible False)
+                        , Selector.attribute (Cem.M3e.Dialog.dismissible False)
                         ]
         , test "withCloseButton True presents a close button (dismissible attr)" <|
             \_ ->
@@ -102,7 +102,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-dialog"
-                        , Selector.attribute (M3e.Dialog.dismissible True)
+                        , Selector.attribute (Cem.M3e.Dialog.dismissible True)
                         ]
         , test "withCloseIcon emits the close-icon slot" <|
             \_ ->

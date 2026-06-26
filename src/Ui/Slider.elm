@@ -115,8 +115,8 @@ A slider renders **bare** (just the track, with its `label` kept as an
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Slider
-import M3e.SliderThumb
+import Cem.M3e.Slider
+import Cem.M3e.SliderThumb
 
 
 
@@ -307,16 +307,16 @@ controlId cfg =
 
 sliderElement : List (Attribute msg) -> Config msg -> Html msg
 sliderElement extraAttrs cfg =
-    M3e.Slider.component
+    Cem.M3e.Slider.component
         (extraAttrs
             ++ List.filterMap identity
                 [ Just (Attr.id (controlId cfg))
-                , Maybe.map M3e.Slider.minAttr cfg.min
-                , Maybe.map M3e.Slider.maxAttr cfg.max
-                , Maybe.map M3e.Slider.step cfg.step
-                , Just (M3e.Slider.discrete cfg.discrete)
-                , Just (M3e.Slider.labelled cfg.labelled)
-                , Just (M3e.Slider.disabled cfg.disabled)
+                , Maybe.map Cem.M3e.Slider.minAttr cfg.min
+                , Maybe.map Cem.M3e.Slider.maxAttr cfg.max
+                , Maybe.map Cem.M3e.Slider.step cfg.step
+                , Just (Cem.M3e.Slider.discrete cfg.discrete)
+                , Just (Cem.M3e.Slider.labelled cfg.labelled)
+                , Just (Cem.M3e.Slider.disabled cfg.disabled)
                 , Just (Attr.attribute "aria-label" cfg.label)
                 ]
         )
@@ -337,9 +337,9 @@ thumbsElements thumbs =
 
 thumbView : Float -> (Float -> msg) -> Html msg
 thumbView v toMsg =
-    M3e.SliderThumb.component
-        [ M3e.SliderThumb.value (String.fromFloat v)
-        , M3e.SliderThumb.onInput (floatDecoder toMsg)
+    Cem.M3e.SliderThumb.component
+        [ Cem.M3e.SliderThumb.value (String.fromFloat v)
+        , Cem.M3e.SliderThumb.onInput (floatDecoder toMsg)
         ]
         []
 

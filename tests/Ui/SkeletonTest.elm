@@ -3,7 +3,7 @@ module Ui.SkeletonTest exposing (suite)
 import Expect
 import Html
 import Html.Attributes as Attr
-import M3e.Skeleton
+import Cem.M3e.Skeleton
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -41,7 +41,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.has
                         [ Selector.tag "m3e-skeleton"
-                        , Selector.attribute (M3e.Skeleton.loaded True)
+                        , Selector.attribute (Cem.M3e.Skeleton.loaded True)
                         ]
         , test "withContent projects children into the element's default slot" <|
             \_ ->

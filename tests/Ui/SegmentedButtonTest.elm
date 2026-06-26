@@ -2,7 +2,7 @@ module Ui.SegmentedButtonTest exposing (suite)
 
 import Expect
 import Html.Attributes as Attr
-import M3e.ButtonSegment
+import Cem.M3e.ButtonSegment
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -59,8 +59,8 @@ suite =
                     |> Ui.SegmentedButton.view
                     |> Query.fromHtml
                     |> Expect.all
-                        [ Query.has [ Selector.attribute (M3e.ButtonSegment.value "Day") ]
-                        , Query.has [ Selector.attribute (M3e.ButtonSegment.value "Week") ]
+                        [ Query.has [ Selector.attribute (Cem.M3e.ButtonSegment.value "Day") ]
+                        , Query.has [ Selector.attribute (Cem.M3e.ButtonSegment.value "Week") ]
                         ]
         , test "label association is via aria-label on the group (not a fragile for)" <|
             \_ ->

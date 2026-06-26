@@ -52,7 +52,7 @@ so it lines up with adjacent content (e.g. list text past a leading icon).
 -}
 
 import Html exposing (Attribute, Html)
-import M3e.Divider
+import Cem.M3e.Divider
 
 
 {-| A divider.
@@ -139,12 +139,12 @@ withInsetEnd b (Divider cfg) =
 -}
 view : Divider msg -> Html msg
 view (Divider cfg) =
-    M3e.Divider.component
+    Cem.M3e.Divider.component
         (cfg.attributes
-            ++ [ M3e.Divider.vertical (cfg.orientation == Vertical)
-               , M3e.Divider.inset cfg.inset
-               , M3e.Divider.insetStart cfg.insetStart
-               , M3e.Divider.insetEnd cfg.insetEnd
+            ++ [ Cem.M3e.Divider.vertical (cfg.orientation == Vertical)
+               , Cem.M3e.Divider.inset cfg.inset
+               , Cem.M3e.Divider.insetStart cfg.insetStart
+               , Cem.M3e.Divider.insetEnd cfg.insetEnd
                ]
         )
         []

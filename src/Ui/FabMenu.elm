@@ -51,10 +51,10 @@ single primary action, prefer `Ui.Fab`.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode
-import M3e.Fab
-import M3e.FabMenu
-import M3e.FabMenuTrigger
-import M3e.MenuItem
+import Cem.M3e.Fab
+import Cem.M3e.FabMenu
+import Cem.M3e.FabMenuTrigger
+import Cem.M3e.MenuItem
 import Ui.Icon
 
 
@@ -158,14 +158,14 @@ Emits an opener (`m3e-fab` carrying the trigger icon plus a nested
 view : FabMenu msg -> Html msg
 view (FabMenu cfg) =
     Html.div cfg.attributes
-        [ M3e.Fab.component
+        [ Cem.M3e.Fab.component
             [ Attr.attribute "aria-label" cfg.triggerLabel ]
             [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Ui.Icon.view cfg.triggerIcon ]
-            , M3e.FabMenuTrigger.component
-                [ M3e.FabMenuTrigger.for cfg.menuId ]
+            , Cem.M3e.FabMenuTrigger.component
+                [ Cem.M3e.FabMenuTrigger.for cfg.menuId ]
                 []
             ]
-        , M3e.FabMenu.component
+        , Cem.M3e.FabMenu.component
             [ Attr.id cfg.menuId
             , variantAttr cfg.variant
             ]
@@ -175,9 +175,9 @@ view (FabMenu cfg) =
 
 itemView : Item msg -> Html msg
 itemView (Item cfg) =
-    M3e.MenuItem.component
-        [ M3e.MenuItem.onClick (Json.Decode.succeed cfg.onClick) ]
-        [ Html.span [ M3e.MenuItem.iconSlot, Attr.attribute "aria-hidden" "true" ]
+    Cem.M3e.MenuItem.component
+        [ Cem.M3e.MenuItem.onClick (Json.Decode.succeed cfg.onClick) ]
+        [ Html.span [ Cem.M3e.MenuItem.iconSlot, Attr.attribute "aria-hidden" "true" ]
             [ Ui.Icon.view cfg.icon ]
         , Html.text cfg.label
         ]
@@ -187,10 +187,10 @@ variantAttr : Variant -> Html.Attribute msg
 variantAttr v =
     case v of
         Primary ->
-            M3e.FabMenu.variant M3e.FabMenu.Primary
+            Cem.M3e.FabMenu.variant Cem.M3e.FabMenu.Primary
 
         Secondary ->
-            M3e.FabMenu.variant M3e.FabMenu.Secondary
+            Cem.M3e.FabMenu.variant Cem.M3e.FabMenu.Secondary
 
         Tertiary ->
-            M3e.FabMenu.variant M3e.FabMenu.Tertiary
+            Cem.M3e.FabMenu.variant Cem.M3e.FabMenu.Tertiary

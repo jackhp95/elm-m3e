@@ -118,7 +118,7 @@ A checkbox renders **bare** (just the box, with its `label` kept as an
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Checkbox
+import Cem.M3e.Checkbox
 
 
 
@@ -287,15 +287,15 @@ controlId cfg =
 
 checkboxElement : List (Attribute msg) -> Config msg -> Html msg
 checkboxElement extraAttrs cfg =
-    M3e.Checkbox.component
+    Cem.M3e.Checkbox.component
         (extraAttrs
             ++ [ Attr.id (controlId cfg)
-               , M3e.Checkbox.checked (isChecked cfg.state)
-               , M3e.Checkbox.indeterminate (isIndeterminate cfg.state)
-               , M3e.Checkbox.disabled cfg.disabled
-               , M3e.Checkbox.required cfg.required
+               , Cem.M3e.Checkbox.checked (isChecked cfg.state)
+               , Cem.M3e.Checkbox.indeterminate (isIndeterminate cfg.state)
+               , Cem.M3e.Checkbox.disabled cfg.disabled
+               , Cem.M3e.Checkbox.required cfg.required
                , Attr.attribute "aria-label" cfg.label
-               , M3e.Checkbox.onChange (changeDecoder cfg.onChange)
+               , Cem.M3e.Checkbox.onChange (changeDecoder cfg.onChange)
                ]
         )
         []

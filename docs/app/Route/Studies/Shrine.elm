@@ -35,7 +35,7 @@ import Html exposing (Html, div, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
 import Json.Decode as Decode
-import M3e.Shape
+import Cem.M3e.Shape
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import Process
@@ -189,25 +189,25 @@ type alias Product =
     , name : String
     , category : Category
     , price : Float
-    , shape : M3e.Shape.Name
+    , shape : Cem.M3e.Shape.Name
     , swatch : String
     }
 
 
 catalog : List Product
 catalog =
-    [ Product 1 "Linen Shirt" Tops 48 M3e.Shape.Pill "bg-tertiary-container"
-    , Product 2 "Cotton Tee" Tops 24 M3e.Shape.Circle "bg-secondary-container"
-    , Product 3 "Wool Overcoat" Outerwear 189 M3e.Shape.Arch "bg-primary-container"
-    , Product 4 "Quilted Jacket" Outerwear 132 M3e.Shape.SoftBurst "bg-tertiary-container"
-    , Product 5 "Ceramic Vase" Decor 36 M3e.Shape.Flower "bg-secondary-container"
-    , Product 6 "Woven Throw" Decor 58 M3e.Shape.Puffy "bg-primary-container"
-    , Product 7 "Copper Kettle" Kitchen 72 M3e.Shape.Gem "bg-tertiary-container"
-    , Product 8 "Stoneware Bowls" Kitchen 44 M3e.Shape.Sunny "bg-secondary-container"
-    , Product 9 "Leather Tote" Bags 156 M3e.Shape.Diamond "bg-primary-container"
-    , Product 10 "Canvas Backpack" Bags 88 M3e.Shape.Hexagon "bg-tertiary-container"
-    , Product 11 "Gold Hoops" Jewelry 64 M3e.Shape.VerySunny "bg-secondary-container"
-    , Product 12 "Beaded Necklace" Jewelry 39 M3e.Shape.Heart "bg-primary-container"
+    [ Product 1 "Linen Shirt" Tops 48 Cem.M3e.Shape.Pill "bg-tertiary-container"
+    , Product 2 "Cotton Tee" Tops 24 Cem.M3e.Shape.Circle "bg-secondary-container"
+    , Product 3 "Wool Overcoat" Outerwear 189 Cem.M3e.Shape.Arch "bg-primary-container"
+    , Product 4 "Quilted Jacket" Outerwear 132 Cem.M3e.Shape.SoftBurst "bg-tertiary-container"
+    , Product 5 "Ceramic Vase" Decor 36 Cem.M3e.Shape.Flower "bg-secondary-container"
+    , Product 6 "Woven Throw" Decor 58 Cem.M3e.Shape.Puffy "bg-primary-container"
+    , Product 7 "Copper Kettle" Kitchen 72 Cem.M3e.Shape.Gem "bg-tertiary-container"
+    , Product 8 "Stoneware Bowls" Kitchen 44 Cem.M3e.Shape.Sunny "bg-secondary-container"
+    , Product 9 "Leather Tote" Bags 156 Cem.M3e.Shape.Diamond "bg-primary-container"
+    , Product 10 "Canvas Backpack" Bags 88 Cem.M3e.Shape.Hexagon "bg-tertiary-container"
+    , Product 11 "Gold Hoops" Jewelry 64 Cem.M3e.Shape.VerySunny "bg-secondary-container"
+    , Product 12 "Beaded Necklace" Jewelry 39 Cem.M3e.Shape.Heart "bg-primary-container"
     ]
 
 

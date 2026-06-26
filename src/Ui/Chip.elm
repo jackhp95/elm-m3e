@@ -92,14 +92,14 @@ no-op placeholder. Leading icons (`withIcon`), the outlined/elevated style axis
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.AssistChip
-import M3e.Chip
-import M3e.ChipSet
-import M3e.FilterChip
-import M3e.FilterChipSet
-import M3e.InputChip
-import M3e.InputChipSet
-import M3e.SuggestionChip
+import Cem.M3e.AssistChip
+import Cem.M3e.Chip
+import Cem.M3e.ChipSet
+import Cem.M3e.FilterChip
+import Cem.M3e.FilterChipSet
+import Cem.M3e.InputChip
+import Cem.M3e.InputChipSet
+import Cem.M3e.SuggestionChip
 import Ui.Icon
 
 
@@ -319,7 +319,7 @@ renders the filter wrapper).
 -}
 filterSet : List (Chip Filter msg) -> Set Filter msg
 filterSet chips =
-    Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.FilterChipSet.component }
+    Set { id = Nothing, attributes = [], chips = chips, wrapper = Cem.M3e.FilterChipSet.component }
 
 
 {-| An input set — holds only [`input`](#input) chips and renders into an
@@ -327,7 +327,7 @@ filterSet chips =
 -}
 inputSet : List (Chip Input msg) -> Set Input msg
 inputSet chips =
-    Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.InputChipSet.component }
+    Set { id = Nothing, attributes = [], chips = chips, wrapper = Cem.M3e.InputChipSet.component }
 
 
 {-| A generic set for [`assist`](#assist) / [`suggestion`](#suggestion) chips,
@@ -335,7 +335,7 @@ rendered into the basic `ChipSet` wrapper.
 -}
 genericSet : List (Chip Generic msg) -> Set Generic msg
 genericSet chips =
-    Set { id = Nothing, attributes = [], chips = chips, wrapper = M3e.ChipSet.component }
+    Set { id = Nothing, attributes = [], chips = chips, wrapper = Cem.M3e.ChipSet.component }
 
 
 {-| A typed chip set. Build via `filterSet`, `inputSet`, or `genericSet`.
@@ -392,7 +392,7 @@ view (Chip cfg) =
         iconChildren =
             case cfg.icon of
                 Just i ->
-                    [ Html.span [ M3e.Chip.iconSlot ] [ Ui.Icon.view i ] ]
+                    [ Html.span [ Cem.M3e.Chip.iconSlot ] [ Ui.Icon.view i ] ]
 
                 Nothing ->
                     []
@@ -407,51 +407,51 @@ view (Chip cfg) =
     in
     case cfg.kind of
         Assist ->
-            M3e.AssistChip.component
+            Cem.M3e.AssistChip.component
                 (cfg.attributes
                     ++ List.filterMap identity
                         [ Just (Attr.id cfg.id)
-                        , Just (genericStyle cfg.elevated (M3e.AssistChip.variant M3e.AssistChip.Elevated) (M3e.AssistChip.variant M3e.AssistChip.Outlined))
-                        , Just (M3e.AssistChip.disabled cfg.disabled)
-                        , linkOrClick M3e.AssistChip.href (on M3e.AssistChip.onClick) cfg
+                        , Just (genericStyle cfg.elevated (Cem.M3e.AssistChip.variant Cem.M3e.AssistChip.Elevated) (Cem.M3e.AssistChip.variant Cem.M3e.AssistChip.Outlined))
+                        , Just (Cem.M3e.AssistChip.disabled cfg.disabled)
+                        , linkOrClick Cem.M3e.AssistChip.href (on Cem.M3e.AssistChip.onClick) cfg
                         ]
                 )
                 children
 
         Suggestion ->
-            M3e.SuggestionChip.component
+            Cem.M3e.SuggestionChip.component
                 (cfg.attributes
                     ++ List.filterMap identity
                         [ Just (Attr.id cfg.id)
-                        , Just (genericStyle cfg.elevated (M3e.SuggestionChip.variant M3e.SuggestionChip.Elevated) (M3e.SuggestionChip.variant M3e.SuggestionChip.Outlined))
-                        , Just (M3e.SuggestionChip.disabled cfg.disabled)
-                        , linkOrClick M3e.SuggestionChip.href (on M3e.SuggestionChip.onClick) cfg
+                        , Just (genericStyle cfg.elevated (Cem.M3e.SuggestionChip.variant Cem.M3e.SuggestionChip.Elevated) (Cem.M3e.SuggestionChip.variant Cem.M3e.SuggestionChip.Outlined))
+                        , Just (Cem.M3e.SuggestionChip.disabled cfg.disabled)
+                        , linkOrClick Cem.M3e.SuggestionChip.href (on Cem.M3e.SuggestionChip.onClick) cfg
                         ]
                 )
                 children
 
         FilterKind ->
-            M3e.FilterChip.component
+            Cem.M3e.FilterChip.component
                 (cfg.attributes
                     ++ List.filterMap identity
                         [ Just (Attr.id cfg.id)
-                        , Just (genericStyle cfg.elevated (M3e.FilterChip.variant M3e.FilterChip.Elevated) (M3e.FilterChip.variant M3e.FilterChip.Outlined))
-                        , Just (M3e.FilterChip.selected cfg.selected)
-                        , Just (M3e.FilterChip.disabled cfg.disabled)
-                        , Maybe.map (on M3e.FilterChip.onChange) cfg.onToggle
+                        , Just (genericStyle cfg.elevated (Cem.M3e.FilterChip.variant Cem.M3e.FilterChip.Elevated) (Cem.M3e.FilterChip.variant Cem.M3e.FilterChip.Outlined))
+                        , Just (Cem.M3e.FilterChip.selected cfg.selected)
+                        , Just (Cem.M3e.FilterChip.disabled cfg.disabled)
+                        , Maybe.map (on Cem.M3e.FilterChip.onChange) cfg.onToggle
                         ]
                 )
                 children
 
         InputKind ->
-            M3e.InputChip.component
+            Cem.M3e.InputChip.component
                 (cfg.attributes
                     ++ List.filterMap identity
                         [ Just (Attr.id cfg.id)
-                        , Just (genericStyle cfg.elevated (M3e.InputChip.variant M3e.InputChip.Elevated) (M3e.InputChip.variant M3e.InputChip.Outlined))
-                        , Just (M3e.InputChip.removable True)
-                        , Just (M3e.InputChip.disabled cfg.disabled)
-                        , Maybe.map (on M3e.InputChip.onRemove) cfg.onRemove
+                        , Just (genericStyle cfg.elevated (Cem.M3e.InputChip.variant Cem.M3e.InputChip.Elevated) (Cem.M3e.InputChip.variant Cem.M3e.InputChip.Outlined))
+                        , Just (Cem.M3e.InputChip.removable True)
+                        , Just (Cem.M3e.InputChip.disabled cfg.disabled)
+                        , Maybe.map (on Cem.M3e.InputChip.onRemove) cfg.onRemove
                         ]
                 )
                 children

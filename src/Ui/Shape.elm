@@ -6,7 +6,7 @@ module Ui.Shape exposing
     , view
     )
 
-{-| Typed builder for `<m3e-shape>`. Wraps `M3e.Shape`.
+{-| Typed builder for `<m3e-shape>`. Wraps `Cem.M3e.Shape`.
 
 The element clips its slotted (default-slot) content to a named Material 3
 shape — drawn from the Material Shape library (`circle`, `pill`,
@@ -19,7 +19,7 @@ layout class of your own.
 
     Ui.Shape.new
         |> Ui.Shape.withId "avatar-clip"
-        |> Ui.Shape.withName M3e.Shape.Circle
+        |> Ui.Shape.withName Cem.M3e.Shape.Circle
         |> Ui.Shape.withContent
             [ Html.img [ Html.Attributes.src "/avatar.jpg" ] [] ]
         |> Ui.Shape.view
@@ -56,7 +56,7 @@ shape itself comes from `withName`, not from a proprietary `ds-*` class.
 
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
-import M3e.Shape
+import Cem.M3e.Shape
 
 
 {-| The shape opaque type. Build via `new`.
@@ -65,12 +65,12 @@ type Shape msg
     = Shape (Config msg)
 
 
-{-| The set of Material 3 shape names, re-exported from `M3e.Shape`.
-Construct values with the `M3e.Shape` constructors (e.g.
-`M3e.Shape.Circle`).
+{-| The set of Material 3 shape names, re-exported from `Cem.M3e.Shape`.
+Construct values with the `Cem.M3e.Shape` constructors (e.g.
+`Cem.M3e.Shape.Circle`).
 -}
 type alias Name =
-    M3e.Shape.Name
+    Cem.M3e.Shape.Name
 
 
 type alias Config msg =
@@ -111,7 +111,7 @@ element's `name` attribute (default none). The value is one of the
 Material Shape library names re-exported as [`Name`](#Name).
 
     Ui.Shape.new
-        |> Ui.Shape.withName M3e.Shape.Circle
+        |> Ui.Shape.withName Cem.M3e.Shape.Circle
 
 -}
 withName : Name -> Shape msg -> Shape msg
@@ -138,11 +138,11 @@ withContent content (Shape cfg) =
 -}
 view : Shape msg -> Html msg
 view (Shape cfg) =
-    M3e.Shape.component
+    Cem.M3e.Shape.component
         (cfg.attributes
             ++ List.filterMap identity
                 [ Maybe.map Attr.id cfg.id
-                , Maybe.map M3e.Shape.name cfg.name
+                , Maybe.map Cem.M3e.Shape.name cfg.name
                 ]
             ++ List.map Attr.class cfg.classes
         )

@@ -96,7 +96,7 @@ An alert dialog (semantic role):
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Json.Decode as Decode
-import M3e.Dialog
+import Cem.M3e.Dialog
 import Ui.Button
 import Ui.Icon
 
@@ -264,16 +264,16 @@ view (Dialog cfg) =
         Html.text ""
 
     else
-        M3e.Dialog.component
+        Cem.M3e.Dialog.component
             (cfg.attributes
                 ++ List.filterMap identity
                     [ Maybe.map Attr.id cfg.id
-                    , Just (M3e.Dialog.open "true")
-                    , Just (M3e.Dialog.alert cfg.alert)
-                    , Just (M3e.Dialog.dismissible cfg.closeButton)
-                    , Just (M3e.Dialog.disableClose (not cfg.dismissible))
-                    , Just (M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
-                    , Just (M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
+                    , Just (Cem.M3e.Dialog.open "true")
+                    , Just (Cem.M3e.Dialog.alert cfg.alert)
+                    , Just (Cem.M3e.Dialog.dismissible cfg.closeButton)
+                    , Just (Cem.M3e.Dialog.disableClose (not cfg.dismissible))
+                    , Just (Cem.M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
+                    , Just (Cem.M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
                     ]
             )
             (List.concat
@@ -293,7 +293,7 @@ closeIconElement closeIcon =
 
         Just icon ->
             [ Html.span
-                [ M3e.Dialog.closeIconSlot
+                [ Cem.M3e.Dialog.closeIconSlot
                 , Attr.attribute "aria-hidden" "true"
                 ]
                 [ Ui.Icon.view icon ]
@@ -302,7 +302,7 @@ closeIconElement closeIcon =
 
 titleElement : Config msg -> Html msg
 titleElement cfg =
-    Html.h2 [ M3e.Dialog.headerSlot ] [ Html.text cfg.title ]
+    Html.h2 [ Cem.M3e.Dialog.headerSlot ] [ Html.text cfg.title ]
 
 
 bodyElement : Maybe (Html msg) -> List (Html msg)
@@ -324,6 +324,6 @@ actionsElement actions =
             []
 
         _ ->
-            [ Html.div [ M3e.Dialog.actionsSlot ]
+            [ Html.div [ Cem.M3e.Dialog.actionsSlot ]
                 (List.map Ui.Button.view actions)
             ]

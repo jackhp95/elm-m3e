@@ -7,11 +7,11 @@ module Ui.TextHighlight exposing
     , view
     )
 
-{-| Typed builder for `<m3e-text-highlight>`. Wraps `M3e.TextHighlight`.
+{-| Typed builder for `<m3e-text-highlight>`. Wraps `Cem.M3e.TextHighlight`.
 
 **Utility element — outside the documented Material component set.**
 `m3e-text-highlight` is not one of the 53 documented Material 3
-components; it ships only as a vendor binding (`M3e.TextHighlight`) as a
+components; it ships only as a vendor binding (`Cem.M3e.TextHighlight`) as a
 text-rendering helper. It is kept here for parity with the vendor
 surface, but it does not correspond to a documented Material component,
 so it sits outside the "one module per documented component" map.
@@ -57,7 +57,7 @@ filtered list rows.
 -}
 
 import Html exposing (Attribute, Html)
-import M3e.TextHighlight
+import Cem.M3e.TextHighlight
 
 
 {-| The text highlight opaque type. Build via `new`.
@@ -138,18 +138,18 @@ matching substrings inside the children's text content.
 -}
 view : List (Html msg) -> TextHighlight msg -> Html msg
 view children (TextHighlight cfg) =
-    M3e.TextHighlight.component
+    Cem.M3e.TextHighlight.component
         (cfg.attributes
             ++ List.filterMap identity
-                [ Maybe.map M3e.TextHighlight.term cfg.term
+                [ Maybe.map Cem.M3e.TextHighlight.term cfg.term
                 , Just (toM3eMode cfg.mode)
                 , if cfg.caseSensitive then
-                    Just (M3e.TextHighlight.caseSensitive True)
+                    Just (Cem.M3e.TextHighlight.caseSensitive True)
 
                   else
                     Nothing
                 , if cfg.disabled then
-                    Just (M3e.TextHighlight.disabled True)
+                    Just (Cem.M3e.TextHighlight.disabled True)
 
                   else
                     Nothing
@@ -162,10 +162,10 @@ toM3eMode : MatchMode -> Html.Attribute msg
 toM3eMode m =
     case m of
         Contains ->
-            M3e.TextHighlight.mode M3e.TextHighlight.Contains
+            Cem.M3e.TextHighlight.mode Cem.M3e.TextHighlight.Contains
 
         StartsWith ->
-            M3e.TextHighlight.mode M3e.TextHighlight.StartsWith
+            Cem.M3e.TextHighlight.mode Cem.M3e.TextHighlight.StartsWith
 
         EndsWith ->
-            M3e.TextHighlight.mode M3e.TextHighlight.EndsWith
+            Cem.M3e.TextHighlight.mode Cem.M3e.TextHighlight.EndsWith
