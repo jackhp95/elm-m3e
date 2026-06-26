@@ -6,9 +6,18 @@ module Ui.Toc exposing
     , view
     )
 
-{-| Typed builder for an M3 table-of-contents sidebar. Wraps
-`M3e.Toc`. Pair with a content area whose id you pass to `withFor`;
-m3e auto-generates the TOC items by walking that subtree's headings.
+{-| Typed builder for `<m3e-toc>` — a table of contents that links to the
+sections of the current page and highlights the active one as the user
+scrolls.
+
+Reach for a TOC for **in-page navigation** down a long document. Sibling
+navigation: `Ui.Breadcrumb` shows cross-page hierarchy depth, `Ui.Tabs`
+switches peer views, and `Ui.Paginator` moves through pages of data.
+
+Pair with a content area whose id you pass to `withFor`; m3e
+auto-generates the TOC items by walking that subtree's headings and
+highlights the section in view. To omit a heading from the generated
+list, add the `m3e-toc-ignore` attribute to that heading element.
 
 Size or otherwise style the TOC column from the call site via
 `withAttributes` (the builder bakes in no layout/styling of its own).
@@ -110,22 +119,25 @@ withFor forId (Toc cfg) =
     Toc { cfg | for = Just forId }
 
 
-{-| How deep into the heading hierarchy the TOC should descend. m3e
-treats this as a positive integer.
+{-| The maximum nesting depth of the generated table of contents, as a
+positive integer; deeper headings are not listed. Omit to keep m3e's
+default of `2`.
 -}
 withMaxDepth : Int -> Toc msg -> Toc msg
 withMaxDepth depth (Toc cfg) =
     Toc { cfg | maxDepth = Just depth }
 
 
-{-| Set the content rendered in the TOC's `title` slot.
+{-| Set the heading shown above the generated list, via the `title` slot
+(e.g. "On this page").
 -}
 withTitle : Html msg -> Toc msg -> Toc msg
 withTitle title (Toc cfg) =
     Toc { cfg | title = Just title }
 
 
-{-| Set the content rendered in the TOC's `overline` slot.
+{-| Set the small overline label rendered above the title, via the
+`overline` slot — a category or eyebrow over the heading.
 -}
 withOverline : Html msg -> Toc msg -> Toc msg
 withOverline overline (Toc cfg) =

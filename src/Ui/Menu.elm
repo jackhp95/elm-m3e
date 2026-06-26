@@ -15,7 +15,10 @@ button or other trigger. Mirrors the Material 3 [Menus][m3] surface.
 
 [m3]: https://m3.material.io/components/menus/overview
 
-For a form-control single/multi-select dropdown, see `Ui.Select`.
+Use a menu for a small, contextual list of actions or commands anchored to
+a trigger. For a form-control single/multi-select dropdown, see `Ui.Select`;
+for a modal prompt that blocks the page, `Ui.Dialog`; on small viewports a
+`Ui.BottomSheet` action list is often the better fit.
 
 
 # Opening a menu
@@ -294,14 +297,16 @@ withSubmenu b (Menu cfg) =
     Menu { cfg | submenu = b }
 
 
-{-| Set the menu's horizontal position relative to its trigger.
+{-| Set the menu's horizontal position relative to its trigger
+(the `position-x` attribute). Default `After`.
 -}
 withPositionX : PositionX -> Menu msg -> Menu msg
 withPositionX p (Menu cfg) =
     Menu { cfg | positionX = Just p }
 
 
-{-| Set the menu's vertical position relative to its trigger.
+{-| Set the menu's vertical position relative to its trigger
+(the `position-y` attribute). Default `Below`.
 -}
 withPositionY : PositionY -> Menu msg -> Menu msg
 withPositionY p (Menu cfg) =

@@ -245,16 +245,17 @@ withId id (Checkbox cfg) =
     Checkbox { cfg | id = Just id }
 
 
-{-| Mark the checkbox as required for form submission. Affects the
-underlying control's `required` property (and the required marker when
-composed with `Ui.Field`).
+{-| Mark the checkbox as required for form submission. Maps to the
+`required` attribute (default `false`); drives form-submission validation
+and the required marker when composed with `Ui.Field`.
 -}
 withRequired : Bool -> Checkbox kind msg -> Checkbox kind msg
 withRequired required (Checkbox cfg) =
     Checkbox { cfg | required = required }
 
 
-{-| Mark the checkbox as disabled — non-interactive.
+{-| Mark the checkbox as disabled — non-interactive. Maps to the
+`disabled` attribute (default `false`).
 -}
 withDisabled : Bool -> Checkbox kind msg -> Checkbox kind msg
 withDisabled disabled (Checkbox cfg) =

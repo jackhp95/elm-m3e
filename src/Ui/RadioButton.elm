@@ -16,15 +16,16 @@ A lone radio button isn't a real interaction — radio buttons always
 appear as a group. This module's API reflects that: callers always
 build a `RadioGroup`, not a single button.
 
-When to choose Radio vs siblings:
+When to choose Radio vs siblings (the one-of-many fork):
 
-  - **`Ui.RadioButton`** — exclusive single-choice in a _small_ set
-    (5–7 options is the Material sweet spot).
+  - **`Ui.RadioButton`** — exclusive single-choice when every option
+    should stay _visible_ at once and there are only a few (2–5).
+  - **`Ui.Select`** — single-choice when the list is _long_ or should
+    stay _collapsed_ until opened (a closed dropdown menu).
+  - **`Ui.SegmentedButton`** — an inline, horizontal one-of-many that
+    reads as a control (2–5 options).
   - **`Ui.Checkbox`** (in a list) — when _multiple_ options can be
     selected, or when a single boolean toggles.
-  - **`Ui.Select`** — single-choice from a _long_ list (10+ options).
-  - **`Ui.SegmentedButton`** — single-choice with strong button-row
-    visual treatment (2–5 options).
 
 
 # Required-by-design
@@ -214,21 +215,25 @@ withAttributes attributes (RadioGroup cfg) =
     RadioGroup { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute on the underlying `<m3e-radio-group>`.
+{-| Set the `id` attribute on the underlying `<m3e-radio-group>`. Also
+seeds the shared `name` threaded onto every child radio; without it both
+are derived as a stable slug of the group `label`.
 -}
 withId : String -> RadioGroup value msg -> RadioGroup value msg
 withId id (RadioGroup cfg) =
     RadioGroup { cfg | id = Just id }
 
 
-{-| Mark the group as required for form submission.
+{-| Set the `required` attribute on the `<m3e-radio-group>` (default
+`False`) — the group must have a selection for form submission.
 -}
 withRequired : Bool -> RadioGroup value msg -> RadioGroup value msg
 withRequired required (RadioGroup cfg) =
     RadioGroup { cfg | required = required }
 
 
-{-| Disable every radio in the group.
+{-| Set the `disabled` attribute on the group and every child radio
+(default `False`) — non-interactive.
 -}
 withDisabled : Bool -> RadioGroup value msg -> RadioGroup value msg
 withDisabled disabled (RadioGroup cfg) =

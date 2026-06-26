@@ -68,7 +68,8 @@ type alias Config msg =
     }
 
 
-{-| Group size.
+{-| Size applied to the whole group (m3e `size`). The m3e element
+defaults to `small`; this builder's `new` defaults to `Medium`.
 -}
 type Size
     = ExtraSmall
@@ -103,14 +104,16 @@ withAttributes attributes (ButtonGroup cfg) =
     ButtonGroup { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the size for all buttons in the group.
+{-| Set the size for the whole group (m3e `size`; builder default
+`Medium`).
 -}
 withSize : Size -> ButtonGroup msg -> ButtonGroup msg
 withSize s (ButtonGroup cfg) =
     ButtonGroup { cfg | size = s }
 
 
-{-| Toggle multi-select mode (buttons act as a multi-selection set).
+{-| Allow more than one toggle button in the group to be selected at
+once (m3e `multi`, default false).
 -}
 withMulti : Bool -> ButtonGroup msg -> ButtonGroup msg
 withMulti b (ButtonGroup cfg) =

@@ -62,7 +62,13 @@ type ScrollContainer msg
     = ScrollContainer (Config msg)
 
 
-{-| Which dividers to show when content is scrolled.
+{-| Which dividers to show when content is scrolled:
+
+  - `Both` — above and below the content
+  - `Top` — above only
+  - `Bottom` — below only
+  - `None` — no dividers
+
 -}
 type Dividers
     = Both
@@ -107,7 +113,7 @@ withId id (ScrollContainer cfg) =
     ScrollContainer { cfg | id = Just id }
 
 
-{-| Use thin scrollbars.
+{-| Use thin scrollbars rather than the default. Off by default.
 -}
 withThin : Bool -> ScrollContainer msg -> ScrollContainer msg
 withThin flag (ScrollContainer cfg) =

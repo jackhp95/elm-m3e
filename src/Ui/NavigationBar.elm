@@ -12,10 +12,12 @@ navigation. Mirrors the Material 3 [Navigation bar][m3] surface.
 
 [m3]: https://m3.material.io/components/navigation-bar/overview
 
-Navigation bars host top-level destinations for compact viewports. For
-medium viewports, use `Ui.NavigationRail`; for expanded viewports,
-`Ui.NavigationDrawer`. The choice is content-tied (which layout the
-caller wants); this module doesn't pick.
+A navigation bar is the **compact/mobile** end of the responsive
+top-level-navigation trio: it anchors 3–5 destinations to the bottom of the
+screen. As the viewport grows, step up to `Ui.NavigationRail` (side, medium
+widths) and then `Ui.NavigationDrawer` (expanded side drawer, large screens).
+The choice is content-tied (which layout the caller wants); this module
+doesn't pick.
 
 
 # Required-by-design
@@ -115,7 +117,9 @@ type Item value msg
     = Item (ItemConfig value msg)
 
 
-{-| Mode (m3e). `Auto` picks compact/expanded based on width.
+{-| How items are presented — the `mode` attribute. `Compact` is the m3e
+attribute default; `Auto` picks `Compact`/`Expanded` based on available width.
+(This builder's `new` defaults the bar to `Auto`.)
 -}
 type Mode
     = Compact

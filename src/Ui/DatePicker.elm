@@ -9,11 +9,15 @@ module Ui.DatePicker exposing
     , view
     )
 
-{-| Typed builder for `<m3e-datepicker>` — a calendar control for
-selecting a date (or a date range) on a temporary surface. Mirrors the
-Material 3 [Date pickers][m3] surface.
+{-| Typed builder for `<m3e-datepicker>` — a date-selection control for
+forms: a text field that opens a pop-up calendar for picking a single
+date (or a date range). Mirrors the Material 3 [Date pickers][m3]
+surface.
 
 [m3]: https://m3.material.io/components/date-pickers/overview
+
+Reach for this for date entry in a form. For an always-visible inline
+month/year surface, use [`Ui.Calendar`](Ui-Calendar) instead.
 
 This is a thin wrapper over what `M3e.Datepicker` actually exposes. The
 selected value is **not** a typed attribute: it rides the element's
@@ -81,8 +85,10 @@ type DatePicker msg
     = DatePicker (Config msg)
 
 
-{-| Layout variant. `Docked` renders inline; `Modal` opens an overlay;
-`Auto` picks based on viewport.
+{-| Appearance variant, the `variant` attribute. `Docked` anchors the
+calendar to the field; `Modal` opens it as a centered overlay; `Auto`
+(`"auto"`) lets the element pick. m3e's own default is `Docked`
+(`"docked"`); this builder defaults to `Auto`.
 -}
 type Variant
     = Docked
@@ -149,56 +155,63 @@ withId id (DatePicker cfg) =
     DatePicker { cfg | id = Just id }
 
 
-{-| Choose the layout variant (default `Auto`).
+{-| Choose the appearance variant (this builder defaults to `Auto`).
 -}
 withVariant : Variant -> DatePicker msg -> DatePicker msg
 withVariant v (DatePicker cfg) =
     DatePicker { cfg | variant = v }
 
 
-{-| Whether a range of dates can be selected (default `False`).
+{-| The `range` attribute — whether a start/end range of dates can be
+selected rather than a single date (default `False`).
 -}
 withRange : Bool -> DatePicker msg -> DatePicker msg
 withRange b (DatePicker cfg) =
     DatePicker { cfg | range = b }
 
 
-{-| Constrain selectable dates to ≥ this ISO-8601 date.
+{-| Earliest selectable date, the `min-date` attribute, as an ISO-8601
+(`"YYYY-MM-DD"`) string. Dates before it are disabled.
 -}
 withMin : String -> DatePicker msg -> DatePicker msg
 withMin d (DatePicker cfg) =
     DatePicker { cfg | min = Just d }
 
 
-{-| Constrain selectable dates to ≤ this ISO-8601 date.
+{-| Latest selectable date, the `max-date` attribute, as an ISO-8601
+(`"YYYY-MM-DD"`) string. Dates after it are disabled.
 -}
 withMax : String -> DatePicker msg -> DatePicker msg
 withMax d (DatePicker cfg) =
     DatePicker { cfg | max = Just d }
 
 
-{-| Toggle the clear button (default `True`).
+{-| The `clearable` attribute — whether the user can clear the selected
+date and close the picker. m3e defaults this to `False`; this builder
+defaults it to `True`.
 -}
 withClearable : Bool -> DatePicker msg -> DatePicker msg
 withClearable b (DatePicker cfg) =
     DatePicker { cfg | clearable = b }
 
 
-{-| Set the picker's accessible label.
+{-| Set the picker's `label` (default `"Select date"`).
 -}
 withLabel : String -> DatePicker msg -> DatePicker msg
 withLabel s (DatePicker cfg) =
     DatePicker { cfg | label = Just s }
 
 
-{-| Set the label of the confirm button (default `"OK"`).
+{-| Set the `confirm-label` — the button that applies the selection and
+closes the picker (default `"OK"`).
 -}
 withConfirmLabel : String -> DatePicker msg -> DatePicker msg
 withConfirmLabel s (DatePicker cfg) =
     DatePicker { cfg | confirmLabel = Just s }
 
 
-{-| Set the label of the dismiss button (default `"Cancel"`).
+{-| Set the `dismiss-label` — the button that discards the selection and
+closes the picker (default `"Cancel"`).
 -}
 withDismissLabel : String -> DatePicker msg -> DatePicker msg
 withDismissLabel s (DatePicker cfg) =

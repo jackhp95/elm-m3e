@@ -232,17 +232,19 @@ withPlaceholder placeholder (Search cfg) =
     Search { cfg | placeholder = Just placeholder }
 
 
-{-| Render the SearchBar with an inline clear (`x`) button. Only available
-on [`bar`](#bar) — SearchView manages its own clear button via the input's
-value.
+{-| Toggle the SearchBar's inline clear (`x`) button — sets `clearable` on
+`<m3e-search-bar>` (default `false`). Only available on [`bar`](#bar);
+SearchView manages its own clear button via the input's value.
 -}
 withClearable : Bool -> Search Bar msg -> Search Bar msg
 withClearable flag (Search cfg) =
     Search { cfg | clearable = flag }
 
 
-{-| Render initially-open with the DOM owning subsequent state. Only
-available on [`results`](#results).
+{-| Set the SearchView's initial `open` state (the `<m3e-search-view>`
+`open` attribute, default `false`), then let the DOM own subsequent
+toggling. Only available on [`results`](#results). For caller-owned state,
+use [`withExplicitOpenState`](#withExplicitOpenState) instead.
 -}
 withDefaultOpen : Bool -> Search Results msg -> Search Results msg
 withDefaultOpen flag (Search cfg) =
@@ -262,7 +264,8 @@ withExplicitOpenState onChange flag (Search cfg) =
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the search surface to `Html`.
+{-| Render the configured surface to `Html` — `<m3e-search-bar>` for
+[`bar`](#bar), `<m3e-search-view>` for [`results`](#results).
 -}
 view : Search kind msg -> Html msg
 view (Search cfg) =

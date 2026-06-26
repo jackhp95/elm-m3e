@@ -6,9 +6,16 @@ module Ui.Progress exposing
     , view
     )
 
-{-| Typed builder for M3 progress indicators. Merges
+{-| Typed builder for the M3 `progress-indicator` element family. Merges
 `M3e.CircularProgressIndicator` and `M3e.LinearProgressIndicator` under
 one type; `view` dispatches based on `Shape`.
+
+Use a progress indicator when the wait conveys progress through a task or
+process. Reach for **determinate** (`linear`/`circular` with a value) when
+the fraction complete is known, and **indeterminate** when it isn't but
+activity should still be shown. For an expressive short-wait spinner prefer
+`Ui.LoadingIndicator`; for a placeholder that mimics content layout while a
+region loads, `Ui.Skeleton`.
 
 Value presence is the determinant of determinate-vs-indeterminate: the
 determinate constructors (`linear`/`circular`) require a value, and
@@ -80,7 +87,9 @@ type Progress msg
     = Progress (Config msg)
 
 
-{-| Progress indicator shape.
+{-| Progress indicator shape — selects the rendered element. `Linear` draws a
+horizontal `<m3e-linear-progress-indicator>` bar; `Circular` an
+`<m3e-circular-progress-indicator>` ring.
 -}
 type Shape
     = Linear
@@ -118,9 +127,9 @@ indeterminate shape =
     Progress { id = Nothing, attributes = [], shape = shape, value = Nothing, max = 100 }
 
 
-{-| Append attributes to the rendered host — `<m3e-linear-progress>` for a
-linear shape, `<m3e-circular-progress>` for a circular one. Structural
-attributes are emitted after these, so callers can't clobber them.
+{-| Append attributes to the rendered host — `<m3e-linear-progress-indicator>`
+for a linear shape, `<m3e-circular-progress-indicator>` for a circular one.
+Structural attributes are emitted after these, so callers can't clobber them.
 -}
 withAttributes : List (Attribute msg) -> Progress msg -> Progress msg
 withAttributes attributes (Progress cfg) =
@@ -134,7 +143,9 @@ withId id (Progress cfg) =
     Progress { cfg | id = Just id }
 
 
-{-| Set the maximum value the indicator measures against. Default 100.
+{-| Set the `max` the indicator measures `value` against — `value` is a
+fraction between 0 and `max`. Mirrors the element's `max` attribute (default
+100).
 -}
 withMax : Int -> Progress msg -> Progress msg
 withMax max (Progress cfg) =

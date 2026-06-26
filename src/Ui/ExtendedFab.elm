@@ -83,7 +83,8 @@ type alias Config msg =
     }
 
 
-{-| FAB variant.
+{-| FAB variant — one of seven m3 color roles (m3e `variant`, default
+`primary-container`).
 -}
 type Variant
     = Primary
@@ -135,21 +136,21 @@ withAttributes attributes (ExtendedFab cfg) =
     ExtendedFab { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the size.
+{-| Set the FAB size (m3e `size`, default `medium`).
 -}
 withSize : Size -> ExtendedFab msg -> ExtendedFab msg
 withSize s (ExtendedFab cfg) =
     ExtendedFab { cfg | size = s }
 
 
-{-| Render in lowered elevation.
+{-| Present a lowered resting elevation (m3e `lowered`, default false).
 -}
 withLowered : Bool -> ExtendedFab msg -> ExtendedFab msg
 withLowered b (ExtendedFab cfg) =
     ExtendedFab { cfg | lowered = b }
 
 
-{-| Disable the FAB.
+{-| Disable the FAB (m3e `disabled`, default false).
 -}
 withDisabled : Bool -> ExtendedFab msg -> ExtendedFab msg
 withDisabled b (ExtendedFab cfg) =

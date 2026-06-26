@@ -160,7 +160,8 @@ type alias Config msg =
     }
 
 
-{-| Container style.
+{-| Container style — `Standard` (the m3e `variant` default), `Filled`,
+`Tonal`, or `Outlined`.
 -}
 type Variant
     = Standard
@@ -179,14 +180,15 @@ type Size
     | ExtraLarge
 
 
-{-| Container shape.
+{-| Container shape (m3e `shape`, default `rounded`).
 -}
 type Shape
     = Round
     | Square
 
 
-{-| Container width relative to the chosen Size.
+{-| Container width relative to the chosen Size (m3e `width`, default
+`default`).
 -}
 type Width
     = Narrow
@@ -253,21 +255,21 @@ withAttributes attributes (IconButton cfg) =
     IconButton { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the container size.
+{-| Set the container size (m3e `size`, default `small`).
 -}
 withSize : Size -> IconButton msg -> IconButton msg
 withSize size (IconButton cfg) =
     IconButton { cfg | size = size }
 
 
-{-| Set the container shape.
+{-| Set the container shape (m3e `shape`, default `rounded`).
 -}
 withShape : Shape -> IconButton msg -> IconButton msg
 withShape shape (IconButton cfg) =
     IconButton { cfg | shape = Just shape }
 
 
-{-| Set the container width.
+{-| Set the container width (m3e `width`, default `default`).
 -}
 withWidth : Width -> IconButton msg -> IconButton msg
 withWidth width (IconButton cfg) =

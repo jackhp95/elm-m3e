@@ -7,11 +7,22 @@ module Ui.Skeleton exposing
     , view
     )
 
-{-| Typed builder for M3 skeleton placeholders. Wraps `M3e.Skeleton`.
+{-| Typed builder for `<m3e-skeleton>` — a placeholder surface that mimics
+content layout while it loads, preserving layout stability and fading out
+when content arrives. Wraps `M3e.Skeleton`.
+
+Reach for a skeleton when a whole region is loading and you want to hold its
+shape; for an expressive short-wait spinner use `Ui.LoadingIndicator`, and
+for a tracked task use `Ui.Progress`.
 
 Sizes for skeletons typically come from Tailwind utility classes
 (width + height), not a `size` attribute — so this exposes `withClass`
 to pass through utility classes.
+
+    Ui.Skeleton.new
+        |> Ui.Skeleton.withShape Ui.Skeleton.Circular
+        |> Ui.Skeleton.withClass "size-12"
+        |> Ui.Skeleton.view
 
 
 # Construction
@@ -52,8 +63,9 @@ type Skeleton msg
     = Skeleton (Config msg)
 
 
-{-| The skeleton shape. Mirrors the element's `shape` attribute (default
-`Auto`).
+{-| The skeleton shape, mirroring the element's `shape` attribute (default
+`Auto`, which adapts the shape to the content it mimics). `Circular`,
+`Rounded`, and `Square` force a fixed shape.
 -}
 type Shape
     = Auto
@@ -62,8 +74,9 @@ type Shape
     | Square
 
 
-{-| The skeleton's shimmer animation. Mirrors the element's `animation`
-attribute (default `Wave`).
+{-| The skeleton's loading animation, mirroring the element's `animation`
+attribute (default `Wave`). `Pulse` fades in and out, `Wave` sweeps a
+shimmer across the surface, and `None` disables motion.
 -}
 type Animation
     = None
@@ -118,22 +131,25 @@ withClass cls (Skeleton cfg) =
     Skeleton { cfg | classes = cls :: cfg.classes }
 
 
-{-| Mark the skeleton's content as loaded. When `True`, the element reveals
-its projected content instead of the placeholder shimmer.
+{-| Mark the skeleton's content as loaded (`loaded` attribute, default
+`False`). When `True`, the element fades out the placeholder and reveals its
+projected content.
 -}
 withLoaded : Bool -> Skeleton msg -> Skeleton msg
 withLoaded flag (Skeleton cfg) =
     Skeleton { cfg | loaded = flag }
 
 
-{-| Set the placeholder shape (`shape` attribute).
+{-| Set the placeholder shape (`shape` attribute). The element defaults to
+`Auto`, which adapts to the mimicked content.
 -}
 withShape : Shape -> Skeleton msg -> Skeleton msg
 withShape shape (Skeleton cfg) =
     Skeleton { cfg | shape = Just shape }
 
 
-{-| Set the shimmer animation (`animation` attribute).
+{-| Set the loading animation (`animation` attribute). The element defaults to
+`Wave`.
 -}
 withAnimation : Animation -> Skeleton msg -> Skeleton msg
 withAnimation animation (Skeleton cfg) =

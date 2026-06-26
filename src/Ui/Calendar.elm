@@ -12,8 +12,10 @@ module Ui.Calendar exposing
 
 {-| Typed builder for an M3 calendar widget. Wraps `M3e.Calendar`.
 
-A standalone date-selection calendar with month, year, and multi-year
-views. Use this when you want a calendar surface without a text field.
+A standalone, always-visible date-selection surface with month, year, and
+multi-year views, supporting single-date and range selection plus min/max
+constraints. Use this when you want the calendar inline; for a text field
+that opens a calendar popup in a form, use `Ui.DatePicker` instead.
 
     Ui.Calendar.new
         |> Ui.Calendar.withId "event-cal"
@@ -87,6 +89,11 @@ type Calendar msg
 
 
 {-| Which view the calendar opens to.
+
+  - **MonthView** — the day grid for a single month (the m3e default).
+  - **YearView** — the months of a single year.
+  - **MultiYearView** — a grid of years (24 at a time) for jumping far.
+
 -}
 type StartView
     = MonthView
@@ -109,7 +116,8 @@ type alias Config msg =
     }
 
 
-{-| Construct a fresh calendar with no selection or constraints.
+{-| Construct a fresh calendar with no selection, no date constraints, and
+no range. It opens to the month view at the current month.
 -}
 new : Calendar msg
 new =
@@ -151,35 +159,40 @@ withDate d (Calendar cfg) =
     Calendar { cfg | date = Just d }
 
 
-{-| Set the earliest selectable date as an ISO-8601 string.
+{-| Set the earliest selectable date as an ISO-8601 string. Earlier dates
+are rendered disabled. Unset by default (no lower bound).
 -}
 withMinDate : String -> Calendar msg -> Calendar msg
 withMinDate d (Calendar cfg) =
     Calendar { cfg | minDate = Just d }
 
 
-{-| Set the latest selectable date as an ISO-8601 string.
+{-| Set the latest selectable date as an ISO-8601 string. Later dates are
+rendered disabled. Unset by default (no upper bound).
 -}
 withMaxDate : String -> Calendar msg -> Calendar msg
 withMaxDate d (Calendar cfg) =
     Calendar { cfg | maxDate = Just d }
 
 
-{-| Set the start of a highlighted date range as an ISO-8601 string.
+{-| Set the start of a highlighted date range as an ISO-8601 string. Pair
+with `withRangeEnd` to render a range selection between the two dates.
 -}
 withRangeStart : String -> Calendar msg -> Calendar msg
 withRangeStart d (Calendar cfg) =
     Calendar { cfg | rangeStart = Just d }
 
 
-{-| Set the end of a highlighted date range as an ISO-8601 string.
+{-| Set the end of a highlighted date range as an ISO-8601 string. Pair
+with `withRangeStart` to render a range selection between the two dates.
 -}
 withRangeEnd : String -> Calendar msg -> Calendar msg
 withRangeEnd d (Calendar cfg) =
     Calendar { cfg | rangeEnd = Just d }
 
 
-{-| Set which view the calendar opens to. Default is `MonthView`.
+{-| Set which view the calendar opens to (the m3e `start-view` attribute).
+Defaults to `MonthView`.
 -}
 withStartView : StartView -> Calendar msg -> Calendar msg
 withStartView sv (Calendar cfg) =
@@ -202,7 +215,8 @@ withOnChange handler (Calendar cfg) =
     Calendar { cfg | onChange = Just handler }
 
 
-{-| Custom header content rendered in the calendar's header slot.
+{-| Custom content for the calendar's `header` slot, rendered above the
+view-switching and navigation controls.
 -}
 withHeader : Html msg -> Calendar msg -> Calendar msg
 withHeader h (Calendar cfg) =

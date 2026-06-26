@@ -13,6 +13,11 @@ with a dropdown trigger for related actions. Mirrors the Material 3
 
 [m3]: https://m3.material.io/components/split-button/overview
 
+Use a split button when one default action dominates but related
+alternates exist behind the trailing dropdown. When the actions are
+peers without a clear default, prefer `Ui.ButtonGroup`; for a FAB-rooted
+set of primary actions, prefer `Ui.FabMenu`.
+
 
 # Type
 
@@ -70,7 +75,8 @@ type alias Config msg =
     }
 
 
-{-| Variant.
+{-| Appearance variant — `Elevated`, `Filled`, `Tonal`, or `Outlined`
+(m3e `variant`, default `filled`).
 -}
 type Variant
     = Elevated
@@ -121,7 +127,7 @@ withAttributes attributes (SplitButton cfg) =
     SplitButton { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the variant.
+{-| Set the appearance variant (m3e `variant`, default `Filled`).
 -}
 withVariant : Variant -> SplitButton msg -> SplitButton msg
 withVariant v (SplitButton cfg) =

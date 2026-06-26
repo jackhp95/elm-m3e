@@ -146,7 +146,7 @@ import Html.Attributes as Attr
 import Json.Encode as Encode
 
 
-{-| A snackbar.
+{-| A snackbar, built with `new` and configured with `with*` modifiers.
 -}
 type Snackbar msg
     = Snackbar (Config msg)
@@ -197,22 +197,25 @@ withId id (Snackbar cfg) =
     Snackbar { cfg | id = Just id }
 
 
-{-| Add an action button with the given label.
+{-| Add an action button with the given label (the m3e `action` attribute;
+empty / no action by default). The press round-trips back to Elm — see the
+action-callback notes in the module header.
 -}
 withAction : String -> Snackbar msg -> Snackbar msg
 withAction label (Snackbar cfg) =
     Snackbar { cfg | action = Just label }
 
 
-{-| Make the snackbar dismissible (shows a close affordance).
+{-| Show a close button (the m3e `dismissible` attribute; default `False`).
+Pair with `withCloseLabel` to set that button's accessible label.
 -}
 withDismissible : Bool -> Snackbar msg -> Snackbar msg
 withDismissible b (Snackbar cfg) =
     Snackbar { cfg | dismissible = b }
 
 
-{-| Set the close-button accessible label (only meaningful with
-`withDismissible True`).
+{-| Set the close button's accessible label (the m3e `close-label` attribute;
+element default `"Close"`). Only meaningful with `withDismissible True`.
 -}
 withCloseLabel : String -> Snackbar msg -> Snackbar msg
 withCloseLabel label (Snackbar cfg) =

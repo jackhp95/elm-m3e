@@ -7,14 +7,28 @@ module Ui.LoadingIndicator exposing
     , view
     )
 
-{-| Typed builder for `<m3e-loading-indicator>` — a short-wait progress
-spinner. Mirrors the Material 3 [Loading indicator][m3] surface.
+{-| Typed builder for `<m3e-loading-indicator>` — an expressive,
+attention-grabbing animation that signals an activity is in progress and
+mitigates perceived latency. Mirrors the Material 3 [Loading indicator][m3]
+surface.
 
 [m3]: https://m3.material.io/components/loading-indicator/overview
 
-Per Material spec (M3 Expressive update): "Recommended as a replacement
-for indeterminate circular progress indicators" — use this for waits
-under 5 seconds. For determinate progress, see `Ui.Progress`.
+The indicator is always indeterminate, sized for a short wait.
+
+    Ui.LoadingIndicator.new
+        |> Ui.LoadingIndicator.withVariant Ui.LoadingIndicator.Contained
+        |> Ui.LoadingIndicator.view
+
+Within the "Feedback & status" family:
+
+  - **`Ui.LoadingIndicator`** — the expressive spinner. Per the M3
+    Expressive update, "recommended as a replacement for indeterminate
+    circular progress indicators"; use it for waits under 5 seconds.
+  - **`Ui.Progress`** — linear/circular bars for determinate progress (a
+    known fraction), or a plainer indeterminate spinner.
+  - **`Ui.Skeleton`** — a placeholder surface that mimics content layout
+    while a whole region loads.
 
 
 # Type
@@ -52,7 +66,8 @@ import Html exposing (Attribute, Html)
 import M3e.LoadingIndicator
 
 
-{-| A loading indicator.
+{-| A loading indicator, built with `new` and configured with `with*`
+modifiers.
 -}
 type LoadingIndicator msg
     = LoadingIndicator (Config msg)
@@ -64,7 +79,9 @@ type alias Config msg =
     }
 
 
-{-| Variant — uncontained (inline) or contained (with surface).
+{-| The indicator's appearance, mirroring the element's `variant` attribute
+(default `Uncontained`). `Contained` adds a surface behind the animation for
+extra contrast and context.
 -}
 type Variant
     = Uncontained
@@ -87,7 +104,8 @@ withAttributes attributes (LoadingIndicator cfg) =
     LoadingIndicator { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the variant.
+{-| Set the appearance variant. The element defaults to `Uncontained`; use
+`Contained` to draw the animation on its own surface.
 -}
 withVariant : Variant -> LoadingIndicator msg -> LoadingIndicator msg
 withVariant v (LoadingIndicator cfg) =

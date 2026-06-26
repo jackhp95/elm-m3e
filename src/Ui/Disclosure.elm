@@ -11,10 +11,15 @@ module Ui.Disclosure exposing
     , view
     )
 
-{-| Typed builder for click-to-expand surfaces. The underlying element is
-chosen **at the call site** by which constructor you reach for — never
-inferred from how many panels you happen to pass (that would be render-path
-inference, a D4 violation):
+{-| Typed builder for click-to-expand surfaces (m3e's expansion panel and
+accordion). Use one to show or hide a section of content **in place** —
+FAQ entries, "show more" detail blocks, collapsible settings groups. For
+transient focus that overlays the page reach for `Ui.Dialog` or
+`Ui.BottomSheet` instead; for a flat row collection, `Ui.List`.
+
+The underlying element is chosen **at the call site** by which constructor
+you reach for — never inferred from how many panels you happen to pass
+(that would be render-path inference, a D4 violation):
 
   - [`single`](#single) → one `m3e-expansion-panel` (a single collapsible
     surface — an FAQ entry, a "show more" detail block).
@@ -213,22 +218,25 @@ withOpen flag =
     mapSinglePanel (\p -> { p | open = flag })
 
 
-{-| Disable the panel: it cannot be toggled by the user.
+{-| Disable a `single` panel: it cannot be toggled by the user. No-op on
+an `accordion`.
 -}
 withDisabled : Bool -> Disclosure msg -> Disclosure msg
 withDisabled flag =
     mapSinglePanel (\p -> { p | disabled = flag })
 
 
-{-| Hide the panel's expansion toggle icon.
+{-| Hide a `single` panel's expansion toggle icon. No-op on an `accordion`.
 -}
 withHideToggle : Bool -> Disclosure msg -> Disclosure msg
 withHideToggle flag =
     mapSinglePanel (\p -> { p | hideToggle = flag })
 
 
-{-| Caller-owned open state. The handler fires with `True` when the panel
-reports `opened` and `False` when it reports `closed`.
+{-| Observe a `single` panel's open state. The handler fires with `True`
+when the panel reports `opened` and `False` when it reports `closed`.
+No-op on an `accordion` — drive its panels per-section with
+[`withSectionOnToggle`](#withSectionOnToggle).
 -}
 withOnToggle : (Bool -> msg) -> Disclosure msg -> Disclosure msg
 withOnToggle handler =

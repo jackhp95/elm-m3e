@@ -17,6 +17,12 @@ of items. Mirrors the Material 3 [Lists][m3] surface.
 
 [m3]: https://m3.material.io/components/lists/overview
 
+Use a list to render rows of items — optionally selectable, actionable, or
+expandable. Shallow nesting is covered by the [`expandable`](#expandable)
+row; for date input reach for `Ui.Calendar` / `Ui.DatePicker` instead. A
+list's rows are the building block; for a single subject's content+actions
+use `Ui.Card`.
+
 The module is named `Ui.List` to honor the m3-doc-page rule, but the
 opaque type is `Listing` to avoid shadowing Elm's core `List` type at
 call sites.

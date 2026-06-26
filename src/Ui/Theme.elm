@@ -20,6 +20,11 @@ motion, and strong-focus tokens from a seed color and applies them — via the
 `Ui.Theme` therefore wraps a subtree: `view children theme` renders the
 themed elements inside an `<m3e-theme>`.
 
+Mount one near the application root. When nested directly beneath `<body>`,
+the element drives the document's `background-color` / `color` (from
+`--md-sys-color-background` / `--md-sys-color-on-background`) and the
+viewport `scrollbar-color`, so the whole page tracks the theme.
+
 This module deliberately ships no class contract of its own; the real M3
 theming mechanism is the element, and the tokens it cascades.
 
@@ -177,49 +182,56 @@ withSeedColor color (Theme cfg) =
     Theme { cfg | seedColor = Just color }
 
 
-{-| Set the color scheme (the `scheme` attribute).
+{-| Set the color scheme (the `scheme` attribute, default `auto` —
+follow the OS light/dark preference).
 -}
 withScheme : Scheme -> Theme msg -> Theme msg
 withScheme scheme (Theme cfg) =
     Theme { cfg | scheme = Just scheme }
 
 
-{-| Set the dynamic-color variant (the `variant` attribute).
+{-| Set the dynamic-color variant — the palette-generation strategy
+(the `variant` attribute, default `neutral`).
 -}
 withVariant : Variant -> Theme msg -> Theme msg
 withVariant variant (Theme cfg) =
     Theme { cfg | variant = Just variant }
 
 
-{-| Set the contrast level (the `contrast` attribute).
+{-| Set the contrast level (the `contrast` attribute, default `standard`;
+also `medium`, `high`).
 -}
 withContrast : Contrast -> Theme msg -> Theme msg
 withContrast contrast (Theme cfg) =
     Theme { cfg | contrast = Just contrast }
 
 
-{-| Set the density scale (the `density` property; typically `0`, `-1`, `-2`).
+{-| Set the density scale (the `density` property, default `0`; tighter
+values `-1`, `-2`).
 -}
 withDensity : Float -> Theme msg -> Theme msg
 withDensity density (Theme cfg) =
     Theme { cfg | density = Just density }
 
 
-{-| Enable or disable strong focus indicators (the `strong-focus` property).
+{-| Enable or disable strong focus indicators across the subtree (the
+`strong-focus` property, default `false`).
 -}
 withStrongFocus : Bool -> Theme msg -> Theme msg
 withStrongFocus strongFocus (Theme cfg) =
     Theme { cfg | strongFocus = Just strongFocus }
 
 
-{-| Set the motion scheme (the `motion` attribute).
+{-| Set the motion scheme (the `motion` attribute, default `standard`;
+`expressive` for the springier M3 Expressive easing/duration set).
 -}
 withMotion : Motion -> Theme msg -> Theme msg
 withMotion motion (Theme cfg) =
     Theme { cfg | motion = Just motion }
 
 
-{-| Listen for the `change` event the theme dispatches when it recomputes.
+{-| Listen for the element's `change` event, dispatched when the theme
+recomputes its derived tokens (e.g. after a scheme or seed-color change).
 -}
 onChange : Json.Decode.Decoder msg -> Theme msg -> Theme msg
 onChange decoder (Theme cfg) =

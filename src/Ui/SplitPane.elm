@@ -6,8 +6,20 @@ module Ui.SplitPane exposing
     , view
     )
 
-{-| Typed builder for M3 split panes. Granular slot setters for the two
+{-| Typed builder for `<m3e-split-pane>` — a resizable two-pane layout with
+a movable drag handle between the panes. Granular slot setters for the two
 panes; each is wrapped in `M3e.ContentPane` automatically.
+
+Reach for a split pane when the user needs to resize how space is divided
+between two adjacent regions (a list/detail layout, an editor/preview).
+For other surfaces in the "Containers & surfaces" family: `Ui.Card` groups
+content about one subject, while `Ui.Disclosure` shows/hides sections in
+place rather than resizing them.
+
+    Ui.SplitPane.new
+        |> Ui.SplitPane.withStart [ text "Navigation" ]
+        |> Ui.SplitPane.withEnd [ text "Detail" ]
+        |> Ui.SplitPane.view
 
 
 # Construction
@@ -48,7 +60,11 @@ type SplitPane msg
     = SplitPane (Config msg)
 
 
-{-| Split pane layout orientation.
+{-| Direction of the split, controlling how the drag handle moves.
+
+  - **Horizontal** — panes sit side by side; the handle moves left/right.
+  - **Vertical** — panes stack; the handle moves up/down.
+
 -}
 type Orientation
     = Horizontal
@@ -64,7 +80,9 @@ type alias Config msg =
     }
 
 
-{-| Construct a fresh, horizontal split pane with empty start/end slots.
+{-| Construct a fresh, `Horizontal` split pane with empty start/end slots.
+The handle defaults to the midpoint (the element's `value` is 50, i.e. the
+start pane takes half the space).
 -}
 new : SplitPane msg
 new =
@@ -93,21 +111,25 @@ withId id (SplitPane cfg) =
     SplitPane { cfg | id = Just id }
 
 
-{-| Set the content for the start pane.
+{-| Set the content for the `start` slot — the pane at the logical start
+side (left in a `Horizontal` split, top in a `Vertical` one). This is the
+pane whose size the drag handle controls.
 -}
 withStart : List (Html msg) -> SplitPane msg -> SplitPane msg
 withStart html (SplitPane cfg) =
     SplitPane { cfg | start = html }
 
 
-{-| Set the content for the end pane.
+{-| Set the content for the `end` slot — the pane at the logical end side
+(right in a `Horizontal` split, bottom in a `Vertical` one). It fills
+whatever space the start pane leaves.
 -}
 withEnd : List (Html msg) -> SplitPane msg -> SplitPane msg
 withEnd html (SplitPane cfg) =
     SplitPane { cfg | end = html }
 
 
-{-| Set the split pane orientation.
+{-| Set the split orientation. Defaults to `Horizontal` (panes side by side).
 -}
 withOrientation : Orientation -> SplitPane msg -> SplitPane msg
 withOrientation orientation (SplitPane cfg) =

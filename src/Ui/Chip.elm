@@ -10,21 +10,25 @@ module Ui.Chip exposing
     , viewSet
     )
 
-{-| Typed builder for M3 chips. The four M3 chip kinds are separate constructors
-that take their required collaborators up front, so a chip can't be built without
-the behavior its kind demands, and a modifier that only makes sense for one kind
-can't be applied to another.
+{-| Typed builder for the `<m3e-*-chip>` family — compact, often dynamic choices.
+Reach for chips over a checkbox/radio/select when the options are tag-like or
+generated on the fly: filter chips for multi-select filtering, input chips for
+tokenized entry, and suggestion/assist chips for prompts. The four M3 chip kinds
+are separate constructors that take their required collaborators up front, so a
+chip can't be built without the behavior its kind demands, and a modifier that
+only makes sense for one kind can't be applied to another.
 
 The phantom `kind` parameter (`Filter` / `Input` / `Generic`) gates the
 kind-specific modifiers and the typed sets:
 
   - [`assist`](#assist) / [`suggestion`](#suggestion) → `Chip Generic msg`:
-    button-like / dynamically-generated actions. Both accept [`withHref`](#withHref)
-    (link behavior) and live in the generic chip set.
-  - [`filter`](#filter) → `Chip Filter msg`: a toggle. Accepts
+    button-like smart/automated actions and dynamically-generated suggestions.
+    Both accept [`withHref`](#withHref) (link behavior) and live in the generic
+    chip set.
+  - [`filter`](#filter) → `Chip Filter msg`: a select/deselect toggle. Accepts
     [`withSelected`](#withSelected); lives only in a filter set.
-  - [`input`](#input) → `Chip Input msg`: represents an entity, with a required
-    trailing remove; lives only in an input set.
+  - [`input`](#input) → `Chip Input msg`: represents a discrete value the user
+    entered, with a required trailing remove; lives only in an input set.
 
 Color is token-driven, not per-instance (M3 has no "colorable chip"); the only
 visual axis is outlined (default) vs [`withElevated`](#withElevated), per spec.
@@ -165,7 +169,8 @@ defaultChip id kind label =
     }
 
 
-{-| A button-like assist chip.
+{-| A button-like assist chip — for a smart or automated action (which may span
+multiple apps). Renders `<m3e-assist-chip>`.
 -}
 assist : { id : String, label : String, onClick : msg } -> Chip Generic msg
 assist { id, label, onClick } =
@@ -184,7 +189,8 @@ assistEscapeHatchHtml { id, label, onClick } =
     Chip { base | onClick = Just onClick }
 
 
-{-| A suggestion chip (a dynamically-generated action).
+{-| A suggestion chip — a dynamically-generated action presented to narrow the
+user's intent. Renders `<m3e-suggestion-chip>`.
 -}
 suggestion : { id : String, label : String, onClick : msg } -> Chip Generic msg
 suggestion { id, label, onClick } =
@@ -203,8 +209,9 @@ suggestionEscapeHatchHtml { id, label, onClick } =
     Chip { base | onClick = Just onClick }
 
 
-{-| A filter chip — a toggle. Pair with [`withSelected`](#withSelected) to drive
-the selected state.
+{-| A filter chip — a select/deselect toggle for filtering. Renders
+`<m3e-filter-chip>` (`selected` defaults to false). Pair with
+[`withSelected`](#withSelected) to drive the selected state.
 -}
 filter : { id : String, label : String, onToggle : msg } -> Chip Filter msg
 filter { id, label, onToggle } =
@@ -223,8 +230,9 @@ filterEscapeHatchHtml { id, label, onToggle } =
     Chip { base | onToggle = Just onToggle }
 
 
-{-| An input chip representing an entity. The trailing remove affordance is
-required per spec, so `onRemove` is a constructor argument.
+{-| An input chip representing a discrete value the user entered. Renders
+`<m3e-input-chip removable>` — the trailing remove affordance is required per
+spec, so `onRemove` is a constructor argument.
 -}
 input : { id : String, label : String, onRemove : msg } -> Chip Input msg
 input { id, label, onRemove } =
@@ -253,7 +261,8 @@ withAttributes attributes (Chip cfg) =
     Chip { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Mark a filter chip selected. Filter-only.
+{-| Set the filter chip's `selected` state (sets `selected` on
+`<m3e-filter-chip>`; default false). Filter-only.
 
 @figma-code-connect prop=Selected bool component=Filter
 
@@ -263,7 +272,8 @@ withSelected flag (Chip cfg) =
     Chip { cfg | selected = flag }
 
 
-{-| Disable a chip. Valid on every kind.
+{-| Disable a chip — non-interactive (sets `disabled`; default false). Valid on
+every kind.
 
 @figma-code-connect prop=Disabled bool component=Assist,Filter,Suggestion,Input
 
@@ -273,15 +283,16 @@ withDisabled flag (Chip cfg) =
     Chip { cfg | disabled = flag }
 
 
-{-| Use the elevated style instead of the default outlined style. M3 reserves
-elevated chips for image/busy backgrounds.
+{-| Use the elevated style instead of the default outlined style (sets
+`variant`, default "outlined"). M3 reserves elevated chips for image/busy
+backgrounds.
 -}
 withElevated : Bool -> Chip kind msg -> Chip kind msg
 withElevated flag (Chip cfg) =
     Chip { cfg | elevated = flag }
 
 
-{-| Add a leading icon.
+{-| Add a leading icon, rendered into the chip's `icon` slot (before the label).
 -}
 withIcon : Ui.Icon.Icon msg -> Chip kind msg -> Chip kind msg
 withIcon icon (Chip cfg) =

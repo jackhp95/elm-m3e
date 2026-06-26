@@ -144,7 +144,8 @@ type alias Config value msg =
 -- CONSTRUCTORS -----------------------------------------------------------
 
 
-{-| Construct a single-select.
+{-| Construct a single-select — exclusive choice, `Maybe value` selection.
+Emits `multi=false` (the m3e default) on the `<m3e-select>`.
 -}
 single :
     { label : String
@@ -169,7 +170,9 @@ single c =
         }
 
 
-{-| Construct a multi-select.
+{-| Construct a multi-select — `List value` selection. Sets `multi=true` on the
+`<m3e-select>` (the attribute defaults to false) and toggles values in/out of
+the list on each option click.
 -}
 multi :
     { label : String
@@ -194,7 +197,9 @@ multi c =
         }
 
 
-{-| Construct an option.
+{-| Construct an option: a typed `value` and the visible `label`. Renders one
+`<m3e-option>`; selection is driven by `selected` + click, so option identity
+stays typed in Elm rather than smuggled through the DOM `value` attribute.
 -}
 option : { value : value, label : String } -> Option value
 option =
@@ -214,35 +219,43 @@ withAttributes attributes (Select cfg) =
     Select { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute.
+{-| Set the `id` attribute on the `<m3e-select>`. Also stabilizes the
+help/error subscript id (and the select's `aria-describedby`); without it the id
+is derived from the label and can collide between selects sharing a label.
 -}
 withId : String -> Select kind value msg -> Select kind value msg
 withId id (Select cfg) =
     Select { cfg | id = Just id }
 
 
-{-| Mark the field as required.
+{-| Set the `required` attribute — flags the field as mandatory for form
+validation. m3e default is `false`.
 -}
 withRequired : Bool -> Select kind value msg -> Select kind value msg
 withRequired b (Select cfg) =
     Select { cfg | required = b }
 
 
-{-| Disable the select.
+{-| Set the `disabled` attribute — non-interactive control (and disables every
+option). m3e default is `false`.
 -}
 withDisabled : Bool -> Select kind value msg -> Select kind value msg
 withDisabled b (Select cfg) =
     Select { cfg | disabled = b }
 
 
-{-| Set help text.
+{-| Set supporting help text. `<m3e-select>` has no supporting-text slot, so this
+renders as a sibling subscript element wired to the select via `aria-describedby`.
+Superseded by `withError` when both are set.
 -}
 withHelp : Html msg -> Select kind value msg -> Select kind value msg
 withHelp h (Select cfg) =
     Select { cfg | help = Just h }
 
 
-{-| Set an error message (replaces help text).
+{-| Set an error message — takes precedence over `withHelp` (mutually exclusive).
+Like help, it renders as a subscript sibling wired via `aria-describedby`, since
+`<m3e-select>` exposes no error slot.
 -}
 withError : Html msg -> Select kind value msg -> Select kind value msg
 withError e (Select cfg) =

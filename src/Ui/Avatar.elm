@@ -86,7 +86,8 @@ initials name =
         |> withContent (text (extractInitials name))
 
 
-{-| An avatar displaying an icon.
+{-| An avatar displaying an icon glyph — the generic-identity fallback when
+there is no photo or name (e.g. `Ui.Icon.material "person"`).
 -}
 icon : Ui.Icon.Icon msg -> Avatar msg
 icon glyph =

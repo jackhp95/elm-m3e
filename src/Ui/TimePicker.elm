@@ -146,14 +146,16 @@ withId id (TimePicker cfg) =
     TimePicker { cfg | id = Just id }
 
 
-{-| Earliest allowed time, `"HH:MM"`.
+{-| Earliest allowed time, `"HH:MM"` — the native input's `min`
+attribute. Earlier times fail validation.
 -}
 withMin : String -> TimePicker msg -> TimePicker msg
 withMin s (TimePicker cfg) =
     TimePicker { cfg | min = Just s }
 
 
-{-| Latest allowed time, `"HH:MM"`.
+{-| Latest allowed time, `"HH:MM"` — the native input's `max`
+attribute. Later times fail validation.
 -}
 withMax : String -> TimePicker msg -> TimePicker msg
 withMax s (TimePicker cfg) =
@@ -168,28 +170,32 @@ withStep n (TimePicker cfg) =
     TimePicker { cfg | step = Just n }
 
 
-{-| Mark the field as required.
+{-| Mark the field as required (default `False`). Sets the native input's
+`required` attribute, which the surrounding form-field reflects as a
+required marker.
 -}
 withRequired : Bool -> TimePicker msg -> TimePicker msg
 withRequired b (TimePicker cfg) =
     TimePicker { cfg | required = b }
 
 
-{-| Disable the field.
+{-| Disable the field — non-interactive (default `False`).
 -}
 withDisabled : Bool -> TimePicker msg -> TimePicker msg
 withDisabled b (TimePicker cfg) =
     TimePicker { cfg | disabled = b }
 
 
-{-| Set help text.
+{-| Set hint text, shown in the form-field's subscript while the input is
+valid.
 -}
 withHelp : Html msg -> TimePicker msg -> TimePicker msg
 withHelp h (TimePicker cfg) =
     TimePicker { cfg | help = Just h }
 
 
-{-| Set an error message (replaces help text).
+{-| Set error text for the form-field's subscript. Takes precedence over
+hint text from `withHelp`.
 -}
 withError : Html msg -> TimePicker msg -> TimePicker msg
 withError e (TimePicker cfg) =
@@ -200,7 +206,9 @@ withError e (TimePicker cfg) =
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render to `Html`.
+{-| Render to `Html` — a native `<input type=time>` placed in the default
+slot of `<m3e-form-field>`, with the label, hint, and error wired into
+the field's subscript.
 -}
 view : TimePicker msg -> Html msg
 view (TimePicker cfg) =

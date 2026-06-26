@@ -13,6 +13,13 @@ surface 1:1.
 
 [m3]: https://m3.material.io/components/cards/overview
 
+Reach for a card to group related content and actions about **one**
+subject, sitting persistently in the page flow. For transient focus use a
+different surface: `Ui.Dialog` (a modal prompt/decision that blocks the
+page), `Ui.BottomSheet` (a sheet from the bottom, mobile-friendly), or
+`Ui.Menu` (a small list of actions anchored to a trigger). To show or hide
+a section in place, use `Ui.Disclosure`.
+
 
 # Anatomy and slots
 

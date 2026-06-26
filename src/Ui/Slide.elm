@@ -6,9 +6,14 @@ module Ui.Slide exposing
     , view
     )
 
-{-| Typed builder for an M3 slide group. Wraps `M3e.SlideGroup` and
-`M3e.Slide`. Each slide is plain `Html msg` content — no separate
-slide type needed.
+{-| Typed builder for an M3 slide group — directional pagination controls
+for scrolling through overflowing content. The previous/next buttons surface
+only when the content overflows. Wraps `M3e.SlideGroup` and `M3e.Slide`;
+each slide is plain `Html msg` content — no separate slide type needed.
+
+Reach for a slide group for directional content paging. To switch between
+peer views use tabs; to page through data use a paginator; for an ordered
+multi-step flow use `Ui.Stepper`.
 
 A single slide is degenerate but valid (renders one `M3e.Slide` inside
 an `M3e.SlideGroup`).
@@ -84,14 +89,16 @@ withId id (Slide cfg) =
     Slide { cfg | id = Just id }
 
 
-{-| Set the vertical orientation.
+{-| Set vertical orientation (`vertical` on `<m3e-slide-group>`, default
+false): content flows and pages top-to-bottom instead of left-to-right.
 -}
 withVertical : Bool -> Slide msg -> Slide msg
 withVertical flag (Slide cfg) =
     Slide { cfg | vertical = flag }
 
 
-{-| Disable the slide group.
+{-| Disable the pagination buttons (`disabled` on `<m3e-slide-group>`,
+default false). Content still renders; only the scroll controls go inert.
 -}
 withDisabled : Bool -> Slide msg -> Slide msg
 withDisabled flag (Slide cfg) =

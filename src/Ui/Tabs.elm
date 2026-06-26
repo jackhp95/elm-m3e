@@ -153,14 +153,16 @@ withId id (Tabs cfg) =
     Tabs { cfg | id = Just id }
 
 
-{-| Stretch tabs to fill the container width.
+{-| Stretch tabs to fill the header width — the `stretch` attribute (default
+`False`, tabs sized to their content). When `True`, tabs expand to divide the
+container evenly.
 -}
 withStretch : Bool -> Tabs value msg -> Tabs value msg
 withStretch b (Tabs cfg) =
     Tabs { cfg | stretch = b }
 
 
-{-| Add an icon to a tab.
+{-| Add an icon before the tab's label — rides the `icon` slot of `m3e-tab`.
 -}
 withTabIcon : Ui.Icon.Icon msg -> Tab value msg -> Tab value msg
 withTabIcon icon (Tab cfg) =

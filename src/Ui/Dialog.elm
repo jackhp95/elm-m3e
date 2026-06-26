@@ -13,6 +13,11 @@ page to focus the user on a single task. Mirrors the Material 3
 
 [m3]: https://m3.material.io/components/dialogs/overview
 
+Use a dialog for a prompt or decision that must **block the page** until
+the user responds. On small viewports a `Ui.BottomSheet` is often the
+better modal; for a short list of actions anchored to a trigger reach for
+`Ui.Menu`; for content that lives in the page flow, `Ui.Card`.
+
 
 # Open state is caller-owned
 
@@ -165,14 +170,17 @@ withAttributes attributes (Dialog cfg) =
     Dialog { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute.
+{-| Set the `id` attribute — e.g. so an external `<m3e-dialog-trigger
+for="…">` can target this dialog by id.
 -}
 withId : String -> Dialog msg -> Dialog msg
 withId id (Dialog cfg) =
     Dialog { cfg | id = Just id }
 
 
-{-| Set the dialog's body content.
+{-| Set the dialog's body content — the supporting text/content region
+(the element's default slot), rendered below the header title and above
+the actions row.
 -}
 withBody : Html msg -> Dialog msg -> Dialog msg
 withBody body (Dialog cfg) =

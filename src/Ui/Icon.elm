@@ -8,9 +8,9 @@ module Ui.Icon exposing
     )
 
 {-| Icon primitive for `Ui.*`, backed by m3e's Material Symbols element
-(`<m3e-icon>`). The symbol name is a [Material Symbols][ms] identifier
-(e.g. `"menu"`, `"save"`, `"check"`) rendered as the element's text
-ligature.
+(`<m3e-icon>`). The glyph is chosen by the element's `name` attribute — a
+[Material Symbols][ms] identifier (e.g. `"menu"`, `"save"`, `"check"`); there
+is no content slot.
 
 Carries an optional accessible label (rendered as `sr-only` by containers
 that present the icon as a standalone interactive) plus the M3 Icon
@@ -77,7 +77,8 @@ type alias Config msg =
     }
 
 
-{-| Material Symbols weight axis (100..700).
+{-| Material Symbols weight axis: `Thin` 100, `Light` 300, `Regular` 400,
+`Medium` 500, `Bold` 700. The `<m3e-icon>` default is 400 (`Regular`).
 -}
 type Weight
     = Thin
@@ -87,7 +88,9 @@ type Weight
     | Bold
 
 
-{-| Material Symbols grade axis (low/normal/high emphasis).
+{-| Material Symbols grade axis, fine-tuning weight for emphasis:
+`LowGrade`, `NormalGrade`, `HighGrade`. The `<m3e-icon>` default grade is
+medium (`NormalGrade`).
 -}
 type Grade
     = LowGrade
@@ -128,28 +131,32 @@ withA11y label (Icon cfg) =
     Icon { cfg | a11y = Just label }
 
 
-{-| Use the filled grade of the symbol.
+{-| Toggle the symbol's `fill` axis. Maps to the `filled` attribute, which
+defaults to `False` (unfilled outline).
 -}
 withFilled : Bool -> Icon msg -> Icon msg
 withFilled f (Icon cfg) =
     Icon { cfg | filled = f }
 
 
-{-| Set the optical size (20..48).
+{-| Set the `optical-size` axis (20..48), tuning stroke detail to the rendered
+size. The `<m3e-icon>` default is 24.
 -}
 withOpticalSize : Int -> Icon msg -> Icon msg
 withOpticalSize n (Icon cfg) =
     Icon { cfg | opticalSize = Just n }
 
 
-{-| Set the icon weight.
+{-| Set the `weight` axis. Unset leaves the `<m3e-icon>` default of 400
+(`Regular`).
 -}
 withWeight : Weight -> Icon msg -> Icon msg
 withWeight w (Icon cfg) =
     Icon { cfg | weight = Just w }
 
 
-{-| Set the icon grade.
+{-| Set the `grade` axis. Unset leaves the `<m3e-icon>` default of medium
+(`NormalGrade`).
 -}
 withGrade : Grade -> Icon msg -> Icon msg
 withGrade g (Icon cfg) =

@@ -16,8 +16,10 @@ expanded-width viewports. Mirrors the Material 3
 
 [m3]: https://m3.material.io/components/navigation-drawer/overview
 
-For compact viewports use `Ui.NavigationBar`; for medium viewports use
-`Ui.NavigationRail`.
+The drawer is the **large-screen** top of the responsive
+top-level-navigation trio: for compact viewports step down to
+`Ui.NavigationBar` (bottom bar); for medium viewports use
+`Ui.NavigationRail` (side rail).
 
 
 # Two shapes
@@ -411,14 +413,16 @@ withEntryTarget target (Entry cfg) =
     Entry { cfg | target = Just target }
 
 
-{-| Mark an entry as the current selection (applies the `selected` attribute).
+{-| Mark an entry as the current selection — the `selected` attribute on
+`m3e-nav-menu-item` (default `False`).
 -}
 withEntrySelected : Bool -> Entry msg -> Entry msg
 withEntrySelected b (Entry cfg) =
     Entry { cfg | selected = b }
 
 
-{-| Expand a group entry (applies the `open` attribute).
+{-| Expand a group entry — the `open` attribute on `m3e-nav-menu-item`
+(default `False`, collapsed).
 -}
 withEntryOpen : Bool -> Entry msg -> Entry msg
 withEntryOpen b (Entry cfg) =

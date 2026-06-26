@@ -321,51 +321,60 @@ withId id (TextField cfg) =
     TextField { cfg | id = Just id }
 
 
-{-| Set placeholder text shown when the field is empty.
+{-| Set the native `placeholder` attribute on the `<input>`/`<textarea>`,
+shown when the field is empty. Default: none.
 -}
 withPlaceholder : String -> TextField kind msg -> TextField kind msg
 withPlaceholder placeholder (TextField cfg) =
     TextField { cfg | placeholder = Just placeholder }
 
 
-{-| Set help text rendered beneath the field.
+{-| Set hint text for the form-field's `hint` slot, rendered in the
+subscript beneath the control while it is valid. Hidden once `withError`
+takes over (errors replace hints). Default: none.
 -}
 withHelp : Html msg -> TextField kind msg -> TextField kind msg
 withHelp help (TextField cfg) =
     TextField { cfg | help = Just help }
 
 
-{-| Set an error message. When set, the field renders in its error
-visual style and the error message replaces help text.
+{-| Set error content for the form-field's `error` slot. When set, the
+field renders in its invalid visual style and the error replaces the
+`hint`/help subscript. Default: none.
 -}
 withError : Html msg -> TextField kind msg -> TextField kind msg
 withError error (TextField cfg) =
     TextField { cfg | error = Just error }
 
 
-{-| Mark the field as required for form submission.
+{-| Set the native `required` attribute, marking the field as required
+for form submission. The form-field shows its required marker unless it
+is hidden. Default: `False`.
 -}
 withRequired : Bool -> TextField kind msg -> TextField kind msg
 withRequired required (TextField cfg) =
     TextField { cfg | required = required }
 
 
-{-| Mark the field as disabled — non-interactive.
+{-| Set the native `disabled` attribute — non-interactive and
+non-focusable. Default: `False`.
 -}
 withDisabled : Bool -> TextField kind msg -> TextField kind msg
 withDisabled disabled (TextField cfg) =
     TextField { cfg | disabled = disabled }
 
 
-{-| Mark the field as read-only — the value is selectable but not
-editable. Distinct from `withDisabled`, which is also non-focusable.
+{-| Set the native `readonly` attribute — the value is focusable and
+selectable but not editable. Distinct from `withDisabled`, which is also
+non-focusable. Default: `False`.
 -}
 withReadonly : Bool -> TextField kind msg -> TextField kind msg
 withReadonly readonly (TextField cfg) =
     TextField { cfg | readonly = readonly }
 
 
-{-| Add a prefix slot (e.g. a currency symbol).
+{-| Fill the form-field's `prefix` slot, rendered before the control
+(e.g. a currency symbol). Default: none.
 
     |> Ui.TextField.withPrefix (text "$")
 
@@ -375,7 +384,8 @@ withPrefix prefix (TextField cfg) =
     TextField { cfg | prefix = Just prefix }
 
 
-{-| Add a suffix slot (e.g. a unit indicator).
+{-| Fill the form-field's `suffix` slot, rendered after the control
+(e.g. a unit indicator). Default: none.
 
     |> Ui.TextField.withSuffix (text "kg")
 
@@ -385,7 +395,8 @@ withSuffix suffix (TextField cfg) =
     TextField { cfg | suffix = Just suffix }
 
 
-{-| Set a maximum length the browser will enforce.
+{-| Set the native `maxlength` attribute — the maximum character count
+the browser will accept. Default: unlimited.
 -}
 withMaxLength : Int -> TextField kind msg -> TextField kind msg
 withMaxLength n (TextField cfg) =
@@ -396,12 +407,9 @@ withMaxLength n (TextField cfg) =
 -- SINGLE-LINE-ONLY MODIFIERS ---------------------------------------------
 
 
-{-| Constrain the input value to a regex pattern. Browser-level
-validation only — combine with `withError` for application-level
-validation feedback.
-
-Single-line text fields only.
-
+{-| Set the native `pattern` attribute, constraining the input value to
+a regex. Browser-level validation only — combine with `withError` for
+application-level validation feedback. Single-line only. Default: none.
 -}
 withPattern : String -> TextField SingleLine msg -> TextField SingleLine msg
 withPattern pattern (TextField cfg) =
@@ -452,8 +460,9 @@ withAutosize bounds (TextField cfg) =
     TextField { cfg | autosize = Just bounds }
 
 
-{-| Set the textarea's `rows` attribute (fixed initial height).
-Multi-line only.
+{-| Set the `<textarea>`'s native `rows` attribute (fixed visible
+height). Multi-line only. Use this for a fixed height, or `withAutosize`
+to grow with content. Default: the browser's intrinsic height.
 -}
 withRows : Int -> TextField MultiLine msg -> TextField MultiLine msg
 withRows rows (TextField cfg) =

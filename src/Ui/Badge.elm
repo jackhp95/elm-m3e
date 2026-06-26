@@ -7,6 +7,11 @@ module Ui.Badge exposing
 
 {-| Typed builder for M3 badges. Wraps `M3e.Badge`.
 
+A badge is a compact count or dot attached to an icon or item — use it for
+unread counts, presence, or short status emphasis. For a dismissible message
+about a completed action reach for [`Ui.Snackbar`](Ui-Snackbar); for on-hover /
+focus context on a control, [`Ui.Tooltip`](Ui-Tooltip).
+
 M3 sanctions exactly two badge types: **small** (shape only, no text) and
 **large** (text/count). These map to three constructors so the content rules
 are enforced by construction rather than by settable-but-ignored modifiers:
@@ -15,6 +20,13 @@ are enforced by construction rather than by settable-but-ignored modifiers:
   - [`count`](#count) — large; a numeric badge. Applies the M3 "999+"
     truncation (max 4 chars including `+`).
   - [`label`](#label) — large; short status text.
+
+Anchor a badge to another element by that element's id and m3e positions it
+relative to the anchor:
+
+    Ui.Badge.count 10
+        |> Ui.Badge.withFor "inbox-button"
+        |> Ui.Badge.view
 
 
 # Construction
@@ -101,21 +113,25 @@ withAttributes attributes (Badge cfg) =
     Badge { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute.
+{-| Set the `id` attribute on the underlying `<m3e-badge>`.
 -}
 withId : String -> Badge msg -> Badge msg
 withId id (Badge cfg) =
     Badge { cfg | id = Just id }
 
 
-{-| Anchor the badge to the element with the given id.
+{-| Anchor the badge to the interactive control with the given `id` (the m3e
+`for` attribute). m3e attaches the badge to that element and positions it
+(element default `above-after`). Unset (`for` defaults to null), the badge
+renders inline wherever you place it.
 -}
 withFor : String -> Badge msg -> Badge msg
 withFor forId (Badge cfg) =
     Badge { cfg | for = Just forId }
 
 
-{-| Render the badge.
+{-| Render the badge to `Html` — a `<m3e-badge>` carrying its content (for
+`count` / `label`) in the default slot.
 -}
 view : Badge msg -> Html msg
 view (Badge cfg) =

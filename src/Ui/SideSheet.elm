@@ -13,8 +13,12 @@ panel in side mode). Mirrors the Material 3 [Side sheets][m3] surface.
 [m3]: https://m3.material.io/components/side-sheets/overview
 
 A side sheet is a panel anchored to the start or end edge of the
-viewport. It can be **modal** (overlays content with a scrim) or
-**non-modal** (occupies layout alongside content).
+viewport, holding **supplementary** content for the current view —
+filters, details, a contextual editor. (For top-level destination
+switching reach for `Ui.NavigationDrawer` instead; both ride
+`<m3e-drawer-container>`, but the side sheet is content, not navigation.)
+It can be **modal** (overlays content with a scrim) or **non-modal**
+(occupies layout alongside content).
 
 Note: m3e ships side-sheets via `<m3e-drawer-container>` rather than a
 dedicated `<m3e-side-sheet>`. This module renders the drawer with the
@@ -150,14 +154,16 @@ withId id (SideSheet cfg) =
     SideSheet { cfg | id = Just id }
 
 
-{-| Set the body content.
+{-| Set the panel's body content — rendered into the drawer's `start`/`end`
+slot (per `withSide`), above any actions.
 -}
 withBody : Html msg -> SideSheet msg -> SideSheet msg
 withBody body (SideSheet cfg) =
     SideSheet { cfg | body = Just body }
 
 
-{-| Set the actions row.
+{-| Set the panel's actions row — buttons rendered into the same `start`/`end`
+slot, below the body. Replaces any previously set actions.
 -}
 withActions :
     List (Ui.Button.Button msg)

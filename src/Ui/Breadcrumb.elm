@@ -10,9 +10,24 @@ module Ui.Breadcrumb exposing
     , view
     )
 
-{-| Typed builder for M3 breadcrumbs. Only typed `Item` values can go
-in. Each item is either an `item`/`link` (trail) or `current` (the
-present location, non-clickable).
+{-| Typed builder for `<m3e-breadcrumb>` — a hierarchical navigation
+trail that shows where the current page sits in the site's depth and
+lets the user step back up the path.
+
+Reach for a breadcrumb to expose **hierarchy depth** within a page.
+Sibling navigation: `Ui.Tabs` switches peer views, `Ui.Toc` links to
+in-page sections, and `Ui.Stepper` walks an ordered multi-step flow.
+
+Only typed `Item` values can go in. Each item is either an `item`/`link`
+(trail) or `current` (the present location, non-clickable).
+
+    Ui.Breadcrumb.new
+        |> Ui.Breadcrumb.withItems
+            [ Ui.Breadcrumb.link "Dashboard" "/dashboard"
+            , Ui.Breadcrumb.link "Reports" "/dashboard/reports"
+            , Ui.Breadcrumb.current "Annual"
+            ]
+        |> Ui.Breadcrumb.view
 
 
 # Construction
@@ -104,28 +119,33 @@ withId id (Breadcrumb cfg) =
     Breadcrumb { cfg | id = Just id }
 
 
-{-| Provide custom content for the `separator` slot rendered between crumbs.
+{-| Replace the glyph rendered between crumbs via the `separator` slot.
+Omit this to keep `m3e-breadcrumb`'s default separator.
 -}
 withSeparator : Html msg -> Breadcrumb msg -> Breadcrumb msg
 withSeparator separator (Breadcrumb cfg) =
     Breadcrumb { cfg | separator = Just separator }
 
 
-{-| A trail item (not the current location) from plain text.
+{-| A non-clickable trail item (no `href`) from plain text — for a level
+that has no destination of its own.
 -}
 item : String -> Item msg
 item label =
     Item { label = Html.text label, href = Nothing, isCurrent = False, icon = Nothing }
 
 
-{-| A clickable trail item from plain text and its target href.
+{-| A clickable trail item from plain text and its target `href` — the
+usual crumb for an ancestor page.
 -}
 link : String -> String -> Item msg
 link label href =
     Item { label = Html.text label, href = Just href, isCurrent = False, icon = Nothing }
 
 
-{-| The current (non-clickable) crumb from plain text.
+{-| The present location as the last crumb. Sets `current` on the
+underlying `<m3e-breadcrumb-item>`, marking it the active, non-clickable
+end of the path. Use exactly one per trail.
 -}
 current : String -> Item msg
 current label =
@@ -153,7 +173,8 @@ currentEscapeHatchHtml label =
     Item { label = label, href = Nothing, isCurrent = True, icon = Nothing }
 
 
-{-| Attach a leading icon (the item's `icon` slot) to a crumb.
+{-| Attach a leading icon, rendered before the label in the item's `icon`
+slot. Emitted `aria-hidden`, so keep the label meaningful on its own.
 -}
 withItemIcon : Ui.Icon.Icon msg -> Item msg -> Item msg
 withItemIcon icon (Item i) =

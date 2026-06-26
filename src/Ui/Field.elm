@@ -13,8 +13,11 @@ filled / outlined container) wrapped around **one** control.
 
 `Ui.Field` is a **composable**: the control is bare (a `<m3e-checkbox>`,
 `<m3e-switch>`, a native `<input>`, …) and `Ui.Field` supplies the field
-presentation around it. This is deliberately the inverse of the old behavior
-where each control wrapped *itself* in a form-field — an outlined box around a
+presentation around it. The toggle controls — `Ui.Switch`, `Ui.Checkbox`,
+`Ui.RadioButton`, `Ui.Slider` — now render bare (their `label` is kept as an
+`aria-label`); wrap one in `Ui.Field` when you want a _visible_ label plus
+supporting/error text. This is deliberately the inverse of the old behavior
+where each control wrapped _itself_ in a form-field — an outlined box around a
 switch / checkbox / radio is not standard M3 (see `docs/research/api-friction-log.md`
 F7). Controls now render bare by default; reach for `Ui.Field` only when you
 genuinely want the labeled-field presentation (text fields always; toggles
@@ -159,16 +162,16 @@ withVariant v (Field cfg) =
     Field { cfg | variant = v }
 
 
-{-| Set the supporting (hint) text shown in the subscript when the control is
-valid. Suppressed when an error is present.
+{-| Set the supporting (hint) text shown in the subscript (the `hint` slot) when
+the control is valid. Suppressed when an error is present.
 -}
 withHint : Html msg -> Field msg -> Field msg
 withHint html (Field cfg) =
     Field { cfg | hint = Just html }
 
 
-{-| Set the error text shown in the subscript when the control is invalid.
-Takes visual precedence over the hint.
+{-| Set the error text shown in the subscript (the `error` slot) when the
+control is invalid. Takes visual precedence over the hint.
 -}
 withError : Html msg -> Field msg -> Field msg
 withError html (Field cfg) =
@@ -189,14 +192,17 @@ withSuffix html (Field cfg) =
     Field { cfg | suffix = Just html }
 
 
-{-| Hide the required marker that `m3e-form-field` shows for required controls.
+{-| Hide the required marker that `m3e-form-field` shows for required controls
+(maps to the `hide-required-marker` attribute; default shown, i.e. `False`).
 -}
 withHideRequiredMarker : Bool -> Field msg -> Field msg
 withHideRequiredMarker b (Field cfg) =
     Field { cfg | hideRequiredMarker = b }
 
 
-{-| Float the label always, rather than only when the control has content.
+{-| Float the label always, rather than only when the control has content
+(maps to the `float-label` attribute; default `"auto"`, which floats only when
+necessary).
 -}
 withFloatAlways : Bool -> Field msg -> Field msg
 withFloatAlways b (Field cfg) =

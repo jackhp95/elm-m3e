@@ -9,9 +9,14 @@ module Ui.Stepper exposing
     , view
     )
 
-{-| Typed builder for M3 steppers. Each `Step` carries its own label,
+{-| Typed builder for M3 steppers — a wizard-like workflow that divides
+content into discrete, ordered steps. Each `Step` carries its own label,
 panel content, and completion state; the renderer threads parallel
 `Step`/`StepPanel` elements with proper selection.
+
+Reach for a stepper to walk an ordered, multi-step flow. To switch between
+peer views use tabs; to page through data use a paginator; for directional
+content paging use a slide group (`Ui.Slide`).
 
 
 # State philosophy
@@ -142,14 +147,19 @@ withAttributes attributes (Stepper cfg) =
     Stepper { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute.
+{-| Set the host `id`. Also seeds the generated per-step and per-panel DOM
+ids (`<id>-step-<stepId>` / `<id>-panel-<stepId>`) that wire each
+`<m3e-step>` to its `<m3e-step-panel>` via `for`. Defaults to `"stepper"`
+when unset.
 -}
 withId : String -> Stepper msg -> Stepper msg
 withId id (Stepper cfg) =
     Stepper { cfg | id = Just id }
 
 
-{-| Construct a step from an id, label, and panel content.
+{-| Construct a step from an id, label, and panel content. The label fills
+the `<m3e-step>` default slot; the content becomes the body of the matching
+`<m3e-step-panel>`.
 -}
 step : String -> Html msg -> List (Html msg) -> Step msg
 step id label content =
@@ -166,14 +176,15 @@ step id label content =
         }
 
 
-{-| Mark a step as completed.
+{-| Mark a step completed (`completed` on `<m3e-step>`, default false). A
+completed step swaps its numbered indicator for the `done-icon`.
 -}
 withCompleted : Bool -> Step msg -> Step msg
 withCompleted flag (Step cfg) =
     Step { cfg | completed = flag }
 
 
-{-| Mark a step as optional.
+{-| Mark a step optional (`optional` on `<m3e-step>`, default false).
 -}
 withOptional : Bool -> Step msg -> Step msg
 withOptional flag (Step cfg) =
@@ -229,14 +240,16 @@ withSteps ss (Stepper cfg) =
     Stepper { cfg | steps = cfg.steps ++ ss }
 
 
-{-| Set the vertical orientation.
+{-| Set vertical orientation (emits `orientation="vertical"` on
+`<m3e-stepper>`; the element default is horizontal).
 -}
 withVertical : Bool -> Stepper msg -> Stepper msg
 withVertical flag (Stepper cfg) =
     Stepper { cfg | vertical = flag }
 
 
-{-| Require steps to be completed in order.
+{-| Require linear progression (`linear` on `<m3e-stepper>`, default false):
+the validity of previous steps is checked before the user can advance.
 -}
 withLinear : Bool -> Stepper msg -> Stepper msg
 withLinear flag (Stepper cfg) =

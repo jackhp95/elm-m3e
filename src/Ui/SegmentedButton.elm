@@ -247,7 +247,8 @@ withError error (SegmentedButton cfg) =
     SegmentedButton { cfg | error = Just error }
 
 
-{-| Disable every segment in the group.
+{-| Disable the group and every segment in it (m3e `disabled` on the
+group and each `m3e-button-segment`, default false).
 -}
 withDisabled : Bool -> SegmentedButton kind value msg -> SegmentedButton kind value msg
 withDisabled disabled (SegmentedButton cfg) =

@@ -137,14 +137,16 @@ withId id (Toolbar cfg) =
     Toolbar { cfg | id = Just id }
 
 
-{-| Toggle the elevated style.
+{-| Toggle the elevated style — the `elevated` attribute (default `False`,
+a flat toolbar). Raises the toolbar above content with shadow.
 -}
 withElevated : Bool -> Toolbar msg -> Toolbar msg
 withElevated b (Toolbar cfg) =
     Toolbar { cfg | elevated = b }
 
 
-{-| Render the toolbar vertically.
+{-| Orient the toolbar vertically — the `vertical` attribute (default
+`False`, a horizontal row). Stacks its children as a column.
 -}
 withVertical : Bool -> Toolbar msg -> Toolbar msg
 withVertical b (Toolbar cfg) =

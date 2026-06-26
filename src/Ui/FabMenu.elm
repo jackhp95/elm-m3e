@@ -87,7 +87,8 @@ type alias ItemConfig msg =
     }
 
 
-{-| FAB menu variant.
+{-| Appearance variant of the expanded menu surface (m3e `m3e-fab-menu`
+`variant`, default `primary`).
 -}
 type Variant
     = Primary
@@ -131,7 +132,7 @@ withAttributes attributes (FabMenu cfg) =
     FabMenu { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the visible label on a FAB menu item.
+{-| Set the visible label on a FAB menu item (the item's default slot).
 -}
 withItemLabel : String -> Item msg -> Item msg
 withItemLabel label (Item cfg) =

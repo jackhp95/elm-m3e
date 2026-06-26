@@ -99,7 +99,10 @@ type alias Config msg =
 -- CONSTRUCTOR ------------------------------------------------------------
 
 
-{-| Construct a bottom sheet.
+{-| Construct a bottom sheet. Requires the current `open` state and an
+`onClose` handler (fired on dismiss); see _Open state is caller-owned_
+above. Defaults to a non-modal sheet with a drag handle that can be
+swiped down to dismiss.
 -}
 new : { open : Bool, onClose : msg } -> BottomSheet msg
 new c =
@@ -130,14 +133,16 @@ withAttributes attributes (BottomSheet cfg) =
     BottomSheet { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute.
+{-| Set the `id` attribute — e.g. so an external `<m3e-bottom-sheet-trigger
+for="…">` can target this sheet by id.
 -}
 withId : String -> BottomSheet msg -> BottomSheet msg
 withId id (BottomSheet cfg) =
     BottomSheet { cfg | id = Just id }
 
 
-{-| Set the sheet's header content (rendered in the `header` slot).
+{-| Set the sheet's header content — a title region rendered in the
+`header` slot, above the body.
 -}
 withHeader : Html msg -> BottomSheet msg -> BottomSheet msg
 withHeader header (BottomSheet cfg) =

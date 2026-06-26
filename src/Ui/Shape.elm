@@ -8,10 +8,14 @@ module Ui.Shape exposing
 
 {-| Typed builder for `<m3e-shape>`. Wraps `M3e.Shape`.
 
-The element clips its slotted content to a named Material 3 shape. Pick
-the shape with [`withName`](#withName) (the element's own `name`
-attribute), and size it the way you size any element — Material spacing
-tokens or a layout class of your own.
+The element clips its slotted (default-slot) content to a named Material 3
+shape — drawn from the Material Shape library (`circle`, `pill`,
+`heart`, `7-sided-cookie`, …), with built-in morphing between them. Use
+it for emphasis and decorative flair: shaped avatars, badges, image
+masks. Pick the shape with [`withName`](#withName) (the element's own
+`name` attribute, default none — unset leaves content unclipped), and
+size it the way you size any element — Material spacing tokens or a
+layout class of your own.
 
     Ui.Shape.new
         |> Ui.Shape.withId "avatar-clip"
@@ -78,7 +82,8 @@ type alias Config msg =
     }
 
 
-{-| Construct a fresh shape with no name and no content.
+{-| Construct a fresh shape with no name and no content. With no name set,
+the `name` attribute stays unset (default) and the content renders unclipped.
 -}
 new : Shape msg
 new =
@@ -101,7 +106,9 @@ withId id (Shape cfg) =
     Shape { cfg | id = Just id }
 
 
-{-| Set the Material 3 shape the element clips its content to.
+{-| Set the Material 3 shape the element clips its content to — the
+element's `name` attribute (default none). The value is one of the
+Material Shape library names re-exported as [`Name`](#Name).
 
     Ui.Shape.new
         |> Ui.Shape.withName M3e.Shape.Circle
@@ -119,7 +126,8 @@ withClass cls (Shape cfg) =
     Shape { cfg | classes = cls :: cfg.classes }
 
 
-{-| Set the content clipped to the shape.
+{-| Set the content rendered into the element's default slot and clipped to
+the shape (an image, an avatar, any markup).
 -}
 withContent : List (Html msg) -> Shape msg -> Shape msg
 withContent content (Shape cfg) =

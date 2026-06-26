@@ -7,9 +7,15 @@ module Ui.Slider exposing
     , view
     )
 
-{-| Typed builder for `<m3e-slider>` — a control for selecting a value
-(or range) from a continuous or stepped range. Mirrors the Material 3
-[Sliders][m3] surface.
+{-| Typed builder for `<m3e-slider>` — a control for choosing a **number
+within a range** (or a `{ start, end }` range between two thumbs). Mirrors the
+Material 3 [Sliders][m3] surface.
+
+Reach for a slider when the choice is a continuous or stepped magnitude
+(volume, brightness, price). For other selection controls: a single immediate
+on/off toggle is [`Ui.Switch`](Ui-Switch); zero-or-more from a list is
+[`Ui.Checkbox`](Ui-Checkbox); one-of-a-few visible options is
+[`Ui.RadioButton`](Ui-RadioButton).
 
 [m3]: https://m3.material.io/components/sliders/overview
 
@@ -31,10 +37,10 @@ module Ui.Slider exposing
 
 # Optional modifiers
 
-`withMin` / `withMax` set the range bounds (default 0..100 from m3e).
-`withStep` sets a step increment (continuous when unset). `withDiscrete`
-shows tick marks at each step. `withLabelled` toggles the in-thumb value
-label (default `True`).
+`withMin` / `withMax` set the range bounds (default `0`..`100`). `withStep`
+sets the snap increment (default `1`). `withDiscrete` shows tick marks at each
+step (default off). `withLabelled` toggles the in-thumb value label (default
+`True`).
 
 
 # Quick examples
@@ -163,7 +169,9 @@ type Thumbs msg
 -- CONSTRUCTORS -----------------------------------------------------------
 
 
-{-| Construct a single-value slider.
+{-| Construct a single-value slider — one thumb selecting one `Float`. Requires
+the visible `label`, the current `value`, and an `onChange` handler receiving
+the new value.
 -}
 value :
     { label : String, value : Float, onChange : Float -> msg }
@@ -172,7 +180,9 @@ value c =
     Slider (baseConfig c.label (SingleThumb { value = c.value, onChange = c.onChange }))
 
 
-{-| Construct a range slider (two thumbs).
+{-| Construct a range slider — two thumbs selecting a `{ start, end }` pair.
+Requires the visible `label`, the current `{ start, end }` value, and an
+`onChange` handler receiving the new pair.
 -}
 range :
     { label : String
@@ -219,50 +229,54 @@ withAttributes attributes (Slider cfg) =
     Slider { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` attribute.
+{-| Set the host `id`. When unset, a stable id is derived from the `label`.
 -}
 withId : String -> Slider kind msg -> Slider kind msg
 withId id (Slider cfg) =
     Slider { cfg | id = Just id }
 
 
-{-| Set the minimum value (default: m3e's element default, typically 0).
+{-| Set the lower bound of the range. Maps to the `min` attribute (default `0`).
 -}
 withMin : Float -> Slider kind msg -> Slider kind msg
 withMin n (Slider cfg) =
     Slider { cfg | min = Just n }
 
 
-{-| Set the maximum value (default: m3e's element default, typically 100).
+{-| Set the upper bound of the range. Maps to the `max` attribute
+(default `100`).
 -}
 withMax : Float -> Slider kind msg -> Slider kind msg
 withMax n (Slider cfg) =
     Slider { cfg | max = Just n }
 
 
-{-| Set the step increment. Continuous when unset.
+{-| Set the value at which the thumb snaps. Maps to the `step` attribute
+(default `1`).
 -}
 withStep : Float -> Slider kind msg -> Slider kind msg
 withStep n (Slider cfg) =
     Slider { cfg | step = Just n }
 
 
-{-| Show tick marks at each step. Pair with `withStep` for a clear
-discrete-value scale.
+{-| Show tick marks at each step. Maps to the `discrete` attribute
+(default `False`). Pair with `withStep` for a clear discrete-value scale.
 -}
 withDiscrete : Bool -> Slider kind msg -> Slider kind msg
 withDiscrete b (Slider cfg) =
     Slider { cfg | discrete = b }
 
 
-{-| Show or hide the in-thumb value label. Default `True`.
+{-| Show or hide the value label that appears above the thumb while dragging.
+Maps to the `labelled` attribute; this builder defaults it to `True`.
 -}
 withLabelled : Bool -> Slider kind msg -> Slider kind msg
 withLabelled b (Slider cfg) =
     Slider { cfg | labelled = b }
 
 
-{-| Disable the slider.
+{-| Mark the slider as disabled — non-interactive. Maps to the `disabled`
+attribute (default `False`).
 -}
 withDisabled : Bool -> Slider kind msg -> Slider kind msg
 withDisabled b (Slider cfg) =

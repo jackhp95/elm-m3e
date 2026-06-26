@@ -200,21 +200,26 @@ withAttributes attributes (Tooltip cfg) =
     Tooltip { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the `id` on the tooltip element.
+{-| Set the `id` on the tooltip element (`<m3e-tooltip>` or
+`<m3e-rich-tooltip>`). Distinct from `anchorId`, which is the id of the control
+the tooltip describes.
 -}
 withId : String -> Tooltip kind msg -> Tooltip kind msg
 withId id (Tooltip cfg) =
     Tooltip { cfg | id = Just id }
 
 
-{-| Set the anchor position.
+{-| Set where the tooltip appears relative to its anchor. Unset, m3e applies
+its own default — `below` for plain `<m3e-tooltip>`, `below-after` for
+`<m3e-rich-tooltip>`.
 -}
 withPosition : Position -> Tooltip kind msg -> Tooltip kind msg
 withPosition p (Tooltip cfg) =
     Tooltip { cfg | position = Just p }
 
 
-{-| Set the hide-delay in milliseconds.
+{-| Set the delay, in milliseconds, before the tooltip hides once hover / focus
+leaves the anchor (the m3e `hide-delay` attribute; element default `200`).
 -}
 withHideDelay : Int -> Tooltip kind msg -> Tooltip kind msg
 withHideDelay ms (Tooltip cfg) =
@@ -245,7 +250,9 @@ withActions actions (Tooltip cfg) =
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the tooltip to `Html`.
+{-| Render the tooltip to `Html` — `<m3e-tooltip>` for plain, `<m3e-rich-tooltip>`
+for rich — anchored to its `anchorId` via the element's `for` attribute. A rich
+tooltip emits its `subhead` slot, content, and `actions` slot in that order.
 -}
 view : Tooltip kind msg -> Html msg
 view (Tooltip cfg) =

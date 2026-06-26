@@ -14,8 +14,9 @@ Material 3 [Floating action button][m3] surface.
 
 [m3]: https://m3.material.io/components/floating-action-button/overview
 
-For a FAB with visible label text, see `Ui.ExtendedFab`. For a FAB that
-opens a menu, see `Ui.FabMenu`.
+Reserve a FAB for the single most important action on a screen — one
+per screen. For a FAB with visible label text, see `Ui.ExtendedFab`;
+for a FAB that expands into several related actions, see `Ui.FabMenu`.
 
 
 # Type
@@ -79,7 +80,8 @@ type alias Config msg =
     }
 
 
-{-| FAB variant (m3 color roles).
+{-| FAB variant — one of seven m3 color roles (m3e `variant`, default
+`primary-container`).
 -}
 type Variant
     = Primary
@@ -132,21 +134,21 @@ withAttributes attributes (Fab cfg) =
     Fab { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the size.
+{-| Set the FAB size (m3e `size`, default `medium`).
 -}
 withSize : Size -> Fab msg -> Fab msg
 withSize s (Fab cfg) =
     Fab { cfg | size = s }
 
 
-{-| Render in lowered elevation.
+{-| Present a lowered resting elevation (m3e `lowered`, default false).
 -}
 withLowered : Bool -> Fab msg -> Fab msg
 withLowered b (Fab cfg) =
     Fab { cfg | lowered = b }
 
 
-{-| Disable the FAB.
+{-| Disable the FAB (m3e `disabled`, default false).
 -}
 withDisabled : Bool -> Fab msg -> Fab msg
 withDisabled b (Fab cfg) =

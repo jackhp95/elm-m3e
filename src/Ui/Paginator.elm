@@ -8,7 +8,19 @@ module Ui.Paginator exposing
     , view
     )
 
-{-| Typed builder for M3 paginators. Wraps `M3e.Paginator`.
+{-| Typed builder for `<m3e-paginator>` — a compact, accessible control
+for moving through a paged data set, with first/previous/next/last
+buttons and an optional page-size selector.
+
+Reach for a paginator to move through **pages of data**, typically below
+a table. Sibling navigation: `Ui.SlideGroup` is directional content
+paging, `Ui.Stepper` walks an ordered multi-step flow, and `Ui.Tabs`
+switches peer views.
+
+    Ui.Paginator.new
+        |> Ui.Paginator.withLength 300
+        |> Ui.Paginator.withFirstLastButtons True
+        |> Ui.Paginator.view
 
 
 # State philosophy
@@ -127,35 +139,41 @@ withId id (Paginator cfg) =
     Paginator { cfg | id = Just id }
 
 
-{-| Set the total number of items being paginated.
+{-| Set the total number of items being paginated. Together with the page
+size this drives the page count and which navigation buttons are enabled.
+Defaults to `0`.
 -}
 withLength : Int -> Paginator msg -> Paginator msg
 withLength length (Paginator cfg) =
     Paginator { cfg | length = length }
 
 
-{-| Toggle the first/last page jump buttons.
+{-| Show the first/last page jump buttons that flank previous/next.
+Hidden by default.
 -}
 withFirstLastButtons : Bool -> Paginator msg -> Paginator msg
 withFirstLastButtons flag (Paginator cfg) =
     Paginator { cfg | firstLast = flag }
 
 
-{-| Hide the page-size selector.
+{-| Hide the "items per page" size selector, which is shown by default.
 -}
 withHidePageSize : Bool -> Paginator msg -> Paginator msg
 withHidePageSize flag (Paginator cfg) =
     Paginator { cfg | hidePageSize = flag }
 
 
-{-| Set the available page sizes (as the element's space-separated string).
+{-| Set the page sizes offered in the selector, as the element's
+comma-separated string (e.g. `"10,25,50"`). Defaults to
+`"5,10,25,50,100"`.
 -}
 withPageSizes : String -> Paginator msg -> Paginator msg
 withPageSizes sizes (Paginator cfg) =
     Paginator { cfg | pageSizes = Just sizes }
 
 
-{-| Disable the paginator.
+{-| Mark the paginator disabled — all navigation and the size selector
+become non-interactive. Enabled by default.
 -}
 withDisabled : Bool -> Paginator msg -> Paginator msg
 withDisabled flag (Paginator cfg) =

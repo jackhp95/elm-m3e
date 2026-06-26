@@ -13,8 +13,10 @@ navigation for medium-width viewports. Mirrors the Material 3
 
 [m3]: https://m3.material.io/components/navigation-rail/overview
 
-For compact viewports use `Ui.NavigationBar`; for expanded viewports
-use `Ui.NavigationDrawer`. The viewport choice is content-tied and
+The rail is the **medium-width** middle of the responsive
+top-level-navigation trio: for compact viewports step down to
+`Ui.NavigationBar` (bottom bar); for expanded viewports step up to
+`Ui.NavigationDrawer` (side drawer). The viewport choice is content-tied and
 made by the caller — m3 documents the three as distinct components.
 
 
@@ -102,7 +104,10 @@ type Item value msg
     = Item (ItemConfig value msg)
 
 
-{-| Mode (m3e). `Auto` picks compact/expanded based on width.
+{-| How items are presented — the `mode` attribute. `Compact` is the m3e
+attribute default (icons only); `Expanded` shows labels; `Auto` switches
+between them based on available width. (This builder's `new` defaults the
+rail to `Auto`.)
 -}
 type Mode
     = Compact

@@ -250,14 +250,15 @@ withAttributes attributes (Button cfg) =
     Button { cfg | attributes = cfg.attributes ++ attributes }
 
 
-{-| Set the container size.
+{-| Set the container size (m3e `size`, default `small`).
 -}
 withSize : Size -> Button msg -> Button msg
 withSize size (Button cfg) =
     Button { cfg | size = size }
 
 
-{-| Set the container shape (`Round` / `Square`).
+{-| Set the container shape — `Round` or `Square` (m3e `shape`, default
+`rounded`).
 -}
 withShape : Shape -> Button msg -> Button msg
 withShape shape (Button cfg) =
@@ -271,14 +272,15 @@ withDisabled disabled (Button cfg) =
     Button { cfg | disabled = disabled }
 
 
-{-| Add a leading icon (renders before the label).
+{-| Add a leading icon, rendered before the label (m3e `icon` slot).
 -}
 withLeadingIcon : Ui.Icon.Icon msg -> Button msg -> Button msg
 withLeadingIcon icon (Button cfg) =
     Button { cfg | leadingIcon = Just icon }
 
 
-{-| Add a trailing icon (renders after the label).
+{-| Add a trailing icon, rendered after the label (m3e `trailing-icon`
+slot).
 -}
 withTrailingIcon : Ui.Icon.Icon msg -> Button msg -> Button msg
 withTrailingIcon icon (Button cfg) =

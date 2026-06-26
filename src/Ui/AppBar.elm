@@ -17,6 +17,12 @@ Material 3 [App bars][m3] surface.
 
 [m3]: https://m3.material.io/components/app-bars/overview
 
+The app bar is the page's top **header** surface: a title (with optional
+subtitle), a leading affordance, and trailing actions. For a free-standing
+row of contextual action buttons, reach for `Ui.Toolbar`; for top-level
+destination switching, the navigation trio (`Ui.NavigationBar` /
+`Ui.NavigationRail` / `Ui.NavigationDrawer`).
+
 
 # Slots are attribute-injected, never wrapped
 
@@ -105,7 +111,9 @@ type alias Config msg =
     }
 
 
-{-| App bar size. Defaults to `Small`.
+{-| App bar size — the `size` attribute (default `Small`). Drives the bar's
+height and title prominence; `Large` gives the most vertical room for a
+two-line title/subtitle.
 -}
 type Size
     = Small
@@ -146,14 +154,15 @@ withId id (AppBar cfg) =
     AppBar { cfg | id = Just id }
 
 
-{-| Set the app bar size.
+{-| Set the app bar size (default `Small`).
 -}
 withSize : Size -> AppBar msg -> AppBar msg
 withSize s (AppBar cfg) =
     AppBar { cfg | size = s }
 
 
-{-| Center the title.
+{-| Center the title and subtitle — the `centered` attribute (default
+`False`, i.e. start-aligned).
 -}
 withCentered : Bool -> AppBar msg -> AppBar msg
 withCentered b (AppBar cfg) =
