@@ -1,3 +1,5 @@
+> **⚠ Historical — superseded by [ADR 0006](../adr/0006-m3e-architecture.md)** (the `M3e.*` architecture). A dogfooding record from the prior `Ui.*` builders; kept for history, not current truth.
+
 # elm-review Rule Set — `m3e-builder`
 
 > **Status:** design doc. No rule code is written yet — this is the durable spec that the

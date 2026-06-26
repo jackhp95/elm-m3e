@@ -1,3 +1,5 @@
+> **⚠ Historical — superseded by [ADR 0006](../adr/0006-m3e-architecture.md)** (the `M3e.*` architecture). A dogfooding record from the prior `Ui.*` builders; kept for history, not current truth.
+
 # Material 3 / m3e CEM ↔ `Ui.*` Wrapper — Spec Delta Audit
 
 > **⚠ Largely stale (as of 2026-06-25).** A later working-tree audit

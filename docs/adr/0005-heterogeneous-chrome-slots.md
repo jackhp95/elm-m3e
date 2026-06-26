@@ -4,7 +4,15 @@ Date: 2026-06-24
 
 ## Status
 
-Accepted
+**Superseded by [ADR 6](0006-m3e-architecture.md).** This ADR's decision —
+"heterogeneous chrome slots keep `Html msg` as the primary type" — was made
+before the introspectable IR + view-style model, which require **view once**
+(the whole app composes as builder data, converting to `Html msg` only at the
+root). A slot taking `Html msg` forces an early conversion, so heterogeneous
+slots are now **phantom-row unions of valid child kinds** plus the slot-capable
+`element` escape (ADR 6 §2, §4), not `Html msg`. The call-site heuristic below
+("look at 3–5 call sites first") is retired in favor of the Material content
+taxonomy. Kept for history.
 
 ## Context
 

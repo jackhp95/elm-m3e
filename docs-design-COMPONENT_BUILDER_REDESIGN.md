@@ -1,5 +1,8 @@
 # Ui.* Component Builder — Redesign / MISI Pass
 
+> **⚠ Historical.** Current truth is [ADR 0006](docs/adr/0006-m3e-architecture.md)
+> (the `M3e.*` architecture). Below is an older decision log.
+
 > **STATUS (2026-06-22):** Historical decision log. **Authoritative spec is now
 > `M3E_SPLIT_REDESIGN.md`** in this directory, which supersedes the philosophy
 > here on two points:

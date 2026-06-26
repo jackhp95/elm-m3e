@@ -1,5 +1,13 @@
 # `Ui.*` Redesign — m3e Component Split + MISI Builder Layer
 
+> **⚠ Historical (2026-06-22).** Superseded by
+> [ADR 0006](docs/adr/0006-m3e-architecture.md) — the `M3e.*` architecture
+> (introspectable IR + phantom-typed slots + view-style components). The D1/D4
+> principles below (one module per component; no silent no-ops) still hold; **D2**
+> ("structural slots typed to child, never `Html msg`") and **D5** ("builder
+> pattern") are replaced by ADR 0006's phantom-row `Renderable` and view-style
+> components. Read ADR 0006 for current truth.
+
 > **Status:** Approved design spec (2026-06-22). Supersedes `src/elm/Ui/REDESIGN_PLAN.md` (now dead — to be deleted).
 > **Branch:** `VOLT-2003`. Backup of pre-redesign state (the inference experiment): local branch `backup/VOLT-2003-inferred-ui` @ `3e1982c357`.
 > **Guiding principle:** Make Impossible States Impossible. The `Ui.*` layer mirrors the Material 3 / m3e *documented component surface* 1:1, and uses the type system — not runtime inference — to prevent invalid component/attribute compositions.

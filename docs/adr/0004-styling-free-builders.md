@@ -4,7 +4,13 @@ Date: 2026-06-24
 
 ## Status
 
-Accepted
+Accepted — **partially superseded by [ADR 6](0006-m3e-architecture.md).** The
+"styling-free + `withAttributes` host hatch" rule below **stands**. The
+slot-typing guidance ("typed builder inputs … with a parallel
+`with<Slot>EscapeHatchHtml`") is **replaced** by ADR 6's phantom-typed
+`M3e.Renderable` slots and the `html`/`element` escapes; and the pipe-builder
+shape this ADR assumes is replaced by ADR 6's view-style components. Read the
+styling rule here; read the slot/escape rules in ADR 6.
 
 ## Context
 

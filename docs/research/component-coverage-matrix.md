@@ -1,3 +1,5 @@
+> **⚠ Historical — superseded by [ADR 0006](../adr/0006-m3e-architecture.md)** (the `M3e.*` architecture). A dogfooding record from the prior `Ui.*` builders; kept for history, not current truth.
+
 # Material Studies — Component Coverage Matrix
 
 > **Goal:** Build a set of Material Design "page" demos (Studies) such that **every one of

@@ -1,3 +1,5 @@
+> **⚠ Historical — superseded by [ADR 0006](../adr/0006-m3e-architecture.md)** (the `M3e.*` architecture). A dogfooding record from the prior `Ui.*` builders; kept for history, not current truth.
+
 # Layer 4 builder audit — `withAttributes` retrofit
 
 This audit covers all 52 `Ui.*` typed builders in `src/Ui/`. Two of them —

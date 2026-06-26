@@ -1,3 +1,5 @@
+> **⚠ Historical — superseded by [ADR 0006](../adr/0006-m3e-architecture.md)** (the `M3e.*` architecture). A dogfooding record from the prior `Ui.*` builders; kept for history, not current truth.
+
 # Slot / content-channel & relational-graph audit
 
 > Synthesized from a 5-way parallel audit (Nav/structure · Actions · Inputs · Containers ·

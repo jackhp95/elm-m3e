@@ -1,3 +1,5 @@
+> **⚠ Historical — superseded by [ADR 0006](docs/adr/0006-m3e-architecture.md)** (the `M3e.*` architecture). Kept for history, not current truth.
+
 # Component Builder Redesign — Acceptance Criteria & Execution Waves
 
 > **STATUS (2026-06-22):** Historical execution tracker from Casey's branch
