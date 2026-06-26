@@ -1,0 +1,177 @@
+module M3e.SegmentedButton exposing
+    ( SegmentOption, ParentOption
+    , segment, view
+    , segmentDisabled, segmentOnClick, segmentValue
+    , disabled, multi
+    )
+
+{-| `<m3e-segmented-button>` + `<m3e-button-segment>` — a small row of
+buttons for choosing one (or several) options (Material 3 Segmented buttons).
+
+Spec (per docs/CONVENTIONS.md):
+
+  - Required (parent): { segments : List (Renderable { segment : Supported } msg) }
+  - Required (child):  { label : String, checked : Bool }
+  - Options (parent):  disabled, multi
+  - Options (child):   segmentDisabled, segmentOnClick, segmentValue
+  - Slots (parent):    default slot ← `m3e-button-segment` children (strict)
+  - Properties:        checked on each segment (Node.property); disabled, multi
+                      on parent (Node.property)
+  - Events:            click on each segment
+  - Tag:               segmentedButton / segment
+
+-}
+
+import Json.Decode as Decode
+import Json.Encode as Encode
+import M3e.Node as Node
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+
+
+-- SEGMENT (child) ---------------------------------------------------------
+
+type SegmentOption msg
+    = SegmentDisabled Bool
+    | SegmentOnClick msg
+    | SegmentValue String
+
+
+{-| Disable this individual segment. -}
+segmentDisabled : Bool -> SegmentOption msg
+segmentDisabled =
+    SegmentDisabled
+
+
+{-| Wire a click handler for this segment. -}
+segmentOnClick : msg -> SegmentOption msg
+segmentOnClick =
+    SegmentOnClick
+
+
+{-| Set the DOM form-submission value for this segment (defaults to the
+label when omitted). -}
+segmentValue : String -> SegmentOption msg
+segmentValue =
+    SegmentValue
+
+
+type alias SegmentConfig msg =
+    { disabled : Bool
+    , onClick : Maybe msg
+    , value : Maybe String
+    }
+
+
+applySegment : SegmentOption msg -> SegmentConfig msg -> SegmentConfig msg
+applySegment opt c =
+    case opt of
+        SegmentDisabled b ->
+            { c | disabled = b }
+
+        SegmentOnClick m ->
+            { c | onClick = Just m }
+
+        SegmentValue v ->
+            { c | value = Just v }
+
+
+{-| A single `<m3e-button-segment>` child for use inside a segmented
+button. The `label` is rendered as text content; `checked` reflects the
+Elm-controlled selection state.
+-}
+segment :
+    { label : String, checked : Bool }
+    -> List (SegmentOption msg)
+    -> Renderable { s | segment : Supported } msg
+segment req opts =
+    let
+        c =
+            List.foldl applySegment
+                { disabled = False, onClick = Nothing, value = Nothing }
+                opts
+
+        domValue =
+            Maybe.withDefault req.label c.value
+    in
+    Renderable.fromNode
+        (Node.element "m3e-button-segment"
+            (List.filterMap identity
+                [ Just (Node.property "checked" (Encode.bool req.checked))
+                , Just (Node.property "value" (Encode.string domValue))
+                , if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
+                , Maybe.map
+                    (\m -> Node.on "click" (Decode.succeed m))
+                    c.onClick
+                ]
+            )
+            [ Node.text req.label ]
+        )
+
+
+-- PARENT ------------------------------------------------------------------
+
+type ParentOption msg
+    = Disabled Bool
+    | Multi Bool
+
+
+{-| Disable the whole segmented button group. -}
+disabled : Bool -> ParentOption msg
+disabled =
+    Disabled
+
+
+{-| Allow multiple segments to be selected simultaneously. -}
+multi : Bool -> ParentOption msg
+multi =
+    Multi
+
+
+type alias ParentConfig =
+    { disabled : Bool
+    , multi : Bool
+    }
+
+
+applyParent : ParentOption msg -> ParentConfig -> ParentConfig
+applyParent opt c =
+    case opt of
+        Disabled b ->
+            { c | disabled = b }
+
+        Multi b ->
+            { c | multi = b }
+
+
+view :
+    { segments : List (Renderable { segment : Supported } msg) }
+    -> List (ParentOption msg)
+    -> Renderable { s | segmentedButton : Supported } msg
+view req opts =
+    let
+        c =
+            List.foldl applyParent
+                { disabled = False, multi = False }
+                opts
+    in
+    Renderable.fromNode
+        (Node.element "m3e-segmented-button"
+            (List.filterMap identity
+                [ if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.multi then
+                    Just (Node.property "multi" (Encode.bool True))
+
+                  else
+                    Nothing
+                ]
+            )
+            (List.map Renderable.toNode req.segments)
+        )
