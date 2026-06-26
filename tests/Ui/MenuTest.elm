@@ -99,4 +99,45 @@ suite =
                         [ Selector.attribute
                             (Html.Attributes.attribute "slot" "trailing-icon")
                         ]
+        , test "triggerFor emits an <m3e-menu-trigger> with the for id" <|
+            \_ ->
+                Ui.Menu.triggerFor "row-actions"
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-menu-trigger"
+                        , Selector.attribute
+                            (Html.Attributes.attribute "for" "row-actions")
+                        ]
+        , test "withTriggerIcon renders both an icon-button trigger and the menu, linked by id" <|
+            \_ ->
+                Ui.Menu.new [ Ui.Menu.item "Edit" Clicked ]
+                    |> Ui.Menu.withId "acts"
+                    |> Ui.Menu.withTriggerIcon
+                        { icon = Ui.Icon.material "more_vert", label = "More" }
+                    |> Ui.Menu.view
+                    |> Query.fromHtml
+                    |> Expect.all
+                        [ Query.has [ Selector.tag "m3e-icon-button" ]
+                        , Query.has [ Selector.tag "m3e-menu" ]
+                        , Query.find [ Selector.tag "m3e-menu-trigger" ]
+                            >> Query.has
+                                [ Selector.attribute
+                                    (Html.Attributes.attribute "for" "acts")
+                                ]
+                        , Query.find [ Selector.tag "m3e-menu" ]
+                            >> Query.has [ Selector.id "acts" ]
+                        ]
+        , test "withPositionX/Y emit the position attributes" <|
+            \_ ->
+                Ui.Menu.new [ Ui.Menu.item "Edit" Clicked ]
+                    |> Ui.Menu.withPositionX Ui.Menu.Before
+                    |> Ui.Menu.withPositionY Ui.Menu.Above
+                    |> Ui.Menu.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.attribute
+                            (Html.Attributes.attribute "position-x" "before")
+                        , Selector.attribute
+                            (Html.Attributes.attribute "position-y" "above")
+                        ]
         ]

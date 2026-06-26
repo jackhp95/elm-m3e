@@ -1,8 +1,10 @@
 module Ui.Menu exposing
     ( Menu, Item
+    , PositionX(..), PositionY(..)
     , new, item, checkboxItem, radioItem, group
     , withAttributes
-    , withId, withSubmenu
+    , withId, withSubmenu, withPositionX, withPositionY, withOnToggle
+    , triggerFor, withTriggerIcon
     , withItemIcon, withItemTrailingIcon, withItemHref, withItemDisabled
     , withItemChecked, withItemSelected
     , view
@@ -14,6 +16,30 @@ button or other trigger. Mirrors the Material 3 [Menus][m3] surface.
 [m3]: https://m3.material.io/components/menus/overview
 
 For a form-control single/multi-select dropdown, see `Ui.Select`.
+
+
+# Opening a menu
+
+A menu opens from an `<m3e-menu-trigger>` nested inside a clickable, linked to
+the menu by a shared `id`. Open/close is element-managed — no `Model` state to
+wire. Two ways:
+
+  - **Bring your own trigger** — nest [`triggerFor`](#triggerFor) inside any
+    control via its `withExtraContent` (e.g. `Ui.IconButton`, `Ui.Button`), and
+    give the menu the same `id` via [`withId`](#withId):
+
+        Ui.IconButton.new { icon = overflow, label = "More", variant = Ui.IconButton.Standard }
+            |> Ui.IconButton.withExtraContent [ Ui.Menu.triggerFor "row-actions" ]
+            |> Ui.IconButton.view
+
+        Ui.Menu.new [ … ] |> Ui.Menu.withId "row-actions" |> Ui.Menu.view
+
+  - **Convenience trigger** — [`withTriggerIcon`](#withTriggerIcon) renders an
+    icon button (with the nested trigger) and the menu together, auto-linked:
+
+        Ui.Menu.new [ … ]
+            |> Ui.Menu.withTriggerIcon { icon = overflow, label = "More" }
+            |> Ui.Menu.view
 
 
 # Required-by-design
@@ -53,6 +79,7 @@ For a form-control single/multi-select dropdown, see `Ui.Select`.
 # Type
 
 @docs Menu, Item
+@docs PositionX, PositionY
 
 
 # Constructors
@@ -67,7 +94,12 @@ For a form-control single/multi-select dropdown, see `Ui.Select`.
 
 # Menu modifiers
 
-@docs withId, withSubmenu
+@docs withId, withSubmenu, withPositionX, withPositionY, withOnToggle
+
+
+# Trigger
+
+@docs triggerFor, withTriggerIcon
 
 
 # Item modifiers
@@ -85,12 +117,15 @@ For a form-control single/multi-select dropdown, see `Ui.Select`.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
+import Json.Decode as Decode
 import M3e.Menu
 import M3e.MenuItem
 import M3e.MenuItemCheckbox
 import M3e.MenuItemGroup
 import M3e.MenuItemRadio
+import M3e.MenuTrigger
 import Ui.Icon
+import Ui.IconButton
 
 
 
@@ -117,8 +152,26 @@ type alias MenuConfig msg =
     { id : Maybe String
     , attributes : List (Attribute msg)
     , submenu : Bool
+    , positionX : Maybe PositionX
+    , positionY : Maybe PositionY
+    , onToggle : Maybe (Bool -> msg)
+    , trigger : Maybe { icon : Ui.Icon.Icon msg, label : String }
     , items : List (Item msg)
     }
+
+
+{-| The menu's position on the x-axis, relative to its trigger. Default `After`.
+-}
+type PositionX
+    = After
+    | Before
+
+
+{-| The menu's position on the y-axis, relative to its trigger. Default `Below`.
+-}
+type PositionY
+    = Above
+    | Below
 
 
 type alias ItemConfig msg =
@@ -154,7 +207,16 @@ type ItemKind msg
 -}
 new : List (Item msg) -> Menu msg
 new items =
-    Menu { id = Nothing, attributes = [], submenu = False, items = items }
+    Menu
+        { id = Nothing
+        , attributes = []
+        , submenu = False
+        , positionX = Nothing
+        , positionY = Nothing
+        , onToggle = Nothing
+        , trigger = Nothing
+        , items = items
+        }
 
 
 emptyItem : ItemKind msg -> String -> Item msg
@@ -230,6 +292,50 @@ withId id (Menu cfg) =
 withSubmenu : Bool -> Menu msg -> Menu msg
 withSubmenu b (Menu cfg) =
     Menu { cfg | submenu = b }
+
+
+{-| Set the menu's horizontal position relative to its trigger.
+-}
+withPositionX : PositionX -> Menu msg -> Menu msg
+withPositionX p (Menu cfg) =
+    Menu { cfg | positionX = Just p }
+
+
+{-| Set the menu's vertical position relative to its trigger.
+-}
+withPositionY : PositionY -> Menu msg -> Menu msg
+withPositionY p (Menu cfg) =
+    Menu { cfg | positionY = Just p }
+
+
+{-| React to the menu opening or closing. The handler receives `True` when the
+menu opens, `False` when it closes. (Open/close itself is element-managed; this
+is only for observing the state.)
+-}
+withOnToggle : (Bool -> msg) -> Menu msg -> Menu msg
+withOnToggle toMsg (Menu cfg) =
+    Menu { cfg | onToggle = Just toMsg }
+
+
+{-| The trigger marker (`<m3e-menu-trigger for="…">`). Nest it inside a
+clickable control via that control's `withExtraContent`, passing the same `id`
+you give the menu via [`withId`](#withId); activating the control opens the
+menu.
+-}
+triggerFor : String -> Html msg
+triggerFor menuId =
+    M3e.MenuTrigger.component [ M3e.MenuTrigger.for menuId ] []
+
+
+{-| Render a convenience icon-button trigger (with the nested marker) alongside
+the menu, auto-linked. The icon button is a `Standard` `Ui.IconButton` carrying
+`label` as its accessible name. For any other trigger control, use
+[`triggerFor`](#triggerFor) instead. The link `id` is [`withId`](#withId) if
+set, else derived from the label.
+-}
+withTriggerIcon : { icon : Ui.Icon.Icon msg, label : String } -> Menu msg -> Menu msg
+withTriggerIcon t (Menu cfg) =
+    Menu { cfg | trigger = Just t }
 
 
 
@@ -322,18 +428,97 @@ withItemSelected b =
 -- RENDER -----------------------------------------------------------------
 
 
-{-| Render the menu to `Html`.
+{-| Render the menu to `Html`. With a convenience trigger
+([`withTriggerIcon`](#withTriggerIcon)) the result is the trigger button and the
+menu together (wrapped in a layout-neutral `display:contents` span); otherwise
+it is the bare `<m3e-menu>` (place your own [`triggerFor`](#triggerFor)).
 -}
 view : Menu msg -> Html msg
 view (Menu cfg) =
+    case cfg.trigger of
+        Nothing ->
+            menuElement cfg cfg.id
+
+        Just t ->
+            let
+                menuId : String
+                menuId =
+                    Maybe.withDefault ("uimenu-" ++ slugify t.label) cfg.id
+            in
+            Html.span [ Attr.style "display" "contents" ]
+                [ Ui.IconButton.new
+                    { icon = t.icon, label = t.label, variant = Ui.IconButton.Standard }
+                    |> Ui.IconButton.withExtraContent [ triggerFor menuId ]
+                    |> Ui.IconButton.view
+                , menuElement cfg (Just menuId)
+                ]
+
+
+menuElement : MenuConfig msg -> Maybe String -> Html msg
+menuElement cfg menuId =
     M3e.Menu.component
         (cfg.attributes
             ++ List.filterMap identity
-                [ Maybe.map Attr.id cfg.id
+                [ Maybe.map Attr.id menuId
                 , Just (M3e.Menu.submenu cfg.submenu)
+                , Maybe.map positionXAttr cfg.positionX
+                , Maybe.map positionYAttr cfg.positionY
+                , Maybe.map onToggleAttr cfg.onToggle
                 ]
         )
         (List.map itemView cfg.items)
+
+
+positionXAttr : PositionX -> Attribute msg
+positionXAttr p =
+    M3e.Menu.positionX
+        (case p of
+            After ->
+                M3e.Menu.After
+
+            Before ->
+                M3e.Menu.Before
+        )
+
+
+positionYAttr : PositionY -> Attribute msg
+positionYAttr p =
+    M3e.Menu.positionY
+        (case p of
+            Above ->
+                M3e.Menu.Above
+
+            Below ->
+                M3e.Menu.Below
+        )
+
+
+onToggleAttr : (Bool -> msg) -> Attribute msg
+onToggleAttr toMsg =
+    -- m3e-menu dispatches a standard ToggleEvent; `newState` is "open"/"closed".
+    M3e.Menu.onToggle
+        (Decode.at [ "newState" ] Decode.string
+            |> Decode.map (\s -> toMsg (s == "open"))
+        )
+
+
+slugify : String -> String
+slugify label =
+    label
+        |> String.toLower
+        |> String.toList
+        |> List.map
+            (\c ->
+                if Char.isAlphaNum c then
+                    c
+
+                else
+                    '-'
+            )
+        |> String.fromList
+        |> String.split "-"
+        |> List.filter (not << String.isEmpty)
+        |> String.join "-"
 
 
 itemView : Item msg -> Html msg

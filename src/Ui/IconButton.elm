@@ -6,6 +6,7 @@ module Ui.IconButton exposing
     , withSize, withShape, withWidth, withDisabled
     , withOnClick, withHref, withToggle
     , withTarget, withRel, withDownload
+    , withExtraContent
     , view
     )
 
@@ -113,6 +114,11 @@ unselected, filled glyph when selected. Pass the _unselected_ glyph in
 @docs withTarget, withRel, withDownload
 
 
+# Extra default-slot content
+
+@docs withExtraContent
+
+
 # Render
 
 @docs view
@@ -150,6 +156,7 @@ type alias Config msg =
     , anchorTarget : Maybe String
     , anchorRel : Maybe String
     , anchorDownload : Maybe String
+    , extraContent : List (Html msg)
     }
 
 
@@ -229,6 +236,7 @@ new c =
         , anchorTarget = Nothing
         , anchorRel = Nothing
         , anchorDownload = Nothing
+        , extraContent = []
         }
 
 
@@ -330,6 +338,16 @@ withDownload download (IconButton cfg) =
     IconButton { cfg | anchorDownload = Just download }
 
 
+{-| Append element(s) into the icon button's default slot, after the glyph.
+The escape hatch for marker elements that must be nested inside a clickable —
+e.g. `Ui.Menu.triggerFor` to make the icon button open a menu. Accumulates
+across calls.
+-}
+withExtraContent : List (Html msg) -> IconButton msg -> IconButton msg
+withExtraContent content (IconButton cfg) =
+    IconButton { cfg | extraContent = cfg.extraContent ++ content }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -352,7 +370,7 @@ view (IconButton cfg) =
                 , wiringAttrs cfg
                 ]
         )
-        [ renderIcon (currentIcon cfg) ]
+        (renderIcon (currentIcon cfg) :: cfg.extraContent)
 
 
 currentIcon : Config msg -> Ui.Icon.Icon msg
