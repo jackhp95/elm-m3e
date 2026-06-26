@@ -1,0 +1,64 @@
+module M3e.DividerTest exposing (suite)
+
+import Expect
+import Json.Encode as Encode
+import M3e.Divider as Divider
+import M3e.Node as Node
+import M3e.Renderable as Renderable
+import Test exposing (Test, describe, test)
+
+
+node : List (Divider.Option msg) -> Node.Node msg
+node opts =
+    Divider.view opts |> Renderable.toNode
+
+
+suite : Test
+suite =
+    describe "M3e.Divider — view-style port"
+        [ test "renders <m3e-divider>" <|
+            \_ ->
+                node []
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-divider")
+        , test "divider is a leaf — no children" <|
+            \_ ->
+                node []
+                    |> Node.childrenOf
+                    |> List.length
+                    |> Expect.equal 0
+        , test "vertical=true is a DOM property — introspectable" <|
+            \_ ->
+                node [ Divider.vertical True ]
+                    |> Node.findProperty "vertical"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "true")
+        , test "vertical absent by default" <|
+            \_ ->
+                node []
+                    |> Node.findProperty "vertical"
+                    |> Expect.equal Nothing
+        , test "inset=true is a DOM property — introspectable" <|
+            \_ ->
+                node [ Divider.inset True ]
+                    |> Node.findProperty "inset"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "true")
+        , test "inset absent by default" <|
+            \_ ->
+                node []
+                    |> Node.findProperty "inset"
+                    |> Expect.equal Nothing
+        , test "insetStart=true sets property inset-start" <|
+            \_ ->
+                node [ Divider.insetStart True ]
+                    |> Node.findProperty "inset-start"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "true")
+        , test "insetEnd=true sets property inset-end" <|
+            \_ ->
+                node [ Divider.insetEnd True ]
+                    |> Node.findProperty "inset-end"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "true")
+        ]
