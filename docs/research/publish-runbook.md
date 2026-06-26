@@ -48,26 +48,30 @@ When `elm-m3e` ships, the package-ready elm.json for this repo becomes:
   "summary": "Material 3 Expressive — typed, MISI Elm builders over @m3e/web.",
   "license": "BSD-3-Clause",
   "version": "0.1.0",
-  "exposed-modules": [ /* 52 Ui.* modules, generated */ ],
+  "exposed-modules": [ /* 54 Ui.* modules, generated */ ],
   "elm-version": "0.19.0 <= v < 0.20.0",
   "dependencies": {
-    "elm/browser": "1.0.0 <= v < 2.0.0",
     "elm/core": "1.0.0 <= v < 2.0.0",
     "elm/html": "1.0.0 <= v < 2.0.0",
     "elm/json": "1.0.0 <= v < 2.0.0",
-    "elm/time": "1.0.0 <= v < 2.0.0",
     "elm-community/html-extra": "3.0.0 <= v < 4.0.0",
-    "elm-community/list-extra": "8.0.0 <= v < 9.0.0",
-    "elm-community/maybe-extra": "5.0.0 <= v < 6.0.0",
     "jackhp95/elm-m3e": "1.0.0 <= v < 2.0.0"
   }
 }
 ```
 
-The only diffs from `/tmp/m3e-docs-gen/elm.json` are: replacing the
-`vendored M3e/` symlink with a `jackhp95/elm-m3e` dependency line, and
-changing `name` to `jackhp95/elm-m3e-repo` (or whatever the published name
-will be).
+The diffs from `/tmp/m3e-docs-gen/elm.json` are: replacing the `vendored M3e/`
+symlink with a `jackhp95/elm-m3e` dependency line, and changing `name`.
+
+> **Dependency set verified (2026-06-25).** `src/Ui/*` imports only `Html` /
+> `Html.Attributes` / `Html.Events` (elm/html), `Html.Extra`
+> (elm-community/html-extra, 4 modules), `Json.Decode` / `Json.Encode`
+> (elm/json), `M3e.*` (jackhp95/elm-m3e), and other `Ui.*` (+ implicit
+> elm/core). It does **not** import `elm/browser`, `elm/time`,
+> `elm-community/list-extra`, or `maybe-extra` — those live in the *app* /
+> *tests* elm.json only, so the **package** must NOT declare them (an earlier
+> draft of this block did; corrected above). Over-declaring forces consumers
+> to resolve unused deps.
 
 ---
 
@@ -102,12 +106,39 @@ on a long-lived sibling branch.
 
 ---
 
+## Pre-publish diligence — done 2026-06-25 (no publish, just audit)
+
+Ran the checks that a "practice publish to a private mirror" would, statically
+against `src/Ui/*`:
+
+- **Type leakage (exported-vs-internal): clean except one intentional case.**
+  Audited every exposed value's signature + every exposed type definition for
+  `M3e.*` references. The **only** leak is `Ui.Shape.Name = M3e.Shape.Name` (a
+  deliberate re-export; callers construct with `M3e.Shape.Circle`). It's
+  publishable — `jackhp95/elm-m3e` exposes the 35-variant `M3e.Shape.Name` — and
+  re-exporting a dependency type is legitimate Elm. Decision: **keep the
+  re-export** rather than hand-mirror a 35-variant generated enum (which would
+  be a maintenance burden tracking upstream). It is the one place a consumer
+  must `import M3e.Shape`; every other module exposes its own enums.
+- **Dependency surface: minimal (see the corrected elm.json above).** 5 deps,
+  no stray imports.
+- **Docs completeness:** already gated — `npm run build:reference` runs
+  `elm make --docs` against the package-shaped project and fails on any missing
+  doc comment (in CI).
+- **Property-driven behavior:** the Playwright contract harness now runs in CI
+  (the `harness` job), so the F4 gap (properties invisible to elm-test) is
+  covered by a gate even though the registry doesn't run Playwright.
+
+Remaining publish-blocker is unchanged: `jackhp95/elm-m3e` must ship to the
+registry first. The `package-ready` branch (which deletes `vendor/`) is a
+one-way door best cut at actual publish time, against this verified spec.
+
 ## Risks / unknowns at publish time
 
-- **Module signatures may need to widen.** The 52 modules currently expose
-  the `Ui.* msg` type aliases inline; the registry is strict about
-  exported-vs-internal type leakage. A practice publish to a private mirror
-  can shake this out without burning a real `0.1.0`.
+- **Module signatures audited (above).** The only exposed `M3e.*` type is the
+  intentional `Ui.Shape.Name` re-export; no accidental internal-type leakage
+  found. A practice publish to a private mirror is still worthwhile to confirm
+  the registry agrees before burning a real `0.1.0`.
 - **`vendor/elm-m3e/` deletion is a one-way door.** Cut a tag on `main`
   before deleting, so the application-shaped history is preserved.
 - **Tests use `Test.Html` which only sees real attributes, not properties.**
