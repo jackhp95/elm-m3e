@@ -50,13 +50,18 @@ suite =
                     |> Query.fromHtml
                     |> Query.findAll [ Selector.tag "m3e-button-segment" ]
                     |> Query.count (Expect.equal 2)
-        , test "each segment emits a submission value" <|
+        , test "each segment's DOM value mirrors its label (Elm-controlled; no form submission path)" <|
             \_ ->
+                -- Selection is owned in Elm via onChange; the DOM `value` is
+                -- never read because no name/form-submission path is exposed.
+                -- We document that by mirroring the label as the value.
                 viewSeg
                     |> Ui.SegmentedButton.view
                     |> Query.fromHtml
-                    |> Query.has
-                        [ Selector.attribute (M3e.ButtonSegment.value "Day") ]
+                    |> Expect.all
+                        [ Query.has [ Selector.attribute (M3e.ButtonSegment.value "Day") ]
+                        , Query.has [ Selector.attribute (M3e.ButtonSegment.value "Week") ]
+                        ]
         , test "label association is via aria-label on the group (not a fragile for)" <|
             \_ ->
                 viewSeg

@@ -80,6 +80,34 @@ suite =
                     |> Query.fromHtml
                     |> Query.find [ Selector.attribute (Attr.attribute "slot" "header") ]
                     |> Query.has [ Selector.text "Title" ]
+        , test "withDetents emits a space-delimited detents attribute" <|
+            \_ ->
+                Ui.BottomSheet.new { open = True, onClose = () }
+                    |> Ui.BottomSheet.withDetents [ "fit", "half", "full" ]
+                    |> Ui.BottomSheet.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.tag "m3e-bottom-sheet"
+                        , Selector.attribute (Attr.attribute "detents" "fit half full")
+                        ]
+        , test "no detents attribute when the list is empty (default)" <|
+            \_ ->
+                Ui.BottomSheet.new { open = True, onClose = () }
+                    |> Ui.BottomSheet.view
+                    |> Query.fromHtml
+                    |> Query.findAll [ Selector.attribute (Attr.attribute "detents" "") ]
+                    |> Query.count (Expect.equal 0)
+        , test "withHideFriction / withOvershootLimit apply without breaking render" <|
+            -- hide-friction / overshoot-limit are number DOM *properties*, which
+            -- Test.Html cannot observe (F4). This only exercises the code path;
+            -- the property values themselves are browser-verified.
+            \_ ->
+                Ui.BottomSheet.new { open = True, onClose = () }
+                    |> Ui.BottomSheet.withHideFriction 0.8
+                    |> Ui.BottomSheet.withOvershootLimit 10
+                    |> Ui.BottomSheet.view
+                    |> Query.fromHtml
+                    |> Query.has [ Selector.tag "m3e-bottom-sheet" ]
         , test "withModal emits the modal property" <|
             \_ ->
                 Ui.BottomSheet.new { open = True, onClose = () }

@@ -4,6 +4,7 @@ module Ui.Skeleton exposing
     , withId, withClass
     , Shape(..), Animation(..)
     , withLoaded, withShape, withAnimation
+    , withContent
     , view
     )
 
@@ -44,6 +45,11 @@ to pass through utility classes.
 
 @docs Shape, Animation
 @docs withLoaded, withShape, withAnimation
+
+
+# Content
+
+@docs withContent
 
 
 # Render
@@ -91,6 +97,7 @@ type alias Config msg =
     , loaded : Bool
     , shape : Maybe Shape
     , animation : Maybe Animation
+    , content : List (Html msg)
     }
 
 
@@ -105,6 +112,7 @@ new =
         , loaded = False
         , shape = Nothing
         , animation = Nothing
+        , content = []
         }
 
 
@@ -156,6 +164,28 @@ withAnimation animation (Skeleton cfg) =
     Skeleton { cfg | animation = Just animation }
 
 
+{-| Set the real content the skeleton is mimicking, projected into the
+element's default slot (default `[]`). The element keeps this content hidden
+behind the shimmer while `loaded` is `False`; calling `withLoaded True` then
+fades the placeholder out and reveals it.
+
+Pair it with `withLoaded` so the same skeleton renders both the loading and
+loaded states:
+
+    Ui.Skeleton.new
+        |> Ui.Skeleton.withContent [ realCard ]
+        |> Ui.Skeleton.withLoaded model.isLoaded
+        |> Ui.Skeleton.view
+
+Leaving the content empty (the default) keeps the historical
+placeholder-only behaviour, where the skeleton is sized via `withClass`.
+
+-}
+withContent : List (Html msg) -> Skeleton msg -> Skeleton msg
+withContent content (Skeleton cfg) =
+    Skeleton { cfg | content = content }
+
+
 {-| Render the skeleton.
 -}
 view : Skeleton msg -> Html msg
@@ -174,7 +204,7 @@ view (Skeleton cfg) =
                 ]
             ++ List.map Attr.class cfg.classes
         )
-        []
+        cfg.content
 
 
 shapeToM3e : Shape -> M3e.Skeleton.Shape

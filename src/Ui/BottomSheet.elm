@@ -3,6 +3,7 @@ module Ui.BottomSheet exposing
     , new
     , withAttributes
     , withId, withHeader, withBody, withActions, withHandle, withHideable, withModal
+    , withDetents, withHideFriction, withOvershootLimit
     , view
     )
 
@@ -57,6 +58,11 @@ and the element's `closed`/`cancel` events are wired back to `onClose`.
 @docs withId, withHeader, withBody, withActions, withHandle, withHideable, withModal
 
 
+# Detents and gesture tuning
+
+@docs withDetents, withHideFriction, withOvershootLimit
+
+
 # Render
 
 @docs view
@@ -92,6 +98,9 @@ type alias Config msg =
     , handle : Bool
     , hideable : Bool
     , modal : Bool
+    , detents : List String
+    , hideFriction : Maybe Float
+    , overshootLimit : Maybe Float
     }
 
 
@@ -117,6 +126,9 @@ new c =
         , handle = True
         , hideable = True
         , modal = False
+        , detents = []
+        , hideFriction = Nothing
+        , overshootLimit = Nothing
         }
 
 
@@ -190,6 +202,45 @@ withModal b (BottomSheet cfg) =
     BottomSheet { cfg | modal = b }
 
 
+{-| Set the detents — the discrete height states the sheet can snap to. The
+element's `detents` property is a `string[]`; its HTML attribute form (see the
+m3e example `detents="fit half full"`) is a space-delimited list, so this takes
+a `List String` and joins it with spaces. Each entry is a CSS-ish height token
+understood by the element (e.g. `"fit"`, `"half"`, `"full"`, or an explicit
+length).
+
+Defaults to `[]` (no detents), in which case the sheet behaves as a simple
+open/hidden surface. When detents are set the sheet snaps to the nearest one on
+release. Note: the `string[]` setter is omitted from the `M3e.BottomSheet`
+binding (Elm can't pass it as a property), so this writes the space-delimited
+attribute directly.
+
+-}
+withDetents : List String -> BottomSheet msg -> BottomSheet msg
+withDetents detents (BottomSheet cfg) =
+    BottomSheet { cfg | detents = detents }
+
+
+{-| Set the hide-friction coefficient (`hide-friction`, the element's default is
+`0.5`) — the friction applied to a downward dismiss gesture. Higher values make
+the sheet harder to fling away. Only emitted when set, so the element default
+is preserved otherwise.
+-}
+withHideFriction : Float -> BottomSheet msg -> BottomSheet msg
+withHideFriction friction (BottomSheet cfg) =
+    BottomSheet { cfg | hideFriction = Just friction }
+
+
+{-| Set the overshoot limit (`overshoot-limit`, the element's default is `4`) —
+a fractional value between 0 and 100 capping the visual overshoot allowed when
+dragging past the minimum or maximum height. Only emitted when set, so the
+element default is preserved otherwise.
+-}
+withOvershootLimit : Float -> BottomSheet msg -> BottomSheet msg
+withOvershootLimit limit (BottomSheet cfg) =
+    BottomSheet { cfg | overshootLimit = Just limit }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -210,6 +261,13 @@ view (BottomSheet cfg) =
                     , Just (M3e.BottomSheet.handle cfg.handle)
                     , Just (M3e.BottomSheet.hideable cfg.hideable)
                     , Just (M3e.BottomSheet.modal cfg.modal)
+                    , if List.isEmpty cfg.detents then
+                        Nothing
+
+                      else
+                        Just (Attr.attribute "detents" (String.join " " cfg.detents))
+                    , Maybe.map M3e.BottomSheet.hideFriction cfg.hideFriction
+                    , Maybe.map M3e.BottomSheet.overshootLimit cfg.overshootLimit
                     , Just (M3e.BottomSheet.onClosed (Decode.succeed cfg.onClose))
                     , Just (M3e.BottomSheet.onCancel (Decode.succeed cfg.onClose))
                     ]

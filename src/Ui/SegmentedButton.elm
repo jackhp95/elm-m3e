@@ -32,6 +32,22 @@ Use for _small_ sets (2–5 segments). For longer lists, prefer
 or chips.
 
 
+# Selection is Elm-controlled (no DOM submission value)
+
+This module owns selection entirely in Elm: each segment carries your
+typed `value`, `view` reflects it via the `checked` attribute, and a
+click dispatches `onChange` with the new selection. Although
+`<m3e-segmented-button>` is form-associated (it has a `name` and each
+`<m3e-button-segment>` has a string `value` that would be submitted with
+a native form), this module exposes **no** `name`/form-submission path,
+so that DOM `value` is never read. We therefore set each segment's DOM
+`value` to its visible `label` purely as a sensible, human-readable
+default; it carries no behaviour. If native form submission is ever
+needed here, add a per-segment `String` submission value (the model's
+selection `value` is a generic type and can't be stringified), rather
+than relying on the label.
+
+
 # Required-by-design
 
 `single` and `multi` both require:
@@ -299,6 +315,10 @@ segmentView cfg (Segment seg) =
     M3e.ButtonSegment.component
         [ M3e.ButtonSegment.checked (cfg.isSelected seg.value)
         , M3e.ButtonSegment.disabled cfg.disabled
+
+        -- Selection is Elm-controlled via onClick; this DOM `value` is never
+        -- read (no form-submission path is exposed). We mirror the label as a
+        -- readable default. See the module doc's "Selection is Elm-controlled".
         , M3e.ButtonSegment.value seg.label
         , HtmlEvents.onClick (cfg.onSegmentClick seg.value)
         ]

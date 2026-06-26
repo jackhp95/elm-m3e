@@ -1,6 +1,7 @@
 module Ui.SkeletonTest exposing (suite)
 
 import Expect
+import Html
 import Html.Attributes as Attr
 import M3e.Skeleton
 import Test exposing (Test, describe, test)
@@ -42,6 +43,25 @@ suite =
                         [ Selector.tag "m3e-skeleton"
                         , Selector.attribute (M3e.Skeleton.loaded True)
                         ]
+        , test "withContent projects children into the element's default slot" <|
+            \_ ->
+                Ui.Skeleton.new
+                    |> Ui.Skeleton.withContent
+                        [ Html.div [ Attr.class "real-content" ] [ Html.text "loaded" ] ]
+                    |> Ui.Skeleton.withLoaded True
+                    |> Ui.Skeleton.view
+                    |> Query.fromHtml
+                    |> Query.has
+                        [ Selector.class "real-content"
+                        , Selector.text "loaded"
+                        ]
+        , test "defaults: no content children when withContent is unset" <|
+            \_ ->
+                Ui.Skeleton.new
+                    |> Ui.Skeleton.view
+                    |> Query.fromHtml
+                    |> Query.children []
+                    |> Query.count (Expect.equal 0)
         , test "defaults: no shape/animation attributes when unset" <|
             \_ ->
                 Ui.Skeleton.new
