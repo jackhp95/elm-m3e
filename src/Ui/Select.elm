@@ -259,22 +259,34 @@ withError e (Select cfg) =
 `label` (a native attribute, not a `<label>` element) and is **not**
 wrapped in `m3e-form-field` — form-field has no `label` slot and
 double-wrapping a control that already provides field chrome produces a
-broken nested-field surface. Help/error text, when present, renders as a
-sibling under a plain layout `div`.
+broken nested-field surface.
+
+`m3e-select` exposes no supporting-text / hint / error slot or attribute
+(its only slots are `arrow` and `value`), so help/error text can't be
+threaded through the component. Instead, when present it renders as a
+sibling subscript element carrying an `id`, and the select points its
+`aria-describedby` at that `id` so the association survives for assistive
+tech. Error takes precedence over help (mutually exclusive), matching the
+form-control subscript precedence. Styling the subscript is the caller's
+concern — the builder keeps it structural.
+
+For a stable, collision-free `aria-describedby`, set `withId`; without an
+`id` the subscript id is derived from the label, which can collide if two
+selects share a label.
 
 -}
 view : Select kind value msg -> Html msg
 view (Select cfg) =
     case subscriptElement cfg of
         Nothing ->
-            selectElement cfg
+            selectElement Nothing cfg
 
         Just subscript ->
-            Html.div [] [ selectElement cfg, subscript ]
+            Html.div [] [ selectElement (Just (subscriptId cfg)) cfg, subscript ]
 
 
-selectElement : Config value msg -> Html msg
-selectElement cfg =
+selectElement : Maybe String -> Config value msg -> Html msg
+selectElement describedBy cfg =
     M3e.Select.component
         (cfg.attributes
             ++ List.filterMap identity
@@ -283,6 +295,7 @@ selectElement cfg =
                 , Just (M3e.Select.multi cfg.multiAttr)
                 , Just (M3e.Select.required cfg.required)
                 , Just (M3e.Select.disabled cfg.disabled)
+                , Maybe.map (Attr.attribute "aria-describedby") describedBy
                 ]
         )
         (List.map (optionView cfg) cfg.options)
@@ -316,10 +329,33 @@ subscriptElement : Config value msg -> Maybe (Html msg)
 subscriptElement cfg =
     case ( cfg.error, cfg.help ) of
         ( Just err, _ ) ->
-            Just (Html.span [] [ err ])
+            Just (Html.span [ Attr.id (subscriptId cfg) ] [ err ])
 
         ( Nothing, Just help ) ->
-            Just (Html.span [] [ help ])
+            Just (Html.span [ Attr.id (subscriptId cfg) ] [ help ])
 
         ( Nothing, Nothing ) ->
             Nothing
+
+
+{-| The `id` of the subscript element, also the target of the select's
+`aria-describedby`. Derived from the explicit `id` when set, otherwise from
+the label (which may collide — prefer `withId`).
+-}
+subscriptId : Config value msg -> String
+subscriptId cfg =
+    let
+        base =
+            case cfg.id of
+                Just id ->
+                    id
+
+                Nothing ->
+                    "ui-select-" ++ slug cfg.label
+    in
+    base ++ "-subscript"
+
+
+slug : String -> String
+slug =
+    String.toLower >> String.words >> String.join "-"
