@@ -1,34 +1,120 @@
-module M3e.Avatar exposing (Option, view, image)
+module M3e.Avatar exposing
+    ( Option
+    , view
+    , image, initials, iconChild
+    )
+
+{-| `<m3e-avatar>` — an image, initials, or icon representing a user.
+
+Spec (per docs/CONVENTIONS.md):
+
+  - Required:   { alt : String }  (→ aria-label on m3e-avatar; also → img[alt]
+                for the image variant)
+  - Options:    image (src String), initials (text String),
+                iconChild (icon Renderable)
+  - Slots:      default (the content child — img, text, or icon)
+  - Properties: none (CEM Avatar has no attributes)
+  - Attrs:      aria-label (from required `alt`)
+  - Escape:     none (leaf)
+  - Tag:        avatar
+
+`Cem.M3e.Avatar` renders only its children (no fallback glyph), so content is
+supplied by exactly one of `image` / `initials` / `iconChild` (last-write-wins).
+An avatar with no content option renders an empty circle.
+
+-}
 
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+
+-- OPTIONS ----------------------------------------------------------------
+
+
 type Option msg
     = Image String
+    | Initials String
+    | IconChild (Renderable { icon : Supported } msg)
 
 
+{-| Display an image (e.g. a profile photo) — rendered as an `<img>` child
+carrying `src` and the required `alt`.
+-}
 image : String -> Option msg
 image =
     Image
 
 
+{-| Display textual initials — rendered as a text child.
+-}
+initials : String -> Option msg
+initials =
+    Initials
+
+
+{-| Display an icon glyph — the generic-identity fallback.
+-}
+iconChild : Renderable { icon : Supported } msg -> Option msg
+iconChild =
+    IconChild
+
+
+
+-- CONTENT ----------------------------------------------------------------
+
+
+type Content msg
+    = ImgContent String
+    | TextContent String
+    | IconContent (Renderable { icon : Supported } msg)
+    | NoContent
+
+
+apply : Option msg -> Content msg -> Content msg
+apply opt _ =
+    case opt of
+        Image src ->
+            ImgContent src
+
+        Initials text ->
+            TextContent text
+
+        IconChild icon ->
+            IconContent icon
+
+
+
+-- VIEW -------------------------------------------------------------------
+
+
 view : { alt : String } -> List (Option msg) -> Renderable { s | avatar : Supported } msg
 view req opts =
     let
-        src =
-            List.foldl (\(Image u) _ -> Just u) Nothing opts
+        content =
+            List.foldl apply NoContent opts
+
+        children =
+            case content of
+                ImgContent src ->
+                    [ Node.element "img"
+                        [ Node.attribute "src" src
+                        , Node.attribute "alt" req.alt
+                        ]
+                        []
+                    ]
+
+                TextContent text ->
+                    [ Node.text text ]
+
+                IconContent icon ->
+                    [ Renderable.toNode icon ]
+
+                NoContent ->
+                    []
     in
     Renderable.fromNode
         (Node.element "m3e-avatar"
-            (Node.attribute "alt" req.alt
-                :: (case src of
-                        Just u ->
-                            [ Node.attribute "src" u ]
-
-                        Nothing ->
-                            []
-                   )
-            )
-            []
+            [ Node.attribute "aria-label" req.alt ]
+            children
         )
