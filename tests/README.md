@@ -1,0 +1,73 @@
+# Testing the `Ui.*` library
+
+Two layers, because m3e components are custom elements whose truth lives in
+places a virtual-DOM test can't reach.
+
+| Layer | Tool | Sees | Run |
+|---|---|---|---|
+| **Unit** | `elm-test` (`tests/Ui/*Test.elm`) | the *emitted virtual DOM* — tags, **string attributes**, slots, text | `npx elm-test` |
+| **Runtime contract** | Playwright (`docs/tests-browser/`) | the *real browser* — shadow DOM, **DOM properties**, the a11y tree, interaction | `cd docs && npm run test:browser` |
+
+`elm-test` is fast and covers most structure. The contract harness covers the
+behaviors `Test.Html` **structurally cannot** — and that gap is exactly how the
+icon-invisible bug (friction F1) shipped past the compiler *and* the unit suite.
+
+## Footguns that keep biting
+
+These have each bitten more than once. Know them before writing a test.
+
+### F6 — `Query.find` / `findAll` search **descendants only**, never the root
+If the element you're asserting is the **root** of the rendered fragment (e.g. a
+bare `m3e-switch`, the `m3e-toolbar` itself, `m3e-skeleton`), `Query.find
+[ tag "m3e-switch" ]` returns **0** and errors. Assert the root directly:
+
+```elm
+-- WRONG: m3e-toolbar is the root → find can't match it
+view |> Query.fromHtml |> Query.find [ Selector.tag "m3e-toolbar" ] |> ...
+
+-- RIGHT: query the root with `has`, or query its (descendant) children directly
+view |> Query.fromHtml |> Query.has [ Selector.tag "m3e-toolbar", ... ]
+view |> Query.fromHtml |> Query.findAll [ Selector.tag "m3e-icon-button" ] |> Query.count ...
+```
+Reach for `findAll` + `count`/`index` for non-unique selectors, and `has` (not
+`find`) when the thing you're checking is the root element.
+
+### F4 — DOM **properties** are invisible to `Test.Html`
+Bindings that emit `Html.Attributes.property` (`checked`, `selected`, `open`,
+`loaded`, number props like `hide-friction` / `overshoot-limit`, …) are **not**
+real attributes. `Test.Html` only sees attributes, so:
+
+```elm
+-- This reports `invalid` and fails — `hideFriction` is a property:
+Query.has [ Selector.attribute (M3e.BottomSheet.hideFriction 0.8) ]
+```
+Don't assert property values in `elm-test`. Assert observable structure
+(tags / string attributes / slots / text) only, and verify the
+property-driven behavior in the **contract harness**:
+
+```ts
+const v = await el.evaluate((e) => (e as any).hideFriction); // reads the property
+```
+Rule of thumb: if the `M3e.*` function is `Html.Attributes.property`, it's
+browser-only. Bare/string attributes (`Attr.attribute "position-x" "before"`)
+are fine in `elm-test`.
+
+### F1 — slotless elements read content from an **attribute**, not children
+`<m3e-icon>` has no slot — its glyph comes from the `name` attribute; a
+`Html.text` child is silently dropped. The `Ui.*` layer routes this correctly,
+and `review/`'s **`NoUntypedSlot`** / **`NoRawAttributeInUi`** rules guard the
+source side. (Run the repo's lint: `docs/node_modules/.bin/elm-review src
+--config review`.)
+
+## When to add a **contract** test (not a unit test)
+Add to `docs/tests-browser/contract.spec.ts` when the behavior is:
+- a **DOM property** (`checked`, `open`, `loaded`, gesture numbers, …),
+- **shadow-DOM** rendering (does the glyph actually paint? is the form-field
+  chrome present/absent?),
+- the **accessibility tree** (computed role / accessible name from `aria-label`),
+- or **interaction** (clicking a `triggerFor` opens the element-managed menu).
+
+The harness mounts the real components via the docs component pages
+(`/components/<slug>`), so a small demo on that page often doubles as the
+fixture. It reuses a dev server on `:1239` if one is up, else starts one;
+override with `BASE_URL=…`.
