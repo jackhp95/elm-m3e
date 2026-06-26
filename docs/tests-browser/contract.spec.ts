@@ -91,6 +91,37 @@ test.describe("F4 — boolean element state lives in DOM properties (invisible t
   });
 });
 
+test.describe("coverage — runtime behaviors Test.Html cannot observe", () => {
+  test("Menu: clicking the trigger opens the element-managed menu", async ({ page }) => {
+    await page.goto("/components/menu");
+    await waitDefined(page, "m3e-menu");
+    const item = page.getByText("Refresh", { exact: true }).first();
+    await expect(item, "menu items hidden until the trigger opens it").toBeHidden();
+    await page.getByRole("button", { name: "Open demo menu" }).first().click();
+    await expect(item, "menu opens on trigger activation").toBeVisible();
+  });
+
+  test("Skeleton: withLoaded reveals the projected content", async ({ page }) => {
+    await page.goto("/components/skeleton");
+    await waitDefined(page, "m3e-skeleton");
+    await expect(
+      page.getByText("Real content, revealed once loaded.")
+    ).toBeVisible();
+    // `loaded` is a DOM property (invisible to Test.Html) — assert it at runtime.
+    const loaded = await page
+      .locator(`${CONTENT} m3e-skeleton`)
+      .last()
+      .evaluate((el) => (el as unknown as { loaded: boolean }).loaded);
+    expect(loaded).toBe(true);
+  });
+
+  // Note: BottomSheet's number gesture properties (hide-friction / overshoot-
+  // limit) are only present on an *open* sheet, which would overlay the docs
+  // page — so they're not asserted here. They stay unit-covered (the `detents`
+  // attribute + a code-path smoke test); a dedicated open-sheet fixture would
+  // be needed to runtime-verify the number properties.
+});
+
 test.describe("smoke — component pages mount without console errors", () => {
   for (const slug of ["icon", "switch", "checkbox", "button", "card"]) {
     test(`/components/${slug} renders its host elements`, async ({ page }) => {

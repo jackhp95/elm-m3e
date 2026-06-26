@@ -997,12 +997,17 @@ demoSections slug =
 
         "menu" ->
             [ usage
-                [ sub "Basic"
+                [ sub "With trigger"
                     (Menu.new
                         [ Menu.item "Refresh" PagesMsg.noOp
                         , Menu.item "Settings" PagesMsg.noOp
                         , Menu.item "Sign out" PagesMsg.noOp
                         ]
+                        |> Menu.withId "demo-menu"
+                        |> Menu.withTriggerIcon
+                            { icon = Icon.material "more_vert"
+                            , label = "Open demo menu"
+                            }
                         |> Menu.view
                     )
                 ]
@@ -1263,6 +1268,15 @@ demoSections slug =
                         , Skeleton.new |> Skeleton.withClass "h-5 w-1/2" |> Skeleton.view
                         , Skeleton.new |> Skeleton.withClass "h-32 w-full" |> Skeleton.view
                         ]
+                    )
+                , sub "Loaded (reveals content)"
+                    (Skeleton.new
+                        |> Skeleton.withContent
+                            [ div [ class "rounded bg-surface-container p-3 text-body-md" ]
+                                [ text "Real content, revealed once loaded." ]
+                            ]
+                        |> Skeleton.withLoaded True
+                        |> Skeleton.view
                     )
                 ]
             ]
