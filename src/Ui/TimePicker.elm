@@ -71,7 +71,7 @@ module will graduate to using it without changing its public surface.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.FormField
+import Ui.Field
 
 
 
@@ -204,15 +204,26 @@ withError e (TimePicker cfg) =
 -}
 view : TimePicker msg -> Html msg
 view (TimePicker cfg) =
-    M3e.FormField.component
-        cfg.attributes
-        (List.concat
-            [ [ labelElement cfg
-              , inputElement cfg
-              ]
-            , subscriptElements cfg
-            ]
-        )
+    Ui.Field.new cfg.label
+        |> Ui.Field.withId (controlId cfg)
+        |> maybeWith Ui.Field.withHint cfg.help
+        |> maybeWith Ui.Field.withError cfg.error
+        |> Ui.Field.withAttributes cfg.attributes
+        |> Ui.Field.view (inputElement cfg)
+
+
+maybeWith :
+    (a -> Ui.Field.Field msg -> Ui.Field.Field msg)
+    -> Maybe a
+    -> Ui.Field.Field msg
+    -> Ui.Field.Field msg
+maybeWith f maybe field =
+    case maybe of
+        Just v ->
+            f v field
+
+        Nothing ->
+            field
 
 
 controlId : Config msg -> String
@@ -243,15 +254,6 @@ inputElement cfg =
         []
 
 
-labelElement : Config msg -> Html msg
-labelElement cfg =
-    Html.label
-        [ Attr.attribute "slot" "label"
-        , Attr.for (controlId cfg)
-        ]
-        [ Html.text cfg.label ]
-
-
 {-| Derive a stable, deterministic control id from the label text so the
 `<label slot="label" for="...">` can anchor the control even when the
 caller hasn't supplied an explicit `withId`.
@@ -278,16 +280,3 @@ slugify label =
                 |> String.join "-"
     in
     "uif-" ++ slug
-
-
-subscriptElements : Config msg -> List (Html msg)
-subscriptElements cfg =
-    case ( cfg.error, cfg.help ) of
-        ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
-
-        ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
-
-        ( Nothing, Nothing ) ->
-            []

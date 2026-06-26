@@ -374,7 +374,7 @@ breadcrumbBar model =
             |> Ui.Heading.withLevel 1
             |> Ui.Heading.withContent (text "Settings")
             |> Ui.Heading.view
-        , p [ class "text-body-large text-on-surface-variant" ]
+        , p [ class "text-body-lg text-on-surface-variant" ]
             [ text "Manage your account, notifications, appearance, and privacy preferences." ]
         ]
 
@@ -460,10 +460,10 @@ controlRow : String -> Maybe String -> Html Msg -> Html Msg
 controlRow label supporting control =
     div [ class "flex flex-col gap-2 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-6" ]
         [ div [ class "flex min-w-0 flex-col" ]
-            [ Html.span [ class "text-body-large text-on-surface" ] [ text label ]
+            [ Html.span [ class "text-body-lg text-on-surface" ] [ text label ]
             , case supporting of
                 Just s ->
-                    Html.span [ class "text-body-small text-on-surface-variant" ] [ text s ]
+                    Html.span [ class "text-body-sm text-on-surface-variant" ] [ text s ]
 
                 Nothing ->
                     text ""
@@ -478,9 +478,9 @@ accountPanel model =
         [ section [ class "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4" ]
             [ Html.map never (Ui.Avatar.view (Ui.Avatar.initials "Jack Peterson"))
             , div [ class "flex min-w-0 flex-col" ]
-                [ Html.span [ class "text-title-medium text-on-surface" ] [ text "Jack Peterson" ]
-                , Html.span [ class "text-body-medium text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
-                , Html.span [ class "mt-1 w-max rounded-full bg-secondary-container px-2 py-0.5 text-label-small text-on-secondary-container" ]
+                [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
+                , Html.span [ class "text-body-md text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
+                , Html.span [ class "mt-1 w-max rounded-full bg-secondary-container px-2 py-0.5 text-label-sm text-on-secondary-container" ]
                     [ text "Pro plan" ]
                 ]
             ]
@@ -494,7 +494,6 @@ accountPanel model =
                     , onChange = TwoFactorToggled
                     }
                     |> Ui.Switch.withHandleIcons True
-                    |> Ui.Switch.withVisibleLabel False
                     |> Ui.Switch.view
                 )
             ]
@@ -522,7 +521,6 @@ notificationsPanel model =
 channelSwitch : String -> Bool -> (Bool -> Msg) -> Html Msg
 channelSwitch label checked onChange =
     Ui.Switch.new { label = label, checked = checked, onChange = onChange }
-        |> Ui.Switch.withVisibleLabel False
         |> Ui.Switch.view
 
 
@@ -543,7 +541,6 @@ appearancePanel model =
                     , selected = Just model.theme
                     , onChange = ThemeChosen
                     }
-                    |> Ui.RadioButton.withVisibleLabel False
                     |> Ui.RadioButton.view
                 )
             , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
@@ -574,7 +571,6 @@ appearancePanel model =
                         |> Ui.Slider.withMin 0
                         |> Ui.Slider.withMax 100
                         |> Ui.Slider.withStep 1
-                        |> Ui.Slider.withVisibleLabel False
                         |> Ui.Slider.view
                     ]
                 )
@@ -586,7 +582,6 @@ appearancePanel model =
                     , checked = model.reduceMotion
                     , onChange = ReduceMotionToggled
                     }
-                    |> Ui.Switch.withVisibleLabel False
                     |> Ui.Switch.view
                 )
             ]
@@ -651,7 +646,6 @@ privacyPanel model =
                         , checked = model.telemetry
                         , onChange = TelemetryToggled
                         }
-                        |> Ui.Switch.withVisibleLabel False
                         |> Ui.Switch.view
                     ]
                 )
@@ -663,7 +657,6 @@ privacyPanel model =
                     , checked = model.personalizedAds
                     , onChange = PersonalizedAdsToggled
                     }
-                    |> Ui.Switch.withVisibleLabel False
                     |> Ui.Switch.view
                 )
             ]
@@ -739,17 +732,17 @@ advancedAccordion =
     Ui.Disclosure.accordion "settings-advanced"
         [ Ui.Disclosure.section "advanced-storage"
             (text "Storage & cache")
-            [ p [ class "text-body-medium text-on-surface-variant" ]
+            [ p [ class "text-body-md text-on-surface-variant" ]
                 [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
             ]
         , Ui.Disclosure.section "advanced-network"
             (text "Network")
-            [ p [ class "text-body-medium text-on-surface-variant" ]
+            [ p [ class "text-body-md text-on-surface-variant" ]
                 [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
             ]
         , Ui.Disclosure.section "advanced-accessibility"
             (text "Accessibility")
-            [ p [ class "text-body-medium text-on-surface-variant" ]
+            [ p [ class "text-body-md text-on-surface-variant" ]
                 [ text "High-contrast mode, larger text, and screen-reader hints." ]
             ]
         ]
@@ -767,7 +760,6 @@ developerPanel model =
                 , checked = model.developerMode
                 , onChange = DeveloperModeToggled
                 }
-                |> Ui.Switch.withVisibleLabel False
                 |> Ui.Switch.view
             )
         ]

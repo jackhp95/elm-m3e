@@ -28,31 +28,35 @@ pricing =
 
 suite : Test
 suite =
-    describe "Ui.RadioButton"
-        [ test "label carries slot=label and for=<stable id>" <|
+    describe "Ui.RadioButton (bare group)"
+        [ test "renders a bare m3e-radio-group with the group label as aria-label" <|
             \_ ->
                 pricing
                     |> Ui.RadioButton.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "label" ]
                     |> Query.has
-                        [ Selector.attribute (Attr.attribute "slot" "label")
-                        , Selector.attribute (Attr.for "uif-billing-cycle")
+                        [ Selector.tag "m3e-radio-group"
+                        , Selector.attribute (Attr.attribute "aria-label" "Billing cycle")
                         ]
-        , test "group carries the stable id" <|
+        , test "renders no m3e-form-field and no visible label" <|
             \_ ->
                 pricing
                     |> Ui.RadioButton.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "m3e-radio-group" ]
-                    |> Query.has [ Selector.id "uif-billing-cycle" ]
-        , test "group carries a name attribute" <|
+                    |> Expect.all
+                        [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                        , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                        ]
+        , test "group carries the stable id and a matching name" <|
             \_ ->
                 pricing
                     |> Ui.RadioButton.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "m3e-radio-group" ]
-                    |> Query.has [ Selector.attribute (Attr.name "uif-billing-cycle") ]
+                    |> Query.has
+                        [ Selector.tag "m3e-radio-group"
+                        , Selector.id "uif-billing-cycle"
+                        , Selector.attribute (Attr.name "uif-billing-cycle")
+                        ]
         , test "every radio shares the same name as the group" <|
             \_ ->
                 pricing
@@ -68,26 +72,13 @@ suite =
                     |> Ui.RadioButton.view
                     |> Query.fromHtml
                     |> Expect.all
-                        [ Query.find [ Selector.tag "m3e-radio-group" ]
-                            >> Query.has
-                                [ Selector.id "bc"
-                                , Selector.attribute (Attr.name "bc")
-                                ]
+                        [ Query.has
+                            [ Selector.tag "m3e-radio-group"
+                            , Selector.id "bc"
+                            , Selector.attribute (Attr.name "bc")
+                            ]
                         , Query.findAll [ Selector.tag "m3e-radio" ]
                             >> Query.each
                                 (Query.has [ Selector.attribute (Attr.name "bc") ])
                         ]
-        , describe "withVisibleLabel False (bare mode)"
-            [ test "renders no m3e-form-field and no visible label, keeps aria-label on the group" <|
-                \_ ->
-                    pricing
-                        |> Ui.RadioButton.withVisibleLabel False
-                        |> Ui.RadioButton.view
-                        |> Query.fromHtml
-                        |> Expect.all
-                            [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
-                            , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
-                            , Query.has [ Selector.tag "m3e-radio-group", Selector.attribute (Attr.attribute "aria-label" "Billing cycle") ]
-                            ]
-            ]
         ]

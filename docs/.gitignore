@@ -14,3 +14,8 @@ functions/
 
 # generated component reference (rebuilt by npm run build:reference)
 data/reference.json
+
+# playwright
+test-results/
+playwright-report/
+.playwright/

@@ -335,14 +335,14 @@ page model =
 intro : Html Msg
 intro =
     section [ class "space-y-3" ]
-        [ p [ class "text-label-large uppercase tracking-wide text-primary" ] [ text "Studies" ]
+        [ p [ class "text-label-lg uppercase tracking-wide text-primary" ] [ text "Studies" ]
         , Heading.new
             |> Heading.withVariant Heading.Display
             |> Heading.withSize Heading.Small
             |> Heading.withLevel 1
             |> Heading.withContent (text "Crane")
             |> Heading.view
-        , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+        , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
             [ text "An expressive travel app: switch between Fly, Sleep, and Eat, set your trip, search fares, and browse a scrolling row of featured destinations — all composed from elm-m3e components under their own Crane-purple theme." ]
         ]
 
@@ -489,17 +489,17 @@ destinationField model =
                 ]
                 [ Icon.view (Icon.material (categoryIcon d.category))
                 , span [ class "flex flex-col" ]
-                    [ span [ class "text-body-medium text-on-surface" ] [ text d.name ]
-                    , span [ class "text-body-small text-on-surface-variant" ] [ text d.country ]
+                    [ span [ class "text-body-md text-on-surface" ] [ text d.name ]
+                    , span [ class "text-body-sm text-on-surface-variant" ] [ text d.country ]
                     ]
                 ]
     in
     div [ class "relative flex min-w-0 flex-col gap-1.5" ]
-        [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Where to" ]
+        [ span [ class "text-label-md text-on-surface-variant" ] [ text "Where to" ]
         , div [ class "flex min-h-12 items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2.5" ]
             [ Icon.view (Icon.material "search")
             , Html.input
-                [ class "min-w-0 flex-1 bg-transparent text-body-large text-on-surface outline-none placeholder:text-on-surface-variant"
+                [ class "min-w-0 flex-1 bg-transparent text-body-lg text-on-surface outline-none placeholder:text-on-surface-variant"
                 , attribute "placeholder" "Search destinations"
                 , Html.Attributes.value model.query
                 , attribute "aria-label" "Search destinations"
@@ -561,7 +561,7 @@ passengersField model =
 departField : Model -> Html Msg
 departField model =
     div [ class "flex min-w-0 flex-col gap-1.5" ]
-        [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Depart" ]
+        [ span [ class "text-label-md text-on-surface-variant" ] [ text "Depart" ]
         , dateTrigger
             { targetId = "crane-depart"
             , label = "Depart"
@@ -581,7 +581,7 @@ returnOrTimeField model =
     case model.tripType of
         RoundTrip ->
             div [ class "flex min-w-0 flex-col gap-1.5" ]
-                [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Return" ]
+                [ span [ class "text-label-md text-on-surface-variant" ] [ text "Return" ]
                 , dateTrigger
                     { targetId = "crane-return"
                     , label = "Return"
@@ -598,7 +598,7 @@ returnOrTimeField model =
 
         OneWay ->
             div [ class "flex min-w-0 flex-col gap-1.5" ]
-                [ span [ class "text-label-medium text-on-surface-variant" ] [ text "Departure time" ]
+                [ span [ class "text-label-md text-on-surface-variant" ] [ text "Departure time" ]
                 , TimePicker.new
                     { label = "Preferred departure time"
                     , value = model.time
@@ -622,7 +622,7 @@ standard HTML popover invoker pattern (`popovertarget`).
 dateTrigger : { targetId : String, label : String, value : String, icon : String } -> Html Msg
 dateTrigger { targetId, label, value, icon } =
     Html.button
-        [ class "flex min-h-12 w-full items-center gap-2 rounded-md-corner-medium border border-outline-variant bg-surface-container px-3 py-2 text-left text-body-large text-on-surface hover:bg-surface-container-high"
+        [ class "flex min-h-12 w-full items-center gap-2 rounded-md-corner-medium border border-outline-variant bg-surface-container px-3 py-2 text-left text-body-lg text-on-surface hover:bg-surface-container-high"
         , attribute "type" "button"
         , attribute "popovertarget" targetId
         , attribute "aria-label" (label ++ " " ++ value)
@@ -651,7 +651,7 @@ searchButton model =
 
 searchingIndicator : Html Msg
 searchingIndicator =
-    div [ class "flex items-center gap-2 text-body-medium text-on-surface-variant" ]
+    div [ class "flex items-center gap-2 text-body-md text-on-surface-variant" ]
         [ span [ class "inline-block size-6" ]
             [ LoadingIndicator.new
                 |> LoadingIndicator.withVariant LoadingIndicator.Uncontained
@@ -697,9 +697,9 @@ featuredSlide model d =
                 |> Shape.view
             ]
         , div [ class "absolute right-2 top-2" ] [ favoriteButton d favorited ]
-        , span [ class "relative text-label-medium uppercase tracking-wide" ] [ text d.country ]
-        , span [ class "relative text-title-large font-medium" ] [ text d.name ]
-        , span [ class "relative text-body-small" ] [ text (d.price ++ " · ★ " ++ d.rating) ]
+        , span [ class "relative text-label-md uppercase tracking-wide" ] [ text d.country ]
+        , span [ class "relative text-title-lg font-medium" ] [ text d.name ]
+        , span [ class "relative text-body-sm" ] [ text (d.price ++ " · ★ " ++ d.rating) ]
         ]
 
 
@@ -737,7 +737,7 @@ emptyState model =
     div [ class "grid place-items-center rounded-md-corner-large border border-dashed border-outline-variant p-10 text-center" ]
         [ div [ class "space-y-2" ]
             [ Icon.view (Icon.material "search_off")
-            , p [ class "text-body-medium text-on-surface-variant" ]
+            , p [ class "text-body-md text-on-surface-variant" ]
                 [ text ("No " ++ categoryLabel model.category ++ " results for “" ++ model.query ++ "”.") ]
             , Button.new { label = "Clear search", variant = Button.Text }
                 |> Button.withOnClick (SetQuery "")
@@ -760,7 +760,7 @@ destinationCard model d =
                     |> Shape.withContent [ Icon.view (Icon.material (categoryIcon d.category)) ]
                     |> Shape.view
                 , div [ class "absolute left-2 top-2 flex items-center gap-1" ]
-                    [ span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-small text-on-surface" ]
+                    [ span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-sm text-on-surface" ]
                         [ text ("★ " ++ d.rating) ]
                     , Badge.label "Top rated"
                         |> Badge.withFor (badgeAnchor d)
@@ -773,7 +773,7 @@ destinationCard model d =
         |> Card.withMedia media
         |> Card.withHeadline (Heading.title d.name)
         |> Card.withSubhead (Heading.label (d.country ++ " · " ++ d.price))
-        |> Card.withBody (p [ class "text-body-medium text-on-surface-variant" ] [ text d.blurb ])
+        |> Card.withBody (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ])
         |> Card.withActions
             [ Button.new { label = "Itinerary", variant = Button.Text }
                 |> Button.withOnClick (OpenItinerary d.id)
@@ -838,8 +838,8 @@ itinerarySheet model =
                     |> Shape.withContent [ Icon.view (Icon.material (categoryIcon dest.category)) ]
                     |> Shape.view
                 , div [ class "flex flex-col" ]
-                    [ span [ class "text-title-large text-on-surface" ] [ text dest.name ]
-                    , span [ class "text-body-medium text-on-surface-variant" ] [ text (dest.country ++ " · " ++ dest.price) ]
+                    [ span [ class "text-title-lg text-on-surface" ] [ text dest.name ]
+                    , span [ class "text-body-md text-on-surface-variant" ] [ text (dest.country ++ " · " ++ dest.price) ]
                     ]
                 ]
 
@@ -847,8 +847,8 @@ itinerarySheet model =
             div [ class "flex items-start gap-3 py-2" ]
                 [ Icon.view (Icon.material icon)
                 , div [ class "flex flex-col" ]
-                    [ span [ class "text-body-large text-on-surface" ] [ text title ]
-                    , span [ class "text-body-small text-on-surface-variant" ] [ text detail ]
+                    [ span [ class "text-body-lg text-on-surface" ] [ text title ]
+                    , span [ class "text-body-sm text-on-surface-variant" ] [ text detail ]
                     ]
                 ]
 

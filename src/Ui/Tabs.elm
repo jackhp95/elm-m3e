@@ -3,6 +3,8 @@ module Ui.Tabs exposing
     , new, tab
     , withAttributes
     , withId, withStretch, withTabIcon, withTabBadge
+    , withPanel
+    , withNextIcon, withPrevIcon
     , view
     )
 
@@ -36,6 +38,22 @@ section switching.
 @docs withId, withStretch, withTabIcon, withTabBadge
 
 
+# Panels
+
+A tab can carry the content it switches to. `withPanel` renders that content
+as an `<m3e-tab-panel>` into the tabs' `panel` slot, associated to its tab by
+the `for`/`id` mechanism the element uses (`<m3e-tab for=X>` ↔
+`<m3e-tab-panel id=X>`). Panels are optional: tabs built without one keep the
+strip-only behaviour.
+
+@docs withPanel
+
+
+# Pagination icons
+
+@docs withNextIcon, withPrevIcon
+
+
 # Render
 
 @docs view
@@ -47,6 +65,7 @@ import Html.Attributes as Attr
 import Html.Events as HtmlEvents
 import M3e.Badge
 import M3e.Tab
+import M3e.TabPanel
 import M3e.Tabs
 import Ui.Icon
 
@@ -70,6 +89,8 @@ type alias TabsConfig value msg =
     , tabs : List (Tab value msg)
     , selected : value
     , onChange : value -> msg
+    , nextIcon : Maybe (Ui.Icon.Icon msg)
+    , prevIcon : Maybe (Ui.Icon.Icon msg)
     }
 
 
@@ -78,6 +99,7 @@ type alias TabConfig value msg =
     , label : String
     , icon : Maybe (Ui.Icon.Icon msg)
     , badge : Maybe String
+    , panel : Maybe (Html msg)
     }
 
 
@@ -97,6 +119,8 @@ new c =
         , tabs = c.tabs
         , selected = c.selected
         , onChange = c.onChange
+        , nextIcon = Nothing
+        , prevIcon = Nothing
         }
 
 
@@ -104,7 +128,13 @@ new c =
 -}
 tab : { value : value, label : String } -> Tab value msg
 tab c =
-    Tab { value = c.value, label = c.label, icon = Nothing, badge = Nothing }
+    Tab
+        { value = c.value
+        , label = c.label
+        , icon = Nothing
+        , badge = Nothing
+        , panel = Nothing
+        }
 
 
 {-| Append attributes to the underlying `<m3e-tabs>` host element — the escape
@@ -144,6 +174,32 @@ withTabBadge badge (Tab cfg) =
     Tab { cfg | badge = Just badge }
 
 
+{-| Attach the panel content a tab switches to. It is rendered as an
+`<m3e-tab-panel>` in the tabs' `panel` slot and wired to its tab via a
+generated `for`/`id` pair, so the element shows the matching panel when the
+tab is selected.
+-}
+withPanel : Html msg -> Tab value msg -> Tab value msg
+withPanel panel (Tab cfg) =
+    Tab { cfg | panel = Just panel }
+
+
+{-| Set the icon used by the "next page" pagination button (the `next-icon`
+slot), shown when the strip overflows.
+-}
+withNextIcon : Ui.Icon.Icon msg -> Tabs value msg -> Tabs value msg
+withNextIcon icon (Tabs cfg) =
+    Tabs { cfg | nextIcon = Just icon }
+
+
+{-| Set the icon used by the "previous page" pagination button (the
+`prev-icon` slot), shown when the strip overflows.
+-}
+withPrevIcon : Ui.Icon.Icon msg -> Tabs value msg -> Tabs value msg
+withPrevIcon icon (Tabs cfg) =
+    Tabs { cfg | prevIcon = Just icon }
+
+
 {-| Render the tabs strip.
 -}
 view : Tabs value msg -> Html msg
@@ -155,21 +211,65 @@ view (Tabs cfg) =
                 , Just (M3e.Tabs.stretch cfg.stretch)
                 ]
         )
-        (List.map (tabView cfg) cfg.tabs)
+        (List.indexedMap (tabView cfg) cfg.tabs
+            ++ List.filterMap identity (List.indexedMap (panelView cfg) cfg.tabs)
+            ++ paginationIcons cfg
+        )
 
 
-tabView : TabsConfig value msg -> Tab value msg -> Html msg
-tabView cfg (Tab t) =
+{-| The `for`/`id` value linking a tab to its panel
+(`<m3e-tab for=X>` ↔ `<m3e-tab-panel id=X>`).
+-}
+panelId : TabsConfig value msg -> Int -> String
+panelId cfg index =
+    Maybe.withDefault "tabs" cfg.id ++ "-panel-" ++ String.fromInt index
+
+
+tabView : TabsConfig value msg -> Int -> Tab value msg -> Html msg
+tabView cfg index (Tab t) =
     M3e.Tab.component
-        [ M3e.Tab.selected (cfg.selected == t.value)
-        , HtmlEvents.onClick (cfg.onChange t.value)
-        ]
+        ([ M3e.Tab.selected (cfg.selected == t.value)
+         , HtmlEvents.onClick (cfg.onChange t.value)
+         ]
+            ++ (case t.panel of
+                    Just _ ->
+                        [ M3e.Tab.for (panelId cfg index) ]
+
+                    Nothing ->
+                        []
+               )
+        )
         (List.concat
             [ iconPart t.icon
             , [ Html.text t.label ]
             , badgePart t.badge
             ]
         )
+
+
+panelView : TabsConfig value msg -> Int -> Tab value msg -> Maybe (Html msg)
+panelView cfg index (Tab t) =
+    Maybe.map
+        (\panel ->
+            M3e.TabPanel.component
+                [ Attr.id (panelId cfg index)
+                , M3e.Tabs.panelSlot
+                ]
+                [ panel ]
+        )
+        t.panel
+
+
+paginationIcons : TabsConfig value msg -> List (Html msg)
+paginationIcons cfg =
+    List.filterMap identity
+        [ Maybe.map
+            (\i -> Html.span [ M3e.Tabs.prevIconSlot ] [ Ui.Icon.view i ])
+            cfg.prevIcon
+        , Maybe.map
+            (\i -> Html.span [ M3e.Tabs.nextIconSlot ] [ Ui.Icon.view i ])
+            cfg.nextIcon
+        ]
 
 
 iconPart : Maybe (Ui.Icon.Icon msg) -> List (Html msg)

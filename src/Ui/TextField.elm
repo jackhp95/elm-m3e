@@ -149,8 +149,8 @@ A multi-line description that auto-grows between 3 and 8 rows:
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
-import M3e.FormField
 import M3e.TextareaAutosize
+import Ui.Field
 
 
 
@@ -468,16 +468,39 @@ withRows rows (TextField cfg) =
 -}
 view : TextField kind msg -> Html msg
 view (TextField cfg) =
-    M3e.FormField.component
-        (cfg.attributes ++ [ formFieldVariantAttr cfg.variant ])
-        (List.concat
-            [ [ labelElement cfg ]
-            , prefixSlot cfg.prefix
-            , [ inputElement cfg ]
-            , suffixSlot cfg.suffix
-            , subscriptElements cfg
-            ]
-        )
+    Ui.Field.new cfg.label
+        |> Ui.Field.withId (controlId cfg)
+        |> Ui.Field.withVariant (toFieldVariant cfg.variant)
+        |> maybeWith Ui.Field.withHint cfg.help
+        |> maybeWith Ui.Field.withError cfg.error
+        |> maybeWith Ui.Field.withPrefix cfg.prefix
+        |> maybeWith Ui.Field.withSuffix cfg.suffix
+        |> Ui.Field.withAttributes cfg.attributes
+        |> Ui.Field.view (inputElement cfg)
+
+
+maybeWith :
+    (a -> Ui.Field.Field msg -> Ui.Field.Field msg)
+    -> Maybe a
+    -> Ui.Field.Field msg
+    -> Ui.Field.Field msg
+maybeWith f maybe field =
+    case maybe of
+        Just v ->
+            f v field
+
+        Nothing ->
+            field
+
+
+toFieldVariant : Variant -> Ui.Field.Variant
+toFieldVariant v =
+    case v of
+        Filled ->
+            Ui.Field.Filled
+
+        Outlined ->
+            Ui.Field.Outlined
 
 
 controlId : Config msg -> String
@@ -488,15 +511,6 @@ controlId cfg =
 
         Nothing ->
             slugify cfg.label
-
-
-labelElement : Config msg -> Html msg
-labelElement cfg =
-    Html.label
-        [ Attr.attribute "slot" "label"
-        , Attr.for (controlId cfg)
-        ]
-        [ Html.text cfg.label ]
 
 
 inputElement : Config msg -> Html msg
@@ -557,49 +571,6 @@ multilineAttrs cfg =
         , Just (Attr.readonly cfg.readonly)
         , Just (HtmlEvents.onInput cfg.onChange)
         ]
-
-
-prefixSlot : Maybe (Html msg) -> List (Html msg)
-prefixSlot maybe =
-    case maybe of
-        Nothing ->
-            []
-
-        Just html ->
-            [ Html.span [ M3e.FormField.prefixSlot ] [ html ] ]
-
-
-suffixSlot : Maybe (Html msg) -> List (Html msg)
-suffixSlot maybe =
-    case maybe of
-        Nothing ->
-            []
-
-        Just html ->
-            [ Html.span [ M3e.FormField.suffixSlot ] [ html ] ]
-
-
-subscriptElements : Config msg -> List (Html msg)
-subscriptElements cfg =
-    case ( cfg.error, cfg.help ) of
-        ( Just err, _ ) ->
-            [ Html.span [ M3e.FormField.errorSlot ] [ err ] ]
-
-        ( Nothing, Just help ) ->
-            [ Html.span [ M3e.FormField.hintSlot ] [ help ] ]
-
-        ( Nothing, Nothing ) ->
-            []
-
-
-formFieldVariantAttr : Variant -> Html.Attribute msg
-formFieldVariantAttr v =
-    case v of
-        Filled ->
-            M3e.FormField.variant M3e.FormField.Filled
-
-        Outlined ->
-            M3e.FormField.variant M3e.FormField.Outlined
 
 
 {-| Derive a stable, deterministic control id from the label text so the

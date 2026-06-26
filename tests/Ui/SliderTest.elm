@@ -10,8 +10,8 @@ import Ui.Slider
 
 suite : Test
 suite =
-    describe "Ui.Slider"
-        [ test "label carries slot=label and for=<stable id>" <|
+    describe "Ui.Slider (bare control)"
+        [ test "renders a bare m3e-slider with the label as aria-label" <|
             \_ ->
                 Ui.Slider.value
                     { label = "Volume"
@@ -20,12 +20,11 @@ suite =
                     }
                     |> Ui.Slider.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "label" ]
                     |> Query.has
-                        [ Selector.attribute (Attr.attribute "slot" "label")
-                        , Selector.attribute (Attr.for "uif-volume")
+                        [ Selector.tag "m3e-slider"
+                        , Selector.attribute (Attr.attribute "aria-label" "Volume")
                         ]
-        , test "slider control carries the same stable id" <|
+        , test "renders no m3e-form-field and no visible label" <|
             \_ ->
                 Ui.Slider.value
                     { label = "Volume"
@@ -34,8 +33,20 @@ suite =
                     }
                     |> Ui.Slider.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "m3e-slider" ]
-                    |> Query.has [ Selector.id "uif-volume" ]
+                    |> Expect.all
+                        [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                        , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                        ]
+        , test "slider control carries the stable id derived from the label" <|
+            \_ ->
+                Ui.Slider.value
+                    { label = "Volume"
+                    , value = 50
+                    , onChange = always ()
+                    }
+                    |> Ui.Slider.view
+                    |> Query.fromHtml
+                    |> Query.has [ Selector.tag "m3e-slider", Selector.id "uif-volume" ]
         , test "thumb carries the typed value attribute" <|
             \_ ->
                 Ui.Slider.value
@@ -47,7 +58,7 @@ suite =
                     |> Query.fromHtml
                     |> Query.find [ Selector.tag "m3e-slider-thumb" ]
                     |> Query.has [ Selector.attribute (Attr.value "42") ]
-        , test "withId overrides on both label and control" <|
+        , test "withId overrides the stable id on the control" <|
             \_ ->
                 Ui.Slider.value
                     { label = "Volume"
@@ -57,23 +68,5 @@ suite =
                     |> Ui.Slider.withId "vol"
                     |> Ui.Slider.view
                     |> Query.fromHtml
-                    |> Expect.all
-                        [ Query.find [ Selector.tag "label" ]
-                            >> Query.has [ Selector.attribute (Attr.for "vol") ]
-                        , Query.find [ Selector.tag "m3e-slider" ]
-                            >> Query.has [ Selector.id "vol" ]
-                        ]
-        , describe "withVisibleLabel False (bare mode)"
-            [ test "renders no m3e-form-field and no visible label, keeps aria-label" <|
-                \_ ->
-                    Ui.Slider.value { label = "Brightness", value = 50, onChange = always () }
-                        |> Ui.Slider.withVisibleLabel False
-                        |> Ui.Slider.view
-                        |> Query.fromHtml
-                        |> Expect.all
-                            [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
-                            , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
-                            , Query.has [ Selector.tag "m3e-slider", Selector.attribute (Attr.attribute "aria-label" "Brightness") ]
-                            ]
-            ]
+                    |> Query.has [ Selector.tag "m3e-slider", Selector.id "vol" ]
         ]

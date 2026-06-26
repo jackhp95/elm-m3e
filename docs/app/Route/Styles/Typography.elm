@@ -58,21 +58,21 @@ head _ =
 
 scale : List ( String, String )
 scale =
-    [ ( "text-display-large", "Display Large" )
-    , ( "text-display-medium", "Display Medium" )
-    , ( "text-display-small", "Display Small" )
-    , ( "text-headline-large", "Headline Large" )
-    , ( "text-headline-medium", "Headline Medium" )
-    , ( "text-headline-small", "Headline Small" )
-    , ( "text-title-large", "Title Large" )
-    , ( "text-title-medium", "Title Medium" )
-    , ( "text-title-small", "Title Small" )
-    , ( "text-body-large", "Body Large" )
-    , ( "text-body-medium", "Body Medium" )
-    , ( "text-body-small", "Body Small" )
-    , ( "text-label-large", "Label Large" )
-    , ( "text-label-medium", "Label Medium" )
-    , ( "text-label-small", "Label Small" )
+    [ ( "text-display-lg", "Display Large" )
+    , ( "text-display-md", "Display Medium" )
+    , ( "text-display-sm", "Display Small" )
+    , ( "text-headline-lg", "Headline Large" )
+    , ( "text-headline-md", "Headline Medium" )
+    , ( "text-headline-sm", "Headline Small" )
+    , ( "text-title-lg", "Title Large" )
+    , ( "text-title-md", "Title Medium" )
+    , ( "text-title-sm", "Title Small" )
+    , ( "text-body-lg", "Body Large" )
+    , ( "text-body-md", "Body Medium" )
+    , ( "text-body-sm", "Body Small" )
+    , ( "text-label-lg", "Label Large" )
+    , ( "text-label-md", "Label Medium" )
+    , ( "text-label-sm", "Label Small" )
     ]
 
 
@@ -80,7 +80,7 @@ row : ( String, String ) -> Html msg
 row ( cls, label ) =
     div [ class "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0" ]
         [ Html.span [ class (cls ++ " text-on-surface") ] [ text label ]
-        , Html.code [ class "text-body-small text-on-surface-variant" ] [ text cls ]
+        , Html.code [ class "text-body-sm text-on-surface-variant" ] [ text cls ]
         ]
 
 
@@ -111,7 +111,7 @@ view _ _ =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
                 ]
             , Divider.new |> Divider.view

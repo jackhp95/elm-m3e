@@ -10,8 +10,8 @@ import Ui.Checkbox
 
 suite : Test
 suite =
-    describe "Ui.Checkbox label anchoring"
-        [ test "label carries slot=label and for=<stable id>" <|
+    describe "Ui.Checkbox (bare control)"
+        [ test "renders a bare m3e-checkbox with the label as aria-label" <|
             \_ ->
                 Ui.Checkbox.boolean
                     { label = "I agree to the terms"
@@ -20,12 +20,11 @@ suite =
                     }
                     |> Ui.Checkbox.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "label" ]
                     |> Query.has
-                        [ Selector.attribute (Attr.attribute "slot" "label")
-                        , Selector.attribute (Attr.for "uif-i-agree-to-the-terms")
+                        [ Selector.tag "m3e-checkbox"
+                        , Selector.attribute (Attr.attribute "aria-label" "I agree to the terms")
                         ]
-        , test "control carries the same stable id as the label's for" <|
+        , test "renders no m3e-form-field and no visible label" <|
             \_ ->
                 Ui.Checkbox.boolean
                     { label = "I agree to the terms"
@@ -34,9 +33,21 @@ suite =
                     }
                     |> Ui.Checkbox.view
                     |> Query.fromHtml
-                    |> Query.find [ Selector.tag "m3e-checkbox" ]
-                    |> Query.has [ Selector.id "uif-i-agree-to-the-terms" ]
-        , test "withId overrides the stable id on both label and control" <|
+                    |> Expect.all
+                        [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
+                        , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
+                        ]
+        , test "control carries the stable id derived from the label" <|
+            \_ ->
+                Ui.Checkbox.boolean
+                    { label = "I agree to the terms"
+                    , checked = False
+                    , onChange = always ()
+                    }
+                    |> Ui.Checkbox.view
+                    |> Query.fromHtml
+                    |> Query.has [ Selector.tag "m3e-checkbox", Selector.id "uif-i-agree-to-the-terms" ]
+        , test "withId overrides the stable id on the control" <|
             \_ ->
                 Ui.Checkbox.boolean
                     { label = "Subscribe"
@@ -46,21 +57,5 @@ suite =
                     |> Ui.Checkbox.withId "sub-1"
                     |> Ui.Checkbox.view
                     |> Query.fromHtml
-                    |> Expect.all
-                        [ Query.find [ Selector.tag "label" ]
-                            >> Query.has [ Selector.attribute (Attr.for "sub-1") ]
-                        , Query.find [ Selector.tag "m3e-checkbox" ]
-                            >> Query.has [ Selector.id "sub-1" ]
-                        ]
-        , test "withVisibleLabel False renders a bare checkbox (no form-field, label as aria-label)" <|
-            \_ ->
-                Ui.Checkbox.boolean { label = "Select row", checked = False, onChange = always () }
-                    |> Ui.Checkbox.withVisibleLabel False
-                    |> Ui.Checkbox.view
-                    |> Query.fromHtml
-                    |> Expect.all
-                        [ Query.findAll [ Selector.tag "m3e-form-field" ] >> Query.count (Expect.equal 0)
-                        , Query.findAll [ Selector.tag "label" ] >> Query.count (Expect.equal 0)
-                        , Query.has [ Selector.tag "m3e-checkbox", Selector.attribute (Attr.attribute "aria-label" "Select row") ]
-                        ]
+                    |> Query.has [ Selector.tag "m3e-checkbox", Selector.id "sub-1" ]
         ]

@@ -73,4 +73,25 @@ suite =
                     |> Query.fromHtml
                     |> Query.find [ Selector.tag "m3e-badge" ]
                     |> Query.has [ Selector.text "3" ]
+        , test "withItemSelectedIcon emits the selected-icon slot" <|
+            \_ ->
+                Ui.NavigationBar.new
+                    { items =
+                        [ Ui.NavigationBar.item { value = Home, icon = Ui.Icon.material "home" }
+                            |> Ui.NavigationBar.withItemSelectedIcon (Ui.Icon.material "home_filled")
+                        ]
+                    , selected = Just Home
+                    , onChange = identity
+                    }
+                    |> Ui.NavigationBar.view
+                    |> Query.fromHtml
+                    |> Query.findAll [ Selector.attribute (Attr.attribute "slot" "selected-icon") ]
+                    |> Query.count (Expect.equal 1)
+        , test "no selected-icon slot when not set" <|
+            \_ ->
+                bar
+                    |> Ui.NavigationBar.view
+                    |> Query.fromHtml
+                    |> Query.findAll [ Selector.attribute (Attr.attribute "slot" "selected-icon") ]
+                    |> Query.count (Expect.equal 0)
         ]

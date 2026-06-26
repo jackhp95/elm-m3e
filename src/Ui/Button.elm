@@ -4,6 +4,7 @@ module Ui.Button exposing
     , new
     , withAttributes
     , withSize, withShape, withDisabled, withLeadingIcon, withTrailingIcon
+    , withExtraContent
     , withOnClick, withHref, withToggle
     , withTarget, withRel, withDownload
     , view
@@ -97,6 +98,7 @@ Toggle — show/hide archived records:
 # Modifiers
 
 @docs withSize, withShape, withDisabled, withLeadingIcon, withTrailingIcon
+@docs withExtraContent
 
 
 # Action wiring (mutually exclusive — last-write-wins)
@@ -146,6 +148,7 @@ type alias Config msg =
     , disabled : DisabledState
     , leadingIcon : Maybe (Ui.Icon.Icon msg)
     , trailingIcon : Maybe (Ui.Icon.Icon msg)
+    , extraContent : List (Html msg)
     , wiring : Maybe (Wiring msg)
     , target : Maybe String
     , rel : Maybe String
@@ -226,6 +229,7 @@ new c =
         , disabled = Enabled
         , leadingIcon = Nothing
         , trailingIcon = Nothing
+        , extraContent = []
         , wiring = Nothing
         , target = Nothing
         , rel = Nothing
@@ -279,6 +283,17 @@ withLeadingIcon icon (Button cfg) =
 withTrailingIcon : Ui.Icon.Icon msg -> Button msg -> Button msg
 withTrailingIcon icon (Button cfg) =
     Button { cfg | trailingIcon = Just icon }
+
+
+{-| Append extra element(s) into the button's **default slot**, after the
+label. Use this for marker elements that must live _inside_ the clickable
+button — e.g. an `<m3e-bottom-sheet-action>` close marker. These render in
+the default slot alongside the label, not in the leading/trailing icon
+slots. Repeated calls append. Most buttons don't need this.
+-}
+withExtraContent : List (Html msg) -> Button msg -> Button msg
+withExtraContent content (Button cfg) =
+    Button { cfg | extraContent = cfg.extraContent ++ content }
 
 
 
@@ -363,6 +378,7 @@ view (Button cfg) =
         (List.concat
             [ leadingSlot cfg.leadingIcon
             , [ Html.text cfg.label ]
+            , cfg.extraContent
             , trailingSlot cfg.trailingIcon
             ]
         )

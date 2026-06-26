@@ -3,6 +3,7 @@ module Ui.Stepper exposing
     , withAttributes
     , withId
     , Step, step, withStep, withSteps, withCompleted, withOptional
+    , withStepIcon, withStepHint, withStepError, withStepActions
     , withVertical, withLinear
     , withDefaultSelected, withExplicitSelectedState
     , view
@@ -42,6 +43,16 @@ Two ways to drive selection:
 @docs Step, step, withStep, withSteps, withCompleted, withOptional
 
 
+# Step decoration & actions
+
+Each step can carry a custom marker icon plus hint/error text (slotted onto the
+`<m3e-step>` indicator), and its panel can carry an actions bar (slotted into
+the `<m3e-step-panel>` `actions` region — the home for prev/next/reset
+navigation).
+
+@docs withStepIcon, withStepHint, withStepError, withStepActions
+
+
 # Layout
 
 @docs withVertical, withLinear
@@ -64,6 +75,7 @@ import Json.Decode as Decode
 import M3e.Step
 import M3e.StepPanel
 import M3e.Stepper
+import Ui.Icon
 
 
 {-| The stepper opaque type. Build via `new`.
@@ -100,6 +112,10 @@ type alias StepConfig msg =
     , content : List (Html msg)
     , completed : Bool
     , optional : Bool
+    , icon : Maybe (Ui.Icon.Icon msg)
+    , hint : Maybe (Html msg)
+    , error : Maybe (Html msg)
+    , actions : List (Html msg)
     }
 
 
@@ -143,6 +159,10 @@ step id label content =
         , content = content
         , completed = False
         , optional = False
+        , icon = Nothing
+        , hint = Nothing
+        , error = Nothing
+        , actions = []
         }
 
 
@@ -158,6 +178,41 @@ withCompleted flag (Step cfg) =
 withOptional : Bool -> Step msg -> Step msg
 withOptional flag (Step cfg) =
     Step { cfg | optional = flag }
+
+
+{-| Set a custom marker icon for the step, slotted into the `<m3e-step>` `icon`
+slot (replacing the default numbered indicator).
+-}
+withStepIcon : Ui.Icon.Icon msg -> Step msg -> Step msg
+withStepIcon icon (Step cfg) =
+    Step { cfg | icon = Just icon }
+
+
+{-| Attach hint text shown beneath the step label, slotted into the
+`<m3e-step>` `hint` slot.
+-}
+withStepHint : Html msg -> Step msg -> Step msg
+withStepHint hint (Step cfg) =
+    Step { cfg | hint = Just hint }
+
+
+{-| Attach an error message for an invalid step, slotted into the `<m3e-step>`
+`error` slot. The element shows it in place of the hint when the step is
+invalid.
+-}
+withStepError : Html msg -> Step msg -> Step msg
+withStepError error (Step cfg) =
+    Step { cfg | error = Just error }
+
+
+{-| Set the step panel's actions bar — the prev/next/reset navigation region,
+slotted into the `<m3e-step-panel>` `actions` slot. Compose `Ui.Button`s
+wrapping `<m3e-stepper-previous>` / `<m3e-stepper-next>` / `<m3e-stepper-reset>`
+(see `M3e.StepperPrevious` / `M3e.StepperReset`) for stepper-driven navigation.
+-}
+withStepActions : List (Html msg) -> Step msg -> Step msg
+withStepActions actions (Step cfg) =
+    Step { cfg | actions = actions }
 
 
 {-| Append a single step.
@@ -225,32 +280,65 @@ view (Stepper cfg) =
                 ]
         )
         (List.map (viewStepHeader cfg) cfg.steps
-            ++ List.map viewStepPanel cfg.steps
+            ++ List.map (viewStepPanel cfg) cfg.steps
         )
 
 
-viewStepHeader : Config msg -> Step msg -> Html msg
-viewStepHeader cfg (Step s) =
-    let
-        prefix : String
-        prefix =
-            Maybe.withDefault "stepper" cfg.id
+stepDomId : Config msg -> Step msg -> String
+stepDomId cfg (Step s) =
+    Maybe.withDefault "stepper" cfg.id ++ "-step-" ++ s.id
 
-        stepId : String
-        stepId =
-            prefix ++ "-step-" ++ s.id
-    in
+
+panelDomId : Config msg -> Step msg -> String
+panelDomId cfg (Step s) =
+    Maybe.withDefault "stepper" cfg.id ++ "-panel-" ++ s.id
+
+
+viewStepHeader : Config msg -> Step msg -> Html msg
+viewStepHeader cfg ((Step s) as fullStep) =
     M3e.Step.component
         (List.filterMap identity
             ([ Just M3e.Stepper.stepSlot
-             , Just (Attr.id stepId)
+             , Just (Attr.id (stepDomId cfg fullStep))
+             , Just (M3e.Step.for (panelDomId cfg fullStep))
              , Just (M3e.Step.completed s.completed)
              , Just (M3e.Step.optional s.optional)
+             , if s.error == Nothing then
+                Nothing
+
+               else
+                Just (M3e.Step.invalid True)
              ]
                 ++ selectionAttrs cfg.selection s.id
             )
         )
-        [ s.label ]
+        (List.concat
+            [ stepIconPart s.icon
+            , [ s.label ]
+            , slotPart M3e.Step.hintSlot s.hint
+            , slotPart M3e.Step.errorSlot s.error
+            ]
+        )
+
+
+stepIconPart : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+stepIconPart icon =
+    case icon of
+        Nothing ->
+            []
+
+        Just i ->
+            [ Html.span [ M3e.Step.iconSlot ] [ Ui.Icon.view i ] ]
+
+
+slotPart : Html.Attribute msg -> Maybe (Html msg) -> List (Html msg)
+slotPart slot content =
+    case content of
+        Nothing ->
+            []
+
+        Just c ->
+            [ Html.span [ slot ] [ c ] ]
 
 
 selectionAttrs : SelectionState msg -> String -> List (Maybe (Html.Attribute msg))
@@ -272,6 +360,25 @@ selectionAttrs state stepId =
             ]
 
 
-viewStepPanel : Step msg -> Html msg
-viewStepPanel (Step s) =
-    M3e.StepPanel.component [ M3e.Stepper.panelSlot ] s.content
+viewStepPanel : Config msg -> Step msg -> Html msg
+viewStepPanel cfg ((Step s) as fullStep) =
+    M3e.StepPanel.component
+        [ M3e.Stepper.panelSlot
+        , Attr.id (panelDomId cfg fullStep)
+        ]
+        (s.content ++ panelActionsPart s.actions)
+
+
+{-| The `<m3e-step-panel>` actions slot is `slot="actions"`. The generated
+`M3e.StepPanel.actionsSlot` binding emits `slot="actions-"` (a stray trailing
+dash from the CEM), which would mis-slot, so the correct value is written
+directly here.
+-}
+panelActionsPart : List (Html msg) -> List (Html msg)
+panelActionsPart actions =
+    case actions of
+        [] ->
+            []
+
+        _ ->
+            [ Html.div [ Attr.attribute "slot" "actions" ] actions ]

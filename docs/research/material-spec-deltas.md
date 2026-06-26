@@ -1,5 +1,12 @@
 # Material 3 / m3e CEM ↔ `Ui.*` Wrapper — Spec Delta Audit
 
+> **⚠ Largely stale (as of 2026-06-25).** A later working-tree audit
+> (`slot-graph-audit.md`) found nearly every CRITICAL/HIGH delta below was
+> already fixed in the code (AppBar, Nav*, SideSheet, Tabs, Paginator, Stepper,
+> Card, Dialog, BottomSheet, Tooltip, Theme, Shape, …), and `Ui.Size` has since
+> been retired. Treat this as a historical snapshot; grade against the working
+> tree and `slot-graph-audit.md`.
+
 > **Scope:** every module in `src/Ui/` (53 component modules + `Ui.Size` + `Ui.Theme`).
 > **Oracle:** m3e-docs `data/components.json` (CEM machine-truth: tags, attributes, enums,
 > defaults, slots, events, css custom properties), `data/examples_raw.json` (shipped example

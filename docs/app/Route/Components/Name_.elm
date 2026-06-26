@@ -207,7 +207,7 @@ headerBlock c =
             |> Heading.withSize Heading.Small
             |> Heading.withContent (text ("Ui." ++ c.name))
             |> Heading.view
-        , prose "max-w-2xl text-body-large text-on-surface-variant" c.overview
+        , prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview
         ]
 
 
@@ -256,13 +256,12 @@ memberRow m =
     Card.new Card.Outlined
         |> Card.withBody
             (div []
-                [ Html.pre [ class "overflow-x-auto text-body-small text-on-surface" ]
-                    [ code [] [ text sig ] ]
+                [ highlightedElm "overflow-x-auto text-body-sm text-on-surface" sig
                 , if m.doc == "" then
                     text ""
 
                   else
-                    prose "mt-2 text-body-small text-on-surface-variant" m.doc
+                    prose "mt-2 text-body-sm text-on-surface-variant" m.doc
                 ]
             )
         |> Card.view
@@ -336,17 +335,23 @@ subView s =
 
 codeBlock : String -> Html msg
 codeBlock s =
+    highlightedElm
+        "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-sm leading-relaxed text-on-surface"
+        s
+
+
+{-| Render an Elm snippet with `SyntaxHighlight` token colors, wrapped in a
+`<div>` carrying `wrapperClass` for surface styling. `SyntaxHighlight.toBlockHtml`
+emits its own `<pre class="elmsh">`, so we wrap in a `<div>` (not `<pre>`) to
+avoid invalid pre-inside-pre markup. Falls back to a plain `<pre>` if the
+lexer can't parse the input.
+-}
+highlightedElm : String -> String -> Html msg
+highlightedElm wrapperClass s =
     let
         trimmed : String
         trimmed =
             String.trim s
-
-        -- SyntaxHighlight.toBlockHtml emits its own <pre class="elmsh">, so we
-        -- wrap it in a <div> (not <pre>) to keep the surface styling without
-        -- emitting invalid pre-inside-pre markup.
-        wrapperClass : String
-        wrapperClass =
-            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface"
     in
     case SyntaxHighlight.elm trimmed of
         Ok highlighted ->
@@ -358,14 +363,124 @@ codeBlock s =
                 [ code [] [ text trimmed ] ]
 
 
+{-| A block parsed out of a doc-comment string: either a prose paragraph or a
+fenced/indented code snippet (rendered with Elm highlighting).
+-}
+type DocBlock
+    = ProseBlock String
+    | CodeDocBlock String
+
+
+{-| Render a doc-comment string. Paragraphs are split on blank lines; any
+paragraph whose every non-blank line is indented 4+ spaces (the Markdown
+indented-code convention Elm doc comments use), or that is wrapped in \``fences, becomes a highlighted code card. The common leading indent is stripped
+before highlighting. Everything else stays prose (`whitespace-pre-line\`), so
+2-space Markdown bullet lists are left untouched.
+-}
 prose : String -> String -> Html msg
 prose cls s =
     div [ class cls ]
         (s
             |> String.split "\n\n"
-            |> List.filter (\para -> String.trim para /= "")
-            |> List.map (\para -> p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ])
+            |> List.filterMap classifyDocChunk
+            |> List.map renderDocBlock
         )
+
+
+renderDocBlock : DocBlock -> Html msg
+renderDocBlock block =
+    case block of
+        ProseBlock para ->
+            p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ]
+
+        CodeDocBlock src ->
+            div [ class "mt-2 first:mt-0" ] [ codeBlock src ]
+
+
+classifyDocChunk : String -> Maybe DocBlock
+classifyDocChunk chunk =
+    let
+        lines : List String
+        lines =
+            dropBlankEdges (String.lines chunk)
+
+        nonBlank : List String
+        nonBlank =
+            List.filter (\l -> String.trim l /= "") lines
+    in
+    if List.isEmpty nonBlank then
+        Nothing
+
+    else if isFenced nonBlank then
+        Just (CodeDocBlock (stripFences lines))
+
+    else if List.all (String.startsWith "    ") nonBlank then
+        Just (CodeDocBlock (stripCommonIndent lines))
+
+    else
+        Just (ProseBlock (String.join "\n" lines))
+
+
+isFenced : List String -> Bool
+isFenced nonBlank =
+    case nonBlank of
+        first :: _ ->
+            String.startsWith "```" (String.trimLeft first)
+
+        [] ->
+            False
+
+
+stripFences : List String -> String
+stripFences lines =
+    lines
+        |> List.filter (\l -> not (String.startsWith "```" (String.trimLeft l)))
+        |> String.join "\n"
+        |> String.trim
+
+
+stripCommonIndent : List String -> String
+stripCommonIndent lines =
+    let
+        indentOf : String -> Int
+        indentOf l =
+            String.length l - String.length (String.trimLeft l)
+
+        minIndent : Int
+        minIndent =
+            lines
+                |> List.filter (\l -> String.trim l /= "")
+                |> List.map indentOf
+                |> List.minimum
+                |> Maybe.withDefault 0
+    in
+    lines
+        |> List.map (String.dropLeft minIndent)
+        |> String.join "\n"
+        |> String.trim
+
+
+dropBlankEdges : List String -> List String
+dropBlankEdges lines =
+    lines
+        |> dropWhileBlank
+        |> List.reverse
+        |> dropWhileBlank
+        |> List.reverse
+
+
+dropWhileBlank : List String -> List String
+dropWhileBlank lines =
+    case lines of
+        l :: rest ->
+            if String.trim l == "" then
+                dropWhileBlank rest
+
+            else
+                lines
+
+        [] ->
+            []
 
 
 noOp : a -> PagesMsg Msg
@@ -466,7 +581,7 @@ demoSections slug =
             [ usage
                 [ sub "Closed preview"
                     (div [ class "w-full space-y-3" ]
-                        [ p [ class "text-body-medium text-on-surface-variant" ]
+                        [ p [ class "text-body-md text-on-surface-variant" ]
                             [ text "Bottom sheets render at the bottom of the viewport and are normally hidden until opened. The composition below has "
                             , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
                             , text " — see the Reply study for a working compose-mail bottom sheet."
@@ -654,7 +769,7 @@ demoSections slug =
             [ usage
                 [ sub "Closed preview"
                     (div [ class "w-full space-y-3" ]
-                        [ p [ class "text-body-medium text-on-surface-variant" ]
+                        [ p [ class "text-body-md text-on-surface-variant" ]
                             [ text "Dialogs render on top of the viewport and are normally hidden until opened. The composition below has "
                             , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
                             , text ". See the Reply study (archive confirm) or Shrine (product details) for live wiring."
@@ -673,7 +788,7 @@ demoSections slug =
                     (Disclosure.single
                         "demo-disclosure"
                         (text "Show more")
-                        [ p [ class "text-body-medium" ] [ text "Expandable content lives here. Tap the headline to toggle." ] ]
+                        [ p [ class "text-body-md" ] [ text "Expandable content lives here. Tap the headline to toggle." ] ]
                         |> Disclosure.view
                     )
                 ]
@@ -1018,7 +1133,7 @@ demoSections slug =
                     (ScrollContainer.new
                         |> ScrollContainer.withDividers ScrollContainer.Both
                         |> ScrollContainer.view
-                            [ div [ class "h-32 overflow-auto p-3 text-body-medium" ]
+                            [ div [ class "h-32 overflow-auto p-3 text-body-md" ]
                                 [ p [] [ text "Item 1" ]
                                 , p [] [ text "Item 2" ]
                                 , p [] [ text "Item 3" ]
@@ -1128,7 +1243,7 @@ demoSections slug =
             [ usage
                 [ sub "Closed preview"
                     (div [ class "w-full space-y-3" ]
-                        [ p [ class "text-body-medium text-on-surface-variant" ]
+                        [ p [ class "text-body-md text-on-surface-variant" ]
                             [ text "Side sheets anchor to the start or end edge of the viewport. The composition below has "
                             , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
                             , text "; modality is opt-in. See Reply or Settings for live wiring."
@@ -1204,8 +1319,8 @@ demoSections slug =
             [ usage
                 [ sub "Horizontal"
                     (SplitPane.new
-                        |> SplitPane.withStart [ p [ class "p-4 text-body-medium" ] [ text "Start pane" ] ]
-                        |> SplitPane.withEnd [ p [ class "p-4 text-body-medium" ] [ text "End pane" ] ]
+                        |> SplitPane.withStart [ p [ class "p-4 text-body-md" ] [ text "Start pane" ] ]
+                        |> SplitPane.withEnd [ p [ class "p-4 text-body-md" ] [ text "End pane" ] ]
                         |> SplitPane.view
                     )
                 ]
@@ -1348,7 +1463,7 @@ demoSections slug =
         "theme" ->
             [ usage
                 [ sub "About"
-                    (p [ class "text-body-medium" ]
+                    (p [ class "text-body-md" ]
                         [ text "Ui.Theme wraps "
                         , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "<m3e-theme>" ]
                         , text ". A single instance owns the dynamic-color scheme, contrast, density, and motion for its subtree — the docs shell mounts it once at the root, which you're inside now. Try the settings popover in the app bar."

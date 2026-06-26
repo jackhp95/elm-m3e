@@ -1,16 +1,19 @@
 module Ui.List exposing
     ( Listing, Item
     , Variant(..)
-    , new, item, actionItem
+    , new, item, actionItem, option, divider, expandable
     , withAttributes
     , withVariant, withId
     , withItemLeadingIcon, withItemTrailingIcon, withItemOverline
     , withItemSupporting, withItemOnClick, withItemDisabled
+    , withItemLeadingHtml, withItemTrailingHtml
+    , withItemSelected, withItemValue, withItemOnChange
+    , withItemOpen, withItemChildren
     , view
     )
 
-{-| Typed builder for `<m3e-list>` and `<m3e-list-item>` — a vertical
-collection of rows. Mirrors the Material 3 [Lists][m3] surface.
+{-| Typed builder for `<m3e-list>` and its rows — a vertical collection
+of items. Mirrors the Material 3 [Lists][m3] surface.
 
 [m3]: https://m3.material.io/components/lists/overview
 
@@ -26,6 +29,13 @@ call sites.
     `headline` text plus optional decorations via `withItem*` setters.
   - `actionItem` — an interactive row (`<m3e-list-item-button>`). Pair
     with [`withItemOnClick`](#withItemOnClick) to handle activation.
+  - `option` — a selectable row (`<m3e-list-option>`). Wire its state
+    with [`withItemSelected`](#withItemSelected) and
+    [`withItemOnChange`](#withItemOnChange).
+  - `divider` — a thin separator row (`<m3e-divider>`).
+  - `expandable` — a row that expands to reveal nested rows
+    (`<m3e-expandable-list-item>`). Supply children with
+    [`withItemChildren`](#withItemChildren).
 
 The rendered element is chosen at the **call site** by which constructor
 you use — never inferred from whether a modifier happens to be present.
@@ -37,10 +47,14 @@ you use — never inferred from whether a modifier happens to be present.
         [ Ui.List.item "Inbox"
             |> Ui.List.withItemLeadingIcon (Ui.Icon.fontAwesome Icon.FontAwesome.inbox)
             |> Ui.List.withItemSupporting "12 unread"
-            |> Ui.List.withItemOnClick (NavigateTo Inbox)
-        , Ui.List.item "Archive"
-            |> Ui.List.withItemLeadingIcon (Ui.Icon.fontAwesome Icon.FontAwesome.archive)
-            |> Ui.List.withItemOnClick (NavigateTo Archive)
+        , Ui.List.divider
+        , Ui.List.actionItem "Open settings"
+            |> Ui.List.withItemOnClick OpenSettings
+        , Ui.List.expandable "More"
+            |> Ui.List.withItemChildren
+                [ Ui.List.item "Nested A"
+                , Ui.List.item "Nested B"
+                ]
         ]
         |> Ui.List.view
 
@@ -57,7 +71,7 @@ you use — never inferred from whether a modifier happens to be present.
 
 # Constructors
 
-@docs new, item, actionItem
+@docs new, item, actionItem, option, divider, expandable
 
 
 # Host attributes
@@ -74,6 +88,17 @@ you use — never inferred from whether a modifier happens to be present.
 
 @docs withItemLeadingIcon, withItemTrailingIcon, withItemOverline
 @docs withItemSupporting, withItemOnClick, withItemDisabled
+@docs withItemLeadingHtml, withItemTrailingHtml
+
+
+# Option modifiers
+
+@docs withItemSelected, withItemValue, withItemOnChange
+
+
+# Expandable modifiers
+
+@docs withItemOpen, withItemChildren
 
 
 # Render
@@ -85,9 +110,12 @@ you use — never inferred from whether a modifier happens to be present.
 import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import Html.Events as HtmlEvents
+import M3e.Divider
+import M3e.ExpandableListItem
 import M3e.List
 import M3e.ListItem
 import M3e.ListItemButton
+import M3e.ListOption
 import Ui.Icon
 
 
@@ -101,10 +129,14 @@ type Listing msg
     = Listing (ListConfig msg)
 
 
-{-| One row in a list.
+{-| One row in a list. Which `<m3e-*>` element it renders is fixed by the
+constructor used to make it ([`item`](#item), [`actionItem`](#actionItem),
+[`option`](#option), [`divider`](#divider), or [`expandable`](#expandable));
+a modifier that does not apply to a row's kind is a no-op.
 -}
 type Item msg
     = Item (ItemConfig msg)
+    | DividerItem (List (Attribute msg))
 
 
 {-| List visual style (m3e variant axis). Default `Standard`.
@@ -128,10 +160,51 @@ type alias ItemConfig msg =
     , supporting : Maybe String
     , leadingIcon : Maybe (Ui.Icon.Icon msg)
     , trailingIcon : Maybe (Ui.Icon.Icon msg)
+    , leadingHtml : Maybe (Html msg)
+    , trailingHtml : Maybe (Html msg)
     , onClick : Maybe msg
     , disabled : Bool
-    , interactive : Bool
+    , kind : ItemKind msg
     }
+
+
+{-| Per-row kind-specific state. Internal — the row's element is selected
+from this, never inferred from modifier presence.
+-}
+type ItemKind msg
+    = Static
+    | Action
+    | Selectable (SelectableData msg)
+    | Expandable (ExpandableData msg)
+
+
+type alias SelectableData msg =
+    { selected : Bool
+    , value : Maybe String
+    , onChange : Maybe (Bool -> msg)
+    }
+
+
+type alias ExpandableData msg =
+    { open : Bool
+    , items : List (Item msg)
+    }
+
+
+emptyItem : ItemKind msg -> String -> Item msg
+emptyItem kind headline =
+    Item
+        { headline = headline
+        , overline = Nothing
+        , supporting = Nothing
+        , leadingIcon = Nothing
+        , trailingIcon = Nothing
+        , leadingHtml = Nothing
+        , trailingHtml = Nothing
+        , onClick = Nothing
+        , disabled = False
+        , kind = kind
+        }
 
 
 
@@ -164,16 +237,7 @@ element neither dispatches clicks nor honours `disabled`). Use
 -}
 item : String -> Item msg
 item headline =
-    Item
-        { headline = headline
-        , overline = Nothing
-        , supporting = Nothing
-        , leadingIcon = Nothing
-        , trailingIcon = Nothing
-        , onClick = Nothing
-        , disabled = False
-        , interactive = False
-        }
+    emptyItem Static headline
 
 
 {-| Construct an interactive list item (`<m3e-list-item-button>`) with
@@ -188,16 +252,56 @@ disable it.
 -}
 actionItem : String -> Item msg
 actionItem headline =
-    Item
-        { headline = headline
-        , overline = Nothing
-        , supporting = Nothing
-        , leadingIcon = Nothing
-        , trailingIcon = Nothing
-        , onClick = Nothing
-        , disabled = False
-        , interactive = True
-        }
+    emptyItem Action headline
+
+
+{-| Construct a selectable list option (`<m3e-list-option>`) with required
+headline text. Drive its state from your model with
+[`withItemSelected`](#withItemSelected) and react to toggles with
+[`withItemOnChange`](#withItemOnChange); the handler receives the new
+selected value. Optionally tag the option with a submission
+[`withItemValue`](#withItemValue).
+
+    Ui.List.option "Wi-Fi"
+        |> Ui.List.withItemSelected model.wifiOn
+        |> Ui.List.withItemOnChange WifiToggled
+
+-}
+option : String -> Item msg
+option headline =
+    emptyItem
+        (Selectable { selected = False, value = Nothing, onChange = Nothing })
+        headline
+
+
+{-| Construct a separator row (`<m3e-divider>`) to place between items.
+-}
+divider : Item msg
+divider =
+    DividerItem []
+
+
+{-| Construct an expandable list item (`<m3e-expandable-list-item>`) with
+required headline text. It shows the same leading/overline/supporting
+decorations as a regular item and reveals nested rows (supplied with
+[`withItemChildren`](#withItemChildren)) when expanded. Control the
+expanded state with [`withItemOpen`](#withItemOpen).
+
+The underlying element does not expose a trailing slot (it renders its
+own expand/collapse toggle there), so `withItemTrailingIcon` /
+`withItemTrailingHtml` are no-ops on an expandable row.
+
+    Ui.List.expandable "Folders"
+        |> Ui.List.withItemOpen True
+        |> Ui.List.withItemChildren
+            [ Ui.List.item "Drafts"
+            , Ui.List.item "Sent"
+            ]
+
+-}
+expandable : String -> Item msg
+expandable headline =
+    emptyItem (Expandable { open = False, items = [] }) headline
 
 
 
@@ -231,49 +335,172 @@ withId id (Listing cfg) =
 -- ITEM MODIFIERS ---------------------------------------------------------
 
 
-{-| Add a leading icon to an item.
+{-| Map the shared config of any item row; a no-op on a [`divider`](#divider).
+-}
+mapConfig : (ItemConfig msg -> ItemConfig msg) -> Item msg -> Item msg
+mapConfig f item_ =
+    case item_ of
+        Item cfg ->
+            Item (f cfg)
+
+        DividerItem _ ->
+            item_
+
+
+{-| Map the kind-specific state of an item row; a no-op on a divider.
+-}
+mapKind : (ItemKind msg -> ItemKind msg) -> Item msg -> Item msg
+mapKind f =
+    mapConfig (\cfg -> { cfg | kind = f cfg.kind })
+
+
+{-| Add a leading icon to an item. Overridden by
+[`withItemLeadingHtml`](#withItemLeadingHtml) if both are set.
 -}
 withItemLeadingIcon : Ui.Icon.Icon msg -> Item msg -> Item msg
-withItemLeadingIcon icon (Item cfg) =
-    Item { cfg | leadingIcon = Just icon }
+withItemLeadingIcon icon =
+    mapConfig (\cfg -> { cfg | leadingIcon = Just icon })
 
 
-{-| Add a trailing icon to an item.
+{-| Add a trailing icon to an item. Overridden by
+[`withItemTrailingHtml`](#withItemTrailingHtml) if both are set. A no-op on
+an [`expandable`](#expandable) row (it has no trailing slot).
 -}
 withItemTrailingIcon : Ui.Icon.Icon msg -> Item msg -> Item msg
-withItemTrailingIcon icon (Item cfg) =
-    Item { cfg | trailingIcon = Just icon }
+withItemTrailingIcon icon =
+    mapConfig (\cfg -> { cfg | trailingIcon = Just icon })
+
+
+{-| Put arbitrary `Html` in the row's leading slot — the escape hatch for
+leading content the typed [`withItemLeadingIcon`](#withItemLeadingIcon) can't
+express, such as an avatar or checkbox. Wins over a leading icon if both are
+set.
+-}
+withItemLeadingHtml : Html msg -> Item msg -> Item msg
+withItemLeadingHtml html =
+    mapConfig (\cfg -> { cfg | leadingHtml = Just html })
+
+
+{-| Put arbitrary `Html` in the row's trailing slot — the escape hatch for
+trailing content the typed [`withItemTrailingIcon`](#withItemTrailingIcon)
+can't express. Wins over a trailing icon if both are set. A no-op on an
+[`expandable`](#expandable) row (it has no trailing slot).
+-}
+withItemTrailingHtml : Html msg -> Item msg -> Item msg
+withItemTrailingHtml html =
+    mapConfig (\cfg -> { cfg | trailingHtml = Just html })
 
 
 {-| Set overline text (small label above the headline).
 -}
 withItemOverline : String -> Item msg -> Item msg
-withItemOverline text (Item cfg) =
-    Item { cfg | overline = Just text }
+withItemOverline text =
+    mapConfig (\cfg -> { cfg | overline = Just text })
 
 
 {-| Set supporting text (below the headline).
 -}
 withItemSupporting : String -> Item msg -> Item msg
-withItemSupporting text (Item cfg) =
-    Item { cfg | supporting = Just text }
+withItemSupporting text =
+    mapConfig (\cfg -> { cfg | supporting = Just text })
 
 
 {-| Wire a click handler. Only meaningful on an [`actionItem`](#actionItem)
-(`<m3e-list-item-button>`); on a static [`item`](#item) it is ignored,
-since `<m3e-list-item>` is non-interactive.
+(`<m3e-list-item-button>`); on other row kinds it is ignored.
 -}
 withItemOnClick : msg -> Item msg -> Item msg
-withItemOnClick msg (Item cfg) =
-    Item { cfg | onClick = Just msg }
+withItemOnClick msg =
+    mapConfig (\cfg -> { cfg | onClick = Just msg })
 
 
-{-| Mark the item disabled. Only meaningful on an
-[`actionItem`](#actionItem); static [`item`](#item) rows ignore it.
+{-| Mark the item disabled. Meaningful on [`actionItem`](#actionItem),
+[`option`](#option), and [`expandable`](#expandable) rows; a static
+[`item`](#item) ignores it (`<m3e-list-item>` is non-interactive).
 -}
 withItemDisabled : Bool -> Item msg -> Item msg
-withItemDisabled b (Item cfg) =
-    Item { cfg | disabled = b }
+withItemDisabled b =
+    mapConfig (\cfg -> { cfg | disabled = b })
+
+
+{-| Set whether an [`option`](#option) row is selected. A no-op on other
+row kinds.
+-}
+withItemSelected : Bool -> Item msg -> Item msg
+withItemSelected b =
+    mapKind
+        (\kind ->
+            case kind of
+                Selectable data ->
+                    Selectable { data | selected = b }
+
+                _ ->
+                    kind
+        )
+
+
+{-| Tag an [`option`](#option) row with a submission value (the option's
+`value` attribute). A no-op on other row kinds.
+-}
+withItemValue : String -> Item msg -> Item msg
+withItemValue v =
+    mapKind
+        (\kind ->
+            case kind of
+                Selectable data ->
+                    Selectable { data | value = Just v }
+
+                _ ->
+                    kind
+        )
+
+
+{-| React to an [`option`](#option) row toggling. The handler receives the
+new selected value (the opposite of the current
+[`withItemSelected`](#withItemSelected) state). A no-op on other row kinds.
+-}
+withItemOnChange : (Bool -> msg) -> Item msg -> Item msg
+withItemOnChange f =
+    mapKind
+        (\kind ->
+            case kind of
+                Selectable data ->
+                    Selectable { data | onChange = Just f }
+
+                _ ->
+                    kind
+        )
+
+
+{-| Set whether an [`expandable`](#expandable) row is open. A no-op on
+other row kinds.
+-}
+withItemOpen : Bool -> Item msg -> Item msg
+withItemOpen b =
+    mapKind
+        (\kind ->
+            case kind of
+                Expandable data ->
+                    Expandable { data | open = b }
+
+                _ ->
+                    kind
+        )
+
+
+{-| Supply the nested rows revealed when an [`expandable`](#expandable) row
+is open. A no-op on other row kinds.
+-}
+withItemChildren : List (Item msg) -> Item msg -> Item msg
+withItemChildren children =
+    mapKind
+        (\kind ->
+            case kind of
+                Expandable data ->
+                    Expandable { data | items = children }
+
+                _ ->
+                    kind
+        )
 
 
 
@@ -291,59 +518,127 @@ view (Listing cfg) =
                 , Just (variantAttr cfg.variant)
                 ]
         )
-        (List.map itemView cfg.items)
+        (List.map (itemViewWith []) cfg.items)
 
 
-itemView : Item msg -> Html msg
-itemView (Item cfg) =
-    if cfg.interactive then
-        M3e.ListItemButton.component
-            (List.filterMap identity
-                [ if cfg.disabled then
-                    Just (M3e.ListItemButton.disabled True)
+itemViewWith : List (Attribute msg) -> Item msg -> Html msg
+itemViewWith extra item_ =
+    case item_ of
+        DividerItem attrs ->
+            M3e.Divider.component (extra ++ attrs) []
 
-                  else
-                    Nothing
-                , Maybe.map HtmlEvents.onClick cfg.onClick
-                ]
-            )
-            (itemChildren cfg)
+        Item cfg ->
+            case cfg.kind of
+                Static ->
+                    -- `<m3e-list-item>` is non-interactive and has no
+                    -- `disabled` attribute, so neither onClick nor disabled
+                    -- is emitted here.
+                    M3e.ListItem.component extra (decorationChildren True cfg)
 
-    else
-        -- `<m3e-list-item>` is non-interactive and has no `disabled`
-        -- attribute, so neither onClick nor disabled is emitted here.
-        M3e.ListItem.component [] (itemChildren cfg)
+                Action ->
+                    M3e.ListItemButton.component (extra ++ actionAttrs cfg)
+                        (decorationChildren True cfg)
+
+                Selectable data ->
+                    M3e.ListOption.component (extra ++ optionAttrs cfg data)
+                        (decorationChildren True cfg)
+
+                Expandable data ->
+                    M3e.ExpandableListItem.component (extra ++ expandableAttrs cfg data)
+                        (decorationChildren False cfg ++ nestedChildren data)
 
 
-itemChildren : ItemConfig msg -> List (Html msg)
-itemChildren cfg =
-    List.concat
-        [ leadingSlot cfg.leadingIcon
-        , overlineSlot cfg.overline
-        , [ Html.text cfg.headline ]
-        , supportingSlot cfg.supporting
-        , trailingSlot cfg.trailingIcon
+actionAttrs : ItemConfig msg -> List (Attribute msg)
+actionAttrs cfg =
+    List.filterMap identity
+        [ if cfg.disabled then
+            Just (M3e.ListItemButton.disabled True)
+
+          else
+            Nothing
+        , Maybe.map HtmlEvents.onClick cfg.onClick
         ]
 
 
-leadingSlot : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
-leadingSlot icon =
-    case icon of
-        Nothing ->
+optionAttrs : ItemConfig msg -> SelectableData msg -> List (Attribute msg)
+optionAttrs cfg data =
+    List.filterMap identity
+        [ Just (M3e.ListOption.selected data.selected)
+        , Maybe.map M3e.ListOption.value data.value
+        , if cfg.disabled then
+            Just (M3e.ListOption.disabled True)
+
+          else
+            Nothing
+
+        -- Selection is owned by Elm (controlled component, like Ui.Select):
+        -- a click reports the toggled value via onChange. The element also
+        -- dispatches a native `change` event, but driving from `click`
+        -- keeps the new value deterministic without decoding DOM state.
+        , Maybe.map (\f -> HtmlEvents.onClick (f (not data.selected))) data.onChange
+        ]
+
+
+expandableAttrs : ItemConfig msg -> ExpandableData msg -> List (Attribute msg)
+expandableAttrs cfg data =
+    List.filterMap identity
+        [ if data.open then
+            Just (M3e.ExpandableListItem.open True)
+
+          else
+            Nothing
+        , if cfg.disabled then
+            Just (M3e.ExpandableListItem.disabled True)
+
+          else
+            Nothing
+        ]
+
+
+nestedChildren : ExpandableData msg -> List (Html msg)
+nestedChildren data =
+    List.map (itemViewWith [ M3e.ExpandableListItem.itemsSlot ]) data.items
+
+
+decorationChildren : Bool -> ItemConfig msg -> List (Html msg)
+decorationChildren includeTrailing cfg =
+    List.concat
+        [ leadingChildren cfg
+        , overlineSlot cfg.overline
+        , [ Html.text cfg.headline ]
+        , supportingSlot cfg.supporting
+        , if includeTrailing then
+            trailingChildren cfg
+
+          else
+            []
+        ]
+
+
+leadingChildren : ItemConfig msg -> List (Html msg)
+leadingChildren cfg =
+    case ( cfg.leadingHtml, cfg.leadingIcon ) of
+        ( Just html, _ ) ->
+            [ Html.span [ M3e.ListItem.leadingSlot ] [ html ] ]
+
+        ( Nothing, Just icon ) ->
+            [ Html.span [ M3e.ListItem.leadingSlot ] [ Ui.Icon.view icon ] ]
+
+        ( Nothing, Nothing ) ->
             []
 
-        Just i ->
-            [ Html.span [ M3e.ListItem.leadingSlot ] [ Ui.Icon.view i ] ]
 
+trailingChildren : ItemConfig msg -> List (Html msg)
+trailingChildren cfg =
+    case ( cfg.trailingHtml, cfg.trailingIcon ) of
+        ( Just html, _ ) ->
+            [ Html.span [ M3e.ListItem.trailingSlot ] [ html ] ]
 
-trailingSlot : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
-trailingSlot icon =
-    case icon of
-        Nothing ->
+        ( Nothing, Just icon ) ->
+            [ Html.span [ M3e.ListItem.trailingSlot ] [ Ui.Icon.view icon ] ]
+
+        ( Nothing, Nothing ) ->
             []
-
-        Just i ->
-            [ Html.span [ M3e.ListItem.trailingSlot ] [ Ui.Icon.view i ] ]
 
 
 overlineSlot : Maybe String -> List (Html msg)

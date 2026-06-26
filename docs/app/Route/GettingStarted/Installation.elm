@@ -72,7 +72,7 @@ code_ lang s =
 
         wrapperClass : String
         wrapperClass =
-            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-small leading-relaxed text-on-surface"
+            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-sm leading-relaxed text-on-surface"
 
         parsed : Result () SyntaxHighlight.HCode
         parsed =
@@ -130,13 +130,13 @@ view _ _ =
         [ div [ class "mx-auto max-w-3xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "text-body-large text-on-surface-variant" ]
+                , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the Ui.* source into your project; a registry release is planned." ]
                 ]
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ stepHeading "1. Add the Elm source"
-                , p [ class "text-body-medium text-on-surface-variant" ]
+                , p [ class "text-body-md text-on-surface-variant" ]
                     [ text "Copy the Ui.* (and supporting M3e.*) modules into your project and add them to elm.json source-directories:" ]
                 , code_ Json """
 {
@@ -147,7 +147,7 @@ view _ _ =
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ stepHeading "2. Register the web components"
-                , p [ class "text-body-medium text-on-surface-variant" ]
+                , p [ class "text-body-md text-on-surface-variant" ]
                     [ text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
                 , code_ Shell """
 npm i @m3e/web
@@ -159,8 +159,8 @@ import "@m3e/web/all";
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ stepHeading "3. Import the token + utility bridge"
-                , p [ class "text-body-medium text-on-surface-variant" ]
-                    [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-large, rounded-md-corner-large, …):" ]
+                , p [ class "text-body-md text-on-surface-variant" ]
+                    [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …):" ]
                 , code_ NoLang """
 /* style.css */
 @import "tailwindcss";
@@ -171,7 +171,7 @@ import "@m3e/web/all";
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ stepHeading "4. Wrap your app in a theme"
-                , p [ class "text-body-medium text-on-surface-variant" ]
+                , p [ class "text-body-md text-on-surface-variant" ]
                     [ text "A single Ui.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
                 , code_ Elm """
 import Ui.Theme as Theme

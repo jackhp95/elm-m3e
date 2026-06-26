@@ -60,7 +60,7 @@ head _ =
 demoBar : Int -> Html msg
 demoBar scaleValue =
     div [ class "space-y-2" ]
-        [ p [ class "text-label-large text-on-surface-variant" ]
+        [ p [ class "text-label-lg text-on-surface-variant" ]
             [ text ("density scale " ++ String.fromInt scaleValue) ]
         , div
             [ style "--md-sys-density-scale" (String.fromInt scaleValue)
@@ -93,7 +93,7 @@ view _ _ =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-large text-on-surface-variant" ]
+                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
                 ]
             , Divider.new |> Divider.view

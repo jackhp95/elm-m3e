@@ -3,7 +3,7 @@ module Ui.Dialog exposing
     , new
     , withAttributes
     , withId, withBody, withActions
-    , withDismissible, withAlert
+    , withDismissible, withCloseButton, withCloseIcon, withAlert
     , view
     )
 
@@ -79,7 +79,7 @@ An alert dialog (semantic role):
 # Modifiers
 
 @docs withId, withBody, withActions
-@docs withDismissible, withAlert
+@docs withDismissible, withCloseButton, withCloseIcon, withAlert
 
 
 # Render
@@ -93,6 +93,7 @@ import Html.Attributes as Attr
 import Json.Decode as Decode
 import M3e.Dialog
 import Ui.Button
+import Ui.Icon
 
 
 
@@ -114,6 +115,8 @@ type alias Config msg =
     , body : Maybe (Html msg)
     , actions : List (Ui.Button.Button msg)
     , dismissible : Bool
+    , closeButton : Bool
+    , closeIcon : Maybe (Ui.Icon.Icon msg)
     , alert : Bool
     }
 
@@ -143,6 +146,8 @@ new c =
         , body = Nothing
         , actions = []
         , dismissible = True
+        , closeButton = False
+        , closeIcon = Nothing
         , alert = False
         }
 
@@ -196,10 +201,37 @@ withActions actions (Dialog cfg) =
 {-| Toggle whether the dialog can be dismissed by Escape / scrim click.
 Default `True`. Set `False` for dialogs that require an explicit action
 choice (delete confirmations, etc.).
+
+This wires the underlying element's `disable-close` attribute (inverted):
+`withDismissible False` emits `disable-close`, blocking both backdrop
+click and the Escape key.
+
 -}
 withDismissible : Bool -> Dialog msg -> Dialog msg
 withDismissible b (Dialog cfg) =
     Dialog { cfg | dismissible = b }
+
+
+{-| Show a built-in close button in the dialog chrome. Default `False`.
+
+This wires the underlying element's `dismissible` attribute, which —
+despite the name — controls _only_ whether a close **button** is
+presented. Escape / scrim dismissal is governed separately by
+`withDismissible`.
+
+-}
+withCloseButton : Bool -> Dialog msg -> Dialog msg
+withCloseButton b (Dialog cfg) =
+    Dialog { cfg | closeButton = b }
+
+
+{-| Provide a custom icon for the built-in close button (`close-icon` slot).
+Only meaningful alongside `withCloseButton True`, which presents the button
+this icon fills.
+-}
+withCloseIcon : Ui.Icon.Icon msg -> Dialog msg -> Dialog msg
+withCloseIcon icon (Dialog cfg) =
+    Dialog { cfg | closeIcon = Just icon }
 
 
 {-| Mark the dialog as an alert (sets ARIA `role=alertdialog`).
@@ -230,17 +262,34 @@ view (Dialog cfg) =
                     [ Maybe.map Attr.id cfg.id
                     , Just (M3e.Dialog.open "true")
                     , Just (M3e.Dialog.alert cfg.alert)
-                    , Just (M3e.Dialog.dismissible cfg.dismissible)
+                    , Just (M3e.Dialog.dismissible cfg.closeButton)
+                    , Just (M3e.Dialog.disableClose (not cfg.dismissible))
                     , Just (M3e.Dialog.onClosed (Decode.succeed cfg.onClose))
                     , Just (M3e.Dialog.onCancel (Decode.succeed cfg.onClose))
                     ]
             )
             (List.concat
                 [ [ titleElement cfg ]
+                , closeIconElement cfg.closeIcon
                 , bodyElement cfg.body
                 , actionsElement cfg.actions
                 ]
             )
+
+
+closeIconElement : Maybe (Ui.Icon.Icon msg) -> List (Html msg)
+closeIconElement closeIcon =
+    case closeIcon of
+        Nothing ->
+            []
+
+        Just icon ->
+            [ Html.span
+                [ M3e.Dialog.closeIconSlot
+                , Attr.attribute "aria-hidden" "true"
+                ]
+                [ Ui.Icon.view icon ]
+            ]
 
 
 titleElement : Config msg -> Html msg

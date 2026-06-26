@@ -6,6 +6,40 @@ phrased as: what I hit → why it bit → suggested fix (library / docs / toolin
 
 Ordered newest-first within each section.
 
+> **2026-06-25 sweep.** A full slot/content-channel audit
+> (`slot-graph-audit.md`) drove a batch of resolutions: **F7 resolved** via the
+> new `Ui.Field` composable (toggles now render bare); **F3 resolved** via
+> `Ui.Text`; **F4's gap closed** by a Playwright runtime contract harness
+> (`docs/tests-browser/`); and the F11 "reshape all 52 modules" plan was
+> **dropped** as low-value (misrouting was already solved — the real work was
+> `Ui.Field` + exposing missing slots). New findings F12–F14 below.
+
+---
+
+## New (2026-06-25)
+
+### F14 — docs used typescale classes that don't exist (FIXED)
+- **Hit:** body/label/title copy across the docs app used
+  `text-body-large` / `-medium` / `-small` (139 usages), which the
+  `tailwind-m3e-web` bridge does **not** define — it ships `text-body-lg` /
+  `-md` / `-sm`. The classes generated no CSS; type scale only applied via
+  `<body>` inheritance. Surfaced while building `Ui.Text` (which used the
+  correct names). **Fixed:** renamed all to the real bridge classes.
+
+### F13 — `M3e.StepPanel.actionsSlot` binding emits the wrong slot name (BINDING BUG)
+- **Hit:** the generated binding emits `slot="actions-"` (stray trailing dash,
+  from the CEM `@slot actions-`), but the element's real shadow slot is
+  `actions`. `Ui.Stepper`'s new panel-actions support emits `slot="actions"`
+  directly and bypasses the binding. **Upstream fix needed in elm-cem/the CEM.**
+
+### F12 — three structural slot bugs found by the audit (FIXED)
+- **Dialog** `withDismissible` was wired to `dismissible` (present a close
+  *button*) while documented as Escape/scrim control; rewired to `disable-close`
+  + added `withCloseButton`. **BottomSheet** nested `m3e-bottom-sheet-action`
+  *around* the button instead of inside it (needed a new `Ui.Button.withExtraContent`).
+  **SegmentedButton** dropped the segment `value` and had a fragile `<label for>`
+  anchor. All fixed + tested.
+
 ---
 
 ## Library bugs (shipped behavior is wrong)
@@ -53,9 +87,11 @@ Ordered newest-first within each section.
   control with the label as `aria-label`, no form-field. Applied across the
   Settings + Reply studies. (Checkbox had the same bug — it surfaced in the
   Reply study as a broken outlined "Select <subject>" box on every row.)
-- **Still open (design):** whether the *default* should be bare for
-  non-text controls (an outlined field around a switch/checkbox is arguably
-  never right). Left as default-wrapped for now to stay non-breaking.
+- **Resolved (2026-06-25):** the default is now **bare**. The form-field
+  chrome moved into a single composable `Ui.Field` (label / hint / error /
+  prefix / suffix / variant); Switch/Checkbox/Slider/RadioButton render bare
+  with the label as `aria-label`, and `withHelp`/`withError`/`withVisibleLabel`
+  were removed. `Ui.Field.view control` opts into the labeled presentation.
 
 ### F9 — Carousel is out of scope (REMOVED, not fixed)
 - **Hit:** the Carousel component page and Crane's "Featured destinations"
@@ -180,6 +216,11 @@ User directives (reference impl: **`Ui.AppBar`**; to roll out library-wide after
 - **Suggested:** document explicitly that the type-scale + color-role utilities
   are the sanctioned way to render body text (the bridge is the primitive
   here), so it doesn't read as "gave up and used Tailwind."
+- **Resolved (2026-06-25):** added `Ui.Text` — a primitive parallel to
+  `Ui.Heading` for the body/label typescale roles. It has no m3e element to
+  delegate to (none exists), so it emits a semantic `<p>`/`<span>` carrying the
+  bridge typescale class for the role — i.e. the bridge token *is* the primitive,
+  now wrapped in a typed API.
 
 ---
 

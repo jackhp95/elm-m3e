@@ -15,6 +15,7 @@ import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector exposing (attribute, tag, text)
 import Ui.Disclosure as Disclosure
+import Ui.Icon
 
 
 suite : Test
@@ -62,6 +63,26 @@ suite =
                         |> Disclosure.view
                         |> Query.fromHtml
                         |> Query.has [ attribute (Html.Attributes.id "faq-shipping") ]
+            , test "withPanelActions fills the actions slot" <|
+                \_ ->
+                    Disclosure.single "faq-shipping"
+                        (Html.text "Shipping")
+                        [ Html.text "body" ]
+                        |> Disclosure.withPanelActions [ Html.text "Save" ]
+                        |> Disclosure.view
+                        |> Query.fromHtml
+                        |> Query.find [ attribute (Html.Attributes.attribute "slot" "actions") ]
+                        |> Query.has [ text "Save" ]
+            , test "withToggleIcon fills the toggle-icon slot" <|
+                \_ ->
+                    Disclosure.single "faq-shipping"
+                        (Html.text "Shipping")
+                        [ Html.text "body" ]
+                        |> Disclosure.withToggleIcon (Ui.Icon.material "expand_more")
+                        |> Disclosure.view
+                        |> Query.fromHtml
+                        |> Query.find [ attribute (Html.Attributes.attribute "slot" "toggle-icon") ]
+                        |> Query.has [ tag "m3e-icon" ]
             ]
         , describe "accordion"
             [ test "renders an m3e-accordion" <|
@@ -105,6 +126,21 @@ suite =
                             [ Query.has [ attribute (Html.Attributes.id "faq-a") ]
                             , Query.has [ attribute (Html.Attributes.id "faq-b") ]
                             , Query.has [ attribute (Html.Attributes.id "faq") ]
+                            ]
+            , test "withSectionActions / withSectionToggleIcon fill their slots" <|
+                \_ ->
+                    Disclosure.accordion "faq"
+                        [ Disclosure.section "faq-a" (Html.text "A") [ Html.text "answer a" ]
+                            |> Disclosure.withSectionActions [ Html.text "More" ]
+                            |> Disclosure.withSectionToggleIcon (Ui.Icon.material "expand_more")
+                        ]
+                        |> Disclosure.view
+                        |> Query.fromHtml
+                        |> Expect.all
+                            [ Query.find [ attribute (Html.Attributes.attribute "slot" "actions") ]
+                                >> Query.has [ text "More" ]
+                            , Query.find [ attribute (Html.Attributes.attribute "slot" "toggle-icon") ]
+                                >> Query.has [ tag "m3e-icon" ]
                             ]
             ]
         , describe "no shared magic id"

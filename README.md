@@ -6,9 +6,10 @@ components. Typed-to-child slots, builders with required collaborators, one
 module per documented m3e component — invalid compositions don't compile, and
 there are no silent no-ops.
 
-> **Status: v0.1.** All 52 component modules compile against the generated
-> bindings — the complete library. 8 have detailed pages on the live docs
-> site; per-component docs for the rest are in progress.
+> **Status: v0.1.** All 54 `Ui.*` modules compile — the complete component
+> layer plus two cross-cutting primitives, `Ui.Field` (the composable
+> form-field chrome) and `Ui.Text` (the body/label typescale). 8 have detailed
+> pages on the live docs site; per-component docs for the rest are in progress.
 
 ## Architecture
 
@@ -33,7 +34,7 @@ Design principles (see the `docs-design-*.md` specs at the repo root):
 
 | Path | What |
 |------|------|
-| `src/Ui/` | The library — all 52 component modules (compile against the bindings). |
+| `src/Ui/` | The library — all 54 modules (compile against the bindings). |
 | `vendor/elm-m3e/` | Vendored `M3e.*` bindings (`jackhp95/elm-m3e`). See `VENDORED_FROM.txt`. |
 | `docs/` | The documentation site — an elm-pages app (the live, deployed page). |
 | `docs-design-*.md` | The authoritative MISI design specs. |
@@ -41,11 +42,14 @@ Design principles (see the `docs-design-*.md` specs at the repo root):
 
 ## Components
 
-All 52 `Ui.*` modules compile. Documented in detail on the site so far:
+All 54 `Ui.*` modules compile. Documented in detail on the site so far:
 `Shape` · `Icon` · `Avatar` · `Skeleton` · `ScrollContainer` · `Snackbar` ·
-`Theme` · `Size`. The rest (buttons, cards, dialogs, nav, chips, fabs, form
+`Theme`. The rest (buttons, cards, dialogs, nav, chips, fabs, form
 controls, sliders, date/time pickers, tooltips, …) compile and are usable;
 per-component docs are in progress.
+
+Form controls (`Switch`, `Checkbox`, `RadioButton`, `Slider`) render **bare**;
+wrap them in `Ui.Field` for a visible label, supporting text, or error subscript.
 
 ## Documentation site
 

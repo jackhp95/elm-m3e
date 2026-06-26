@@ -7,9 +7,11 @@
     "build:reference": "node scripts/extract-reference.mjs",
     "build:assets": "npm run build:css && npm run build:m3e && npm run build:reference",
     "start": "npm run build:assets && elm-pages dev",
-    "build": "npm run build:assets && elm-pages build"
+    "build": "npm run build:assets && elm-pages build",
+    "test:browser": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/cli": "^4.3.1",
     "elm": "^0.19.1-6",
     "elm-codegen": "^0.6.3",

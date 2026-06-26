@@ -59,6 +59,21 @@ suite =
                         [ Selector.tag "m3e-rich-tooltip"
                         , Selector.attribute (Attr.attribute "position" "after")
                         ]
+        , test "rich tooltip subhead lands in the subhead slot" <|
+            \_ ->
+                Ui.Tooltip.rich { anchorId = "a", content = Html.text "c" }
+                    |> Ui.Tooltip.withSubhead (Html.text "Heads up")
+                    |> Ui.Tooltip.view
+                    |> Query.fromHtml
+                    |> Query.find [ Selector.attribute (Attr.attribute "slot" "subhead") ]
+                    |> Query.has [ Selector.text "Heads up" ]
+        , test "rich tooltip without subhead emits no subhead slot" <|
+            \_ ->
+                Ui.Tooltip.rich { anchorId = "a", content = Html.text "c" }
+                    |> Ui.Tooltip.view
+                    |> Query.fromHtml
+                    |> Query.findAll [ Selector.attribute (Attr.attribute "slot" "subhead") ]
+                    |> Query.count (Expect.equal 0)
         ]
 
 

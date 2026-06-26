@@ -95,7 +95,7 @@ highlightCard ( iconName, title, body ) =
         |> Card.withBody
             (div [ class "flex gap-3" ]
                 [ Html.span [ class "shrink-0 text-primary" ] [ Icon.material iconName |> Icon.view ]
-                , p [ class "text-body-medium text-on-surface-variant" ] [ text body ]
+                , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
                 ]
             )
         |> Card.view
@@ -108,9 +108,9 @@ view _ _ =
         [ div [ class "mx-auto max-w-4xl space-y-8" ]
             [ section [ class "space-y-3" ]
                 [ pageHeading
-                , p [ class "text-body-large text-on-surface-variant" ]
+                , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "elm-m3e (the m3e-builder project) is a type-safe Elm binding layer over "
-                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "@m3e/web" ]
+                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
                     , text ", matraic's Material 3 Expressive web component library."
                     ]
                 ]
@@ -123,9 +123,9 @@ view _ _ =
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "The MISI philosophy"
-                , p [ class "text-body-large text-on-surface-variant" ]
+                , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "Every Ui.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
-                , ul [ class "list-disc space-y-1.5 pl-5 text-body-medium text-on-surface-variant" ]
+                , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                     [ li [] [ text "Typed slots — an icon slot only accepts a Ui.Icon, never arbitrary Html." ]
                     , li [] [ text "Builders with required collaborators — you can't render an avatar without content." ]
                     , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
@@ -134,12 +134,12 @@ view _ _ =
             , Divider.new |> Divider.view
             , section [ class "space-y-3" ]
                 [ sectionHeading "Relationship to @m3e/web"
-                , p [ class "text-body-large text-on-surface-variant" ]
+                , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "@m3e/web ships the custom elements, the dynamic-color "
-                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-medium" ] [ text "<m3e-theme>" ]
+                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "<m3e-theme>" ]
                     , text " engine, and the M3 design tokens. elm-m3e wraps each element in a typed Elm builder and the tokens flow through Tailwind utilities (the tailwind-m3e-web bridge)."
                     ]
-                , p [ class "text-body-large text-on-surface-variant" ]
+                , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "Next: "
                     , a [ href "/getting-started/installation", class "text-primary hover:underline" ] [ text "Installation" ]
                     , text "."

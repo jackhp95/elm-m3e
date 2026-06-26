@@ -47,6 +47,23 @@ suite =
                     |> Ui.BottomSheet.view
                     |> Query.fromHtml
                     |> Query.has [ Selector.tag "m3e-bottom-sheet-action" ]
+        , test "action marker is nested INSIDE the m3e-button (not wrapping it)" <|
+            \_ ->
+                Ui.BottomSheet.new { open = True, onClose = () }
+                    |> Ui.BottomSheet.withActions [ actionButton ]
+                    |> Ui.BottomSheet.view
+                    |> Query.fromHtml
+                    |> Query.find [ Selector.tag "m3e-button" ]
+                    |> Query.has [ Selector.tag "m3e-bottom-sheet-action" ]
+        , test "no m3e-bottom-sheet-action wraps the m3e-button" <|
+            \_ ->
+                Ui.BottomSheet.new { open = True, onClose = () }
+                    |> Ui.BottomSheet.withActions [ actionButton ]
+                    |> Ui.BottomSheet.view
+                    |> Query.fromHtml
+                    |> Query.find [ Selector.tag "m3e-bottom-sheet-action" ]
+                    |> Query.findAll [ Selector.tag "m3e-button" ]
+                    |> Query.count (Expect.equal 0)
         , test "no ds-bottom-sheet-actions div" <|
             \_ ->
                 Ui.BottomSheet.new { open = True, onClose = () }

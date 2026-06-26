@@ -151,8 +151,9 @@ withBody body (BottomSheet cfg) =
     BottomSheet { cfg | body = Just body }
 
 
-{-| Set the actions. Each is rendered as an `<m3e-bottom-sheet-action>`
-element so that activating it closes the parent sheet.
+{-| Set the actions. Each is rendered as its `<m3e-button>` with an
+`<m3e-bottom-sheet-action>` marker nested _inside_ it, so that activating
+the button closes the parent sheet.
 -}
 withActions :
     List (Ui.Button.Button msg)
@@ -242,6 +243,9 @@ actionsElement :
 actionsElement actions =
     List.map
         (\button ->
-            M3e.BottomSheetAction.component [] [ Ui.Button.view button ]
+            button
+                |> Ui.Button.withExtraContent
+                    [ M3e.BottomSheetAction.component [] [] ]
+                |> Ui.Button.view
         )
         actions
