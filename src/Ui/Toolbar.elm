@@ -3,6 +3,7 @@ module Ui.Toolbar exposing
     , new
     , withAttributes
     , withId, withElevated, withVertical
+    , withIconButtons, withExtraContent
     , view
     )
 
@@ -53,6 +54,16 @@ The actions list is typed to `Ui.Button.Button msg` (any button kind).
 @docs withId, withElevated, withVertical
 
 
+# Extra content
+
+`new` takes labeled `Ui.Button`s. To add the common dense case —
+**icon buttons** — or anything else (dividers, custom controls), append
+them with the builders below. Render order in the default slot is:
+buttons (from `new`) ++ icon buttons ++ extra content.
+
+@docs withIconButtons, withExtraContent
+
+
 # Render
 
 @docs view
@@ -63,6 +74,7 @@ import Html exposing (Attribute, Html)
 import Html.Attributes as Attr
 import M3e.Toolbar
 import Ui.Button
+import Ui.IconButton
 
 
 
@@ -81,6 +93,8 @@ type alias Config msg =
     , elevated : Bool
     , vertical : Bool
     , actions : List (Ui.Button.Button msg)
+    , iconButtons : List (Ui.IconButton.IconButton msg)
+    , extraContent : List (Html msg)
     }
 
 
@@ -98,6 +112,8 @@ new actions =
         , elevated = False
         , vertical = False
         , actions = actions
+        , iconButtons = []
+        , extraContent = []
         }
 
 
@@ -135,6 +151,23 @@ withVertical b (Toolbar cfg) =
     Toolbar { cfg | vertical = b }
 
 
+{-| Append icon buttons (in order) into the toolbar's default slot, after
+the buttons from `new`. Calls accumulate.
+-}
+withIconButtons : List (Ui.IconButton.IconButton msg) -> Toolbar msg -> Toolbar msg
+withIconButtons iconButtons (Toolbar cfg) =
+    Toolbar { cfg | iconButtons = cfg.iconButtons ++ iconButtons }
+
+
+{-| Append arbitrary `Html` (dividers, custom controls) into the toolbar's
+default slot, after the buttons and icon buttons. The escape hatch for content
+the typed builders don't cover. Calls accumulate.
+-}
+withExtraContent : List (Html msg) -> Toolbar msg -> Toolbar msg
+withExtraContent extraContent (Toolbar cfg) =
+    Toolbar { cfg | extraContent = cfg.extraContent ++ extraContent }
+
+
 
 -- RENDER -----------------------------------------------------------------
 
@@ -151,4 +184,9 @@ view (Toolbar cfg) =
                 , Just (M3e.Toolbar.vertical cfg.vertical)
                 ]
         )
-        (List.map Ui.Button.view cfg.actions)
+        (List.concat
+            [ List.map Ui.Button.view cfg.actions
+            , List.map Ui.IconButton.view cfg.iconButtons
+            , cfg.extraContent
+            ]
+        )
