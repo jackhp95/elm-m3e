@@ -49,42 +49,38 @@ type Position
     | BelowBefore
 
 
-type Option msg
-    = Dot
-    | Count Int
-    | Label String
-    | PositionOpt Position
-    | ForId String
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| A small, shape-only badge (no content) — the M3 "small" type.
 -}
 dot : Option msg
 dot =
-    Dot
+    Internal.option (\c -> { c | content = DotContent })
 
 
 {-| A large numeric badge. Applies the M3 "999+" truncation: counts above 999
 render as `"999+"` (the spec caps the badge at 4 characters including the `+`).
 -}
 count : Int -> Option msg
-count =
-    Count
+count n =
+    Internal.option (\c -> { c | content = CountContent n })
 
 
 {-| A large badge displaying short status text — the M3 "large" type.
 -}
 label : String -> Option msg
-label =
-    Label
+label s =
+    Internal.option (\c -> { c | content = LabelContent s })
 
 
 {-| Set where the badge sits relative to its anchor (default `AboveAfter`).
 Only meaningful when `forId` is also set.
 -}
 position : Position -> Option msg
-position =
-    PositionOpt
+position p =
+    Internal.option (\c -> { c | position = Just p })
 
 
 {-| Anchor the badge to the interactive control with the given id (the m3e
@@ -92,8 +88,8 @@ position =
 can read the relational wiring.
 -}
 forId : String -> Option msg
-forId =
-    ForId
+forId s =
+    Internal.option (\c -> { c | for = Just s })
 
 
 type Content
@@ -110,35 +106,15 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Dot ->
-            { c | content = DotContent }
-
-        Count n ->
-            { c | content = CountContent n }
-
-        Label s ->
-            { c | content = LabelContent s }
-
-        PositionOpt p ->
-            { c | position = Just p }
-
-        ForId s ->
-            { c | for = Just s }
-
-
 view : List (Option msg) -> Renderable { s | badge : Supported } msg
 view opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { content = NoneContent
                 , position = Nothing
                 , for = Nothing
                 }
-                opts
 
         ( sizeAttr, children ) =
             case c.content of

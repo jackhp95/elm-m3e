@@ -55,67 +55,58 @@ type Shape
     | Square
 
 
-type Option msg
-    = Size Size
-    | ShapeOpt Shape
-    | Disabled Bool
-    | OnClick msg
-    | Href String
-    | Target String
-    | Rel String
-    | Download String
-    | LeadingIcon (Renderable { icon : Supported } msg)
-    | TrailingIcon (Renderable { icon : Supported } msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 size : Size -> Option msg
-size =
-    Size
+size v =
+    Internal.option (\c -> { c | size = v })
 
 
 shape : Shape -> Option msg
-shape =
-    ShapeOpt
+shape v =
+    Internal.option (\c -> { c | shape = Just v })
 
 
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled v =
+    Internal.option (\c -> { c | disabled = v })
 
 
 onClick : msg -> Option msg
-onClick =
-    OnClick
+onClick m =
+    Internal.option (\c -> { c | onClick = Just m })
 
 
 href : String -> Option msg
-href =
-    Href
+href v =
+    Internal.option (\c -> { c | href = Just v })
 
 
 target : String -> Option msg
-target =
-    Target
+target v =
+    Internal.option (\c -> { c | target = Just v })
 
 
 rel : String -> Option msg
-rel =
-    Rel
+rel v =
+    Internal.option (\c -> { c | rel = Just v })
 
 
 download : String -> Option msg
-download =
-    Download
+download v =
+    Internal.option (\c -> { c | download = Just v })
 
 
 leadingIcon : Renderable { icon : Supported } msg -> Option msg
-leadingIcon =
-    LeadingIcon
+leadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 trailingIcon : Renderable { icon : Supported } msg -> Option msg
-trailingIcon =
-    TrailingIcon
+trailingIcon i =
+    Internal.option (\c -> { c | trailingIcon = Just i })
 
 
 type alias Config msg =
@@ -132,50 +123,15 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Size v ->
-            { c | size = v }
-
-        ShapeOpt v ->
-            { c | shape = Just v }
-
-        Disabled v ->
-            { c | disabled = v }
-
-        OnClick m ->
-            { c | onClick = Just m }
-
-        Href v ->
-            { c | href = Just v }
-
-        Target v ->
-            { c | target = Just v }
-
-        Rel v ->
-            { c | rel = Just v }
-
-        Download v ->
-            { c | download = Just v }
-
-        LeadingIcon i ->
-            { c | leadingIcon = Just i }
-
-        TrailingIcon i ->
-            { c | trailingIcon = Just i }
-
-
 view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | button : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { size = Small, shape = Nothing, disabled = False, onClick = Nothing
                 , href = Nothing, target = Nothing, rel = Nothing, download = Nothing
                 , leadingIcon = Nothing, trailingIcon = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-button"

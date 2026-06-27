@@ -37,60 +37,54 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Open Bool
-    | OnClose msg
-    | Handle Bool
-    | Hideable Bool
-    | Modal Bool
-    | Header (List (Node.Node msg))
-    | Actions (List (Renderable { button : Supported } msg))
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Whether the bottom sheet is open. Sets the `open` DOM property. Default false. -}
 open : Bool -> Option msg
-open =
-    Open
+open b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Handler for user-initiated dismiss. Wired to both the `closed` and `cancel`
 events.
 -}
 onClose : msg -> Option msg
-onClose =
-    OnClose
+onClose m =
+    Internal.option (\c -> { c | onClose = Just m })
 
 
 {-| Show the drag handle at the top of the sheet. Default false. -}
 handle : Bool -> Option msg
-handle =
-    Handle
+handle b =
+    Internal.option (\c -> { c | handle = b })
 
 
 {-| Allow the user to dismiss the sheet by dragging it down. Default false. -}
 hideable : Bool -> Option msg
-hideable =
-    Hideable
+hideable b =
+    Internal.option (\c -> { c | hideable = b })
 
 
 {-| Make the sheet modal (shows a scrim behind it). Default false. -}
 modal : Bool -> Option msg
-modal =
-    Modal
+modal b =
+    Internal.option (\c -> { c | modal = b })
 
 
 {-| Content for the sheet's `header` slot — rendered above the body region. -}
 header : List (Renderable any msg) -> Option msg
 header xs =
-    Header (List.map Renderable.toNode xs)
+    Internal.option (\c -> { c | header = List.map Renderable.toNode xs })
 
 
 {-| Action buttons. Each button will have `<m3e-bottom-sheet-action>` nested
 inside it (Fix F12), so activating the button closes the parent sheet.
 -}
 actions : List (Renderable { button : Supported } msg) -> Option msg
-actions =
-    Actions
+actions xs =
+    Internal.option (\c -> { c | actions = xs })
 
 
 type alias Config msg =
@@ -116,31 +110,6 @@ defaultConfig =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Open b ->
-            { c | open = b }
-
-        OnClose m ->
-            { c | onClose = Just m }
-
-        Handle b ->
-            { c | handle = b }
-
-        Hideable b ->
-            { c | hideable = b }
-
-        Modal b ->
-            { c | modal = b }
-
-        Header nodes ->
-            { c | header = nodes }
-
-        Actions xs ->
-            { c | actions = xs }
-
-
 {-| Render the bottom sheet as an introspectable IR node.
 
     M3e.BottomSheet.view
@@ -160,7 +129,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-bottom-sheet"

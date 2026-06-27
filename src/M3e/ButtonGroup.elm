@@ -43,30 +43,6 @@ type Size
     | ExtraLarge
 
 
-type Option msg
-    = VariantOpt Variant
-    | SizeOpt Size
-    | Multi Bool
-
-
-variant : Variant -> Option msg
-variant =
-    VariantOpt
-
-
-size : Size -> Option msg
-size =
-    SizeOpt
-
-
-{-| Allow more than one toggle button in the group to be selected at
-once (m3e `multi` property, default false).
--}
-multi : Bool -> Option msg
-multi =
-    Multi
-
-
 type alias Config =
     { variant : Variant
     , size : Size
@@ -74,17 +50,26 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        VariantOpt v ->
-            { c | variant = v }
+type alias Option msg =
+    Internal.Option Config msg
 
-        SizeOpt s ->
-            { c | size = s }
 
-        Multi b ->
-            { c | multi = b }
+variant : Variant -> Option msg
+variant v =
+    Internal.option (\c -> { c | variant = v })
+
+
+size : Size -> Option msg
+size s =
+    Internal.option (\c -> { c | size = s })
+
+
+{-| Allow more than one toggle button in the group to be selected at
+once (m3e `multi` property, default false).
+-}
+multi : Bool -> Option msg
+multi b =
+    Internal.option (\c -> { c | multi = b })
 
 
 view :
@@ -94,9 +79,8 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { variant = Standard, size = Small, multi = False }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-button-group"

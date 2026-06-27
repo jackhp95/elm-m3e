@@ -34,59 +34,6 @@ import M3e.Internal as Internal
 
 -- ITEM (child) ------------------------------------------------------------
 
-type ItemOption msg
-    = ItemHref String
-    | ItemCurrent Bool
-    | ItemDisabled Bool
-    | ItemOnClick msg
-    | ItemTarget String
-    | ItemRel String
-    | ItemDownload String
-
-
-{-| Set the URL this breadcrumb crumb links to. -}
-itemHref : String -> ItemOption msg
-itemHref =
-    ItemHref
-
-
-{-| Mark this as the current (active, non-clickable) crumb. Sets
-`current="true"` on the element. -}
-itemCurrent : Bool -> ItemOption msg
-itemCurrent =
-    ItemCurrent
-
-
-{-| Disable this crumb — renders but its internal button is inert. -}
-itemDisabled : Bool -> ItemOption msg
-itemDisabled =
-    ItemDisabled
-
-
-{-| Wire a click handler for this crumb. -}
-itemOnClick : msg -> ItemOption msg
-itemOnClick =
-    ItemOnClick
-
-
-{-| Set the link `target` (e.g. `"_blank"`). -}
-itemTarget : String -> ItemOption msg
-itemTarget =
-    ItemTarget
-
-
-{-| Set the link `rel` (e.g. `"noreferrer noopener"`). -}
-itemRel : String -> ItemOption msg
-itemRel =
-    ItemRel
-
-
-{-| Request the link target be downloaded; optionally sets the filename. -}
-itemDownload : String -> ItemOption msg
-itemDownload =
-    ItemDownload
-
-
 type alias ItemConfig msg =
     { href : Maybe String
     , current : Bool
@@ -98,29 +45,51 @@ type alias ItemConfig msg =
     }
 
 
-applyItem : ItemOption msg -> ItemConfig msg -> ItemConfig msg
-applyItem opt c =
-    case opt of
-        ItemHref v ->
-            { c | href = Just v }
+type alias ItemOption msg =
+    Internal.Option (ItemConfig msg) msg
 
-        ItemCurrent b ->
-            { c | current = b }
 
-        ItemDisabled b ->
-            { c | disabled = b }
+{-| Set the URL this breadcrumb crumb links to. -}
+itemHref : String -> ItemOption msg
+itemHref v =
+    Internal.option (\c -> { c | href = Just v })
 
-        ItemOnClick m ->
-            { c | onClick = Just m }
 
-        ItemTarget v ->
-            { c | target = Just v }
+{-| Mark this as the current (active, non-clickable) crumb. Sets
+`current="true"` on the element. -}
+itemCurrent : Bool -> ItemOption msg
+itemCurrent b =
+    Internal.option (\c -> { c | current = b })
 
-        ItemRel v ->
-            { c | rel = Just v }
 
-        ItemDownload v ->
-            { c | download = Just v }
+{-| Disable this crumb — renders but its internal button is inert. -}
+itemDisabled : Bool -> ItemOption msg
+itemDisabled b =
+    Internal.option (\c -> { c | disabled = b })
+
+
+{-| Wire a click handler for this crumb. -}
+itemOnClick : msg -> ItemOption msg
+itemOnClick m =
+    Internal.option (\c -> { c | onClick = Just m })
+
+
+{-| Set the link `target` (e.g. `"_blank"`). -}
+itemTarget : String -> ItemOption msg
+itemTarget v =
+    Internal.option (\c -> { c | target = Just v })
+
+
+{-| Set the link `rel` (e.g. `"noreferrer noopener"`). -}
+itemRel : String -> ItemOption msg
+itemRel v =
+    Internal.option (\c -> { c | rel = Just v })
+
+
+{-| Request the link target be downloaded; optionally sets the filename. -}
+itemDownload : String -> ItemOption msg
+itemDownload v =
+    Internal.option (\c -> { c | download = Just v })
 
 
 {-| A single `<m3e-breadcrumb-item>`. The `label` is rendered as text
@@ -134,7 +103,7 @@ item :
 item req opts =
     let
         c =
-            List.foldl applyItem
+            Internal.applyOptions opts
                 { href = Nothing
                 , current = False
                 , disabled = False
@@ -143,7 +112,6 @@ item req opts =
                 , rel = Nothing
                 , download = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-breadcrumb-item"
@@ -174,26 +142,19 @@ item req opts =
 
 -- PARENT ------------------------------------------------------------------
 
-type BreadcrumbOption msg
-    = Wrap Bool
+type alias BreadcrumbConfig =
+    { wrap : Bool }
+
+
+type alias BreadcrumbOption msg =
+    Internal.Option BreadcrumbConfig msg
 
 
 {-| Allow crumbs to wrap onto a new line when the trail is too wide
 (m3e `wrap` property, default false). -}
 wrap : Bool -> BreadcrumbOption msg
-wrap =
-    Wrap
-
-
-type alias BreadcrumbConfig =
-    { wrap : Bool }
-
-
-applyBreadcrumb : BreadcrumbOption msg -> BreadcrumbConfig -> BreadcrumbConfig
-applyBreadcrumb opt c =
-    case opt of
-        Wrap b ->
-            { c | wrap = b }
+wrap b =
+    Internal.option (\c -> { c | wrap = b })
 
 
 view :
@@ -203,7 +164,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyBreadcrumb { wrap = False } opts
+            Internal.applyOptions opts { wrap = False }
     in
     Internal.fromNode
         (Node.element "m3e-breadcrumb"

@@ -33,38 +33,6 @@ import M3e.Internal as Internal
 -- OPTIONS ----------------------------------------------------------------
 
 
-type Option msg
-    = Image String
-    | Initials String
-    | IconChild (Renderable { icon : Supported } msg)
-
-
-{-| Display an image (e.g. a profile photo) — rendered as an `<img>` child
-carrying `src` and the required `alt`.
--}
-image : String -> Option msg
-image =
-    Image
-
-
-{-| Display textual initials — rendered as a text child.
--}
-initials : String -> Option msg
-initials =
-    Initials
-
-
-{-| Display an icon glyph — the generic-identity fallback.
--}
-iconChild : Renderable { icon : Supported } msg -> Option msg
-iconChild =
-    IconChild
-
-
-
--- CONTENT ----------------------------------------------------------------
-
-
 type Content msg
     = ImgContent String
     | TextContent String
@@ -72,17 +40,30 @@ type Content msg
     | NoContent
 
 
-apply : Option msg -> Content msg -> Content msg
-apply opt _ =
-    case opt of
-        Image src ->
-            ImgContent src
+type alias Option msg =
+    Internal.Option (Content msg) msg
 
-        Initials text ->
-            TextContent text
 
-        IconChild icon ->
-            IconContent icon
+{-| Display an image (e.g. a profile photo) — rendered as an `<img>` child
+carrying `src` and the required `alt`.
+-}
+image : String -> Option msg
+image src =
+    Internal.option (\_ -> ImgContent src)
+
+
+{-| Display textual initials — rendered as a text child.
+-}
+initials : String -> Option msg
+initials text =
+    Internal.option (\_ -> TextContent text)
+
+
+{-| Display an icon glyph — the generic-identity fallback.
+-}
+iconChild : Renderable { icon : Supported } msg -> Option msg
+iconChild icon =
+    Internal.option (\_ -> IconContent icon)
 
 
 
@@ -93,7 +74,7 @@ view : { alt : String } -> List (Option msg) -> Renderable { s | avatar : Suppor
 view req opts =
     let
         content =
-            List.foldl apply NoContent opts
+            Internal.applyOptions opts NoContent
 
         children =
             case content of

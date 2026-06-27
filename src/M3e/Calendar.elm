@@ -75,22 +75,8 @@ type StartView
     | MultiYearView
 
 
-type Option msg
-    = WithId String
-    | WithDate String
-    | WithMinDate String
-    | WithMaxDate String
-    | WithRangeStart String
-    | WithRangeEnd String
-    | WithStartView StartView
-    | WithStartAt String
-    | WithPreviousMonthLabel String
-    | WithNextMonthLabel String
-    | WithPreviousYearLabel String
-    | WithNextYearLabel String
-    | WithPreviousMultiYearLabel String
-    | WithNextMultiYearLabel String
-    | OnChange (String -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 type alias Config msg =
@@ -137,86 +123,86 @@ defaultConfig =
 
 {-| Set the `id` attribute on `<m3e-calendar>`. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Seed the calendar with an initially selected date (ISO-8601 string). -}
 withDate : String -> Option msg
-withDate =
-    WithDate
+withDate s =
+    Internal.option (\c -> { c | date = Just s })
 
 
 {-| Earliest selectable date (ISO-8601). -}
 withMinDate : String -> Option msg
-withMinDate =
-    WithMinDate
+withMinDate s =
+    Internal.option (\c -> { c | minDate = Just s })
 
 
 {-| Latest selectable date (ISO-8601). -}
 withMaxDate : String -> Option msg
-withMaxDate =
-    WithMaxDate
+withMaxDate s =
+    Internal.option (\c -> { c | maxDate = Just s })
 
 
 {-| Start of a highlighted date range (ISO-8601). -}
 withRangeStart : String -> Option msg
-withRangeStart =
-    WithRangeStart
+withRangeStart s =
+    Internal.option (\c -> { c | rangeStart = Just s })
 
 
 {-| End of a highlighted date range (ISO-8601). -}
 withRangeEnd : String -> Option msg
-withRangeEnd =
-    WithRangeEnd
+withRangeEnd s =
+    Internal.option (\c -> { c | rangeEnd = Just s })
 
 
 {-| Set the initial view (`MonthView`, `YearView`, `MultiYearView`). -}
 withStartView : StartView -> Option msg
-withStartView =
-    WithStartView
+withStartView sv =
+    Internal.option (\c -> { c | startView = Just sv })
 
 
 {-| Set the initial period to display (ISO-8601). -}
 withStartAt : String -> Option msg
-withStartAt =
-    WithStartAt
+withStartAt s =
+    Internal.option (\c -> { c | startAt = Just s })
 
 
 {-| Accessible label for the "previous month" button. -}
 withPreviousMonthLabel : String -> Option msg
-withPreviousMonthLabel =
-    WithPreviousMonthLabel
+withPreviousMonthLabel s =
+    Internal.option (\c -> { c | previousMonthLabel = Just s })
 
 
 {-| Accessible label for the "next month" button. -}
 withNextMonthLabel : String -> Option msg
-withNextMonthLabel =
-    WithNextMonthLabel
+withNextMonthLabel s =
+    Internal.option (\c -> { c | nextMonthLabel = Just s })
 
 
 {-| Accessible label for the "previous year" button. -}
 withPreviousYearLabel : String -> Option msg
-withPreviousYearLabel =
-    WithPreviousYearLabel
+withPreviousYearLabel s =
+    Internal.option (\c -> { c | previousYearLabel = Just s })
 
 
 {-| Accessible label for the "next year" button. -}
 withNextYearLabel : String -> Option msg
-withNextYearLabel =
-    WithNextYearLabel
+withNextYearLabel s =
+    Internal.option (\c -> { c | nextYearLabel = Just s })
 
 
 {-| Accessible label for the "previous 24 years" button. -}
 withPreviousMultiYearLabel : String -> Option msg
-withPreviousMultiYearLabel =
-    WithPreviousMultiYearLabel
+withPreviousMultiYearLabel s =
+    Internal.option (\c -> { c | previousMultiYearLabel = Just s })
 
 
 {-| Accessible label for the "next 24 years" button. -}
 withNextMultiYearLabel : String -> Option msg
-withNextMultiYearLabel =
-    WithNextMultiYearLabel
+withNextMultiYearLabel s =
+    Internal.option (\c -> { c | nextMultiYearLabel = Just s })
 
 
 {-| Handle date selection. Receives the selected date as an ISO-8601 string.
@@ -225,8 +211,8 @@ See module documentation (⚠️) for the exact decoding channel used.
 
 -}
 onChange : (String -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -245,7 +231,7 @@ view : List (Option msg) -> Renderable { s | calendar : Supported } msg
 view opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-calendar"
@@ -276,55 +262,6 @@ view opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        WithDate s ->
-            { c | date = Just s }
-
-        WithMinDate s ->
-            { c | minDate = Just s }
-
-        WithMaxDate s ->
-            { c | maxDate = Just s }
-
-        WithRangeStart s ->
-            { c | rangeStart = Just s }
-
-        WithRangeEnd s ->
-            { c | rangeEnd = Just s }
-
-        WithStartView sv ->
-            { c | startView = Just sv }
-
-        WithStartAt s ->
-            { c | startAt = Just s }
-
-        WithPreviousMonthLabel s ->
-            { c | previousMonthLabel = Just s }
-
-        WithNextMonthLabel s ->
-            { c | nextMonthLabel = Just s }
-
-        WithPreviousYearLabel s ->
-            { c | previousYearLabel = Just s }
-
-        WithNextYearLabel s ->
-            { c | nextYearLabel = Just s }
-
-        WithPreviousMultiYearLabel s ->
-            { c | previousMultiYearLabel = Just s }
-
-        WithNextMultiYearLabel s ->
-            { c | nextMultiYearLabel = Just s }
-
-        OnChange f ->
-            { c | onChange = Just f }
 
 
 startViewString : StartView -> String
