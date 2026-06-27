@@ -1,4 +1,4 @@
-module M3e.Element exposing (Element, Supported, element, html, text, toNode)
+module M3e.Element exposing (Element, Supported, element, fromNode, html, text, toNode)
 
 {-| One content type for every slot. Each component `view` pins its own kind by
 annotating its result (via `M3e.Internal.fromNode`). Two escapes:
@@ -7,9 +7,13 @@ annotating its result (via `M3e.Internal.fromNode`). Two escapes:
   - `element` for NAMED slots (you build a slot-capable element the parent can
     stamp `slot=` onto) — so the slot can never be silently dropped.
 
-`fromNode` is NOT exposed here — it lives in `M3e.Internal` so consumers
-cannot forge phantom slot tags. Components import `M3e.Internal as Internal`
-and call `Internal.fromNode` to annotate their output.
+`fromNode` is also exposed here for use in `Shared.view` where a `Node msg`
+wrapping a whole page-body subtree needs to be passed into a component slot
+(e.g. `Theme.view { content = List.map Element.fromNode nodes }`). Component
+modules should still use `M3e.Internal.fromNode` to keep their phantom tags
+unforgeable by general consumers.
+
+@docs Element, Supported, element, fromNode, html, text, toNode
 
 -}
 
@@ -36,6 +40,20 @@ type alias Supported =
 toNode : Element supported msg -> Node msg
 toNode =
     Internal.toNode
+
+
+{-| Wrap a `Node` as an unconstrained `Element`. The phantom slot type is left
+fully polymorphic (`any`), so the result fits any slot. Use this in
+`Shared.view` to feed a pre-built `Node` tree into a component slot like
+`Theme.view { content = List.map Element.fromNode nodes }`.
+
+Do NOT use this in component modules to annotate their own output — use
+`M3e.Internal.fromNode` there so the phantom tag remains precise and unforgeable.
+
+-}
+fromNode : Node msg -> Element any msg
+fromNode =
+    Internal.fromNode
 
 
 {-| Lift raw `Html` into an element that fits any **default-slot region**

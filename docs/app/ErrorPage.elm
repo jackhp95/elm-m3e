@@ -2,7 +2,8 @@ module ErrorPage exposing (ErrorPage(..), Model, Msg, head, init, internalError,
 
 import Effect exposing (Effect)
 import Head
-import Html exposing (Html)
+import Html
+import M3e.Node as Node
 import View exposing (View)
 
 
@@ -52,17 +53,19 @@ internalError =
 view : ErrorPage -> Model -> View Msg
 view error model =
     { body =
-        [ Html.div []
-            [ Html.p []
-                [ Html.text <|
-                    case error of
-                        NotFound ->
-                            "Page not found. Maybe try another URL?"
+        [ Node.raw
+            (Html.div []
+                [ Html.p []
+                    [ Html.text <|
+                        case error of
+                            NotFound ->
+                                "Page not found. Maybe try another URL?"
 
-                        InternalError string ->
-                            "Something went wrong.\n" ++ string
+                            InternalError string ->
+                                "Something went wrong.\n" ++ string
+                    ]
                 ]
-            ]
+            )
         ]
     , title =
         case error of

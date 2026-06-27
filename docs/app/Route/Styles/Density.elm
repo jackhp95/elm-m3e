@@ -4,14 +4,14 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, p, section, text)
+import Html exposing (p, text)
 import Html.Attributes exposing (class, style)
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.Divider as Divider
-import M3e.Heading as Heading
-import M3e.Node as Node
 import M3e.Element as Element
+import M3e.Heading as Heading
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -59,53 +59,56 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
-demoBar : Int -> Html msg
+demoBar : Int -> Node msg
 demoBar scaleValue =
-    div [ class "space-y-2" ]
-        [ p [ class "text-label-lg text-on-surface-variant" ]
-            [ text ("density scale " ++ String.fromInt scaleValue) ]
-        , div
-            [ style "--md-sys-density-scale" (String.fromInt scaleValue)
-            , class "flex flex-wrap gap-2"
+    Node.element "div"
+        [ Node.rawAttr (class "space-y-2") ]
+        [ Node.raw
+            (p [ class "text-label-lg text-on-surface-variant" ]
+                [ text ("density scale " ++ String.fromInt scaleValue) ]
+            )
+        , Node.element "div"
+            [ Node.rawAttr (style "--md-sys-density-scale" (String.fromInt scaleValue))
+            , Node.rawAttr (class "flex flex-wrap gap-2")
             ]
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Button.view { label = "Action", variant = Button.Filled } [] |> toHtml
+                        Button.view { label = "Action", variant = Button.Filled } [] |> Element.toNode
                     )
             )
         ]
 
 
-pageHeading : Html msg
+pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Density", variant = Heading.Display }
         [ Heading.size Heading.Small, Heading.level 1 ]
-        |> toHtml
+        |> Element.toNode
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Density · elm-m3e"
     , body =
-        [ div [ class "mx-auto max-w-4xl space-y-8" ]
-            [ section [ class "space-y-3" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
+            [ Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                        [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
+            , Divider.view [] |> Element.toNode
             , Card.view
                 [ Card.variant Card.Outlined
                 , Card.headline (Heading.view { label = "Density scale, 0 to -3", variant = Heading.Title } [])
                 , Card.body
-                    [ Element.html
-                        (div [ class "space-y-6" ]
+                    [ Element.fromNode
+                        (Node.element "div"
+                            [ Node.rawAttr (class "space-y-6") ]
                             [ demoBar 0
                             , demoBar -1
                             , demoBar -2
@@ -115,7 +118,6 @@ view _ _ =
                     ]
                 ]
                 |> Element.toNode
-                |> Node.toHtml
             ]
         ]
     }

@@ -9,14 +9,14 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, p, section, text)
+import Html exposing (p, text)
 import Html.Attributes exposing (class)
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.Divider as Divider
-import M3e.Heading as Heading
-import M3e.Node as Node
 import M3e.Element as Element
+import M3e.Heading as Heading
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -64,11 +64,6 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
 studies : List ( String, String, String )
 studies =
     [ ( "reply", "Reply", "A Material 3 email / inbox client — nav family, app bar with search, message list, split-pane reading view, compose bottom sheet, and snackbar." )
@@ -79,14 +74,14 @@ studies =
     ]
 
 
-pageHeading : Html msg
+pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Studies", variant = Heading.Display }
         [ Heading.size Heading.Small, Heading.level 1 ]
-        |> toHtml
+        |> Element.toNode
 
 
-studyCard : ( String, String, String ) -> Html msg
+studyCard : ( String, String, String ) -> Node msg
 studyCard ( slug, title, body ) =
     let
         studyHref =
@@ -105,21 +100,25 @@ studyCard ( slug, title, body ) =
             ]
         ]
         |> Element.toNode
-        |> Node.toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Studies · elm-m3e"
     , body =
-        [ div [ class "mx-auto max-w-4xl space-y-8" ]
-            [ section [ class "space-y-3" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
+            [ Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                        [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "grid gap-4 sm:grid-cols-2" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2") ]
                 (List.map studyCard studies)
             ]
         ]

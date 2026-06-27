@@ -31,7 +31,7 @@ import BackendTask exposing (BackendTask)
 import Effect
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, p, section, text)
+import Html exposing (div, p, section, text)
 import Html.Attributes exposing (class)
 import M3e.Avatar as Avatar
 import M3e.Breadcrumb as Breadcrumb
@@ -43,9 +43,9 @@ import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.List as List_
 import M3e.NavigationRail as NavigationRail
-import M3e.Node as Node
-import M3e.RadioButton as RadioButton
+import M3e.Node as Node exposing (Node)
 import M3e.Element as Element exposing (Element, Supported)
+import M3e.RadioButton as RadioButton
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
 import M3e.Slider as Slider
@@ -321,19 +321,12 @@ resetSnackbar =
 -- VIEW -------------------------------------------------------------------
 
 
-{-| Convert any Element to Html within the Msg context.
--}
-toHtml : Element any Msg -> Html Msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
     { title = "Settings · Studies · elm-m3e"
     , body =
         [ Theme.view
-            { content = [ Element.html (Html.map PagesMsg.fromMsg (page model)) ] }
+            { content = [ Element.fromNode (Node.map PagesMsg.fromMsg (page model)) ] }
             [ Theme.seedColor "#4F6BED"
             , Theme.variant Theme.Expressive
             , Theme.scheme (themeScheme model.theme)
@@ -341,22 +334,21 @@ view _ _ model =
             , Theme.motion (motionScheme model.reduceMotion)
             ]
             |> Element.toNode
-            |> Node.toHtml
         ]
     }
 
 
-page : Model -> Html Msg
+page : Model -> Node Msg
 page model =
     -- Outer `px-4 py-6 sm:px-6 sm:py-8` lives in `Shared.view` for every
     -- study route, so the page wrapper here only needs to constrain width.
-    div [ class "mx-auto flex max-w-5xl flex-col gap-6 rounded-md-corner-large bg-surface" ]
+    Node.element "div" [ Node.rawAttr (class "mx-auto flex max-w-5xl flex-col gap-6 rounded-md-corner-large bg-surface") ]
         [ breadcrumbBar model
-        , div [ class "flex flex-col gap-6 md:flex-row md:items-start" ]
+        , Node.element "div" [ Node.rawAttr (class "flex flex-col gap-6 md:flex-row md:items-start") ]
             [ railColumn model
-            , div [ class "min-w-0 flex-1" ] [ sectionPanel model ]
+            , Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ] [ sectionPanel model ]
             ]
-        , Divider.view [] |> toHtml
+        , Divider.view [] |> Element.toNode
         , advancedColumns model
         , footerActions
         , snackbarHost model
@@ -368,9 +360,9 @@ page model =
 -- HEADER / NAV -----------------------------------------------------------
 
 
-breadcrumbBar : Model -> Html Msg
+breadcrumbBar : Model -> Node Msg
 breadcrumbBar model =
-    div [ class "flex flex-col gap-1" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-1") ]
         [ Breadcrumb.view
             { items =
                 [ Breadcrumb.item { label = "Settings" } [ Breadcrumb.itemHref "/studies/settings" ]
@@ -378,18 +370,18 @@ breadcrumbBar model =
                 ]
             }
             []
-            |> toHtml
+            |> Element.toNode
         , Heading.view { label = "Settings", variant = Heading.Display }
             [ Heading.size Heading.Small, Heading.level 1 ]
-            |> toHtml
-        , p [ class "text-body-lg text-on-surface-variant" ]
-            [ text "Manage your account, notifications, appearance, and privacy preferences." ]
+            |> Element.toNode
+        , Node.raw (p [ class "text-body-lg text-on-surface-variant" ]
+            [ text "Manage your account, notifications, appearance, and privacy preferences." ])
         ]
 
 
-railColumn : Model -> Html Msg
+railColumn : Model -> Node Msg
 railColumn model =
-    div [ class "shrink-0 self-start rounded-md-corner-large bg-surface-container p-1" ]
+    Node.element "div" [ Node.rawAttr (class "shrink-0 self-start rounded-md-corner-large bg-surface-container p-1") ]
         [ NavigationRail.view
             { items =
                 [ railItem model.section "person" "Account" Account
@@ -399,7 +391,7 @@ railColumn model =
                 ]
             }
             []
-            |> toHtml
+            |> Element.toNode
         ]
 
 
@@ -431,7 +423,7 @@ sectionTitle section =
 -- SECTION PANELS ---------------------------------------------------------
 
 
-sectionPanel : Model -> Html Msg
+sectionPanel : Model -> Node Msg
 sectionPanel model =
     case model.section of
         Account ->
@@ -447,14 +439,14 @@ sectionPanel model =
             privacyPanel model
 
 
-groupCard : String -> String -> List (Html Msg) -> Html Msg
+groupCard : String -> String -> List (Node Msg) -> Node Msg
 groupCard glyph title rows =
-    section [ class "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5" ]
-        (div [ class "flex items-center gap-2 text-on-surface" ]
-            [ Icon.view { name = glyph } |> toHtml
+    Node.element "section" [ Node.rawAttr (class "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5") ]
+        (Node.element "div" [ Node.rawAttr (class "flex items-center gap-2 text-on-surface") ]
+            [ Icon.view { name = glyph } |> Element.toNode
             , Heading.view { label = title, variant = Heading.Title }
                 [ Heading.size Heading.Medium, Heading.level 2 ]
-                |> toHtml
+                |> Element.toNode
             ]
             :: rows
         )
@@ -462,33 +454,33 @@ groupCard glyph title rows =
 
 {-| A labeled control row: a description on the left, the control on the right.
 -}
-controlRow : String -> Maybe String -> Html Msg -> Html Msg
+controlRow : String -> Maybe String -> Node Msg -> Node Msg
 controlRow label supporting control =
-    div [ class "flex flex-col gap-2 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-6" ]
-        [ div [ class "flex min-w-0 flex-col" ]
-            [ Html.span [ class "text-body-lg text-on-surface" ] [ text label ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-2 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-6") ]
+        [ Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-col") ]
+            [ Node.raw (Html.span [ class "text-body-lg text-on-surface" ] [ text label ])
             , case supporting of
                 Just s ->
-                    Html.span [ class "text-body-sm text-on-surface-variant" ] [ text s ]
+                    Node.raw (Html.span [ class "text-body-sm text-on-surface-variant" ] [ text s ])
 
                 Nothing ->
-                    text ""
+                    Node.text ""
             ]
-        , div [ class "shrink-0" ] [ control ]
+        , Node.element "div" [ Node.rawAttr (class "shrink-0") ] [ control ]
         ]
 
 
-accountPanel : Model -> Html Msg
+accountPanel : Model -> Node Msg
 accountPanel model =
-    div [ class "flex flex-col gap-4" ]
-        [ section [ class "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4" ]
-            [ Avatar.view { alt = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> toHtml
-            , div [ class "flex min-w-0 flex-col" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
+        [ Node.element "section" [ Node.rawAttr (class "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4") ]
+            [ Avatar.view { alt = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> Element.toNode
+            , Node.raw (div [ class "flex min-w-0 flex-col" ]
                 [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
                 , Html.span [ class "text-body-md text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
                 , Html.span [ class "mt-1 w-max rounded-full bg-secondary-container px-2 py-0.5 text-label-sm text-on-secondary-container" ]
                     [ text "Pro plan" ]
-                ]
+                ])
             ]
         , groupCard "security"
             "Security"
@@ -499,42 +491,42 @@ accountPanel model =
                     , Switch.onChange TwoFactorToggled
                     , Switch.handleIcons True
                     ]
-                    |> toHtml
+                    |> Element.toNode
                 )
             ]
         ]
 
 
-notificationsPanel : Model -> Html Msg
+notificationsPanel : Model -> Node Msg
 notificationsPanel model =
     groupCard "notifications"
         "Notification channels"
         [ controlRow "Push notifications"
             (Just "Alerts on this device.")
             (channelSwitch "Push notifications" model.pushEnabled PushToggled)
-        , Divider.view [ Divider.inset True ] |> toHtml
+        , Divider.view [ Divider.inset True ] |> Element.toNode
         , controlRow "Email notifications"
             (Just "Summaries and security alerts by email.")
             (channelSwitch "Email notifications" model.emailEnabled EmailToggled)
-        , Divider.view [ Divider.inset True ] |> toHtml
+        , Divider.view [ Divider.inset True ] |> Element.toNode
         , controlRow "Product & marketing"
             (Just "Occasional news about new features.")
             (channelSwitch "Product & marketing" model.marketingEnabled MarketingToggled)
         ]
 
 
-channelSwitch : String -> Bool -> (Bool -> Msg) -> Html Msg
-channelSwitch label checked onChange =
+channelSwitch : String -> Bool -> (Bool -> Msg) -> Node Msg
+channelSwitch label checked onChange_ =
     Switch.view { name = label }
         [ Switch.checked checked
-        , Switch.onChange onChange
+        , Switch.onChange onChange_
         ]
-        |> toHtml
+        |> Element.toNode
 
 
-appearancePanel : Model -> Html Msg
+appearancePanel : Model -> Node Msg
 appearancePanel model =
-    div [ class "flex flex-col gap-4" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
         [ groupCard "palette"
             "Theme"
             [ controlRow "Color scheme"
@@ -555,9 +547,9 @@ appearancePanel model =
                                 |> ThemeChosen
                         )
                     ]
-                    |> toHtml
+                    |> Element.toNode
                 )
-            , Divider.view [ Divider.inset True ] |> toHtml
+            , Divider.view [ Divider.inset True ] |> Element.toNode
             , controlRow "Density"
                 (Just "Compact tightens spacing across the app.")
                 (SegmentedButton.view
@@ -571,14 +563,14 @@ appearancePanel model =
                         ]
                     }
                     []
-                    |> toHtml
+                    |> Element.toNode
                 )
             ]
         , groupCard "tune"
             "Display"
             [ controlRow "Brightness"
                 (Just (String.fromInt (round model.brightness) ++ "%"))
-                (div [ class "w-full sm:w-72" ]
+                (Node.element "div" [ Node.rawAttr (class "w-full sm:w-72") ]
                     [ Slider.view { name = "Brightness" }
                         [ Slider.value model.brightness
                         , Slider.onChange BrightnessChanged
@@ -586,31 +578,31 @@ appearancePanel model =
                         , Slider.max 100
                         , Slider.step 1
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     ]
                 )
-            , Divider.view [ Divider.inset True ] |> toHtml
+            , Divider.view [ Divider.inset True ] |> Element.toNode
             , controlRow "Reduce motion"
                 (Just "Minimize non-essential animations.")
                 (Switch.view { name = "Reduce motion" }
                     [ Switch.checked model.reduceMotion
                     , Switch.onChange ReduceMotionToggled
                     ]
-                    |> toHtml
+                    |> Element.toNode
                 )
             ]
         , groupCard "language"
             "Region"
             [ controlRow "Language" Nothing (languageSelect model)
-            , Divider.view [ Divider.inset True ] |> toHtml
+            , Divider.view [ Divider.inset True ] |> Element.toNode
             , controlRow "Timezone" Nothing (timezoneSelect model)
             ]
         ]
 
 
-languageSelect : Model -> Html Msg
+languageSelect : Model -> Node Msg
 languageSelect model =
-    div [ class "w-full sm:w-64" ]
+    Node.element "div" [ Node.rawAttr (class "w-full sm:w-64") ]
         [ Select.view { label = "Language" }
             [ Select.options
                 [ Select.option { value = "english", label = "English" }
@@ -631,13 +623,13 @@ languageSelect model =
                         |> LanguageChosen
                 )
             ]
-            |> toHtml
+            |> Element.toNode
         ]
 
 
-timezoneSelect : Model -> Html Msg
+timezoneSelect : Model -> Node Msg
 timezoneSelect model =
-    div [ class "w-full sm:w-64" ]
+    Node.element "div" [ Node.rawAttr (class "w-full sm:w-64") ]
         [ Select.view { label = "Timezone" }
             [ Select.options
                 [ Select.option { value = "utc", label = "UTC" }
@@ -658,37 +650,37 @@ timezoneSelect model =
                         |> TimezoneChosen
                 )
             ]
-            |> toHtml
+            |> Element.toNode
         ]
 
 
-privacyPanel : Model -> Html Msg
+privacyPanel : Model -> Node Msg
 privacyPanel model =
-    div [ class "flex flex-col gap-4" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
         [ groupCard "lock"
             "Privacy"
             [ controlRow "Usage analytics"
                 (Just "Share anonymized usage data to help improve the product.")
-                (div [ class "flex items-center gap-2" ]
+                (Node.element "div" [ Node.rawAttr (class "flex items-center gap-2") ]
                     [ infoIcon "telemetry-info" "We never sell your data."
                     , Switch.view { name = "Usage analytics" }
                         [ Switch.checked model.telemetry
                         , Switch.onChange TelemetryToggled
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     ]
                 )
-            , Divider.view [ Divider.inset True ] |> toHtml
+            , Divider.view [ Divider.inset True ] |> Element.toNode
             , controlRow "Personalized ads"
                 (Just "Use your activity to tailor advertising.")
                 (Switch.view { name = "Personalized ads" }
                     [ Switch.checked model.personalizedAds
                     , Switch.onChange PersonalizedAdsToggled
                     ]
-                    |> toHtml
+                    |> Element.toNode
                 )
             ]
-        , section [ class "rounded-md-corner-large bg-surface-container-low p-2" ]
+        , Node.element "section" [ Node.rawAttr (class "rounded-md-corner-large bg-surface-container-low p-2") ]
             [ List_.view
                 { items =
                     [ List_.actionItem { headline = "Download my data" }
@@ -722,7 +714,7 @@ privacyPanel model =
                     ]
                 }
                 []
-                |> toHtml
+                |> Element.toNode
             ]
         ]
 
@@ -730,12 +722,12 @@ privacyPanel model =
 {-| A small info glyph that carries a plain tooltip. The icon's `id` is the
 tooltip's anchor.
 -}
-infoIcon : String -> String -> Html Msg
+infoIcon : String -> String -> Node Msg
 infoIcon anchorId label =
-    Html.span []
-        [ Html.span [ Html.Attributes.id anchorId, class "inline-flex text-on-surface-variant" ]
-            [ Icon.view { name = "info" } |> toHtml ]
-        , Tooltip.plain { anchorId = anchorId, label = label } [] |> toHtml
+    Node.element "span" []
+        [ Node.element "span" [ Node.rawAttr (Html.Attributes.id anchorId), Node.rawAttr (class "inline-flex text-on-surface-variant") ]
+            [ Icon.view { name = "info" } |> Element.toNode ]
+        , Tooltip.plain { anchorId = anchorId, label = label } [] |> Element.toNode
         ]
 
 
@@ -743,119 +735,114 @@ infoIcon anchorId label =
 -- ADVANCED: DISCLOSURE SINGLE + ACCORDION SIDE BY SIDE -------------------
 
 
-advancedColumns : Model -> Html Msg
+advancedColumns : Model -> Node Msg
 advancedColumns model =
-    div [ class "flex flex-col gap-4 lg:flex-row lg:items-start" ]
-        [ div [ class "min-w-0 flex-1" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4 lg:flex-row lg:items-start") ]
+        [ Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ]
             [ Heading.view
                 { label = "Advanced (accordion — one open at a time)", variant = Heading.Title }
                 [ Heading.size Heading.Small, Heading.level 2 ]
-                |> toHtml
+                |> Element.toNode
             , advancedAccordion
             ]
-        , div [ class "min-w-0 flex-1" ]
+        , Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ]
             [ Heading.view
                 { label = "Developer options (single panel)", variant = Heading.Title }
                 [ Heading.size Heading.Small, Heading.level 2 ]
-                |> toHtml
+                |> Element.toNode
             , developerPanel model
             ]
         ]
 
 
-advancedAccordion : Html Msg
+advancedAccordion : Node Msg
 advancedAccordion =
     Disclosure.view
         { sections =
             [ Disclosure.section
                 { header = "Storage & cache"
                 , content =
-                    [ Element.html
-                        (p [ class "text-body-md text-on-surface-variant" ]
-                            [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
-                        )
+                    [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ]
+                        [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
+                        ))
                     ]
                 }
                 []
             , Disclosure.section
                 { header = "Network"
                 , content =
-                    [ Element.html
-                        (p [ class "text-body-md text-on-surface-variant" ]
-                            [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
-                        )
+                    [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ]
+                        [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
+                        ))
                     ]
                 }
                 []
             , Disclosure.section
                 { header = "Accessibility"
                 , content =
-                    [ Element.html
-                        (p [ class "text-body-md text-on-surface-variant" ]
-                            [ text "High-contrast mode, larger text, and screen-reader hints." ]
-                        )
+                    [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ]
+                        [ text "High-contrast mode, larger text, and screen-reader hints." ]
+                        ))
                     ]
                 }
                 []
             ]
         }
         []
-        |> toHtml
+        |> Element.toNode
 
 
-developerPanel : Model -> Html Msg
+developerPanel : Model -> Node Msg
 developerPanel model =
     Disclosure.view
         { sections =
             [ Disclosure.section
                 { header = "Developer options"
                 , content =
-                    [ Element.html
-                        (controlRow "Developer mode"
-                            (Just "Show experimental flags and verbose logging.")
-                            (Switch.view { name = "Developer mode" }
-                                [ Switch.checked model.developerMode
-                                , Switch.onChange DeveloperModeToggled
-                                ]
-                                |> toHtml
-                            )
+                    [ Element.fromNode (controlRow "Developer mode"
+                        (Just "Show experimental flags and verbose logging.")
+                        (Switch.view { name = "Developer mode" }
+                            [ Switch.checked model.developerMode
+                            , Switch.onChange DeveloperModeToggled
+                            ]
+                            |> Element.toNode
                         )
+                      )
                     ]
                 }
                 []
             ]
         }
         []
-        |> toHtml
+        |> Element.toNode
 
 
 
 -- FOOTER / DIALOG / SNACKBAR ---------------------------------------------
 
 
-footerActions : Html Msg
+footerActions : Node Msg
 footerActions =
-    div [ class "flex flex-wrap items-center justify-end gap-3" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center justify-end gap-3") ]
         [ Button.view { label = "Reset to defaults", variant = Button.Text }
             [ Button.leadingIcon (Icon.view { name = "restart_alt" })
             , Button.onClick ResetRequested
             ]
-            |> toHtml
+            |> Element.toNode
         , Button.view { label = "Save changes", variant = Button.Filled }
             [ Button.leadingIcon (Icon.view { name = "save" })
             , Button.onClick SaveRequested
             ]
-            |> toHtml
+            |> Element.toNode
         ]
 
 
-resetDialog : Model -> Html Msg
+resetDialog : Model -> Node Msg
 resetDialog model =
     Dialog.view
         { headline = "Reset to defaults?"
         , content =
-            [ Element.html
-                (text "This restores every setting in this screen to its original value. This can't be undone.")
+            [ Element.fromNode (Node.text "This restores every setting in this screen to its original value. This can't be undone.")
             ]
         }
         [ Dialog.open model.confirmResetOpen
@@ -867,14 +854,14 @@ resetDialog model =
                 [ Button.onClick ResetConfirmed ]
             ]
         ]
-        |> toHtml
+        |> Element.toNode
 
 
-snackbarHost : Model -> Html Msg
+snackbarHost : Model -> Node Msg
 snackbarHost model =
     case model.snackbar of
         Nothing ->
-            text ""
+            Node.text ""
 
         Just s ->
             Snackbar.view { message = s.message }
@@ -882,7 +869,7 @@ snackbarHost model =
                 , Snackbar.dismissible True
                 , Snackbar.duration s.duration
                 ]
-                |> toHtml
+                |> Element.toNode
 
 
 

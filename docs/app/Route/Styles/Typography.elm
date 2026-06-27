@@ -4,13 +4,13 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, p, section, text)
+import Html exposing (p, text)
 import Html.Attributes exposing (class)
 import M3e.Card as Card
 import M3e.Divider as Divider
-import M3e.Heading as Heading
-import M3e.Node as Node
 import M3e.Element as Element
+import M3e.Heading as Heading
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -58,11 +58,6 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
 scale : List ( String, String )
 scale =
     [ ( "text-display-lg", "Display Large" )
@@ -83,47 +78,58 @@ scale =
     ]
 
 
-row : ( String, String ) -> Html msg
+row : ( String, String ) -> Node msg
 row ( cls, label ) =
-    div [ class "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0" ]
-        [ Html.span [ class (cls ++ " text-on-surface") ] [ text label ]
-        , Html.code [ class "text-body-sm text-on-surface-variant" ] [ text cls ]
+    Node.element "div"
+        [ Node.rawAttr (class "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0") ]
+        [ Node.element "span" [ Node.rawAttr (class (cls ++ " text-on-surface")) ] [ Node.text label ]
+        , Node.element "code" [ Node.rawAttr (class "text-body-sm text-on-surface-variant") ] [ Node.text cls ]
         ]
 
 
-pageHeading : Html msg
+pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Typography", variant = Heading.Display }
         [ Heading.size Heading.Small, Heading.level 1 ]
-        |> toHtml
+        |> Element.toNode
 
 
-sectionHeading : String -> Html msg
+sectionHeading : String -> Node msg
 sectionHeading label =
     Heading.view { label = label, variant = Heading.Headline }
         [ Heading.size Heading.Small, Heading.level 2 ]
-        |> toHtml
+        |> Element.toNode
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Typography · elm-m3e"
     , body =
-        [ div [ class "mx-auto max-w-4xl space-y-8" ]
-            [ section [ class "space-y-3" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
+            [ Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                        [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "space-y-3" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ sectionHeading "The scale, live"
                 , Card.view
                     [ Card.variant Card.Outlined
-                    , Card.body [ Element.html (div [ class "px-2" ] (List.map row scale)) ]
+                    , Card.body
+                        [ Element.fromNode
+                            (Node.element "div"
+                                [ Node.rawAttr (class "px-2") ]
+                                (List.map row scale)
+                            )
+                        ]
                     ]
                     |> Element.toNode
-                    |> Node.toHtml
                 ]
             ]
         ]

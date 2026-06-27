@@ -4,12 +4,12 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, code, div, li, p, section, text, ul)
+import Html exposing (code, li, p, text, ul)
 import Html.Attributes exposing (class)
 import M3e.Divider as Divider
-import M3e.Heading as Heading
-import M3e.Node as Node
 import M3e.Element as Element
+import M3e.Heading as Heading
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -57,50 +57,55 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
-pageHeading : Html msg
+pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Motion", variant = Heading.Display }
         [ Heading.size Heading.Small, Heading.level 1 ]
-        |> toHtml
+        |> Element.toNode
 
 
-sectionHeading : String -> Html msg
+sectionHeading : String -> Node msg
 sectionHeading label =
     Heading.view { label = label, variant = Heading.Headline }
         [ Heading.size Heading.Small, Heading.level 2 ]
-        |> toHtml
+        |> Element.toNode
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Motion · elm-m3e"
     , body =
-        [ div [ class "mx-auto max-w-3xl space-y-8" ]
-            [ section [ class "space-y-3" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-3xl space-y-8") ]
+            [ Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                        [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "space-y-3" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ sectionHeading "Schemes"
-                , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
-                    [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
-                    , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
-                    ]
+                , Node.raw
+                    (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                        [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
+                        , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
+                        ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "space-y-3" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ sectionHeading "Token families"
-                , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
-                    [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
-                    , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
-                    ]
+                , Node.raw
+                    (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                        [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
+                        , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
+                        ]
+                    )
                 ]
             ]
         ]

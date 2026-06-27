@@ -20,12 +20,12 @@ import Html.Events
 import Json.Decode as Decode
 import M3e.AppBar
 import M3e.Card
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Heading
 import M3e.Icon
 import M3e.IconButton
 import M3e.NavigationDrawer
 import M3e.Node as Node
-import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton
 import M3e.Theme as Theme
 import Pages.Flags
@@ -281,9 +281,12 @@ view :
     -> { body : List (Html msg), title : String }
 view _ page model toMsg pageView =
     let
+        -- `themed` takes a list of `Node msg` values, wraps them in
+        -- `<m3e-theme>`, and does the single `Node.toHtml` conversion.
+        themed : List (Node.Node msg) -> Html msg
         themed children =
             Theme.view
-                { content = List.map Element.html children }
+                { content = List.map Element.fromNode children }
                 [ Theme.seedColor model.seed
                 , Theme.scheme model.scheme
                 , Theme.contrast model.contrast
@@ -306,9 +309,9 @@ view _ page model toMsg pageView =
             -- spacing, so the study content reaches the viewport edges like a
             -- real app rather than sitting inside a docs gutter.
             [ themed
-                [ Html.div
-                    [ class "min-h-screen bg-surface text-on-surface"
-                    , attribute "dir" (directionAttr model.dir)
+                [ Node.element "div"
+                    [ Node.rawAttr (class "min-h-screen bg-surface text-on-surface")
+                    , Node.rawAttr (attribute "dir" (directionAttr model.dir))
                     ]
                     pageView.body
                 ]
@@ -316,12 +319,12 @@ view _ page model toMsg pageView =
 
         else
             [ themed
-                [ Html.div
-                    [ class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface"
-                    , attribute "dir" (directionAttr model.dir)
+                [ Node.element "div"
+                    [ Node.rawAttr (class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface")
+                    , Node.rawAttr (attribute "dir" (directionAttr model.dir))
                     ]
-                    [ Html.map toMsg (appShellBar model)
-                    , drawerShell toMsg model page pageView.body
+                    [ Node.raw (Html.map toMsg (appShellBar model))
+                    , Node.raw (drawerShell toMsg model page (List.map Node.toHtml pageView.body))
                     ]
                 ]
             ]

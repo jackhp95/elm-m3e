@@ -13,7 +13,7 @@ import Cem.M3e.Shape
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, code, div, p, pre, section, text)
+import Html exposing (code, div, p, pre, text)
 import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
 import M3e.AppBar as AppBar
@@ -45,7 +45,7 @@ import M3e.Menu as Menu
 import M3e.NavigationBar as NavigationBar
 import M3e.NavigationDrawer as NavigationDrawer
 import M3e.NavigationRail as NavigationRail
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Paginator as Paginator
 import M3e.Progress as Progress
 import M3e.RadioButton as RadioButton
@@ -192,7 +192,7 @@ view app _ =
     in
     { title = "M3e." ++ c.name ++ " · elm-m3e"
     , body =
-        [ div [ class "mx-auto max-w-4xl space-y-10" ]
+        [ Node.element "div" [ Node.rawAttr (class "mx-auto max-w-4xl space-y-10") ]
             [ headerBlock c
             , importBlock c
             , demoBlock c
@@ -206,46 +206,46 @@ view app _ =
 -- HEADER + IMPORT + API ------------------------------------------------------
 
 
-headerBlock : Component -> Html (PagesMsg Msg)
+headerBlock : Component -> Node (PagesMsg Msg)
 headerBlock c =
-    section [ class "space-y-3" ]
+    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
         [ Heading.view { label = "M3e." ++ c.name, variant = Heading.Display }
             [ Heading.size Heading.Small, Heading.level 1 ]
-            |> toHtml
-        , prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview
+            |> Element.toNode
+        , Node.raw (prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview)
         ]
 
 
-importBlock : Component -> Html msg
+importBlock : Component -> Node (PagesMsg Msg)
 importBlock c =
-    section [ class "space-y-3" ]
+    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
         [ h2Heading "Import"
-        , codeBlock ("import M3e." ++ c.name ++ " as " ++ c.name)
+        , Node.raw (codeBlock ("import M3e." ++ c.name ++ " as " ++ c.name))
         ]
 
 
-demoBlock : Component -> Html (PagesMsg Msg)
+demoBlock : Component -> Node (PagesMsg Msg)
 demoBlock c =
     let
         sections =
             demoSections c.slug
     in
     if List.isEmpty sections then
-        text ""
+        Node.text ""
 
     else
-        div [ class "space-y-10" ] (List.map demoSection sections)
+        Node.element "div" [ Node.rawAttr (class "space-y-10") ] (List.map demoSection sections)
 
 
-apiBlock : Component -> Html msg
+apiBlock : Component -> Node (PagesMsg Msg)
 apiBlock c =
-    section [ class "space-y-4" ]
+    Node.element "section" [ Node.rawAttr (class "space-y-4") ]
         [ h2Heading "API"
-        , div [ class "space-y-3" ] (List.map memberRow c.members)
+        , Node.element "div" [ Node.rawAttr (class "space-y-3") ] (List.map memberRow c.members)
         ]
 
 
-memberRow : Member -> Html msg
+memberRow : Member -> Node (PagesMsg Msg)
 memberRow m =
     let
         sig =
@@ -273,7 +273,7 @@ memberRow m =
                 )
             ]
         ]
-        |> toHtml
+        |> Element.toNode
 
 
 
@@ -293,10 +293,10 @@ type alias DemoSection msg =
 {-| One H3 sub-demo within a `DemoSection`.
 -}
 type alias Sub msg =
-    { title : String, body : Html msg }
+    { title : String, body : Node msg }
 
 
-sub : String -> Html msg -> Sub msg
+sub : String -> Node msg -> Sub msg
 sub title body =
     { title = title, body = body }
 
@@ -306,39 +306,39 @@ usage subs =
     { title = "Usage", subs = subs }
 
 
-h2Heading : String -> Html msg
+h2Heading : String -> Node (PagesMsg Msg)
 h2Heading label =
     Heading.view { label = label, variant = Heading.Headline }
         [ Heading.level 2, Heading.size Heading.Medium ]
-        |> toHtml
+        |> Element.toNode
 
 
-h3Heading : String -> Html msg
+h3Heading : String -> Node (PagesMsg Msg)
 h3Heading label =
     Heading.view { label = label, variant = Heading.Headline }
         [ Heading.level 3, Heading.size Heading.Small ]
-        |> toHtml
+        |> Element.toNode
 
 
-demoSection : DemoSection (PagesMsg Msg) -> Html (PagesMsg Msg)
+demoSection : DemoSection (PagesMsg Msg) -> Node (PagesMsg Msg)
 demoSection ds =
-    section [ class "space-y-4" ]
+    Node.element "section" [ Node.rawAttr (class "space-y-4") ]
         (h2Heading ds.title :: List.map subView ds.subs)
 
 
-subView : Sub (PagesMsg Msg) -> Html (PagesMsg Msg)
+subView : Sub (PagesMsg Msg) -> Node (PagesMsg Msg)
 subView s =
-    section [ class "space-y-3" ]
+    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
         [ h3Heading s.title
         , Card.view
             [ Card.variant Card.Outlined
-            , Card.body [ Element.html (div [ class "flex flex-wrap items-center gap-4" ] [ s.body ]) ]
+            , Card.body [ Element.fromNode (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ] [ s.body ]) ]
             ]
-            |> toHtml
+            |> Element.toNode
         ]
 
 
-codeBlock : String -> Html msg
+codeBlock : String -> Html.Html msg
 codeBlock s =
     highlightedElm
         "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-sm leading-relaxed text-on-surface"
@@ -351,7 +351,7 @@ emits its own `<pre class="elmsh">`, so we wrap in a `<div>` (not `<pre>`) to
 avoid invalid pre-inside-pre markup. Falls back to a plain `<pre>` if the
 lexer can't parse the input.
 -}
-highlightedElm : String -> String -> Html msg
+highlightedElm : String -> String -> Html.Html msg
 highlightedElm wrapperClass s =
     let
         trimmed : String
@@ -382,7 +382,7 @@ indented-code convention Elm doc comments use), or that is wrapped in \``fences,
 before highlighting. Everything else stays prose (`whitespace-pre-line\`), so
 2-space Markdown bullet lists are left untouched.
 -}
-prose : String -> String -> Html msg
+prose : String -> String -> Html.Html msg
 prose cls s =
     div [ class cls ] (renderMarkdown s)
 
@@ -392,7 +392,7 @@ links, emphasis, lists, indented/fenced code blocks all become real elements).
 Code blocks reuse the Elm `codeBlock` highlighter. Falls back to the plain
 paragraph/indent-code rendering if the Markdown parser rejects the input.
 -}
-renderMarkdown : String -> List (Html msg)
+renderMarkdown : String -> List (Html.Html msg)
 renderMarkdown raw =
     case Markdown.Parser.parse raw of
         Ok blocks ->
@@ -407,7 +407,7 @@ renderMarkdown raw =
             fallbackProse raw
 
 
-fallbackProse : String -> List (Html msg)
+fallbackProse : String -> List (Html.Html msg)
 fallbackProse s =
     s
         |> String.split "\n\n"
@@ -419,10 +419,10 @@ fallbackProse s =
 renderer. Inline code gets the surface-container chip; links the primary color;
 code blocks the Elm syntax highlighter; lists and headings M3 typescale.
 -}
-docRenderer : Markdown.Renderer.Renderer (Html msg)
+docRenderer : Markdown.Renderer.Renderer (Html.Html msg)
 docRenderer =
     let
-        base : Markdown.Renderer.Renderer (Html msg)
+        base : Markdown.Renderer.Renderer (Html.Html msg)
         base =
             Markdown.Renderer.defaultHtmlRenderer
     in
@@ -477,7 +477,7 @@ docRenderer =
     }
 
 
-renderDocBlock : DocBlock -> Html msg
+renderDocBlock : DocBlock -> Html.Html msg
 renderDocBlock block =
     case block of
         ProseBlock para ->
@@ -578,23 +578,16 @@ noOp _ =
     PagesMsg.noOp
 
 
-{-| Convert any `Element` to `Html msg`.
--}
-toHtml : Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
-headingDemo : Heading.Variant -> Heading.Size -> String -> Html msg
+headingDemo : Heading.Variant -> Heading.Size -> String -> Node (PagesMsg Msg)
 headingDemo variant size label =
     Heading.view { label = label, variant = variant }
         [ Heading.size size ]
-        |> toHtml
+        |> Element.toNode
 
 
-buttonRow : List (Html msg) -> Html msg
+buttonRow : List (Node (PagesMsg Msg)) -> Node (PagesMsg Msg)
 buttonRow children =
-    div [ class "flex flex-wrap items-center gap-2" ] children
+    Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-2") ] children
 
 
 
@@ -616,13 +609,12 @@ demoSections slug =
                             ]
                         ]
                         |> Element.toNode
-                        |> Node.toHtml
                     )
                 , sub "Sizes"
-                    (div [ class "w-full space-y-3" ]
-                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Element.toNode |> Node.toHtml
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Element.toNode |> Node.toHtml
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Element.toNode |> Node.toHtml
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Element.toNode
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Element.toNode
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Element.toNode
                         ]
                     )
                 , sub "Centered title"
@@ -632,7 +624,6 @@ demoSections slug =
                         , AppBar.leading (IconButton.view { icon = "arrow_back", name = "Back" } [])
                         ]
                         |> Element.toNode
-                        |> Node.toHtml
                     )
                 ]
             ]
@@ -640,12 +631,12 @@ demoSections slug =
         "avatar" ->
             [ usage
                 [ sub "Image"
-                    (Avatar.view { alt = "Sample" } [ Avatar.image "/avatar-sample.svg" ] |> toHtml)
+                    (Avatar.view { alt = "Sample" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode)
                 , sub "Initials"
-                    (div [ class "flex flex-wrap items-center gap-3" ]
-                        [ Avatar.view { alt = "Jane Reed" } [ Avatar.initials "Jane Reed" ] |> toHtml
-                        , Avatar.view { alt = "AB" } [ Avatar.initials "AB" ] |> toHtml
-                        , Avatar.view { alt = "Pat Lee" } [ Avatar.initials "Pat Lee" ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+                        [ Avatar.view { alt = "Jane Reed" } [ Avatar.initials "Jane Reed" ] |> Element.toNode
+                        , Avatar.view { alt = "AB" } [ Avatar.initials "AB" ] |> Element.toNode
+                        , Avatar.view { alt = "Pat Lee" } [ Avatar.initials "Pat Lee" ] |> Element.toNode
                         ]
                     )
                 ]
@@ -654,21 +645,21 @@ demoSections slug =
         "badge" ->
             [ usage
                 [ sub "Dot"
-                    (div [ class "relative" ]
-                        [ Icon.view { name = "notifications" } |> toHtml
-                        , Badge.view [ Badge.dot ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "relative") ]
+                        [ Icon.view { name = "notifications" } |> Element.toNode
+                        , Badge.view [ Badge.dot ] |> Element.toNode
                         ]
                     )
                 , sub "Count"
-                    (div [ class "relative" ]
-                        [ Icon.view { name = "inbox" } |> toHtml
-                        , Badge.view [ Badge.count 5 ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "relative") ]
+                        [ Icon.view { name = "inbox" } |> Element.toNode
+                        , Badge.view [ Badge.count 5 ] |> Element.toNode
                         ]
                     )
                 , sub "Label"
-                    (div [ class "relative" ]
-                        [ Icon.view { name = "shopping_bag" } |> toHtml
-                        , Badge.view [ Badge.label "New" ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "relative") ]
+                        [ Icon.view { name = "shopping_bag" } |> Element.toNode
+                        , Badge.view [ Badge.label "New" ] |> Element.toNode
                         ]
                     )
                 ]
@@ -677,15 +668,17 @@ demoSections slug =
         "bottomsheet" ->
             [ usage
                 [ sub "Closed preview"
-                    (div [ class "w-full space-y-3" ]
-                        [ p [ class "text-body-md text-on-surface-variant" ]
-                            [ text "Bottom sheets render at the bottom of the viewport and are normally hidden until opened. The composition below has "
-                            , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
-                            , text " — see the Reply study for a working compose-mail bottom sheet."
-                            ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "Bottom sheets render at the bottom of the viewport and are normally hidden until opened. The composition below has "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
+                                , text " — see the Reply study for a working compose-mail bottom sheet."
+                                ]
+                            )
                         , BottomSheet.view { content = [] }
                             [ BottomSheet.open False, BottomSheet.onClose PagesMsg.noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -702,7 +695,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -711,42 +704,42 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (buttonRow
-                        [ Button.view { label = "Elevated", variant = Button.Elevated } [] |> toHtml
-                        , Button.view { label = "Filled", variant = Button.Filled } [] |> toHtml
-                        , Button.view { label = "Tonal", variant = Button.Tonal } [] |> toHtml
-                        , Button.view { label = "Outlined", variant = Button.Outlined } [] |> toHtml
-                        , Button.view { label = "Text", variant = Button.Text } [] |> toHtml
+                        [ Button.view { label = "Elevated", variant = Button.Elevated } [] |> Element.toNode
+                        , Button.view { label = "Filled", variant = Button.Filled } [] |> Element.toNode
+                        , Button.view { label = "Tonal", variant = Button.Tonal } [] |> Element.toNode
+                        , Button.view { label = "Outlined", variant = Button.Outlined } [] |> Element.toNode
+                        , Button.view { label = "Text", variant = Button.Text } [] |> Element.toNode
                         ]
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ Button.view { label = "Rounded", variant = Button.Filled } [ Button.shape Button.Rounded ] |> toHtml
-                        , Button.view { label = "Square", variant = Button.Filled } [ Button.shape Button.Square ] |> toHtml
+                        [ Button.view { label = "Rounded", variant = Button.Filled } [ Button.shape Button.Rounded ] |> Element.toNode
+                        , Button.view { label = "Square", variant = Button.Filled } [ Button.shape Button.Square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ Button.view { label = "XS", variant = Button.Tonal } [ Button.size Button.ExtraSmall ] |> toHtml
-                        , Button.view { label = "Small", variant = Button.Tonal } [ Button.size Button.Small ] |> toHtml
-                        , Button.view { label = "Medium", variant = Button.Tonal } [ Button.size Button.Medium ] |> toHtml
-                        , Button.view { label = "Large", variant = Button.Tonal } [ Button.size Button.Large ] |> toHtml
-                        , Button.view { label = "XL", variant = Button.Tonal } [ Button.size Button.ExtraLarge ] |> toHtml
+                        [ Button.view { label = "XS", variant = Button.Tonal } [ Button.size Button.ExtraSmall ] |> Element.toNode
+                        , Button.view { label = "Small", variant = Button.Tonal } [ Button.size Button.Small ] |> Element.toNode
+                        , Button.view { label = "Medium", variant = Button.Tonal } [ Button.size Button.Medium ] |> Element.toNode
+                        , Button.view { label = "Large", variant = Button.Tonal } [ Button.size Button.Large ] |> Element.toNode
+                        , Button.view { label = "XL", variant = Button.Tonal } [ Button.size Button.ExtraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Icons"
                     (buttonRow
                         [ Button.view { label = "Send", variant = Button.Tonal }
                             [ Button.leadingIcon (Icon.view { name = "send" }) ]
-                            |> toHtml
+                            |> Element.toNode
                         , Button.view { label = "Open", variant = Button.Tonal }
                             [ Button.trailingIcon (Icon.view { name = "open_in_new" }) ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 , sub "Disabling"
                     (buttonRow
-                        [ Button.view { label = "Disabled", variant = Button.Filled } [ Button.disabled True ] |> toHtml
-                        , Button.view { label = "Disabled (soft)", variant = Button.Filled } [ Button.disabled True ] |> toHtml
+                        [ Button.view { label = "Disabled", variant = Button.Filled } [ Button.disabled True ] |> Element.toNode
+                        , Button.view { label = "Disabled (soft)", variant = Button.Filled } [ Button.disabled True ] |> Element.toNode
                         ]
                     )
                 , sub "Links"
@@ -754,7 +747,7 @@ demoSections slug =
                         [ Button.trailingIcon (Icon.view { name = "open_in_new" })
                         , Button.href "https://www.google.com"
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -770,7 +763,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -783,7 +776,7 @@ demoSections slug =
                         , Calendar.minDate "2026-01-01"
                         , Calendar.maxDate "2026-12-31"
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -791,25 +784,25 @@ demoSections slug =
         "card" ->
             [ usage
                 [ sub "Variants"
-                    (div [ class "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full" ]
+                    (Node.element "div" [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full") ]
                         [ Card.view
                             [ Card.variant Card.Elevated
                             , Card.headline (Heading.view { label = "Elevated", variant = Heading.Title } [])
                             , Card.body [ Element.html (text "Raised shadow surface, highest emphasis.") ]
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         , Card.view
                             [ Card.variant Card.Filled
                             , Card.headline (Heading.view { label = "Filled", variant = Heading.Title } [])
                             , Card.body [ Element.html (text "Solid tonal surface, medium emphasis.") ]
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         , Card.view
                             [ Card.variant Card.Outlined
                             , Card.headline (Heading.view { label = "Outlined", variant = Heading.Title } [])
                             , Card.body [ Element.html (text "Bordered, no fill, lowest emphasis.") ]
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 , sub "Anatomy"
@@ -823,7 +816,7 @@ demoSections slug =
                             , Button.view { label = "Dismiss", variant = Button.Text } []
                             ]
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -831,24 +824,24 @@ demoSections slug =
         "checkbox" ->
             [ usage
                 [ sub "Basic"
-                    (div [ class "flex flex-wrap items-center gap-6" ]
-                        [ Checkbox.view { name = "Unchecked" } [ Checkbox.checked False, Checkbox.onChange noOp ] |> toHtml
-                        , Checkbox.view { name = "Checked" } [ Checkbox.checked True, Checkbox.onChange noOp ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                        [ Checkbox.view { name = "Unchecked" } [ Checkbox.checked False, Checkbox.onChange noOp ] |> Element.toNode
+                        , Checkbox.view { name = "Checked" } [ Checkbox.checked True, Checkbox.onChange noOp ] |> Element.toNode
                         ]
                     )
                 , sub "Indeterminate (tristate)"
                     (Checkbox.view { name = "Select all" }
                         [ Checkbox.indeterminate True, Checkbox.onChange noOp ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Disabling"
-                    (div [ class "flex flex-wrap items-center gap-6" ]
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
                         [ Checkbox.view { name = "Disabled" }
                             [ Checkbox.checked False, Checkbox.disabled True, Checkbox.onChange noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         , Checkbox.view { name = "Disabled checked" }
                             [ Checkbox.checked True, Checkbox.disabled True, Checkbox.onChange noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -857,38 +850,40 @@ demoSections slug =
         "chip" ->
             [ usage
                 [ sub "Assist"
-                    (Chip.assist { label = "Assist", onClick = PagesMsg.noOp } [] |> toHtml)
+                    (Chip.assist { label = "Assist", onClick = PagesMsg.noOp } [] |> Element.toNode)
                 , sub "Suggestion"
-                    (Chip.suggestion { label = "Suggestion", onClick = PagesMsg.noOp } [] |> toHtml)
+                    (Chip.suggestion { label = "Suggestion", onClick = PagesMsg.noOp } [] |> Element.toNode)
                 , sub "Filter"
-                    (Chip.filter { label = "Filter", onToggle = PagesMsg.noOp } [] |> toHtml)
+                    (Chip.filter { label = "Filter", onToggle = PagesMsg.noOp } [] |> Element.toNode)
                 , sub "Input"
-                    (Chip.input { label = "Input", onRemove = PagesMsg.noOp } [] |> toHtml)
+                    (Chip.input { label = "Input", onRemove = PagesMsg.noOp } [] |> Element.toNode)
                 ]
             ]
 
         "datepicker" ->
             [ usage
                 [ sub "Basic"
-                    (DatePicker.view [ DatePicker.onChange noOp ] |> toHtml)
+                    (DatePicker.view [ DatePicker.onChange noOp ] |> Element.toNode)
                 ]
             ]
 
         "dialog" ->
             [ usage
                 [ sub "Closed preview"
-                    (div [ class "w-full space-y-3" ]
-                        [ p [ class "text-body-md text-on-surface-variant" ]
-                            [ text "Dialogs render on top of the viewport and are normally hidden until opened. The composition below has "
-                            , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
-                            , text ". See the Reply study (archive confirm) or Shrine (product details) for live wiring."
-                            ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "Dialogs render on top of the viewport and are normally hidden until opened. The composition below has "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
+                                , text ". See the Reply study (archive confirm) or Shrine (product details) for live wiring."
+                                ]
+                            )
                         , Dialog.view
                             { headline = "Confirm deletion"
                             , content = [ Element.html (text "This action permanently removes the project and all of its files.") ]
                             }
                             [ Dialog.open False, Dialog.onClose PagesMsg.noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -907,7 +902,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -915,31 +910,31 @@ demoSections slug =
         "divider" ->
             [ usage
                 [ sub "Horizontal"
-                    (Divider.view [] |> toHtml)
+                    (Divider.view [] |> Element.toNode)
                 , sub "Inset start"
-                    (Divider.view [ Divider.insetStart True ] |> toHtml)
+                    (Divider.view [ Divider.insetStart True ] |> Element.toNode)
                 ]
             ]
 
         "extendedfab" ->
             [ usage
                 [ sub "Variants"
-                    (div [ class "flex flex-wrap items-center gap-3" ]
-                        [ ExtendedFab.view { icon = "edit", label = "Primary", variant = ExtendedFab.Primary } [] |> toHtml
-                        , ExtendedFab.view { icon = "edit", label = "Secondary", variant = ExtendedFab.Secondary } [] |> toHtml
-                        , ExtendedFab.view { icon = "edit", label = "Tertiary", variant = ExtendedFab.Tertiary } [] |> toHtml
-                        , ExtendedFab.view { icon = "edit", label = "Surface", variant = ExtendedFab.Surface } [] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+                        [ ExtendedFab.view { icon = "edit", label = "Primary", variant = ExtendedFab.Primary } [] |> Element.toNode
+                        , ExtendedFab.view { icon = "edit", label = "Secondary", variant = ExtendedFab.Secondary } [] |> Element.toNode
+                        , ExtendedFab.view { icon = "edit", label = "Tertiary", variant = ExtendedFab.Tertiary } [] |> Element.toNode
+                        , ExtendedFab.view { icon = "edit", label = "Surface", variant = ExtendedFab.Surface } [] |> Element.toNode
                         ]
                     )
                 , sub "Lowered"
                     (ExtendedFab.view { icon = "edit", label = "Lowered", variant = ExtendedFab.Primary }
                         [ ExtendedFab.lowered True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Disabled"
                     (ExtendedFab.view { icon = "edit", label = "Disabled", variant = ExtendedFab.Primary }
                         [ ExtendedFab.disabled True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -947,29 +942,29 @@ demoSections slug =
         "fab" ->
             [ usage
                 [ sub "Variants"
-                    (div [ class "flex flex-wrap items-center gap-4" ]
-                        [ Fab.view { icon = "add", name = "Primary" } [ Fab.variant Fab.Primary ] |> toHtml
-                        , Fab.view { icon = "add", name = "Secondary" } [ Fab.variant Fab.Secondary ] |> toHtml
-                        , Fab.view { icon = "add", name = "Tertiary" } [ Fab.variant Fab.Tertiary ] |> toHtml
-                        , Fab.view { icon = "add", name = "Surface" } [ Fab.variant Fab.Surface ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                        [ Fab.view { icon = "add", name = "Primary" } [ Fab.variant Fab.Primary ] |> Element.toNode
+                        , Fab.view { icon = "add", name = "Secondary" } [ Fab.variant Fab.Secondary ] |> Element.toNode
+                        , Fab.view { icon = "add", name = "Tertiary" } [ Fab.variant Fab.Tertiary ] |> Element.toNode
+                        , Fab.view { icon = "add", name = "Surface" } [ Fab.variant Fab.Surface ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
-                    (div [ class "flex flex-wrap items-center gap-4" ]
-                        [ Fab.view { icon = "add", name = "Small" } [ Fab.variant Fab.Primary, Fab.size Fab.Small ] |> toHtml
-                        , Fab.view { icon = "add", name = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> toHtml
-                        , Fab.view { icon = "add", name = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                        [ Fab.view { icon = "add", name = "Small" } [ Fab.variant Fab.Primary, Fab.size Fab.Small ] |> Element.toNode
+                        , Fab.view { icon = "add", name = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> Element.toNode
+                        , Fab.view { icon = "add", name = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> Element.toNode
                         ]
                     )
                 , sub "Lowered"
                     (Fab.view { icon = "add", name = "Lowered" }
                         [ Fab.variant Fab.Primary, Fab.lowered True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Disabled"
                     (Fab.view { icon = "add", name = "Disabled" }
                         [ Fab.variant Fab.Primary, Fab.disabled True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -987,7 +982,7 @@ demoSections slug =
                             ]
                         }
                         [ FabMenu.variant FabMenu.Primary ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -995,28 +990,28 @@ demoSections slug =
         "heading" ->
             [ usage
                 [ sub "Display"
-                    (div [ class "w-full space-y-2" ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
                         [ headingDemo Heading.Display Heading.Large "Display Large"
                         , headingDemo Heading.Display Heading.Medium "Display Medium"
                         , headingDemo Heading.Display Heading.Small "Display Small"
                         ]
                     )
                 , sub "Headline"
-                    (div [ class "w-full space-y-2" ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
                         [ headingDemo Heading.Headline Heading.Large "Headline Large"
                         , headingDemo Heading.Headline Heading.Medium "Headline Medium"
                         , headingDemo Heading.Headline Heading.Small "Headline Small"
                         ]
                     )
                 , sub "Title"
-                    (div [ class "w-full space-y-2" ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
                         [ headingDemo Heading.Title Heading.Large "Title Large"
                         , headingDemo Heading.Title Heading.Medium "Title Medium"
                         , headingDemo Heading.Title Heading.Small "Title Small"
                         ]
                     )
                 , sub "Label"
-                    (div [ class "w-full space-y-2" ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
                         [ headingDemo Heading.Label Heading.Large "Label Large"
                         , headingDemo Heading.Label Heading.Medium "Label Medium"
                         , headingDemo Heading.Label Heading.Small "Label Small"
@@ -1028,25 +1023,25 @@ demoSections slug =
         "icon" ->
             [ usage
                 [ sub "Basic icons"
-                    (div [ class "flex flex-wrap items-center gap-4 text-3xl" ]
-                        [ Icon.view { name = "home" } |> toHtml
-                        , Icon.view { name = "settings" } |> toHtml
-                        , Icon.view { name = "notifications" } |> toHtml
-                        , Icon.view { name = "search" } |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4 text-3xl") ]
+                        [ Icon.view { name = "home" } |> Element.toNode
+                        , Icon.view { name = "settings" } |> Element.toNode
+                        , Icon.view { name = "notifications" } |> Element.toNode
+                        , Icon.view { name = "search" } |> Element.toNode
                         ]
                     )
                 , sub "Filled axis"
-                    (div [ class "flex flex-wrap items-center gap-4 text-3xl" ]
-                        [ Icon.view { name = "favorite" } |> toHtml
-                        , Icon.view { name = "favorite" } |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4 text-3xl") ]
+                        [ Icon.view { name = "favorite" } |> Element.toNode
+                        , Icon.view { name = "favorite" } |> Element.toNode
                         ]
                     )
                 , sub "Weight axis"
-                    (div [ class "flex flex-wrap items-center gap-4 text-3xl" ]
-                        [ Icon.view { name = "circle" } |> toHtml
-                        , Icon.view { name = "circle" } |> toHtml
-                        , Icon.view { name = "circle" } |> toHtml
-                        , Icon.view { name = "circle" } |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4 text-3xl") ]
+                        [ Icon.view { name = "circle" } |> Element.toNode
+                        , Icon.view { name = "circle" } |> Element.toNode
+                        , Icon.view { name = "circle" } |> Element.toNode
+                        , Icon.view { name = "circle" } |> Element.toNode
                         ]
                     )
                 ]
@@ -1056,38 +1051,38 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (buttonRow
-                        [ IconButton.view { icon = "favorite", name = "Like (standard)" } [] |> toHtml
-                        , IconButton.view { icon = "favorite", name = "Like (filled)" } [ IconButton.variant IconButton.Filled ] |> toHtml
-                        , IconButton.view { icon = "favorite", name = "Like (tonal)" } [ IconButton.variant IconButton.Tonal ] |> toHtml
-                        , IconButton.view { icon = "favorite", name = "Like (outlined)" } [ IconButton.variant IconButton.Outlined ] |> toHtml
+                        [ IconButton.view { icon = "favorite", name = "Like (standard)" } [] |> Element.toNode
+                        , IconButton.view { icon = "favorite", name = "Like (filled)" } [ IconButton.variant IconButton.Filled ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", name = "Like (tonal)" } [ IconButton.variant IconButton.Tonal ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", name = "Like (outlined)" } [ IconButton.variant IconButton.Outlined ] |> Element.toNode
                         ]
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ IconButton.view { icon = "check", name = "Round" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Round ] |> toHtml
-                        , IconButton.view { icon = "check", name = "Square" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Square ] |> toHtml
+                        [ IconButton.view { icon = "check", name = "Round" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Round ] |> Element.toNode
+                        , IconButton.view { icon = "check", name = "Square" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ IconButton.view { icon = "add", name = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraSmall ] |> toHtml
-                        , IconButton.view { icon = "add", name = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Small ] |> toHtml
-                        , IconButton.view { icon = "add", name = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Medium ] |> toHtml
-                        , IconButton.view { icon = "add", name = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Large ] |> toHtml
-                        , IconButton.view { icon = "add", name = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraLarge ] |> toHtml
+                        [ IconButton.view { icon = "add", name = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraSmall ] |> Element.toNode
+                        , IconButton.view { icon = "add", name = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Small ] |> Element.toNode
+                        , IconButton.view { icon = "add", name = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Medium ] |> Element.toNode
+                        , IconButton.view { icon = "add", name = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Large ] |> Element.toNode
+                        , IconButton.view { icon = "add", name = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Widths"
                     (buttonRow
-                        [ IconButton.view { icon = "add", name = "Narrow" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Narrow ] |> toHtml
-                        , IconButton.view { icon = "add", name = "Default" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Default ] |> toHtml
-                        , IconButton.view { icon = "add", name = "Wide" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Wide ] |> toHtml
+                        [ IconButton.view { icon = "add", name = "Narrow" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Narrow ] |> Element.toNode
+                        , IconButton.view { icon = "add", name = "Default" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Default ] |> Element.toNode
+                        , IconButton.view { icon = "add", name = "Wide" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Wide ] |> Element.toNode
                         ]
                     )
                 , sub "Disabling"
                     (buttonRow
-                        [ IconButton.view { icon = "check", name = "Disabled" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> toHtml
-                        , IconButton.view { icon = "check", name = "Disabled (soft)" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> toHtml
+                        [ IconButton.view { icon = "check", name = "Disabled" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
+                        , IconButton.view { icon = "check", name = "Disabled (soft)" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1104,7 +1099,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1112,17 +1107,17 @@ demoSections slug =
         "loadingindicator" ->
             [ usage
                 [ sub "Basic"
-                    (LoadingIndicator.view [] |> toHtml)
+                    (LoadingIndicator.view [] |> Element.toNode)
                 ]
             ]
 
         "menu" ->
             [ usage
                 [ sub "With trigger"
-                    (div [ class "flex items-center gap-2" ]
+                    (Node.element "div" [ Node.rawAttr (class "flex items-center gap-2") ]
                         [ IconButton.view { icon = "more_vert", name = "Open demo menu" }
                             [ IconButton.extraContent [ Menu.triggerFor "demo-menu" ] ]
-                            |> toHtml
+                            |> Element.toNode
                         , Menu.view
                             { items =
                                 [ Menu.item { label = "Refresh", action = Menu.Click PagesMsg.noOp } []
@@ -1131,7 +1126,7 @@ demoSections slug =
                                 ]
                             }
                             [ Menu.id "demo-menu" ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -1152,7 +1147,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "With badges"
                     (NavigationBar.view
@@ -1169,7 +1164,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1194,7 +1189,7 @@ demoSections slug =
                         [ NavigationDrawer.open True
                         , NavigationDrawer.mode NavigationDrawer.ModeSide
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1214,7 +1209,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1224,14 +1219,14 @@ demoSections slug =
                 [ sub "Basic"
                     (Paginator.view { length = 53 }
                         [ Paginator.pageIndex 0 ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "With first/last"
                     (Paginator.view { length = 200 }
                         [ Paginator.pageIndex 4
                         , Paginator.showFirstLastButtons True
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1239,13 +1234,13 @@ demoSections slug =
         "progress" ->
             [ usage
                 [ sub "Linear"
-                    (Progress.view { shape = Progress.Linear } [ Progress.value 60 ] |> toHtml)
+                    (Progress.view { shape = Progress.Linear } [ Progress.value 60 ] |> Element.toNode)
                 , sub "Circular"
-                    (Progress.view { shape = Progress.Circular } [ Progress.value 40 ] |> toHtml)
+                    (Progress.view { shape = Progress.Circular } [ Progress.value 40 ] |> Element.toNode)
                 , sub "Indeterminate"
-                    (div [ class "flex flex-wrap items-center gap-6" ]
-                        [ Progress.view { shape = Progress.Linear } [] |> toHtml
-                        , Progress.view { shape = Progress.Circular } [] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                        [ Progress.view { shape = Progress.Linear } [] |> Element.toNode
+                        , Progress.view { shape = Progress.Circular } [] |> Element.toNode
                         ]
                     )
                 ]
@@ -1263,7 +1258,7 @@ demoSections slug =
                         , selected = Just "monthly"
                         }
                         [ RadioButton.onChange noOp ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1287,7 +1282,7 @@ demoSections slug =
                             ]
                         }
                         [ ScrollContainer.dividers ScrollContainer.AboveBelow ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1295,7 +1290,7 @@ demoSections slug =
         "search" ->
             [ usage
                 [ sub "Bar"
-                    (Search.view { placeholder = "Search the docs" } [] |> toHtml)
+                    (Search.view { placeholder = "Search the docs" } [] |> Element.toNode)
                 ]
             ]
 
@@ -1309,7 +1304,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Multi select"
                     (SegmentedButton.view
@@ -1319,7 +1314,7 @@ demoSections slug =
                             ]
                         }
                         [ SegmentedButton.multi True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1335,7 +1330,7 @@ demoSections slug =
                             ]
                         , Select.onChange noOp
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Multi"
                     (Select.view { label = "Categories" }
@@ -1347,7 +1342,7 @@ demoSections slug =
                         , Select.onChange noOp
                         , Select.multi True
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1355,20 +1350,20 @@ demoSections slug =
         "shape" ->
             [ usage
                 [ sub "Decorative shapes"
-                    (div [ class "flex flex-wrap items-center gap-4" ]
-                        [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Circle ] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-secondary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Flower ] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-24 h-16 bg-tertiary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Pill ] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-error-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Heart ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                        [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Circle ] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-secondary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Flower ] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-24 h-16 bg-tertiary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Pill ] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-error-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Heart ] |> Element.toNode
                         ]
                     )
                 , sub "Corner-radius scale"
-                    (div [ class "flex flex-wrap items-end gap-4" ]
-                        [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-none" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-small" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-medium" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-large" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-full" ] []) ] } [] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-end gap-4") ]
+                        [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-none" ] []) ] } [] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-small" ] []) ] } [] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-medium" ] []) ] } [] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-large" ] []) ] } [] |> Element.toNode
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-full" ] []) ] } [] |> Element.toNode
                         ]
                     )
                 ]
@@ -1377,15 +1372,17 @@ demoSections slug =
         "sidesheet" ->
             [ usage
                 [ sub "Closed preview"
-                    (div [ class "w-full space-y-3" ]
-                        [ p [ class "text-body-md text-on-surface-variant" ]
-                            [ text "Side sheets anchor to the start or end edge of the viewport. The composition below has "
-                            , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
-                            , text "; modality is opt-in. See Reply or Settings for live wiring."
-                            ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "Side sheets anchor to the start or end edge of the viewport. The composition below has "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "open = False" ]
+                                , text "; modality is opt-in. See Reply or Settings for live wiring."
+                                ]
+                            )
                         , SideSheet.view { content = [] }
                             [ SideSheet.open False, SideSheet.onClose PagesMsg.noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -1394,10 +1391,10 @@ demoSections slug =
         "skeleton" ->
             [ usage
                 [ sub "Lines + block"
-                    (div [ class "flex w-full flex-col gap-2" ]
-                        [ Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-2/3" ] []) ] } [] |> toHtml
-                        , Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-1/2" ] []) ] } [] |> toHtml
-                        , Skeleton.view { content = [ Element.html (Html.div [ class "h-32 w-full" ] []) ] } [] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex w-full flex-col gap-2") ]
+                        [ Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-2/3" ] []) ] } [] |> Element.toNode
+                        , Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-1/2" ] []) ] } [] |> Element.toNode
+                        , Skeleton.view { content = [ Element.html (Html.div [ class "h-32 w-full" ] []) ] } [] |> Element.toNode
                         ]
                     )
                 , sub "Loaded (reveals content)"
@@ -1410,7 +1407,7 @@ demoSections slug =
                             ]
                         }
                         [ Skeleton.loaded True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1436,7 +1433,7 @@ demoSections slug =
                                 ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1444,21 +1441,21 @@ demoSections slug =
         "slider" ->
             [ usage
                 [ sub "Basic value"
-                    (Slider.view { name = "Volume" } [ Slider.value 35 ] |> toHtml)
+                    (Slider.view { name = "Volume" } [ Slider.value 35 ] |> Element.toNode)
                 , sub "Discrete (tick marks)"
                     (Slider.view { name = "Brightness" }
                         [ Slider.value 60
                         , Slider.step 10
                         , Slider.discrete True
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Disabled"
                     (Slider.view { name = "Locked" }
                         [ Slider.value 50
                         , Slider.disabled True
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1466,7 +1463,7 @@ demoSections slug =
         "snackbar" ->
             [ usage
                 [ sub "Basic"
-                    (Snackbar.view { message = "Message sent" } [] |> toHtml)
+                    (Snackbar.view { message = "Message sent" } [] |> Element.toNode)
                 ]
             ]
 
@@ -1481,7 +1478,7 @@ demoSections slug =
                         , onTriggerClick = PagesMsg.noOp
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1494,7 +1491,7 @@ demoSections slug =
                         , end = [ Element.html (p [ class "p-4 text-body-md" ] [ text "End pane" ]) ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1515,7 +1512,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1523,9 +1520,9 @@ demoSections slug =
         "switch" ->
             [ usage
                 [ sub "Basic"
-                    (div [ class "flex flex-wrap items-center gap-6" ]
-                        [ Switch.view { name = "Off" } [ Switch.checked False, Switch.onChange noOp ] |> toHtml
-                        , Switch.view { name = "On" } [ Switch.checked True, Switch.onChange noOp ] |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                        [ Switch.view { name = "Off" } [ Switch.checked False, Switch.onChange noOp ] |> Element.toNode
+                        , Switch.view { name = "On" } [ Switch.checked True, Switch.onChange noOp ] |> Element.toNode
                         ]
                     )
                 , sub "Handle icons"
@@ -1534,16 +1531,16 @@ demoSections slug =
                         , Switch.handleIcons True
                         , Switch.onChange noOp
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Disabled"
-                    (div [ class "flex flex-wrap items-center gap-6" ]
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
                         [ Switch.view { name = "Off (disabled)" }
                             [ Switch.checked False, Switch.disabled True, Switch.onChange noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         , Switch.view { name = "On (disabled)" }
                             [ Switch.checked True, Switch.disabled True, Switch.onChange noOp ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -1565,7 +1562,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "With icons"
                     (Tabs.view
@@ -1581,7 +1578,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Stretched"
                     (Tabs.view
@@ -1597,7 +1594,7 @@ demoSections slug =
                             ]
                         }
                         [ Tabs.stretch True ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1605,37 +1602,37 @@ demoSections slug =
         "textfield" ->
             [ usage
                 [ sub "Variants"
-                    (div [ class "w-full max-w-md space-y-4" ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full max-w-md space-y-4") ]
                         [ TextField.view { label = "Name (filled)" }
                             [ TextField.variant TextField.Filled
                             , TextField.value ""
                             , TextField.onInput noOp
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         , TextField.view { label = "Name (outlined)" }
                             [ TextField.variant TextField.Outlined
                             , TextField.value ""
                             , TextField.onInput noOp
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 , sub "Input types"
-                    (div [ class "w-full max-w-md space-y-4" ]
+                    (Node.element "div" [ Node.rawAttr (class "w-full max-w-md space-y-4") ]
                         [ TextField.view { label = "Email" }
                             [ TextField.variant TextField.Outlined
                             , TextField.value ""
                             , TextField.inputType TextField.Email
                             , TextField.onInput noOp
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         , TextField.view { label = "URL" }
                             [ TextField.variant TextField.Outlined
                             , TextField.value ""
                             , TextField.inputType TextField.Url
                             , TextField.onInput noOp
                             ]
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 , sub "Multiline"
@@ -1646,7 +1643,7 @@ demoSections slug =
                         , TextField.multiline True
                         , TextField.rows 3
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Prefix and suffix"
                     (TextField.view { label = "Price" }
@@ -1656,7 +1653,7 @@ demoSections slug =
                         , TextField.prefix (Element.text "$")
                         , TextField.suffix (Element.text "USD")
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 , sub "Disabled"
                     (TextField.view { label = "Locked" }
@@ -1665,7 +1662,7 @@ demoSections slug =
                         , TextField.onInput noOp
                         , TextField.disabled True
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1680,7 +1677,7 @@ demoSections slug =
                             ]
                         }
                         [ TextHighlight.term "highlight" ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1688,11 +1685,13 @@ demoSections slug =
         "theme" ->
             [ usage
                 [ sub "About"
-                    (p [ class "text-body-md" ]
-                        [ text "M3e.Theme wraps "
-                        , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "<m3e-theme>" ]
-                        , text ". A single instance owns the dynamic-color scheme, contrast, density, and motion for its subtree — the docs shell mounts it once at the root, which you're inside now. Try the settings popover in the app bar."
-                        ]
+                    (Node.raw
+                        (p [ class "text-body-md" ]
+                            [ text "M3e.Theme wraps "
+                            , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "<m3e-theme>" ]
+                            , text ". A single instance owns the dynamic-color scheme, contrast, density, and motion for its subtree — the docs shell mounts it once at the root, which you're inside now. Try the settings popover in the app bar."
+                            ]
+                        )
                     )
                 ]
             ]
@@ -1704,7 +1703,7 @@ demoSections slug =
                         [ TimePicker.value "14:30"
                         , TimePicker.onChange noOp
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1712,16 +1711,18 @@ demoSections slug =
         "toc" ->
             [ usage
                 [ sub "Basic"
-                    (div [ class "flex gap-6" ]
-                        [ Toc.view { for = "toc-demo-content" } [ Toc.title "On this page" ] |> toHtml
-                        , div [ Attr.id "toc-demo-content", class "min-w-0 flex-1 space-y-3" ]
-                            [ Html.h2 [ Attr.id "toc-overview", class "text-title-md" ] [ text "Overview" ]
-                            , p [ class "text-body-md text-on-surface-variant" ] [ text "The table of contents tracks the headings inside the referenced container." ]
-                            , Html.h2 [ Attr.id "toc-usage", class "text-title-md" ] [ text "Usage" ]
-                            , p [ class "text-body-md text-on-surface-variant" ] [ text "Point `for` at the id of the content element whose headings should be scanned." ]
-                            , Html.h2 [ Attr.id "toc-api", class "text-title-md" ] [ text "API" ]
-                            , p [ class "text-body-md text-on-surface-variant" ] [ text "The optional title and maxDepth options refine the rendered list." ]
-                            ]
+                    (Node.element "div" [ Node.rawAttr (class "flex gap-6") ]
+                        [ Toc.view { for = "toc-demo-content" } [ Toc.title "On this page" ] |> Element.toNode
+                        , Node.raw
+                            (div [ Attr.id "toc-demo-content", class "min-w-0 flex-1 space-y-3" ]
+                                [ Html.h2 [ Attr.id "toc-overview", class "text-title-md" ] [ text "Overview" ]
+                                , p [ class "text-body-md text-on-surface-variant" ] [ text "The table of contents tracks the headings inside the referenced container." ]
+                                , Html.h2 [ Attr.id "toc-usage", class "text-title-md" ] [ text "Usage" ]
+                                , p [ class "text-body-md text-on-surface-variant" ] [ text "Point `for` at the id of the content element whose headings should be scanned." ]
+                                , Html.h2 [ Attr.id "toc-api", class "text-title-md" ] [ text "API" ]
+                                , p [ class "text-body-md text-on-surface-variant" ] [ text "The optional title and maxDepth options refine the rendered list." ]
+                                ]
+                            )
                         ]
                     )
                 ]
@@ -1737,7 +1738,7 @@ demoSections slug =
                             ]
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
                     )
                 ]
             ]
@@ -1745,14 +1746,14 @@ demoSections slug =
         "tooltip" ->
             [ usage
                 [ sub "Plain tooltip"
-                    (div [ class "flex flex-wrap items-center gap-3" ]
-                        [ Html.span [ Attr.id "tooltip-anchor-demo" ]
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+                        [ Node.element "span" [ Node.rawAttr (Attr.id "tooltip-anchor-demo") ]
                             [ IconButton.view { icon = "refresh", name = "Refresh" }
                                 [ IconButton.variant IconButton.Tonal ]
-                                |> toHtml
+                                |> Element.toNode
                             ]
                         , Tooltip.plain { anchorId = "tooltip-anchor-demo", label = "Refresh data" } []
-                            |> toHtml
+                            |> Element.toNode
                         ]
                     )
                 ]
@@ -1766,7 +1767,6 @@ demoSections slug =
                         , label = Label.fromHtml (Html.text "Reduce motion")
                         , control = Switch.view { name = "Reduce motion" } [ Switch.checked True ]
                         }
-                        |> Node.toHtml
                     )
                 , sub "Outlined variant with error"
                     (Field.view
@@ -1777,7 +1777,6 @@ demoSections slug =
                                 [ Node.rawAttr (Attr.value "atlas") ]
                                 []
                         }
-                        |> Node.toHtml
                     )
                 ]
             ]
@@ -1785,17 +1784,17 @@ demoSections slug =
         "text" ->
             [ usage
                 [ sub "Body roles"
-                    (div [ class "w-full space-y-2" ]
-                        [ Text.bodyLarge "Body large — default running text." |> toHtml
-                        , Text.bodyMedium "Body medium — secondary copy." |> toHtml
-                        , Text.bodySmall "Body small — captions and footnotes." |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
+                        [ Text.bodyLarge "Body large — default running text." |> Element.toNode
+                        , Text.bodyMedium "Body medium — secondary copy." |> Element.toNode
+                        , Text.bodySmall "Body small — captions and footnotes." |> Element.toNode
                         ]
                     )
                 , sub "Label roles"
-                    (div [ class "flex flex-wrap items-center gap-4" ]
-                        [ Text.labelLarge "Label large" |> toHtml
-                        , Text.labelMedium "Label medium" |> toHtml
-                        , Text.labelSmall "Label small" |> toHtml
+                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                        [ Text.labelLarge "Label large" |> Element.toNode
+                        , Text.labelMedium "Label medium" |> Element.toNode
+                        , Text.labelSmall "Label small" |> Element.toNode
                         ]
                     )
                 ]

@@ -7,12 +7,13 @@ module View exposing (View, map, freeze, freezableToHtml, htmlToFreezable)
 -}
 
 import Html exposing (Html)
+import M3e.Node as Node exposing (Node)
 
 
 {-| -}
 type alias View msg =
     { title : String
-    , body : List (Html msg)
+    , body : List (Node msg)
     }
 
 
@@ -20,7 +21,7 @@ type alias View msg =
 map : (msg1 -> msg2) -> View msg1 -> View msg2
 map fn doc =
     { title = doc.title
-    , body = List.map (Html.map fn) doc.body
+    , body = List.map (Node.map fn) doc.body
     }
 
 

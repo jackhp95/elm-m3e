@@ -31,8 +31,9 @@ import Dict exposing (Dict)
 import Effect exposing (Effect)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, div, span, text)
+import Html exposing (div, span, text)
 import Html.Attributes exposing (attribute, class)
+import Html.Attributes
 import Html.Events
 import Json.Decode as Decode
 import Cem.M3e.Shape
@@ -51,7 +52,7 @@ import M3e.Icon as Icon
 import M3e.IconButton as IconButton
 import M3e.List as L
 import M3e.NavigationRail as NavigationRail
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
@@ -68,11 +69,6 @@ import Shared
 import Task
 import UrlPath
 import View exposing (View)
-
-
-toHtml : Element any Msg -> Html Msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
 
 
 
@@ -556,11 +552,11 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Shrine · Studies · elm-m3e"
     , body =
-        [ Html.map PagesMsg.fromMsg (viewShrine model) ]
+        [ Node.map PagesMsg.fromMsg (viewShrine model) ]
     }
 
 
-viewShrine : Model -> Html Msg
+viewShrine : Model -> Node Msg
 viewShrine model =
     let
         filtered =
@@ -571,14 +567,14 @@ viewShrine model =
                 }
                 catalog
     in
-    div [ class "mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8" ]
+    Node.element "div" [ Node.rawAttr (class "mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8") ]
         [ viewAppBar model
         , viewCarousel
-        , div [ class "flex gap-4" ]
-            [ div [ class "hidden sm:block" ] [ viewRail model ]
-            , div [ class "flex min-w-0 flex-1 flex-col gap-4" ]
+        , Node.element "div" [ Node.rawAttr (class "flex gap-4") ]
+            [ Node.element "div" [ Node.rawAttr (class "hidden sm:block") ] [ viewRail model ]
+            , Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-1 flex-col gap-4") ]
                 [ viewControls model
-                , Divider.view [] |> toHtml
+                , Divider.view [] |> Element.toNode
                 , viewResultsBar model filtered
                 , if model.loading then
                     viewSkeletonGrid
@@ -593,7 +589,7 @@ viewShrine model =
         ]
 
 
-viewAppBar : Model -> Html Msg
+viewAppBar : Model -> Node Msg
 viewAppBar model =
     let
         count =
@@ -627,10 +623,9 @@ viewAppBar model =
             ]
         ]
         |> Element.toNode
-        |> Node.toHtml
 
 
-viewCarousel : Html Msg
+viewCarousel : Node Msg
 viewCarousel =
     let
         featured =
@@ -641,24 +636,24 @@ viewCarousel =
             ]
 
         slideCard ( title, swatch, iconName ) =
-            div
-                [ class ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch) ]
-                [ Icon.view { name = iconName } |> toHtml
-                , span [ class "text-title-md font-medium" ] [ text title ]
+            Node.element "div"
+                [ Node.rawAttr (class ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch)) ]
+                [ Icon.view { name = iconName } |> Element.toNode
+                , Node.raw (span [ class "text-title-md font-medium" ] [ text title ])
                 ]
     in
-    div [ class "-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0" ]
+    Node.element "div" [ Node.rawAttr (class "-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0") ]
         (List.map slideCard featured)
 
 
-viewRail : Model -> Html Msg
+viewRail : Model -> Node Msg
 viewRail model =
     NavigationRail.view
         { items = List.map (railItem model.department) departments }
         [ NavigationRail.id "shrine-rail"
         , NavigationRail.mode NavigationRail.Expanded
         ]
-        |> toHtml
+        |> Element.toNode
 
 
 railItem : Department -> Department -> Element { navItem : Element.Supported } Msg
@@ -670,7 +665,7 @@ railItem selectedDept dept =
         ]
 
 
-viewControls : Model -> Html Msg
+viewControls : Model -> Node Msg
 viewControls model =
     let
         chips =
@@ -688,7 +683,6 @@ viewControls model =
             ChipSet.filterSet { label = "Product filters" }
                 [ ChipSet.chips chips ]
                 |> Element.toNode
-                |> Node.toHtml
 
         viewModeControl =
             SegmentedButton.view
@@ -700,7 +694,7 @@ viewControls model =
                     ]
                 }
                 []
-                |> toHtml
+                |> Element.toNode
 
         priceSlider =
             Slider.view { name = "Max price" }
@@ -712,25 +706,25 @@ viewControls model =
                 , Slider.labelled True
                 , Slider.onChange MaxPriceChanged
                 ]
-                |> toHtml
+                |> Element.toNode
     in
-    div [ class "flex flex-col gap-4" ]
-        [ div [ class "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between" ]
+    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
+        [ Node.element "div" [ Node.rawAttr (class "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between") ]
             [ chipSet
             , viewModeControl
             ]
-        , div [ class "max-w-md" ]
-            [ span [ class "text-label-md text-on-surface-variant" ]
-                [ text ("Up to " ++ formatPrice model.maxPrice) ]
+        , Node.element "div" [ Node.rawAttr (class "max-w-md") ]
+            [ Node.raw (span [ class "text-label-md text-on-surface-variant" ]
+                [ text ("Up to " ++ formatPrice model.maxPrice) ])
             , priceSlider
             ]
         ]
 
 
-viewResultsBar : Model -> List Product -> Html Msg
+viewResultsBar : Model -> List Product -> Node Msg
 viewResultsBar _ filtered =
-    div [ class "flex items-center gap-2 text-on-surface-variant" ]
-        [ Icon.view { name = "inventory_2" } |> toHtml
+    Node.element "div" [ Node.rawAttr (class "flex items-center gap-2 text-on-surface-variant") ]
+        [ Icon.view { name = "inventory_2" } |> Element.toNode
         , Heading.view
             { label = String.fromInt (List.length filtered) ++ " products"
             , variant = Heading.Title
@@ -738,17 +732,17 @@ viewResultsBar _ filtered =
             [ Heading.size Heading.Small
             , Heading.level 2
             ]
-            |> toHtml
+            |> Element.toNode
         ]
 
 
-viewSkeletonGrid : Html Msg
+viewSkeletonGrid : Node Msg
 viewSkeletonGrid =
-    div [ class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
+    Node.element "div" [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
         (List.range 1 6
             |> List.map
                 (\_ ->
-                    div [ class "flex flex-col gap-3 rounded-md-corner-large border border-outline-variant p-4" ]
+                    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-3 rounded-md-corner-large border border-outline-variant p-4") ]
                         [ Skeleton.view
                             { content =
                                 [ Element.html
@@ -756,58 +750,59 @@ viewSkeletonGrid =
                                 ]
                             }
                             []
-                            |> toHtml
+                            |> Element.toNode
                         , Skeleton.view
                             { content =
                                 [ Element.html (div [ class "h-5 w-2/3" ] []) ]
                             }
                             []
-                            |> toHtml
+                            |> Element.toNode
                         , Skeleton.view
                             { content =
                                 [ Element.html (div [ class "h-4 w-1/3" ] []) ]
                             }
                             []
-                            |> toHtml
+                            |> Element.toNode
                         ]
                 )
         )
 
 
-viewCatalog : Model -> List Product -> Html Msg
+viewCatalog : Model -> List Product -> Node Msg
 viewCatalog model filtered =
     if List.isEmpty filtered then
-        div [ class "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant" ]
-            [ Icon.view { name = "sentiment_dissatisfied" } |> toHtml
-            , text "No products match these filters."
+        Node.element "div" [ Node.rawAttr (class "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant") ]
+            [ Icon.view { name = "sentiment_dissatisfied" } |> Element.toNode
+            , Node.text "No products match these filters."
             ]
 
     else
         case model.viewMode of
             Grid ->
-                div
+                Node.element "div"
                     -- Size: responsive grid columns scale with breakpoint.
-                    [ class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
+                    [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
                     (List.map (viewProductCard model) filtered)
 
             ListView ->
                 viewProductList model filtered
 
 
-productMedia : Product -> Html Msg
+productMedia : Product -> Node Msg
 productMedia product =
     Shape.view
         { content =
-            [ Element.html
-                (div [ class ("flex h-full w-full items-center justify-center " ++ product.swatch) ]
-                    [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
+            [ Element.fromNode
+                (Node.element "div"
+                    [ Node.rawAttr (class ("flex h-full w-full items-center justify-center " ++ product.swatch)) ]
+                    [ Icon.view { name = categoryGlyph product.category } |> Element.toNode ]
                 )
             ]
         }
         [ Shape.name product.shape
         , Shape.attributes [ Node.rawAttr (class "block h-36 w-full") ]
         ]
-        |> toHtml
+        |> Element.toNode
 
 
 categoryGlyph : Category -> String
@@ -832,7 +827,7 @@ categoryGlyph cat =
             "diamond"
 
 
-viewProductCard : Model -> Product -> Html Msg
+viewProductCard : Model -> Product -> Node Msg
 viewProductCard model product =
     let
         favoriteButton =
@@ -846,41 +841,41 @@ viewProductCard model product =
                 , IconButton.selectedIcon (Icon.view { name = "favorite" })
                 , IconButton.size IconButton.Small
                 ]
-                |> toHtml
+                |> Element.toNode
 
         body =
-            div [ class "flex flex-col gap-2" ]
-                [ div [ class "flex items-start justify-between gap-2" ]
+            Node.element "div" [ Node.rawAttr (class "flex flex-col gap-2") ]
+                [ Node.element "div" [ Node.rawAttr (class "flex items-start justify-between gap-2") ]
                     [ Heading.view { label = product.name, variant = Heading.Title }
                         [ Heading.size Heading.Medium
                         , Heading.level 3
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     , favoriteButton
                     ]
-                , span [ class "text-primary" ]
+                , Node.element "span" [ Node.rawAttr (class "text-primary") ]
                     [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
                         [ Heading.size Heading.Small
                         , Heading.level 4
                         ]
-                        |> toHtml
+                        |> Element.toNode
                     ]
                 ]
     in
     Card.view
         [ Card.variant Card.Elevated
         , Card.media
-            (Element.html
-                (div
-                    [ class "cursor-pointer"
-                    , attribute "role" "button"
-                    , Html.Attributes.tabindex 0
-                    , Html.Events.onClick (ProductOpened product.id)
+            (Element.fromNode
+                (Node.element "div"
+                    [ Node.rawAttr (class "cursor-pointer")
+                    , Node.rawAttr (attribute "role" "button")
+                    , Node.rawAttr (Html.Attributes.tabindex 0)
+                    , Node.rawAttr (Html.Events.onClick (ProductOpened product.id))
                     ]
                     [ productMedia product ]
                 )
             )
-        , Card.body [ Element.html body ]
+        , Card.body [ Element.fromNode body ]
         , Card.actions
             [ Button.view { label = "Add to bag", variant = Button.Filled }
                 [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
@@ -888,10 +883,10 @@ viewProductCard model product =
                 ]
             ]
         ]
-        |> toHtml
+        |> Element.toNode
 
 
-viewProductList : Model -> List Product -> Html Msg
+viewProductList : Model -> List Product -> Node Msg
 viewProductList _ filtered =
     L.view
         { items =
@@ -916,14 +911,14 @@ viewProductList _ filtered =
                     )
         }
         []
-        |> toHtml
+        |> Element.toNode
 
 
 
 -- CART SHEET -----------------------------------------------------------------
 
 
-viewCartSheet : Model -> Html Msg
+viewCartSheet : Model -> Node Msg
 viewCartSheet model =
     let
         items =
@@ -934,42 +929,46 @@ viewCartSheet model =
                     )
 
         header =
-            div [ class "flex items-center justify-between" ]
+            Node.element "div" [ Node.rawAttr (class "flex items-center justify-between") ]
                 [ Heading.view { label = "Your bag", variant = Heading.Headline }
                     [ Heading.size Heading.Small
                     , Heading.level 2
                     ]
-                    |> toHtml
-                , span [ class "text-label-lg text-on-surface-variant" ]
-                    [ text (String.fromInt (cartCount model.cart) ++ " items") ]
+                    |> Element.toNode
+                , Node.raw
+                    (span [ class "text-label-lg text-on-surface-variant" ]
+                        [ text (String.fromInt (cartCount model.cart) ++ " items") ]
+                    )
                 ]
 
         body =
             if List.isEmpty items then
-                div [ class "flex flex-col items-center gap-2 py-8 text-on-surface-variant" ]
-                    [ Icon.view { name = "shopping_bag" } |> toHtml
-                    , text "Your bag is empty."
+                Node.element "div" [ Node.rawAttr (class "flex flex-col items-center gap-2 py-8 text-on-surface-variant") ]
+                    [ Icon.view { name = "shopping_bag" } |> Element.toNode
+                    , Node.text "Your bag is empty."
                     ]
 
             else
-                div [ class "flex flex-col gap-2" ]
+                Node.element "div" [ Node.rawAttr (class "flex flex-col gap-2") ]
                     (List.map viewCartRow items
-                        ++ [ Divider.view [] |> toHtml
-                           , div [ class "flex items-center justify-between pt-1" ]
-                                [ span [ class "text-title-md text-on-surface" ] [ text "Subtotal" ]
-                                , span [ class "text-title-md font-medium text-primary" ]
-                                    [ text (formatPrice (cartSubtotal model.cart)) ]
-                                ]
+                        ++ [ Divider.view [] |> Element.toNode
+                           , Node.raw
+                                (div [ class "flex items-center justify-between pt-1" ]
+                                    [ span [ class "text-title-md text-on-surface" ] [ text "Subtotal" ]
+                                    , span [ class "text-title-md font-medium text-primary" ]
+                                        [ text (formatPrice (cartSubtotal model.cart)) ]
+                                    ]
+                                )
                            ]
                     )
     in
     BottomSheet.view
-        { content = [ Element.html body ] }
+        { content = [ Element.fromNode body ] }
         [ BottomSheet.open model.cartOpen
         , BottomSheet.onClose CartClosed
         , BottomSheet.modal True
         , BottomSheet.handle True
-        , BottomSheet.header [ Element.html header ]
+        , BottomSheet.header [ Element.fromNode header ]
         , BottomSheet.actions
             [ Button.view { label = "Checkout", variant = Button.Filled }
                 [ Button.leadingIcon (Icon.view { name = "lock" })
@@ -980,44 +979,47 @@ viewCartSheet model =
                 [ Button.onClick CartClosed ]
             ]
         ]
-        |> toHtml
+        |> Element.toNode
 
 
-viewCartRow : ( Product, Int ) -> Html Msg
+viewCartRow : ( Product, Int ) -> Node Msg
 viewCartRow ( product, qty ) =
-    div [ class "flex items-center gap-3" ]
+    Node.element "div" [ Node.rawAttr (class "flex items-center gap-3") ]
         [ Shape.view
             { content =
-                [ Element.html
-                    (div [ class ("flex h-10 w-10 items-center justify-center " ++ product.swatch) ]
-                        [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
+                [ Element.fromNode
+                    (Node.element "div"
+                        [ Node.rawAttr (class ("flex h-10 w-10 items-center justify-center " ++ product.swatch)) ]
+                        [ Icon.view { name = categoryGlyph product.category } |> Element.toNode ]
                     )
                 ]
             }
             [ Shape.name product.shape ]
-            |> toHtml
-        , div [ class "flex min-w-0 flex-1 flex-col" ]
-            [ span [ class "truncate text-body-lg text-on-surface" ] [ text product.name ]
-            , span [ class "text-label-md text-on-surface-variant" ]
-                [ text (formatPrice product.price ++ " each") ]
-            ]
-        , div [ class "flex items-center gap-1" ]
+            |> Element.toNode
+        , Node.raw
+            (div [ class "flex min-w-0 flex-1 flex-col" ]
+                [ span [ class "truncate text-body-lg text-on-surface" ] [ text product.name ]
+                , span [ class "text-label-md text-on-surface-variant" ]
+                    [ text (formatPrice product.price ++ " each") ]
+                ]
+            )
+        , Node.element "div" [ Node.rawAttr (class "flex items-center gap-1") ]
             [ IconButton.view { icon = "remove", name = "Decrease quantity" }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty - 1))
                 ]
-                |> toHtml
-            , span [ class "w-6 text-center text-body-lg text-on-surface" ] [ text (String.fromInt qty) ]
+                |> Element.toNode
+            , Node.raw (span [ class "w-6 text-center text-body-lg text-on-surface" ] [ text (String.fromInt qty) ])
             , IconButton.view { icon = "add", name = "Increase quantity" }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty + 1))
                 ]
-                |> toHtml
+                |> Element.toNode
             , IconButton.view { icon = "delete", name = "Remove " ++ product.name }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (ItemRemoved product.id)
                 ]
-                |> toHtml
+                |> Element.toNode
             ]
         ]
 
@@ -1026,11 +1028,11 @@ viewCartRow ( product, qty ) =
 -- PRODUCT DETAIL DIALOG ------------------------------------------------------
 
 
-viewDetailDialog : Model -> Html Msg
+viewDetailDialog : Model -> Node Msg
 viewDetailDialog model =
     case model.detail |> Maybe.andThen productById of
         Nothing ->
-            text ""
+            Node.text ""
 
         Just product ->
             let
@@ -1044,16 +1046,16 @@ viewDetailDialog model =
                                 |> List.map
                                     (\i ->
                                         Slide.slide
-                                            [ Element.html
-                                                (div
-                                                    [ class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch) ]
-                                                    [ Icon.view { name = galleryGlyph product.category i } |> toHtml ]
+                                            [ Element.fromNode
+                                                (Node.element "div"
+                                                    [ Node.rawAttr (class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch)) ]
+                                                    [ Icon.view { name = galleryGlyph product.category i } |> Element.toNode ]
                                                 )
                                             ]
                                     )
                         }
                         []
-                        |> toHtml
+                        |> Element.toNode
 
                 sizeSelect =
                     Select.view { label = "Size" }
@@ -1069,7 +1071,7 @@ viewDetailDialog model =
                             )
                         , Select.onChange DetailSizeChanged
                         ]
-                        |> toHtml
+                        |> Element.toNode
 
                 qtySlider =
                     Slider.view { name = "Quantity" }
@@ -1081,7 +1083,7 @@ viewDetailDialog model =
                         , Slider.labelled True
                         , Slider.onChange DetailQtyChanged
                         ]
-                        |> toHtml
+                        |> Element.toNode
 
                 buyActions =
                     ButtonGroup.view
@@ -1097,21 +1099,23 @@ viewDetailDialog model =
                             ]
                         }
                         [ ButtonGroup.variant ButtonGroup.Connected ]
-                        |> toHtml
+                        |> Element.toNode
 
                 body =
-                    div [ class "flex flex-col gap-4" ]
+                    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
                         [ gallery
-                        , div [ class "flex items-center justify-between" ]
-                            [ span [ class "text-primary" ]
+                        , Node.element "div" [ Node.rawAttr (class "flex items-center justify-between") ]
+                            [ Node.element "span" [ Node.rawAttr (class "text-primary") ]
                                 [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
                                     [ Heading.size Heading.Large
                                     , Heading.level 3
                                     ]
-                                    |> toHtml
+                                    |> Element.toNode
                                 ]
-                            , span [ class "text-label-lg text-on-surface-variant" ]
-                                [ text (categoryLabel product.category) ]
+                            , Node.raw
+                                (span [ class "text-label-lg text-on-surface-variant" ]
+                                    [ text (categoryLabel product.category) ]
+                                )
                             ]
                         , sizeSelect
                         , qtySlider
@@ -1120,7 +1124,7 @@ viewDetailDialog model =
             in
             Dialog.view
                 { headline = product.name
-                , content = [ Element.html body ]
+                , content = [ Element.fromNode body ]
                 }
                 [ Dialog.open True
                 , Dialog.onClose ProductClosed
@@ -1130,7 +1134,7 @@ viewDetailDialog model =
                         [ Button.onClick ProductClosed ]
                     ]
                 ]
-                |> toHtml
+                |> Element.toNode
 
 
 galleryGlyph : Category -> Int -> String
@@ -1150,13 +1154,13 @@ galleryGlyph cat i =
 -- SNACKBAR -------------------------------------------------------------------
 
 
-viewSnackbar : Model -> Html Msg
+viewSnackbar : Model -> Node Msg
 viewSnackbar model =
     case model.snackbar of
         Just { message } ->
-            div
-                [ attribute "data-shrine-snackbar" "true"
-                , Html.Events.on "avt-snackbar-action" (Decode.succeed CartOpened)
+            Node.element "div"
+                [ Node.rawAttr (attribute "data-shrine-snackbar" "true")
+                , Node.rawAttr (Html.Events.on "avt-snackbar-action" (Decode.succeed CartOpened))
                 ]
                 [ Snackbar.view { message = message }
                     [ Snackbar.id "shrine-snackbar"
@@ -1164,8 +1168,8 @@ viewSnackbar model =
                     , Snackbar.dismissible True
                     , Snackbar.duration 4000
                     ]
-                    |> toHtml
+                    |> Element.toNode
                 ]
 
         Nothing ->
-            text ""
+            Node.text ""

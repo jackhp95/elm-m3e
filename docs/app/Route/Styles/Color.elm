@@ -4,13 +4,13 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, code, div, p, section, text)
+import Html exposing (code, p, text)
 import Html.Attributes exposing (class)
 import M3e.Card as Card
 import M3e.Divider as Divider
-import M3e.Heading as Heading
-import M3e.Node as Node
 import M3e.Element as Element
+import M3e.Heading as Heading
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -58,11 +58,6 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
 {-| (label, bg utility, on-color utility) for each M3 color role pair.
 -}
 roles : List ( String, String, String )
@@ -82,55 +77,68 @@ roles =
     ]
 
 
-swatch : ( String, String, String ) -> Html msg
+swatch : ( String, String, String ) -> Node msg
 swatch ( label, bg, on ) =
-    div [ class ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on) ]
-        [ Html.span [ class "text-label-lg font-medium" ] [ text label ]
-        , code [ class "text-body-sm opacity-80" ] [ text bg ]
+    Node.element "div"
+        [ Node.rawAttr (class ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on)) ]
+        [ Node.element "span" [ Node.rawAttr (class "text-label-lg font-medium") ] [ Node.text label ]
+        , Node.raw (code [ class "text-body-sm opacity-80" ] [ text bg ])
         ]
 
 
-pageHeading : Html msg
+pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Color", variant = Heading.Display }
         [ Heading.size Heading.Small, Heading.level 1 ]
-        |> toHtml
+        |> Element.toNode
 
 
-sectionHeading : String -> Html msg
+sectionHeading : String -> Node msg
 sectionHeading label =
     Heading.view { label = label, variant = Heading.Headline }
         [ Heading.size Heading.Small, Heading.level 2 ]
-        |> toHtml
+        |> Element.toNode
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Color · elm-m3e"
     , body =
-        [ div [ class "mx-auto max-w-4xl space-y-8" ]
-            [ section [ class "space-y-3" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
+            [ Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ pageHeading
-                , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                        [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "space-y-3" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ sectionHeading "Color roles"
-                , div [ class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" ]
+                , Node.element "div"
+                    [ Node.rawAttr (class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3") ]
                     (List.map swatch roles)
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "space-y-3" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ sectionHeading "Dynamic color"
-                , p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
-                    [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
+                        [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                    )
                 ]
-            , Divider.view [] |> toHtml
-            , section [ class "space-y-3" ]
+            , Divider.view [] |> Element.toNode
+            , Node.element "section"
+                [ Node.rawAttr (class "space-y-3") ]
                 [ sectionHeading "Forced colors"
-                , p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
-                    [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                , Node.raw
+                    (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
+                        [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                    )
                 , forcedColorsCard
                 ]
             ]
@@ -138,7 +146,7 @@ view _ _ =
     }
 
 
-forcedColorsCard : Html msg
+forcedColorsCard : Node msg
 forcedColorsCard =
     Card.view
         [ Card.variant Card.Outlined
@@ -149,4 +157,3 @@ forcedColorsCard =
             ]
         ]
         |> Element.toNode
-        |> Node.toHtml

@@ -11,14 +11,14 @@ import BackendTask.File
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, a, code, div, p, section, text)
+import Html exposing (a, code, p, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import M3e.Card as Card
 import M3e.Divider as Divider
-import M3e.Heading as Heading
-import M3e.Node as Node
 import M3e.Element as Element
+import M3e.Heading as Heading
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -103,63 +103,71 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
-pageHeading : Html msg
+pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Component reference", variant = Heading.Display }
         [ Heading.size Heading.Small, Heading.level 1 ]
-        |> toHtml
+        |> Element.toNode
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
-        [ div [ class "mx-auto max-w-5xl" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-5xl") ]
             [ pageHeading
-            , p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
-                [ text "Every "
-                , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
-                , text " module, its overview, and every exposed value — extracted from the library source at build time."
-                ]
+            , Node.raw
+                (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
+                    [ text "Every "
+                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
+                    , text " module, its overview, and every exposed value — extracted from the library source at build time."
+                    ]
+                )
             , indexGrid app.data
-            , div [ class "mt-12 space-y-12" ] (List.map componentBlock app.data)
+            , Node.element "div"
+                [ Node.rawAttr (class "mt-12 space-y-12") ]
+                (List.map componentBlock app.data)
             ]
         ]
     }
 
 
-indexGrid : List Component -> Html msg
+indexGrid : List Component -> Node msg
 indexGrid components =
-    div [ class "mt-8 flex flex-wrap gap-2" ]
+    Node.element "div"
+        [ Node.rawAttr (class "mt-8 flex flex-wrap gap-2") ]
         (List.map
             (\c ->
-                a
-                    [ href ("#" ++ c.slug)
-                    , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
-                    ]
-                    [ text c.name ]
+                Node.raw
+                    (a
+                        [ href ("#" ++ c.slug)
+                        , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
+                        ]
+                        [ text c.name ]
+                    )
             )
             components
         )
 
 
-componentBlock : Component -> Html msg
+componentBlock : Component -> Node msg
 componentBlock c =
-    section [ id c.slug, class "scroll-mt-6 space-y-4" ]
-        [ Divider.view [] |> toHtml
-        , Html.h2 [ class "text-headline-sm" ]
-            [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
+    Node.element "section"
+        [ Node.rawAttr (id c.slug), Node.rawAttr (class "scroll-mt-6 space-y-4") ]
+        [ Divider.view [] |> Element.toNode
+        , Node.raw
+            (Html.h2 [ class "text-headline-sm" ]
+                [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
+            )
         , prose "max-w-2xl text-body-md text-on-surface-variant" c.overview
-        , div [ class "space-y-3" ] (List.map memberRow c.members)
+        , Node.element "div"
+            [ Node.rawAttr (class "space-y-3") ]
+            (List.map memberRow c.members)
         ]
 
 
-memberRow : Member -> Html msg
+memberRow : Member -> Node msg
 memberRow m =
     let
         sig =
@@ -175,11 +183,12 @@ memberRow m =
     Card.view
         [ Card.variant Card.Outlined
         , Card.body
-            [ Element.html
-                (div []
-                    [ pre_ sig
+            [ Element.fromNode
+                (Node.element "div"
+                    []
+                    [ Node.raw (pre_ sig)
                     , if m.doc == "" then
-                        text ""
+                        Node.text ""
 
                       else
                         prose "mt-2 text-body-sm text-on-surface-variant" m.doc
@@ -188,10 +197,9 @@ memberRow m =
             ]
         ]
         |> Element.toNode
-        |> Node.toHtml
 
 
-pre_ : String -> Html msg
+pre_ : String -> Html.Html msg
 pre_ s =
     Html.pre [ class "overflow-x-auto text-body-sm text-on-surface" ]
         [ code [] [ text s ] ]
@@ -199,11 +207,12 @@ pre_ s =
 
 {-| Render \\n\\n-separated text as paragraphs.
 -}
-prose : String -> String -> Html msg
+prose : String -> String -> Node msg
 prose cls s =
-    div [ class cls ]
+    Node.element "div"
+        [ Node.rawAttr (class cls) ]
         (s
             |> String.split "\n\n"
             |> List.filter (\para -> String.trim para /= "")
-            |> List.map (\para -> p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ])
+            |> List.map (\para -> Node.raw (p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ]))
         )

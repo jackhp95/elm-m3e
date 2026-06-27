@@ -13,16 +13,16 @@ import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, code, div, p, section, text)
+import Html exposing (code, div, p, text)
 import Html.Attributes exposing (class)
 import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.Divider as Divider
+import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Icon as Icon
-import M3e.Node as Node
-import M3e.Element as Element
+import M3e.Node as Node exposing (Node)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -80,66 +80,73 @@ head _ =
         |> Seo.website
 
 
-toHtml : Element.Element any msg -> Html msg
-toHtml r =
-    r |> Element.toNode |> Node.toHtml
-
-
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
     , body =
-        [ div [ class "mx-auto max-w-5xl space-y-16" ]
+        [ Node.element "div"
+            [ Node.rawAttr (class "mx-auto max-w-5xl space-y-16") ]
             [ hero
-            , Divider.view [] |> toHtml
+            , Divider.view [] |> Element.toNode
             , highlights
-            , Divider.view [] |> toHtml
+            , Divider.view [] |> Element.toNode
             , statusGrid
             ]
         ]
     }
 
 
-hero : Html msg
+hero : Node msg
 hero =
-    section [ class "space-y-5" ]
-        [ p [ class "text-label-lg uppercase tracking-wide text-primary" ]
-            [ text "elm-m3e · m3e-builder" ]
+    Node.element "section"
+        [ Node.rawAttr (class "space-y-5") ]
+        [ Node.raw
+            (p [ class "text-label-lg uppercase tracking-wide text-primary" ]
+                [ text "elm-m3e · m3e-builder" ]
+            )
         , Heading.view { label = "Type-safe Material 3 Expressive for Elm", variant = Heading.Display }
             [ Heading.size Heading.Small, Heading.level 1 ]
-            |> toHtml
-        , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-            [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
-            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
-            , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
-            ]
-        , div [ class "flex flex-wrap items-center gap-3 pt-2" ]
-            [ Button.view { label = "Get started", variant = Button.Filled } [ Button.href "/getting-started/installation" ] |> toHtml
-            , Button.view { label = "Browse the API reference", variant = Button.Outlined } [ Button.href "/reference" ] |> toHtml
-            ]
-        , div [ class "flex items-center gap-3 pt-4" ]
-            [ Avatar.view { alt = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> toHtml
-            , div [ class "flex gap-3" ]
-                [ div [ class "block w-10 h-10 bg-primary rounded-md-corner-large" ] []
-                , div [ class "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" ] []
-                , div [ class "block w-10 h-10 bg-secondary-container rounded-full" ] []
+            |> Element.toNode
+        , Node.raw
+            (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
+                , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
+                , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
                 ]
+            )
+        , Node.element "div"
+            [ Node.rawAttr (class "flex flex-wrap items-center gap-3 pt-2") ]
+            [ Button.view { label = "Get started", variant = Button.Filled } [ Button.href "/getting-started/installation" ] |> Element.toNode
+            , Button.view { label = "Browse the API reference", variant = Button.Outlined } [ Button.href "/reference" ] |> Element.toNode
+            ]
+        , Node.element "div"
+            [ Node.rawAttr (class "flex items-center gap-3 pt-4") ]
+            [ Avatar.view { alt = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode
+            , Node.raw
+                (div [ class "flex gap-3" ]
+                    [ div [ class "block w-10 h-10 bg-primary rounded-md-corner-large" ] []
+                    , div [ class "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" ] []
+                    , div [ class "block w-10 h-10 bg-secondary-container rounded-full" ] []
+                    ]
+                )
             ]
         ]
 
 
-sectionHeading : String -> Html msg
+sectionHeading : String -> Node msg
 sectionHeading label =
     Heading.view { label = label, variant = Heading.Headline }
         [ Heading.size Heading.Medium, Heading.level 2 ]
-        |> toHtml
+        |> Element.toNode
 
 
-highlights : Html msg
+highlights : Node msg
 highlights =
-    section [ class "space-y-6" ]
+    Node.element "section"
+        [ Node.rawAttr (class "space-y-6") ]
         [ sectionHeading "Why elm-m3e"
-        , div [ class "grid gap-4 sm:grid-cols-3" ]
+        , Node.element "div"
+            [ Node.rawAttr (class "grid gap-4 sm:grid-cols-3") ]
             [ highlightCard "verified"
                 "Type-safe slots"
                 "Containers take typed children — an icon slot can only hold a M3e.Icon. Invalid compositions are compile errors, not runtime no-ops."
@@ -153,31 +160,37 @@ highlights =
         ]
 
 
-highlightCard : String -> String -> String -> Html msg
+highlightCard : String -> String -> String -> Node msg
 highlightCard iconName title body =
     Card.view
         [ Card.variant Card.Outlined
         , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
         , Card.body
-            [ Element.html
-                (div [ class "flex gap-3" ]
-                    [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
-                    , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
+            [ Element.fromNode
+                (Node.element "div"
+                    [ Node.rawAttr (class "flex gap-3") ]
+                    [ Node.element "span"
+                        [ Node.rawAttr (class "shrink-0 text-primary") ]
+                        [ Icon.view { name = iconName } |> Element.toNode ]
+                    , Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
                     ]
                 )
             ]
         ]
         |> Element.toNode
-        |> Node.toHtml
 
 
-statusGrid : Html msg
+statusGrid : Node msg
 statusGrid =
-    section [ class "space-y-6" ]
+    Node.element "section"
+        [ Node.rawAttr (class "space-y-6") ]
         [ sectionHeading "Status & roadmap"
-        , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-            [ text "The honest current state of the standalone library." ]
-        , div [ class "grid gap-4 sm:grid-cols-2" ]
+        , Node.raw
+            (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                [ text "The honest current state of the standalone library." ]
+            )
+        , Node.element "div"
+            [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2") ]
             [ statusCard "Complete (53)" "Every M3e.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
             , statusCard "Documented" "Getting Started, Styles, and per-component pages (API tables) are generated; rich per-component demos and Studies are in progress."
             , statusCard "Removed (1)" "M3e.Table — m3e ships no table element, so it does not belong in a library that wraps m3e."
@@ -186,7 +199,7 @@ statusGrid =
         ]
 
 
-statusCard : String -> String -> Html msg
+statusCard : String -> String -> Node msg
 statusCard title body =
     Card.view
         [ Card.variant Card.Outlined
@@ -194,4 +207,3 @@ statusCard title body =
         , Card.body [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
         ]
         |> Element.toNode
-        |> Node.toHtml
