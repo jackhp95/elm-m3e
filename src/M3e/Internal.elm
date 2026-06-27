@@ -1,4 +1,4 @@
-module M3e.Internal exposing (Option(..), Renderable(..), Supported(..), applyOptions, fromNode, option, toNode)
+module M3e.Internal exposing (Option(..), Renderable(..), Supported(..), applyOptions, fromNode, option, slugify, toNode)
 
 {-| Internal primitives — not part of the public surface.
 
@@ -8,6 +8,7 @@ when it becomes a package.
 
 -}
 
+import Char
 import M3e.Node as Node exposing (Node)
 
 
@@ -63,3 +64,33 @@ option =
 applyOptions : List (Option c msg) -> c -> c
 applyOptions opts c0 =
     List.foldl (\(Option f) acc -> f acc) c0 opts
+
+
+{-| Derive a stable element id from a label, prefixed per component. The single
+source of truth for the label↔control slug used by the form-field family
+(TextField/Select/TimePicker) — the `<label for=id>` ↔ `<control id=id>`
+association depends on this being identical everywhere, so it lives here rather
+than copy-pasted (the contract `#30`/`#44` flagged).
+
+    slugify "m3etf-" "Email address" --> "m3etf-email-address"
+
+-}
+slugify : String -> String -> String
+slugify prefix label =
+    prefix
+        ++ (label
+                |> String.toLower
+                |> String.toList
+                |> List.map
+                    (\ch ->
+                        if Char.isAlphaNum ch then
+                            ch
+
+                        else
+                            '-'
+                    )
+                |> String.fromList
+                |> String.split "-"
+                |> List.filter (not << String.isEmpty)
+                |> String.join "-"
+           )

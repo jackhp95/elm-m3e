@@ -286,23 +286,5 @@ view req opts =
 {-| Derive a fallback id from the label text.
 -}
 slugify : String -> String
-slugify label =
-    let
-        slug =
-            label
-                |> String.toLower
-                |> String.toList
-                |> List.map
-                    (\ch ->
-                        if Char.isAlphaNum ch then
-                            ch
-
-                        else
-                            '-'
-                    )
-                |> String.fromList
-                |> String.split "-"
-                |> List.filter (not << String.isEmpty)
-                |> String.join "-"
-    in
-    "m3esel-" ++ slug
+slugify =
+    Internal.slugify "m3esel-"
