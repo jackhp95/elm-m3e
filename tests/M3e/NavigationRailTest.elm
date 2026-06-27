@@ -2,10 +2,10 @@ module M3e.NavigationRailTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
 import M3e.NavigationRail as NavRail
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
@@ -13,12 +13,12 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-fakeIcon : Element.Element { icon : Element.Supported } msg
+fakeIcon : Element { icon : Element.Supported } msg
 fakeIcon =
     Internal.fromNode (Node.element "m3e-icon" [] [ Node.text "home" ])
 
 
-railNode : List (NavRail.Option msg) -> List (Element.Element { navItem : Element.Supported } msg) -> Node.Node msg
+railNode : List (NavRail.Option msg) -> List (Element { navItem : Element.Supported } msg) -> Node msg
 railNode opts items =
     NavRail.view { items = items } opts
         |> Element.toNode
@@ -26,7 +26,7 @@ railNode opts items =
 
 {-| Build a rail item with a required label.
 -}
-railItem : String -> List (NavRail.ItemOption String) -> Element.Element { navItem : Element.Supported } String
+railItem : String -> List (NavRail.ItemOption String) -> Element { navItem : Element.Supported } String
 railItem lbl opts =
     NavRail.item { icon = fakeIcon, label = lbl } opts
 

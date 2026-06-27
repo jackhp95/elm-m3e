@@ -2,17 +2,17 @@ module M3e.TextTest exposing (suite)
 
 import Expect
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Text as Text
 import Test exposing (Test, describe, test)
 
 
-node : String -> Text.Role -> List (Text.Option msg) -> Node.Node msg
+node : String -> Text.Role -> List (Text.Option msg) -> Node msg
 node content role opts =
     Text.view { content = content, role = role } opts |> Element.toNode
 
 
-firstChildText : Node.Node msg -> Maybe String
+firstChildText : Node msg -> Maybe String
 firstChildText n =
     case Node.childrenOf n of
         (Node.Text s) :: _ ->

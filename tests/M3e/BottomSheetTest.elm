@@ -4,18 +4,18 @@ import Expect
 import Json.Encode as Encode
 import M3e.BottomSheet as BottomSheet
 import M3e.Button as Button
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-node : List (BottomSheet.Option msg) -> Node.Node msg
+node : List (BottomSheet.Option msg) -> Node msg
 node opts =
     BottomSheet.view { content = [] } opts
         |> Element.toNode
 
 
-actionButton : Element.Element { button : Element.Supported } msg
+actionButton : Element { button : Element.Supported } msg
 actionButton =
     Button.view { label = "Share", variant = Button.Tonal } []
 

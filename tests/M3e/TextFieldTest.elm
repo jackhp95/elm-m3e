@@ -3,7 +3,7 @@ module M3e.TextFieldTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.TextField as TextField
 import Test exposing (Test, describe, test)
 
@@ -12,18 +12,18 @@ import Test exposing (Test, describe, test)
 -- Helpers ---------------------------------------------------------------------
 
 
-viewNode : List (TextField.Option String) -> Node.Node String
+viewNode : List (TextField.Option String) -> Node String
 viewNode opts =
     TextField.view { label = "Email" } opts
         |> Element.toNode
 
 
-labelChild : Node.Node msg -> Maybe (Node.Node msg)
+labelChild : Node msg -> Maybe (Node msg)
 labelChild node =
     Node.childrenOf node |> List.head
 
 
-controlChild : Node.Node msg -> Maybe (Node.Node msg)
+controlChild : Node msg -> Maybe (Node msg)
 controlChild node =
     Node.childrenOf node |> List.drop 1 |> List.head
 
@@ -52,7 +52,7 @@ suite =
         , test "control child has 'id' matching the label 'for'" <|
             \_ ->
                 let
-                    node : Node.Node String
+                    node : Node String
                     node =
                         viewNode []
 
@@ -68,7 +68,7 @@ suite =
         , test "id overrides the derived id on both label and input" <|
             \_ ->
                 let
-                    node : Node.Node String
+                    node : Node String
                     node =
                         viewNode [ TextField.id "my-email" ]
 

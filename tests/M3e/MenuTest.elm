@@ -2,9 +2,9 @@ module M3e.MenuTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Menu as Menu
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
@@ -12,18 +12,18 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-menuNode : List (Menu.Option msg) -> List (Element.Element { menuItem : Element.Supported } msg) -> Node.Node msg
+menuNode : List (Menu.Option msg) -> List (Element { menuItem : Element.Supported } msg) -> Node msg
 menuNode opts items =
     Menu.view { items = items } opts
         |> Element.toNode
 
 
-plainItem : Element.Element { menuItem : Element.Supported } String
+plainItem : Element { menuItem : Element.Supported } String
 plainItem =
     Menu.item { label = "Edit", action = Menu.Click "EditClicked" } []
 
 
-checkedItem : Bool -> Element.Element { menuItem : Element.Supported } String
+checkedItem : Bool -> Element { menuItem : Element.Supported } String
 checkedItem b =
     Menu.checkboxItem
         { label = "Show grid"
@@ -38,7 +38,7 @@ checkedItem b =
         [ Menu.checkboxChecked b ]
 
 
-radioItem_ : Bool -> Element.Element { menuItem : Element.Supported } String
+radioItem_ : Bool -> Element { menuItem : Element.Supported } String
 radioItem_ sel =
     Menu.radioItem { label = "Left", onClick = "AlignLeft" } [ Menu.radioSelected sel ]
 

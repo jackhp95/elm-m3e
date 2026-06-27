@@ -3,11 +3,11 @@ module M3e.LoadingIndicatorTest exposing (suite)
 import Expect
 import M3e.Element as Element
 import M3e.LoadingIndicator as LoadingIndicator
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-nodeWith : List (LoadingIndicator.Option msg) -> Node.Node msg
+nodeWith : List (LoadingIndicator.Option msg) -> Node msg
 nodeWith opts =
     LoadingIndicator.view opts |> Element.toNode
 

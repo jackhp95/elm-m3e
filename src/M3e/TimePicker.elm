@@ -36,7 +36,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 
@@ -57,8 +57,8 @@ type alias Config msg =
     , step : Maybe Int
     , required : Bool
     , disabled : Bool
-    , hint : Maybe (Node.Node msg)
-    , error : Maybe (Node.Node msg)
+    , hint : Maybe (Node msg)
+    , error : Maybe (Node msg)
     , onChange : Maybe (String -> msg)
     }
 

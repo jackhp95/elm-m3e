@@ -3,13 +3,13 @@ module M3e.StepperTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import M3e.Stepper as Stepper
 import Test exposing (Test, describe, test)
 
 
-step1 : Element.Element { step : Element.Supported } msg
+step1 : Element { step : Element.Supported } msg
 step1 =
     Stepper.step { label = "Shipping" }
         [ Stepper.stepId "s1"
@@ -18,7 +18,7 @@ step1 =
         ]
 
 
-step2 : Element.Element { step : Element.Supported } msg
+step2 : Element { step : Element.Supported } msg
 step2 =
     Stepper.step { label = "Payment" }
         [ Stepper.stepId "s2"
@@ -26,12 +26,12 @@ step2 =
         ]
 
 
-actionButton : Element.Element { button : Element.Supported } msg
+actionButton : Element { button : Element.Supported } msg
 actionButton =
     Button.view { label = "Next", variant = Button.Filled } []
 
 
-panel1 : Element.Element { stepPanel : Element.Supported } msg
+panel1 : Element { stepPanel : Element.Supported } msg
 panel1 =
     Stepper.stepPanel { content = [] }
         [ Stepper.panelId "p1"
@@ -39,12 +39,12 @@ panel1 =
         ]
 
 
-panel2 : Element.Element { stepPanel : Element.Supported } msg
+panel2 : Element { stepPanel : Element.Supported } msg
 panel2 =
     Stepper.stepPanel { content = [] } [ Stepper.panelId "p2" ]
 
 
-stripNode : List (Stepper.Option msg) -> Node.Node msg
+stripNode : List (Stepper.Option msg) -> Node msg
 stripNode opts =
     Stepper.view
         { steps = [ step1, step2 ]

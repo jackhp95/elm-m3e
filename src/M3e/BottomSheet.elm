@@ -44,7 +44,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| A bottom sheet configuration option. Build with the option functions below
@@ -111,7 +111,7 @@ type alias Config msg =
     , handle : Bool
     , hideable : Bool
     , modal : Bool
-    , header : List (Node.Node msg)
+    , header : List (Node msg)
     , actions : List (Element { button : Supported } msg)
     }
 
@@ -192,7 +192,7 @@ rendered node, so it lives INSIDE the button element. The sentinel tells the
 parent `m3e-bottom-sheet` to close when the button is activated. Handles only
 `Element` nodes; Text/Raw nodes pass through unchanged (degenerate but safe).
 -}
-injectSheetAction : Node.Node msg -> Node.Node msg
+injectSheetAction : Node msg -> Node msg
 injectSheetAction node =
     case node of
         Node.Element el ->

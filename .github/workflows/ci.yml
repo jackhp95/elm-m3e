@@ -47,11 +47,10 @@ jobs:
         run: node_modules/.bin/elm-test
 
       - name: elm-review
-        # docs/ provides elm-review (root doesn't have it as a direct dep).
-        run: |
-          cd docs && npm ci
-          cd ..
-          docs/node_modules/.bin/elm-review
+        # Run from docs/ so elm-review picks up docs/elm.json, which covers
+        # the docs app (app/) in addition to the library (../src, ../vendor/elm-m3e).
+        # The review config lives in the repo root (../review relative to docs/).
+        run: cd docs && npm ci && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm
 
   docs:
     name: Docs — reference pipeline + production build

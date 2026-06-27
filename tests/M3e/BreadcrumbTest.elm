@@ -3,28 +3,28 @@ module M3e.BreadcrumbTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Breadcrumb as Breadcrumb
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-crumb1 : Element.Element { breadcrumbItem : Element.Supported } msg
+crumb1 : Element { breadcrumbItem : Element.Supported } msg
 crumb1 =
     Breadcrumb.item { label = "Dashboard" } [ Breadcrumb.itemHref "/dashboard" ]
 
 
-crumb2 : Element.Element { breadcrumbItem : Element.Supported } msg
+crumb2 : Element { breadcrumbItem : Element.Supported } msg
 crumb2 =
     Breadcrumb.item { label = "Reports" } [ Breadcrumb.itemCurrent True ]
 
 
-parentNode : List (Breadcrumb.BreadcrumbOption msg) -> Node.Node msg
+parentNode : List (Breadcrumb.BreadcrumbOption msg) -> Node msg
 parentNode opts =
     Breadcrumb.view { items = [ crumb1, crumb2 ] } opts
         |> Element.toNode
 
 
-itemNode : List (Breadcrumb.ItemOption msg) -> Node.Node msg
+itemNode : List (Breadcrumb.ItemOption msg) -> Node msg
 itemNode opts =
     Breadcrumb.item { label = "Home" } opts
         |> Element.toNode
@@ -106,7 +106,7 @@ suite =
         ]
 
 
-textContent : Node.Node msg -> Maybe String
+textContent : Node msg -> Maybe String
 textContent n =
     case n of
         Node.Text s ->

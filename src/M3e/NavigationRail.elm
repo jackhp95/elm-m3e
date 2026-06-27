@@ -83,8 +83,8 @@ itemSelected b =
 {-| Fire a message when this destination is chosen.
 -}
 itemOnClick : msg -> ItemOption msg
-itemOnClick msg_ =
-    Internal.option (\c -> { c | onClick = Just msg_ })
+itemOnClick msg =
+    Internal.option (\c -> { c | onClick = Just msg })
 
 
 {-| Attach a badge count to the item. Rendered as an `<m3e-badge>` inside the

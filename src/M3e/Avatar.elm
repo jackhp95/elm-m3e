@@ -38,7 +38,7 @@ An avatar with no content option renders an empty circle.
 
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 
@@ -94,7 +94,7 @@ view req opts =
         content =
             Internal.applyOptions opts NoContent
 
-        children : List (Node.Node msg)
+        children : List (Node msg)
         children =
             case content of
                 ImgContent src ->

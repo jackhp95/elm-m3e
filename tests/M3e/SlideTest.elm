@@ -3,13 +3,13 @@ module M3e.SlideTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Slide as Slide
 import M3e.Text as Text
 import Test exposing (Test, describe, test)
 
 
-groupNode : List (Slide.Option msg) -> Node.Node msg
+groupNode : List (Slide.Option msg) -> Node msg
 groupNode opts =
     Slide.view
         { slides =

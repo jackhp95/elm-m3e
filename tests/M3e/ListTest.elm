@@ -2,9 +2,9 @@ module M3e.ListTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.List as MList
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
@@ -12,7 +12,7 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-listNode : List (MList.Option msg) -> List (Element.Element { listItem : Element.Supported } msg) -> Node.Node msg
+listNode : List (MList.Option msg) -> List (Element { listItem : Element.Supported } msg) -> Node msg
 listNode opts items =
     MList.view { items = items } opts
         |> Element.toNode

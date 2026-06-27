@@ -2,8 +2,8 @@ module M3e.SelectTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import M3e.Select as Select
 import Test exposing (Test, describe, test)
 
@@ -12,28 +12,28 @@ import Test exposing (Test, describe, test)
 -- Helpers ---------------------------------------------------------------------
 
 
-viewNode : List (Select.Option String) -> Node.Node String
+viewNode : List (Select.Option String) -> Node String
 viewNode opts =
     Select.view { label = "Plan" } opts
         |> Element.toNode
 
 
-labelChild : Node.Node msg -> Maybe (Node.Node msg)
+labelChild : Node msg -> Maybe (Node msg)
 labelChild node =
     Node.childrenOf node |> List.head
 
 
-selectChild : Node.Node msg -> Maybe (Node.Node msg)
+selectChild : Node msg -> Maybe (Node msg)
 selectChild node =
     Node.childrenOf node |> List.drop 1 |> List.head
 
 
-freeOpt : Element.Element { selectOption : Element.Supported } String
+freeOpt : Element { selectOption : Element.Supported } String
 freeOpt =
     Select.option { value = "free", label = "Free" } []
 
 
-proOpt : Element.Element { selectOption : Element.Supported } String
+proOpt : Element { selectOption : Element.Supported } String
 proOpt =
     Select.option { value = "pro", label = "Pro" } [ Select.optionSelected True ]
 
@@ -66,7 +66,7 @@ suite =
         , test "m3e-select child has 'id' matching the label's 'for' (fix #13)" <|
             \_ ->
                 let
-                    node : Node.Node String
+                    node : Node String
                     node =
                         viewNode []
 
@@ -87,7 +87,7 @@ suite =
         , test "id overrides derived id on both label 'for' and select 'id'" <|
             \_ ->
                 let
-                    node : Node.Node String
+                    node : Node String
                     node =
                         viewNode [ Select.id "plan-sel" ]
 

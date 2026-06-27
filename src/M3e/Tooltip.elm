@@ -42,7 +42,7 @@ import Cem.M3e.Tooltip as CemPlain
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 
@@ -222,7 +222,7 @@ rich req opts =
         c =
             List.foldl applyRich defaultRichConfig opts
 
-        subheadNodes : List (Node.Node msg)
+        subheadNodes : List (Node msg)
         subheadNodes =
             case c.subhead of
                 Nothing ->
@@ -231,11 +231,11 @@ rich req opts =
                 Just r ->
                     [ Node.withSlot "subhead" (Element.toNode r) ]
 
-        contentNodes : List (Node.Node msg)
+        contentNodes : List (Node msg)
         contentNodes =
             List.map Element.toNode req.content
 
-        actionNodes : List (Node.Node msg)
+        actionNodes : List (Node msg)
         actionNodes =
             case c.actions of
                 [] ->

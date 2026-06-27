@@ -42,7 +42,7 @@ import Cem.M3e.Stepper as CemStepper
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| Where the step header sits relative to panel content (horizontal mode).
@@ -303,7 +303,7 @@ The generated `Cem.M3e.StepPanel.actionsSlot` binding emits `slot="actions-"`
 (a stray trailing dash), which would mis-slot the content. We write the
 correct value here.
 -}
-actionsNodes : List (Element { button : Supported } msg) -> List (Node.Node msg)
+actionsNodes : List (Element { button : Supported } msg) -> List (Node msg)
 actionsNodes xs =
     case xs of
         [] ->

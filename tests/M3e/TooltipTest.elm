@@ -3,8 +3,8 @@ module M3e.TooltipTest exposing (suite)
 import Expect
 import Html
 import Json.Encode as Encode
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import M3e.Tooltip as Tooltip
 import Test exposing (Test, describe, test)
 
@@ -13,18 +13,18 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-fakeElement : Element.Element { element : Element.Supported } msg
+fakeElement : Element { element : Element.Supported } msg
 fakeElement =
     Element.element { tag = "span" } [] []
 
 
-plainNode : List (Tooltip.PlainOption msg) -> Node.Node msg
+plainNode : List (Tooltip.PlainOption msg) -> Node msg
 plainNode opts =
     Tooltip.plain { anchorId = "my-btn", label = "Delete" } opts
         |> Element.toNode
 
 
-richNode : List (Tooltip.RichOption msg) -> Node.Node msg
+richNode : List (Tooltip.RichOption msg) -> Node msg
 richNode opts =
     Tooltip.rich { anchorId = "my-btn", content = [] } opts
         |> Element.toNode

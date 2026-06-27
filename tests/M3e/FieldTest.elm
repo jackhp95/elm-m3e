@@ -2,16 +2,16 @@ module M3e.FieldTest exposing (suite)
 
 import Expect
 import Html
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Field as Field
 import M3e.Label as Label
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
 {-| An element-bearing control (the only kind Field accepts).
 -}
-inputElement : Element.Element { s | element : Element.Supported } msg
+inputElement : Element { s | element : Element.Supported } msg
 inputElement =
     Element.element { tag = "input" } [ Node.attribute "type" "email" ] []
 
@@ -22,7 +22,7 @@ suite =
         [ test "label[for] and control[id] wired to the same generated id" <|
             \_ ->
                 let
-                    node : Node.Node msg
+                    node : Node msg
                     node =
                         Field.view
                             { id = "field-email"
@@ -30,7 +30,7 @@ suite =
                             , control = inputElement
                             }
 
-                    kids : List (Node.Node msg)
+                    kids : List (Node msg)
                     kids =
                         Node.childrenOf node
                 in

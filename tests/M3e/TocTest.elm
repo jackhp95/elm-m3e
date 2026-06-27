@@ -3,12 +3,12 @@ module M3e.TocTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Toc as Toc
 import Test exposing (Test, describe, test)
 
 
-node : String -> List (Toc.Option msg) -> Node.Node msg
+node : String -> List (Toc.Option msg) -> Node msg
 node forId opts =
     Toc.view { for = forId } opts |> Element.toNode
 

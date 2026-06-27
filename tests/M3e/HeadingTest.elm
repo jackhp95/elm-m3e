@@ -4,18 +4,18 @@ import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Heading as Heading
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-nodeWith : { label : String, variant : Heading.Variant } -> List (Heading.Option msg) -> Node.Node msg
+nodeWith : { label : String, variant : Heading.Variant } -> List (Heading.Option msg) -> Node msg
 nodeWith req opts =
     Heading.view req opts |> Element.toNode
 
 
 {-| Extract the text of the first Text child.
 -}
-firstChildText : Node.Node msg -> Maybe String
+firstChildText : Node msg -> Maybe String
 firstChildText n =
     case Node.childrenOf n of
         (Node.Text s) :: _ ->

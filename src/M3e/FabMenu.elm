@@ -46,7 +46,7 @@ import Cem.M3e.FabMenu as Cem
 import Json.Decode as Decode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| Appearance variant of the menu surface (default `Primary`).
@@ -125,7 +125,7 @@ view req opts =
                 { variant = Primary, menuId = "fab-menu" }
 
         -- The FAB trigger: m3e-fab with aria-label + icon + menu-trigger inside
-        fabTrigger : Node.Node msg
+        fabTrigger : Node msg
         fabTrigger =
             Node.element "m3e-fab"
                 [ Node.attribute "aria-label" req.name ]
@@ -140,7 +140,7 @@ view req opts =
                 ]
 
         -- The FAB menu: m3e-fab-menu with id + variant + items
-        fabMenu : Node.Node msg
+        fabMenu : Node msg
         fabMenu =
             Node.element "m3e-fab-menu"
                 [ Node.attribute "id" c.menuId

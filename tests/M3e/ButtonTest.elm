@@ -5,11 +5,11 @@ import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Element as Element
 import M3e.Icon as Icon
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-node : String -> List (Button.Option msg) -> Node.Node msg
+node : String -> List (Button.Option msg) -> Node msg
 node label opts =
     Button.view { label = label, variant = Button.Filled } opts |> Element.toNode
 
@@ -38,7 +38,7 @@ suite =
         ]
 
 
-childText : Node.Node msg -> Maybe String
+childText : Node msg -> Maybe String
 childText n =
     case n of
         Node.Text s ->

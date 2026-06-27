@@ -8,12 +8,12 @@ import M3e.Card as Card
 import M3e.Chip as Chip
 import M3e.Element as Element
 import M3e.IconButton as IconButton
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Search as Search
 import Test exposing (Test, describe, test)
 
 
-firstChild : Node.Node msg -> Maybe (Node.Node msg)
+firstChild : Node msg -> Maybe (Node msg)
 firstChild node =
     Node.childrenOf node |> List.head
 

@@ -40,7 +40,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| Which edge the panel anchors to. Default `End`.
@@ -108,7 +108,7 @@ type alias Config msg =
     , side : Side
     , modal : Bool
     , onClose : Maybe msg
-    , body : List (Node.Node msg)
+    , body : List (Node msg)
     , actions : List (Element { button : Supported } msg)
     }
 
@@ -231,7 +231,7 @@ closedDecoder s msg =
 
 {-| The panel node slotted into the start or end drawer slot.
 -}
-panelNode : Config msg -> Node.Node msg
+panelNode : Config msg -> Node msg
 panelNode c =
     let
         slotName : String

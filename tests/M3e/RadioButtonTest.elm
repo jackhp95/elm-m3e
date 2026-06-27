@@ -3,7 +3,7 @@ module M3e.RadioButtonTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.RadioButton as RadioButton
 import Test exposing (Test, describe, test)
 
@@ -15,7 +15,7 @@ options =
     ]
 
 
-groupNode : Maybe String -> List (RadioButton.Option msg) -> Node.Node msg
+groupNode : Maybe String -> List (RadioButton.Option msg) -> Node msg
 groupNode sel opts =
     RadioButton.view
         { name = "Billing cycle"

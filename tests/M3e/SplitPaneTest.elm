@@ -3,7 +3,7 @@ module M3e.SplitPaneTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element)
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.SplitPane as SplitPane
 import M3e.Text as Text
 import Test exposing (Test, describe, test)
@@ -12,7 +12,7 @@ import Test exposing (Test, describe, test)
 node :
     { start : List (Element any msg), end : List (Element any msg) }
     -> List (SplitPane.Option msg)
-    -> Node.Node msg
+    -> Node msg
 node req opts =
     SplitPane.view req opts |> Element.toNode
 

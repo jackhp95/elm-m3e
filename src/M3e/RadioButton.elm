@@ -42,7 +42,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| Configuration option for a radio group, built by the helpers below.
@@ -124,7 +124,7 @@ renderOption :
     -> Maybe String
     -> Config msg
     -> { value : String, label : String }
-    -> Node.Node msg
+    -> Node msg
 renderOption groupName selected cfg opt =
     let
         isChecked : Bool

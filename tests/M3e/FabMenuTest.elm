@@ -3,7 +3,7 @@ module M3e.FabMenuTest exposing (suite)
 import Expect
 import M3e.Element as Element exposing (Element)
 import M3e.FabMenu as FabMenu
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
@@ -18,14 +18,14 @@ req =
     }
 
 
-node : List (FabMenu.Option ()) -> Node.Node ()
+node : List (FabMenu.Option ()) -> Node ()
 node opts =
     FabMenu.view req opts |> Element.toNode
 
 
 {-| Get the m3e-fab-menu node (second child of the root div).
 -}
-fabMenuNode : Node.Node msg -> Maybe (Node.Node msg)
+fabMenuNode : Node msg -> Maybe (Node msg)
 fabMenuNode n =
     Node.childrenOf n
         |> List.drop 1
@@ -34,7 +34,7 @@ fabMenuNode n =
 
 {-| Get the m3e-fab trigger node (first child of the root div).
 -}
-fabTriggerNode : Node.Node msg -> Maybe (Node.Node msg)
+fabTriggerNode : Node msg -> Maybe (Node msg)
 fabTriggerNode n =
     Node.childrenOf n
         |> List.head

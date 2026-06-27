@@ -2,19 +2,19 @@ module M3e.TextHighlightTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.TextHighlight as TextHighlight
 import Test exposing (Test, describe, test)
 
 
-item : String -> Element.Element any msg
+item : String -> Element any msg
 item tag =
     Internal.fromNode (Node.element tag [] [])
 
 
-nodeWith : List (TextHighlight.Option msg) -> List (Element.Element any msg) -> Node.Node msg
+nodeWith : List (TextHighlight.Option msg) -> List (Element any msg) -> Node msg
 nodeWith opts content =
     TextHighlight.view { content = content } opts |> Element.toNode
 

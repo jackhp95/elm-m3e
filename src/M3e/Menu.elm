@@ -60,7 +60,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 
@@ -536,12 +536,12 @@ itemChildren :
     Maybe (Element { icon : Supported } msg)
     -> Maybe (Element { icon : Supported } msg)
     -> String
-    -> List (Node.Node msg)
-itemChildren leadingIcon_ trailingIcon_ label =
+    -> List (Node msg)
+itemChildren leadingIcon trailingIcon label =
     List.filterMap identity
-        [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) leadingIcon_
+        [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) leadingIcon
         , Just (Node.text label)
-        , Maybe.map (\i -> Node.withSlot "trailing-icon" (Element.toNode i)) trailingIcon_
+        , Maybe.map (\i -> Node.withSlot "trailing-icon" (Element.toNode i)) trailingIcon
         ]
 
 

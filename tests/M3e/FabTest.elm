@@ -4,11 +4,11 @@ import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Fab as Fab
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-node : String -> List (Fab.Option msg) -> Node.Node msg
+node : String -> List (Fab.Option msg) -> Node msg
 node icon opts =
     Fab.view { icon = icon, name = "Add item" } opts |> Element.toNode
 

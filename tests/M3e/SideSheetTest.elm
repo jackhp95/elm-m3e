@@ -4,12 +4,12 @@ import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.SideSheet as SideSheet
 import Test exposing (Test, describe, test)
 
 
-node : List (SideSheet.Option msg) -> Node.Node msg
+node : List (SideSheet.Option msg) -> Node msg
 node opts =
     SideSheet.view { content = [] } opts
         |> Element.toNode
@@ -44,7 +44,7 @@ suite =
         , test "default side is End — 'end' property present, 'start' absent" <|
             \_ ->
                 let
-                    n : Node.Node msg
+                    n : Node msg
                     n =
                         node []
                 in
@@ -112,7 +112,7 @@ suite =
         ]
 
 
-attrsOf : Node.Node msg -> List (Node.Attr msg)
+attrsOf : Node msg -> List (Node.Attr msg)
 attrsOf n =
     case n of
         Node.Element el ->

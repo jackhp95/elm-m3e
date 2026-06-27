@@ -1,16 +1,19 @@
 module ReviewConfig exposing (config)
 
-{-| The elm-review configuration for the `m3e-builder` MISI component library.
+{-| The elm-review configuration for the `m3e-builder` MISI component library
+and the `docs/` application.
 
-The library lives in `src/Ui/*` and wraps the generated `vendor/elm-m3e/M3e/*`
-bindings. This config is run from the repo root against the application
-`elm.json` (whose `source-directories` are `src` + `vendor/elm-m3e`) with
-`docs/node_modules/.bin/elm-review src --config review`.
+The library lives in `src/M3e/*`; the docs app lives in `docs/app/`. This
+config is now run from `docs/` against `docs/elm.json` (whose source-dirs cover
+`app`, `docs/src`, `.elm-pages`, `../src`, `../vendor/elm-m3e`) via:
+
+    cd docs && node_modules /. bin / elm - review --config ../review --compiler node_modules/.bin/elm
 
 See `review/README.md` for the rationale behind each rule and every relaxation.
 
 -}
 
+import CognitiveComplexity
 import Docs.ReviewAtDocs
 import Docs.ReviewLinksAndSections
 import Docs.UpToDateReadmeLinks
@@ -19,13 +22,18 @@ import NoConfusingPrefixOperator
 import NoDebug.Log
 import NoDebug.TodoOrToString
 import NoExposingEverything
+import NoFunctionOutsideOfModules
 import NoImportingEverything
 import NoMissingTypeAnnotation
 import NoMissingTypeAnnotationInLetIn
 import NoMissingTypeExpose
+import NoModuleOnExposedNames
 import NoPrematureLetComputation
 import NoProprietaryDsClasses
 import NoRawAttributeInUi
+import NoRedundantlyQualifiedType
+import NoSimpleLetBody
+import NoUnnecessaryTrailingUnderscore
 import NoUntypedSlot
 import NoUnused.CustomTypeConstructorArgs
 import NoUnused.CustomTypeConstructors
@@ -47,16 +55,33 @@ config =
         , docs
         , correctness
         , materialDiscipline
+        , codeStyle
+        , complexity
+        , toHtmlGate
         ]
 
 
 {-| `vendor/elm-m3e/` is generated. Style and documentation rules should not
 gate on generated code; correctness rules (`Simplify`, `NoDebug.*`, and the
 Material-discipline rules) still run on it.
+
+Two path forms: `"vendor/elm-m3e/"` (from repo root) and
+`"../vendor/elm-m3e/"` (from docs/ when docs/elm.json lists `../vendor/elm-m3e`
+as a source directory).
+
 -}
 ignoreVendor : Rule -> Rule
 ignoreVendor =
-    Rule.ignoreErrorsForDirectories [ "vendor/elm-m3e/" ]
+    Rule.ignoreErrorsForDirectories [ "vendor/elm-m3e/", "../vendor/elm-m3e/" ]
+
+
+{-| `.elm-pages/` contains auto-generated routing and metadata. Treat it the
+same as vendor — correctness rules still run, style rules do not.
+-}
+ignoreGenerated : Rule -> Rule
+ignoreGenerated rule =
+    rule
+        |> Rule.ignoreErrorsForDirectories [ "vendor/elm-m3e/", "../vendor/elm-m3e/", ".elm-pages/" ]
 
 
 
@@ -91,10 +116,15 @@ bindings are equally "unused-by-self".) See README §"Relaxed rules".
 `Config` private (the opaque-builder design, ADR 0006), which the rule reads as
 a "private type used by an exposed type". Hiding `Config` is the point.
 
+Two path forms are listed: `"src/M3e/"` (when review runs from the repo root
+against root elm.json) and `"../src/M3e/"` (when it runs from `docs/` against
+docs/elm.json, which lists `../src` as a source directory). Both must be
+present so that the ignore works regardless of working directory.
+
 -}
 ignorePublicApi : Rule -> Rule
 ignorePublicApi =
-    Rule.ignoreErrorsForDirectories [ "src/M3e/" ]
+    Rule.ignoreErrorsForDirectories [ "src/M3e/", "../src/M3e/" ]
 
 
 
@@ -159,3 +189,70 @@ rules would otherwise flag. They are not part of the published surface.
 ignoreTests : Rule -> Rule
 ignoreTests =
     Rule.ignoreErrorsForDirectories [ "tests/" ]
+
+
+
+-- CODE STYLE -----------------------------------------------------------------
+
+
+{-| Code-style rules from `jfmengels/elm-review-code-style`.
+
+  - `NoSimpleLetBody` — a let whose body is just a reference to its last
+    binding is redundant; the binding can inline directly. Auto-fixable.
+  - `NoUnnecessaryTrailingUnderscore` — trailing underscores on names that
+    don't shadow anything are noise. Auto-fixable.
+  - `NoRedundantlyQualifiedType` — `Set.Set`, `Dict.Dict` etc. can be written
+    as just `Set`, `Dict` when the type is already in scope. Auto-fixable.
+
+`NoModuleOnExposedNames` from `sparksp/elm-review-imports` — if a name is
+already exposed on import, calling it via the module alias is redundant. Auto-fixable.
+
+All four rules are ignored for generated dirs (vendor + .elm-pages).
+
+-}
+codeStyle : List Rule
+codeStyle =
+    [ NoSimpleLetBody.rule |> ignoreGenerated
+    , NoUnnecessaryTrailingUnderscore.rule |> ignoreGenerated
+    , NoRedundantlyQualifiedType.rule |> ignoreGenerated
+    , NoModuleOnExposedNames.rule |> ignoreGenerated
+    ]
+
+
+
+-- COGNITIVE COMPLEXITY -------------------------------------------------------
+
+
+{-| Flag functions with a cognitive complexity score above 15. Study routes
+(Rally, Shrine, Crane, Name\_) are intentionally complex; their findings go
+into the suppression baseline rather than forcing a refactor. Generated dirs
+are ignored.
+-}
+complexity : List Rule
+complexity =
+    [ CognitiveComplexity.rule 15 |> ignoreGenerated
+    ]
+
+
+
+-- toHtml GATE ----------------------------------------------------------------
+
+
+{-| `M3e.Node.toHtml` is the single escape hatch from the Node IR to Html. It
+must only be called from `Shared` (the one place the app assembles a real
+Html.Html tree) and from within `M3e.Node` itself (for the recursive traversal).
+
+A violation here means a route or helper is bypassing the IR — that is a real
+regression, not legacy debt, and must NOT be suppressed.
+
+The test suite (which lives in `../tests/` relative to docs/elm.json) calls
+`Node.toHtml` to produce `Html` values for assertion; those are acceptable.
+Because the review is run from `docs/` the path prefix is `../tests/`.
+
+-}
+toHtmlGate : List Rule
+toHtmlGate =
+    [ NoFunctionOutsideOfModules.rule
+        [ ( [ "M3e.Node.toHtml" ], [ "Shared", "M3e.Node" ] ) ]
+        |> Rule.ignoreErrorsForDirectories [ "../tests/", "tests/" ]
+    ]

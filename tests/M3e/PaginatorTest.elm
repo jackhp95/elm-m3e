@@ -3,12 +3,12 @@ module M3e.PaginatorTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Paginator as Paginator
 import Test exposing (Test, describe, test)
 
 
-node : List (Paginator.Option msg) -> Node.Node msg
+node : List (Paginator.Option msg) -> Node msg
 node opts =
     Paginator.view { length = 300 } opts
         |> Element.toNode

@@ -5,17 +5,17 @@ import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Disclosure as Disclosure
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-sectionNode : List (Disclosure.SectionOption msg) -> Node.Node msg
+sectionNode : List (Disclosure.SectionOption msg) -> Node msg
 sectionNode opts =
     Disclosure.section { header = "FAQ", content = [] } opts
         |> Element.toNode
 
 
-accordionNode : List (Disclosure.SectionOption msg) -> List (Disclosure.Option msg) -> Node.Node msg
+accordionNode : List (Disclosure.SectionOption msg) -> List (Disclosure.Option msg) -> Node msg
 accordionNode secOpts accOpts =
     Disclosure.view
         { sections = [ Disclosure.section { header = "FAQ", content = [] } secOpts ] }
@@ -134,7 +134,7 @@ suite =
         ]
 
 
-nodeText : Node.Node msg -> Maybe String
+nodeText : Node msg -> Maybe String
 nodeText n =
     case n of
         Node.Text s ->

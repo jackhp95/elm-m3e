@@ -4,12 +4,12 @@ import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Toolbar as Toolbar
 import Test exposing (Test, describe, test)
 
 
-node : List (Toolbar.Option msg) -> Node.Node msg
+node : List (Toolbar.Option msg) -> Node msg
 node opts =
     Toolbar.view { content = [] } opts
         |> Element.toNode

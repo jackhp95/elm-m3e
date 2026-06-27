@@ -7,7 +7,7 @@ import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.NavigationDrawer as NavigationDrawer
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
@@ -17,7 +17,7 @@ import Test exposing (Test, describe, test)
 
 {-| Render the container with one link entry and return the IR node.
 -}
-viewNode : List (NavigationDrawer.Option String) -> Node.Node String
+viewNode : List (NavigationDrawer.Option String) -> Node String
 viewNode opts =
     NavigationDrawer.view
         { entries =
@@ -29,27 +29,27 @@ viewNode opts =
 
 {-| The `<m3e-nav-menu>` child of the container.
 -}
-navMenuChild : Node.Node msg -> Maybe (Node.Node msg)
+navMenuChild : Node msg -> Maybe (Node msg)
 navMenuChild node =
     Node.childrenOf node |> List.head
 
 
 {-| Items inside the nav-menu (children of `<m3e-nav-menu>`).
 -}
-navMenuItems : Node.Node msg -> List (Node.Node msg)
+navMenuItems : Node msg -> List (Node msg)
 navMenuItems node =
     navMenuChild node
         |> Maybe.map Node.childrenOf
         |> Maybe.withDefault []
 
 
-linkNode : List (NavigationDrawer.LinkOption String) -> Node.Node String
+linkNode : List (NavigationDrawer.LinkOption String) -> Node String
 linkNode opts =
     NavigationDrawer.link { label = "Overview", href = "/docs" } opts
         |> Element.toNode
 
 
-groupNode : List (Node.Node String) -> List (NavigationDrawer.GroupOption String) -> Node.Node String
+groupNode : List (Node String) -> List (NavigationDrawer.GroupOption String) -> Node String
 groupNode childNodes opts =
     NavigationDrawer.group
         { label = "Docs" }
@@ -142,7 +142,7 @@ suite =
         , test "content option adds extra children after nav-menu" <|
             \_ ->
                 let
-                    n : Node.Node msg
+                    n : Node msg
                     n =
                         NavigationDrawer.view
                             { entries = [] }
@@ -157,7 +157,7 @@ suite =
         , test "entries become children of <m3e-nav-menu>" <|
             \_ ->
                 let
-                    node : Node.Node msg
+                    node : Node msg
                     node =
                         NavigationDrawer.view
                             { entries =
@@ -302,12 +302,12 @@ suite =
         , test "group children appear as children of the group item" <|
             \_ ->
                 let
-                    child : Node.Node msg
+                    child : Node msg
                     child =
                         NavigationDrawer.link { label = "Child", href = "/child" } []
                             |> Element.toNode
 
-                    g : Node.Node String
+                    g : Node String
                     g =
                         groupNode [ child ] []
                 in
@@ -318,7 +318,7 @@ suite =
         , test "nested group: child count matches" <|
             \_ ->
                 let
-                    children : List (Node.Node msg)
+                    children : List (Node msg)
                     children =
                         [ NavigationDrawer.link { label = "A", href = "/a" } []
                             |> Element.toNode
@@ -326,7 +326,7 @@ suite =
                             |> Element.toNode
                         ]
 
-                    g : Node.Node String
+                    g : Node String
                     g =
                         groupNode children []
                 in

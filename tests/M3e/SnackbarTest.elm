@@ -3,7 +3,7 @@ module M3e.SnackbarTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.Snackbar as Snackbar
 import Test exposing (Test, describe, test)
 
@@ -12,7 +12,7 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-snackNode : List (Snackbar.Option msg) -> Node.Node msg
+snackNode : List (Snackbar.Option msg) -> Node msg
 snackNode opts =
     Snackbar.view { message = "Saved." } opts
         |> Element.toNode
@@ -67,11 +67,11 @@ suite =
         , test "different messages produce different nodes (sanity)" <|
             \_ ->
                 let
-                    n1 : Node.Node msg
+                    n1 : Node msg
                     n1 =
                         Snackbar.view { message = "Saved." } [] |> Element.toNode
 
-                    n2 : Node.Node msg
+                    n2 : Node msg
                     n2 =
                         Snackbar.view { message = "Deleted." } [] |> Element.toNode
                 in

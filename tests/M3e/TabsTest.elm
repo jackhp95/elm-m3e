@@ -2,33 +2,33 @@ module M3e.TabsTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import M3e.Tabs as Tabs
 import Test exposing (Test, describe, test)
 
 
-tab1 : Element.Element { tab : Element.Supported } msg
+tab1 : Element { tab : Element.Supported } msg
 tab1 =
     Tabs.tab { label = "Tab 1" } [ Tabs.tabSelected True, Tabs.tabFor "p1" ]
 
 
-tab2 : Element.Element { tab : Element.Supported } msg
+tab2 : Element { tab : Element.Supported } msg
 tab2 =
     Tabs.tab { label = "Tab 2" } [ Tabs.tabFor "p2" ]
 
 
-panel1 : Element.Element { tabPanel : Element.Supported } msg
+panel1 : Element { tabPanel : Element.Supported } msg
 panel1 =
     Tabs.panel { content = [] } [ Tabs.panelId "p1" ]
 
 
-panel2 : Element.Element { tabPanel : Element.Supported } msg
+panel2 : Element { tabPanel : Element.Supported } msg
 panel2 =
     Tabs.panel { content = [] } [ Tabs.panelId "p2" ]
 
 
-stripNode : List (Tabs.Option msg) -> Node.Node msg
+stripNode : List (Tabs.Option msg) -> Node msg
 stripNode opts =
     Tabs.view
         { tabs = [ tab1, tab2 ]

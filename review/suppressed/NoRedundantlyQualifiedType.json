@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "automatically created by": "elm-review suppress",
+  "learn more": "elm-review suppress --help",
+  "suppressions": [
+    { "count": 8, "filePath": "app/Route/Components/Name_.elm" },
+    { "count": 1, "filePath": "app/Route/Reference.elm" },
+    { "count": 1, "filePath": "app/Route/Studies/Settings.elm" },
+    { "count": 1, "filePath": "app/Route/Studies/Shrine.elm" },
+    { "count": 1, "filePath": "app/Shared.elm" }
+  ]
+}

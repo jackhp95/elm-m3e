@@ -2,19 +2,19 @@ module M3e.ScrollContainerTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import M3e.ScrollContainer as ScrollContainer
 import Test exposing (Test, describe, test)
 
 
-contentItem : Element.Element any msg
+contentItem : Element any msg
 contentItem =
     Internal.fromNode (Node.element "p" [] [ Node.text "Some content" ])
 
 
-node : List (ScrollContainer.Option msg) -> Node.Node msg
+node : List (ScrollContainer.Option msg) -> Node msg
 node opts =
     ScrollContainer.view { content = [ contentItem, contentItem ] } opts
         |> Element.toNode

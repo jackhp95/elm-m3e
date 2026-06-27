@@ -40,7 +40,7 @@ import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| Appearance variant (default `Filled`).
@@ -97,7 +97,7 @@ view req opts =
             Internal.applyOptions opts { variant = Filled, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
-        leadingButton : Node.Node msg
+        leadingButton : Node msg
         leadingButton =
             Button.view
                 { label = req.label, variant = toButtonVariant c.variant }
@@ -114,7 +114,7 @@ view req opts =
                 |> Node.withSlot "leading-button"
 
         -- Trailing button: m3e-icon-button (FIX #16 — not a native <button>)
-        trailingButton : Node.Node msg
+        trailingButton : Node msg
         trailingButton =
             Node.element "m3e-icon-button"
                 (List.filterMap identity

@@ -33,7 +33,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 {-| An option configuring the `<m3e-slider>` element.
@@ -157,7 +157,7 @@ view req opts =
         )
 
 
-thumbNode : Config msg -> Node.Node msg
+thumbNode : Config msg -> Node msg
 thumbNode c =
     Node.element "m3e-slider-thumb"
         (List.filterMap identity

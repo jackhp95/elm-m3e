@@ -2,10 +2,10 @@ module M3e.NavigationBarTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
 import M3e.NavigationBar as NavBar
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
@@ -13,12 +13,12 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-fakeIcon : Element.Element { icon : Element.Supported } msg
+fakeIcon : Element { icon : Element.Supported } msg
 fakeIcon =
     Internal.fromNode (Node.element "m3e-icon" [] [ Node.text "home" ])
 
 
-navNode : List (NavBar.Option msg) -> List (Element.Element { navItem : Element.Supported } msg) -> Node.Node msg
+navNode : List (NavBar.Option msg) -> List (Element { navItem : Element.Supported } msg) -> Node msg
 navNode opts items =
     NavBar.view { items = items } opts
         |> Element.toNode
@@ -26,7 +26,7 @@ navNode opts items =
 
 {-| Build a bar item with a required label.
 -}
-barItem : String -> List (NavBar.ItemOption String) -> Element.Element { navItem : Element.Supported } String
+barItem : String -> List (NavBar.ItemOption String) -> Element { navItem : Element.Supported } String
 barItem lbl opts =
     NavBar.item { icon = fakeIcon, label = lbl } opts
 

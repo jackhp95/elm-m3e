@@ -4,18 +4,18 @@ import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Dialog as Dialog
-import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Element as Element exposing (Element)
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-node : List (Dialog.Option msg) -> Node.Node msg
+node : List (Dialog.Option msg) -> Node msg
 node opts =
     Dialog.view { headline = "Delete item?", content = [] } opts
         |> Element.toNode
 
 
-actionButton : Element.Element { button : Element.Supported } msg
+actionButton : Element { button : Element.Supported } msg
 actionButton =
     Button.view { label = "Confirm", variant = Button.Filled } []
 
@@ -115,7 +115,7 @@ suite =
         ]
 
 
-nodeText : Node.Node msg -> Maybe String
+nodeText : Node msg -> Maybe String
 nodeText n =
     case n of
         Node.Text s ->

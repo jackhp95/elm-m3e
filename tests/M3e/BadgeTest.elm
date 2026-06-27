@@ -3,18 +3,18 @@ module M3e.BadgeTest exposing (suite)
 import Expect
 import M3e.Badge as Badge
 import M3e.Element as Element
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-node : List (Badge.Option msg) -> Node.Node msg
+node : List (Badge.Option msg) -> Node msg
 node opts =
     Badge.view opts |> Element.toNode
 
 
 {-| Extract the text content of the first Text child of a node.
 -}
-firstChildText : Node.Node msg -> Maybe String
+firstChildText : Node msg -> Maybe String
 firstChildText n =
     case Node.childrenOf n of
         (Node.Text s) :: _ ->

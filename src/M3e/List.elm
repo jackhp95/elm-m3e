@@ -48,7 +48,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 
@@ -400,7 +400,7 @@ expandable req opts =
         c =
             Internal.applyOptions opts defaultExpandableConfig
 
-        childNodes : List (Node.Node msg)
+        childNodes : List (Node msg)
         childNodes =
             List.map (Node.withSlot "items" << Element.toNode) req.children
     in
@@ -557,14 +557,14 @@ decorationNodes :
     -> Maybe String
     -> Maybe (Element { element : Supported } msg)
     -> String
-    -> List (Node.Node msg)
-decorationNodes leading_ overline_ supporting_ trailing_ headline =
+    -> List (Node msg)
+decorationNodes leading overline supporting trailing headline =
     List.filterMap identity
-        [ Maybe.map (\r -> Node.withSlot "leading" (Element.toNode r)) leading_
-        , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "overline" ] [ Node.text s ]) overline_
+        [ Maybe.map (\r -> Node.withSlot "leading" (Element.toNode r)) leading
+        , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "overline" ] [ Node.text s ]) overline
         , Just (Node.text headline)
-        , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "supporting-text" ] [ Node.text s ]) supporting_
-        , Maybe.map (\r -> Node.withSlot "trailing" (Element.toNode r)) trailing_
+        , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "supporting-text" ] [ Node.text s ]) supporting
+        , Maybe.map (\r -> Node.withSlot "trailing" (Element.toNode r)) trailing
         ]
 
 
