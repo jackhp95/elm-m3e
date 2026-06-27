@@ -9,21 +9,13 @@ extracted API table.
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
+import Cem.M3e.Shape
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (Html, code, div, p, pre, section, text)
 import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
-import Cem.M3e.Shape
-import Markdown.Block as Block
-import Markdown.Parser
-import Markdown.Renderer
-import Pages.Url
-import PagesMsg exposing (PagesMsg)
-import RouteBuilder exposing (App, StatelessRoute)
-import Shared
-import SyntaxHighlight
 import M3e.AppBar as AppBar
 import M3e.Avatar as Avatar
 import M3e.Badge as Badge
@@ -80,6 +72,14 @@ import M3e.TimePicker as TimePicker
 import M3e.Toc as Toc
 import M3e.Toolbar as Toolbar
 import M3e.Tooltip as Tooltip
+import Markdown.Block as Block
+import Markdown.Parser
+import Markdown.Renderer
+import Pages.Url
+import PagesMsg exposing (PagesMsg)
+import RouteBuilder exposing (App, StatelessRoute)
+import Shared
+import SyntaxHighlight
 import UrlPath
 import View exposing (View)
 
@@ -578,7 +578,8 @@ noOp _ =
     PagesMsg.noOp
 
 
-{-| Convert any `Renderable` to `Html msg`. -}
+{-| Convert any `Renderable` to `Html msg`.
+-}
 toHtml : Renderable any msg -> Html msg
 toHtml r =
     r |> Renderable.toNode |> Node.toHtml
@@ -1415,7 +1416,26 @@ demoSections slug =
         "slide" ->
             [ usage
                 [ sub "Basic"
-                    (Slide.view { slides = [] } [] |> toHtml)
+                    (Slide.view
+                        { slides =
+                            List.map
+                                (\( label, swatch ) ->
+                                    Slide.slide
+                                        [ Renderable.html
+                                            (div [ class ("flex h-24 w-40 shrink-0 items-center justify-center rounded-md-corner-large text-on-surface " ++ swatch) ]
+                                                [ text label ]
+                                            )
+                                        ]
+                                )
+                                [ ( "Spring", "bg-tertiary-container" )
+                                , ( "Summer", "bg-primary-container" )
+                                , ( "Autumn", "bg-secondary-container" )
+                                , ( "Winter", "bg-surface-container-high" )
+                                ]
+                        }
+                        []
+                        |> toHtml
+                    )
                 ]
             ]
 
@@ -1690,7 +1710,18 @@ demoSections slug =
         "toc" ->
             [ usage
                 [ sub "Basic"
-                    (Toc.view { for = "demo-content" } [] |> toHtml)
+                    (div [ class "flex gap-6" ]
+                        [ Toc.view { for = "toc-demo-content" } [ Toc.title "On this page" ] |> toHtml
+                        , div [ Attr.id "toc-demo-content", class "min-w-0 flex-1 space-y-3" ]
+                            [ Html.h2 [ Attr.id "toc-overview", class "text-title-md" ] [ text "Overview" ]
+                            , p [ class "text-body-md text-on-surface-variant" ] [ text "The table of contents tracks the headings inside the referenced container." ]
+                            , Html.h2 [ Attr.id "toc-usage", class "text-title-md" ] [ text "Usage" ]
+                            , p [ class "text-body-md text-on-surface-variant" ] [ text "Point `for` at the id of the content element whose headings should be scanned." ]
+                            , Html.h2 [ Attr.id "toc-api", class "text-title-md" ] [ text "API" ]
+                            , p [ class "text-body-md text-on-surface-variant" ] [ text "The optional title and maxDepth options refine the rendered list." ]
+                            ]
+                        ]
+                    )
                 ]
             ]
 

@@ -666,7 +666,8 @@ accountRow account =
         [ List_.staticOverline account.institution
         , List_.staticSupporting (formatMoney account.cents)
         , List_.staticLeading
-            (Renderable.element { tag = "span" } []
+            (Renderable.element { tag = "span" }
+                []
                 [ Renderable.toNode (Icon.view { name = "account_circle" }) ]
             )
         ]
@@ -811,7 +812,8 @@ billRow bill =
                    )
             )
         , List_.staticLeading
-            (Renderable.element { tag = "span" } []
+            (Renderable.element { tag = "span" }
+                []
                 [ Renderable.toNode
                     (Icon.view
                         { name =
@@ -871,7 +873,7 @@ overviewCard =
             [ Renderable.html
                 (div [ class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6" ]
                     [ div [ class "relative grid place-items-center self-center sm:self-auto" ]
-                        [ span [ class "text-primary" ]
+                        [ span [ Attr.style "--m3e-progress-indicator-color" "var(--md-sys-color-primary)" ]
                             [ Progress.view { shape = Progress.Circular } [ Progress.value percent ]
                                 |> toHtml
                             ]
@@ -919,12 +921,13 @@ budgetCard category =
                             [ text (String.fromInt percent ++ "%") ]
                         ]
                     , span
-                        [ class
+                        [ class "block"
+                        , Attr.style "--m3e-progress-indicator-color"
                             (if over then
-                                "block text-error"
+                                "var(--md-sys-color-error)"
 
                              else
-                                "block text-primary"
+                                "var(--md-sys-color-primary)"
                             )
                         ]
                         [ Progress.view { shape = Progress.Linear } [ Progress.value percent ]
@@ -969,7 +972,8 @@ budgetLineRow ( label, cents ) =
     List_.item { headline = label }
         [ List_.staticSupporting (formatMoney (negate cents))
         , List_.staticLeading
-            (Renderable.element { tag = "span" } []
+            (Renderable.element { tag = "span" }
+                []
                 [ Renderable.toNode (Icon.view { name = "subdirectory_arrow_right" }) ]
             )
         ]

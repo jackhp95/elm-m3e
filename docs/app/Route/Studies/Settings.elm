@@ -374,8 +374,7 @@ breadcrumbBar model =
         [ Breadcrumb.view
             { items =
                 [ Breadcrumb.item { label = "Settings" } [ Breadcrumb.itemHref "/studies/settings" ]
-                , Breadcrumb.item { label = sectionTitle model.section } [ Breadcrumb.itemHref "/studies/settings" ]
-                , Breadcrumb.item { label = "Permissions" } [ Breadcrumb.itemCurrent True ]
+                , Breadcrumb.item { label = sectionTitle model.section } [ Breadcrumb.itemCurrent True ]
                 ]
             }
             []
@@ -695,11 +694,13 @@ privacyPanel model =
                     [ List_.actionItem { headline = "Download my data" }
                         [ List_.actionSupporting "Export a copy of your information."
                         , List_.actionLeading
-                            (Renderable.element { tag = "span" } []
+                            (Renderable.element { tag = "span" }
+                                []
                                 [ Renderable.toNode (Icon.view { name = "download" }) ]
                             )
                         , List_.actionTrailing
-                            (Renderable.element { tag = "span" } []
+                            (Renderable.element { tag = "span" }
+                                []
                                 [ Renderable.toNode (Icon.view { name = "chevron_right" }) ]
                             )
                         , List_.actionOnClick SaveRequested
@@ -707,11 +708,13 @@ privacyPanel model =
                     , List_.actionItem { headline = "Delete account" }
                         [ List_.actionSupporting "Permanently remove your account and data."
                         , List_.actionLeading
-                            (Renderable.element { tag = "span" } []
+                            (Renderable.element { tag = "span" }
+                                []
                                 [ Renderable.toNode (Icon.view { name = "delete" }) ]
                             )
                         , List_.actionTrailing
-                            (Renderable.element { tag = "span" } []
+                            (Renderable.element { tag = "span" }
+                                []
                                 [ Renderable.toNode (Icon.view { name = "chevron_right" }) ]
                             )
                         , List_.actionOnClick ResetRequested
