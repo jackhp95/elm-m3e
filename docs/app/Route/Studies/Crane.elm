@@ -24,6 +24,26 @@ import Html exposing (Html, div, p, section, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
 import Cem.M3e.Shape
+import M3e.Badge as Badge
+import M3e.BottomSheet as BottomSheet
+import M3e.Button as Button
+import M3e.Card as Card
+import M3e.DatePicker as DatePicker
+import M3e.Divider as Divider
+import M3e.FabMenu as FabMenu
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.IconButton as IconButton
+import M3e.LoadingIndicator as LoadingIndicator
+import M3e.Node as Node
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.SegmentedButton as SegmentedButton
+import M3e.Select as Select
+import M3e.Shape as Shape
+import M3e.Tabs as Tabs
+import M3e.Theme as Theme
+import M3e.TimePicker as TimePicker
+import M3e.Tooltip as Tooltip
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import Process
@@ -31,26 +51,13 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Set exposing (Set)
 import Shared
 import Task
-import Ui.Badge as Badge
-import Ui.BottomSheet as BottomSheet
-import Ui.Button as Button
-import Ui.Card as Card
-import Ui.DatePicker as DatePicker
-import Ui.Divider as Divider
-import Ui.FabMenu as FabMenu
-import Ui.Heading as Heading
-import Ui.Icon as Icon
-import Ui.IconButton as IconButton
-import Ui.LoadingIndicator as LoadingIndicator
-import Ui.SegmentedButton as SegmentedButton
-import Ui.Select as Select
-import Ui.Shape as Shape
-import Ui.Tabs as Tabs
-import Ui.Theme as Theme
-import Ui.TimePicker as TimePicker
-import Ui.Tooltip as Tooltip
 import UrlPath
 import View exposing (View)
+
+
+toHtml : Renderable any Msg -> Html Msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
 
 
 
@@ -108,7 +115,7 @@ type alias Destination =
     , rating : String
     , price : String
     , blurb : String
-    , shape : Shape.Name
+    , shape : Cem.M3e.Shape.Name
     , featured : Bool
     }
 
@@ -336,12 +343,11 @@ intro : Html Msg
 intro =
     section [ class "space-y-3" ]
         [ p [ class "text-label-lg uppercase tracking-wide text-primary" ] [ text "Studies" ]
-        , Heading.new
-            |> Heading.withVariant Heading.Display
-            |> Heading.withSize Heading.Small
-            |> Heading.withLevel 1
-            |> Heading.withContent (text "Crane")
-            |> Heading.view
+        , Heading.view { label = "Crane", variant = Heading.Display }
+            [ Heading.size Heading.Small
+            , Heading.level 1
+            ]
+            |> toHtml
         , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
             [ text "An expressive travel app: switch between Fly, Sleep, and Eat, set your trip, search fares, and browse a scrolling row of featured destinations — all composed from elm-m3e components under their own Crane-purple theme." ]
         ]
@@ -352,21 +358,26 @@ palette is scoped to the demo and doesn't leak into the docs chrome.
 -}
 craneApp : Model -> Html Msg
 craneApp model =
-    Theme.new
-        |> Theme.withSeedColor "#5D3FD3"
-        |> Theme.withVariant Theme.Expressive
-        |> Theme.withMotion Theme.MotionExpressive
-        |> Theme.view
-            [ div [ class "overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface" ]
-                [ appHeader model
-                , div [ class "space-y-6 p-4 sm:space-y-8 sm:p-6" ]
-                    [ searchForm model
-                    , featuredCarousel model
-                    , resultsSection model
+    Theme.view
+        { content =
+            [ Renderable.html
+                (div [ class "overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface" ]
+                    [ appHeader model
+                    , div [ class "space-y-6 p-4 sm:space-y-8 sm:p-6" ]
+                        [ searchForm model
+                        , featuredCarousel model
+                        , resultsSection model
+                        ]
+                    , itinerarySheet model
                     ]
-                , itinerarySheet model
-                ]
+                )
             ]
+        }
+        [ Theme.seedColor "#5D3FD3"
+        , Theme.variant Theme.Expressive
+        , Theme.motion Theme.MotionExpressive
+        ]
+        |> toHtml
 
 
 appHeader : Model -> Html Msg
@@ -374,17 +385,21 @@ appHeader model =
     div [ class "flex flex-col gap-3 bg-surface-container-low p-4 sm:gap-4 sm:p-6" ]
         [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
             [ div [ class "flex min-w-0 items-center gap-2" ]
-                [ Shape.new
-                    |> Shape.withName Cem.M3e.Shape.Sunny
-                    |> Shape.withClass "size-8 shrink-0 bg-primary text-on-primary grid place-items-center"
-                    |> Shape.withContent [ Icon.view (Icon.material "explore") ]
-                    |> Shape.view
-                , Heading.new
-                    |> Heading.withVariant Heading.Title
-                    |> Heading.withSize Heading.Large
-                    |> Heading.withLevel 2
-                    |> Heading.withContent (text "Crane")
-                    |> Heading.view
+                [ Shape.view
+                    { content =
+                        [ Renderable.html
+                            (div [ class "size-8 shrink-0 bg-primary text-on-primary grid place-items-center" ]
+                                [ Icon.view { name = "explore" } |> toHtml ]
+                            )
+                        ]
+                    }
+                    [ Shape.name Cem.M3e.Shape.Sunny ]
+                    |> toHtml
+                , Heading.view { label = "Crane", variant = Heading.Title }
+                    [ Heading.size Heading.Large
+                    , Heading.level 2
+                    ]
+                    |> toHtml
                 ]
             , planTripMenu model
             ]
@@ -395,35 +410,39 @@ appHeader model =
 
 categoryTabs : Model -> Html Msg
 categoryTabs model =
-    let
-        toTab cat =
-            Tabs.tab { value = cat, label = categoryLabel cat }
-                |> Tabs.withTabIcon (Icon.material (categoryIcon cat))
-    in
-    Tabs.new
-        { tabs = List.map toTab [ Fly, Sleep, Eat ]
-        , selected = model.category
-        , onChange = SelectCategory
+    Tabs.view
+        { tabs =
+            List.map
+                (\cat ->
+                    -- Note: tab icons (old Tabs.withTabIcon) have no equivalent
+                    -- in M3e.Tabs — the icon option has been dropped.
+                    Tabs.tab { label = categoryLabel cat }
+                        [ Tabs.tabSelected (cat == model.category)
+                        , Tabs.tabOnClick (SelectCategory cat)
+                        ]
+                )
+                [ Fly, Sleep, Eat ]
+        , panels = []
         }
-        |> Tabs.withId "crane-tabs"
-        |> Tabs.withStretch True
-        |> Tabs.view
+        [ Tabs.stretch True ]
+        |> toHtml
 
 
 planTripMenu : Model -> Html Msg
 planTripMenu _ =
-    FabMenu.new
-        { triggerIcon = Icon.material "add"
-        , triggerLabel = "Plan trip"
-        , variant = FabMenu.Primary
+    FabMenu.view
+        { triggerIcon = "add"
+        , name = "Plan trip"
         , items =
-            [ FabMenu.item { icon = Icon.material "flight", label = "Flights", onClick = PlanTrip Fly }
-            , FabMenu.item { icon = Icon.material "hotel", label = "Hotels", onClick = PlanTrip Sleep }
-            , FabMenu.item { icon = Icon.material "restaurant", label = "Restaurants", onClick = PlanTrip Eat }
+            [ FabMenu.item { icon = "flight", label = "Flights", onClick = PlanTrip Fly }
+            , FabMenu.item { icon = "hotel", label = "Hotels", onClick = PlanTrip Sleep }
+            , FabMenu.item { icon = "restaurant", label = "Restaurants", onClick = PlanTrip Eat }
             ]
         }
-        |> FabMenu.withId "crane-plan-trip"
-        |> FabMenu.view
+        [ FabMenu.variant FabMenu.Primary
+        , FabMenu.menuId "crane-plan-trip"
+        ]
+        |> toHtml
 
 
 
@@ -434,12 +453,11 @@ searchForm : Model -> Html Msg
 searchForm model =
     section [ class "space-y-4 rounded-md-corner-large bg-surface-container-lowest p-4 sm:p-5" ]
         [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
-            [ Heading.new
-                |> Heading.withVariant Heading.Title
-                |> Heading.withSize Heading.Medium
-                |> Heading.withLevel 3
-                |> Heading.withContent (text "Find your trip")
-                |> Heading.view
+            [ Heading.view { label = "Find your trip", variant = Heading.Title }
+                [ Heading.size Heading.Medium
+                , Heading.level 3
+                ]
+                |> toHtml
             , div [ class "-mx-1 overflow-x-auto px-1" ]
                 [ tripTypeToggle model ]
             ]
@@ -462,17 +480,16 @@ searchForm model =
 
 tripTypeToggle : Model -> Html Msg
 tripTypeToggle model =
-    SegmentedButton.single
-        { label = "Trip type"
-        , segments =
-            [ SegmentedButton.segment { value = RoundTrip, label = "Round-trip" }
-            , SegmentedButton.segment { value = OneWay, label = "One-way" }
+    SegmentedButton.view
+        { segments =
+            [ SegmentedButton.segment { label = "Round-trip", checked = model.tripType == RoundTrip }
+                [ SegmentedButton.segmentOnClick (SetTripType RoundTrip) ]
+            , SegmentedButton.segment { label = "One-way", checked = model.tripType == OneWay }
+                [ SegmentedButton.segmentOnClick (SetTripType OneWay) ]
             ]
-        , selected = Just model.tripType
-        , onChange = SetTripType
         }
-        |> SegmentedButton.withId "crane-trip-type"
-        |> SegmentedButton.view
+        []
+        |> toHtml
 
 
 destinationField : Model -> Html Msg
@@ -487,7 +504,7 @@ destinationField model =
                 , attribute "type" "button"
                 , Html.Events.onClick (SetQuery d.name)
                 ]
-                [ Icon.view (Icon.material (categoryIcon d.category))
+                [ Icon.view { name = categoryIcon d.category } |> toHtml
                 , span [ class "flex flex-col" ]
                     [ span [ class "text-body-md text-on-surface" ] [ text d.name ]
                     , span [ class "text-body-sm text-on-surface-variant" ] [ text d.country ]
@@ -497,7 +514,7 @@ destinationField model =
     div [ class "relative flex min-w-0 flex-col gap-1.5" ]
         [ span [ class "text-label-md text-on-surface-variant" ] [ text "Where to" ]
         , div [ class "flex min-h-12 items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2.5" ]
-            [ Icon.view (Icon.material "search")
+            [ Icon.view { name = "search" } |> toHtml
             , Html.input
                 [ class "min-w-0 flex-1 bg-transparent text-body-lg text-on-surface outline-none placeholder:text-on-surface-variant"
                 , attribute "placeholder" "Search destinations"
@@ -507,14 +524,11 @@ destinationField model =
                 ]
                 []
             , if model.query /= "" then
-                IconButton.new
-                    { icon = Icon.material "close"
-                    , label = "Clear search"
-                    , variant = IconButton.Standard
-                    }
-                    |> IconButton.withSize IconButton.ExtraSmall
-                    |> IconButton.withOnClick (SetQuery "")
-                    |> IconButton.view
+                IconButton.view { icon = "close", name = "Clear search" }
+                    [ IconButton.size IconButton.ExtraSmall
+                    , IconButton.onClick (SetQuery "")
+                    ]
+                    |> toHtml
 
               else
                 text ""
@@ -533,13 +547,13 @@ destinationField model =
 
 passengersField : Model -> Html Msg
 passengersField model =
-    Select.single
-        { label = "Passengers"
-        , options =
-            List.map
+    Select.view { label = "Passengers" }
+        [ Select.withId "crane-passengers"
+        , Select.withOptions
+            (List.map
                 (\n ->
                     Select.option
-                        { value = n
+                        { value = String.fromInt n
                         , label =
                             String.fromInt n
                                 ++ (if n == 1 then
@@ -549,13 +563,13 @@ passengersField model =
                                         " travelers"
                                    )
                         }
+                        [ Select.optionSelected (n == model.passengers) ]
                 )
                 [ 1, 2, 3, 4, 5, 6 ]
-        , selected = Just model.passengers
-        , onChange = SetPassengers
-        }
-        |> Select.withId "crane-passengers"
-        |> Select.view
+            )
+        , Select.onChange (\s -> SetPassengers (Maybe.withDefault 1 (String.toInt s)))
+        ]
+        |> toHtml
 
 
 departField : Model -> Html Msg
@@ -568,11 +582,13 @@ departField model =
             , value = model.depart
             , icon = "flight_takeoff"
             }
-        , DatePicker.new SetDepart
-            |> DatePicker.withId "crane-depart"
-            |> DatePicker.withLabel "Depart"
-            |> DatePicker.withClearable False
-            |> DatePicker.view
+        , DatePicker.view
+            [ DatePicker.withId "crane-depart"
+            , DatePicker.withLabel "Depart"
+            , DatePicker.withClearable False
+            , DatePicker.onChange SetDepart
+            ]
+            |> toHtml
         ]
 
 
@@ -588,25 +604,26 @@ returnOrTimeField model =
                     , value = model.return
                     , icon = "event"
                     }
-                , DatePicker.new SetReturn
-                    |> DatePicker.withId "crane-return"
-                    |> DatePicker.withLabel "Return"
-                    |> DatePicker.withMin model.depart
-                    |> DatePicker.withClearable True
-                    |> DatePicker.view
+                , DatePicker.view
+                    [ DatePicker.withId "crane-return"
+                    , DatePicker.withLabel "Return"
+                    , DatePicker.withMinDate model.depart
+                    , DatePicker.withClearable True
+                    , DatePicker.onChange SetReturn
+                    ]
+                    |> toHtml
                 ]
 
         OneWay ->
             div [ class "flex min-w-0 flex-col gap-1.5" ]
                 [ span [ class "text-label-md text-on-surface-variant" ] [ text "Departure time" ]
-                , TimePicker.new
-                    { label = "Preferred departure time"
-                    , value = model.time
-                    , onChange = SetTime
-                    }
-                    |> TimePicker.withId "crane-time"
-                    |> TimePicker.withStep 300
-                    |> TimePicker.view
+                , TimePicker.view { label = "Preferred departure time" }
+                    [ TimePicker.withId "crane-time"
+                    , TimePicker.withValue model.time
+                    , TimePicker.withStep 300
+                    , TimePicker.onChange SetTime
+                    ]
+                    |> toHtml
                 ]
 
 
@@ -627,35 +644,30 @@ dateTrigger { targetId, label, value, icon } =
         , attribute "popovertarget" targetId
         , attribute "aria-label" (label ++ " " ++ value)
         ]
-        [ Icon.view (Icon.material icon)
+        [ Icon.view { name = icon } |> toHtml
         , span [ class "min-w-0 flex-1 truncate" ] [ text value ]
-        , Icon.view (Icon.material "expand_more")
+        , Icon.view { name = "expand_more" } |> toHtml
         ]
 
 
 searchButton : Model -> Html Msg
 searchButton model =
-    Button.new { label = "Search fares", variant = Button.Filled }
-        |> Button.withSize Button.Large
-        |> Button.withLeadingIcon (Icon.material "travel_explore")
-        |> Button.withDisabled
-            (if model.searching then
-                Button.Disabled
-
-             else
-                Button.Enabled
-            )
-        |> Button.withOnClick SearchFares
-        |> Button.view
+    Button.view { label = "Search fares", variant = Button.Filled }
+        [ Button.size Button.Large
+        , Button.leadingIcon (Icon.view { name = "travel_explore" })
+        , Button.disabled model.searching
+        , Button.onClick SearchFares
+        ]
+        |> toHtml
 
 
 searchingIndicator : Html Msg
 searchingIndicator =
     div [ class "flex items-center gap-2 text-body-md text-on-surface-variant" ]
         [ span [ class "inline-block size-6" ]
-            [ LoadingIndicator.new
-                |> LoadingIndicator.withVariant LoadingIndicator.Uncontained
-                |> LoadingIndicator.view
+            [ LoadingIndicator.view
+                [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
+                |> toHtml
             ]
         , text "Searching fares…"
         ]
@@ -672,12 +684,11 @@ featuredCarousel model =
             List.filter .featured destinations
     in
     section [ class "space-y-3" ]
-        [ Heading.new
-            |> Heading.withVariant Heading.Title
-            |> Heading.withSize Heading.Medium
-            |> Heading.withLevel 3
-            |> Heading.withContent (text "Featured destinations")
-            |> Heading.view
+        [ Heading.view { label = "Featured destinations", variant = Heading.Title }
+            [ Heading.size Heading.Medium
+            , Heading.level 3
+            ]
+            |> toHtml
         , div [ class "-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:gap-4 sm:px-0", attribute "aria-label" "Featured destinations carousel" ]
             (List.map (featuredSlide model) featured)
         ]
@@ -691,10 +702,12 @@ featuredSlide model d =
     in
     div [ class "relative flex h-44 w-56 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container sm:w-64" ]
         [ div [ class "absolute -right-6 -top-6 opacity-60" ]
-            [ Shape.new
-                |> Shape.withName d.shape
-                |> Shape.withClass "size-28 bg-primary/30"
-                |> Shape.view
+            [ Shape.view
+                { content =
+                    [ Renderable.html (div [ class "size-28 bg-primary/30" ] []) ]
+                }
+                [ Shape.name d.shape ]
+                |> toHtml
             ]
         , div [ class "absolute right-2 top-2" ] [ favoriteButton d favorited ]
         , span [ class "relative text-label-md uppercase tracking-wide" ] [ text d.country ]
@@ -715,14 +728,16 @@ resultsSection model =
     in
     section [ class "space-y-4" ]
         [ div [ class "flex items-center justify-between gap-3" ]
-            [ Heading.new
-                |> Heading.withVariant Heading.Title
-                |> Heading.withSize Heading.Medium
-                |> Heading.withLevel 3
-                |> Heading.withContent (text (categoryLabel model.category ++ " — " ++ String.fromInt (List.length results) ++ " places"))
-                |> Heading.view
+            [ Heading.view
+                { label = categoryLabel model.category ++ " — " ++ String.fromInt (List.length results) ++ " places"
+                , variant = Heading.Title
+                }
+                [ Heading.size Heading.Medium
+                , Heading.level 3
+                ]
+                |> toHtml
             ]
-        , Divider.new |> Divider.view
+        , Divider.view [] |> toHtml
         , if List.isEmpty results then
             emptyState model
 
@@ -736,12 +751,12 @@ emptyState : Model -> Html Msg
 emptyState model =
     div [ class "grid place-items-center rounded-md-corner-large border border-dashed border-outline-variant p-10 text-center" ]
         [ div [ class "space-y-2" ]
-            [ Icon.view (Icon.material "search_off")
+            [ Icon.view { name = "search_off" } |> toHtml
             , p [ class "text-body-md text-on-surface-variant" ]
-                [ text ("No " ++ categoryLabel model.category ++ " results for “" ++ model.query ++ "”.") ]
-            , Button.new { label = "Clear search", variant = Button.Text }
-                |> Button.withOnClick (SetQuery "")
-                |> Button.view
+                [ text ("No " ++ categoryLabel model.category ++ " results for \u{201C}" ++ model.query ++ "\u{201D}.") ]
+            , Button.view { label = "Clear search", variant = Button.Text }
+                [ Button.onClick (SetQuery "") ]
+                |> toHtml
             ]
         ]
 
@@ -754,33 +769,39 @@ destinationCard model d =
 
         media =
             div [ class "relative grid h-32 place-items-center bg-secondary-container" ]
-                [ Shape.new
-                    |> Shape.withName d.shape
-                    |> Shape.withClass "size-20 bg-primary text-on-primary grid place-items-center"
-                    |> Shape.withContent [ Icon.view (Icon.material (categoryIcon d.category)) ]
-                    |> Shape.view
+                [ Shape.view
+                    { content =
+                        [ Renderable.html
+                            (div [ class "size-20 bg-primary text-on-primary grid place-items-center" ]
+                                [ Icon.view { name = categoryIcon d.category } |> toHtml ]
+                            )
+                        ]
+                    }
+                    [ Shape.name d.shape ]
+                    |> toHtml
                 , div [ class "absolute left-2 top-2 flex items-center gap-1" ]
                     [ span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-sm text-on-surface" ]
                         [ text ("★ " ++ d.rating) ]
-                    , Badge.label "Top rated"
-                        |> Badge.withFor (badgeAnchor d)
-                        |> Badge.view
+                    , Badge.view [ Badge.label "Top rated", Badge.forId (badgeAnchor d) ] |> toHtml
                     ]
                 , div [ class "absolute right-2 top-2" ] [ favoriteButton d favorited ]
                 ]
     in
-    Card.new Card.Elevated
-        |> Card.withMedia media
-        |> Card.withHeadline (Heading.title d.name)
-        |> Card.withSubhead (Heading.label (d.country ++ " · " ++ d.price))
-        |> Card.withBody (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ])
+    Card.new
+        |> Card.withVariant Card.Elevated
+        |> Card.withMedia (Renderable.html media)
+        |> Card.withHeadline (Heading.view { label = d.name, variant = Heading.Title } [])
+        |> Card.withSubhead (Heading.view { label = d.country ++ " · " ++ d.price, variant = Heading.Label } [])
+        |> Card.withBody
+            [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ]) ]
         |> Card.withActions
-            [ Button.new { label = "Itinerary", variant = Button.Text }
-                |> Button.withOnClick (OpenItinerary d.id)
-            , Button.new { label = "Select", variant = Button.Filled }
-                |> Button.withOnClick (OpenItinerary d.id)
+            [ Button.view { label = "Itinerary", variant = Button.Text }
+                [ Button.onClick (OpenItinerary d.id) ]
+            , Button.view { label = "Select", variant = Button.Filled }
+                [ Button.onClick (OpenItinerary d.id) ]
             ]
-        |> Card.view
+        |> Card.toNode
+        |> Node.toHtml
 
 
 badgeAnchor : Destination -> String
@@ -796,26 +817,25 @@ favoriteButton d favorited =
     in
     span []
         [ span [ attribute "id" anchorId ]
-            [ IconButton.new
-                { icon = Icon.material "favorite_border"
-                , label =
+            [ IconButton.view
+                { icon = "favorite_border"
+                , name =
                     if favorited then
                         "Remove " ++ d.name ++ " from favorites"
 
                     else
                         "Add " ++ d.name ++ " to favorites"
-                , variant = IconButton.Filled
                 }
-                |> IconButton.withSize IconButton.Small
-                |> IconButton.withToggle
-                    { selected = favorited
-                    , onChange = ToggleFavorite d.id
-                    , selectedIcon = Just (Icon.material "favorite")
-                    }
-                |> IconButton.view
+                [ IconButton.variant IconButton.Filled
+                , IconButton.size IconButton.Small
+                , IconButton.toggle True
+                , IconButton.selected favorited
+                , IconButton.onChange (ToggleFavorite d.id)
+                , IconButton.selectedIcon (Icon.view { name = "favorite" })
+                ]
+                |> toHtml
             ]
-        , Tooltip.plain { anchorId = anchorId, label = "Save to favorites" }
-            |> Tooltip.view
+        , Tooltip.plain { anchorId = anchorId, label = "Save to favorites" } [] |> toHtml
         ]
 
 
@@ -830,13 +850,18 @@ itinerarySheet model =
             model.itineraryFor
                 |> Maybe.andThen (\id -> List.head (List.filter (\d -> d.id == id) destinations))
 
-        header dest =
+        headerHtml dest =
             div [ class "flex items-center gap-3" ]
-                [ Shape.new
-                    |> Shape.withName dest.shape
-                    |> Shape.withClass "size-10 bg-primary text-on-primary grid place-items-center"
-                    |> Shape.withContent [ Icon.view (Icon.material (categoryIcon dest.category)) ]
-                    |> Shape.view
+                [ Shape.view
+                    { content =
+                        [ Renderable.html
+                            (div [ class "size-10 bg-primary text-on-primary grid place-items-center" ]
+                                [ Icon.view { name = categoryIcon dest.category } |> toHtml ]
+                            )
+                        ]
+                    }
+                    [ Shape.name dest.shape ]
+                    |> toHtml
                 , div [ class "flex flex-col" ]
                     [ span [ class "text-title-lg text-on-surface" ] [ text dest.name ]
                     , span [ class "text-body-md text-on-surface-variant" ] [ text (dest.country ++ " · " ++ dest.price) ]
@@ -845,19 +870,19 @@ itinerarySheet model =
 
         timelineRow icon title detail =
             div [ class "flex items-start gap-3 py-2" ]
-                [ Icon.view (Icon.material icon)
+                [ Icon.view { name = icon } |> toHtml
                 , div [ class "flex flex-col" ]
                     [ span [ class "text-body-lg text-on-surface" ] [ text title ]
                     , span [ class "text-body-sm text-on-surface-variant" ] [ text detail ]
                     ]
                 ]
 
-        body dest =
+        bodyHtml dest =
             div [ class "flex flex-col gap-1 pt-2" ]
                 [ timelineRow "flight_takeoff" "Depart" (model.depart ++ " · " ++ model.time)
-                , Divider.new |> Divider.withInset True |> Divider.view
+                , Divider.view [ Divider.inset True ] |> toHtml
                 , timelineRow (categoryIcon dest.category) ("Arrive in " ++ dest.name) dest.blurb
-                , Divider.new |> Divider.withInset True |> Divider.view
+                , Divider.view [ Divider.inset True ] |> toHtml
                 , timelineRow "flight_land"
                     (case model.tripType of
                         RoundTrip ->
@@ -877,22 +902,27 @@ itinerarySheet model =
     in
     case maybeDest of
         Just dest ->
-            BottomSheet.new { open = True, onClose = CloseItinerary }
-                |> BottomSheet.withId "crane-itinerary"
-                |> BottomSheet.withModal True
-                |> BottomSheet.withHandle True
-                |> BottomSheet.withHeader (header dest)
-                |> BottomSheet.withBody (body dest)
-                |> BottomSheet.withActions
-                    [ Button.new { label = "Close", variant = Button.Text }
-                        |> Button.withOnClick CloseItinerary
-                    , Button.new { label = "Book trip", variant = Button.Filled }
-                        |> Button.withOnClick CloseItinerary
+            BottomSheet.view
+                { content = [ Renderable.html (bodyHtml dest) ] }
+                [ BottomSheet.open True
+                , BottomSheet.onClose CloseItinerary
+                , BottomSheet.modal True
+                , BottomSheet.handle True
+                , BottomSheet.header [ Renderable.html (headerHtml dest) ]
+                , BottomSheet.actions
+                    [ Button.view { label = "Close", variant = Button.Text }
+                        [ Button.onClick CloseItinerary ]
+                    , Button.view { label = "Book trip", variant = Button.Filled }
+                        [ Button.onClick CloseItinerary ]
                     ]
-                |> BottomSheet.view
+                ]
+                |> toHtml
 
         Nothing ->
-            BottomSheet.new { open = False, onClose = CloseItinerary }
-                |> BottomSheet.withId "crane-itinerary"
-                |> BottomSheet.withModal True
-                |> BottomSheet.view
+            BottomSheet.view
+                { content = [] }
+                [ BottomSheet.open False
+                , BottomSheet.onClose CloseItinerary
+                , BottomSheet.modal True
+                ]
+                |> toHtml

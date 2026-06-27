@@ -5,20 +5,20 @@ module Route.Studies.Rally exposing (ActionData, Data, Model, Msg, route)
 A dark-themed money surface that composes a large slice of the elm-m3e
 library the way the catalogue intends:
 
-  - `Ui.Theme` wraps the whole surface in a dark, expressive scheme.
-  - `Ui.AppBar` carries a month `Ui.Select` and a refresh `Ui.IconButton`
-    that spins a `Ui.LoadingIndicator` while "syncing".
-  - `Ui.NavigationRail` mirrors the active section.
-  - `Ui.Tabs` switches between **Accounts / Bills / Budgets**.
+  - `M3e.Theme` wraps the whole surface in a dark, expressive scheme.
+  - `M3e.AppBar` carries a month `M3e.Select` and a refresh `M3e.IconButton`
+    that spins a `M3e.LoadingIndicator` while "syncing".
+  - `M3e.NavigationRail` mirrors the active section.
+  - `M3e.Tabs` switches between **Accounts / Bills / Budgets**.
   - **Accounts** groups Checking / Savings / Credit in a
-    `Ui.Disclosure.accordion` with running totals, and lists recent
-    transactions filtered by a `Ui.Search` bar — matches are marked with
-    `Ui.TextHighlight` and paged with `Ui.Paginator`.
-  - **Bills** pairs a `Ui.Calendar` of due dates with a due-soon `Ui.List`.
-  - **Budgets** shows a per-category spend `Ui.Progress` ring + bars inside
-    `Ui.Card`s; expanding a category reveals its line items.
-  - `Ui.Tooltip`, `Ui.Divider`, `Ui.Heading`, `Ui.Icon`,
-    `Ui.ScrollContainer`, and a `Ui.Snackbar` ("Budget updated") round it out.
+    `M3e.Disclosure` accordion with running totals, and lists recent
+    transactions filtered by a `M3e.Search` bar — matches are marked with
+    `M3e.TextHighlight` and paged with `M3e.Paginator`.
+  - **Bills** pairs a `M3e.Calendar` of due dates with a due-soon `M3e.List`.
+  - **Budgets** shows a per-category spend `M3e.Progress` ring + bars inside
+    `M3e.Card`s; expanding a category reveals its line items.
+  - `M3e.Tooltip`, `M3e.Divider`, `M3e.Heading`, `M3e.Icon`,
+    `M3e.ScrollContainer`, and a `M3e.Snackbar` ("Budget updated") round it out.
 
 All page interactivity is local state via `RouteBuilder.buildWithLocalState`.
 
@@ -30,31 +30,33 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, span, text)
 import Html.Attributes as Attr exposing (class)
+import M3e.AppBar as AppBar
+import M3e.Calendar as Calendar
+import M3e.Card as Card
+import M3e.Disclosure as Disclosure
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.IconButton as IconButton
+import M3e.List as List_
+import M3e.LoadingIndicator as LoadingIndicator
+import M3e.NavigationRail as NavigationRail
+import M3e.Node as Node
+import M3e.Paginator as Paginator
+import M3e.Progress as Progress
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.ScrollContainer as ScrollContainer
+import M3e.Search as Search
+import M3e.Select as Select
+import M3e.Snackbar as Snackbar
+import M3e.Tabs as Tabs
+import M3e.TextHighlight as TextHighlight
+import M3e.Theme as Theme
+import M3e.Tooltip as Tooltip
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
-import Ui.AppBar as AppBar
-import Ui.Calendar as Calendar
-import Ui.Card as Card
-import Ui.Disclosure as Disclosure
-import Ui.Divider as Divider
-import Ui.Heading as Heading
-import Ui.Icon as Icon
-import Ui.IconButton as IconButton
-import Ui.List as List_
-import Ui.LoadingIndicator as LoadingIndicator
-import Ui.NavigationRail as NavigationRail
-import Ui.Paginator as Paginator
-import Ui.Progress as Progress
-import Ui.ScrollContainer as ScrollContainer
-import Ui.Search as Search
-import Ui.Select as Select
-import Ui.Snackbar as Snackbar
-import Ui.Tabs as Tabs
-import Ui.TextHighlight as TextHighlight
-import Ui.Theme as Theme
-import Ui.Tooltip as Tooltip
 import UrlPath
 import View exposing (View)
 
@@ -333,6 +335,22 @@ matchingTransactions query txns =
             txns
 
 
+monthFromString : String -> Maybe Month
+monthFromString s =
+    case s of
+        "january" ->
+            Just January
+
+        "february" ->
+            Just February
+
+        "march" ->
+            Just March
+
+        _ ->
+            Nothing
+
+
 
 -- SAMPLE DATA ------------------------------------------------------------
 
@@ -428,44 +446,56 @@ budgetCategories =
 -- VIEW -------------------------------------------------------------------
 
 
+{-| Convert any Renderable to Html within the Msg context.
+-}
+toHtml : Renderable any Msg -> Html Msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
     { title = "Rally · Studies · elm-m3e"
     , body =
-        [ Theme.new
-            |> Theme.withScheme Theme.Dark
-            |> Theme.withVariant Theme.Expressive
-            |> Theme.withSeedColor "#1EB980"
-            |> Theme.withMotion Theme.MotionExpressive
-            |> Theme.view
-                [ div [ class "overflow-hidden rounded-md-corner-large bg-surface text-on-surface" ]
-                    [ Html.map PagesMsg.fromMsg (dashboard model) ]
+        [ Theme.view
+            { content =
+                [ Renderable.html
+                    (div [ class "overflow-hidden rounded-md-corner-large bg-surface text-on-surface" ]
+                        [ Html.map PagesMsg.fromMsg (dashboard model) ]
+                    )
                 ]
+            }
+            [ Theme.scheme Theme.Dark
+            , Theme.variant Theme.Expressive
+            , Theme.seedColor "#1EB980"
+            , Theme.motion Theme.MotionExpressive
+            ]
+            |> Renderable.toNode
+            |> Node.toHtml
         ]
     }
 
 
 dashboard : Model -> Html Msg
 dashboard model =
-    -- Below `md`, the `Ui.Tabs` row is the primary navigation, so the rail
+    -- Below `md`, the `M3e.Tabs` row is the primary navigation, so the rail
     -- (which duplicates it) is hidden — that frees the full viewport width
     -- for the cards, transactions list, and Paginator on phones.
     div [ class "flex min-h-[40rem]" ]
         [ div [ class "hidden md:flex" ]
             [ rail model
-            , Divider.new
-                |> Divider.withOrientation Divider.Vertical
-                |> Divider.view
+            , Divider.view [ Divider.vertical True ] |> toHtml
             ]
         , div [ class "flex min-w-0 flex-1 flex-col" ]
             [ appBar model
             , div [ class "border-b border-outline-variant px-2 pt-2 sm:px-4" ]
                 [ tabsBar model ]
-            , ScrollContainer.new
-                |> ScrollContainer.withThin True
-                |> ScrollContainer.withDividers ScrollContainer.None
-                |> ScrollContainer.view
-                    [ div [ class "p-3 sm:p-6" ] [ tabPanel model ] ]
+            , ScrollContainer.view
+                { content = [ Renderable.html (div [ class "p-3 sm:p-6" ] [ tabPanel model ]) ] }
+                [ ScrollContainer.thin True
+                , ScrollContainer.dividers ScrollContainer.None
+                ]
+                |> toHtml
             , snackbarSlot model
             ]
         ]
@@ -474,50 +504,65 @@ dashboard model =
 rail : Model -> Html Msg
 rail model =
     div [ class "shrink-0" ]
-        [ NavigationRail.new
+        [ NavigationRail.view
             { items =
-                [ NavigationRail.item { value = Accounts, icon = Icon.material "account_balance_wallet" }
-                    |> NavigationRail.withItemLabel "Accounts"
-                , NavigationRail.item { value = Bills, icon = Icon.material "receipt_long" }
-                    |> NavigationRail.withItemLabel "Bills"
-                    |> NavigationRail.withItemBadge (String.fromInt (List.length bills))
-                , NavigationRail.item { value = Budgets, icon = Icon.material "donut_small" }
-                    |> NavigationRail.withItemLabel "Budgets"
+                [ NavigationRail.item { icon = Icon.view { name = "account_balance_wallet" } }
+                    [ NavigationRail.itemLabel "Accounts"
+                    , NavigationRail.itemSelected (model.tab == Accounts)
+                    , NavigationRail.itemOnClick (TabSelected Accounts)
+                    ]
+                , NavigationRail.item { icon = Icon.view { name = "receipt_long" } }
+                    [ NavigationRail.itemLabel "Bills"
+                    , NavigationRail.itemSelected (model.tab == Bills)
+                    , NavigationRail.itemOnClick (TabSelected Bills)
+                    , NavigationRail.itemBadge (String.fromInt (List.length bills))
+                    ]
+                , NavigationRail.item { icon = Icon.view { name = "donut_small" } }
+                    [ NavigationRail.itemLabel "Budgets"
+                    , NavigationRail.itemSelected (model.tab == Budgets)
+                    , NavigationRail.itemOnClick (TabSelected Budgets)
+                    ]
                 ]
-            , selected = Just model.tab
-            , onChange = TabSelected
             }
-            |> NavigationRail.view
+            []
+            |> toHtml
         ]
 
 
 appBar : Model -> Html Msg
 appBar model =
     AppBar.new
-        |> AppBar.withTitle (Heading.title "Rally")
-        |> AppBar.withLeadingHtmlElementEscapeHatch Html.span
-            [ class "px-2 text-primary" ]
-            [ Icon.view (Icon.material "savings" |> Icon.withFilled True) ]
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ monthSelect model ]
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ refreshButton model ]
-        |> AppBar.view
+        |> AppBar.withTitle (Heading.view { label = "Rally", variant = Heading.Title } [])
+        |> AppBar.withLeading
+            (Renderable.element { tag = "span" }
+                [ Node.rawAttr (Attr.class "px-2 text-primary") ]
+                [ Renderable.toNode (Icon.view { name = "savings" }) ]
+            )
+        |> AppBar.withTrailing
+            [ Renderable.element { tag = "div" } [] [ Node.raw (monthSelect model) ]
+            , Renderable.element { tag = "div" } [] [ Node.raw (refreshButton model) ]
+            ]
+        |> AppBar.toNode
+        |> Node.toHtml
 
 
 monthSelect : Model -> Html Msg
 monthSelect model =
     div [ class "min-w-[9rem]" ]
-        [ Select.single
-            { label = "Month"
-            , options =
-                [ Select.option { value = January, label = "January" }
-                , Select.option { value = February, label = "February" }
-                , Select.option { value = March, label = "March" }
+        [ Select.view { label = "Month" }
+            [ Select.withId "rally-month"
+            , Select.withOptions
+                [ Select.option { value = "january", label = "January" }
+                    [ Select.optionSelected (model.month == January) ]
+                , Select.option { value = "february", label = "February" }
+                    [ Select.optionSelected (model.month == February) ]
+                , Select.option { value = "march", label = "March" }
+                    [ Select.optionSelected (model.month == March) ]
                 ]
-            , selected = Just model.month
-            , onChange = MonthSelected
-            }
-            |> Select.withId "rally-month"
-            |> Select.view
+            , Select.onChange
+                (\s -> MonthSelected (monthFromString s |> Maybe.withDefault model.month))
+            ]
+            |> toHtml
         ]
 
 
@@ -526,55 +571,55 @@ refreshButton model =
     div [ class "flex items-center gap-1 pr-1" ]
         [ if model.syncing then
             span [ class "text-primary", Attr.attribute "aria-label" "Syncing" ]
-                [ LoadingIndicator.new
-                    |> LoadingIndicator.withVariant LoadingIndicator.Uncontained
-                    |> LoadingIndicator.view
+                [ LoadingIndicator.view [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
+                    |> toHtml
                 ]
 
           else
             text ""
         , span [ Attr.id "rally-refresh-anchor" ]
-            [ IconButton.new
-                { icon = Icon.material "sync"
-                , label =
+            [ IconButton.view
+                { icon = "sync"
+                , name =
                     if model.syncing then
                         "Stop sync"
 
                     else
                         "Sync accounts"
-                , variant = IconButton.Standard
                 }
-                |> IconButton.withOnClick RefreshClicked
-                |> IconButton.view
+                [ IconButton.onClick RefreshClicked ]
+                |> toHtml
             ]
         , Tooltip.plain
             { anchorId = "rally-refresh-anchor"
             , label = "Refresh balances"
             }
-            |> Tooltip.withPosition Tooltip.Below
-            |> Tooltip.view
+            [ Tooltip.plainPosition Tooltip.PlainBelow ]
+            |> toHtml
         ]
 
 
 tabsBar : Model -> Html Msg
 tabsBar model =
-    Tabs.new
+    Tabs.view
         { tabs =
-            [ Tabs.tab { value = Accounts, label = "Accounts" }
-                |> Tabs.withTabIcon (Icon.material "account_balance_wallet")
-            , Tabs.tab { value = Bills, label = "Bills" }
-                |> Tabs.withTabIcon (Icon.material "receipt_long")
-                |> Tabs.withTabBadge (String.fromInt (List.length bills))
-            , Tabs.tab { value = Budgets, label = "Budgets" }
-                |> Tabs.withTabIcon (Icon.material "donut_small")
+            [ Tabs.tab { label = "Accounts" }
+                [ Tabs.tabSelected (model.tab == Accounts)
+                , Tabs.tabOnClick (TabSelected Accounts)
+                ]
+            , Tabs.tab { label = "Bills" }
+                [ Tabs.tabSelected (model.tab == Bills)
+                , Tabs.tabOnClick (TabSelected Bills)
+                ]
+            , Tabs.tab { label = "Budgets" }
+                [ Tabs.tabSelected (model.tab == Budgets)
+                , Tabs.tabOnClick (TabSelected Budgets)
+                ]
             ]
-        , selected = model.tab
-        , onChange = TabSelected
+        , panels = []
         }
-        -- Stretch fills wide viewports, but on mobile we want the tabs row
-        -- to scroll horizontally rather than crush three icon+label+badge
-        -- tabs into a 343 px gutter. m3e-tabs handles overflow scrolling.
-        |> Tabs.view
+        []
+        |> toHtml
 
 
 tabPanel : Model -> Html Msg
@@ -598,37 +643,35 @@ accountsPanel : Model -> Html Msg
 accountsPanel model =
     div [ class "space-y-6" ]
         [ sectionHeading "Accounts" "Balances across your linked institutions."
-        , Disclosure.accordion "rally-accounts"
-            (List.indexedMap accountSection accountGroups)
-            |> Disclosure.view
-        , Divider.new |> Divider.view
+        , Disclosure.view
+            { sections = List.indexedMap accountSection accountGroups }
+            []
+            |> toHtml
+        , Divider.view [] |> toHtml
         , transactionsSection model
         ]
 
 
-accountSection : Int -> AccountGroup -> Disclosure.Section Msg
+accountSection : Int -> AccountGroup -> Renderable { section : Supported } Msg
 accountSection index group =
-    Disclosure.section group.id
-        (div [ class "flex w-full items-center gap-3" ]
-            [ Icon.view (Icon.material group.icon)
-            , span [ class "text-title-md font-medium" ] [ text group.label ]
-            , span [ class "ml-auto text-title-md tabular-nums text-on-surface-variant" ]
-                [ text (formatMoney (groupTotalCents group)) ]
-            ]
-        )
-        [ List_.new (List.map accountRow group.accounts)
-            |> List_.view
-        ]
-        -- Open the first group by default so the panel doesn't read as empty.
-        |> Disclosure.withSectionOpen (index == 0)
+    Disclosure.section
+        { header = group.label ++ " · " ++ formatMoney (groupTotalCents group)
+        , content =
+            [ List_.view { items = List.map accountRow group.accounts } [] ]
+        }
+        [ Disclosure.sectionOpen (index == 0) ]
 
 
-accountRow : Account -> List_.Item Msg
+accountRow : Account -> Renderable { listItem : Supported } Msg
 accountRow account =
-    List_.item account.name
-        |> List_.withItemOverline account.institution
-        |> List_.withItemSupporting (formatMoney account.cents)
-        |> List_.withItemLeadingIcon (Icon.material "account_circle")
+    List_.item { headline = account.name }
+        [ List_.staticOverline account.institution
+        , List_.staticSupporting (formatMoney account.cents)
+        , List_.staticLeading
+            (Renderable.element { tag = "span" } []
+                [ Renderable.toNode (Icon.view { name = "account_circle" }) ]
+            )
+        ]
 
 
 transactionsSection : Model -> Html Msg
@@ -646,12 +689,12 @@ transactionsSection model =
         [ div [ class "flex flex-wrap items-center justify-between gap-3" ]
             [ span [ class "text-title-md font-medium" ] [ text "Recent transactions" ]
             , div [ class "w-full min-w-0 flex-1 sm:w-auto sm:min-w-[16rem] sm:max-w-sm" ]
-                [ Search.bar
-                    |> Search.withId "rally-txn-search"
-                    |> Search.withQuery model.query QueryChanged
-                    |> Search.withPlaceholder "Filter by merchant or category"
-                    |> Search.withClearable True
-                    |> Search.view
+                [ Search.view { placeholder = "Filter by merchant or category" }
+                    [ Search.value model.query
+                    , Search.onInput QueryChanged
+                    , Search.clearable True
+                    ]
+                    |> toHtml
                 ]
             ]
         , if List.isEmpty matches then
@@ -663,32 +706,34 @@ transactionsSection model =
                 [ div [ class "overflow-hidden rounded-md-corner-medium border border-outline-variant" ]
                     (paged
                         |> List.map (transactionRow model.query)
-                        |> List.intersperse (Divider.new |> Divider.view)
+                        |> List.intersperse (Divider.view [] |> toHtml)
                     )
                 , div [ class "flex justify-end" ]
-                    [ Paginator.new
-                        |> Paginator.withId "rally-txn-paginator"
-                        |> Paginator.withLength (List.length matches)
-                        |> Paginator.withHidePageSize True
-                        |> Paginator.withExplicitPageState PageChanged model.page
-                        |> Paginator.view
+                    [ Paginator.view { length = toFloat (List.length matches) }
+                        [ Paginator.hidePageSize True
+                        , Paginator.pageIndex (toFloat model.page)
+                        , Paginator.onPage PageChanged
+                        ]
+                        |> toHtml
                     ]
                 ]
         ]
 
 
-{-| A transaction row. The merchant name is wrapped in `Ui.TextHighlight`
+{-| A transaction row. The merchant name is wrapped in `M3e.TextHighlight`
 so the active filter term is marked inside the matched text.
 -}
 transactionRow : String -> Transaction -> Html Msg
 transactionRow query txn =
     div [ class "flex items-center gap-3 bg-surface-container-low px-4 py-3" ]
-        [ span [ class "text-on-surface-variant" ] [ Icon.view (categoryIcon txn.category) ]
+        [ span [ class "text-on-surface-variant" ]
+            [ Icon.view { name = categoryIcon txn.category } |> toHtml ]
         , div [ class "min-w-0 flex-1" ]
             [ div [ class "truncate text-body-lg" ]
-                [ TextHighlight.new
-                    |> TextHighlight.withTerm query
-                    |> TextHighlight.view [ text txn.merchant ]
+                [ TextHighlight.view
+                    { content = [ Renderable.html (text txn.merchant) ] }
+                    [ TextHighlight.term query ]
+                    |> toHtml
                 ]
             , span [ class "block text-body-sm text-on-surface-variant" ]
                 [ text (txn.dateLabel ++ " · " ++ txn.category) ]
@@ -706,27 +751,26 @@ transactionRow query txn =
         ]
 
 
-categoryIcon : String -> Icon.Icon msg
+categoryIcon : String -> String
 categoryIcon category =
-    Icon.material <|
-        case category of
-            "Groceries" ->
-                "shopping_cart"
+    case category of
+        "Groceries" ->
+            "shopping_cart"
 
-            "Transport" ->
-                "directions_car"
+        "Transport" ->
+            "directions_car"
 
-            "Entertainment" ->
-                "movie"
+        "Entertainment" ->
+            "movie"
 
-            "Utilities" ->
-                "bolt"
+        "Utilities" ->
+            "bolt"
 
-            "Income" ->
-                "payments"
+        "Income" ->
+            "payments"
 
-            _ ->
-                "receipt_long"
+        _ ->
+            "receipt_long"
 
 
 
@@ -738,28 +782,28 @@ billsPanel =
     div [ class "grid gap-6 lg:grid-cols-2" ]
         [ div [ class "space-y-4" ]
             [ sectionHeading "Upcoming bills" "Due dates for the next billing cycle."
-            , List_.new (List.map billRow bills)
-                |> List_.view
+            , List_.view { items = List.map billRow bills } [] |> toHtml
             ]
         , div [ class "space-y-4" ]
             [ span [ class "text-title-md font-medium" ] [ text "Due-date calendar" ]
             , div [ class "rounded-md-corner-large bg-surface-container p-2" ]
-                [ Calendar.new
-                    |> Calendar.withId "rally-bill-calendar"
-                    |> Calendar.withDate "2024-04-01"
-                    |> Calendar.withMinDate "2024-04-01"
-                    |> Calendar.withMaxDate "2024-04-30"
-                    |> Calendar.view
+                [ Calendar.view
+                    [ Calendar.withId "rally-bill-calendar"
+                    , Calendar.withDate "2024-04-01"
+                    , Calendar.withMinDate "2024-04-01"
+                    , Calendar.withMaxDate "2024-04-30"
+                    ]
+                    |> toHtml
                 ]
             ]
         ]
 
 
-billRow : Bill -> List_.Item Msg
+billRow : Bill -> Renderable { listItem : Supported } Msg
 billRow bill =
-    List_.item bill.payee
-        |> List_.withItemOverline ("Due " ++ bill.dueLabel)
-        |> List_.withItemSupporting
+    List_.item { headline = bill.payee }
+        [ List_.staticOverline ("Due " ++ bill.dueLabel)
+        , List_.staticSupporting
             (formatMoney bill.cents
                 ++ (if bill.autopay then
                         " · Autopay on"
@@ -768,15 +812,21 @@ billRow bill =
                         " · Manual"
                    )
             )
-        |> List_.withItemLeadingIcon
-            (Icon.material
-                (if bill.autopay then
-                    "event_repeat"
+        , List_.staticLeading
+            (Renderable.element { tag = "span" } []
+                [ Renderable.toNode
+                    (Icon.view
+                        { name =
+                            if bill.autopay then
+                                "event_repeat"
 
-                 else
-                    "event"
-                )
+                            else
+                                "event"
+                        }
+                    )
+                ]
             )
+        ]
 
 
 
@@ -790,7 +840,7 @@ budgetsPanel model =
         , overviewCard
         , div [ class "grid gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
             (List.map budgetCard budgetCategories)
-        , Divider.new |> Divider.view
+        , Divider.view [] |> toHtml
         , categoryDetail
         , div [ class "flex justify-end" ]
             [ adjustButton model ]
@@ -809,29 +859,38 @@ overviewCard =
         budget =
             totalBudget budgetCategories
     in
-    Card.new Card.Filled
-        |> Card.withHeadline (Heading.title "March overview")
-        |> Card.withSubhead (Heading.label (formatMoney spent ++ " of " ++ formatMoney budget ++ " spent"))
-        |> Card.withBody
-            (div [ class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6" ]
-                [ div [ class "relative grid place-items-center self-center sm:self-auto" ]
-                    [ span [ class "text-primary" ]
-                        [ Progress.circular percent
-                            |> Progress.withId "rally-overview-ring"
-                            |> Progress.view
-                        ]
-                    , span [ class "absolute text-title-lg font-medium tabular-nums" ]
-                        [ text (String.fromInt percent ++ "%") ]
-                    ]
-                , div [ class "min-w-0 flex-1 space-y-1" ]
-                    [ span [ class "block text-body-md text-on-surface-variant" ]
-                        [ text "Remaining this month" ]
-                    , span [ class "block text-headline-sm font-medium tabular-nums" ]
-                        [ text (formatMoney (budget - spent)) ]
-                    ]
-                ]
+    Card.new
+        |> Card.withVariant Card.Filled
+        |> Card.withHeadline (Heading.view { label = "March overview", variant = Heading.Title } [])
+        |> Card.withSubhead
+            (Heading.view
+                { label = formatMoney spent ++ " of " ++ formatMoney budget ++ " spent"
+                , variant = Heading.Label
+                }
+                []
             )
-        |> Card.view
+        |> Card.withBody
+            [ Renderable.html
+                (div [ class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6" ]
+                    [ div [ class "relative grid place-items-center self-center sm:self-auto" ]
+                        [ span [ class "text-primary" ]
+                            [ Progress.view { shape = Progress.Circular } [ Progress.value percent ]
+                                |> toHtml
+                            ]
+                        , span [ class "absolute text-title-lg font-medium tabular-nums" ]
+                            [ text (String.fromInt percent ++ "%") ]
+                        ]
+                    , div [ class "min-w-0 flex-1 space-y-1" ]
+                        [ span [ class "block text-body-md text-on-surface-variant" ]
+                            [ text "Remaining this month" ]
+                        , span [ class "block text-headline-sm font-medium tabular-nums" ]
+                            [ text (formatMoney (budget - spent)) ]
+                        ]
+                    ]
+                )
+            ]
+        |> Card.toNode
+        |> Node.toHtml
 
 
 budgetCard : BudgetCategory -> Html Msg
@@ -843,89 +902,96 @@ budgetCard category =
         over =
             isOverBudget category
     in
-    Card.new Card.Outlined
-        |> Card.withHeadline (Heading.title category.label)
+    Card.new
+        |> Card.withVariant Card.Outlined
+        |> Card.withHeadline (Heading.view { label = category.label, variant = Heading.Title } [])
         |> Card.withSubhead
-            (Heading.label (formatMoney category.spentCents ++ " of " ++ formatMoney category.budgetCents))
-        |> Card.withBody
-            (div [ class "space-y-2" ]
-                [ div [ class "flex items-center gap-2" ]
-                    [ Icon.view (Icon.material category.icon)
-                    , span [ class "ml-auto text-label-lg tabular-nums" ]
-                        [ text (String.fromInt percent ++ "%") ]
-                    ]
-                , span
-                    [ class
-                        (if over then
-                            "block text-error"
-
-                         else
-                            "block text-primary"
-                        )
-                    ]
-                    [ Progress.linear percent
-                        |> Progress.withId ("rally-bar-" ++ category.id)
-                        |> Progress.view
-                    ]
-                , if over then
-                    span [ class "block text-label-md text-error" ]
-                        [ text ("Over by " ++ formatMoney (category.spentCents - category.budgetCents)) ]
-
-                  else
-                    text ""
-                ]
+            (Heading.view
+                { label = formatMoney category.spentCents ++ " of " ++ formatMoney category.budgetCents
+                , variant = Heading.Label
+                }
+                []
             )
-        |> Card.view
+        |> Card.withBody
+            [ Renderable.html
+                (div [ class "space-y-2" ]
+                    [ div [ class "flex items-center gap-2" ]
+                        [ Icon.view { name = category.icon } |> toHtml
+                        , span [ class "ml-auto text-label-lg tabular-nums" ]
+                            [ text (String.fromInt percent ++ "%") ]
+                        ]
+                    , span
+                        [ class
+                            (if over then
+                                "block text-error"
+
+                             else
+                                "block text-primary"
+                            )
+                        ]
+                        [ Progress.view { shape = Progress.Linear } [ Progress.value percent ]
+                            |> toHtml
+                        ]
+                    , if over then
+                        span [ class "block text-label-md text-error" ]
+                            [ text ("Over by " ++ formatMoney (category.spentCents - category.budgetCents)) ]
+
+                      else
+                        text ""
+                    ]
+                )
+            ]
+        |> Card.toNode
+        |> Node.toHtml
 
 
 categoryDetail : Html Msg
 categoryDetail =
     div [ class "space-y-3" ]
         [ span [ class "text-title-md font-medium" ] [ text "Category detail" ]
-        , Disclosure.accordion "rally-budget-detail"
-            (List.map budgetDetailSection budgetCategories)
-            |> Disclosure.view
+        , Disclosure.view
+            { sections = List.map budgetDetailSection budgetCategories }
+            []
+            |> toHtml
         ]
 
 
-budgetDetailSection : BudgetCategory -> Disclosure.Section Msg
+budgetDetailSection : BudgetCategory -> Renderable { section : Supported } Msg
 budgetDetailSection category =
-    Disclosure.section ("rally-detail-" ++ category.id)
-        (div [ class "flex w-full items-center gap-3" ]
-            [ Icon.view (Icon.material category.icon)
-            , span [ class "text-title-sm font-medium" ] [ text category.label ]
-            , span [ class "ml-auto text-label-lg tabular-nums text-on-surface-variant" ]
-                [ text (String.fromInt (budgetPercent category) ++ "%") ]
-            ]
-        )
-        [ List_.new (List.map budgetLineRow category.lines)
-            |> List_.view
-        ]
+    Disclosure.section
+        { header = category.label ++ " · " ++ String.fromInt (budgetPercent category) ++ "%"
+        , content =
+            [ List_.view { items = List.map budgetLineRow category.lines } [] ]
+        }
+        []
 
 
-budgetLineRow : ( String, Int ) -> List_.Item Msg
+budgetLineRow : ( String, Int ) -> Renderable { listItem : Supported } Msg
 budgetLineRow ( label, cents ) =
-    List_.item label
-        |> List_.withItemSupporting (formatMoney (negate cents))
-        |> List_.withItemLeadingIcon (Icon.material "subdirectory_arrow_right")
+    List_.item { headline = label }
+        [ List_.staticSupporting (formatMoney (negate cents))
+        , List_.staticLeading
+            (Renderable.element { tag = "span" } []
+                [ Renderable.toNode (Icon.view { name = "subdirectory_arrow_right" }) ]
+            )
+        ]
 
 
 adjustButton : Model -> Html Msg
 adjustButton model =
     span [ Attr.id "rally-adjust-anchor" ]
-        [ IconButton.new
-            { icon = Icon.material "tune"
-            , label = "Adjust budgets"
-            , variant = IconButton.Tonal
-            }
-            |> IconButton.withOnClick (BudgetAdjusted (monthLabel model.month))
-            |> IconButton.view
+        [ IconButton.view
+            { icon = "tune", name = "Adjust budgets" }
+            [ IconButton.variant IconButton.Tonal
+            , IconButton.onClick (BudgetAdjusted (monthLabel model.month))
+            ]
+            |> toHtml
         , Tooltip.plain
             { anchorId = "rally-adjust-anchor"
             , label = "Adjust this month's budgets"
             }
-            |> Tooltip.withPosition Tooltip.Above
-            |> Tooltip.view
+            [ Tooltip.plainPosition Tooltip.PlainAbove ]
+            |> toHtml
         ]
 
 
@@ -940,11 +1006,12 @@ snackbarSlot model =
             text ""
 
         Just message ->
-            Snackbar.new message
-                |> Snackbar.withId ("rally-snackbar-" ++ message)
-                |> Snackbar.withDismissible True
-                |> Snackbar.withDuration 4000
-                |> Snackbar.view
+            Snackbar.view { message = message }
+                [ Snackbar.withId ("rally-snackbar-" ++ message)
+                , Snackbar.dismissible True
+                , Snackbar.duration 4000
+                ]
+                |> toHtml
 
 
 
@@ -954,12 +1021,11 @@ snackbarSlot model =
 sectionHeading : String -> String -> Html Msg
 sectionHeading title subtitle =
     div [ class "space-y-1" ]
-        [ Heading.new
-            |> Heading.withVariant Heading.Headline
-            |> Heading.withSize Heading.Small
-            |> Heading.withLevel 2
-            |> Heading.withContent (text title)
-            |> Heading.view
+        [ Heading.view { label = title, variant = Heading.Headline }
+            [ Heading.size Heading.Small
+            , Heading.level 2
+            ]
+            |> toHtml
         , span [ class "block text-body-md text-on-surface-variant" ] [ text subtitle ]
         ]
 

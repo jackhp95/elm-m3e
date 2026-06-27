@@ -3,25 +3,25 @@ module Route.Studies.Settings exposing (ActionData, Data, Model, Msg, route)
 {-| **Settings** study — a realistic Material 3 settings screen.
 
 A canonical settings surface split into four sections (Account, Notifications,
-Appearance, Privacy) reachable from a left `Ui.NavigationRail`, with a
-`Ui.Breadcrumb` trail showing depth. Rows are real M3 form controls:
+Appearance, Privacy) reachable from a left `M3e.NavigationRail`, with a
+`M3e.Breadcrumb` trail showing depth. Rows are real M3 form controls:
 
-  - `Ui.Switch` — instant on/off toggles (per guidance: apply immediately, no
+  - `M3e.Switch` — instant on/off toggles (per guidance: apply immediately, no
     Save), e.g. two-factor, dark mode, notification channels.
-  - `Ui.Slider` — a number within a range (display brightness).
-  - `Ui.Select` — pick one from a long, collapsed list (language, timezone).
-  - `Ui.RadioButton` — one-of-many from a small, always-visible set (theme).
-  - `Ui.SegmentedButton` — inline control for a 2–5 option toggle (density),
-    which live-drives the wrapping `Ui.Theme` `density` attribute.
+  - `M3e.Slider` — a number within a range (display brightness).
+  - `M3e.Select` — pick one from a long, collapsed list (language, timezone).
+  - `M3e.RadioButton` — one-of-many from a small, always-visible set (theme).
+  - `M3e.SegmentedButton` — inline control for a 2–5 option toggle (density),
+    which live-drives the wrapping `M3e.Theme` `density` attribute.
 
-Advanced groups use `Ui.Disclosure.accordion` (one-open-at-a-time); the lone
-"Developer options" panel uses `Ui.Disclosure.single` — the two are demoed
-side by side so the difference between the presentations is obvious.
+Advanced groups use `M3e.Disclosure` accordion (one-open-at-a-time); the lone
+"Developer options" panel uses a single `M3e.Disclosure` section — the two are
+demoed side by side so the difference between the presentations is obvious.
 
-"Reset to defaults" opens a confirmation `Ui.Dialog`; saving fires a
-`Ui.Snackbar`. The account header carries a `Ui.Avatar`; `Ui.Divider`s
-separate groups; `Ui.Tooltip`s annotate info icons; `Ui.Heading` and
-`Ui.Icon` throughout. The whole subtree is wrapped in `Ui.Theme`.
+"Reset to defaults" opens a confirmation `M3e.Dialog`; saving fires a
+`M3e.Snackbar`. The account header carries a `M3e.Avatar`; `M3e.Divider`s
+separate groups; `M3e.Tooltip`s annotate info icons; `M3e.Heading` and
+`M3e.Icon` throughout. The whole subtree is wrapped in `M3e.Theme`.
 
 Everything is live via `RouteBuilder.buildWithLocalState`.
 
@@ -33,28 +33,30 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class)
+import M3e.Avatar as Avatar
+import M3e.Breadcrumb as Breadcrumb
+import M3e.Button as Button
+import M3e.Dialog as Dialog
+import M3e.Disclosure as Disclosure
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.List as List_
+import M3e.NavigationRail as NavigationRail
+import M3e.Node as Node
+import M3e.RadioButton as RadioButton
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.SegmentedButton as SegmentedButton
+import M3e.Select as Select
+import M3e.Slider as Slider
+import M3e.Snackbar as Snackbar
+import M3e.Switch as Switch
+import M3e.Theme as Theme
+import M3e.Tooltip as Tooltip
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
-import Ui.Avatar
-import Ui.Breadcrumb
-import Ui.Button
-import Ui.Dialog
-import Ui.Disclosure
-import Ui.Divider
-import Ui.Heading
-import Ui.Icon
-import Ui.List
-import Ui.NavigationRail
-import Ui.RadioButton
-import Ui.SegmentedButton
-import Ui.Select
-import Ui.Slider
-import Ui.Snackbar
-import Ui.Switch
-import Ui.Theme
-import Ui.Tooltip
 import UrlPath
 import View exposing (View)
 
@@ -108,6 +110,10 @@ type Timezone
 -- MODEL ------------------------------------------------------------------
 
 
+type alias SnackbarConfig =
+    { message : String, snackbarId : String, duration : Int }
+
+
 type alias Model =
     { section : Section
 
@@ -136,7 +142,7 @@ type alias Model =
 
     -- Transient UI
     , confirmResetOpen : Bool
-    , snackbar : Maybe (Ui.Snackbar.Snackbar Msg)
+    , snackbar : Maybe SnackbarConfig
     }
 
 
@@ -301,37 +307,41 @@ update _ _ msg model =
             ( { model | snackbar = Nothing }, Effect.none )
 
 
-savedSnackbar : Ui.Snackbar.Snackbar Msg
+savedSnackbar : SnackbarConfig
 savedSnackbar =
-    Ui.Snackbar.new "Settings saved."
-        |> Ui.Snackbar.withId "settings-saved"
-        |> Ui.Snackbar.withDismissible True
-        |> Ui.Snackbar.withDuration 3000
+    { message = "Settings saved.", snackbarId = "settings-saved", duration = 3000 }
 
 
-resetSnackbar : Ui.Snackbar.Snackbar Msg
+resetSnackbar : SnackbarConfig
 resetSnackbar =
-    Ui.Snackbar.new "Settings reset to defaults."
-        |> Ui.Snackbar.withId "settings-reset"
-        |> Ui.Snackbar.withDismissible True
-        |> Ui.Snackbar.withDuration 3000
+    { message = "Settings reset to defaults.", snackbarId = "settings-reset", duration = 3000 }
 
 
 
 -- VIEW -------------------------------------------------------------------
 
 
+{-| Convert any Renderable to Html within the Msg context.
+-}
+toHtml : Renderable any Msg -> Html Msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
     { title = "Settings · Studies · elm-m3e"
     , body =
-        [ Ui.Theme.new
-            |> Ui.Theme.withSeedColor "#4F6BED"
-            |> Ui.Theme.withVariant Ui.Theme.Expressive
-            |> Ui.Theme.withScheme (themeScheme model.theme)
-            |> Ui.Theme.withDensity (densityValue model.density)
-            |> Ui.Theme.withMotion (motionScheme model.reduceMotion)
-            |> Ui.Theme.view [ Html.map PagesMsg.fromMsg (page model) ]
+        [ Theme.view
+            { content = [ Renderable.html (Html.map PagesMsg.fromMsg (page model)) ] }
+            [ Theme.seedColor "#4F6BED"
+            , Theme.variant Theme.Expressive
+            , Theme.scheme (themeScheme model.theme)
+            , Theme.density (densityValue model.density)
+            , Theme.motion (motionScheme model.reduceMotion)
+            ]
+            |> Renderable.toNode
+            |> Node.toHtml
         ]
     }
 
@@ -346,7 +356,7 @@ page model =
             [ railColumn model
             , div [ class "min-w-0 flex-1" ] [ sectionPanel model ]
             ]
-        , Html.map never (Ui.Divider.view Ui.Divider.new)
+        , Divider.view [] |> toHtml
         , advancedColumns model
         , footerActions
         , snackbarHost model
@@ -361,19 +371,18 @@ page model =
 breadcrumbBar : Model -> Html Msg
 breadcrumbBar model =
     div [ class "flex flex-col gap-1" ]
-        [ Ui.Breadcrumb.new
-            |> Ui.Breadcrumb.withItems
-                [ Ui.Breadcrumb.link "Settings" "/studies/settings"
-                , Ui.Breadcrumb.link (sectionTitle model.section) "/studies/settings"
-                , Ui.Breadcrumb.current "Permissions"
+        [ Breadcrumb.view
+            { items =
+                [ Breadcrumb.item { label = "Settings" } [ Breadcrumb.itemHref "/studies/settings" ]
+                , Breadcrumb.item { label = sectionTitle model.section } [ Breadcrumb.itemHref "/studies/settings" ]
+                , Breadcrumb.item { label = "Permissions" } [ Breadcrumb.itemCurrent True ]
                 ]
-            |> Ui.Breadcrumb.view
-        , Ui.Heading.new
-            |> Ui.Heading.withVariant Ui.Heading.Display
-            |> Ui.Heading.withSize Ui.Heading.Small
-            |> Ui.Heading.withLevel 1
-            |> Ui.Heading.withContent (text "Settings")
-            |> Ui.Heading.view
+            }
+            []
+            |> toHtml
+        , Heading.view { label = "Settings", variant = Heading.Display }
+            [ Heading.size Heading.Small, Heading.level 1 ]
+            |> toHtml
         , p [ class "text-body-lg text-on-surface-variant" ]
             [ text "Manage your account, notifications, appearance, and privacy preferences." ]
         ]
@@ -382,24 +391,26 @@ breadcrumbBar model =
 railColumn : Model -> Html Msg
 railColumn model =
     div [ class "shrink-0 self-start rounded-md-corner-large bg-surface-container p-1" ]
-        [ Ui.NavigationRail.new
+        [ NavigationRail.view
             { items =
-                [ railItem "person" "Account" Account
-                , railItem "notifications" "Notifications" Notifications
-                , railItem "palette" "Appearance" Appearance
-                , railItem "lock" "Privacy" Privacy
+                [ railItem model.section "person" "Account" Account
+                , railItem model.section "notifications" "Notifications" Notifications
+                , railItem model.section "palette" "Appearance" Appearance
+                , railItem model.section "lock" "Privacy" Privacy
                 ]
-            , selected = Just model.section
-            , onChange = SectionSelected
             }
-            |> Ui.NavigationRail.view
+            []
+            |> toHtml
         ]
 
 
-railItem : String -> String -> Section -> Ui.NavigationRail.Item Section Msg
-railItem glyph label value =
-    Ui.NavigationRail.item { value = value, icon = Ui.Icon.material glyph }
-        |> Ui.NavigationRail.withItemLabel label
+railItem : Section -> String -> String -> Section -> Renderable { navItem : Supported } Msg
+railItem currentSection glyph label itemSection =
+    NavigationRail.item { icon = Icon.view { name = glyph } }
+        [ NavigationRail.itemLabel label
+        , NavigationRail.itemSelected (currentSection == itemSection)
+        , NavigationRail.itemOnClick (SectionSelected itemSection)
+        ]
 
 
 sectionTitle : Section -> String
@@ -442,13 +453,10 @@ groupCard : String -> String -> List (Html Msg) -> Html Msg
 groupCard glyph title rows =
     section [ class "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5" ]
         (div [ class "flex items-center gap-2 text-on-surface" ]
-            [ Html.map never (Ui.Icon.view (Ui.Icon.material glyph))
-            , Ui.Heading.new
-                |> Ui.Heading.withVariant Ui.Heading.Title
-                |> Ui.Heading.withSize Ui.Heading.Medium
-                |> Ui.Heading.withLevel 2
-                |> Ui.Heading.withContent (text title)
-                |> Ui.Heading.view
+            [ Icon.view { name = glyph } |> toHtml
+            , Heading.view { label = title, variant = Heading.Title }
+                [ Heading.size Heading.Medium, Heading.level 2 ]
+                |> toHtml
             ]
             :: rows
         )
@@ -476,7 +484,7 @@ accountPanel : Model -> Html Msg
 accountPanel model =
     div [ class "flex flex-col gap-4" ]
         [ section [ class "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4" ]
-            [ Html.map never (Ui.Avatar.view (Ui.Avatar.initials "Jack Peterson"))
+            [ Avatar.view { alt = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> toHtml
             , div [ class "flex min-w-0 flex-col" ]
                 [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
                 , Html.span [ class "text-body-md text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
@@ -488,13 +496,12 @@ accountPanel model =
             "Security"
             [ controlRow "Two-factor authentication"
                 (Just "Require a verification code on every sign-in.")
-                (Ui.Switch.new
-                    { label = "Two-factor authentication"
-                    , checked = model.twoFactor
-                    , onChange = TwoFactorToggled
-                    }
-                    |> Ui.Switch.withHandleIcons True
-                    |> Ui.Switch.view
+                (Switch.view { name = "Two-factor authentication" }
+                    [ Switch.checked model.twoFactor
+                    , Switch.onChange TwoFactorToggled
+                    , Switch.handleIcons True
+                    ]
+                    |> toHtml
                 )
             ]
         ]
@@ -507,11 +514,11 @@ notificationsPanel model =
         [ controlRow "Push notifications"
             (Just "Alerts on this device.")
             (channelSwitch "Push notifications" model.pushEnabled PushToggled)
-        , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
+        , Divider.view [ Divider.inset True ] |> toHtml
         , controlRow "Email notifications"
             (Just "Summaries and security alerts by email.")
             (channelSwitch "Email notifications" model.emailEnabled EmailToggled)
-        , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
+        , Divider.view [ Divider.inset True ] |> toHtml
         , controlRow "Product & marketing"
             (Just "Occasional news about new features.")
             (channelSwitch "Product & marketing" model.marketingEnabled MarketingToggled)
@@ -520,8 +527,11 @@ notificationsPanel model =
 
 channelSwitch : String -> Bool -> (Bool -> Msg) -> Html Msg
 channelSwitch label checked onChange =
-    Ui.Switch.new { label = label, checked = checked, onChange = onChange }
-        |> Ui.Switch.view
+    Switch.view { name = label }
+        [ Switch.checked checked
+        , Switch.onChange onChange
+        ]
+        |> toHtml
 
 
 appearancePanel : Model -> Html Msg
@@ -531,31 +541,39 @@ appearancePanel model =
             "Theme"
             [ controlRow "Color scheme"
                 (Just "Choose how the interface looks. Applies instantly.")
-                (Ui.RadioButton.group
-                    { label = "Color scheme"
+                (RadioButton.view
+                    { name = "Color scheme"
                     , options =
-                        [ Ui.RadioButton.option { value = SystemTheme, label = "System" }
-                        , Ui.RadioButton.option { value = LightTheme, label = "Light" }
-                        , Ui.RadioButton.option { value = DarkTheme, label = "Dark" }
+                        [ { value = "system", label = "System" }
+                        , { value = "light", label = "Light" }
+                        , { value = "dark", label = "Dark" }
                         ]
-                    , selected = Just model.theme
-                    , onChange = ThemeChosen
+                    , selected = Just (themeChoiceToString model.theme)
                     }
-                    |> Ui.RadioButton.view
+                    [ RadioButton.onChange
+                        (\s ->
+                            themeChoiceFromString s
+                                |> Maybe.withDefault SystemTheme
+                                |> ThemeChosen
+                        )
+                    ]
+                    |> toHtml
                 )
-            , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
+            , Divider.view [ Divider.inset True ] |> toHtml
             , controlRow "Density"
                 (Just "Compact tightens spacing across the app.")
-                (Ui.SegmentedButton.single
-                    { label = "Density"
-                    , segments =
-                        [ Ui.SegmentedButton.segment { value = Comfortable, label = "Comfortable" }
-                        , Ui.SegmentedButton.segment { value = Compact, label = "Compact" }
+                (SegmentedButton.view
+                    { segments =
+                        [ SegmentedButton.segment
+                            { label = "Comfortable", checked = model.density == Comfortable }
+                            [ SegmentedButton.segmentOnClick (DensityChosen Comfortable) ]
+                        , SegmentedButton.segment
+                            { label = "Compact", checked = model.density == Compact }
+                            [ SegmentedButton.segmentOnClick (DensityChosen Compact) ]
                         ]
-                    , selected = Just model.density
-                    , onChange = DensityChosen
                     }
-                    |> Ui.SegmentedButton.view
+                    []
+                    |> toHtml
                 )
             ]
         , groupCard "tune"
@@ -563,32 +581,30 @@ appearancePanel model =
             [ controlRow "Brightness"
                 (Just (String.fromInt (round model.brightness) ++ "%"))
                 (div [ class "w-full sm:w-72" ]
-                    [ Ui.Slider.value
-                        { label = "Brightness"
-                        , value = model.brightness
-                        , onChange = BrightnessChanged
-                        }
-                        |> Ui.Slider.withMin 0
-                        |> Ui.Slider.withMax 100
-                        |> Ui.Slider.withStep 1
-                        |> Ui.Slider.view
+                    [ Slider.view { name = "Brightness" }
+                        [ Slider.value model.brightness
+                        , Slider.onChange BrightnessChanged
+                        , Slider.min 0
+                        , Slider.max 100
+                        , Slider.step 1
+                        ]
+                        |> toHtml
                     ]
                 )
-            , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
+            , Divider.view [ Divider.inset True ] |> toHtml
             , controlRow "Reduce motion"
                 (Just "Minimize non-essential animations.")
-                (Ui.Switch.new
-                    { label = "Reduce motion"
-                    , checked = model.reduceMotion
-                    , onChange = ReduceMotionToggled
-                    }
-                    |> Ui.Switch.view
+                (Switch.view { name = "Reduce motion" }
+                    [ Switch.checked model.reduceMotion
+                    , Switch.onChange ReduceMotionToggled
+                    ]
+                    |> toHtml
                 )
             ]
         , groupCard "language"
             "Region"
             [ controlRow "Language" Nothing (languageSelect model)
-            , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
+            , Divider.view [ Divider.inset True ] |> toHtml
             , controlRow "Timezone" Nothing (timezoneSelect model)
             ]
         ]
@@ -597,38 +613,54 @@ appearancePanel model =
 languageSelect : Model -> Html Msg
 languageSelect model =
     div [ class "w-full sm:w-64" ]
-        [ Ui.Select.single
-            { label = "Language"
-            , options =
-                [ Ui.Select.option { value = English, label = "English" }
-                , Ui.Select.option { value = Spanish, label = "Español" }
-                , Ui.Select.option { value = French, label = "Français" }
-                , Ui.Select.option { value = German, label = "Deutsch" }
-                , Ui.Select.option { value = Japanese, label = "日本語" }
+        [ Select.view { label = "Language" }
+            [ Select.withOptions
+                [ Select.option { value = "english", label = "English" }
+                    [ Select.optionSelected (model.language == Just English) ]
+                , Select.option { value = "spanish", label = "Español" }
+                    [ Select.optionSelected (model.language == Just Spanish) ]
+                , Select.option { value = "french", label = "Français" }
+                    [ Select.optionSelected (model.language == Just French) ]
+                , Select.option { value = "german", label = "Deutsch" }
+                    [ Select.optionSelected (model.language == Just German) ]
+                , Select.option { value = "japanese", label = "日本語" }
+                    [ Select.optionSelected (model.language == Just Japanese) ]
                 ]
-            , selected = model.language
-            , onChange = LanguageChosen
-            }
-            |> Ui.Select.view
+            , Select.onChange
+                (\s ->
+                    languageFromString s
+                        |> Maybe.withDefault English
+                        |> LanguageChosen
+                )
+            ]
+            |> toHtml
         ]
 
 
 timezoneSelect : Model -> Html Msg
 timezoneSelect model =
     div [ class "w-full sm:w-64" ]
-        [ Ui.Select.single
-            { label = "Timezone"
-            , options =
-                [ Ui.Select.option { value = UTC, label = "UTC" }
-                , Ui.Select.option { value = Eastern, label = "Eastern (UTC−5)" }
-                , Ui.Select.option { value = Central, label = "Central (UTC−6)" }
-                , Ui.Select.option { value = Pacific, label = "Pacific (UTC−8)" }
-                , Ui.Select.option { value = London, label = "London (UTC+0)" }
+        [ Select.view { label = "Timezone" }
+            [ Select.withOptions
+                [ Select.option { value = "utc", label = "UTC" }
+                    [ Select.optionSelected (model.timezone == Just UTC) ]
+                , Select.option { value = "eastern", label = "Eastern (UTC−5)" }
+                    [ Select.optionSelected (model.timezone == Just Eastern) ]
+                , Select.option { value = "central", label = "Central (UTC−6)" }
+                    [ Select.optionSelected (model.timezone == Just Central) ]
+                , Select.option { value = "pacific", label = "Pacific (UTC−8)" }
+                    [ Select.optionSelected (model.timezone == Just Pacific) ]
+                , Select.option { value = "london", label = "London (UTC+0)" }
+                    [ Select.optionSelected (model.timezone == Just London) ]
                 ]
-            , selected = model.timezone
-            , onChange = TimezoneChosen
-            }
-            |> Ui.Select.view
+            , Select.onChange
+                (\s ->
+                    timezoneFromString s
+                        |> Maybe.withDefault UTC
+                        |> TimezoneChosen
+                )
+            ]
+            |> toHtml
         ]
 
 
@@ -641,39 +673,54 @@ privacyPanel model =
                 (Just "Share anonymized usage data to help improve the product.")
                 (div [ class "flex items-center gap-2" ]
                     [ infoIcon "telemetry-info" "We never sell your data."
-                    , Ui.Switch.new
-                        { label = "Usage analytics"
-                        , checked = model.telemetry
-                        , onChange = TelemetryToggled
-                        }
-                        |> Ui.Switch.view
+                    , Switch.view { name = "Usage analytics" }
+                        [ Switch.checked model.telemetry
+                        , Switch.onChange TelemetryToggled
+                        ]
+                        |> toHtml
                     ]
                 )
-            , Html.map never (Ui.Divider.view (Ui.Divider.new |> Ui.Divider.withInset True))
+            , Divider.view [ Divider.inset True ] |> toHtml
             , controlRow "Personalized ads"
                 (Just "Use your activity to tailor advertising.")
-                (Ui.Switch.new
-                    { label = "Personalized ads"
-                    , checked = model.personalizedAds
-                    , onChange = PersonalizedAdsToggled
-                    }
-                    |> Ui.Switch.view
+                (Switch.view { name = "Personalized ads" }
+                    [ Switch.checked model.personalizedAds
+                    , Switch.onChange PersonalizedAdsToggled
+                    ]
+                    |> toHtml
                 )
             ]
         , section [ class "rounded-md-corner-large bg-surface-container-low p-2" ]
-            [ Ui.List.new
-                [ Ui.List.actionItem "Download my data"
-                    |> Ui.List.withItemSupporting "Export a copy of your information."
-                    |> Ui.List.withItemLeadingIcon (Ui.Icon.material "download")
-                    |> Ui.List.withItemTrailingIcon (Ui.Icon.material "chevron_right")
-                    |> Ui.List.withItemOnClick SaveRequested
-                , Ui.List.actionItem "Delete account"
-                    |> Ui.List.withItemSupporting "Permanently remove your account and data."
-                    |> Ui.List.withItemLeadingIcon (Ui.Icon.material "delete")
-                    |> Ui.List.withItemTrailingIcon (Ui.Icon.material "chevron_right")
-                    |> Ui.List.withItemOnClick ResetRequested
-                ]
-                |> Ui.List.view
+            [ List_.view
+                { items =
+                    [ List_.actionItem { headline = "Download my data" }
+                        [ List_.actionSupporting "Export a copy of your information."
+                        , List_.actionLeading
+                            (Renderable.element { tag = "span" } []
+                                [ Renderable.toNode (Icon.view { name = "download" }) ]
+                            )
+                        , List_.actionTrailing
+                            (Renderable.element { tag = "span" } []
+                                [ Renderable.toNode (Icon.view { name = "chevron_right" }) ]
+                            )
+                        , List_.actionOnClick SaveRequested
+                        ]
+                    , List_.actionItem { headline = "Delete account" }
+                        [ List_.actionSupporting "Permanently remove your account and data."
+                        , List_.actionLeading
+                            (Renderable.element { tag = "span" } []
+                                [ Renderable.toNode (Icon.view { name = "delete" }) ]
+                            )
+                        , List_.actionTrailing
+                            (Renderable.element { tag = "span" } []
+                                [ Renderable.toNode (Icon.view { name = "chevron_right" }) ]
+                            )
+                        , List_.actionOnClick ResetRequested
+                        ]
+                    ]
+                }
+                []
+                |> toHtml
             ]
         ]
 
@@ -685,17 +732,8 @@ infoIcon : String -> String -> Html Msg
 infoIcon anchorId label =
     Html.span []
         [ Html.span [ Html.Attributes.id anchorId, class "inline-flex text-on-surface-variant" ]
-            [ Html.map never
-                (Ui.Icon.view
-                    (Ui.Icon.material "info"
-                        |> Ui.Icon.withA11y (text label)
-                    )
-                )
-            ]
-        , Html.map never
-            (Ui.Tooltip.plain { anchorId = anchorId, label = label }
-                |> Ui.Tooltip.view
-            )
+            [ Icon.view { name = "info" } |> toHtml ]
+        , Tooltip.plain { anchorId = anchorId, label = label } [] |> toHtml
         ]
 
 
@@ -707,21 +745,17 @@ advancedColumns : Model -> Html Msg
 advancedColumns model =
     div [ class "flex flex-col gap-4 lg:flex-row lg:items-start" ]
         [ div [ class "min-w-0 flex-1" ]
-            [ Ui.Heading.new
-                |> Ui.Heading.withVariant Ui.Heading.Title
-                |> Ui.Heading.withSize Ui.Heading.Small
-                |> Ui.Heading.withLevel 2
-                |> Ui.Heading.withContent (text "Advanced (accordion — one open at a time)")
-                |> Ui.Heading.view
+            [ Heading.view
+                { label = "Advanced (accordion — one open at a time)", variant = Heading.Title }
+                [ Heading.size Heading.Small, Heading.level 2 ]
+                |> toHtml
             , advancedAccordion
             ]
         , div [ class "min-w-0 flex-1" ]
-            [ Ui.Heading.new
-                |> Ui.Heading.withVariant Ui.Heading.Title
-                |> Ui.Heading.withSize Ui.Heading.Small
-                |> Ui.Heading.withLevel 2
-                |> Ui.Heading.withContent (text "Developer options (single panel)")
-                |> Ui.Heading.view
+            [ Heading.view
+                { label = "Developer options (single panel)", variant = Heading.Title }
+                [ Heading.size Heading.Small, Heading.level 2 ]
+                |> toHtml
             , developerPanel model
             ]
         ]
@@ -729,41 +763,68 @@ advancedColumns model =
 
 advancedAccordion : Html Msg
 advancedAccordion =
-    Ui.Disclosure.accordion "settings-advanced"
-        [ Ui.Disclosure.section "advanced-storage"
-            (text "Storage & cache")
-            [ p [ class "text-body-md text-on-surface-variant" ]
-                [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
+    Disclosure.view
+        { sections =
+            [ Disclosure.section
+                { header = "Storage & cache"
+                , content =
+                    [ Renderable.html
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
+                        )
+                    ]
+                }
+                []
+            , Disclosure.section
+                { header = "Network"
+                , content =
+                    [ Renderable.html
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
+                        )
+                    ]
+                }
+                []
+            , Disclosure.section
+                { header = "Accessibility"
+                , content =
+                    [ Renderable.html
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "High-contrast mode, larger text, and screen-reader hints." ]
+                        )
+                    ]
+                }
+                []
             ]
-        , Ui.Disclosure.section "advanced-network"
-            (text "Network")
-            [ p [ class "text-body-md text-on-surface-variant" ]
-                [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
-            ]
-        , Ui.Disclosure.section "advanced-accessibility"
-            (text "Accessibility")
-            [ p [ class "text-body-md text-on-surface-variant" ]
-                [ text "High-contrast mode, larger text, and screen-reader hints." ]
-            ]
-        ]
-        |> Ui.Disclosure.view
+        }
+        []
+        |> toHtml
 
 
 developerPanel : Model -> Html Msg
 developerPanel model =
-    Ui.Disclosure.single "settings-developer"
-        (text "Developer options")
-        [ controlRow "Developer mode"
-            (Just "Show experimental flags and verbose logging.")
-            (Ui.Switch.new
-                { label = "Developer mode"
-                , checked = model.developerMode
-                , onChange = DeveloperModeToggled
+    Disclosure.view
+        { sections =
+            [ Disclosure.section
+                { header = "Developer options"
+                , content =
+                    [ Renderable.html
+                        (controlRow "Developer mode"
+                            (Just "Show experimental flags and verbose logging.")
+                            (Switch.view { name = "Developer mode" }
+                                [ Switch.checked model.developerMode
+                                , Switch.onChange DeveloperModeToggled
+                                ]
+                                |> toHtml
+                            )
+                        )
+                    ]
                 }
-                |> Ui.Switch.view
-            )
-        ]
-        |> Ui.Disclosure.view
+                []
+            ]
+        }
+        []
+        |> toHtml
 
 
 
@@ -773,33 +834,38 @@ developerPanel model =
 footerActions : Html Msg
 footerActions =
     div [ class "flex flex-wrap items-center justify-end gap-3" ]
-        [ Ui.Button.new { label = "Reset to defaults", variant = Ui.Button.Text }
-            |> Ui.Button.withLeadingIcon (Ui.Icon.material "restart_alt")
-            |> Ui.Button.withOnClick ResetRequested
-            |> Ui.Button.view
-        , Ui.Button.new { label = "Save changes", variant = Ui.Button.Filled }
-            |> Ui.Button.withLeadingIcon (Ui.Icon.material "save")
-            |> Ui.Button.withOnClick SaveRequested
-            |> Ui.Button.view
+        [ Button.view { label = "Reset to defaults", variant = Button.Text }
+            [ Button.leadingIcon (Icon.view { name = "restart_alt" })
+            , Button.onClick ResetRequested
+            ]
+            |> toHtml
+        , Button.view { label = "Save changes", variant = Button.Filled }
+            [ Button.leadingIcon (Icon.view { name = "save" })
+            , Button.onClick SaveRequested
+            ]
+            |> toHtml
         ]
 
 
 resetDialog : Model -> Html Msg
 resetDialog model =
-    Ui.Dialog.new
-        { title = "Reset to defaults?"
-        , open = model.confirmResetOpen
-        , onClose = DialogClosed
-        }
-        |> Ui.Dialog.withBody
-            (text "This restores every setting in this screen to its original value. This can't be undone.")
-        |> Ui.Dialog.withActions
-            [ Ui.Button.new { label = "Cancel", variant = Ui.Button.Text }
-                |> Ui.Button.withOnClick DialogClosed
-            , Ui.Button.new { label = "Reset", variant = Ui.Button.Filled }
-                |> Ui.Button.withOnClick ResetConfirmed
+    Dialog.view
+        { headline = "Reset to defaults?"
+        , content =
+            [ Renderable.html
+                (text "This restores every setting in this screen to its original value. This can't be undone.")
             ]
-        |> Ui.Dialog.view
+        }
+        [ Dialog.open model.confirmResetOpen
+        , Dialog.onClose DialogClosed
+        , Dialog.actions
+            [ Button.view { label = "Cancel", variant = Button.Text }
+                [ Button.onClick DialogClosed ]
+            , Button.view { label = "Reset", variant = Button.Filled }
+                [ Button.onClick ResetConfirmed ]
+            ]
+        ]
+        |> toHtml
 
 
 snackbarHost : Model -> Html Msg
@@ -809,24 +875,29 @@ snackbarHost model =
             text ""
 
         Just s ->
-            Ui.Snackbar.view s
+            Snackbar.view { message = s.message }
+                [ Snackbar.withId s.snackbarId
+                , Snackbar.dismissible True
+                , Snackbar.duration s.duration
+                ]
+                |> toHtml
 
 
 
 -- THEME MAPPING (pure) ---------------------------------------------------
 
 
-themeScheme : ThemeChoice -> Ui.Theme.Scheme
+themeScheme : ThemeChoice -> Theme.Scheme
 themeScheme choice =
     case choice of
         SystemTheme ->
-            Ui.Theme.Auto
+            Theme.Auto
 
         LightTheme ->
-            Ui.Theme.Light
+            Theme.Light
 
         DarkTheme ->
-            Ui.Theme.Dark
+            Theme.Dark
 
 
 densityValue : Density -> Float
@@ -839,10 +910,87 @@ densityValue density =
             -2
 
 
-motionScheme : Bool -> Ui.Theme.Motion
+motionScheme : Bool -> Theme.Motion
 motionScheme reduceMotion =
     if reduceMotion then
-        Ui.Theme.MotionStandard
+        Theme.MotionStandard
 
     else
-        Ui.Theme.MotionExpressive
+        Theme.MotionExpressive
+
+
+
+-- STRING CONVERSIONS (for Select / RadioButton) --------------------------
+
+
+themeChoiceToString : ThemeChoice -> String
+themeChoiceToString choice =
+    case choice of
+        SystemTheme ->
+            "system"
+
+        LightTheme ->
+            "light"
+
+        DarkTheme ->
+            "dark"
+
+
+themeChoiceFromString : String -> Maybe ThemeChoice
+themeChoiceFromString s =
+    case s of
+        "system" ->
+            Just SystemTheme
+
+        "light" ->
+            Just LightTheme
+
+        "dark" ->
+            Just DarkTheme
+
+        _ ->
+            Nothing
+
+
+languageFromString : String -> Maybe Language
+languageFromString s =
+    case s of
+        "english" ->
+            Just English
+
+        "spanish" ->
+            Just Spanish
+
+        "french" ->
+            Just French
+
+        "german" ->
+            Just German
+
+        "japanese" ->
+            Just Japanese
+
+        _ ->
+            Nothing
+
+
+timezoneFromString : String -> Maybe Timezone
+timezoneFromString s =
+    case s of
+        "utc" ->
+            Just UTC
+
+        "eastern" ->
+            Just Eastern
+
+        "pacific" ->
+            Just Pacific
+
+        "central" ->
+            Just Central
+
+        "london" ->
+            Just London
+
+        _ ->
+            Nothing

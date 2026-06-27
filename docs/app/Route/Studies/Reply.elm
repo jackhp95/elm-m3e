@@ -35,34 +35,41 @@ import Head.Seo as Seo
 import Html exposing (Html, div, p, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
+import M3e.AppBar as AppBar
+import M3e.Avatar as Avatar
+import M3e.Badge as Badge
+import M3e.BottomSheet as BottomSheet
+import M3e.Button as Button
+import M3e.Checkbox as Checkbox
+import M3e.Divider as Divider
+import M3e.Fab as Fab
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.IconButton as IconButton
+import M3e.Menu as Menu
+import M3e.NavigationBar as NavigationBar
+import M3e.NavigationRail as NavigationRail
+import M3e.Node as Node
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.ScrollContainer as ScrollContainer
+import M3e.Search as Search
+import M3e.Snackbar as Snackbar
+import M3e.SplitButton as SplitButton
+import M3e.SplitPane as SplitPane
+import M3e.TextField as TextField
+import M3e.Theme as Theme
+import M3e.Tooltip as Tooltip
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
-import Ui.AppBar as AppBar
-import Ui.Avatar as Avatar
-import Ui.Badge as Badge
-import Ui.BottomSheet as BottomSheet
-import Ui.Button as Button
-import Ui.Checkbox as Checkbox
-import Ui.Divider as Divider
-import Ui.Fab as Fab
-import Ui.Heading as Heading
-import Ui.Icon as Icon
-import Ui.IconButton as IconButton
-import Ui.Menu as Menu
-import Ui.NavigationBar as NavigationBar
-import Ui.NavigationRail as NavigationRail
-import Ui.ScrollContainer as ScrollContainer
-import Ui.Search as Search
-import Ui.Snackbar as Snackbar
-import Ui.SplitButton as SplitButton
-import Ui.SplitPane as SplitPane
-import Ui.TextField as TextField
-import Ui.Theme as Theme
-import Ui.Tooltip as Tooltip
 import UrlPath
 import View exposing (View)
+
+
+toHtml : Renderable any Msg -> Html Msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
 
 
 
@@ -439,23 +446,28 @@ view _ _ model =
 
 viewApp : Model -> Html Msg
 viewApp model =
-    Theme.new
-        |> Theme.withSeedColor "#4F6354"
-        |> Theme.withVariant Theme.Vibrant
-        |> Theme.withScheme Theme.Light
-        |> Theme.view
-            [ div [ class "flex h-[100dvh] w-full overflow-hidden bg-surface-container-lowest text-on-surface md:h-[calc(100vh-2rem)] md:min-h-[36rem] md:rounded-md-corner-large md:border md:border-outline-variant" ]
-                [ viewSideNav model
-                , div [ class "relative flex min-w-0 flex-1 flex-col" ]
-                    [ viewAppBar model
-                    , div [ class "min-h-0 flex-1 overflow-hidden" ] [ viewMain model ]
-                    , viewBottomNav model
-                    , viewComposeFab model
-                    , viewCompose model
-                    , viewSnackbar model
+    Theme.view
+        { content =
+            [ Renderable.html
+                (div [ class "flex h-[100dvh] w-full overflow-hidden bg-surface-container-lowest text-on-surface md:h-[calc(100vh-2rem)] md:min-h-[36rem] md:rounded-md-corner-large md:border md:border-outline-variant" ]
+                    [ viewSideNav model
+                    , div [ class "relative flex min-w-0 flex-1 flex-col" ]
+                        [ viewAppBar model
+                        , div [ class "min-h-0 flex-1 overflow-hidden" ] [ viewMain model ]
+                        , viewBottomNav model
+                        , viewComposeFab model
+                        , viewCompose model
+                        , viewSnackbar model
+                        ]
                     ]
-                ]
+                )
             ]
+        }
+        [ Theme.seedColor "#4F6354"
+        , Theme.variant Theme.Vibrant
+        , Theme.scheme Theme.Light
+        ]
+        |> toHtml
 
 
 {-| Drawer on large screens, rail on medium. Hidden on compact (the
@@ -487,39 +499,37 @@ viewSideNav model =
 
 
 navRail : NavigationRail.Mode -> Model -> Html Msg
-navRail mode model =
-    NavigationRail.new
-        { items = List.map railItem allMailboxes
-        , selected = Just model.mailbox
-        , onChange = SelectMailbox
-        }
-        |> NavigationRail.withId
-            (case mode of
+navRail railMode model =
+    NavigationRail.view
+        { items = List.map (railItem model.mailbox) allMailboxes }
+        [ NavigationRail.withId
+            (case railMode of
                 NavigationRail.Expanded ->
                     "reply-rail-expanded"
 
                 _ ->
                     "reply-rail-compact"
             )
-        |> NavigationRail.withMode mode
-        |> NavigationRail.view
+        , NavigationRail.mode railMode
+        ]
+        |> toHtml
 
 
-railItem : Mailbox -> NavigationRail.Item Mailbox Msg
-railItem mailbox =
-    let
-        base =
-            NavigationRail.item
-                { value = mailbox
-                , icon = Icon.material (mailboxIcon mailbox)
-                }
-                |> NavigationRail.withItemLabel (mailboxLabel mailbox)
-    in
-    if unreadCount mailbox > 0 then
-        NavigationRail.withItemBadge (String.fromInt (unreadCount mailbox)) base
+railItem : Mailbox -> Mailbox -> Renderable { navItem : Supported } Msg
+railItem selectedMailbox mailbox =
+    NavigationRail.item
+        { icon = Icon.view { name = mailboxIcon mailbox } }
+        ([ NavigationRail.itemLabel (mailboxLabel mailbox)
+         , NavigationRail.itemSelected (mailbox == selectedMailbox)
+         , NavigationRail.itemOnClick (SelectMailbox mailbox)
+         ]
+            ++ (if unreadCount mailbox > 0 then
+                    [ NavigationRail.itemBadge (String.fromInt (unreadCount mailbox)) ]
 
-    else
-        base
+                else
+                    []
+               )
+        )
 
 
 {-| Compact-only bottom navigation bar. Hidden when the reading pane is open
@@ -537,32 +547,29 @@ viewBottomNav model =
                     ""
     in
     div [ class ("bg-surface-container-low md:hidden " ++ hideWhenReading) ]
-        [ Divider.new |> Divider.view
-        , NavigationBar.new
-            { items = List.map barItem [ Inbox, Starred, Sent, Drafts ]
-            , selected = Just model.mailbox
-            , onChange = SelectMailbox
-            }
-            |> NavigationBar.withId "reply-bar"
-            |> NavigationBar.view
+        [ Divider.view [] |> toHtml
+        , NavigationBar.view
+            { items = List.map (barItem model.mailbox) [ Inbox, Starred, Sent, Drafts ] }
+            [ NavigationBar.withId "reply-bar" ]
+            |> toHtml
         ]
 
 
-barItem : Mailbox -> NavigationBar.Item Mailbox Msg
-barItem mailbox =
-    let
-        base =
-            NavigationBar.item
-                { value = mailbox
-                , icon = Icon.material (mailboxIcon mailbox)
-                }
-                |> NavigationBar.withItemLabel (mailboxLabel mailbox)
-    in
-    if unreadCount mailbox > 0 then
-        NavigationBar.withItemBadge (String.fromInt (unreadCount mailbox)) base
+barItem : Mailbox -> Mailbox -> Renderable { navItem : Supported } Msg
+barItem selectedMailbox mailbox =
+    NavigationBar.item
+        { icon = Icon.view { name = mailboxIcon mailbox } }
+        ([ NavigationBar.itemLabel (mailboxLabel mailbox)
+         , NavigationBar.itemSelected (mailbox == selectedMailbox)
+         , NavigationBar.itemOnClick (SelectMailbox mailbox)
+         ]
+            ++ (if unreadCount mailbox > 0 then
+                    [ NavigationBar.itemBadge (String.fromInt (unreadCount mailbox)) ]
 
-    else
-        base
+                else
+                    []
+               )
+        )
 
 
 
@@ -571,25 +578,77 @@ barItem mailbox =
 
 viewAppBar : Model -> Html Msg
 viewAppBar model =
+    let
+        -- Leading: back arrow on compact when reading, otherwise menu
+        leadingElem =
+            case model.selected of
+                Just _ ->
+                    Renderable.element { tag = "div" } []
+                        [ Node.element "div"
+                            [ Node.attribute "class" "md:hidden" ]
+                            [ Renderable.toNode
+                                (IconButton.view { icon = "arrow_back", name = "Back to inbox" }
+                                    [ IconButton.onClick CloseReadingPane ]
+                                )
+                            ]
+                        , Node.element "div"
+                            [ Node.attribute "class" "hidden md:block"
+                            , Node.attribute "id" "reply-menu-anchor"
+                            ]
+                            [ Renderable.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
+                        ]
+
+                Nothing ->
+                    Renderable.element { tag = "div" }
+                        [ Node.attribute "id" "reply-menu-anchor" ]
+                        [ Renderable.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
+
+        -- Search bar: visible md+
+        searchElem =
+            Renderable.element { tag = "div" }
+                [ Node.attribute "class" "hidden md:block min-w-0 max-w-md flex-1" ]
+                [ Node.raw (searchBar model) ]
+
+        -- Search icon button: compact only
+        compactSearchElem =
+            Renderable.element { tag = "div" }
+                [ Node.attribute "class" "md:hidden" ]
+                [ Renderable.toNode
+                    (IconButton.view { icon = "search", name = "Search mail" } [])
+                ]
+
+        -- Notifications with badge
+        total =
+            unreadCount Inbox
+
+        notifElem =
+            Renderable.element { tag = "div" }
+                [ Node.attribute "class" "relative"
+                , Node.attribute "id" "reply-notifications"
+                ]
+                (Renderable.toNode (IconButton.view { icon = "notifications", name = "Notifications" } [])
+                    :: (if total > 0 then
+                            [ Renderable.toNode (Badge.view [ Badge.count total ]) ]
+
+                        else
+                            []
+                       )
+                )
+
+        -- User avatar
+        avatarElem =
+            Avatar.view { alt = "Jane Reed" }
+                [ Avatar.initials "Jane Reed" ]
+    in
     AppBar.new
-        |> AppBar.withTitle (Heading.title (appBarTitle model))
         |> AppBar.withId "reply-appbar"
         |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeadingHtmlElementEscapeHatch Html.div [] [ leadingControl model ]
-        -- Search occupies most of the trailing slot at md+; hidden on
-        -- compact (a search icon button replaces it).
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div
-            [ class "hidden md:block min-w-0 max-w-md flex-1" ]
-            [ searchBar model ]
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [ class "md:hidden" ] [ compactSearchButton ]
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ notificationsButton ]
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div
-            []
-            [ Avatar.initials "Jane Reed"
-                |> Avatar.withId "reply-user-avatar"
-                |> Avatar.view
-            ]
-        |> AppBar.view
+        |> AppBar.withLeading leadingElem
+        |> AppBar.withTitle
+            (Heading.view { label = appBarTitle model, variant = Heading.Title } [])
+        |> AppBar.withTrailing [ searchElem, compactSearchElem, notifElem, avatarElem ]
+        |> AppBar.toNode
+        |> Node.toHtml
 
 
 {-| On compact, when a message is selected the reading pane replaces the list
@@ -606,87 +665,14 @@ appBarTitle model =
             mailboxLabel model.mailbox
 
 
-{-| Compact: a back arrow when a message is open, otherwise the menu icon.
-At md+ this is always the menu icon.
--}
-leadingControl : Model -> Html Msg
-leadingControl model =
-    case model.selected of
-        Just _ ->
-            div []
-                [ -- Back arrow only on compact; the desktop SplitPane keeps the list visible.
-                  div [ class "md:hidden" ] [ backLeading ]
-                , div [ class "hidden md:block" ] [ menuLeading ]
-                ]
-
-        Nothing ->
-            menuLeading
-
-
-backLeading : Html Msg
-backLeading =
-    IconButton.new
-        { icon = Icon.material "arrow_back"
-        , label = "Back to inbox"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withOnClick CloseReadingPane
-        |> IconButton.view
-
-
-compactSearchButton : Html Msg
-compactSearchButton =
-    IconButton.new
-        { icon = Icon.material "search"
-        , label = "Search mail"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.view
-
-
-menuLeading : Html Msg
-menuLeading =
-    div [ attribute "id" "reply-menu-anchor" ]
-        [ IconButton.new
-            { icon = Icon.material "menu"
-            , label = "Mailboxes"
-            , variant = IconButton.Standard
-            }
-            |> IconButton.view
-        ]
-
-
 searchBar : Model -> Html Msg
 searchBar model =
-    Search.bar
-        |> Search.withId "reply-search"
-        |> Search.withPlaceholder "Search mail"
-        |> Search.withQuery model.query SetQuery
-        |> Search.withClearable True
-        |> Search.view
-
-
-notificationsButton : Html Msg
-notificationsButton =
-    let
-        total =
-            unreadCount Inbox
-    in
-    div [ class "relative", attribute "id" "reply-notifications" ]
-        [ IconButton.new
-            { icon = Icon.material "notifications"
-            , label = "Notifications"
-            , variant = IconButton.Standard
-            }
-            |> IconButton.view
-        , if total > 0 then
-            Badge.count total
-                |> Badge.withFor "reply-notifications"
-                |> Badge.view
-
-          else
-            text ""
+    Search.view { placeholder = "Search mail" }
+        [ Search.onInput SetQuery
+        , Search.value model.query
+        , Search.clearable True
         ]
+        |> toHtml
 
 
 
@@ -702,11 +688,12 @@ viewMain model =
                     div [ class "h-full" ]
                         [ -- md+: SplitPane keeps list visible alongside the reading pane.
                           div [ class "hidden h-full md:block" ]
-                            [ SplitPane.new
-                                |> SplitPane.withId "reply-splitpane"
-                                |> SplitPane.withStart [ messageListPane model ]
-                                |> SplitPane.withEnd [ readingPane message ]
-                                |> SplitPane.view
+                            [ SplitPane.view
+                                { start = [ Renderable.html (messageListPane model) ]
+                                , end = [ Renderable.html (readingPane message) ]
+                                }
+                                []
+                                |> toHtml
                             ]
                         , -- Compact: reading pane stacks over the list — single column.
                           div [ class "h-full md:hidden" ] [ readingPane message ]
@@ -732,31 +719,32 @@ messageListPane model =
         shown =
             visibleMessages model
     in
-    ScrollContainer.new
-        |> ScrollContainer.withId "reply-list-scroll"
-        |> ScrollContainer.withDividers ScrollContainer.Top
-        |> ScrollContainer.view
-            [ div [ class "flex flex-col" ]
-                (if List.isEmpty shown then
-                    [ emptyState model.query ]
+    ScrollContainer.view
+        { content =
+            [ Renderable.html
+                (div [ class "flex flex-col" ]
+                    (if List.isEmpty shown then
+                        [ emptyState model.query ]
 
-                 else
-                    List.intersperse listDivider (List.map (messageRow model) shown)
+                     else
+                        List.intersperse listDivider (List.map (messageRow model) shown)
+                    )
                 )
             ]
+        }
+        [ ScrollContainer.dividers ScrollContainer.Above ]
+        |> toHtml
 
 
 listDivider : Html Msg
 listDivider =
-    Divider.new
-        |> Divider.withInsetStart True
-        |> Divider.view
+    Divider.view [ Divider.insetStart True ] |> toHtml
 
 
 emptyState : String -> Html Msg
 emptyState query =
     div [ class "flex flex-col items-center gap-2 px-6 py-16 text-center text-on-surface-variant" ]
-        [ Icon.material "mail" |> Icon.view
+        [ Icon.view { name = "mail" } |> toHtml
         , p [ class "text-body-md" ]
             [ text
                 (if String.isEmpty (String.trim query) then
@@ -793,17 +781,15 @@ messageRow model message =
     in
     div [ class ("flex items-start gap-3 px-3 py-3 transition-colors " ++ rowBg) ]
         [ div [ class "pt-1" ]
-            [ Checkbox.boolean
-                { label = "Select " ++ message.subject
-                , checked = isChecked
-                , onChange = ToggleChecked message.id
-                }
-                |> Checkbox.withId ("reply-check-" ++ String.fromInt message.id)
-                |> Checkbox.view
+            [ Checkbox.view { name = "Select " ++ message.subject }
+                [ Checkbox.checked isChecked
+                , Checkbox.onChange (ToggleChecked message.id)
+                ]
+                |> toHtml
             ]
-        , Avatar.initials message.sender
-            |> Avatar.withId ("reply-avatar-" ++ String.fromInt message.id)
-            |> Avatar.view
+        , Avatar.view { alt = message.sender }
+            [ Avatar.initials message.sender ]
+            |> toHtml
         , div
             [ class "min-w-0 flex-1 cursor-pointer"
             , attribute "role" "button"
@@ -840,23 +826,22 @@ messageRow model message =
             ]
         , div [ class "flex flex-col items-center gap-1" ]
             [ div [ attribute "id" starId ]
-                [ IconButton.new
-                    { icon = Icon.material "star"
-                    , label =
+                [ IconButton.view
+                    { icon = "star"
+                    , name =
                         if message.starred then
                             "Unstar"
 
                         else
                             "Star"
-                    , variant = IconButton.Standard
                     }
-                    |> IconButton.withSize IconButton.Small
-                    |> IconButton.withToggle
-                        { selected = message.starred
-                        , onChange = ToggleStar message.id
-                        , selectedIcon = Just (Icon.material "star" |> Icon.withFilled True)
-                        }
-                    |> IconButton.view
+                    [ IconButton.size IconButton.Small
+                    , IconButton.toggle True
+                    , IconButton.selected message.starred
+                    , IconButton.onChange (ToggleStar message.id)
+                    , IconButton.selectedIcon (Icon.view { name = "star" })
+                    ]
+                    |> toHtml
                 ]
             , Tooltip.plain
                 { anchorId = starId
@@ -867,7 +852,8 @@ messageRow model message =
                     else
                         "Add star"
                 }
-                |> Tooltip.view
+                []
+                |> toHtml
             ]
         ]
 
@@ -878,43 +864,48 @@ messageRow model message =
 
 readingPane : Message -> Html Msg
 readingPane message =
-    ScrollContainer.new
-        |> ScrollContainer.withId "reply-reading-scroll"
-        |> ScrollContainer.view
-            [ div [ class "flex flex-col gap-4 p-4 md:p-6" ]
-                [ div [ class "flex items-start justify-between gap-3" ]
-                    [ Heading.new
-                        |> Heading.withVariant Heading.Headline
-                        |> Heading.withSize Heading.Small
-                        |> Heading.withLevel 2
-                        |> Heading.withContent (text message.subject)
-                        |> Heading.view
-                    , readingActions
-                    ]
-                , Divider.new |> Divider.view
-                , div [ class "flex items-center gap-3" ]
-                    [ Avatar.initials message.sender
-                        |> Avatar.withId "reply-reading-avatar"
-                        |> Avatar.view
-                    , div [ class "min-w-0 flex-1" ]
-                        [ div [ class "text-title-sm font-medium text-on-surface" ] [ text message.sender ]
-                        , div [ class "text-body-sm text-on-surface-variant" ] [ text ("to me · " ++ message.time) ]
+    ScrollContainer.view
+        { content =
+            [ Renderable.html
+                (div [ class "flex flex-col gap-4 p-4 md:p-6" ]
+                    [ div [ class "flex items-start justify-between gap-3" ]
+                        [ Heading.view { label = message.subject, variant = Heading.Headline }
+                            [ Heading.size Heading.Small
+                            , Heading.level 2
+                            ]
+                            |> toHtml
+                        , readingActions
+                        ]
+                    , Divider.view [] |> toHtml
+                    , div [ class "flex items-center gap-3" ]
+                        [ Avatar.view { alt = message.sender }
+                            [ Avatar.initials message.sender ]
+                            |> toHtml
+                        , div [ class "min-w-0 flex-1" ]
+                            [ div [ class "text-title-sm font-medium text-on-surface" ] [ text message.sender ]
+                            , div [ class "text-body-sm text-on-surface-variant" ] [ text ("to me · " ++ message.time) ]
+                            ]
+                        ]
+                    , p [ class "whitespace-pre-line text-body-lg leading-relaxed text-on-surface" ] [ text message.body ]
+                    , Divider.view [] |> toHtml
+                    , div [ class "flex flex-wrap gap-2" ]
+                        [ Button.view { label = "Reply", variant = Button.Filled }
+                            [ Button.leadingIcon (Icon.view { name = "reply" })
+                            , Button.onClick OpenCompose
+                            ]
+                            |> toHtml
+                        , Button.view { label = "Forward", variant = Button.Tonal }
+                            [ Button.leadingIcon (Icon.view { name = "forward" })
+                            , Button.onClick OpenCompose
+                            ]
+                            |> toHtml
                         ]
                     ]
-                , p [ class "whitespace-pre-line text-body-lg leading-relaxed text-on-surface" ] [ text message.body ]
-                , Divider.new |> Divider.view
-                , div [ class "flex flex-wrap gap-2" ]
-                    [ Button.new { label = "Reply", variant = Button.Filled }
-                        |> Button.withLeadingIcon (Icon.material "reply")
-                        |> Button.withOnClick OpenCompose
-                        |> Button.view
-                    , Button.new { label = "Forward", variant = Button.Tonal }
-                        |> Button.withLeadingIcon (Icon.material "forward")
-                        |> Button.withOnClick OpenCompose
-                        |> Button.view
-                    ]
-                ]
+                )
             ]
+        }
+        []
+        |> toHtml
 
 
 readingActions : Html Msg
@@ -929,13 +920,9 @@ readingActions =
 
 closeReadingButton : Html Msg
 closeReadingButton =
-    IconButton.new
-        { icon = Icon.material "close"
-        , label = "Close conversation"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withOnClick CloseReadingPane
-        |> IconButton.view
+    IconButton.view { icon = "close", name = "Close conversation" }
+        [ IconButton.onClick CloseReadingPane ]
+        |> toHtml
 
 
 archiveButton : Html Msg
@@ -946,40 +933,32 @@ archiveButton =
     in
     div [ class "flex flex-col items-center" ]
         [ div [ attribute "id" anchor ]
-            [ IconButton.new
-                { icon = Icon.material "archive"
-                , label = "Archive"
-                , variant = IconButton.Standard
-                }
-                |> IconButton.withOnClick ArchiveSelected
-                |> IconButton.view
+            [ IconButton.view { icon = "archive", name = "Archive" }
+                [ IconButton.onClick ArchiveSelected ]
+                |> toHtml
             ]
-        , Tooltip.plain { anchorId = anchor, label = "Archive" }
-            |> Tooltip.view
+        , Tooltip.plain { anchorId = anchor, label = "Archive" } [] |> toHtml
         ]
 
 
 overflowMenu : Html Msg
 overflowMenu =
     div [ attribute "id" "reply-overflow", class "relative" ]
-        [ IconButton.new
-            { icon = Icon.material "more_vert"
-            , label = "More actions"
-            , variant = IconButton.Standard
+        [ IconButton.view { icon = "more_vert", name = "More actions" } [] |> toHtml
+        , Menu.view
+            { items =
+                [ Menu.item { label = "Mark as unread", action = Menu.Click NoOp }
+                    [ Menu.itemLeadingIcon (Icon.view { name = "mark_email_unread" }) ]
+                , Menu.item { label = "Move to", action = Menu.Click NoOp }
+                    [ Menu.itemLeadingIcon (Icon.view { name = "drive_file_move" }) ]
+                , Menu.item { label = "Report spam", action = Menu.Click NoOp }
+                    [ Menu.itemLeadingIcon (Icon.view { name = "report" }) ]
+                , Menu.item { label = "Delete", action = Menu.Click ArchiveSelected }
+                    [ Menu.itemLeadingIcon (Icon.view { name = "delete" }) ]
+                ]
             }
-            |> IconButton.view
-        , Menu.new
-            [ Menu.item "Mark as unread" NoOp
-                |> Menu.withItemIcon (Icon.material "mark_email_unread")
-            , Menu.item "Move to" NoOp
-                |> Menu.withItemIcon (Icon.material "drive_file_move")
-            , Menu.item "Report spam" NoOp
-                |> Menu.withItemIcon (Icon.material "report")
-            , Menu.item "Delete" ArchiveSelected
-                |> Menu.withItemIcon (Icon.material "delete")
-            ]
-            |> Menu.withId "reply-overflow-menu"
-            |> Menu.view
+            [ Menu.withId "reply-overflow-menu" ]
+            |> toHtml
         ]
 
 
@@ -1002,85 +981,76 @@ viewComposeFab model =
                     ""
     in
     div [ class ("absolute bottom-20 right-4 z-10 md:bottom-6 md:right-6 " ++ compactHide) ]
-        [ Fab.new
-            { icon = Icon.material "edit"
-            , label = "Compose"
-            , variant = Fab.Primary
-            }
-            |> Fab.withOnClick OpenCompose
-            |> Fab.view
+        [ Fab.view { icon = "edit", name = "Compose" }
+            [ Fab.label "Compose"
+            , Fab.variant Fab.Primary
+            , Fab.onClick OpenCompose
+            ]
+            |> toHtml
         ]
 
 
 viewCompose : Model -> Html Msg
 viewCompose model =
-    BottomSheet.new { open = model.composing, onClose = CloseCompose }
-        |> BottomSheet.withId "reply-compose"
-        |> BottomSheet.withModal True
-        |> BottomSheet.withHandle True
-        |> BottomSheet.withAttributes
-            -- Without explicit detents the m3e-bottom-sheet opens to a 16px
-            -- peek and waits for a drag gesture; on a touch-less test page
-            -- that hides the compose form entirely. Three detents matches
-            -- the m3e example (`fit half full`) and the property `detent: 2`
-            -- snaps to the full-height detent on open.
-            [ attribute "detents" "fit half full"
-            , attribute "detent" "2"
+    -- TODO: The old API's BottomSheet.withAttributes for custom detents
+    -- ("detents" = "fit half full", "detent" = "2") has no equivalent in
+    -- M3e.BottomSheet options. The sheet opens to its default size.
+    BottomSheet.view
+        { content = [ Renderable.html (composeBody model.compose) ] }
+        [ BottomSheet.open model.composing
+        , BottomSheet.onClose CloseCompose
+        , BottomSheet.modal True
+        , BottomSheet.handle True
+        , BottomSheet.header
+            [ Heading.view { label = "New message", variant = Heading.Title }
+                [ Heading.size Heading.Large
+                , Heading.level 2
+                ]
             ]
-        |> BottomSheet.withHeader
-            (Heading.new
-                |> Heading.withVariant Heading.Title
-                |> Heading.withSize Heading.Large
-                |> Heading.withLevel 2
-                |> Heading.withContent (text "New message")
-                |> Heading.view
-            )
-        |> BottomSheet.withBody (composeBody model.compose)
-        |> BottomSheet.view
+        ]
+        |> toHtml
 
 
 composeBody : ComposeFields -> Html Msg
 composeBody fields =
     div [ class "flex flex-col gap-4 pt-2" ]
-        [ TextField.text
-            { label = "To"
-            , value = fields.to
-            , variant = TextField.Outlined
-            , onChange = SetComposeTo
-            }
-            |> TextField.withId "reply-compose-to"
-            |> TextField.withEmailValidator
-            |> TextField.view
-        , TextField.text
-            { label = "Subject"
-            , value = fields.subject
-            , variant = TextField.Outlined
-            , onChange = SetComposeSubject
-            }
-            |> TextField.withId "reply-compose-subject"
-            |> TextField.view
-        , TextField.multiline
-            { label = "Message"
-            , value = fields.body
-            , variant = TextField.Outlined
-            , onChange = SetComposeBody
-            }
-            |> TextField.withId "reply-compose-body"
-            |> TextField.withRows 5
-            |> TextField.view
+        [ TextField.view { label = "To" }
+            [ TextField.withId "reply-compose-to"
+            , TextField.withVariant TextField.Outlined
+            , TextField.withInputType TextField.Email
+            , TextField.withValue fields.to
+            , TextField.onInput SetComposeTo
+            ]
+            |> toHtml
+        , TextField.view { label = "Subject" }
+            [ TextField.withId "reply-compose-subject"
+            , TextField.withVariant TextField.Outlined
+            , TextField.withValue fields.subject
+            , TextField.onInput SetComposeSubject
+            ]
+            |> toHtml
+        , TextField.view { label = "Message" }
+            [ TextField.withId "reply-compose-body"
+            , TextField.withVariant TextField.Outlined
+            , TextField.multiline True
+            , TextField.withRows 5
+            , TextField.withValue fields.body
+            , TextField.onInput SetComposeBody
+            ]
+            |> toHtml
         , div [ class "flex items-center justify-between gap-2" ]
-            [ Button.new { label = "Discard", variant = Button.Text }
-                |> Button.withOnClick CloseCompose
-                |> Button.view
-            , SplitButton.new
+            [ Button.view { label = "Discard", variant = Button.Text }
+                [ Button.onClick CloseCompose ]
+                |> toHtml
+            , SplitButton.view
                 { label = "Send"
+                , name = "Schedule send"
+                , trailingIcon = "schedule_send"
                 , onPrimaryClick = SendMessage
                 , onTriggerClick = ScheduleSend
-                , trailingIcon = Icon.material "schedule_send"
                 }
-                |> SplitButton.withVariant SplitButton.Filled
-                |> SplitButton.withTriggerLabel "Schedule send"
-                |> SplitButton.view
+                [ SplitButton.variant SplitButton.Filled ]
+                |> toHtml
             ]
         ]
 
@@ -1093,11 +1063,12 @@ viewSnackbar : Model -> Html Msg
 viewSnackbar model =
     case model.toast of
         Just message ->
-            Snackbar.new message
-                |> Snackbar.withId "reply-snackbar"
-                |> Snackbar.withAction "Undo"
-                |> Snackbar.withDismissible True
-                |> Snackbar.view
+            Snackbar.view { message = message }
+                [ Snackbar.withId "reply-snackbar"
+                , Snackbar.action "Undo"
+                , Snackbar.dismissible True
+                ]
+                |> toHtml
 
         Nothing ->
             text ""

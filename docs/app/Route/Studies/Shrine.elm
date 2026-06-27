@@ -2,7 +2,7 @@ module Route.Studies.Shrine exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Shrine** — a Material 3 e-commerce boutique study.
 
-A polished, interactive storefront composed entirely from the elm-m3e (`Ui.*`)
+A polished, interactive storefront composed entirely from the elm-m3e (`M3e.*`)
 component library plus the tailwind-m3e-web token bridge. It exercises the full
 set of components the coverage matrix assigns to the Shrine study (column 2):
 
@@ -36,35 +36,43 @@ import Html.Attributes exposing (attribute, class)
 import Html.Events
 import Json.Decode as Decode
 import Cem.M3e.Shape
+import M3e.AppBar as AppBar
+import M3e.Badge as Badge
+import M3e.BottomSheet as BottomSheet
+import M3e.Button as Button
+import M3e.ButtonGroup as ButtonGroup
+import M3e.Card as Card
+import M3e.Chip as Chip
+import M3e.ChipSet as ChipSet
+import M3e.Dialog as Dialog
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.IconButton as IconButton
+import M3e.List as L
+import M3e.NavigationRail as NavigationRail
+import M3e.Node as Node
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.SegmentedButton as SegmentedButton
+import M3e.Select as Select
+import M3e.Shape as Shape
+import M3e.Skeleton as Skeleton
+import M3e.Slide as Slide
+import M3e.Slider as Slider
+import M3e.Snackbar as Snackbar
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import Process
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
 import Task
-import Ui.AppBar as AppBar
-import Ui.Badge as Badge
-import Ui.BottomSheet as BottomSheet
-import Ui.Button as Button
-import Ui.ButtonGroup as ButtonGroup
-import Ui.Card as Card
-import Ui.Chip as Chip
-import Ui.Dialog as Dialog
-import Ui.Divider as Divider
-import Ui.Heading as Heading
-import Ui.Icon as Icon
-import Ui.IconButton as IconButton
-import Ui.List as L
-import Ui.NavigationRail as NavigationRail
-import Ui.SegmentedButton as SegmentedButton
-import Ui.Select as Select
-import Ui.Shape as Shape
-import Ui.Skeleton as Skeleton
-import Ui.Slide as Slide
-import Ui.Slider as Slider
-import Ui.Snackbar as Snackbar
 import UrlPath
 import View exposing (View)
+
+
+toHtml : Renderable any Msg -> Html Msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
 
 
 
@@ -357,7 +365,7 @@ type alias Model =
     , detail : Maybe Int
     , detailQty : Float
     , detailSize : String
-    , snackbar : Maybe (Snackbar.Snackbar Msg)
+    , snackbar : Maybe { message : String }
     }
 
 
@@ -495,7 +503,7 @@ update _ _ msg model =
             ( { model | detailSize = size }, Effect.none )
 
 
-addedSnackbar : Int -> Int -> Snackbar.Snackbar Msg
+addedSnackbar : Int -> Int -> { message : String }
 addedSnackbar productId qty =
     let
         name =
@@ -508,11 +516,7 @@ addedSnackbar productId qty =
             else
                 name ++ " added to bag"
     in
-    Snackbar.new label
-        |> Snackbar.withId "shrine-snackbar"
-        |> Snackbar.withAction "View bag"
-        |> Snackbar.withDismissible True
-        |> Snackbar.withDuration 4000
+    { message = label }
 
 
 subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
@@ -574,7 +578,7 @@ viewShrine model =
             [ div [ class "hidden sm:block" ] [ viewRail model ]
             , div [ class "flex min-w-0 flex-1 flex-col gap-4" ]
                 [ viewControls model
-                , Divider.new |> Divider.view
+                , Divider.view [] |> toHtml
                 , viewResultsBar model filtered
                 , if model.loading then
                     viewSkeletonGrid
@@ -595,43 +599,34 @@ viewAppBar model =
         count =
             cartCount model.cart
 
-        cartButton =
-            div [ class "relative" ]
-                [ IconButton.new
-                    { icon = Icon.material "shopping_bag"
-                    , label = "Open bag"
-                    , variant = IconButton.Standard
-                    }
-                    |> IconButton.withOnClick CartOpened
-                    |> IconButton.view
-                , if count > 0 then
-                    span [ class "pointer-events-none absolute -right-1 -top-1" ]
-                        [ Badge.count count |> Badge.view ]
+        cartElem =
+            Renderable.element { tag = "div" }
+                [ Node.attribute "class" "relative" ]
+                (Renderable.toNode
+                    (IconButton.view { icon = "shopping_bag", name = "Open bag" }
+                        [ IconButton.onClick CartOpened ]
+                    )
+                    :: (if count > 0 then
+                            [ Renderable.toNode (Badge.view [ Badge.count count ]) ]
 
-                  else
-                    text ""
-                ]
+                        else
+                            []
+                       )
+                )
     in
     AppBar.new
-        |> AppBar.withTitle (Heading.title "Shrine")
         |> AppBar.withId "shrine-appbar"
         |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeadingIconButton
-            (IconButton.new
-                { icon = Icon.material "menu"
-                , label = "Menu"
-                , variant = IconButton.Standard
-                }
-            )
-        |> AppBar.withTrailingIconButton
-            (IconButton.new
-                { icon = Icon.material "search"
-                , label = "Search"
-                , variant = IconButton.Standard
-                }
-            )
-        |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [] [ cartButton ]
-        |> AppBar.view
+        |> AppBar.withLeading
+            (IconButton.view { icon = "menu", name = "Menu" } [])
+        |> AppBar.withTitle
+            (Heading.view { label = "Shrine", variant = Heading.Title } [])
+        |> AppBar.withTrailing
+            [ IconButton.view { icon = "search", name = "Search" } []
+            , cartElem
+            ]
+        |> AppBar.toNode
+        |> Node.toHtml
 
 
 viewCarousel : Html Msg
@@ -644,10 +639,10 @@ viewCarousel =
             , ( "New arrivals", "bg-tertiary-container", "auto_awesome" )
             ]
 
-        slideCard ( title, swatch, icon ) =
+        slideCard ( title, swatch, iconName ) =
             div
                 [ class ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch) ]
-                [ Icon.material icon |> Icon.view
+                [ Icon.view { name = iconName } |> toHtml
                 , span [ class "text-title-md font-medium" ] [ text title ]
                 ]
     in
@@ -657,22 +652,22 @@ viewCarousel =
 
 viewRail : Model -> Html Msg
 viewRail model =
-    let
-        railItem dept =
-            NavigationRail.item
-                { value = dept
-                , icon = Icon.material (departmentIcon dept)
-                }
-                |> NavigationRail.withItemLabel (departmentLabel dept)
-    in
-    NavigationRail.new
-        { items = List.map railItem departments
-        , selected = Just model.department
-        , onChange = DepartmentPicked
-        }
-        |> NavigationRail.withId "shrine-rail"
-        |> NavigationRail.withMode NavigationRail.Expanded
-        |> NavigationRail.view
+    NavigationRail.view
+        { items = List.map (railItem model.department) departments }
+        [ NavigationRail.withId "shrine-rail"
+        , NavigationRail.mode NavigationRail.Expanded
+        ]
+        |> toHtml
+
+
+railItem : Department -> Department -> Renderable { navItem : Renderable.Supported } Msg
+railItem selectedDept dept =
+    NavigationRail.item
+        { icon = Icon.view { name = departmentIcon dept } }
+        [ NavigationRail.itemLabel (departmentLabel dept)
+        , NavigationRail.itemSelected (dept == selectedDept)
+        , NavigationRail.itemOnClick (DepartmentPicked dept)
+        ]
 
 
 viewControls : Model -> Html Msg
@@ -683,45 +678,45 @@ viewControls model =
                 |> List.map
                     (\cat ->
                         Chip.filter
-                            { id = "chip-" ++ categoryKey cat
-                            , label = categoryLabel cat
+                            { label = categoryLabel cat
                             , onToggle = CategoryToggled cat
                             }
-                            |> Chip.withSelected (List.member cat model.categories)
+                            [ Chip.selected (List.member cat model.categories) ]
                     )
 
+        chipSet =
+            ChipSet.filterSet "Product filters"
+                |> ChipSet.withChips chips
+                |> ChipSet.toNode
+                |> Node.toHtml
+
         viewModeControl =
-            SegmentedButton.single
-                { label = "View mode"
-                , segments =
-                    [ SegmentedButton.segment { value = Grid, label = "Grid" }
-                    , SegmentedButton.segment { value = ListView, label = "List" }
+            SegmentedButton.view
+                { segments =
+                    [ SegmentedButton.segment { label = "Grid", checked = model.viewMode == Grid }
+                        [ SegmentedButton.segmentOnClick (ViewModeChanged Grid) ]
+                    , SegmentedButton.segment { label = "List", checked = model.viewMode == ListView }
+                        [ SegmentedButton.segmentOnClick (ViewModeChanged ListView) ]
                     ]
-                , selected = Just model.viewMode
-                , onChange = ViewModeChanged
                 }
-                |> SegmentedButton.withId "shrine-viewmode"
-                |> SegmentedButton.view
+                []
+                |> toHtml
 
         priceSlider =
-            Slider.value
-                { label = "Max price"
-                , value = model.maxPrice
-                , onChange = MaxPriceChanged
-                }
-                |> Slider.withId "shrine-price"
-                |> Slider.withMin 0
-                |> Slider.withMax 200
-                |> Slider.withStep 5
-                |> Slider.withDiscrete True
-                |> Slider.withLabelled True
-                |> Slider.view
+            Slider.view { name = "Max price" }
+                [ Slider.value model.maxPrice
+                , Slider.min 0
+                , Slider.max 200
+                , Slider.step 5
+                , Slider.discrete True
+                , Slider.labelled True
+                , Slider.onChange MaxPriceChanged
+                ]
+                |> toHtml
     in
     div [ class "flex flex-col gap-4" ]
         [ div [ class "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between" ]
-            [ Chip.filterSet chips
-                |> Chip.withId "shrine-filters"
-                |> Chip.viewSet
+            [ chipSet
             , viewModeControl
             ]
         , div [ class "max-w-md" ]
@@ -735,13 +730,15 @@ viewControls model =
 viewResultsBar : Model -> List Product -> Html Msg
 viewResultsBar _ filtered =
     div [ class "flex items-center gap-2 text-on-surface-variant" ]
-        [ Icon.material "inventory_2" |> Icon.view
-        , Heading.new
-            |> Heading.withVariant Heading.Title
-            |> Heading.withSize Heading.Small
-            |> Heading.withLevel 2
-            |> Heading.withContent (text (String.fromInt (List.length filtered) ++ " products"))
-            |> Heading.view
+        [ Icon.view { name = "inventory_2" } |> toHtml
+        , Heading.view
+            { label = String.fromInt (List.length filtered) ++ " products"
+            , variant = Heading.Title
+            }
+            [ Heading.size Heading.Small
+            , Heading.level 2
+            ]
+            |> toHtml
         ]
 
 
@@ -750,20 +747,28 @@ viewSkeletonGrid =
     div [ class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" ]
         (List.range 1 6
             |> List.map
-                (\n ->
+                (\_ ->
                     div [ class "flex flex-col gap-3 rounded-md-corner-large border border-outline-variant p-4" ]
-                        [ Skeleton.new
-                            |> Skeleton.withId ("skeleton-media-" ++ String.fromInt n)
-                            |> Skeleton.withClass "h-32 w-full rounded-md-corner-medium"
-                            |> Skeleton.view
-                        , Skeleton.new
-                            |> Skeleton.withId ("skeleton-title-" ++ String.fromInt n)
-                            |> Skeleton.withClass "h-5 w-2/3"
-                            |> Skeleton.view
-                        , Skeleton.new
-                            |> Skeleton.withId ("skeleton-price-" ++ String.fromInt n)
-                            |> Skeleton.withClass "h-4 w-1/3"
-                            |> Skeleton.view
+                        [ Skeleton.view
+                            { content =
+                                [ Renderable.html
+                                    (div [ class "h-32 w-full rounded-md-corner-medium" ] [])
+                                ]
+                            }
+                            []
+                            |> toHtml
+                        , Skeleton.view
+                            { content =
+                                [ Renderable.html (div [ class "h-5 w-2/3" ] []) ]
+                            }
+                            []
+                            |> toHtml
+                        , Skeleton.view
+                            { content =
+                                [ Renderable.html (div [ class "h-4 w-1/3" ] []) ]
+                            }
+                            []
+                            |> toHtml
                         ]
                 )
         )
@@ -773,7 +778,7 @@ viewCatalog : Model -> List Product -> Html Msg
 viewCatalog model filtered =
     if List.isEmpty filtered then
         div [ class "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant" ]
-            [ Icon.material "sentiment_dissatisfied" |> Icon.view
+            [ Icon.view { name = "sentiment_dissatisfied" } |> toHtml
             , text "No products match these filters."
             ]
 
@@ -791,12 +796,16 @@ viewCatalog model filtered =
 
 productMedia : Product -> Html Msg
 productMedia product =
-    Shape.new
-        |> Shape.withName product.shape
-        |> Shape.withClass ("flex h-36 items-center justify-center " ++ product.swatch)
-        |> Shape.withContent
-            [ Icon.material (categoryGlyph product.category) |> Icon.view ]
-        |> Shape.view
+    Shape.view
+        { content =
+            [ Renderable.html
+                (div [ class ("flex h-36 items-center justify-center " ++ product.swatch) ]
+                    [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
+                )
+            ]
+        }
+        [ Shape.name product.shape ]
+        |> toHtml
 
 
 categoryGlyph : Category -> String
@@ -825,75 +834,87 @@ viewProductCard : Model -> Product -> Html Msg
 viewProductCard model product =
     let
         favoriteButton =
-            IconButton.new
-                { icon = Icon.material "favorite"
-                , label = "Favorite " ++ product.name
-                , variant = IconButton.Standard
+            IconButton.view
+                { icon = "favorite"
+                , name = "Favorite " ++ product.name
                 }
-                |> IconButton.withToggle
-                    { selected = List.member product.id model.favorites
-                    , onChange = always (FavoriteToggled product.id)
-                    , selectedIcon = Just (Icon.material "favorite" |> Icon.withFilled True)
-                    }
-                |> IconButton.withSize IconButton.Small
-                |> IconButton.view
+                [ IconButton.toggle True
+                , IconButton.selected (List.member product.id model.favorites)
+                , IconButton.onChange (always (FavoriteToggled product.id))
+                , IconButton.selectedIcon (Icon.view { name = "favorite" })
+                , IconButton.size IconButton.Small
+                ]
+                |> toHtml
 
         body =
             div [ class "flex flex-col gap-2" ]
                 [ div [ class "flex items-start justify-between gap-2" ]
-                    [ Heading.new
-                        |> Heading.withVariant Heading.Title
-                        |> Heading.withSize Heading.Medium
-                        |> Heading.withLevel 3
-                        |> Heading.withContent (text product.name)
-                        |> Heading.view
+                    [ Heading.view { label = product.name, variant = Heading.Title }
+                        [ Heading.size Heading.Medium
+                        , Heading.level 3
+                        ]
+                        |> toHtml
                     , favoriteButton
                     ]
-                , Heading.new
-                    |> Heading.withVariant Heading.Title
-                    |> Heading.withSize Heading.Small
-                    |> Heading.withLevel 4
-                    |> Heading.withContent
-                        (span [ class "text-primary" ] [ text (formatPrice product.price) ])
-                    |> Heading.view
+                , span [ class "text-primary" ]
+                    [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
+                        [ Heading.size Heading.Small
+                        , Heading.level 4
+                        ]
+                        |> toHtml
+                    ]
                 ]
     in
-    Card.new Card.Elevated
+    Card.new
+        |> Card.withVariant Card.Elevated
         |> Card.withMedia
-            (div
-                [ class "cursor-pointer"
-                , attribute "role" "button"
-                , Html.Attributes.tabindex 0
-                , Html.Events.onClick (ProductOpened product.id)
-                ]
-                [ productMedia product ]
+            (Renderable.html
+                (div
+                    [ class "cursor-pointer"
+                    , attribute "role" "button"
+                    , Html.Attributes.tabindex 0
+                    , Html.Events.onClick (ProductOpened product.id)
+                    ]
+                    [ productMedia product ]
+                )
             )
-        |> Card.withBody body
+        |> Card.withBody [ Renderable.html body ]
         |> Card.withActions
-            [ Button.new { label = "Add to bag", variant = Button.Filled }
-                |> Button.withLeadingIcon (Icon.material "add_shopping_cart")
-                |> Button.withOnClick (AddedToBag product.id 1)
+            [ Button.view { label = "Add to bag", variant = Button.Filled }
+                [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
+                , Button.onClick (AddedToBag product.id 1)
+                ]
             ]
-        |> Card.view
+        |> Card.toNode
+        |> Node.toHtml
 
 
 viewProductList : Model -> List Product -> Html Msg
 viewProductList _ filtered =
-    L.new
-        (filtered
-            |> List.map
-                (\product ->
-                    L.actionItem product.name
-                        |> L.withItemLeadingIcon (Icon.material (categoryGlyph product.category))
-                        |> L.withItemOverline (categoryLabel product.category)
-                        |> L.withItemSupporting (formatPrice product.price)
-                        |> L.withItemTrailingIcon (Icon.material "add_shopping_cart")
-                        |> L.withItemOnClick (AddedToBag product.id 1)
-                )
-        )
-        |> L.withId "shrine-list"
-        |> L.withVariant L.Standard
-        |> L.view
+    L.view
+        { items =
+            filtered
+                |> List.map
+                    (\product ->
+                        L.actionItem { headline = product.name }
+                            [ L.actionLeading
+                                (Renderable.element { tag = "span" }
+                                    []
+                                    [ Renderable.toNode (Icon.view { name = categoryGlyph product.category }) ]
+                                )
+                            , L.actionOverline (categoryLabel product.category)
+                            , L.actionSupporting (formatPrice product.price)
+                            , L.actionTrailing
+                                (Renderable.element { tag = "span" }
+                                    []
+                                    [ Renderable.toNode (Icon.view { name = "add_shopping_cart" }) ]
+                                )
+                            , L.actionOnClick (AddedToBag product.id 1)
+                            ]
+                    )
+        }
+        []
+        |> toHtml
 
 
 
@@ -912,12 +933,11 @@ viewCartSheet model =
 
         header =
             div [ class "flex items-center justify-between" ]
-                [ Heading.new
-                    |> Heading.withVariant Heading.Headline
-                    |> Heading.withSize Heading.Small
-                    |> Heading.withLevel 2
-                    |> Heading.withContent (text "Your bag")
-                    |> Heading.view
+                [ Heading.view { label = "Your bag", variant = Heading.Headline }
+                    [ Heading.size Heading.Small
+                    , Heading.level 2
+                    ]
+                    |> toHtml
                 , span [ class "text-label-lg text-on-surface-variant" ]
                     [ text (String.fromInt (cartCount model.cart) ++ " items") ]
                 ]
@@ -925,14 +945,14 @@ viewCartSheet model =
         body =
             if List.isEmpty items then
                 div [ class "flex flex-col items-center gap-2 py-8 text-on-surface-variant" ]
-                    [ Icon.material "shopping_bag" |> Icon.view
+                    [ Icon.view { name = "shopping_bag" } |> toHtml
                     , text "Your bag is empty."
                     ]
 
             else
                 div [ class "flex flex-col gap-2" ]
                     (List.map viewCartRow items
-                        ++ [ Divider.new |> Divider.view
+                        ++ [ Divider.view [] |> toHtml
                            , div [ class "flex items-center justify-between pt-1" ]
                                 [ span [ class "text-title-md text-on-surface" ] [ text "Subtotal" ]
                                 , span [ class "text-title-md font-medium text-primary" ]
@@ -941,69 +961,61 @@ viewCartSheet model =
                            ]
                     )
     in
-    BottomSheet.new { open = model.cartOpen, onClose = CartClosed }
-        |> BottomSheet.withId "shrine-cart"
-        |> BottomSheet.withModal True
-        |> BottomSheet.withHandle True
-        |> BottomSheet.withHeader header
-        |> BottomSheet.withBody body
-        |> BottomSheet.withActions
-            [ Button.new { label = "Checkout", variant = Button.Filled }
-                |> Button.withLeadingIcon (Icon.material "lock")
-                |> Button.withDisabled
-                    (if List.isEmpty items then
-                        Button.Disabled
-
-                     else
-                        Button.Enabled
-                    )
-                |> Button.withOnClick CartClosed
-            , Button.new { label = "Keep shopping", variant = Button.Text }
-                |> Button.withOnClick CartClosed
+    BottomSheet.view
+        { content = [ Renderable.html body ] }
+        [ BottomSheet.open model.cartOpen
+        , BottomSheet.onClose CartClosed
+        , BottomSheet.modal True
+        , BottomSheet.handle True
+        , BottomSheet.header [ Renderable.html header ]
+        , BottomSheet.actions
+            [ Button.view { label = "Checkout", variant = Button.Filled }
+                [ Button.leadingIcon (Icon.view { name = "lock" })
+                , Button.disabled (List.isEmpty items)
+                , Button.onClick CartClosed
+                ]
+            , Button.view { label = "Keep shopping", variant = Button.Text }
+                [ Button.onClick CartClosed ]
             ]
-        |> BottomSheet.view
+        ]
+        |> toHtml
 
 
 viewCartRow : ( Product, Int ) -> Html Msg
 viewCartRow ( product, qty ) =
     div [ class "flex items-center gap-3" ]
-        [ Shape.new
-            |> Shape.withName product.shape
-            |> Shape.withClass ("flex h-10 w-10 items-center justify-center " ++ product.swatch)
-            |> Shape.withContent
-                [ Icon.material (categoryGlyph product.category) |> Icon.view ]
-            |> Shape.view
+        [ Shape.view
+            { content =
+                [ Renderable.html
+                    (div [ class ("flex h-10 w-10 items-center justify-center " ++ product.swatch) ]
+                        [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
+                    )
+                ]
+            }
+            [ Shape.name product.shape ]
+            |> toHtml
         , div [ class "flex min-w-0 flex-1 flex-col" ]
             [ span [ class "truncate text-body-lg text-on-surface" ] [ text product.name ]
             , span [ class "text-label-md text-on-surface-variant" ]
                 [ text (formatPrice product.price ++ " each") ]
             ]
         , div [ class "flex items-center gap-1" ]
-            [ IconButton.new
-                { icon = Icon.material "remove"
-                , label = "Decrease quantity"
-                , variant = IconButton.Standard
-                }
-                |> IconButton.withSize IconButton.ExtraSmall
-                |> IconButton.withOnClick (QuantityChanged product.id (qty - 1))
-                |> IconButton.view
+            [ IconButton.view { icon = "remove", name = "Decrease quantity" }
+                [ IconButton.size IconButton.ExtraSmall
+                , IconButton.onClick (QuantityChanged product.id (qty - 1))
+                ]
+                |> toHtml
             , span [ class "w-6 text-center text-body-lg text-on-surface" ] [ text (String.fromInt qty) ]
-            , IconButton.new
-                { icon = Icon.material "add"
-                , label = "Increase quantity"
-                , variant = IconButton.Standard
-                }
-                |> IconButton.withSize IconButton.ExtraSmall
-                |> IconButton.withOnClick (QuantityChanged product.id (qty + 1))
-                |> IconButton.view
-            , IconButton.new
-                { icon = Icon.material "delete"
-                , label = "Remove " ++ product.name
-                , variant = IconButton.Standard
-                }
-                |> IconButton.withSize IconButton.ExtraSmall
-                |> IconButton.withOnClick (ItemRemoved product.id)
-                |> IconButton.view
+            , IconButton.view { icon = "add", name = "Increase quantity" }
+                [ IconButton.size IconButton.ExtraSmall
+                , IconButton.onClick (QuantityChanged product.id (qty + 1))
+                ]
+                |> toHtml
+            , IconButton.view { icon = "delete", name = "Remove " ++ product.name }
+                [ IconButton.size IconButton.ExtraSmall
+                , IconButton.onClick (ItemRemoved product.id)
+                ]
+                |> toHtml
             ]
         ]
 
@@ -1024,68 +1036,78 @@ viewDetailDialog model =
                     max 1 (round model.detailQty)
 
                 gallery =
-                    Slide.new
-                        |> Slide.withId "shrine-gallery"
-                        |> Slide.withSlides
-                            (List.range 0 2
+                    Slide.view
+                        { slides =
+                            List.range 0 2
                                 |> List.map
                                     (\i ->
-                                        [ div
-                                            [ class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch) ]
-                                            [ Icon.material (galleryGlyph product.category i) |> Icon.view ]
-                                        ]
+                                        Slide.slide
+                                            [ Renderable.html
+                                                (div
+                                                    [ class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch) ]
+                                                    [ Icon.view { name = galleryGlyph product.category i } |> toHtml ]
+                                                )
+                                            ]
                                     )
-                            )
-                        |> Slide.view
+                        }
+                        []
+                        |> toHtml
 
                 sizeSelect =
-                    Select.single
-                        { label = "Size"
-                        , options =
-                            List.map (\s -> Select.option { value = s, label = s }) sizeOptions
-                        , selected = Just model.detailSize
-                        , onChange = DetailSizeChanged
-                        }
-                        |> Select.withId "shrine-size"
-                        |> Select.withRequired True
-                        |> Select.view
+                    Select.view { label = "Size" }
+                        [ Select.withId "shrine-size"
+                        , Select.withRequired True
+                        , Select.withOptions
+                            (List.map
+                                (\s ->
+                                    Select.option { value = s, label = s }
+                                        [ Select.optionSelected (s == model.detailSize) ]
+                                )
+                                sizeOptions
+                            )
+                        , Select.onChange DetailSizeChanged
+                        ]
+                        |> toHtml
 
                 qtySlider =
-                    Slider.value
-                        { label = "Quantity"
-                        , value = model.detailQty
-                        , onChange = DetailQtyChanged
-                        }
-                        |> Slider.withId "shrine-qty"
-                        |> Slider.withMin 1
-                        |> Slider.withMax 10
-                        |> Slider.withStep 1
-                        |> Slider.withDiscrete True
-                        |> Slider.withLabelled True
-                        |> Slider.view
+                    Slider.view { name = "Quantity" }
+                        [ Slider.value model.detailQty
+                        , Slider.min 1
+                        , Slider.max 10
+                        , Slider.step 1
+                        , Slider.discrete True
+                        , Slider.labelled True
+                        , Slider.onChange DetailQtyChanged
+                        ]
+                        |> toHtml
 
                 buyActions =
-                    ButtonGroup.new
-                        [ Button.new { label = "Buy now", variant = Button.Filled }
-                            |> Button.withLeadingIcon (Icon.material "bolt")
-                            |> Button.withOnClick (AddedToBag product.id qty)
-                        , Button.new { label = "Add to bag", variant = Button.Tonal }
-                            |> Button.withLeadingIcon (Icon.material "add_shopping_cart")
-                            |> Button.withOnClick (AddedToBag product.id qty)
-                        ]
-                        |> ButtonGroup.withVariant ButtonGroup.Connected
-                        |> ButtonGroup.view
+                    ButtonGroup.view
+                        { buttons =
+                            [ Button.view { label = "Buy now", variant = Button.Filled }
+                                [ Button.leadingIcon (Icon.view { name = "bolt" })
+                                , Button.onClick (AddedToBag product.id qty)
+                                ]
+                            , Button.view { label = "Add to bag", variant = Button.Tonal }
+                                [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
+                                , Button.onClick (AddedToBag product.id qty)
+                                ]
+                            ]
+                        }
+                        [ ButtonGroup.variant ButtonGroup.Connected ]
+                        |> toHtml
 
                 body =
                     div [ class "flex flex-col gap-4" ]
                         [ gallery
                         , div [ class "flex items-center justify-between" ]
-                            [ Heading.new
-                                |> Heading.withVariant Heading.Title
-                                |> Heading.withSize Heading.Large
-                                |> Heading.withLevel 3
-                                |> Heading.withContent (span [ class "text-primary" ] [ text (formatPrice product.price) ])
-                                |> Heading.view
+                            [ span [ class "text-primary" ]
+                                [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
+                                    [ Heading.size Heading.Large
+                                    , Heading.level 3
+                                    ]
+                                    |> toHtml
+                                ]
                             , span [ class "text-label-lg text-on-surface-variant" ]
                                 [ text (categoryLabel product.category) ]
                             ]
@@ -1094,15 +1116,19 @@ viewDetailDialog model =
                         , buyActions
                         ]
             in
-            Dialog.new { title = product.name, open = True, onClose = ProductClosed }
-                |> Dialog.withId "shrine-detail"
-                |> Dialog.withDismissible True
-                |> Dialog.withBody body
-                |> Dialog.withActions
-                    [ Button.new { label = "Close", variant = Button.Text }
-                        |> Button.withOnClick ProductClosed
+            Dialog.view
+                { headline = product.name
+                , content = [ Renderable.html body ]
+                }
+                [ Dialog.open True
+                , Dialog.onClose ProductClosed
+                , Dialog.dismissible True
+                , Dialog.actions
+                    [ Button.view { label = "Close", variant = Button.Text }
+                        [ Button.onClick ProductClosed ]
                     ]
-                |> Dialog.view
+                ]
+                |> toHtml
 
 
 galleryGlyph : Category -> Int -> String
@@ -1125,12 +1151,19 @@ galleryGlyph cat i =
 viewSnackbar : Model -> Html Msg
 viewSnackbar model =
     case model.snackbar of
-        Just snackbar ->
+        Just { message } ->
             div
                 [ attribute "data-shrine-snackbar" "true"
                 , Html.Events.on "avt-snackbar-action" (Decode.succeed CartOpened)
                 ]
-                [ Snackbar.view snackbar ]
+                [ Snackbar.view { message = message }
+                    [ Snackbar.withId "shrine-snackbar"
+                    , Snackbar.action "View bag"
+                    , Snackbar.dismissible True
+                    , Snackbar.duration 4000
+                    ]
+                    |> toHtml
+                ]
 
         Nothing ->
             text ""
