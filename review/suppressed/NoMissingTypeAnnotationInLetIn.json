@@ -4,7 +4,6 @@
   "learn more": "elm-review suppress --help",
   "suppressions": [
     { "count": 29, "filePath": "app/Route/Studies/Shrine.elm" },
-    { "count": 17, "filePath": ".elm-pages/Main.elm" },
     { "count": 16, "filePath": "app/Route/Studies/Reply.elm" },
     { "count": 15, "filePath": "app/Route/Studies/Crane.elm" },
     { "count": 14, "filePath": "app/Route/Studies/Rally.elm" },

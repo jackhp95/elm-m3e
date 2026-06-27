@@ -14,6 +14,7 @@ import Head.Seo as Seo
 import Html exposing (a, code, p, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
+import Layout
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element
@@ -114,8 +115,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-5xl") ]
+        [ Layout.div "mx-auto max-w-5xl"
             [ pageHeading
             , Node.raw
                 (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -125,8 +125,7 @@ view app _ =
                     ]
                 )
             , indexGrid app.data
-            , Node.element "div"
-                [ Node.rawAttr (class "mt-12 space-y-12") ]
+            , Layout.div "mt-12 space-y-12"
                 (List.map componentBlock app.data)
             ]
         ]
@@ -135,8 +134,7 @@ view app _ =
 
 indexGrid : List Component -> Node msg
 indexGrid components =
-    Node.element "div"
-        [ Node.rawAttr (class "mt-8 flex flex-wrap gap-2") ]
+    Layout.div "mt-8 flex flex-wrap gap-2"
         (List.map
             (\c ->
                 Node.raw
@@ -161,8 +159,7 @@ componentBlock c =
                 [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
             )
         , prose "max-w-2xl text-body-md text-on-surface-variant" c.overview
-        , Node.element "div"
-            [ Node.rawAttr (class "space-y-3") ]
+        , Layout.div "space-y-3"
             (List.map memberRow c.members)
         ]
 
@@ -209,8 +206,7 @@ pre_ s =
 -}
 prose : String -> String -> Node msg
 prose cls s =
-    Node.element "div"
-        [ Node.rawAttr (class cls) ]
+    Layout.div cls
         (s
             |> String.split "\n\n"
             |> List.filter (\para -> String.trim para /= "")

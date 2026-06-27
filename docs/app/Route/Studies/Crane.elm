@@ -24,6 +24,7 @@ import Html exposing (div, p, section, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
 import Cem.M3e.Shape
+import Layout
 import M3e.Badge as Badge
 import M3e.BottomSheet as BottomSheet
 import M3e.Button as Button
@@ -328,7 +329,7 @@ view _ _ model =
 
 page : Model -> Node Msg
 page model =
-    Node.element "div" [ Node.rawAttr (class "mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8") ]
+    Layout.div "mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8"
         [ intro
         , craneApp model
         ]
@@ -336,7 +337,7 @@ page model =
 
 intro : Node Msg
 intro =
-    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
+    Layout.section "space-y-3"
         [ Node.raw (p [ class "text-label-lg uppercase tracking-wide text-primary" ] [ text "Studies" ])
         , Heading.view { label = "Crane", variant = Heading.Display }
             [ Heading.size Heading.Small
@@ -356,9 +357,9 @@ craneApp model =
     Theme.view
         { content =
             [ Element.fromNode
-                (Node.element "div" [ Node.rawAttr (class "overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface") ]
+                (Layout.div "overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface"
                     [ appHeader model
-                    , Node.element "div" [ Node.rawAttr (class "space-y-6 p-4 sm:space-y-8 sm:p-6") ]
+                    , Layout.div "space-y-6 p-4 sm:space-y-8 sm:p-6"
                         [ searchForm model
                         , featuredCarousel model
                         , resultsSection model
@@ -377,13 +378,13 @@ craneApp model =
 
 appHeader : Model -> Node Msg
 appHeader model =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-3 bg-surface-container-low p-4 sm:gap-4 sm:p-6") ]
-        [ Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center justify-between gap-3") ]
-            [ Node.element "div" [ Node.rawAttr (class "flex min-w-0 items-center gap-2") ]
+    Layout.div "flex flex-col gap-3 bg-surface-container-low p-4 sm:gap-4 sm:p-6"
+        [ Layout.div "flex flex-wrap items-center justify-between gap-3"
+            [ Layout.div "flex min-w-0 items-center gap-2"
                 [ Shape.view
                     { content =
                         [ Element.fromNode
-                            (Node.element "div" [ Node.rawAttr (class "size-8 shrink-0 bg-primary text-on-primary grid place-items-center") ]
+                            (Layout.div "size-8 shrink-0 bg-primary text-on-primary grid place-items-center"
                                 [ Icon.view { name = "explore" } |> Element.toNode ]
                             )
                         ]
@@ -398,7 +399,7 @@ appHeader model =
                 ]
             , planTripMenu model
             ]
-        , Node.element "div" [ Node.rawAttr (class "-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0") ]
+        , Layout.div "-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0"
             [ categoryTabs model ]
         ]
 
@@ -446,23 +447,23 @@ planTripMenu _ =
 
 searchForm : Model -> Node Msg
 searchForm model =
-    Node.element "section" [ Node.rawAttr (class "space-y-4 rounded-md-corner-large bg-surface-container-lowest p-4 sm:p-5") ]
-        [ Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center justify-between gap-3") ]
+    Layout.section "space-y-4 rounded-md-corner-large bg-surface-container-lowest p-4 sm:p-5"
+        [ Layout.div "flex flex-wrap items-center justify-between gap-3"
             [ Heading.view { label = "Find your trip", variant = Heading.Title }
                 [ Heading.size Heading.Medium
                 , Heading.level 3
                 ]
                 |> Element.toNode
-            , Node.element "div" [ Node.rawAttr (class "-mx-1 overflow-x-auto px-1") ]
+            , Layout.div "-mx-1 overflow-x-auto px-1"
                 [ tripTypeToggle model ]
             ]
-        , Node.element "div" [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2 lg:grid-cols-4") ]
+        , Layout.div "grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
             [ destinationField model
             , passengersField model
             , departField model
             , returnOrTimeField model
             ]
-        , Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+        , Layout.div "flex flex-wrap items-center gap-3"
             [ searchButton model
             , if model.searching then
                 searchingIndicator
@@ -506,9 +507,9 @@ destinationField model =
                     ]
                 ]
     in
-    Node.element "div" [ Node.rawAttr (class "relative flex min-w-0 flex-col gap-1.5") ]
+    Layout.div "relative flex min-w-0 flex-col gap-1.5"
         [ Node.raw (span [ class "text-label-md text-on-surface-variant" ] [ text "Where to" ])
-        , Node.element "div" [ Node.rawAttr (class "flex min-h-12 items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2.5") ]
+        , Layout.div "flex min-h-12 items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2.5"
             [ Icon.view { name = "search" } |> Element.toNode
             , Node.element "input"
                 [ Node.rawAttr (class "min-w-0 flex-1 bg-transparent text-body-lg text-on-surface outline-none placeholder:text-on-surface-variant")
@@ -569,7 +570,7 @@ passengersField model =
 
 departField : Model -> Node Msg
 departField model =
-    Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-col gap-1.5") ]
+    Layout.div "flex min-w-0 flex-col gap-1.5"
         [ Node.raw (span [ class "text-label-md text-on-surface-variant" ] [ text "Depart" ])
         , dateTrigger
             { targetId = "crane-depart"
@@ -591,7 +592,7 @@ returnOrTimeField : Model -> Node Msg
 returnOrTimeField model =
     case model.tripType of
         RoundTrip ->
-            Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-col gap-1.5") ]
+            Layout.div "flex min-w-0 flex-col gap-1.5"
                 [ Node.raw (span [ class "text-label-md text-on-surface-variant" ] [ text "Return" ])
                 , dateTrigger
                     { targetId = "crane-return"
@@ -610,7 +611,7 @@ returnOrTimeField model =
                 ]
 
         OneWay ->
-            Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-col gap-1.5") ]
+            Layout.div "flex min-w-0 flex-col gap-1.5"
                 [ Node.raw (span [ class "text-label-md text-on-surface-variant" ] [ text "Departure time" ])
                 , TimePicker.view { label = "Preferred departure time" }
                     [ TimePicker.id "crane-time"
@@ -658,8 +659,8 @@ searchButton model =
 
 searchingIndicator : Node Msg
 searchingIndicator =
-    Node.element "div" [ Node.rawAttr (class "flex items-center gap-2 text-body-md text-on-surface-variant") ]
-        [ Node.element "span" [ Node.rawAttr (class "inline-block size-6") ]
+    Layout.div "flex items-center gap-2 text-body-md text-on-surface-variant"
+        [ Layout.span "inline-block size-6"
             [ LoadingIndicator.view
                 [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
                 |> Element.toNode
@@ -678,7 +679,7 @@ featuredCarousel model =
         featured =
             List.filter .featured destinations
     in
-    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
+    Layout.section "space-y-3"
         [ Heading.view { label = "Featured destinations", variant = Heading.Title }
             [ Heading.size Heading.Medium
             , Heading.level 3
@@ -698,16 +699,16 @@ featuredSlide model d =
         favorited =
             Set.member d.id model.favorites
     in
-    Node.element "div" [ Node.rawAttr (class "relative flex h-44 w-56 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container sm:w-64") ]
-        [ Node.element "div" [ Node.rawAttr (class "absolute -right-6 -top-6 opacity-60") ]
+    Layout.div "relative flex h-44 w-56 shrink-0 snap-start flex-col justify-end overflow-hidden rounded-md-corner-large bg-primary-container p-4 text-on-primary-container sm:w-64"
+        [ Layout.div "absolute -right-6 -top-6 opacity-60"
             [ Shape.view
                 { content =
-                    [ Element.fromNode (Node.element "div" [ Node.rawAttr (class "size-28 bg-primary/30") ] []) ]
+                    [ Element.fromNode (Layout.div "size-28 bg-primary/30" []) ]
                 }
                 [ Shape.name d.shape ]
                 |> Element.toNode
             ]
-        , Node.element "div" [ Node.rawAttr (class "absolute right-2 top-2") ] [ favoriteButton d favorited ]
+        , Layout.div "absolute right-2 top-2" [ favoriteButton d favorited ]
         , Node.raw (span [ class "relative text-label-md uppercase tracking-wide" ] [ text d.country ])
         , Node.raw (span [ class "relative text-title-lg font-medium" ] [ text d.name ])
         , Node.raw (span [ class "relative text-body-sm" ] [ text (d.price ++ " · ★ " ++ d.rating) ])
@@ -724,8 +725,8 @@ resultsSection model =
         results =
             filterDestinations model.category model.query destinations
     in
-    Node.element "section" [ Node.rawAttr (class "space-y-4") ]
-        [ Node.element "div" [ Node.rawAttr (class "flex items-center justify-between gap-3") ]
+    Layout.section "space-y-4"
+        [ Layout.div "flex items-center justify-between gap-3"
             [ Heading.view
                 { label = categoryLabel model.category ++ " — " ++ String.fromInt (List.length results) ++ " places"
                 , variant = Heading.Title
@@ -740,15 +741,15 @@ resultsSection model =
             emptyState model
 
           else
-            Node.element "div" [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
+            Layout.div "grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
                 (List.map (destinationCard model) results)
         ]
 
 
 emptyState : Model -> Node Msg
 emptyState model =
-    Node.element "div" [ Node.rawAttr (class "grid place-items-center rounded-md-corner-large border border-dashed border-outline-variant p-10 text-center") ]
-        [ Node.element "div" [ Node.rawAttr (class "space-y-2") ]
+    Layout.div "grid place-items-center rounded-md-corner-large border border-dashed border-outline-variant p-10 text-center"
+        [ Layout.div "space-y-2"
             [ Icon.view { name = "search_off" } |> Element.toNode
             , Node.raw (p [ class "text-body-md text-on-surface-variant" ]
                 [ text ("No " ++ categoryLabel model.category ++ " results for \u{201C}" ++ model.query ++ "\u{201D}.") ])
@@ -766,23 +767,23 @@ destinationCard model d =
             Set.member d.id model.favorites
 
         media =
-            Node.element "div" [ Node.rawAttr (class "relative grid h-32 place-items-center bg-secondary-container") ]
+            Layout.div "relative grid h-32 place-items-center bg-secondary-container"
                 [ Shape.view
                     { content =
                         [ Element.fromNode
-                            (Node.element "div" [ Node.rawAttr (class "size-20 bg-primary text-on-primary grid place-items-center") ]
+                            (Layout.div "size-20 bg-primary text-on-primary grid place-items-center"
                                 [ Icon.view { name = categoryIcon d.category } |> Element.toNode ]
                             )
                         ]
                     }
                     [ Shape.name d.shape ]
                     |> Element.toNode
-                , Node.element "div" [ Node.rawAttr (class "absolute left-2 top-2 flex items-center gap-1") ]
+                , Layout.div "absolute left-2 top-2 flex items-center gap-1"
                     [ Node.raw (span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-sm text-on-surface" ]
                         [ text ("★ " ++ d.rating) ])
                     , Badge.view [ Badge.label "Top rated", Badge.forId (badgeAnchor d) ] |> Element.toNode
                     ]
-                , Node.element "div" [ Node.rawAttr (class "absolute right-2 top-2") ] [ favoriteButton d favorited ]
+                , Layout.div "absolute right-2 top-2" [ favoriteButton d favorited ]
                 ]
     in
     Card.view
@@ -849,34 +850,34 @@ itinerarySheet model =
                 |> Maybe.andThen (\id -> List.head (List.filter (\d -> d.id == id) destinations))
 
         headerHtml dest =
-            Node.element "div" [ Node.rawAttr (class "flex items-center gap-3") ]
+            Layout.row
                 [ Shape.view
                     { content =
                         [ Element.fromNode
-                            (Node.element "div" [ Node.rawAttr (class "size-10 bg-primary text-on-primary grid place-items-center") ]
+                            (Layout.div "size-10 bg-primary text-on-primary grid place-items-center"
                                 [ Icon.view { name = categoryIcon dest.category } |> Element.toNode ]
                             )
                         ]
                     }
                     [ Shape.name dest.shape ]
                     |> Element.toNode
-                , Node.element "div" [ Node.rawAttr (class "flex flex-col") ]
+                , Layout.div "flex flex-col"
                     [ Node.raw (span [ class "text-title-lg text-on-surface" ] [ text dest.name ])
                     , Node.raw (span [ class "text-body-md text-on-surface-variant" ] [ text (dest.country ++ " · " ++ dest.price) ])
                     ]
                 ]
 
         timelineRow icon title detail =
-            Node.element "div" [ Node.rawAttr (class "flex items-start gap-3 py-2") ]
+            Layout.div "flex items-start gap-3 py-2"
                 [ Icon.view { name = icon } |> Element.toNode
-                , Node.element "div" [ Node.rawAttr (class "flex flex-col") ]
+                , Layout.div "flex flex-col"
                     [ Node.raw (span [ class "text-body-lg text-on-surface" ] [ text title ])
                     , Node.raw (span [ class "text-body-sm text-on-surface-variant" ] [ text detail ])
                     ]
                 ]
 
         bodyHtml dest =
-            Node.element "div" [ Node.rawAttr (class "flex flex-col gap-1 pt-2") ]
+            Layout.div "flex flex-col gap-1 pt-2"
                 [ timelineRow "flight_takeoff" "Depart" (model.depart ++ " · " ++ model.time)
                 , Divider.view [ Divider.inset True ] |> Element.toNode
                 , timelineRow (categoryIcon dest.category) ("Arrive in " ++ dest.name) dest.blurb

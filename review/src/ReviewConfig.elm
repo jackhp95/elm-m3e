@@ -31,6 +31,7 @@ import NoModuleOnExposedNames
 import NoPrematureLetComputation
 import NoProprietaryDsClasses
 import NoRawAttributeInUi
+import NoRawLayoutOutsideLayoutModule
 import NoRedundantlyQualifiedType
 import NoSimpleLetBody
 import NoUnnecessaryTrailingUnderscore
@@ -59,6 +60,16 @@ config =
         , complexity
         , toHtmlGate
         ]
+        |> List.map ignoreElmPages
+
+
+{-| `.elm-pages/` is fully generated routing/metadata — NO rule should lint it
+(unlike `vendor/`, where correctness rules intentionally still run). Applied to
+EVERY rule here so generated routing code never enters the suppression baseline.
+-}
+ignoreElmPages : Rule -> Rule
+ignoreElmPages =
+    Rule.ignoreErrorsForDirectories [ ".elm-pages/" ]
 
 
 {-| `vendor/elm-m3e/` is generated. Style and documentation rules should not
@@ -90,14 +101,26 @@ ignoreGenerated rule =
 
 unused : List Rule
 unused =
-    [ NoUnused.Variables.rule |> ignoreVendor
-    , NoUnused.CustomTypeConstructors.rule [] |> ignoreVendor |> ignorePublicApi
-    , NoUnused.CustomTypeConstructorArgs.rule |> ignoreVendor
-    , NoUnused.Exports.rule |> ignoreVendor |> ignorePublicApi
-    , NoUnused.Modules.rule |> ignoreVendor |> ignorePublicApi
-    , NoUnused.Parameters.rule |> ignoreVendor
-    , NoUnused.Patterns.rule |> ignoreVendor
+    [ NoUnused.Variables.rule |> ignoreGenerated
+    , NoUnused.CustomTypeConstructors.rule [] |> ignoreGenerated |> ignorePublicApi
+    , NoUnused.CustomTypeConstructorArgs.rule |> ignoreGenerated
+    , NoUnused.Exports.rule |> ignoreGenerated |> ignorePublicApi |> ignoreLayoutVocabulary
+    , NoUnused.Modules.rule |> ignoreGenerated |> ignorePublicApi
+    , NoUnused.Parameters.rule |> ignoreGenerated
+    , NoUnused.Patterns.rule |> ignoreGenerated
     ]
+
+
+{-| `docs/src/Layout.elm` is the docs app's layout-vocabulary module: a
+deliberately-complete, symmetric set of presets + escapes (`row`/`rowWith`/…)
+that exists as an intentional API surface, exactly like a design-system module.
+Not every primitive is used by the current pages, and that is fine — they are
+provided on purpose. Exempt it from `NoUnused.Exports` (config-level intent, not
+a suppression-baseline debt). Two path forms cover root- vs `docs/`-relative runs.
+-}
+ignoreLayoutVocabulary : Rule -> Rule
+ignoreLayoutVocabulary =
+    Rule.ignoreErrorsForFiles [ "src/Layout.elm", "docs/src/Layout.elm" ]
 
 
 {-| A published library's whole point is exports/modules/constructors that are
@@ -178,6 +201,7 @@ materialDiscipline =
     , NoRawAttributeInUi.rule |> ignoreTests
     , NoProprietaryDsClasses.rule
     , NoUntypedSlot.rule |> ignoreTests
+    , NoRawLayoutOutsideLayoutModule.rule |> ignoreGenerated
     ]
 
 

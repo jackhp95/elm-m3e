@@ -35,6 +35,7 @@ import Head.Seo as Seo
 import Html exposing (div, p, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
+import Layout
 import M3e.AppBar as AppBar
 import M3e.Avatar as Avatar
 import M3e.Badge as Badge
@@ -444,12 +445,11 @@ viewApp model =
     Theme.view
         { content =
             [ Element.fromNode
-                (Node.element "div"
-                    [ Node.rawAttr (class "flex h-[100dvh] w-full overflow-hidden bg-surface-container-lowest text-on-surface md:h-[calc(100vh-2rem)] md:min-h-[36rem] md:rounded-md-corner-large md:border md:border-outline-variant") ]
+                (Layout.div "flex h-[100dvh] w-full overflow-hidden bg-surface-container-lowest text-on-surface md:h-[calc(100vh-2rem)] md:min-h-[36rem] md:rounded-md-corner-large md:border md:border-outline-variant"
                     [ viewSideNav model
-                    , Node.element "div" [ Node.rawAttr (class "relative flex min-w-0 flex-1 flex-col") ]
+                    , Layout.div "relative flex min-w-0 flex-1 flex-col"
                         [ viewAppBar model
-                        , Node.element "div" [ Node.rawAttr (class "min-h-0 flex-1 overflow-hidden") ] [ viewMain model ]
+                        , Layout.div "min-h-0 flex-1 overflow-hidden" [ viewMain model ]
                         , viewBottomNav model
                         , viewComposeFab model
                         , viewCompose model
@@ -484,12 +484,12 @@ sits as a direct flex child of the app shell.
 -}
 viewSideNav : Model -> Node Msg
 viewSideNav model =
-    Node.element "div" [ Node.rawAttr (class "contents") ]
+    Layout.div "contents"
         [ -- Large screens: expanded rail (drawer-like; icon + label per item)
-          Node.element "div" [ Node.rawAttr (class "hidden h-full border-r border-outline-variant bg-surface-container-low lg:block") ]
+          Layout.div "hidden h-full border-r border-outline-variant bg-surface-container-low lg:block"
             [ navRail NavigationRail.Expanded model ]
         , -- Medium screens: compact navigation rail (icons only)
-          Node.element "div" [ Node.rawAttr (class "hidden h-full border-r border-outline-variant bg-surface-container-low md:block lg:hidden") ]
+          Layout.div "hidden h-full border-r border-outline-variant bg-surface-container-low md:block lg:hidden"
             [ navRail NavigationRail.Compact model ]
         ]
 
@@ -541,7 +541,7 @@ viewBottomNav model =
                 Nothing ->
                     ""
     in
-    Node.element "div" [ Node.rawAttr (class ("bg-surface-container-low md:hidden " ++ hideWhenReading)) ]
+    Layout.div ("bg-surface-container-low md:hidden " ++ hideWhenReading)
         [ Divider.view [] |> Element.toNode
         , NavigationBar.view
             { items = List.map (barItem model.mailbox) [ Inbox, Starred, Sent, Drafts ] }
@@ -679,9 +679,9 @@ viewMain model =
         Just id ->
             case findMessage id of
                 Just message ->
-                    Node.element "div" [ Node.rawAttr (class "h-full") ]
+                    Layout.div "h-full"
                         [ -- md+: SplitPane keeps list visible alongside the reading pane.
-                          Node.element "div" [ Node.rawAttr (class "hidden h-full md:block") ]
+                          Layout.div "hidden h-full md:block"
                             [ SplitPane.view
                                 { start = [ Element.fromNode (messageListPane model) ]
                                 , end = [ Element.fromNode (readingPane message) ]
@@ -690,7 +690,7 @@ viewMain model =
                                 |> Element.toNode
                             ]
                         , -- Compact: reading pane stacks over the list — single column.
-                          Node.element "div" [ Node.rawAttr (class "h-full md:hidden") ] [ readingPane message ]
+                          Layout.div "h-full md:hidden" [ readingPane message ]
                         ]
 
                 Nothing ->
@@ -716,7 +716,7 @@ messageListPane model =
     ScrollContainer.view
         { content =
             [ Element.fromNode
-                (Node.element "div" [ Node.rawAttr (class "flex flex-col") ]
+                (Layout.div "flex flex-col"
                     (if List.isEmpty shown then
                         [ emptyState model.query ]
 
@@ -739,7 +739,7 @@ listDivider =
 
 emptyState : String -> Node Msg
 emptyState query =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col items-center gap-2 px-6 py-16 text-center text-on-surface-variant") ]
+    Layout.div "flex flex-col items-center gap-2 px-6 py-16 text-center text-on-surface-variant"
         [ Icon.view { name = "mail" } |> Element.toNode
         , Node.raw
             (p [ class "text-body-md" ]
@@ -777,8 +777,8 @@ messageRow model message =
         starId =
             "reply-star-" ++ String.fromInt message.id
     in
-    Node.element "div" [ Node.rawAttr (class ("flex items-start gap-3 px-3 py-3 transition-colors " ++ rowBg)) ]
-        [ Node.element "div" [ Node.rawAttr (class "pt-1") ]
+    Layout.div ("flex items-start gap-3 px-3 py-3 transition-colors " ++ rowBg)
+        [ Layout.div "pt-1"
             [ Checkbox.view { name = "Select " ++ message.subject }
                 [ Checkbox.checked isChecked
                 , Checkbox.onChange (ToggleChecked message.id)
@@ -826,7 +826,7 @@ messageRow model message =
                 )
             , Node.raw (p [ class "mt-0.5 line-clamp-1 text-body-sm text-on-surface-variant" ] [ text message.preview ])
             ]
-        , Node.element "div" [ Node.rawAttr (class "flex flex-col items-center gap-1") ]
+        , Layout.div "flex flex-col items-center gap-1"
             [ Node.element "div" [ Node.rawAttr (attribute "id" starId) ]
                 [ IconButton.view
                     { icon = "star"
@@ -869,8 +869,8 @@ readingPane message =
     ScrollContainer.view
         { content =
             [ Element.fromNode
-                (Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4 p-4 md:p-6") ]
-                    [ Node.element "div" [ Node.rawAttr (class "flex items-start justify-between gap-3") ]
+                (Layout.div "flex flex-col gap-4 p-4 md:p-6"
+                    [ Layout.div "flex items-start justify-between gap-3"
                         [ Heading.view { label = message.subject, variant = Heading.Headline }
                             [ Heading.size Heading.Small
                             , Heading.level 2
@@ -879,7 +879,7 @@ readingPane message =
                         , readingActions
                         ]
                     , Divider.view [] |> Element.toNode
-                    , Node.element "div" [ Node.rawAttr (class "flex items-center gap-3") ]
+                    , Layout.row
                         [ Avatar.view { alt = message.sender }
                             [ Avatar.initials message.sender ]
                             |> Element.toNode
@@ -892,7 +892,7 @@ readingPane message =
                         ]
                     , Node.raw (p [ class "whitespace-pre-line text-body-lg leading-relaxed text-on-surface" ] [ text message.body ])
                     , Divider.view [] |> Element.toNode
-                    , Node.element "div" [ Node.rawAttr (class "flex flex-wrap gap-2") ]
+                    , Layout.div "flex flex-wrap gap-2"
                         [ Button.view { label = "Reply", variant = Button.Filled }
                             [ Button.leadingIcon (Icon.view { name = "reply" })
                             , Button.onClick OpenCompose
@@ -914,9 +914,9 @@ readingPane message =
 
 readingActions : Node Msg
 readingActions =
-    Node.element "div" [ Node.rawAttr (class "flex shrink-0 items-center gap-1") ]
+    Layout.div "flex shrink-0 items-center gap-1"
         [ -- The compact app bar already has a back arrow; hide the close button there.
-          Node.element "div" [ Node.rawAttr (class "hidden md:block") ] [ closeReadingButton ]
+          Layout.div "hidden md:block" [ closeReadingButton ]
         , archiveButton
         , overflowMenu
         ]
@@ -935,7 +935,7 @@ archiveButton =
         anchor =
             "reply-archive"
     in
-    Node.element "div" [ Node.rawAttr (class "flex flex-col items-center") ]
+    Layout.div "flex flex-col items-center"
         [ Node.element "div" [ Node.rawAttr (attribute "id" anchor) ]
             [ IconButton.view { icon = "archive", name = "Archive" }
                 [ IconButton.onClick ArchiveSelected ]
@@ -986,7 +986,7 @@ viewComposeFab model =
                 Nothing ->
                     ""
     in
-    Node.element "div" [ Node.rawAttr (class ("absolute bottom-20 right-4 z-10 md:bottom-6 md:right-6 " ++ compactHide)) ]
+    Layout.div ("absolute bottom-20 right-4 z-10 md:bottom-6 md:right-6 " ++ compactHide)
         [ Fab.view { icon = "edit", name = "Compose" }
             [ Fab.label "Compose"
             , Fab.variant Fab.Primary
@@ -1019,7 +1019,7 @@ viewCompose model =
 
 composeBody : ComposeFields -> Node Msg
 composeBody fields =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4 pt-2") ]
+    Layout.div "flex flex-col gap-4 pt-2"
         [ TextField.view { label = "To" }
             [ TextField.id "reply-compose-to"
             , TextField.variant TextField.Outlined
@@ -1044,7 +1044,7 @@ composeBody fields =
             , TextField.onInput SetComposeBody
             ]
             |> Element.toNode
-        , Node.element "div" [ Node.rawAttr (class "flex items-center justify-between gap-2") ]
+        , Layout.div "flex items-center justify-between gap-2"
             [ Button.view { label = "Discard", variant = Button.Text }
                 [ Button.onClick CloseCompose ]
                 |> Element.toNode

@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element
@@ -80,9 +81,8 @@ scale =
 
 row : ( String, String ) -> Node msg
 row ( cls, label ) =
-    Node.element "div"
-        [ Node.rawAttr (class "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0") ]
-        [ Node.element "span" [ Node.rawAttr (class (cls ++ " text-on-surface")) ] [ Node.text label ]
+    Layout.div "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0"
+        [ Layout.span (cls ++ " text-on-surface") [ Node.text label ]
         , Node.element "code" [ Node.rawAttr (class "text-body-sm text-on-surface-variant") ] [ Node.text cls ]
         ]
 
@@ -105,10 +105,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Typography · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.container
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -116,15 +114,13 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "The scale, live"
                 , Card.view
                     [ Card.variant Card.Outlined
                     , Card.body
                         [ Element.fromNode
-                            (Node.element "div"
-                                [ Node.rawAttr (class "px-2") ]
+                            (Layout.div "px-2"
                                 (List.map row scale)
                             )
                         ]

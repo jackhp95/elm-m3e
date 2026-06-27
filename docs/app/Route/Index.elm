@@ -15,6 +15,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (code, div, p, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
@@ -84,8 +85,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-5xl space-y-16") ]
+        [ Layout.div "mx-auto max-w-5xl space-y-16"
             [ hero
             , Divider.view [] |> Element.toNode
             , highlights
@@ -98,8 +98,7 @@ view _ _ =
 
 hero : Node msg
 hero =
-    Node.element "section"
-        [ Node.rawAttr (class "space-y-5") ]
+    Layout.section "space-y-5"
         [ Node.raw
             (p [ class "text-label-lg uppercase tracking-wide text-primary" ]
                 [ text "elm-m3e · m3e-builder" ]
@@ -114,13 +113,11 @@ hero =
                 , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
                 ]
             )
-        , Node.element "div"
-            [ Node.rawAttr (class "flex flex-wrap items-center gap-3 pt-2") ]
+        , Layout.div "flex flex-wrap items-center gap-3 pt-2"
             [ Button.view { label = "Get started", variant = Button.Filled } [ Button.href "/getting-started/installation" ] |> Element.toNode
             , Button.view { label = "Browse the API reference", variant = Button.Outlined } [ Button.href "/reference" ] |> Element.toNode
             ]
-        , Node.element "div"
-            [ Node.rawAttr (class "flex items-center gap-3 pt-4") ]
+        , Layout.div "flex items-center gap-3 pt-4"
             [ Avatar.view { alt = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode
             , Node.raw
                 (div [ class "flex gap-3" ]
@@ -142,11 +139,9 @@ sectionHeading label =
 
 highlights : Node msg
 highlights =
-    Node.element "section"
-        [ Node.rawAttr (class "space-y-6") ]
+    Layout.section "space-y-6"
         [ sectionHeading "Why elm-m3e"
-        , Node.element "div"
-            [ Node.rawAttr (class "grid gap-4 sm:grid-cols-3") ]
+        , Layout.div "grid gap-4 sm:grid-cols-3"
             [ highlightCard "verified"
                 "Type-safe slots"
                 "Containers take typed children — an icon slot can only hold a M3e.Icon. Invalid compositions are compile errors, not runtime no-ops."
@@ -167,10 +162,8 @@ highlightCard iconName title body =
         , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
         , Card.body
             [ Element.fromNode
-                (Node.element "div"
-                    [ Node.rawAttr (class "flex gap-3") ]
-                    [ Node.element "span"
-                        [ Node.rawAttr (class "shrink-0 text-primary") ]
+                (Layout.div "flex gap-3"
+                    [ Layout.span "shrink-0 text-primary"
                         [ Icon.view { name = iconName } |> Element.toNode ]
                     , Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
                     ]
@@ -182,15 +175,13 @@ highlightCard iconName title body =
 
 statusGrid : Node msg
 statusGrid =
-    Node.element "section"
-        [ Node.rawAttr (class "space-y-6") ]
+    Layout.section "space-y-6"
         [ sectionHeading "Status & roadmap"
         , Node.raw
             (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                 [ text "The honest current state of the standalone library." ]
             )
-        , Node.element "div"
-            [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2") ]
+        , Layout.div "grid gap-4 sm:grid-cols-2"
             [ statusCard "Complete (53)" "Every M3e.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
             , statusCard "Documented" "Getting Started, Styles, and per-component pages (API tables) are generated; rich per-component demos and Studies are in progress."
             , statusCard "Removed (1)" "M3e.Table — m3e ships no table element, so it does not belong in a library that wraps m3e."

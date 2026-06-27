@@ -11,6 +11,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.Divider as Divider
@@ -106,10 +107,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Studies · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.container
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -117,8 +116,7 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2") ]
+            , Layout.section "grid gap-4 sm:grid-cols-2"
                 (List.map studyCard studies)
             ]
         ]

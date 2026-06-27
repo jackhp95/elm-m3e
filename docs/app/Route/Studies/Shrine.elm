@@ -36,6 +36,7 @@ import Html.Attributes exposing (attribute, class)
 import Html.Attributes
 import Html.Events
 import Json.Decode as Decode
+import Layout
 import Cem.M3e.Shape
 import M3e.AppBar as AppBar
 import M3e.Badge as Badge
@@ -567,12 +568,12 @@ viewShrine model =
                 }
                 catalog
     in
-    Node.element "div" [ Node.rawAttr (class "mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8") ]
+    Layout.div "mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 sm:py-8"
         [ viewAppBar model
         , viewCarousel
-        , Node.element "div" [ Node.rawAttr (class "flex gap-4") ]
-            [ Node.element "div" [ Node.rawAttr (class "hidden sm:block") ] [ viewRail model ]
-            , Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-1 flex-col gap-4") ]
+        , Layout.div "flex gap-4"
+            [ Layout.div "hidden sm:block" [ viewRail model ]
+            , Layout.div "flex min-w-0 flex-1 flex-col gap-4"
                 [ viewControls model
                 , Divider.view [] |> Element.toNode
                 , viewResultsBar model filtered
@@ -636,13 +637,12 @@ viewCarousel =
             ]
 
         slideCard ( title, swatch, iconName ) =
-            Node.element "div"
-                [ Node.rawAttr (class ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch)) ]
+            Layout.div ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch)
                 [ Icon.view { name = iconName } |> Element.toNode
                 , Node.raw (span [ class "text-title-md font-medium" ] [ text title ])
                 ]
     in
-    Node.element "div" [ Node.rawAttr (class "-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0") ]
+    Layout.div "-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0"
         (List.map slideCard featured)
 
 
@@ -708,12 +708,12 @@ viewControls model =
                 ]
                 |> Element.toNode
     in
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
-        [ Node.element "div" [ Node.rawAttr (class "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between") ]
+    Layout.col
+        [ Layout.div "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
             [ chipSet
             , viewModeControl
             ]
-        , Node.element "div" [ Node.rawAttr (class "max-w-md") ]
+        , Layout.div "max-w-md"
             [ Node.raw (span [ class "text-label-md text-on-surface-variant" ]
                 [ text ("Up to " ++ formatPrice model.maxPrice) ])
             , priceSlider
@@ -723,7 +723,7 @@ viewControls model =
 
 viewResultsBar : Model -> List Product -> Node Msg
 viewResultsBar _ filtered =
-    Node.element "div" [ Node.rawAttr (class "flex items-center gap-2 text-on-surface-variant") ]
+    Layout.div "flex items-center gap-2 text-on-surface-variant"
         [ Icon.view { name = "inventory_2" } |> Element.toNode
         , Heading.view
             { label = String.fromInt (List.length filtered) ++ " products"
@@ -738,11 +738,11 @@ viewResultsBar _ filtered =
 
 viewSkeletonGrid : Node Msg
 viewSkeletonGrid =
-    Node.element "div" [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
+    Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         (List.range 1 6
             |> List.map
                 (\_ ->
-                    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-3 rounded-md-corner-large border border-outline-variant p-4") ]
+                    Layout.div "flex flex-col gap-3 rounded-md-corner-large border border-outline-variant p-4"
                         [ Skeleton.view
                             { content =
                                 [ Element.html
@@ -771,7 +771,7 @@ viewSkeletonGrid =
 viewCatalog : Model -> List Product -> Node Msg
 viewCatalog model filtered =
     if List.isEmpty filtered then
-        Node.element "div" [ Node.rawAttr (class "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant") ]
+        Layout.div "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant"
             [ Icon.view { name = "sentiment_dissatisfied" } |> Element.toNode
             , Node.text "No products match these filters."
             ]
@@ -779,9 +779,9 @@ viewCatalog model filtered =
     else
         case model.viewMode of
             Grid ->
-                Node.element "div"
+                Layout.div
                     -- Size: responsive grid columns scale with breakpoint.
-                    [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
+                    "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
                     (List.map (viewProductCard model) filtered)
 
             ListView ->
@@ -793,8 +793,7 @@ productMedia product =
     Shape.view
         { content =
             [ Element.fromNode
-                (Node.element "div"
-                    [ Node.rawAttr (class ("flex h-full w-full items-center justify-center " ++ product.swatch)) ]
+                (Layout.div ("flex h-full w-full items-center justify-center " ++ product.swatch)
                     [ Icon.view { name = categoryGlyph product.category } |> Element.toNode ]
                 )
             ]
@@ -844,8 +843,8 @@ viewProductCard model product =
                 |> Element.toNode
 
         body =
-            Node.element "div" [ Node.rawAttr (class "flex flex-col gap-2") ]
-                [ Node.element "div" [ Node.rawAttr (class "flex items-start justify-between gap-2") ]
+            Layout.div "flex flex-col gap-2"
+                [ Layout.div "flex items-start justify-between gap-2"
                     [ Heading.view { label = product.name, variant = Heading.Title }
                         [ Heading.size Heading.Medium
                         , Heading.level 3
@@ -853,7 +852,7 @@ viewProductCard model product =
                         |> Element.toNode
                     , favoriteButton
                     ]
-                , Node.element "span" [ Node.rawAttr (class "text-primary") ]
+                , Layout.span "text-primary"
                     [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
                         [ Heading.size Heading.Small
                         , Heading.level 4
@@ -929,7 +928,7 @@ viewCartSheet model =
                     )
 
         header =
-            Node.element "div" [ Node.rawAttr (class "flex items-center justify-between") ]
+            Layout.div "flex items-center justify-between"
                 [ Heading.view { label = "Your bag", variant = Heading.Headline }
                     [ Heading.size Heading.Small
                     , Heading.level 2
@@ -943,13 +942,13 @@ viewCartSheet model =
 
         body =
             if List.isEmpty items then
-                Node.element "div" [ Node.rawAttr (class "flex flex-col items-center gap-2 py-8 text-on-surface-variant") ]
+                Layout.div "flex flex-col items-center gap-2 py-8 text-on-surface-variant"
                     [ Icon.view { name = "shopping_bag" } |> Element.toNode
                     , Node.text "Your bag is empty."
                     ]
 
             else
-                Node.element "div" [ Node.rawAttr (class "flex flex-col gap-2") ]
+                Layout.div "flex flex-col gap-2"
                     (List.map viewCartRow items
                         ++ [ Divider.view [] |> Element.toNode
                            , Node.raw
@@ -984,12 +983,11 @@ viewCartSheet model =
 
 viewCartRow : ( Product, Int ) -> Node Msg
 viewCartRow ( product, qty ) =
-    Node.element "div" [ Node.rawAttr (class "flex items-center gap-3") ]
+    Layout.row
         [ Shape.view
             { content =
                 [ Element.fromNode
-                    (Node.element "div"
-                        [ Node.rawAttr (class ("flex h-10 w-10 items-center justify-center " ++ product.swatch)) ]
+                    (Layout.div ("flex h-10 w-10 items-center justify-center " ++ product.swatch)
                         [ Icon.view { name = categoryGlyph product.category } |> Element.toNode ]
                     )
                 ]
@@ -1003,7 +1001,7 @@ viewCartRow ( product, qty ) =
                     [ text (formatPrice product.price ++ " each") ]
                 ]
             )
-        , Node.element "div" [ Node.rawAttr (class "flex items-center gap-1") ]
+        , Layout.div "flex items-center gap-1"
             [ IconButton.view { icon = "remove", name = "Decrease quantity" }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty - 1))
@@ -1047,8 +1045,7 @@ viewDetailDialog model =
                                     (\i ->
                                         Slide.slide
                                             [ Element.fromNode
-                                                (Node.element "div"
-                                                    [ Node.rawAttr (class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch)) ]
+                                                (Layout.div ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch)
                                                     [ Icon.view { name = galleryGlyph product.category i } |> Element.toNode ]
                                                 )
                                             ]
@@ -1102,10 +1099,10 @@ viewDetailDialog model =
                         |> Element.toNode
 
                 body =
-                    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
+                    Layout.col
                         [ gallery
-                        , Node.element "div" [ Node.rawAttr (class "flex items-center justify-between") ]
-                            [ Node.element "span" [ Node.rawAttr (class "text-primary") ]
+                        , Layout.div "flex items-center justify-between"
+                            [ Layout.span "text-primary"
                                 [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
                                     [ Heading.size Heading.Large
                                     , Heading.level 3

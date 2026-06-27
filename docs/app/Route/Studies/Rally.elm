@@ -30,6 +30,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (div, span, text)
 import Html.Attributes as Attr exposing (class)
+import Layout
 import M3e.AppBar as AppBar
 import M3e.Calendar as Calendar
 import M3e.Card as Card
@@ -453,7 +454,7 @@ view _ _ model =
         [ Theme.view
             { content =
                 [ Element.fromNode
-                    (Node.element "div" [ Node.rawAttr (class "overflow-hidden rounded-md-corner-large bg-surface text-on-surface") ]
+                    (Layout.div "overflow-hidden rounded-md-corner-large bg-surface text-on-surface"
                         [ Node.map PagesMsg.fromMsg (dashboard model) ]
                     )
                 ]
@@ -473,17 +474,17 @@ dashboard model =
     -- Below `md`, the `M3e.Tabs` row is the primary navigation, so the rail
     -- (which duplicates it) is hidden — that frees the full viewport width
     -- for the cards, transactions list, and Paginator on phones.
-    Node.element "div" [ Node.rawAttr (class "flex min-h-[40rem]") ]
-        [ Node.element "div" [ Node.rawAttr (class "hidden md:flex") ]
+    Layout.div "flex min-h-[40rem]"
+        [ Layout.div "hidden md:flex"
             [ rail model
             , Divider.view [ Divider.vertical True ] |> Element.toNode
             ]
-        , Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-1 flex-col") ]
+        , Layout.div "flex min-w-0 flex-1 flex-col"
             [ appBar model
-            , Node.element "div" [ Node.rawAttr (class "border-b border-outline-variant px-2 pt-2 sm:px-4") ]
+            , Layout.div "border-b border-outline-variant px-2 pt-2 sm:px-4"
                 [ tabsBar model ]
             , ScrollContainer.view
-                { content = [ Element.fromNode (Node.element "div" [ Node.rawAttr (class "p-3 sm:p-6") ] [ tabPanel model ]) ] }
+                { content = [ Element.fromNode (Layout.div "p-3 sm:p-6" [ tabPanel model ]) ] }
                 [ ScrollContainer.thin True
                 , ScrollContainer.dividers ScrollContainer.None
                 ]
@@ -495,7 +496,7 @@ dashboard model =
 
 rail : Model -> Node Msg
 rail model =
-    Node.element "div" [ Node.rawAttr (class "shrink-0") ]
+    Layout.div "shrink-0"
         [ NavigationRail.view
             { items =
                 [ NavigationRail.item { icon = Icon.view { name = "account_balance_wallet" }, label = "Accounts" }
@@ -537,7 +538,7 @@ appBar model =
 
 monthSelect : Model -> Node Msg
 monthSelect model =
-    Node.element "div" [ Node.rawAttr (class "min-w-[9rem]") ]
+    Layout.div "min-w-[9rem]"
         [ Select.view { label = "Month" }
             [ Select.id "rally-month"
             , Select.options
@@ -557,7 +558,7 @@ monthSelect model =
 
 refreshButton : Model -> Node Msg
 refreshButton model =
-    Node.element "div" [ Node.rawAttr (class "flex items-center gap-1 pr-1") ]
+    Layout.div "flex items-center gap-1 pr-1"
         [ if model.syncing then
             Node.element "span" [ Node.rawAttr (class "text-primary"), Node.rawAttr (Attr.attribute "aria-label" "Syncing") ]
                 [ LoadingIndicator.view [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
@@ -630,7 +631,7 @@ tabPanel model =
 
 accountsPanel : Model -> Node Msg
 accountsPanel model =
-    Node.element "div" [ Node.rawAttr (class "space-y-6") ]
+    Layout.div "space-y-6"
         [ sectionHeading "Accounts" "Balances across your linked institutions."
         , Disclosure.view
             { sections = List.indexedMap accountSection accountGroups }
@@ -675,10 +676,10 @@ transactionsSection model =
                 |> List.drop (model.page * pageSize)
                 |> List.take pageSize
     in
-    Node.element "div" [ Node.rawAttr (class "space-y-4") ]
-        [ Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center justify-between gap-3") ]
+    Layout.stack
+        [ Layout.div "flex flex-wrap items-center justify-between gap-3"
             [ Node.raw (span [ class "text-title-md font-medium" ] [ text "Recent transactions" ])
-            , Node.element "div" [ Node.rawAttr (class "w-full min-w-0 flex-1 sm:w-auto sm:min-w-[16rem] sm:max-w-sm") ]
+            , Layout.div "w-full min-w-0 flex-1 sm:w-auto sm:min-w-[16rem] sm:max-w-sm"
                 [ Search.view { placeholder = "Filter by merchant or category" }
                     [ Search.value model.query
                     , Search.onInput QueryChanged
@@ -692,13 +693,13 @@ transactionsSection model =
                 [ text ("No transactions match \"" ++ model.query ++ "\".") ])
 
           else
-            Node.element "div" [ Node.rawAttr (class "space-y-3") ]
-                [ Node.element "div" [ Node.rawAttr (class "overflow-hidden rounded-md-corner-medium border border-outline-variant") ]
+            Layout.div "space-y-3"
+                [ Layout.div "overflow-hidden rounded-md-corner-medium border border-outline-variant"
                     (paged
                         |> List.map (transactionRow model.query)
                         |> List.intersperse (Divider.view [] |> Element.toNode)
                     )
-                , Node.element "div" [ Node.rawAttr (class "flex justify-end") ]
+                , Layout.div "flex justify-end"
                     [ Paginator.view { length = List.length matches }
                         [ Paginator.hidePageSize True
                         , Paginator.pageIndex model.page
@@ -715,11 +716,11 @@ so the active filter term is marked inside the matched text.
 -}
 transactionRow : String -> Transaction -> Node Msg
 transactionRow query txn =
-    Node.element "div" [ Node.rawAttr (class "flex items-center gap-3 bg-surface-container-low px-4 py-3") ]
-        [ Node.element "span" [ Node.rawAttr (class "text-on-surface-variant") ]
+    Layout.div "flex items-center gap-3 bg-surface-container-low px-4 py-3"
+        [ Layout.span "text-on-surface-variant"
             [ Icon.view { name = categoryIcon txn.category } |> Element.toNode ]
-        , Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ]
-            [ Node.element "div" [ Node.rawAttr (class "truncate text-body-lg") ]
+        , Layout.div "min-w-0 flex-1"
+            [ Layout.div "truncate text-body-lg"
                 [ TextHighlight.view
                     { content = [ Element.fromNode (Node.text txn.merchant) ] }
                     [ TextHighlight.term query ]
@@ -769,14 +770,14 @@ categoryIcon category =
 
 billsPanel : Node Msg
 billsPanel =
-    Node.element "div" [ Node.rawAttr (class "grid gap-6 lg:grid-cols-2") ]
-        [ Node.element "div" [ Node.rawAttr (class "space-y-4") ]
+    Layout.div "grid gap-6 lg:grid-cols-2"
+        [ Layout.stack
             [ sectionHeading "Upcoming bills" "Due dates for the next billing cycle."
             , List_.view { items = List.map billRow bills } [] |> Element.toNode
             ]
-        , Node.element "div" [ Node.rawAttr (class "space-y-4") ]
+        , Layout.stack
             [ Node.raw (span [ class "text-title-md font-medium" ] [ text "Due-date calendar" ])
-            , Node.element "div" [ Node.rawAttr (class "rounded-md-corner-large bg-surface-container p-2") ]
+            , Layout.div "rounded-md-corner-large bg-surface-container p-2"
                 [ Calendar.view
                     [ Calendar.id "rally-bill-calendar"
                     , Calendar.date "2024-04-01"
@@ -826,14 +827,14 @@ billRow bill =
 
 budgetsPanel : Model -> Node Msg
 budgetsPanel model =
-    Node.element "div" [ Node.rawAttr (class "space-y-6") ]
+    Layout.div "space-y-6"
         [ sectionHeading "Budgets" "How this month's spending tracks against plan."
         , overviewCard
-        , Node.element "div" [ Node.rawAttr (class "grid gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
+        , Layout.div "grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
             (List.map budgetCard budgetCategories)
         , Divider.view [] |> Element.toNode
         , categoryDetail
-        , Node.element "div" [ Node.rawAttr (class "flex justify-end") ]
+        , Layout.div "flex justify-end"
             [ adjustButton model ]
         ]
 
@@ -862,8 +863,8 @@ overviewCard =
             )
         , Card.body
             [ Element.fromNode
-                (Node.element "div" [ Node.rawAttr (class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6") ]
-                    [ Node.element "div" [ Node.rawAttr (class "relative grid place-items-center self-center sm:self-auto") ]
+                (Layout.div "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6"
+                    [ Layout.div "relative grid place-items-center self-center sm:self-auto"
                         [ Node.element "span" [ Node.rawAttr (Attr.style "--m3e-progress-indicator-color" "var(--md-sys-color-primary)") ]
                             [ Progress.view { shape = Progress.Circular } [ Progress.value percent ]
                                 |> Element.toNode
@@ -871,7 +872,7 @@ overviewCard =
                         , Node.raw (span [ class "absolute text-title-lg font-medium tabular-nums" ]
                             [ text (String.fromInt percent ++ "%") ])
                         ]
-                    , Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1 space-y-1") ]
+                    , Layout.div "min-w-0 flex-1 space-y-1"
                         [ Node.raw (span [ class "block text-body-md text-on-surface-variant" ]
                             [ text "Remaining this month" ])
                         , Node.raw (span [ class "block text-headline-sm font-medium tabular-nums" ]
@@ -905,8 +906,8 @@ budgetCard category =
             )
         , Card.body
             [ Element.fromNode
-                (Node.element "div" [ Node.rawAttr (class "space-y-2") ]
-                    [ Node.element "div" [ Node.rawAttr (class "flex items-center gap-2") ]
+                (Layout.div "space-y-2"
+                    [ Layout.div "flex items-center gap-2"
                         [ Icon.view { name = category.icon } |> Element.toNode
                         , Node.raw (span [ class "ml-auto text-label-lg tabular-nums" ]
                             [ text (String.fromInt percent ++ "%") ])
@@ -939,7 +940,7 @@ budgetCard category =
 
 categoryDetail : Node Msg
 categoryDetail =
-    Node.element "div" [ Node.rawAttr (class "space-y-3") ]
+    Layout.div "space-y-3"
         [ Node.raw (span [ class "text-title-md font-medium" ] [ text "Category detail" ])
         , Disclosure.view
             { sections = List.map budgetDetailSection budgetCategories }
@@ -1013,7 +1014,7 @@ snackbarSlot model =
 
 sectionHeading : String -> String -> Node Msg
 sectionHeading title subtitle =
-    Node.element "div" [ Node.rawAttr (class "space-y-1") ]
+    Layout.div "space-y-1"
         [ Heading.view { label = title, variant = Heading.Headline }
             [ Heading.size Heading.Small
             , Heading.level 2

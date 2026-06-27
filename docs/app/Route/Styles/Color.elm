@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (code, p, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element
@@ -79,9 +80,8 @@ roles =
 
 swatch : ( String, String, String ) -> Node msg
 swatch ( label, bg, on ) =
-    Node.element "div"
-        [ Node.rawAttr (class ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on)) ]
-        [ Node.element "span" [ Node.rawAttr (class "text-label-lg font-medium") ] [ Node.text label ]
+    Layout.div ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on)
+        [ Layout.span "text-label-lg font-medium" [ Node.text label ]
         , Node.raw (code [ class "text-body-sm opacity-80" ] [ text bg ])
         ]
 
@@ -104,10 +104,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Color · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.container
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -115,16 +113,13 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "Color roles"
-                , Node.element "div"
-                    [ Node.rawAttr (class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3") ]
+                , Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
                     (List.map swatch roles)
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "Dynamic color"
                 , Node.raw
                     (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
@@ -132,8 +127,7 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "Forced colors"
                 , Node.raw
                     (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]

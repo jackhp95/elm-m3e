@@ -16,6 +16,7 @@ import Head.Seo as Seo
 import Html exposing (code, div, p, pre, text)
 import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
+import Layout
 import M3e.AppBar as AppBar
 import M3e.Avatar as Avatar
 import M3e.Badge as Badge
@@ -192,7 +193,7 @@ view app _ =
     in
     { title = "M3e." ++ c.name ++ " · elm-m3e"
     , body =
-        [ Node.element "div" [ Node.rawAttr (class "mx-auto max-w-4xl space-y-10") ]
+        [ Layout.div "mx-auto max-w-4xl space-y-10"
             [ headerBlock c
             , importBlock c
             , demoBlock c
@@ -208,7 +209,7 @@ view app _ =
 
 headerBlock : Component -> Node (PagesMsg Msg)
 headerBlock c =
-    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
+    Layout.section "space-y-3"
         [ Heading.view { label = "M3e." ++ c.name, variant = Heading.Display }
             [ Heading.size Heading.Small, Heading.level 1 ]
             |> Element.toNode
@@ -218,7 +219,7 @@ headerBlock c =
 
 importBlock : Component -> Node (PagesMsg Msg)
 importBlock c =
-    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
+    Layout.section "space-y-3"
         [ h2Heading "Import"
         , Node.raw (codeBlock ("import M3e." ++ c.name ++ " as " ++ c.name))
         ]
@@ -234,14 +235,14 @@ demoBlock c =
         Node.text ""
 
     else
-        Node.element "div" [ Node.rawAttr (class "space-y-10") ] (List.map demoSection sections)
+        Layout.div "space-y-10" (List.map demoSection sections)
 
 
 apiBlock : Component -> Node (PagesMsg Msg)
 apiBlock c =
-    Node.element "section" [ Node.rawAttr (class "space-y-4") ]
+    Layout.section "space-y-4"
         [ h2Heading "API"
-        , Node.element "div" [ Node.rawAttr (class "space-y-3") ] (List.map memberRow c.members)
+        , Layout.div "space-y-3" (List.map memberRow c.members)
         ]
 
 
@@ -322,17 +323,17 @@ h3Heading label =
 
 demoSection : DemoSection (PagesMsg Msg) -> Node (PagesMsg Msg)
 demoSection ds =
-    Node.element "section" [ Node.rawAttr (class "space-y-4") ]
+    Layout.section "space-y-4"
         (h2Heading ds.title :: List.map subView ds.subs)
 
 
 subView : Sub (PagesMsg Msg) -> Node (PagesMsg Msg)
 subView s =
-    Node.element "section" [ Node.rawAttr (class "space-y-3") ]
+    Layout.section "space-y-3"
         [ h3Heading s.title
         , Card.view
             [ Card.variant Card.Outlined
-            , Card.body [ Element.fromNode (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ] [ s.body ]) ]
+            , Card.body [ Element.fromNode (Layout.div "flex flex-wrap items-center gap-4" [ s.body ]) ]
             ]
             |> Element.toNode
         ]
@@ -587,7 +588,7 @@ headingDemo variant size label =
 
 buttonRow : List (Node (PagesMsg Msg)) -> Node (PagesMsg Msg)
 buttonRow children =
-    Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-2") ] children
+    Layout.div "flex flex-wrap items-center gap-2" children
 
 
 
@@ -611,7 +612,7 @@ demoSections slug =
                         |> Element.toNode
                     )
                 , sub "Sizes"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                    (Layout.div "w-full space-y-3"
                         [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Element.toNode
                         , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Element.toNode
                         , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Element.toNode
@@ -633,7 +634,7 @@ demoSections slug =
                 [ sub "Image"
                     (Avatar.view { alt = "Sample" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode)
                 , sub "Initials"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+                    (Layout.div "flex flex-wrap items-center gap-3"
                         [ Avatar.view { alt = "Jane Reed" } [ Avatar.initials "Jane Reed" ] |> Element.toNode
                         , Avatar.view { alt = "AB" } [ Avatar.initials "AB" ] |> Element.toNode
                         , Avatar.view { alt = "Pat Lee" } [ Avatar.initials "Pat Lee" ] |> Element.toNode
@@ -645,19 +646,19 @@ demoSections slug =
         "badge" ->
             [ usage
                 [ sub "Dot"
-                    (Node.element "div" [ Node.rawAttr (class "relative") ]
+                    (Layout.div "relative"
                         [ Icon.view { name = "notifications" } |> Element.toNode
                         , Badge.view [ Badge.dot ] |> Element.toNode
                         ]
                     )
                 , sub "Count"
-                    (Node.element "div" [ Node.rawAttr (class "relative") ]
+                    (Layout.div "relative"
                         [ Icon.view { name = "inbox" } |> Element.toNode
                         , Badge.view [ Badge.count 5 ] |> Element.toNode
                         ]
                     )
                 , sub "Label"
-                    (Node.element "div" [ Node.rawAttr (class "relative") ]
+                    (Layout.div "relative"
                         [ Icon.view { name = "shopping_bag" } |> Element.toNode
                         , Badge.view [ Badge.label "New" ] |> Element.toNode
                         ]
@@ -668,7 +669,7 @@ demoSections slug =
         "bottomsheet" ->
             [ usage
                 [ sub "Closed preview"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                    (Layout.div "w-full space-y-3"
                         [ Node.raw
                             (p [ class "text-body-md text-on-surface-variant" ]
                                 [ text "Bottom sheets render at the bottom of the viewport and are normally hidden until opened. The composition below has "
@@ -784,7 +785,7 @@ demoSections slug =
         "card" ->
             [ usage
                 [ sub "Variants"
-                    (Node.element "div" [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full") ]
+                    (Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full"
                         [ Card.view
                             [ Card.variant Card.Elevated
                             , Card.headline (Heading.view { label = "Elevated", variant = Heading.Title } [])
@@ -824,7 +825,7 @@ demoSections slug =
         "checkbox" ->
             [ usage
                 [ sub "Basic"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                    (Layout.div "flex flex-wrap items-center gap-6"
                         [ Checkbox.view { name = "Unchecked" } [ Checkbox.checked False, Checkbox.onChange noOp ] |> Element.toNode
                         , Checkbox.view { name = "Checked" } [ Checkbox.checked True, Checkbox.onChange noOp ] |> Element.toNode
                         ]
@@ -835,7 +836,7 @@ demoSections slug =
                         |> Element.toNode
                     )
                 , sub "Disabling"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                    (Layout.div "flex flex-wrap items-center gap-6"
                         [ Checkbox.view { name = "Disabled" }
                             [ Checkbox.checked False, Checkbox.disabled True, Checkbox.onChange noOp ]
                             |> Element.toNode
@@ -870,7 +871,7 @@ demoSections slug =
         "dialog" ->
             [ usage
                 [ sub "Closed preview"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                    (Layout.div "w-full space-y-3"
                         [ Node.raw
                             (p [ class "text-body-md text-on-surface-variant" ]
                                 [ text "Dialogs render on top of the viewport and are normally hidden until opened. The composition below has "
@@ -919,7 +920,7 @@ demoSections slug =
         "extendedfab" ->
             [ usage
                 [ sub "Variants"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+                    (Layout.div "flex flex-wrap items-center gap-3"
                         [ ExtendedFab.view { icon = "edit", label = "Primary", variant = ExtendedFab.Primary } [] |> Element.toNode
                         , ExtendedFab.view { icon = "edit", label = "Secondary", variant = ExtendedFab.Secondary } [] |> Element.toNode
                         , ExtendedFab.view { icon = "edit", label = "Tertiary", variant = ExtendedFab.Tertiary } [] |> Element.toNode
@@ -942,7 +943,7 @@ demoSections slug =
         "fab" ->
             [ usage
                 [ sub "Variants"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                    (Layout.div "flex flex-wrap items-center gap-4"
                         [ Fab.view { icon = "add", name = "Primary" } [ Fab.variant Fab.Primary ] |> Element.toNode
                         , Fab.view { icon = "add", name = "Secondary" } [ Fab.variant Fab.Secondary ] |> Element.toNode
                         , Fab.view { icon = "add", name = "Tertiary" } [ Fab.variant Fab.Tertiary ] |> Element.toNode
@@ -950,7 +951,7 @@ demoSections slug =
                         ]
                     )
                 , sub "Sizes"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                    (Layout.div "flex flex-wrap items-center gap-4"
                         [ Fab.view { icon = "add", name = "Small" } [ Fab.variant Fab.Primary, Fab.size Fab.Small ] |> Element.toNode
                         , Fab.view { icon = "add", name = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> Element.toNode
                         , Fab.view { icon = "add", name = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> Element.toNode
@@ -990,28 +991,28 @@ demoSections slug =
         "heading" ->
             [ usage
                 [ sub "Display"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
+                    (Layout.div "w-full space-y-2"
                         [ headingDemo Heading.Display Heading.Large "Display Large"
                         , headingDemo Heading.Display Heading.Medium "Display Medium"
                         , headingDemo Heading.Display Heading.Small "Display Small"
                         ]
                     )
                 , sub "Headline"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
+                    (Layout.div "w-full space-y-2"
                         [ headingDemo Heading.Headline Heading.Large "Headline Large"
                         , headingDemo Heading.Headline Heading.Medium "Headline Medium"
                         , headingDemo Heading.Headline Heading.Small "Headline Small"
                         ]
                     )
                 , sub "Title"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
+                    (Layout.div "w-full space-y-2"
                         [ headingDemo Heading.Title Heading.Large "Title Large"
                         , headingDemo Heading.Title Heading.Medium "Title Medium"
                         , headingDemo Heading.Title Heading.Small "Title Small"
                         ]
                     )
                 , sub "Label"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
+                    (Layout.div "w-full space-y-2"
                         [ headingDemo Heading.Label Heading.Large "Label Large"
                         , headingDemo Heading.Label Heading.Medium "Label Medium"
                         , headingDemo Heading.Label Heading.Small "Label Small"
@@ -1023,7 +1024,7 @@ demoSections slug =
         "icon" ->
             [ usage
                 [ sub "Basic icons"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4 text-3xl") ]
+                    (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
                         [ Icon.view { name = "home" } |> Element.toNode
                         , Icon.view { name = "settings" } |> Element.toNode
                         , Icon.view { name = "notifications" } |> Element.toNode
@@ -1031,13 +1032,13 @@ demoSections slug =
                         ]
                     )
                 , sub "Filled axis"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4 text-3xl") ]
+                    (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
                         [ Icon.view { name = "favorite" } |> Element.toNode
                         , Icon.view { name = "favorite" } |> Element.toNode
                         ]
                     )
                 , sub "Weight axis"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4 text-3xl") ]
+                    (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
                         [ Icon.view { name = "circle" } |> Element.toNode
                         , Icon.view { name = "circle" } |> Element.toNode
                         , Icon.view { name = "circle" } |> Element.toNode
@@ -1114,7 +1115,7 @@ demoSections slug =
         "menu" ->
             [ usage
                 [ sub "With trigger"
-                    (Node.element "div" [ Node.rawAttr (class "flex items-center gap-2") ]
+                    (Layout.div "flex items-center gap-2"
                         [ IconButton.view { icon = "more_vert", name = "Open demo menu" }
                             [ IconButton.extraContent [ Menu.triggerFor "demo-menu" ] ]
                             |> Element.toNode
@@ -1238,7 +1239,7 @@ demoSections slug =
                 , sub "Circular"
                     (Progress.view { shape = Progress.Circular } [ Progress.value 40 ] |> Element.toNode)
                 , sub "Indeterminate"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                    (Layout.div "flex flex-wrap items-center gap-6"
                         [ Progress.view { shape = Progress.Linear } [] |> Element.toNode
                         , Progress.view { shape = Progress.Circular } [] |> Element.toNode
                         ]
@@ -1350,7 +1351,7 @@ demoSections slug =
         "shape" ->
             [ usage
                 [ sub "Decorative shapes"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                    (Layout.div "flex flex-wrap items-center gap-4"
                         [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Circle ] |> Element.toNode
                         , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-secondary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Flower ] |> Element.toNode
                         , Shape.view { content = [ Element.html (Html.div [ class "block w-24 h-16 bg-tertiary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Pill ] |> Element.toNode
@@ -1358,7 +1359,7 @@ demoSections slug =
                         ]
                     )
                 , sub "Corner-radius scale"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-end gap-4") ]
+                    (Layout.div "flex flex-wrap items-end gap-4"
                         [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-none" ] []) ] } [] |> Element.toNode
                         , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-small" ] []) ] } [] |> Element.toNode
                         , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-medium" ] []) ] } [] |> Element.toNode
@@ -1372,7 +1373,7 @@ demoSections slug =
         "sidesheet" ->
             [ usage
                 [ sub "Closed preview"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-3") ]
+                    (Layout.div "w-full space-y-3"
                         [ Node.raw
                             (p [ class "text-body-md text-on-surface-variant" ]
                                 [ text "Side sheets anchor to the start or end edge of the viewport. The composition below has "
@@ -1391,7 +1392,7 @@ demoSections slug =
         "skeleton" ->
             [ usage
                 [ sub "Lines + block"
-                    (Node.element "div" [ Node.rawAttr (class "flex w-full flex-col gap-2") ]
+                    (Layout.div "flex w-full flex-col gap-2"
                         [ Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-2/3" ] []) ] } [] |> Element.toNode
                         , Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-1/2" ] []) ] } [] |> Element.toNode
                         , Skeleton.view { content = [ Element.html (Html.div [ class "h-32 w-full" ] []) ] } [] |> Element.toNode
@@ -1520,7 +1521,7 @@ demoSections slug =
         "switch" ->
             [ usage
                 [ sub "Basic"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                    (Layout.div "flex flex-wrap items-center gap-6"
                         [ Switch.view { name = "Off" } [ Switch.checked False, Switch.onChange noOp ] |> Element.toNode
                         , Switch.view { name = "On" } [ Switch.checked True, Switch.onChange noOp ] |> Element.toNode
                         ]
@@ -1534,7 +1535,7 @@ demoSections slug =
                         |> Element.toNode
                     )
                 , sub "Disabled"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-6") ]
+                    (Layout.div "flex flex-wrap items-center gap-6"
                         [ Switch.view { name = "Off (disabled)" }
                             [ Switch.checked False, Switch.disabled True, Switch.onChange noOp ]
                             |> Element.toNode
@@ -1602,7 +1603,7 @@ demoSections slug =
         "textfield" ->
             [ usage
                 [ sub "Variants"
-                    (Node.element "div" [ Node.rawAttr (class "w-full max-w-md space-y-4") ]
+                    (Layout.div "w-full max-w-md space-y-4"
                         [ TextField.view { label = "Name (filled)" }
                             [ TextField.variant TextField.Filled
                             , TextField.value ""
@@ -1618,7 +1619,7 @@ demoSections slug =
                         ]
                     )
                 , sub "Input types"
-                    (Node.element "div" [ Node.rawAttr (class "w-full max-w-md space-y-4") ]
+                    (Layout.div "w-full max-w-md space-y-4"
                         [ TextField.view { label = "Email" }
                             [ TextField.variant TextField.Outlined
                             , TextField.value ""
@@ -1711,7 +1712,7 @@ demoSections slug =
         "toc" ->
             [ usage
                 [ sub "Basic"
-                    (Node.element "div" [ Node.rawAttr (class "flex gap-6") ]
+                    (Layout.div "flex gap-6"
                         [ Toc.view { for = "toc-demo-content" } [ Toc.title "On this page" ] |> Element.toNode
                         , Node.raw
                             (div [ Attr.id "toc-demo-content", class "min-w-0 flex-1 space-y-3" ]
@@ -1746,7 +1747,7 @@ demoSections slug =
         "tooltip" ->
             [ usage
                 [ sub "Plain tooltip"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-3") ]
+                    (Layout.div "flex flex-wrap items-center gap-3"
                         [ Node.element "span" [ Node.rawAttr (Attr.id "tooltip-anchor-demo") ]
                             [ IconButton.view { icon = "refresh", name = "Refresh" }
                                 [ IconButton.variant IconButton.Tonal ]
@@ -1784,14 +1785,14 @@ demoSections slug =
         "text" ->
             [ usage
                 [ sub "Body roles"
-                    (Node.element "div" [ Node.rawAttr (class "w-full space-y-2") ]
+                    (Layout.div "w-full space-y-2"
                         [ Text.bodyLarge "Body large — default running text." |> Element.toNode
                         , Text.bodyMedium "Body medium — secondary copy." |> Element.toNode
                         , Text.bodySmall "Body small — captions and footnotes." |> Element.toNode
                         ]
                     )
                 , sub "Label roles"
-                    (Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center gap-4") ]
+                    (Layout.div "flex flex-wrap items-center gap-4"
                         [ Text.labelLarge "Label large" |> Element.toNode
                         , Text.labelMedium "Label medium" |> Element.toNode
                         , Text.labelSmall "Label small" |> Element.toNode

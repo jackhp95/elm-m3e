@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class, style)
+import Layout
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.Divider as Divider
@@ -61,8 +62,7 @@ head _ =
 
 demoBar : Int -> Node msg
 demoBar scaleValue =
-    Node.element "div"
-        [ Node.rawAttr (class "space-y-2") ]
+    Layout.div "space-y-2"
         [ Node.raw
             (p [ class "text-label-lg text-on-surface-variant" ]
                 [ text ("density scale " ++ String.fromInt scaleValue) ]
@@ -91,10 +91,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Density · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.container
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -107,8 +105,7 @@ view _ _ =
                 , Card.headline (Heading.view { label = "Density scale, 0 to -3", variant = Heading.Title } [])
                 , Card.body
                     [ Element.fromNode
-                        (Node.element "div"
-                            [ Node.rawAttr (class "space-y-6") ]
+                        (Layout.div "space-y-6"
                             [ demoBar 0
                             , demoBar -1
                             , demoBar -2

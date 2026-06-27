@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (a, code, div, li, p, text, ul)
 import Html.Attributes exposing (class, href)
+import Layout
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element
@@ -91,10 +92,8 @@ highlightCard ( iconName, title, body ) =
         , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
         , Card.body
             [ Element.fromNode
-                (Node.element "div"
-                    [ Node.rawAttr (class "flex gap-3") ]
-                    [ Node.element "span"
-                        [ Node.rawAttr (class "shrink-0 text-primary") ]
+                (Layout.div "flex gap-3"
+                    [ Layout.span "shrink-0 text-primary"
                         [ Icon.view { name = iconName } |> Element.toNode ]
                     , Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
                     ]
@@ -108,10 +107,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Overview · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.container
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "text-body-lg text-on-surface-variant" ]
@@ -122,16 +119,13 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-4") ]
+            , Layout.section "space-y-4"
                 [ sectionHeading "What you get"
-                , Node.element "div"
-                    [ Node.rawAttr (class "grid grid-cols-1 gap-4 sm:grid-cols-2") ]
+                , Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2"
                     (List.map highlightCard highlights)
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "The MISI philosophy"
                 , Node.raw
                     (p [ class "text-body-lg text-on-surface-variant" ]
@@ -146,8 +140,7 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "Relationship to @m3e/web"
                 , Node.raw
                     (p [ class "text-body-lg text-on-surface-variant" ]

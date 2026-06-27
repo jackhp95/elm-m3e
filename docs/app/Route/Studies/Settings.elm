@@ -33,6 +33,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (div, p, section, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Avatar as Avatar
 import M3e.Breadcrumb as Breadcrumb
 import M3e.Button as Button
@@ -342,11 +343,11 @@ page : Model -> Node Msg
 page model =
     -- Outer `px-4 py-6 sm:px-6 sm:py-8` lives in `Shared.view` for every
     -- study route, so the page wrapper here only needs to constrain width.
-    Node.element "div" [ Node.rawAttr (class "mx-auto flex max-w-5xl flex-col gap-6 rounded-md-corner-large bg-surface") ]
+    Layout.div "mx-auto flex max-w-5xl flex-col gap-6 rounded-md-corner-large bg-surface"
         [ breadcrumbBar model
-        , Node.element "div" [ Node.rawAttr (class "flex flex-col gap-6 md:flex-row md:items-start") ]
+        , Layout.div "flex flex-col gap-6 md:flex-row md:items-start"
             [ railColumn model
-            , Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ] [ sectionPanel model ]
+            , Layout.div "min-w-0 flex-1" [ sectionPanel model ]
             ]
         , Divider.view [] |> Element.toNode
         , advancedColumns model
@@ -362,7 +363,7 @@ page model =
 
 breadcrumbBar : Model -> Node Msg
 breadcrumbBar model =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-1") ]
+    Layout.div "flex flex-col gap-1"
         [ Breadcrumb.view
             { items =
                 [ Breadcrumb.item { label = "Settings" } [ Breadcrumb.itemHref "/studies/settings" ]
@@ -381,7 +382,7 @@ breadcrumbBar model =
 
 railColumn : Model -> Node Msg
 railColumn model =
-    Node.element "div" [ Node.rawAttr (class "shrink-0 self-start rounded-md-corner-large bg-surface-container p-1") ]
+    Layout.div "shrink-0 self-start rounded-md-corner-large bg-surface-container p-1"
         [ NavigationRail.view
             { items =
                 [ railItem model.section "person" "Account" Account
@@ -441,8 +442,8 @@ sectionPanel model =
 
 groupCard : String -> String -> List (Node Msg) -> Node Msg
 groupCard glyph title rows =
-    Node.element "section" [ Node.rawAttr (class "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5") ]
-        (Node.element "div" [ Node.rawAttr (class "flex items-center gap-2 text-on-surface") ]
+    Layout.section "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5"
+        (Layout.div "flex items-center gap-2 text-on-surface"
             [ Icon.view { name = glyph } |> Element.toNode
             , Heading.view { label = title, variant = Heading.Title }
                 [ Heading.size Heading.Medium, Heading.level 2 ]
@@ -456,8 +457,8 @@ groupCard glyph title rows =
 -}
 controlRow : String -> Maybe String -> Node Msg -> Node Msg
 controlRow label supporting control =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-2 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-6") ]
-        [ Node.element "div" [ Node.rawAttr (class "flex min-w-0 flex-col") ]
+    Layout.div "flex flex-col gap-2 py-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+        [ Layout.div "flex min-w-0 flex-col"
             [ Node.raw (Html.span [ class "text-body-lg text-on-surface" ] [ text label ])
             , case supporting of
                 Just s ->
@@ -466,14 +467,14 @@ controlRow label supporting control =
                 Nothing ->
                     Node.text ""
             ]
-        , Node.element "div" [ Node.rawAttr (class "shrink-0") ] [ control ]
+        , Layout.div "shrink-0" [ control ]
         ]
 
 
 accountPanel : Model -> Node Msg
 accountPanel model =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
-        [ Node.element "section" [ Node.rawAttr (class "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4") ]
+    Layout.col
+        [ Layout.section "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4"
             [ Avatar.view { alt = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> Element.toNode
             , Node.raw (div [ class "flex min-w-0 flex-col" ]
                 [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
@@ -526,7 +527,7 @@ channelSwitch label checked onChange_ =
 
 appearancePanel : Model -> Node Msg
 appearancePanel model =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
+    Layout.col
         [ groupCard "palette"
             "Theme"
             [ controlRow "Color scheme"
@@ -570,7 +571,7 @@ appearancePanel model =
             "Display"
             [ controlRow "Brightness"
                 (Just (String.fromInt (round model.brightness) ++ "%"))
-                (Node.element "div" [ Node.rawAttr (class "w-full sm:w-72") ]
+                (Layout.div "w-full sm:w-72"
                     [ Slider.view { name = "Brightness" }
                         [ Slider.value model.brightness
                         , Slider.onChange BrightnessChanged
@@ -602,7 +603,7 @@ appearancePanel model =
 
 languageSelect : Model -> Node Msg
 languageSelect model =
-    Node.element "div" [ Node.rawAttr (class "w-full sm:w-64") ]
+    Layout.div "w-full sm:w-64"
         [ Select.view { label = "Language" }
             [ Select.options
                 [ Select.option { value = "english", label = "English" }
@@ -629,7 +630,7 @@ languageSelect model =
 
 timezoneSelect : Model -> Node Msg
 timezoneSelect model =
-    Node.element "div" [ Node.rawAttr (class "w-full sm:w-64") ]
+    Layout.div "w-full sm:w-64"
         [ Select.view { label = "Timezone" }
             [ Select.options
                 [ Select.option { value = "utc", label = "UTC" }
@@ -656,12 +657,12 @@ timezoneSelect model =
 
 privacyPanel : Model -> Node Msg
 privacyPanel model =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4") ]
+    Layout.col
         [ groupCard "lock"
             "Privacy"
             [ controlRow "Usage analytics"
                 (Just "Share anonymized usage data to help improve the product.")
-                (Node.element "div" [ Node.rawAttr (class "flex items-center gap-2") ]
+                (Layout.div "flex items-center gap-2"
                     [ infoIcon "telemetry-info" "We never sell your data."
                     , Switch.view { name = "Usage analytics" }
                         [ Switch.checked model.telemetry
@@ -680,7 +681,7 @@ privacyPanel model =
                     |> Element.toNode
                 )
             ]
-        , Node.element "section" [ Node.rawAttr (class "rounded-md-corner-large bg-surface-container-low p-2") ]
+        , Layout.section "rounded-md-corner-large bg-surface-container-low p-2"
             [ List_.view
                 { items =
                     [ List_.actionItem { headline = "Download my data" }
@@ -737,15 +738,15 @@ infoIcon anchorId label =
 
 advancedColumns : Model -> Node Msg
 advancedColumns model =
-    Node.element "div" [ Node.rawAttr (class "flex flex-col gap-4 lg:flex-row lg:items-start") ]
-        [ Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ]
+    Layout.div "flex flex-col gap-4 lg:flex-row lg:items-start"
+        [ Layout.div "min-w-0 flex-1"
             [ Heading.view
                 { label = "Advanced (accordion — one open at a time)", variant = Heading.Title }
                 [ Heading.size Heading.Small, Heading.level 2 ]
                 |> Element.toNode
             , advancedAccordion
             ]
-        , Node.element "div" [ Node.rawAttr (class "min-w-0 flex-1") ]
+        , Layout.div "min-w-0 flex-1"
             [ Heading.view
                 { label = "Developer options (single panel)", variant = Heading.Title }
                 [ Heading.size Heading.Small, Heading.level 2 ]
@@ -823,7 +824,7 @@ developerPanel model =
 
 footerActions : Node Msg
 footerActions =
-    Node.element "div" [ Node.rawAttr (class "flex flex-wrap items-center justify-end gap-3") ]
+    Layout.div "flex flex-wrap items-center justify-end gap-3"
         [ Button.view { label = "Reset to defaults", variant = Button.Text }
             [ Button.leadingIcon (Icon.view { name = "restart_alt" })
             , Button.onClick ResetRequested

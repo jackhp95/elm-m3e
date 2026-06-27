@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (code, div, p, pre, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
@@ -127,10 +128,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Installation · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-3xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.div "mx-auto max-w-3xl space-y-8"
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "text-body-lg text-on-surface-variant" ]
@@ -138,8 +137,7 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ stepHeading "1. Add the Elm source"
                 , Node.raw
                     (p [ class "text-body-md text-on-surface-variant" ]
@@ -152,8 +150,7 @@ view _ _ =
 """
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ stepHeading "2. Register the web components"
                 , Node.raw
                     (p [ class "text-body-md text-on-surface-variant" ]
@@ -167,8 +164,7 @@ import "@m3e/web/all";
 """
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ stepHeading "3. Import the token + utility bridge"
                 , Node.raw
                     (p [ class "text-body-md text-on-surface-variant" ]
@@ -182,8 +178,7 @@ import "@m3e/web/all";
 """
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ stepHeading "4. Wrap your app in a theme"
                 , Node.raw
                     (p [ class "text-body-md text-on-surface-variant" ]

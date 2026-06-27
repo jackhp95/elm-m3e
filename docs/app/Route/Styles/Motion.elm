@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (code, li, p, text, ul)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
@@ -75,10 +76,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Motion · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-3xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.div "mx-auto max-w-3xl space-y-8"
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -86,8 +85,7 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "Schemes"
                 , Node.raw
                     (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
@@ -97,8 +95,7 @@ view _ _ =
                     )
                 ]
             , Divider.view [] |> Element.toNode
-            , Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+            , Layout.section "space-y-3"
                 [ sectionHeading "Token families"
                 , Node.raw
                     (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]

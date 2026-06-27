@@ -6,6 +6,7 @@ import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class)
+import Layout
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element
@@ -72,9 +73,8 @@ steps =
 
 swatch : ( String, String ) -> Node msg
 swatch ( cls, label ) =
-    Node.element "div"
-        [ Node.rawAttr (class "flex flex-col items-center gap-2 text-label-sm text-on-surface-variant") ]
-        [ Node.element "div" [ Node.rawAttr (class ("block w-16 h-16 bg-primary-container " ++ cls)) ] []
+    Layout.div "flex flex-col items-center gap-2 text-label-sm text-on-surface-variant"
+        [ Layout.div ("block w-16 h-16 bg-primary-container " ++ cls) []
         , Node.text label
         ]
 
@@ -90,10 +90,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Shape · elm-m3e"
     , body =
-        [ Node.element "div"
-            [ Node.rawAttr (class "mx-auto max-w-4xl space-y-8") ]
-            [ Node.element "section"
-                [ Node.rawAttr (class "space-y-3") ]
+        [ Layout.container
+            [ Layout.section "space-y-3"
                 [ pageHeading
                 , Node.raw
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -106,8 +104,7 @@ view _ _ =
                 , Card.headline (Heading.view { label = "Corner scale", variant = Heading.Title } [])
                 , Card.body
                     [ Element.fromNode
-                        (Node.element "div"
-                            [ Node.rawAttr (class "flex flex-wrap items-end gap-6") ]
+                        (Layout.div "flex flex-wrap items-end gap-6"
                             (List.map swatch steps)
                         )
                     ]
