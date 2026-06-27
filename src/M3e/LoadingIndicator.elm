@@ -38,34 +38,27 @@ type Variant
     | Contained
 
 
-type Option msg
-    = VariantOpt Variant
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set the visual style. Default `Uncontained`; use `Contained` to place the
 animation on its own surface.
 -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant x =
+    Internal.option (\c -> { c | variant = x })
 
 
 type alias Config =
     { variant : Variant }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        VariantOpt v ->
-            { c | variant = v }
-
-
 view : List (Option msg) -> Renderable { s | loadingIndicator : Supported } msg
 view opts =
     let
         c =
-            List.foldl apply { variant = Uncontained } opts
+            Internal.applyOptions opts { variant = Uncontained }
     in
     Internal.fromNode
         (Node.element "m3e-loading-indicator"

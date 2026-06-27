@@ -31,58 +31,52 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = PageIndex Float
-    | PageSize String
-    | PageSizes String
-    | Disabled Bool
-    | ShowFirstLastButtons Bool
-    | HidePageSize Bool
-    | OnPage (Int -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Set the zero-based page index of the displayed list of items. -}
 pageIndex : Float -> Option msg
-pageIndex =
-    PageIndex
+pageIndex v =
+    Internal.option (\c -> { c | pageIndex = Just v })
 
 
 {-| Set the number of items per page (as a string, e.g. `"25"`). -}
 pageSize : String -> Option msg
-pageSize =
-    PageSize
+pageSize v =
+    Internal.option (\c -> { c | pageSize = Just v })
 
 
 {-| Set the available page sizes as a comma-separated string
 (e.g. `"10,25,50"`). Defaults to `"5,10,25,50,100"`. -}
 pageSizes : String -> Option msg
-pageSizes =
-    PageSizes
+pageSizes v =
+    Internal.option (\c -> { c | pageSizes = Just v })
 
 
 {-| Disable all navigation and the size selector. -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Show the first/last page jump buttons (default false). -}
 showFirstLastButtons : Bool -> Option msg
-showFirstLastButtons =
-    ShowFirstLastButtons
+showFirstLastButtons b =
+    Internal.option (\c -> { c | showFirstLastButtons = b })
 
 
 {-| Hide the "items per page" size selector. -}
 hidePageSize : Bool -> Option msg
-hidePageSize =
-    HidePageSize
+hidePageSize b =
+    Internal.option (\c -> { c | hidePageSize = b })
 
 
 {-| Wire a page-change handler. Receives the new zero-based page index
 decoded from the `page` custom event's `detail.pageIndex`. -}
 onPage : (Int -> msg) -> Option msg
-onPage =
-    OnPage
+onPage f =
+    Internal.option (\c -> { c | onPage = Just f })
 
 
 type alias Config msg =
@@ -96,36 +90,11 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        PageIndex v ->
-            { c | pageIndex = Just v }
-
-        PageSize v ->
-            { c | pageSize = Just v }
-
-        PageSizes v ->
-            { c | pageSizes = Just v }
-
-        Disabled b ->
-            { c | disabled = b }
-
-        ShowFirstLastButtons b ->
-            { c | showFirstLastButtons = b }
-
-        HidePageSize b ->
-            { c | hidePageSize = b }
-
-        OnPage f ->
-            { c | onPage = Just f }
-
-
 view : { length : Float } -> List (Option msg) -> Renderable { s | paginator : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { pageIndex = Nothing
                 , pageSize = Nothing
                 , pageSizes = Nothing
@@ -134,7 +103,6 @@ view req opts =
                 , hidePageSize = False
                 , onPage = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-paginator"

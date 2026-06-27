@@ -64,105 +64,91 @@ type Width
     | Wide
 
 
-type Option msg
-    = Variant_ Variant
-    | Size_ Size
-    | Shape_ Shape
-    | Width_ Width
-    | Disabled Bool
-    | Toggle Bool
-    | OnClick msg
-    | Selected Bool
-    | Href String
-    | Target String
-    | Rel String
-    | Download String
-    | OnChange (Bool -> msg)
-    | SelectedIcon (Renderable { icon : Supported } msg)
-
-
-
 -- SMART CONSTRUCTORS ----------------------------------------------------
 
 
 variant : Variant -> Option msg
-variant =
-    Variant_
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 size : Size -> Option msg
-size =
-    Size_
+size s =
+    Internal.option (\c -> { c | size = s })
 
 
 shape : Shape -> Option msg
-shape =
-    Shape_
+shape s =
+    Internal.option (\c -> { c | shape = Just s })
 
 
 width : Width -> Option msg
-width =
-    Width_
+width w =
+    Internal.option (\c -> { c | width = w })
 
 
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 toggle : Bool -> Option msg
-toggle =
-    Toggle
+toggle b =
+    Internal.option (\c -> { c | toggle = b })
 
 
 onClick : msg -> Option msg
-onClick =
-    OnClick
+onClick m =
+    Internal.option (\c -> { c | onClick = Just m })
 
 
 selected : Bool -> Option msg
-selected =
-    Selected
+selected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 href : String -> Option msg
-href =
-    Href
+href v =
+    Internal.option (\c -> { c | href = Just v })
 
 
 target : String -> Option msg
-target =
-    Target
+target v =
+    Internal.option (\c -> { c | target = Just v })
 
 
 rel : String -> Option msg
-rel =
-    Rel
+rel v =
+    Internal.option (\c -> { c | rel = Just v })
 
 
 download : String -> Option msg
-download =
-    Download
+download v =
+    Internal.option (\c -> { c | download = Just v })
 
 
 {-| Wire the toggle-state change event. Invoked with the new `selected` Bool
 whenever the button dispatches a `change` event.
 -}
 onChange : (Bool -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 {-| Icon to show when the toggle button is selected. Slotted into
 `slot="selected"`.
 -}
 selectedIcon : Renderable { icon : Supported } msg -> Option msg
-selectedIcon =
-    SelectedIcon
+selectedIcon i =
+    Internal.option (\c -> { c | selectedIcon = Just i })
 
 
 
 -- CONFIG -----------------------------------------------------------------
+
+
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 type alias Config msg =
@@ -202,53 +188,6 @@ defaults =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Variant_ v ->
-            { c | variant = v }
-
-        Size_ s ->
-            { c | size = s }
-
-        Shape_ s ->
-            { c | shape = Just s }
-
-        Width_ w ->
-            { c | width = w }
-
-        Disabled b ->
-            { c | disabled = b }
-
-        Toggle b ->
-            { c | toggle = b }
-
-        OnClick m ->
-            { c | onClick = Just m }
-
-        Selected b ->
-            { c | selected = b }
-
-        Href v ->
-            { c | href = Just v }
-
-        Target v ->
-            { c | target = Just v }
-
-        Rel v ->
-            { c | rel = Just v }
-
-        Download v ->
-            { c | download = Just v }
-
-        OnChange f ->
-            { c | onChange = Just f }
-
-        SelectedIcon i ->
-            { c | selectedIcon = Just i }
-
-
-
 -- VIEW -------------------------------------------------------------------
 
 
@@ -256,7 +195,7 @@ view : { icon : String, name : String } -> List (Option msg) -> Renderable { s |
 view req opts =
     let
         c =
-            List.foldl apply defaults opts
+            Internal.applyOptions opts defaults
     in
     Internal.fromNode
         (Node.element "m3e-icon-button"

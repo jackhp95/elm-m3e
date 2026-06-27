@@ -52,33 +52,31 @@ type Variant
     | Wavy
 
 
-type Option msg
-    = Value Int
-    | MaxVal Int
-    | VariantOpt Variant
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set the progress value (0..max). Passing this option makes the indicator
 determinate. Omitting it leaves the indicator indeterminate (animated, no value).
 -}
 value : Int -> Option msg
-value =
-    Value
+value x =
+    Internal.option (\c -> { c | value = Just x })
 
 
 {-| Set the maximum value the indicator measures against. Default 100.
 Maps to the `max` DOM property.
 -}
 max : Int -> Option msg
-max =
-    MaxVal
+max x =
+    Internal.option (\c -> { c | max = x })
 
 
 {-| Set the visual style — `Flat` (default) or `Wavy`.
 -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant x =
+    Internal.option (\c -> { c | variant = Just x })
 
 
 type alias Config =
@@ -88,29 +86,15 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Value v ->
-            { c | value = Just v }
-
-        MaxVal m ->
-            { c | max = m }
-
-        VariantOpt v ->
-            { c | variant = Just v }
-
-
 view : { shape : Shape } -> List (Option msg) -> Renderable { s | progress : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { value = Nothing
                 , max = 100
                 , variant = Nothing
                 }
-                opts
     in
     case req.shape of
         Linear ->

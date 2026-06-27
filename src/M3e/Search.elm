@@ -39,49 +39,43 @@ import M3e.Internal as Internal
 -- OPTIONS ----------------------------------------------------------------
 
 
-type Option msg
-    = OnInput (String -> msg)
-    | Value String
-    | Clearable Bool
-    | ClearLabel String
-    | OnClear msg
-    | LeadingIcon (Renderable { icon : Supported } msg)
-    | TrailingIcon (Renderable { icon : Supported } msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 onInput : (String -> msg) -> Option msg
-onInput =
-    OnInput
+onInput f =
+    Internal.option (\c -> { c | onInput = Just f })
 
 
 value : String -> Option msg
-value =
-    Value
+value v =
+    Internal.option (\c -> { c | value = Just v })
 
 
 clearable : Bool -> Option msg
-clearable =
-    Clearable
+clearable b =
+    Internal.option (\c -> { c | clearable = b })
 
 
 clearLabel : String -> Option msg
-clearLabel =
-    ClearLabel
+clearLabel v =
+    Internal.option (\c -> { c | clearLabel = Just v })
 
 
 onClear : msg -> Option msg
-onClear =
-    OnClear
+onClear m =
+    Internal.option (\c -> { c | onClear = Just m })
 
 
 leadingIcon : Renderable { icon : Supported } msg -> Option msg
-leadingIcon =
-    LeadingIcon
+leadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 trailingIcon : Renderable { icon : Supported } msg -> Option msg
-trailingIcon =
-    TrailingIcon
+trailingIcon i =
+    Internal.option (\c -> { c | trailingIcon = Just i })
 
 
 
@@ -111,32 +105,6 @@ defaults =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        OnInput f ->
-            { c | onInput = Just f }
-
-        Value v ->
-            { c | value = Just v }
-
-        Clearable b ->
-            { c | clearable = b }
-
-        ClearLabel v ->
-            { c | clearLabel = Just v }
-
-        OnClear m ->
-            { c | onClear = Just m }
-
-        LeadingIcon i ->
-            { c | leadingIcon = Just i }
-
-        TrailingIcon i ->
-            { c | trailingIcon = Just i }
-
-
-
 -- VIEW -------------------------------------------------------------------
 
 
@@ -144,7 +112,7 @@ view : { placeholder : String } -> List (Option msg) -> Renderable { s | search 
 view req opts =
     let
         c =
-            List.foldl apply defaults opts
+            Internal.applyOptions opts defaults
     in
     Internal.fromNode
         (Node.element "m3e-search-bar"

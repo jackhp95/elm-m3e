@@ -41,30 +41,28 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Disabled Bool
-    | Required Bool
-    | OnChange (String -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Disable the whole group (and every radio within it). -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Mark the group as required for form submission. -}
 required : Bool -> Option msg
-required =
-    Required
+required b =
+    Internal.option (\c -> { c | required = b })
 
 
 {-| Wire a change handler. Receives the `value` string of the clicked
 radio option.
 -}
 onChange : (String -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 type alias Config msg =
@@ -72,19 +70,6 @@ type alias Config msg =
     , required : Bool
     , onChange : Maybe (String -> msg)
     }
-
-
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Disabled b ->
-            { c | disabled = b }
-
-        Required b ->
-            { c | required = b }
-
-        OnChange f ->
-            { c | onChange = Just f }
 
 
 view :
@@ -97,9 +82,8 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { disabled = False, required = False, onChange = Nothing }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-radio-group"

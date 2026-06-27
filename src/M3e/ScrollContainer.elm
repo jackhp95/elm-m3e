@@ -35,38 +35,27 @@ type Dividers
     | None
 
 
-type Option msg
-    = DividersOpt Dividers
-    | Thin Bool
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set which dividers appear when content is scrolled
 (default `AboveBelow`). -}
 dividers : Dividers -> Option msg
-dividers =
-    DividersOpt
+dividers d =
+    Internal.option (\c -> { c | dividers = d })
 
 
 {-| Use thin scrollbars (default false). -}
 thin : Bool -> Option msg
-thin =
-    Thin
+thin b =
+    Internal.option (\c -> { c | thin = b })
 
 
 type alias Config =
     { dividers : Dividers
     , thin : Bool
     }
-
-
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        DividersOpt d ->
-            { c | dividers = d }
-
-        Thin b ->
-            { c | thin = b }
 
 
 view :
@@ -76,7 +65,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply { dividers = AboveBelow, thin = False } opts
+            Internal.applyOptions opts { dividers = AboveBelow, thin = False }
     in
     Internal.fromNode
         (Node.element "m3e-scroll-container"

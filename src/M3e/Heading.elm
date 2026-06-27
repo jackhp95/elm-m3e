@@ -47,36 +47,6 @@ type Size
     | Large
 
 
-type Option msg
-    = SizeOpt Size
-    | Emphasized Bool
-    | Level Int
-
-
-{-| Set the heading size (`Small`, `Medium`, `Large`). Default `Medium`.
--}
-size : Size -> Option msg
-size =
-    SizeOpt
-
-
-{-| Toggle the emphasized typescale (default `False`). When `True`, the heading
-uses M3's emphasized type tokens for extra prominence. Maps to the `emphasized`
-DOM property.
--}
-emphasized : Bool -> Option msg
-emphasized =
-    Emphasized
-
-
-{-| Set the accessibility level (clamped to 1..6). Maps to the `level`
-attribute.
--}
-level : Int -> Option msg
-level =
-    Level
-
-
 type alias Config =
     { size : Maybe Size
     , emphasized : Bool
@@ -84,29 +54,43 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        SizeOpt s ->
-            { c | size = Just s }
+type alias Option msg =
+    Internal.Option Config msg
 
-        Emphasized b ->
-            { c | emphasized = b }
 
-        Level l ->
-            { c | level = Just (clamp 1 6 l) }
+{-| Set the heading size (`Small`, `Medium`, `Large`). Default `Medium`.
+-}
+size : Size -> Option msg
+size s =
+    Internal.option (\c -> { c | size = Just s })
+
+
+{-| Toggle the emphasized typescale (default `False`). When `True`, the heading
+uses M3's emphasized type tokens for extra prominence. Maps to the `emphasized`
+DOM property.
+-}
+emphasized : Bool -> Option msg
+emphasized b =
+    Internal.option (\c -> { c | emphasized = b })
+
+
+{-| Set the accessibility level (clamped to 1..6). Maps to the `level`
+attribute.
+-}
+level : Int -> Option msg
+level l =
+    Internal.option (\c -> { c | level = Just (clamp 1 6 l) })
 
 
 view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | heading : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { size = Nothing
                 , emphasized = False
                 , level = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-heading"
