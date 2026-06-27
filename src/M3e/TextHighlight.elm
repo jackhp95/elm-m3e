@@ -110,16 +110,8 @@ view req opts =
             (List.filterMap identity
                 [ Maybe.map (\t -> Node.rawAttr (Cem.term t)) c.term
                 , Just (Node.rawAttr (Cem.mode (toCemMode c.mode)))
-                , if c.caseSensitive then
-                    Just (Node.property "caseSensitive" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "caseSensitive" (Encode.bool c.caseSensitive))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 ]
             )
             (List.map Element.toNode req.content)

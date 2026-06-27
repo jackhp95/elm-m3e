@@ -128,21 +128,11 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-toolbar"
-            (List.filterMap identity
-                [ if c.elevated then
-                    Just (Node.property "elevated" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.vertical then
-                    Just (Node.property "vertical" (Encode.bool True))
-
-                  else
-                    Nothing
-                , Just (Node.rawAttr (Cem.shape (toCemShape c.shape)))
-                , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
-                ]
-            )
+            [ Node.property "elevated" (Encode.bool c.elevated)
+            , Node.property "vertical" (Encode.bool c.vertical)
+            , Node.rawAttr (Cem.shape (toCemShape c.shape))
+            , Node.rawAttr (Cem.variant (toCemVariant c.variant))
+            ]
             (List.map Element.toNode req.content)
         )
 

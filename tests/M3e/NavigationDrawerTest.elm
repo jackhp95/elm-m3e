@@ -258,11 +258,12 @@ suite =
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "group: open absent by default (collapsed)" <|
+        , test "group: open emits false by default (collapsed)" <|
             \_ ->
                 groupNode [] []
                     |> Node.findProperty "open"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "group: groupOpen True sets open property" <|
             \_ ->
                 groupNode [] [ NavigationDrawer.groupOpen True ]

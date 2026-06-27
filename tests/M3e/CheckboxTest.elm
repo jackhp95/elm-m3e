@@ -45,22 +45,24 @@ suite =
                     |> Node.findProperty "indeterminate"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "indeterminate absent by default" <|
+        , test "indeterminate emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "indeterminate"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "disabled=true is visible as a DOM property" <|
             \_ ->
                 node [ Checkbox.disabled True ]
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default" <|
+        , test "disabled emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "checkbox is a leaf — no children" <|
             \_ ->
                 node []

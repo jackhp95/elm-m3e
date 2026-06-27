@@ -208,11 +208,7 @@ view opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") cfg.id
                 , Just (Node.attribute "size" (Cem.sizeToString (toCemSize cfg.size)))
-                , if cfg.centered then
-                    Just (Node.property "centered" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "centered" (Encode.bool cfg.centered))
                 ]
             )
             (List.filterMap identity

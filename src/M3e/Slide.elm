@@ -102,16 +102,8 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-slide-group"
             (List.filterMap identity
-                [ if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.vertical then
-                    Just (Node.property "vertical" (Encode.bool True))
-
-                  else
-                    Nothing
+                [ Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "vertical" (Encode.bool c.vertical))
                 , Maybe.map (\px -> Node.property "threshold" (Encode.float px)) c.threshold
                 ]
             )

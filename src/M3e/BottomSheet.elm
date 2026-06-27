@@ -154,21 +154,9 @@ view req opts =
         (Node.element "m3e-bottom-sheet"
             (List.filterMap identity
                 [ Just (Node.property "open" (Encode.bool c.open))
-                , if c.handle then
-                    Just (Node.property "handle" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.hideable then
-                    Just (Node.property "hideable" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.modal then
-                    Just (Node.property "modal" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "handle" (Encode.bool c.handle))
+                , Just (Node.property "hideable" (Encode.bool c.hideable))
+                , Just (Node.property "modal" (Encode.bool c.modal))
                 , Maybe.map (\m -> Node.on "closed" (Decode.succeed m)) c.onClose
                 , Maybe.map (\m -> Node.on "cancel" (Decode.succeed m)) c.onClose
                 ]

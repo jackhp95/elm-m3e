@@ -95,28 +95,10 @@ view opts =
     in
     Internal.fromNode
         (Node.element "m3e-divider"
-            (List.filterMap identity
-                [ if c.vertical then
-                    Just (Node.property "vertical" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.inset then
-                    Just (Node.property "inset" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.insetStart then
-                    Just (Node.property "insetStart" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.insetEnd then
-                    Just (Node.property "insetEnd" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.property "vertical" (Encode.bool c.vertical)
+            , Node.property "inset" (Encode.bool c.inset)
+            , Node.property "insetStart" (Encode.bool c.insetStart)
+            , Node.property "insetEnd" (Encode.bool c.insetEnd)
+            ]
             []
         )

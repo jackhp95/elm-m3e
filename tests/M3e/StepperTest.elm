@@ -157,9 +157,10 @@ suite =
                     |> Node.findProperty "linear"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "linear absent by default" <|
+        , test "linear emits false by default" <|
             \_ ->
                 stripNode []
                     |> Node.findProperty "linear"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         ]

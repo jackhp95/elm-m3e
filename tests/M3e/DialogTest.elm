@@ -70,33 +70,36 @@ suite =
                     |> Node.findProperty "alert"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "alert absent by default" <|
+        , test "alert emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "alert"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "closeButton=true sets the dismissible DOM property" <|
             \_ ->
                 node [ Dialog.closeButton True ]
                     |> Node.findProperty "dismissible"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "closeButton absent by default (no dismissible property)" <|
+        , test "closeButton=false emits dismissible=false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "dismissible"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "dismissible=false sets disable-close DOM property" <|
             \_ ->
                 node [ Dialog.dismissible False ]
                     |> Node.findProperty "disableClose"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disable-close absent by default (dismissible=true)" <|
+        , test "disableClose emits false by default (dismissible=true)" <|
             \_ ->
                 node []
                     |> Node.findProperty "disableClose"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "actions render inside <div slot=\"actions\">" <|
             \_ ->
                 node [ Dialog.actions [ actionButton ] ]

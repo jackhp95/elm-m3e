@@ -117,11 +117,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-skeleton"
             (List.filterMap identity
-                [ if c.loaded then
-                    Just (Node.property "loaded" (Encode.bool True))
-
-                  else
-                    Nothing
+                [ Just (Node.property "loaded" (Encode.bool c.loaded))
                 , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
                 , Maybe.map (\a -> Node.rawAttr (Cem.animation (toCemAnimation a))) c.animation
                 ]

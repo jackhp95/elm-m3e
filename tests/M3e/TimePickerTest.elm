@@ -138,11 +138,12 @@ suite =
                     |> Maybe.andThen (Node.findProperty "required")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default" <|
+        , test "disabled emits false by default" <|
             \_ ->
                 inputChild (viewNode [])
                     |> Maybe.andThen (Node.findProperty "disabled")
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
 
         -- Slot children
         , test "hint adds a child with slot='hint'" <|

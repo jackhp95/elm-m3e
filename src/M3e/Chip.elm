@@ -221,11 +221,7 @@ variantAttr c =
 
 disabledAttr : Config msg -> Maybe (Node.Attr msg)
 disabledAttr c =
-    if c.disabled then
-        Just (Node.property "disabled" (Encode.bool True))
-
-    else
-        Nothing
+    Just (Node.property "disabled" (Encode.bool c.disabled))
 
 
 
@@ -345,11 +341,7 @@ filter req opts =
         (Node.element "m3e-filter-chip"
             (List.filterMap identity
                 [ Just (variantAttr c)
-                , if c.selected then
-                    Just (Node.property "selected" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "selected" (Encode.bool c.selected))
                 , disabledAttr c
                 , Just (Node.on "change" (Decode.succeed req.onToggle))
                 ]

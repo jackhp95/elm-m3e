@@ -105,23 +105,25 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default" <|
+        , test "disabled emits false by default" <|
             \_ ->
                 tab1
                     |> Element.toNode
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "stretch=true is a DOM property on the strip" <|
             \_ ->
                 stripNode [ Tabs.stretch True ]
                     |> Node.findProperty "stretch"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "stretch absent by default" <|
+        , test "stretch emits false by default" <|
             \_ ->
                 stripNode []
                     |> Node.findProperty "stretch"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "total children = tabs + panels" <|
             \_ ->
                 stripNode []

@@ -64,11 +64,12 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default" <|
+        , test "disabled emits false by default" <|
             \_ ->
                 node emptyPane []
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "label attribute is introspectable" <|
             \_ ->
                 node emptyPane [ SplitPane.label "Adjust panes" ]

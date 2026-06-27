@@ -319,11 +319,7 @@ actionItem req opts =
     Internal.fromNode
         (Node.element "m3e-list-item-button"
             (List.filterMap identity
-                [ if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                [ Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (\msg -> Node.on "click" (Decode.succeed msg)) c.onClick
                 ]
             )
@@ -354,11 +350,7 @@ option req opts =
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool c.selected))
                 , Maybe.map (Node.attribute "value") c.value
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map
                     (\f -> Node.on "click" (Decode.succeed (f (not c.selected))))
                     c.onChange
@@ -406,19 +398,9 @@ expandable req opts =
     in
     Internal.fromNode
         (Node.element "m3e-expandable-list-item"
-            (List.filterMap identity
-                [ if c.open then
-                    Just (Node.property "open" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.property "open" (Encode.bool c.open)
+            , Node.property "disabled" (Encode.bool c.disabled)
+            ]
             (decorationNodes c.leading c.overline c.supporting Nothing req.headline
                 ++ childNodes
             )

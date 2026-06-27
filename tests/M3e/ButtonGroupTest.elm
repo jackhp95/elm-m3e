@@ -51,9 +51,10 @@ suite =
                     |> Node.findProperty "multi"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "multi absent by default" <|
+        , test "multi emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "multi"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         ]

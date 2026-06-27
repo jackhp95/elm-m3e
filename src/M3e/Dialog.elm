@@ -171,21 +171,9 @@ view req opts =
         (Node.element "m3e-dialog"
             (List.filterMap identity
                 [ Just (Node.property "open" (Encode.bool c.open))
-                , if c.alert then
-                    Just (Node.property "alert" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.closeButton then
-                    Just (Node.property "dismissible" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if not c.dismissible then
-                    Just (Node.property "disableClose" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "alert" (Encode.bool c.alert))
+                , Just (Node.property "dismissible" (Encode.bool c.closeButton))
+                , Just (Node.property "disableClose" (Encode.bool (not c.dismissible)))
                 , Maybe.map (Node.attribute "close-label") c.closeLabel
                 , Maybe.map (\m -> Node.on "closed" (Decode.succeed m)) c.onClose
                 , Maybe.map (\m -> Node.on "cancel" (Decode.succeed m)) c.onClose

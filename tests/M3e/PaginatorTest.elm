@@ -45,11 +45,12 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default" <|
+        , test "disabled emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "showFirstLastButtons is a DOM property" <|
             \_ ->
                 node [ Paginator.showFirstLastButtons True ]

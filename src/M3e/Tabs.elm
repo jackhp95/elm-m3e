@@ -178,11 +178,7 @@ tab req opts =
         (Node.element "m3e-tab"
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool c.selected))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (Node.attribute "for") c.for
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 ]
@@ -281,16 +277,10 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-tabs"
-            (List.filterMap identity
-                [ if c.stretch then
-                    Just (Node.property "stretch" (Encode.bool True))
-
-                  else
-                    Nothing
-                , Just (Node.rawAttr (CemTabs.variant (toCemVariant c.variant)))
-                , Just (Node.rawAttr (CemTabs.headerPosition (toCemHeaderPosition c.headerPosition)))
-                ]
-            )
+            [ Node.property "stretch" (Encode.bool c.stretch)
+            , Node.rawAttr (CemTabs.variant (toCemVariant c.variant))
+            , Node.rawAttr (CemTabs.headerPosition (toCemHeaderPosition c.headerPosition))
+            ]
             (List.map Element.toNode req.tabs
                 ++ List.map (Node.withSlot "panel" << Element.toNode) req.panels
             )

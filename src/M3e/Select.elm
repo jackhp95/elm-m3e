@@ -174,16 +174,10 @@ option req opts =
     in
     Internal.fromNode
         (Node.element "m3e-option"
-            (List.filterMap identity
-                [ Just (Node.attribute "value" req.value)
-                , Just (Node.property "selected" (Encode.bool oc.selected))
-                , if oc.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.attribute "value" req.value
+            , Node.property "selected" (Encode.bool oc.selected)
+            , Node.property "disabled" (Encode.bool oc.disabled)
+            ]
             [ Node.text req.label ]
         )
 
@@ -231,21 +225,9 @@ view req opts =
             , Node.element "m3e-select"
                 (List.filterMap identity
                     [ Just (Node.attribute "id" fieldId)
-                    , if c.multi then
-                        Just (Node.property "multi" (Encode.bool True))
-
-                      else
-                        Nothing
-                    , if c.required then
-                        Just (Node.property "required" (Encode.bool True))
-
-                      else
-                        Nothing
-                    , if c.disabled then
-                        Just (Node.property "disabled" (Encode.bool True))
-
-                      else
-                        Nothing
+                    , Just (Node.property "multi" (Encode.bool c.multi))
+                    , Just (Node.property "required" (Encode.bool c.required))
+                    , Just (Node.property "disabled" (Encode.bool c.disabled))
                     , Maybe.map
                         (\handler ->
                             Node.on "change"

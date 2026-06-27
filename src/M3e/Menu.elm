@@ -281,11 +281,7 @@ item req opts =
 
                     Link href ->
                         Just (Node.attribute "href" href)
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 ]
             )
             (itemChildren c.leadingIcon c.trailingIcon req.label)
@@ -313,16 +309,10 @@ checkboxItem req opts =
     in
     Internal.fromNode
         (Node.element "m3e-menu-item-checkbox"
-            (List.filterMap identity
-                [ Just (Node.property "checked" (Encode.bool c.checked))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , Just (Node.on "click" (Decode.succeed (req.onChange (not c.checked))))
-                ]
-            )
+            [ Node.property "checked" (Encode.bool c.checked)
+            , Node.property "disabled" (Encode.bool c.disabled)
+            , Node.on "click" (Decode.succeed (req.onChange (not c.checked)))
+            ]
             (itemChildren c.leadingIcon c.trailingIcon req.label)
         )
 
@@ -347,16 +337,10 @@ radioItem req opts =
     in
     Internal.fromNode
         (Node.element "m3e-menu-item-radio"
-            (List.filterMap identity
-                [ Just (Node.property "checked" (Encode.bool c.selected))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , Just (Node.on "click" (Decode.succeed req.onClick))
-                ]
-            )
+            [ Node.property "checked" (Encode.bool c.selected)
+            , Node.property "disabled" (Encode.bool c.disabled)
+            , Node.on "click" (Decode.succeed req.onClick)
+            ]
             (itemChildren c.leadingIcon c.trailingIcon req.label)
         )
 
@@ -447,11 +431,7 @@ view req opts =
         (Node.element "m3e-menu"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , if c.submenu then
-                    Just (Node.property "submenu" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "submenu" (Encode.bool c.submenu))
                 , Maybe.map (\v -> Node.rawAttr (CemMenu.variant (toCemVariant v))) c.variant
                 , Maybe.map (\px -> Node.rawAttr (CemMenu.positionX (toCemPositionX px))) c.positionX
                 , Maybe.map (\py -> Node.rawAttr (CemMenu.positionY (toCemPositionY py))) c.positionY

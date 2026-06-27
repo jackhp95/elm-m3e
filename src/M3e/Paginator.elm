@@ -129,21 +129,9 @@ view req opts =
                 , Maybe.map (\v -> Node.property "pageIndex" (Encode.int v)) c.pageIndex
                 , Maybe.map (\v -> Node.attribute "page-size" (String.fromInt v)) c.pageSize
                 , Maybe.map (\v -> Node.attribute "page-sizes" (String.join "," (List.map String.fromInt v))) c.pageSizes
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.showFirstLastButtons then
-                    Just (Node.property "showFirstLastButtons" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.hidePageSize then
-                    Just (Node.property "hidePageSize" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "showFirstLastButtons" (Encode.bool c.showFirstLastButtons))
+                , Just (Node.property "hidePageSize" (Encode.bool c.hidePageSize))
                 , Maybe.map
                     (\f ->
                         Node.on "page"

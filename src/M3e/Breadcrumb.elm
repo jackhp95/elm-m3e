@@ -152,11 +152,7 @@ item req opts =
 
                   else
                     Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map
                     (\m -> Node.on "click" (Decode.succeed m))
                     c.onClick
@@ -203,13 +199,7 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-breadcrumb"
-            (List.filterMap identity
-                [ if c.wrap then
-                    Just (Node.property "wrap" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.property "wrap" (Encode.bool c.wrap)
+            ]
             (List.map Element.toNode req.items)
         )

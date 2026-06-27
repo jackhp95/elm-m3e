@@ -54,11 +54,12 @@ suite =
                     |> Node.findProperty "thin"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "thin absent by default" <|
+        , test "thin emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "thin"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "content children are rendered in the default slot" <|
             \_ ->
                 node []

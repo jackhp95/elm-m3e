@@ -136,21 +136,9 @@ view req opts =
                 , Maybe.map (\v -> Node.property "min" (Encode.float v)) c.min
                 , Maybe.map (\v -> Node.property "max" (Encode.float v)) c.max
                 , Maybe.map (\v -> Node.property "step" (Encode.float v)) c.step
-                , if c.discrete then
-                    Just (Node.property "discrete" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.labelled then
-                    Just (Node.property "labelled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "discrete" (Encode.bool c.discrete))
+                , Just (Node.property "labelled" (Encode.bool c.labelled))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 ]
             )
             [ thumbNode c ]
@@ -162,7 +150,7 @@ thumbNode c =
     Node.element "m3e-slider-thumb"
         (List.filterMap identity
             [ Maybe.map
-                (\v -> Node.property "value" (Encode.string (String.fromFloat v)))
+                (\v -> Node.property "value" (Encode.float v))
                 c.value
             , Maybe.map
                 (\f ->

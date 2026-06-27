@@ -106,11 +106,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
                 , Maybe.map (\s -> Node.rawAttr (Cem.size (toCemSize s))) c.size
-                , if c.emphasized then
-                    Just (Node.property "emphasized" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "emphasized" (Encode.bool c.emphasized))
                 , Maybe.map (\l -> Node.rawAttr (Cem.level (String.fromInt l))) c.level
                 ]
             )

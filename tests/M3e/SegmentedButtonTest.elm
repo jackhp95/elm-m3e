@@ -57,11 +57,12 @@ suite =
                         |> Node.findProperty "multi"
                         |> Maybe.map (Encode.encode 0)
                         |> Expect.equal (Just "true")
-            , test "multi absent by default" <|
+            , test "multi emits false by default" <|
                 \_ ->
                     parentNode []
                         |> Node.findProperty "multi"
-                        |> Expect.equal Nothing
+                        |> Maybe.map (Encode.encode 0)
+                        |> Expect.equal (Just "false")
             , test "disabled on parent is a DOM property" <|
                 \_ ->
                     parentNode [ SegmentedButton.disabled True ]

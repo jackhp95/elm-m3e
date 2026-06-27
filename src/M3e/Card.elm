@@ -178,16 +178,8 @@ view opts =
         (Node.element "m3e-card"
             (List.filterMap identity
                 [ Maybe.map (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v))) cfg.variant
-                , if cfg.actionable then
-                    Just (Node.property "actionable" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if cfg.inline then
-                    Just (Node.property "inline" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "actionable" (Encode.bool cfg.actionable))
+                , Just (Node.property "inline" (Encode.bool cfg.inline))
                 ]
             )
             (List.filterMap identity

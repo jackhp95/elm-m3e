@@ -92,12 +92,13 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default on actionItem" <|
+        , test "disabled emits false by default on actionItem" <|
             \_ ->
                 MList.actionItem { headline = "Settings" } []
                     |> Element.toNode
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
 
         -- Option item
         , test "option renders <m3e-list-option>" <|
@@ -161,12 +162,13 @@ suite =
                     |> Node.findProperty "open"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "open absent by default on expandable" <|
+        , test "open emits false by default on expandable" <|
             \_ ->
                 MList.expandable { headline = "Folders", children = [] } []
                     |> Element.toNode
                     |> Node.findProperty "open"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "expandable children land in the items slot" <|
             \_ ->
                 MList.expandable

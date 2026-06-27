@@ -274,21 +274,9 @@ view req opts =
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
                 , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
                 , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.toggle then
-                    Just (Node.property "toggle" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.selected then
-                    Just (Node.property "selected" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "toggle" (Encode.bool c.toggle))
+                , Just (Node.property "selected" (Encode.bool c.selected))
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 , Maybe.map (Node.attribute "href") c.href
                 , Maybe.map (Node.attribute "target") c.target

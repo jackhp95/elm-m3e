@@ -154,16 +154,8 @@ section req opts =
         (Node.element "m3e-expansion-panel"
             (List.filterMap identity
                 [ Just (Node.property "open" (Encode.bool c.open))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.hideToggle then
-                    Just (Node.property "hideToggle" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "hideToggle" (Encode.bool c.hideToggle))
                 , Maybe.map (\h -> Node.on "opened" (Decode.succeed (h True))) c.onToggle
                 , Maybe.map (\h -> Node.on "closed" (Decode.succeed (h False))) c.onToggle
                 ]

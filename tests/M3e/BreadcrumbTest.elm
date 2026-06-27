@@ -57,11 +57,12 @@ suite =
                         |> Node.findProperty "wrap"
                         |> Maybe.map (Encode.encode 0)
                         |> Expect.equal (Just "true")
-            , test "wrap absent by default" <|
+            , test "wrap emits false by default" <|
                 \_ ->
                     parentNode []
                         |> Node.findProperty "wrap"
-                        |> Expect.equal Nothing
+                        |> Maybe.map (Encode.encode 0)
+                        |> Expect.equal (Just "false")
             ]
         , describe "item child (<m3e-breadcrumb-item>)"
             [ test "renders <m3e-breadcrumb-item>" <|

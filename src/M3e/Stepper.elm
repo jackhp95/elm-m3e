@@ -219,31 +219,11 @@ step req opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 , Maybe.map (Node.attribute "for") c.for
                 , Just (Node.property "selected" (Encode.bool c.selected))
-                , if c.completed then
-                    Just (Node.property "completed" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.optional then
-                    Just (Node.property "optional" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.editable then
-                    Just (Node.property "editable" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.invalid then
-                    Just (Node.property "invalid" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "completed" (Encode.bool c.completed))
+                , Just (Node.property "optional" (Encode.bool c.optional))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "editable" (Encode.bool c.editable))
+                , Just (Node.property "invalid" (Encode.bool c.invalid))
                 ]
             )
             [ Node.text req.label ]
@@ -378,11 +358,7 @@ view req opts =
 
                   else
                     Nothing
-                , if c.linear then
-                    Just (Node.property "linear" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "linear" (Encode.bool c.linear))
                 , Maybe.map
                     (\hp ->
                         Node.rawAttr

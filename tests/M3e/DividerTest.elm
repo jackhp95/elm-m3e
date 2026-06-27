@@ -33,22 +33,24 @@ suite =
                     |> Node.findProperty "vertical"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "vertical absent by default" <|
+        , test "vertical emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "vertical"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "inset=true is a DOM property — introspectable" <|
             \_ ->
                 node [ Divider.inset True ]
                     |> Node.findProperty "inset"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "inset absent by default" <|
+        , test "inset emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "inset"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "insetStart=true sets property inset-start" <|
             \_ ->
                 node [ Divider.insetStart True ]

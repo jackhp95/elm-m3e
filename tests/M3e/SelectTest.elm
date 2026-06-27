@@ -112,11 +112,12 @@ suite =
                     |> Maybe.andThen (Node.findProperty "multi")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "multi absent by default" <|
+        , test "multi emits false by default" <|
             \_ ->
                 selectChild (viewNode [])
                     |> Maybe.andThen (Node.findProperty "multi")
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "required True sets 'required' DOM property" <|
             \_ ->
                 selectChild (viewNode [ Select.required True ])

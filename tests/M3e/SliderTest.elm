@@ -56,11 +56,12 @@ suite =
                     |> Node.findProperty "discrete"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "discrete absent by default" <|
+        , test "discrete emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "discrete"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "disabled=true is visible as a DOM property" <|
             \_ ->
                 node [ Slider.disabled True ]
@@ -74,7 +75,7 @@ suite =
                     |> List.head
                     |> Maybe.andThen (Node.findProperty "value")
                     |> Maybe.map (Encode.encode 0)
-                    |> Expect.equal (Just "\"42\"")
+                    |> Expect.equal (Just "42")
         , test "value absent from thumb when option not provided" <|
             \_ ->
                 node []

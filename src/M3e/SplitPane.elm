@@ -107,11 +107,7 @@ view req opts =
         (Node.element "m3e-split-pane"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.orientation (toCemOrientation c.orientation)))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (\l -> Node.attribute "label" l) c.label
                 ]
             )

@@ -45,11 +45,12 @@ suite =
                     |> Node.findProperty "loaded"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "loaded absent by default" <|
+        , test "loaded emits false by default" <|
             \_ ->
                 nodeWith [] []
                     |> Node.findProperty "loaded"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "shape option does not crash (rawAttr — not introspectable)" <|
             \_ ->
                 nodeWith [ Skeleton.shape Skeleton.Circular ] []

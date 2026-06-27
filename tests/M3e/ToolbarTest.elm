@@ -29,22 +29,24 @@ suite =
                     |> Node.findProperty "elevated"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "elevated absent by default" <|
+        , test "elevated emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "elevated"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "vertical=true is a DOM property — introspectable" <|
             \_ ->
                 node [ Toolbar.vertical True ]
                     |> Node.findProperty "vertical"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "vertical absent by default" <|
+        , test "vertical emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "vertical"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "content children land in default slot (no slot attribute)" <|
             \_ ->
                 Toolbar.view

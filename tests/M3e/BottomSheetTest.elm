@@ -46,11 +46,12 @@ suite =
                     |> Node.findProperty "handle"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "handle absent by default" <|
+        , test "handle emits false by default" <|
             \_ ->
                 node []
                     |> Node.findProperty "handle"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "modal=true is a DOM property" <|
             \_ ->
                 node [ BottomSheet.modal True ]

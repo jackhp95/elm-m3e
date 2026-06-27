@@ -100,21 +100,11 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-radio-group"
-            (List.filterMap identity
-                [ Just (Node.attribute "aria-label" req.name)
-                , Just (Node.attribute "name" req.name)
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.required then
-                    Just (Node.property "required" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.attribute "aria-label" req.name
+            , Node.attribute "name" req.name
+            , Node.property "disabled" (Encode.bool c.disabled)
+            , Node.property "required" (Encode.bool c.required)
+            ]
             (List.map (renderOption req.name req.selected c) req.options)
         )
 
@@ -137,11 +127,7 @@ renderOption groupName selected cfg opt =
             (List.filterMap identity
                 [ Just (Node.attribute "name" groupName)
                 , Just (Node.property "checked" (Encode.bool isChecked))
-                , if cfg.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool cfg.disabled))
                 , Maybe.map
                     (\f -> Node.on "click" (Decode.succeed (f opt.value)))
                     cfg.onChange

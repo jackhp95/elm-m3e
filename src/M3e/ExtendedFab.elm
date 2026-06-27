@@ -157,16 +157,8 @@ view req opts =
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
                 , Just (Node.property "extended" (Encode.bool True))
-                , if c.lowered then
-                    Just (Node.property "lowered" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "lowered" (Encode.bool c.lowered))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 , Maybe.map (\v -> Node.rawAttr (Cem.href v)) c.href
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target

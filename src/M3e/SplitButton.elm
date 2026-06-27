@@ -117,16 +117,10 @@ view req opts =
         trailingButton : Node msg
         trailingButton =
             Node.element "m3e-icon-button"
-                (List.filterMap identity
-                    [ Just (Node.attribute "aria-label" req.name)
-                    , if c.disabled then
-                        Just (Node.property "disabled" (Encode.bool True))
-
-                      else
-                        Nothing
-                    , Just (Node.on "click" (Decode.succeed req.onTriggerClick))
-                    ]
-                )
+                [ Node.attribute "aria-label" req.name
+                , Node.property "disabled" (Encode.bool c.disabled)
+                , Node.on "click" (Decode.succeed req.onTriggerClick)
+                ]
                 [ Node.element "m3e-icon" [ Node.attribute "name" req.trailingIcon ] [] ]
                 |> Node.withSlot "trailing-button"
     in

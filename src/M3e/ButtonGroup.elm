@@ -108,16 +108,10 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-button-group"
-            (List.filterMap identity
-                [ Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
-                , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
-                , if c.multi then
-                    Just (Node.property "multi" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.rawAttr (Cem.variant (toCemVariant c.variant))
+            , Node.rawAttr (Cem.size (toCemSize c.size))
+            , Node.property "multi" (Encode.bool c.multi)
+            ]
             (List.map Element.toNode req.buttons)
         )
 

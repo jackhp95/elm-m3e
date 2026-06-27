@@ -331,21 +331,9 @@ sharedAttrs c fieldId =
         [ Just (Node.attribute "id" fieldId)
         , Maybe.map (\v -> Node.property "value" (Encode.string v)) c.value
         , Maybe.map (Node.attribute "placeholder") c.placeholder
-        , if c.disabled then
-            Just (Node.property "disabled" (Encode.bool True))
-
-          else
-            Nothing
-        , if c.required then
-            Just (Node.property "required" (Encode.bool True))
-
-          else
-            Nothing
-        , if c.readonly then
-            Just (Node.property "readOnly" (Encode.bool True))
-
-          else
-            Nothing
+        , Just (Node.property "disabled" (Encode.bool c.disabled))
+        , Just (Node.property "required" (Encode.bool c.required))
+        , Just (Node.property "readOnly" (Encode.bool c.readonly))
         , Maybe.map
             (\f ->
                 Node.on "input"

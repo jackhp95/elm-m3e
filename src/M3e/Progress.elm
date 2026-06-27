@@ -127,7 +127,7 @@ view req opts =
                         [ Just (Node.property "max" (Encode.float (toFloat c.max)))
                         , case c.value of
                             Just v ->
-                                Just (Node.property "value" (Encode.string (String.fromInt v)))
+                                Just (Node.property "value" (Encode.float (toFloat v)))
 
                             Nothing ->
                                 Just (Node.rawAttr (CemLinear.mode CemLinear.Indeterminate))
@@ -145,7 +145,7 @@ view req opts =
                         [ Just (Node.property "max" (Encode.float (toFloat c.max)))
                         , case c.value of
                             Just v ->
-                                Just (Node.property "value" (Encode.string (String.fromInt v)))
+                                Just (Node.property "value" (Encode.float (toFloat v)))
 
                             Nothing ->
                                 Just (Node.property "indeterminate" (Encode.bool True))

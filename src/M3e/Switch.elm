@@ -103,11 +103,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.name)
                 , Just (Node.property "checked" (Encode.bool c.checked))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , if c.handleIcons then
                     Just (Node.rawAttr (Cem.icons Cem.Both))
 

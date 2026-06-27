@@ -50,7 +50,7 @@ suite =
                     linearNode [ Progress.value 42 ]
                         |> Node.findProperty "value"
                         |> Maybe.map (Encode.encode 0)
-                        |> Expect.equal (Just "\"42\"")
+                        |> Expect.equal (Just "42")
             , test "no value option → value property is absent (indeterminate via rawAttr mode)" <|
                 \_ ->
                     linearNode []
@@ -80,7 +80,7 @@ suite =
                     circularNode [ Progress.value 75 ]
                         |> Node.findProperty "value"
                         |> Maybe.map (Encode.encode 0)
-                        |> Expect.equal (Just "\"75\"")
+                        |> Expect.equal (Just "75")
             , test "no value option → indeterminate property is true" <|
                 \_ ->
                     circularNode []

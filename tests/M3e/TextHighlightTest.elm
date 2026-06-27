@@ -45,22 +45,24 @@ suite =
                     |> Node.findProperty "caseSensitive"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "caseSensitive absent by default" <|
+        , test "caseSensitive emits false by default" <|
             \_ ->
                 nodeWith [] []
                     |> Node.findProperty "caseSensitive"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "disabled=True is a DOM property — introspectable" <|
             \_ ->
                 nodeWith [ TextHighlight.disabled True ] []
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default" <|
+        , test "disabled emits false by default" <|
             \_ ->
                 nodeWith [] []
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "term option does not crash (rawAttr — not introspectable)" <|
             \_ ->
                 nodeWith [ TextHighlight.term "hello" ] []

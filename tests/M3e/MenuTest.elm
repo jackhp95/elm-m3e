@@ -68,11 +68,12 @@ suite =
                     |> Node.findProperty "submenu"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "submenu absent by default" <|
+        , test "submenu emits false by default" <|
             \_ ->
                 menuNode [] []
                     |> Node.findProperty "submenu"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "item count reflects the items list" <|
             \_ ->
                 menuNode [] [ plainItem, plainItem ]
@@ -108,12 +109,13 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "disabled absent by default on item" <|
+        , test "disabled emits false by default on item" <|
             \_ ->
                 plainItem
                     |> Element.toNode
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
 
         -- Checkbox item
         , test "checkboxItem renders <m3e-menu-item-checkbox>" <|

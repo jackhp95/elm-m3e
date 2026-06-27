@@ -174,21 +174,9 @@ view req opts =
                 [ Just (Node.attribute "aria-label" req.name)
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
-                , if c.lowered then
-                    Just (Node.property "lowered" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.label /= Nothing then
-                    Just (Node.property "extended" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "lowered" (Encode.bool c.lowered))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "extended" (Encode.bool (c.label /= Nothing)))
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 , Maybe.map (\v -> Node.rawAttr (Cem.href v)) c.href
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target

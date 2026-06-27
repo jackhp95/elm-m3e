@@ -201,16 +201,8 @@ view req opts =
                             , Maybe.map
                                 (\n -> Node.attribute "step" (String.fromInt n))
                                 c.step
-                            , if c.required then
-                                Just (Node.property "required" (Encode.bool True))
-
-                              else
-                                Nothing
-                            , if c.disabled then
-                                Just (Node.property "disabled" (Encode.bool True))
-
-                              else
-                                Nothing
+                            , Just (Node.property "required" (Encode.bool c.required))
+                            , Just (Node.property "disabled" (Encode.bool c.disabled))
                             , Maybe.map
                                 (\f ->
                                     Node.on "input"

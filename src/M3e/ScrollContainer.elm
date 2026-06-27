@@ -94,14 +94,9 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-scroll-container"
-            (List.filterMap identity
-                [ Just (Node.attribute "dividers" (Cem.dividersToString (toCemDividers c.dividers)))
-                , if c.thin then
-                    Just (Node.property "thin" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
+            ([ Node.attribute "dividers" (Cem.dividersToString (toCemDividers c.dividers))
+             , Node.property "thin" (Encode.bool c.thin)
+             ]
                 ++ c.attributes
             )
             (List.map Element.toNode req.content)

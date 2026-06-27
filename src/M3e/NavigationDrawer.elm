@@ -301,15 +301,9 @@ group req children opts =
     in
     Internal.fromNode
         (Node.element "m3e-nav-menu-item"
-            (List.filterMap identity
-                [ Just (Node.property "selected" (Encode.bool cfg.selected))
-                , if cfg.open then
-                    Just (Node.property "open" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.property "selected" (Encode.bool cfg.selected)
+            , Node.property "open" (Encode.bool cfg.open)
+            ]
             (List.filterMap identity
                 [ Maybe.map
                     (\ic ->

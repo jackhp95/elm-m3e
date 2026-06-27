@@ -131,11 +131,7 @@ view req opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
                 , Maybe.map (\a -> Node.rawAttr (CemSnackbar.action a)) c.action
-                , if c.dismissible then
-                    Just (Node.property "dismissible" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "dismissible" (Encode.bool c.dismissible))
                 , Maybe.map (\l -> Node.rawAttr (CemSnackbar.closeLabel l)) c.closeLabel
                 , Maybe.map (\ms -> Node.property "duration" (Encode.float (toFloat ms))) c.duration
                 ]

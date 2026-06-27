@@ -44,11 +44,12 @@ suite =
                     |> Node.findProperty "emphasized"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "emphasized absent by default" <|
+        , test "emphasized emits false by default" <|
             \_ ->
                 nodeWith { label = "Hi", variant = Heading.Display } []
                     |> Node.findProperty "emphasized"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "variant option does not crash (rawAttr — not introspectable)" <|
             \_ ->
                 nodeWith { label = "Hi", variant = Heading.Headline } []

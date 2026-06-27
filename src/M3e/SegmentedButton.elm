@@ -113,11 +113,7 @@ segment req opts =
             (List.filterMap identity
                 [ Just (Node.property "checked" (Encode.bool req.checked))
                 , Just (Node.property "value" (Encode.string domValue))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map
                     (\m -> Node.on "click" (Decode.succeed m))
                     c.onClick
@@ -185,18 +181,8 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-segmented-button"
-            (List.filterMap identity
-                [ if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.multi then
-                    Just (Node.property "multi" (Encode.bool True))
-
-                  else
-                    Nothing
-                ]
-            )
+            [ Node.property "disabled" (Encode.bool c.disabled)
+            , Node.property "multi" (Encode.bool c.multi)
+            ]
             (List.map Element.toNode req.segments)
         )

@@ -108,16 +108,8 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.name)
                 , Just (Node.property "checked" (Encode.bool c.checked))
-                , if c.indeterminate then
-                    Just (Node.property "indeterminate" (Encode.bool True))
-
-                  else
-                    Nothing
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "indeterminate" (Encode.bool c.indeterminate))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map
                     (\f ->
                         Node.on "change"

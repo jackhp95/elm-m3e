@@ -140,11 +140,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-search-bar"
             (List.filterMap identity
-                [ if c.clearable then
-                    Just (Node.property "clearable" (Encode.bool True))
-
-                  else
-                    Nothing
+                [ Just (Node.property "clearable" (Encode.bool c.clearable))
                 , Maybe.map (Node.attribute "clear-label") c.clearLabel
                 , Maybe.map (\m -> Node.on "clear" (Decode.succeed m)) c.onClear
                 ]

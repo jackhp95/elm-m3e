@@ -161,11 +161,7 @@ item req opts =
         (Node.element "m3e-nav-item"
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool c.selected))
-                , if c.disabled then
-                    Just (Node.property "disabled" (Encode.bool True))
-
-                  else
-                    Nothing
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (Node.attribute "href") c.href
                 , Maybe.map (\msg -> Node.on "click" (Decode.succeed msg)) c.onClick
                 ]

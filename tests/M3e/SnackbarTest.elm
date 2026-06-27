@@ -48,11 +48,12 @@ suite =
                     |> Node.findProperty "dismissible"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "dismissible absent by default" <|
+        , test "dismissible emits false by default" <|
             \_ ->
                 snackNode []
                     |> Node.findProperty "dismissible"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         , test "duration sets the duration DOM property" <|
             \_ ->
                 snackNode [ Snackbar.duration 5000 ]

@@ -67,14 +67,16 @@ suite =
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "label")
-        , test "no label → extended property is absent" <|
+        , test "no label → extended property emits false" <|
             \_ ->
                 node "add" []
                     |> Node.findProperty "extended"
-                    |> Expect.equal Nothing
-        , test "no disabled → disabled property is absent" <|
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
+        , test "no disabled → disabled emits false by default" <|
             \_ ->
                 node "add" []
                     |> Node.findProperty "disabled"
-                    |> Expect.equal Nothing
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
         ]
