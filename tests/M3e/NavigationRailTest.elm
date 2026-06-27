@@ -2,10 +2,10 @@ module M3e.NavigationRailTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.NavigationRail as NavRail
 import M3e.Node as Node
 import M3e.Renderable as Renderable
-import M3e.Internal as Internal
 import Test exposing (Test, describe, test)
 
 
@@ -23,9 +23,10 @@ railNode opts items =
         |> Renderable.toNode
 
 
-railItem : List (NavRail.ItemOption String) -> Renderable.Renderable { navItem : Renderable.Supported } String
-railItem opts =
-    NavRail.item { icon = fakeIcon } opts
+{-| Build a rail item with a required label. -}
+railItem : String -> List (NavRail.ItemOption String) -> Renderable.Renderable { navItem : Renderable.Supported } String
+railItem lbl opts =
+    NavRail.item { icon = fakeIcon, label = lbl } opts
 
 
 suite : Test
@@ -44,7 +45,7 @@ suite =
                     |> Expect.equal (Just "side-nav")
         , test "item count reflects the items list" <|
             \_ ->
-                railNode [] [ railItem [], railItem [] ]
+                railNode [] [ railItem "A" [], railItem "B" [] ]
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2
@@ -52,42 +53,49 @@ suite =
         -- Item
         , test "item renders <m3e-nav-item>" <|
             \_ ->
-                railItem []
+                railItem "Home" []
                     |> Renderable.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-nav-item")
+        , test "item carries an accessible name (label text node always present)" <|
+            \_ ->
+                railItem "Settings" []
+                    |> Renderable.toNode
+                    |> Node.childrenOf
+                    |> List.any (\n -> n == Node.text "Settings")
+                    |> Expect.equal True
         , test "selected=false is emitted as DOM property by default" <|
             \_ ->
-                railItem []
+                railItem "Home" []
                     |> Renderable.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
         , test "itemSelected=true sets the selected DOM property" <|
             \_ ->
-                railItem [ NavRail.itemSelected True ]
+                railItem "Home" [ NavRail.itemSelected True ]
                     |> Renderable.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "icon lands in the icon slot" <|
             \_ ->
-                railItem []
+                railItem "Home" []
                     |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "icon")
-        , test "itemLabel appends a text child after the icon" <|
+        , test "label text is always a child (always 2+ children: icon + label)" <|
             \_ ->
-                railItem [ NavRail.itemLabel "Home" ]
+                railItem "Home" []
                     |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.length
-                    |> Expect.equal 2
+                    |> Expect.atLeast 2
         , test "itemSelectedIcon lands in the selected-icon slot" <|
             \_ ->
-                railItem [ NavRail.itemSelectedIcon fakeIcon ]
+                railItem "Home" [ NavRail.itemSelectedIcon fakeIcon ]
                     |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "selected-icon")
@@ -95,7 +103,7 @@ suite =
                     |> Expect.equal 1
         , test "itemBadge appends an <m3e-badge> child" <|
             \_ ->
-                railItem [ NavRail.itemBadge "5" ]
+                railItem "Home" [ NavRail.itemBadge "5" ]
                     |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.tagOf n == Just "m3e-badge")
@@ -103,20 +111,20 @@ suite =
                     |> Expect.equal 1
         , test "itemDisabled=true sets the disabled DOM property" <|
             \_ ->
-                railItem [ NavRail.itemDisabled True ]
+                railItem "Home" [ NavRail.itemDisabled True ]
                     |> Renderable.toNode
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "disabled absent by default" <|
             \_ ->
-                railItem []
+                railItem "Home" []
                     |> Renderable.toNode
                     |> Node.findProperty "disabled"
                     |> Expect.equal Nothing
         , test "itemHref sets the href attribute" <|
             \_ ->
-                railItem [ NavRail.itemHref "/settings" ]
+                railItem "Home" [ NavRail.itemHref "/settings" ]
                     |> Renderable.toNode
                     |> Node.findAttribute "href"
                     |> Expect.equal (Just "/settings")

@@ -2,7 +2,7 @@ module M3e.NavigationRail exposing
     ( Mode(..)
     , ItemOption, Option
     , view, item
-    , itemSelected, itemOnClick, itemLabel, itemBadge, itemSelectedIcon, itemDisabled, itemHref
+    , itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
     , withId, mode
     )
 
@@ -11,9 +11,9 @@ medium-width viewports (Material 3 Navigation rail).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required (item): `{ icon }` — the destination glyph
+  - Required (item): `{ icon, label }` — the glyph and its accessible name
   - Required (container): `{ items }` — the destination list
-  - Options (item): selected, onClick, label, badge, selectedIcon, disabled, href
+  - Options (item): selected, onClick, badge, selectedIcon, disabled, href
   - Options (container): id, mode
   - Slots (item): icon (leading glyph), selected-icon (active glyph)
   - Properties: selected (item; DOM property), disabled (item; DOM property)
@@ -51,7 +51,6 @@ type Mode
 type ItemOption msg
     = ItemSelected Bool
     | ItemOnClick msg
-    | ItemLabel String
     | ItemBadge String
     | ItemSelectedIcon (Renderable { icon : Supported } msg)
     | ItemDisabled Bool
@@ -77,12 +76,6 @@ itemSelected =
 itemOnClick : msg -> ItemOption msg
 itemOnClick =
     ItemOnClick
-
-
-{-| Set the visible label text (goes in the default slot). -}
-itemLabel : String -> ItemOption msg
-itemLabel =
-    ItemLabel
 
 
 {-| Attach a badge count to the item. Rendered as an `<m3e-badge>` inside the
@@ -128,15 +121,18 @@ mode =
 
 {-| Construct a navigation rail destination (`<m3e-nav-item>`).
 
-    M3e.NavigationRail.item { icon = homeIcon }
-        [ M3e.NavigationRail.itemLabel "Home"
-        , M3e.NavigationRail.itemSelected (model.page == Home)
+`label` is the destination's accessible name — always required. In `Expanded`
+mode it renders as visible text; the web component hides it in `Compact` mode
+while keeping it available to screen readers via the slot content.
+
+    M3e.NavigationRail.item { icon = homeIcon, label = "Home" }
+        [ M3e.NavigationRail.itemSelected (model.page == Home)
         , M3e.NavigationRail.itemOnClick (Navigate Home)
         ]
 
 -}
 item :
-    { icon : Renderable { icon : Supported } msg }
+    { icon : Renderable { icon : Supported } msg, label : String }
     -> List (ItemOption msg)
     -> Renderable { navItem : Supported } msg
 item req opts =
@@ -160,7 +156,7 @@ item req opts =
             (List.filterMap identity
                 [ Just (Node.withSlot "icon" (Renderable.toNode req.icon))
                 , Maybe.map (\si -> Node.withSlot "selected-icon" (Renderable.toNode si)) c.selectedIcon
-                , Maybe.map Node.text c.label
+                , Just (Node.text req.label)
                 , Maybe.map (\b -> Node.element "m3e-badge" [] [ Node.text b ]) c.badge
                 ]
             )
@@ -210,7 +206,6 @@ view req opts =
 type alias ItemConfig msg =
     { selected : Bool
     , onClick : Maybe msg
-    , label : Maybe String
     , badge : Maybe String
     , selectedIcon : Maybe (Renderable { icon : Supported } msg)
     , disabled : Bool
@@ -222,7 +217,6 @@ defaultItemConfig : ItemConfig msg
 defaultItemConfig =
     { selected = False
     , onClick = Nothing
-    , label = Nothing
     , badge = Nothing
     , selectedIcon = Nothing
     , disabled = False
@@ -238,9 +232,6 @@ applyItem opt c =
 
         ItemOnClick msg ->
             { c | onClick = Just msg }
-
-        ItemLabel s ->
-            { c | label = Just s }
 
         ItemBadge s ->
             { c | badge = Just s }
