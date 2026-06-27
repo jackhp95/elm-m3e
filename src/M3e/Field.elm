@@ -7,10 +7,10 @@ here a couple of IR rewrites instead of a slot-name guess.
 
 import M3e.Label as Label exposing (Label)
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable as Renderable exposing (Renderable)
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
-view : { id : String, label : Label msg, control : Renderable any msg } -> Node msg
+view : { id : String, label : Label msg, control : Renderable { element : Supported } msg } -> Node msg
 view config =
     Node.element "m3e-form-field"
         []
