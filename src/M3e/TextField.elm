@@ -32,12 +32,11 @@ via the `for` attribute rather than by wrapping it.
 -}
 
 import Cem.M3e.FormField as CemFF
-import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable exposing (Renderable, Supported)
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -82,10 +81,10 @@ type alias Config msg =
     , required : Bool
     , readonly : Bool
     , onInput : Maybe (String -> msg)
-    , prefix : Maybe (Html msg)
-    , suffix : Maybe (Html msg)
-    , hint : Maybe (Html msg)
-    , error : Maybe (Html msg)
+    , prefix : Maybe (Node msg)
+    , suffix : Maybe (Node msg)
+    , hint : Maybe (Node msg)
+    , error : Maybe (Node msg)
     , multiline : Bool
     , rows : Maybe Int
     , autosize : Maybe { min : Int, max : Int }
@@ -184,35 +183,36 @@ onInput f =
 
 
 {-| Content for the `prefix` slot of `<m3e-form-field>`, shown before the
-control (e.g. a currency symbol). Wrapped in `<span slot="prefix">`.
+control (e.g. a currency symbol). A slottable element — use `Renderable.text`
+for a plain string, or `Renderable.element` for richer content.
 -}
-prefix : Html msg -> Option msg
-prefix h =
-    Internal.option (\c -> { c | prefix = Just h })
+prefix : Renderable { element : Supported } msg -> Option msg
+prefix r =
+    Internal.option (\c -> { c | prefix = Just (Renderable.toNode r) })
 
 
 {-| Content for the `suffix` slot of `<m3e-form-field>`, shown after the
-control (e.g. a unit indicator). Wrapped in `<span slot="suffix">`.
+control (e.g. a unit indicator). See [`prefix`](#prefix).
 -}
-suffix : Html msg -> Option msg
-suffix h =
-    Internal.option (\c -> { c | suffix = Just h })
+suffix : Renderable { element : Supported } msg -> Option msg
+suffix r =
+    Internal.option (\c -> { c | suffix = Just (Renderable.toNode r) })
 
 
-{-| Hint text for the form-field's `hint` slot — shown while the field is
-valid. Hidden when an error is also set (error takes precedence).
+{-| Hint for the form-field's `hint` slot — shown while the field is valid.
+Hidden when an error is also set (error takes precedence). See [`prefix`](#prefix).
 -}
-hint : Html msg -> Option msg
-hint h =
-    Internal.option (\c -> { c | hint = Just h })
+hint : Renderable { element : Supported } msg -> Option msg
+hint r =
+    Internal.option (\c -> { c | hint = Just (Renderable.toNode r) })
 
 
-{-| Error text for the form-field's `error` slot — shown while the field is
-invalid. Takes precedence over `hint`.
+{-| Error for the form-field's `error` slot — shown while the field is invalid.
+Takes precedence over `hint`. See [`prefix`](#prefix).
 -}
-error : Html msg -> Option msg
-error h =
-    Internal.option (\c -> { c | error = Just h })
+error : Renderable { element : Supported } msg -> Option msg
+error r =
+    Internal.option (\c -> { c | error = Just (Renderable.toNode r) })
 
 
 {-| Render a `<textarea>` instead of an `<input>` (multi-line text entry).
@@ -293,18 +293,10 @@ view req opts =
 
                   else
                     Nothing
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "prefix" ] [ Node.raw h ])
-                    c.prefix
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "suffix" ] [ Node.raw h ])
-                    c.suffix
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "hint" ] [ Node.raw h ])
-                    c.hint
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "error" ] [ Node.raw h ])
-                    c.error
+                , Maybe.map (Node.withSlot "prefix") c.prefix
+                , Maybe.map (Node.withSlot "suffix") c.suffix
+                , Maybe.map (Node.withSlot "hint") c.hint
+                , Maybe.map (Node.withSlot "error") c.error
                 ]
             )
         )

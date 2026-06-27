@@ -21,9 +21,8 @@ Spec (per docs/CONVENTIONS.md):
 
 **Fix #13 — relational label:** the label is rendered as `<label for=selectId>`
 inside `<m3e-form-field>`, with the `<m3e-select>` carrying `id=selectId`. This
-is what `M3e.Field` implements; here it is applied inline so we can also add
-hint/error children to the form-field. The old `Ui.Select` set `label=` as an
-inert attribute on `<m3e-select>` — that never wired the accessible label.
+is what `M3e.Field` implements, applied inline. The old `Ui.Select` set `label=`
+as an inert attribute on `<m3e-select>` — that never wired the accessible label.
 
 **onChange:** wires the `change` event on `<m3e-select>` and decodes
 `event.target.value` as a string. This requires each `<m3e-option>` to carry a
@@ -37,7 +36,6 @@ inert attribute on `<m3e-select>` — that never wired the accessible label.
 
 -}
 
-import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
@@ -72,8 +70,6 @@ type alias Config msg =
     , disabled : Bool
     , onChange : Maybe (String -> msg)
     , options : List (Renderable { selectOption : Supported } msg)
-    , hint : Maybe (Html msg)
-    , error : Maybe (Html msg)
     }
 
 
@@ -85,8 +81,6 @@ defaultConfig =
     , disabled = False
     , onChange = Nothing
     , options = []
-    , hint = Nothing
-    , error = Nothing
     }
 
 
@@ -231,51 +225,39 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-form-field"
             []
-            (List.filterMap identity
-                [ Just
-                    (Node.element "label"
-                        [ Node.attribute "for" fieldId ]
-                        [ Node.text req.label ]
-                    )
-                , Just
-                    (Node.element "m3e-select"
-                        (List.filterMap identity
-                            [ Just (Node.attribute "id" fieldId)
-                            , if c.multi then
-                                Just (Node.property "multi" (Encode.bool True))
+            [ Node.element "label"
+                [ Node.attribute "for" fieldId ]
+                [ Node.text req.label ]
+            , Node.element "m3e-select"
+                (List.filterMap identity
+                    [ Just (Node.attribute "id" fieldId)
+                    , if c.multi then
+                        Just (Node.property "multi" (Encode.bool True))
 
-                              else
-                                Nothing
-                            , if c.required then
-                                Just (Node.property "required" (Encode.bool True))
+                      else
+                        Nothing
+                    , if c.required then
+                        Just (Node.property "required" (Encode.bool True))
 
-                              else
-                                Nothing
-                            , if c.disabled then
-                                Just (Node.property "disabled" (Encode.bool True))
+                      else
+                        Nothing
+                    , if c.disabled then
+                        Just (Node.property "disabled" (Encode.bool True))
 
-                              else
-                                Nothing
-                            , Maybe.map
-                                (\handler ->
-                                    Node.on "change"
-                                        (Decode.at [ "target", "value" ] Decode.string
-                                            |> Decode.map handler
-                                        )
+                      else
+                        Nothing
+                    , Maybe.map
+                        (\handler ->
+                            Node.on "change"
+                                (Decode.at [ "target", "value" ] Decode.string
+                                    |> Decode.map handler
                                 )
-                                c.onChange
-                            ]
                         )
-                        (List.map Renderable.toNode c.options)
-                    )
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "hint" ] [ Node.raw h ])
-                    c.hint
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "error" ] [ Node.raw h ])
-                    c.error
-                ]
-            )
+                        c.onChange
+                    ]
+                )
+                (List.map Renderable.toNode c.options)
+            ]
         )
 
 

@@ -1653,8 +1653,8 @@ demoSections slug =
                         [ TextField.variant TextField.Outlined
                         , TextField.value ""
                         , TextField.onInput noOp
-                        , TextField.prefix (Html.text "$")
-                        , TextField.suffix (Html.text "USD")
+                        , TextField.prefix (Renderable.text "$")
+                        , TextField.suffix (Renderable.text "USD")
                         ]
                         |> toHtml
                     )

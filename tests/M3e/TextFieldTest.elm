@@ -1,7 +1,6 @@
 module M3e.TextFieldTest exposing (suite)
 
 import Expect
-import Html
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable
@@ -189,14 +188,14 @@ suite =
         -- Slot children
         , test "hint adds a child with slot='hint'" <|
             \_ ->
-                viewNode [ TextField.hint (Html.text "Optional") ]
+                viewNode [ TextField.hint (Renderable.text "Optional") ]
                     |> Node.childrenOf
                     |> List.any (\n -> Node.findAttribute "slot" n == Just "hint")
                     |> not
                     |> Expect.equal False
         , test "error adds a child with slot='error'" <|
             \_ ->
-                viewNode [ TextField.error (Html.text "Required") ]
+                viewNode [ TextField.error (Renderable.text "Required") ]
                     |> Node.childrenOf
                     |> List.any (\n -> Node.findAttribute "slot" n == Just "error")
                     |> not

@@ -1,4 +1,4 @@
-module M3e.Renderable exposing (Renderable, Supported, element, html, toNode)
+module M3e.Renderable exposing (Renderable, Supported, element, html, text, toNode)
 
 {-| One content type for every slot. Each component `view` pins its own kind by
 annotating its result (via `M3e.Internal.fromNode`). Two escapes:
@@ -53,3 +53,12 @@ node because it is a real IR element (not opaque `Html`).
 element : { tag : String } -> List (Node.Attr msg) -> List (Node msg) -> Renderable { s | element : Supported } msg
 element config attrs children =
     Internal.fromNode (Node.element config.tag attrs children)
+
+
+{-| A bit of text as a slottable element — `<span>text</span>`. The terse tier-1
+for the common "just words" case of a named slot (a field hint, a chip label):
+a bare `String` has no element to carry the injected `slot=`, but this does.
+-}
+text : String -> Renderable { s | element : Supported } msg
+text content =
+    element { tag = "span" } [] [ Node.text content ]

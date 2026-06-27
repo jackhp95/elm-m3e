@@ -32,12 +32,11 @@ format.
 
 -}
 
-import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -58,8 +57,8 @@ type alias Config msg =
     , step : Maybe Int
     , required : Bool
     , disabled : Bool
-    , hint : Maybe (Html msg)
-    , error : Maybe (Html msg)
+    , hint : Maybe (Node.Node msg)
+    , error : Maybe (Node.Node msg)
     , onChange : Maybe (String -> msg)
     }
 
@@ -135,18 +134,19 @@ disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Hint text for the form-field's `hint` slot.
+{-| Hint for the form-field's `hint` slot. A slottable element — use
+`Renderable.text` for a plain string, or `Renderable.element` for richer content.
 -}
-hint : Html msg -> Option msg
-hint h =
-    Internal.option (\c -> { c | hint = Just h })
+hint : Renderable { element : Supported } msg -> Option msg
+hint r =
+    Internal.option (\c -> { c | hint = Just (Renderable.toNode r) })
 
 
-{-| Error text for the form-field's `error` slot.
+{-| Error for the form-field's `error` slot. See [`hint`](#hint).
 -}
-error : Html msg -> Option msg
-error h =
-    Internal.option (\c -> { c | error = Just h })
+error : Renderable { element : Supported } msg -> Option msg
+error r =
+    Internal.option (\c -> { c | error = Just (Renderable.toNode r) })
 
 
 {-| Handle the native `input` event. Receives the new time as `"HH:MM"`.
@@ -223,12 +223,8 @@ view req opts =
                         )
                         []
                     )
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "hint" ] [ Node.raw h ])
-                    c.hint
-                , Maybe.map
-                    (\h -> Node.element "span" [ Node.attribute "slot" "error" ] [ Node.raw h ])
-                    c.error
+                , Maybe.map (Node.withSlot "hint") c.hint
+                , Maybe.map (Node.withSlot "error") c.error
                 ]
             )
         )
