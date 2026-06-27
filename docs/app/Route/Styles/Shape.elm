@@ -51,7 +51,7 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.ico" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "The M3 shape scale, rendered live with Ui.Shape."
+        , description = "The M3 shape scale, rendered live with M3e.Shape."
         , locale = Nothing
         , title = "Shape · elm-m3e"
         }
@@ -98,7 +98,7 @@ view _ _ =
             [ section [ class "space-y-3" ]
                 [ pageHeading
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. Ui.Shape renders a decorative <m3e-shape> surface that respects it." ]
+                    [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. M3e.Shape renders a decorative <m3e-shape> surface that respects it." ]
                 ]
             , Divider.view [] |> toHtml
             , Card.view

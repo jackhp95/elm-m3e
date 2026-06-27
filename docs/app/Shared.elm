@@ -375,7 +375,7 @@ appShellBar model =
 
 
 {-| The mobile hamburger. Drives the drawer through `MenuClicked` → showMenu →
-`drawerShell`'s `withOpen`, which emits `start` as an HTML attribute so
+`drawerShell`'s `open`, which emits `start` as an HTML attribute so
 the drawer-container's CSS selectors actually react.
 
 Why not `m3e-drawer-toggle`? Its `_toggleDrawer` does
@@ -646,9 +646,9 @@ drawerShell _ model page body =
     in
     M3e.NavigationDrawer.view
         { entries = navEntries currentPath }
-        [ M3e.NavigationDrawer.withId "docs-drawer"
-        , M3e.NavigationDrawer.withMode M3e.NavigationDrawer.ModeAuto
-        , M3e.NavigationDrawer.withOpen (not (isMobile model) || model.showMenu)
+        [ M3e.NavigationDrawer.id "docs-drawer"
+        , M3e.NavigationDrawer.mode M3e.NavigationDrawer.ModeAuto
+        , M3e.NavigationDrawer.open (not (isMobile model) || model.showMenu)
         , M3e.NavigationDrawer.content
             [ Html.div [ class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12" ] body ]
         ]

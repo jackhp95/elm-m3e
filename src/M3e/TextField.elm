@@ -1,11 +1,24 @@
 module M3e.TextField exposing
-    ( Variant(..), InputType(..)
+    ( InputType(..)
     , Option
+    , Variant(..)
+    , autosize
+    , disabled
+    , error
+    , hint
+    , id
+    , inputType
+    , multiline
+    , onInput
+    , placeholder
+    , prefix
+    , readonly
+    , required
+    , rows
+    , suffix
+    , value
+    , variant
     , view
-    , withId, withValue, withPlaceholder, withVariant, withInputType
-    , withDisabled, withRequired, withReadonly
-    , onInput, withPrefix, withSuffix, withHint, withError
-    , multiline, withRows, withAutosize
     )
 
 {-| `<m3e-form-field>` wrapping a native `<input>` or `<textarea>` — Material
@@ -22,7 +35,7 @@ Spec (per docs/CONVENTIONS.md):
   - Tag: `textField`
 
 **Multiline / autosize (fixes bug #A6/#17):** when `multiline True` and
-`withAutosize` are both set, the `<textarea id=tid>` and
+`autosize` are both set, the `<textarea id=tid>` and
 `<m3e-textarea-autosize for=tid>` are rendered as **siblings** inside
 `<m3e-form-field>` — NOT wrapping. The autosize element observes the textarea
 via the `for` attribute rather than by wrapping it.
@@ -32,9 +45,10 @@ via the `for` attribute rather than by wrapping it.
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -107,6 +121,7 @@ defaultConfig =
     }
 
 
+
 -- OPTION CONSTRUCTORS ---------------------------------------------------------
 
 
@@ -114,56 +129,63 @@ defaultConfig =
 the matching `for` on the `<label>` and any autosize sibling). Without this, an
 id is derived from the label text.
 -}
-withId : String -> Option msg
-withId s =
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
-{-| Drive the input value (sets the DOM `value` property). -}
-withValue : String -> Option msg
-withValue s =
+{-| Drive the input value (sets the DOM `value` property).
+-}
+value : String -> Option msg
+value s =
     Internal.option (\c -> { c | value = Just s })
 
 
-{-| Set the native `placeholder` attribute. -}
-withPlaceholder : String -> Option msg
-withPlaceholder s =
+{-| Set the native `placeholder` attribute.
+-}
+placeholder : String -> Option msg
+placeholder s =
     Internal.option (\c -> { c | placeholder = Just s })
 
 
-{-| Choose `Filled` or `Outlined` appearance. -}
-withVariant : Variant -> Option msg
-withVariant v =
+{-| Choose `Filled` or `Outlined` appearance.
+-}
+variant : Variant -> Option msg
+variant v =
     Internal.option (\c -> { c | variant = Just v })
 
 
 {-| Choose the input type for single-line fields (`Text`, `Password`, …).
 Has no effect on multiline fields (which always render `<textarea>`).
 -}
-withInputType : InputType -> Option msg
-withInputType t =
+inputType : InputType -> Option msg
+inputType t =
     Internal.option (\c -> { c | inputType = t })
 
 
-{-| Disable the field. -}
-withDisabled : Bool -> Option msg
-withDisabled b =
+{-| Disable the field.
+-}
+disabled : Bool -> Option msg
+disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Mark the field as required for form validation. -}
-withRequired : Bool -> Option msg
-withRequired b =
+{-| Mark the field as required for form validation.
+-}
+required : Bool -> Option msg
+required b =
     Internal.option (\c -> { c | required = b })
 
 
-{-| Make the field read-only (focusable but not editable). -}
-withReadonly : Bool -> Option msg
-withReadonly b =
+{-| Make the field read-only (focusable but not editable).
+-}
+readonly : Bool -> Option msg
+readonly b =
     Internal.option (\c -> { c | readonly = b })
 
 
-{-| Handle the native `input` event. Receives the new value string. -}
+{-| Handle the native `input` event. Receives the new value string.
+-}
 onInput : (String -> msg) -> Option msg
 onInput f =
     Internal.option (\c -> { c | onInput = Just f })
@@ -172,32 +194,32 @@ onInput f =
 {-| Content for the `prefix` slot of `<m3e-form-field>`, shown before the
 control (e.g. a currency symbol). Wrapped in `<span slot="prefix">`.
 -}
-withPrefix : Html msg -> Option msg
-withPrefix h =
+prefix : Html msg -> Option msg
+prefix h =
     Internal.option (\c -> { c | prefix = Just h })
 
 
 {-| Content for the `suffix` slot of `<m3e-form-field>`, shown after the
 control (e.g. a unit indicator). Wrapped in `<span slot="suffix">`.
 -}
-withSuffix : Html msg -> Option msg
-withSuffix h =
+suffix : Html msg -> Option msg
+suffix h =
     Internal.option (\c -> { c | suffix = Just h })
 
 
 {-| Hint text for the form-field's `hint` slot — shown while the field is
 valid. Hidden when an error is also set (error takes precedence).
 -}
-withHint : Html msg -> Option msg
-withHint h =
+hint : Html msg -> Option msg
+hint h =
     Internal.option (\c -> { c | hint = Just h })
 
 
 {-| Error text for the form-field's `error` slot — shown while the field is
-invalid.  Takes precedence over `withHint`.
+invalid. Takes precedence over `hint`.
 -}
-withError : Html msg -> Option msg
-withError h =
+error : Html msg -> Option msg
+error h =
     Internal.option (\c -> { c | error = Just h })
 
 
@@ -212,8 +234,8 @@ multiline b =
 {-| Set the native `rows` attribute on the `<textarea>` (fixed visible height).
 Has no effect on single-line fields.
 -}
-withRows : Int -> Option msg
-withRows n =
+rows : Int -> Option msg
+rows n =
     Internal.option (\c -> { c | rows = Just n })
 
 
@@ -221,9 +243,10 @@ withRows n =
 Adds a sibling `<m3e-textarea-autosize for=id>` element — NOT wrapping the
 textarea. Multi-line only.
 -}
-withAutosize : { min : Int, max : Int } -> Option msg
-withAutosize bounds =
+autosize : { min : Int, max : Int } -> Option msg
+autosize bounds =
     Internal.option (\c -> { c | autosize = Just bounds })
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -232,9 +255,9 @@ withAutosize bounds =
 {-| Render the text field.
 
     M3e.TextField.view { label = "Email" }
-        [ M3e.TextField.withVariant M3e.TextField.Outlined
-        , M3e.TextField.withInputType M3e.TextField.Email
-        , M3e.TextField.withValue model.email
+        [ M3e.TextField.variant M3e.TextField.Outlined
+        , M3e.TextField.inputType M3e.TextField.Email
+        , M3e.TextField.value model.email
         , M3e.TextField.onInput EmailChanged
         ]
 
@@ -242,8 +265,8 @@ For a multiline field that grows between 3 and 8 rows:
 
     M3e.TextField.view { label = "Description" }
         [ M3e.TextField.multiline True
-        , M3e.TextField.withValue model.description
-        , M3e.TextField.withAutosize { min = 3, max = 8 }
+        , M3e.TextField.value model.description
+        , M3e.TextField.autosize { min = 3, max = 8 }
         , M3e.TextField.onInput DescriptionChanged
         ]
 
@@ -254,7 +277,7 @@ view req opts =
         c =
             Internal.applyOptions opts defaultConfig
 
-        id =
+        fieldId =
             Maybe.withDefault (slugify req.label) c.id
     in
     Internal.fromNode
@@ -266,13 +289,13 @@ view req opts =
             (List.filterMap identity
                 [ Just
                     (Node.element "label"
-                        [ Node.attribute "for" id ]
+                        [ Node.attribute "for" fieldId ]
                         [ Node.text req.label ]
                     )
-                , Just (controlNode c id)
+                , Just (controlNode c fieldId)
                 , -- Autosize sibling: ONLY for multiline + autosize (bug #A6/#17 fix)
                   if c.multiline then
-                    Maybe.map (autosizeNode id) c.autosize
+                    Maybe.map (autosizeNode fieldId) c.autosize
 
                   else
                     Nothing
@@ -293,14 +316,15 @@ view req opts =
         )
 
 
+
 -- INTERNAL --------------------------------------------------------------------
 
 
 controlNode : Config msg -> String -> Node msg
-controlNode c id =
+controlNode c fieldId =
     if c.multiline then
         Node.element "textarea"
-            (sharedAttrs c id
+            (sharedAttrs c fieldId
                 ++ List.filterMap identity
                     [ Maybe.map (\n -> Node.property "rows" (Encode.int n)) c.rows
                     ]
@@ -309,15 +333,16 @@ controlNode c id =
 
     else
         Node.element "input"
-            (Node.attribute "type" (inputTypeString c.inputType) :: sharedAttrs c id)
+            (Node.attribute "type" (inputTypeString c.inputType) :: sharedAttrs c fieldId)
             []
 
 
-{-| Attributes shared between `<input>` and `<textarea>`. -}
+{-| Attributes shared between `<input>` and `<textarea>`.
+-}
 sharedAttrs : Config msg -> String -> List (Node.Attr msg)
-sharedAttrs c id =
+sharedAttrs c fieldId =
     List.filterMap identity
-        [ Just (Node.attribute "id" id)
+        [ Just (Node.attribute "id" fieldId)
         , Maybe.map (\v -> Node.property "value" (Encode.string v)) c.value
         , Maybe.map (Node.attribute "placeholder") c.placeholder
         , if c.disabled then
@@ -347,16 +372,17 @@ sharedAttrs c id =
 
 
 autosizeNode : String -> { min : Int, max : Int } -> Node msg
-autosizeNode id bounds =
+autosizeNode fieldId bounds =
     Node.element "m3e-textarea-autosize"
-        [ Node.attribute "for" id
+        [ Node.attribute "for" fieldId
         , Node.property "min-rows" (Encode.float (toFloat bounds.min))
         , Node.property "max-rows" (Encode.float (toFloat bounds.max))
         ]
         []
 
 
-{-| Derive a stable, collision-resistant id from the label text. -}
+{-| Derive a stable, collision-resistant id from the label text.
+-}
 slugify : String -> String
 slugify label =
     let

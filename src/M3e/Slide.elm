@@ -1,7 +1,10 @@
 module M3e.Slide exposing
     ( Option
-    , slide, view
-    , disabled, vertical, threshold
+    , disabled
+    , slide
+    , threshold
+    , vertical
+    , view
     )
 
 {-| `<m3e-slide-group>` / `<m3e-slide>` — a horizontal (or vertical) slide
@@ -9,15 +12,16 @@ group with directional pagination controls.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { slides : List (Renderable { slide : Supported } msg) }
-                (homogeneous list slot — a slide group is meaningless without
-                slides; typed list constrains children to `slide`-tagged nodes)
-  - Options:    disabled, vertical, threshold
-  - Slots:      default slot ← `m3e-slide` children (no slot= injection)
+  - Required: { slides : List (Renderable { slide : Supported } msg) }
+    (homogeneous list slot — a slide group is meaningless without
+    slides; typed list constrains children to `slide`-tagged nodes)
+  - Options: disabled, vertical, threshold
+  - Slots: default slot ← `m3e-slide` children (no slot= injection)
   - Properties: disabled, vertical, threshold — via Node.property (introspectable)
-  - Attrs:      none (all configurable state is via DOM property)
-  - Escape:     html (inside each individual slide's content region)
-  - Tag:        slide (module tag; the `slide` helper also carries this tag)
+  - Attrs: none (all configurable state is via DOM property)
+  - Escape: html (inside each individual slide's content region)
+  - Tag: slide (module tag; the `slide` helper also carries this tag)
+
 
 ## Child constructor
 
@@ -28,29 +32,32 @@ placed in the `slides` list.
 -}
 
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Disable the pagination buttons (content still renders, controls go inert). -}
+{-| Disable the pagination buttons (content still renders, controls go inert).
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Set vertical orientation — content flows top-to-bottom (default: false). -}
+{-| Set vertical orientation — content flows top-to-bottom (default: false).
+-}
 vertical : Bool -> Option msg
 vertical b =
     Internal.option (\c -> { c | vertical = b })
 
 
 {-| Scroll threshold in pixels at which the pagination controls begin to show
-(default: 0). -}
+(default: 0).
+-}
 threshold : Float -> Option msg
 threshold px =
     Internal.option (\c -> { c | threshold = Just px })
@@ -88,8 +95,16 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-slide-group"
             (List.filterMap identity
-                [ if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing
-                , if c.vertical then Just (Node.property "vertical" (Encode.bool True)) else Nothing
+                [ if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.vertical then
+                    Just (Node.property "vertical" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map (\px -> Node.property "threshold" (Encode.float px)) c.threshold
                 ]
             )

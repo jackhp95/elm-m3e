@@ -1,9 +1,18 @@
 module M3e.Tooltip exposing
-    ( PlainPosition(..), RichPosition(..)
-    , PlainOption, RichOption
-    , plain, rich
-    , plainId, plainPosition, plainHideDelay
-    , richId, richPosition, richHideDelay, richSubhead, richActions
+    ( PlainOption
+    , PlainPosition(..)
+    , RichOption
+    , RichPosition(..)
+    , plain
+    , plainHideDelay
+    , plainId
+    , plainPosition
+    , rich
+    , richActions
+    , richHideDelay
+    , richId
+    , richPosition
+    , richSubhead
     )
 
 {-| `<m3e-tooltip>` / `<m3e-rich-tooltip>` — short contextual labels anchored
@@ -12,10 +21,10 @@ to a control by id (Material 3 Tooltips).
 Spec (per docs/CONVENTIONS.md):
 
   - Two constructors, same `tooltip` tag:
-      `plain : { anchorId, label } → List PlainOption → Renderable { tooltip }`
-        → `<m3e-tooltip>`
-      `rich  : { anchorId, content } → List RichOption → Renderable { tooltip }`
-        → `<m3e-rich-tooltip>`
+    `plain : { anchorId, label } → List PlainOption → Renderable { tooltip }`
+    → `<m3e-tooltip>`
+    `rich  : { anchorId, content } → List RichOption → Renderable { tooltip }`
+    → `<m3e-rich-tooltip>`
   - Required (plain): anchorId (wired via `for` attribute), label text
   - Required (rich): anchorId, content (default-slot children; free row)
   - Options (plain): id, position, hideDelay
@@ -34,15 +43,17 @@ No Elm state is required for visibility; the element manages show/hide.
 import Cem.M3e.RichTooltip as CemRich
 import Cem.M3e.Tooltip as CemPlain
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Tooltip position relative to the anchor element (plain tooltips). -}
+{-| Tooltip position relative to the anchor element (plain tooltips).
+-}
 type PlainPosition
     = PlainAbove
     | PlainBelow
@@ -64,6 +75,7 @@ type RichPosition
     | RichBelowBefore
 
 
+
 -- OPTION TYPES ------------------------------------------------------------
 
 
@@ -81,61 +93,72 @@ type RichOption msg
     | RichActions (List (Renderable { element : Supported } msg))
 
 
+
 -- SMART CONSTRUCTORS (PLAIN OPTIONS) --------------------------------------
 
 
-{-| Set the `id` attribute on the `<m3e-tooltip>` element. -}
+{-| Set the `id` attribute on the `<m3e-tooltip>` element.
+-}
 plainId : String -> PlainOption msg
 plainId =
     PlainId
 
 
-{-| Set where the plain tooltip appears relative to its anchor. -}
+{-| Set where the plain tooltip appears relative to its anchor.
+-}
 plainPosition : PlainPosition -> PlainOption msg
 plainPosition =
     PlainPosition
 
 
 {-| Set the hide delay in milliseconds (the `hide-delay` DOM property;
-element default 200 ms). -}
+element default 200 ms).
+-}
 plainHideDelay : Int -> PlainOption msg
 plainHideDelay =
     PlainHideDelay
 
 
+
 -- SMART CONSTRUCTORS (RICH OPTIONS) ---------------------------------------
 
 
-{-| Set the `id` attribute on the `<m3e-rich-tooltip>` element. -}
+{-| Set the `id` attribute on the `<m3e-rich-tooltip>` element.
+-}
 richId : String -> RichOption msg
 richId =
     RichId
 
 
-{-| Set where the rich tooltip appears relative to its anchor. -}
+{-| Set where the rich tooltip appears relative to its anchor.
+-}
 richPosition : RichPosition -> RichOption msg
 richPosition =
     RichPosition
 
 
 {-| Set the hide delay in milliseconds (the `hide-delay` DOM property;
-element default 200 ms). -}
+element default 200 ms).
+-}
 richHideDelay : Int -> RichOption msg
 richHideDelay =
     RichHideDelay
 
 
 {-| Set the `subhead` slot content of a rich tooltip (optional header line
-above the supporting text). -}
+above the supporting text).
+-}
 richSubhead : Renderable { element : Supported } msg -> RichOption msg
 richSubhead =
     RichSubhead
 
 
-{-| Set the `actions` slot content of a rich tooltip (buttons at the bottom). -}
+{-| Set the `actions` slot content of a rich tooltip (buttons at the bottom).
+-}
 richActions : List (Renderable { element : Supported } msg) -> RichOption msg
 richActions =
     RichActions
+
 
 
 -- CONSTRUCTORS ------------------------------------------------------------
@@ -227,6 +250,7 @@ rich req opts =
             )
             (subheadNodes ++ contentNodes ++ actionNodes)
         )
+
 
 
 -- INTERNAL ----------------------------------------------------------------

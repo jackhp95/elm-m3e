@@ -1,8 +1,18 @@
 module M3e.Theme exposing
-    ( Scheme(..), Variant(..), Contrast(..), Motion(..)
+    ( Contrast(..)
+    , Motion(..)
     , Option
+    , Scheme(..)
+    , Variant(..)
+    , contrast
+    , density
+    , motion
+    , onChange
+    , scheme
+    , seedColor
+    , strongFocus
+    , variant
     , view
-    , seedColor, scheme, variant, contrast, density, strongFocus, motion, onChange
     )
 
 {-| `<m3e-theme>` — a non-visual application-level theme provider. Derives
@@ -11,25 +21,25 @@ dynamic color, density, motion, and focus tokens from a seed color and applies
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { content : List (Renderable any msg) }
-                (the themed subtree — content IS what the element wraps)
-  - Options:    seedColor, scheme, variant, contrast, density, strongFocus,
-                motion, onChange
-  - Slots:      default slot ← arbitrary themed content (free-row region)
+  - Required: { content : List (Renderable any msg) }
+    (the themed subtree — content IS what the element wraps)
+  - Options: seedColor, scheme, variant, contrast, density, strongFocus,
+    motion, onChange
+  - Slots: default slot ← arbitrary themed content (free-row region)
   - Properties: density (float), strongFocus (bool) — via Node.property (introspectable)
-  - Attrs:      color, scheme, variant, contrast, motion — via Node.rawAttr (Cem enums)
-  - Events:     change (dispatched when theme recomputes tokens)
-  - Escape:     html (default-slot region)
-  - Tag:        theme
+  - Attrs: color, scheme, variant, contrast, motion — via Node.rawAttr (Cem enums)
+  - Events: change (dispatched when theme recomputes tokens)
+  - Escape: html (default-slot region)
+  - Tag: theme
 
 -}
 
 import Cem.M3e.Theme as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Color scheme — follows the OS light/dark preference (`Auto`), or is
@@ -41,7 +51,8 @@ type Scheme
     | Dark
 
 
-{-| Dynamic-color palette-generation strategy. Default `Neutral`. -}
+{-| Dynamic-color palette-generation strategy. Default `Neutral`.
+-}
 type Variant
     = Content
     | Vibrant
@@ -54,7 +65,8 @@ type Variant
     | FruitSalad
 
 
-{-| Contrast level. Default `Standard`. -}
+{-| Contrast level. Default `Standard`.
+-}
 type Contrast
     = Medium
     | Standard
@@ -81,25 +93,29 @@ seedColor s =
     Internal.option (\c -> { c | seedColor = Just s })
 
 
-{-| Set the color scheme (default `Auto` — follow the OS preference). -}
+{-| Set the color scheme (default `Auto` — follow the OS preference).
+-}
 scheme : Scheme -> Option msg
 scheme s =
     Internal.option (\c -> { c | scheme = Just s })
 
 
-{-| Set the dynamic-color variant (default `Neutral`). -}
+{-| Set the dynamic-color variant (default `Neutral`).
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
 
-{-| Set the contrast level (default `Standard`). -}
+{-| Set the contrast level (default `Standard`).
+-}
 contrast : Contrast -> Option msg
 contrast co =
     Internal.option (\c -> { c | contrast = Just co })
 
 
-{-| Set the density scale (default `0`; tighter: `-1`, `-2`). -}
+{-| Set the density scale (default `0`; tighter: `-1`, `-2`).
+-}
 density : Float -> Option msg
 density d =
     Internal.option (\c -> { c | density = Just d })
@@ -113,7 +129,8 @@ strongFocus sf =
     Internal.option (\c -> { c | strongFocus = Just sf })
 
 
-{-| Set the motion scheme (default `MotionStandard`). -}
+{-| Set the motion scheme (default `MotionStandard`).
+-}
 motion : Motion -> Option msg
 motion m =
     Internal.option (\c -> { c | motion = Just m })

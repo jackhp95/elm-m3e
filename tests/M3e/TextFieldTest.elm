@@ -9,6 +9,7 @@ import M3e.TextField as TextField
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers ---------------------------------------------------------------------
 
 
@@ -26,6 +27,7 @@ labelChild node =
 controlChild : Node.Node msg -> Maybe (Node.Node msg)
 controlChild node =
     Node.childrenOf node |> List.drop 1 |> List.head
+
 
 
 -- Tests -----------------------------------------------------------------------
@@ -61,11 +63,11 @@ suite =
                         controlChild node |> Maybe.andThen (Node.findAttribute "id")
                 in
                 Expect.equal labelFor controlId
-        , test "withId overrides the derived id on both label and input" <|
+        , test "id overrides the derived id on both label and input" <|
             \_ ->
                 let
                     node =
-                        viewNode [ TextField.withId "my-email" ]
+                        viewNode [ TextField.id "my-email" ]
 
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
@@ -80,14 +82,14 @@ suite =
                     ()
 
         -- Variant
-        , test "withVariant Filled sets variant='filled' on the form-field" <|
+        , test "variant Filled sets variant='filled' on the form-field" <|
             \_ ->
-                viewNode [ TextField.withVariant TextField.Filled ]
+                viewNode [ TextField.variant TextField.Filled ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "filled")
-        , test "withVariant Outlined sets variant='outlined'" <|
+        , test "variant Outlined sets variant='outlined'" <|
             \_ ->
-                viewNode [ TextField.withVariant TextField.Outlined ]
+                viewNode [ TextField.variant TextField.Outlined ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "outlined")
         , test "variant absent by default" <|
@@ -114,9 +116,9 @@ suite =
                 controlChild (viewNode [])
                     |> Maybe.andThen (Node.findAttribute "type")
                     |> Expect.equal (Just "text")
-        , test "withInputType Password sets type='password'" <|
+        , test "inputType Password sets type='password'" <|
             \_ ->
-                controlChild (viewNode [ TextField.withInputType TextField.Password ])
+                controlChild (viewNode [ TextField.inputType TextField.Password ])
                     |> Maybe.andThen (Node.findAttribute "type")
                     |> Expect.equal (Just "password")
         , test "multiline control has no 'type' attribute" <|
@@ -126,9 +128,9 @@ suite =
                     |> Expect.equal Nothing
 
         -- Value property
-        , test "withValue sets the 'value' DOM property on the input" <|
+        , test "value sets the 'value' DOM property on the input" <|
             \_ ->
-                controlChild (viewNode [ TextField.withValue "hello@example.com" ])
+                controlChild (viewNode [ TextField.value "hello@example.com" ])
                     |> Maybe.andThen (Node.findProperty "value")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "\"hello@example.com\"")
@@ -139,9 +141,9 @@ suite =
                     |> Expect.equal Nothing
 
         -- disabled
-        , test "withDisabled True sets the 'disabled' DOM property on the input" <|
+        , test "disabled True sets the 'disabled' DOM property on the input" <|
             \_ ->
-                controlChild (viewNode [ TextField.withDisabled True ])
+                controlChild (viewNode [ TextField.disabled True ])
                     |> Maybe.andThen (Node.findProperty "disabled")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
@@ -154,7 +156,7 @@ suite =
         -- Autosize sibling (bug #A6/#17 fix)
         , test "autosize adds a sibling <m3e-textarea-autosize>, not a wrapper" <|
             \_ ->
-                viewNode [ TextField.multiline True, TextField.withAutosize { min = 3, max = 8 } ]
+                viewNode [ TextField.multiline True, TextField.autosize { min = 3, max = 8 } ]
                     |> Node.childrenOf
                     -- label=0, textarea=1, autosize=2  (siblings under m3e-form-field)
                     |> List.drop 2
@@ -163,7 +165,7 @@ suite =
                     |> Expect.equal (Just "m3e-textarea-autosize")
         , test "autosize sibling 'for' matches the textarea id" <|
             \_ ->
-                viewNode [ TextField.withId "desc", TextField.multiline True, TextField.withAutosize { min = 2, max = 6 } ]
+                viewNode [ TextField.id "desc", TextField.multiline True, TextField.autosize { min = 2, max = 6 } ]
                     |> Node.childrenOf
                     |> List.drop 2
                     |> List.head
@@ -171,7 +173,7 @@ suite =
                     |> Expect.equal (Just "desc")
         , test "textarea is a direct child of m3e-form-field (not inside autosize)" <|
             \_ ->
-                viewNode [ TextField.multiline True, TextField.withAutosize { min = 2, max = 6 } ]
+                viewNode [ TextField.multiline True, TextField.autosize { min = 2, max = 6 } ]
                     |> Node.childrenOf
                     |> List.drop 1
                     |> List.head
@@ -179,16 +181,16 @@ suite =
                     |> Expect.equal (Just "textarea")
 
         -- Slot children
-        , test "withHint adds a child with slot='hint'" <|
+        , test "hint adds a child with slot='hint'" <|
             \_ ->
-                viewNode [ TextField.withHint (Html.text "Optional") ]
+                viewNode [ TextField.hint (Html.text "Optional") ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "hint")
                     |> List.isEmpty
                     |> Expect.equal False
-        , test "withError adds a child with slot='error'" <|
+        , test "error adds a child with slot='error'" <|
             \_ ->
-                viewNode [ TextField.withError (Html.text "Required") ]
+                viewNode [ TextField.error (Html.text "Required") ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "error")
                     |> List.isEmpty

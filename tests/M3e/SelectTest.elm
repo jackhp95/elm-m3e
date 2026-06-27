@@ -8,6 +8,7 @@ import M3e.Select as Select
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers ---------------------------------------------------------------------
 
 
@@ -35,6 +36,7 @@ freeOpt =
 proOpt : Renderable.Renderable { selectOption : Renderable.Supported } String
 proOpt =
     Select.option { value = "pro", label = "Pro" } [ Select.optionSelected True ]
+
 
 
 -- Tests -----------------------------------------------------------------------
@@ -79,11 +81,11 @@ suite =
                 selectChild (viewNode [])
                     |> Maybe.andThen (Node.findAttribute "label")
                     |> Expect.equal Nothing
-        , test "withId overrides derived id on both label 'for' and select 'id'" <|
+        , test "id overrides derived id on both label 'for' and select 'id'" <|
             \_ ->
                 let
                     node =
-                        viewNode [ Select.withId "plan-sel" ]
+                        viewNode [ Select.id "plan-sel" ]
 
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
@@ -98,9 +100,9 @@ suite =
                     ()
 
         -- Properties
-        , test "withMulti True sets 'multi' DOM property on m3e-select" <|
+        , test "multi True sets 'multi' DOM property on m3e-select" <|
             \_ ->
-                selectChild (viewNode [ Select.withMulti True ])
+                selectChild (viewNode [ Select.multi True ])
                     |> Maybe.andThen (Node.findProperty "multi")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
@@ -109,23 +111,23 @@ suite =
                 selectChild (viewNode [])
                     |> Maybe.andThen (Node.findProperty "multi")
                     |> Expect.equal Nothing
-        , test "withRequired True sets 'required' DOM property" <|
+        , test "required True sets 'required' DOM property" <|
             \_ ->
-                selectChild (viewNode [ Select.withRequired True ])
+                selectChild (viewNode [ Select.required True ])
                     |> Maybe.andThen (Node.findProperty "required")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "withDisabled True sets 'disabled' DOM property" <|
+        , test "disabled True sets 'disabled' DOM property" <|
             \_ ->
-                selectChild (viewNode [ Select.withDisabled True ])
+                selectChild (viewNode [ Select.disabled True ])
                     |> Maybe.andThen (Node.findProperty "disabled")
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
 
         -- Options
-        , test "withOptions populates m3e-select children" <|
+        , test "options populates m3e-select children" <|
             \_ ->
-                selectChild (viewNode [ Select.withOptions [ freeOpt, proOpt ] ])
+                selectChild (viewNode [ Select.options [ freeOpt, proOpt ] ])
                     |> Maybe.map Node.childrenOf
                     |> Maybe.map List.length
                     |> Expect.equal (Just 2)

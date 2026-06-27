@@ -8,6 +8,7 @@ import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers -----------------------------------------------------------------
 
 
@@ -24,7 +25,17 @@ plainItem =
 
 checkedItem : Bool -> Renderable.Renderable { menuItem : Renderable.Supported } String
 checkedItem b =
-    Menu.checkboxItem { label = "Show grid", onChange = \checked -> if checked then "on" else "off" } [ Menu.checkboxChecked b ]
+    Menu.checkboxItem
+        { label = "Show grid"
+        , onChange =
+            \checked ->
+                if checked then
+                    "on"
+
+                else
+                    "off"
+        }
+        [ Menu.checkboxChecked b ]
 
 
 radioItem_ : Bool -> Renderable.Renderable { menuItem : Renderable.Supported } String
@@ -41,9 +52,9 @@ suite =
                 menuNode [] []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-menu")
-        , test "withId sets the 'id' attribute" <|
+        , test "id sets the 'id' attribute" <|
             \_ ->
-                menuNode [ Menu.withId "my-menu" ] []
+                menuNode [ Menu.id "my-menu" ] []
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "my-menu")
         , test "id absent by default" <|

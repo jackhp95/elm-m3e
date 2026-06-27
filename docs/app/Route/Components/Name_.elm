@@ -779,9 +779,9 @@ demoSections slug =
             [ usage
                 [ sub "Single date"
                     (Calendar.view
-                        [ Calendar.withDate "2026-06-24"
-                        , Calendar.withMinDate "2026-01-01"
-                        , Calendar.withMaxDate "2026-12-31"
+                        [ Calendar.date "2026-06-24"
+                        , Calendar.minDate "2026-01-01"
+                        , Calendar.maxDate "2026-12-31"
                         ]
                         |> toHtml
                     )
@@ -1130,7 +1130,7 @@ demoSections slug =
                                 , Menu.item { label = "Sign out", action = Menu.Click PagesMsg.noOp } []
                                 ]
                             }
-                            [ Menu.withId "demo-menu" ]
+                            [ Menu.id "demo-menu" ]
                             |> toHtml
                         ]
                     )
@@ -1191,8 +1191,8 @@ demoSections slug =
                                 ]
                             ]
                         }
-                        [ NavigationDrawer.withOpen True
-                        , NavigationDrawer.withMode NavigationDrawer.ModeSide
+                        [ NavigationDrawer.open True
+                        , NavigationDrawer.mode NavigationDrawer.ModeSide
                         ]
                         |> toHtml
                     )
@@ -1328,7 +1328,7 @@ demoSections slug =
             [ usage
                 [ sub "Single"
                     (Select.view { label = "Sort by" }
-                        [ Select.withOptions
+                        [ Select.options
                             [ Select.option { value = "recent", label = "Most recent" } [ Select.optionSelected True ]
                             , Select.option { value = "oldest", label = "Oldest" } []
                             , Select.option { value = "name", label = "By name" } []
@@ -1339,13 +1339,13 @@ demoSections slug =
                     )
                 , sub "Multi"
                     (Select.view { label = "Categories" }
-                        [ Select.withOptions
+                        [ Select.options
                             [ Select.option { value = "news", label = "News" } [ Select.optionSelected True ]
                             , Select.option { value = "blog", label = "Blog" } [ Select.optionSelected True ]
                             , Select.option { value = "video", label = "Video" } []
                             ]
                         , Select.onChange noOp
-                        , Select.withMulti True
+                        , Select.multi True
                         ]
                         |> toHtml
                     )
@@ -1607,14 +1607,14 @@ demoSections slug =
                 [ sub "Variants"
                     (div [ class "w-full max-w-md space-y-4" ]
                         [ TextField.view { label = "Name (filled)" }
-                            [ TextField.withVariant TextField.Filled
-                            , TextField.withValue ""
+                            [ TextField.variant TextField.Filled
+                            , TextField.value ""
                             , TextField.onInput noOp
                             ]
                             |> toHtml
                         , TextField.view { label = "Name (outlined)" }
-                            [ TextField.withVariant TextField.Outlined
-                            , TextField.withValue ""
+                            [ TextField.variant TextField.Outlined
+                            , TextField.value ""
                             , TextField.onInput noOp
                             ]
                             |> toHtml
@@ -1623,16 +1623,16 @@ demoSections slug =
                 , sub "Input types"
                     (div [ class "w-full max-w-md space-y-4" ]
                         [ TextField.view { label = "Email" }
-                            [ TextField.withVariant TextField.Outlined
-                            , TextField.withValue ""
-                            , TextField.withInputType TextField.Email
+                            [ TextField.variant TextField.Outlined
+                            , TextField.value ""
+                            , TextField.inputType TextField.Email
                             , TextField.onInput noOp
                             ]
                             |> toHtml
                         , TextField.view { label = "URL" }
-                            [ TextField.withVariant TextField.Outlined
-                            , TextField.withValue ""
-                            , TextField.withInputType TextField.Url
+                            [ TextField.variant TextField.Outlined
+                            , TextField.value ""
+                            , TextField.inputType TextField.Url
                             , TextField.onInput noOp
                             ]
                             |> toHtml
@@ -1640,30 +1640,30 @@ demoSections slug =
                     )
                 , sub "Multiline"
                     (TextField.view { label = "Notes" }
-                        [ TextField.withVariant TextField.Outlined
-                        , TextField.withValue ""
+                        [ TextField.variant TextField.Outlined
+                        , TextField.value ""
                         , TextField.onInput noOp
                         , TextField.multiline True
-                        , TextField.withRows 3
+                        , TextField.rows 3
                         ]
                         |> toHtml
                     )
                 , sub "Prefix and suffix"
                     (TextField.view { label = "Price" }
-                        [ TextField.withVariant TextField.Outlined
-                        , TextField.withValue ""
+                        [ TextField.variant TextField.Outlined
+                        , TextField.value ""
                         , TextField.onInput noOp
-                        , TextField.withPrefix (Html.text "$")
-                        , TextField.withSuffix (Html.text "USD")
+                        , TextField.prefix (Html.text "$")
+                        , TextField.suffix (Html.text "USD")
                         ]
                         |> toHtml
                     )
                 , sub "Disabled"
                     (TextField.view { label = "Locked" }
-                        [ TextField.withVariant TextField.Outlined
-                        , TextField.withValue "Read-only value"
+                        [ TextField.variant TextField.Outlined
+                        , TextField.value "Read-only value"
                         , TextField.onInput noOp
-                        , TextField.withDisabled True
+                        , TextField.disabled True
                         ]
                         |> toHtml
                     )
@@ -1701,7 +1701,7 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (TimePicker.view { label = "Meeting time" }
-                        [ TimePicker.withValue "14:30"
+                        [ TimePicker.value "14:30"
                         , TimePicker.onChange noOp
                         ]
                         |> toHtml

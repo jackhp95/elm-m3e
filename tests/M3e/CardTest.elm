@@ -3,12 +3,12 @@ module M3e.CardTest exposing (suite)
 import Expect
 import Html
 import Json.Encode as Encode
-import Test exposing (Test, describe, test)
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.Heading as Heading
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import Test exposing (Test, describe, test)
 
 
 htmlText : String -> Renderable { s | html : Supported } msg

@@ -2,14 +2,15 @@ module M3e.FieldTest exposing (suite)
 
 import Expect
 import Html
-import Test exposing (Test, describe, test)
 import M3e.Field as Field
 import M3e.Label as Label
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import Test exposing (Test, describe, test)
 
 
-{-| An element-bearing control (the only kind Field accepts). -}
+{-| An element-bearing control (the only kind Field accepts).
+-}
 inputElement : Renderable.Renderable { s | element : Renderable.Supported } msg
 inputElement =
     Renderable.element { tag = "input" } [ Node.attribute "type" "email" ] []

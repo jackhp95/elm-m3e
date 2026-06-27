@@ -1,22 +1,26 @@
 module M3e.Heading exposing
-    ( Variant(..), Size(..), Option
+    ( Option
+    , Size(..)
+    , Variant(..)
+    , emphasized
+    , level
+    , size
     , view
-    , size, emphasized, level
     )
 
 {-| `<m3e-heading>` — a Material 3 typescale heading.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { label : String, variant : Variant }
-                (label is visible text → it IS the accessible name; no separate
-                a11y field. Variant is mutually exclusive — required sum field.)
-  - Options:    size, emphasized, level
-  - Slots:      default slot ← text content (label as Node.text child)
+  - Required: { label : String, variant : Variant }
+    (label is visible text → it IS the accessible name; no separate
+    a11y field. Variant is mutually exclusive — required sum field.)
+  - Options: size, emphasized, level
+  - Slots: default slot ← text content (label as Node.text child)
   - Properties: emphasized — via Node.property (Cem uses Html.Attributes.property)
-  - Attrs:      variant, size, level — via Node.rawAttr (Cem uses Html.Attributes.attribute)
-  - Escape:     none (leaf — content is fixed string)
-  - Tag:        heading
+  - Attrs: variant, size, level — via Node.rawAttr (Cem uses Html.Attributes.attribute)
+  - Escape: none (leaf — content is fixed string)
+  - Tag: heading
 
 The `level` option is clamped to the CEM-permitted range 1..6 (same as
 `Ui.Heading.clampLevel`).
@@ -25,9 +29,9 @@ The `level` option is clamped to the CEM-permitted range 1..6 (same as
 
 import Cem.M3e.Heading as Cem
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
@@ -97,7 +101,11 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
                 , Maybe.map (\s -> Node.rawAttr (Cem.size (toCemSize s))) c.size
-                , if c.emphasized then Just (Node.property "emphasized" (Encode.bool True)) else Nothing
+                , if c.emphasized then
+                    Just (Node.property "emphasized" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map (\l -> Node.rawAttr (Cem.level (String.fromInt l))) c.level
                 ]
             )

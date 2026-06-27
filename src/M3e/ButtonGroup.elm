@@ -1,7 +1,11 @@
 module M3e.ButtonGroup exposing
-    ( Variant(..), Size(..), Option
+    ( Option
+    , Size(..)
+    , Variant(..)
+    , multi
+    , size
+    , variant
     , view
-    , variant, size, multi
     )
 
 {-| `<m3e-button-group>` — a connected row of buttons (Material 3 Button
@@ -9,32 +13,34 @@ groups, M3 Expressive).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { buttons : List (Renderable { button : Supported } msg) }
-               (homogeneous list slot — a button-group is meaningless without
-               buttons; typed list in the required record)
-  - Options:    variant, size, multi
-  - Slots:      default slot ← `m3e-button` children (no slot= injection)
+  - Required: { buttons : List (Renderable { button : Supported } msg) }
+    (homogeneous list slot — a button-group is meaningless without
+    buttons; typed list in the required record)
+  - Options: variant, size, multi
+  - Slots: default slot ← `m3e-button` children (no slot= injection)
   - Properties: multi (Node.property — introspectable)
-  - Attrs:      variant/size via Cem.M3e.ButtonGroup.* as rawAttr
-  - Escape:     none (strict child kind: { button })
-  - Tag:        buttonGroup
+  - Attrs: variant/size via Cem.M3e.ButtonGroup.\* as rawAttr
+  - Escape: none (strict child kind: { button })
+  - Tag: buttonGroup
 
 -}
 
 import Cem.M3e.ButtonGroup as Cem
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
-{-| Group appearance variant. -}
+{-| Group appearance variant.
+-}
 type Variant
     = Standard
     | Connected
 
 
-{-| Size applied to the whole group. -}
+{-| Size applied to the whole group.
+-}
 type Size
     = ExtraSmall
     | Small

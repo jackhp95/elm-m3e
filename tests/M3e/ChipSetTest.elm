@@ -1,11 +1,11 @@
 module M3e.ChipSetTest exposing (suite)
 
 import Expect
-import Test exposing (Test, describe, test)
 import M3e.Chip as Chip
 import M3e.ChipSet as ChipSet
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import Test exposing (Test, describe, test)
 
 
 suite : Test

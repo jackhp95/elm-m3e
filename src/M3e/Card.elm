@@ -1,27 +1,35 @@
 module M3e.Card exposing
-    ( Variant(..), Option
+    ( Option
+    , Variant(..)
+    , actionable
+    , actions
+    , body
+    , footer
+    , headline
+    , inline
+    , media
+    , subhead
+    , variant
     , view
-    , variant, actionable, inline
-    , media, headline, subhead, body, actions, footer
     )
 
 {-| `<m3e-card>` — a flexible content container (Material 3 Cards).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   (none — container only, variant optional)
-  - Options:    variant, actionable, inline, media, headline, subhead,
-                body, actions, footer
+  - Required: (none — container only, variant optional)
+  - Options: variant, actionable, inline, media, headline, subhead,
+    body, actions, footer
   - Slots:
-      header   : region (free row — any Renderable; wrapped in div[slot=header])
-      content  : region (free row — headline + subhead; wrapped in div[slot=content])
-      actions  : homogeneous List (Renderable { button : Supported })
-      footer   : region (free row)
-      (default): free row — body items, no slot injected
+    header : region (free row — any Renderable; wrapped in div[slot=header])
+    content : region (free row — headline + subhead; wrapped in div[slot=content])
+    actions : homogeneous List (Renderable { button : Supported })
+    footer : region (free row)
+    (default): free row — body items, no slot injected
   - Properties: actionable, inline (DOM properties)
-  - Attrs:      variant
-  - Escape:     html (default slot / all regions)
-  - Tag:        card
+  - Attrs: variant
+  - Escape: html (default slot / all regions)
+  - Tag: card
 
 `body` items go into the card's DEFAULT SLOT (no slot wrapper) so that
 existing code and the IntrospectionTest (which counts direct children) keep

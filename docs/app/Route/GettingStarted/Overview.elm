@@ -80,10 +80,10 @@ sectionHeading label =
 
 highlights : List ( String, String, String )
 highlights =
-    [ ( "tune", "Typed Builder API", "Every component is a small builder pipeline (`Ui.Foo.new |> with* |> view`) — the compiler refuses invalid compositions before runtime." )
+    [ ( "tune", "Typed View API", "Every component is `M3e.Foo.view {required} [options]` returning typed `Renderable` content — the compiler refuses invalid compositions before runtime." )
     , ( "design_services", "Material Design 3 Compliance", "All 53 modules track the M3 spec and the @m3e/web Custom Elements Manifest, with per-component enums in place of stringly-typed attributes." )
-    , ( "verified", "Slot-Safe Composition", "Typed slots ensure an icon slot only accepts a Ui.Icon, a leading slot only accepts a leading — no orphan content quietly disappearing into the default slot." )
-    , ( "palette", "Theme as Owned State", "A single Ui.Theme drives the dynamic-color engine, dark/light, contrast, density, and motion for its subtree. No app-wide globals." )
+    , ( "verified", "Slot-Safe Composition", "Typed slots ensure an icon slot only accepts a M3e.Icon, a leading slot only accepts a leading — no orphan content quietly disappearing into the default slot." )
+    , ( "palette", "Theme as Owned State", "A single M3e.Theme drives the dynamic-color engine, dark/light, contrast, density, and motion for its subtree. No app-wide globals." )
     , ( "deselect", "Tree-Shakable Bindings", "Wraps thin per-element bindings, generated from the upstream CEM. The bundle pays for what it imports." )
     , ( "verified_user", "Test-Friendly", "Render targets are real `Html msg`. Logic is testable via `Test.Html`; rendered behavior is verified via Playwright against the @m3e/web runtime." )
     ]
@@ -130,9 +130,9 @@ view _ _ =
             , section [ class "space-y-3" ]
                 [ sectionHeading "The MISI philosophy"
                 , p [ class "text-body-lg text-on-surface-variant" ]
-                    [ text "Every Ui.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
+                    [ text "Every M3e.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
                 , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
-                    [ li [] [ text "Typed slots — an icon slot only accepts a Ui.Icon, never arbitrary Html." ]
+                    [ li [] [ text "Typed slots — an icon slot only accepts a M3e.Icon, never arbitrary Html." ]
                     , li [] [ text "Builders with required collaborators — you can't render an avatar without content." ]
                     , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
                     ]

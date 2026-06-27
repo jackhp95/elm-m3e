@@ -4,17 +4,19 @@ import Expect
 import Html
 import Json.Encode as Encode
 import M3e.Icon as Icon
+import M3e.Internal as Internal
 import M3e.NavigationDrawer as NavigationDrawer
 import M3e.Node as Node
 import M3e.Renderable as Renderable
-import M3e.Internal as Internal
 import Test exposing (Test, describe, test)
+
 
 
 -- Helpers ---------------------------------------------------------------------
 
 
-{-| Render the container with one link entry and return the IR node. -}
+{-| Render the container with one link entry and return the IR node.
+-}
 viewNode : List (NavigationDrawer.Option String) -> Node.Node String
 viewNode opts =
     NavigationDrawer.view
@@ -25,13 +27,15 @@ viewNode opts =
         |> Renderable.toNode
 
 
-{-| The `<m3e-nav-menu>` child of the container. -}
+{-| The `<m3e-nav-menu>` child of the container.
+-}
 navMenuChild : Node.Node msg -> Maybe (Node.Node msg)
 navMenuChild node =
     Node.childrenOf node |> List.head
 
 
-{-| Items inside the nav-menu (children of `<m3e-nav-menu>`). -}
+{-| Items inside the nav-menu (children of `<m3e-nav-menu>`).
+-}
 navMenuItems : Node.Node msg -> List (Node.Node msg)
 navMenuItems node =
     navMenuChild node
@@ -52,6 +56,7 @@ groupNode childNodes opts =
         (List.map (\n -> Internal.fromNode n) childNodes)
         opts
         |> Renderable.toNode
+
 
 
 -- Tests -----------------------------------------------------------------------
@@ -85,9 +90,9 @@ suite =
                 viewNode []
                     |> Node.findAttribute "start"
                     |> Expect.notEqual Nothing
-        , test "withOpen False removes 'start' attribute" <|
+        , test "open False removes 'start' attribute" <|
             \_ ->
-                viewNode [ NavigationDrawer.withOpen False ]
+                viewNode [ NavigationDrawer.open False ]
                     |> Node.findAttribute "start"
                     |> Expect.equal Nothing
 
@@ -97,39 +102,39 @@ suite =
                 viewNode []
                     |> Node.findAttribute "start-mode"
                     |> Expect.equal (Just "side")
-        , test "withMode ModeAuto sets 'start-mode=auto'" <|
+        , test "mode ModeAuto sets 'start-mode=auto'" <|
             \_ ->
-                viewNode [ NavigationDrawer.withMode NavigationDrawer.ModeAuto ]
+                viewNode [ NavigationDrawer.mode NavigationDrawer.ModeAuto ]
                     |> Node.findAttribute "start-mode"
                     |> Expect.equal (Just "auto")
-        , test "withMode ModeOver sets 'start-mode=over'" <|
+        , test "mode ModeOver sets 'start-mode=over'" <|
             \_ ->
-                viewNode [ NavigationDrawer.withMode NavigationDrawer.ModeOver ]
+                viewNode [ NavigationDrawer.mode NavigationDrawer.ModeOver ]
                     |> Node.findAttribute "start-mode"
                     |> Expect.equal (Just "over")
 
         -- Side = End
-        , test "withSide End uses 'end-mode' attribute name" <|
+        , test "side End uses 'end-mode' attribute name" <|
             \_ ->
-                viewNode [ NavigationDrawer.withSide NavigationDrawer.End ]
+                viewNode [ NavigationDrawer.side NavigationDrawer.End ]
                     |> Node.findAttribute "end-mode"
                     |> Expect.notEqual Nothing
-        , test "withSide End uses 'end' for open attribute" <|
+        , test "side End uses 'end' for open attribute" <|
             \_ ->
-                viewNode [ NavigationDrawer.withSide NavigationDrawer.End ]
+                viewNode [ NavigationDrawer.side NavigationDrawer.End ]
                     |> Node.findAttribute "end"
                     |> Expect.notEqual Nothing
-        , test "withSide End: nav-menu slot='end'" <|
+        , test "side End: nav-menu slot='end'" <|
             \_ ->
                 navMenuChild
-                    (viewNode [ NavigationDrawer.withSide NavigationDrawer.End ])
+                    (viewNode [ NavigationDrawer.side NavigationDrawer.End ])
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "end")
 
         -- Container id
-        , test "withId sets 'id' attribute on container" <|
+        , test "id sets 'id' attribute on container" <|
             \_ ->
-                viewNode [ NavigationDrawer.withId "main-drawer" ]
+                viewNode [ NavigationDrawer.id "main-drawer" ]
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "main-drawer")
 

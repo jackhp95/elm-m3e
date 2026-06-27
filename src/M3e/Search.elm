@@ -1,26 +1,31 @@
 module M3e.Search exposing
     ( Option
+    , clearLabel
+    , clearable
+    , leadingIcon
+    , onClear
+    , onInput
+    , trailingIcon
+    , value
     , view
-    , onInput, value, clearable, clearLabel, onClear
-    , leadingIcon, trailingIcon
     )
 
 {-| `<m3e-search-bar>` — a Material 3 Search bar.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { placeholder : String }
-  - Options:    onInput, value, clearable, clearLabel, onClear,
-                leadingIcon, trailingIcon
+  - Required: { placeholder : String }
+  - Options: onInput, value, clearable, clearLabel, onClear,
+    leadingIcon, trailingIcon
   - Slots:
-      leading  : Renderable { icon : Supported } (via leadingIcon option)
-      input    : always rendered as <input type=search slot=input>
-      trailing : Renderable { icon : Supported } (via trailingIcon option)
+    leading : Renderable { icon : Supported } (via leadingIcon option)
+    input : always rendered as <input type=search slot=input>
+    trailing : Renderable { icon : Supported } (via trailingIcon option)
   - Properties: clearable (DOM property)
-  - Attrs:      clear-label
-  - Events:     input (onInput), clear (onClear)
-  - Escape:     none (leaf — slots are option-driven, not caller-supplied nodes)
-  - Tag:        search
+  - Attrs: clear-label
+  - Events: input (onInput), clear (onClear)
+  - Escape: none (leaf — slots are option-driven, not caller-supplied nodes)
+  - Tag: search
 
 Note: `placeholder` goes on the `<input>` child, not the bar root, per the CEM
 slot contract. The root element is still `m3e-search-bar`, so a parent
@@ -30,9 +35,9 @@ slot contract. The root element is still `m3e-search-bar`, so a parent
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 
@@ -103,6 +108,7 @@ defaults =
     , leadingIcon = Nothing
     , trailingIcon = Nothing
     }
+
 
 
 -- VIEW -------------------------------------------------------------------

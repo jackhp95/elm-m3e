@@ -23,7 +23,8 @@ node opts =
     SplitButton.view req opts |> Renderable.toNode
 
 
-{-| Find a child by its slot attribute. -}
+{-| Find a child by its slot attribute.
+-}
 childWithSlot : String -> Node.Node msg -> Maybe (Node.Node msg)
 childWithSlot slotName n =
     Node.childrenOf n

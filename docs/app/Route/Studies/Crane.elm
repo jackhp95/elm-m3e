@@ -548,8 +548,8 @@ destinationField model =
 passengersField : Model -> Html Msg
 passengersField model =
     Select.view { label = "Passengers" }
-        [ Select.withId "crane-passengers"
-        , Select.withOptions
+        [ Select.id "crane-passengers"
+        , Select.options
             (List.map
                 (\n ->
                     Select.option
@@ -583,9 +583,9 @@ departField model =
             , icon = "flight_takeoff"
             }
         , DatePicker.view
-            [ DatePicker.withId "crane-depart"
-            , DatePicker.withLabel "Depart"
-            , DatePicker.withClearable False
+            [ DatePicker.id "crane-depart"
+            , DatePicker.label "Depart"
+            , DatePicker.clearable False
             , DatePicker.onChange SetDepart
             ]
             |> toHtml
@@ -605,10 +605,10 @@ returnOrTimeField model =
                     , icon = "event"
                     }
                 , DatePicker.view
-                    [ DatePicker.withId "crane-return"
-                    , DatePicker.withLabel "Return"
-                    , DatePicker.withMinDate model.depart
-                    , DatePicker.withClearable True
+                    [ DatePicker.id "crane-return"
+                    , DatePicker.label "Return"
+                    , DatePicker.minDate model.depart
+                    , DatePicker.clearable True
                     , DatePicker.onChange SetReturn
                     ]
                     |> toHtml
@@ -618,9 +618,9 @@ returnOrTimeField model =
             div [ class "flex min-w-0 flex-col gap-1.5" ]
                 [ span [ class "text-label-md text-on-surface-variant" ] [ text "Departure time" ]
                 , TimePicker.view { label = "Preferred departure time" }
-                    [ TimePicker.withId "crane-time"
-                    , TimePicker.withValue model.time
-                    , TimePicker.withStep 300
+                    [ TimePicker.id "crane-time"
+                    , TimePicker.value model.time
+                    , TimePicker.step 300
                     , TimePicker.onChange SetTime
                     ]
                     |> toHtml

@@ -1,7 +1,8 @@
 module M3e.LoadingIndicator exposing
-    ( Variant(..), Option
-    , view
+    ( Option
+    , Variant(..)
     , variant
+    , view
     )
 
 {-| `<m3e-loading-indicator>` — an expressive, indeterminate spinner for short
@@ -9,14 +10,14 @@ waits.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   none — no accessible name required; the indicator is purely visual
-  - Options:    variant
-  - Slots:      none (leaf element)
+  - Required: none — no accessible name required; the indicator is purely visual
+  - Options: variant
+  - Slots: none (leaf element)
   - Properties: none (no boolean DOM properties)
-  - Attrs:      variant — via Node.rawAttr (Cem uses Html.Attributes.attribute;
-                opaque, no parent needs to introspect it)
-  - Escape:     none (leaf)
-  - Tag:        loadingIndicator
+  - Attrs: variant — via Node.rawAttr (Cem uses Html.Attributes.attribute;
+    opaque, no parent needs to introspect it)
+  - Escape: none (leaf)
+  - Tag: loadingIndicator
 
 The indicator is always indeterminate. For a tracked task with a known
 fraction, use `M3e.Progress`. For a content-placeholder shimmer, use
@@ -25,9 +26,9 @@ fraction, use `M3e.Progress`. For a content-placeholder shimmer, use
 -}
 
 import Cem.M3e.LoadingIndicator as Cem
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Visual style, mirroring the `m3e-loading-indicator` `variant` attribute.

@@ -1,9 +1,14 @@
 module M3e.Disclosure exposing
-    ( SectionOption, Option
-    , section, view
-    , sectionOpen, sectionDisabled, sectionHideToggle
-    , sectionOnToggle, sectionActions
+    ( Option
+    , SectionOption
     , multi
+    , section
+    , sectionActions
+    , sectionDisabled
+    , sectionHideToggle
+    , sectionOnToggle
+    , sectionOpen
+    , view
     )
 
 {-| `<m3e-accordion>` + `<m3e-expansion-panel>` — click-to-expand collapsible
@@ -12,18 +17,18 @@ sections (Material 3 Disclosure / Accordion).
 Spec (per docs/CONVENTIONS.md):
 
   - One section sub-component:
-      `section : { header : String, content : List (Renderable any msg) }
-               → List SectionOption → Renderable { section }`
+    `section : { header : String, content : List (Renderable any msg) }
+    → List SectionOption → Renderable { section }`
   - View:
-      `view : { sections : List (Renderable { section }) }
-            → List Option → Renderable { disclosure }`
-  - Slots:      header (<span slot="header"> wrapping the title String)
-                default (content region — free row, may include html escape)
-                actions (<div slot="actions"> wrapping action buttons)
+    `view : { sections : List (Renderable { section }) }
+    → List Option → Renderable { disclosure }`
+  - Slots: header (<span slot="header"> wrapping the title String)
+    default (content region — free row, may include html escape)
+    actions (<div slot="actions"> wrapping action buttons)
   - Properties: open, disabled, hide-toggle (section)
-                multi (accordion)
-  - Events:     opened/closed → sectionOnToggle (Bool -> msg)
-  - Tags:       section → m3e-expansion-panel; view → m3e-accordion
+    multi (accordion)
+  - Events: opened/closed → sectionOnToggle (Bool -> msg)
+  - Tags: section → m3e-expansion-panel; view → m3e-accordion
 
 **Simplification vs Ui.Disclosure** — Ui.Disclosure had two constructor paths
 (`single` / `accordion`) and doubled modifier families for single panels vs
@@ -36,9 +41,9 @@ This is cleaner and avoids the confusing split API.
 import Cem.M3e.Accordion as CemAccordion
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias SectionOption msg =
@@ -49,19 +54,22 @@ type alias Option msg =
     Internal.Option AccordionConfig msg
 
 
-{-| Whether the section is initially expanded. Default false. -}
+{-| Whether the section is initially expanded. Default false.
+-}
 sectionOpen : Bool -> SectionOption msg
 sectionOpen b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Disable the section (cannot be toggled by the user). Default false. -}
+{-| Disable the section (cannot be toggled by the user). Default false.
+-}
 sectionDisabled : Bool -> SectionOption msg
 sectionDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Hide the expansion toggle icon. Default false. -}
+{-| Hide the expansion toggle icon. Default false.
+-}
 sectionHideToggle : Bool -> SectionOption msg
 sectionHideToggle b =
     Internal.option (\c -> { c | hideToggle = b })
@@ -75,7 +83,8 @@ sectionOnToggle h =
     Internal.option (\c -> { c | onToggle = Just h })
 
 
-{-| Action buttons shown in the section's `actions` slot. -}
+{-| Action buttons shown in the section's `actions` slot.
+-}
 sectionActions : List (Renderable { button : Supported } msg) -> SectionOption msg
 sectionActions xs =
     Internal.option (\c -> { c | actions = xs })

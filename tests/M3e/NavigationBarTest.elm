@@ -9,6 +9,7 @@ import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers -----------------------------------------------------------------
 
 
@@ -23,7 +24,8 @@ navNode opts items =
         |> Renderable.toNode
 
 
-{-| Build a bar item with a required label. -}
+{-| Build a bar item with a required label.
+-}
 barItem : String -> List (NavBar.ItemOption String) -> Renderable.Renderable { navItem : Renderable.Supported } String
 barItem lbl opts =
     NavBar.item { icon = fakeIcon, label = lbl } opts
@@ -38,9 +40,9 @@ suite =
                 navNode [] []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-nav-bar")
-        , test "withId sets the 'id' attribute" <|
+        , test "id sets the 'id' attribute" <|
             \_ ->
-                navNode [ NavBar.withId "main-nav" ] []
+                navNode [ NavBar.id "main-nav" ] []
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "main-nav")
         , test "item count reflects the items list" <|

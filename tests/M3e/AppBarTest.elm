@@ -2,12 +2,12 @@ module M3e.AppBarTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import Test exposing (Test, describe, test)
 import M3e.AppBar as AppBar
 import M3e.Heading as Heading
 import M3e.IconButton as IB
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import Test exposing (Test, describe, test)
 
 
 suite : Test

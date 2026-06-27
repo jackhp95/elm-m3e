@@ -1,7 +1,9 @@
 module M3e.Toc exposing
     ( Option
+    , maxDepth
+    , overline
+    , title
     , view
-    , maxDepth, title, overline
     )
 
 {-| `<m3e-toc>` — a table of contents that auto-generates in-page navigation
@@ -10,24 +12,24 @@ view as the user scrolls.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { for : String }
-                (`for` = the DOM id of the content area to index; a TOC without
-                a target is non-functional — required by the a11y/usefulness rule)
-  - Options:    maxDepth, title, overline
-  - Slots:      "title" ← a `<span>` carrying the heading above the list;
-                "overline" ← a `<span>` carrying the small eyebrow label
-                (both are named slots — inject with Node.withSlot)
+  - Required: { for : String }
+    (`for` = the DOM id of the content area to index; a TOC without
+    a target is non-functional — required by the a11y/usefulness rule)
+  - Options: maxDepth, title, overline
+  - Slots: "title" ← a `<span>` carrying the heading above the list;
+    "overline" ← a `<span>` carrying the small eyebrow label
+    (both are named slots — inject with Node.withSlot)
   - Properties: max-depth (DOM property, via Node.property — introspectable)
-  - Attrs:      for via Node.attribute (relational — introspectable)
-  - Escape:     none (leaf structure; callers style via host attributes)
-  - Tag:        toc
+  - Attrs: for via Node.attribute (relational — introspectable)
+  - Escape: none (leaf structure; callers style via host attributes)
+  - Tag: toc
 
 -}
 
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Option msg =

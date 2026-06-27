@@ -1,9 +1,21 @@
 module M3e.Node exposing
-    ( Node(..), Attr(..)
-    , element, text, raw
-    , attribute, property, rawAttr, on
-    , withSlot, setAttribute, map, toHtml
-    , findAttribute, findProperty, tagOf, childrenOf
+    ( Attr(..)
+    , Node(..)
+    , attribute
+    , childrenOf
+    , element
+    , findAttribute
+    , findProperty
+    , map
+    , on
+    , property
+    , raw
+    , rawAttr
+    , setAttribute
+    , tagOf
+    , text
+    , toHtml
+    , withSlot
     )
 
 {-| The introspectable IR. Relational attrs (`id`/`for`/`slot`/`aria-*`) and

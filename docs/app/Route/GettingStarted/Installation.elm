@@ -132,13 +132,13 @@ view _ _ =
             [ section [ class "space-y-3" ]
                 [ pageHeading
                 , p [ class "text-body-lg text-on-surface-variant" ]
-                    [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the Ui.* source into your project; a registry release is planned." ]
+                    [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
                 ]
             , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ stepHeading "1. Add the Elm source"
                 , p [ class "text-body-md text-on-surface-variant" ]
-                    [ text "Copy the Ui.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
+                    [ text "Copy the M3e.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
                 , code_ Json """
 {
   "source-directories": [ "src", "vendor/elm-m3e" ]
@@ -173,9 +173,9 @@ import "@m3e/web/all";
             , section [ class "space-y-3" ]
                 [ stepHeading "4. Wrap your app in a theme"
                 , p [ class "text-body-md text-on-surface-variant" ]
-                    [ text "A single Ui.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
+                    [ text "A single M3e.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
                 , code_ Elm """
-import Ui.Theme as Theme
+import M3e.Theme as Theme
 
 Theme.new
     |> Theme.withSeedColor "#6750A4"

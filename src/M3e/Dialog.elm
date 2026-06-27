@@ -1,7 +1,13 @@
 module M3e.Dialog exposing
     ( Option
+    , actions
+    , alert
+    , closeButton
+    , closeLabel
+    , dismissible
+    , onClose
+    , open
     , view
-    , open, onClose, alert, closeButton, dismissible, closeLabel, actions
     )
 
 {-| `<m3e-dialog>` — a modal surface for a single focused task (Material 3
@@ -9,19 +15,19 @@ Dialogs).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { headline : String, content : List (Renderable any msg) }
-                headline → visible title, always present (accessibility + UX);
-                content  → the dialog body region (default slot, free row)
-  - Options:    open, onClose, alert, closeButton, dismissible, closeLabel, actions
-  - Slots:      header (headline in <span slot="header">)
-                default (content region — free row, may include html escape)
-                actions (<div slot="actions"> wrapping the button list)
-                close-icon (not exposed here; use Renderable.element for custom)
+  - Required: { headline : String, content : List (Renderable any msg) }
+    headline → visible title, always present (accessibility + UX);
+    content → the dialog body region (default slot, free row)
+  - Options: open, onClose, alert, closeButton, dismissible, closeLabel, actions
+  - Slots: header (headline in <span slot="header">)
+    default (content region — free row, may include html escape)
+    actions (<div slot="actions"> wrapping the button list)
+    close-icon (not exposed here; use Renderable.element for custom)
   - Properties: open (bool), alert (bool), dismissible (bool — close button),
-                disable-close (bool — ESC/scrim blocking, inverted from the
-                `dismissible` option below)
-  - Events:     closed → onClose msg; cancel → onClose msg
-  - Tag:        dialog
+    disable-close (bool — ESC/scrim blocking, inverted from the
+    `dismissible` option below)
+  - Events: closed → onClose msg; cancel → onClose msg
+  - Tag: dialog
 
 **Naming fix vs Ui.Dialog** — Ui.Dialog had two boolean modifiers with
 confusing names. Here the options are clearly named:
@@ -40,16 +46,17 @@ confusing names. Here the options are clearly named:
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Whether the dialog is open. Sets the `open` DOM property. Default false. -}
+{-| Whether the dialog is open. Sets the `open` DOM property. Default false.
+-}
 open : Bool -> Option msg
 open b =
     Internal.option (\c -> { c | open = b })

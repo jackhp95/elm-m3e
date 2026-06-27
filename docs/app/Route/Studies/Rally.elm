@@ -548,8 +548,8 @@ monthSelect : Model -> Html Msg
 monthSelect model =
     div [ class "min-w-[9rem]" ]
         [ Select.view { label = "Month" }
-            [ Select.withId "rally-month"
-            , Select.withOptions
+            [ Select.id "rally-month"
+            , Select.options
                 [ Select.option { value = "january", label = "January" }
                     [ Select.optionSelected (model.month == January) ]
                 , Select.option { value = "february", label = "February" }
@@ -787,10 +787,10 @@ billsPanel =
             [ span [ class "text-title-md font-medium" ] [ text "Due-date calendar" ]
             , div [ class "rounded-md-corner-large bg-surface-container p-2" ]
                 [ Calendar.view
-                    [ Calendar.withId "rally-bill-calendar"
-                    , Calendar.withDate "2024-04-01"
-                    , Calendar.withMinDate "2024-04-01"
-                    , Calendar.withMaxDate "2024-04-30"
+                    [ Calendar.id "rally-bill-calendar"
+                    , Calendar.date "2024-04-01"
+                    , Calendar.minDate "2024-04-01"
+                    , Calendar.maxDate "2024-04-30"
                     ]
                     |> toHtml
                 ]
@@ -1009,7 +1009,7 @@ snackbarSlot model =
 
         Just message ->
             Snackbar.view { message = message }
-                [ Snackbar.withId ("rally-snackbar-" ++ message)
+                [ Snackbar.id ("rally-snackbar-" ++ message)
                 , Snackbar.dismissible True
                 , Snackbar.duration 4000
                 ]

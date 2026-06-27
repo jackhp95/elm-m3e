@@ -1,7 +1,7 @@
 module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 {-| Documentation home for `m3e-builder` / `elm-m3e` — the type-safe, MISI Elm
-builder layer (`Ui.*`) over matraic's `@m3e/web` Material 3 Expressive web
+builder layer (`M3e.*`) over matraic's `@m3e/web` Material 3 Expressive web
 components.
 
 The app shell (`Shared.elm`) owns the `<m3e-theme>`, the top app bar, and the
@@ -142,10 +142,10 @@ highlights =
         , div [ class "grid gap-4 sm:grid-cols-3" ]
             [ highlightCard "verified"
                 "Type-safe slots"
-                "Containers take typed children — an icon slot can only hold a Ui.Icon. Invalid compositions are compile errors, not runtime no-ops."
+                "Containers take typed children — an icon slot can only hold a M3e.Icon. Invalid compositions are compile errors, not runtime no-ops."
             , highlightCard "category"
                 "One module per component"
-                "53 Ui.* modules mirroring matraic's @m3e/web catalogue, each a small builder with required collaborators."
+                "53 M3e.* modules mirroring matraic's @m3e/web catalogue, each a small builder with required collaborators."
             , highlightCard "palette"
                 "Real M3 tokens"
                 "Dynamic color, density, contrast, motion and the full type scale flow from a single <m3e-theme> — switch them live in the app bar."
@@ -178,9 +178,9 @@ statusGrid =
         , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
             [ text "The honest current state of the standalone library." ]
         , div [ class "grid gap-4 sm:grid-cols-2" ]
-            [ statusCard "Complete (53)" "Every Ui.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
+            [ statusCard "Complete (53)" "Every M3e.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
             , statusCard "Documented" "Getting Started, Styles, and per-component pages (API tables) are generated; rich per-component demos and Studies are in progress."
-            , statusCard "Removed (1)" "Ui.Table — m3e ships no table element, so it does not belong in a library that wraps m3e."
+            , statusCard "Removed (1)" "M3e.Table — m3e ships no table element, so it does not belong in a library that wraps m3e."
             , statusCard "Generator fixed" "elm-cem now resolves TS string-literal aliases to real per-component Elm enums and emits shared attributes per-component — benefiting every binding library."
             ]
         ]

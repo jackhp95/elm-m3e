@@ -1,10 +1,25 @@
 module M3e.NavigationDrawer exposing
-    ( Side(..), Mode(..)
-    , LinkOption, GroupOption, Option
-    , link, group, view
-    , linkSelected, linkBadge, linkIcon, linkTarget
-    , groupSelected, groupOpen, groupBadge, groupIcon
-    , withId, withOpen, withSide, withMode, content
+    ( GroupOption
+    , LinkOption
+    , Mode(..)
+    , Option
+    , Side(..)
+    , content
+    , group
+    , groupBadge
+    , groupIcon
+    , groupOpen
+    , groupSelected
+    , id
+    , link
+    , linkBadge
+    , linkIcon
+    , linkSelected
+    , linkTarget
+    , mode
+    , open
+    , side
+    , view
     )
 
 {-| `<m3e-drawer-container>` + `<m3e-nav-menu>` + `<m3e-nav-menu-item>` —
@@ -42,15 +57,17 @@ re-renders.
 
 import Html exposing (Html)
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| Which edge the drawer anchors to. -}
+{-| Which edge the drawer anchors to.
+-}
 type Side
     = Start
     | End
@@ -70,101 +87,118 @@ type Mode
     | ModeAuto
 
 
-{-| Options on a `link` entry. -}
+{-| Options on a `link` entry.
+-}
 type alias LinkOption msg =
     Internal.Option (LinkConfig msg) msg
 
 
-{-| Options on a `group` entry. -}
+{-| Options on a `group` entry.
+-}
 type alias GroupOption msg =
     Internal.Option (GroupConfig msg) msg
 
 
-{-| Options on the container. -}
+{-| Options on the container.
+-}
 type alias Option msg =
     Internal.Option (ContainerConfig msg) msg
+
 
 
 -- LINK OPTION CONSTRUCTORS ----------------------------------------------------
 
 
-{-| Mark this link as the currently selected destination. -}
+{-| Mark this link as the currently selected destination.
+-}
 linkSelected : Bool -> LinkOption msg
 linkSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Attach a badge text to this link (e.g. an unread count). -}
+{-| Attach a badge text to this link (e.g. an unread count).
+-}
 linkBadge : String -> LinkOption msg
 linkBadge s =
     Internal.option (\c -> { c | badge = Just s })
 
 
-{-| Leading icon for this link. -}
+{-| Leading icon for this link.
+-}
 linkIcon : Renderable { icon : Supported } msg -> LinkOption msg
 linkIcon ic =
     Internal.option (\c -> { c | icon = Just ic })
 
 
-{-| Set the `target` attribute on the anchor (e.g. `"_blank"`). -}
+{-| Set the `target` attribute on the anchor (e.g. `"_blank"`).
+-}
 linkTarget : String -> LinkOption msg
 linkTarget s =
     Internal.option (\c -> { c | target = Just s })
 
 
+
 -- GROUP OPTION CONSTRUCTORS ---------------------------------------------------
 
 
-{-| Mark this group as selected (e.g. it contains the active destination). -}
+{-| Mark this group as selected (e.g. it contains the active destination).
+-}
 groupSelected : Bool -> GroupOption msg
 groupSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Expand the group. Default `False` (collapsed). -}
+{-| Expand the group. Default `False` (collapsed).
+-}
 groupOpen : Bool -> GroupOption msg
 groupOpen b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Attach a badge text to this group. -}
+{-| Attach a badge text to this group.
+-}
 groupBadge : String -> GroupOption msg
 groupBadge s =
     Internal.option (\c -> { c | badge = Just s })
 
 
-{-| Leading icon for this group. -}
+{-| Leading icon for this group.
+-}
 groupIcon : Renderable { icon : Supported } msg -> GroupOption msg
 groupIcon ic =
     Internal.option (\c -> { c | icon = Just ic })
 
 
+
 -- CONTAINER OPTION CONSTRUCTORS -----------------------------------------------
 
 
-{-| Set the `id` attribute on the `<m3e-drawer-container>`. -}
-withId : String -> Option msg
-withId s =
+{-| Set the `id` attribute on the `<m3e-drawer-container>`.
+-}
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
 {-| Control whether the drawer is open. Default `True` (open — the usual
 shape for a permanent side drawer). Pass `False` on mobile / overlay mode.
 -}
-withOpen : Bool -> Option msg
-withOpen b =
+open : Bool -> Option msg
+open b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Which edge the drawer anchors to. Default `Start`. -}
-withSide : Side -> Option msg
-withSide s =
+{-| Which edge the drawer anchors to. Default `Start`.
+-}
+side : Side -> Option msg
+side s =
     Internal.option (\c -> { c | side = s })
 
 
-{-| Set the display mode. Default `ModeSide`. -}
-withMode : Mode -> Option msg
-withMode m =
+{-| Set the display mode. Default `ModeSide`.
+-}
+mode : Mode -> Option msg
+mode m =
     Internal.option (\c -> { c | mode = m })
 
 
@@ -174,6 +208,7 @@ default slot of `<m3e-drawer-container>`).
 content : List (Html msg) -> Option msg
 content items =
     Internal.option (\c -> { c | content = items })
+
 
 
 -- ENTRY CONSTRUCTORS ----------------------------------------------------------
@@ -287,6 +322,7 @@ group req children opts =
         )
 
 
+
 -- VIEW (CONTAINER) ------------------------------------------------------------
 
 
@@ -301,8 +337,8 @@ group req children opts =
                 [ M3e.NavigationDrawer.groupOpen True ]
             ]
         }
-        [ M3e.NavigationDrawer.withMode M3e.NavigationDrawer.ModeAuto
-        , M3e.NavigationDrawer.withOpen model.drawerOpen
+        [ M3e.NavigationDrawer.mode M3e.NavigationDrawer.ModeAuto
+        , M3e.NavigationDrawer.open model.drawerOpen
         , M3e.NavigationDrawer.content [ pageBody ]
         ]
 
@@ -344,6 +380,7 @@ view req opts =
         )
 
 
+
 -- INTERNAL --------------------------------------------------------------------
 
 
@@ -360,7 +397,6 @@ defaultLinkConfig =
     { selected = False, badge = Nothing, icon = Nothing, target = Nothing }
 
 
-
 type alias GroupConfig msg =
     { selected : Bool
     , open : Bool
@@ -372,7 +408,6 @@ type alias GroupConfig msg =
 defaultGroupConfig : GroupConfig msg
 defaultGroupConfig =
     { selected = False, open = False, badge = Nothing, icon = Nothing }
-
 
 
 type alias ContainerConfig msg =
@@ -387,7 +422,6 @@ type alias ContainerConfig msg =
 defaultContainerConfig : ContainerConfig msg
 defaultContainerConfig =
     { id = Nothing, open = True, side = Start, mode = ModeSide, content = [] }
-
 
 
 modeString : Mode -> String

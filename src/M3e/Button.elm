@@ -1,37 +1,49 @@
 module M3e.Button exposing
-    ( Variant(..), Size(..), Shape(..), Option
+    ( Option
+    , Shape(..)
+    , Size(..)
+    , Variant(..)
+    , disabled
+    , download
+    , href
+    , leadingIcon
+    , onClick
+    , rel
+    , shape
+    , size
+    , target
+    , trailingIcon
     , view
-    , size, shape, disabled, onClick, href, target, rel, download
-    , leadingIcon, trailingIcon
     )
 
 {-| `<m3e-button>` — a labeled action button (Material 3 Buttons, 1:1).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { label : String, variant : Variant }  (label is visible -> it IS
-                the accessible name; no separate a11y field)
-  - Options:    size, shape, disabled, onClick, href(+target/rel/download),
-                leadingIcon, trailingIcon
-  - Slots:      icon -> single M3e.Icon (slot "icon"); trailing-icon likewise
+  - Required: { label : String, variant : Variant } (label is visible -> it IS
+    the accessible name; no separate a11y field)
+  - Options: size, shape, disabled, onClick, href(+target/rel/download),
+    leadingIcon, trailingIcon
+  - Slots: icon -> single M3e.Icon (slot "icon"); trailing-icon likewise
   - Properties: disabled (DOM property -> introspectable/testable)
-  - Attrs:      variant/size/shape/href/... via Cem.M3e.Button.* as RawAttr
-                (codegen name+enum safety; opaque, which is fine — no parent
-                introspects them)
-  - Escape:     none (leaf)
-  - Tag:        m3e-button
+  - Attrs: variant/size/shape/href/... via Cem.M3e.Button.\* as RawAttr
+    (codegen name+enum safety; opaque, which is fine — no parent
+    introspects them)
+  - Escape: none (leaf)
+  - Tag: m3e-button
 
 Action wiring (`onClick`/`href`) is last-write-wins options, not a required sum
 field — a button with no action is degenerate-but-valid (caught by a review rule,
 per ADR 0006 / the prior NoActionlessButton design).
+
 -}
 
 import Cem.M3e.Button as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type Variant
@@ -128,9 +140,16 @@ view req opts =
     let
         c =
             Internal.applyOptions opts
-                { size = Small, shape = Nothing, disabled = False, onClick = Nothing
-                , href = Nothing, target = Nothing, rel = Nothing, download = Nothing
-                , leadingIcon = Nothing, trailingIcon = Nothing
+                { size = Small
+                , shape = Nothing
+                , disabled = False
+                , onClick = Nothing
+                , href = Nothing
+                , target = Nothing
+                , rel = Nothing
+                , download = Nothing
+                , leadingIcon = Nothing
+                , trailingIcon = Nothing
                 }
     in
     Internal.fromNode
@@ -139,7 +158,11 @@ view req opts =
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
                 , Maybe.map (\v -> Node.rawAttr (Cem.shape (toCemShape v))) c.shape
-                , if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing
+                , if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 , Maybe.map (\v -> Node.rawAttr (Cem.href v)) c.href
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target
@@ -159,25 +182,46 @@ view req opts =
 toCemVariant : Variant -> Cem.Variant
 toCemVariant v =
     case v of
-        Elevated -> Cem.Elevated
-        Filled -> Cem.Filled
-        Tonal -> Cem.Tonal
-        Outlined -> Cem.Outlined
-        Text -> Cem.Text
+        Elevated ->
+            Cem.Elevated
+
+        Filled ->
+            Cem.Filled
+
+        Tonal ->
+            Cem.Tonal
+
+        Outlined ->
+            Cem.Outlined
+
+        Text ->
+            Cem.Text
 
 
 toCemSize : Size -> Cem.Size
 toCemSize s =
     case s of
-        ExtraSmall -> Cem.ExtraSmall
-        Small -> Cem.Small
-        Medium -> Cem.Medium
-        Large -> Cem.Large
-        ExtraLarge -> Cem.ExtraLarge
+        ExtraSmall ->
+            Cem.ExtraSmall
+
+        Small ->
+            Cem.Small
+
+        Medium ->
+            Cem.Medium
+
+        Large ->
+            Cem.Large
+
+        ExtraLarge ->
+            Cem.ExtraLarge
 
 
 toCemShape : Shape -> Cem.Shape
 toCemShape s =
     case s of
-        Rounded -> Cem.Rounded
-        Square -> Cem.Square
+        Rounded ->
+            Cem.Rounded
+
+        Square ->
+            Cem.Square

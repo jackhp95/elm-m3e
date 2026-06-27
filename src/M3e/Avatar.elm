@@ -1,22 +1,24 @@
 module M3e.Avatar exposing
     ( Option
+    , iconChild
+    , image
+    , initials
     , view
-    , image, initials, iconChild
     )
 
 {-| `<m3e-avatar>` — an image, initials, or icon representing a user.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { alt : String }  (→ aria-label on m3e-avatar; also → img[alt]
-                for the image variant)
-  - Options:    image (src String), initials (text String),
-                iconChild (icon Renderable)
-  - Slots:      default (the content child — img, text, or icon)
+  - Required: { alt : String } (→ aria-label on m3e-avatar; also → img[alt]
+    for the image variant)
+  - Options: image (src String), initials (text String),
+    iconChild (icon Renderable)
+  - Slots: default (the content child — img, text, or icon)
   - Properties: none (CEM Avatar has no attributes)
-  - Attrs:      aria-label (from required `alt`)
-  - Escape:     none (leaf)
-  - Tag:        avatar
+  - Attrs: aria-label (from required `alt`)
+  - Escape: none (leaf)
+  - Tag: avatar
 
 `Cem.M3e.Avatar` renders only its children (no fallback glyph), so content is
 supplied by exactly one of `image` / `initials` / `iconChild` (last-write-wins).
@@ -24,9 +26,9 @@ An avatar with no content option renders an empty circle.
 
 -}
 
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 

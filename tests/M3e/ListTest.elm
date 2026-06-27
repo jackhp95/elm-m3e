@@ -8,6 +8,7 @@ import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers -----------------------------------------------------------------
 
 
@@ -26,9 +27,9 @@ suite =
                 listNode [] []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-list")
-        , test "withId sets the 'id' attribute" <|
+        , test "id sets the 'id' attribute" <|
             \_ ->
-                listNode [ MList.withId "my-list" ] []
+                listNode [ MList.id "my-list" ] []
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "my-list")
         , test "item count reflects the items list" <|

@@ -1,7 +1,16 @@
 module M3e.ExtendedFab exposing
-    ( Variant(..), Size(..), Option
+    ( Option
+    , Size(..)
+    , Variant(..)
+    , disabled
+    , download
+    , href
+    , lowered
+    , onClick
+    , rel
+    , size
+    , target
     , view
-    , size, lowered, disabled, onClick, href, target, rel, download
     )
 
 {-| `<m3e-fab>` with `extended = True` — a floating action button with a
@@ -9,17 +18,17 @@ module M3e.ExtendedFab exposing
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { icon : String, label : String, variant : Variant }
-               (label is always visible → it IS the accessible name;
-               no separate a11y field needed)
-  - Options:    size, lowered, disabled, onClick, href(+target/rel/download)
-  - Slots:      default slot ← `<m3e-icon>` for the glyph;
-               "label" slot ← a `<span>` carrying the visible label text
+  - Required: { icon : String, label : String, variant : Variant }
+    (label is always visible → it IS the accessible name;
+    no separate a11y field needed)
+  - Options: size, lowered, disabled, onClick, href(+target/rel/download)
+  - Slots: default slot ← `<m3e-icon>` for the glyph;
+    "label" slot ← a `<span>` carrying the visible label text
   - Properties: extended (always True), disabled, lowered (all Node.property)
-  - Attrs:      variant/size via Cem.M3e.Fab.* as rawAttr
-  - Events:     click
-  - A11y:       label is visible text — no aria-label required
-  - Tag:        extendedFab
+  - Attrs: variant/size via Cem.M3e.Fab.\* as rawAttr
+  - Events: click
+  - A11y: label is visible text — no aria-label required
+  - Tag: extendedFab
 
 -}
 
@@ -27,12 +36,13 @@ import Cem.M3e.Fab as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Icon as Icon
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
-{-| FAB variant — seven M3 color roles. Default `PrimaryContainer`. -}
+{-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
+-}
 type Variant
     = Primary
     | PrimaryContainer
@@ -43,7 +53,8 @@ type Variant
     | Surface
 
 
-{-| FAB size. Default `Medium`. -}
+{-| FAB size. Default `Medium`.
+-}
 type Size
     = Small
     | Medium

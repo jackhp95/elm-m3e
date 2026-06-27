@@ -8,6 +8,7 @@ import M3e.Snackbar as Snackbar
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers -----------------------------------------------------------------
 
 
@@ -31,9 +32,9 @@ suite =
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 1
-        , test "withId sets the 'id' attribute" <|
+        , test "id sets the 'id' attribute" <|
             \_ ->
-                snackNode [ Snackbar.withId "save-snack" ]
+                snackNode [ Snackbar.id "save-snack" ]
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "save-snack")
         , test "id absent by default" <|

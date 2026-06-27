@@ -1,8 +1,13 @@
 module M3e.SideSheet exposing
-    ( Side(..), Option
+    ( Option
+    , Side(..)
+    , actions
+    , body
+    , modal
+    , onClose
+    , open
+    , side
     , view
-    , open, side, modal, onClose
-    , body, actions
     )
 
 {-| `<m3e-drawer-container>` used as a side sheet — a panel anchored to the
@@ -11,16 +16,16 @@ Side sheets).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { content : List (Renderable any msg) }
-                The host's main page content, projected into the drawer
-                container's default slot so the element manages open/close
-                layout transitions.
-  - Options:    open, side, modal, onClose, body, actions
-  - Slots:      start/end (panel body + actions), default (page content)
+  - Required: { content : List (Renderable any msg) }
+    The host's main page content, projected into the drawer
+    container's default slot so the element manages open/close
+    layout transitions.
+  - Options: open, side, modal, onClose, body, actions
+  - Slots: start/end (panel body + actions), default (page content)
   - Properties: start or end (Bool DOM property, name depends on `side` option)
-                start-mode / end-mode (attribute, "over"|"side")
-  - Events:     change → onClose (only on the CLOSED transition; see Fix A8)
-  - Tag:        sideSheet
+    start-mode / end-mode (attribute, "over"|"side")
+  - Events: change → onClose (only on the CLOSED transition; see Fix A8)
+  - Tag: sideSheet
 
 Note: m3e ships side-sheets via `<m3e-drawer-container>`. There is no
 dedicated `<m3e-side-sheet>` element.
@@ -35,12 +40,13 @@ message when the relevant property transitions to `false`.
 import Cem.M3e.DrawerContainer as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
-{-| Which edge the panel anchors to. Default `End`. -}
+{-| Which edge the panel anchors to. Default `End`.
+-}
 type Side
     = Start
     | End
@@ -51,13 +57,15 @@ type alias Option msg =
 
 
 {-| Whether the side sheet is open. Maps to the `start` or `end` DOM property
-(depending on the `side` option). Default false. -}
+(depending on the `side` option). Default false.
+-}
 open : Bool -> Option msg
 open b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Which edge the sheet anchors to. Default `End`. -}
+{-| Which edge the sheet anchors to. Default `End`.
+-}
 side : Side -> Option msg
 side s =
     Internal.option (\c -> { c | side = s })
@@ -88,7 +96,8 @@ body xs =
     Internal.option (\c -> { c | body = List.map Renderable.toNode xs })
 
 
-{-| Action buttons rendered at the bottom of the panel. -}
+{-| Action buttons rendered at the bottom of the panel.
+-}
 actions : List (Renderable { button : Supported } msg) -> Option msg
 actions xs =
     Internal.option (\c -> { c | actions = xs })
@@ -150,7 +159,8 @@ view req opts =
         )
 
 
-{-| The open/closed DOM property for the correct side. -}
+{-| The open/closed DOM property for the correct side.
+-}
 openProperty : Config msg -> Node.Attr msg
 openProperty c =
     case c.side of
@@ -161,7 +171,8 @@ openProperty c =
             Node.property "end" (Encode.bool c.open)
 
 
-{-| The mode attribute for the correct side (over=modal, side=non-modal). -}
+{-| The mode attribute for the correct side (over=modal, side=non-modal).
+-}
 modeAttr : Config msg -> Node.Attr msg
 modeAttr c =
     case c.side of
@@ -216,7 +227,8 @@ closedDecoder s msg =
         )
 
 
-{-| The panel node slotted into the start or end drawer slot. -}
+{-| The panel node slotted into the start or end drawer slot.
+-}
 panelNode : Config msg -> Node.Node msg
 panelNode c =
     let

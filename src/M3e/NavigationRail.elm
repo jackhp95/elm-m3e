@@ -1,9 +1,17 @@
 module M3e.NavigationRail exposing
-    ( Mode(..)
-    , ItemOption, Option
-    , view, item
-    , itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
-    , withId, mode
+    ( ItemOption
+    , Mode(..)
+    , Option
+    , id
+    , item
+    , itemBadge
+    , itemDisabled
+    , itemHref
+    , itemOnClick
+    , itemSelected
+    , itemSelectedIcon
+    , mode
+    , view
     )
 
 {-| `<m3e-nav-rail>` + `<m3e-nav-item>` — side-anchored primary navigation for
@@ -28,9 +36,10 @@ Items are the same `<m3e-nav-item>` element used by `M3e.NavigationBar`;
 import Cem.M3e.NavRail as CemNavRail
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -------------------------------------------------------------------
@@ -45,6 +54,7 @@ type Mode
     | Auto
 
 
+
 -- OPTION TYPES ------------------------------------------------------------
 
 
@@ -56,58 +66,68 @@ type alias Option msg =
     Internal.Option ContainerConfig msg
 
 
+
 -- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
 
 
 {-| Mark this item as selected (the `selected` DOM property on
-`<m3e-nav-item>`). -}
+`<m3e-nav-item>`).
+-}
 itemSelected : Bool -> ItemOption msg
 itemSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Fire a message when this destination is chosen. -}
+{-| Fire a message when this destination is chosen.
+-}
 itemOnClick : msg -> ItemOption msg
 itemOnClick msg_ =
     Internal.option (\c -> { c | onClick = Just msg_ })
 
 
 {-| Attach a badge count to the item. Rendered as an `<m3e-badge>` inside the
-item's default slot. -}
+item's default slot.
+-}
 itemBadge : String -> ItemOption msg
 itemBadge s =
     Internal.option (\c -> { c | badge = Just s })
 
 
 {-| Give the item a distinct glyph for its selected state (the `selected-icon`
-slot). Shown in place of the regular icon while the item is selected. -}
+slot). Shown in place of the regular icon while the item is selected.
+-}
 itemSelectedIcon : Renderable { icon : Supported } msg -> ItemOption msg
 itemSelectedIcon r =
     Internal.option (\c -> { c | selectedIcon = Just r })
 
 
-{-| Disable this destination. -}
+{-| Disable this destination.
+-}
 itemDisabled : Bool -> ItemOption msg
 itemDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Make this destination a link (the `href` attribute). -}
+{-| Make this destination a link (the `href` attribute).
+-}
 itemHref : String -> ItemOption msg
 itemHref s =
     Internal.option (\c -> { c | href = Just s })
 
 
-{-| Set the `id` attribute on the `<m3e-nav-rail>` element. -}
-withId : String -> Option msg
-withId id_ =
+{-| Set the `id` attribute on the `<m3e-nav-rail>` element.
+-}
+id : String -> Option msg
+id id_ =
     Internal.option (\c -> { c | id = Just id_ })
 
 
-{-| Set the display mode of the rail. Default `Auto`. -}
+{-| Set the display mode of the rail. Default `Auto`.
+-}
 mode : Mode -> Option msg
 mode m =
     Internal.option (\c -> { c | mode = m })
+
 
 
 -- ITEM CONSTRUCTOR --------------------------------------------------------
@@ -157,6 +177,7 @@ item req opts =
         )
 
 
+
 -- CONTAINER ---------------------------------------------------------------
 
 
@@ -192,6 +213,7 @@ view req opts =
             )
             (List.map Renderable.toNode req.items)
         )
+
 
 
 -- INTERNAL ----------------------------------------------------------------

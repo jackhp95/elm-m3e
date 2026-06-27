@@ -1,7 +1,12 @@
 module M3e.Toolbar exposing
-    ( Shape(..), Variant(..), Option
+    ( Option
+    , Shape(..)
+    , Variant(..)
+    , elevated
+    , shape
+    , variant
+    , vertical
     , view
-    , elevated, vertical, shape, variant
     )
 
 {-| `<m3e-toolbar>` — an in-flow row of contextual action controls (Material 3
@@ -9,33 +14,35 @@ Toolbars).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { content : List (Renderable any msg) }
-                A spec-heterogeneous free row — buttons, icon buttons, dividers,
-                custom controls, etc. No slot injection (default slot; html
-                escape is valid).
-  - Options:    elevated, vertical, shape, variant
-  - Slots:      default (content region — free row)
+  - Required: { content : List (Renderable any msg) }
+    A spec-heterogeneous free row — buttons, icon buttons, dividers,
+    custom controls, etc. No slot injection (default slot; html
+    escape is valid).
+  - Options: elevated, vertical, shape, variant
+  - Slots: default (content region — free row)
   - Properties: elevated, vertical (Bool DOM properties)
-  - Attrs:      shape, variant (rawAttr enums via Cem.M3e.Toolbar)
-  - Escape:     html (default-slot region; include via Renderable.html)
-  - Tag:        toolbar
+  - Attrs: shape, variant (rawAttr enums via Cem.M3e.Toolbar)
+  - Escape: html (default-slot region; include via Renderable.html)
+  - Tag: toolbar
 
 -}
 
 import Cem.M3e.Toolbar as Cem
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
-{-| The shape of the toolbar corners. `Square` is the element default. -}
+{-| The shape of the toolbar corners. `Square` is the element default.
+-}
 type Shape
     = Square
     | Rounded
 
 
-{-| The appearance variant of the toolbar. `Standard` is the element default. -}
+{-| The appearance variant of the toolbar. `Standard` is the element default.
+-}
 type Variant
     = Standard
     | Vibrant
@@ -45,7 +52,8 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Raise the toolbar above content with a shadow. Default false (flat). -}
+{-| Raise the toolbar above content with a shadow. Default false (flat).
+-}
 elevated : Bool -> Option msg
 elevated b =
     Internal.option (\c -> { c | elevated = b })
@@ -59,13 +67,15 @@ vertical b =
     Internal.option (\c -> { c | vertical = b })
 
 
-{-| Set the toolbar's corner shape. Default `Square`. -}
+{-| Set the toolbar's corner shape. Default `Square`.
+-}
 shape : Shape -> Option msg
 shape s =
     Internal.option (\c -> { c | shape = s })
 
 
-{-| Set the appearance variant. Default `Standard`. -}
+{-| Set the appearance variant. Default `Standard`.
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })

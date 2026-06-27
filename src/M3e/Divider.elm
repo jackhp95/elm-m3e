@@ -1,21 +1,24 @@
 module M3e.Divider exposing
     ( Option
+    , inset
+    , insetEnd
+    , insetStart
+    , vertical
     , view
-    , vertical, inset, insetStart, insetEnd
     )
 
 {-| `<m3e-divider>` — a thin rule that separates content in lists or containers.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   none — a divider carries no required accessible name or content
-  - Options:    vertical, inset, insetStart, insetEnd
-  - Slots:      none (leaf element)
+  - Required: none — a divider carries no required accessible name or content
+  - Options: vertical, inset, insetStart, insetEnd
+  - Slots: none (leaf element)
   - Properties: vertical, inset, inset-start, inset-end — all via Node.property
-                (Cem.M3e.Divider uses Html.Attributes.property for all four;
-                emitted via Node.property so tests can assert them)
-  - Escape:     none (leaf)
-  - Tag:        m3e-divider
+    (Cem.M3e.Divider uses Html.Attributes.property for all four;
+    emitted via Node.property so tests can assert them)
+  - Escape: none (leaf)
+  - Tag: m3e-divider
 
 Because there are no required fields, `view` takes only the options list:
 
@@ -24,9 +27,9 @@ Because there are no required fields, `view` takes only the options list:
 -}
 
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Config =
@@ -87,10 +90,26 @@ view opts =
     Internal.fromNode
         (Node.element "m3e-divider"
             (List.filterMap identity
-                [ if c.vertical then Just (Node.property "vertical" (Encode.bool True)) else Nothing
-                , if c.inset then Just (Node.property "inset" (Encode.bool True)) else Nothing
-                , if c.insetStart then Just (Node.property "inset-start" (Encode.bool True)) else Nothing
-                , if c.insetEnd then Just (Node.property "inset-end" (Encode.bool True)) else Nothing
+                [ if c.vertical then
+                    Just (Node.property "vertical" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.inset then
+                    Just (Node.property "inset" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.insetStart then
+                    Just (Node.property "inset-start" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.insetEnd then
+                    Just (Node.property "inset-end" (Encode.bool True))
+
+                  else
+                    Nothing
                 ]
             )
             []

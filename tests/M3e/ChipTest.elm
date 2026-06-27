@@ -2,12 +2,12 @@ module M3e.ChipTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import Test exposing (Test, describe, test)
 import M3e.Avatar as Avatar
 import M3e.Chip as Chip
 import M3e.Icon as Icon
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import Test exposing (Test, describe, test)
 
 
 suite : Test

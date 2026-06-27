@@ -502,7 +502,7 @@ navRail : NavigationRail.Mode -> Model -> Html Msg
 navRail railMode model =
     NavigationRail.view
         { items = List.map (railItem model.mailbox) allMailboxes }
-        [ NavigationRail.withId
+        [ NavigationRail.id
             (case railMode of
                 NavigationRail.Expanded ->
                     "reply-rail-expanded"
@@ -549,7 +549,7 @@ viewBottomNav model =
         [ Divider.view [] |> toHtml
         , NavigationBar.view
             { items = List.map (barItem model.mailbox) [ Inbox, Starred, Sent, Drafts ] }
-            [ NavigationBar.withId "reply-bar" ]
+            [ NavigationBar.id "reply-bar" ]
             |> toHtml
         ]
 
@@ -960,7 +960,7 @@ overflowMenu =
                     [ Menu.itemLeadingIcon (Icon.view { name = "delete" }) ]
                 ]
             }
-            [ Menu.withId "reply-overflow-menu" ]
+            [ Menu.id "reply-overflow-menu" ]
             |> toHtml
         ]
 
@@ -1018,26 +1018,26 @@ composeBody : ComposeFields -> Html Msg
 composeBody fields =
     div [ class "flex flex-col gap-4 pt-2" ]
         [ TextField.view { label = "To" }
-            [ TextField.withId "reply-compose-to"
-            , TextField.withVariant TextField.Outlined
-            , TextField.withInputType TextField.Email
-            , TextField.withValue fields.to
+            [ TextField.id "reply-compose-to"
+            , TextField.variant TextField.Outlined
+            , TextField.inputType TextField.Email
+            , TextField.value fields.to
             , TextField.onInput SetComposeTo
             ]
             |> toHtml
         , TextField.view { label = "Subject" }
-            [ TextField.withId "reply-compose-subject"
-            , TextField.withVariant TextField.Outlined
-            , TextField.withValue fields.subject
+            [ TextField.id "reply-compose-subject"
+            , TextField.variant TextField.Outlined
+            , TextField.value fields.subject
             , TextField.onInput SetComposeSubject
             ]
             |> toHtml
         , TextField.view { label = "Message" }
-            [ TextField.withId "reply-compose-body"
-            , TextField.withVariant TextField.Outlined
+            [ TextField.id "reply-compose-body"
+            , TextField.variant TextField.Outlined
             , TextField.multiline True
-            , TextField.withRows 5
-            , TextField.withValue fields.body
+            , TextField.rows 5
+            , TextField.value fields.body
             , TextField.onInput SetComposeBody
             ]
             |> toHtml
@@ -1067,7 +1067,7 @@ viewSnackbar model =
     case model.toast of
         Just message ->
             Snackbar.view { message = message }
-                [ Snackbar.withId "reply-snackbar"
+                [ Snackbar.id "reply-snackbar"
                 , Snackbar.action "Undo"
                 , Snackbar.dismissible True
                 ]

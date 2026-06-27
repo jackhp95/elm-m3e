@@ -1,8 +1,13 @@
 module M3e.SegmentedButton exposing
-    ( SegmentOption, ParentOption
-    , segment, view
-    , segmentDisabled, segmentOnClick, segmentValue
-    , disabled, multi
+    ( ParentOption
+    , SegmentOption
+    , disabled
+    , multi
+    , segment
+    , segmentDisabled
+    , segmentOnClick
+    , segmentValue
+    , view
     )
 
 {-| `<m3e-segmented-button>` + `<m3e-button-segment>` — a small row of
@@ -11,25 +16,27 @@ buttons for choosing one (or several) options (Material 3 Segmented buttons).
 Spec (per docs/CONVENTIONS.md):
 
   - Required (parent): { segments : List (Renderable { segment : Supported } msg) }
-  - Required (child):  { label : String, checked : Bool }
-  - Options (parent):  disabled, multi
-  - Options (child):   segmentDisabled, segmentOnClick, segmentValue
-  - Slots (parent):    default slot ← `m3e-button-segment` children (strict)
-  - Properties:        checked on each segment (Node.property); disabled, multi
-                      on parent (Node.property)
-  - Events:            click on each segment
-  - Tag:               segmentedButton / segment
+  - Required (child): { label : String, checked : Bool }
+  - Options (parent): disabled, multi
+  - Options (child): segmentDisabled, segmentOnClick, segmentValue
+  - Slots (parent): default slot ← `m3e-button-segment` children (strict)
+  - Properties: checked on each segment (Node.property); disabled, multi
+    on parent (Node.property)
+  - Events: click on each segment
+  - Tag: segmentedButton / segment
 
 -}
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- SEGMENT (child) ---------------------------------------------------------
+
 
 type SegmentOption msg
     = SegmentDisabled Bool
@@ -37,20 +44,23 @@ type SegmentOption msg
     | SegmentValue String
 
 
-{-| Disable this individual segment. -}
+{-| Disable this individual segment.
+-}
 segmentDisabled : Bool -> SegmentOption msg
 segmentDisabled =
     SegmentDisabled
 
 
-{-| Wire a click handler for this segment. -}
+{-| Wire a click handler for this segment.
+-}
 segmentOnClick : msg -> SegmentOption msg
 segmentOnClick =
     SegmentOnClick
 
 
 {-| Set the DOM form-submission value for this segment (defaults to the
-label when omitted). -}
+label when omitted).
+-}
 segmentValue : String -> SegmentOption msg
 segmentValue =
     SegmentValue
@@ -113,20 +123,24 @@ segment req opts =
         )
 
 
+
 -- PARENT ------------------------------------------------------------------
+
 
 type ParentOption msg
     = Disabled Bool
     | Multi Bool
 
 
-{-| Disable the whole segmented button group. -}
+{-| Disable the whole segmented button group.
+-}
 disabled : Bool -> ParentOption msg
 disabled =
     Disabled
 
 
-{-| Allow multiple segments to be selected simultaneously. -}
+{-| Allow multiple segments to be selected simultaneously.
+-}
 multi : Bool -> ParentOption msg
 multi =
     Multi

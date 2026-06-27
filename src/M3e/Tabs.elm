@@ -1,10 +1,20 @@
 module M3e.Tabs exposing
-    ( Variant(..), HeaderPosition(..)
-    , TabOption, PanelOption, Option
-    , tab, panel, view
-    , tabSelected, tabDisabled, tabFor, tabOnClick
+    ( HeaderPosition(..)
+    , Option
+    , PanelOption
+    , TabOption
+    , Variant(..)
+    , headerPosition
+    , panel
     , panelId
-    , stretch, variant, headerPosition
+    , stretch
+    , tab
+    , tabDisabled
+    , tabFor
+    , tabOnClick
+    , tabSelected
+    , variant
+    , view
     )
 
 {-| `<m3e-tabs>` + `<m3e-tab>` + `<m3e-tab-panel>` — in-page navigation
@@ -13,17 +23,17 @@ between related content sections (Material 3 Tabs).
 Spec (per docs/CONVENTIONS.md):
 
   - Two sub-components:
-      `tab  : { label : String } → List TabOption → Renderable { tab }`
-      `panel: { content }       → List PanelOption → Renderable { tabPanel }`
+    `tab  : { label : String } → List TabOption → Renderable { tab }`
+    `panel: { content }       → List PanelOption → Renderable { tabPanel }`
   - View:
-      `view : { tabs, panels } → List Option → Renderable { tabs }`
-  - Tabs default-slot   ← m3e-tab children (no slot injection)
-  - Panels panel-slot   ← m3e-tab-panel children (Node.withSlot "panel")
+    `view : { tabs, panels } → List Option → Renderable { tabs }`
+  - Tabs default-slot ← m3e-tab children (no slot injection)
+  - Panels panel-slot ← m3e-tab-panel children (Node.withSlot "panel")
   - Properties: selected (tab), disabled (tab), stretch (strip)
-  - Attrs:      for (tab, relational), id (panel, relational),
-                variant / header-position (strip, rawAttr enums)
-  - Events:     click → tabOnClick msg (per-tab)
-  - Tag:        tabs
+  - Attrs: for (tab, relational), id (panel, relational),
+    variant / header-position (strip, rawAttr enums)
+  - Events: click → tabOnClick msg (per-tab)
+  - Tag: tabs
 
 Wiring `<m3e-tab for=X>` ↔ `<m3e-tab-panel id=X>` is the caller's
 responsibility via `tabFor` / `panelId` options — they choose meaningful,
@@ -34,9 +44,9 @@ stable ids.
 import Cem.M3e.Tabs as CemTabs
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| The appearance variant of the tabs strip.
@@ -69,25 +79,29 @@ type alias Option msg =
     Internal.Option StripConfig msg
 
 
-{-| Mark the tab as currently selected. Sets the `selected` DOM property. -}
+{-| Mark the tab as currently selected. Sets the `selected` DOM property.
+-}
 tabSelected : Bool -> TabOption msg
 tabSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Disable the tab. Sets the `disabled` DOM property. -}
+{-| Disable the tab. Sets the `disabled` DOM property.
+-}
 tabDisabled : Bool -> TabOption msg
 tabDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Wire the tab to a panel via its panel's id (the `for` attribute). -}
+{-| Wire the tab to a panel via its panel's id (the `for` attribute).
+-}
 tabFor : String -> TabOption msg
 tabFor s =
     Internal.option (\c -> { c | for = Just s })
 
 
-{-| Fire a message when the tab is clicked. -}
+{-| Fire a message when the tab is clicked.
+-}
 tabOnClick : msg -> TabOption msg
 tabOnClick m =
     Internal.option (\c -> { c | onClick = Just m })
@@ -101,19 +115,22 @@ panelId s =
     Internal.option (\c -> { c | id = Just s })
 
 
-{-| Stretch tabs to fill the header width. Default false. -}
+{-| Stretch tabs to fill the header width. Default false.
+-}
 stretch : Bool -> Option msg
 stretch b =
     Internal.option (\c -> { c | stretch = b })
 
 
-{-| Set the strip appearance variant. Default `Secondary`. -}
+{-| Set the strip appearance variant. Default `Secondary`.
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
 
-{-| Where the header strip sits relative to panels. Default `Before`. -}
+{-| Where the header strip sits relative to panels. Default `Before`.
+-}
 headerPosition : HeaderPosition -> Option msg
 headerPosition hp =
     Internal.option (\c -> { c | headerPosition = hp })

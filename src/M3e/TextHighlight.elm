@@ -1,23 +1,27 @@
 module M3e.TextHighlight exposing
-    ( MatchMode(..), Option
+    ( MatchMode(..)
+    , Option
+    , caseSensitive
+    , disabled
+    , mode
+    , term
     , view
-    , term, mode, caseSensitive, disabled
     )
 
 {-| `<m3e-text-highlight>` — highlights substrings matching a search term.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { content : List (Renderable any msg) }
-                (the text content to highlight inside; the type variable `any`
-                means the content can include the raw `html` escape)
-  - Options:    term, mode, caseSensitive, disabled
-  - Slots:      default slot ← arbitrary content (free row; no slot injected)
+  - Required: { content : List (Renderable any msg) }
+    (the text content to highlight inside; the type variable `any`
+    means the content can include the raw `html` escape)
+  - Options: term, mode, caseSensitive, disabled
+  - Slots: default slot ← arbitrary content (free row; no slot injected)
   - Properties: caseSensitive — via Node.property (Cem uses Html.Attributes.property)
-                disabled — via Node.property (Cem uses Html.Attributes.property)
-  - Attrs:      term, mode — via Node.rawAttr (Cem uses Html.Attributes.attribute)
-  - Escape:     html (default-slot region)
-  - Tag:        textHighlight
+    disabled — via Node.property (Cem uses Html.Attributes.property)
+  - Attrs: term, mode — via Node.rawAttr (Cem uses Html.Attributes.attribute)
+  - Escape: html (default-slot region)
+  - Tag: textHighlight
 
 Note: `m3e-text-highlight` is not in the 53 documented Material 3 components;
 it ships as a vendor utility. Included here for parity with the `Ui.*` surface.
@@ -26,9 +30,9 @@ it ships as a vendor utility. Included here for parity with the `Ui.*` surface.
 
 import Cem.M3e.TextHighlight as Cem
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| How the term is matched against the content. Default `Contains`.
@@ -98,8 +102,16 @@ view req opts =
             (List.filterMap identity
                 [ Maybe.map (\t -> Node.rawAttr (Cem.term t)) c.term
                 , Just (Node.rawAttr (Cem.mode (toCemMode c.mode)))
-                , if c.caseSensitive then Just (Node.property "case-sensitive" (Encode.bool True)) else Nothing
-                , if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing
+                , if c.caseSensitive then
+                    Just (Node.property "case-sensitive" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
                 ]
             )
             (List.map Renderable.toNode req.content)

@@ -1,23 +1,26 @@
 module M3e.Checkbox exposing
     ( Option
+    , checked
+    , disabled
+    , indeterminate
+    , onChange
     , view
-    , checked, indeterminate, disabled, onChange
     )
 
 {-| `<m3e-checkbox>` — a checkbox for selecting items or toggling a value (Material 3).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { name : String }
-                (the a11y label — checkbox renders bare with no visible text,
-                so a required aria-label is mandatory for accessibility)
-  - Options:    checked, indeterminate, disabled, onChange
-  - Slots:      none (leaf element)
+  - Required: { name : String }
+    (the a11y label — checkbox renders bare with no visible text,
+    so a required aria-label is mandatory for accessibility)
+  - Options: checked, indeterminate, disabled, onChange
+  - Slots: none (leaf element)
   - Properties: checked, indeterminate, disabled — all via Node.property so
-                a unit test can assert their state (Test.Html cannot)
-  - Events:     change → Bool (decoded from event.target.checked)
-  - Escape:     none (leaf)
-  - Tag:        m3e-checkbox
+    a unit test can assert their state (Test.Html cannot)
+  - Events: change → Bool (decoded from event.target.checked)
+  - Escape: none (leaf)
+  - Tag: m3e-checkbox
 
 Note on `checked`: `Cem.M3e.Checkbox.checked` delegates to
 `Html.Attributes.checked`, which Elm's virtual-DOM implements as
@@ -28,9 +31,9 @@ Note on `checked`: `Cem.M3e.Checkbox.checked` delegates to
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Config msg =
@@ -90,8 +93,16 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.name)
                 , Just (Node.property "checked" (Encode.bool c.checked))
-                , if c.indeterminate then Just (Node.property "indeterminate" (Encode.bool True)) else Nothing
-                , if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing
+                , if c.indeterminate then
+                    Just (Node.property "indeterminate" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map
                     (\f ->
                         Node.on "change"

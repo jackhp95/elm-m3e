@@ -1,4 +1,4 @@
-module M3e.Renderable exposing (Renderable, Supported, toNode, html, element)
+module M3e.Renderable exposing (Renderable, Supported, element, html, toNode)
 
 {-| One content type for every slot. Each component `view` pins its own kind by
 annotating its result (via `M3e.Internal.fromNode`). Two escapes:
@@ -19,17 +19,20 @@ import M3e.Node as Node exposing (Node)
 
 
 {-| Transparent alias for `M3e.Internal.Renderable`. Public consumers use this
-name; the canonical definition lives in Internal. -}
+name; the canonical definition lives in Internal.
+-}
 type alias Renderable supported msg =
     Internal.Renderable supported msg
 
 
-{-| Transparent alias for `M3e.Internal.Supported`. -}
+{-| Transparent alias for `M3e.Internal.Supported`.
+-}
 type alias Supported =
     Internal.Supported
 
 
-{-| Unwrap to the underlying `Node` for composition or rendering. -}
+{-| Unwrap to the underlying `Node` for composition or rendering.
+-}
 toNode : Renderable supported msg -> Node msg
 toNode =
     Internal.toNode
@@ -37,14 +40,16 @@ toNode =
 
 {-| Lift raw `Html` into a renderable that fits any **default-slot region**
 (`{ s | html : Supported }`). Do NOT use this in named slots — the slot
-attribute can't be stamped onto opaque `Html`. -}
+attribute can't be stamped onto opaque `Html`.
+-}
 html : Html msg -> Renderable { s | html : Supported } msg
 html h =
     Internal.fromNode (Node.raw h)
 
 
 {-| Build a named-slot-capable element. The parent can stamp `slot=` onto this
-node because it is a real IR element (not opaque `Html`). -}
+node because it is a real IR element (not opaque `Html`).
+-}
 element : { tag : String } -> List (Node.Attr msg) -> List (Node msg) -> Renderable { s | element : Supported } msg
 element config attrs children =
     Internal.fromNode (Node.element config.tag attrs children)

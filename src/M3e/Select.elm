@@ -1,8 +1,16 @@
 module M3e.Select exposing
-    ( OptionOption, Option
-    , option, optionSelected, optionDisabled
+    ( Option
+    , OptionOption
+    , disabled
+    , id
+    , multi
+    , onChange
+    , option
+    , optionDisabled
+    , optionSelected
+    , options
+    , required
     , view
-    , withId, withMulti, withRequired, withDisabled, withOptions, onChange
     )
 
 {-| `<m3e-select>` inside `<m3e-form-field>` with a proper `<label for=id>`
@@ -35,9 +43,10 @@ inert attribute on `<m3e-select>` — that never wired the accessible label.
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -47,12 +56,14 @@ type alias OptionConfig =
     { selected : Bool, disabled : Bool }
 
 
-{-| Options on an individual `<m3e-option>`. -}
+{-| Options on an individual `<m3e-option>`.
+-}
 type alias OptionOption msg =
     Internal.Option OptionConfig msg
 
 
-{-| Options on the `<m3e-select>` container. -}
+{-| Options on the `<m3e-select>` container.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -82,6 +93,7 @@ defaultConfig =
     }
 
 
+
 -- OPTION CONSTRUCTORS (ITEM) --------------------------------------------------
 
 
@@ -93,38 +105,43 @@ optionSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Disable this option. -}
+{-| Disable this option.
+-}
 optionDisabled : Bool -> OptionOption msg
 optionDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
+
 -- OPTION CONSTRUCTORS (CONTAINER) ---------------------------------------------
 
 
-{-| Set the `id` attribute on the `<m3e-select>`. -}
-withId : String -> Option msg
-withId s =
+{-| Set the `id` attribute on the `<m3e-select>`.
+-}
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
 {-| Enable multi-select (sets the `multi` DOM property on `<m3e-select>`).
 Default `False`.
 -}
-withMulti : Bool -> Option msg
-withMulti b =
+multi : Bool -> Option msg
+multi b =
     Internal.option (\c -> { c | multi = b })
 
 
-{-| Mark the select as required. -}
-withRequired : Bool -> Option msg
-withRequired b =
+{-| Mark the select as required.
+-}
+required : Bool -> Option msg
+required b =
     Internal.option (\c -> { c | required = b })
 
 
-{-| Disable the select. -}
-withDisabled : Bool -> Option msg
-withDisabled b =
+{-| Disable the select.
+-}
+disabled : Bool -> Option msg
+disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
@@ -136,10 +153,12 @@ onChange f =
     Internal.option (\c -> { c | onChange = Just f })
 
 
-{-| Supply the list of options to render inside `<m3e-select>`. -}
-withOptions : List (Renderable { selectOption : Supported } msg) -> Option msg
-withOptions os =
+{-| Supply the list of options to render inside `<m3e-select>`.
+-}
+options : List (Renderable { selectOption : Supported } msg) -> Option msg
+options os =
     Internal.option (\c -> { c | options = os })
+
 
 
 -- ITEM CONSTRUCTOR ------------------------------------------------------------
@@ -177,6 +196,7 @@ option req opts =
         )
 
 
+
 -- VIEW ------------------------------------------------------------------------
 
 
@@ -187,7 +207,7 @@ accessible-label association (#13).
 
     M3e.Select.view
         { label = "Plan" }
-        [ M3e.Select.withOptions
+        [ M3e.Select.options
             [ M3e.Select.option { value = "free", label = "Free" } []
             , M3e.Select.option { value = "pro", label = "Pro" }
                 [ M3e.Select.optionSelected True ]
@@ -205,7 +225,7 @@ view req opts =
         c =
             Internal.applyOptions opts defaultConfig
 
-        id =
+        fieldId =
             Maybe.withDefault (slugify req.label) c.id
     in
     Internal.fromNode
@@ -214,13 +234,13 @@ view req opts =
             (List.filterMap identity
                 [ Just
                     (Node.element "label"
-                        [ Node.attribute "for" id ]
+                        [ Node.attribute "for" fieldId ]
                         [ Node.text req.label ]
                     )
                 , Just
                     (Node.element "m3e-select"
                         (List.filterMap identity
-                            [ Just (Node.attribute "id" id)
+                            [ Just (Node.attribute "id" fieldId)
                             , if c.multi then
                                 Just (Node.property "multi" (Encode.bool True))
 
@@ -259,10 +279,12 @@ view req opts =
         )
 
 
+
 -- INTERNAL --------------------------------------------------------------------
 
 
-{-| Derive a fallback id from the label text. -}
+{-| Derive a fallback id from the label text.
+-}
 slugify : String -> String
 slugify label =
     let

@@ -2,9 +2,9 @@ module M3e.ShapeTest exposing (suite)
 
 import Cem.M3e.Shape
 import Expect
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable
-import M3e.Internal as Internal
 import M3e.Shape as Shape
 import Test exposing (Test, describe, test)
 

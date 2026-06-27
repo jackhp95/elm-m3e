@@ -655,7 +655,7 @@ viewRail : Model -> Html Msg
 viewRail model =
     NavigationRail.view
         { items = List.map (railItem model.department) departments }
-        [ NavigationRail.withId "shrine-rail"
+        [ NavigationRail.id "shrine-rail"
         , NavigationRail.mode NavigationRail.Expanded
         ]
         |> toHtml
@@ -1057,9 +1057,9 @@ viewDetailDialog model =
 
                 sizeSelect =
                     Select.view { label = "Size" }
-                        [ Select.withId "shrine-size"
-                        , Select.withRequired True
-                        , Select.withOptions
+                        [ Select.id "shrine-size"
+                        , Select.required True
+                        , Select.options
                             (List.map
                                 (\s ->
                                     Select.option { value = s, label = s }
@@ -1159,7 +1159,7 @@ viewSnackbar model =
                 , Html.Events.on "avt-snackbar-action" (Decode.succeed CartOpened)
                 ]
                 [ Snackbar.view { message = message }
-                    [ Snackbar.withId "shrine-snackbar"
+                    [ Snackbar.id "shrine-snackbar"
                     , Snackbar.action "View bag"
                     , Snackbar.dismissible True
                     , Snackbar.duration 4000

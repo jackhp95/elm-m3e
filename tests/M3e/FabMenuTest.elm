@@ -23,7 +23,8 @@ node opts =
     FabMenu.view req opts |> Renderable.toNode
 
 
-{-| Get the m3e-fab-menu node (second child of the root div). -}
+{-| Get the m3e-fab-menu node (second child of the root div).
+-}
 fabMenuNode : Node.Node msg -> Maybe (Node.Node msg)
 fabMenuNode n =
     Node.childrenOf n
@@ -31,7 +32,8 @@ fabMenuNode n =
         |> List.head
 
 
-{-| Get the m3e-fab trigger node (first child of the root div). -}
+{-| Get the m3e-fab trigger node (first child of the root div).
+-}
 fabTriggerNode : Node.Node msg -> Maybe (Node.Node msg)
 fabTriggerNode n =
     Node.childrenOf n

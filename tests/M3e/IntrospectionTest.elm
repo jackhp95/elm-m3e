@@ -3,7 +3,6 @@ module M3e.IntrospectionTest exposing (suite)
 import Expect
 import Html
 import Json.Encode as Encode
-import Test exposing (Test, describe, test)
 import M3e.AppBar as AppBar
 import M3e.Card as Card
 import M3e.Chip as Chip
@@ -11,6 +10,7 @@ import M3e.IconButton as IconButton
 import M3e.Node as Node
 import M3e.Renderable as Renderable
 import M3e.Search as Search
+import Test exposing (Test, describe, test)
 
 
 firstChild : Node.Node msg -> Maybe (Node.Node msg)

@@ -1,26 +1,37 @@
 module M3e.Fab exposing
-    ( Variant(..), Size(..), Option
+    ( Option
+    , Size(..)
+    , Variant(..)
+    , disabled
+    , download
+    , href
+    , label
+    , lowered
+    , onClick
+    , rel
+    , size
+    , target
+    , variant
     , view
-    , variant, size, lowered, disabled, onClick, href, target, rel, download, label
     )
 
 {-| `<m3e-fab>` — a floating action button for the primary action on a screen.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { icon : String, name : String }
-                (icon = glyph name; name = a11y label — FAB is icon-only with no
-                visible text, so a required aria-label is mandatory)
-  - Options:    variant, size, lowered, disabled, onClick, href(+target/rel/download),
-                label (extended-FAB visible text → sets `extended` property + slot "label")
-  - Slots:      default slot ← `<m3e-icon>` for the glyph;
-                "label" slot ← a span carrying the extended-FAB label text
+  - Required: { icon : String, name : String }
+    (icon = glyph name; name = a11y label — FAB is icon-only with no
+    visible text, so a required aria-label is mandatory)
+  - Options: variant, size, lowered, disabled, onClick, href(+target/rel/download),
+    label (extended-FAB visible text → sets `extended` property + slot "label")
+  - Slots: default slot ← `<m3e-icon>` for the glyph;
+    "label" slot ← a span carrying the extended-FAB label text
   - Properties: disabled, lowered, extended (all via Node.property — introspectable/testable)
-  - Attrs:      variant/size via Cem.M3e.Fab.* wrapped in Node.rawAttr
-                (codegen name+enum safety; opaque, which is fine — no parent introspects them)
-  - Events:     click
-  - A11y:       aria-label = name (required; m3e aria-hides its icon slot)
-  - Tag:        m3e-fab
+  - Attrs: variant/size via Cem.M3e.Fab.\* wrapped in Node.rawAttr
+    (codegen name+enum safety; opaque, which is fine — no parent introspects them)
+  - Events: click
+  - A11y: aria-label = name (required; m3e aria-hides its icon slot)
+  - Tag: m3e-fab
 
 -}
 
@@ -28,9 +39,9 @@ import Cem.M3e.Fab as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Icon as Icon
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
@@ -147,9 +158,21 @@ view req opts =
                 [ Just (Node.attribute "aria-label" req.name)
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
-                , if c.lowered then Just (Node.property "lowered" (Encode.bool True)) else Nothing
-                , if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing
-                , if c.label /= Nothing then Just (Node.property "extended" (Encode.bool True)) else Nothing
+                , if c.lowered then
+                    Just (Node.property "lowered" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
+                , if c.label /= Nothing then
+                    Just (Node.property "extended" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 , Maybe.map (\v -> Node.rawAttr (Cem.href v)) c.href
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target

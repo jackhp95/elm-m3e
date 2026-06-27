@@ -1,7 +1,10 @@
 module M3e.SplitPane exposing
-    ( Orientation(..), Option
+    ( Option
+    , Orientation(..)
+    , disabled
+    , label
+    , orientation
     , view
-    , orientation, disabled, label
     )
 
 {-| `<m3e-split-pane>` — a resizable two-pane layout with a movable drag
@@ -9,19 +12,19 @@ handle between the panes.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { start : List (Renderable any msg)
-                , end   : List (Renderable any msg) }
-                (arbitrary content regions for the two panes; both are
-                free-row — the `html` escape is valid inside either)
-  - Options:    orientation, disabled, label (accessible label for the handle)
-  - Slots:      "start" ← `m3e-content-pane` wrapping the start-side region;
-                "end"   ← `m3e-content-pane` wrapping the end-side region
-                (named slots — each pane is wrapped automatically)
+  - Required: { start : List (Renderable any msg)
+    , end : List (Renderable any msg) }
+    (arbitrary content regions for the two panes; both are
+    free-row — the `html` escape is valid inside either)
+  - Options: orientation, disabled, label (accessible label for the handle)
+  - Slots: "start" ← `m3e-content-pane` wrapping the start-side region;
+    "end" ← `m3e-content-pane` wrapping the end-side region
+    (named slots — each pane is wrapped automatically)
   - Properties: disabled (DOM property — introspectable)
-  - Attrs:      orientation via Node.rawAttr (Cem enum);
-                label via Node.attribute (string attr)
-  - Escape:     html (inside each pane region)
-  - Tag:        splitPane
+  - Attrs: orientation via Node.rawAttr (Cem enum);
+    label via Node.attribute (string attr)
+  - Escape: html (inside each pane region)
+  - Tag: splitPane
 
 Each content region is wrapped in an `<m3e-content-pane>` element (faithfully
 mirroring Ui.SplitPane) and assigned the appropriate slot name.
@@ -30,9 +33,9 @@ mirroring Ui.SplitPane) and assigned the appropriate slot name.
 
 import Cem.M3e.SplitPane as Cem
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Direction of the split.
@@ -52,19 +55,22 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the split orientation (default `Horizontal`). -}
+{-| Set the split orientation (default `Horizontal`).
+-}
 orientation : Orientation -> Option msg
 orientation o =
     Internal.option (\c -> { c | orientation = o })
 
 
-{-| Disable the drag handle (content still renders, controls go inert). -}
+{-| Disable the drag handle (content still renders, controls go inert).
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Accessible label for the drag handle (default: "Resize panes"). -}
+{-| Accessible label for the drag handle (default: "Resize panes").
+-}
 label : String -> Option msg
 label l =
     Internal.option (\c -> { c | label = Just l })
@@ -93,7 +99,11 @@ view req opts =
         (Node.element "m3e-split-pane"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.orientation (toCemOrientation c.orientation)))
-                , if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing
+                , if c.disabled then
+                    Just (Node.property "disabled" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map (\l -> Node.attribute "label" l) c.label
                 ]
             )

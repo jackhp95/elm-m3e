@@ -1,23 +1,28 @@
 module M3e.Badge exposing
-    ( Position(..), Option
+    ( Option
+    , Position(..)
+    , count
+    , dot
+    , forId
+    , label
+    , position
     , view
-    , dot, count, label, position, forId
     )
 
 {-| `<m3e-badge>` — a compact count, dot, or status label attached to a control.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   none — a badge has no required accessible name; its anchor
-                (`forId`) is optional and its content is chosen via options.
-  - Options:    dot, count, label (content type — last-write-wins), position, forId
-  - Slots:      default slot ← text content (for count / label variants)
+  - Required: none — a badge has no required accessible name; its anchor
+    (`forId`) is optional and its content is chosen via options.
+  - Options: dot, count, label (content type — last-write-wins), position, forId
+  - Slots: default slot ← text content (for count / label variants)
   - Properties: none (badge has no boolean DOM properties)
-  - Attrs:      size (string enum, RawAttr — set automatically from content type)
-                position (string enum, RawAttr)
-                for (introspectable Node.attribute — relational, links badge to a control)
-  - Escape:     none (leaf with text content)
-  - Tag:        m3e-badge
+  - Attrs: size (string enum, RawAttr — set automatically from content type)
+    position (string enum, RawAttr)
+    for (introspectable Node.attribute — relational, links badge to a control)
+  - Escape: none (leaf with text content)
+  - Tag: m3e-badge
 
 M3 recognises exactly two badge types:
 
@@ -30,9 +35,9 @@ The `count` option applies M3's 999+ truncation: values above 999 render as
 -}
 
 import Cem.M3e.Badge as Cem
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Where the badge sits relative to its anchor element (`forId`).

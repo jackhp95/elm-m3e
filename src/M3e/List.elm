@@ -1,16 +1,40 @@
 module M3e.List exposing
-    ( Variant(..)
-    , StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption, Option
+    ( ActionItemOption
+    , ExpandableItemOption
+    , Option
+    , OptionItemOption
+    , StaticItemOption
+    , Variant(..)
+    , actionDisabled
+    , actionItem
+    , actionLeading
+    , actionOnClick
+    , actionOverline
+    , actionSupporting
+    , actionTrailing
+    , divider
+    , expandable
+    , expandableDisabled
+    , expandableLeading
+    , expandableOpen
+    , expandableOverline
+    , expandableSupporting
+    , id
+    , item
+    , option
+    , optionDisabled
+    , optionLeading
+    , optionOnChange
+    , optionOverline
+    , optionSelected
+    , optionSupporting
+    , optionValue
+    , staticLeading
+    , staticOverline
+    , staticSupporting
+    , staticTrailing
+    , variant
     , view
-    , item, actionItem, option, divider, expandable
-    , staticLeading, staticTrailing, staticOverline, staticSupporting
-    , actionLeading, actionTrailing, actionOverline, actionSupporting
-    , actionDisabled, actionOnClick
-    , optionLeading, optionOverline, optionSupporting
-    , optionDisabled, optionSelected, optionValue, optionOnChange
-    , expandableLeading, expandableOverline, expandableSupporting
-    , expandableDisabled, expandableOpen
-    , withId, variant
     )
 
 {-| `<m3e-list>` + kind-typed item constructors — a vertical collection of rows
@@ -23,11 +47,11 @@ Spec (per docs/CONVENTIONS.md):
   - Required (item / actionItem / option / expandable): `{ headline }` — visible text
   - Required (expandable): `{ headline, children }` — nested rows in the items slot
   - Kinds → tags:
-      item        → `<m3e-list-item>` (static, non-interactive)
-      actionItem  → `<m3e-list-item-button>` (interactive)
-      option      → `<m3e-list-option>` (selectable)
-      divider     → `<m3e-divider>`
-      expandable  → `<m3e-expandable-list-item>`
+    item → `<m3e-list-item>` (static, non-interactive)
+    actionItem → `<m3e-list-item-button>` (interactive)
+    option → `<m3e-list-option>` (selectable)
+    divider → `<m3e-divider>`
+    expandable → `<m3e-expandable-list-item>`
   - Slots: leading / trailing (element); overline / supporting-text (String→span)
     expandable children land in the `items` slot
   - Properties: disabled (action/option/expandable), selected (option), open (expandable)
@@ -39,18 +63,21 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.List as CemList
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Visual style of the list. Default `Standard`. -}
+{-| Visual style of the list. Default `Standard`.
+-}
 type Variant
     = Standard
     | Segmented
+
 
 
 -- OPTION TYPES (KIND-SPECIFIC) --------------------------------------------
@@ -76,152 +103,178 @@ type alias Option msg =
     Internal.Option ContainerConfig msg
 
 
+
 -- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
 
 
-{-| Add a leading element to a static item. -}
+{-| Add a leading element to a static item.
+-}
 staticLeading : Renderable { element : Supported } msg -> StaticItemOption msg
 staticLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
 
-{-| Add a trailing element to a static item. -}
+{-| Add a trailing element to a static item.
+-}
 staticTrailing : Renderable { element : Supported } msg -> StaticItemOption msg
 staticTrailing r =
     Internal.option (\c -> { c | trailing = Just r })
 
 
-{-| Set overline text on a static item. -}
+{-| Set overline text on a static item.
+-}
 staticOverline : String -> StaticItemOption msg
 staticOverline s =
     Internal.option (\c -> { c | overline = Just s })
 
 
-{-| Set supporting text on a static item. -}
+{-| Set supporting text on a static item.
+-}
 staticSupporting : String -> StaticItemOption msg
 staticSupporting s =
     Internal.option (\c -> { c | supporting = Just s })
 
 
-{-| Add a leading element to an action item. -}
+{-| Add a leading element to an action item.
+-}
 actionLeading : Renderable { element : Supported } msg -> ActionItemOption msg
 actionLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
 
-{-| Add a trailing element to an action item. -}
+{-| Add a trailing element to an action item.
+-}
 actionTrailing : Renderable { element : Supported } msg -> ActionItemOption msg
 actionTrailing r =
     Internal.option (\c -> { c | trailing = Just r })
 
 
-{-| Set overline text on an action item. -}
+{-| Set overline text on an action item.
+-}
 actionOverline : String -> ActionItemOption msg
 actionOverline s =
     Internal.option (\c -> { c | overline = Just s })
 
 
-{-| Set supporting text on an action item. -}
+{-| Set supporting text on an action item.
+-}
 actionSupporting : String -> ActionItemOption msg
 actionSupporting s =
     Internal.option (\c -> { c | supporting = Just s })
 
 
-{-| Disable an action item. -}
+{-| Disable an action item.
+-}
 actionDisabled : Bool -> ActionItemOption msg
 actionDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Wire a click handler for an action item. -}
+{-| Wire a click handler for an action item.
+-}
 actionOnClick : msg -> ActionItemOption msg
 actionOnClick msg =
     Internal.option (\c -> { c | onClick = Just msg })
 
 
-{-| Add a leading element to a selectable option item. -}
+{-| Add a leading element to a selectable option item.
+-}
 optionLeading : Renderable { element : Supported } msg -> OptionItemOption msg
 optionLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
 
-{-| Set overline text on a selectable option item. -}
+{-| Set overline text on a selectable option item.
+-}
 optionOverline : String -> OptionItemOption msg
 optionOverline s =
     Internal.option (\c -> { c | overline = Just s })
 
 
-{-| Set supporting text on a selectable option item. -}
+{-| Set supporting text on a selectable option item.
+-}
 optionSupporting : String -> OptionItemOption msg
 optionSupporting s =
     Internal.option (\c -> { c | supporting = Just s })
 
 
-{-| Disable a selectable option item. -}
+{-| Disable a selectable option item.
+-}
 optionDisabled : Bool -> OptionItemOption msg
 optionDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Set whether a selectable option item is selected (the `selected` DOM property). -}
+{-| Set whether a selectable option item is selected (the `selected` DOM property).
+-}
 optionSelected : Bool -> OptionItemOption msg
 optionSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Set the form-submission value of a selectable option item. -}
+{-| Set the form-submission value of a selectable option item.
+-}
 optionValue : String -> OptionItemOption msg
 optionValue v =
     Internal.option (\c -> { c | value = Just v })
 
 
 {-| React to a selectable option being toggled. The handler receives the new
-selected state. -}
+selected state.
+-}
 optionOnChange : (Bool -> msg) -> OptionItemOption msg
 optionOnChange f =
     Internal.option (\c -> { c | onChange = Just f })
 
 
-{-| Add a leading element to an expandable item. -}
+{-| Add a leading element to an expandable item.
+-}
 expandableLeading : Renderable { element : Supported } msg -> ExpandableItemOption msg
 expandableLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
 
-{-| Set overline text on an expandable item. -}
+{-| Set overline text on an expandable item.
+-}
 expandableOverline : String -> ExpandableItemOption msg
 expandableOverline s =
     Internal.option (\c -> { c | overline = Just s })
 
 
-{-| Set supporting text on an expandable item. -}
+{-| Set supporting text on an expandable item.
+-}
 expandableSupporting : String -> ExpandableItemOption msg
 expandableSupporting s =
     Internal.option (\c -> { c | supporting = Just s })
 
 
-{-| Disable an expandable item. -}
+{-| Disable an expandable item.
+-}
 expandableDisabled : Bool -> ExpandableItemOption msg
 expandableDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Control the expanded state of an expandable item (the `open` DOM property). -}
+{-| Control the expanded state of an expandable item (the `open` DOM property).
+-}
 expandableOpen : Bool -> ExpandableItemOption msg
 expandableOpen b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Set the `id` attribute on the `<m3e-list>` element. -}
-withId : String -> Option msg
-withId id =
-    Internal.option (\c -> { c | id = Just id })
+{-| Set the `id` attribute on the `<m3e-list>` element.
+-}
+id : String -> Option msg
+id newId =
+    Internal.option (\c -> { c | id = Just newId })
 
 
-{-| Set the visual style of the list. Default `Standard`. -}
+{-| Set the visual style of the list. Default `Standard`.
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
+
 
 
 -- ITEM CONSTRUCTORS -------------------------------------------------------
@@ -319,7 +372,8 @@ option req opts =
         )
 
 
-{-| A thin separator row (`<m3e-divider>`). -}
+{-| A thin separator row (`<m3e-divider>`).
+-}
 divider : Renderable { listItem : Supported } msg
 divider =
     Internal.fromNode (Node.element "m3e-divider" [] [])
@@ -373,6 +427,7 @@ expandable req opts =
         )
 
 
+
 -- CONTAINER ---------------------------------------------------------------
 
 
@@ -409,6 +464,7 @@ view req opts =
         )
 
 
+
 -- INTERNAL ----------------------------------------------------------------
 
 
@@ -425,7 +481,6 @@ defaultStaticConfig =
     { leading = Nothing, trailing = Nothing, overline = Nothing, supporting = Nothing }
 
 
-
 type alias ActionConfig msg =
     { leading : Maybe (Renderable { element : Supported } msg)
     , trailing : Maybe (Renderable { element : Supported } msg)
@@ -438,10 +493,13 @@ type alias ActionConfig msg =
 
 defaultActionConfig : ActionConfig msg
 defaultActionConfig =
-    { leading = Nothing, trailing = Nothing, overline = Nothing, supporting = Nothing
-    , disabled = False, onClick = Nothing
+    { leading = Nothing
+    , trailing = Nothing
+    , overline = Nothing
+    , supporting = Nothing
+    , disabled = False
+    , onClick = Nothing
     }
-
 
 
 type alias OptionConfig msg =
@@ -457,10 +515,14 @@ type alias OptionConfig msg =
 
 defaultOptionConfig : OptionConfig msg
 defaultOptionConfig =
-    { leading = Nothing, overline = Nothing, supporting = Nothing
-    , disabled = False, selected = False, value = Nothing, onChange = Nothing
+    { leading = Nothing
+    , overline = Nothing
+    , supporting = Nothing
+    , disabled = False
+    , selected = False
+    , value = Nothing
+    , onChange = Nothing
     }
-
 
 
 type alias ExpandableConfig msg =
@@ -477,7 +539,6 @@ defaultExpandableConfig =
     { leading = Nothing, overline = Nothing, supporting = Nothing, disabled = False, open = False }
 
 
-
 type alias ContainerConfig =
     { id : Maybe String
     , variant : Variant
@@ -489,8 +550,8 @@ defaultContainerConfig =
     { id = Nothing, variant = Standard }
 
 
-
-{-| Build the common decoration children for any list item kind. -}
+{-| Build the common decoration children for any list item kind.
+-}
 decorationNodes :
     Maybe (Renderable { element : Supported } msg)
     -> Maybe String

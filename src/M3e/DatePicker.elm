@@ -1,12 +1,21 @@
 module M3e.DatePicker exposing
-    ( Variant(..), StartView(..)
-    , Option
-    , view
-    , withId, withDate, withVariant, withRange
-    , withMinDate, withMaxDate, withClearable
-    , withLabel, withConfirmLabel, withDismissLabel
-    , withStartAt, withStartView
+    ( Option
+    , StartView(..)
+    , Variant(..)
+    , clearable
+    , confirmLabel
+    , date
+    , dismissLabel
+    , id
+    , label
+    , maxDate
+    , minDate
     , onChange
+    , range
+    , startAt
+    , startView
+    , variant
+    , view
     )
 
 {-| `<m3e-datepicker>` — a text field that opens a pop-up calendar for picking
@@ -25,7 +34,7 @@ Spec (per docs/CONVENTIONS.md):
 
 `m3e-datepicker` dispatches `Event("change")` after the user confirms a pick.
 The selected date lives on `this.date` (a JS `Date` object) — NOT on
-`event.target.value`.  `Ui.DatePicker` read `target.value` via
+`event.target.value`. `Ui.DatePicker` read `target.value` via
 `Cem.M3e.Common.targetValue` — that was always a silent no-op.
 
 `M3e.DatePicker.onChange` uses the same roundabout pure-Elm decoder as
@@ -34,7 +43,7 @@ The selected date lives on `this.date` (a JS `Date` object) — NOT on
 → `Date.prototype.toJSON()` returns a quoted ISO string, and
 `Decode.decodeString Decode.string` unwraps it.
 
-This works with Elm 0.19 / elm/json 1.1.4.  If it breaks, the fix is:
+This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 
     elem.dispatchEvent(new CustomEvent('m3e-date-change', {
       detail: { date: e.target.date?.toISOString() ?? '' }, bubbles: true
@@ -46,9 +55,10 @@ This works with Elm 0.19 / elm/json 1.1.4.  If it breaks, the fix is:
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -67,7 +77,8 @@ type Variant
     | Modal
 
 
-{-| Which view the embedded calendar opens to. -}
+{-| Which view the embedded calendar opens to.
+-}
 type StartView
     = MonthView
     | YearView
@@ -113,78 +124,91 @@ defaultConfig =
     }
 
 
+
 -- OPTION CONSTRUCTORS ---------------------------------------------------------
 
 
-{-| Set the `id` attribute. -}
-withId : String -> Option msg
-withId s =
+{-| Set the `id` attribute.
+-}
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
-{-| Seed the picker with an initially selected date (ISO-8601). -}
-withDate : String -> Option msg
-withDate s =
+{-| Seed the picker with an initially selected date (ISO-8601).
+-}
+date : String -> Option msg
+date s =
     Internal.option (\c -> { c | date = Just s })
 
 
-{-| Choose the appearance variant. -}
-withVariant : Variant -> Option msg
-withVariant v =
+{-| Choose the appearance variant.
+-}
+variant : Variant -> Option msg
+variant v =
     Internal.option (\c -> { c | variant = Just v })
 
 
-{-| Enable range selection (the user can pick a start and an end date). -}
-withRange : Bool -> Option msg
-withRange b =
+{-| Enable range selection (the user can pick a start and an end date).
+-}
+range : Bool -> Option msg
+range b =
     Internal.option (\c -> { c | range = Just b })
 
 
-{-| Earliest selectable date (ISO-8601). -}
-withMinDate : String -> Option msg
-withMinDate s =
+{-| Earliest selectable date (ISO-8601).
+-}
+minDate : String -> Option msg
+minDate s =
     Internal.option (\c -> { c | minDate = Just s })
 
 
-{-| Latest selectable date (ISO-8601). -}
-withMaxDate : String -> Option msg
-withMaxDate s =
+{-| Latest selectable date (ISO-8601).
+-}
+maxDate : String -> Option msg
+maxDate s =
     Internal.option (\c -> { c | maxDate = Just s })
 
 
-{-| Allow the user to clear the selected date and close without picking. -}
-withClearable : Bool -> Option msg
-withClearable b =
+{-| Allow the user to clear the selected date and close without picking.
+-}
+clearable : Bool -> Option msg
+clearable b =
     Internal.option (\c -> { c | clearable = Just b })
 
 
-{-| Set the picker's displayed label (default "Select date"). -}
-withLabel : String -> Option msg
-withLabel s =
+{-| Set the picker's displayed label (default "Select date").
+-}
+label : String -> Option msg
+label s =
     Internal.option (\c -> { c | label = Just s })
 
 
-{-| Label for the confirm button (default "OK"). -}
-withConfirmLabel : String -> Option msg
-withConfirmLabel s =
+{-| Label for the confirm button (default "OK").
+-}
+confirmLabel : String -> Option msg
+confirmLabel s =
     Internal.option (\c -> { c | confirmLabel = Just s })
 
 
-{-| Label for the dismiss / cancel button (default "Cancel"). -}
-withDismissLabel : String -> Option msg
-withDismissLabel s =
+{-| Label for the dismiss / cancel button (default "Cancel").
+-}
+dismissLabel : String -> Option msg
+dismissLabel s =
     Internal.option (\c -> { c | dismissLabel = Just s })
 
 
-{-| Set the initial period to display (ISO-8601). -}
-withStartAt : String -> Option msg
-withStartAt s =
+{-| Set the initial period to display (ISO-8601).
+-}
+startAt : String -> Option msg
+startAt s =
     Internal.option (\c -> { c | startAt = Just s })
 
 
-{-| Set the initial view of the embedded calendar. -}
-withStartView : StartView -> Option msg
-withStartView sv =
+{-| Set the initial view of the embedded calendar.
+-}
+startView : StartView -> Option msg
+startView sv =
     Internal.option (\c -> { c | startView = Just sv })
 
 
@@ -198,15 +222,16 @@ onChange f =
     Internal.option (\c -> { c | onChange = Just f })
 
 
+
 -- VIEW ------------------------------------------------------------------------
 
 
 {-| Render the date picker.
 
     M3e.DatePicker.view
-        [ M3e.DatePicker.withLabel "Visit date"
-        , M3e.DatePicker.withMinDate todayIso
-        , M3e.DatePicker.withVariant M3e.DatePicker.Docked
+        [ M3e.DatePicker.label "Visit date"
+        , M3e.DatePicker.minDate todayIso
+        , M3e.DatePicker.variant M3e.DatePicker.Docked
         , M3e.DatePicker.onChange DateSelected
         ]
 
@@ -247,6 +272,7 @@ view opts =
             )
             []
         )
+
 
 
 -- INTERNAL --------------------------------------------------------------------

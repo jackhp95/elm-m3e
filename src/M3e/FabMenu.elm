@@ -1,7 +1,10 @@
 module M3e.FabMenu exposing
-    ( Variant(..), Option
-    , view, item
-    , variant, menuId
+    ( Option
+    , Variant(..)
+    , item
+    , menuId
+    , variant
+    , view
     )
 
 {-| `<m3e-fab-menu>` + `<m3e-fab>` trigger — a floating action button that
@@ -9,25 +12,26 @@ expands into a set of related actions.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { triggerIcon : String
-                , name : String   -- a11y aria-label for the FAB trigger
-                , items : List (Renderable { fabMenuItem : Supported } msg)
-                }
-                (items = homogeneous list of `m3e-fab-menu-item` children)
-  - Options:    variant (of the menu surface), menuId (relational wiring)
-  - Structure:  emits a wrapping `<div>` containing:
-                  (1) `<m3e-fab>` trigger: aria-label + icon + `<m3e-fab-menu-trigger for=menuId>`
-                  (2) `<m3e-fab-menu id=menuId>` with items
+  - Required: { triggerIcon : String
+    , name : String -- a11y aria-label for the FAB trigger
+    , items : List (Renderable { fabMenuItem : Supported } msg)
+    }
+    (items = homogeneous list of `m3e-fab-menu-item` children)
+  - Options: variant (of the menu surface), menuId (relational wiring)
+  - Structure: emits a wrapping `<div>` containing:
+    (1) `<m3e-fab>` trigger: aria-label + icon + `<m3e-fab-menu-trigger for=menuId>`
+    (2) `<m3e-fab-menu id=menuId>` with items
   - Properties: none
-  - Attrs:      variant via Node.rawAttr (Cem enum); for, id via Node.attribute
-  - Events:     click on items (via Node.on inside each m3e-fab-menu-item)
-  - Escape:     none (strict: items must be `m3e-fab-menu-item` children)
-  - Tag:        fabMenu
+  - Attrs: variant via Node.rawAttr (Cem enum); for, id via Node.attribute
+  - Events: click on items (via Node.on inside each m3e-fab-menu-item)
+  - Escape: none (strict: items must be `m3e-fab-menu-item` children)
+  - Tag: fabMenu
 
 BUG FIX #18: the previous `Ui.FabMenu` emitted `<m3e-menu-item>` children
 inside the FAB menu, but `<m3e-fab-menu>` adopts `<m3e-fab-menu-item>` children.
 There is no `Cem.M3e.FabMenuItem` atom — the `m3e-fab-menu-item` element is
 constructed directly via `Node.element`.
+
 
 ## Child constructor
 
@@ -39,12 +43,13 @@ constructed directly via `Node.element`.
 
 import Cem.M3e.FabMenu as Cem
 import Json.Decode as Decode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
-{-| Appearance variant of the menu surface (default `Primary`). -}
+{-| Appearance variant of the menu surface (default `Primary`).
+-}
 type Variant
     = Primary
     | Secondary
@@ -61,7 +66,8 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the menu surface variant (default `Primary`). -}
+{-| Set the menu surface variant (default `Primary`).
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })

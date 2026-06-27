@@ -1,13 +1,36 @@
 module M3e.Menu exposing
-    ( PositionX(..), PositionY(..), Variant(..)
+    ( CheckboxItemOption
     , ItemAction(..)
-    , ItemOption, CheckboxItemOption, RadioItemOption, Option
+    , ItemOption
+    , Option
+    , PositionX(..)
+    , PositionY(..)
+    , RadioItemOption
+    , Variant(..)
+    , checkboxChecked
+    , checkboxDisabled
+    , checkboxItem
+    , checkboxLeadingIcon
+    , checkboxTrailingIcon
+    , divider
+    , group
+    , id
+    , item
+    , itemDisabled
+    , itemLeadingIcon
+    , itemTrailingIcon
+    , menuVariant
+    , onToggle
+    , positionX
+    , positionY
+    , radioDisabled
+    , radioItem
+    , radioLeadingIcon
+    , radioSelected
+    , radioTrailingIcon
+    , submenu
+    , triggerFor
     , view
-    , item, checkboxItem, radioItem, divider, group, triggerFor
-    , itemLeadingIcon, itemTrailingIcon, itemDisabled
-    , checkboxChecked, checkboxLeadingIcon, checkboxTrailingIcon, checkboxDisabled
-    , radioSelected, radioLeadingIcon, radioTrailingIcon, radioDisabled
-    , withId, menuVariant, positionX, positionY, submenu, onToggle
     )
 
 {-| `<m3e-menu>` + kind-typed item constructors — an action menu anchored to a
@@ -28,8 +51,8 @@ Spec (per docs/CONVENTIONS.md):
   - Events: onToggle (toggle/newState on container), click per item
   - Tag: menu / menuItem
 
-Relational wiring — `withId` + `triggerFor` — is caller-driven: give the menu
-an id via `withId`, and nest `triggerFor menuId` inside any clickable control
+Relational wiring — `id` + `triggerFor` — is caller-driven: give the menu
+an id via `id`, and nest `triggerFor menuId` inside any clickable control
 via that control's escape/element slot or default slot.
 
 -}
@@ -37,36 +60,42 @@ via that control's escape/element slot or default slot.
 import Cem.M3e.Menu as CemMenu
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Horizontal placement of the menu relative to its trigger. Default `After`. -}
+{-| Horizontal placement of the menu relative to its trigger. Default `After`.
+-}
 type PositionX
     = After
     | Before
 
 
-{-| Vertical placement of the menu relative to its trigger. Default `Below`. -}
+{-| Vertical placement of the menu relative to its trigger. Default `Below`.
+-}
 type PositionY
     = Above
     | Below
 
 
-{-| Visual style of the menu surface. Default `Standard`. -}
+{-| Visual style of the menu surface. Default `Standard`.
+-}
 type Variant
     = Standard
     | Vibrant
 
 
-{-| The action a plain menu item performs — either a message or a link. -}
+{-| The action a plain menu item performs — either a message or a link.
+-}
 type ItemAction msg
     = Click msg
     | Link String
+
 
 
 -- OPTIONS -----------------------------------------------------------------
@@ -88,112 +117,131 @@ type alias Option msg =
     Internal.Option (ContainerConfig msg) msg
 
 
+
 -- SMART CONSTRUCTORS ------------------------------------------------------
 
 
-{-| Add a leading icon to a plain menu item. -}
+{-| Add a leading icon to a plain menu item.
+-}
 itemLeadingIcon : Renderable { icon : Supported } msg -> ItemOption msg
 itemLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
-{-| Add a trailing icon to a plain menu item. -}
+{-| Add a trailing icon to a plain menu item.
+-}
 itemTrailingIcon : Renderable { icon : Supported } msg -> ItemOption msg
 itemTrailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
 
-{-| Disable a plain menu item. -}
+{-| Disable a plain menu item.
+-}
 itemDisabled : Bool -> ItemOption msg
 itemDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Set the checked state of a checkbox item (the `checked` DOM property). -}
+{-| Set the checked state of a checkbox item (the `checked` DOM property).
+-}
 checkboxChecked : Bool -> CheckboxItemOption msg
 checkboxChecked b =
     Internal.option (\c -> { c | checked = b })
 
 
-{-| Add a leading icon to a checkbox item. -}
+{-| Add a leading icon to a checkbox item.
+-}
 checkboxLeadingIcon : Renderable { icon : Supported } msg -> CheckboxItemOption msg
 checkboxLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
-{-| Add a trailing icon to a checkbox item. -}
+{-| Add a trailing icon to a checkbox item.
+-}
 checkboxTrailingIcon : Renderable { icon : Supported } msg -> CheckboxItemOption msg
 checkboxTrailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
 
-{-| Disable a checkbox item. -}
+{-| Disable a checkbox item.
+-}
 checkboxDisabled : Bool -> CheckboxItemOption msg
 checkboxDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
 {-| Mark a radio item as selected (the `checked` DOM property on
-`<m3e-menu-item-radio>`). -}
+`<m3e-menu-item-radio>`).
+-}
 radioSelected : Bool -> RadioItemOption msg
 radioSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Add a leading icon to a radio item. -}
+{-| Add a leading icon to a radio item.
+-}
 radioLeadingIcon : Renderable { icon : Supported } msg -> RadioItemOption msg
 radioLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
-{-| Add a trailing icon to a radio item. -}
+{-| Add a trailing icon to a radio item.
+-}
 radioTrailingIcon : Renderable { icon : Supported } msg -> RadioItemOption msg
 radioTrailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
 
-{-| Disable a radio item. -}
+{-| Disable a radio item.
+-}
 radioDisabled : Bool -> RadioItemOption msg
 radioDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
 {-| Set the `id` attribute on the `<m3e-menu>` element (for the trigger to
-reference via `triggerFor`). -}
-withId : String -> Option msg
-withId s =
+reference via `triggerFor`).
+-}
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
-{-| Set the menu's appearance variant. Default `Standard`. -}
+{-| Set the menu's appearance variant. Default `Standard`.
+-}
 menuVariant : Variant -> Option msg
 menuVariant v =
     Internal.option (\c -> { c | variant = Just v })
 
 
-{-| Set the horizontal placement of the menu. Default `After`. -}
+{-| Set the horizontal placement of the menu. Default `After`.
+-}
 positionX : PositionX -> Option msg
 positionX px =
     Internal.option (\c -> { c | positionX = Just px })
 
 
-{-| Set the vertical placement of the menu. Default `Below`. -}
+{-| Set the vertical placement of the menu. Default `Below`.
+-}
 positionY : PositionY -> Option msg
 positionY py =
     Internal.option (\c -> { c | positionY = Just py })
 
 
-{-| Mark this menu as a submenu (flyout from a parent menu row). -}
+{-| Mark this menu as a submenu (flyout from a parent menu row).
+-}
 submenu : Bool -> Option msg
 submenu b =
     Internal.option (\c -> { c | submenu = b })
 
 
 {-| React to the menu opening or closing. The handler receives `True` when the
-menu opens, `False` when it closes. -}
+menu opens, `False` when it closes.
+-}
 onToggle : (Bool -> msg) -> Option msg
 onToggle toMsg =
     Internal.option (\c -> { c | onToggle = Just toMsg })
+
 
 
 -- ITEM CONSTRUCTORS -------------------------------------------------------
@@ -304,7 +352,8 @@ radioItem req opts =
         )
 
 
-{-| A thin separator row (`<m3e-divider>`) for use between menu items. -}
+{-| A thin separator row (`<m3e-divider>`) for use between menu items.
+-}
 divider : Renderable { menuItem : Supported } msg
 divider =
     Internal.fromNode (Node.element "m3e-divider" [] [])
@@ -356,6 +405,7 @@ triggerFor menuId =
         (Node.element "m3e-menu-trigger" [ Node.attribute "for" menuId ] [])
 
 
+
 -- CONTAINER ---------------------------------------------------------------
 
 
@@ -368,7 +418,7 @@ triggerFor menuId =
                 [ M3e.Menu.itemDisabled True ]
             ]
         }
-        [ M3e.Menu.withId "my-menu" ]
+        [ M3e.Menu.id "my-menu" ]
 
 Place a `triggerFor "my-menu"` inside your trigger control. Open/close is
 element-managed — no Elm state is needed.
@@ -409,6 +459,7 @@ view req opts =
         )
 
 
+
 -- INTERNAL ----------------------------------------------------------------
 
 
@@ -424,7 +475,6 @@ defaultItemConfig =
     { leadingIcon = Nothing, trailingIcon = Nothing, disabled = False }
 
 
-
 type alias CheckboxConfig msg =
     { checked : Bool
     , leadingIcon : Maybe (Renderable { icon : Supported } msg)
@@ -438,7 +488,6 @@ defaultCheckboxConfig =
     { checked = False, leadingIcon = Nothing, trailingIcon = Nothing, disabled = False }
 
 
-
 type alias RadioConfig msg =
     { selected : Bool
     , leadingIcon : Maybe (Renderable { icon : Supported } msg)
@@ -450,7 +499,6 @@ type alias RadioConfig msg =
 defaultRadioConfig : RadioConfig msg
 defaultRadioConfig =
     { selected = False, leadingIcon = Nothing, trailingIcon = Nothing, disabled = False }
-
 
 
 type alias ContainerConfig msg =
@@ -472,7 +520,6 @@ defaultConfig =
     , positionY = Nothing
     , onToggle = Nothing
     }
-
 
 
 itemChildren :

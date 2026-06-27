@@ -1,10 +1,16 @@
 module M3e.TimePicker exposing
     ( Option
-    , view
-    , withId, withValue, withMin, withMax, withStep
-    , withRequired, withDisabled
-    , withHint, withError
+    , disabled
+    , error
+    , hint
+    , id
+    , max
+    , min
     , onChange
+    , required
+    , step
+    , value
+    , view
     )
 
 {-| `<m3e-form-field>` wrapping a native `<input type=time>` — Material 3
@@ -34,9 +40,10 @@ format.
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -75,73 +82,82 @@ defaultConfig =
     }
 
 
+
 -- OPTION CONSTRUCTORS ---------------------------------------------------------
 
 
 {-| Set the `id` attribute on the underlying `<input>` (and the matching `for`
 on the `<label>`). Without this, an id is derived from the label.
 -}
-withId : String -> Option msg
-withId s =
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
 {-| Drive the time value (sets the DOM `value` property). Expects `"HH:MM"` in
 24-hour format.
 -}
-withValue : String -> Option msg
-withValue s =
+value : String -> Option msg
+value s =
     Internal.option (\c -> { c | value = Just s })
 
 
-{-| Earliest allowed time (`"HH:MM"`). -}
-withMin : String -> Option msg
-withMin s =
+{-| Earliest allowed time (`"HH:MM"`).
+-}
+min : String -> Option msg
+min s =
     Internal.option (\c -> { c | min = Just s })
 
 
-{-| Latest allowed time (`"HH:MM"`). -}
-withMax : String -> Option msg
-withMax s =
+{-| Latest allowed time (`"HH:MM"`).
+-}
+max : String -> Option msg
+max s =
     Internal.option (\c -> { c | max = Just s })
 
 
 {-| Step granularity in seconds. Use `60` for minute resolution (the browser
 default) or `1` to expose seconds.
 -}
-withStep : Int -> Option msg
-withStep n =
+step : Int -> Option msg
+step n =
     Internal.option (\c -> { c | step = Just n })
 
 
-{-| Mark the field as required. -}
-withRequired : Bool -> Option msg
-withRequired b =
+{-| Mark the field as required.
+-}
+required : Bool -> Option msg
+required b =
     Internal.option (\c -> { c | required = b })
 
 
-{-| Disable the field. -}
-withDisabled : Bool -> Option msg
-withDisabled b =
+{-| Disable the field.
+-}
+disabled : Bool -> Option msg
+disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Hint text for the form-field's `hint` slot. -}
-withHint : Html msg -> Option msg
-withHint h =
+{-| Hint text for the form-field's `hint` slot.
+-}
+hint : Html msg -> Option msg
+hint h =
     Internal.option (\c -> { c | hint = Just h })
 
 
-{-| Error text for the form-field's `error` slot. -}
-withError : Html msg -> Option msg
-withError h =
+{-| Error text for the form-field's `error` slot.
+-}
+error : Html msg -> Option msg
+error h =
     Internal.option (\c -> { c | error = Just h })
 
 
-{-| Handle the native `input` event. Receives the new time as `"HH:MM"`. -}
+{-| Handle the native `input` event. Receives the new time as `"HH:MM"`.
+-}
 onChange : (String -> msg) -> Option msg
 onChange f =
     Internal.option (\c -> { c | onChange = Just f })
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -150,9 +166,9 @@ onChange f =
 {-| Render the time picker.
 
     M3e.TimePicker.view { label = "Meeting time" }
-        [ M3e.TimePicker.withValue model.meetingTime
-        , M3e.TimePicker.withMin "09:00"
-        , M3e.TimePicker.withMax "17:00"
+        [ M3e.TimePicker.value model.meetingTime
+        , M3e.TimePicker.min "09:00"
+        , M3e.TimePicker.max "17:00"
         , M3e.TimePicker.onChange MeetingTimeChanged
         ]
 
@@ -163,7 +179,7 @@ view req opts =
         c =
             Internal.applyOptions opts defaultConfig
 
-        id =
+        fieldId =
             Maybe.withDefault (slugify req.label) c.id
     in
     Internal.fromNode
@@ -172,13 +188,13 @@ view req opts =
             (List.filterMap identity
                 [ Just
                     (Node.element "label"
-                        [ Node.attribute "for" id ]
+                        [ Node.attribute "for" fieldId ]
                         [ Node.text req.label ]
                     )
                 , Just
                     (Node.element "input"
                         (List.filterMap identity
-                            [ Just (Node.attribute "id" id)
+                            [ Just (Node.attribute "id" fieldId)
                             , Just (Node.attribute "type" "time")
                             , Maybe.map (\v -> Node.property "value" (Encode.string v)) c.value
                             , Maybe.map (Node.attribute "min") c.min
@@ -219,10 +235,12 @@ view req opts =
         )
 
 
+
 -- INTERNAL --------------------------------------------------------------------
 
 
-{-| Derive a fallback id from the label text. -}
+{-| Derive a fallback id from the label text.
+-}
 slugify : String -> String
 slugify label =
     let

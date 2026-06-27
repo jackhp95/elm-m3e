@@ -1,11 +1,11 @@
 module M3e.AvatarTest exposing (suite)
 
 import Expect
-import Test exposing (Test, describe, test)
 import M3e.Avatar as Avatar
 import M3e.Icon as Icon
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import Test exposing (Test, describe, test)
 
 
 suite : Test

@@ -1,14 +1,22 @@
 module M3e.Calendar exposing
-    ( StartView(..)
-    , Option
-    , view
-    , withId, withDate, withMinDate, withMaxDate
-    , withRangeStart, withRangeEnd
-    , withStartView, withStartAt
-    , withPreviousMonthLabel, withNextMonthLabel
-    , withPreviousYearLabel, withNextYearLabel
-    , withPreviousMultiYearLabel, withNextMultiYearLabel
+    ( Option
+    , StartView(..)
+    , date
+    , id
+    , maxDate
+    , minDate
+    , nextMonthLabel
+    , nextMultiYearLabel
+    , nextYearLabel
     , onChange
+    , previousMonthLabel
+    , previousMultiYearLabel
+    , previousYearLabel
+    , rangeEnd
+    , rangeStart
+    , startAt
+    , startView
+    , view
     )
 
 {-| `<m3e-calendar>` — an always-visible date-selection surface.
@@ -26,7 +34,7 @@ Spec (per docs/CONVENTIONS.md):
 **Fix #14 — change event channel:**
 
 `m3e-calendar` dispatches a plain `Event("change")` when the user picks a
-date.  The selection lives on `this.date` (a JavaScript `Date` object), NOT on
+date. The selection lives on `this.date` (a JavaScript `Date` object), NOT on
 `event.target.value` (which the old `Ui.Calendar.changeListener` tried to read
 — that was bug #14).
 
@@ -38,13 +46,13 @@ the seed value we set, not the user's pick.
 **Change-event decoding — roundabout pure-Elm path:**
 
 `event.target.date` is a JS `Date` object; `Json.Decode.string` cannot decode
-it directly.  We exploit the fact that Elm's `Json.Encode.encode 0 value`
+it directly. We exploit the fact that Elm's `Json.Encode.encode 0 value`
 calls `JSON.stringify` on the underlying JS object, and `JSON.stringify(date)`
 invokes `Date.prototype.toJSON()` which returns a quoted ISO string — then we
 re-parse that JSON string with `Decode.decodeString Decode.string`.
 
 This works with Elm 0.19 / elm/json 1.1.4 and is the closest faithful pure-Elm
-path.  **If it ever breaks** (e.g. after an elm/json internals change), the
+path. **If it ever breaks** (e.g. after an elm/json internals change), the
 authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 
     elem.addEventListener('change', e => {
@@ -60,15 +68,17 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| The view the calendar opens to. -}
+{-| The view the calendar opens to.
+-}
 type StartView
     = MonthView
     | YearView
@@ -118,90 +128,105 @@ defaultConfig =
     }
 
 
+
 -- OPTION CONSTRUCTORS ---------------------------------------------------------
 
 
-{-| Set the `id` attribute on `<m3e-calendar>`. -}
-withId : String -> Option msg
-withId s =
+{-| Set the `id` attribute on `<m3e-calendar>`.
+-}
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
-{-| Seed the calendar with an initially selected date (ISO-8601 string). -}
-withDate : String -> Option msg
-withDate s =
+{-| Seed the calendar with an initially selected date (ISO-8601 string).
+-}
+date : String -> Option msg
+date s =
     Internal.option (\c -> { c | date = Just s })
 
 
-{-| Earliest selectable date (ISO-8601). -}
-withMinDate : String -> Option msg
-withMinDate s =
+{-| Earliest selectable date (ISO-8601).
+-}
+minDate : String -> Option msg
+minDate s =
     Internal.option (\c -> { c | minDate = Just s })
 
 
-{-| Latest selectable date (ISO-8601). -}
-withMaxDate : String -> Option msg
-withMaxDate s =
+{-| Latest selectable date (ISO-8601).
+-}
+maxDate : String -> Option msg
+maxDate s =
     Internal.option (\c -> { c | maxDate = Just s })
 
 
-{-| Start of a highlighted date range (ISO-8601). -}
-withRangeStart : String -> Option msg
-withRangeStart s =
+{-| Start of a highlighted date range (ISO-8601).
+-}
+rangeStart : String -> Option msg
+rangeStart s =
     Internal.option (\c -> { c | rangeStart = Just s })
 
 
-{-| End of a highlighted date range (ISO-8601). -}
-withRangeEnd : String -> Option msg
-withRangeEnd s =
+{-| End of a highlighted date range (ISO-8601).
+-}
+rangeEnd : String -> Option msg
+rangeEnd s =
     Internal.option (\c -> { c | rangeEnd = Just s })
 
 
-{-| Set the initial view (`MonthView`, `YearView`, `MultiYearView`). -}
-withStartView : StartView -> Option msg
-withStartView sv =
+{-| Set the initial view (`MonthView`, `YearView`, `MultiYearView`).
+-}
+startView : StartView -> Option msg
+startView sv =
     Internal.option (\c -> { c | startView = Just sv })
 
 
-{-| Set the initial period to display (ISO-8601). -}
-withStartAt : String -> Option msg
-withStartAt s =
+{-| Set the initial period to display (ISO-8601).
+-}
+startAt : String -> Option msg
+startAt s =
     Internal.option (\c -> { c | startAt = Just s })
 
 
-{-| Accessible label for the "previous month" button. -}
-withPreviousMonthLabel : String -> Option msg
-withPreviousMonthLabel s =
+{-| Accessible label for the "previous month" button.
+-}
+previousMonthLabel : String -> Option msg
+previousMonthLabel s =
     Internal.option (\c -> { c | previousMonthLabel = Just s })
 
 
-{-| Accessible label for the "next month" button. -}
-withNextMonthLabel : String -> Option msg
-withNextMonthLabel s =
+{-| Accessible label for the "next month" button.
+-}
+nextMonthLabel : String -> Option msg
+nextMonthLabel s =
     Internal.option (\c -> { c | nextMonthLabel = Just s })
 
 
-{-| Accessible label for the "previous year" button. -}
-withPreviousYearLabel : String -> Option msg
-withPreviousYearLabel s =
+{-| Accessible label for the "previous year" button.
+-}
+previousYearLabel : String -> Option msg
+previousYearLabel s =
     Internal.option (\c -> { c | previousYearLabel = Just s })
 
 
-{-| Accessible label for the "next year" button. -}
-withNextYearLabel : String -> Option msg
-withNextYearLabel s =
+{-| Accessible label for the "next year" button.
+-}
+nextYearLabel : String -> Option msg
+nextYearLabel s =
     Internal.option (\c -> { c | nextYearLabel = Just s })
 
 
-{-| Accessible label for the "previous 24 years" button. -}
-withPreviousMultiYearLabel : String -> Option msg
-withPreviousMultiYearLabel s =
+{-| Accessible label for the "previous 24 years" button.
+-}
+previousMultiYearLabel : String -> Option msg
+previousMultiYearLabel s =
     Internal.option (\c -> { c | previousMultiYearLabel = Just s })
 
 
-{-| Accessible label for the "next 24 years" button. -}
-withNextMultiYearLabel : String -> Option msg
-withNextMultiYearLabel s =
+{-| Accessible label for the "next 24 years" button.
+-}
+nextMultiYearLabel : String -> Option msg
+nextMultiYearLabel s =
     Internal.option (\c -> { c | nextMultiYearLabel = Just s })
 
 
@@ -215,14 +240,15 @@ onChange f =
     Internal.option (\c -> { c | onChange = Just f })
 
 
+
 -- VIEW ------------------------------------------------------------------------
 
 
 {-| Render the calendar.
 
     M3e.Calendar.view
-        [ M3e.Calendar.withDate "2026-06-25"
-        , M3e.Calendar.withMinDate todayIso
+        [ M3e.Calendar.date "2026-06-25"
+        , M3e.Calendar.minDate todayIso
         , M3e.Calendar.onChange DateSelected
         ]
 
@@ -259,6 +285,7 @@ view opts =
             )
             []
         )
+
 
 
 -- INTERNAL --------------------------------------------------------------------

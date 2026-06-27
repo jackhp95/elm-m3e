@@ -1,11 +1,24 @@
 module M3e.Stepper exposing
     ( HeaderPosition(..)
-    , StepOption, PanelOption, Option
-    , step, stepPanel, view
-    , stepId, stepFor, stepSelected, stepCompleted
-    , stepOptional, stepDisabled, stepEditable, stepInvalid
-    , panelId, panelActions
-    , vertical, linear, stepperHeaderPosition
+    , Option
+    , PanelOption
+    , StepOption
+    , linear
+    , panelActions
+    , panelId
+    , step
+    , stepCompleted
+    , stepDisabled
+    , stepEditable
+    , stepFor
+    , stepId
+    , stepInvalid
+    , stepOptional
+    , stepPanel
+    , stepSelected
+    , stepperHeaderPosition
+    , vertical
+    , view
     )
 
 {-| `<m3e-stepper>` + `<m3e-step>` + `<m3e-step-panel>` — a wizard-like
@@ -14,17 +27,17 @@ workflow dividing content into ordered, selectable steps (Material 3 Stepper).
 Spec (per docs/CONVENTIONS.md):
 
   - Two sub-components:
-      `step      : { label : String } → List StepOption → Renderable { step }`
-      `stepPanel : { content }        → List PanelOption → Renderable { stepPanel }`
+    `step      : { label : String } → List StepOption → Renderable { step }`
+    `stepPanel : { content }        → List PanelOption → Renderable { stepPanel }`
   - View:
-      `view : { steps, panels } → List Option → Renderable { stepper }`
-  - Steps  → slot="step"  (injected by view via Node.withSlot)
+    `view : { steps, panels } → List Option → Renderable { stepper }`
+  - Steps → slot="step" (injected by view via Node.withSlot)
   - Panels → slot="panel" (injected by view via Node.withSlot)
   - Properties: selected, completed, optional, disabled, editable, invalid (step)
-                linear (stepper)
-  - Attrs:      id, for (relational); orientation, header-position (strip rawAttr)
-  - Events:     (none at this layer; add onClick to step options if needed)
-  - Tag:        stepper
+    linear (stepper)
+  - Attrs: id, for (relational); orientation, header-position (strip rawAttr)
+  - Events: (none at this layer; add onClick to step options if needed)
+  - Tag: stepper
 
 **Fix #13** — The `<m3e-step-panel>` actions slot is `slot="actions"`. The
 generated `Cem.M3e.StepPanel.actionsSlot` binding emits `slot="actions-"` (a
@@ -37,9 +50,9 @@ module emits `Node.attribute "slot" "actions"` directly and does NOT use
 import Cem.M3e.Stepper as CemStepper
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Where the step header sits relative to panel content (horizontal mode).
@@ -62,55 +75,64 @@ type alias Option msg =
     Internal.Option StripConfig msg
 
 
-{-| Set the DOM `id` on the step element (used by the panel's paired `for`). -}
+{-| Set the DOM `id` on the step element (used by the panel's paired `for`).
+-}
 stepId : String -> StepOption msg
 stepId s =
     Internal.option (\c -> { c | id = Just s })
 
 
-{-| Link this step to its panel via the panel's `id` (the `for` attribute). -}
+{-| Link this step to its panel via the panel's `id` (the `for` attribute).
+-}
 stepFor : String -> StepOption msg
 stepFor s =
     Internal.option (\c -> { c | for = Just s })
 
 
-{-| Mark the step as currently selected. -}
+{-| Mark the step as currently selected.
+-}
 stepSelected : Bool -> StepOption msg
 stepSelected b =
     Internal.option (\c -> { c | selected = b })
 
 
-{-| Mark the step as completed. -}
+{-| Mark the step as completed.
+-}
 stepCompleted : Bool -> StepOption msg
 stepCompleted b =
     Internal.option (\c -> { c | completed = b })
 
 
-{-| Mark the step as optional. -}
+{-| Mark the step as optional.
+-}
 stepOptional : Bool -> StepOption msg
 stepOptional b =
     Internal.option (\c -> { c | optional = b })
 
 
-{-| Disable the step (shown but cannot be selected). -}
+{-| Disable the step (shown but cannot be selected).
+-}
 stepDisabled : Bool -> StepOption msg
 stepDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Mark the step as editable (returns to it after completion). -}
+{-| Mark the step as editable (returns to it after completion).
+-}
 stepEditable : Bool -> StepOption msg
 stepEditable b =
     Internal.option (\c -> { c | editable = b })
 
 
-{-| Mark the step as invalid. -}
+{-| Mark the step as invalid.
+-}
 stepInvalid : Bool -> StepOption msg
 stepInvalid b =
     Internal.option (\c -> { c | invalid = b })
 
 
-{-| Set the DOM `id` on the panel (paired with the step's `stepFor`). -}
+{-| Set the DOM `id` on the panel (paired with the step's `stepFor`).
+-}
 panelId : String -> PanelOption msg
 panelId s =
     Internal.option (\c -> { c | id = Just s })
@@ -120,6 +142,7 @@ panelId s =
 
 **Fix #13:** Emits `slot="actions"` directly — NOT via
 `Cem.M3e.StepPanel.actionsSlot` which emits the buggy `slot="actions-"`.
+
 -}
 panelActions : List (Renderable { button : Supported } msg) -> PanelOption msg
 panelActions xs =

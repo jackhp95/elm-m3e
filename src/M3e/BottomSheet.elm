@@ -1,9 +1,13 @@
 module M3e.BottomSheet exposing
     ( Option
+    , actions
+    , handle
+    , header
+    , hideable
+    , modal
+    , onClose
+    , open
     , view
-    , open, onClose
-    , handle, hideable, modal
-    , header, actions
     )
 
 {-| `<m3e-bottom-sheet>` — a surface that slides up from the bottom of the
@@ -11,16 +15,16 @@ viewport (Material 3 Bottom sheets).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { content : List (Renderable any msg) }
-                (default slot body region — free row, may include html escape)
-  - Options:    open, onClose, handle, hideable, modal, header, actions
-  - Slots:      header (<div slot="header"> wrapping the header content)
-                default (content region, no slot injection)
-                actions (each action button has m3e-bottom-sheet-action nested
-                INSIDE it — see Fix F12 below)
+  - Required: { content : List (Renderable any msg) }
+    (default slot body region — free row, may include html escape)
+  - Options: open, onClose, handle, hideable, modal, header, actions
+  - Slots: header (<div slot="header"> wrapping the header content)
+    default (content region, no slot injection)
+    actions (each action button has m3e-bottom-sheet-action nested
+    INSIDE it — see Fix F12 below)
   - Properties: open, handle, hideable, modal (all Bool DOM properties)
-  - Events:     closed → onClose; cancel → onClose
-  - Tag:        bottomSheet
+  - Events: closed → onClose; cancel → onClose
+  - Tag: bottomSheet
 
 **Fix F12** — The `m3e-bottom-sheet-action` sentinel element goes INSIDE each
 action button (the button closes the parent sheet when activated). Ui.BottomSheet
@@ -32,16 +36,17 @@ its rendered element node before it lands in the DOM.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Whether the bottom sheet is open. Sets the `open` DOM property. Default false. -}
+{-| Whether the bottom sheet is open. Sets the `open` DOM property. Default false.
+-}
 open : Bool -> Option msg
 open b =
     Internal.option (\c -> { c | open = b })
@@ -55,25 +60,29 @@ onClose m =
     Internal.option (\c -> { c | onClose = Just m })
 
 
-{-| Show the drag handle at the top of the sheet. Default false. -}
+{-| Show the drag handle at the top of the sheet. Default false.
+-}
 handle : Bool -> Option msg
 handle b =
     Internal.option (\c -> { c | handle = b })
 
 
-{-| Allow the user to dismiss the sheet by dragging it down. Default false. -}
+{-| Allow the user to dismiss the sheet by dragging it down. Default false.
+-}
 hideable : Bool -> Option msg
 hideable b =
     Internal.option (\c -> { c | hideable = b })
 
 
-{-| Make the sheet modal (shows a scrim behind it). Default false. -}
+{-| Make the sheet modal (shows a scrim behind it). Default false.
+-}
 modal : Bool -> Option msg
 modal b =
     Internal.option (\c -> { c | modal = b })
 
 
-{-| Content for the sheet's `header` slot — rendered above the body region. -}
+{-| Content for the sheet's `header` slot — rendered above the body region.
+-}
 header : List (Renderable any msg) -> Option msg
 header xs =
     Internal.option (\c -> { c | header = List.map Renderable.toNode xs })

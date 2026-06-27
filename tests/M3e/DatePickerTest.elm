@@ -8,6 +8,7 @@ import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
+
 -- Helpers ---------------------------------------------------------------------
 
 
@@ -15,6 +16,7 @@ viewNode : List (DatePicker.Option String) -> Node.Node String
 viewNode opts =
     DatePicker.view opts
         |> Renderable.toNode
+
 
 
 -- Tests -----------------------------------------------------------------------
@@ -30,39 +32,39 @@ suite =
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-datepicker")
 
-        -- withDate seeds via attribute (not property — see fix #15)
-        , test "withDate sets 'date' attribute" <|
+        -- date seeds via attribute (not property — see fix #15)
+        , test "date sets 'date' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withDate "2026-06-25" ]
+                viewNode [ DatePicker.date "2026-06-25" ]
                     |> Node.findAttribute "date"
                     |> Expect.equal (Just "2026-06-25")
-        , test "fix-#15: withDate uses attribute channel (no property for seeding)" <|
+        , test "fix-#15: date uses attribute channel (no property for seeding)" <|
             \_ ->
-                viewNode [ DatePicker.withDate "2026-06-25" ]
+                viewNode [ DatePicker.date "2026-06-25" ]
                     |> Node.findProperty "date"
                     |> Expect.equal Nothing
 
         -- Variant
-        , test "withVariant Auto sets variant='auto'" <|
+        , test "variant Auto sets variant='auto'" <|
             \_ ->
-                viewNode [ DatePicker.withVariant DatePicker.Auto ]
+                viewNode [ DatePicker.variant DatePicker.Auto ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "auto")
-        , test "withVariant Docked sets variant='docked'" <|
+        , test "variant Docked sets variant='docked'" <|
             \_ ->
-                viewNode [ DatePicker.withVariant DatePicker.Docked ]
+                viewNode [ DatePicker.variant DatePicker.Docked ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "docked")
-        , test "withVariant Modal sets variant='modal'" <|
+        , test "variant Modal sets variant='modal'" <|
             \_ ->
-                viewNode [ DatePicker.withVariant DatePicker.Modal ]
+                viewNode [ DatePicker.variant DatePicker.Modal ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "modal")
 
         -- Range (DOM property)
-        , test "withRange True sets 'range' DOM property" <|
+        , test "range True sets 'range' DOM property" <|
             \_ ->
-                viewNode [ DatePicker.withRange True ]
+                viewNode [ DatePicker.range True ]
                     |> Node.findProperty "range"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
@@ -73,46 +75,46 @@ suite =
                     |> Expect.equal Nothing
 
         -- Clearable (DOM property)
-        , test "withClearable True sets 'clearable' DOM property" <|
+        , test "clearable True sets 'clearable' DOM property" <|
             \_ ->
-                viewNode [ DatePicker.withClearable True ]
+                viewNode [ DatePicker.clearable True ]
                     |> Node.findProperty "clearable"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
 
         -- Labels
-        , test "withLabel sets 'label' attribute" <|
+        , test "label sets 'label' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withLabel "Visit date" ]
+                viewNode [ DatePicker.label "Visit date" ]
                     |> Node.findAttribute "label"
                     |> Expect.equal (Just "Visit date")
-        , test "withConfirmLabel sets 'confirm-label' attribute" <|
+        , test "confirmLabel sets 'confirm-label' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withConfirmLabel "Apply" ]
+                viewNode [ DatePicker.confirmLabel "Apply" ]
                     |> Node.findAttribute "confirm-label"
                     |> Expect.equal (Just "Apply")
-        , test "withDismissLabel sets 'dismiss-label' attribute" <|
+        , test "dismissLabel sets 'dismiss-label' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withDismissLabel "Dismiss" ]
+                viewNode [ DatePicker.dismissLabel "Dismiss" ]
                     |> Node.findAttribute "dismiss-label"
                     |> Expect.equal (Just "Dismiss")
 
         -- Min/Max
-        , test "withMinDate sets 'min-date' attribute" <|
+        , test "minDate sets 'min-date' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withMinDate "2026-01-01" ]
+                viewNode [ DatePicker.minDate "2026-01-01" ]
                     |> Node.findAttribute "min-date"
                     |> Expect.equal (Just "2026-01-01")
-        , test "withMaxDate sets 'max-date' attribute" <|
+        , test "maxDate sets 'max-date' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withMaxDate "2026-12-31" ]
+                viewNode [ DatePicker.maxDate "2026-12-31" ]
                     |> Node.findAttribute "max-date"
                     |> Expect.equal (Just "2026-12-31")
 
         -- id
-        , test "withId sets the 'id' attribute" <|
+        , test "id sets the 'id' attribute" <|
             \_ ->
-                viewNode [ DatePicker.withId "visit-date" ]
+                viewNode [ DatePicker.id "visit-date" ]
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "visit-date")
 

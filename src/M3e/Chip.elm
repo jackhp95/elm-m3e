@@ -1,29 +1,41 @@
 module M3e.Chip exposing
-    ( Option, ViewOption
+    ( Option
+    , ViewOption
+    , assist
+    , avatarChild
+    , disabled
+    , elevated
+    , filter
+    , href
+    , input
+    , leadingIcon
+    , onClick
+    , removeLabel
+    , selected
+    , suggestion
     , view
-    , assist, suggestion, filter, input
-    , onClick, selected, disabled, elevated, href, removeLabel, leadingIcon, avatarChild
-    , viewElevated, viewLeadingIcon
+    , viewElevated
+    , viewLeadingIcon
     )
 
 {-| `<m3e-*-chip>` family — compact, often dynamic choices.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - `view {label}`              → `<m3e-chip>` (display, non-interactive)
-                                   ViewOption: viewElevated, viewLeadingIcon
-  - `assist {label, onClick}`   → `<m3e-assist-chip>`
+  - `view {label}` → `<m3e-chip>` (display, non-interactive)
+    ViewOption: viewElevated, viewLeadingIcon
+  - `assist {label, onClick}` → `<m3e-assist-chip>`
   - `suggestion {label, onClick}` → `<m3e-suggestion-chip>`
-  - `filter {label, onToggle}`  → `<m3e-filter-chip>`
-  - `input {label, onRemove}`   → `<m3e-input-chip>` (always removable)
-  - Interactive chips return `Renderable { s | chip : Supported }` (fits ChipSet.withChips)
+  - `filter {label, onToggle}` → `<m3e-filter-chip>`
+  - `input {label, onRemove}` → `<m3e-input-chip>` (always removable)
+  - Interactive chips return `Renderable { s | chip : Supported }` (fits ChipSet.chips)
   - Options (interactive, shared): onClick, selected, disabled, elevated, href,
-                                   removeLabel, leadingIcon, avatarChild
+    removeLabel, leadingIcon, avatarChild
   - Properties: selected, disabled, removable (DOM)
-  - Attrs:      variant (elevated/outlined), href, remove-label
-  - Slots:      icon (leadingIcon); avatar (avatarChild — input chips)
-  - Escape:     none (leaves)
-  - Tag:        chip
+  - Attrs: variant (elevated/outlined), href, remove-label
+  - Slots: icon (leadingIcon); avatar (avatarChild — input chips)
+  - Escape: none (leaves)
+  - Tag: chip
 
 The kind-specific action (`onClick`/`onToggle`/`onRemove`) is a required
 constructor argument, not an option — a chip can't be built without the
@@ -33,9 +45,9 @@ behaviour its kind demands.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 
@@ -93,18 +105,21 @@ avatarChild a =
 
 
 {-| Options accepted by the display `view` chip. Narrow subset matching
-`<m3e-chip>`'s real CEM surface (variant + icon slot). -}
+`<m3e-chip>`'s real CEM surface (variant + icon slot).
+-}
 type alias ViewOption msg =
     Internal.Option (ViewConfig msg) msg
 
 
-{-| Set the elevated variant on the display chip. -}
+{-| Set the elevated variant on the display chip.
+-}
 viewElevated : Bool -> ViewOption msg
 viewElevated b =
     Internal.option (\c -> { c | elevated = b })
 
 
-{-| Add a leading icon to the display chip (rendered in the `icon` slot). -}
+{-| Add a leading icon to the display chip (rendered in the `icon` slot).
+-}
 viewLeadingIcon : Renderable { icon : Supported } msg -> ViewOption msg
 viewLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
@@ -139,6 +154,7 @@ defaultConfig =
     }
 
 
+
 -- CONFIG (display chip) --------------------------------------------------
 
 
@@ -151,6 +167,7 @@ type alias ViewConfig msg =
 defaultViewConfig : ViewConfig msg
 defaultViewConfig =
     { elevated = False, leadingIcon = Nothing }
+
 
 
 -- SLOT / ATTR HELPERS ----------------------------------------------------
@@ -189,7 +206,8 @@ disabledAttr c =
 
 {-| Display (`<m3e-chip>`) — non-interactive, informational. Accepts
 `ViewOption` only; the full `Option` set (onClick, disabled, etc.) is not
-honoured by this element and is therefore not available here. -}
+honoured by this element and is therefore not available here.
+-}
 view : { label : String } -> List (ViewOption msg) -> Renderable { s | chip : Supported } msg
 view req opts =
     let

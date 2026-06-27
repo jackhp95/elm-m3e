@@ -1,7 +1,14 @@
 module M3e.Slider exposing
     ( Option
+    , disabled
+    , discrete
+    , labelled
+    , max
+    , min
+    , onChange
+    , step
+    , value
     , view
-    , value, min, max, step, discrete, labelled, disabled, onChange
     )
 
 {-| `<m3e-slider>` — a control for choosing a numeric value from a range
@@ -9,74 +16,82 @@ module M3e.Slider exposing
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { name : String }
-               (bare control with no visible text — a required aria-label
-               is mandatory for accessibility)
-  - Options:    value, min, max, step, discrete, labelled, disabled, onChange
-  - Slots:      one `<m3e-slider-thumb>` child (default slot)
+  - Required: { name : String }
+    (bare control with no visible text — a required aria-label
+    is mandatory for accessibility)
+  - Options: value, min, max, step, discrete, labelled, disabled, onChange
+  - Slots: one `<m3e-slider-thumb>` child (default slot)
   - Properties: min, max, step, discrete, labelled, disabled — on the
-               slider element (via Node.property — introspectable/testable);
-               value — on the thumb child (Node.property "value")
-  - Events:     input on the thumb → Float (decoded from target.value)
-  - A11y:       aria-label = name
-  - Tag:        slider
+    slider element (via Node.property — introspectable/testable);
+    value — on the thumb child (Node.property "value")
+  - Events: input on the thumb → Float (decoded from target.value)
+  - A11y: aria-label = name
+  - Tag: slider
 
 -}
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Set the current value (default: not set, element uses its own default). -}
+{-| Set the current value (default: not set, element uses its own default).
+-}
 value : Float -> Option msg
 value v =
     Internal.option (\c -> { c | value = Just v })
 
 
-{-| Set the lower bound of the range. -}
+{-| Set the lower bound of the range.
+-}
 min : Float -> Option msg
 min v =
     Internal.option (\c -> { c | min = Just v })
 
 
-{-| Set the upper bound of the range. -}
+{-| Set the upper bound of the range.
+-}
 max : Float -> Option msg
 max v =
     Internal.option (\c -> { c | max = Just v })
 
 
-{-| Set the snap increment. -}
+{-| Set the snap increment.
+-}
 step : Float -> Option msg
 step v =
     Internal.option (\c -> { c | step = Just v })
 
 
-{-| Show tick marks at each step. -}
+{-| Show tick marks at each step.
+-}
 discrete : Bool -> Option msg
 discrete b =
     Internal.option (\c -> { c | discrete = b })
 
 
-{-| Show or hide the in-thumb value label. -}
+{-| Show or hide the in-thumb value label.
+-}
 labelled : Bool -> Option msg
 labelled b =
     Internal.option (\c -> { c | labelled = b })
 
 
-{-| Mark the slider disabled — non-interactive. -}
+{-| Mark the slider disabled — non-interactive.
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Wire a change handler. Receives the new Float value from the thumb. -}
+{-| Wire a change handler. Receives the new Float value from the thumb.
+-}
 onChange : (Float -> msg) -> Option msg
 onChange f =
     Internal.option (\c -> { c | onChange = Just f })

@@ -1,7 +1,11 @@
 module M3e.Snackbar exposing
     ( Option
+    , action
+    , closeLabel
+    , dismissible
+    , duration
+    , id
     , view
-    , withId, action, dismissible, closeLabel, duration
     )
 
 {-| `<m3e-snackbar>` — a transient feedback surface at the bottom of the
@@ -25,7 +29,7 @@ This module ports only the **declarative attribute/property surface** (the shape
 of the element): it gives you an IR node whose tag, slots, and properties are
 fully introspectable and testable.
 
-To actually *show* a snackbar in a running app you need one of:
+To actually _show_ a snackbar in a running app you need one of:
 
   - The `avt-snackbar` declarative wrapper (`js/avt-snackbar.js`), which reads
     these attributes and calls `M3eSnackbar.open(…)` on connect / attribute
@@ -39,9 +43,10 @@ Both imperative paths are **out of scope** for the view-style IR layer.
 
 import Cem.M3e.Snackbar as CemSnackbar
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- OPTION TYPE -------------------------------------------------------------
@@ -51,40 +56,47 @@ type alias Option msg =
     Internal.Option Config msg
 
 
+
 -- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
 
 
-{-| Set the `id` attribute on the `<m3e-snackbar>` element. -}
-withId : String -> Option msg
-withId s =
+{-| Set the `id` attribute on the `<m3e-snackbar>` element.
+-}
+id : String -> Option msg
+id s =
     Internal.option (\c -> { c | id = Just s })
 
 
 {-| Set the snackbar's action button label (the `action` attribute; no action
-button rendered when absent). -}
+button rendered when absent).
+-}
 action : String -> Option msg
 action s =
     Internal.option (\c -> { c | action = Just s })
 
 
-{-| Show a close button (the `dismissible` DOM property; default `false`). -}
+{-| Show a close button (the `dismissible` DOM property; default `false`).
+-}
 dismissible : Bool -> Option msg
 dismissible b =
     Internal.option (\c -> { c | dismissible = b })
 
 
 {-| Set the close button's accessible label (the `close-label` attribute;
-element default `"Close"`). Only rendered with `dismissible True`. -}
+element default `"Close"`). Only rendered with `dismissible True`.
+-}
 closeLabel : String -> Option msg
 closeLabel s =
     Internal.option (\c -> { c | closeLabel = Just s })
 
 
 {-| Set the auto-dismiss duration in milliseconds (the `duration` DOM property;
-element default 3000 ms). -}
+element default 3000 ms).
+-}
 duration : Int -> Option msg
 duration ms =
     Internal.option (\c -> { c | duration = Just ms })
+
 
 
 -- VIEW --------------------------------------------------------------------
@@ -129,6 +141,7 @@ view req opts =
         )
 
 
+
 -- INTERNAL ----------------------------------------------------------------
 
 
@@ -149,5 +162,3 @@ defaultConfig =
     , closeLabel = Nothing
     , duration = Nothing
     }
-
-

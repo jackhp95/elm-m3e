@@ -1,7 +1,15 @@
 module M3e.Breadcrumb exposing
-    ( ItemOption, BreadcrumbOption
-    , item, view
-    , itemHref, itemCurrent, itemDisabled, itemOnClick, itemTarget, itemRel, itemDownload
+    ( BreadcrumbOption
+    , ItemOption
+    , item
+    , itemCurrent
+    , itemDisabled
+    , itemDownload
+    , itemHref
+    , itemOnClick
+    , itemRel
+    , itemTarget
+    , view
     , wrap
     )
 
@@ -11,28 +19,30 @@ navigation trail (Material 3 Breadcrumb).
 Spec (per docs/CONVENTIONS.md):
 
   - Required (parent): { items : List (Renderable { breadcrumbItem : Supported } msg) }
-  - Required (child):  { label : String }
-               (label = both the visible text child AND the `item-label` attr
-               for the internal button's accessible name)
-  - Options (parent):  wrap
-  - Options (child):   itemHref, itemCurrent, itemDisabled, itemOnClick,
-                      itemTarget, itemRel, itemDownload
-  - Slots (parent):    default slot ← `m3e-breadcrumb-item` children (strict)
-  - Properties:        disabled per item (Node.property); wrap on parent (property)
-  - Attrs:             item-label, href, current, target, rel, download
-                      (Node.attribute — relational/string attrs, non-property)
-  - Tag:               breadcrumb / breadcrumbItem
+  - Required (child): { label : String }
+    (label = both the visible text child AND the `item-label` attr
+    for the internal button's accessible name)
+  - Options (parent): wrap
+  - Options (child): itemHref, itemCurrent, itemDisabled, itemOnClick,
+    itemTarget, itemRel, itemDownload
+  - Slots (parent): default slot ← `m3e-breadcrumb-item` children (strict)
+  - Properties: disabled per item (Node.property); wrap on parent (property)
+  - Attrs: item-label, href, current, target, rel, download
+    (Node.attribute — relational/string attrs, non-property)
+  - Tag: breadcrumb / breadcrumbItem
 
 -}
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
+
 
 
 -- ITEM (child) ------------------------------------------------------------
+
 
 type alias ItemConfig msg =
     { href : Maybe String
@@ -49,44 +59,51 @@ type alias ItemOption msg =
     Internal.Option (ItemConfig msg) msg
 
 
-{-| Set the URL this breadcrumb crumb links to. -}
+{-| Set the URL this breadcrumb crumb links to.
+-}
 itemHref : String -> ItemOption msg
 itemHref v =
     Internal.option (\c -> { c | href = Just v })
 
 
 {-| Mark this as the current (active, non-clickable) crumb. Sets
-`current="true"` on the element. -}
+`current="true"` on the element.
+-}
 itemCurrent : Bool -> ItemOption msg
 itemCurrent b =
     Internal.option (\c -> { c | current = b })
 
 
-{-| Disable this crumb — renders but its internal button is inert. -}
+{-| Disable this crumb — renders but its internal button is inert.
+-}
 itemDisabled : Bool -> ItemOption msg
 itemDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Wire a click handler for this crumb. -}
+{-| Wire a click handler for this crumb.
+-}
 itemOnClick : msg -> ItemOption msg
 itemOnClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
-{-| Set the link `target` (e.g. `"_blank"`). -}
+{-| Set the link `target` (e.g. `"_blank"`).
+-}
 itemTarget : String -> ItemOption msg
 itemTarget v =
     Internal.option (\c -> { c | target = Just v })
 
 
-{-| Set the link `rel` (e.g. `"noreferrer noopener"`). -}
+{-| Set the link `rel` (e.g. `"noreferrer noopener"`).
+-}
 itemRel : String -> ItemOption msg
 itemRel v =
     Internal.option (\c -> { c | rel = Just v })
 
 
-{-| Request the link target be downloaded; optionally sets the filename. -}
+{-| Request the link target be downloaded; optionally sets the filename.
+-}
 itemDownload : String -> ItemOption msg
 itemDownload v =
     Internal.option (\c -> { c | download = Just v })
@@ -140,7 +157,9 @@ item req opts =
         )
 
 
+
 -- PARENT ------------------------------------------------------------------
+
 
 type alias BreadcrumbConfig =
     { wrap : Bool }
@@ -151,7 +170,8 @@ type alias BreadcrumbOption msg =
 
 
 {-| Allow crumbs to wrap onto a new line when the trail is too wide
-(m3e `wrap` property, default false). -}
+(m3e `wrap` property, default false).
+-}
 wrap : Bool -> BreadcrumbOption msg
 wrap b =
     Internal.option (\c -> { c | wrap = b })

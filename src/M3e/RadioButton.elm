@@ -1,7 +1,9 @@
 module M3e.RadioButton exposing
     ( Option
+    , disabled
+    , onChange
+    , required
     , view
-    , disabled, required, onChange
     )
 
 {-| `<m3e-radio-group>` + `<m3e-radio>` — a group of radio buttons for
@@ -9,18 +11,18 @@ selecting exactly one option from a small set (Material 3 Radio button).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { name : String
-               , options : List { value : String, label : String }
-               , selected : Maybe String }
-               (name = a11y aria-label on the group + the shared `name`
-               attribute threaded onto every `<m3e-radio>`)
-  - Options:    disabled, required, onChange
-  - Slots:      none (radios rendered as children of the group)
+  - Required: { name : String
+    , options : List { value : String, label : String }
+    , selected : Maybe String }
+    (name = a11y aria-label on the group + the shared `name`
+    attribute threaded onto every `<m3e-radio>`)
+  - Options: disabled, required, onChange
+  - Slots: none (radios rendered as children of the group)
   - Properties: disabled (group), required (group), checked (per radio)
-               all via Node.property — introspectable/testable
-  - Events:     click on each radio → String (the clicked option value)
-  - A11y:       aria-label = name on `<m3e-radio-group>`
-  - Tag:        radioButton
+    all via Node.property — introspectable/testable
+  - Events: click on each radio → String (the clicked option value)
+  - A11y: aria-label = name on `<m3e-radio-group>`
+  - Tag: radioButton
 
 F-bug fix: `<m3e-radio>` is slotless. Passing the visible label as a
 CHILD of the radio element silently drops it. Instead each radio is
@@ -36,22 +38,24 @@ text as **siblings** inside the label:
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Disable the whole group (and every radio within it). -}
+{-| Disable the whole group (and every radio within it).
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Mark the group as required for form submission. -}
+{-| Mark the group as required for form submission.
+-}
 required : Bool -> Option msg
 required b =
     Internal.option (\c -> { c | required = b })

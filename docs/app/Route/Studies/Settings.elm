@@ -612,7 +612,7 @@ languageSelect : Model -> Html Msg
 languageSelect model =
     div [ class "w-full sm:w-64" ]
         [ Select.view { label = "Language" }
-            [ Select.withOptions
+            [ Select.options
                 [ Select.option { value = "english", label = "English" }
                     [ Select.optionSelected (model.language == Just English) ]
                 , Select.option { value = "spanish", label = "Español" }
@@ -639,7 +639,7 @@ timezoneSelect : Model -> Html Msg
 timezoneSelect model =
     div [ class "w-full sm:w-64" ]
         [ Select.view { label = "Timezone" }
-            [ Select.withOptions
+            [ Select.options
                 [ Select.option { value = "utc", label = "UTC" }
                     [ Select.optionSelected (model.timezone == Just UTC) ]
                 , Select.option { value = "eastern", label = "Eastern (UTC−5)" }
@@ -878,7 +878,7 @@ snackbarHost model =
 
         Just s ->
             Snackbar.view { message = s.message }
-                [ Snackbar.withId s.snackbarId
+                [ Snackbar.id s.snackbarId
                 , Snackbar.dismissible True
                 , Snackbar.duration s.duration
                 ]
