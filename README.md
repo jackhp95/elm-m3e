@@ -1,4 +1,4 @@
-# m3e · `M3e.*` — type-safe Material 3 Expressive for Elm
+# elm-m3e · `M3e.*` — type-safe Material 3 Expressive for Elm
 
 A **Make-Impossible-States-Impossible** Elm layer over matraic's
 [`@m3e/web`](https://github.com/matraic/m3e) Material 3 Expressive web
