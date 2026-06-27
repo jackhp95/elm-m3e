@@ -2,23 +2,20 @@
   "name": "m3e-builder-docs",
   "type": "module",
   "scripts": {
-    "build:css": "tailwindcss -i ./style.css -o ./public/style.css --minify",
-    "build:m3e": "esbuild m3e-entry.js --bundle --format=esm --minify --outfile=public/m3e.js",
     "build:reference": "node scripts/extract-reference.mjs",
-    "build:assets": "npm run build:css && npm run build:m3e && npm run build:reference",
+    "build:assets": "npm run build:reference",
     "start": "npm run build:assets && elm-pages dev",
     "build": "npm run build:assets && elm-pages build",
     "test:browser": "playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
-    "@tailwindcss/cli": "^4.3.1",
+    "@tailwindcss/vite": "^4.3.1",
     "elm": "^0.19.1-6",
     "elm-codegen": "^0.6.3",
     "elm-format": "^0.8.8",
     "elm-pages": "^3.5.0",
     "elm-review": "^2.13.5",
-    "esbuild": "^0.25.0",
     "lamdera": "^0.19.1-1.4.0",
     "tailwindcss": "^4.3.1",
     "vite": "^7.3.2"

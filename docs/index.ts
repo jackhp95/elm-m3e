@@ -1,7 +1,10 @@
-// NOTE: @m3e/web registration and the Tailwind stylesheet are shipped as
-// pre-built static assets (public/m3e.js, public/style.css) linked from
-// elm-pages.config.mjs headTagsTemplate — not bundled here, since this hook
-// is loaded as a runtime module by the elm-pages client.
+// @m3e/web custom-element registration + the Tailwind stylesheet are bundled
+// through elm-pages' Vite client pipeline (content-hashed; <link>/<script>
+// injected automatically) — not hand-linked static assets. These are
+// side-effect imports: registering the <m3e-*> elements and pulling in the CSS.
+import "@m3e/web/all";
+import "../js/avt-snackbar.js";
+import "./style.css";
 
 type ElmPagesInit = {
   load: (elmLoaded: Promise<unknown>) => Promise<void>;
