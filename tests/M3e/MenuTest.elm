@@ -184,14 +184,14 @@ suite =
                     |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-menu-item-group")
-        , test "group label child has slot='label'" <|
+        , test "group label child is in the default slot — no slot attr (fix #63: m3e-menu-item-group has only a default slot, not a label slot)" <|
             \_ ->
                 Menu.group { label = "Section", items = [] }
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
-                    |> Expect.equal (Just "label")
+                    |> Expect.equal Nothing
         , test "group items appear after the label child" <|
             \_ ->
                 Menu.group { label = "Section", items = [ Menu.divider ] }

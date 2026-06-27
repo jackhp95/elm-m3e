@@ -1472,7 +1472,7 @@ demoSections slug =
                     (SplitButton.view
                         { label = "Save"
                         , name = "More options"
-                        , trailingIcon = "arrow_drop_down"
+                        , trailingContent = [ Icon.view { name = "arrow_drop_down" } ]
                         , onPrimaryClick = PagesMsg.noOp
                         , onTriggerClick = PagesMsg.noOp
                         }

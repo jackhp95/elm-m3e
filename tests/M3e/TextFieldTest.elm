@@ -43,6 +43,12 @@ suite =
                     |> Expect.equal (Just "m3e-form-field")
 
         -- Label / id wiring
+        , test "label child lands in the label slot (slot='label' — fix #63)" <|
+            \_ ->
+                viewNode []
+                    |> labelChild
+                    |> Maybe.andThen (Node.findAttribute "slot")
+                    |> Expect.equal (Just "label")
         , test "label child has the 'for' attribute set" <|
             \_ ->
                 viewNode []

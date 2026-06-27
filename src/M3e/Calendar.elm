@@ -3,6 +3,7 @@ module M3e.Calendar exposing
     , id, date, minDate, maxDate, rangeStart, rangeEnd, startView, startAt
     , previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
     , previousMultiYearLabel, nextMultiYearLabel, onChange
+    , header
     , view
     )
 
@@ -62,6 +63,7 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 @docs id, date, minDate, maxDate, rangeStart, rangeEnd, startView, startAt
 @docs previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
 @docs previousMultiYearLabel, nextMultiYearLabel, onChange
+@docs header
 
 @docs view
 
@@ -70,9 +72,9 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 import Cem.M3e.Calendar as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
-import M3e.Element exposing (Element, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
-import M3e.Node as Node
+import M3e.Node as Node exposing (Node)
 
 
 
@@ -109,6 +111,7 @@ type alias Config msg =
     , previousMultiYearLabel : Maybe String
     , nextMultiYearLabel : Maybe String
     , onChange : Maybe (String -> msg)
+    , header : Maybe (Node msg)
     }
 
 
@@ -129,6 +132,7 @@ defaultConfig =
     , previousMultiYearLabel = Nothing
     , nextMultiYearLabel = Nothing
     , onChange = Nothing
+    , header = Nothing
     }
 
 
@@ -244,6 +248,14 @@ onChange f =
     Internal.option (\c -> { c | onChange = Just f })
 
 
+{-| Content for the `header` slot of `<m3e-calendar>` — rendered above the
+calendar grid. Use this to inject custom navigation controls or a title.
+-}
+header : Element { element : Supported } msg -> Option msg
+header r =
+    Internal.option (\c -> { c | header = Just (Element.toNode r) })
+
+
 
 -- VIEW ------------------------------------------------------------------------
 
@@ -288,7 +300,10 @@ view opts =
                     c.onChange
                 ]
             )
-            []
+            (List.filterMap identity
+                [ Maybe.map (Node.withSlot "header") c.header
+                ]
+            )
         )
 
 

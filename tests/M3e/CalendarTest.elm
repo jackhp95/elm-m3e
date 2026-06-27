@@ -121,4 +121,18 @@ suite =
                 viewNode [ Calendar.date "2026-06-25" ]
                     |> Node.findProperty "date"
                     |> Expect.equal Nothing
+
+        -- Fix #63 — header slot is now reachable
+        , test "fix-#63: header option emits a child with slot='header'" <|
+            \_ ->
+                viewNode [ Calendar.header (Element.text "March 2026") ]
+                    |> Node.childrenOf
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "header")
+                    |> Expect.equal True
+        , test "no header child by default" <|
+            \_ ->
+                viewNode []
+                    |> Node.childrenOf
+                    |> List.isEmpty
+                    |> Expect.equal True
         ]

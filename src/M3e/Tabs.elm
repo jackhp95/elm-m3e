@@ -1,7 +1,7 @@
 module M3e.Tabs exposing
     ( view, tab, panel
     , Option, TabOption, PanelOption, Variant(..), HeaderPosition(..)
-    , tabSelected, tabDisabled, tabFor, tabOnClick
+    , tabSelected, tabDisabled, tabFor, tabOnClick, tabIcon
     , panelId
     , stretch, variant, headerPosition
     )
@@ -22,6 +22,7 @@ Spec (per docs/CONVENTIONS.md):
   - Attrs: for (tab, relational), id (panel, relational),
     variant / header-position (strip, rawAttr enums)
   - Events: click → tabOnClick msg (per-tab)
+  - Slots: icon (tab, `Node.withSlot "icon"`)
   - Tag: tabs
 
 Wiring `<m3e-tab for=X>` ↔ `<m3e-tab-panel id=X>` is the caller's
@@ -30,7 +31,7 @@ stable ids.
 
 @docs view, tab, panel
 @docs Option, TabOption, PanelOption, Variant, HeaderPosition
-@docs tabSelected, tabDisabled, tabFor, tabOnClick
+@docs tabSelected, tabDisabled, tabFor, tabOnClick, tabIcon
 @docs panelId
 @docs stretch, variant, headerPosition
 
@@ -108,6 +109,15 @@ tabOnClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
+{-| Inject an icon into the tab's `icon` slot (rendered before the label).
+The upstream `<m3e-tab>` icon slot accepts `m3e-icon` or any icon-shaped
+element.
+-}
+tabIcon : Element { icon : Supported } msg -> TabOption msg
+tabIcon i =
+    Internal.option (\c -> { c | icon = Just i })
+
+
 {-| Set the `id` attribute on the panel element — matches the `for` attribute
 on its paired `m3e-tab`.
 -}
@@ -146,6 +156,7 @@ type alias TabConfig msg =
     , disabled : Bool
     , for : Maybe String
     , onClick : Maybe msg
+    , icon : Maybe (Element { icon : Supported } msg)
     }
 
 
@@ -155,6 +166,7 @@ defaultTabConfig =
     , disabled = False
     , for = Nothing
     , onClick = Nothing
+    , icon = Nothing
     }
 
 
@@ -183,7 +195,11 @@ tab req opts =
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 ]
             )
-            [ Node.text req.label ]
+            (List.filterMap identity
+                [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) c.icon
+                , Just (Node.text req.label)
+                ]
+            )
         )
 
 

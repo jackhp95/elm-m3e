@@ -656,7 +656,7 @@ viewRail model =
         |> Element.toNode
 
 
-railItem : Department -> Department -> Element { navItem : Element.Supported } Msg
+railItem : Department -> Department -> Element { s | navItem : Element.Supported } Msg
 railItem selectedDept dept =
     NavigationRail.item
         { icon = Icon.view { name = departmentIcon dept }, label = departmentLabel dept }

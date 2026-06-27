@@ -2,17 +2,24 @@ module M3e.SplitButtonTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Node as Node exposing (Node)
 import M3e.SplitButton as SplitButton
 import Test exposing (Test, describe, test)
 
 
-req : { label : String, name : String, trailingIcon : String, onPrimaryClick : (), onTriggerClick : () }
+req :
+    { label : String
+    , name : String
+    , trailingContent : List (Element { icon : Element.Supported, element : Element.Supported } ())
+    , onPrimaryClick : ()
+    , onTriggerClick : ()
+    }
 req =
     { label = "Save"
     , name = "More actions"
-    , trailingIcon = "expand_more"
+    , trailingContent =
+        [ Element.fromNode (Node.element "m3e-icon" [ Node.attribute "name" "expand_more" ] []) ]
     , onPrimaryClick = ()
     , onTriggerClick = ()
     }
@@ -97,4 +104,32 @@ suite =
                 node [ SplitButton.variant SplitButton.Outlined ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
+
+        -- Fix #63 — trailingContent is a typed slot input
+        , test "fix-#63: trailingContent is rendered inside the trailing m3e-icon-button" <|
+            \_ ->
+                node []
+                    |> childWithSlot "trailing-button"
+                    |> Maybe.map Node.childrenOf
+                    |> Maybe.andThen List.head
+                    |> Maybe.andThen Node.tagOf
+                    |> Expect.equal (Just "m3e-icon")
+        , test "fix-#63: multiple trailingContent elements are all rendered" <|
+            \_ ->
+                SplitButton.view
+                    { label = "Save"
+                    , name = "More options"
+                    , trailingContent =
+                        [ Element.fromNode (Node.element "m3e-icon" [ Node.attribute "name" "expand_more" ] [])
+                        , Element.fromNode (Node.element "m3e-menu-trigger" [ Node.attribute "for" "my-menu" ] [])
+                        ]
+                    , onPrimaryClick = ()
+                    , onTriggerClick = ()
+                    }
+                    []
+                    |> Element.toNode
+                    |> childWithSlot "trailing-button"
+                    |> Maybe.map Node.childrenOf
+                    |> Maybe.map List.length
+                    |> Expect.equal (Just 2)
         ]

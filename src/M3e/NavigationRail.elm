@@ -11,7 +11,7 @@ medium-width viewports (Material 3 Navigation rail).
 Spec (per docs/CONVENTIONS.md):
 
   - Required (item): `{ icon, label }` — the glyph and its accessible name
-  - Required (container): `{ items }` — the destination list
+  - Required (container): `{ items : List (Element { navItem : Supported, iconButton : Supported, fab : Supported } msg) }` — the destination list
   - Options (item): selected, onClick, badge, selectedIcon, disabled, href
   - Options (container): id, mode
   - Slots (item): icon (leading glyph), selected-icon (active glyph)
@@ -150,7 +150,7 @@ while keeping it available to screen readers via the slot content.
 item :
     { icon : Element { icon : Supported } msg, label : String }
     -> List (ItemOption msg)
-    -> Element { navItem : Supported } msg
+    -> Element { s | navItem : Supported } msg
 item req opts =
     let
         c : ItemConfig msg
@@ -182,11 +182,16 @@ item req opts =
 
 {-| Render the navigation rail.
 
+The upstream `<m3e-nav-rail>` default slot accepts `<m3e-nav-item>`,
+`<m3e-icon-button>`, and `<m3e-fab>` (in addition to the companion
+`<m3e-nav-rail-toggle>` which is handled separately). The slot type is `any`
+to allow all of these — pass items from `M3e.NavigationRail.item`,
+icon buttons from `M3e.IconButton.view`, or FABs from `M3e.Fab.view`.
+
     M3e.NavigationRail.view
         { items =
-            [ M3e.NavigationRail.item { icon = homeIcon }
-                [ M3e.NavigationRail.itemLabel "Home"
-                , M3e.NavigationRail.itemSelected (model.page == Home)
+            [ M3e.NavigationRail.item { icon = homeIcon, label = "Home" }
+                [ M3e.NavigationRail.itemSelected (model.page == Home)
                 , M3e.NavigationRail.itemOnClick (Navigate Home)
                 ]
             ]
@@ -195,7 +200,7 @@ item req opts =
 
 -}
 view :
-    { items : List (Element { navItem : Supported } msg) }
+    { items : List (Element { navItem : Supported, iconButton : Supported, fab : Supported } msg) }
     -> List (Option msg)
     -> Element { s | navRail : Supported } msg
 view req opts =

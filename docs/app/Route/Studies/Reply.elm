@@ -511,7 +511,7 @@ navRail railMode model =
         |> Element.toNode
 
 
-railItem : Mailbox -> Mailbox -> Element { navItem : Supported } Msg
+railItem : Mailbox -> Mailbox -> Element { s | navItem : Supported } Msg
 railItem selectedMailbox mailbox =
     NavigationRail.item
         { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
@@ -1051,7 +1051,7 @@ composeBody fields =
             , SplitButton.view
                 { label = "Send"
                 , name = "Schedule send"
-                , trailingIcon = "schedule_send"
+                , trailingContent = [ Icon.view { name = "schedule_send" } ]
                 , onPrimaryClick = SendMessage
                 , onTriggerClick = ScheduleSend
                 }

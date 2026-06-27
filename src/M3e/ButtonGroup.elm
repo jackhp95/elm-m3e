@@ -9,14 +9,14 @@ groups, M3 Expressive).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { buttons : List (Element { button : Supported } msg) }
-    (homogeneous list slot — a button-group is meaningless without
-    buttons; typed list in the required record)
+  - Required: { buttons : List (Element { button : Supported, iconButton : Supported } msg) }
+    (heterogeneous list slot — accepts both `m3e-button` and
+    `m3e-icon-button` per the upstream `m3e-button-group` default slot)
   - Options: variant, size, multi
-  - Slots: default slot ← `m3e-button` children (no slot= injection)
+  - Slots: default slot ← `m3e-button` / `m3e-icon-button` children
   - Properties: multi (Node.property — introspectable)
   - Attrs: variant/size via Cem.M3e.ButtonGroup.\* as rawAttr
-  - Escape: none (strict child kind: { button })
+  - Escape: slot type is `any` — accepts both buttons and icon buttons
   - Tag: buttonGroup
 
 
@@ -94,9 +94,14 @@ multi b =
 
 
 {-| Render the button group wrapping the required `buttons`.
+
+The upstream `<m3e-button-group>` default slot accepts both `<m3e-button>` and
+`<m3e-icon-button>`. The slot type is `any` to reflect this — pass buttons
+from `M3e.Button.view` or icon buttons from `M3e.IconButton.view`.
+
 -}
 view :
-    { buttons : List (Element { button : Supported } msg) }
+    { buttons : List (Element { button : Supported, iconButton : Supported } msg) }
     -> List (Option msg)
     -> Element { s | buttonGroup : Supported } msg
 view req opts =

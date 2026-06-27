@@ -5,16 +5,17 @@ import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.ButtonGroup as ButtonGroup
 import M3e.Element as Element exposing (Element)
+import M3e.IconButton as IconButton
 import M3e.Node as Node exposing (Node)
 import Test exposing (Test, describe, test)
 
 
-button1 : Element { button : Element.Supported } msg
+button1 : Element { s | button : Element.Supported } msg
 button1 =
     Button.view { label = "Save", variant = Button.Filled } []
 
 
-button2 : Element { button : Element.Supported } msg
+button2 : Element { s | button : Element.Supported } msg
 button2 =
     Button.view { label = "Cancel", variant = Button.Text } []
 
@@ -57,4 +58,19 @@ suite =
                     |> Node.findProperty "multi"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
+
+        -- Fix #63 — widened slot type accepts icon buttons
+        , test "fix-#63: icon buttons are accepted in the default slot (widened type)" <|
+            \_ ->
+                ButtonGroup.view
+                    { buttons =
+                        [ IconButton.view { icon = "format_bold", name = "Bold" } []
+                        , IconButton.view { icon = "format_italic", name = "Italic" } []
+                        ]
+                    }
+                    []
+                    |> Element.toNode
+                    |> Node.childrenOf
+                    |> List.filterMap Node.tagOf
+                    |> Expect.equal [ "m3e-icon-button", "m3e-icon-button" ]
         ]

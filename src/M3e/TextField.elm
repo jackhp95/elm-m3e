@@ -285,6 +285,7 @@ view req opts =
                     (Node.element "label"
                         [ Node.attribute "for" fieldId ]
                         [ Node.text req.label ]
+                        |> Node.withSlot "label"
                     )
                 , Just (controlNode c fieldId)
                 , -- Autosize sibling: ONLY for multiline + autosize (bug #A6/#17 fix)

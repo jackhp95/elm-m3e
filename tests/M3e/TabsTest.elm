@@ -3,9 +3,15 @@ module M3e.TabsTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element)
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Tabs as Tabs
 import Test exposing (Test, describe, test)
+
+
+fakeIcon : Element { icon : Element.Supported } msg
+fakeIcon =
+    Internal.fromNode (Node.element "m3e-icon" [] [ Node.text "home" ])
 
 
 tab1 : Element { tab : Element.Supported } msg
@@ -130,4 +136,21 @@ suite =
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 4
+
+        -- Fix #63 — tabIcon slot
+        , test "fix-#63: tabIcon injects content into the icon slot of m3e-tab" <|
+            \_ ->
+                Tabs.tab { label = "Home" } [ Tabs.tabIcon fakeIcon ]
+                    |> Element.toNode
+                    |> Node.childrenOf
+                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "icon")
+                    |> List.length
+                    |> Expect.equal 1
+        , test "fix-#63: tab with icon still renders the label text" <|
+            \_ ->
+                Tabs.tab { label = "Home" } [ Tabs.tabIcon fakeIcon ]
+                    |> Element.toNode
+                    |> Node.childrenOf
+                    |> List.member (Node.text "Home")
+                    |> Expect.equal True
         ]

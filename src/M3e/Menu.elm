@@ -371,7 +371,7 @@ group req =
     Internal.fromNode
         (Node.element "m3e-menu-item-group"
             []
-            (Node.element "span" [ Node.attribute "slot" "label" ] [ Node.text req.label ]
+            (Node.element "span" [] [ Node.text req.label ]
                 :: List.map Element.toNode req.items
             )
         )

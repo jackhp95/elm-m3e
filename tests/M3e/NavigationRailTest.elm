@@ -3,6 +3,8 @@ module M3e.NavigationRailTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element)
+import M3e.Fab as Fab
+import M3e.IconButton as IconButton
 import M3e.Internal as Internal
 import M3e.NavigationRail as NavRail
 import M3e.Node as Node exposing (Node)
@@ -18,7 +20,7 @@ fakeIcon =
     Internal.fromNode (Node.element "m3e-icon" [] [ Node.text "home" ])
 
 
-railNode : List (NavRail.Option msg) -> List (Element { navItem : Element.Supported } msg) -> Node msg
+railNode : List (NavRail.Option msg) -> List (Element { navItem : Element.Supported, iconButton : Element.Supported, fab : Element.Supported } msg) -> Node msg
 railNode opts items =
     NavRail.view { items = items } opts
         |> Element.toNode
@@ -26,7 +28,7 @@ railNode opts items =
 
 {-| Build a rail item with a required label.
 -}
-railItem : String -> List (NavRail.ItemOption String) -> Element { navItem : Element.Supported } String
+railItem : String -> List (NavRail.ItemOption String) -> Element { s | navItem : Element.Supported } String
 railItem lbl opts =
     NavRail.item { icon = fakeIcon, label = lbl } opts
 
@@ -131,4 +133,24 @@ suite =
                     |> Element.toNode
                     |> Node.findAttribute "href"
                     |> Expect.equal (Just "/settings")
+
+        -- Fix #63 — widened slot type accepts fab and icon-button
+        , test "fix-#63: fab can be placed in the nav rail (widened slot type)" <|
+            \_ ->
+                NavRail.view
+                    { items = [ Fab.view { icon = "edit", name = "Create" } [] ] }
+                    []
+                    |> Element.toNode
+                    |> Node.childrenOf
+                    |> List.filterMap Node.tagOf
+                    |> Expect.equal [ "m3e-fab" ]
+        , test "fix-#63: icon-button can be placed in the nav rail (widened slot type)" <|
+            \_ ->
+                NavRail.view
+                    { items = [ IconButton.view { icon = "menu", name = "Toggle" } [] ] }
+                    []
+                    |> Element.toNode
+                    |> Node.childrenOf
+                    |> List.filterMap Node.tagOf
+                    |> Expect.equal [ "m3e-icon-button" ]
         ]

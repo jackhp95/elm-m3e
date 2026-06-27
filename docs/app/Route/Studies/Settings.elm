@@ -396,7 +396,7 @@ railColumn model =
         ]
 
 
-railItem : Section -> String -> String -> Section -> Element { navItem : Supported } Msg
+railItem : Section -> String -> String -> Section -> Element { s | navItem : Supported } Msg
 railItem currentSection glyph label itemSection =
     NavigationRail.item { icon = Icon.view { name = glyph }, label = label }
         [ NavigationRail.itemSelected (currentSection == itemSection)

@@ -11,7 +11,7 @@ Spec (per docs/CONVENTIONS.md):
 
   - Required: { label : String
     , name : String -- a11y label for the trailing icon-button
-    , trailingIcon : String -- m3e-icon glyph name
+    , trailingContent : List (Element { icon : Supported, element : Supported } msg) -- content for the trailing icon-button
     , onPrimaryClick : msg -- handler for the leading button
     , onTriggerClick : msg -- handler for the trailing icon-button
     }
@@ -79,12 +79,31 @@ type alias Config =
 
 
 {-| Render the split button: a leading `<m3e-button>` (the primary action)
-paired with a trailing `<m3e-icon-button>` trigger for related actions.
+paired with a trailing `<m3e-icon-button>` whose light-DOM children are
+supplied by the caller via `trailingContent`.
+
+    SplitButton.view
+        { label = "Send"
+        , name = "Schedule send"
+        , trailingContent = [ Icon.view { name = "schedule_send" } ]
+        , onPrimaryClick = SendMessage
+        , onTriggerClick = ScheduleSend
+        }
+        [ SplitButton.variant SplitButton.Filled ]
+
+To also open a menu from the trailing button, add `Menu.triggerFor` alongside
+the icon:
+
+    trailingContent =
+        [ Icon.view { name = "expand_more" }
+        , Menu.triggerFor "my-menu"
+        ]
+
 -}
 view :
     { label : String
     , name : String
-    , trailingIcon : String
+    , trailingContent : List (Element { icon : Supported, element : Supported } msg)
     , onPrimaryClick : msg
     , onTriggerClick : msg
     }
@@ -114,6 +133,8 @@ view req opts =
                 |> Node.withSlot "leading-button"
 
         -- Trailing button: m3e-icon-button (FIX #16 — not a native <button>)
+        -- trailingContent is the typed slot input — any element(s) go here,
+        -- enabling both the icon and companions like m3e-menu-trigger.
         trailingButton : Node msg
         trailingButton =
             Node.element "m3e-icon-button"
@@ -121,7 +142,7 @@ view req opts =
                 , Node.property "disabled" (Encode.bool c.disabled)
                 , Node.on "click" (Decode.succeed req.onTriggerClick)
                 ]
-                [ Node.element "m3e-icon" [ Node.attribute "name" req.trailingIcon ] [] ]
+                (List.map Element.toNode req.trailingContent)
                 |> Node.withSlot "trailing-button"
     in
     Internal.fromNode
