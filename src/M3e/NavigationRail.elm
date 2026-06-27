@@ -48,18 +48,12 @@ type Mode
 -- OPTION TYPES ------------------------------------------------------------
 
 
-type ItemOption msg
-    = ItemSelected Bool
-    | ItemOnClick msg
-    | ItemBadge String
-    | ItemSelectedIcon (Renderable { icon : Supported } msg)
-    | ItemDisabled Bool
-    | ItemHref String
+type alias ItemOption msg =
+    Internal.Option (ItemConfig msg) msg
 
 
-type Option msg
-    = WithId String
-    | ModeOpt Mode
+type alias Option msg =
+    Internal.Option ContainerConfig msg
 
 
 -- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
@@ -68,52 +62,52 @@ type Option msg
 {-| Mark this item as selected (the `selected` DOM property on
 `<m3e-nav-item>`). -}
 itemSelected : Bool -> ItemOption msg
-itemSelected =
-    ItemSelected
+itemSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Fire a message when this destination is chosen. -}
 itemOnClick : msg -> ItemOption msg
-itemOnClick =
-    ItemOnClick
+itemOnClick msg_ =
+    Internal.option (\c -> { c | onClick = Just msg_ })
 
 
 {-| Attach a badge count to the item. Rendered as an `<m3e-badge>` inside the
 item's default slot. -}
 itemBadge : String -> ItemOption msg
-itemBadge =
-    ItemBadge
+itemBadge s =
+    Internal.option (\c -> { c | badge = Just s })
 
 
 {-| Give the item a distinct glyph for its selected state (the `selected-icon`
 slot). Shown in place of the regular icon while the item is selected. -}
 itemSelectedIcon : Renderable { icon : Supported } msg -> ItemOption msg
-itemSelectedIcon =
-    ItemSelectedIcon
+itemSelectedIcon r =
+    Internal.option (\c -> { c | selectedIcon = Just r })
 
 
 {-| Disable this destination. -}
 itemDisabled : Bool -> ItemOption msg
-itemDisabled =
-    ItemDisabled
+itemDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Make this destination a link (the `href` attribute). -}
 itemHref : String -> ItemOption msg
-itemHref =
-    ItemHref
+itemHref s =
+    Internal.option (\c -> { c | href = Just s })
 
 
 {-| Set the `id` attribute on the `<m3e-nav-rail>` element. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId id_ =
+    Internal.option (\c -> { c | id = Just id_ })
 
 
 {-| Set the display mode of the rail. Default `Auto`. -}
 mode : Mode -> Option msg
-mode =
-    ModeOpt
+mode m =
+    Internal.option (\c -> { c | mode = m })
 
 
 -- ITEM CONSTRUCTOR --------------------------------------------------------
@@ -138,7 +132,7 @@ item :
 item req opts =
     let
         c =
-            List.foldl applyItem defaultItemConfig opts
+            Internal.applyOptions opts defaultItemConfig
     in
     Internal.fromNode
         (Node.element "m3e-nav-item"
@@ -187,7 +181,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyOption defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-nav-rail"
@@ -224,28 +218,6 @@ defaultItemConfig =
     }
 
 
-applyItem : ItemOption msg -> ItemConfig msg -> ItemConfig msg
-applyItem opt c =
-    case opt of
-        ItemSelected b ->
-            { c | selected = b }
-
-        ItemOnClick msg ->
-            { c | onClick = Just msg }
-
-        ItemBadge s ->
-            { c | badge = Just s }
-
-        ItemSelectedIcon r ->
-            { c | selectedIcon = Just r }
-
-        ItemDisabled b ->
-            { c | disabled = b }
-
-        ItemHref s ->
-            { c | href = Just s }
-
-
 type alias ContainerConfig =
     { id : Maybe String
     , mode : Mode
@@ -255,16 +227,6 @@ type alias ContainerConfig =
 defaultConfig : ContainerConfig
 defaultConfig =
     { id = Nothing, mode = Auto }
-
-
-applyOption : Option msg -> ContainerConfig -> ContainerConfig
-applyOption opt c =
-    case opt of
-        WithId id ->
-            { c | id = Just id }
-
-        ModeOpt m ->
-            { c | mode = m }
 
 
 toCemMode : Mode -> CemNavRail.Mode

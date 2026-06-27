@@ -42,57 +42,50 @@ import M3e.Internal as Internal
 -- OPTION TYPE (interactive chips) ----------------------------------------
 
 
-type Option msg
-    = OnClick msg
-    | Selected Bool
-    | Disabled Bool
-    | Elevated Bool
-    | Href String
-    | RemoveLabel String
-    | LeadingIcon (Renderable { icon : Supported } msg)
-    | AvatarChild (Renderable { avatar : Supported } msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 onClick : msg -> Option msg
-onClick =
-    OnClick
+onClick m =
+    Internal.option (\c -> { c | onClick = Just m })
 
 
 selected : Bool -> Option msg
-selected =
-    Selected
+selected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 elevated : Bool -> Option msg
-elevated =
-    Elevated
+elevated b =
+    Internal.option (\c -> { c | elevated = b })
 
 
 href : String -> Option msg
-href =
-    Href
+href v =
+    Internal.option (\c -> { c | href = Just v })
 
 
 removeLabel : String -> Option msg
-removeLabel =
-    RemoveLabel
+removeLabel v =
+    Internal.option (\c -> { c | removeLabel = Just v })
 
 
 leadingIcon : Renderable { icon : Supported } msg -> Option msg
-leadingIcon =
-    LeadingIcon
+leadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Render an avatar before the label (input chips only — `slot="avatar"`).
 -}
 avatarChild : Renderable { avatar : Supported } msg -> Option msg
-avatarChild =
-    AvatarChild
+avatarChild a =
+    Internal.option (\c -> { c | avatarChild = Just a })
 
 
 
@@ -101,21 +94,20 @@ avatarChild =
 
 {-| Options accepted by the display `view` chip. Narrow subset matching
 `<m3e-chip>`'s real CEM surface (variant + icon slot). -}
-type ViewOption msg
-    = ViewElevated Bool
-    | ViewLeadingIcon (Renderable { icon : Supported } msg)
+type alias ViewOption msg =
+    Internal.Option (ViewConfig msg) msg
 
 
 {-| Set the elevated variant on the display chip. -}
 viewElevated : Bool -> ViewOption msg
-viewElevated =
-    ViewElevated
+viewElevated b =
+    Internal.option (\c -> { c | elevated = b })
 
 
 {-| Add a leading icon to the display chip (rendered in the `icon` slot). -}
 viewLeadingIcon : Renderable { icon : Supported } msg -> ViewOption msg
-viewLeadingIcon =
-    ViewLeadingIcon
+viewLeadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 
@@ -147,35 +139,6 @@ defaultConfig =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        OnClick m ->
-            { c | onClick = Just m }
-
-        Selected b ->
-            { c | selected = b }
-
-        Disabled b ->
-            { c | disabled = b }
-
-        Elevated b ->
-            { c | elevated = b }
-
-        Href v ->
-            { c | href = Just v }
-
-        RemoveLabel v ->
-            { c | removeLabel = Just v }
-
-        LeadingIcon i ->
-            { c | leadingIcon = Just i }
-
-        AvatarChild a ->
-            { c | avatarChild = Just a }
-
-
-
 -- CONFIG (display chip) --------------------------------------------------
 
 
@@ -188,17 +151,6 @@ type alias ViewConfig msg =
 defaultViewConfig : ViewConfig msg
 defaultViewConfig =
     { elevated = False, leadingIcon = Nothing }
-
-
-applyView : ViewOption msg -> ViewConfig msg -> ViewConfig msg
-applyView opt vc =
-    case opt of
-        ViewElevated b ->
-            { vc | elevated = b }
-
-        ViewLeadingIcon i ->
-            { vc | leadingIcon = Just i }
-
 
 
 -- SLOT / ATTR HELPERS ----------------------------------------------------
@@ -242,7 +194,7 @@ view : { label : String } -> List (ViewOption msg) -> Renderable { s | chip : Su
 view req opts =
     let
         vc =
-            List.foldl applyView defaultViewConfig opts
+            Internal.applyOptions opts defaultViewConfig
     in
     Internal.fromNode
         (Node.element "m3e-chip"
@@ -289,7 +241,7 @@ genericChip : String -> String -> msg -> List (Option msg) -> Renderable { s | c
 genericChip tag label clickMsg opts =
     let
         c =
-            List.foldl apply { defaultConfig | onClick = Just clickMsg } opts
+            Internal.applyOptions opts { defaultConfig | onClick = Just clickMsg }
 
         action =
             case c.href of
@@ -326,7 +278,7 @@ filter :
 filter req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-filter-chip"
@@ -360,7 +312,7 @@ input :
 input req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-input-chip"

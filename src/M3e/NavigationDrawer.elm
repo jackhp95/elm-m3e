@@ -71,28 +71,18 @@ type Mode
 
 
 {-| Options on a `link` entry. -}
-type LinkOption msg
-    = LinkSelected Bool
-    | LinkBadge String
-    | LinkIcon (Renderable { icon : Supported } msg)
-    | LinkTarget String
+type alias LinkOption msg =
+    Internal.Option (LinkConfig msg) msg
 
 
 {-| Options on a `group` entry. -}
-type GroupOption msg
-    = GroupSelected Bool
-    | GroupOpen Bool
-    | GroupBadge String
-    | GroupIcon (Renderable { icon : Supported } msg)
+type alias GroupOption msg =
+    Internal.Option (GroupConfig msg) msg
 
 
 {-| Options on the container. -}
-type Option msg
-    = WithId String
-    | WithOpen Bool
-    | WithSide Side
-    | WithMode Mode
-    | WithContent (List (Html msg))
+type alias Option msg =
+    Internal.Option (ContainerConfig msg) msg
 
 
 -- LINK OPTION CONSTRUCTORS ----------------------------------------------------
@@ -100,26 +90,26 @@ type Option msg
 
 {-| Mark this link as the currently selected destination. -}
 linkSelected : Bool -> LinkOption msg
-linkSelected =
-    LinkSelected
+linkSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Attach a badge text to this link (e.g. an unread count). -}
 linkBadge : String -> LinkOption msg
-linkBadge =
-    LinkBadge
+linkBadge s =
+    Internal.option (\c -> { c | badge = Just s })
 
 
 {-| Leading icon for this link. -}
 linkIcon : Renderable { icon : Supported } msg -> LinkOption msg
-linkIcon =
-    LinkIcon
+linkIcon ic =
+    Internal.option (\c -> { c | icon = Just ic })
 
 
 {-| Set the `target` attribute on the anchor (e.g. `"_blank"`). -}
 linkTarget : String -> LinkOption msg
-linkTarget =
-    LinkTarget
+linkTarget s =
+    Internal.option (\c -> { c | target = Just s })
 
 
 -- GROUP OPTION CONSTRUCTORS ---------------------------------------------------
@@ -127,26 +117,26 @@ linkTarget =
 
 {-| Mark this group as selected (e.g. it contains the active destination). -}
 groupSelected : Bool -> GroupOption msg
-groupSelected =
-    GroupSelected
+groupSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Expand the group. Default `False` (collapsed). -}
 groupOpen : Bool -> GroupOption msg
-groupOpen =
-    GroupOpen
+groupOpen b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Attach a badge text to this group. -}
 groupBadge : String -> GroupOption msg
-groupBadge =
-    GroupBadge
+groupBadge s =
+    Internal.option (\c -> { c | badge = Just s })
 
 
 {-| Leading icon for this group. -}
 groupIcon : Renderable { icon : Supported } msg -> GroupOption msg
-groupIcon =
-    GroupIcon
+groupIcon ic =
+    Internal.option (\c -> { c | icon = Just ic })
 
 
 -- CONTAINER OPTION CONSTRUCTORS -----------------------------------------------
@@ -154,36 +144,36 @@ groupIcon =
 
 {-| Set the `id` attribute on the `<m3e-drawer-container>`. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Control whether the drawer is open. Default `True` (open — the usual
 shape for a permanent side drawer). Pass `False` on mobile / overlay mode.
 -}
 withOpen : Bool -> Option msg
-withOpen =
-    WithOpen
+withOpen b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Which edge the drawer anchors to. Default `Start`. -}
 withSide : Side -> Option msg
-withSide =
-    WithSide
+withSide s =
+    Internal.option (\c -> { c | side = s })
 
 
 {-| Set the display mode. Default `ModeSide`. -}
 withMode : Mode -> Option msg
-withMode =
-    WithMode
+withMode m =
+    Internal.option (\c -> { c | mode = m })
 
 
 {-| Main page content to project into the drawer's content region (the
 default slot of `<m3e-drawer-container>`).
 -}
 content : List (Html msg) -> Option msg
-content =
-    WithContent
+content items =
+    Internal.option (\c -> { c | content = items })
 
 
 -- ENTRY CONSTRUCTORS ----------------------------------------------------------
@@ -205,7 +195,7 @@ link :
 link req opts =
     let
         cfg =
-            List.foldl applyLink defaultLinkConfig opts
+            Internal.applyOptions opts defaultLinkConfig
     in
     Internal.fromNode
         (Node.element "m3e-nav-menu-item"
@@ -259,7 +249,7 @@ group :
 group req children opts =
     let
         cfg =
-            List.foldl applyGroup defaultGroupConfig opts
+            Internal.applyOptions opts defaultGroupConfig
     in
     Internal.fromNode
         (Node.element "m3e-nav-menu-item"
@@ -324,7 +314,7 @@ view :
 view req opts =
     let
         cfg =
-            List.foldl applyOption defaultContainerConfig opts
+            Internal.applyOptions opts defaultContainerConfig
 
         ( openAttr, slotAttr, modeAttrName ) =
             case cfg.side of
@@ -370,21 +360,6 @@ defaultLinkConfig =
     { selected = False, badge = Nothing, icon = Nothing, target = Nothing }
 
 
-applyLink : LinkOption msg -> LinkConfig msg -> LinkConfig msg
-applyLink opt c =
-    case opt of
-        LinkSelected b ->
-            { c | selected = b }
-
-        LinkBadge s ->
-            { c | badge = Just s }
-
-        LinkIcon ic ->
-            { c | icon = Just ic }
-
-        LinkTarget s ->
-            { c | target = Just s }
-
 
 type alias GroupConfig msg =
     { selected : Bool
@@ -398,21 +373,6 @@ defaultGroupConfig : GroupConfig msg
 defaultGroupConfig =
     { selected = False, open = False, badge = Nothing, icon = Nothing }
 
-
-applyGroup : GroupOption msg -> GroupConfig msg -> GroupConfig msg
-applyGroup opt c =
-    case opt of
-        GroupSelected b ->
-            { c | selected = b }
-
-        GroupOpen b ->
-            { c | open = b }
-
-        GroupBadge s ->
-            { c | badge = Just s }
-
-        GroupIcon ic ->
-            { c | icon = Just ic }
 
 
 type alias ContainerConfig msg =
@@ -428,24 +388,6 @@ defaultContainerConfig : ContainerConfig msg
 defaultContainerConfig =
     { id = Nothing, open = True, side = Start, mode = ModeSide, content = [] }
 
-
-applyOption : Option msg -> ContainerConfig msg -> ContainerConfig msg
-applyOption opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        WithOpen b ->
-            { c | open = b }
-
-        WithSide s ->
-            { c | side = s }
-
-        WithMode m ->
-            { c | mode = m }
-
-        WithContent items ->
-            { c | content = items }
 
 
 modeString : Mode -> String

@@ -41,37 +41,34 @@ type Variant
     | Vibrant
 
 
-type Option msg
-    = Elevated Bool
-    | Vertical Bool
-    | ShapeOpt Shape
-    | VariantOpt Variant
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Raise the toolbar above content with a shadow. Default false (flat). -}
 elevated : Bool -> Option msg
-elevated =
-    Elevated
+elevated b =
+    Internal.option (\c -> { c | elevated = b })
 
 
 {-| Orient the toolbar vertically (stacks children as a column). Default false
 (horizontal row).
 -}
 vertical : Bool -> Option msg
-vertical =
-    Vertical
+vertical b =
+    Internal.option (\c -> { c | vertical = b })
 
 
 {-| Set the toolbar's corner shape. Default `Square`. -}
 shape : Shape -> Option msg
-shape =
-    ShapeOpt
+shape s =
+    Internal.option (\c -> { c | shape = s })
 
 
 {-| Set the appearance variant. Default `Standard`. -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 type alias Config =
@@ -89,22 +86,6 @@ defaultConfig =
     , shape = Square
     , variant = Standard
     }
-
-
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Elevated b ->
-            { c | elevated = b }
-
-        Vertical b ->
-            { c | vertical = b }
-
-        ShapeOpt s ->
-            { c | shape = s }
-
-        VariantOpt v ->
-            { c | variant = v }
 
 
 {-| Render the toolbar as an introspectable IR node.
@@ -129,7 +110,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-toolbar"
