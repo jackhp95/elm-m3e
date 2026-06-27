@@ -506,20 +506,17 @@ rail model =
     div [ class "shrink-0" ]
         [ NavigationRail.view
             { items =
-                [ NavigationRail.item { icon = Icon.view { name = "account_balance_wallet" } }
-                    [ NavigationRail.itemLabel "Accounts"
-                    , NavigationRail.itemSelected (model.tab == Accounts)
+                [ NavigationRail.item { icon = Icon.view { name = "account_balance_wallet" }, label = "Accounts" }
+                    [ NavigationRail.itemSelected (model.tab == Accounts)
                     , NavigationRail.itemOnClick (TabSelected Accounts)
                     ]
-                , NavigationRail.item { icon = Icon.view { name = "receipt_long" } }
-                    [ NavigationRail.itemLabel "Bills"
-                    , NavigationRail.itemSelected (model.tab == Bills)
+                , NavigationRail.item { icon = Icon.view { name = "receipt_long" }, label = "Bills" }
+                    [ NavigationRail.itemSelected (model.tab == Bills)
                     , NavigationRail.itemOnClick (TabSelected Bills)
                     , NavigationRail.itemBadge (String.fromInt (List.length bills))
                     ]
-                , NavigationRail.item { icon = Icon.view { name = "donut_small" } }
-                    [ NavigationRail.itemLabel "Budgets"
-                    , NavigationRail.itemSelected (model.tab == Budgets)
+                , NavigationRail.item { icon = Icon.view { name = "donut_small" }, label = "Budgets" }
+                    [ NavigationRail.itemSelected (model.tab == Budgets)
                     , NavigationRail.itemOnClick (TabSelected Budgets)
                     ]
                 ]
@@ -531,18 +528,19 @@ rail model =
 
 appBar : Model -> Html Msg
 appBar model =
-    AppBar.new
-        |> AppBar.withTitle (Heading.view { label = "Rally", variant = Heading.Title } [])
-        |> AppBar.withLeading
+    AppBar.view
+        [ AppBar.title (Heading.view { label = "Rally", variant = Heading.Title } [])
+        , AppBar.leading
             (Renderable.element { tag = "span" }
                 [ Node.rawAttr (Attr.class "px-2 text-primary") ]
                 [ Renderable.toNode (Icon.view { name = "savings" }) ]
             )
-        |> AppBar.withTrailing
+        , AppBar.trailing
             [ Renderable.element { tag = "div" } [] [ Node.raw (monthSelect model) ]
             , Renderable.element { tag = "div" } [] [ Node.raw (refreshButton model) ]
             ]
-        |> AppBar.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 
@@ -859,17 +857,17 @@ overviewCard =
         budget =
             totalBudget budgetCategories
     in
-    Card.new
-        |> Card.withVariant Card.Filled
-        |> Card.withHeadline (Heading.view { label = "March overview", variant = Heading.Title } [])
-        |> Card.withSubhead
+    Card.view
+        [ Card.variant Card.Filled
+        , Card.headline (Heading.view { label = "March overview", variant = Heading.Title } [])
+        , Card.subhead
             (Heading.view
                 { label = formatMoney spent ++ " of " ++ formatMoney budget ++ " spent"
                 , variant = Heading.Label
                 }
                 []
             )
-        |> Card.withBody
+        , Card.body
             [ Renderable.html
                 (div [ class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6" ]
                     [ div [ class "relative grid place-items-center self-center sm:self-auto" ]
@@ -889,8 +887,8 @@ overviewCard =
                     ]
                 )
             ]
-        |> Card.toNode
-        |> Node.toHtml
+        ]
+        |> toHtml
 
 
 budgetCard : BudgetCategory -> Html Msg
@@ -902,17 +900,17 @@ budgetCard category =
         over =
             isOverBudget category
     in
-    Card.new
-        |> Card.withVariant Card.Outlined
-        |> Card.withHeadline (Heading.view { label = category.label, variant = Heading.Title } [])
-        |> Card.withSubhead
+    Card.view
+        [ Card.variant Card.Outlined
+        , Card.headline (Heading.view { label = category.label, variant = Heading.Title } [])
+        , Card.subhead
             (Heading.view
                 { label = formatMoney category.spentCents ++ " of " ++ formatMoney category.budgetCents
                 , variant = Heading.Label
                 }
                 []
             )
-        |> Card.withBody
+        , Card.body
             [ Renderable.html
                 (div [ class "space-y-2" ]
                     [ div [ class "flex items-center gap-2" ]
@@ -941,8 +939,8 @@ budgetCard category =
                     ]
                 )
             ]
-        |> Card.toNode
-        |> Node.toHtml
+        ]
+        |> toHtml
 
 
 categoryDetail : Html Msg

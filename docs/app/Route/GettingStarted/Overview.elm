@@ -91,10 +91,10 @@ highlights =
 
 highlightCard : ( String, String, String ) -> Html msg
 highlightCard ( iconName, title, body ) =
-    Card.new
-        |> Card.withVariant Card.Filled
-        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
-        |> Card.withBody
+    Card.view
+        [ Card.variant Card.Filled
+        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        , Card.body
             [ Renderable.html
                 (div [ class "flex gap-3" ]
                     [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
@@ -102,7 +102,8 @@ highlightCard ( iconName, title, body ) =
                     ]
                 )
             ]
-        |> Card.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 

@@ -13,72 +13,72 @@ import M3e.Renderable as Renderable
 suite : Test
 suite =
     describe "M3e.AppBar — expanded surface"
-        [ test "withTrailing (existing) still injects slot=trailing on first child" <|
+        [ test "trailing injects slot=trailing on first child" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withTrailing
+                AppBar.view
+                    [ AppBar.trailing
                         [ IB.view { icon = "more_vert", name = "More" } [] ]
-                    |> AppBar.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "trailing")
-        , test "withLeading injects slot=leading" <|
+        , test "leading injects slot=leading" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withLeading (IB.view { icon = "menu", name = "Menu" } [])
-                    |> AppBar.toNode
+                AppBar.view
+                    [ AppBar.leading (IB.view { icon = "menu", name = "Menu" } []) ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "leading")
-        , test "withTitle injects slot=title" <|
+        , test "title injects slot=title" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withTitle
+                AppBar.view
+                    [ AppBar.title
                         (Heading.view { label = "My App", variant = Heading.Title } [])
-                    |> AppBar.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "title")
-        , test "withSubtitle injects slot=subtitle" <|
+        , test "subtitle injects slot=subtitle" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withSubtitle
+                AppBar.view
+                    [ AppBar.subtitle
                         (Heading.view { label = "Dashboard", variant = Heading.Label } [])
-                    |> AppBar.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "subtitle")
-        , test "withSize emits size attribute" <|
+        , test "size emits size attribute" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withSize AppBar.Large
-                    |> AppBar.toNode
+                AppBar.view [ AppBar.size AppBar.Large ]
+                    |> Renderable.toNode
                     |> Node.findAttribute "size"
                     |> Expect.equal (Just "large")
-        , test "withCentered emits centered DOM property" <|
+        , test "centered emits centered DOM property" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withCentered True
-                    |> AppBar.toNode
+                AppBar.view [ AppBar.centered True ]
+                    |> Renderable.toNode
                     |> Node.findProperty "centered"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "withId emits id attribute" <|
+        , test "id emits id attribute" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withId "main-bar"
-                    |> AppBar.toNode
+                AppBar.view [ AppBar.id "main-bar" ]
+                    |> Renderable.toNode
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "main-bar")
         , test "element escape in leading slot carries slot=leading" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withLeading (Renderable.element { tag = "img" } [] [])
-                    |> AppBar.toNode
+                AppBar.view
+                    [ AppBar.leading (Renderable.element { tag = "img" } [] []) ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")

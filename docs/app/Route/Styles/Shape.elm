@@ -101,11 +101,12 @@ view _ _ =
                     [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. Ui.Shape renders a decorative <m3e-shape> surface that respects it." ]
                 ]
             , Divider.view [] |> toHtml
-            , Card.new
-                |> Card.withVariant Card.Outlined
-                |> Card.withHeadline (Heading.view { label = "Corner scale", variant = Heading.Title } [])
-                |> Card.withBody [ Renderable.html (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps)) ]
-                |> Card.toNode
+            , Card.view
+                [ Card.variant Card.Outlined
+                , Card.headline (Heading.view { label = "Corner scale", variant = Heading.Title } [])
+                , Card.body [ Renderable.html (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps)) ]
+                ]
+                |> Renderable.toNode
                 |> Node.toHtml
             ]
         ]

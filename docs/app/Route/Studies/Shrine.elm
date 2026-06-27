@@ -614,18 +614,19 @@ viewAppBar model =
                        )
                 )
     in
-    AppBar.new
-        |> AppBar.withId "shrine-appbar"
-        |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeading
+    AppBar.view
+        [ AppBar.id "shrine-appbar"
+        , AppBar.size AppBar.Small
+        , AppBar.leading
             (IconButton.view { icon = "menu", name = "Menu" } [])
-        |> AppBar.withTitle
+        , AppBar.title
             (Heading.view { label = "Shrine", variant = Heading.Title } [])
-        |> AppBar.withTrailing
+        , AppBar.trailing
             [ IconButton.view { icon = "search", name = "Search" } []
             , cartElem
             ]
-        |> AppBar.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 
@@ -663,9 +664,8 @@ viewRail model =
 railItem : Department -> Department -> Renderable { navItem : Renderable.Supported } Msg
 railItem selectedDept dept =
     NavigationRail.item
-        { icon = Icon.view { name = departmentIcon dept } }
-        [ NavigationRail.itemLabel (departmentLabel dept)
-        , NavigationRail.itemSelected (dept == selectedDept)
+        { icon = Icon.view { name = departmentIcon dept }, label = departmentLabel dept }
+        [ NavigationRail.itemSelected (dept == selectedDept)
         , NavigationRail.itemOnClick (DepartmentPicked dept)
         ]
 
@@ -685,9 +685,9 @@ viewControls model =
                     )
 
         chipSet =
-            ChipSet.filterSet "Product filters"
-                |> ChipSet.withChips chips
-                |> ChipSet.toNode
+            ChipSet.filterSet { label = "Product filters" }
+                [ ChipSet.chips chips ]
+                |> Renderable.toNode
                 |> Node.toHtml
 
         viewModeControl =
@@ -865,9 +865,9 @@ viewProductCard model product =
                     ]
                 ]
     in
-    Card.new
-        |> Card.withVariant Card.Elevated
-        |> Card.withMedia
+    Card.view
+        [ Card.variant Card.Elevated
+        , Card.media
             (Renderable.html
                 (div
                     [ class "cursor-pointer"
@@ -878,15 +878,15 @@ viewProductCard model product =
                     [ productMedia product ]
                 )
             )
-        |> Card.withBody [ Renderable.html body ]
-        |> Card.withActions
+        , Card.body [ Renderable.html body ]
+        , Card.actions
             [ Button.view { label = "Add to bag", variant = Button.Filled }
                 [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
                 , Button.onClick (AddedToBag product.id 1)
                 ]
             ]
-        |> Card.toNode
-        |> Node.toHtml
+        ]
+        |> toHtml
 
 
 viewProductList : Model -> List Product -> Html Msg

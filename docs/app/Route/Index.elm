@@ -155,10 +155,10 @@ highlights =
 
 highlightCard : String -> String -> String -> Html msg
 highlightCard iconName title body =
-    Card.new
-        |> Card.withVariant Card.Outlined
-        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
-        |> Card.withBody
+    Card.view
+        [ Card.variant Card.Outlined
+        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        , Card.body
             [ Renderable.html
                 (div [ class "flex gap-3" ]
                     [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
@@ -166,7 +166,8 @@ highlightCard iconName title body =
                     ]
                 )
             ]
-        |> Card.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 
@@ -187,9 +188,10 @@ statusGrid =
 
 statusCard : String -> String -> Html msg
 statusCard title body =
-    Card.new
-        |> Card.withVariant Card.Outlined
-        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
-        |> Card.withBody [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
-        |> Card.toNode
+    Card.view
+        [ Card.variant Card.Outlined
+        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        , Card.body [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
+        ]
+        |> Renderable.toNode
         |> Node.toHtml

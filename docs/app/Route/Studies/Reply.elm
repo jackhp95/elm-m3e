@@ -518,9 +518,8 @@ navRail railMode model =
 railItem : Mailbox -> Mailbox -> Renderable { navItem : Supported } Msg
 railItem selectedMailbox mailbox =
     NavigationRail.item
-        { icon = Icon.view { name = mailboxIcon mailbox } }
-        ([ NavigationRail.itemLabel (mailboxLabel mailbox)
-         , NavigationRail.itemSelected (mailbox == selectedMailbox)
+        { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
+        ([ NavigationRail.itemSelected (mailbox == selectedMailbox)
          , NavigationRail.itemOnClick (SelectMailbox mailbox)
          ]
             ++ (if unreadCount mailbox > 0 then
@@ -558,9 +557,8 @@ viewBottomNav model =
 barItem : Mailbox -> Mailbox -> Renderable { navItem : Supported } Msg
 barItem selectedMailbox mailbox =
     NavigationBar.item
-        { icon = Icon.view { name = mailboxIcon mailbox } }
-        ([ NavigationBar.itemLabel (mailboxLabel mailbox)
-         , NavigationBar.itemSelected (mailbox == selectedMailbox)
+        { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
+        ([ NavigationBar.itemSelected (mailbox == selectedMailbox)
          , NavigationBar.itemOnClick (SelectMailbox mailbox)
          ]
             ++ (if unreadCount mailbox > 0 then
@@ -640,14 +638,15 @@ viewAppBar model =
             Avatar.view { alt = "Jane Reed" }
                 [ Avatar.initials "Jane Reed" ]
     in
-    AppBar.new
-        |> AppBar.withId "reply-appbar"
-        |> AppBar.withSize AppBar.Small
-        |> AppBar.withLeading leadingElem
-        |> AppBar.withTitle
+    AppBar.view
+        [ AppBar.id "reply-appbar"
+        , AppBar.size AppBar.Small
+        , AppBar.leading leadingElem
+        , AppBar.title
             (Heading.view { label = appBarTitle model, variant = Heading.Title } [])
-        |> AppBar.withTrailing [ searchElem, compactSearchElem, notifElem, avatarElem ]
-        |> AppBar.toNode
+        , AppBar.trailing [ searchElem, compactSearchElem, notifElem, avatarElem ]
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 

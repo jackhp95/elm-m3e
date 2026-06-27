@@ -100,10 +100,10 @@ view _ _ =
                     [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
                 ]
             , Divider.view [] |> toHtml
-            , Card.new
-                |> Card.withVariant Card.Outlined
-                |> Card.withHeadline (Heading.view { label = "Density scale, 0 to -3", variant = Heading.Title } [])
-                |> Card.withBody
+            , Card.view
+                [ Card.variant Card.Outlined
+                , Card.headline (Heading.view { label = "Density scale, 0 to -3", variant = Heading.Title } [])
+                , Card.body
                     [ Renderable.html
                         (div [ class "space-y-6" ]
                             [ demoBar 0
@@ -113,7 +113,8 @@ view _ _ =
                             ]
                         )
                     ]
-                |> Card.toNode
+                ]
+                |> Renderable.toNode
                 |> Node.toHtml
             ]
         ]

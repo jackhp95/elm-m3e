@@ -36,31 +36,33 @@ suite =
                     |> Expect.equal (Just "Delete items")
         , test "no-lift heterogeneous slot folds like Html; parent injects slot=" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withTrailing
+                AppBar.view
+                    [ AppBar.trailing
                         [ Search.view { placeholder = "Search" } [ Search.onInput identity ]
                         , IconButton.view { icon = "more_vert", name = "More" } [ IconButton.onClick "x" ]
                         ]
-                    |> AppBar.toNode
+                    ]
+                    |> Renderable.toNode
                     |> firstChild
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "trailing")
         , test "element escape in a named slot DOES carry the injected slot (C+D)" <|
             \_ ->
-                AppBar.new
-                    |> AppBar.withTrailing [ Renderable.element { tag = "div" } [] [ Node.text "Custom" ] ]
-                    |> AppBar.toNode
+                AppBar.view
+                    [ AppBar.trailing [ Renderable.element { tag = "div" } [] [ Node.text "Custom" ] ] ]
+                    |> Renderable.toNode
                     |> firstChild
                     |> Maybe.map (\n -> ( Node.tagOf n, Node.findAttribute "slot" n ))
                     |> Expect.equal (Just ( Just "div", Just "trailing" ))
         , test "html escape lives happily in a default-slot region" <|
             \_ ->
-                Card.new
-                    |> Card.withBody
+                Card.view
+                    [ Card.body
                         [ Chip.view { label = "Featured" } []
                         , Renderable.html (Html.text "raw escape")
                         ]
-                    |> Card.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2

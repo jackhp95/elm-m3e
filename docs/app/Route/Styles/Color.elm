@@ -140,12 +140,13 @@ view _ _ =
 
 forcedColorsCard : Html msg
 forcedColorsCard =
-    Card.new
-        |> Card.withVariant Card.Outlined
-        |> Card.withHeadline (Heading.view { label = "Test it", variant = Heading.Title } [])
-        |> Card.withBody
+    Card.view
+        [ Card.variant Card.Outlined
+        , Card.headline (Heading.view { label = "Test it", variant = Heading.Title } [])
+        , Card.body
             [ Renderable.html
                 (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
             ]
-        |> Card.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml

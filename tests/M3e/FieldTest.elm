@@ -10,7 +10,7 @@ import M3e.Renderable as Renderable
 
 
 {-| An element-bearing control (the only kind Field accepts). -}
-inputElement : Renderable.Renderable { element : Renderable.Supported } msg
+inputElement : Renderable.Renderable { s | element : Renderable.Supported } msg
 inputElement =
     Renderable.element { tag = "input" } [ Node.attribute "type" "email" ] []
 

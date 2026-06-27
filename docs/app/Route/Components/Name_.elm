@@ -258,9 +258,9 @@ memberRow m =
             else
                 m.name ++ " : " ++ m.signature
     in
-    Card.new
-        |> Card.withVariant Card.Outlined
-        |> Card.withBody
+    Card.view
+        [ Card.variant Card.Outlined
+        , Card.body
             [ Renderable.html
                 (div []
                     [ highlightedElm "overflow-x-auto text-body-sm text-on-surface" sig
@@ -272,8 +272,8 @@ memberRow m =
                     ]
                 )
             ]
-        |> Card.toNode
-        |> Node.toHtml
+        ]
+        |> toHtml
 
 
 
@@ -330,11 +330,11 @@ subView : Sub (PagesMsg Msg) -> Html (PagesMsg Msg)
 subView s =
     section [ class "space-y-3" ]
         [ h3Heading s.title
-        , Card.new
-            |> Card.withVariant Card.Outlined
-            |> Card.withBody [ Renderable.html (div [ class "flex flex-wrap items-center gap-4" ] [ s.body ]) ]
-            |> Card.toNode
-            |> Node.toHtml
+        , Card.view
+            [ Card.variant Card.Outlined
+            , Card.body [ Renderable.html (div [ class "flex flex-wrap items-center gap-4" ] [ s.body ]) ]
+            ]
+            |> toHtml
         ]
 
 
@@ -606,29 +606,31 @@ demoSections slug =
         "appbar" ->
             [ usage
                 [ sub "Basic"
-                    (AppBar.new
-                        |> AppBar.withTitle (Heading.view { label = "Inbox", variant = Heading.Title } [])
-                        |> AppBar.withLeading (IconButton.view { icon = "menu", name = "Open menu" } [])
-                        |> AppBar.withTrailing
+                    (AppBar.view
+                        [ AppBar.title (Heading.view { label = "Inbox", variant = Heading.Title } [])
+                        , AppBar.leading (IconButton.view { icon = "menu", name = "Open menu" } [])
+                        , AppBar.trailing
                             [ IconButton.view { icon = "search", name = "Search" } []
                             , IconButton.view { icon = "more_vert", name = "More" } []
                             ]
-                        |> AppBar.toNode
+                        ]
+                        |> Renderable.toNode
                         |> Node.toHtml
                     )
                 , sub "Sizes"
                     (div [ class "w-full space-y-3" ]
-                        [ AppBar.new |> AppBar.withTitle (Heading.view { label = "Small", variant = Heading.Title } []) |> AppBar.withSize AppBar.Small |> AppBar.toNode |> Node.toHtml
-                        , AppBar.new |> AppBar.withTitle (Heading.view { label = "Medium", variant = Heading.Title } []) |> AppBar.withSize AppBar.Medium |> AppBar.toNode |> Node.toHtml
-                        , AppBar.new |> AppBar.withTitle (Heading.view { label = "Large", variant = Heading.Title } []) |> AppBar.withSize AppBar.Large |> AppBar.toNode |> Node.toHtml
+                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Renderable.toNode |> Node.toHtml
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Renderable.toNode |> Node.toHtml
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Renderable.toNode |> Node.toHtml
                         ]
                     )
                 , sub "Centered title"
-                    (AppBar.new
-                        |> AppBar.withTitle (Heading.view { label = "Profile", variant = Heading.Title } [])
-                        |> AppBar.withCentered True
-                        |> AppBar.withLeading (IconButton.view { icon = "arrow_back", name = "Back" } [])
-                        |> AppBar.toNode
+                    (AppBar.view
+                        [ AppBar.title (Heading.view { label = "Profile", variant = Heading.Title } [])
+                        , AppBar.centered True
+                        , AppBar.leading (IconButton.view { icon = "arrow_back", name = "Back" } [])
+                        ]
+                        |> Renderable.toNode
                         |> Node.toHtml
                     )
                 ]
@@ -789,38 +791,38 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (div [ class "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full" ]
-                        [ Card.new
-                            |> Card.withVariant Card.Elevated
-                            |> Card.withHeadline (Heading.view { label = "Elevated", variant = Heading.Title } [])
-                            |> Card.withBody [ Renderable.html (text "Raised shadow surface, highest emphasis.") ]
-                            |> Card.toNode
-                            |> Node.toHtml
-                        , Card.new
-                            |> Card.withVariant Card.Filled
-                            |> Card.withHeadline (Heading.view { label = "Filled", variant = Heading.Title } [])
-                            |> Card.withBody [ Renderable.html (text "Solid tonal surface, medium emphasis.") ]
-                            |> Card.toNode
-                            |> Node.toHtml
-                        , Card.new
-                            |> Card.withVariant Card.Outlined
-                            |> Card.withHeadline (Heading.view { label = "Outlined", variant = Heading.Title } [])
-                            |> Card.withBody [ Renderable.html (text "Bordered, no fill, lowest emphasis.") ]
-                            |> Card.toNode
-                            |> Node.toHtml
+                        [ Card.view
+                            [ Card.variant Card.Elevated
+                            , Card.headline (Heading.view { label = "Elevated", variant = Heading.Title } [])
+                            , Card.body [ Renderable.html (text "Raised shadow surface, highest emphasis.") ]
+                            ]
+                            |> toHtml
+                        , Card.view
+                            [ Card.variant Card.Filled
+                            , Card.headline (Heading.view { label = "Filled", variant = Heading.Title } [])
+                            , Card.body [ Renderable.html (text "Solid tonal surface, medium emphasis.") ]
+                            ]
+                            |> toHtml
+                        , Card.view
+                            [ Card.variant Card.Outlined
+                            , Card.headline (Heading.view { label = "Outlined", variant = Heading.Title } [])
+                            , Card.body [ Renderable.html (text "Bordered, no fill, lowest emphasis.") ]
+                            ]
+                            |> toHtml
                         ]
                     )
                 , sub "Anatomy"
-                    (Card.new
-                        |> Card.withVariant Card.Outlined
-                        |> Card.withHeadline (Heading.view { label = "Compliance scorecard", variant = Heading.Title } [])
-                        |> Card.withSubhead (Heading.view { label = "Updated 2 hours ago", variant = Heading.Label } [])
-                        |> Card.withBody [ Renderable.html (text "Supporting body text gives context to the headline.") ]
-                        |> Card.withActions
+                    (Card.view
+                        [ Card.variant Card.Outlined
+                        , Card.headline (Heading.view { label = "Compliance scorecard", variant = Heading.Title } [])
+                        , Card.subhead (Heading.view { label = "Updated 2 hours ago", variant = Heading.Label } [])
+                        , Card.body [ Renderable.html (text "Supporting body text gives context to the headline.") ]
+                        , Card.actions
                             [ Button.view { label = "Review", variant = Button.Filled } []
                             , Button.view { label = "Dismiss", variant = Button.Text } []
                             ]
-                        |> Card.toNode
-                        |> Node.toHtml
+                        ]
+                        |> toHtml
                     )
                 ]
             ]
@@ -1137,16 +1139,13 @@ demoSections slug =
                 [ sub "Basic"
                     (NavigationBar.view
                         { items =
-                            [ NavigationBar.item { icon = Icon.view { name = "home" } }
-                                [ NavigationBar.itemLabel "Home"
-                                , NavigationBar.itemSelected True
+                            [ NavigationBar.item { icon = Icon.view { name = "home" }, label = "Home" }
+                                [ NavigationBar.itemSelected True
                                 ]
-                            , NavigationBar.item { icon = Icon.view { name = "search" } }
-                                [ NavigationBar.itemLabel "Search"
-                                ]
-                            , NavigationBar.item { icon = Icon.view { name = "bookmark" } }
-                                [ NavigationBar.itemLabel "Saved"
-                                ]
+                            , NavigationBar.item { icon = Icon.view { name = "search" }, label = "Search" }
+                                []
+                            , NavigationBar.item { icon = Icon.view { name = "bookmark" }, label = "Saved" }
+                                []
                             ]
                         }
                         []
@@ -1155,18 +1154,15 @@ demoSections slug =
                 , sub "With badges"
                     (NavigationBar.view
                         { items =
-                            [ NavigationBar.item { icon = Icon.view { name = "inbox" } }
-                                [ NavigationBar.itemLabel "Inbox"
-                                , NavigationBar.itemSelected True
+                            [ NavigationBar.item { icon = Icon.view { name = "inbox" }, label = "Inbox" }
+                                [ NavigationBar.itemSelected True
                                 , NavigationBar.itemBadge "3"
                                 ]
-                            , NavigationBar.item { icon = Icon.view { name = "notifications" } }
-                                [ NavigationBar.itemLabel "Alerts"
-                                , NavigationBar.itemBadge "12"
+                            , NavigationBar.item { icon = Icon.view { name = "notifications" }, label = "Alerts" }
+                                [ NavigationBar.itemBadge "12"
                                 ]
-                            , NavigationBar.item { icon = Icon.view { name = "person" } }
-                                [ NavigationBar.itemLabel "Profile"
-                                ]
+                            , NavigationBar.item { icon = Icon.view { name = "person" }, label = "Profile" }
+                                []
                             ]
                         }
                         []
@@ -1205,16 +1201,13 @@ demoSections slug =
                 [ sub "Basic"
                     (NavigationRail.view
                         { items =
-                            [ NavigationRail.item { icon = Icon.view { name = "home" } }
-                                [ NavigationRail.itemLabel "Home"
-                                , NavigationRail.itemSelected True
+                            [ NavigationRail.item { icon = Icon.view { name = "home" }, label = "Home" }
+                                [ NavigationRail.itemSelected True
                                 ]
-                            , NavigationRail.item { icon = Icon.view { name = "search" } }
-                                [ NavigationRail.itemLabel "Search"
-                                ]
-                            , NavigationRail.item { icon = Icon.view { name = "bookmark" } }
-                                [ NavigationRail.itemLabel "Saved"
-                                ]
+                            , NavigationRail.item { icon = Icon.view { name = "search" }, label = "Search" }
+                                []
+                            , NavigationRail.item { icon = Icon.view { name = "bookmark" }, label = "Saved" }
+                                []
                             ]
                         }
                         []
@@ -1747,11 +1740,9 @@ demoSections slug =
                         { id = "field-project-name"
                         , label = Label.fromHtml (Html.text "Project name")
                         , control =
-                            Renderable.html
-                                (Html.input
-                                    [ Attr.id "uif-project-name", Attr.value "atlas" ]
-                                    []
-                                )
+                            Renderable.element { tag = "input" }
+                                [ Node.rawAttr (Attr.value "atlas") ]
+                                []
                         }
                         |> Node.toHtml
                     )

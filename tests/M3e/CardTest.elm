@@ -24,75 +24,73 @@ htmlImg =
 suite : Test
 suite =
     describe "M3e.Card — expanded surface"
-        [ test "withBody (existing) — children count preserved" <|
+        [ test "body (default slot) — children count preserved" <|
             \_ ->
-                Card.new
-                    |> Card.withBody [ htmlText "Item A", htmlText "Item B" ]
-                    |> Card.toNode
+                Card.view [ Card.body [ htmlText "Item A", htmlText "Item B" ] ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2
-        , test "withVariant emits variant attribute" <|
+        , test "variant option emits variant attribute" <|
             \_ ->
-                Card.new
-                    |> Card.withVariant Card.Elevated
-                    |> Card.toNode
+                Card.view [ Card.variant Card.Elevated ]
+                    |> Renderable.toNode
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "elevated")
-        , test "withMedia produces a child with slot=header" <|
+        , test "media option produces a child with slot=header" <|
             \_ ->
-                Card.new
-                    |> Card.withMedia htmlImg
-                    |> Card.toNode
+                Card.view [ Card.media htmlImg ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "header")
-        , test "withHeadline produces a child with slot=content" <|
+        , test "headline option produces a child with slot=content" <|
             \_ ->
-                Card.new
-                    |> Card.withHeadline
+                Card.view
+                    [ Card.headline
                         (Heading.view { label = "Title", variant = Heading.Title } [])
-                    |> Card.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "content")
-        , test "withActions produces a child with slot=actions" <|
+        , test "actions option produces a child with slot=actions" <|
             \_ ->
-                Card.new
-                    |> Card.withActions
+                Card.view
+                    [ Card.actions
                         [ Button.view { label = "OK", variant = Button.Filled } [] ]
-                    |> Card.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "actions")
-        , test "withFooter produces a child with slot=footer" <|
+        , test "footer option produces a child with slot=footer" <|
             \_ ->
-                Card.new
-                    |> Card.withFooter (htmlText "Footer")
-                    |> Card.toNode
+                Card.view [ Card.footer (htmlText "Footer") ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "footer")
         , test "actionable is a DOM property" <|
             \_ ->
-                Card.new
-                    |> Card.withActionable True
-                    |> Card.toNode
+                Card.view [ Card.actionable True ]
+                    |> Renderable.toNode
                     |> Node.findProperty "actionable"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "headline + body gives 2 children (content-div + body item)" <|
             \_ ->
-                Card.new
-                    |> Card.withVariant Card.Outlined
-                    |> Card.withHeadline
+                Card.view
+                    [ Card.variant Card.Outlined
+                    , Card.headline
                         (Heading.view { label = "Title", variant = Heading.Title } [])
-                    |> Card.withBody [ htmlText "body" ]
-                    |> Card.toNode
+                    , Card.body [ htmlText "body" ]
+                    ]
+                    |> Renderable.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2

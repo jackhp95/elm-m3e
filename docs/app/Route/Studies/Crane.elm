@@ -787,21 +787,21 @@ destinationCard model d =
                 , div [ class "absolute right-2 top-2" ] [ favoriteButton d favorited ]
                 ]
     in
-    Card.new
-        |> Card.withVariant Card.Elevated
-        |> Card.withMedia (Renderable.html media)
-        |> Card.withHeadline (Heading.view { label = d.name, variant = Heading.Title } [])
-        |> Card.withSubhead (Heading.view { label = d.country ++ " · " ++ d.price, variant = Heading.Label } [])
-        |> Card.withBody
+    Card.view
+        [ Card.variant Card.Elevated
+        , Card.media (Renderable.html media)
+        , Card.headline (Heading.view { label = d.name, variant = Heading.Title } [])
+        , Card.subhead (Heading.view { label = d.country ++ " · " ++ d.price, variant = Heading.Label } [])
+        , Card.body
             [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ]) ]
-        |> Card.withActions
+        , Card.actions
             [ Button.view { label = "Itinerary", variant = Button.Text }
                 [ Button.onClick (OpenItinerary d.id) ]
             , Button.view { label = "Select", variant = Button.Filled }
                 [ Button.onClick (OpenItinerary d.id) ]
             ]
-        |> Card.toNode
-        |> Node.toHtml
+        ]
+        |> toHtml
 
 
 badgeAnchor : Destination -> String

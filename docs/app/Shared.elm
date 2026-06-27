@@ -355,20 +355,21 @@ appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
-        [ M3e.AppBar.new
-            |> M3e.AppBar.withId "docs-app-bar"
-            |> M3e.AppBar.withSize M3e.AppBar.Small
-            |> M3e.AppBar.withTitle
+        [ M3e.AppBar.view
+            [ M3e.AppBar.id "docs-app-bar"
+            , M3e.AppBar.size M3e.AppBar.Small
+            , M3e.AppBar.title
                 (M3e.Heading.view { label = "elm-m3e", variant = M3e.Heading.Title } [])
-            |> M3e.AppBar.withSubtitle
+            , M3e.AppBar.subtitle
                 (M3e.Heading.view { label = "Material 3 Expressive for Elm", variant = M3e.Heading.Label } [])
-            |> M3e.AppBar.withLeading (menuButton model)
-            |> M3e.AppBar.withTrailing
+            , M3e.AppBar.leading (menuButton model)
+            , M3e.AppBar.trailing
                 [ schemeQuickToggle model
                 , settingsTriggerElement model
                 , githubLink
                 ]
-            |> M3e.AppBar.toNode
+            ]
+            |> Renderable.toNode
             |> Node.toHtml
         ]
 
@@ -405,7 +406,7 @@ githubLink : M3e.AppBar.Trailing Msg
 githubLink =
     M3e.IconButton.view
         { icon = "code", name = "GitHub repository" }
-        [ M3e.IconButton.href "https://github.com/jackhp95/m3e-builder"
+        [ M3e.IconButton.href "https://github.com/jackhp95/elm-m3e"
         , M3e.IconButton.target "_blank"
         , M3e.IconButton.rel "noreferrer noopener"
         ]
@@ -460,13 +461,14 @@ settingsPanel model =
     -- ancestor was the tiny icon-button-wrapper (~40px wide), which made
     -- `left-2 right-2` resolve to a 24px-wide column — the "narrow" complaint.
     Html.div [ class "fixed left-2 right-2 top-14 z-40 sm:left-auto sm:right-2 sm:w-72" ]
-        [ M3e.Card.new
-            |> M3e.Card.withVariant M3e.Card.Filled
-            |> M3e.Card.withHeadline
+        [ M3e.Card.view
+            [ M3e.Card.variant M3e.Card.Filled
+            , M3e.Card.headline
                 (M3e.Heading.view { label = "Theme settings", variant = M3e.Heading.Title } [])
-            |> M3e.Card.withBody
+            , M3e.Card.body
                 [ Renderable.html (settingsBody model) ]
-            |> M3e.Card.toNode
+            ]
+            |> Renderable.toNode
             |> Node.toHtml
         ]
 

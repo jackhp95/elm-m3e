@@ -172,9 +172,9 @@ memberRow m =
             else
                 m.name ++ " : " ++ m.signature
     in
-    Card.new
-        |> Card.withVariant Card.Outlined
-        |> Card.withBody
+    Card.view
+        [ Card.variant Card.Outlined
+        , Card.body
             [ Renderable.html
                 (div []
                     [ pre_ sig
@@ -186,7 +186,8 @@ memberRow m =
                     ]
                 )
             ]
-        |> Card.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 

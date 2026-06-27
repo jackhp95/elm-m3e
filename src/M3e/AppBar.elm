@@ -1,28 +1,35 @@
 module M3e.AppBar exposing
-    ( AppBar, Trailing, Leading, Title
+    ( Leading
+    , Option
     , Size(..)
-    , new
-    , withId, withSize, withCentered
-    , withLeading, withTitle, withSubtitle
-    , withTrailing
-    , toNode
+    , Title
+    , Trailing
+    , centered
+    , id
+    , leading
+    , size
+    , subtitle
+    , title
+    , trailing
+    , view
     )
 
 {-| `<m3e-app-bar>` — top-of-screen chrome (Material 3 App bars).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   (none — all slots optional)
-  - Options:    id, size (Small/Medium/Large), centered
+  - Required: (none — all slots optional)
+  - Options: id, size (Small/Medium/Large), centered,
+    leading, title, subtitle, trailing
   - Slots:
-      leading  : Leading  (iconButton | element)
-      title    : Title    (heading | element)
-      subtitle : Title    (heading | element)
-      trailing : Trailing (iconButton | search | avatar | element) — list
+    leading : Leading (iconButton | element)
+    title : Title (heading | element)
+    subtitle : Title (heading | element)
+    trailing : Trailing (iconButton | search | avatar | element) — list
   - Properties: centered (DOM property)
-  - Attrs:      size, id
-  - Escape:     element (all named slots)
-  - Tag:        appBar
+  - Attrs: size, id
+  - Escape: element (all named slots)
+  - Tag: appBar
 
 `Trailing`/`Leading`/`Title` accept the spec kinds plus the slot-capable
 `element` escape — NOT the raw `html` escape, because a parent must stamp the
@@ -32,6 +39,7 @@ slot can never be silently dropped.
 -}
 
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
@@ -85,11 +93,7 @@ type Size
 
 
 
--- BUILDER ----------------------------------------------------------------
-
-
-type AppBar msg
-    = AppBar (Config msg)
+-- CONFIG -----------------------------------------------------------------
 
 
 type alias Config msg =
@@ -103,78 +107,97 @@ type alias Config msg =
     }
 
 
-new : AppBar msg
-new =
-    AppBar
-        { id = Nothing
-        , size = Small
-        , centered = False
-        , leading = Nothing
-        , title = Nothing
-        , subtitle = Nothing
-        , trailing = []
-        }
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
-withId : String -> AppBar msg -> AppBar msg
-withId id (AppBar cfg) =
-    AppBar { cfg | id = Just id }
+defaultConfig : Config msg
+defaultConfig =
+    { id = Nothing
+    , size = Small
+    , centered = False
+    , leading = Nothing
+    , title = Nothing
+    , subtitle = Nothing
+    , trailing = []
+    }
 
 
-withSize : Size -> AppBar msg -> AppBar msg
-withSize s (AppBar cfg) =
-    AppBar { cfg | size = s }
+
+-- OPTIONS ----------------------------------------------------------------
 
 
-withCentered : Bool -> AppBar msg -> AppBar msg
-withCentered b (AppBar cfg) =
-    AppBar { cfg | centered = b }
+id : String -> Option msg
+id v =
+    Internal.option (\c -> { c | id = Just v })
 
 
-withLeading : Leading msg -> AppBar msg -> AppBar msg
-withLeading item (AppBar cfg) =
-    AppBar { cfg | leading = Just (Node.withSlot "leading" (Renderable.toNode item)) }
+size : Size -> Option msg
+size s =
+    Internal.option (\c -> { c | size = s })
 
 
-withTitle : Title msg -> AppBar msg -> AppBar msg
-withTitle item (AppBar cfg) =
-    AppBar { cfg | title = Just (Node.withSlot "title" (Renderable.toNode item)) }
+centered : Bool -> Option msg
+centered b =
+    Internal.option (\c -> { c | centered = b })
 
 
-withSubtitle : Title msg -> AppBar msg -> AppBar msg
-withSubtitle item (AppBar cfg) =
-    AppBar { cfg | subtitle = Just (Node.withSlot "subtitle" (Renderable.toNode item)) }
+leading : Leading msg -> Option msg
+leading item =
+    Internal.option (\c -> { c | leading = Just (Node.withSlot "leading" (Renderable.toNode item)) })
 
 
-withTrailing : List (Trailing msg) -> AppBar msg -> AppBar msg
-withTrailing items (AppBar cfg) =
-    AppBar
-        { cfg
-            | trailing =
-                cfg.trailing
-                    ++ List.map (Renderable.toNode >> Node.withSlot "trailing") items
-        }
+title : Title msg -> Option msg
+title item =
+    Internal.option (\c -> { c | title = Just (Node.withSlot "title" (Renderable.toNode item)) })
 
 
-toNode : AppBar msg -> Node msg
-toNode (AppBar cfg) =
-    Node.element "m3e-app-bar"
-        (List.filterMap identity
-            [ Maybe.map (Node.attribute "id") cfg.id
-            , Just (Node.attribute "size" (sizeString cfg.size))
-            , if cfg.centered then
-                Just (Node.property "centered" (Encode.bool True))
+subtitle : Title msg -> Option msg
+subtitle item =
+    Internal.option (\c -> { c | subtitle = Just (Node.withSlot "subtitle" (Renderable.toNode item)) })
 
-              else
-                Nothing
-            ]
+
+trailing : List (Trailing msg) -> Option msg
+trailing items =
+    Internal.option
+        (\c ->
+            { c
+                | trailing =
+                    c.trailing
+                        ++ List.map (Renderable.toNode >> Node.withSlot "trailing") items
+            }
         )
-        (List.filterMap identity
-            [ cfg.leading
-            , cfg.title
-            , cfg.subtitle
-            ]
-            ++ cfg.trailing
+
+
+
+-- VIEW -------------------------------------------------------------------
+
+
+view : List (Option msg) -> Renderable { s | appBar : Supported } msg
+view opts =
+    let
+        cfg =
+            Internal.applyOptions opts defaultConfig
+    in
+    Internal.fromNode
+        (Node.element "m3e-app-bar"
+            (List.filterMap identity
+                [ Maybe.map (Node.attribute "id") cfg.id
+                , Just (Node.attribute "size" (sizeString cfg.size))
+                , if cfg.centered then
+                    Just (Node.property "centered" (Encode.bool True))
+
+                  else
+                    Nothing
+                ]
+            )
+            (List.filterMap identity
+                [ cfg.leading
+                , cfg.title
+                , cfg.subtitle
+                ]
+                ++ cfg.trailing
+            )
         )
 
 

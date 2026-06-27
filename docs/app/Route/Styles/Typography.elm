@@ -118,10 +118,11 @@ view _ _ =
             , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "The scale, live"
-                , Card.new
-                    |> Card.withVariant Card.Outlined
-                    |> Card.withBody [ Renderable.html (div [ class "px-2" ] (List.map row scale)) ]
-                    |> Card.toNode
+                , Card.view
+                    [ Card.variant Card.Outlined
+                    , Card.body [ Renderable.html (div [ class "px-2" ] (List.map row scale)) ]
+                    ]
+                    |> Renderable.toNode
                     |> Node.toHtml
                 ]
             ]

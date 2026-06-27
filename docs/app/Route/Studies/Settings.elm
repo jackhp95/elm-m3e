@@ -406,9 +406,8 @@ railColumn model =
 
 railItem : Section -> String -> String -> Section -> Renderable { navItem : Supported } Msg
 railItem currentSection glyph label itemSection =
-    NavigationRail.item { icon = Icon.view { name = glyph } }
-        [ NavigationRail.itemLabel label
-        , NavigationRail.itemSelected (currentSection == itemSection)
+    NavigationRail.item { icon = Icon.view { name = glyph }, label = label }
+        [ NavigationRail.itemSelected (currentSection == itemSection)
         , NavigationRail.itemOnClick (SectionSelected itemSection)
         ]
 

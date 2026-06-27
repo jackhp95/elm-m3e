@@ -92,18 +92,19 @@ studyCard ( slug, title, body ) =
         studyHref =
             "/studies/" ++ slug
     in
-    Card.new
-        |> Card.withVariant Card.Elevated
-        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
-        |> Card.withBody [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
-        |> Card.withActions
+    Card.view
+        [ Card.variant Card.Elevated
+        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        , Card.body [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
+        , Card.actions
             [ Button.view { label = "Open " ++ title, variant = Button.Filled }
                 [ Button.href studyHref
                 , Button.target "_blank"
                 , Button.rel "noreferrer noopener"
                 ]
             ]
-        |> Card.toNode
+        ]
+        |> Renderable.toNode
         |> Node.toHtml
 
 

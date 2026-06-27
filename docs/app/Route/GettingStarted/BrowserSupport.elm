@@ -98,9 +98,9 @@ view _ _ =
             , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Supported browsers"
-                , Card.new
-                    |> Card.withVariant Card.Outlined
-                    |> Card.withBody
+                , Card.view
+                    [ Card.variant Card.Outlined
+                    , Card.body
                         [ Renderable.html
                             (ul [ class "px-2" ]
                                 [ supportRow "Chrome / Edge" "Latest 2 versions"
@@ -110,7 +110,8 @@ view _ _ =
                                 ]
                             )
                         ]
-                    |> Card.toNode
+                    ]
+                    |> Renderable.toNode
                     |> Node.toHtml
                 ]
             , Divider.view [] |> toHtml
