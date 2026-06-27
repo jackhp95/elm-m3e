@@ -14,13 +14,15 @@ import Head.Seo as Seo
 import Html exposing (Html, a, code, div, p, section, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -101,14 +103,16 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Component reference")
-        |> Heading.view
+    Heading.view { label = "Component reference", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -147,13 +151,9 @@ indexGrid components =
 componentBlock : Component -> Html msg
 componentBlock c =
     section [ id c.slug, class "scroll-mt-6 space-y-4" ]
-        [ Divider.new |> Divider.view
-        , Heading.new
-            |> Heading.withLevel 2
-            |> Heading.withVariant Heading.Headline
-            |> Heading.withSize Heading.Small
-            |> Heading.withContent (code [ class "text-primary" ] [ text ("Ui." ++ c.name) ])
-            |> Heading.view
+        [ Divider.view [] |> toHtml
+        , Html.h2 [ class "text-headline-sm" ]
+            [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
         , prose "max-w-2xl text-body-md text-on-surface-variant" c.overview
         , div [ class "space-y-3" ] (List.map memberRow c.members)
         ]
@@ -172,18 +172,22 @@ memberRow m =
             else
                 m.name ++ " : " ++ m.signature
     in
-    Card.new Card.Outlined
+    Card.new
+        |> Card.withVariant Card.Outlined
         |> Card.withBody
-            (div []
-                [ pre_ sig
-                , if m.doc == "" then
-                    text ""
+            [ Renderable.html
+                (div []
+                    [ pre_ sig
+                    , if m.doc == "" then
+                        text ""
 
-                  else
-                    prose "mt-2 text-body-sm text-on-surface-variant" m.doc
-                ]
-            )
-        |> Card.view
+                      else
+                        prose "mt-2 text-body-sm text-on-surface-variant" m.doc
+                    ]
+                )
+            ]
+        |> Card.toNode
+        |> Node.toHtml
 
 
 pre_ : String -> Html msg

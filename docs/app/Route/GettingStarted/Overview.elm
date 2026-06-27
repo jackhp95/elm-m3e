@@ -6,14 +6,16 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, a, code, div, li, p, section, text, ul)
 import Html.Attributes exposing (class, href)
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
-import Ui.Icon as Icon
 import UrlPath
 import View exposing (View)
 
@@ -57,24 +59,23 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Overview")
-        |> Heading.view
+    Heading.view { label = "Overview", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 sectionHeading : String -> Html msg
 sectionHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Small, Heading.level 2 ]
+        |> toHtml
 
 
 highlights : List ( String, String, String )
@@ -90,15 +91,19 @@ highlights =
 
 highlightCard : ( String, String, String ) -> Html msg
 highlightCard ( iconName, title, body ) =
-    Card.new Card.Filled
-        |> Card.withHeadline (Heading.title title)
+    Card.new
+        |> Card.withVariant Card.Filled
+        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
         |> Card.withBody
-            (div [ class "flex gap-3" ]
-                [ Html.span [ class "shrink-0 text-primary" ] [ Icon.material iconName |> Icon.view ]
-                , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
-                ]
-            )
-        |> Card.view
+            [ Renderable.html
+                (div [ class "flex gap-3" ]
+                    [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
+                    , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
+                    ]
+                )
+            ]
+        |> Card.toNode
+        |> Node.toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -114,13 +119,13 @@ view _ _ =
                     , text ", matraic's Material 3 Expressive web component library."
                     ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-4" ]
                 [ sectionHeading "What you get"
                 , div [ class "grid grid-cols-1 gap-4 sm:grid-cols-2" ]
                     (List.map highlightCard highlights)
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "The MISI philosophy"
                 , p [ class "text-body-lg text-on-surface-variant" ]
@@ -131,7 +136,7 @@ view _ _ =
                     , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
                     ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Relationship to @m3e/web"
                 , p [ class "text-body-lg text-on-surface-variant" ]

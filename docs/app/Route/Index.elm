@@ -15,17 +15,18 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, code, div, p, section, text)
 import Html.Attributes exposing (class)
+import M3e.Avatar as Avatar
+import M3e.Button as Button
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Avatar as Avatar
-import Ui.Button as Button
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
-import Ui.Icon as Icon
-import Ui.Shape as Shape
 import UrlPath
 import View exposing (View)
 
@@ -79,15 +80,20 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
     , body =
         [ div [ class "mx-auto max-w-5xl space-y-16" ]
             [ hero
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , highlights
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , statusGrid
             ]
         ]
@@ -99,31 +105,24 @@ hero =
     section [ class "space-y-5" ]
         [ p [ class "text-label-lg uppercase tracking-wide text-primary" ]
             [ text "elm-m3e · m3e-builder" ]
-        , Heading.new
-            |> Heading.withLevel 1
-            |> Heading.withVariant Heading.Display
-            |> Heading.withSize Heading.Small
-            |> Heading.withContent (text "Type-safe Material 3 Expressive for Elm")
-            |> Heading.view
+        , Heading.view { label = "Type-safe Material 3 Expressive for Elm", variant = Heading.Display }
+            [ Heading.size Heading.Small, Heading.level 1 ]
+            |> toHtml
         , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
             [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
             , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
             , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
             ]
         , div [ class "flex flex-wrap items-center gap-3 pt-2" ]
-            [ Button.new { label = "Get started", variant = Button.Filled }
-                |> Button.withHref "/getting-started/installation"
-                |> Button.view
-            , Button.new { label = "Browse the API reference", variant = Button.Outlined }
-                |> Button.withHref "/reference"
-                |> Button.view
+            [ Button.view { label = "Get started", variant = Button.Filled } [ Button.href "/getting-started/installation" ] |> toHtml
+            , Button.view { label = "Browse the API reference", variant = Button.Outlined } [ Button.href "/reference" ] |> toHtml
             ]
         , div [ class "flex items-center gap-3 pt-4" ]
-            [ Avatar.image { url = "/avatar-sample.svg", alt = "Sample avatar" } |> Avatar.view
+            [ Avatar.view { alt = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> toHtml
             , div [ class "flex gap-3" ]
-                [ Shape.new |> Shape.withClass "block w-10 h-10 bg-primary rounded-md-corner-large" |> Shape.view
-                , Shape.new |> Shape.withClass "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" |> Shape.view
-                , Shape.new |> Shape.withClass "block w-10 h-10 bg-secondary-container rounded-full" |> Shape.view
+                [ div [ class "block w-10 h-10 bg-primary rounded-md-corner-large" ] []
+                , div [ class "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" ] []
+                , div [ class "block w-10 h-10 bg-secondary-container rounded-full" ] []
                 ]
             ]
         ]
@@ -131,12 +130,9 @@ hero =
 
 sectionHeading : String -> Html msg
 sectionHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Medium
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Medium, Heading.level 2 ]
+        |> toHtml
 
 
 highlights : Html msg
@@ -159,15 +155,19 @@ highlights =
 
 highlightCard : String -> String -> String -> Html msg
 highlightCard iconName title body =
-    Card.new Card.Outlined
-        |> Card.withHeadline (Heading.title title)
+    Card.new
+        |> Card.withVariant Card.Outlined
+        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
         |> Card.withBody
-            (div [ class "flex gap-3" ]
-                [ Html.span [ class "shrink-0 text-primary" ] [ Icon.material iconName |> Icon.view ]
-                , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
-                ]
-            )
-        |> Card.view
+            [ Renderable.html
+                (div [ class "flex gap-3" ]
+                    [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
+                    , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
+                    ]
+                )
+            ]
+        |> Card.toNode
+        |> Node.toHtml
 
 
 statusGrid : Html msg
@@ -187,7 +187,9 @@ statusGrid =
 
 statusCard : String -> String -> Html msg
 statusCard title body =
-    Card.new Card.Outlined
-        |> Card.withHeadline (Heading.title title)
-        |> Card.withBody (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
-        |> Card.view
+    Card.new
+        |> Card.withVariant Card.Outlined
+        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
+        |> Card.withBody [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
+        |> Card.toNode
+        |> Node.toHtml

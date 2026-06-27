@@ -6,12 +6,14 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, code, div, li, p, section, text, ul)
 import Html.Attributes exposing (class)
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -55,24 +57,23 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Motion")
-        |> Heading.view
+    Heading.view { label = "Motion", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 sectionHeading : String -> Html msg
 sectionHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Small, Heading.level 2 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -85,7 +86,7 @@ view _ _ =
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Schemes"
                 , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
@@ -93,7 +94,7 @@ view _ _ =
                     , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
                     ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Token families"
                 , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]

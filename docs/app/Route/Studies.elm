@@ -11,14 +11,16 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class)
+import M3e.Button as Button
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Button as Button
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -62,6 +64,11 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 studies : List ( String, String, String )
 studies =
     [ ( "reply", "Reply", "A Material 3 email / inbox client — nav family, app bar with search, message list, split-pane reading view, compose bottom sheet, and snackbar." )
@@ -74,30 +81,30 @@ studies =
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Studies")
-        |> Heading.view
+    Heading.view { label = "Studies", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 studyCard : ( String, String, String ) -> Html msg
 studyCard ( slug, title, body ) =
     let
-        href =
+        studyHref =
             "/studies/" ++ slug
     in
-    Card.new Card.Elevated
-        |> Card.withHeadline (Heading.title title)
-        |> Card.withBody (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
+    Card.new
+        |> Card.withVariant Card.Elevated
+        |> Card.withHeadline (Heading.view { label = title, variant = Heading.Title } [])
+        |> Card.withBody [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
         |> Card.withActions
-            [ Button.new { label = "Open " ++ title, variant = Button.Filled }
-                |> Button.withHref href
-                |> Button.withTarget "_blank"
-                |> Button.withRel "noreferrer noopener"
+            [ Button.view { label = "Open " ++ title, variant = Button.Filled }
+                [ Button.href studyHref
+                , Button.target "_blank"
+                , Button.rel "noreferrer noopener"
+                ]
             ]
-        |> Card.view
+        |> Card.toNode
+        |> Node.toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -110,7 +117,7 @@ view _ _ =
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "grid gap-4 sm:grid-cols-2" ]
                 (List.map studyCard studies)
             ]

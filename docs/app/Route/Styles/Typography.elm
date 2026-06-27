@@ -6,13 +6,15 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class)
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -56,6 +58,11 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 scale : List ( String, String )
 scale =
     [ ( "text-display-lg", "Display Large" )
@@ -86,22 +93,16 @@ row ( cls, label ) =
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Typography")
-        |> Heading.view
+    Heading.view { label = "Typography", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 sectionHeading : String -> Html msg
 sectionHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Small, Heading.level 2 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -114,12 +115,14 @@ view _ _ =
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "The scale, live"
-                , Card.new Card.Outlined
-                    |> Card.withBody (div [ class "px-2" ] (List.map row scale))
-                    |> Card.view
+                , Card.new
+                    |> Card.withVariant Card.Outlined
+                    |> Card.withBody [ Renderable.html (div [ class "px-2" ] (List.map row scale)) ]
+                    |> Card.toNode
+                    |> Node.toHtml
                 ]
             ]
         ]

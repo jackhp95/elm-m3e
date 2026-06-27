@@ -2,11 +2,11 @@ module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 {-| The M3 application shell that frames every docs route.
 
-Owns the single `<m3e-theme>` for the whole app, renders a real `Ui.AppBar`
-top app bar with the live theme controls in an outlined `Ui.Card` popover,
+Owns the single `<m3e-theme>` for the whole app, renders a real `M3e.AppBar`
+top app bar with the live theme controls in an outlined `M3e.Card` popover,
 and a persistent left sidebar mirroring matraic's IA. Every icon goes
-through `Ui.Icon`; every action through `Ui.IconButton`; every theme
-toggle through `Ui.SegmentedButton`.
+through `M3e.Icon`; every action through `M3e.IconButton`; every theme
+toggle through `M3e.SegmentedButton`.
 
 -}
 
@@ -15,22 +15,24 @@ import Browser.Events
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
-import Html.Attributes as Attr exposing (attribute, class, href)
+import Html.Attributes as Attr exposing (attribute, class)
 import Html.Events
 import Json.Decode as Decode
+import M3e.AppBar
+import M3e.Card
+import M3e.Heading
+import M3e.Icon
+import M3e.IconButton
+import M3e.NavigationDrawer
+import M3e.Node as Node
+import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.SegmentedButton
+import M3e.Theme as Theme
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Ports
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
-import Ui.AppBar as AppBar
-import Ui.Card as Card
-import Ui.Heading as Heading
-import Ui.Icon as Icon
-import Ui.IconButton as IconButton
-import Ui.NavigationDrawer as NavigationDrawer
-import Ui.SegmentedButton as SegmentedButton
-import Ui.Theme as Theme
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
@@ -242,9 +244,9 @@ update msg model =
 
 {-| Watch viewport width specifically to re-open the side drawer when the
 user crosses from mobile to desktop. m3e-drawer-container's `mode=auto`
-autoCloses going side→over (caught via `withOnChange`), but it doesn't
-autoOpen going over→side — so without this subscription, a closed drawer
-on mobile stays closed (no sidebar) after resizing up.
+autoCloses going side→over (caught via the old `withOnChange`, now dropped),
+but it doesn't autoOpen going over→side — so without this subscription, a
+closed drawer on mobile stays closed (no sidebar) after resizing up.
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
@@ -260,6 +262,13 @@ data =
 -- VIEW
 
 
+{-| Convenience alias: convert any `Renderable` to `Html`.
+-}
+toHtml : Renderable any msg -> Html msg
+toHtml =
+    Renderable.toNode >> Node.toHtml
+
+
 view :
     Data
     ->
@@ -273,12 +282,14 @@ view :
 view _ page model toMsg pageView =
     let
         themed children =
-            Theme.new
-                |> Theme.withSeedColor model.seed
-                |> Theme.withScheme model.scheme
-                |> Theme.withContrast model.contrast
-                |> Theme.withDensity model.density
-                |> Theme.view children
+            Theme.view
+                { content = List.map Renderable.html children }
+                [ Theme.seedColor model.seed
+                , Theme.scheme model.scheme
+                , Theme.contrast model.contrast
+                , Theme.density model.density
+                ]
+                |> toHtml
 
         absolutePath =
             UrlPath.toAbsolute page.path
@@ -344,21 +355,26 @@ appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
-        [ AppBar.new
-            |> AppBar.withId "docs-app-bar"
-            |> AppBar.withSize AppBar.Small
-            |> AppBar.withTitle (Heading.title "elm-m3e")
-            |> AppBar.withSubtitle (Heading.label "Material 3 Expressive for Elm")
-            |> AppBar.withLeadingIconButton (menuButton model)
-            |> AppBar.withTrailingIconButton (schemeQuickToggle model)
-            |> AppBar.withTrailingHtmlElementEscapeHatch Html.div [ class "relative" ] (settingsTriggerChildren model)
-            |> AppBar.withTrailingIconButton githubLink
-            |> AppBar.view
+        [ M3e.AppBar.new
+            |> M3e.AppBar.withId "docs-app-bar"
+            |> M3e.AppBar.withSize M3e.AppBar.Small
+            |> M3e.AppBar.withTitle
+                (M3e.Heading.view { label = "elm-m3e", variant = M3e.Heading.Title } [])
+            |> M3e.AppBar.withSubtitle
+                (M3e.Heading.view { label = "Material 3 Expressive for Elm", variant = M3e.Heading.Label } [])
+            |> M3e.AppBar.withLeading (menuButton model)
+            |> M3e.AppBar.withTrailing
+                [ schemeQuickToggle model
+                , settingsTriggerElement model
+                , githubLink
+                ]
+            |> M3e.AppBar.toNode
+            |> Node.toHtml
         ]
 
 
 {-| The mobile hamburger. Drives the drawer through `MenuClicked` → showMenu →
-`drawerShell`'s `withOpen`, which now emits `start` as an HTML attribute so
+`drawerShell`'s `withOpen`, which emits `start` as an HTML attribute so
 the drawer-container's CSS selectors actually react.
 
 Why not `m3e-drawer-toggle`? Its `_toggleDrawer` does
@@ -367,34 +383,38 @@ bar sits in a SIBLING of the drawer-container, not a descendant, so the
 canonical toggle silently no-ops here. The Elm round-trip is the right call
 until the shell layout puts the app bar inside the drawer.
 
+Wrapped in a `span.md:hidden` so the button is invisible on wider viewports
+(the side drawer is always visible there — no hamburger needed). Since
+`M3e.IconButton` no longer accepts arbitrary HTML attributes, the class is
+attached via `Renderable.element`.
+
 -}
-menuButton : Model -> IconButton.IconButton Msg
+menuButton : Model -> M3e.AppBar.Leading Msg
 menuButton _ =
-    IconButton.new
-        { icon = Icon.material "menu"
-        , label = "Toggle navigation"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withOnClick MenuClicked
-        |> IconButton.withAttributes [ class "md:hidden" ]
+    Renderable.element { tag = "span" }
+        [ Node.rawAttr (class "md:hidden") ]
+        [ Renderable.toNode
+            (M3e.IconButton.view
+                { icon = "menu", name = "Toggle navigation" }
+                [ M3e.IconButton.onClick MenuClicked ]
+            )
+        ]
 
 
-githubLink : IconButton.IconButton Msg
+githubLink : M3e.AppBar.Trailing Msg
 githubLink =
-    IconButton.new
-        { icon = Icon.material "code"
-        , label = "GitHub repository"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withHref "https://github.com/jackhp95/m3e-builder"
-        |> IconButton.withTarget "_blank"
-        |> IconButton.withRel "noreferrer noopener"
+    M3e.IconButton.view
+        { icon = "code", name = "GitHub repository" }
+        [ M3e.IconButton.href "https://github.com/jackhp95/m3e-builder"
+        , M3e.IconButton.target "_blank"
+        , M3e.IconButton.rel "noreferrer noopener"
+        ]
 
 
-schemeQuickToggle : Model -> IconButton.IconButton Msg
+schemeQuickToggle : Model -> M3e.AppBar.Trailing Msg
 schemeQuickToggle model =
     let
-        ( next, iconName, label ) =
+        ( next, iconName, iconLabel ) =
             case model.scheme of
                 Theme.Light ->
                     ( Theme.Dark, "dark_mode", "Switch to dark mode" )
@@ -405,38 +425,33 @@ schemeQuickToggle model =
                 Theme.Auto ->
                     ( Theme.Light, "light_mode", "Switch to light mode" )
     in
-    IconButton.new
-        { icon = Icon.material iconName
-        , label = label
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withOnClick (SetScheme next)
+    M3e.IconButton.view { icon = iconName, name = iconLabel }
+        [ M3e.IconButton.onClick (SetScheme next) ]
 
 
 
 -- SETTINGS POPOVER (anchored to a relative-positioned wrapper)
 
 
-{-| The trailing settings control is a `relative` wrapper (so the popover can
-anchor) holding the trigger icon button + the popover. It's projected into the
-app bar's trailing slot via `withTrailingHtmlElementEscapeHatch Html.div`, so
-these are just the wrapper's children.
+{-| The trailing settings control: a `relative`-positioned wrapper (so the
+popover can anchor) holding the trigger icon button and — when open — the
+settings panel. Rendered as a single trailing slot item via `withTrailing`.
 -}
-settingsTriggerChildren : Model -> List (Html Msg)
-settingsTriggerChildren model =
-    [ IconButton.new
-        { icon = Icon.material "tune"
-        , label = "Theme settings"
-        , variant = IconButton.Standard
-        }
-        |> IconButton.withOnClick ToggleSettings
-        |> IconButton.view
-    , if model.settingsOpen then
-        settingsPanel model
+settingsTriggerElement : Model -> M3e.AppBar.Trailing Msg
+settingsTriggerElement model =
+    Renderable.element { tag = "div" }
+        [ Node.rawAttr (class "relative") ]
+        [ Renderable.toNode
+            (M3e.IconButton.view
+                { icon = "tune", name = "Theme settings" }
+                [ M3e.IconButton.onClick ToggleSettings ]
+            )
+        , if model.settingsOpen then
+            Node.raw (settingsPanel model)
 
-      else
-        Html.text ""
-    ]
+          else
+            Node.raw (Html.text "")
+        ]
 
 
 settingsPanel : Model -> Html Msg
@@ -445,10 +460,14 @@ settingsPanel model =
     -- ancestor was the tiny icon-button-wrapper (~40px wide), which made
     -- `left-2 right-2` resolve to a 24px-wide column — the "narrow" complaint.
     Html.div [ class "fixed left-2 right-2 top-14 z-40 sm:left-auto sm:right-2 sm:w-72" ]
-        [ Card.new Card.Filled
-            |> Card.withHeadline (Heading.title "Theme settings")
-            |> Card.withBody (settingsBody model)
-            |> Card.view
+        [ M3e.Card.new
+            |> M3e.Card.withVariant M3e.Card.Filled
+            |> M3e.Card.withHeadline
+                (M3e.Heading.view { label = "Theme settings", variant = M3e.Heading.Title } [])
+            |> M3e.Card.withBody
+                [ Renderable.html (settingsBody model) ]
+            |> M3e.Card.toNode
+            |> Node.toHtml
         ]
 
 
@@ -465,34 +484,40 @@ settingsBody model =
 
 schemeSegmented : Model -> Html Msg
 schemeSegmented model =
-    SegmentedButton.single
-        { label = "Color scheme"
-        , segments =
-            [ SegmentedButton.segment { value = Theme.Light, label = "Light" }
-            , SegmentedButton.segment { value = Theme.Auto, label = "System" }
-            , SegmentedButton.segment { value = Theme.Dark, label = "Dark" }
+    M3e.SegmentedButton.view
+        { segments =
+            [ M3e.SegmentedButton.segment
+                { label = "Light", checked = model.scheme == Theme.Light }
+                [ M3e.SegmentedButton.segmentOnClick (SetScheme Theme.Light) ]
+            , M3e.SegmentedButton.segment
+                { label = "System", checked = model.scheme == Theme.Auto }
+                [ M3e.SegmentedButton.segmentOnClick (SetScheme Theme.Auto) ]
+            , M3e.SegmentedButton.segment
+                { label = "Dark", checked = model.scheme == Theme.Dark }
+                [ M3e.SegmentedButton.segmentOnClick (SetScheme Theme.Dark) ]
             ]
-        , selected = Just model.scheme
-        , onChange = SetScheme
         }
-        |> SegmentedButton.withId "docs-scheme"
-        |> SegmentedButton.view
+        []
+        |> toHtml
 
 
 contrastSegmented : Model -> Html Msg
 contrastSegmented model =
-    SegmentedButton.single
-        { label = "Contrast"
-        , segments =
-            [ SegmentedButton.segment { value = Theme.Standard, label = "Standard" }
-            , SegmentedButton.segment { value = Theme.Medium, label = "Medium" }
-            , SegmentedButton.segment { value = Theme.High, label = "High" }
+    M3e.SegmentedButton.view
+        { segments =
+            [ M3e.SegmentedButton.segment
+                { label = "Standard", checked = model.contrast == Theme.Standard }
+                [ M3e.SegmentedButton.segmentOnClick (SetContrast Theme.Standard) ]
+            , M3e.SegmentedButton.segment
+                { label = "Medium", checked = model.contrast == Theme.Medium }
+                [ M3e.SegmentedButton.segmentOnClick (SetContrast Theme.Medium) ]
+            , M3e.SegmentedButton.segment
+                { label = "High", checked = model.contrast == Theme.High }
+                [ M3e.SegmentedButton.segmentOnClick (SetContrast Theme.High) ]
             ]
-        , selected = Just model.contrast
-        , onChange = SetContrast
         }
-        |> SegmentedButton.withId "docs-contrast"
-        |> SegmentedButton.view
+        []
+        |> toHtml
 
 
 seedColorInput : Model -> Html Msg
@@ -518,34 +543,40 @@ seedColorInput model =
 
 densitySegmented : Model -> Html Msg
 densitySegmented model =
-    SegmentedButton.single
-        { label = "Density"
-        , segments =
-            [ SegmentedButton.segment { value = 0, label = "0" }
-            , SegmentedButton.segment { value = -1, label = "-1" }
-            , SegmentedButton.segment { value = -2, label = "-2" }
-            , SegmentedButton.segment { value = -3, label = "-3" }
+    M3e.SegmentedButton.view
+        { segments =
+            [ M3e.SegmentedButton.segment
+                { label = "0", checked = model.density == 0 }
+                [ M3e.SegmentedButton.segmentOnClick (SetDensity 0) ]
+            , M3e.SegmentedButton.segment
+                { label = "-1", checked = model.density == -1 }
+                [ M3e.SegmentedButton.segmentOnClick (SetDensity -1) ]
+            , M3e.SegmentedButton.segment
+                { label = "-2", checked = model.density == -2 }
+                [ M3e.SegmentedButton.segmentOnClick (SetDensity -2) ]
+            , M3e.SegmentedButton.segment
+                { label = "-3", checked = model.density == -3 }
+                [ M3e.SegmentedButton.segmentOnClick (SetDensity -3) ]
             ]
-        , selected = Just model.density
-        , onChange = SetDensity
         }
-        |> SegmentedButton.withId "docs-density"
-        |> SegmentedButton.view
+        []
+        |> toHtml
 
 
 directionSegmented : Model -> Html Msg
 directionSegmented model =
-    SegmentedButton.single
-        { label = "Direction"
-        , segments =
-            [ SegmentedButton.segment { value = Ltr, label = "LTR" }
-            , SegmentedButton.segment { value = Rtl, label = "RTL" }
+    M3e.SegmentedButton.view
+        { segments =
+            [ M3e.SegmentedButton.segment
+                { label = "LTR", checked = model.dir == Ltr }
+                [ M3e.SegmentedButton.segmentOnClick (SetDirection Ltr) ]
+            , M3e.SegmentedButton.segment
+                { label = "RTL", checked = model.dir == Rtl }
+                [ M3e.SegmentedButton.segmentOnClick (SetDirection Rtl) ]
             ]
-        , selected = Just model.dir
-        , onChange = SetDirection
         }
-        |> SegmentedButton.withId "docs-direction"
-        |> SegmentedButton.view
+        []
+        |> toHtml
 
 
 
@@ -591,32 +622,38 @@ navSections =
 
 
 {-| The whole below-app-bar shell: a side `m3e-drawer-container` (via
-`Ui.NavigationDrawer`) whose `start` panel is the hierarchical nav-menu and
+`M3e.NavigationDrawer`) whose `start` panel is the hierarchical nav-menu and
 whose content region holds the page body. The rounded floating content pane
 and the panel chrome come from the primitive — no hand-styled surfaces.
 
 The nav is pure `a[href]` links (no messages), so this is `Html msg`, letting
 the page body keep its own message type without a `Html.map`.
 
+NOTE: `M3e.NavigationDrawer` has no `withOnChange` option — the callback that
+kept `model.showMenu` in sync with drawer-initiated closes is therefore
+dropped. `showMenu` is still toggled by `MenuClicked` (hamburger) and reset
+to `False` by `CloseMenu` (page navigation). The `toMsg` argument is retained
+in the signature to avoid breaking the call-site in `view`.
+
 -}
 drawerShell : (Msg -> msg) -> Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
-drawerShell toMsg model page body =
+drawerShell _ model page body =
     let
         currentPath =
             normalizePath (UrlPath.toAbsolute page.path)
     in
-    NavigationDrawer.tree
-        |> NavigationDrawer.withId "docs-drawer"
-        |> NavigationDrawer.withMode NavigationDrawer.ModeAuto
-        |> NavigationDrawer.withOpen (not (isMobile model) || model.showMenu)
-        |> NavigationDrawer.withOnChange (\open -> toMsg (MenuChanged open))
-        |> NavigationDrawer.withEntries (navEntries currentPath)
-        |> NavigationDrawer.withContent
+    M3e.NavigationDrawer.view
+        { entries = navEntries currentPath }
+        [ M3e.NavigationDrawer.withId "docs-drawer"
+        , M3e.NavigationDrawer.withMode M3e.NavigationDrawer.ModeAuto
+        , M3e.NavigationDrawer.withOpen (not (isMobile model) || model.showMenu)
+        , M3e.NavigationDrawer.content
             [ Html.div [ class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12" ] body ]
-        |> NavigationDrawer.view
+        ]
+        |> toHtml
 
 
-navEntries : String -> List (NavigationDrawer.Entry msg)
+navEntries : String -> List (Renderable { navMenuItem : Supported } msg)
 navEntries currentPath =
     List.map (sectionEntry currentPath) navSections
         ++ [ componentsEntry currentPath
@@ -627,12 +664,12 @@ navEntries currentPath =
            ]
 
 
-sectionEntry : String -> NavSection -> NavigationDrawer.Entry msg
+sectionEntry : String -> NavSection -> Renderable { navMenuItem : Supported } msg
 sectionEntry currentPath section =
     groupEntry currentPath section.icon section.title section.items
 
 
-componentsEntry : String -> NavigationDrawer.Entry msg
+componentsEntry : String -> Renderable { navMenuItem : Supported } msg
 componentsEntry currentPath =
     groupEntry currentPath
         "grid_view"
@@ -642,19 +679,21 @@ componentsEntry currentPath =
 
 {-| One collapsible group, expanded when it contains the current route.
 -}
-groupEntry : String -> String -> String -> List ( String, String ) -> NavigationDrawer.Entry msg
+groupEntry : String -> String -> String -> List ( String, String ) -> Renderable { navMenuItem : Supported } msg
 groupEntry currentPath glyph title items =
-    NavigationDrawer.group title
-        |> NavigationDrawer.withEntryIcon (Icon.material glyph)
-        |> NavigationDrawer.withEntryOpen (List.any (\( path, _ ) -> path == currentPath) items)
-        |> NavigationDrawer.withEntryChildren (List.map (linkEntry currentPath) items)
+    M3e.NavigationDrawer.group
+        { label = title }
+        (List.map (linkEntry currentPath) items)
+        [ M3e.NavigationDrawer.groupIcon (M3e.Icon.view { name = glyph })
+        , M3e.NavigationDrawer.groupOpen (List.any (\( path, _ ) -> path == currentPath) items)
+        ]
 
 
-linkEntry : String -> ( String, String ) -> NavigationDrawer.Entry msg
+linkEntry : String -> ( String, String ) -> Renderable { navMenuItem : Supported } msg
 linkEntry currentPath ( path, label ) =
-    NavigationDrawer.link label
-        |> NavigationDrawer.withEntryHref path
-        |> NavigationDrawer.withEntrySelected (path == currentPath)
+    M3e.NavigationDrawer.link
+        { label = label, href = path }
+        [ M3e.NavigationDrawer.linkSelected (path == currentPath) ]
 
 
 {-| (slug, label) for every documented component, kept in sync with

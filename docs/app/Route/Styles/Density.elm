@@ -6,14 +6,16 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class, style)
+import M3e.Button as Button
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Button as Button
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -57,6 +59,11 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 demoBar : Int -> Html msg
 demoBar scaleValue =
     div [ class "space-y-2" ]
@@ -69,8 +76,7 @@ demoBar scaleValue =
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Button.new { label = "Action", variant = Button.Filled }
-                            |> Button.view
+                        Button.view { label = "Action", variant = Button.Filled } [] |> toHtml
                     )
             )
         ]
@@ -78,12 +84,9 @@ demoBar scaleValue =
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Density")
-        |> Heading.view
+    Heading.view { label = "Density", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -96,18 +99,22 @@ view _ _ =
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
                 ]
-            , Divider.new |> Divider.view
-            , Card.new Card.Outlined
-                |> Card.withHeadline (Heading.title "Density scale, 0 to -3")
+            , Divider.view [] |> toHtml
+            , Card.new
+                |> Card.withVariant Card.Outlined
+                |> Card.withHeadline (Heading.view { label = "Density scale, 0 to -3", variant = Heading.Title } [])
                 |> Card.withBody
-                    (div [ class "space-y-6" ]
-                        [ demoBar 0
-                        , demoBar -1
-                        , demoBar -2
-                        , demoBar -3
-                        ]
-                    )
-                |> Card.view
+                    [ Renderable.html
+                        (div [ class "space-y-6" ]
+                            [ demoBar 0
+                            , demoBar -1
+                            , demoBar -2
+                            , demoBar -3
+                            ]
+                        )
+                    ]
+                |> Card.toNode
+                |> Node.toHtml
             ]
         ]
     }

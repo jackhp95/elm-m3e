@@ -6,14 +6,15 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, p, section, text)
 import Html.Attributes exposing (class)
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
-import Ui.Shape as Shape
 import UrlPath
 import View exposing (View)
 
@@ -57,6 +58,11 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 steps : List ( String, String )
 steps =
     [ ( "rounded-md-corner-none", "None" )
@@ -72,19 +78,16 @@ steps =
 swatch : ( String, String ) -> Html msg
 swatch ( cls, label ) =
     div [ class "flex flex-col items-center gap-2 text-label-sm text-on-surface-variant" ]
-        [ Shape.new |> Shape.withClass ("block w-16 h-16 bg-primary-container " ++ cls) |> Shape.view
+        [ div [ class ("block w-16 h-16 bg-primary-container " ++ cls) ] []
         , text label
         ]
 
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Shape")
-        |> Heading.view
+    Heading.view { label = "Shape", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -97,11 +100,13 @@ view _ _ =
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. Ui.Shape renders a decorative <m3e-shape> surface that respects it." ]
                 ]
-            , Divider.new |> Divider.view
-            , Card.new Card.Outlined
-                |> Card.withHeadline (Heading.title "Corner scale")
-                |> Card.withBody (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps))
-                |> Card.view
+            , Divider.view [] |> toHtml
+            , Card.new
+                |> Card.withVariant Card.Outlined
+                |> Card.withHeadline (Heading.view { label = "Corner scale", variant = Heading.Title } [])
+                |> Card.withBody [ Renderable.html (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps)) ]
+                |> Card.toNode
+                |> Node.toHtml
             ]
         ]
     }

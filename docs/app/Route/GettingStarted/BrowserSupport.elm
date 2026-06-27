@@ -6,13 +6,15 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, div, li, p, section, text, ul)
 import Html.Attributes exposing (class)
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -56,6 +58,11 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 supportRow : String -> String -> Html msg
 supportRow browser note =
     li [ class "flex items-baseline justify-between gap-4 border-b border-outline-variant py-2.5 last:border-0" ]
@@ -66,22 +73,16 @@ supportRow browser note =
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Browser Support")
-        |> Heading.view
+    Heading.view { label = "Browser Support", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 sectionHeading : String -> Html msg
 sectionHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Small, Heading.level 2 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -94,21 +95,25 @@ view _ _ =
                 , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Supported browsers"
-                , Card.new Card.Outlined
+                , Card.new
+                    |> Card.withVariant Card.Outlined
                     |> Card.withBody
-                        (ul [ class "px-2" ]
-                            [ supportRow "Chrome / Edge" "Latest 2 versions"
-                            , supportRow "Firefox" "Latest 2 versions"
-                            , supportRow "Safari" "Latest 2 versions"
-                            , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
-                            ]
-                        )
-                    |> Card.view
+                        [ Renderable.html
+                            (ul [ class "px-2" ]
+                                [ supportRow "Chrome / Edge" "Latest 2 versions"
+                                , supportRow "Firefox" "Latest 2 versions"
+                                , supportRow "Safari" "Latest 2 versions"
+                                , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
+                                ]
+                            )
+                        ]
+                    |> Card.toNode
+                    |> Node.toHtml
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Platform features used"
                 , ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]

@@ -6,13 +6,15 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, code, div, p, section, text)
 import Html.Attributes exposing (class)
+import M3e.Card as Card
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import Ui.Card as Card
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -56,6 +58,11 @@ head _ =
         |> Seo.website
 
 
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
+
+
 {-| (label, bg utility, on-color utility) for each M3 color role pair.
 -}
 roles : List ( String, String, String )
@@ -85,22 +92,16 @@ swatch ( label, bg, on ) =
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Color")
-        |> Heading.view
+    Heading.view { label = "Color", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 sectionHeading : String -> Html msg
 sectionHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Small, Heading.level 2 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -113,19 +114,19 @@ view _ _ =
                 , p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Color roles"
                 , div [ class "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" ]
                     (List.map swatch roles)
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Dynamic color"
                 , p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
                     [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ sectionHeading "Forced colors"
                 , p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
@@ -139,7 +140,12 @@ view _ _ =
 
 forcedColorsCard : Html msg
 forcedColorsCard =
-    Card.new Card.Outlined
-        |> Card.withHeadline (Heading.title "Test it")
-        |> Card.withBody (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
-        |> Card.view
+    Card.new
+        |> Card.withVariant Card.Outlined
+        |> Card.withHeadline (Heading.view { label = "Test it", variant = Heading.Title } [])
+        |> Card.withBody
+            [ Renderable.html
+                (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
+            ]
+        |> Card.toNode
+        |> Node.toHtml

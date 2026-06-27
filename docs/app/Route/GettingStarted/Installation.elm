@@ -6,13 +6,15 @@ import Head
 import Head.Seo as Seo
 import Html exposing (Html, code, div, p, pre, section, text)
 import Html.Attributes exposing (class)
+import M3e.Divider as Divider
+import M3e.Heading as Heading
+import M3e.Node as Node
+import M3e.Renderable as Renderable
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
 import SyntaxHighlight
-import Ui.Divider as Divider
-import Ui.Heading as Heading
 import UrlPath
 import View exposing (View)
 
@@ -54,6 +56,11 @@ head _ =
         , title = "Installation · elm-m3e"
         }
         |> Seo.website
+
+
+toHtml : Renderable.Renderable any msg -> Html msg
+toHtml r =
+    r |> Renderable.toNode |> Node.toHtml
 
 
 type Lang
@@ -105,22 +112,16 @@ code_ lang s =
 
 pageHeading : Html msg
 pageHeading =
-    Heading.new
-        |> Heading.withLevel 1
-        |> Heading.withVariant Heading.Display
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text "Installation")
-        |> Heading.view
+    Heading.view { label = "Installation", variant = Heading.Display }
+        [ Heading.size Heading.Small, Heading.level 1 ]
+        |> toHtml
 
 
 stepHeading : String -> Html msg
 stepHeading label =
-    Heading.new
-        |> Heading.withLevel 2
-        |> Heading.withVariant Heading.Headline
-        |> Heading.withSize Heading.Small
-        |> Heading.withContent (text label)
-        |> Heading.view
+    Heading.view { label = label, variant = Heading.Headline }
+        [ Heading.size Heading.Small, Heading.level 2 ]
+        |> toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -133,7 +134,7 @@ view _ _ =
                 , p [ class "text-body-lg text-on-surface-variant" ]
                     [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the Ui.* source into your project; a registry release is planned." ]
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ stepHeading "1. Add the Elm source"
                 , p [ class "text-body-md text-on-surface-variant" ]
@@ -144,7 +145,7 @@ view _ _ =
 }
 """
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ stepHeading "2. Register the web components"
                 , p [ class "text-body-md text-on-surface-variant" ]
@@ -156,7 +157,7 @@ npm i @m3e/web
 import "@m3e/web/all";
 """
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ stepHeading "3. Import the token + utility bridge"
                 , p [ class "text-body-md text-on-surface-variant" ]
@@ -168,7 +169,7 @@ import "@m3e/web/all";
 @import "tailwind-m3e-web/generated/utilities.css";
 """
                 ]
-            , Divider.new |> Divider.view
+            , Divider.view [] |> toHtml
             , section [ class "space-y-3" ]
                 [ stepHeading "4. Wrap your app in a theme"
                 , p [ class "text-body-md text-on-surface-variant" ]
