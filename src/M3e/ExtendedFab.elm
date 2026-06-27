@@ -50,57 +50,6 @@ type Size
     | Large
 
 
-type Option msg
-    = SizeOpt Size
-    | Lowered Bool
-    | Disabled Bool
-    | OnClick msg
-    | Href String
-    | Target String
-    | Rel String
-    | Download String
-
-
-size : Size -> Option msg
-size =
-    SizeOpt
-
-
-lowered : Bool -> Option msg
-lowered =
-    Lowered
-
-
-disabled : Bool -> Option msg
-disabled =
-    Disabled
-
-
-onClick : msg -> Option msg
-onClick =
-    OnClick
-
-
-href : String -> Option msg
-href =
-    Href
-
-
-target : String -> Option msg
-target =
-    Target
-
-
-rel : String -> Option msg
-rel =
-    Rel
-
-
-download : String -> Option msg
-download =
-    Download
-
-
 type alias Config msg =
     { size : Size
     , lowered : Bool
@@ -113,32 +62,48 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        SizeOpt s ->
-            { c | size = s }
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
-        Lowered b ->
-            { c | lowered = b }
 
-        Disabled b ->
-            { c | disabled = b }
+size : Size -> Option msg
+size s =
+    Internal.option (\c -> { c | size = s })
 
-        OnClick m ->
-            { c | onClick = Just m }
 
-        Href v ->
-            { c | href = Just v }
+lowered : Bool -> Option msg
+lowered b =
+    Internal.option (\c -> { c | lowered = b })
 
-        Target v ->
-            { c | target = Just v }
 
-        Rel v ->
-            { c | rel = Just v }
+disabled : Bool -> Option msg
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
-        Download v ->
-            { c | download = Just v }
+
+onClick : msg -> Option msg
+onClick m =
+    Internal.option (\c -> { c | onClick = Just m })
+
+
+href : String -> Option msg
+href v =
+    Internal.option (\c -> { c | href = Just v })
+
+
+target : String -> Option msg
+target v =
+    Internal.option (\c -> { c | target = Just v })
+
+
+rel : String -> Option msg
+rel v =
+    Internal.option (\c -> { c | rel = Just v })
+
+
+download : String -> Option msg
+download v =
+    Internal.option (\c -> { c | download = Just v })
 
 
 view :
@@ -148,7 +113,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { size = Medium
                 , lowered = False
                 , disabled = False
@@ -158,7 +123,6 @@ view req opts =
                 , rel = Nothing
                 , download = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-fab"

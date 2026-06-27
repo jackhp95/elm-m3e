@@ -29,45 +29,6 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Vertical Bool
-    | Inset Bool
-    | InsetStart Bool
-    | InsetEnd Bool
-
-
-{-| Render the divider vertically (for side-by-side content). Default `False`.
-Maps to the `vertical` DOM property.
--}
-vertical : Bool -> Option msg
-vertical =
-    Vertical
-
-
-{-| Indent the rule with equal padding on both sides (the M3 "inset divider").
-Maps to the `inset` DOM property. Default `False`.
--}
-inset : Bool -> Option msg
-inset =
-    Inset
-
-
-{-| Indent the leading (start) edge only.
-Maps to the `inset-start` DOM property. Default `False`.
--}
-insetStart : Bool -> Option msg
-insetStart =
-    InsetStart
-
-
-{-| Indent the trailing (end) edge only.
-Maps to the `inset-end` DOM property. Default `False`.
--}
-insetEnd : Bool -> Option msg
-insetEnd =
-    InsetEnd
-
-
 type alias Config =
     { vertical : Bool
     , inset : Bool
@@ -76,33 +37,52 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Vertical b ->
-            { c | vertical = b }
+type alias Option msg =
+    Internal.Option Config msg
 
-        Inset b ->
-            { c | inset = b }
 
-        InsetStart b ->
-            { c | insetStart = b }
+{-| Render the divider vertically (for side-by-side content). Default `False`.
+Maps to the `vertical` DOM property.
+-}
+vertical : Bool -> Option msg
+vertical b =
+    Internal.option (\c -> { c | vertical = b })
 
-        InsetEnd b ->
-            { c | insetEnd = b }
+
+{-| Indent the rule with equal padding on both sides (the M3 "inset divider").
+Maps to the `inset` DOM property. Default `False`.
+-}
+inset : Bool -> Option msg
+inset b =
+    Internal.option (\c -> { c | inset = b })
+
+
+{-| Indent the leading (start) edge only.
+Maps to the `inset-start` DOM property. Default `False`.
+-}
+insetStart : Bool -> Option msg
+insetStart b =
+    Internal.option (\c -> { c | insetStart = b })
+
+
+{-| Indent the trailing (end) edge only.
+Maps to the `inset-end` DOM property. Default `False`.
+-}
+insetEnd : Bool -> Option msg
+insetEnd b =
+    Internal.option (\c -> { c | insetEnd = b })
 
 
 view : List (Option msg) -> Renderable { s | divider : Supported } msg
 view opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { vertical = False
                 , inset = False
                 , insetStart = False
                 , insetEnd = False
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-divider"

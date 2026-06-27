@@ -45,44 +45,38 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Open Bool
-    | OnClose msg
-    | Alert Bool
-    | CloseButton Bool
-    | Dismissible Bool
-    | CloseLabel String
-    | Actions (List (Renderable { button : Supported } msg))
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Whether the dialog is open. Sets the `open` DOM property. Default false. -}
 open : Bool -> Option msg
-open =
-    Open
+open b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Handler for user-initiated dismiss. Wired to both the `closed` and
 `cancel` events so Escape, scrim click, and programmatic close all fire it.
 -}
 onClose : msg -> Option msg
-onClose =
-    OnClose
+onClose m =
+    Internal.option (\c -> { c | onClose = Just m })
 
 
 {-| Mark the dialog as an alert (`role=alertdialog`). Use for important
 state changes (failures, irreversible actions). Default false.
 -}
 alert : Bool -> Option msg
-alert =
-    Alert
+alert b =
+    Internal.option (\c -> { c | alert = b })
 
 
 {-| Show a built-in close button in the dialog chrome (the `dismissible` DOM
 property). Default false.
 -}
 closeButton : Bool -> Option msg
-closeButton =
-    CloseButton
+closeButton b =
+    Internal.option (\c -> { c | closeButton = b })
 
 
 {-| Whether the dialog can be dismissed by ESC or clicking the scrim
@@ -90,23 +84,23 @@ closeButton =
 for dialogs that require an explicit action choice.
 -}
 dismissible : Bool -> Option msg
-dismissible =
-    Dismissible
+dismissible b =
+    Internal.option (\c -> { c | dismissible = b })
 
 
 {-| Accessible label for the built-in close button (the `close-label`
 attribute). Only meaningful alongside `closeButton True`.
 -}
 closeLabel : String -> Option msg
-closeLabel =
-    CloseLabel
+closeLabel s =
+    Internal.option (\c -> { c | closeLabel = Just s })
 
 
 {-| Action buttons shown in the dialog's `actions` slot. Accepts M3e buttons.
 -}
 actions : List (Renderable { button : Supported } msg) -> Option msg
-actions =
-    Actions
+actions xs =
+    Internal.option (\c -> { c | actions = xs })
 
 
 type alias Config msg =
@@ -132,31 +126,6 @@ defaultConfig =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Open b ->
-            { c | open = b }
-
-        OnClose m ->
-            { c | onClose = Just m }
-
-        Alert b ->
-            { c | alert = b }
-
-        CloseButton b ->
-            { c | closeButton = b }
-
-        Dismissible b ->
-            { c | dismissible = b }
-
-        CloseLabel s ->
-            { c | closeLabel = Just s }
-
-        Actions xs ->
-            { c | actions = xs }
-
-
 {-| Render the dialog as an introspectable IR node.
 
     M3e.Dialog.view
@@ -180,7 +149,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-dialog"

@@ -51,15 +51,20 @@ type Variant
     | Tertiary
 
 
-type Option msg
-    = VariantOpt Variant
-    | MenuId String
+type alias Config =
+    { variant : Variant
+    , menuId : String
+    }
+
+
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set the menu surface variant (default `Primary`). -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 {-| Override the DOM id used to link the trigger to the menu (default
@@ -67,24 +72,8 @@ variant =
 page.
 -}
 menuId : String -> Option msg
-menuId =
-    MenuId
-
-
-type alias Config =
-    { variant : Variant
-    , menuId : String
-    }
-
-
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        VariantOpt v ->
-            { c | variant = v }
-
-        MenuId id ->
-            { c | menuId = id }
+menuId id =
+    Internal.option (\c -> { c | menuId = id })
 
 
 {-| Construct one item in a FAB menu — emits an `<m3e-fab-menu-item>` with an
@@ -120,9 +109,8 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { variant = Primary, menuId = "fab-menu" }
-                opts
 
         -- The FAB trigger: m3e-fab with aria-label + icon + menu-trigger inside
         fabTrigger =

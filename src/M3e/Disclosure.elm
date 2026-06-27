@@ -41,56 +41,52 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type SectionOption msg
-    = SectionOpen Bool
-    | SectionDisabled Bool
-    | SectionHideToggle Bool
-    | SectionOnToggle (Bool -> msg)
-    | SectionActions (List (Renderable { button : Supported } msg))
+type alias SectionOption msg =
+    Internal.Option (SectionConfig msg) msg
 
 
-type Option msg
-    = Multi Bool
+type alias Option msg =
+    Internal.Option AccordionConfig msg
 
 
 {-| Whether the section is initially expanded. Default false. -}
 sectionOpen : Bool -> SectionOption msg
-sectionOpen =
-    SectionOpen
+sectionOpen b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Disable the section (cannot be toggled by the user). Default false. -}
 sectionDisabled : Bool -> SectionOption msg
-sectionDisabled =
-    SectionDisabled
+sectionDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Hide the expansion toggle icon. Default false. -}
 sectionHideToggle : Bool -> SectionOption msg
-sectionHideToggle =
-    SectionHideToggle
+sectionHideToggle b =
+    Internal.option (\c -> { c | hideToggle = b })
 
 
 {-| Observe the section's open/close state. The handler receives `True` when
 the panel reports `opened` and `False` when it reports `closed`.
 -}
 sectionOnToggle : (Bool -> msg) -> SectionOption msg
-sectionOnToggle =
-    SectionOnToggle
+sectionOnToggle h =
+    Internal.option (\c -> { c | onToggle = Just h })
 
 
 {-| Action buttons shown in the section's `actions` slot. -}
 sectionActions : List (Renderable { button : Supported } msg) -> SectionOption msg
-sectionActions =
-    SectionActions
+sectionActions xs =
+    Internal.option (\c -> { c | actions = xs })
 
 
 {-| Allow more than one section to be open at once (`multi` DOM property).
 Default false (only one section open at a time).
 -}
 multi : Bool -> Option msg
-multi =
-    Multi
+multi b =
+    Internal.option (\c -> { c | multi = b })
 
 
 type alias SectionConfig msg =
@@ -110,25 +106,6 @@ defaultSectionConfig =
     , onToggle = Nothing
     , actions = []
     }
-
-
-applySection : SectionOption msg -> SectionConfig msg -> SectionConfig msg
-applySection opt c =
-    case opt of
-        SectionOpen b ->
-            { c | open = b }
-
-        SectionDisabled b ->
-            { c | disabled = b }
-
-        SectionHideToggle b ->
-            { c | hideToggle = b }
-
-        SectionOnToggle h ->
-            { c | onToggle = Just h }
-
-        SectionActions xs ->
-            { c | actions = xs }
 
 
 {-| Construct a collapsible section (renders as `<m3e-expansion-panel>`).
@@ -152,7 +129,7 @@ section :
 section req opts =
     let
         c =
-            List.foldl applySection defaultSectionConfig opts
+            Internal.applyOptions opts defaultSectionConfig
     in
     Internal.fromNode
         (Node.element "m3e-expansion-panel"
@@ -205,13 +182,6 @@ defaultAccordionConfig =
     { multi = False }
 
 
-applyAccordion : Option msg -> AccordionConfig -> AccordionConfig
-applyAccordion opt c =
-    case opt of
-        Multi b ->
-            { c | multi = b }
-
-
 {-| Render the accordion wrapping the provided sections.
 
     M3e.Disclosure.view
@@ -233,7 +203,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyAccordion defaultAccordionConfig opts
+            Internal.applyOptions opts defaultAccordionConfig
     in
     Internal.fromNode
         (Node.element "m3e-accordion"

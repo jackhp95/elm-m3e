@@ -53,72 +53,6 @@ type Size
     | Large
 
 
-type Option msg
-    = VariantOpt Variant
-    | SizeOpt Size
-    | Lowered Bool
-    | Disabled Bool
-    | OnClick msg
-    | Href String
-    | Target String
-    | Rel String
-    | Download String
-    | Label String
-
-
-variant : Variant -> Option msg
-variant =
-    VariantOpt
-
-
-size : Size -> Option msg
-size =
-    SizeOpt
-
-
-lowered : Bool -> Option msg
-lowered =
-    Lowered
-
-
-disabled : Bool -> Option msg
-disabled =
-    Disabled
-
-
-onClick : msg -> Option msg
-onClick =
-    OnClick
-
-
-href : String -> Option msg
-href =
-    Href
-
-
-target : String -> Option msg
-target =
-    Target
-
-
-rel : String -> Option msg
-rel =
-    Rel
-
-
-download : String -> Option msg
-download =
-    Download
-
-
-{-| Visible label for an extended FAB. Setting this option also sets the
-`extended` property on the element so it expands to show the label.
--}
-label : String -> Option msg
-label =
-    Label
-
-
 type alias Config msg =
     { variant : Variant
     , size : Size
@@ -133,45 +67,68 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        VariantOpt v ->
-            { c | variant = v }
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
-        SizeOpt s ->
-            { c | size = s }
 
-        Lowered b ->
-            { c | lowered = b }
+variant : Variant -> Option msg
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
-        Disabled b ->
-            { c | disabled = b }
 
-        OnClick m ->
-            { c | onClick = Just m }
+size : Size -> Option msg
+size s =
+    Internal.option (\c -> { c | size = s })
 
-        Href v ->
-            { c | href = Just v }
 
-        Target v ->
-            { c | target = Just v }
+lowered : Bool -> Option msg
+lowered b =
+    Internal.option (\c -> { c | lowered = b })
 
-        Rel v ->
-            { c | rel = Just v }
 
-        Download v ->
-            { c | download = Just v }
+disabled : Bool -> Option msg
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
-        Label v ->
-            { c | label = Just v }
+
+onClick : msg -> Option msg
+onClick m =
+    Internal.option (\c -> { c | onClick = Just m })
+
+
+href : String -> Option msg
+href v =
+    Internal.option (\c -> { c | href = Just v })
+
+
+target : String -> Option msg
+target v =
+    Internal.option (\c -> { c | target = Just v })
+
+
+rel : String -> Option msg
+rel v =
+    Internal.option (\c -> { c | rel = Just v })
+
+
+download : String -> Option msg
+download v =
+    Internal.option (\c -> { c | download = Just v })
+
+
+{-| Visible label for an extended FAB. Setting this option also sets the
+`extended` property on the element so it expands to show the label.
+-}
+label : String -> Option msg
+label v =
+    Internal.option (\c -> { c | label = Just v })
 
 
 view : { icon : String, name : String } -> List (Option msg) -> Renderable { s | fab : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { variant = PrimaryContainer
                 , size = Medium
                 , lowered = False
@@ -183,7 +140,6 @@ view req opts =
                 , download = Nothing
                 , label = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-fab"

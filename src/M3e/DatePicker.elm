@@ -74,20 +74,8 @@ type StartView
     | MultiYearView
 
 
-type Option msg
-    = WithId String
-    | WithDate String
-    | WithVariant Variant
-    | WithRange Bool
-    | WithMinDate String
-    | WithMaxDate String
-    | WithClearable Bool
-    | WithLabel String
-    | WithConfirmLabel String
-    | WithDismissLabel String
-    | WithStartAt String
-    | WithStartView StartView
-    | OnChange (String -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 type alias Config msg =
@@ -130,74 +118,74 @@ defaultConfig =
 
 {-| Set the `id` attribute. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Seed the picker with an initially selected date (ISO-8601). -}
 withDate : String -> Option msg
-withDate =
-    WithDate
+withDate s =
+    Internal.option (\c -> { c | date = Just s })
 
 
 {-| Choose the appearance variant. -}
 withVariant : Variant -> Option msg
-withVariant =
-    WithVariant
+withVariant v =
+    Internal.option (\c -> { c | variant = Just v })
 
 
 {-| Enable range selection (the user can pick a start and an end date). -}
 withRange : Bool -> Option msg
-withRange =
-    WithRange
+withRange b =
+    Internal.option (\c -> { c | range = Just b })
 
 
 {-| Earliest selectable date (ISO-8601). -}
 withMinDate : String -> Option msg
-withMinDate =
-    WithMinDate
+withMinDate s =
+    Internal.option (\c -> { c | minDate = Just s })
 
 
 {-| Latest selectable date (ISO-8601). -}
 withMaxDate : String -> Option msg
-withMaxDate =
-    WithMaxDate
+withMaxDate s =
+    Internal.option (\c -> { c | maxDate = Just s })
 
 
 {-| Allow the user to clear the selected date and close without picking. -}
 withClearable : Bool -> Option msg
-withClearable =
-    WithClearable
+withClearable b =
+    Internal.option (\c -> { c | clearable = Just b })
 
 
 {-| Set the picker's displayed label (default "Select date"). -}
 withLabel : String -> Option msg
-withLabel =
-    WithLabel
+withLabel s =
+    Internal.option (\c -> { c | label = Just s })
 
 
 {-| Label for the confirm button (default "OK"). -}
 withConfirmLabel : String -> Option msg
-withConfirmLabel =
-    WithConfirmLabel
+withConfirmLabel s =
+    Internal.option (\c -> { c | confirmLabel = Just s })
 
 
 {-| Label for the dismiss / cancel button (default "Cancel"). -}
 withDismissLabel : String -> Option msg
-withDismissLabel =
-    WithDismissLabel
+withDismissLabel s =
+    Internal.option (\c -> { c | dismissLabel = Just s })
 
 
 {-| Set the initial period to display (ISO-8601). -}
 withStartAt : String -> Option msg
-withStartAt =
-    WithStartAt
+withStartAt s =
+    Internal.option (\c -> { c | startAt = Just s })
 
 
 {-| Set the initial view of the embedded calendar. -}
 withStartView : StartView -> Option msg
-withStartView =
-    WithStartView
+withStartView sv =
+    Internal.option (\c -> { c | startView = Just sv })
 
 
 {-| Handle date confirmation. Receives the selected date as an ISO-8601 string.
@@ -206,8 +194,8 @@ See module documentation (⚠️) for the exact decoding channel used.
 
 -}
 onChange : (String -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -227,7 +215,7 @@ view : List (Option msg) -> Renderable { s | datePicker : Supported } msg
 view opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-datepicker"
@@ -262,49 +250,6 @@ view opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        WithDate s ->
-            { c | date = Just s }
-
-        WithVariant v ->
-            { c | variant = Just v }
-
-        WithRange b ->
-            { c | range = Just b }
-
-        WithMinDate s ->
-            { c | minDate = Just s }
-
-        WithMaxDate s ->
-            { c | maxDate = Just s }
-
-        WithClearable b ->
-            { c | clearable = Just b }
-
-        WithLabel s ->
-            { c | label = Just s }
-
-        WithConfirmLabel s ->
-            { c | confirmLabel = Just s }
-
-        WithDismissLabel s ->
-            { c | dismissLabel = Just s }
-
-        WithStartAt s ->
-            { c | startAt = Just s }
-
-        WithStartView sv ->
-            { c | startView = Just sv }
-
-        OnChange f ->
-            { c | onChange = Just f }
 
 
 variantString : Variant -> String
