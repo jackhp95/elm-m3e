@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Runtime contract harness for the `Ui.*` library.
+ * Runtime contract harness for the M3e.* library.
  *
  * Why this exists: the elm-test suite renders the *virtual DOM* (the emitted
  * markup string) via `Test.Html`. But m3e components are custom elements whose
