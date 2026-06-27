@@ -799,12 +799,14 @@ productMedia product =
     Shape.view
         { content =
             [ Renderable.html
-                (div [ class ("flex h-36 items-center justify-center " ++ product.swatch) ]
+                (div [ class ("flex h-full w-full items-center justify-center " ++ product.swatch) ]
                     [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
                 )
             ]
         }
-        [ Shape.name product.shape ]
+        [ Shape.name product.shape
+        , Shape.attributes [ Node.rawAttr (class "block h-36 w-full") ]
+        ]
         |> toHtml
 
 

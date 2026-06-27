@@ -1,37 +1,51 @@
 module M3e.IconButton exposing
-    ( Variant(..), Size(..), Shape(..), Width(..), Option
-    , view
-    , variant, size, shape, width
-    , disabled, toggle, onClick, selected
-    , href, target, rel, download
+    ( Option
+    , Shape(..)
+    , Size(..)
+    , Variant(..)
+    , Width(..)
+    , disabled
+    , download
+    , extraContent
+    , href
     , onChange
+    , onClick
+    , rel
+    , selected
     , selectedIcon
+    , shape
+    , size
+    , target
+    , toggle
+    , variant
+    , view
+    , width
     )
 
 {-| `<m3e-icon-button>` — a one-tap icon action (Material 3 Icon buttons).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { icon : String, name : String }
-                (`name` → `aria-label`; icon-only so no visible-text fallback)
-  - Options:    variant, size, shape, width, disabled, toggle, onClick, selected,
-                href, target, rel, download, onChange, selectedIcon
-  - Slots:      icon (default, the <m3e-icon> child); selected → single icon
-  - Properties: selected, disabled, toggle  (DOM properties — introspectable)
-  - Attrs:      variant, size, shape, width via rawAttr; href/target/rel/download
-                via Node.attribute (introspectable string attrs)
-  - Events:     click (onClick), change (onChange for toggle state)
-  - Escape:     none (leaf)
-  - Tag:        iconButton
+  - Required: { icon : String, name : String }
+    (`name` → `aria-label`; icon-only so no visible-text fallback)
+  - Options: variant, size, shape, width, disabled, toggle, onClick, selected,
+    href, target, rel, download, onChange, selectedIcon
+  - Slots: icon (default, the <m3e-icon> child); selected → single icon
+  - Properties: selected, disabled, toggle (DOM properties — introspectable)
+  - Attrs: variant, size, shape, width via rawAttr; href/target/rel/download
+    via Node.attribute (introspectable string attrs)
+  - Events: click (onClick), change (onChange for toggle state)
+  - Escape: none (leaf)
+  - Tag: iconButton
 
 -}
 
 import Cem.M3e.IconButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 
@@ -62,6 +76,7 @@ type Width
     = Narrow
     | Default
     | Wide
+
 
 
 -- SMART CONSTRUCTORS ----------------------------------------------------
@@ -143,6 +158,15 @@ selectedIcon i =
     Internal.option (\c -> { c | selectedIcon = Just i })
 
 
+{-| Project extra children into the button's default slot, alongside the icon.
+The intended use is a slot-ready marker such as `M3e.Menu.triggerFor "my-menu"`,
+which makes the icon button open a menu (open/close is element-managed).
+-}
+extraContent : List (Renderable any msg) -> Option msg
+extraContent items =
+    Internal.option (\c -> { c | extraContent = c.extraContent ++ List.map Renderable.toNode items })
+
+
 
 -- CONFIG -----------------------------------------------------------------
 
@@ -166,6 +190,7 @@ type alias Config msg =
     , download : Maybe String
     , onChange : Maybe (Bool -> msg)
     , selectedIcon : Maybe (Renderable { icon : Supported } msg)
+    , extraContent : List (Node.Node msg)
     }
 
 
@@ -185,7 +210,9 @@ defaults =
     , download = Nothing
     , onChange = Nothing
     , selectedIcon = Nothing
+    , extraContent = []
     }
+
 
 
 -- VIEW -------------------------------------------------------------------
@@ -239,6 +266,7 @@ view req opts =
                 [ Just (Node.element "m3e-icon" [ Node.attribute "name" req.icon ] [])
                 , Maybe.map (\i -> Node.withSlot "selected" (Renderable.toNode i)) c.selectedIcon
                 ]
+                ++ c.extraContent
             )
         )
 

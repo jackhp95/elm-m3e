@@ -1,7 +1,11 @@
 module M3e.Progress exposing
-    ( Shape(..), Variant(..), Option
+    ( Option
+    , Shape(..)
+    , Variant(..)
+    , max
+    , value
+    , variant
     , view
-    , value, max, variant
     )
 
 {-| `<m3e-linear-progress-indicator>` / `<m3e-circular-progress-indicator>` —
@@ -9,17 +13,17 @@ a determinate or indeterminate progress indicator.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { shape : Shape }
-                (Linear or Circular — mutually exclusive, selects the HTML tag)
-  - Options:    value, max, variant
-  - Slots:      none (leaf elements)
+  - Required: { shape : Shape }
+    (Linear or Circular — mutually exclusive, selects the HTML tag)
+  - Options: value, max, variant
+  - Slots: none (leaf elements)
   - Properties: value — via Node.property (Cem uses Html.Attributes.value =
-                  stringProperty "value"; introspectable/testable)
-                max — via Node.property (Cem uses Html.Attributes.property "max")
-                indeterminate (Circular only) — via Node.property when no value
-  - Attrs:      mode (Linear indeterminate) — Node.rawAttr; variant — Node.rawAttr
-  - Escape:     none (leaves)
-  - Tag:        progress
+    stringProperty "value"; introspectable/testable)
+    max — via Node.property (Cem uses Html.Attributes.property "max")
+    indeterminate (Circular only) — via Node.property when no value
+  - Attrs: mode (Linear indeterminate) — Node.rawAttr; variant — Node.rawAttr
+  - Escape: none (leaves)
+  - Tag: progress
 
 Value presence is the determinant of determinate vs indeterminate, matching
 the Ui.Progress approach: when `value` is set the indicator is determinate;
@@ -31,9 +35,9 @@ Circular emits `indeterminate=true` DOM property).
 import Cem.M3e.CircularProgressIndicator as CemCircular
 import Cem.M3e.LinearProgressIndicator as CemLinear
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Selects the rendered element. `Linear` draws `<m3e-linear-progress-indicator>`;
@@ -53,7 +57,7 @@ type Variant
 
 
 type alias Option msg =
-    Internal.Option Config msg
+    Internal.Option (Config msg) msg
 
 
 {-| Set the progress value (0..max). Passing this option makes the indicator
@@ -79,10 +83,22 @@ variant x =
     Internal.option (\c -> { c | variant = Just x })
 
 
-type alias Config =
+{-| Escape hatch: add raw attributes to the host element. The indicator's fill
+color reads the `--m3e-progress-indicator-color` CSS variable (not the inherited
+`color`), so a color role is set here:
+`Progress.attributes [ Node.rawAttr (style "--m3e-progress-indicator-color" "var(--md-sys-color-error)") ]`.
+See ADR 0007.
+-}
+attributes : List (Node.Attr msg) -> Option msg
+attributes attrs =
+    Internal.option (\c -> { c | attributes = c.attributes ++ attrs })
+
+
+type alias Config msg =
     { value : Maybe Int
     , max : Int
     , variant : Maybe Variant
+    , attributes : List (Node.Attr msg)
     }
 
 
@@ -94,6 +110,7 @@ view req opts =
                 { value = Nothing
                 , max = 100
                 , variant = Nothing
+                , attributes = []
                 }
     in
     case req.shape of
@@ -110,6 +127,7 @@ view req opts =
                                 Just (Node.rawAttr (CemLinear.mode CemLinear.Indeterminate))
                         , Maybe.map (\v -> Node.rawAttr (CemLinear.variant (toCemLinearVariant v))) c.variant
                         ]
+                        ++ c.attributes
                     )
                     []
                 )
@@ -127,6 +145,7 @@ view req opts =
                                 Just (Node.property "indeterminate" (Encode.bool True))
                         , Maybe.map (\v -> Node.rawAttr (CemCircular.variant (toCemCircularVariant v))) c.variant
                         ]
+                        ++ c.attributes
                     )
                     []
                 )

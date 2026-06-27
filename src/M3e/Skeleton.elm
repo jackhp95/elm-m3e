@@ -1,21 +1,26 @@
 module M3e.Skeleton exposing
-    ( Shape(..), Animation(..), Option
+    ( Animation(..)
+    , Option
+    , Shape(..)
+    , animation
+    , attributes
+    , loaded
+    , shape
     , view
-    , loaded, shape, animation
     )
 
 {-| `<m3e-skeleton>` — a loading placeholder that mimics content layout.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required:   { content : List (Renderable any msg) }
-                (the content being mimicked / revealed on load)
-  - Options:    loaded, shape, animation
-  - Slots:      default slot ← arbitrary content (free row)
+  - Required: { content : List (Renderable any msg) }
+    (the content being mimicked / revealed on load)
+  - Options: loaded, shape, animation
+  - Slots: default slot ← arbitrary content (free row)
   - Properties: loaded — via Node.property (Cem uses Html.Attributes.property)
-  - Attrs:      shape, animation — via Node.rawAttr (Cem uses Html.Attributes.attribute)
-  - Escape:     html (default-slot region)
-  - Tag:        skeleton
+  - Attrs: shape, animation — via Node.rawAttr (Cem uses Html.Attributes.attribute)
+  - Escape: html (default-slot region)
+  - Tag: skeleton
 
 Passing an empty `content` list is valid — the skeleton then acts as a
 standalone shimmer placeholder sized by the caller's classes.
@@ -24,9 +29,9 @@ standalone shimmer placeholder sized by the caller's classes.
 
 import Cem.M3e.Skeleton as Cem
 import Json.Encode as Encode
+import M3e.Internal as Internal
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
-import M3e.Internal as Internal
 
 
 {-| Placeholder shape. Mirrors the `m3e-skeleton` `shape` attribute. Default is
@@ -49,7 +54,7 @@ type Animation
 
 
 type alias Option msg =
-    Internal.Option Config msg
+    Internal.Option (Config msg) msg
 
 
 {-| Mark the skeleton's content as loaded (default `False`). When `True`,
@@ -76,10 +81,20 @@ animation a =
     Internal.option (\c -> { c | animation = Just a })
 
 
-type alias Config =
+{-| Escape hatch: add raw attributes to the host element. `m3e-skeleton`'s host
+is `display: contents`, so a standalone shimmer must be sized via slotted
+children; this escape covers any other host-level styling. See ADR 0007.
+-}
+attributes : List (Node.Attr msg) -> Option msg
+attributes attrs =
+    Internal.option (\c -> { c | attributes = c.attributes ++ attrs })
+
+
+type alias Config msg =
     { loaded : Bool
     , shape : Maybe Shape
     , animation : Maybe Animation
+    , attributes : List (Node.Attr msg)
     }
 
 
@@ -91,15 +106,21 @@ view req opts =
                 { loaded = False
                 , shape = Nothing
                 , animation = Nothing
+                , attributes = []
                 }
     in
     Internal.fromNode
         (Node.element "m3e-skeleton"
             (List.filterMap identity
-                [ if c.loaded then Just (Node.property "loaded" (Encode.bool True)) else Nothing
+                [ if c.loaded then
+                    Just (Node.property "loaded" (Encode.bool True))
+
+                  else
+                    Nothing
                 , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
                 , Maybe.map (\a -> Node.rawAttr (Cem.animation (toCemAnimation a))) c.animation
                 ]
+                ++ c.attributes
             )
             (List.map Renderable.toNode req.content)
         )

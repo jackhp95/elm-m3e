@@ -1120,7 +1120,9 @@ demoSections slug =
             [ usage
                 [ sub "With trigger"
                     (div [ class "flex items-center gap-2" ]
-                        [ IconButton.view { icon = "more_vert", name = "Open demo menu" } [] |> toHtml
+                        [ IconButton.view { icon = "more_vert", name = "Open demo menu" }
+                            [ IconButton.extraContent [ Menu.triggerFor "demo-menu" ] ]
+                            |> toHtml
                         , Menu.view
                             { items =
                                 [ Menu.item { label = "Refresh", action = Menu.Click PagesMsg.noOp } []

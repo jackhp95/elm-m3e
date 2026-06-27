@@ -731,7 +731,9 @@ messageListPane model =
                 )
             ]
         }
-        [ ScrollContainer.dividers ScrollContainer.Above ]
+        [ ScrollContainer.dividers ScrollContainer.Above
+        , ScrollContainer.attributes [ Node.rawAttr (class "block h-full") ]
+        ]
         |> toHtml
 
 
@@ -903,7 +905,7 @@ readingPane message =
                 )
             ]
         }
-        []
+        [ ScrollContainer.attributes [ Node.rawAttr (class "block h-full") ] ]
         |> toHtml
 
 
@@ -943,7 +945,9 @@ archiveButton =
 overflowMenu : Html Msg
 overflowMenu =
     div [ attribute "id" "reply-overflow", class "relative" ]
-        [ IconButton.view { icon = "more_vert", name = "More actions" } [] |> toHtml
+        [ IconButton.view { icon = "more_vert", name = "More actions" }
+            [ IconButton.extraContent [ Menu.triggerFor "reply-overflow-menu" ] ]
+            |> toHtml
         , Menu.view
             { items =
                 [ Menu.item { label = "Mark as unread", action = Menu.Click NoOp }
