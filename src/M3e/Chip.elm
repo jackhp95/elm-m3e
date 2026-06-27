@@ -1,8 +1,9 @@
 module M3e.Chip exposing
-    ( Option
+    ( Option, ViewOption
     , view
     , assist, suggestion, filter, input
     , onClick, selected, disabled, elevated, href, removeLabel, leadingIcon, avatarChild
+    , viewElevated, viewLeadingIcon
     )
 
 {-| `<m3e-*-chip>` family — compact, often dynamic choices.
@@ -10,13 +11,14 @@ module M3e.Chip exposing
 Spec (per docs/CONVENTIONS.md):
 
   - `view {label}`              → `<m3e-chip>` (display, non-interactive)
+                                   ViewOption: viewElevated, viewLeadingIcon
   - `assist {label, onClick}`   → `<m3e-assist-chip>`
   - `suggestion {label, onClick}` → `<m3e-suggestion-chip>`
   - `filter {label, onToggle}`  → `<m3e-filter-chip>`
   - `input {label, onRemove}`   → `<m3e-input-chip>` (always removable)
-  - All return `Renderable { s | chip : Supported }` (fits ChipSet.withChips)
-  - Options (shared): onClick, selected, disabled, elevated, href, removeLabel,
-                      leadingIcon, avatarChild
+  - Interactive chips return `Renderable { s | chip : Supported }` (fits ChipSet.withChips)
+  - Options (interactive, shared): onClick, selected, disabled, elevated, href,
+                                   removeLabel, leadingIcon, avatarChild
   - Properties: selected, disabled, removable (DOM)
   - Attrs:      variant (elevated/outlined), href, remove-label
   - Slots:      icon (leadingIcon); avatar (avatarChild — input chips)
@@ -37,7 +39,7 @@ import M3e.Internal as Internal
 
 
 
--- OPTION TYPE ------------------------------------------------------------
+-- OPTION TYPE (interactive chips) ----------------------------------------
 
 
 type Option msg
@@ -91,6 +93,29 @@ leadingIcon =
 avatarChild : Renderable { avatar : Supported } msg -> Option msg
 avatarChild =
     AvatarChild
+
+
+
+-- OPTION TYPE (display chip only) ----------------------------------------
+
+
+{-| Options accepted by the display `view` chip. Narrow subset matching
+`<m3e-chip>`'s real CEM surface (variant + icon slot). -}
+type ViewOption msg
+    = ViewElevated Bool
+    | ViewLeadingIcon (Renderable { icon : Supported } msg)
+
+
+{-| Set the elevated variant on the display chip. -}
+viewElevated : Bool -> ViewOption msg
+viewElevated =
+    ViewElevated
+
+
+{-| Add a leading icon to the display chip (rendered in the `icon` slot). -}
+viewLeadingIcon : Renderable { icon : Supported } msg -> ViewOption msg
+viewLeadingIcon =
+    ViewLeadingIcon
 
 
 
@@ -151,6 +176,31 @@ apply opt c =
 
 
 
+-- CONFIG (display chip) --------------------------------------------------
+
+
+type alias ViewConfig msg =
+    { elevated : Bool
+    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
+    }
+
+
+defaultViewConfig : ViewConfig msg
+defaultViewConfig =
+    { elevated = False, leadingIcon = Nothing }
+
+
+applyView : ViewOption msg -> ViewConfig msg -> ViewConfig msg
+applyView opt vc =
+    case opt of
+        ViewElevated b ->
+            { vc | elevated = b }
+
+        ViewLeadingIcon i ->
+            { vc | leadingIcon = Just i }
+
+
+
 -- SLOT / ATTR HELPERS ----------------------------------------------------
 
 
@@ -185,19 +235,30 @@ disabledAttr c =
 -- VIEW (display chip — m3e-chip) ----------------------------------------
 
 
-view : { label : String } -> List (Option msg) -> Renderable { s | chip : Supported } msg
+{-| Display (`<m3e-chip>`) — non-interactive, informational. Accepts
+`ViewOption` only; the full `Option` set (onClick, disabled, etc.) is not
+honoured by this element and is therefore not available here. -}
+view : { label : String } -> List (ViewOption msg) -> Renderable { s | chip : Supported } msg
 view req opts =
     let
-        c =
-            List.foldl apply defaultConfig opts
+        vc =
+            List.foldl applyView defaultViewConfig opts
     in
     Internal.fromNode
         (Node.element "m3e-chip"
+            [ Node.attribute "variant"
+                (if vc.elevated then
+                    "elevated"
+
+                 else
+                    "outlined"
+                )
+            ]
             (List.filterMap identity
-                [ Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
+                [ Maybe.map (\i -> Node.withSlot "icon" (Renderable.toNode i)) vc.leadingIcon
+                , Just (Node.text req.label)
                 ]
             )
-            [ Node.text req.label ]
         )
 
 

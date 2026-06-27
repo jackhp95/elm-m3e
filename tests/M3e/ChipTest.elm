@@ -13,12 +13,36 @@ import M3e.Renderable as Renderable
 suite : Test
 suite =
     describe "M3e.Chip — expanded surface"
-        [ test "view {label} (existing) renders m3e-chip" <|
+        [ -- Display chip (view / m3e-chip / ViewOption)
+          test "view {label} renders m3e-chip" <|
             \_ ->
                 Chip.view { label = "Tag" } []
                     |> Renderable.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-chip")
+        , test "view: default variant is outlined" <|
+            \_ ->
+                Chip.view { label = "Tag" } []
+                    |> Renderable.toNode
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal (Just "outlined")
+        , test "view: viewElevated True sets variant=elevated (advertised option is applied)" <|
+            \_ ->
+                Chip.view { label = "Tag" } [ Chip.viewElevated True ]
+                    |> Renderable.toNode
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal (Just "elevated")
+        , test "view: viewLeadingIcon renders in icon slot (advertised option is applied)" <|
+            \_ ->
+                Chip.view { label = "Tag" }
+                    [ Chip.viewLeadingIcon (Icon.view { name = "star" }) ]
+                    |> Renderable.toNode
+                    |> Node.childrenOf
+                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "icon")
+                    |> List.length
+                    |> Expect.equal 1
+
+        -- Interactive chips
         , test "assist renders m3e-assist-chip" <|
             \_ ->
                 Chip.assist { label = "Auto-fill", onClick = () } []
