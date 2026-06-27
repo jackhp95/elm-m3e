@@ -1,10 +1,7 @@
 module M3e.Switch exposing
-    ( Option
-    , checked
-    , disabled
-    , handleIcons
-    , onChange
-    , view
+    ( view
+    , Option
+    , checked, disabled, handleIcons, onChange
     )
 
 {-| `<m3e-switch>` — an on/off toggle for a setting that takes effect immediately.
@@ -29,6 +26,10 @@ Note on `checked`: `Cem.M3e.Switch.checked` delegates to
 `property "checked" (Json.Encode.bool _)`. We therefore emit it via
 `Node.property "checked"` so the IR can see and test it.
 
+@docs view
+@docs Option
+@docs checked, disabled, handleIcons, onChange
+
 -}
 
 import Cem.M3e.Switch as Cem
@@ -39,6 +40,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| An option configuring a switch.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -80,6 +83,9 @@ type alias Config msg =
     }
 
 
+{-| Render the switch. `name` is the required accessible label (the switch has
+no visible text).
+-}
 view : { name : String } -> List (Option msg) -> Renderable { s | switch : Supported } msg
 view req opts =
     let

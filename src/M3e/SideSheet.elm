@@ -1,13 +1,7 @@
 module M3e.SideSheet exposing
-    ( Option
-    , Side(..)
-    , actions
-    , body
-    , modal
-    , onClose
-    , open
-    , side
+    ( Option, Side(..)
     , view
+    , open, side, modal, onClose, body, actions
     )
 
 {-| `<m3e-drawer-container>` used as a side sheet — a panel anchored to the
@@ -35,6 +29,10 @@ dedicated `<m3e-side-sheet>` element.
 decoder reads `event.target.end` (or `event.target.start`) and only fires the
 message when the relevant property transitions to `false`.
 
+@docs Option, Side
+@docs view
+@docs open, side, modal, onClose, body, actions
+
 -}
 
 import Cem.M3e.DrawerContainer as Cem
@@ -52,6 +50,8 @@ type Side
     | End
 
 
+{-| Configuration option for the side sheet, built by the helpers below.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

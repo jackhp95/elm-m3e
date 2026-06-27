@@ -1,21 +1,8 @@
 module M3e.Chip exposing
-    ( Option
-    , ViewOption
-    , assist
-    , avatarChild
-    , disabled
-    , elevated
-    , filter
-    , href
-    , input
-    , leadingIcon
-    , onClick
-    , removeLabel
-    , selected
-    , suggestion
-    , view
-    , viewElevated
-    , viewLeadingIcon
+    ( Option, ViewOption
+    , view, assist, suggestion, filter, input
+    , onClick, selected, disabled, elevated, href, removeLabel, leadingIcon, avatarChild
+    , viewElevated, viewLeadingIcon
     )
 
 {-| `<m3e-*-chip>` family — compact, often dynamic choices.
@@ -41,6 +28,26 @@ The kind-specific action (`onClick`/`onToggle`/`onRemove`) is a required
 constructor argument, not an option — a chip can't be built without the
 behaviour its kind demands.
 
+
+# Types
+
+@docs Option, ViewOption
+
+
+# Chips
+
+@docs view, assist, suggestion, filter, input
+
+
+# Options (interactive chips)
+
+@docs onClick, selected, disabled, elevated, href, removeLabel, leadingIcon, avatarChild
+
+
+# Options (display chip)
+
+@docs viewElevated, viewLeadingIcon
+
 -}
 
 import Json.Decode as Decode
@@ -54,40 +61,58 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 -- OPTION TYPE (interactive chips) ----------------------------------------
 
 
+{-| An opaque option for the interactive chips (`assist`, `suggestion`,
+`filter`, `input`).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
+{-| Override the click handler (assist/suggestion chips set it from their
+required argument; this lets options replace it).
+-}
 onClick : msg -> Option msg
 onClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
+{-| Set the chip's selected state (the `selected` DOM property).
+-}
 selected : Bool -> Option msg
 selected b =
     Internal.option (\c -> { c | selected = b })
 
 
+{-| Disable the chip (the `disabled` DOM property).
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
+{-| Use the elevated variant rather than outlined.
+-}
 elevated : Bool -> Option msg
 elevated b =
     Internal.option (\c -> { c | elevated = b })
 
 
+{-| Render the chip as a link to the given URL (sets the `href` attribute).
+-}
 href : String -> Option msg
 href v =
     Internal.option (\c -> { c | href = Just v })
 
 
+{-| Accessible label for the remove button (the `remove-label` attribute).
+-}
 removeLabel : String -> Option msg
 removeLabel v =
     Internal.option (\c -> { c | removeLabel = Just v })
 
 
+{-| Add a leading icon (rendered in the `icon` slot).
+-}
 leadingIcon : Renderable { icon : Supported } msg -> Option msg
 leadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
@@ -236,6 +261,9 @@ view req opts =
 -- ASSIST -----------------------------------------------------------------
 
 
+{-| Assist chip (`<m3e-assist-chip>`) — suggests an action. Requires an
+`onClick` handler.
+-}
 assist :
     { label : String, onClick : msg }
     -> List (Option msg)
@@ -244,6 +272,9 @@ assist req opts =
     genericChip "m3e-assist-chip" req.label req.onClick opts
 
 
+{-| Suggestion chip (`<m3e-suggestion-chip>`) — a dynamically generated
+suggestion. Requires an `onClick` handler.
+-}
 suggestion :
     { label : String, onClick : msg }
     -> List (Option msg)
@@ -289,6 +320,9 @@ genericChip tag label clickMsg opts =
 -- FILTER -----------------------------------------------------------------
 
 
+{-| Filter chip (`<m3e-filter-chip>`) — toggles a filter on/off. Requires an
+`onToggle` handler (fired on `change`).
+-}
 filter :
     { label : String, onToggle : msg }
     -> List (Option msg)
@@ -323,6 +357,9 @@ filter req opts =
 -- INPUT ------------------------------------------------------------------
 
 
+{-| Input chip (`<m3e-input-chip>`) — represents a user-entered value; always
+removable. Requires an `onRemove` handler.
+-}
 input :
     { label : String, onRemove : msg }
     -> List (Option msg)

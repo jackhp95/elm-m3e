@@ -1,20 +1,9 @@
 module M3e.Tabs exposing
-    ( HeaderPosition(..)
-    , Option
-    , PanelOption
-    , TabOption
-    , Variant(..)
-    , headerPosition
-    , panel
+    ( view, tab, panel
+    , Option, TabOption, PanelOption, Variant(..), HeaderPosition(..)
+    , tabSelected, tabDisabled, tabFor, tabOnClick
     , panelId
-    , stretch
-    , tab
-    , tabDisabled
-    , tabFor
-    , tabOnClick
-    , tabSelected
-    , variant
-    , view
+    , stretch, variant, headerPosition
     )
 
 {-| `<m3e-tabs>` + `<m3e-tab>` + `<m3e-tab-panel>` — in-page navigation
@@ -38,6 +27,12 @@ Spec (per docs/CONVENTIONS.md):
 Wiring `<m3e-tab for=X>` ↔ `<m3e-tab-panel id=X>` is the caller's
 responsibility via `tabFor` / `panelId` options — they choose meaningful,
 stable ids.
+
+@docs view, tab, panel
+@docs Option, TabOption, PanelOption, Variant, HeaderPosition
+@docs tabSelected, tabDisabled, tabFor, tabOnClick
+@docs panelId
+@docs stretch, variant, headerPosition
 
 -}
 
@@ -67,14 +62,20 @@ type HeaderPosition
     | After
 
 
+{-| An option configuring an individual tab.
+-}
 type alias TabOption msg =
     Internal.Option (TabConfig msg) msg
 
 
+{-| An option configuring an individual tab panel.
+-}
 type alias PanelOption msg =
     Internal.Option PanelConfig msg
 
 
+{-| An option configuring the tabs strip.
+-}
 type alias Option msg =
     Internal.Option StripConfig msg
 

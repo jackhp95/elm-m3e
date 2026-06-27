@@ -1,10 +1,7 @@
 module M3e.Divider exposing
-    ( Option
-    , inset
-    , insetEnd
-    , insetStart
-    , vertical
-    , view
+    ( view
+    , Option
+    , vertical, inset, insetStart, insetEnd
     )
 
 {-| `<m3e-divider>` — a thin rule that separates content in lists or containers.
@@ -24,6 +21,10 @@ Because there are no required fields, `view` takes only the options list:
 
     view : List (Option msg) -> Renderable { s | divider : Supported } msg
 
+@docs view
+@docs Option
+@docs vertical, inset, insetStart, insetEnd
+
 -}
 
 import Json.Encode as Encode
@@ -40,6 +41,8 @@ type alias Config =
     }
 
 
+{-| Configuration option for `view`.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -76,6 +79,8 @@ insetEnd b =
     Internal.option (\c -> { c | insetEnd = b })
 
 
+{-| Render the divider.
+-}
 view : List (Option msg) -> Renderable { s | divider : Supported } msg
 view opts =
     let

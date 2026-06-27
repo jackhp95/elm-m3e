@@ -1,12 +1,7 @@
 module M3e.Skeleton exposing
-    ( Animation(..)
-    , Option
-    , Shape(..)
-    , animation
-    , attributes
-    , loaded
-    , shape
-    , view
+    ( view
+    , Shape(..), Animation(..), Option
+    , loaded, shape, animation, attributes
     )
 
 {-| `<m3e-skeleton>` — a loading placeholder that mimics content layout.
@@ -24,6 +19,10 @@ Spec (per docs/CONVENTIONS.md):
 
 Passing an empty `content` list is valid — the skeleton then acts as a
 standalone shimmer placeholder sized by the caller's classes.
+
+@docs view
+@docs Shape, Animation, Option
+@docs loaded, shape, animation, attributes
 
 -}
 
@@ -53,6 +52,8 @@ type Animation
     | Wave
 
 
+{-| An option configuring a skeleton placeholder.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -98,6 +99,9 @@ type alias Config msg =
     }
 
 
+{-| Render a skeleton placeholder around `content`, showing a shimmer until
+`loaded` is set, then revealing the projected content.
+-}
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | skeleton : Supported } msg
 view req opts =
     let

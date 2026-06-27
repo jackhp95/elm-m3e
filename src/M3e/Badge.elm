@@ -1,12 +1,7 @@
 module M3e.Badge exposing
-    ( Option
-    , Position(..)
-    , count
-    , dot
-    , forId
-    , label
-    , position
+    ( Option, Position(..)
     , view
+    , dot, count, label, position, forId
     )
 
 {-| `<m3e-badge>` — a compact count, dot, or status label attached to a control.
@@ -32,6 +27,21 @@ M3 recognises exactly two badge types:
 The `count` option applies M3's 999+ truncation: values above 999 render as
 `"999+"` (capped at 4 characters including the `+`).
 
+
+# Types
+
+@docs Option, Position
+
+
+# View
+
+@docs view
+
+
+# Options
+
+@docs dot, count, label, position, forId
+
 -}
 
 import Cem.M3e.Badge as Cem
@@ -54,6 +64,9 @@ type Position
     | BelowBefore
 
 
+{-| A badge configuration option. Build with the option functions below and
+pass a list to [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -111,6 +124,8 @@ type alias Config =
     }
 
 
+{-| Render the badge as an introspectable IR node from a list of options.
+-}
 view : List (Option msg) -> Renderable { s | badge : Supported } msg
 view opts =
     let

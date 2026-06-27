@@ -1,16 +1,7 @@
 module M3e.Breadcrumb exposing
-    ( BreadcrumbOption
-    , ItemOption
-    , item
-    , itemCurrent
-    , itemDisabled
-    , itemDownload
-    , itemHref
-    , itemOnClick
-    , itemRel
-    , itemTarget
-    , view
-    , wrap
+    ( BreadcrumbOption, ItemOption
+    , view, wrap
+    , item, itemHref, itemCurrent, itemDisabled, itemOnClick, itemTarget, itemRel, itemDownload
     )
 
 {-| `<m3e-breadcrumb>` + `<m3e-breadcrumb-item>` — a hierarchical
@@ -30,6 +21,21 @@ Spec (per docs/CONVENTIONS.md):
   - Attrs: item-label, href, current, target, rel, download
     (Node.attribute — relational/string attrs, non-property)
   - Tag: breadcrumb / breadcrumbItem
+
+
+# Types
+
+@docs BreadcrumbOption, ItemOption
+
+
+# Parent
+
+@docs view, wrap
+
+
+# Items
+
+@docs item, itemHref, itemCurrent, itemDisabled, itemOnClick, itemTarget, itemRel, itemDownload
 
 -}
 
@@ -55,6 +61,8 @@ type alias ItemConfig msg =
     }
 
 
+{-| A configuration option for a single breadcrumb [`item`](#item).
+-}
 type alias ItemOption msg =
     Internal.Option (ItemConfig msg) msg
 
@@ -165,6 +173,8 @@ type alias BreadcrumbConfig =
     { wrap : Bool }
 
 
+{-| A configuration option for the breadcrumb trail ([`view`](#view)).
+-}
 type alias BreadcrumbOption msg =
     Internal.Option BreadcrumbConfig msg
 
@@ -177,6 +187,9 @@ wrap b =
     Internal.option (\c -> { c | wrap = b })
 
 
+{-| Render the breadcrumb trail wrapping the required `items` (each built with
+[`item`](#item)).
+-}
 view :
     { items : List (Renderable { breadcrumbItem : Supported } msg) }
     -> List (BreadcrumbOption msg)

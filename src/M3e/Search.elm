@@ -1,13 +1,7 @@
 module M3e.Search exposing
     ( Option
-    , clearLabel
-    , clearable
-    , leadingIcon
-    , onClear
-    , onInput
-    , trailingIcon
-    , value
     , view
+    , onInput, value, clearable, clearLabel, onClear, leadingIcon, trailingIcon
     )
 
 {-| `<m3e-search-bar>` — a Material 3 Search bar.
@@ -31,6 +25,10 @@ Note: `placeholder` goes on the `<input>` child, not the bar root, per the CEM
 slot contract. The root element is still `m3e-search-bar`, so a parent
 `Node.setAttribute "id"` (e.g. `M3e.Field`) continues to work.
 
+@docs Option
+@docs view
+@docs onInput, value, clearable, clearLabel, onClear, leadingIcon, trailingIcon
+
 -}
 
 import Json.Decode as Decode
@@ -44,40 +42,56 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 -- OPTIONS ----------------------------------------------------------------
 
 
+{-| Configuration option for the search bar, built by the helpers below.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
+{-| Wire a handler for the `input` event. Receives the current input value.
+-}
 onInput : (String -> msg) -> Option msg
 onInput f =
     Internal.option (\c -> { c | onInput = Just f })
 
 
+{-| Set the controlled value of the search input.
+-}
 value : String -> Option msg
 value v =
     Internal.option (\c -> { c | value = Just v })
 
 
+{-| Show a clear button when the input is non-empty.
+-}
 clearable : Bool -> Option msg
 clearable b =
     Internal.option (\c -> { c | clearable = b })
 
 
+{-| Set the accessible label for the clear button.
+-}
 clearLabel : String -> Option msg
 clearLabel v =
     Internal.option (\c -> { c | clearLabel = Just v })
 
 
+{-| Wire a handler fired when the clear button is pressed.
+-}
 onClear : msg -> Option msg
 onClear m =
     Internal.option (\c -> { c | onClear = Just m })
 
 
+{-| Place an icon in the bar's leading slot.
+-}
 leadingIcon : Renderable { icon : Supported } msg -> Option msg
 leadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
+{-| Place an icon in the bar's trailing slot.
+-}
 trailingIcon : Renderable { icon : Supported } msg -> Option msg
 trailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
@@ -114,6 +128,8 @@ defaults =
 -- VIEW -------------------------------------------------------------------
 
 
+{-| Render a search bar. `placeholder` is set on the inner `<input>`.
+-}
 view : { placeholder : String } -> List (Option msg) -> Renderable { s | search : Supported } msg
 view req opts =
     let

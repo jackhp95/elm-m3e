@@ -1,9 +1,7 @@
 module M3e.SplitButton exposing
-    ( Option
-    , Variant(..)
-    , disabled
-    , variant
-    , view
+    ( view
+    , Option, Variant(..)
+    , variant, disabled
     )
 
 {-| `<m3e-split-button>` — a primary action button paired with a trailing
@@ -30,6 +28,10 @@ but `<m3e-split-button>` adopts only `<m3e-button>` / `<m3e-icon-button>`. This
 port emits the correct element types by constructing the slot children via
 `M3e.Button.view` and a hand-built `<m3e-icon-button>` node respectively.
 
+@docs view
+@docs Option, Variant
+@docs variant, disabled
+
 -}
 
 import Cem.M3e.SplitButton as Cem
@@ -50,6 +52,8 @@ type Variant
     | Outlined
 
 
+{-| An option configuring a split button.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -74,6 +78,9 @@ type alias Config =
     }
 
 
+{-| Render the split button: a leading `<m3e-button>` (the primary action)
+paired with a trailing `<m3e-icon-button>` trigger for related actions.
+-}
 view :
     { label : String
     , name : String

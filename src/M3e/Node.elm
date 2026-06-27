@@ -1,21 +1,9 @@
 module M3e.Node exposing
-    ( Attr(..)
-    , Node(..)
-    , attribute
-    , childrenOf
-    , element
-    , findAttribute
-    , findProperty
-    , map
-    , on
-    , property
-    , raw
-    , rawAttr
-    , setAttribute
-    , tagOf
-    , text
-    , toHtml
-    , withSlot
+    ( Node(..), Attr(..)
+    , element, text, raw
+    , attribute, property, rawAttr, on, withSlot
+    , map, toHtml
+    , childrenOf, tagOf, findAttribute, findProperty, setAttribute
     )
 
 {-| The introspectable IR. Relational attrs (`id`/`for`/`slot`/`aria-*`) and
@@ -23,6 +11,13 @@ web-component properties are modeled explicitly so parents can inject/inspect
 them and tests can read them; everything else (codegen attrs, ALL events incl
 custom) rides opaquely in `RawAttr`. We build on `elm/html`; the only vdom touch
 is `VirtualDom.mapAttribute` for `map`.
+
+@docs Node, Attr
+@docs element, text, raw
+@docs attribute, property, rawAttr, on, withSlot
+@docs map, toHtml
+@docs childrenOf, tagOf, findAttribute, findProperty, setAttribute
+
 -}
 
 import Html exposing (Html)

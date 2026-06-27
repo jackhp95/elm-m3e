@@ -1,11 +1,7 @@
 module M3e.ChipSet exposing
-    ( Item
-    , Option
-    , ariaLabel
-    , chips
-    , filterSet
-    , inputSet
-    , view
+    ( view, filterSet, inputSet
+    , Item, Option
+    , chips, ariaLabel
     )
 
 {-| `<m3e-chip-set>` and friends — typed chip-set containers.
@@ -24,6 +20,10 @@ Spec (per docs/CONVENTIONS.md):
 
 Strict container: the accepted child set is `{ chip : Supported }` only — no
 `element` or `html` escape. A wrong child kind is a compile error.
+
+@docs view, filterSet, inputSet
+@docs Item, Option
+@docs chips, ariaLabel
 
 -}
 
@@ -48,6 +48,8 @@ type alias Config msg =
     }
 
 
+{-| An option configuring a chip set.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

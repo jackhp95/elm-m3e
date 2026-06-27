@@ -1,24 +1,8 @@
 module M3e.TextField exposing
-    ( InputType(..)
+    ( view
     , Option
-    , Variant(..)
-    , autosize
-    , disabled
-    , error
-    , hint
-    , id
-    , inputType
-    , multiline
-    , onInput
-    , placeholder
-    , prefix
-    , readonly
-    , required
-    , rows
-    , suffix
-    , value
-    , variant
-    , view
+    , Variant(..), InputType(..)
+    , id, value, placeholder, variant, inputType, disabled, required, readonly, onInput, prefix, suffix, hint, error, multiline, rows, autosize
     )
 
 {-| `<m3e-form-field>` wrapping a native `<input>` or `<textarea>` — Material
@@ -39,6 +23,11 @@ Spec (per docs/CONVENTIONS.md):
 `<m3e-textarea-autosize for=tid>` are rendered as **siblings** inside
 `<m3e-form-field>` — NOT wrapping. The autosize element observes the textarea
 via the `for` attribute rather than by wrapping it.
+
+@docs view
+@docs Option
+@docs Variant, InputType
+@docs id, value, placeholder, variant, inputType, disabled, required, readonly, onInput, prefix, suffix, hint, error, multiline, rows, autosize
 
 -}
 
@@ -76,6 +65,8 @@ type InputType
     | Tel
 
 
+{-| An option configuring the `<m3e-form-field>` text field.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

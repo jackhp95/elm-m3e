@@ -1,16 +1,7 @@
 module M3e.TimePicker exposing
-    ( Option
-    , disabled
-    , error
-    , hint
-    , id
-    , max
-    , min
-    , onChange
-    , required
-    , step
-    , value
-    , view
+    ( view
+    , Option
+    , id, value, min, max, step, required, disabled, hint, error, onChange
     )
 
 {-| `<m3e-form-field>` wrapping a native `<input type=time>` — Material 3
@@ -35,6 +26,10 @@ can be upgraded without changing its public surface.
 Values are exchanged as `"HH:MM"` (24-hour) strings — the native HTML time
 format.
 
+@docs view
+@docs Option
+@docs id, value, min, max, step, required, disabled, hint, error, onChange
+
 -}
 
 import Html exposing (Html)
@@ -49,6 +44,8 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 -- TYPES -----------------------------------------------------------------------
 
 
+{-| An option configuring the time-picker form field.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

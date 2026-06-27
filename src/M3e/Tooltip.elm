@@ -1,18 +1,9 @@
 module M3e.Tooltip exposing
-    ( PlainOption
-    , PlainPosition(..)
-    , RichOption
-    , RichPosition(..)
-    , plain
-    , plainHideDelay
-    , plainId
-    , plainPosition
-    , rich
-    , richActions
-    , richHideDelay
-    , richId
-    , richPosition
-    , richSubhead
+    ( plain, rich
+    , PlainOption, RichOption
+    , PlainPosition(..), RichPosition(..)
+    , plainId, plainPosition, plainHideDelay
+    , richId, richPosition, richHideDelay, richSubhead, richActions
     )
 
 {-| `<m3e-tooltip>` / `<m3e-rich-tooltip>` — short contextual labels anchored
@@ -37,6 +28,12 @@ Spec (per docs/CONVENTIONS.md):
 Relational wiring — the caller gives the anchor control an `id` attribute and
 passes the same string to `plain { anchorId = "…" }` / `rich { anchorId = "…" }`.
 No Elm state is required for visibility; the element manages show/hide.
+
+@docs plain, rich
+@docs PlainOption, RichOption
+@docs PlainPosition, RichPosition
+@docs plainId, plainPosition, plainHideDelay
+@docs richId, richPosition, richHideDelay, richSubhead, richActions
 
 -}
 
@@ -79,12 +76,18 @@ type RichPosition
 -- OPTION TYPES ------------------------------------------------------------
 
 
+{-| An option configuring a plain `<m3e-tooltip>` (build with `plainId`,
+`plainPosition`, `plainHideDelay`).
+-}
 type PlainOption msg
     = PlainId String
     | PlainPosition PlainPosition
     | PlainHideDelay Int
 
 
+{-| An option configuring a rich `<m3e-rich-tooltip>` (build with `richId`,
+`richPosition`, `richHideDelay`, `richSubhead`, `richActions`).
+-}
 type RichOption msg
     = RichId String
     | RichPosition RichPosition

@@ -1,12 +1,8 @@
 module M3e.Toolbar exposing
-    ( Option
-    , Shape(..)
-    , Variant(..)
-    , elevated
-    , shape
-    , variant
-    , vertical
-    , view
+    ( view
+    , Option
+    , Shape(..), Variant(..)
+    , elevated, vertical, shape, variant
     )
 
 {-| `<m3e-toolbar>` — an in-flow row of contextual action controls (Material 3
@@ -24,6 +20,11 @@ Spec (per docs/CONVENTIONS.md):
   - Attrs: shape, variant (rawAttr enums via Cem.M3e.Toolbar)
   - Escape: html (default-slot region; include via Renderable.html)
   - Tag: toolbar
+
+@docs view
+@docs Option
+@docs Shape, Variant
+@docs elevated, vertical, shape, variant
 
 -}
 
@@ -48,6 +49,8 @@ type Variant
     | Vibrant
 
 
+{-| An option configuring the `<m3e-toolbar>` element.
+-}
 type alias Option msg =
     Internal.Option Config msg
 

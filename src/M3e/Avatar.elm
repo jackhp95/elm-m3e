@@ -1,9 +1,7 @@
 module M3e.Avatar exposing
     ( Option
-    , iconChild
-    , image
-    , initials
     , view
+    , image, initials, iconChild
     )
 
 {-| `<m3e-avatar>` — an image, initials, or icon representing a user.
@@ -24,6 +22,21 @@ Spec (per docs/CONVENTIONS.md):
 supplied by exactly one of `image` / `initials` / `iconChild` (last-write-wins).
 An avatar with no content option renders an empty circle.
 
+
+# Types
+
+@docs Option
+
+
+# View
+
+@docs view
+
+
+# Options
+
+@docs image, initials, iconChild
+
 -}
 
 import M3e.Internal as Internal
@@ -42,6 +55,8 @@ type Content msg
     | NoContent
 
 
+{-| An avatar configuration option — chooses the avatar's content.
+-}
 type alias Option msg =
     Internal.Option (Content msg) msg
 
@@ -72,6 +87,9 @@ iconChild icon =
 -- VIEW -------------------------------------------------------------------
 
 
+{-| Render the avatar. The required `alt` becomes the `aria-label` (and the
+`<img>` `alt` for the image variant).
+-}
 view : { alt : String } -> List (Option msg) -> Renderable { s | avatar : Supported } msg
 view req opts =
     let

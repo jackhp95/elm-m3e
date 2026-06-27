@@ -1,17 +1,7 @@
 module M3e.AppBar exposing
-    ( Leading
-    , Option
-    , Size(..)
-    , Title
-    , Trailing
-    , centered
-    , id
-    , leading
-    , size
-    , subtitle
-    , title
-    , trailing
+    ( Option, Size(..), Leading, Title, Trailing
     , view
+    , id, size, centered, leading, title, subtitle, trailing
     )
 
 {-| `<m3e-app-bar>` — top-of-screen chrome (Material 3 App bars).
@@ -35,6 +25,21 @@ Spec (per docs/CONVENTIONS.md):
 `element` escape — NOT the raw `html` escape, because a parent must stamp the
 `slot=` attribute onto each child, which it can only do to an element. So the
 slot can never be silently dropped.
+
+
+# Types
+
+@docs Option, Size, Leading, Title, Trailing
+
+
+# View
+
+@docs view
+
+
+# Options
+
+@docs id, size, centered, leading, title, subtitle, trailing
 
 -}
 
@@ -107,6 +112,9 @@ type alias Config msg =
     }
 
 
+{-| An app bar configuration option. Build with the option functions below
+and pass a list to [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -127,36 +135,51 @@ defaultConfig =
 -- OPTIONS ----------------------------------------------------------------
 
 
+{-| Set the `id` attribute on the app bar (e.g. so a badge can anchor to it).
+-}
 id : String -> Option msg
 id v =
     Internal.option (\c -> { c | id = Just v })
 
 
+{-| Set the app bar size (`Small` / `Medium` / `Large`; default `Small`).
+-}
 size : Size -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
 
+{-| Center the title within the app bar (the `centered` DOM property).
+-}
 centered : Bool -> Option msg
 centered b =
     Internal.option (\c -> { c | centered = b })
 
 
+{-| Content for the `leading` slot (an icon button or element).
+-}
 leading : Leading msg -> Option msg
 leading item =
     Internal.option (\c -> { c | leading = Just (Node.withSlot "leading" (Renderable.toNode item)) })
 
 
+{-| Content for the `title` slot (a heading or element).
+-}
 title : Title msg -> Option msg
 title item =
     Internal.option (\c -> { c | title = Just (Node.withSlot "title" (Renderable.toNode item)) })
 
 
+{-| Content for the `subtitle` slot (a heading or element).
+-}
 subtitle : Title msg -> Option msg
 subtitle item =
     Internal.option (\c -> { c | subtitle = Just (Node.withSlot "subtitle" (Renderable.toNode item)) })
 
 
+{-| Append items to the `trailing` slot (icon buttons, search, avatar, or
+elements). Repeated calls accumulate.
+-}
 trailing : List (Trailing msg) -> Option msg
 trailing items =
     Internal.option
@@ -173,6 +196,8 @@ trailing items =
 -- VIEW -------------------------------------------------------------------
 
 
+{-| Render the app bar as an introspectable IR node from a list of options.
+-}
 view : List (Option msg) -> Renderable { s | appBar : Supported } msg
 view opts =
     let

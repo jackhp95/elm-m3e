@@ -1,14 +1,7 @@
 module M3e.Disclosure exposing
-    ( Option
-    , SectionOption
-    , multi
-    , section
-    , sectionActions
-    , sectionDisabled
-    , sectionHideToggle
-    , sectionOnToggle
-    , sectionOpen
-    , view
+    ( Option, SectionOption
+    , section, sectionOpen, sectionDisabled, sectionHideToggle, sectionOnToggle, sectionActions
+    , view, multi
     )
 
 {-| `<m3e-accordion>` + `<m3e-expansion-panel>` — click-to-expand collapsible
@@ -36,6 +29,21 @@ sections. Here there is ONE concept: a `section`. The `view` always renders an
 `<m3e-accordion>` — for a single collapsible block simply pass one section.
 This is cleaner and avoids the confusing split API.
 
+
+# Types
+
+@docs Option, SectionOption
+
+
+# Sections
+
+@docs section, sectionOpen, sectionDisabled, sectionHideToggle, sectionOnToggle, sectionActions
+
+
+# View
+
+@docs view, multi
+
 -}
 
 import Cem.M3e.Accordion as CemAccordion
@@ -46,10 +54,14 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| An opaque option for a [`section`](#section).
+-}
 type alias SectionOption msg =
     Internal.Option (SectionConfig msg) msg
 
 
+{-| An opaque option for the accordion [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option AccordionConfig msg
 

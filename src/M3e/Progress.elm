@@ -1,11 +1,7 @@
 module M3e.Progress exposing
-    ( Option
-    , Shape(..)
-    , Variant(..)
-    , max
-    , value
-    , variant
-    , view
+    ( view
+    , Shape(..), Variant(..), Option
+    , value, max, variant, attributes
     )
 
 {-| `<m3e-linear-progress-indicator>` / `<m3e-circular-progress-indicator>` —
@@ -29,6 +25,10 @@ Value presence is the determinant of determinate vs indeterminate, matching
 the Ui.Progress approach: when `value` is set the indicator is determinate;
 when omitted it becomes indeterminate (Linear emits `mode=indeterminate`,
 Circular emits `indeterminate=true` DOM property).
+
+@docs view
+@docs Shape, Variant, Option
+@docs value, max, variant, attributes
 
 -}
 
@@ -56,6 +56,8 @@ type Variant
     | Wavy
 
 
+{-| An option configuring a progress indicator.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -102,6 +104,9 @@ type alias Config msg =
     }
 
 
+{-| Render a progress indicator. `shape` selects `Linear` or `Circular`;
+without a `value` option the indicator is indeterminate.
+-}
 view : { shape : Shape } -> List (Option msg) -> Renderable { s | progress : Supported } msg
 view req opts =
     let

@@ -1,25 +1,12 @@
 module M3e.NavigationDrawer exposing
-    ( GroupOption
+    ( view
+    , Option, Side(..), Mode(..)
+    , id, open, side, mode, content
+    , link, group
     , LinkOption
-    , Mode(..)
-    , Option
-    , Side(..)
-    , content
-    , group
-    , groupBadge
-    , groupIcon
-    , groupOpen
-    , groupSelected
-    , id
-    , link
-    , linkBadge
-    , linkIcon
-    , linkSelected
-    , linkTarget
-    , mode
-    , open
-    , side
-    , view
+    , linkSelected, linkBadge, linkIcon, linkTarget
+    , GroupOption
+    , groupSelected, groupOpen, groupBadge, groupIcon
     )
 
 {-| `<m3e-drawer-container>` + `<m3e-nav-menu>` + `<m3e-nav-menu-item>` —
@@ -52,6 +39,30 @@ ATTRIBUTE (not DOM property) on `<m3e-drawer-container>`, matching the
 approach in `Ui.NavigationDrawer`: the element's CSS selectors key off
 `:host([start])`, so attribute presence is the reliable surface across Elm
 re-renders.
+
+
+# Container
+
+@docs view
+@docs Option, Side, Mode
+@docs id, open, side, mode, content
+
+
+# Entries
+
+@docs link, group
+
+
+# Link options
+
+@docs LinkOption
+@docs linkSelected, linkBadge, linkIcon, linkTarget
+
+
+# Group options
+
+@docs GroupOption
+@docs groupSelected, groupOpen, groupBadge, groupIcon
 
 -}
 

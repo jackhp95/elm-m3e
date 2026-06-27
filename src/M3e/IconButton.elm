@@ -1,25 +1,11 @@
 module M3e.IconButton exposing
-    ( Option
-    , Shape(..)
-    , Size(..)
-    , Variant(..)
-    , Width(..)
-    , disabled
-    , download
-    , extraContent
-    , href
-    , onChange
-    , onClick
-    , rel
-    , selected
-    , selectedIcon
-    , shape
-    , size
-    , target
-    , toggle
-    , variant
-    , view
-    , width
+    ( view
+    , Option
+    , Variant(..), Size(..), Shape(..), Width(..)
+    , variant, size, shape, width
+    , disabled, toggle, selected, onClick, onChange
+    , href, target, rel, download
+    , selectedIcon, extraContent
     )
 
 {-| `<m3e-icon-button>` — a one-tap icon action (Material 3 Icon buttons).
@@ -38,6 +24,14 @@ Spec (per docs/CONVENTIONS.md):
   - Escape: none (leaf)
   - Tag: iconButton
 
+@docs view
+@docs Option
+@docs Variant, Size, Shape, Width
+@docs variant, size, shape, width
+@docs disabled, toggle, selected, onClick, onChange
+@docs href, target, rel, download
+@docs selectedIcon, extraContent
+
 -}
 
 import Cem.M3e.IconButton as Cem
@@ -52,6 +46,9 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 -- TYPES ------------------------------------------------------------------
 
 
+{-| Visual style of the icon button: `Standard` (default), `Filled`, `Tonal`,
+or `Outlined`.
+-}
 type Variant
     = Standard
     | Filled
@@ -59,6 +56,8 @@ type Variant
     | Outlined
 
 
+{-| Touch-target size of the icon button, from `ExtraSmall` to `ExtraLarge`.
+-}
 type Size
     = ExtraSmall
     | Small
@@ -67,11 +66,15 @@ type Size
     | ExtraLarge
 
 
+{-| Container shape: `Round` (pill) or `Square`.
+-}
 type Shape
     = Round
     | Square
 
 
+{-| Container width: `Narrow`, `Default`, or `Wide`.
+-}
 type Width
     = Narrow
     | Default
@@ -82,61 +85,86 @@ type Width
 -- SMART CONSTRUCTORS ----------------------------------------------------
 
 
+{-| Set the visual variant. Default `Standard`.
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
 
+{-| Set the touch-target size. Default `Small`.
+-}
 size : Size -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
 
+{-| Set the container shape (`Round` or `Square`).
+-}
 shape : Shape -> Option msg
 shape s =
     Internal.option (\c -> { c | shape = Just s })
 
 
+{-| Set the container width. Default `Default`.
+-}
 width : Width -> Option msg
 width w =
     Internal.option (\c -> { c | width = w })
 
 
+{-| Disable the button (the `disabled` DOM property).
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
+{-| Make the button a toggle (the `toggle` DOM property), so taps flip its
+`selected` state.
+-}
 toggle : Bool -> Option msg
 toggle b =
     Internal.option (\c -> { c | toggle = b })
 
 
+{-| Fire a message when the button is clicked.
+-}
 onClick : msg -> Option msg
 onClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
+{-| Mark a toggle button as selected (the `selected` DOM property).
+-}
 selected : Bool -> Option msg
 selected b =
     Internal.option (\c -> { c | selected = b })
 
 
+{-| Render the button as a link by setting its `href`.
+-}
 href : String -> Option msg
 href v =
     Internal.option (\c -> { c | href = Just v })
 
 
+{-| Set the link `target` (used with `href`).
+-}
 target : String -> Option msg
 target v =
     Internal.option (\c -> { c | target = Just v })
 
 
+{-| Set the link `rel` (used with `href`).
+-}
 rel : String -> Option msg
 rel v =
     Internal.option (\c -> { c | rel = Just v })
 
 
+{-| Set the link `download` attribute (used with `href`).
+-}
 download : String -> Option msg
 download v =
     Internal.option (\c -> { c | download = Just v })
@@ -171,6 +199,9 @@ extraContent items =
 -- CONFIG -----------------------------------------------------------------
 
 
+{-| A configuration option for an icon button, produced by the smart
+constructors above and passed to [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -218,6 +249,16 @@ defaults =
 -- VIEW -------------------------------------------------------------------
 
 
+{-| Render an `<m3e-icon-button>`. `icon` is the Material Symbols glyph name and
+`name` becomes the `aria-label` (the button is icon-only, so it has no visible
+text fallback).
+
+    M3e.IconButton.view { icon = "settings", name = "Settings" }
+        [ M3e.IconButton.variant M3e.IconButton.Filled
+        , M3e.IconButton.onClick OpenSettings
+        ]
+
+-}
 view : { icon : String, name : String } -> List (Option msg) -> Renderable { s | iconButton : Supported } msg
 view req opts =
     let

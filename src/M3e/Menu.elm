@@ -1,36 +1,13 @@
 module M3e.Menu exposing
-    ( CheckboxItemOption
+    ( view
+    , Option, Variant(..), PositionX(..), PositionY(..)
+    , id, menuVariant, positionX, positionY, submenu, onToggle
+    , item, checkboxItem, radioItem, divider, group, triggerFor
     , ItemAction(..)
-    , ItemOption
-    , Option
-    , PositionX(..)
-    , PositionY(..)
-    , RadioItemOption
-    , Variant(..)
-    , checkboxChecked
-    , checkboxDisabled
-    , checkboxItem
-    , checkboxLeadingIcon
-    , checkboxTrailingIcon
-    , divider
-    , group
-    , id
-    , item
-    , itemDisabled
-    , itemLeadingIcon
-    , itemTrailingIcon
-    , menuVariant
-    , onToggle
-    , positionX
-    , positionY
-    , radioDisabled
-    , radioItem
-    , radioLeadingIcon
-    , radioSelected
-    , radioTrailingIcon
-    , submenu
-    , triggerFor
-    , view
+    , ItemOption, CheckboxItemOption, RadioItemOption
+    , itemLeadingIcon, itemTrailingIcon, itemDisabled
+    , checkboxChecked, checkboxLeadingIcon, checkboxTrailingIcon, checkboxDisabled
+    , radioSelected, radioLeadingIcon, radioTrailingIcon, radioDisabled
     )
 
 {-| `<m3e-menu>` + kind-typed item constructors — an action menu anchored to a
@@ -54,6 +31,27 @@ Spec (per docs/CONVENTIONS.md):
 Relational wiring — `id` + `triggerFor` — is caller-driven: give the menu
 an id via `id`, and nest `triggerFor menuId` inside any clickable control
 via that control's escape/element slot or default slot.
+
+
+# Container
+
+@docs view
+@docs Option, Variant, PositionX, PositionY
+@docs id, menuVariant, positionX, positionY, submenu, onToggle
+
+
+# Items
+
+@docs item, checkboxItem, radioItem, divider, group, triggerFor
+@docs ItemAction
+
+
+# Item options
+
+@docs ItemOption, CheckboxItemOption, RadioItemOption
+@docs itemLeadingIcon, itemTrailingIcon, itemDisabled
+@docs checkboxChecked, checkboxLeadingIcon, checkboxTrailingIcon, checkboxDisabled
+@docs radioSelected, radioLeadingIcon, radioTrailingIcon, radioDisabled
 
 -}
 
@@ -101,18 +99,26 @@ type ItemAction msg
 -- OPTIONS -----------------------------------------------------------------
 
 
+{-| Options for a plain `item`.
+-}
 type alias ItemOption msg =
     Internal.Option (ItemConfig msg) msg
 
 
+{-| Options for a `checkboxItem`.
+-}
 type alias CheckboxItemOption msg =
     Internal.Option (CheckboxConfig msg) msg
 
 
+{-| Options for a `radioItem`.
+-}
 type alias RadioItemOption msg =
     Internal.Option (RadioConfig msg) msg
 
 
+{-| Options for the menu container (`view`).
+-}
 type alias Option msg =
     Internal.Option (ContainerConfig msg) msg
 

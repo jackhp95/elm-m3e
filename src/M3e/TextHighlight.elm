@@ -1,11 +1,8 @@
 module M3e.TextHighlight exposing
-    ( MatchMode(..)
+    ( view
     , Option
-    , caseSensitive
-    , disabled
-    , mode
-    , term
-    , view
+    , MatchMode(..)
+    , term, mode, caseSensitive, disabled
     )
 
 {-| `<m3e-text-highlight>` — highlights substrings matching a search term.
@@ -26,6 +23,11 @@ Spec (per docs/CONVENTIONS.md):
 Note: `m3e-text-highlight` is not in the 53 documented Material 3 components;
 it ships as a vendor utility. Included here for parity with the `Ui.*` surface.
 
+@docs view
+@docs Option
+@docs MatchMode
+@docs term, mode, caseSensitive, disabled
+
 -}
 
 import Cem.M3e.TextHighlight as Cem
@@ -43,6 +45,8 @@ type MatchMode
     | EndsWith
 
 
+{-| An option configuring the `<m3e-text-highlight>` element.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -86,6 +90,9 @@ type alias Config =
     }
 
 
+{-| Build the `<m3e-text-highlight>` IR node. The `content` renders into the
+default slot, with substrings matching the configured `term` highlighted.
+-}
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | textHighlight : Supported } msg
 view req opts =
     let

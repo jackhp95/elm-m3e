@@ -1,10 +1,7 @@
 module M3e.ScrollContainer exposing
-    ( Dividers(..)
-    , Option
-    , attributes
-    , dividers
-    , thin
-    , view
+    ( view
+    , Dividers(..), Option
+    , dividers, thin, attributes
     )
 
 {-| `<m3e-scroll-container>` — a vertically scrollable content region
@@ -21,6 +18,10 @@ Spec (per docs/CONVENTIONS.md):
   - Attrs: dividers (Node.attribute — enum string, non-property)
   - Escape: html (default-slot region)
   - Tag: scrollContainer
+
+@docs view
+@docs Dividers, Option
+@docs dividers, thin, attributes
 
 -}
 
@@ -39,6 +40,8 @@ type Dividers
     | None
 
 
+{-| An option configuring a scroll container.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -75,6 +78,9 @@ type alias Config msg =
     }
 
 
+{-| Render a scroll container wrapping `content` in a vertically scrollable
+region that shows dividers above/below when scrolled.
+-}
 view :
     { content : List (Renderable any msg) }
     -> List (Option msg)

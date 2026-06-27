@@ -1,20 +1,7 @@
 module M3e.DatePicker exposing
-    ( Option
-    , StartView(..)
-    , Variant(..)
-    , clearable
-    , confirmLabel
-    , date
-    , dismissLabel
-    , id
-    , label
-    , maxDate
-    , minDate
-    , onChange
-    , range
-    , startAt
-    , startView
-    , variant
+    ( Option, StartView(..), Variant(..)
+    , id, date, variant, range, minDate, maxDate, clearable, label
+    , confirmLabel, dismissLabel, startAt, startView, onChange
     , view
     )
 
@@ -51,6 +38,22 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 
 ...decoded with `Node.on "m3e-date-change" (Decode.at ["detail","date"] Decode.string)`.
 
+
+# Types
+
+@docs Option, StartView, Variant
+
+
+# Options
+
+@docs id, date, variant, range, minDate, maxDate, clearable, label
+@docs confirmLabel, dismissLabel, startAt, startView, onChange
+
+
+# View
+
+@docs view
+
 -}
 
 import Json.Decode as Decode
@@ -85,6 +88,8 @@ type StartView
     | MultiYearView
 
 
+{-| An opaque configuration option for [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

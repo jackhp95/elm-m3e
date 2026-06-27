@@ -1,14 +1,8 @@
 module M3e.Slider exposing
-    ( Option
-    , disabled
-    , discrete
-    , labelled
-    , max
-    , min
-    , onChange
-    , step
-    , value
-    , view
+    ( view
+    , Option
+    , value, min, max, step
+    , discrete, labelled, disabled, onChange
     )
 
 {-| `<m3e-slider>` — a control for choosing a numeric value from a range
@@ -28,6 +22,11 @@ Spec (per docs/CONVENTIONS.md):
   - A11y: aria-label = name
   - Tag: slider
 
+@docs view
+@docs Option
+@docs value, min, max, step
+@docs discrete, labelled, disabled, onChange
+
 -}
 
 import Json.Decode as Decode
@@ -37,6 +36,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| An option configuring the `<m3e-slider>` element.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -109,6 +110,9 @@ type alias Config msg =
     }
 
 
+{-| Build the `<m3e-slider>` IR node. Requires `name`, used as the
+`aria-label` for this otherwise text-free control.
+-}
 view : { name : String } -> List (Option msg) -> Renderable { s | slider : Supported } msg
 view req opts =
     let

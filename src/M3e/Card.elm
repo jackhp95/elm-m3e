@@ -1,15 +1,6 @@
 module M3e.Card exposing
-    ( Option
-    , Variant(..)
-    , actionable
-    , actions
-    , body
-    , footer
-    , headline
-    , inline
-    , media
-    , subhead
-    , variant
+    ( Option, Variant(..)
+    , variant, actionable, inline, media, headline, subhead, body, actions, footer
     , view
     )
 
@@ -34,6 +25,21 @@ Spec (per docs/CONVENTIONS.md):
 `body` items go into the card's DEFAULT SLOT (no slot wrapper) so that
 existing code and the IntrospectionTest (which counts direct children) keep
 working: with only `body` set, the card's children are exactly the body items.
+
+
+# Type
+
+@docs Option, Variant
+
+
+# Options
+
+@docs variant, actionable, inline, media, headline, subhead, body, actions, footer
+
+
+# View
+
+@docs view
 
 -}
 
@@ -68,6 +74,8 @@ type alias Config msg =
     }
 
 
+{-| An opaque configuration option for [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -90,46 +98,66 @@ defaultConfig =
 -- OPTIONS ------------------------------------------------------------------
 
 
+{-| Set the container style (`Elevated`, `Filled`, or `Outlined`).
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
 
+{-| Make the whole card a single interactive surface (the `actionable` DOM
+property). Default false.
+-}
 actionable : Bool -> Option msg
 actionable b =
     Internal.option (\c -> { c | actionable = b })
 
 
+{-| Lay the card out inline rather than as a block (the `inline` DOM
+property). Default false.
+-}
 inline : Bool -> Option msg
 inline b =
     Internal.option (\c -> { c | inline = b })
 
 
+{-| Media (e.g. an image) shown in the card's `header` slot.
+-}
 media : Renderable any msg -> Option msg
 media item =
     Internal.option (\c -> { c | media = Just (Renderable.toNode item) })
 
 
+{-| Headline shown in the card's `content` slot.
+-}
 headline : Renderable any msg -> Option msg
 headline item =
     Internal.option (\c -> { c | headline = Just (Renderable.toNode item) })
 
 
+{-| Subhead shown beneath the headline in the card's `content` slot.
+-}
 subhead : Renderable any msg -> Option msg
 subhead item =
     Internal.option (\c -> { c | subhead = Just (Renderable.toNode item) })
 
 
+{-| Body content placed in the card's default slot (no slot wrapper).
+-}
 body : List (Renderable any msg) -> Option msg
 body items =
     Internal.option (\c -> { c | body = List.map Renderable.toNode items })
 
 
+{-| Action buttons shown in the card's `actions` slot.
+-}
 actions : List (Renderable { s | button : Supported } msg) -> Option msg
 actions items =
     Internal.option (\c -> { c | actions = List.map Renderable.toNode items })
 
 
+{-| Footer content shown in the card's `footer` region.
+-}
 footer : Renderable any msg -> Option msg
 footer item =
     Internal.option (\c -> { c | footer = Just (Renderable.toNode item) })
@@ -139,6 +167,8 @@ footer item =
 -- VIEW ------------------------------------------------------------------
 
 
+{-| Render the card.
+-}
 view : List (Option msg) -> Renderable { s | card : Supported } msg
 view opts =
     let

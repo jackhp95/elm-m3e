@@ -1,17 +1,8 @@
 module M3e.NavigationBar exposing
-    ( ItemOption
-    , Mode(..)
-    , Option
-    , id
-    , item
-    , itemBadge
-    , itemDisabled
-    , itemHref
-    , itemOnClick
-    , itemSelected
-    , itemSelectedIcon
-    , mode
-    , view
+    ( view, item
+    , Option, ItemOption, Mode(..)
+    , id, mode
+    , itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
     )
 
 {-| `<m3e-nav-bar>` + `<m3e-nav-item>` — bottom-anchored primary navigation
@@ -30,6 +21,11 @@ Spec (per docs/CONVENTIONS.md):
 
 Selection state is fully Elm-controlled: set `itemSelected True` on the active
 item and wire `itemOnClick` on each destination to update your model.
+
+@docs view, item
+@docs Option, ItemOption, Mode
+@docs id, mode
+@docs itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
 
 -}
 
@@ -58,10 +54,16 @@ type Mode
 -- OPTION TYPES ------------------------------------------------------------
 
 
+{-| A configuration option for a navigation bar item, produced by the
+`item*` smart constructors and passed to [`item`](#item).
+-}
 type alias ItemOption msg =
     Internal.Option (ItemConfig msg) msg
 
 
+{-| A configuration option for the navigation bar container, passed to
+[`view`](#view).
+-}
 type alias Option msg =
     Internal.Option ContainerConfig msg
 

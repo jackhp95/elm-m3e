@@ -1,11 +1,7 @@
 module M3e.ButtonGroup exposing
-    ( Option
-    , Size(..)
-    , Variant(..)
-    , multi
-    , size
-    , variant
+    ( Option, Variant(..), Size(..)
     , view
+    , variant, size, multi
     )
 
 {-| `<m3e-button-group>` — a connected row of buttons (Material 3 Button
@@ -22,6 +18,21 @@ Spec (per docs/CONVENTIONS.md):
   - Attrs: variant/size via Cem.M3e.ButtonGroup.\* as rawAttr
   - Escape: none (strict child kind: { button })
   - Tag: buttonGroup
+
+
+# Types
+
+@docs Option, Variant, Size
+
+
+# View
+
+@docs view
+
+
+# Options
+
+@docs variant, size, multi
 
 -}
 
@@ -56,15 +67,22 @@ type alias Config =
     }
 
 
+{-| A button group configuration option. Build with the option functions below
+and pass a list to [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option Config msg
 
 
+{-| Set the group appearance variant (default `Standard`).
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
 
+{-| Set the size applied to the whole group (default `Small`).
+-}
 size : Size -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
@@ -78,6 +96,8 @@ multi b =
     Internal.option (\c -> { c | multi = b })
 
 
+{-| Render the button group wrapping the required `buttons`.
+-}
 view :
     { buttons : List (Renderable { button : Supported } msg) }
     -> List (Option msg)

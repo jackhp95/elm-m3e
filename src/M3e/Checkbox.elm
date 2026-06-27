@@ -1,9 +1,6 @@
 module M3e.Checkbox exposing
     ( Option
-    , checked
-    , disabled
-    , indeterminate
-    , onChange
+    , checked, indeterminate, disabled, onChange
     , view
     )
 
@@ -27,6 +24,21 @@ Note on `checked`: `Cem.M3e.Checkbox.checked` delegates to
 `property "checked" (Json.Encode.bool _)`. We therefore emit it via
 `Node.property "checked"` so the IR can see and test it.
 
+
+# Type
+
+@docs Option
+
+
+# Options
+
+@docs checked, indeterminate, disabled, onChange
+
+
+# View
+
+@docs view
+
 -}
 
 import Json.Decode as Decode
@@ -44,6 +56,8 @@ type alias Config msg =
     }
 
 
+{-| An opaque configuration option for [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -77,6 +91,9 @@ onChange f =
     Internal.option (\c -> { c | onChange = Just f })
 
 
+{-| Render the checkbox. The required `name` becomes the `aria-label` (the
+checkbox renders with no visible text).
+-}
 view : { name : String } -> List (Option msg) -> Renderable { s | checkbox : Supported } msg
 view req opts =
     let

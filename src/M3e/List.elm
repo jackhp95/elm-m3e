@@ -1,40 +1,13 @@
 module M3e.List exposing
-    ( ActionItemOption
-    , ExpandableItemOption
-    , Option
-    , OptionItemOption
-    , StaticItemOption
-    , Variant(..)
-    , actionDisabled
-    , actionItem
-    , actionLeading
-    , actionOnClick
-    , actionOverline
-    , actionSupporting
-    , actionTrailing
-    , divider
-    , expandable
-    , expandableDisabled
-    , expandableLeading
-    , expandableOpen
-    , expandableOverline
-    , expandableSupporting
-    , id
-    , item
-    , option
-    , optionDisabled
-    , optionLeading
-    , optionOnChange
-    , optionOverline
-    , optionSelected
-    , optionSupporting
-    , optionValue
-    , staticLeading
-    , staticOverline
-    , staticSupporting
-    , staticTrailing
-    , variant
-    , view
+    ( view
+    , item, actionItem, option, divider, expandable
+    , Variant(..), Option
+    , StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption
+    , variant, id
+    , staticLeading, staticTrailing, staticOverline, staticSupporting
+    , actionLeading, actionTrailing, actionOverline, actionSupporting, actionDisabled, actionOnClick
+    , optionLeading, optionOverline, optionSupporting, optionDisabled, optionSelected, optionValue, optionOnChange
+    , expandableLeading, expandableOverline, expandableSupporting, expandableDisabled, expandableOpen
     )
 
 {-| `<m3e-list>` + kind-typed item constructors — a vertical collection of rows
@@ -57,6 +30,16 @@ Spec (per docs/CONVENTIONS.md):
   - Properties: disabled (action/option/expandable), selected (option), open (expandable)
   - Events: onClick (actionItem), onChange (option)
   - Tag: list / listItem
+
+@docs view
+@docs item, actionItem, option, divider, expandable
+@docs Variant, Option
+@docs StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption
+@docs variant, id
+@docs staticLeading, staticTrailing, staticOverline, staticSupporting
+@docs actionLeading, actionTrailing, actionOverline, actionSupporting, actionDisabled, actionOnClick
+@docs optionLeading, optionOverline, optionSupporting, optionDisabled, optionSelected, optionValue, optionOnChange
+@docs expandableLeading, expandableOverline, expandableSupporting, expandableDisabled, expandableOpen
 
 -}
 
@@ -83,22 +66,32 @@ type Variant
 -- OPTION TYPES (KIND-SPECIFIC) --------------------------------------------
 
 
+{-| Option for a static `item`.
+-}
 type alias StaticItemOption msg =
     Internal.Option (StaticConfig msg) msg
 
 
+{-| Option for an `actionItem`.
+-}
 type alias ActionItemOption msg =
     Internal.Option (ActionConfig msg) msg
 
 
+{-| Option for a selectable `option` item.
+-}
 type alias OptionItemOption msg =
     Internal.Option (OptionConfig msg) msg
 
 
+{-| Option for an `expandable` item.
+-}
 type alias ExpandableItemOption msg =
     Internal.Option (ExpandableConfig msg) msg
 
 
+{-| Option for the list container (`view`).
+-}
 type alias Option msg =
     Internal.Option ContainerConfig msg
 

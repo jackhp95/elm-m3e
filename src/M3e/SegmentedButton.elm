@@ -1,13 +1,8 @@
 module M3e.SegmentedButton exposing
-    ( ParentOption
-    , SegmentOption
-    , disabled
-    , multi
-    , segment
-    , segmentDisabled
-    , segmentOnClick
-    , segmentValue
-    , view
+    ( ParentOption, SegmentOption
+    , view, segment
+    , disabled, multi
+    , segmentDisabled, segmentOnClick, segmentValue
     )
 
 {-| `<m3e-segmented-button>` + `<m3e-button-segment>` — a small row of
@@ -25,6 +20,11 @@ Spec (per docs/CONVENTIONS.md):
   - Events: click on each segment
   - Tag: segmentedButton / segment
 
+@docs ParentOption, SegmentOption
+@docs view, segment
+@docs disabled, multi
+@docs segmentDisabled, segmentOnClick, segmentValue
+
 -}
 
 import Json.Decode as Decode
@@ -38,6 +38,8 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 -- SEGMENT (child) ---------------------------------------------------------
 
 
+{-| Configuration option for an individual segment, built by the helpers below.
+-}
 type SegmentOption msg
     = SegmentDisabled Bool
     | SegmentOnClick msg
@@ -127,6 +129,9 @@ segment req opts =
 -- PARENT ------------------------------------------------------------------
 
 
+{-| Configuration option for the segmented button group, built by the helpers
+below.
+-}
 type ParentOption msg
     = Disabled Bool
     | Multi Bool
@@ -162,6 +167,8 @@ applyParent opt c =
             { c | multi = b }
 
 
+{-| Render a segmented button group from a list of `segment` children.
+-}
 view :
     { segments : List (Renderable { segment : Supported } msg) }
     -> List (ParentOption msg)

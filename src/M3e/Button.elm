@@ -1,19 +1,7 @@
 module M3e.Button exposing
-    ( Option
-    , Shape(..)
-    , Size(..)
-    , Variant(..)
-    , disabled
-    , download
-    , href
-    , leadingIcon
-    , onClick
-    , rel
-    , shape
-    , size
-    , target
-    , trailingIcon
+    ( Option, Variant(..), Size(..), Shape(..)
     , view
+    , size, shape, disabled, onClick, href, target, rel, download, leadingIcon, trailingIcon
     )
 
 {-| `<m3e-button>` — a labeled action button (Material 3 Buttons, 1:1).
@@ -36,6 +24,21 @@ Action wiring (`onClick`/`href`) is last-write-wins options, not a required sum
 field — a button with no action is degenerate-but-valid (caught by a review rule,
 per ADR 0006 / the prior NoActionlessButton design).
 
+
+# Types
+
+@docs Option, Variant, Size, Shape
+
+
+# View
+
+@docs view
+
+
+# Options
+
+@docs size, shape, disabled, onClick, href, target, rel, download, leadingIcon, trailingIcon
+
 -}
 
 import Cem.M3e.Button as Cem
@@ -46,6 +49,9 @@ import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| Button style — `Elevated`, `Filled`, `Tonal`, `Outlined`, or `Text`.
+Supplied as a required field of [`view`](#view).
+-}
 type Variant
     = Elevated
     | Filled
@@ -54,6 +60,8 @@ type Variant
     | Text
 
 
+{-| Button size, from `ExtraSmall` to `ExtraLarge` (default `Small`).
+-}
 type Size
     = ExtraSmall
     | Small
@@ -62,60 +70,85 @@ type Size
     | ExtraLarge
 
 
+{-| Button corner shape — `Rounded` or `Square`.
+-}
 type Shape
     = Rounded
     | Square
 
 
+{-| A button configuration option. Build with the option functions below and
+pass a list to [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
+{-| Set the button size (default `Small`).
+-}
 size : Size -> Option msg
 size v =
     Internal.option (\c -> { c | size = v })
 
 
+{-| Set the button corner shape.
+-}
 shape : Shape -> Option msg
 shape v =
     Internal.option (\c -> { c | shape = Just v })
 
 
+{-| Disable the button (sets the `disabled` DOM property).
+-}
 disabled : Bool -> Option msg
 disabled v =
     Internal.option (\c -> { c | disabled = v })
 
 
+{-| Wire a click handler for the button.
+-}
 onClick : msg -> Option msg
 onClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
+{-| Render the button as a link to the given URL.
+-}
 href : String -> Option msg
 href v =
     Internal.option (\c -> { c | href = Just v })
 
 
+{-| Set the link `target` (e.g. `"_blank"`); only meaningful with [`href`](#href).
+-}
 target : String -> Option msg
 target v =
     Internal.option (\c -> { c | target = Just v })
 
 
+{-| Set the link `rel` (e.g. `"noreferrer noopener"`); only meaningful with [`href`](#href).
+-}
 rel : String -> Option msg
 rel v =
     Internal.option (\c -> { c | rel = Just v })
 
 
+{-| Request the link target be downloaded; only meaningful with [`href`](#href).
+-}
 download : String -> Option msg
 download v =
     Internal.option (\c -> { c | download = Just v })
 
 
+{-| Place an icon in the `icon` slot, before the label.
+-}
 leadingIcon : Renderable { icon : Supported } msg -> Option msg
 leadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
+{-| Place an icon in the `trailing-icon` slot, after the label.
+-}
 trailingIcon : Renderable { icon : Supported } msg -> Option msg
 trailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
@@ -135,6 +168,9 @@ type alias Config msg =
     }
 
 
+{-| Render the button. The required `label` is the visible text and the
+accessible name; `variant` selects the M3 button style.
+-}
 view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | button : Supported } msg
 view req opts =
     let

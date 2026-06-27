@@ -1,13 +1,8 @@
 module M3e.Paginator exposing
-    ( Option
-    , disabled
-    , hidePageSize
-    , onPage
-    , pageIndex
-    , pageSize
-    , pageSizes
-    , showFirstLastButtons
-    , view
+    ( view
+    , Option
+    , pageIndex, pageSize, pageSizes
+    , disabled, showFirstLastButtons, hidePageSize, onPage
     )
 
 {-| `<m3e-paginator>` — a compact control for moving through a paged
@@ -27,6 +22,11 @@ Spec (per docs/CONVENTIONS.md):
   - Escape: none (leaf)
   - Tag: paginator
 
+@docs view
+@docs Option
+@docs pageIndex, pageSize, pageSizes
+@docs disabled, showFirstLastButtons, hidePageSize, onPage
+
 -}
 
 import Json.Decode as Decode
@@ -36,6 +36,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| An option configuring the `<m3e-paginator>` element.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -102,6 +104,9 @@ type alias Config msg =
     }
 
 
+{-| Build the `<m3e-paginator>` IR node. Requires the total item count
+(`length`), which drives the page count and which nav buttons are enabled.
+-}
 view : { length : Float } -> List (Option msg) -> Renderable { s | paginator : Supported } msg
 view req opts =
     let

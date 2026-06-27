@@ -1,9 +1,7 @@
 module M3e.RadioButton exposing
     ( Option
-    , disabled
-    , onChange
-    , required
     , view
+    , disabled, required, onChange
     )
 
 {-| `<m3e-radio-group>` + `<m3e-radio>` — a group of radio buttons for
@@ -34,6 +32,10 @@ text as **siblings** inside the label:
       Label text                        ← sibling, not child
     </label>
 
+@docs Option
+@docs view
+@docs disabled, required, onChange
+
 -}
 
 import Json.Decode as Decode
@@ -43,6 +45,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| Configuration option for a radio group, built by the helpers below.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -76,6 +80,10 @@ type alias Config msg =
     }
 
 
+{-| Render a radio group. `name` is the shared radio name and the group's
+accessible label, `options` are the selectable values/labels, and `selected`
+is the currently chosen value (if any).
+-}
 view :
     { name : String
     , options : List { value : String, label : String }

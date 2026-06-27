@@ -1,13 +1,7 @@
 module M3e.BottomSheet exposing
     ( Option
-    , actions
-    , handle
-    , header
-    , hideable
-    , modal
-    , onClose
-    , open
     , view
+    , open, onClose, handle, hideable, modal, header, actions
     )
 
 {-| `<m3e-bottom-sheet>` — a surface that slides up from the bottom of the
@@ -32,6 +26,21 @@ previously had a bug where the action was positioned outside/wrapping the button
 Here each action `Renderable { button }` has the sentinel injected as a child of
 its rendered element node before it lands in the DOM.
 
+
+# Types
+
+@docs Option
+
+
+# View
+
+@docs view
+
+
+# Options
+
+@docs open, onClose, handle, hideable, modal, header, actions
+
 -}
 
 import Json.Decode as Decode
@@ -41,6 +50,9 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| A bottom sheet configuration option. Build with the option functions below
+and pass a list to [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

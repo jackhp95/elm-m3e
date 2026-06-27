@@ -1,16 +1,7 @@
 module M3e.ExtendedFab exposing
-    ( Option
-    , Size(..)
-    , Variant(..)
-    , disabled
-    , download
-    , href
-    , lowered
-    , onClick
-    , rel
-    , size
-    , target
-    , view
+    ( view
+    , Option, Size(..), Variant(..)
+    , size, lowered, disabled, onClick, href, target, rel, download
     )
 
 {-| `<m3e-fab>` with `extended = True` — a floating action button with a
@@ -29,6 +20,10 @@ Spec (per docs/CONVENTIONS.md):
   - Events: click
   - A11y: label is visible text — no aria-label required
   - Tag: extendedFab
+
+@docs view
+@docs Option, Size, Variant
+@docs size, lowered, disabled, onClick, href, target, rel, download
 
 -}
 
@@ -73,50 +68,70 @@ type alias Config msg =
     }
 
 
+{-| Configuration option for `view`.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
+{-| Set the FAB size (`Small`, `Medium`, `Large`). Default `Medium`.
+-}
 size : Size -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
 
+{-| Use the lowered (less-elevated) style. Default `False`.
+-}
 lowered : Bool -> Option msg
 lowered b =
     Internal.option (\c -> { c | lowered = b })
 
 
+{-| Disable the FAB. Default `False`.
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
+{-| Wire a click handler.
+-}
 onClick : msg -> Option msg
 onClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
+{-| Render the FAB as a link to the given URL.
+-}
 href : String -> Option msg
 href v =
     Internal.option (\c -> { c | href = Just v })
 
 
+{-| Set the `target` for a link FAB (used with `href`).
+-}
 target : String -> Option msg
 target v =
     Internal.option (\c -> { c | target = Just v })
 
 
+{-| Set the `rel` for a link FAB (used with `href`).
+-}
 rel : String -> Option msg
 rel v =
     Internal.option (\c -> { c | rel = Just v })
 
 
+{-| Set the `download` for a link FAB (used with `href`).
+-}
 download : String -> Option msg
 download v =
     Internal.option (\c -> { c | download = Just v })
 
 
+{-| Render the extended FAB with its required `icon`, `label`, and `variant`.
+-}
 view :
     { icon : String, label : String, variant : Variant }
     -> List (Option msg)

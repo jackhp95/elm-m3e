@@ -1,9 +1,7 @@
 module M3e.Shape exposing
-    ( Name
-    , Option
-    , attributes
-    , name
-    , view
+    ( view
+    , Name, Option
+    , name, attributes
     )
 
 {-| `<m3e-shape>` — a clipped/shaped container.
@@ -25,6 +23,10 @@ NOTE: `m3e-shape`'s host hard-sets `width: var(--m3e-shape-size, 3rem)` with
 the host. Per ADR 0007 that goes through the `attributes` escape
 (`Node.rawAttr (class "h-36 w-full")`), not a baked class.
 
+@docs view
+@docs Name, Option
+@docs name, attributes
+
 -}
 
 import Cem.M3e.Shape as Cem
@@ -40,6 +42,8 @@ type alias Name =
     Cem.Name
 
 
+{-| An option configuring a shape container.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -67,6 +71,8 @@ type alias Config msg =
     }
 
 
+{-| Render a shape container clipping `content` to the named Material 3 shape.
+-}
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | shape : Supported } msg
 view req opts =
     let

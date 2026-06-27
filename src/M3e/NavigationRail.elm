@@ -1,17 +1,8 @@
 module M3e.NavigationRail exposing
-    ( ItemOption
-    , Mode(..)
-    , Option
-    , id
-    , item
-    , itemBadge
-    , itemDisabled
-    , itemHref
-    , itemOnClick
-    , itemSelected
-    , itemSelectedIcon
-    , mode
-    , view
+    ( view, item
+    , Option, ItemOption, Mode(..)
+    , id, mode
+    , itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
     )
 
 {-| `<m3e-nav-rail>` + `<m3e-nav-item>` — side-anchored primary navigation for
@@ -30,6 +21,11 @@ Spec (per docs/CONVENTIONS.md):
 
 Items are the same `<m3e-nav-item>` element used by `M3e.NavigationBar`;
 `navItem` is a shared kind tag. Selection state is fully Elm-controlled.
+
+@docs view, item
+@docs Option, ItemOption, Mode
+@docs id, mode
+@docs itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
 
 -}
 
@@ -58,10 +54,16 @@ type Mode
 -- OPTION TYPES ------------------------------------------------------------
 
 
+{-| A configuration option for a navigation rail item, produced by the
+`item*` smart constructors and passed to [`item`](#item).
+-}
 type alias ItemOption msg =
     Internal.Option (ItemConfig msg) msg
 
 
+{-| A configuration option for the navigation rail container, passed to
+[`view`](#view).
+-}
 type alias Option msg =
     Internal.Option ContainerConfig msg
 

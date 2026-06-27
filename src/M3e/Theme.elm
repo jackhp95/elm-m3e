@@ -1,18 +1,8 @@
 module M3e.Theme exposing
-    ( Contrast(..)
-    , Motion(..)
+    ( view
     , Option
-    , Scheme(..)
-    , Variant(..)
-    , contrast
-    , density
-    , motion
-    , onChange
-    , scheme
-    , seedColor
-    , strongFocus
-    , variant
-    , view
+    , Scheme(..), Variant(..), Contrast(..), Motion(..)
+    , seedColor, scheme, variant, contrast, density, strongFocus, motion, onChange
     )
 
 {-| `<m3e-theme>` — a non-visual application-level theme provider. Derives
@@ -31,6 +21,11 @@ Spec (per docs/CONVENTIONS.md):
   - Events: change (dispatched when theme recomputes tokens)
   - Escape: html (default-slot region)
   - Tag: theme
+
+@docs view
+@docs Option
+@docs Scheme, Variant, Contrast, Motion
+@docs seedColor, scheme, variant, contrast, density, strongFocus, motion, onChange
 
 -}
 
@@ -81,6 +76,8 @@ type Motion
     | MotionExpressive
 
 
+{-| An option configuring the `<m3e-theme>` provider.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
@@ -156,6 +153,9 @@ type alias Config msg =
     }
 
 
+{-| Render the theme provider, wrapping `content` in `<m3e-theme>` so the
+derived color, density, motion, and focus tokens apply to that subtree.
+-}
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | theme : Supported } msg
 view req opts =
     let

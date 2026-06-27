@@ -1,10 +1,7 @@
 module M3e.FabMenu exposing
-    ( Option
-    , Variant(..)
-    , item
-    , menuId
-    , variant
-    , view
+    ( view, item
+    , Option, Variant(..)
+    , variant, menuId
     )
 
 {-| `<m3e-fab-menu>` + `<m3e-fab>` trigger — a floating action button that
@@ -39,6 +36,10 @@ constructed directly via `Node.element`.
 `<m3e-fab-menu-item>` with a click event, returning a
 `Renderable { s | fabMenuItem : Supported }` for the `items` list.
 
+@docs view, item
+@docs Option, Variant
+@docs variant, menuId
+
 -}
 
 import Cem.M3e.FabMenu as Cem
@@ -62,6 +63,8 @@ type alias Config =
     }
 
 
+{-| Configuration option for `view`.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -105,6 +108,8 @@ item req =
         )
 
 
+{-| Render the FAB menu — the FAB trigger plus its expandable `items`.
+-}
 view :
     { triggerIcon : String
     , name : String

@@ -1,16 +1,8 @@
 module M3e.Select exposing
-    ( Option
-    , OptionOption
-    , disabled
-    , id
-    , multi
-    , onChange
-    , option
-    , optionDisabled
-    , optionSelected
-    , options
-    , required
-    , view
+    ( Option, OptionOption
+    , view, option, options
+    , id, multi, required, disabled, onChange
+    , optionSelected, optionDisabled
     )
 
 {-| `<m3e-select>` inside `<m3e-form-field>` with a proper `<label for=id>`
@@ -37,6 +29,11 @@ inert attribute on `<m3e-select>` — that never wired the accessible label.
 `event.target.value` as a string. This requires each `<m3e-option>` to carry a
 `value` attribute — `M3e.Select.option` sets this automatically from the
 `value` field.
+
+@docs Option, OptionOption
+@docs view, option, options
+@docs id, multi, required, disabled, onChange
+@docs optionSelected, optionDisabled
 
 -}
 

@@ -1,11 +1,7 @@
 module M3e.Heading exposing
-    ( Option
-    , Size(..)
-    , Variant(..)
-    , emphasized
-    , level
-    , size
-    , view
+    ( view
+    , Option, Size(..), Variant(..)
+    , size, emphasized, level
     )
 
 {-| `<m3e-heading>` — a Material 3 typescale heading.
@@ -24,6 +20,10 @@ Spec (per docs/CONVENTIONS.md):
 
 The `level` option is clamped to the CEM-permitted range 1..6 (same as
 `Ui.Heading.clampLevel`).
+
+@docs view
+@docs Option, Size, Variant
+@docs size, emphasized, level
 
 -}
 
@@ -58,6 +58,8 @@ type alias Config =
     }
 
 
+{-| Configuration option for `view`.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -86,6 +88,8 @@ level l =
     Internal.option (\c -> { c | level = Just (clamp 1 6 l) })
 
 
+{-| Render the heading with its required `label` and `variant`.
+-}
 view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | heading : Supported } msg
 view req opts =
     let

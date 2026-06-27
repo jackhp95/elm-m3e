@@ -1,9 +1,7 @@
 module M3e.Toc exposing
-    ( Option
-    , maxDepth
-    , overline
-    , title
-    , view
+    ( view
+    , Option
+    , maxDepth, title, overline
     )
 
 {-| `<m3e-toc>` — a table of contents that auto-generates in-page navigation
@@ -24,6 +22,10 @@ Spec (per docs/CONVENTIONS.md):
   - Escape: none (leaf structure; callers style via host attributes)
   - Tag: toc
 
+@docs view
+@docs Option
+@docs maxDepth, title, overline
+
 -}
 
 import Json.Encode as Encode
@@ -32,6 +34,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| An option configuring the `<m3e-toc>` element.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -67,6 +71,8 @@ type alias Config =
     }
 
 
+{-| Render the table of contents, indexing the content area named by `for`.
+-}
 view : { for : String } -> List (Option msg) -> Renderable { s | toc : Supported } msg
 view req opts =
     let

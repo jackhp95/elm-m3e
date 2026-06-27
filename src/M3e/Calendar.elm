@@ -1,21 +1,8 @@
 module M3e.Calendar exposing
-    ( Option
-    , StartView(..)
-    , date
-    , id
-    , maxDate
-    , minDate
-    , nextMonthLabel
-    , nextMultiYearLabel
-    , nextYearLabel
-    , onChange
-    , previousMonthLabel
-    , previousMultiYearLabel
-    , previousYearLabel
-    , rangeEnd
-    , rangeStart
-    , startAt
-    , startView
+    ( Option, StartView(..)
+    , id, date, minDate, maxDate, rangeStart, rangeEnd, startView, startAt
+    , previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+    , previousMultiYearLabel, nextMultiYearLabel, onChange
     , view
     )
 
@@ -64,6 +51,23 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 
 ...with a matching `Node.on "m3e-date-change" (Decode.at ["detail","date"] Decode.string)`.
 
+
+# Types
+
+@docs Option, StartView
+
+
+# Options
+
+@docs id, date, minDate, maxDate, rangeStart, rangeEnd, startView, startAt
+@docs previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+@docs previousMultiYearLabel, nextMultiYearLabel, onChange
+
+
+# View
+
+@docs view
+
 -}
 
 import Json.Decode as Decode
@@ -85,6 +89,8 @@ type StartView
     | MultiYearView
 
 
+{-| An opaque configuration option for [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

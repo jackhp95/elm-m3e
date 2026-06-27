@@ -1,10 +1,7 @@
 module M3e.Slide exposing
     ( Option
-    , disabled
-    , slide
-    , threshold
-    , vertical
-    , view
+    , view, slide
+    , disabled, vertical, threshold
     )
 
 {-| `<m3e-slide-group>` / `<m3e-slide>` — a horizontal (or vertical) slide
@@ -29,6 +26,10 @@ Spec (per docs/CONVENTIONS.md):
 element and returns a `Renderable { s | slide : Supported }` that can be
 placed in the `slides` list.
 
+@docs Option
+@docs view, slide
+@docs disabled, vertical, threshold
+
 -}
 
 import Json.Encode as Encode
@@ -37,6 +38,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| Configuration option for a slide group, built by the helpers below.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -82,6 +85,9 @@ slide content =
         )
 
 
+{-| Render a slide group from a list of `slide` children, with directional
+pagination controls.
+-}
 view :
     { slides : List (Renderable { slide : Supported } msg) }
     -> List (Option msg)

@@ -1,18 +1,7 @@
 module M3e.Fab exposing
-    ( Option
-    , Size(..)
-    , Variant(..)
-    , disabled
-    , download
-    , href
-    , label
-    , lowered
-    , onClick
-    , rel
-    , size
-    , target
-    , variant
-    , view
+    ( view
+    , Option, Size(..), Variant(..)
+    , variant, size, lowered, disabled, onClick, href, target, rel, download, label
     )
 
 {-| `<m3e-fab>` — a floating action button for the primary action on a screen.
@@ -32,6 +21,10 @@ Spec (per docs/CONVENTIONS.md):
   - Events: click
   - A11y: aria-label = name (required; m3e aria-hides its icon slot)
   - Tag: m3e-fab
+
+@docs view
+@docs Option, Size, Variant
+@docs variant, size, lowered, disabled, onClick, href, target, rel, download, label
 
 -}
 
@@ -78,50 +71,70 @@ type alias Config msg =
     }
 
 
+{-| Configuration option for `view`.
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 
 
+{-| Set the FAB variant (one of the seven M3 color roles). Default `PrimaryContainer`.
+-}
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
 
+{-| Set the FAB size (`Small`, `Medium`, `Large`). Default `Medium`.
+-}
 size : Size -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
 
+{-| Use the lowered (less-elevated) style. Default `False`.
+-}
 lowered : Bool -> Option msg
 lowered b =
     Internal.option (\c -> { c | lowered = b })
 
 
+{-| Disable the FAB. Default `False`.
+-}
 disabled : Bool -> Option msg
 disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
+{-| Wire a click handler.
+-}
 onClick : msg -> Option msg
 onClick m =
     Internal.option (\c -> { c | onClick = Just m })
 
 
+{-| Render the FAB as a link to the given URL.
+-}
 href : String -> Option msg
 href v =
     Internal.option (\c -> { c | href = Just v })
 
 
+{-| Set the `target` for a link FAB (used with `href`).
+-}
 target : String -> Option msg
 target v =
     Internal.option (\c -> { c | target = Just v })
 
 
+{-| Set the `rel` for a link FAB (used with `href`).
+-}
 rel : String -> Option msg
 rel v =
     Internal.option (\c -> { c | rel = Just v })
 
 
+{-| Set the `download` for a link FAB (used with `href`).
+-}
 download : String -> Option msg
 download v =
     Internal.option (\c -> { c | download = Just v })
@@ -135,6 +148,8 @@ label v =
     Internal.option (\c -> { c | label = Just v })
 
 
+{-| Render the FAB with its required `icon` and `name` (aria-label).
+-}
 view : { icon : String, name : String } -> List (Option msg) -> Renderable { s | fab : Supported } msg
 view req opts =
     let

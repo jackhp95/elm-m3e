@@ -1,14 +1,8 @@
 module M3e.Text exposing
-    ( Option
-    , Role(..)
-    , bodyLarge
-    , bodyMedium
-    , bodySmall
+    ( view
+    , Option, Role(..)
     , inline
-    , labelLarge
-    , labelMedium
-    , labelSmall
-    , view
+    , bodyLarge, bodyMedium, bodySmall, labelLarge, labelMedium, labelSmall
     )
 
 {-| Semantic running-text primitive — emits `<p>` (block) or `<span>` (inline)
@@ -33,6 +27,11 @@ The M3 typescale for running text is delivered via the `tailwind-m3e-web` bridge
 as Tailwind v4 `--text-*` `@theme` utilities. The class on `<p>`/`<span>` IS the
 primitive.
 
+@docs view
+@docs Option, Role
+@docs inline
+@docs bodyLarge, bodyMedium, bodySmall, labelLarge, labelMedium, labelSmall
+
 -}
 
 import M3e.Internal as Internal
@@ -52,6 +51,8 @@ type Role
     | LabelSmall
 
 
+{-| An option configuring a text node.
+-}
 type alias Option msg =
     Internal.Option Config msg
 

@@ -1,8 +1,7 @@
 module M3e.LoadingIndicator exposing
-    ( Option
-    , Variant(..)
-    , variant
-    , view
+    ( view
+    , Option
+    , Variant(..), variant
     )
 
 {-| `<m3e-loading-indicator>` — an expressive, indeterminate spinner for short
@@ -23,6 +22,10 @@ The indicator is always indeterminate. For a tracked task with a known
 fraction, use `M3e.Progress`. For a content-placeholder shimmer, use
 `M3e.Skeleton`.
 
+@docs view
+@docs Option
+@docs Variant, variant
+
 -}
 
 import Cem.M3e.LoadingIndicator as Cem
@@ -39,6 +42,8 @@ type Variant
     | Contained
 
 
+{-| An option configuring the `<m3e-loading-indicator>` element.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -55,6 +60,8 @@ type alias Config =
     { variant : Variant }
 
 
+{-| Build the `<m3e-loading-indicator>` IR node — an indeterminate spinner.
+-}
 view : List (Option msg) -> Renderable { s | loadingIndicator : Supported } msg
 view opts =
     let

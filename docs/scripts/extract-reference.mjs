@@ -8,11 +8,13 @@
 // it actually type-checked. Single source of truth; same artifact Phase 8
 // (package-readiness) needs anyway.
 //
-// How: the library can't be a real package today (M3e.* isn't a published
-// dep), so this script sets up a scratch package project at /tmp/m3e-docs-gen
-// with symlinks to `src/Ui` and `vendor/elm-m3e/M3e`, runs `elm make --docs`
-// there, then maps the produced `docs.json` to the existing `reference.json`
-// schema consumed by Route.Reference and Route.Components.Name_.
+// How: the library can't be a real package today (it vendors its `Cem.M3e.*`
+// atoms instead of depending on them), so this script sets up a scratch package
+// project at /tmp/m3e-docs-gen with symlinks to `src/M3e` (the library) and
+// `vendor/elm-m3e/Cem` (the atoms, kept in source-dirs but NOT exposed), runs
+// `elm make --docs` there, then maps the produced `docs.json` to the existing
+// `reference.json` schema consumed by Route.Reference and Route.Components.Name_.
+// `M3e.Internal` is the unexposed escape-hatch and is excluded from the docs.
 
 import fs from "fs";
 import path from "path";
@@ -21,24 +23,33 @@ import { fileURLToPath } from "url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, "../..");
-const SRC_UI = path.resolve(REPO, "src/Ui");
-const SRC_M3E = path.resolve(REPO, "vendor/elm-m3e/M3e");
+const SRC_M3E = path.resolve(REPO, "src/M3e");
+const SRC_CEM = path.resolve(REPO, "vendor/elm-m3e/Cem");
 const OUT = path.resolve(here, "../data/reference.json");
 const ELM_BIN = path.resolve(REPO, "docs/node_modules/.bin/elm");
 
 const SCRATCH = "/tmp/m3e-docs-gen";
 
+// Modules that exist in src/M3e but are NOT part of the *component* reference:
+// the IR primitives + escape-hatch (documented in the architecture guide, not
+// the per-component catalogue).
+const NOT_EXPOSED = new Set(["M3e.Internal", "M3e.Node", "M3e.Label", "M3e.Renderable"]);
+
 // 1. Build a fresh scratch package project (idempotent).
 function setupScratch() {
   fs.rmSync(SCRATCH, { recursive: true, force: true });
   fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
-  fs.symlinkSync(SRC_UI, path.join(SCRATCH, "src/Ui"));
   fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
+  // The atoms live under `Cem.M3e.*`; symlinking `vendor/elm-m3e/Cem` puts
+  // `Cem/M3e/*.elm` on the source path so the library's imports resolve. They
+  // stay in source-dirs but out of `exposed-modules` (escape-hatch, not API).
+  fs.symlinkSync(SRC_CEM, path.join(SCRATCH, "src/Cem"));
 
   const exposed = fs
-    .readdirSync(SRC_UI)
+    .readdirSync(SRC_M3E)
     .filter((f) => f.endsWith(".elm"))
-    .map((f) => "Ui." + f.replace(/\.elm$/, ""))
+    .map((f) => "M3e." + f.replace(/\.elm$/, ""))
+    .filter((m) => !NOT_EXPOSED.has(m))
     .sort();
 
   const elmJson = {
@@ -50,14 +61,10 @@ function setupScratch() {
     "exposed-modules": exposed,
     "elm-version": "0.19.0 <= v < 0.20.0",
     dependencies: {
-      "elm/browser": "1.0.0 <= v < 2.0.0",
       "elm/core": "1.0.0 <= v < 2.0.0",
       "elm/html": "1.0.0 <= v < 2.0.0",
       "elm/json": "1.0.0 <= v < 2.0.0",
-      "elm/time": "1.0.0 <= v < 2.0.0",
-      "elm-community/html-extra": "3.0.0 <= v < 4.0.0",
-      "elm-community/list-extra": "8.0.0 <= v < 9.0.0",
-      "elm-community/maybe-extra": "5.0.0 <= v < 6.0.0",
+      "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
     },
     "test-dependencies": {},
   };
@@ -112,7 +119,7 @@ function memberOrder(comment) {
 //    aliases; value for everything else. Signature on values is the elm type
 //    (multi-line collapsed to a single line by docs.json already).
 function moduleEntry(mod) {
-  const name = mod.name.replace(/^Ui\./, "");
+  const name = mod.name.replace(/^M3e\./, "");
   const slug = name.toLowerCase();
   const byName = new Map();
   for (const u of mod.unions || []) {
@@ -144,7 +151,7 @@ function moduleEntry(mod) {
 setupScratch();
 const modules = buildDocsJson();
 const components = modules
-  .filter((m) => /^Ui\./.test(m.name))
+  .filter((m) => /^M3e\./.test(m.name))
   .map(moduleEntry)
   .sort((a, b) => a.name.localeCompare(b.name));
 

@@ -1,11 +1,7 @@
 module M3e.Snackbar exposing
-    ( Option
-    , action
-    , closeLabel
-    , dismissible
-    , duration
-    , id
-    , view
+    ( view
+    , Option
+    , id, action, dismissible, closeLabel, duration
     )
 
 {-| `<m3e-snackbar>` — a transient feedback surface at the bottom of the
@@ -39,6 +35,10 @@ To actually _show_ a snackbar in a running app you need one of:
 
 Both imperative paths are **out of scope** for the view-style IR layer.
 
+@docs view
+@docs Option
+@docs id, action, dismissible, closeLabel, duration
+
 -}
 
 import Cem.M3e.Snackbar as CemSnackbar
@@ -52,6 +52,8 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 -- OPTION TYPE -------------------------------------------------------------
 
 
+{-| An option configuring the `<m3e-snackbar>` element.
+-}
 type alias Option msg =
     Internal.Option Config msg
 

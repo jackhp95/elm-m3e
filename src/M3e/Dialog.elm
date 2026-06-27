@@ -1,12 +1,6 @@
 module M3e.Dialog exposing
     ( Option
-    , actions
-    , alert
-    , closeButton
-    , closeLabel
-    , dismissible
-    , onClose
-    , open
+    , open, onClose, alert, closeButton, dismissible, closeLabel, actions
     , view
     )
 
@@ -42,6 +36,21 @@ confusing names. Here the options are clearly named:
     them (for flows that require an explicit action, like destructive
     confirmations).
 
+
+# Type
+
+@docs Option
+
+
+# Options
+
+@docs open, onClose, alert, closeButton, dismissible, closeLabel, actions
+
+
+# View
+
+@docs view
+
 -}
 
 import Json.Decode as Decode
@@ -51,6 +60,8 @@ import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
+{-| An opaque configuration option for [`view`](#view).
+-}
 type alias Option msg =
     Internal.Option (Config msg) msg
 

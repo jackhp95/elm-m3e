@@ -1,10 +1,7 @@
 module M3e.SplitPane exposing
-    ( Option
-    , Orientation(..)
-    , disabled
-    , label
-    , orientation
-    , view
+    ( view
+    , Option, Orientation(..)
+    , orientation, disabled, label
     )
 
 {-| `<m3e-split-pane>` — a resizable two-pane layout with a movable drag
@@ -29,6 +26,10 @@ Spec (per docs/CONVENTIONS.md):
 Each content region is wrapped in an `<m3e-content-pane>` element (faithfully
 mirroring Ui.SplitPane) and assigned the appropriate slot name.
 
+@docs view
+@docs Option, Orientation
+@docs orientation, disabled, label
+
 -}
 
 import Cem.M3e.SplitPane as Cem
@@ -51,6 +52,8 @@ type Orientation
     | Auto
 
 
+{-| An option configuring a split pane.
+-}
 type alias Option msg =
     Internal.Option Config msg
 
@@ -83,6 +86,10 @@ type alias Config =
     }
 
 
+{-| Render the resizable two-pane layout. The `start` and `end` regions are
+each wrapped in an `<m3e-content-pane>` and placed in their named slots, with a
+movable drag handle between them.
+-}
 view :
     { start : List (Renderable any msg)
     , end : List (Renderable any msg)

@@ -1,24 +1,9 @@
 module M3e.Stepper exposing
-    ( HeaderPosition(..)
-    , Option
-    , PanelOption
-    , StepOption
-    , linear
-    , panelActions
-    , panelId
-    , step
-    , stepCompleted
-    , stepDisabled
-    , stepEditable
-    , stepFor
-    , stepId
-    , stepInvalid
-    , stepOptional
-    , stepPanel
-    , stepSelected
-    , stepperHeaderPosition
-    , vertical
-    , view
+    ( view, step, stepPanel
+    , Option, StepOption, PanelOption, HeaderPosition(..)
+    , stepId, stepFor, stepSelected, stepCompleted, stepOptional, stepDisabled, stepEditable, stepInvalid
+    , panelId, panelActions
+    , vertical, linear, stepperHeaderPosition
     )
 
 {-| `<m3e-stepper>` + `<m3e-step>` + `<m3e-step-panel>` — a wizard-like
@@ -45,6 +30,12 @@ stray trailing dash from the CEM codegen), which mis-slots the content. This
 module emits `Node.attribute "slot" "actions"` directly and does NOT use
 `Cem.M3e.StepPanel.actionsSlot`.
 
+@docs view, step, stepPanel
+@docs Option, StepOption, PanelOption, HeaderPosition
+@docs stepId, stepFor, stepSelected, stepCompleted, stepOptional, stepDisabled, stepEditable, stepInvalid
+@docs panelId, panelActions
+@docs vertical, linear, stepperHeaderPosition
+
 -}
 
 import Cem.M3e.Stepper as CemStepper
@@ -63,14 +54,20 @@ type HeaderPosition
     | Below
 
 
+{-| An option configuring an individual step.
+-}
 type alias StepOption msg =
     Internal.Option StepConfig msg
 
 
+{-| An option configuring an individual step panel.
+-}
 type alias PanelOption msg =
     Internal.Option (PanelConfig msg) msg
 
 
+{-| An option configuring the stepper strip.
+-}
 type alias Option msg =
     Internal.Option StripConfig msg
 
