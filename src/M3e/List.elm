@@ -56,43 +56,24 @@ type Variant
 -- OPTION TYPES (KIND-SPECIFIC) --------------------------------------------
 
 
-type StaticItemOption msg
-    = StaticLeading (Renderable { element : Supported } msg)
-    | StaticTrailing (Renderable { element : Supported } msg)
-    | StaticOverline String
-    | StaticSupporting String
+type alias StaticItemOption msg =
+    Internal.Option (StaticConfig msg) msg
 
 
-type ActionItemOption msg
-    = ActionLeading (Renderable { element : Supported } msg)
-    | ActionTrailing (Renderable { element : Supported } msg)
-    | ActionOverline String
-    | ActionSupporting String
-    | ActionDisabled Bool
-    | ActionOnClick msg
+type alias ActionItemOption msg =
+    Internal.Option (ActionConfig msg) msg
 
 
-type OptionItemOption msg
-    = OptionLeading (Renderable { element : Supported } msg)
-    | OptionOverline String
-    | OptionSupporting String
-    | OptionDisabled Bool
-    | OptionSelected Bool
-    | OptionValue String
-    | OptionOnChange (Bool -> msg)
+type alias OptionItemOption msg =
+    Internal.Option (OptionConfig msg) msg
 
 
-type ExpandableItemOption msg
-    = ExpandableLeading (Renderable { element : Supported } msg)
-    | ExpandableOverline String
-    | ExpandableSupporting String
-    | ExpandableDisabled Bool
-    | ExpandableOpen Bool
+type alias ExpandableItemOption msg =
+    Internal.Option (ExpandableConfig msg) msg
 
 
-type Option msg
-    = WithId String
-    | VariantOpt Variant
+type alias Option msg =
+    Internal.Option ContainerConfig msg
 
 
 -- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
@@ -100,147 +81,147 @@ type Option msg
 
 {-| Add a leading element to a static item. -}
 staticLeading : Renderable { element : Supported } msg -> StaticItemOption msg
-staticLeading =
-    StaticLeading
+staticLeading r =
+    Internal.option (\c -> { c | leading = Just r })
 
 
 {-| Add a trailing element to a static item. -}
 staticTrailing : Renderable { element : Supported } msg -> StaticItemOption msg
-staticTrailing =
-    StaticTrailing
+staticTrailing r =
+    Internal.option (\c -> { c | trailing = Just r })
 
 
 {-| Set overline text on a static item. -}
 staticOverline : String -> StaticItemOption msg
-staticOverline =
-    StaticOverline
+staticOverline s =
+    Internal.option (\c -> { c | overline = Just s })
 
 
 {-| Set supporting text on a static item. -}
 staticSupporting : String -> StaticItemOption msg
-staticSupporting =
-    StaticSupporting
+staticSupporting s =
+    Internal.option (\c -> { c | supporting = Just s })
 
 
 {-| Add a leading element to an action item. -}
 actionLeading : Renderable { element : Supported } msg -> ActionItemOption msg
-actionLeading =
-    ActionLeading
+actionLeading r =
+    Internal.option (\c -> { c | leading = Just r })
 
 
 {-| Add a trailing element to an action item. -}
 actionTrailing : Renderable { element : Supported } msg -> ActionItemOption msg
-actionTrailing =
-    ActionTrailing
+actionTrailing r =
+    Internal.option (\c -> { c | trailing = Just r })
 
 
 {-| Set overline text on an action item. -}
 actionOverline : String -> ActionItemOption msg
-actionOverline =
-    ActionOverline
+actionOverline s =
+    Internal.option (\c -> { c | overline = Just s })
 
 
 {-| Set supporting text on an action item. -}
 actionSupporting : String -> ActionItemOption msg
-actionSupporting =
-    ActionSupporting
+actionSupporting s =
+    Internal.option (\c -> { c | supporting = Just s })
 
 
 {-| Disable an action item. -}
 actionDisabled : Bool -> ActionItemOption msg
-actionDisabled =
-    ActionDisabled
+actionDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Wire a click handler for an action item. -}
 actionOnClick : msg -> ActionItemOption msg
-actionOnClick =
-    ActionOnClick
+actionOnClick msg =
+    Internal.option (\c -> { c | onClick = Just msg })
 
 
 {-| Add a leading element to a selectable option item. -}
 optionLeading : Renderable { element : Supported } msg -> OptionItemOption msg
-optionLeading =
-    OptionLeading
+optionLeading r =
+    Internal.option (\c -> { c | leading = Just r })
 
 
 {-| Set overline text on a selectable option item. -}
 optionOverline : String -> OptionItemOption msg
-optionOverline =
-    OptionOverline
+optionOverline s =
+    Internal.option (\c -> { c | overline = Just s })
 
 
 {-| Set supporting text on a selectable option item. -}
 optionSupporting : String -> OptionItemOption msg
-optionSupporting =
-    OptionSupporting
+optionSupporting s =
+    Internal.option (\c -> { c | supporting = Just s })
 
 
 {-| Disable a selectable option item. -}
 optionDisabled : Bool -> OptionItemOption msg
-optionDisabled =
-    OptionDisabled
+optionDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Set whether a selectable option item is selected (the `selected` DOM property). -}
 optionSelected : Bool -> OptionItemOption msg
-optionSelected =
-    OptionSelected
+optionSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Set the form-submission value of a selectable option item. -}
 optionValue : String -> OptionItemOption msg
-optionValue =
-    OptionValue
+optionValue v =
+    Internal.option (\c -> { c | value = Just v })
 
 
 {-| React to a selectable option being toggled. The handler receives the new
 selected state. -}
 optionOnChange : (Bool -> msg) -> OptionItemOption msg
-optionOnChange =
-    OptionOnChange
+optionOnChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 {-| Add a leading element to an expandable item. -}
 expandableLeading : Renderable { element : Supported } msg -> ExpandableItemOption msg
-expandableLeading =
-    ExpandableLeading
+expandableLeading r =
+    Internal.option (\c -> { c | leading = Just r })
 
 
 {-| Set overline text on an expandable item. -}
 expandableOverline : String -> ExpandableItemOption msg
-expandableOverline =
-    ExpandableOverline
+expandableOverline s =
+    Internal.option (\c -> { c | overline = Just s })
 
 
 {-| Set supporting text on an expandable item. -}
 expandableSupporting : String -> ExpandableItemOption msg
-expandableSupporting =
-    ExpandableSupporting
+expandableSupporting s =
+    Internal.option (\c -> { c | supporting = Just s })
 
 
 {-| Disable an expandable item. -}
 expandableDisabled : Bool -> ExpandableItemOption msg
-expandableDisabled =
-    ExpandableDisabled
+expandableDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Control the expanded state of an expandable item (the `open` DOM property). -}
 expandableOpen : Bool -> ExpandableItemOption msg
-expandableOpen =
-    ExpandableOpen
+expandableOpen b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Set the `id` attribute on the `<m3e-list>` element. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId id =
+    Internal.option (\c -> { c | id = Just id })
 
 
 {-| Set the visual style of the list. Default `Standard`. -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 -- ITEM CONSTRUCTORS -------------------------------------------------------
@@ -261,7 +242,7 @@ item :
 item req opts =
     let
         c =
-            List.foldl applyStatic defaultStaticConfig opts
+            Internal.applyOptions opts defaultStaticConfig
     in
     Internal.fromNode
         (Node.element "m3e-list-item"
@@ -285,7 +266,7 @@ actionItem :
 actionItem req opts =
     let
         c =
-            List.foldl applyAction defaultActionConfig opts
+            Internal.applyOptions opts defaultActionConfig
     in
     Internal.fromNode
         (Node.element "m3e-list-item-button"
@@ -317,7 +298,7 @@ option :
 option req opts =
     let
         c =
-            List.foldl applyOptionItem defaultOptionConfig opts
+            Internal.applyOptions opts defaultOptionConfig
     in
     Internal.fromNode
         (Node.element "m3e-list-option"
@@ -366,7 +347,7 @@ expandable :
 expandable req opts =
     let
         c =
-            List.foldl applyExpandable defaultExpandableConfig opts
+            Internal.applyOptions opts defaultExpandableConfig
 
         childNodes =
             List.map (Node.withSlot "items" << Renderable.toNode) req.children
@@ -415,7 +396,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyContainerOption defaultContainerConfig opts
+            Internal.applyOptions opts defaultContainerConfig
     in
     Internal.fromNode
         (Node.element "m3e-list"
@@ -444,21 +425,6 @@ defaultStaticConfig =
     { leading = Nothing, trailing = Nothing, overline = Nothing, supporting = Nothing }
 
 
-applyStatic : StaticItemOption msg -> StaticConfig msg -> StaticConfig msg
-applyStatic opt c =
-    case opt of
-        StaticLeading r ->
-            { c | leading = Just r }
-
-        StaticTrailing r ->
-            { c | trailing = Just r }
-
-        StaticOverline s ->
-            { c | overline = Just s }
-
-        StaticSupporting s ->
-            { c | supporting = Just s }
-
 
 type alias ActionConfig msg =
     { leading : Maybe (Renderable { element : Supported } msg)
@@ -476,27 +442,6 @@ defaultActionConfig =
     , disabled = False, onClick = Nothing
     }
 
-
-applyAction : ActionItemOption msg -> ActionConfig msg -> ActionConfig msg
-applyAction opt c =
-    case opt of
-        ActionLeading r ->
-            { c | leading = Just r }
-
-        ActionTrailing r ->
-            { c | trailing = Just r }
-
-        ActionOverline s ->
-            { c | overline = Just s }
-
-        ActionSupporting s ->
-            { c | supporting = Just s }
-
-        ActionDisabled b ->
-            { c | disabled = b }
-
-        ActionOnClick msg ->
-            { c | onClick = Just msg }
 
 
 type alias OptionConfig msg =
@@ -517,30 +462,6 @@ defaultOptionConfig =
     }
 
 
-applyOptionItem : OptionItemOption msg -> OptionConfig msg -> OptionConfig msg
-applyOptionItem opt c =
-    case opt of
-        OptionLeading r ->
-            { c | leading = Just r }
-
-        OptionOverline s ->
-            { c | overline = Just s }
-
-        OptionSupporting s ->
-            { c | supporting = Just s }
-
-        OptionDisabled b ->
-            { c | disabled = b }
-
-        OptionSelected b ->
-            { c | selected = b }
-
-        OptionValue v ->
-            { c | value = Just v }
-
-        OptionOnChange f ->
-            { c | onChange = Just f }
-
 
 type alias ExpandableConfig msg =
     { leading : Maybe (Renderable { element : Supported } msg)
@@ -556,24 +477,6 @@ defaultExpandableConfig =
     { leading = Nothing, overline = Nothing, supporting = Nothing, disabled = False, open = False }
 
 
-applyExpandable : ExpandableItemOption msg -> ExpandableConfig msg -> ExpandableConfig msg
-applyExpandable opt c =
-    case opt of
-        ExpandableLeading r ->
-            { c | leading = Just r }
-
-        ExpandableOverline s ->
-            { c | overline = Just s }
-
-        ExpandableSupporting s ->
-            { c | supporting = Just s }
-
-        ExpandableDisabled b ->
-            { c | disabled = b }
-
-        ExpandableOpen b ->
-            { c | open = b }
-
 
 type alias ContainerConfig =
     { id : Maybe String
@@ -585,15 +488,6 @@ defaultContainerConfig : ContainerConfig
 defaultContainerConfig =
     { id = Nothing, variant = Standard }
 
-
-applyContainerOption : Option msg -> ContainerConfig -> ContainerConfig
-applyContainerOption opt c =
-    case opt of
-        WithId id ->
-            { c | id = Just id }
-
-        VariantOpt v ->
-            { c | variant = v }
 
 
 {-| Build the common decoration children for any list item kind. -}

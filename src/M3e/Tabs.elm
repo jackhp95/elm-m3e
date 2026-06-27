@@ -57,71 +57,66 @@ type HeaderPosition
     | After
 
 
-type TabOption msg
-    = TabSelected Bool
-    | TabDisabled Bool
-    | TabFor String
-    | TabOnClick msg
+type alias TabOption msg =
+    Internal.Option (TabConfig msg) msg
 
 
-type PanelOption msg
-    = PanelId String
+type alias PanelOption msg =
+    Internal.Option PanelConfig msg
 
 
-type Option msg
-    = Stretch Bool
-    | VariantOpt Variant
-    | HeaderPositionOpt HeaderPosition
+type alias Option msg =
+    Internal.Option StripConfig msg
 
 
 {-| Mark the tab as currently selected. Sets the `selected` DOM property. -}
 tabSelected : Bool -> TabOption msg
-tabSelected =
-    TabSelected
+tabSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Disable the tab. Sets the `disabled` DOM property. -}
 tabDisabled : Bool -> TabOption msg
-tabDisabled =
-    TabDisabled
+tabDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Wire the tab to a panel via its panel's id (the `for` attribute). -}
 tabFor : String -> TabOption msg
-tabFor =
-    TabFor
+tabFor s =
+    Internal.option (\c -> { c | for = Just s })
 
 
 {-| Fire a message when the tab is clicked. -}
 tabOnClick : msg -> TabOption msg
-tabOnClick =
-    TabOnClick
+tabOnClick m =
+    Internal.option (\c -> { c | onClick = Just m })
 
 
 {-| Set the `id` attribute on the panel element — matches the `for` attribute
 on its paired `m3e-tab`.
 -}
 panelId : String -> PanelOption msg
-panelId =
-    PanelId
+panelId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Stretch tabs to fill the header width. Default false. -}
 stretch : Bool -> Option msg
-stretch =
-    Stretch
+stretch b =
+    Internal.option (\c -> { c | stretch = b })
 
 
 {-| Set the strip appearance variant. Default `Secondary`. -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 {-| Where the header strip sits relative to panels. Default `Before`. -}
 headerPosition : HeaderPosition -> Option msg
-headerPosition =
-    HeaderPositionOpt
+headerPosition hp =
+    Internal.option (\c -> { c | headerPosition = hp })
 
 
 
@@ -145,22 +140,6 @@ defaultTabConfig =
     }
 
 
-applyTab : TabOption msg -> TabConfig msg -> TabConfig msg
-applyTab opt c =
-    case opt of
-        TabSelected b ->
-            { c | selected = b }
-
-        TabDisabled b ->
-            { c | disabled = b }
-
-        TabFor s ->
-            { c | for = Just s }
-
-        TabOnClick m ->
-            { c | onClick = Just m }
-
-
 {-| Construct a tab.
 
     M3e.Tabs.tab { label = "Details" }
@@ -174,7 +153,7 @@ tab : { label : String } -> List (TabOption msg) -> Renderable { t | tab : Suppo
 tab req opts =
     let
         c =
-            List.foldl applyTab defaultTabConfig opts
+            Internal.applyOptions opts defaultTabConfig
     in
     Internal.fromNode
         (Node.element "m3e-tab"
@@ -206,13 +185,6 @@ defaultPanelConfig =
     { id = Nothing }
 
 
-applyPanel : PanelOption msg -> PanelConfig -> PanelConfig
-applyPanel opt c =
-    case opt of
-        PanelId s ->
-            { c | id = Just s }
-
-
 {-| Construct a tab panel.
 
     M3e.Tabs.panel
@@ -224,7 +196,7 @@ panel : { content : List (Renderable any msg) } -> List (PanelOption msg) -> Ren
 panel req opts =
     let
         c =
-            List.foldl applyPanel defaultPanelConfig opts
+            Internal.applyOptions opts defaultPanelConfig
     in
     Internal.fromNode
         (Node.element "m3e-tab-panel"
@@ -253,19 +225,6 @@ defaultStripConfig =
     , variant = Secondary
     , headerPosition = Before
     }
-
-
-applyStrip : Option msg -> StripConfig -> StripConfig
-applyStrip opt c =
-    case opt of
-        Stretch b ->
-            { c | stretch = b }
-
-        VariantOpt v ->
-            { c | variant = v }
-
-        HeaderPositionOpt hp ->
-            { c | headerPosition = hp }
 
 
 {-| Render the tabs strip.
@@ -297,7 +256,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyStrip defaultStripConfig opts
+            Internal.applyOptions opts defaultStripConfig
     in
     Internal.fromNode
         (Node.element "m3e-tabs"

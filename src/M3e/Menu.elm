@@ -72,33 +72,20 @@ type ItemAction msg
 -- OPTIONS -----------------------------------------------------------------
 
 
-type ItemOption msg
-    = ItemLeadingIcon (Renderable { icon : Supported } msg)
-    | ItemTrailingIcon (Renderable { icon : Supported } msg)
-    | ItemDisabled Bool
+type alias ItemOption msg =
+    Internal.Option (ItemConfig msg) msg
 
 
-type CheckboxItemOption msg
-    = CheckboxChecked Bool
-    | CheckboxLeadingIcon (Renderable { icon : Supported } msg)
-    | CheckboxTrailingIcon (Renderable { icon : Supported } msg)
-    | CheckboxDisabled Bool
+type alias CheckboxItemOption msg =
+    Internal.Option (CheckboxConfig msg) msg
 
 
-type RadioItemOption msg
-    = RadioSelected Bool
-    | RadioLeadingIcon (Renderable { icon : Supported } msg)
-    | RadioTrailingIcon (Renderable { icon : Supported } msg)
-    | RadioDisabled Bool
+type alias RadioItemOption msg =
+    Internal.Option (RadioConfig msg) msg
 
 
-type Option msg
-    = WithId String
-    | Submenu Bool
-    | VariantOpt Variant
-    | PositionXOpt PositionX
-    | PositionYOpt PositionY
-    | OnToggle (Bool -> msg)
+type alias Option msg =
+    Internal.Option (ContainerConfig msg) msg
 
 
 -- SMART CONSTRUCTORS ------------------------------------------------------
@@ -106,107 +93,107 @@ type Option msg
 
 {-| Add a leading icon to a plain menu item. -}
 itemLeadingIcon : Renderable { icon : Supported } msg -> ItemOption msg
-itemLeadingIcon =
-    ItemLeadingIcon
+itemLeadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Add a trailing icon to a plain menu item. -}
 itemTrailingIcon : Renderable { icon : Supported } msg -> ItemOption msg
-itemTrailingIcon =
-    ItemTrailingIcon
+itemTrailingIcon i =
+    Internal.option (\c -> { c | trailingIcon = Just i })
 
 
 {-| Disable a plain menu item. -}
 itemDisabled : Bool -> ItemOption msg
-itemDisabled =
-    ItemDisabled
+itemDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Set the checked state of a checkbox item (the `checked` DOM property). -}
 checkboxChecked : Bool -> CheckboxItemOption msg
-checkboxChecked =
-    CheckboxChecked
+checkboxChecked b =
+    Internal.option (\c -> { c | checked = b })
 
 
 {-| Add a leading icon to a checkbox item. -}
 checkboxLeadingIcon : Renderable { icon : Supported } msg -> CheckboxItemOption msg
-checkboxLeadingIcon =
-    CheckboxLeadingIcon
+checkboxLeadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Add a trailing icon to a checkbox item. -}
 checkboxTrailingIcon : Renderable { icon : Supported } msg -> CheckboxItemOption msg
-checkboxTrailingIcon =
-    CheckboxTrailingIcon
+checkboxTrailingIcon i =
+    Internal.option (\c -> { c | trailingIcon = Just i })
 
 
 {-| Disable a checkbox item. -}
 checkboxDisabled : Bool -> CheckboxItemOption msg
-checkboxDisabled =
-    CheckboxDisabled
+checkboxDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Mark a radio item as selected (the `checked` DOM property on
 `<m3e-menu-item-radio>`). -}
 radioSelected : Bool -> RadioItemOption msg
-radioSelected =
-    RadioSelected
+radioSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Add a leading icon to a radio item. -}
 radioLeadingIcon : Renderable { icon : Supported } msg -> RadioItemOption msg
-radioLeadingIcon =
-    RadioLeadingIcon
+radioLeadingIcon i =
+    Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Add a trailing icon to a radio item. -}
 radioTrailingIcon : Renderable { icon : Supported } msg -> RadioItemOption msg
-radioTrailingIcon =
-    RadioTrailingIcon
+radioTrailingIcon i =
+    Internal.option (\c -> { c | trailingIcon = Just i })
 
 
 {-| Disable a radio item. -}
 radioDisabled : Bool -> RadioItemOption msg
-radioDisabled =
-    RadioDisabled
+radioDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Set the `id` attribute on the `<m3e-menu>` element (for the trigger to
 reference via `triggerFor`). -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Set the menu's appearance variant. Default `Standard`. -}
 menuVariant : Variant -> Option msg
-menuVariant =
-    VariantOpt
+menuVariant v =
+    Internal.option (\c -> { c | variant = Just v })
 
 
 {-| Set the horizontal placement of the menu. Default `After`. -}
 positionX : PositionX -> Option msg
-positionX =
-    PositionXOpt
+positionX px =
+    Internal.option (\c -> { c | positionX = Just px })
 
 
 {-| Set the vertical placement of the menu. Default `Below`. -}
 positionY : PositionY -> Option msg
-positionY =
-    PositionYOpt
+positionY py =
+    Internal.option (\c -> { c | positionY = Just py })
 
 
 {-| Mark this menu as a submenu (flyout from a parent menu row). -}
 submenu : Bool -> Option msg
-submenu =
-    Submenu
+submenu b =
+    Internal.option (\c -> { c | submenu = b })
 
 
 {-| React to the menu opening or closing. The handler receives `True` when the
 menu opens, `False` when it closes. -}
 onToggle : (Bool -> msg) -> Option msg
-onToggle =
-    OnToggle
+onToggle toMsg =
+    Internal.option (\c -> { c | onToggle = Just toMsg })
 
 
 -- ITEM CONSTRUCTORS -------------------------------------------------------
@@ -228,7 +215,7 @@ item :
 item req opts =
     let
         c =
-            List.foldl applyItem defaultItemConfig opts
+            Internal.applyOptions opts defaultItemConfig
     in
     Internal.fromNode
         (Node.element "m3e-menu-item"
@@ -266,7 +253,7 @@ checkboxItem :
 checkboxItem req opts =
     let
         c =
-            List.foldl applyCheckbox defaultCheckboxConfig opts
+            Internal.applyOptions opts defaultCheckboxConfig
     in
     Internal.fromNode
         (Node.element "m3e-menu-item-checkbox"
@@ -299,7 +286,7 @@ radioItem :
 radioItem req opts =
     let
         c =
-            List.foldl applyRadio defaultRadioConfig opts
+            Internal.applyOptions opts defaultRadioConfig
     in
     Internal.fromNode
         (Node.element "m3e-menu-item-radio"
@@ -394,7 +381,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyOption defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-menu"
@@ -437,18 +424,6 @@ defaultItemConfig =
     { leadingIcon = Nothing, trailingIcon = Nothing, disabled = False }
 
 
-applyItem : ItemOption msg -> ItemConfig msg -> ItemConfig msg
-applyItem opt c =
-    case opt of
-        ItemLeadingIcon i ->
-            { c | leadingIcon = Just i }
-
-        ItemTrailingIcon i ->
-            { c | trailingIcon = Just i }
-
-        ItemDisabled b ->
-            { c | disabled = b }
-
 
 type alias CheckboxConfig msg =
     { checked : Bool
@@ -463,21 +438,6 @@ defaultCheckboxConfig =
     { checked = False, leadingIcon = Nothing, trailingIcon = Nothing, disabled = False }
 
 
-applyCheckbox : CheckboxItemOption msg -> CheckboxConfig msg -> CheckboxConfig msg
-applyCheckbox opt c =
-    case opt of
-        CheckboxChecked b ->
-            { c | checked = b }
-
-        CheckboxLeadingIcon i ->
-            { c | leadingIcon = Just i }
-
-        CheckboxTrailingIcon i ->
-            { c | trailingIcon = Just i }
-
-        CheckboxDisabled b ->
-            { c | disabled = b }
-
 
 type alias RadioConfig msg =
     { selected : Bool
@@ -491,21 +451,6 @@ defaultRadioConfig : RadioConfig msg
 defaultRadioConfig =
     { selected = False, leadingIcon = Nothing, trailingIcon = Nothing, disabled = False }
 
-
-applyRadio : RadioItemOption msg -> RadioConfig msg -> RadioConfig msg
-applyRadio opt c =
-    case opt of
-        RadioSelected b ->
-            { c | selected = b }
-
-        RadioLeadingIcon i ->
-            { c | leadingIcon = Just i }
-
-        RadioTrailingIcon i ->
-            { c | trailingIcon = Just i }
-
-        RadioDisabled b ->
-            { c | disabled = b }
 
 
 type alias ContainerConfig msg =
@@ -528,27 +473,6 @@ defaultConfig =
     , onToggle = Nothing
     }
 
-
-applyOption : Option msg -> ContainerConfig msg -> ContainerConfig msg
-applyOption opt c =
-    case opt of
-        WithId id ->
-            { c | id = Just id }
-
-        Submenu b ->
-            { c | submenu = b }
-
-        VariantOpt v ->
-            { c | variant = Just v }
-
-        PositionXOpt px ->
-            { c | positionX = Just px }
-
-        PositionYOpt py ->
-            { c | positionY = Just py }
-
-        OnToggle toMsg ->
-            { c | onToggle = Just toMsg }
 
 
 itemChildren :

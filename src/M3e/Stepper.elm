@@ -50,80 +50,70 @@ type HeaderPosition
     | Below
 
 
-type StepOption msg
-    = StepId String
-    | StepFor String
-    | StepSelected Bool
-    | StepCompleted Bool
-    | StepOptional Bool
-    | StepDisabled Bool
-    | StepEditable Bool
-    | StepInvalid Bool
+type alias StepOption msg =
+    Internal.Option StepConfig msg
 
 
-type PanelOption msg
-    = PanelId String
-    | PanelActions (List (Renderable { button : Supported } msg))
+type alias PanelOption msg =
+    Internal.Option (PanelConfig msg) msg
 
 
-type Option msg
-    = Vertical Bool
-    | Linear Bool
-    | HeaderPositionOpt HeaderPosition
+type alias Option msg =
+    Internal.Option StripConfig msg
 
 
 {-| Set the DOM `id` on the step element (used by the panel's paired `for`). -}
 stepId : String -> StepOption msg
-stepId =
-    StepId
+stepId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Link this step to its panel via the panel's `id` (the `for` attribute). -}
 stepFor : String -> StepOption msg
-stepFor =
-    StepFor
+stepFor s =
+    Internal.option (\c -> { c | for = Just s })
 
 
 {-| Mark the step as currently selected. -}
 stepSelected : Bool -> StepOption msg
-stepSelected =
-    StepSelected
+stepSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Mark the step as completed. -}
 stepCompleted : Bool -> StepOption msg
-stepCompleted =
-    StepCompleted
+stepCompleted b =
+    Internal.option (\c -> { c | completed = b })
 
 
 {-| Mark the step as optional. -}
 stepOptional : Bool -> StepOption msg
-stepOptional =
-    StepOptional
+stepOptional b =
+    Internal.option (\c -> { c | optional = b })
 
 
 {-| Disable the step (shown but cannot be selected). -}
 stepDisabled : Bool -> StepOption msg
-stepDisabled =
-    StepDisabled
+stepDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Mark the step as editable (returns to it after completion). -}
 stepEditable : Bool -> StepOption msg
-stepEditable =
-    StepEditable
+stepEditable b =
+    Internal.option (\c -> { c | editable = b })
 
 
 {-| Mark the step as invalid. -}
 stepInvalid : Bool -> StepOption msg
-stepInvalid =
-    StepInvalid
+stepInvalid b =
+    Internal.option (\c -> { c | invalid = b })
 
 
 {-| Set the DOM `id` on the panel (paired with the step's `stepFor`). -}
 panelId : String -> PanelOption msg
-panelId =
-    PanelId
+panelId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Action buttons for the panel's actions region.
@@ -132,31 +122,31 @@ panelId =
 `Cem.M3e.StepPanel.actionsSlot` which emits the buggy `slot="actions-"`.
 -}
 panelActions : List (Renderable { button : Supported } msg) -> PanelOption msg
-panelActions =
-    PanelActions
+panelActions xs =
+    Internal.option (\c -> { c | actions = xs })
 
 
 {-| Orient the stepper vertically (`orientation="vertical"`). Default false
 (horizontal).
 -}
 vertical : Bool -> Option msg
-vertical =
-    Vertical
+vertical b =
+    Internal.option (\c -> { c | vertical = b })
 
 
 {-| Require linear progression — validity of previous steps is checked before
 the user can advance. Default false.
 -}
 linear : Bool -> Option msg
-linear =
-    Linear
+linear b =
+    Internal.option (\c -> { c | linear = b })
 
 
 {-| Set where the step header sits relative to panel content (horizontal mode).
 -}
 stepperHeaderPosition : HeaderPosition -> Option msg
-stepperHeaderPosition =
-    HeaderPositionOpt
+stepperHeaderPosition hp =
+    Internal.option (\c -> { c | headerPosition = Just hp })
 
 
 
@@ -188,34 +178,6 @@ defaultStepConfig =
     }
 
 
-applyStep : StepOption msg -> StepConfig -> StepConfig
-applyStep opt c =
-    case opt of
-        StepId s ->
-            { c | id = Just s }
-
-        StepFor s ->
-            { c | for = Just s }
-
-        StepSelected b ->
-            { c | selected = b }
-
-        StepCompleted b ->
-            { c | completed = b }
-
-        StepOptional b ->
-            { c | optional = b }
-
-        StepDisabled b ->
-            { c | disabled = b }
-
-        StepEditable b ->
-            { c | editable = b }
-
-        StepInvalid b ->
-            { c | invalid = b }
-
-
 {-| Construct a step indicator.
 
     M3e.Stepper.step { label = "Shipping" }
@@ -229,7 +191,7 @@ step : { label : String } -> List (StepOption msg) -> Renderable { s | step : Su
 step req opts =
     let
         c =
-            List.foldl applyStep defaultStepConfig opts
+            Internal.applyOptions opts defaultStepConfig
     in
     Internal.fromNode
         (Node.element "m3e-step"
@@ -285,16 +247,6 @@ defaultPanelConfig =
     }
 
 
-applyPanel : PanelOption msg -> PanelConfig msg -> PanelConfig msg
-applyPanel opt c =
-    case opt of
-        PanelId s ->
-            { c | id = Just s }
-
-        PanelActions xs ->
-            { c | actions = xs }
-
-
 {-| Construct a step panel.
 
     M3e.Stepper.stepPanel
@@ -311,7 +263,7 @@ stepPanel : { content : List (Renderable any msg) } -> List (PanelOption msg) ->
 stepPanel req opts =
     let
         c =
-            List.foldl applyPanel defaultPanelConfig opts
+            Internal.applyOptions opts defaultPanelConfig
     in
     Internal.fromNode
         (Node.element "m3e-step-panel"
@@ -362,19 +314,6 @@ defaultStripConfig =
     }
 
 
-applyStrip : Option msg -> StripConfig -> StripConfig
-applyStrip opt c =
-    case opt of
-        Vertical b ->
-            { c | vertical = b }
-
-        Linear b ->
-            { c | linear = b }
-
-        HeaderPositionOpt hp ->
-            { c | headerPosition = Just hp }
-
-
 {-| Render the stepper.
 
     M3e.Stepper.view
@@ -407,7 +346,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyStrip defaultStripConfig opts
+            Internal.applyOptions opts defaultStripConfig
     in
     Internal.fromNode
         (Node.element "m3e-stepper"
