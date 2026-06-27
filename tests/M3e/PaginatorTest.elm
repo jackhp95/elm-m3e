@@ -64,7 +64,7 @@ suite =
                     |> Expect.equal (Just "true")
         , test "pageSizes is a string attribute (not property)" <|
             \_ ->
-                node [ Paginator.pageSizes "10,25,50" ]
+                node [ Paginator.pageSizes [ 10, 25, 50 ] ]
                     |> Node.findAttribute "page-sizes"
                     |> Expect.equal (Just "10,25,50")
         , test "paginator is a leaf — no children" <|

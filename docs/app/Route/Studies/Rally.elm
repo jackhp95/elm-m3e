@@ -708,9 +708,9 @@ transactionsSection model =
                         |> List.intersperse (Divider.view [] |> toHtml)
                     )
                 , div [ class "flex justify-end" ]
-                    [ Paginator.view { length = toFloat (List.length matches) }
+                    [ Paginator.view { length = List.length matches }
                         [ Paginator.hidePageSize True
-                        , Paginator.pageIndex (toFloat model.page)
+                        , Paginator.pageIndex model.page
                         , Paginator.onPage PageChanged
                         ]
                         |> toHtml

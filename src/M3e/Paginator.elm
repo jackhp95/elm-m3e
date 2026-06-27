@@ -44,22 +44,22 @@ type alias Option msg =
 
 {-| Set the zero-based page index of the displayed list of items.
 -}
-pageIndex : Float -> Option msg
+pageIndex : Int -> Option msg
 pageIndex v =
     Internal.option (\c -> { c | pageIndex = Just v })
 
 
-{-| Set the number of items per page (as a string, e.g. `"25"`).
+{-| Set the number of items per page (e.g. `25`).
 -}
-pageSize : String -> Option msg
+pageSize : Int -> Option msg
 pageSize v =
     Internal.option (\c -> { c | pageSize = Just v })
 
 
-{-| Set the available page sizes as a comma-separated string
-(e.g. `"10,25,50"`). Defaults to `"5,10,25,50,100"`.
+{-| Set the available page sizes (e.g. `[ 10, 25, 50 ]`). Defaults to
+`[ 5, 10, 25, 50, 100 ]`.
 -}
-pageSizes : String -> Option msg
+pageSizes : List Int -> Option msg
 pageSizes v =
     Internal.option (\c -> { c | pageSizes = Just v })
 
@@ -94,9 +94,9 @@ onPage f =
 
 
 type alias Config msg =
-    { pageIndex : Maybe Float
-    , pageSize : Maybe String
-    , pageSizes : Maybe String
+    { pageIndex : Maybe Int
+    , pageSize : Maybe Int
+    , pageSizes : Maybe (List Int)
     , disabled : Bool
     , showFirstLastButtons : Bool
     , hidePageSize : Bool
@@ -107,7 +107,7 @@ type alias Config msg =
 {-| Build the `<m3e-paginator>` IR node. Requires the total item count
 (`length`), which drives the page count and which nav buttons are enabled.
 -}
-view : { length : Float } -> List (Option msg) -> Renderable { s | paginator : Supported } msg
+view : { length : Int } -> List (Option msg) -> Renderable { s | paginator : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -125,10 +125,10 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-paginator"
             (List.filterMap identity
-                [ Just (Node.property "length" (Encode.float req.length))
-                , Maybe.map (\v -> Node.property "page-index" (Encode.float v)) c.pageIndex
-                , Maybe.map (\v -> Node.attribute "page-size" v) c.pageSize
-                , Maybe.map (\v -> Node.attribute "page-sizes" v) c.pageSizes
+                [ Just (Node.property "length" (Encode.int req.length))
+                , Maybe.map (\v -> Node.property "page-index" (Encode.int v)) c.pageIndex
+                , Maybe.map (\v -> Node.attribute "page-size" (String.fromInt v)) c.pageSize
+                , Maybe.map (\v -> Node.attribute "page-sizes" (String.join "," (List.map String.fromInt v))) c.pageSizes
                 , if c.disabled then
                     Just (Node.property "disabled" (Encode.bool True))
 
