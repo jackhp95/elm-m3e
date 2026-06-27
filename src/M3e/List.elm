@@ -300,7 +300,7 @@ item req opts =
     Internal.fromNode
         (Node.element "m3e-list-item"
             []
-            (decorationNodes c.leading c.overline c.supporting True c.trailing req.headline)
+            (decorationNodes c.leading c.overline c.supporting c.trailing req.headline)
         )
 
 
@@ -332,7 +332,7 @@ actionItem req opts =
                 , Maybe.map (\msg -> Node.on "click" (Decode.succeed msg)) c.onClick
                 ]
             )
-            (decorationNodes c.leading c.overline c.supporting True c.trailing req.headline)
+            (decorationNodes c.leading c.overline c.supporting c.trailing req.headline)
         )
 
 
@@ -368,7 +368,7 @@ option req opts =
                     c.onChange
                 ]
             )
-            (decorationNodes c.leading c.overline c.supporting True Nothing req.headline)
+            (decorationNodes c.leading c.overline c.supporting Nothing req.headline)
         )
 
 
@@ -421,7 +421,7 @@ expandable req opts =
                     Nothing
                 ]
             )
-            (decorationNodes c.leading c.overline c.supporting False Nothing req.headline
+            (decorationNodes c.leading c.overline c.supporting Nothing req.headline
                 ++ childNodes
             )
         )
@@ -556,21 +556,16 @@ decorationNodes :
     Maybe (Renderable { element : Supported } msg)
     -> Maybe String
     -> Maybe String
-    -> Bool
     -> Maybe (Renderable { element : Supported } msg)
     -> String
     -> List (Node.Node msg)
-decorationNodes leading_ overline_ supporting_ includeTrailing trailing_ headline =
+decorationNodes leading_ overline_ supporting_ trailing_ headline =
     List.filterMap identity
         [ Maybe.map (\r -> Node.withSlot "leading" (Renderable.toNode r)) leading_
         , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "overline" ] [ Node.text s ]) overline_
         , Just (Node.text headline)
         , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "supporting-text" ] [ Node.text s ]) supporting_
-        , if includeTrailing then
-            Maybe.map (\r -> Node.withSlot "trailing" (Renderable.toNode r)) trailing_
-
-          else
-            Nothing
+        , Maybe.map (\r -> Node.withSlot "trailing" (Renderable.toNode r)) trailing_
         ]
 
 
