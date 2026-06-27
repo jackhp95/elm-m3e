@@ -40,6 +40,7 @@ slot can never be silently dropped.
 
 -}
 
+import Cem.M3e.AppBar as Cem
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -206,7 +207,7 @@ view opts =
         (Node.element "m3e-app-bar"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") cfg.id
-                , Just (Node.attribute "size" (sizeString cfg.size))
+                , Just (Node.attribute "size" (Cem.sizeToString (toCemSize cfg.size)))
                 , if cfg.centered then
                     Just (Node.property "centered" (Encode.bool True))
 
@@ -224,14 +225,14 @@ view opts =
         )
 
 
-sizeString : Size -> String
-sizeString s =
+toCemSize : Size -> Cem.Size
+toCemSize s =
     case s of
         Small ->
-            "small"
+            Cem.Small
 
         Medium ->
-            "medium"
+            Cem.Medium
 
         Large ->
-            "large"
+            Cem.Large

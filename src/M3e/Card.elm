@@ -40,6 +40,7 @@ working: with only `body` set, the card's children are exactly the body items.
 
 -}
 
+import Cem.M3e.Card as Cem
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -176,7 +177,7 @@ view opts =
     Internal.fromNode
         (Node.element "m3e-card"
             (List.filterMap identity
-                [ Maybe.map (\v -> Node.attribute "variant" (variantString v)) cfg.variant
+                [ Maybe.map (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v))) cfg.variant
                 , if cfg.actionable then
                     Just (Node.property "actionable" (Encode.bool True))
 
@@ -238,14 +239,18 @@ footerSection maybeFooter =
         maybeFooter
 
 
-variantString : Variant -> String
-variantString v =
+{-| Map the local variant to the generated `Cem.M3e.Card` enum, whose
+`variantToString` is the single source of truth for the attribute value (kept
+in sync with the element's CEM, so the string can't drift — #45).
+-}
+toCemVariant : Variant -> Cem.Variant
+toCemVariant v =
     case v of
         Elevated ->
-            "elevated"
+            Cem.Elevated
 
         Filled ->
-            "filled"
+            Cem.Filled
 
         Outlined ->
-            "outlined"
+            Cem.Outlined

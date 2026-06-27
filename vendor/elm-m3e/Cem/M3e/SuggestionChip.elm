@@ -1,26 +1,35 @@
-module Cem.M3e.SuggestionChip exposing (Type(..), Variant(..), component, disabled, disabledInteractive, download, href, iconSlot, name, onClick, rel, target, trailingIconSlot, type_, value, variant)
+module Cem.M3e.SuggestionChip exposing
+    ( component
+    , disabled, disabledInteractive, download, href, name, rel, target, Type(..), type_, value, Variant(..), variant
+    , onClick
+    , iconSlot, trailingIconSlot
+    , typeToString, variantToString
+    )
 
-{-| 
-A chip used to help narrow a user's intent by presenting dynamically generated suggestions, such as
+{-| A chip used to help narrow a user's intent by presenting dynamically generated suggestions, such as
 suggested responses or search filters.
+
 
 ## Component
 
 @docs component
 
+
 ### Attributes
 
 @docs disabled, disabledInteractive, download, href, name, rel, target, Type, type_, value, Variant, variant
+
 
 ### Events
 
 @docs onClick
 
+
 ### Slots
 
 @docs iconSlot, trailingIconSlot
--}
 
+-}
 
 import Html
 import Html.Attributes
@@ -33,70 +42,83 @@ import Json.Encode
 suggested responses or search filters.
 
 **Component Info:**
-- **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
+
+  - **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
 
 **Events:**
-- `click`: Dispatched when the element is clicked.
+
+  - `click`: Dispatched when the element is clicked.
 
 **Slots:**
-- `icon`: Renders an icon before the chip's label.
-- `trailing-icon`: Renders an icon after the chip's label.
+
+  - `icon`: Renders an icon before the chip's label.
+  - `trailing-icon`: Renders an icon after the chip's label.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-suggestion-chip" attributes children
 
 
-{-| A value indicating whether the element is disabled. (default: `false`) -}
+{-| A value indicating whether the element is disabled. (default: `false`)
+-}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
     Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
-{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+{-| A value indicating whether the element is disabled and interactive. (default: `false`)
+-}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
     Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
 
 
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
+-}
 download : String -> Html.Attribute msg
 download val_ =
     Html.Attributes.attribute "download" val_
 
 
-{-| The URL to which the link button points. (default: `""`) -}
+{-| The URL to which the link button points. (default: `""`)
+-}
 href : String -> Html.Attribute msg
 href val_ =
     Html.Attributes.attribute "href" val_
 
 
-{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
+{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form.
+-}
 name : String -> Html.Attribute msg
 name val_ =
     Html.Attributes.attribute "name" val_
 
 
-{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+{-| The relationship between the `target` of the link button and the document. (default: `""`)
+-}
 rel : String -> Html.Attribute msg
 rel val_ =
     Html.Attributes.attribute "rel" val_
 
 
-{-| The target of the link button. (default: `""`) -}
+{-| The target of the link button. (default: `""`)
+-}
 target : String -> Html.Attribute msg
 target val_ =
     Html.Attributes.attribute "target" val_
 
 
-{-| Values for the `type` attribute. -}
+{-| Values for the `type` attribute.
+-}
 type Type
     = Button
     | Reset
     | Submit
 
 
-{-| The type of the element. (default: `"button"`) -}
+{-| The type of the element. (default: `"button"`)
+-}
 type_ : Type -> Html.Attribute msg
 type_ val_ =
     Html.Attributes.attribute "type" (typeToString val_)
@@ -107,27 +129,30 @@ typeToString val_ =
     case val_ of
         Button ->
             "button"
-    
+
         Reset ->
             "reset"
-    
+
         Submit ->
             "submit"
 
 
-{-| A string representing the value of the chip. -}
+{-| A string representing the value of the chip.
+-}
 value : String -> Html.Attribute msg
 value =
     Html.Attributes.value
 
 
-{-| Values for the `variant` attribute. -}
+{-| Values for the `variant` attribute.
+-}
 type Variant
     = Elevated
     | Outlined
 
 
-{-| The appearance variant of the chip. (default: `"outlined"`) -}
+{-| The appearance variant of the chip. (default: `"outlined"`)
+-}
 variant : Variant -> Html.Attribute msg
 variant val_ =
     Html.Attributes.attribute "variant" (variantToString val_)
@@ -138,7 +163,7 @@ variantToString val_ =
     case val_ of
         Elevated ->
             "elevated"
-    
+
         Outlined ->
             "outlined"
 
@@ -148,19 +173,22 @@ variantToString val_ =
 **Payload type:** `MouseEvent`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onClick : Json.Decode.Decoder msg -> Html.Attribute msg
 onClick decoder =
     Html.Events.on "click" decoder
 
 
-{-| Renders an icon before the chip's label. -}
+{-| Renders an icon before the chip's label.
+-}
 iconSlot : Html.Attribute msg
 iconSlot =
     Html.Attributes.attribute "slot" "icon"
 
 
-{-| Renders an icon after the chip's label. -}
+{-| Renders an icon after the chip's label.
+-}
 trailingIconSlot : Html.Attribute msg
 trailingIconSlot =
     Html.Attributes.attribute "slot" "trailing-icon"

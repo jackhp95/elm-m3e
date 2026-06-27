@@ -50,6 +50,7 @@ behaviour its kind demands.
 
 -}
 
+import Cem.M3e.Chip as CemChip
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
@@ -208,11 +209,13 @@ iconChild c =
 variantAttr : Config msg -> Node.Attr msg
 variantAttr c =
     Node.attribute "variant"
-        (if c.elevated then
-            "elevated"
+        (CemChip.variantToString
+            (if c.elevated then
+                CemChip.Elevated
 
-         else
-            "outlined"
+             else
+                CemChip.Outlined
+            )
         )
 
 
@@ -243,11 +246,13 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-chip"
             [ Node.attribute "variant"
-                (if vc.elevated then
-                    "elevated"
+                (CemChip.variantToString
+                    (if vc.elevated then
+                        CemChip.Elevated
 
-                 else
-                    "outlined"
+                     else
+                        CemChip.Outlined
+                    )
                 )
             ]
             (List.filterMap identity

@@ -31,6 +31,7 @@ via the `for` attribute rather than by wrapping it.
 
 -}
 
+import Cem.M3e.FormField as CemFF
 import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
@@ -276,7 +277,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-form-field"
             (List.filterMap identity
-                [ Maybe.map (\v -> Node.attribute "variant" (variantString v)) c.variant
+                [ Maybe.map (\v -> Node.attribute "variant" (CemFF.variantToString (toCemVariant v))) c.variant
                 ]
             )
             (List.filterMap identity
@@ -381,14 +382,16 @@ slugify =
     Internal.slugify "m3etf-"
 
 
-variantString : Variant -> String
-variantString v =
+{-| Translate the local `Variant` to its `Cem.M3e.FormField` counterpart.
+-}
+toCemVariant : Variant -> CemFF.Variant
+toCemVariant v =
     case v of
         Filled ->
-            "filled"
+            CemFF.Filled
 
         Outlined ->
-            "outlined"
+            CemFF.Outlined
 
 
 inputTypeString : InputType -> String

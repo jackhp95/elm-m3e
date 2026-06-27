@@ -53,6 +53,7 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 
 -}
 
+import Cem.M3e.Datepicker as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
@@ -251,7 +252,7 @@ view opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 , Maybe.map (Node.attribute "date") c.date
                 , Maybe.map
-                    (\v -> Node.attribute "variant" (variantString v))
+                    (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v)))
                     c.variant
                 , Maybe.map
                     (\b -> Node.property "range" (Encode.bool b))
@@ -266,7 +267,7 @@ view opts =
                 , Maybe.map (Node.attribute "dismiss-label") c.dismissLabel
                 , Maybe.map (Node.attribute "start-at") c.startAt
                 , Maybe.map
-                    (\sv -> Node.attribute "start-view" (startViewString sv))
+                    (\sv -> Node.attribute "start-view" (Cem.startViewToString (toCemStartView sv)))
                     c.startView
                 , Maybe.map
                     (\handler -> Node.on "change" (datePropertyDecoder |> Decode.map handler))
@@ -281,30 +282,34 @@ view opts =
 -- INTERNAL --------------------------------------------------------------------
 
 
-variantString : Variant -> String
-variantString v =
+{-| Translate the local `Variant` to its `Cem.M3e.Datepicker` counterpart.
+-}
+toCemVariant : Variant -> Cem.Variant
+toCemVariant v =
     case v of
         Auto ->
-            "auto"
+            Cem.Auto
 
         Docked ->
-            "docked"
+            Cem.Docked
 
         Modal ->
-            "modal"
+            Cem.Modal
 
 
-startViewString : StartView -> String
-startViewString sv =
+{-| Translate the local `StartView` to its `Cem.M3e.Datepicker` counterpart.
+-}
+toCemStartView : StartView -> Cem.StartView
+toCemStartView sv =
     case sv of
         MonthView ->
-            "month"
+            Cem.Month
 
         YearView ->
-            "year"
+            Cem.Year
 
         MultiYearView ->
-            "multi-year"
+            Cem.MultiYear
 
 
 {-| Decode the ISO string from `event.target.date` (a JS Date object).

@@ -1,25 +1,33 @@
-module Cem.M3e.TreeItem exposing (component, disabled, iconSlot, indeterminate, labelSlot, onClick, onClosed, onClosing, onOpened, onOpening, open, openToggleIconSlot, selected, selectedIconSlot, toggleIconSlot)
+module Cem.M3e.TreeItem exposing
+    ( component
+    , disabled, indeterminate, open, selected
+    , onOpening, onOpened, onClosing, onClosed, onClick
+    , labelSlot, iconSlot, selectedIconSlot, toggleIconSlot, openToggleIconSlot
+    )
 
-{-| 
-An expandable item in a tree.
+{-| An expandable item in a tree.
+
 
 ## Component
 
 @docs component
 
+
 ### Attributes
 
 @docs disabled, indeterminate, open, selected
+
 
 ### Events
 
 @docs onOpening, onOpened, onClosing, onClosed, onClick
 
+
 ### Slots
 
 @docs labelSlot, iconSlot, selectedIconSlot, toggleIconSlot, openToggleIconSlot
--}
 
+-}
 
 import Html
 import Html.Attributes
@@ -31,43 +39,50 @@ import Json.Encode
 {-| An expandable item in a tree.
 
 **Events:**
-- `opening`: Dispatched when the item begins to open.
-- `opened`: Dispatched when the item has opened.
-- `closing`: Dispatched when the item begins to close.
-- `closed`: Dispatched when the item has closed.
-- `click`: Dispatched when the element is clicked.
+
+  - `opening`: Dispatched when the item begins to open.
+  - `opened`: Dispatched when the item has opened.
+  - `closing`: Dispatched when the item begins to close.
+  - `closed`: Dispatched when the item has closed.
+  - `click`: Dispatched when the element is clicked.
 
 **Slots:**
-- `label`: Renders the label of the item.
-- `icon`: Renders the icon of the item.
-- `selected-icon`: Renders the icon of the item when selected.
-- `toggle-icon`: Renders the toggle icon.
-- `open-toggle-icon`: Renders the toggle icon when selected.
+
+  - `label`: Renders the label of the item.
+  - `icon`: Renders the icon of the item.
+  - `selected-icon`: Renders the icon of the item when selected.
+  - `toggle-icon`: Renders the toggle icon.
+  - `open-toggle-icon`: Renders the toggle icon when selected.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-tree-item" attributes children
 
 
-{-| Whether the element is disabled. (default: `false`) -}
+{-| Whether the element is disabled. (default: `false`)
+-}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
     Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
-{-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`) -}
+{-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`)
+-}
 indeterminate : Bool -> Html.Attribute msg
 indeterminate val_ =
     Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
 
 
-{-| Whether the item is expanded. (default: `false`) -}
+{-| Whether the item is expanded. (default: `false`)
+-}
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
 
 
-{-| Whether the item is selected. (default: `false`) -}
+{-| Whether the item is selected. (default: `false`)
+-}
 selected : Bool -> Html.Attribute msg
 selected =
     Html.Attributes.selected
@@ -76,6 +91,7 @@ selected =
 {-| Dispatched when the item begins to open.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onOpening : Json.Decode.Decoder msg -> Html.Attribute msg
 onOpening decoder =
@@ -85,6 +101,7 @@ onOpening decoder =
 {-| Dispatched when the item has opened.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onOpened : Json.Decode.Decoder msg -> Html.Attribute msg
 onOpened decoder =
@@ -94,6 +111,7 @@ onOpened decoder =
 {-| Dispatched when the item begins to close.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onClosing : Json.Decode.Decoder msg -> Html.Attribute msg
 onClosing decoder =
@@ -103,6 +121,7 @@ onClosing decoder =
 {-| Dispatched when the item has closed.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onClosed : Json.Decode.Decoder msg -> Html.Attribute msg
 onClosed decoder =
@@ -112,37 +131,43 @@ onClosed decoder =
 {-| Dispatched when the element is clicked.
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onClick : Json.Decode.Decoder msg -> Html.Attribute msg
 onClick decoder =
     Html.Events.on "click" decoder
 
 
-{-| Renders the label of the item. -}
+{-| Renders the label of the item.
+-}
 labelSlot : Html.Attribute msg
 labelSlot =
     Html.Attributes.attribute "slot" "label"
 
 
-{-| Renders the icon of the item. -}
+{-| Renders the icon of the item.
+-}
 iconSlot : Html.Attribute msg
 iconSlot =
     Html.Attributes.attribute "slot" "icon"
 
 
-{-| Renders the icon of the item when selected. -}
+{-| Renders the icon of the item when selected.
+-}
 selectedIconSlot : Html.Attribute msg
 selectedIconSlot =
     Html.Attributes.attribute "slot" "selected-icon"
 
 
-{-| Renders the toggle icon. -}
+{-| Renders the toggle icon.
+-}
 toggleIconSlot : Html.Attribute msg
 toggleIconSlot =
     Html.Attributes.attribute "slot" "toggle-icon"
 
 
-{-| Renders the toggle icon when selected. -}
+{-| Renders the toggle icon when selected.
+-}
 openToggleIconSlot : Html.Attribute msg
 openToggleIconSlot =
     Html.Attributes.attribute "slot" "open-toggle-icon"

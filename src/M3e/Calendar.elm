@@ -67,6 +67,7 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 
 -}
 
+import Cem.M3e.Calendar as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
@@ -273,7 +274,7 @@ view opts =
                 , Maybe.map (Node.attribute "range-start") c.rangeStart
                 , Maybe.map (Node.attribute "range-end") c.rangeEnd
                 , Maybe.map
-                    (\sv -> Node.attribute "start-view" (startViewString sv))
+                    (\sv -> Node.attribute "start-view" (Cem.startViewToString (toCemStartView sv)))
                     c.startView
                 , Maybe.map (Node.attribute "start-at") c.startAt
                 , Maybe.map (Node.attribute "previous-month-label") c.previousMonthLabel
@@ -295,17 +296,19 @@ view opts =
 -- INTERNAL --------------------------------------------------------------------
 
 
-startViewString : StartView -> String
-startViewString sv =
+{-| Translate the local `StartView` to its `Cem.M3e.Calendar` counterpart.
+-}
+toCemStartView : StartView -> Cem.StartView
+toCemStartView sv =
     case sv of
         MonthView ->
-            "month"
+            Cem.Month
 
         YearView ->
-            "year"
+            Cem.Year
 
         MultiYearView ->
-            "multi-year"
+            Cem.MultiYear
 
 
 {-| Decode the ISO string from `event.target.date` (a JS Date object).

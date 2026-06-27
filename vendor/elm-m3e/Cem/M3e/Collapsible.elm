@@ -1,21 +1,28 @@
-module Cem.M3e.Collapsible exposing (Orientation(..), component, noAnimate, onClosed, onClosing, onOpened, onOpening, open, orientation)
+module Cem.M3e.Collapsible exposing
+    ( component
+    , open, Orientation(..), orientation, noAnimate
+    , onOpening, onOpened, onClosing, onClosed
+    , orientationToString
+    )
 
-{-| 
-A container used to expand and collapse content.
+{-| A container used to expand and collapse content.
+
 
 ## Component
 
 @docs component
 
+
 ### Attributes
 
 @docs open, Orientation, orientation, noAnimate
 
+
 ### Events
 
 @docs onOpening, onOpened, onClosing, onClosed
--}
 
+-}
 
 import Html
 import Html.Attributes
@@ -27,29 +34,34 @@ import Json.Encode
 {-| A container used to expand and collapse content.
 
 **Events:**
-- `opening`: Dispatched when the collapsible begins to open.
-- `opened`: Dispatched when the collapsible has opened.
-- `closing`: Dispatched when the collapsible begins to close.
-- `closed`: Dispatched when the collapsible has closed.
+
+  - `opening`: Dispatched when the collapsible begins to open.
+  - `opened`: Dispatched when the collapsible has opened.
+  - `closing`: Dispatched when the collapsible begins to close.
+  - `closed`: Dispatched when the collapsible has closed.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-collapsible" attributes children
 
 
-{-| Whether content is visible. (default: `false`) -}
+{-| Whether content is visible. (default: `false`)
+-}
 open : Bool -> Html.Attribute msg
 open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
 
 
-{-| Values for the `orientation` attribute. -}
+{-| Values for the `orientation` attribute.
+-}
 type Orientation
     = Horizontal
     | Vertical
 
 
-{-| Orientation of collapsible content. (default: `"vertical"`) -}
+{-| Orientation of collapsible content. (default: `"vertical"`)
+-}
 orientation : Orientation -> Html.Attribute msg
 orientation val_ =
     Html.Attributes.attribute "orientation" (orientationToString val_)
@@ -60,12 +72,13 @@ orientationToString val_ =
     case val_ of
         Horizontal ->
             "horizontal"
-    
+
         Vertical ->
             "vertical"
 
 
-{-| Whether to disable animation. (default: `false`) -}
+{-| Whether to disable animation. (default: `false`)
+-}
 noAnimate : Bool -> Html.Attribute msg
 noAnimate val_ =
     Html.Attributes.property "no-animate" (Json.Encode.bool val_)
@@ -76,6 +89,7 @@ noAnimate val_ =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onOpening : Json.Decode.Decoder msg -> Html.Attribute msg
 onOpening decoder =
@@ -87,6 +101,7 @@ onOpening decoder =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onOpened : Json.Decode.Decoder msg -> Html.Attribute msg
 onOpened decoder =
@@ -98,6 +113,7 @@ onOpened decoder =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onClosing : Json.Decode.Decoder msg -> Html.Attribute msg
 onClosing decoder =
@@ -109,6 +125,7 @@ onClosing decoder =
 **Payload type:** `Event`
 
 Custom event data is carried on the event's `detail` field — decode it with e.g. `Json.Decode.at [ "detail" ] yourDecoder`.
+
 -}
 onClosed : Json.Decode.Decoder msg -> Html.Attribute msg
 onClosed decoder =

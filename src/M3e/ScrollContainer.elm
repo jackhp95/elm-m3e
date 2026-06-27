@@ -25,6 +25,7 @@ Spec (per docs/CONVENTIONS.md):
 
 -}
 
+import Cem.M3e.ScrollContainer as Cem
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -94,7 +95,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-scroll-container"
             (List.filterMap identity
-                [ Just (Node.attribute "dividers" (dividersToString c.dividers))
+                [ Just (Node.attribute "dividers" (Cem.dividersToString (toCemDividers c.dividers)))
                 , if c.thin then
                     Just (Node.property "thin" (Encode.bool True))
 
@@ -107,17 +108,19 @@ view req opts =
         )
 
 
-dividersToString : Dividers -> String
-dividersToString d =
+{-| Translate the local `Dividers` to its `Cem.M3e.ScrollContainer` counterpart.
+-}
+toCemDividers : Dividers -> Cem.Dividers
+toCemDividers d =
     case d of
         AboveBelow ->
-            "above-below"
+            Cem.AboveBelow
 
         Above ->
-            "above"
+            Cem.Above
 
         Below ->
-            "below"
+            Cem.Below
 
         None ->
-            "none"
+            Cem.None
