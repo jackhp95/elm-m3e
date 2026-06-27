@@ -682,7 +682,7 @@ privacyPanel model =
                 )
             ]
         , Layout.section "rounded-md-corner-large bg-surface-container-low p-2"
-            [ List_.view
+            [ List_.actionList
                 { items =
                     [ List_.actionItem { headline = "Download my data" }
                         [ List_.actionSupporting "Export a copy of your information."

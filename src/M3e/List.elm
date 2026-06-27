@@ -1,49 +1,86 @@
 module M3e.List exposing
-    ( view
+    ( list, actionList, selectionList
     , item, actionItem, option, divider, expandable
-    , Variant(..), Option
+    , Variant(..), Option, SelectionOption
     , StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption
-    , variant, id
+    , id, variant
     , staticLeading, staticTrailing, staticOverline, staticSupporting
-    , actionLeading, actionTrailing, actionOverline, actionSupporting, actionDisabled, actionOnClick
+    , actionLeading, actionTrailing, actionOverline, actionSupporting
+    , actionDisabled, actionHref, actionTarget, actionRel, actionDownload, actionOnClick
     , optionLeading, optionOverline, optionSupporting, optionDisabled, optionSelected, optionValue, optionOnChange
     , expandableLeading, expandableOverline, expandableSupporting, expandableDisabled, expandableOpen
+    , selectionId, selectionVariant, multi, selectionName, hideSelectionIndicator, selectionDisabled
     )
 
-{-| `<m3e-list>` + kind-typed item constructors — a vertical collection of rows
-(Material 3 Lists). The module is named `M3e.List`; kind-specific options live
-on the right constructor so no modifier is ever a silent no-op.
+{-| Material 3 Expressive list family — three typed containers with kind-specific
+item constructors so no option is ever a silent no-op.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required (container): `{ items }` — the item list
-  - Required (item / actionItem / option / expandable): `{ headline }` — visible text
-  - Required (expandable): `{ headline, children }` — nested rows in the items slot
-  - Kinds → tags:
-    item → `<m3e-list-item>` (static, non-interactive)
-    actionItem → `<m3e-list-item-button>` (interactive)
-    option → `<m3e-list-option>` (selectable)
-    divider → `<m3e-divider>`
-    expandable → `<m3e-expandable-list-item>`
-  - Slots: leading / trailing (element); overline / supporting-text (String→span)
-    expandable children land in the `items` slot
-  - Properties: disabled (action/option/expandable), selected (option), open (expandable)
-  - Events: onClick (actionItem), onChange (option)
-  - Tag: list / listItem
+  - `list` → `<m3e-list>` — static / expandable rows
+  - `actionList` → `<m3e-action-list>` — interactive rows with RovingTabIndex keyboard nav
+  - `selectionList` → `<m3e-selection-list>` — selectable options, multi-select, form-associated
+  - `item` → `<m3e-list-item>` — non-interactive row (goes in `list`)
+  - `actionItem` → `<m3e-list-action>` — interactive row (goes in `actionList`);
+    link attrs (`href`/`target`/`rel`/`download`) supported
+  - `option` → `<m3e-list-option>` — selectable row (goes in `selectionList`);
+    change event reads element-managed selected state
+  - `divider` → `<m3e-divider>` — separator (goes in `list`)
+  - `expandable` → `<m3e-expandable-list-item>` — collapsible group (goes in `list`)
 
-@docs view
+
+## Containers
+
+@docs list, actionList, selectionList
+
+
+## Items
+
 @docs item, actionItem, option, divider, expandable
-@docs Variant, Option
+
+
+## Types
+
+@docs Variant, Option, SelectionOption
 @docs StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption
-@docs variant, id
+
+
+## Container options (`list` / `actionList`)
+
+@docs id, variant
+
+
+## Static item options
+
 @docs staticLeading, staticTrailing, staticOverline, staticSupporting
-@docs actionLeading, actionTrailing, actionOverline, actionSupporting, actionDisabled, actionOnClick
+
+
+## Action item options
+
+@docs actionLeading, actionTrailing, actionOverline, actionSupporting
+@docs actionDisabled, actionHref, actionTarget, actionRel, actionDownload, actionOnClick
+
+
+## Selectable option item options
+
 @docs optionLeading, optionOverline, optionSupporting, optionDisabled, optionSelected, optionValue, optionOnChange
+
+
+## Expandable item options
+
 @docs expandableLeading, expandableOverline, expandableSupporting, expandableDisabled, expandableOpen
+
+
+## Selection list container options
+
+@docs selectionId, selectionVariant, multi, selectionName, hideSelectionIndicator, selectionDisabled
 
 -}
 
+import Cem.M3e.ActionList as CemActionList
 import Cem.M3e.List as CemList
+import Cem.M3e.ListAction as CemListAction
+import Cem.M3e.SelectionList as CemSelectionList
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
@@ -55,7 +92,7 @@ import M3e.Node as Node exposing (Node)
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Visual style of the list. Default `Standard`.
+{-| Visual style of a list container. Default `Standard`.
 -}
 type Variant
     = Standard
@@ -90,14 +127,20 @@ type alias ExpandableItemOption msg =
     Internal.Option (ExpandableConfig msg) msg
 
 
-{-| Option for the list container (`view`).
+{-| Option for the `list` and `actionList` containers.
 -}
 type alias Option msg =
     Internal.Option ContainerConfig msg
 
 
+{-| Option for the `selectionList` container.
+-}
+type alias SelectionOption msg =
+    Internal.Option SelectionConfig msg
 
--- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
+
+
+-- STATIC ITEM OPTIONS -----------------------------------------------------
 
 
 {-| Add a leading element to a static item.
@@ -126,6 +169,10 @@ staticOverline s =
 staticSupporting : String -> StaticItemOption msg
 staticSupporting s =
     Internal.option (\c -> { c | supporting = Just s })
+
+
+
+-- ACTION ITEM OPTIONS -----------------------------------------------------
 
 
 {-| Add a leading element to an action item.
@@ -163,11 +210,43 @@ actionDisabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
+{-| Set the link URL. When set the item renders as an `<a>` inside the element.
+-}
+actionHref : String -> ActionItemOption msg
+actionHref v =
+    Internal.option (\c -> { c | href = Just v })
+
+
+{-| Set the link `target` (e.g. `"_blank"`); only meaningful with `actionHref`.
+-}
+actionTarget : String -> ActionItemOption msg
+actionTarget v =
+    Internal.option (\c -> { c | target = Just v })
+
+
+{-| Set the link `rel` (e.g. `"noreferrer noopener"`); only meaningful with `actionHref`.
+-}
+actionRel : String -> ActionItemOption msg
+actionRel v =
+    Internal.option (\c -> { c | rel = Just v })
+
+
+{-| Request the link target be downloaded; only meaningful with `actionHref`.
+-}
+actionDownload : String -> ActionItemOption msg
+actionDownload v =
+    Internal.option (\c -> { c | download = Just v })
+
+
 {-| Wire a click handler for an action item.
 -}
 actionOnClick : msg -> ActionItemOption msg
 actionOnClick msg =
     Internal.option (\c -> { c | onClick = Just msg })
+
+
+
+-- OPTION ITEM OPTIONS -----------------------------------------------------
 
 
 {-| Add a leading element to a selectable option item.
@@ -212,12 +291,17 @@ optionValue v =
     Internal.option (\c -> { c | value = Just v })
 
 
-{-| React to a selectable option being toggled. The handler receives the new
-selected state.
+{-| React to the element's `change` event. The handler receives the new
+`selected` state as reported by the element itself — **not** a client-side
+guess. This correctly tracks multi-select state managed by `<m3e-selection-list>`.
 -}
 optionOnChange : (Bool -> msg) -> OptionItemOption msg
 optionOnChange f =
     Internal.option (\c -> { c | onChange = Just f })
+
+
+
+-- EXPANDABLE ITEM OPTIONS -------------------------------------------------
 
 
 {-| Add a leading element to an expandable item.
@@ -255,7 +339,11 @@ expandableOpen b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Set the `id` attribute on the `<m3e-list>` element.
+
+-- CONTAINER OPTIONS (list / actionList) -----------------------------------
+
+
+{-| Set the `id` attribute on the list element.
 -}
 id : String -> Option msg
 id newId =
@@ -270,10 +358,56 @@ variant v =
 
 
 
+-- SELECTION LIST CONTAINER OPTIONS ----------------------------------------
+
+
+{-| Set the `id` attribute on the `<m3e-selection-list>` element.
+-}
+selectionId : String -> SelectionOption msg
+selectionId newId =
+    Internal.option (\c -> { c | id = Just newId })
+
+
+{-| Set the visual style of the selection list. Default `Standard`.
+-}
+selectionVariant : Variant -> SelectionOption msg
+selectionVariant v =
+    Internal.option (\c -> { c | variant = v })
+
+
+{-| Allow multiple options to be selected simultaneously.
+-}
+multi : Bool -> SelectionOption msg
+multi b =
+    Internal.option (\c -> { c | multi = b })
+
+
+{-| Set the `name` attribute used for form submission.
+-}
+selectionName : String -> SelectionOption msg
+selectionName n =
+    Internal.option (\c -> { c | name = Just n })
+
+
+{-| Hide the built-in selection indicator (checkbox/checkmark).
+-}
+hideSelectionIndicator : Bool -> SelectionOption msg
+hideSelectionIndicator b =
+    Internal.option (\c -> { c | hideSelectionIndicator = b })
+
+
+{-| Disable the entire selection list.
+-}
+selectionDisabled : Bool -> SelectionOption msg
+selectionDisabled b =
+    Internal.option (\c -> { c | disabled = b })
+
+
+
 -- ITEM CONSTRUCTORS -------------------------------------------------------
 
 
-{-| A static, non-interactive list item (`<m3e-list-item>`).
+{-| A static, non-interactive list item (`<m3e-list-item>`). Use inside `list`.
 
     M3e.List.item { headline = "Inbox" }
         [ M3e.List.staticLeading myIconElement
@@ -298,18 +432,24 @@ item req opts =
         )
 
 
-{-| An interactive list item (`<m3e-list-item-button>`).
+{-| An interactive list item (`<m3e-list-action>`). Use inside `actionList`.
 
     M3e.List.actionItem { headline = "Open settings" }
         [ M3e.List.actionOnClick OpenSettings
         , M3e.List.actionLeading myGearIcon
         ]
 
+    -- Link variant:
+    M3e.List.actionItem { headline = "Account" }
+        [ M3e.List.actionHref "/account"
+        , M3e.List.actionTarget "_blank"
+        ]
+
 -}
 actionItem :
     { headline : String }
     -> List (ActionItemOption msg)
-    -> Element { listItem : Supported } msg
+    -> Element { actionItem : Supported } msg
 actionItem req opts =
     let
         c : ActionConfig msg
@@ -317,9 +457,13 @@ actionItem req opts =
             Internal.applyOptions opts defaultActionConfig
     in
     Internal.fromNode
-        (Node.element "m3e-list-item-button"
+        (Node.element "m3e-list-action"
             (List.filterMap identity
                 [ Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Maybe.map (\v -> Node.rawAttr (CemListAction.href v)) c.href
+                , Maybe.map (\v -> Node.rawAttr (CemListAction.target v)) c.target
+                , Maybe.map (\v -> Node.rawAttr (CemListAction.rel v)) c.rel
+                , Maybe.map (\v -> Node.rawAttr (CemListAction.download v)) c.download
                 , Maybe.map (\msg -> Node.on "click" (Decode.succeed msg)) c.onClick
                 ]
             )
@@ -327,18 +471,23 @@ actionItem req opts =
         )
 
 
-{-| A selectable list option (`<m3e-list-option>`).
+{-| A selectable list option (`<m3e-list-option>`). Use inside `selectionList`.
+
+The `change` event (not `click`) is what the element fires when its selection
+state changes; `optionOnChange` decodes `event.target.selected` directly so
+the handler always receives the element-authoritative state.
 
     M3e.List.option { headline = "Wi-Fi" }
         [ M3e.List.optionSelected model.wifiOn
         , M3e.List.optionOnChange WifiToggled
+        , M3e.List.optionValue "wifi"
         ]
 
 -}
 option :
     { headline : String }
     -> List (OptionItemOption msg)
-    -> Element { listItem : Supported } msg
+    -> Element { optionItem : Supported } msg
 option req opts =
     let
         c : OptionConfig msg
@@ -352,7 +501,12 @@ option req opts =
                 , Maybe.map (Node.attribute "value") c.value
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map
-                    (\f -> Node.on "click" (Decode.succeed (f (not c.selected))))
+                    (\f ->
+                        Node.on "change"
+                            (Decode.at [ "target", "selected" ] Decode.bool
+                                |> Decode.map f
+                            )
+                    )
                     c.onChange
                 ]
             )
@@ -360,7 +514,7 @@ option req opts =
         )
 
 
-{-| A thin separator row (`<m3e-divider>`).
+{-| A thin separator row (`<m3e-divider>`). Use inside `list`.
 -}
 divider : Element { listItem : Supported } msg
 divider =
@@ -368,7 +522,7 @@ divider =
 
 
 {-| An expandable list item (`<m3e-expandable-list-item>`). Children are
-injected into the `items` slot automatically.
+injected into the `items` slot automatically. Use inside `list`.
 
     M3e.List.expandable
         { headline = "Folders"
@@ -408,27 +562,27 @@ expandable req opts =
 
 
 
--- CONTAINER ---------------------------------------------------------------
+-- CONTAINERS --------------------------------------------------------------
 
 
-{-| Render the list element.
+{-| Render a plain `<m3e-list>` — for static items, dividers, and expandable
+groups. Items must be built with `item`, `divider`, or `expandable`.
 
-    M3e.List.view
+    M3e.List.list
         { items =
             [ M3e.List.item { headline = "Inbox" } []
             , M3e.List.divider
-            , M3e.List.actionItem { headline = "Settings" }
-                [ M3e.List.actionOnClick OpenSettings ]
+            , M3e.List.item { headline = "Sent" } []
             ]
         }
         []
 
 -}
-view :
+list :
     { items : List (Element { listItem : Supported } msg) }
     -> List (Option msg)
     -> Element { s | list : Supported } msg
-view req opts =
+list req opts =
     let
         c : ContainerConfig
         c =
@@ -438,7 +592,84 @@ view req opts =
         (Node.element "m3e-list"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , Just (Node.rawAttr (CemList.variant (toCemVariant c.variant)))
+                , Just (Node.rawAttr (CemList.variant (toCemListVariant c.variant)))
+                ]
+            )
+            (List.map Element.toNode req.items)
+        )
+
+
+{-| Render an `<m3e-action-list>` — for interactive action rows with roving
+tabindex keyboard navigation. Items must be built with `actionItem`.
+
+    M3e.List.actionList
+        { items =
+            [ M3e.List.actionItem { headline = "Account" }
+                [ M3e.List.actionHref "/account" ]
+            , M3e.List.actionItem { headline = "Settings" }
+                [ M3e.List.actionOnClick OpenSettings ]
+            ]
+        }
+        []
+
+-}
+actionList :
+    { items : List (Element { actionItem : Supported } msg) }
+    -> List (Option msg)
+    -> Element { s | list : Supported } msg
+actionList req opts =
+    let
+        c : ContainerConfig
+        c =
+            Internal.applyOptions opts defaultContainerConfig
+    in
+    Internal.fromNode
+        (Node.element "m3e-action-list"
+            (List.filterMap identity
+                [ Maybe.map (Node.attribute "id") c.id
+                , Just (Node.rawAttr (CemActionList.variant (toCemActionListVariant c.variant)))
+                ]
+            )
+            (List.map Element.toNode req.items)
+        )
+
+
+{-| Render an `<m3e-selection-list>` — for selectable option rows with
+SelectionManager, multi-select, and form association. Items must be built
+with `option`.
+
+    M3e.List.selectionList
+        { items =
+            [ M3e.List.option { headline = "News" }
+                [ M3e.List.optionSelected True, M3e.List.optionValue "news" ]
+            , M3e.List.option { headline = "Offers" }
+                [ M3e.List.optionValue "offers" ]
+            ]
+        }
+        [ M3e.List.multi True
+        , M3e.List.selectionName "topics"
+        ]
+
+-}
+selectionList :
+    { items : List (Element { optionItem : Supported } msg) }
+    -> List (SelectionOption msg)
+    -> Element { s | list : Supported } msg
+selectionList req opts =
+    let
+        c : SelectionConfig
+        c =
+            Internal.applyOptions opts defaultSelectionConfig
+    in
+    Internal.fromNode
+        (Node.element "m3e-selection-list"
+            (List.filterMap identity
+                [ Maybe.map (Node.attribute "id") c.id
+                , Just (Node.rawAttr (CemSelectionList.variant (toCemSelectionListVariant c.variant)))
+                , Just (Node.property "multi" (Encode.bool c.multi))
+                , Maybe.map (Node.attribute "name") c.name
+                , Just (Node.property "hide-selection-indicator" (Encode.bool c.hideSelectionIndicator))
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
                 ]
             )
             (List.map Element.toNode req.items)
@@ -468,6 +699,10 @@ type alias ActionConfig msg =
     , overline : Maybe String
     , supporting : Maybe String
     , disabled : Bool
+    , href : Maybe String
+    , target : Maybe String
+    , rel : Maybe String
+    , download : Maybe String
     , onClick : Maybe msg
     }
 
@@ -479,6 +714,10 @@ defaultActionConfig =
     , overline = Nothing
     , supporting = Nothing
     , disabled = False
+    , href = Nothing
+    , target = Nothing
+    , rel = Nothing
+    , download = Nothing
     , onClick = Nothing
     }
 
@@ -531,6 +770,27 @@ defaultContainerConfig =
     { id = Nothing, variant = Standard }
 
 
+type alias SelectionConfig =
+    { id : Maybe String
+    , variant : Variant
+    , multi : Bool
+    , name : Maybe String
+    , hideSelectionIndicator : Bool
+    , disabled : Bool
+    }
+
+
+defaultSelectionConfig : SelectionConfig
+defaultSelectionConfig =
+    { id = Nothing
+    , variant = Standard
+    , multi = False
+    , name = Nothing
+    , hideSelectionIndicator = False
+    , disabled = False
+    }
+
+
 {-| Build the common decoration children for any list item kind.
 -}
 decorationNodes :
@@ -550,11 +810,31 @@ decorationNodes leading overline supporting trailing headline =
         ]
 
 
-toCemVariant : Variant -> CemList.Variant
-toCemVariant v =
+toCemListVariant : Variant -> CemList.Variant
+toCemListVariant v =
     case v of
         Standard ->
             CemList.Standard
 
         Segmented ->
             CemList.Segmented
+
+
+toCemActionListVariant : Variant -> CemActionList.Variant
+toCemActionListVariant v =
+    case v of
+        Standard ->
+            CemActionList.Standard
+
+        Segmented ->
+            CemActionList.Segmented
+
+
+toCemSelectionListVariant : Variant -> CemSelectionList.Variant
+toCemSelectionListVariant v =
+    case v of
+        Standard ->
+            CemSelectionList.Standard
+
+        Segmented ->
+            CemSelectionList.Segmented

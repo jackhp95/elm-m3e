@@ -1092,7 +1092,7 @@ demoSections slug =
         "list" ->
             [ usage
                 [ sub "Basic"
-                    (List_.view
+                    (List_.list
                         { items =
                             [ List_.item { headline = "First item" } []
                             , List_.item { headline = "Second item" } []
@@ -1417,15 +1417,13 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (Slide.view
-                        { slides =
+                        { items =
                             List.map
                                 (\( label, swatch ) ->
-                                    Slide.slide
-                                        [ Element.html
-                                            (div [ class ("flex h-24 w-40 shrink-0 items-center justify-center rounded-md-corner-large text-on-surface " ++ swatch) ]
-                                                [ text label ]
-                                            )
-                                        ]
+                                    Element.html
+                                        (div [ class ("flex h-24 w-40 shrink-0 items-center justify-center rounded-md-corner-large text-on-surface " ++ swatch) ]
+                                            [ text label ]
+                                        )
                                 )
                                 [ ( "Spring", "bg-tertiary-container" )
                                 , ( "Summer", "bg-primary-container" )
@@ -1433,7 +1431,7 @@ demoSections slug =
                                 , ( "Winter", "bg-surface-container-high" )
                                 ]
                         }
-                        []
+                        [ Slide.selectedIndex 0 ]
                         |> Element.toNode
                     )
                 ]

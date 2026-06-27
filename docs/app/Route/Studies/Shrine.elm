@@ -887,7 +887,7 @@ viewProductCard model product =
 
 viewProductList : Model -> List Product -> Node Msg
 viewProductList _ filtered =
-    L.view
+    L.actionList
         { items =
             filtered
                 |> List.map
@@ -1039,19 +1039,17 @@ viewDetailDialog model =
 
                 gallery =
                     Slide.view
-                        { slides =
+                        { items =
                             List.range 0 2
                                 |> List.map
                                     (\i ->
-                                        Slide.slide
-                                            [ Element.fromNode
-                                                (Layout.div ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch)
-                                                    [ Icon.view { name = galleryGlyph product.category i } |> Element.toNode ]
-                                                )
-                                            ]
+                                        Element.fromNode
+                                            (Layout.div ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch)
+                                                [ Icon.view { name = galleryGlyph product.category i } |> Element.toNode ]
+                                            )
                                     )
                         }
-                        []
+                        [ Slide.selectedIndex 0 ]
                         |> Element.toNode
 
                 sizeSelect =

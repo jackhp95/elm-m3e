@@ -647,7 +647,7 @@ accountSection index group =
     Disclosure.section
         { header = group.label ++ " · " ++ formatMoney (groupTotalCents group)
         , content =
-            [ List_.view { items = List.map accountRow group.accounts } [] ]
+            [ List_.list { items = List.map accountRow group.accounts } [] ]
         }
         [ Disclosure.sectionOpen (index == 0) ]
 
@@ -773,7 +773,7 @@ billsPanel =
     Layout.div "grid gap-6 lg:grid-cols-2"
         [ Layout.stack
             [ sectionHeading "Upcoming bills" "Due dates for the next billing cycle."
-            , List_.view { items = List.map billRow bills } [] |> Element.toNode
+            , List_.list { items = List.map billRow bills } [] |> Element.toNode
             ]
         , Layout.stack
             [ Node.raw (span [ class "text-title-md font-medium" ] [ text "Due-date calendar" ])
@@ -954,7 +954,7 @@ budgetDetailSection category =
     Disclosure.section
         { header = category.label ++ " · " ++ String.fromInt (budgetPercent category) ++ "%"
         , content =
-            [ List_.view { items = List.map budgetLineRow category.lines } [] ]
+            [ List_.list { items = List.map budgetLineRow category.lines } [] ]
         }
         []
 
