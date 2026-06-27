@@ -69,69 +69,62 @@ type Motion
     | MotionExpressive
 
 
-type Option msg
-    = SeedColor String
-    | Scheme Scheme
-    | Variant Variant
-    | Contrast Contrast
-    | Density Float
-    | StrongFocus Bool
-    | Motion Motion
-    | OnChange (Decode.Decoder msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Set the hex seed color from which the dynamic palettes are derived
 (the `color` attribute, default `#6750A4`).
 -}
 seedColor : String -> Option msg
-seedColor =
-    SeedColor
+seedColor s =
+    Internal.option (\c -> { c | seedColor = Just s })
 
 
 {-| Set the color scheme (default `Auto` — follow the OS preference). -}
 scheme : Scheme -> Option msg
-scheme =
-    Scheme
+scheme s =
+    Internal.option (\c -> { c | scheme = Just s })
 
 
 {-| Set the dynamic-color variant (default `Neutral`). -}
 variant : Variant -> Option msg
-variant =
-    Variant
+variant v =
+    Internal.option (\c -> { c | variant = Just v })
 
 
 {-| Set the contrast level (default `Standard`). -}
 contrast : Contrast -> Option msg
-contrast =
-    Contrast
+contrast co =
+    Internal.option (\c -> { c | contrast = Just co })
 
 
 {-| Set the density scale (default `0`; tighter: `-1`, `-2`). -}
 density : Float -> Option msg
-density =
-    Density
+density d =
+    Internal.option (\c -> { c | density = Just d })
 
 
 {-| Enable or disable strong focus indicators across the subtree (default
 `false`).
 -}
 strongFocus : Bool -> Option msg
-strongFocus =
-    StrongFocus
+strongFocus sf =
+    Internal.option (\c -> { c | strongFocus = Just sf })
 
 
 {-| Set the motion scheme (default `MotionStandard`). -}
 motion : Motion -> Option msg
-motion =
-    Motion
+motion m =
+    Internal.option (\c -> { c | motion = Just m })
 
 
 {-| Listen for the `change` event — dispatched when the theme recomputes its
 derived tokens (e.g. after a scheme or seed-color change).
 -}
 onChange : Decode.Decoder msg -> Option msg
-onChange =
-    OnChange
+onChange d =
+    Internal.option (\c -> { c | onChange = Just d })
 
 
 type alias Config msg =
@@ -146,39 +139,11 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        SeedColor s ->
-            { c | seedColor = Just s }
-
-        Scheme s ->
-            { c | scheme = Just s }
-
-        Variant v ->
-            { c | variant = Just v }
-
-        Contrast co ->
-            { c | contrast = Just co }
-
-        Density d ->
-            { c | density = Just d }
-
-        StrongFocus sf ->
-            { c | strongFocus = Just sf }
-
-        Motion m ->
-            { c | motion = Just m }
-
-        OnChange d ->
-            { c | onChange = Just d }
-
-
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | theme : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { seedColor = Nothing
                 , scheme = Nothing
                 , variant = Nothing
@@ -188,7 +153,6 @@ view req opts =
                 , motion = Nothing
                 , onChange = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-theme"

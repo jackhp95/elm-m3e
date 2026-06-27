@@ -36,40 +36,37 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Checked Bool
-    | Disabled Bool
-    | HandleIcons Bool
-    | OnChange (Bool -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Set the checked (on/off) state. Maps to the `checked` DOM property.
 -}
 checked : Bool -> Option msg
-checked =
-    Checked
+checked b =
+    Internal.option (\c -> { c | checked = b })
 
 
 {-| Disable the switch. Maps to the `disabled` DOM property.
 -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Show handle icons (m3e's built-in checkmark when on / dash when off).
 `True` → icons="both"; `False` (default) → no icons attr emitted.
 -}
 handleIcons : Bool -> Option msg
-handleIcons =
-    HandleIcons
+handleIcons b =
+    Internal.option (\c -> { c | handleIcons = b })
 
 
 {-| Wire a change handler. The decoder reads `event.target.checked` (a Bool).
 -}
 onChange : (Bool -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 type alias Config msg =
@@ -80,33 +77,16 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Checked b ->
-            { c | checked = b }
-
-        Disabled b ->
-            { c | disabled = b }
-
-        HandleIcons b ->
-            { c | handleIcons = b }
-
-        OnChange f ->
-            { c | onChange = Just f }
-
-
 view : { name : String } -> List (Option msg) -> Renderable { s | switch : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { checked = False
                 , disabled = False
                 , handleIcons = False
                 , onChange = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-switch"

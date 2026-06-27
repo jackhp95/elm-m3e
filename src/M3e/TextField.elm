@@ -62,23 +62,8 @@ type InputType
     | Tel
 
 
-type Option msg
-    = WithId String
-    | WithValue String
-    | WithPlaceholder String
-    | WithVariant Variant
-    | WithInputType InputType
-    | WithDisabled Bool
-    | WithRequired Bool
-    | WithReadonly Bool
-    | OnInput (String -> msg)
-    | WithPrefix (Html msg)
-    | WithSuffix (Html msg)
-    | WithHint (Html msg)
-    | WithError (Html msg)
-    | WithMultiline Bool
-    | WithRows Int
-    | WithAutosize { min : Int, max : Int }
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 type alias Config msg =
@@ -130,106 +115,106 @@ the matching `for` on the `<label>` and any autosize sibling). Without this, an
 id is derived from the label text.
 -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Drive the input value (sets the DOM `value` property). -}
 withValue : String -> Option msg
-withValue =
-    WithValue
+withValue s =
+    Internal.option (\c -> { c | value = Just s })
 
 
 {-| Set the native `placeholder` attribute. -}
 withPlaceholder : String -> Option msg
-withPlaceholder =
-    WithPlaceholder
+withPlaceholder s =
+    Internal.option (\c -> { c | placeholder = Just s })
 
 
 {-| Choose `Filled` or `Outlined` appearance. -}
 withVariant : Variant -> Option msg
-withVariant =
-    WithVariant
+withVariant v =
+    Internal.option (\c -> { c | variant = Just v })
 
 
 {-| Choose the input type for single-line fields (`Text`, `Password`, …).
 Has no effect on multiline fields (which always render `<textarea>`).
 -}
 withInputType : InputType -> Option msg
-withInputType =
-    WithInputType
+withInputType t =
+    Internal.option (\c -> { c | inputType = t })
 
 
 {-| Disable the field. -}
 withDisabled : Bool -> Option msg
-withDisabled =
-    WithDisabled
+withDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Mark the field as required for form validation. -}
 withRequired : Bool -> Option msg
-withRequired =
-    WithRequired
+withRequired b =
+    Internal.option (\c -> { c | required = b })
 
 
 {-| Make the field read-only (focusable but not editable). -}
 withReadonly : Bool -> Option msg
-withReadonly =
-    WithReadonly
+withReadonly b =
+    Internal.option (\c -> { c | readonly = b })
 
 
 {-| Handle the native `input` event. Receives the new value string. -}
 onInput : (String -> msg) -> Option msg
-onInput =
-    OnInput
+onInput f =
+    Internal.option (\c -> { c | onInput = Just f })
 
 
 {-| Content for the `prefix` slot of `<m3e-form-field>`, shown before the
 control (e.g. a currency symbol). Wrapped in `<span slot="prefix">`.
 -}
 withPrefix : Html msg -> Option msg
-withPrefix =
-    WithPrefix
+withPrefix h =
+    Internal.option (\c -> { c | prefix = Just h })
 
 
 {-| Content for the `suffix` slot of `<m3e-form-field>`, shown after the
 control (e.g. a unit indicator). Wrapped in `<span slot="suffix">`.
 -}
 withSuffix : Html msg -> Option msg
-withSuffix =
-    WithSuffix
+withSuffix h =
+    Internal.option (\c -> { c | suffix = Just h })
 
 
 {-| Hint text for the form-field's `hint` slot — shown while the field is
 valid. Hidden when an error is also set (error takes precedence).
 -}
 withHint : Html msg -> Option msg
-withHint =
-    WithHint
+withHint h =
+    Internal.option (\c -> { c | hint = Just h })
 
 
 {-| Error text for the form-field's `error` slot — shown while the field is
 invalid.  Takes precedence over `withHint`.
 -}
 withError : Html msg -> Option msg
-withError =
-    WithError
+withError h =
+    Internal.option (\c -> { c | error = Just h })
 
 
 {-| Render a `<textarea>` instead of an `<input>` (multi-line text entry).
 Pass `True` to activate.
 -}
 multiline : Bool -> Option msg
-multiline =
-    WithMultiline
+multiline b =
+    Internal.option (\c -> { c | multiline = b })
 
 
 {-| Set the native `rows` attribute on the `<textarea>` (fixed visible height).
 Has no effect on single-line fields.
 -}
 withRows : Int -> Option msg
-withRows =
-    WithRows
+withRows n =
+    Internal.option (\c -> { c | rows = Just n })
 
 
 {-| Auto-resize the textarea between `min` and `max` rows as the user types.
@@ -237,8 +222,8 @@ Adds a sibling `<m3e-textarea-autosize for=id>` element — NOT wrapping the
 textarea. Multi-line only.
 -}
 withAutosize : { min : Int, max : Int } -> Option msg
-withAutosize =
-    WithAutosize
+withAutosize bounds =
+    Internal.option (\c -> { c | autosize = Just bounds })
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -267,7 +252,7 @@ view : { label : String } -> List (Option msg) -> Renderable { s | textField : S
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
 
         id =
             Maybe.withDefault (slugify req.label) c.id
@@ -309,58 +294,6 @@ view req opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        WithValue s ->
-            { c | value = Just s }
-
-        WithPlaceholder s ->
-            { c | placeholder = Just s }
-
-        WithVariant v ->
-            { c | variant = Just v }
-
-        WithInputType t ->
-            { c | inputType = t }
-
-        WithDisabled b ->
-            { c | disabled = b }
-
-        WithRequired b ->
-            { c | required = b }
-
-        WithReadonly b ->
-            { c | readonly = b }
-
-        OnInput f ->
-            { c | onInput = Just f }
-
-        WithPrefix h ->
-            { c | prefix = Just h }
-
-        WithSuffix h ->
-            { c | suffix = Just h }
-
-        WithHint h ->
-            { c | hint = Just h }
-
-        WithError h ->
-            { c | error = Just h }
-
-        WithMultiline b ->
-            { c | multiline = b }
-
-        WithRows n ->
-            { c | rows = Just n }
-
-        WithAutosize bounds ->
-            { c | autosize = Just bounds }
 
 
 controlNode : Config msg -> String -> Node msg

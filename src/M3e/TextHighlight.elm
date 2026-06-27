@@ -39,42 +39,39 @@ type MatchMode
     | EndsWith
 
 
-type Option msg
-    = Term String
-    | ModeOpt MatchMode
-    | CaseSensitive Bool
-    | Disabled Bool
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set the search term to highlight. No highlighting occurs until this is set.
 Maps to the `term` attribute.
 -}
 term : String -> Option msg
-term =
-    Term
+term t =
+    Internal.option (\c -> { c | term = Just t })
 
 
 {-| Set the match mode (default `Contains`). Maps to the `mode` attribute.
 -}
 mode : MatchMode -> Option msg
-mode =
-    ModeOpt
+mode m =
+    Internal.option (\c -> { c | mode = m })
 
 
 {-| Enable case-sensitive matching (default `False`). Maps to the
 `case-sensitive` DOM property.
 -}
 caseSensitive : Bool -> Option msg
-caseSensitive =
-    CaseSensitive
+caseSensitive b =
+    Internal.option (\c -> { c | caseSensitive = b })
 
 
 {-| Disable highlighting entirely — children render unaltered (default `False`).
 Maps to the `disabled` DOM property.
 -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 type alias Config =
@@ -85,33 +82,16 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Term t ->
-            { c | term = Just t }
-
-        ModeOpt m ->
-            { c | mode = m }
-
-        CaseSensitive b ->
-            { c | caseSensitive = b }
-
-        Disabled b ->
-            { c | disabled = b }
-
-
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | textHighlight : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { term = Nothing
                 , mode = Contains
                 , caseSensitive = False
                 , disabled = False
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-text-highlight"

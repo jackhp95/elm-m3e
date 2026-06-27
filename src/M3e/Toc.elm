@@ -30,34 +30,32 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = MaxDepth Int
-    | Title String
-    | Overline String
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| The maximum nesting depth of the generated list (positive integer).
 Omit to keep `m3e-toc`'s default of 2.
 -}
 maxDepth : Int -> Option msg
-maxDepth =
-    MaxDepth
+maxDepth d =
+    Internal.option (\c -> { c | maxDepth = Just d })
 
 
 {-| Heading shown above the generated list (e.g. "On this page") — injected
 into the `title` slot inside a `<span>`.
 -}
 title : String -> Option msg
-title =
-    Title
+title t =
+    Internal.option (\c -> { c | title = Just t })
 
 
 {-| Small overline label rendered above the title — injected into the
 `overline` slot inside a `<span>`.
 -}
 overline : String -> Option msg
-overline =
-    Overline
+overline o =
+    Internal.option (\c -> { c | overline = Just o })
 
 
 type alias Config =
@@ -67,26 +65,12 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        MaxDepth d ->
-            { c | maxDepth = Just d }
-
-        Title t ->
-            { c | title = Just t }
-
-        Overline o ->
-            { c | overline = Just o }
-
-
 view : { for : String } -> List (Option msg) -> Renderable { s | toc : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { maxDepth = Nothing, title = Nothing, overline = Nothing }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-toc"

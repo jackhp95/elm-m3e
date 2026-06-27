@@ -48,28 +48,26 @@ type Orientation
     | Auto
 
 
-type Option msg
-    = OrientationOpt Orientation
-    | Disabled Bool
-    | Label String
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set the split orientation (default `Horizontal`). -}
 orientation : Orientation -> Option msg
-orientation =
-    OrientationOpt
+orientation o =
+    Internal.option (\c -> { c | orientation = o })
 
 
 {-| Disable the drag handle (content still renders, controls go inert). -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Accessible label for the drag handle (default: "Resize panes"). -}
 label : String -> Option msg
-label =
-    Label
+label l =
+    Internal.option (\c -> { c | label = Just l })
 
 
 type alias Config =
@@ -77,19 +75,6 @@ type alias Config =
     , disabled : Bool
     , label : Maybe String
     }
-
-
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        OrientationOpt o ->
-            { c | orientation = o }
-
-        Disabled b ->
-            { c | disabled = b }
-
-        Label l ->
-            { c | label = Just l }
 
 
 view :
@@ -101,9 +86,8 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { orientation = Horizontal, disabled = False, label = Nothing }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-split-pane"

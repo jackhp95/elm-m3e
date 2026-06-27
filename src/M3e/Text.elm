@@ -46,8 +46,8 @@ type Role
     | LabelSmall
 
 
-type Option msg
-    = Inline
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Render inline as a `<span>` instead of the default block `<p>` — for text
@@ -55,7 +55,7 @@ that flows within a line or sits beside another element.
 -}
 inline : Option msg
 inline =
-    Inline
+    Internal.option (\c -> { c | inline = True })
 
 
 {-| `BodyLarge` block text — the default body-copy size. One-liner preset. -}
@@ -98,13 +98,6 @@ type alias Config =
     { inline : Bool }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Inline ->
-            { c | inline = True }
-
-
 {-| Render the text node.
 
 The `role` drives the typescale utility class (`text-body-lg`, `text-label-md`,
@@ -116,7 +109,7 @@ view : { content : String, role : Role } -> List (Option msg) -> Renderable { s 
 view req opts =
     let
         c =
-            List.foldl apply { inline = False } opts
+            Internal.applyOptions opts { inline = False }
 
         tag =
             if c.inline then

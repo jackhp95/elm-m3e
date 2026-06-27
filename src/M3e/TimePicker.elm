@@ -42,17 +42,8 @@ import M3e.Internal as Internal
 -- TYPES -----------------------------------------------------------------------
 
 
-type Option msg
-    = WithId String
-    | WithValue String
-    | WithMin String
-    | WithMax String
-    | WithStep Int
-    | WithRequired Bool
-    | WithDisabled Bool
-    | WithHint (Html msg)
-    | WithError (Html msg)
-    | OnChange (String -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 type alias Config msg =
@@ -91,66 +82,66 @@ defaultConfig =
 on the `<label>`). Without this, an id is derived from the label.
 -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Drive the time value (sets the DOM `value` property). Expects `"HH:MM"` in
 24-hour format.
 -}
 withValue : String -> Option msg
-withValue =
-    WithValue
+withValue s =
+    Internal.option (\c -> { c | value = Just s })
 
 
 {-| Earliest allowed time (`"HH:MM"`). -}
 withMin : String -> Option msg
-withMin =
-    WithMin
+withMin s =
+    Internal.option (\c -> { c | min = Just s })
 
 
 {-| Latest allowed time (`"HH:MM"`). -}
 withMax : String -> Option msg
-withMax =
-    WithMax
+withMax s =
+    Internal.option (\c -> { c | max = Just s })
 
 
 {-| Step granularity in seconds. Use `60` for minute resolution (the browser
 default) or `1` to expose seconds.
 -}
 withStep : Int -> Option msg
-withStep =
-    WithStep
+withStep n =
+    Internal.option (\c -> { c | step = Just n })
 
 
 {-| Mark the field as required. -}
 withRequired : Bool -> Option msg
-withRequired =
-    WithRequired
+withRequired b =
+    Internal.option (\c -> { c | required = b })
 
 
 {-| Disable the field. -}
 withDisabled : Bool -> Option msg
-withDisabled =
-    WithDisabled
+withDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Hint text for the form-field's `hint` slot. -}
 withHint : Html msg -> Option msg
-withHint =
-    WithHint
+withHint h =
+    Internal.option (\c -> { c | hint = Just h })
 
 
 {-| Error text for the form-field's `error` slot. -}
 withError : Html msg -> Option msg
-withError =
-    WithError
+withError h =
+    Internal.option (\c -> { c | error = Just h })
 
 
 {-| Handle the native `input` event. Receives the new time as `"HH:MM"`. -}
 onChange : (String -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -170,7 +161,7 @@ view : { label : String } -> List (Option msg) -> Renderable { s | timePicker : 
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
 
         id =
             Maybe.withDefault (slugify req.label) c.id
@@ -229,40 +220,6 @@ view req opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        WithValue s ->
-            { c | value = Just s }
-
-        WithMin s ->
-            { c | min = Just s }
-
-        WithMax s ->
-            { c | max = Just s }
-
-        WithStep n ->
-            { c | step = Just n }
-
-        WithRequired b ->
-            { c | required = b }
-
-        WithDisabled b ->
-            { c | disabled = b }
-
-        WithHint h ->
-            { c | hint = Just h }
-
-        WithError h ->
-            { c | error = Just h }
-
-        OnChange f ->
-            { c | onChange = Just f }
 
 
 {-| Derive a fallback id from the label text. -}
