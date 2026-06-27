@@ -37,34 +37,27 @@ type alias Name =
     Cem.Name
 
 
-type Option msg
-    = ShapeName Name
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Clip the content to the named Material 3 shape. Omitting this option
 leaves the content unclipped (the element's own default).
 -}
 name : Name -> Option msg
-name =
-    ShapeName
+name n =
+    Internal.option (\c -> { c | name = Just n })
 
 
 type alias Config =
     { name : Maybe Name }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        ShapeName n ->
-            { c | name = Just n }
-
-
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | shape : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply { name = Nothing } opts
+            Internal.applyOptions opts { name = Nothing }
     in
     Internal.fromNode
         (Node.element "m3e-shape"

@@ -30,63 +30,56 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Value Float
-    | Min Float
-    | Max Float
-    | Step Float
-    | Discrete Bool
-    | Labelled Bool
-    | Disabled Bool
-    | OnChange (Float -> msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Set the current value (default: not set, element uses its own default). -}
 value : Float -> Option msg
-value =
-    Value
+value v =
+    Internal.option (\c -> { c | value = Just v })
 
 
 {-| Set the lower bound of the range. -}
 min : Float -> Option msg
-min =
-    Min
+min v =
+    Internal.option (\c -> { c | min = Just v })
 
 
 {-| Set the upper bound of the range. -}
 max : Float -> Option msg
-max =
-    Max
+max v =
+    Internal.option (\c -> { c | max = Just v })
 
 
 {-| Set the snap increment. -}
 step : Float -> Option msg
-step =
-    Step
+step v =
+    Internal.option (\c -> { c | step = Just v })
 
 
 {-| Show tick marks at each step. -}
 discrete : Bool -> Option msg
-discrete =
-    Discrete
+discrete b =
+    Internal.option (\c -> { c | discrete = b })
 
 
 {-| Show or hide the in-thumb value label. -}
 labelled : Bool -> Option msg
-labelled =
-    Labelled
+labelled b =
+    Internal.option (\c -> { c | labelled = b })
 
 
 {-| Mark the slider disabled — non-interactive. -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Wire a change handler. Receives the new Float value from the thumb. -}
 onChange : (Float -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 type alias Config msg =
@@ -101,39 +94,11 @@ type alias Config msg =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Value v ->
-            { c | value = Just v }
-
-        Min v ->
-            { c | min = Just v }
-
-        Max v ->
-            { c | max = Just v }
-
-        Step v ->
-            { c | step = Just v }
-
-        Discrete b ->
-            { c | discrete = b }
-
-        Labelled b ->
-            { c | labelled = b }
-
-        Disabled b ->
-            { c | disabled = b }
-
-        OnChange f ->
-            { c | onChange = Just f }
-
-
 view : { name : String } -> List (Option msg) -> Renderable { s | slider : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { value = Nothing
                 , min = Nothing
                 , max = Nothing
@@ -143,7 +108,6 @@ view req opts =
                 , disabled = False
                 , onChange = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-slider"

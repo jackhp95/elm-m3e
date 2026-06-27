@@ -46,26 +46,21 @@ type Side
     | End
 
 
-type Option msg
-    = Open Bool
-    | SideOpt Side
-    | Modal Bool
-    | OnClose msg
-    | Body (List (Node.Node msg))
-    | Actions (List (Renderable { button : Supported } msg))
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 {-| Whether the side sheet is open. Maps to the `start` or `end` DOM property
 (depending on the `side` option). Default false. -}
 open : Bool -> Option msg
-open =
-    Open
+open b =
+    Internal.option (\c -> { c | open = b })
 
 
 {-| Which edge the sheet anchors to. Default `End`. -}
 side : Side -> Option msg
-side =
-    SideOpt
+side s =
+    Internal.option (\c -> { c | side = s })
 
 
 {-| Modal mode (scrim + dismisses on click-outside) vs non-modal (occupies
@@ -73,16 +68,16 @@ layout). Modal → `end-mode="over"` (or `start-mode="over"`); non-modal →
 `"side"`. Default false (non-modal).
 -}
 modal : Bool -> Option msg
-modal =
-    Modal
+modal b =
+    Internal.option (\c -> { c | modal = b })
 
 
 {-| Handler fired when the sheet closes (Fix A8: only on the closed
 transition, not on every `change` event).
 -}
 onClose : msg -> Option msg
-onClose =
-    OnClose
+onClose m =
+    Internal.option (\c -> { c | onClose = Just m })
 
 
 {-| Content for the sheet's panel (rendered into the start/end slot above any
@@ -90,13 +85,13 @@ action buttons).
 -}
 body : List (Renderable any msg) -> Option msg
 body xs =
-    Body (List.map Renderable.toNode xs)
+    Internal.option (\c -> { c | body = List.map Renderable.toNode xs })
 
 
 {-| Action buttons rendered at the bottom of the panel. -}
 actions : List (Renderable { button : Supported } msg) -> Option msg
-actions =
-    Actions
+actions xs =
+    Internal.option (\c -> { c | actions = xs })
 
 
 type alias Config msg =
@@ -120,28 +115,6 @@ defaultConfig =
     }
 
 
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        Open b ->
-            { c | open = b }
-
-        SideOpt s ->
-            { c | side = s }
-
-        Modal b ->
-            { c | modal = b }
-
-        OnClose m ->
-            { c | onClose = Just m }
-
-        Body nodes ->
-            { c | body = nodes }
-
-        Actions xs ->
-            { c | actions = xs }
-
-
 {-| Render the side sheet as an introspectable IR node.
 
     M3e.SideSheet.view
@@ -161,7 +134,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-drawer-container"

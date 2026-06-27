@@ -47,37 +47,26 @@ type Variant
     | Outlined
 
 
-type Option msg
-    = VariantOpt Variant
-    | Disabled Bool
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Set the appearance variant (default `Filled`). -}
 variant : Variant -> Option msg
-variant =
-    VariantOpt
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 {-| Disable both the leading and trailing buttons. -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 type alias Config =
     { variant : Variant
     , disabled : Bool
     }
-
-
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        VariantOpt v ->
-            { c | variant = v }
-
-        Disabled b ->
-            { c | disabled = b }
 
 
 view :
@@ -92,7 +81,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply { variant = Filled, disabled = False } opts
+            Internal.applyOptions opts { variant = Filled, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
         leadingButton =

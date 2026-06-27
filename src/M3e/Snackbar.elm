@@ -47,12 +47,8 @@ import M3e.Internal as Internal
 -- OPTION TYPE -------------------------------------------------------------
 
 
-type Option msg
-    = WithId String
-    | Action String
-    | Dismissible Bool
-    | CloseLabel String
-    | Duration Int
+type alias Option msg =
+    Internal.Option Config msg
 
 
 -- SMART CONSTRUCTORS (OPTIONS) --------------------------------------------
@@ -60,35 +56,35 @@ type Option msg
 
 {-| Set the `id` attribute on the `<m3e-snackbar>` element. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Set the snackbar's action button label (the `action` attribute; no action
 button rendered when absent). -}
 action : String -> Option msg
-action =
-    Action
+action s =
+    Internal.option (\c -> { c | action = Just s })
 
 
 {-| Show a close button (the `dismissible` DOM property; default `false`). -}
 dismissible : Bool -> Option msg
-dismissible =
-    Dismissible
+dismissible b =
+    Internal.option (\c -> { c | dismissible = b })
 
 
 {-| Set the close button's accessible label (the `close-label` attribute;
 element default `"Close"`). Only rendered with `dismissible True`. -}
 closeLabel : String -> Option msg
-closeLabel =
-    CloseLabel
+closeLabel s =
+    Internal.option (\c -> { c | closeLabel = Just s })
 
 
 {-| Set the auto-dismiss duration in milliseconds (the `duration` DOM property;
 element default 3000 ms). -}
 duration : Int -> Option msg
-duration =
-    Duration
+duration ms =
+    Internal.option (\c -> { c | duration = Just ms })
 
 
 -- VIEW --------------------------------------------------------------------
@@ -113,7 +109,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl applyOption defaultConfig opts
+            Internal.applyOptions opts defaultConfig
     in
     Internal.fromNode
         (Node.element "m3e-snackbar"
@@ -155,20 +151,3 @@ defaultConfig =
     }
 
 
-applyOption : Option msg -> Config -> Config
-applyOption opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        Action s ->
-            { c | action = Just s }
-
-        Dismissible b ->
-            { c | dismissible = b }
-
-        CloseLabel s ->
-            { c | closeLabel = Just s }
-
-        Duration ms ->
-            { c | duration = Just ms }

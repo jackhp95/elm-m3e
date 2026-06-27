@@ -33,29 +33,27 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 import M3e.Internal as Internal
 
 
-type Option msg
-    = Disabled Bool
-    | Vertical Bool
-    | Threshold Float
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Disable the pagination buttons (content still renders, controls go inert). -}
 disabled : Bool -> Option msg
-disabled =
-    Disabled
+disabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Set vertical orientation — content flows top-to-bottom (default: false). -}
 vertical : Bool -> Option msg
-vertical =
-    Vertical
+vertical b =
+    Internal.option (\c -> { c | vertical = b })
 
 
 {-| Scroll threshold in pixels at which the pagination controls begin to show
 (default: 0). -}
 threshold : Float -> Option msg
-threshold =
-    Threshold
+threshold px =
+    Internal.option (\c -> { c | threshold = Just px })
 
 
 type alias Config =
@@ -63,19 +61,6 @@ type alias Config =
     , vertical : Bool
     , threshold : Maybe Float
     }
-
-
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Disabled b ->
-            { c | disabled = b }
-
-        Vertical b ->
-            { c | vertical = b }
-
-        Threshold px ->
-            { c | threshold = Just px }
 
 
 {-| Wrap arbitrary content in an `<m3e-slide>` element — the child unit of a
@@ -97,9 +82,8 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { disabled = False, vertical = False, threshold = Nothing }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-slide-group"

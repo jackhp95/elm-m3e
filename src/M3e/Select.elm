@@ -43,22 +43,18 @@ import M3e.Internal as Internal
 -- TYPES -----------------------------------------------------------------------
 
 
+type alias OptionConfig =
+    { selected : Bool, disabled : Bool }
+
+
 {-| Options on an individual `<m3e-option>`. -}
-type OptionOption msg
-    = OptionSelected Bool
-    | OptionDisabled Bool
+type alias OptionOption msg =
+    Internal.Option OptionConfig msg
 
 
 {-| Options on the `<m3e-select>` container. -}
-type Option msg
-    = WithId String
-    | WithMulti Bool
-    | WithRequired Bool
-    | WithDisabled Bool
-    | OnChange (String -> msg)
-    | WithOptions (List (Renderable { selectOption : Supported } msg))
-    | WithHint (Html msg)
-    | WithError (Html msg)
+type alias Option msg =
+    Internal.Option (Config msg) msg
 
 
 type alias Config msg =
@@ -93,14 +89,14 @@ defaultConfig =
 `<m3e-option>`.
 -}
 optionSelected : Bool -> OptionOption msg
-optionSelected =
-    OptionSelected
+optionSelected b =
+    Internal.option (\c -> { c | selected = b })
 
 
 {-| Disable this option. -}
 optionDisabled : Bool -> OptionOption msg
-optionDisabled =
-    OptionDisabled
+optionDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 -- OPTION CONSTRUCTORS (CONTAINER) ---------------------------------------------
@@ -108,42 +104,42 @@ optionDisabled =
 
 {-| Set the `id` attribute on the `<m3e-select>`. -}
 withId : String -> Option msg
-withId =
-    WithId
+withId s =
+    Internal.option (\c -> { c | id = Just s })
 
 
 {-| Enable multi-select (sets the `multi` DOM property on `<m3e-select>`).
 Default `False`.
 -}
 withMulti : Bool -> Option msg
-withMulti =
-    WithMulti
+withMulti b =
+    Internal.option (\c -> { c | multi = b })
 
 
 {-| Mark the select as required. -}
 withRequired : Bool -> Option msg
-withRequired =
-    WithRequired
+withRequired b =
+    Internal.option (\c -> { c | required = b })
 
 
 {-| Disable the select. -}
 withDisabled : Bool -> Option msg
-withDisabled =
-    WithDisabled
+withDisabled b =
+    Internal.option (\c -> { c | disabled = b })
 
 
 {-| Handle selection changes. The handler receives the value string of the
 newly selected option (from `event.target.value` on the `change` event).
 -}
 onChange : (String -> msg) -> Option msg
-onChange =
-    OnChange
+onChange f =
+    Internal.option (\c -> { c | onChange = Just f })
 
 
 {-| Supply the list of options to render inside `<m3e-select>`. -}
 withOptions : List (Renderable { selectOption : Supported } msg) -> Option msg
-withOptions =
-    WithOptions
+withOptions os =
+    Internal.option (\c -> { c | options = os })
 
 
 -- ITEM CONSTRUCTOR ------------------------------------------------------------
@@ -162,38 +158,15 @@ option :
     -> Renderable { selectOption : Supported } msg
 option req opts =
     let
-        selected =
-            List.foldl
-                (\o acc ->
-                    case o of
-                        OptionSelected b ->
-                            b
-
-                        _ ->
-                            acc
-                )
-                False
-                opts
-
-        disabled =
-            List.foldl
-                (\o acc ->
-                    case o of
-                        OptionDisabled b ->
-                            b
-
-                        _ ->
-                            acc
-                )
-                False
-                opts
+        oc =
+            Internal.applyOptions opts { selected = False, disabled = False }
     in
     Internal.fromNode
         (Node.element "m3e-option"
             (List.filterMap identity
                 [ Just (Node.attribute "value" req.value)
-                , Just (Node.property "selected" (Encode.bool selected))
-                , if disabled then
+                , Just (Node.property "selected" (Encode.bool oc.selected))
+                , if oc.disabled then
                     Just (Node.property "disabled" (Encode.bool True))
 
                   else
@@ -230,7 +203,7 @@ view :
 view req opts =
     let
         c =
-            List.foldl apply defaultConfig opts
+            Internal.applyOptions opts defaultConfig
 
         id =
             Maybe.withDefault (slugify req.label) c.id
@@ -287,34 +260,6 @@ view req opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-apply : Option msg -> Config msg -> Config msg
-apply opt c =
-    case opt of
-        WithId s ->
-            { c | id = Just s }
-
-        WithMulti b ->
-            { c | multi = b }
-
-        WithRequired b ->
-            { c | required = b }
-
-        WithDisabled b ->
-            { c | disabled = b }
-
-        OnChange f ->
-            { c | onChange = Just f }
-
-        WithOptions os ->
-            { c | options = os }
-
-        WithHint h ->
-            { c | hint = Just h }
-
-        WithError h ->
-            { c | error = Just h }
 
 
 {-| Derive a fallback id from the label text. -}

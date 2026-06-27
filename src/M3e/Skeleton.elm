@@ -48,10 +48,8 @@ type Animation
     | Wave
 
 
-type Option msg
-    = Loaded Bool
-    | ShapeOpt Shape
-    | AnimationOpt Animation
+type alias Option msg =
+    Internal.Option Config msg
 
 
 {-| Mark the skeleton's content as loaded (default `False`). When `True`,
@@ -59,23 +57,23 @@ the element fades out the shimmer and reveals its projected content.
 Maps to the `loaded` DOM property.
 -}
 loaded : Bool -> Option msg
-loaded =
-    Loaded
+loaded b =
+    Internal.option (\c -> { c | loaded = b })
 
 
 {-| Set the placeholder shape (default `Auto`). Maps to the `shape` attribute.
 -}
 shape : Shape -> Option msg
-shape =
-    ShapeOpt
+shape s =
+    Internal.option (\c -> { c | shape = Just s })
 
 
 {-| Set the loading animation (default `Wave`). Maps to the `animation`
 attribute.
 -}
 animation : Animation -> Option msg
-animation =
-    AnimationOpt
+animation a =
+    Internal.option (\c -> { c | animation = Just a })
 
 
 type alias Config =
@@ -85,29 +83,15 @@ type alias Config =
     }
 
 
-apply : Option msg -> Config -> Config
-apply opt c =
-    case opt of
-        Loaded b ->
-            { c | loaded = b }
-
-        ShapeOpt s ->
-            { c | shape = Just s }
-
-        AnimationOpt a ->
-            { c | animation = Just a }
-
-
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | skeleton : Supported } msg
 view req opts =
     let
         c =
-            List.foldl apply
+            Internal.applyOptions opts
                 { loaded = False
                 , shape = Nothing
                 , animation = Nothing
                 }
-                opts
     in
     Internal.fromNode
         (Node.element "m3e-skeleton"
