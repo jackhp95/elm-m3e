@@ -62,12 +62,15 @@ suite =
         , test "input 'id' matches label 'for'" <|
             \_ ->
                 let
+                    node : Node.Node String
                     node =
                         viewNode []
 
+                    labelFor : Maybe String
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
 
+                    inputId : Maybe String
                     inputId =
                         inputChild node |> Maybe.andThen (Node.findAttribute "id")
                 in
@@ -75,12 +78,15 @@ suite =
         , test "id overrides the derived id on label and input" <|
             \_ ->
                 let
+                    node : Node.Node String
                     node =
                         viewNode [ TimePicker.id "meeting-t" ]
 
+                    labelFor : Maybe String
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
 
+                    inputId : Maybe String
                     inputId =
                         inputChild node |> Maybe.andThen (Node.findAttribute "id")
                 in
@@ -144,14 +150,14 @@ suite =
             \_ ->
                 viewNode [ TimePicker.hint (Html.text "24-hour format") ]
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "hint")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "hint")
+                    |> not
                     |> Expect.equal False
         , test "error adds a child with slot='error'" <|
             \_ ->
                 viewNode [ TimePicker.error (Html.text "Invalid time") ]
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "error")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "error")
+                    |> not
                     |> Expect.equal False
         ]

@@ -92,10 +92,12 @@ view :
     -> Renderable { s | splitButton : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts { variant = Filled, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
+        leadingButton : Node.Node msg
         leadingButton =
             Button.view
                 { label = req.label, variant = toButtonVariant c.variant }
@@ -112,6 +114,7 @@ view req opts =
                 |> Node.withSlot "leading-button"
 
         -- Trailing button: m3e-icon-button (FIX #16 — not a native <button>)
+        trailingButton : Node.Node msg
         trailingButton =
             Node.element "m3e-icon-button"
                 (List.filterMap identity

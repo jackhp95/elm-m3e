@@ -98,11 +98,13 @@ segment :
     -> Renderable { s | segment : Supported } msg
 segment req opts =
     let
+        c : SegmentConfig msg
         c =
             List.foldl applySegment
                 { disabled = False, onClick = Nothing, value = Nothing }
                 opts
 
+        domValue : String
         domValue =
             Maybe.withDefault req.label c.value
     in
@@ -175,6 +177,7 @@ view :
     -> Renderable { s | segmentedButton : Supported } msg
 view req opts =
     let
+        c : ParentConfig
         c =
             List.foldl applyParent
                 { disabled = False, multi = False }

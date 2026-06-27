@@ -22,6 +22,7 @@ suite =
         [ test "label[for] and control[id] wired to the same generated id" <|
             \_ ->
                 let
+                    node : Node.Node msg
                     node =
                         Field.view
                             { id = "field-email"
@@ -29,6 +30,7 @@ suite =
                             , control = inputElement
                             }
 
+                    kids : List (Node.Node msg)
                     kids =
                         Node.childrenOf node
                 in

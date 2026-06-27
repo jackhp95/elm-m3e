@@ -8,8 +8,7 @@ when it becomes a package.
 
 -}
 
-import Char
-import M3e.Node as Node exposing (Node)
+import M3e.Node exposing (Node)
 
 
 type Renderable supported msg

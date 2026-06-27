@@ -39,7 +39,6 @@ module emits `Node.attribute "slot" "actions"` directly and does NOT use
 -}
 
 import Cem.M3e.Stepper as CemStepper
-import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -210,6 +209,7 @@ defaultStepConfig =
 step : { label : String } -> List (StepOption msg) -> Renderable { s | step : Supported } msg
 step req opts =
     let
+        c : StepConfig
         c =
             Internal.applyOptions opts defaultStepConfig
     in
@@ -282,6 +282,7 @@ defaultPanelConfig =
 stepPanel : { content : List (Renderable any msg) } -> List (PanelOption msg) -> Renderable { s | stepPanel : Supported } msg
 stepPanel req opts =
     let
+        c : PanelConfig msg
         c =
             Internal.applyOptions opts defaultPanelConfig
     in
@@ -365,6 +366,7 @@ view :
     -> Renderable { s | stepper : Supported } msg
 view req opts =
     let
+        c : StripConfig
         c =
             Internal.applyOptions opts defaultStripConfig
     in

@@ -46,9 +46,6 @@ confusing names. Here the options are clearly named:
 
 @docs open, onClose, alert, closeButton, dismissible, closeLabel, actions
 
-
-# View
-
 @docs view
 
 -}
@@ -166,6 +163,7 @@ view :
     -> Renderable { s | dialog : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaultConfig
     in

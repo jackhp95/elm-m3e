@@ -236,6 +236,7 @@ honoured by this element and is therefore not available here.
 view : { label : String } -> List (ViewOption msg) -> Renderable { s | chip : Supported } msg
 view req opts =
     let
+        vc : ViewConfig msg
         vc =
             Internal.applyOptions opts defaultViewConfig
     in
@@ -289,9 +290,11 @@ otherwise the required `onClick`.
 genericChip : String -> String -> msg -> List (Option msg) -> Renderable { s | chip : Supported } msg
 genericChip tag label clickMsg opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts { defaultConfig | onClick = Just clickMsg }
 
+        action : Maybe (Node.Attr msg)
         action =
             case c.href of
                 Just url ->
@@ -329,6 +332,7 @@ filter :
     -> Renderable { s | chip : Supported } msg
 filter req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaultConfig
     in
@@ -366,6 +370,7 @@ input :
     -> Renderable { s | chip : Supported } msg
 input req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaultConfig
     in

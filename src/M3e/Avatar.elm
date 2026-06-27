@@ -27,9 +27,6 @@ An avatar with no content option renders an empty circle.
 
 @docs Option
 
-
-# View
-
 @docs view
 
 
@@ -93,9 +90,11 @@ iconChild icon =
 view : { alt : String } -> List (Option msg) -> Renderable { s | avatar : Supported } msg
 view req opts =
     let
+        content : Content msg
         content =
             Internal.applyOptions opts NoContent
 
+        children : List (Node.Node msg)
         children =
             case content of
                 ImgContent src ->

@@ -67,9 +67,11 @@ suite =
         , test "different messages produce different nodes (sanity)" <|
             \_ ->
                 let
+                    n1 : Node.Node msg
                     n1 =
                         Snackbar.view { message = "Saved." } [] |> Renderable.toNode
 
+                    n2 : Node.Node msg
                     n2 =
                         Snackbar.view { message = "Deleted." } [] |> Renderable.toNode
                 in

@@ -138,6 +138,7 @@ view :
     -> Renderable { s | extendedFab : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { size = Medium

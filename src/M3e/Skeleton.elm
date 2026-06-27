@@ -105,6 +105,7 @@ type alias Config msg =
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | skeleton : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { loaded = False

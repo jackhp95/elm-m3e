@@ -66,12 +66,15 @@ suite =
         , test "m3e-select child has 'id' matching the label's 'for' (fix #13)" <|
             \_ ->
                 let
+                    node : Node.Node String
                     node =
                         viewNode []
 
+                    labelFor : Maybe String
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
 
+                    selectId : Maybe String
                     selectId =
                         selectChild node |> Maybe.andThen (Node.findAttribute "id")
                 in
@@ -84,12 +87,15 @@ suite =
         , test "id overrides derived id on both label 'for' and select 'id'" <|
             \_ ->
                 let
+                    node : Node.Node String
                     node =
                         viewNode [ Select.id "plan-sel" ]
 
+                    labelFor : Maybe String
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
 
+                    selectId : Maybe String
                     selectId =
                         selectChild node |> Maybe.andThen (Node.findAttribute "id")
                 in

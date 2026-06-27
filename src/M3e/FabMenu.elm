@@ -119,11 +119,13 @@ view :
     -> Renderable { s | fabMenu : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts
                 { variant = Primary, menuId = "fab-menu" }
 
         -- The FAB trigger: m3e-fab with aria-label + icon + menu-trigger inside
+        fabTrigger : Node.Node msg
         fabTrigger =
             Node.element "m3e-fab"
                 [ Node.attribute "aria-label" req.name ]
@@ -138,6 +140,7 @@ view req opts =
                 ]
 
         -- The FAB menu: m3e-fab-menu with id + variant + items
+        fabMenu : Node.Node msg
         fabMenu =
             Node.element "m3e-fab-menu"
                 [ Node.attribute "id" c.menuId

@@ -39,9 +39,6 @@ This is cleaner and avoids the confusing split API.
 
 @docs section, sectionOpen, sectionDisabled, sectionHideToggle, sectionOnToggle, sectionActions
 
-
-# View
-
 @docs view, multi
 
 -}
@@ -149,6 +146,7 @@ section :
     -> Renderable { s | section : Supported } msg
 section req opts =
     let
+        c : SectionConfig msg
         c =
             Internal.applyOptions opts defaultSectionConfig
     in
@@ -223,6 +221,7 @@ view :
     -> Renderable { s | disclosure : Supported } msg
 view req opts =
     let
+        c : AccordionConfig
         c =
             Internal.applyOptions opts defaultAccordionConfig
     in

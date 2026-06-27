@@ -142,6 +142,7 @@ view :
     -> Renderable { s | sideSheet : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaultConfig
     in
@@ -206,6 +207,7 @@ just CLOSED (the relevant DOM property is now false). A generic
 closedDecoder : Side -> msg -> Node.Attr msg
 closedDecoder s msg =
     let
+        prop : String
         prop =
             case s of
                 Start ->
@@ -232,6 +234,7 @@ closedDecoder s msg =
 panelNode : Config msg -> Node.Node msg
 panelNode c =
     let
+        slotName : String
         slotName =
             case c.side of
                 Start ->

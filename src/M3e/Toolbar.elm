@@ -122,6 +122,7 @@ view :
     -> Renderable { s | toolbar : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts defaultConfig
     in

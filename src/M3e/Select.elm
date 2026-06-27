@@ -41,7 +41,7 @@ import Html exposing (Html)
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
-import M3e.Node as Node exposing (Node)
+import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
@@ -174,6 +174,7 @@ option :
     -> Renderable { selectOption : Supported } msg
 option req opts =
     let
+        oc : OptionConfig
         oc =
             Internal.applyOptions opts { selected = False, disabled = False }
     in
@@ -219,9 +220,11 @@ view :
     -> Renderable { s | select : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaultConfig
 
+        fieldId : String
         fieldId =
             Maybe.withDefault (slugify req.label) c.id
     in

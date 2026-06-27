@@ -127,6 +127,7 @@ item :
     -> Renderable { s | breadcrumbItem : Supported } msg
 item req opts =
     let
+        c : ItemConfig msg
         c =
             Internal.applyOptions opts
                 { href = Nothing
@@ -196,6 +197,7 @@ view :
     -> Renderable { s | breadcrumb : Supported } msg
 view req opts =
     let
+        c : BreadcrumbConfig
         c =
             Internal.applyOptions opts { wrap = False }
     in

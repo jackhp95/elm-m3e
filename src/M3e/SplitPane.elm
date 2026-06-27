@@ -98,6 +98,7 @@ view :
     -> Renderable { s | splitPane : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts
                 { orientation = Horizontal, disabled = False, label = Nothing }

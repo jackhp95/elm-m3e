@@ -45,7 +45,7 @@ import Cem.M3e.Snackbar as CemSnackbar
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 
@@ -122,6 +122,7 @@ view :
     -> Renderable { s | snackbar : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts defaultConfig
     in

@@ -34,9 +34,6 @@ Note on `checked`: `Cem.M3e.Checkbox.checked` delegates to
 
 @docs checked, indeterminate, disabled, onChange
 
-
-# View
-
 @docs view
 
 -}
@@ -45,7 +42,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 type alias Config msg =
@@ -97,6 +94,7 @@ checkbox renders with no visible text).
 view : { name : String } -> List (Option msg) -> Renderable { s | checkbox : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { checked = False

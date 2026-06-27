@@ -287,6 +287,7 @@ item :
     -> Renderable { listItem : Supported } msg
 item req opts =
     let
+        c : StaticConfig msg
         c =
             Internal.applyOptions opts defaultStaticConfig
     in
@@ -311,6 +312,7 @@ actionItem :
     -> Renderable { listItem : Supported } msg
 actionItem req opts =
     let
+        c : ActionConfig msg
         c =
             Internal.applyOptions opts defaultActionConfig
     in
@@ -343,6 +345,7 @@ option :
     -> Renderable { listItem : Supported } msg
 option req opts =
     let
+        c : OptionConfig msg
         c =
             Internal.applyOptions opts defaultOptionConfig
     in
@@ -393,9 +396,11 @@ expandable :
     -> Renderable { listItem : Supported } msg
 expandable req opts =
     let
+        c : ExpandableConfig msg
         c =
             Internal.applyOptions opts defaultExpandableConfig
 
+        childNodes : List (Node.Node msg)
         childNodes =
             List.map (Node.withSlot "items" << Renderable.toNode) req.children
     in
@@ -443,6 +448,7 @@ view :
     -> Renderable { s | list : Supported } msg
 view req opts =
     let
+        c : ContainerConfig
         c =
             Internal.applyOptions opts defaultContainerConfig
     in

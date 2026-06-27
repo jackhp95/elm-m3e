@@ -10,7 +10,7 @@ Option-less, so `view` takes only its required record.
 
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Build the `<m3e-icon>` IR node. The `name` is the Material Symbol glyph

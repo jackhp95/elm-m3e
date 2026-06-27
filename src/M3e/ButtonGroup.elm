@@ -24,9 +24,6 @@ Spec (per docs/CONVENTIONS.md):
 
 @docs Option, Variant, Size
 
-
-# View
-
 @docs view
 
 
@@ -104,6 +101,7 @@ view :
     -> Renderable { s | buttonGroup : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts
                 { variant = Standard, size = Small, multi = False }

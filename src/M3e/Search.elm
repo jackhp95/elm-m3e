@@ -133,6 +133,7 @@ defaults =
 view : { placeholder : String } -> List (Option msg) -> Renderable { s | search : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaults
     in

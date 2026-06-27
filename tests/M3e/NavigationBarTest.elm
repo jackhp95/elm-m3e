@@ -64,7 +64,7 @@ suite =
                 barItem "Inbox" []
                     |> Renderable.toNode
                     |> Node.childrenOf
-                    |> List.any (\n -> n == Node.text "Inbox")
+                    |> List.member (Node.text "Inbox")
                     |> Expect.equal True
         , test "selected=false is emitted as DOM property by default" <|
             \_ ->

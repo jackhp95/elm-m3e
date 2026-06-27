@@ -87,6 +87,7 @@ view :
     -> Renderable { s | scrollContainer : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts { dividers = AboveBelow, thin = False, attributes = [] }
     in

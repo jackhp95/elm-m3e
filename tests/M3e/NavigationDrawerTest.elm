@@ -142,6 +142,7 @@ suite =
         , test "content option adds extra children after nav-menu" <|
             \_ ->
                 let
+                    n : Node.Node msg
                     n =
                         NavigationDrawer.view
                             { entries = [] }
@@ -156,6 +157,7 @@ suite =
         , test "entries become children of <m3e-nav-menu>" <|
             \_ ->
                 let
+                    node : Node.Node msg
                     node =
                         NavigationDrawer.view
                             { entries =
@@ -220,8 +222,8 @@ suite =
             \_ ->
                 linkNode [ NavigationDrawer.linkBadge "3" ]
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "badge")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "badge")
+                    |> not
                     |> Expect.equal False
         , test "link: linkIcon prepends a child with slot='icon'" <|
             \_ ->
@@ -234,8 +236,8 @@ suite =
             \_ ->
                 linkNode []
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "icon")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "icon")
+                    |> not
                     |> Expect.equal True
 
         -- group
@@ -285,8 +287,8 @@ suite =
             \_ ->
                 groupNode [] [ NavigationDrawer.groupBadge "5" ]
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "badge")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "badge")
+                    |> not
                     |> Expect.equal False
         , test "group: icon gets slot='icon' injected" <|
             \_ ->
@@ -300,20 +302,23 @@ suite =
         , test "group children appear as children of the group item" <|
             \_ ->
                 let
+                    child : Node.Node msg
                     child =
                         NavigationDrawer.link { label = "Child", href = "/child" } []
                             |> Renderable.toNode
 
+                    g : Node.Node String
                     g =
                         groupNode [ child ] []
                 in
                 Node.childrenOf g
-                    |> List.filter (\n -> Node.tagOf n == Just "m3e-nav-menu-item")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.tagOf n == Just "m3e-nav-menu-item")
+                    |> not
                     |> Expect.equal False
         , test "nested group: child count matches" <|
             \_ ->
                 let
+                    children : List (Node.Node msg)
                     children =
                         [ NavigationDrawer.link { label = "A", href = "/a" } []
                             |> Renderable.toNode
@@ -321,6 +326,7 @@ suite =
                             |> Renderable.toNode
                         ]
 
+                    g : Node.Node String
                     g =
                         groupNode children []
                 in

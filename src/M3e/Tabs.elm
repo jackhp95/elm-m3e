@@ -170,6 +170,7 @@ defaultTabConfig =
 tab : { label : String } -> List (TabOption msg) -> Renderable { t | tab : Supported } msg
 tab req opts =
     let
+        c : TabConfig msg
         c =
             Internal.applyOptions opts defaultTabConfig
     in
@@ -213,6 +214,7 @@ defaultPanelConfig =
 panel : { content : List (Renderable any msg) } -> List (PanelOption msg) -> Renderable { p | tabPanel : Supported } msg
 panel req opts =
     let
+        c : PanelConfig
         c =
             Internal.applyOptions opts defaultPanelConfig
     in
@@ -273,6 +275,7 @@ view :
     -> Renderable { s | tabs : Supported } msg
 view req opts =
     let
+        c : StripConfig
         c =
             Internal.applyOptions opts defaultStripConfig
     in

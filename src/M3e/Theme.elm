@@ -159,6 +159,7 @@ derived color, density, motion, and focus tokens apply to that subtree.
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | theme : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { seedColor = Nothing

@@ -153,6 +153,7 @@ item :
     -> Renderable { navItem : Supported } msg
 item req opts =
     let
+        c : ItemConfig msg
         c =
             Internal.applyOptions opts defaultItemConfig
     in
@@ -203,6 +204,7 @@ view :
     -> Renderable { s | navRail : Supported } msg
 view req opts =
     let
+        c : ContainerConfig
         c =
             Internal.applyOptions opts defaultConfig
     in

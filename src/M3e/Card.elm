@@ -36,9 +36,6 @@ working: with only `body` set, the card's children are exactly the body items.
 
 @docs variant, actionable, inline, media, headline, subhead, body, actions, footer
 
-
-# View
-
 @docs view
 
 -}
@@ -172,6 +169,7 @@ footer item =
 view : List (Option msg) -> Renderable { s | card : Supported } msg
 view opts =
     let
+        cfg : Config msg
         cfg =
             Internal.applyOptions opts defaultConfig
     in

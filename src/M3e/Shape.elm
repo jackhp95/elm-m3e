@@ -76,6 +76,7 @@ type alias Config msg =
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | shape : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts { name = Nothing, attributes = [] }
     in

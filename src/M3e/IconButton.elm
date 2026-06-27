@@ -262,6 +262,7 @@ text fallback).
 view : { icon : String, name : String } -> List (Option msg) -> Renderable { s | iconButton : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaults
     in

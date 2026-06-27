@@ -44,6 +44,7 @@ suite =
         , test "default side is End — 'end' property present, 'start' absent" <|
             \_ ->
                 let
+                    n : Node.Node msg
                     n =
                         node []
                 in
@@ -99,6 +100,7 @@ suite =
             \_ ->
                 let
                     -- A simple count: open + mode + onClose = 3 attrs total
+                    attrCount : Int
                     attrCount =
                         SideSheet.view { content = [] } [ SideSheet.onClose () ]
                             |> Renderable.toNode

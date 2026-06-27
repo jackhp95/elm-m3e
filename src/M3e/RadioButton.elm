@@ -42,7 +42,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Configuration option for a radio group, built by the helpers below.
@@ -93,6 +93,7 @@ view :
     -> Renderable { s | radioButton : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { disabled = False, required = False, onChange = Nothing }
@@ -126,6 +127,7 @@ renderOption :
     -> Node.Node msg
 renderOption groupName selected cfg opt =
     let
+        isChecked : Bool
         isChecked =
             selected == Just opt.value
     in

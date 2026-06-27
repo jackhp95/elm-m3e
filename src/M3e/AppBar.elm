@@ -31,9 +31,6 @@ slot can never be silently dropped.
 
 @docs Option, Size, Leading, Title, Trailing
 
-
-# View
-
 @docs view
 
 
@@ -201,6 +198,7 @@ trailing items =
 view : List (Option msg) -> Renderable { s | appBar : Supported } msg
 view opts =
     let
+        cfg : Config msg
         cfg =
             Internal.applyOptions opts defaultConfig
     in

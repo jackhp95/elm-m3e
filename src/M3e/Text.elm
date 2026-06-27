@@ -36,7 +36,7 @@ primitive.
 
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| The M3 typescale role this text renders at — the **body** and **label**
@@ -121,9 +121,11 @@ to switch the element from `<p>` to `<span>`.
 view : { content : String, role : Role } -> List (Option msg) -> Renderable { s | text : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts { inline = False }
 
+        tag : String
         tag =
             if c.inline then
                 "span"

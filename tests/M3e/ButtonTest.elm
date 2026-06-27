@@ -9,6 +9,7 @@ import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
+node : String -> List (Button.Option msg) -> Node.Node msg
 node label opts =
     Button.view { label = label, variant = Button.Filled } opts |> Renderable.toNode
 

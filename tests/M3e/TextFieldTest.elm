@@ -53,12 +53,15 @@ suite =
         , test "control child has 'id' matching the label 'for'" <|
             \_ ->
                 let
+                    node : Node.Node String
                     node =
                         viewNode []
 
+                    labelFor : Maybe String
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
 
+                    controlId : Maybe String
                     controlId =
                         controlChild node |> Maybe.andThen (Node.findAttribute "id")
                 in
@@ -66,12 +69,15 @@ suite =
         , test "id overrides the derived id on both label and input" <|
             \_ ->
                 let
+                    node : Node.Node String
                     node =
                         viewNode [ TextField.id "my-email" ]
 
+                    labelFor : Maybe String
                     labelFor =
                         labelChild node |> Maybe.andThen (Node.findAttribute "for")
 
+                    controlId : Maybe String
                     controlId =
                         controlChild node |> Maybe.andThen (Node.findAttribute "id")
                 in
@@ -185,14 +191,14 @@ suite =
             \_ ->
                 viewNode [ TextField.hint (Html.text "Optional") ]
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "hint")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "hint")
+                    |> not
                     |> Expect.equal False
         , test "error adds a child with slot='error'" <|
             \_ ->
                 viewNode [ TextField.error (Html.text "Required") ]
                     |> Node.childrenOf
-                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "error")
-                    |> List.isEmpty
+                    |> List.any (\n -> Node.findAttribute "slot" n == Just "error")
+                    |> not
                     |> Expect.equal False
         ]

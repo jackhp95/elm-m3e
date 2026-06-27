@@ -37,7 +37,7 @@ import Cem.M3e.LinearProgressIndicator as CemLinear
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Selects the rendered element. `Linear` draws `<m3e-linear-progress-indicator>`;
@@ -110,6 +110,7 @@ without a `value` option the indicator is indeterminate.
 view : { shape : Shape } -> List (Option msg) -> Renderable { s | progress : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { value = Nothing

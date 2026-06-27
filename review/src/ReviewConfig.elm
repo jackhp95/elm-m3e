@@ -66,30 +66,35 @@ ignoreVendor =
 unused : List Rule
 unused =
     [ NoUnused.Variables.rule |> ignoreVendor
-    , NoUnused.CustomTypeConstructors.rule [] |> ignoreVendor |> ignoreUiPublicApi
+    , NoUnused.CustomTypeConstructors.rule [] |> ignoreVendor |> ignorePublicApi
     , NoUnused.CustomTypeConstructorArgs.rule |> ignoreVendor
-    , NoUnused.Exports.rule |> ignoreVendor |> ignoreUiPublicApi
-    , NoUnused.Modules.rule |> ignoreVendor |> ignoreUiPublicApi
+    , NoUnused.Exports.rule |> ignoreVendor |> ignorePublicApi
+    , NoUnused.Modules.rule |> ignoreVendor |> ignorePublicApi
     , NoUnused.Parameters.rule |> ignoreVendor
     , NoUnused.Patterns.rule |> ignoreVendor
     ]
 
 
 {-| A published library's whole point is exports/modules/constructors that are
-unused _by itself_ — every `Ui.*` value and every exposed `Variant(..)`-style
+unused _by itself_ — every `M3e.*` value and every exposed `Variant(..)`-style
 constructor exists for consumers we cannot see in this repo.
 
 Reviewing the library in isolation (no docs app, no consuming app) makes
 `NoUnused.Exports`, `NoUnused.Modules`, and `NoUnused.CustomTypeConstructors`
-fire on the entire public API. We ignore `src/Ui/` for those rules so they
+fire on the entire public API. We ignore `src/M3e/` for those rules so they
 still catch genuinely-dead code in any non-public helper directories while
 leaving the public surface alone. (`vendor/` is ignored too — generated
 bindings are equally "unused-by-self".) See README §"Relaxed rules".
 
+`NoMissingTypeExpose` is relaxed here for the same directory: each component's
+`type alias Option msg = Internal.Option (Config msg) msg` deliberately keeps
+`Config` private (the opaque-builder design, ADR 0006), which the rule reads as
+a "private type used by an exposed type". Hiding `Config` is the point.
+
 -}
-ignoreUiPublicApi : Rule -> Rule
-ignoreUiPublicApi =
-    Rule.ignoreErrorsForDirectories [ "src/Ui/" ]
+ignorePublicApi : Rule -> Rule
+ignorePublicApi =
+    Rule.ignoreErrorsForDirectories [ "src/M3e/" ]
 
 
 
@@ -102,7 +107,7 @@ common =
     , NoImportingEverything.rule [] |> ignoreVendor
     , NoMissingTypeAnnotation.rule |> ignoreVendor
     , NoMissingTypeAnnotationInLetIn.rule |> ignoreVendor
-    , NoMissingTypeExpose.rule |> ignoreVendor
+    , NoMissingTypeExpose.rule |> ignoreVendor |> ignorePublicApi
     , NoConfusingPrefixOperator.rule
     , NoPrematureLetComputation.rule
     ]

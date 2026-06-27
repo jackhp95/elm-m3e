@@ -64,7 +64,7 @@ suite =
                 railItem "Settings" []
                     |> Renderable.toNode
                     |> Node.childrenOf
-                    |> List.any (\n -> n == Node.text "Settings")
+                    |> List.member (Node.text "Settings")
                     |> Expect.equal True
         , test "selected=false is emitted as DOM property by default" <|
             \_ ->

@@ -29,9 +29,6 @@ per ADR 0006 / the prior NoActionlessButton design).
 
 @docs Option, Variant, Size, Shape
 
-
-# View
-
 @docs view
 
 
@@ -45,7 +42,7 @@ import Cem.M3e.Button as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Internal as Internal
-import M3e.Node as Node exposing (Node)
+import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
@@ -174,6 +171,7 @@ accessible name; `variant` selects the M3 button style.
 view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | button : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { size = Small

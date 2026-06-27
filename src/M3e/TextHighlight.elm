@@ -96,6 +96,7 @@ default slot, with substrings matching the configured `term` highlighted.
 view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | textHighlight : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts
                 { term = Nothing

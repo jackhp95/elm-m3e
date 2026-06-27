@@ -31,7 +31,7 @@ import Cem.M3e.Heading as Cem
 import Json.Encode as Encode
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
@@ -93,6 +93,7 @@ level l =
 view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | heading : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts
                 { size = Nothing

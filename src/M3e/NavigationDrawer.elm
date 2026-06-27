@@ -240,6 +240,7 @@ link :
     -> Renderable { navMenuItem : Supported } msg
 link req opts =
     let
+        cfg : LinkConfig msg
         cfg =
             Internal.applyOptions opts defaultLinkConfig
     in
@@ -294,6 +295,7 @@ group :
     -> Renderable { navMenuItem : Supported } msg
 group req children opts =
     let
+        cfg : GroupConfig msg
         cfg =
             Internal.applyOptions opts defaultGroupConfig
     in
@@ -360,6 +362,7 @@ view :
     -> Renderable { s | navigationDrawer : Supported } msg
 view req opts =
     let
+        cfg : ContainerConfig msg
         cfg =
             Internal.applyOptions opts defaultContainerConfig
 

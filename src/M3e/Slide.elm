@@ -94,6 +94,7 @@ view :
     -> Renderable { s | slide : Supported } msg
 view req opts =
     let
+        c : Config
         c =
             Internal.applyOptions opts
                 { disabled = False, vertical = False, threshold = Nothing }

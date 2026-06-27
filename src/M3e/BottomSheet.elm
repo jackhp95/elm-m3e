@@ -31,9 +31,6 @@ its rendered element node before it lands in the DOM.
 
 @docs Option
 
-
-# View
-
 @docs view
 
 
@@ -149,6 +146,7 @@ view :
     -> Renderable { s | bottomSheet : Supported } msg
 view req opts =
     let
+        c : Config msg
         c =
             Internal.applyOptions opts defaultConfig
     in

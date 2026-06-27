@@ -181,6 +181,7 @@ plain :
     -> Renderable { s | tooltip : Supported } msg
 plain req opts =
     let
+        c : PlainConfig
         c =
             List.foldl applyPlain defaultPlainConfig opts
     in
@@ -217,9 +218,11 @@ rich :
     -> Renderable { s | tooltip : Supported } msg
 rich req opts =
     let
+        c : RichConfig msg
         c =
             List.foldl applyRich defaultRichConfig opts
 
+        subheadNodes : List (Node.Node msg)
         subheadNodes =
             case c.subhead of
                 Nothing ->
@@ -228,9 +231,11 @@ rich req opts =
                 Just r ->
                     [ Node.withSlot "subhead" (Renderable.toNode r) ]
 
+        contentNodes : List (Node.Node msg)
         contentNodes =
             List.map Renderable.toNode req.content
 
+        actionNodes : List (Node.Node msg)
         actionNodes =
             case c.actions of
                 [] ->

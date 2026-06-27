@@ -268,6 +268,7 @@ item :
     -> Renderable { menuItem : Supported } msg
 item req opts =
     let
+        c : ItemConfig msg
         c =
             Internal.applyOptions opts defaultItemConfig
     in
@@ -306,6 +307,7 @@ checkboxItem :
     -> Renderable { menuItem : Supported } msg
 checkboxItem req opts =
     let
+        c : CheckboxConfig msg
         c =
             Internal.applyOptions opts defaultCheckboxConfig
     in
@@ -339,6 +341,7 @@ radioItem :
     -> Renderable { menuItem : Supported } msg
 radioItem req opts =
     let
+        c : RadioConfig msg
         c =
             Internal.applyOptions opts defaultRadioConfig
     in
@@ -436,6 +439,7 @@ view :
     -> Renderable { s | menu : Supported } msg
 view req opts =
     let
+        c : ContainerConfig msg
         c =
             Internal.applyOptions opts defaultConfig
     in
