@@ -50,7 +50,11 @@ jobs:
         # Run from docs/ so elm-review picks up docs/elm.json, which covers
         # the docs app (app/) in addition to the library (../src, ../vendor/elm-m3e).
         # The review config lives in the repo root (../review relative to docs/).
-        run: cd docs && npm ci && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm
+        # `elm-pages gen` writes the generated router under docs/.elm-pages/;
+        # without it elm-review can't see that Api/Effect/View/Shared are used by
+        # the router and reports false NoUnused errors. `gen` is the lightweight
+        # codegen step (no full build).
+        run: cd docs && npm ci && npx elm-pages gen && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm
 
   docs:
     name: Docs — reference pipeline + production build
