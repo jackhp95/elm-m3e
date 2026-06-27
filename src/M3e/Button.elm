@@ -41,9 +41,9 @@ per ADR 0006 / the prior NoActionlessButton design).
 import Cem.M3e.Button as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Button style — `Elevated`, `Filled`, `Tonal`, `Outlined`, or `Text`.
@@ -139,14 +139,14 @@ download v =
 
 {-| Place an icon in the `icon` slot, before the label.
 -}
-leadingIcon : Renderable { icon : Supported } msg -> Option msg
+leadingIcon : Element { icon : Supported } msg -> Option msg
 leadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Place an icon in the `trailing-icon` slot, after the label.
 -}
-trailingIcon : Renderable { icon : Supported } msg -> Option msg
+trailingIcon : Element { icon : Supported } msg -> Option msg
 trailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
@@ -160,15 +160,15 @@ type alias Config msg =
     , target : Maybe String
     , rel : Maybe String
     , download : Maybe String
-    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
-    , trailingIcon : Maybe (Renderable { icon : Supported } msg)
+    , leadingIcon : Maybe (Element { icon : Supported } msg)
+    , trailingIcon : Maybe (Element { icon : Supported } msg)
     }
 
 
 {-| Render the button. The required `label` is the visible text and the
 accessible name; `variant` selects the M3 button style.
 -}
-view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | button : Supported } msg
+view : { label : String, variant : Variant } -> List (Option msg) -> Element { s | button : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -205,9 +205,9 @@ view req opts =
                 ]
             )
             (List.filterMap identity
-                [ Maybe.map (\i -> Node.withSlot "icon" (Renderable.toNode i)) c.leadingIcon
+                [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) c.leadingIcon
                 , Just (Node.text req.label)
-                , Maybe.map (\i -> Node.withSlot "trailing-icon" (Renderable.toNode i)) c.trailingIcon
+                , Maybe.map (\i -> Node.withSlot "trailing-icon" (Element.toNode i)) c.trailingIcon
                 ]
             )
         )

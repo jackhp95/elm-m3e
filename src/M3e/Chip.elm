@@ -15,7 +15,7 @@ Spec (per docs/CONVENTIONS.md):
   - `suggestion {label, onClick}` → `<m3e-suggestion-chip>`
   - `filter {label, onToggle}` → `<m3e-filter-chip>`
   - `input {label, onRemove}` → `<m3e-input-chip>` (always removable)
-  - Interactive chips return `Renderable { s | chip : Supported }` (fits ChipSet.chips)
+  - Interactive chips return `Element { s | chip : Supported }` (fits ChipSet.chips)
   - Options (interactive, shared): onClick, selected, disabled, elevated, href,
     removeLabel, leadingIcon, avatarChild
   - Properties: selected, disabled, removable (DOM)
@@ -53,9 +53,9 @@ behaviour its kind demands.
 import Cem.M3e.Chip as CemChip
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -114,14 +114,14 @@ removeLabel v =
 
 {-| Add a leading icon (rendered in the `icon` slot).
 -}
-leadingIcon : Renderable { icon : Supported } msg -> Option msg
+leadingIcon : Element { icon : Supported } msg -> Option msg
 leadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Render an avatar before the label (input chips only — `slot="avatar"`).
 -}
-avatarChild : Renderable { avatar : Supported } msg -> Option msg
+avatarChild : Element { avatar : Supported } msg -> Option msg
 avatarChild a =
     Internal.option (\c -> { c | avatarChild = Just a })
 
@@ -146,7 +146,7 @@ viewElevated b =
 
 {-| Add a leading icon to the display chip (rendered in the `icon` slot).
 -}
-viewLeadingIcon : Renderable { icon : Supported } msg -> ViewOption msg
+viewLeadingIcon : Element { icon : Supported } msg -> ViewOption msg
 viewLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
@@ -162,8 +162,8 @@ type alias Config msg =
     , elevated : Bool
     , href : Maybe String
     , removeLabel : Maybe String
-    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
-    , avatarChild : Maybe (Renderable { avatar : Supported } msg)
+    , leadingIcon : Maybe (Element { icon : Supported } msg)
+    , avatarChild : Maybe (Element { avatar : Supported } msg)
     }
 
 
@@ -186,7 +186,7 @@ defaultConfig =
 
 type alias ViewConfig msg =
     { elevated : Bool
-    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
+    , leadingIcon : Maybe (Element { icon : Supported } msg)
     }
 
 
@@ -202,7 +202,7 @@ defaultViewConfig =
 iconChild : Config msg -> Maybe (Node msg)
 iconChild c =
     Maybe.map
-        (\i -> Node.withSlot "icon" (Renderable.toNode i))
+        (\i -> Node.withSlot "icon" (Element.toNode i))
         c.leadingIcon
 
 
@@ -236,7 +236,7 @@ disabledAttr c =
 `ViewOption` only; the full `Option` set (onClick, disabled, etc.) is not
 honoured by this element and is therefore not available here.
 -}
-view : { label : String } -> List (ViewOption msg) -> Renderable { s | chip : Supported } msg
+view : { label : String } -> List (ViewOption msg) -> Element { s | chip : Supported } msg
 view req opts =
     let
         vc : ViewConfig msg
@@ -256,7 +256,7 @@ view req opts =
                 )
             ]
             (List.filterMap identity
-                [ Maybe.map (\i -> Node.withSlot "icon" (Renderable.toNode i)) vc.leadingIcon
+                [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) vc.leadingIcon
                 , Just (Node.text req.label)
                 ]
             )
@@ -273,7 +273,7 @@ view req opts =
 assist :
     { label : String, onClick : msg }
     -> List (Option msg)
-    -> Renderable { s | chip : Supported } msg
+    -> Element { s | chip : Supported } msg
 assist req opts =
     genericChip "m3e-assist-chip" req.label req.onClick opts
 
@@ -284,7 +284,7 @@ suggestion. Requires an `onClick` handler.
 suggestion :
     { label : String, onClick : msg }
     -> List (Option msg)
-    -> Renderable { s | chip : Supported } msg
+    -> Element { s | chip : Supported } msg
 suggestion req opts =
     genericChip "m3e-suggestion-chip" req.label req.onClick opts
 
@@ -292,7 +292,7 @@ suggestion req opts =
 {-| Shared rendering for assist/suggestion chips: a link when `href` is set,
 otherwise the required `onClick`.
 -}
-genericChip : String -> String -> msg -> List (Option msg) -> Renderable { s | chip : Supported } msg
+genericChip : String -> String -> msg -> List (Option msg) -> Element { s | chip : Supported } msg
 genericChip tag label clickMsg opts =
     let
         c : Config msg
@@ -334,7 +334,7 @@ genericChip tag label clickMsg opts =
 filter :
     { label : String, onToggle : msg }
     -> List (Option msg)
-    -> Renderable { s | chip : Supported } msg
+    -> Element { s | chip : Supported } msg
 filter req opts =
     let
         c : Config msg
@@ -372,7 +372,7 @@ removable. Requires an `onRemove` handler.
 input :
     { label : String, onRemove : msg }
     -> List (Option msg)
-    -> Renderable { s | chip : Supported } msg
+    -> Element { s | chip : Supported } msg
 input req opts =
     let
         c : Config msg
@@ -390,7 +390,7 @@ input req opts =
                 ]
             )
             (List.filterMap identity
-                [ Maybe.map (\a -> Node.withSlot "avatar" (Renderable.toNode a)) c.avatarChild
+                [ Maybe.map (\a -> Node.withSlot "avatar" (Element.toNode a)) c.avatarChild
                 , iconChild c
                 , Just (Node.text req.label)
                 ]

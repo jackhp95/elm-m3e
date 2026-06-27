@@ -8,14 +8,14 @@ module M3e.Shape exposing
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     (the content IS what the element is about — it clips/shapes it)
   - Options: name (which Material 3 shape to clip to)
   - Slots: default slot ← arbitrary content (free row; no slot is injected,
     so the raw `html` escape is valid inside `content`)
   - Properties: none (no boolean DOM properties)
   - Attrs: name via Cem.M3e.Shape.name (codegen attr; opaque/non-introspectable)
-  - Escape: html (default-slot region; include via Renderable.html)
+  - Escape: html (default-slot region; include via Element.html)
   - Tag: shape
 
 NOTE: `m3e-shape`'s host hard-sets `width: var(--m3e-shape-size, 3rem)` with
@@ -30,9 +30,9 @@ the host. Per ADR 0007 that goes through the `attributes` escape
 -}
 
 import Cem.M3e.Shape as Cem
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| The set of Material 3 shape names — re-exported from `Cem.M3e.Shape`.
@@ -73,7 +73,7 @@ type alias Config msg =
 
 {-| Render a shape container clipping `content` to the named Material 3 shape.
 -}
-view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | shape : Supported } msg
+view : { content : List (Element any msg) } -> List (Option msg) -> Element { s | shape : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -87,5 +87,5 @@ view req opts =
                 ]
                 ++ c.attributes
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )

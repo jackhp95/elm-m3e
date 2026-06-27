@@ -9,14 +9,14 @@ Dialogs).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { headline : String, content : List (Renderable any msg) }
+  - Required: { headline : String, content : List (Element any msg) }
     headline → visible title, always present (accessibility + UX);
     content → the dialog body region (default slot, free row)
   - Options: open, onClose, alert, closeButton, dismissible, closeLabel, actions
   - Slots: header (headline in <span slot="header">)
     default (content region — free row, may include html escape)
     actions (<div slot="actions"> wrapping the button list)
-    close-icon (not exposed here; use Renderable.element for custom)
+    close-icon (not exposed here; use Element.element for custom)
   - Properties: open (bool), alert (bool), dismissible (bool — close button),
     disable-close (bool — ESC/scrim blocking, inverted from the
     `dismissible` option below)
@@ -52,9 +52,9 @@ confusing names. Here the options are clearly named:
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| An opaque configuration option for [`view`](#view).
@@ -113,7 +113,7 @@ closeLabel s =
 
 {-| Action buttons shown in the dialog's `actions` slot. Accepts M3e buttons.
 -}
-actions : List (Renderable { button : Supported } msg) -> Option msg
+actions : List (Element { button : Supported } msg) -> Option msg
 actions xs =
     Internal.option (\c -> { c | actions = xs })
 
@@ -125,7 +125,7 @@ type alias Config msg =
     , closeButton : Bool
     , dismissible : Bool
     , closeLabel : Maybe String
-    , actions : List (Renderable { button : Supported } msg)
+    , actions : List (Element { button : Supported } msg)
     }
 
 
@@ -158,9 +158,9 @@ defaultConfig =
 
 -}
 view :
-    { headline : String, content : List (Renderable any msg) }
+    { headline : String, content : List (Element any msg) }
     -> List (Option msg)
-    -> Renderable { s | dialog : Supported } msg
+    -> Element { s | dialog : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -196,7 +196,7 @@ view req opts =
                         [ Node.attribute "slot" "header" ]
                         [ Node.text req.headline ]
                   ]
-                , List.map Renderable.toNode req.content
+                , List.map Element.toNode req.content
                 , case c.actions of
                     [] ->
                         []
@@ -204,7 +204,7 @@ view req opts =
                     xs ->
                         [ Node.element "div"
                             [ Node.attribute "slot" "actions" ]
-                            (List.map Renderable.toNode xs)
+                            (List.map Element.toNode xs)
                         ]
                 ]
             )

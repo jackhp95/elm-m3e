@@ -9,7 +9,7 @@ navigation trail (Material 3 Breadcrumb).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required (parent): { items : List (Renderable { breadcrumbItem : Supported } msg) }
+  - Required (parent): { items : List (Element { breadcrumbItem : Supported } msg) }
   - Required (child): { label : String }
     (label = both the visible text child AND the `item-label` attr
     for the internal button's accessible name)
@@ -41,9 +41,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -124,7 +124,7 @@ attribute (the internal button's accessible name).
 item :
     { label : String }
     -> List (ItemOption msg)
-    -> Renderable { s | breadcrumbItem : Supported } msg
+    -> Element { s | breadcrumbItem : Supported } msg
 item req opts =
     let
         c : ItemConfig msg
@@ -192,9 +192,9 @@ wrap b =
 [`item`](#item)).
 -}
 view :
-    { items : List (Renderable { breadcrumbItem : Supported } msg) }
+    { items : List (Element { breadcrumbItem : Supported } msg) }
     -> List (BreadcrumbOption msg)
-    -> Renderable { s | breadcrumb : Supported } msg
+    -> Element { s | breadcrumb : Supported } msg
 view req opts =
     let
         c : BreadcrumbConfig
@@ -211,5 +211,5 @@ view req opts =
                     Nothing
                 ]
             )
-            (List.map Renderable.toNode req.items)
+            (List.map Element.toNode req.items)
         )

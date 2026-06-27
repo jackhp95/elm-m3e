@@ -10,7 +10,7 @@ import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Heading as Heading
 import M3e.Node as Node
-import M3e.Renderable as Renderable
+import M3e.Element as Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -58,9 +58,9 @@ head _ =
         |> Seo.website
 
 
-toHtml : Renderable.Renderable any msg -> Html msg
+toHtml : Element.Element any msg -> Html msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 steps : List ( String, String )
@@ -104,9 +104,9 @@ view _ _ =
             , Card.view
                 [ Card.variant Card.Outlined
                 , Card.headline (Heading.view { label = "Corner scale", variant = Heading.Title } [])
-                , Card.body [ Renderable.html (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps)) ]
+                , Card.body [ Element.html (div [ class "flex flex-wrap items-end gap-6" ] (List.map swatch steps)) ]
                 ]
-                |> Renderable.toNode
+                |> Element.toNode
                 |> Node.toHtml
             ]
         ]

@@ -2,8 +2,8 @@ module M3e.TextFieldTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.TextField as TextField
 import Test exposing (Test, describe, test)
 
@@ -15,7 +15,7 @@ import Test exposing (Test, describe, test)
 viewNode : List (TextField.Option String) -> Node.Node String
 viewNode opts =
     TextField.view { label = "Email" } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 labelChild : Node.Node msg -> Maybe (Node.Node msg)
@@ -188,14 +188,14 @@ suite =
         -- Slot children
         , test "hint adds a child with slot='hint'" <|
             \_ ->
-                viewNode [ TextField.hint (Renderable.text "Optional") ]
+                viewNode [ TextField.hint (Element.text "Optional") ]
                     |> Node.childrenOf
                     |> List.any (\n -> Node.findAttribute "slot" n == Just "hint")
                     |> not
                     |> Expect.equal False
         , test "error adds a child with slot='error'" <|
             \_ ->
-                viewNode [ TextField.error (Renderable.text "Required") ]
+                viewNode [ TextField.error (Element.text "Required") ]
                     |> Node.childrenOf
                     |> List.any (\n -> Node.findAttribute "slot" n == Just "error")
                     |> not

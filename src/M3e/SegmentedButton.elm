@@ -10,7 +10,7 @@ buttons for choosing one (or several) options (Material 3 Segmented buttons).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required (parent): { segments : List (Renderable { segment : Supported } msg) }
+  - Required (parent): { segments : List (Element { segment : Supported } msg) }
   - Required (child): { label : String, checked : Bool }
   - Options (parent): disabled, multi
   - Options (child): segmentDisabled, segmentOnClick, segmentValue
@@ -29,9 +29,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -95,7 +95,7 @@ Elm-controlled selection state.
 segment :
     { label : String, checked : Bool }
     -> List (SegmentOption msg)
-    -> Renderable { s | segment : Supported } msg
+    -> Element { s | segment : Supported } msg
 segment req opts =
     let
         c : SegmentConfig msg
@@ -172,9 +172,9 @@ applyParent opt c =
 {-| Render a segmented button group from a list of `segment` children.
 -}
 view :
-    { segments : List (Renderable { segment : Supported } msg) }
+    { segments : List (Element { segment : Supported } msg) }
     -> List (ParentOption msg)
-    -> Renderable { s | segmentedButton : Supported } msg
+    -> Element { s | segmentedButton : Supported } msg
 view req opts =
     let
         c : ParentConfig
@@ -198,5 +198,5 @@ view req opts =
                     Nothing
                 ]
             )
-            (List.map Renderable.toNode req.segments)
+            (List.map Element.toNode req.segments)
         )

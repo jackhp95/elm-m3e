@@ -3,15 +3,15 @@ module M3e.ButtonTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
+import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : String -> List (Button.Option msg) -> Node.Node msg
 node label opts =
-    Button.view { label = label, variant = Button.Filled } opts |> Renderable.toNode
+    Button.view { label = label, variant = Button.Filled } opts |> Element.toNode
 
 
 suite : Test

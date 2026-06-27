@@ -2,15 +2,15 @@ module M3e.SwitchTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Switch as Switch
 import Test exposing (Test, describe, test)
 
 
 node : List (Switch.Option msg) -> Node.Node msg
 node opts =
-    Switch.view { name = "Dark mode" } opts |> Renderable.toNode
+    Switch.view { name = "Dark mode" } opts |> Element.toNode
 
 
 suite : Test
@@ -24,7 +24,7 @@ suite =
         , test "aria-label equals the required name field" <|
             \_ ->
                 Switch.view { name = "Email notifications" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Email notifications")
         , test "checked=true is visible as a DOM property" <|

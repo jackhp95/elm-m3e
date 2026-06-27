@@ -9,7 +9,7 @@ that shows dividers above/below when scrolled (utility element).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     (arbitrary content region — the free row var means this
     cannot live in an Option, so it's in the required record)
   - Options: dividers, thin
@@ -27,9 +27,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Cem.M3e.ScrollContainer as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Which dividers to show when content is scrolled.
@@ -83,9 +83,9 @@ type alias Config msg =
 region that shows dividers above/below when scrolled.
 -}
 view :
-    { content : List (Renderable any msg) }
+    { content : List (Element any msg) }
     -> List (Option msg)
-    -> Renderable { s | scrollContainer : Supported } msg
+    -> Element { s | scrollContainer : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -104,7 +104,7 @@ view req opts =
                 ]
                 ++ c.attributes
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )
 
 

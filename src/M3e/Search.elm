@@ -12,9 +12,9 @@ Spec (per docs/CONVENTIONS.md):
   - Options: onInput, value, clearable, clearLabel, onClear,
     leadingIcon, trailingIcon
   - Slots:
-    leading : Renderable { icon : Supported } (via leadingIcon option)
+    leading : Element { icon : Supported } (via leadingIcon option)
     input : always rendered as <input type=search slot=input>
-    trailing : Renderable { icon : Supported } (via trailingIcon option)
+    trailing : Element { icon : Supported } (via trailingIcon option)
   - Properties: clearable (DOM property)
   - Attrs: clear-label
   - Events: input (onInput), clear (onClear)
@@ -33,9 +33,9 @@ slot contract. The root element is still `m3e-search-bar`, so a parent
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -85,14 +85,14 @@ onClear m =
 
 {-| Place an icon in the bar's leading slot.
 -}
-leadingIcon : Renderable { icon : Supported } msg -> Option msg
+leadingIcon : Element { icon : Supported } msg -> Option msg
 leadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Place an icon in the bar's trailing slot.
 -}
-trailingIcon : Renderable { icon : Supported } msg -> Option msg
+trailingIcon : Element { icon : Supported } msg -> Option msg
 trailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
@@ -107,8 +107,8 @@ type alias Config msg =
     , clearable : Bool
     , clearLabel : Maybe String
     , onClear : Maybe msg
-    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
-    , trailingIcon : Maybe (Renderable { icon : Supported } msg)
+    , leadingIcon : Maybe (Element { icon : Supported } msg)
+    , trailingIcon : Maybe (Element { icon : Supported } msg)
     }
 
 
@@ -130,7 +130,7 @@ defaults =
 
 {-| Render a search bar. `placeholder` is set on the inner `<input>`.
 -}
-view : { placeholder : String } -> List (Option msg) -> Renderable { s | search : Supported } msg
+view : { placeholder : String } -> List (Option msg) -> Element { s | search : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -150,9 +150,9 @@ view req opts =
                 ]
             )
             (List.filterMap identity
-                [ Maybe.map (\i -> Node.withSlot "leading" (Renderable.toNode i)) c.leadingIcon
+                [ Maybe.map (\i -> Node.withSlot "leading" (Element.toNode i)) c.leadingIcon
                 , Just (inputElement req.placeholder c)
-                , Maybe.map (\i -> Node.withSlot "trailing" (Renderable.toNode i)) c.trailingIcon
+                , Maybe.map (\i -> Node.withSlot "trailing" (Element.toNode i)) c.trailingIcon
                 ]
             )
         )

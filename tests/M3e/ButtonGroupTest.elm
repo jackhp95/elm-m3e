@@ -4,17 +4,17 @@ import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.ButtonGroup as ButtonGroup
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
-button1 : Renderable.Renderable { button : Renderable.Supported } msg
+button1 : Element.Element { button : Element.Supported } msg
 button1 =
     Button.view { label = "Save", variant = Button.Filled } []
 
 
-button2 : Renderable.Renderable { button : Renderable.Supported } msg
+button2 : Element.Element { button : Element.Supported } msg
 button2 =
     Button.view { label = "Cancel", variant = Button.Text } []
 
@@ -22,7 +22,7 @@ button2 =
 node : List (ButtonGroup.Option msg) -> Node.Node msg
 node opts =
     ButtonGroup.view { buttons = [ button1, button2 ] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test

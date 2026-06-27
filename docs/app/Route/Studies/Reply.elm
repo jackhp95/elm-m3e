@@ -50,7 +50,7 @@ import M3e.Menu as Menu
 import M3e.NavigationBar as NavigationBar
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.ScrollContainer as ScrollContainer
 import M3e.Search as Search
 import M3e.Snackbar as Snackbar
@@ -67,9 +67,9 @@ import UrlPath
 import View exposing (View)
 
 
-toHtml : Renderable any Msg -> Html Msg
+toHtml : Element any Msg -> Html Msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 
@@ -448,7 +448,7 @@ viewApp : Model -> Html Msg
 viewApp model =
     Theme.view
         { content =
-            [ Renderable.html
+            [ Element.html
                 (div [ class "flex h-[100dvh] w-full overflow-hidden bg-surface-container-lowest text-on-surface md:h-[calc(100vh-2rem)] md:min-h-[36rem] md:rounded-md-corner-large md:border md:border-outline-variant" ]
                     [ viewSideNav model
                     , div [ class "relative flex min-w-0 flex-1 flex-col" ]
@@ -515,7 +515,7 @@ navRail railMode model =
         |> toHtml
 
 
-railItem : Mailbox -> Mailbox -> Renderable { navItem : Supported } Msg
+railItem : Mailbox -> Mailbox -> Element { navItem : Supported } Msg
 railItem selectedMailbox mailbox =
     NavigationRail.item
         { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
@@ -554,7 +554,7 @@ viewBottomNav model =
         ]
 
 
-barItem : Mailbox -> Mailbox -> Renderable { navItem : Supported } Msg
+barItem : Mailbox -> Mailbox -> Element { navItem : Supported } Msg
 barItem selectedMailbox mailbox =
     NavigationBar.item
         { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
@@ -581,10 +581,10 @@ viewAppBar model =
         leadingElem =
             case model.selected of
                 Just _ ->
-                    Renderable.element { tag = "div" } []
+                    Element.element { tag = "div" } []
                         [ Node.element "div"
                             [ Node.attribute "class" "md:hidden" ]
-                            [ Renderable.toNode
+                            [ Element.toNode
                                 (IconButton.view { icon = "arrow_back", name = "Back to inbox" }
                                     [ IconButton.onClick CloseReadingPane ]
                                 )
@@ -593,25 +593,25 @@ viewAppBar model =
                             [ Node.attribute "class" "hidden md:block"
                             , Node.attribute "id" "reply-menu-anchor"
                             ]
-                            [ Renderable.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
+                            [ Element.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
                         ]
 
                 Nothing ->
-                    Renderable.element { tag = "div" }
+                    Element.element { tag = "div" }
                         [ Node.attribute "id" "reply-menu-anchor" ]
-                        [ Renderable.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
+                        [ Element.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
 
         -- Search bar: visible md+
         searchElem =
-            Renderable.element { tag = "div" }
+            Element.element { tag = "div" }
                 [ Node.attribute "class" "hidden md:block min-w-0 max-w-md flex-1" ]
                 [ Node.raw (searchBar model) ]
 
         -- Search icon button: compact only
         compactSearchElem =
-            Renderable.element { tag = "div" }
+            Element.element { tag = "div" }
                 [ Node.attribute "class" "md:hidden" ]
-                [ Renderable.toNode
+                [ Element.toNode
                     (IconButton.view { icon = "search", name = "Search mail" } [])
                 ]
 
@@ -620,13 +620,13 @@ viewAppBar model =
             unreadCount Inbox
 
         notifElem =
-            Renderable.element { tag = "div" }
+            Element.element { tag = "div" }
                 [ Node.attribute "class" "relative"
                 , Node.attribute "id" "reply-notifications"
                 ]
-                (Renderable.toNode (IconButton.view { icon = "notifications", name = "Notifications" } [])
+                (Element.toNode (IconButton.view { icon = "notifications", name = "Notifications" } [])
                     :: (if total > 0 then
-                            [ Renderable.toNode (Badge.view [ Badge.count total ]) ]
+                            [ Element.toNode (Badge.view [ Badge.count total ]) ]
 
                         else
                             []
@@ -646,7 +646,7 @@ viewAppBar model =
             (Heading.view { label = appBarTitle model, variant = Heading.Title } [])
         , AppBar.trailing [ searchElem, compactSearchElem, notifElem, avatarElem ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml
 
 
@@ -688,8 +688,8 @@ viewMain model =
                         [ -- md+: SplitPane keeps list visible alongside the reading pane.
                           div [ class "hidden h-full md:block" ]
                             [ SplitPane.view
-                                { start = [ Renderable.html (messageListPane model) ]
-                                , end = [ Renderable.html (readingPane message) ]
+                                { start = [ Element.html (messageListPane model) ]
+                                , end = [ Element.html (readingPane message) ]
                                 }
                                 []
                                 |> toHtml
@@ -720,7 +720,7 @@ messageListPane model =
     in
     ScrollContainer.view
         { content =
-            [ Renderable.html
+            [ Element.html
                 (div [ class "flex flex-col" ]
                     (if List.isEmpty shown then
                         [ emptyState model.query ]
@@ -867,7 +867,7 @@ readingPane : Message -> Html Msg
 readingPane message =
     ScrollContainer.view
         { content =
-            [ Renderable.html
+            [ Element.html
                 (div [ class "flex flex-col gap-4 p-4 md:p-6" ]
                     [ div [ class "flex items-start justify-between gap-3" ]
                         [ Heading.view { label = message.subject, variant = Heading.Headline }
@@ -999,7 +999,7 @@ viewCompose model =
     -- ("detents" = "fit half full", "detent" = "2") has no equivalent in
     -- M3e.BottomSheet options. The sheet opens to its default size.
     BottomSheet.view
-        { content = [ Renderable.html (composeBody model.compose) ] }
+        { content = [ Element.html (composeBody model.compose) ] }
         [ BottomSheet.open model.composing
         , BottomSheet.onClose CloseCompose
         , BottomSheet.modal True

@@ -2,8 +2,8 @@ module M3e.SnackbarTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Snackbar as Snackbar
 import Test exposing (Test, describe, test)
 
@@ -15,7 +15,7 @@ import Test exposing (Test, describe, test)
 snackNode : List (Snackbar.Option msg) -> Node.Node msg
 snackNode opts =
     Snackbar.view { message = "Saved." } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -69,11 +69,11 @@ suite =
                 let
                     n1 : Node.Node msg
                     n1 =
-                        Snackbar.view { message = "Saved." } [] |> Renderable.toNode
+                        Snackbar.view { message = "Saved." } [] |> Element.toNode
 
                     n2 : Node.Node msg
                     n2 =
-                        Snackbar.view { message = "Deleted." } [] |> Renderable.toNode
+                        Snackbar.view { message = "Deleted." } [] |> Element.toNode
                 in
                 ( Node.tagOf n1, Node.tagOf n2 )
                     |> Expect.equal ( Just "m3e-snackbar", Just "m3e-snackbar" )

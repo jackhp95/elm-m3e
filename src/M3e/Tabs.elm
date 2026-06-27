@@ -12,10 +12,10 @@ between related content sections (Material 3 Tabs).
 Spec (per docs/CONVENTIONS.md):
 
   - Two sub-components:
-    `tab  : { label : String } → List TabOption → Renderable { tab }`
-    `panel: { content }       → List PanelOption → Renderable { tabPanel }`
+    `tab  : { label : String } → List TabOption → Element { tab }`
+    `panel: { content }       → List PanelOption → Element { tabPanel }`
   - View:
-    `view : { tabs, panels } → List Option → Renderable { tabs }`
+    `view : { tabs, panels } → List Option → Element { tabs }`
   - Tabs default-slot ← m3e-tab children (no slot injection)
   - Panels panel-slot ← m3e-tab-panel children (Node.withSlot "panel")
   - Properties: selected (tab), disabled (tab), stretch (strip)
@@ -39,9 +39,9 @@ stable ids.
 import Cem.M3e.Tabs as CemTabs
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| The appearance variant of the tabs strip.
@@ -167,7 +167,7 @@ defaultTabConfig =
         ]
 
 -}
-tab : { label : String } -> List (TabOption msg) -> Renderable { t | tab : Supported } msg
+tab : { label : String } -> List (TabOption msg) -> Element { t | tab : Supported } msg
 tab req opts =
     let
         c : TabConfig msg
@@ -211,7 +211,7 @@ defaultPanelConfig =
         [ M3e.Tabs.panelId "details-panel" ]
 
 -}
-panel : { content : List (Renderable any msg) } -> List (PanelOption msg) -> Renderable { p | tabPanel : Supported } msg
+panel : { content : List (Element any msg) } -> List (PanelOption msg) -> Element { p | tabPanel : Supported } msg
 panel req opts =
     let
         c : PanelConfig
@@ -224,7 +224,7 @@ panel req opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 ]
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )
 
 
@@ -268,11 +268,11 @@ slot. The `tabFor`/`panelId` pairing is the caller's responsibility.
 
 -}
 view :
-    { tabs : List (Renderable { tab : Supported } msg)
-    , panels : List (Renderable { tabPanel : Supported } msg)
+    { tabs : List (Element { tab : Supported } msg)
+    , panels : List (Element { tabPanel : Supported } msg)
     }
     -> List (Option msg)
-    -> Renderable { s | tabs : Supported } msg
+    -> Element { s | tabs : Supported } msg
 view req opts =
     let
         c : StripConfig
@@ -291,8 +291,8 @@ view req opts =
                 , Just (Node.rawAttr (CemTabs.headerPosition (toCemHeaderPosition c.headerPosition)))
                 ]
             )
-            (List.map Renderable.toNode req.tabs
-                ++ List.map (Node.withSlot "panel" << Renderable.toNode) req.panels
+            (List.map Element.toNode req.tabs
+                ++ List.map (Node.withSlot "panel" << Element.toNode) req.panels
             )
         )
 

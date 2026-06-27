@@ -2,9 +2,9 @@ module M3e.AvatarTest exposing (suite)
 
 import Expect
 import M3e.Avatar as Avatar
+import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -14,19 +14,19 @@ suite =
         [ test "renders m3e-avatar at root" <|
             \_ ->
                 Avatar.view { alt = "Jack" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-avatar")
         , test "alt is emitted as aria-label" <|
             \_ ->
                 Avatar.view { alt = "Jack Peterson" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Jack Peterson")
         , test "image option renders an img child" <|
             \_ ->
                 Avatar.view { alt = "Jack" } [ Avatar.image "/photo.jpg" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen Node.tagOf
@@ -34,7 +34,7 @@ suite =
         , test "image child carries src attribute" <|
             \_ ->
                 Avatar.view { alt = "Jack" } [ Avatar.image "/photo.jpg" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "src")
@@ -42,7 +42,7 @@ suite =
         , test "image child carries alt attribute from required field" <|
             \_ ->
                 Avatar.view { alt = "Jack Peterson" } [ Avatar.image "/photo.jpg" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "alt")
@@ -50,7 +50,7 @@ suite =
         , test "initials option renders a text child" <|
             \_ ->
                 Avatar.view { alt = "Jack" } [ Avatar.initials "JP" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> (\n ->
@@ -65,7 +65,7 @@ suite =
         , test "iconChild option renders an m3e-icon child" <|
             \_ ->
                 Avatar.view { alt = "Generic" } [ Avatar.iconChild (Icon.view { name = "person" }) ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen Node.tagOf

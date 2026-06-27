@@ -2,9 +2,9 @@ module M3e.ListTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.List as MList
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -12,10 +12,10 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-listNode : List (MList.Option msg) -> List (Renderable.Renderable { listItem : Renderable.Supported } msg) -> Node.Node msg
+listNode : List (MList.Option msg) -> List (Element.Element { listItem : Element.Supported } msg) -> Node.Node msg
 listNode opts items =
     MList.view { items = items } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -47,13 +47,13 @@ suite =
         , test "item renders <m3e-list-item>" <|
             \_ ->
                 MList.item { headline = "Inbox" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-list-item")
         , test "item headline is in the default slot (no slot attr)" <|
             \_ ->
                 MList.item { headline = "Inbox" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     -- only child: the headline text node (no leading/trailing)
                     |> List.map (Node.findAttribute "slot")
@@ -62,7 +62,7 @@ suite =
             \_ ->
                 MList.item { headline = "Inbox" }
                     [ MList.staticOverline "Unread" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
@@ -71,7 +71,7 @@ suite =
             \_ ->
                 MList.item { headline = "Inbox" }
                     [ MList.staticSupporting "12 messages" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "supporting-text")
                     |> List.length
@@ -81,21 +81,21 @@ suite =
         , test "actionItem renders <m3e-list-item-button>" <|
             \_ ->
                 MList.actionItem { headline = "Settings" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-list-item-button")
         , test "actionDisabled=true sets the disabled DOM property" <|
             \_ ->
                 MList.actionItem { headline = "Settings" }
                     [ MList.actionDisabled True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "disabled absent by default on actionItem" <|
             \_ ->
                 MList.actionItem { headline = "Settings" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "disabled"
                     |> Expect.equal Nothing
 
@@ -103,14 +103,14 @@ suite =
         , test "option renders <m3e-list-option>" <|
             \_ ->
                 MList.option { headline = "Wi-Fi" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-list-option")
         , test "optionSelected=true sets the selected DOM property" <|
             \_ ->
                 MList.option { headline = "Wi-Fi" }
                     [ MList.optionSelected True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
@@ -118,7 +118,7 @@ suite =
             \_ ->
                 MList.option { headline = "Wi-Fi" }
                     [ MList.optionSelected False ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
@@ -126,14 +126,14 @@ suite =
             \_ ->
                 MList.option { headline = "Wi-Fi" }
                     [ MList.optionValue "wifi" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "value"
                     |> Expect.equal (Just "wifi")
         , test "optionDisabled=true sets the disabled DOM property" <|
             \_ ->
                 MList.option { headline = "Wi-Fi" }
                     [ MList.optionDisabled True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
@@ -142,7 +142,7 @@ suite =
         , test "divider renders <m3e-divider>" <|
             \_ ->
                 MList.divider
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-divider")
 
@@ -150,21 +150,21 @@ suite =
         , test "expandable renders <m3e-expandable-list-item>" <|
             \_ ->
                 MList.expandable { headline = "Folders", children = [] } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-expandable-list-item")
         , test "expandableOpen=true sets the open DOM property" <|
             \_ ->
                 MList.expandable { headline = "Folders", children = [] }
                     [ MList.expandableOpen True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "open"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "open absent by default on expandable" <|
             \_ ->
                 MList.expandable { headline = "Folders", children = [] } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "open"
                     |> Expect.equal Nothing
         , test "expandable children land in the items slot" <|
@@ -177,7 +177,7 @@ suite =
                         ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "items")
                     |> List.length
@@ -186,7 +186,7 @@ suite =
             \_ ->
                 MList.expandable { headline = "Folders", children = [] }
                     [ MList.expandableDisabled True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")

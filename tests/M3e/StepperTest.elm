@@ -3,13 +3,13 @@ module M3e.StepperTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Stepper as Stepper
 import Test exposing (Test, describe, test)
 
 
-step1 : Renderable.Renderable { step : Renderable.Supported } msg
+step1 : Element.Element { step : Element.Supported } msg
 step1 =
     Stepper.step { label = "Shipping" }
         [ Stepper.stepId "s1"
@@ -18,7 +18,7 @@ step1 =
         ]
 
 
-step2 : Renderable.Renderable { step : Renderable.Supported } msg
+step2 : Element.Element { step : Element.Supported } msg
 step2 =
     Stepper.step { label = "Payment" }
         [ Stepper.stepId "s2"
@@ -26,12 +26,12 @@ step2 =
         ]
 
 
-actionButton : Renderable.Renderable { button : Renderable.Supported } msg
+actionButton : Element.Element { button : Element.Supported } msg
 actionButton =
     Button.view { label = "Next", variant = Button.Filled } []
 
 
-panel1 : Renderable.Renderable { stepPanel : Renderable.Supported } msg
+panel1 : Element.Element { stepPanel : Element.Supported } msg
 panel1 =
     Stepper.stepPanel { content = [] }
         [ Stepper.panelId "p1"
@@ -39,7 +39,7 @@ panel1 =
         ]
 
 
-panel2 : Renderable.Renderable { stepPanel : Renderable.Supported } msg
+panel2 : Element.Element { stepPanel : Element.Supported } msg
 panel2 =
     Stepper.stepPanel { content = [] } [ Stepper.panelId "p2" ]
 
@@ -51,7 +51,7 @@ stripNode opts =
         , panels = [ panel1, panel2 ]
         }
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -65,13 +65,13 @@ suite =
         , test "step helper renders <m3e-step>" <|
             \_ ->
                 step1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-step")
         , test "stepPanel helper renders <m3e-step-panel>" <|
             \_ ->
                 panel1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-step-panel")
         , test "steps receive slot=\"step\" from view" <|
@@ -91,39 +91,39 @@ suite =
         , test "selected=true is a DOM property on step" <|
             \_ ->
                 step1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "selected=false on unselected step" <|
             \_ ->
                 step2
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
         , test "stepId sets the 'id' attribute on the step" <|
             \_ ->
                 step1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "s1")
         , test "stepFor sets the 'for' attribute on the step" <|
             \_ ->
                 step1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "for"
                     |> Expect.equal (Just "p1")
         , test "panelId sets the 'id' attribute on the panel" <|
             \_ ->
                 panel1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "p1")
         , test "Fix #13: panelActions slot is exactly \"actions\" (not \"actions-\")" <|
             \_ ->
                 panel1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     -- the actions div is the first (and only) child here
                     |> List.head
@@ -132,7 +132,7 @@ suite =
         , test "Fix #13: action buttons land inside the actions wrapper" <|
             \_ ->
                 panel1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.map (Node.childrenOf >> List.length)
@@ -140,14 +140,14 @@ suite =
         , test "no actions child when panelActions is empty" <|
             \_ ->
                 panel2
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 0
         , test "stepCompleted is a DOM property" <|
             \_ ->
                 Stepper.step { label = "Done" } [ Stepper.stepCompleted True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "completed"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")

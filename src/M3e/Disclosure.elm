@@ -10,11 +10,11 @@ sections (Material 3 Disclosure / Accordion).
 Spec (per docs/CONVENTIONS.md):
 
   - One section sub-component:
-    `section : { header : String, content : List (Renderable any msg) }
-    → List SectionOption → Renderable { section }`
+    `section : { header : String, content : List (Element any msg) }
+    → List SectionOption → Element { section }`
   - View:
-    `view : { sections : List (Renderable { section }) }
-    → List Option → Renderable { disclosure }`
+    `view : { sections : List (Element { section }) }
+    → List Option → Element { disclosure }`
   - Slots: header (<span slot="header"> wrapping the title String)
     default (content region — free row, may include html escape)
     actions (<div slot="actions"> wrapping action buttons)
@@ -46,9 +46,9 @@ This is cleaner and avoids the confusing split API.
 import Cem.M3e.Accordion as CemAccordion
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| An opaque option for a [`section`](#section).
@@ -94,7 +94,7 @@ sectionOnToggle h =
 
 {-| Action buttons shown in the section's `actions` slot.
 -}
-sectionActions : List (Renderable { button : Supported } msg) -> SectionOption msg
+sectionActions : List (Element { button : Supported } msg) -> SectionOption msg
 sectionActions xs =
     Internal.option (\c -> { c | actions = xs })
 
@@ -112,7 +112,7 @@ type alias SectionConfig msg =
     , disabled : Bool
     , hideToggle : Bool
     , onToggle : Maybe (Bool -> msg)
-    , actions : List (Renderable { button : Supported } msg)
+    , actions : List (Element { button : Supported } msg)
     }
 
 
@@ -141,9 +141,9 @@ the default slot. Action buttons go in the `actions` slot.
 
 -}
 section :
-    { header : String, content : List (Renderable any msg) }
+    { header : String, content : List (Element any msg) }
     -> List (SectionOption msg)
-    -> Renderable { s | section : Supported } msg
+    -> Element { s | section : Supported } msg
 section req opts =
     let
         c : SectionConfig msg
@@ -173,7 +173,7 @@ section req opts =
                         [ Node.attribute "slot" "header" ]
                         [ Node.text req.header ]
                   ]
-                , List.map Renderable.toNode req.content
+                , List.map Element.toNode req.content
                 , case c.actions of
                     [] ->
                         []
@@ -181,7 +181,7 @@ section req opts =
                     xs ->
                         [ Node.element "div"
                             [ Node.attribute "slot" "actions" ]
-                            (List.map Renderable.toNode xs)
+                            (List.map Element.toNode xs)
                         ]
                 ]
             )
@@ -216,9 +216,9 @@ option allows more than one section to be open simultaneously.
 
 -}
 view :
-    { sections : List (Renderable { section : Supported } msg) }
+    { sections : List (Element { section : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | disclosure : Supported } msg
+    -> Element { s | disclosure : Supported } msg
 view req opts =
     let
         c : AccordionConfig
@@ -235,5 +235,5 @@ view req opts =
                     Nothing
                 ]
             )
-            (List.map Renderable.toNode req.sections)
+            (List.map Element.toNode req.sections)
         )

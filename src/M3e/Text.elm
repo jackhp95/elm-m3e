@@ -34,9 +34,9 @@ primitive.
 
 -}
 
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| The M3 typescale role this text renders at — the **body** and **label**
@@ -67,42 +67,42 @@ inline =
 
 {-| `BodyLarge` block text — the default body-copy size. One-liner preset.
 -}
-bodyLarge : String -> Renderable { s | text : Supported } msg
+bodyLarge : String -> Element { s | text : Supported } msg
 bodyLarge content =
     view { content = content, role = BodyLarge } []
 
 
 {-| `BodyMedium` block text. One-liner preset.
 -}
-bodyMedium : String -> Renderable { s | text : Supported } msg
+bodyMedium : String -> Element { s | text : Supported } msg
 bodyMedium content =
     view { content = content, role = BodyMedium } []
 
 
 {-| `BodySmall` block text — captions and fine print. One-liner preset.
 -}
-bodySmall : String -> Renderable { s | text : Supported } msg
+bodySmall : String -> Element { s | text : Supported } msg
 bodySmall content =
     view { content = content, role = BodySmall } []
 
 
 {-| `LabelLarge` text — utilitarian UI label. One-liner preset.
 -}
-labelLarge : String -> Renderable { s | text : Supported } msg
+labelLarge : String -> Element { s | text : Supported } msg
 labelLarge content =
     view { content = content, role = LabelLarge } []
 
 
 {-| `LabelMedium` text. One-liner preset.
 -}
-labelMedium : String -> Renderable { s | text : Supported } msg
+labelMedium : String -> Element { s | text : Supported } msg
 labelMedium content =
     view { content = content, role = LabelMedium } []
 
 
 {-| `LabelSmall` text — the smallest utilitarian label. One-liner preset.
 -}
-labelSmall : String -> Renderable { s | text : Supported } msg
+labelSmall : String -> Element { s | text : Supported } msg
 labelSmall content =
     view { content = content, role = LabelSmall } []
 
@@ -118,7 +118,7 @@ The `role` drives the typescale utility class (`text-body-lg`, `text-label-md`,
 to switch the element from `<p>` to `<span>`.
 
 -}
-view : { content : String, role : Role } -> List (Option msg) -> Renderable { s | text : Supported } msg
+view : { content : String, role : Role } -> List (Option msg) -> Element { s | text : Supported } msg
 view req opts =
     let
         c : Config

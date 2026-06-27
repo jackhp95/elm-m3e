@@ -36,7 +36,7 @@ import M3e.Icon as Icon
 import M3e.IconButton as IconButton
 import M3e.LoadingIndicator as LoadingIndicator
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
 import M3e.Shape as Shape
@@ -55,9 +55,9 @@ import UrlPath
 import View exposing (View)
 
 
-toHtml : Renderable any Msg -> Html Msg
+toHtml : Element any Msg -> Html Msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 
@@ -360,7 +360,7 @@ craneApp : Model -> Html Msg
 craneApp model =
     Theme.view
         { content =
-            [ Renderable.html
+            [ Element.html
                 (div [ class "overflow-hidden rounded-md-corner-large border border-outline-variant bg-surface" ]
                     [ appHeader model
                     , div [ class "space-y-6 p-4 sm:space-y-8 sm:p-6" ]
@@ -387,7 +387,7 @@ appHeader model =
             [ div [ class "flex min-w-0 items-center gap-2" ]
                 [ Shape.view
                     { content =
-                        [ Renderable.html
+                        [ Element.html
                             (div [ class "size-8 shrink-0 bg-primary text-on-primary grid place-items-center" ]
                                 [ Icon.view { name = "explore" } |> toHtml ]
                             )
@@ -704,7 +704,7 @@ featuredSlide model d =
         [ div [ class "absolute -right-6 -top-6 opacity-60" ]
             [ Shape.view
                 { content =
-                    [ Renderable.html (div [ class "size-28 bg-primary/30" ] []) ]
+                    [ Element.html (div [ class "size-28 bg-primary/30" ] []) ]
                 }
                 [ Shape.name d.shape ]
                 |> toHtml
@@ -771,7 +771,7 @@ destinationCard model d =
             div [ class "relative grid h-32 place-items-center bg-secondary-container" ]
                 [ Shape.view
                     { content =
-                        [ Renderable.html
+                        [ Element.html
                             (div [ class "size-20 bg-primary text-on-primary grid place-items-center" ]
                                 [ Icon.view { name = categoryIcon d.category } |> toHtml ]
                             )
@@ -789,11 +789,11 @@ destinationCard model d =
     in
     Card.view
         [ Card.variant Card.Elevated
-        , Card.media (Renderable.html media)
+        , Card.media (Element.html media)
         , Card.headline (Heading.view { label = d.name, variant = Heading.Title } [])
         , Card.subhead (Heading.view { label = d.country ++ " · " ++ d.price, variant = Heading.Label } [])
         , Card.body
-            [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ]) ]
+            [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ]) ]
         , Card.actions
             [ Button.view { label = "Itinerary", variant = Button.Text }
                 [ Button.onClick (OpenItinerary d.id) ]
@@ -854,7 +854,7 @@ itinerarySheet model =
             div [ class "flex items-center gap-3" ]
                 [ Shape.view
                     { content =
-                        [ Renderable.html
+                        [ Element.html
                             (div [ class "size-10 bg-primary text-on-primary grid place-items-center" ]
                                 [ Icon.view { name = categoryIcon dest.category } |> toHtml ]
                             )
@@ -903,12 +903,12 @@ itinerarySheet model =
     case maybeDest of
         Just dest ->
             BottomSheet.view
-                { content = [ Renderable.html (bodyHtml dest) ] }
+                { content = [ Element.html (bodyHtml dest) ] }
                 [ BottomSheet.open True
                 , BottomSheet.onClose CloseItinerary
                 , BottomSheet.modal True
                 , BottomSheet.handle True
-                , BottomSheet.header [ Renderable.html (headerHtml dest) ]
+                , BottomSheet.header [ Element.html (headerHtml dest) ]
                 , BottomSheet.actions
                     [ Button.view { label = "Close", variant = Button.Text }
                         [ Button.onClick CloseItinerary ]

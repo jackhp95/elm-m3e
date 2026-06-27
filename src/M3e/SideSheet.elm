@@ -10,7 +10,7 @@ Side sheets).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     The host's main page content, projected into the drawer
     container's default slot so the element manages open/close
     layout transitions.
@@ -38,9 +38,9 @@ message when the relevant property transitions to `false`.
 import Cem.M3e.DrawerContainer as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Which edge the panel anchors to. Default `End`.
@@ -91,14 +91,14 @@ onClose m =
 {-| Content for the sheet's panel (rendered into the start/end slot above any
 action buttons).
 -}
-body : List (Renderable any msg) -> Option msg
+body : List (Element any msg) -> Option msg
 body xs =
-    Internal.option (\c -> { c | body = List.map Renderable.toNode xs })
+    Internal.option (\c -> { c | body = List.map Element.toNode xs })
 
 
 {-| Action buttons rendered at the bottom of the panel.
 -}
-actions : List (Renderable { button : Supported } msg) -> Option msg
+actions : List (Element { button : Supported } msg) -> Option msg
 actions xs =
     Internal.option (\c -> { c | actions = xs })
 
@@ -109,7 +109,7 @@ type alias Config msg =
     , modal : Bool
     , onClose : Maybe msg
     , body : List (Node.Node msg)
-    , actions : List (Renderable { button : Supported } msg)
+    , actions : List (Element { button : Supported } msg)
     }
 
 
@@ -137,9 +137,9 @@ defaultConfig =
 
 -}
 view :
-    { content : List (Renderable any msg) }
+    { content : List (Element any msg) }
     -> List (Option msg)
-    -> Renderable { s | sideSheet : Supported } msg
+    -> Element { s | sideSheet : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -155,7 +155,7 @@ view req opts =
                 ]
             )
             (panelNode c
-                :: List.map Renderable.toNode req.content
+                :: List.map Element.toNode req.content
             )
         )
 
@@ -245,4 +245,4 @@ panelNode c =
     in
     Node.element "div"
         [ Node.attribute "slot" slotName ]
-        (c.body ++ List.map Renderable.toNode c.actions)
+        (c.body ++ List.map Element.toNode c.actions)

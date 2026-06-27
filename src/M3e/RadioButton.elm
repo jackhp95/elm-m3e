@@ -40,9 +40,9 @@ text as **siblings** inside the label:
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Configuration option for a radio group, built by the helpers below.
@@ -90,7 +90,7 @@ view :
     , selected : Maybe String
     }
     -> List (Option msg)
-    -> Renderable { s | radioButton : Supported } msg
+    -> Element { s | radioButton : Supported } msg
 view req opts =
     let
         c : Config msg

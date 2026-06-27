@@ -31,9 +31,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| An option configuring the `<m3e-paginator>` element.
@@ -107,7 +107,7 @@ type alias Config msg =
 {-| Build the `<m3e-paginator>` IR node. Requires the total item count
 (`length`), which drives the page count and which nav buttons are enabled.
 -}
-view : { length : Int } -> List (Option msg) -> Renderable { s | paginator : Supported } msg
+view : { length : Int } -> List (Option msg) -> Element { s | paginator : Supported } msg
 view req opts =
     let
         c : Config msg

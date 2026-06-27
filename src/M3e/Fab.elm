@@ -31,10 +31,10 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.Fab as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
@@ -150,7 +150,7 @@ label v =
 
 {-| Render the FAB with its required `icon` and `name` (aria-label).
 -}
-view : { icon : String, name : String } -> List (Option msg) -> Renderable { s | fab : Supported } msg
+view : { icon : String, name : String } -> List (Option msg) -> Element { s | fab : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -197,7 +197,7 @@ view req opts =
                 ]
             )
             (List.filterMap identity
-                [ Just (Renderable.toNode (Icon.view { name = req.icon }))
+                [ Just (Element.toNode (Icon.view { name = req.icon }))
                 , Maybe.map (\lbl -> Node.withSlot "label" (Node.element "span" [] [ Node.text lbl ])) c.label
                 ]
             )

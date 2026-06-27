@@ -32,9 +32,9 @@ item and wire `itemOnClick` on each destination to update your model.
 import Cem.M3e.NavBar as CemNavBar
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -98,7 +98,7 @@ itemBadge s =
 {-| Give the item a distinct glyph for its selected state (the `selected-icon`
 slot). Shown in place of the regular icon while the item is selected.
 -}
-itemSelectedIcon : Renderable { icon : Supported } msg -> ItemOption msg
+itemSelectedIcon : Element { icon : Supported } msg -> ItemOption msg
 itemSelectedIcon r =
     Internal.option (\c -> { c | selectedIcon = Just r })
 
@@ -148,9 +148,9 @@ while keeping it available to screen readers via the slot content.
 
 -}
 item :
-    { icon : Renderable { icon : Supported } msg, label : String }
+    { icon : Element { icon : Supported } msg, label : String }
     -> List (ItemOption msg)
-    -> Renderable { navItem : Supported } msg
+    -> Element { navItem : Supported } msg
 item req opts =
     let
         c : ItemConfig msg
@@ -171,8 +171,8 @@ item req opts =
                 ]
             )
             (List.filterMap identity
-                [ Just (Node.withSlot "icon" (Renderable.toNode req.icon))
-                , Maybe.map (\si -> Node.withSlot "selected-icon" (Renderable.toNode si)) c.selectedIcon
+                [ Just (Node.withSlot "icon" (Element.toNode req.icon))
+                , Maybe.map (\si -> Node.withSlot "selected-icon" (Element.toNode si)) c.selectedIcon
                 , Just (Node.text req.label)
                 , Maybe.map (\b -> Node.element "m3e-badge" [] [ Node.text b ]) c.badge
                 ]
@@ -205,9 +205,9 @@ item req opts =
 
 -}
 view :
-    { items : List (Renderable { navItem : Supported } msg) }
+    { items : List (Element { navItem : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | navBar : Supported } msg
+    -> Element { s | navBar : Supported } msg
 view req opts =
     let
         c : ContainerConfig
@@ -221,7 +221,7 @@ view req opts =
                 , Just (Node.rawAttr (CemNavBar.mode (toCemMode c.mode)))
                 ]
             )
-            (List.map Renderable.toNode req.items)
+            (List.map Element.toNode req.items)
         )
 
 
@@ -233,7 +233,7 @@ type alias ItemConfig msg =
     { selected : Bool
     , onClick : Maybe msg
     , badge : Maybe String
-    , selectedIcon : Maybe (Renderable { icon : Supported } msg)
+    , selectedIcon : Maybe (Element { icon : Supported } msg)
     , disabled : Bool
     , href : Maybe String
     }

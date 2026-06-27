@@ -11,7 +11,7 @@ import M3e.Divider as Divider
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.Node as Node
-import M3e.Renderable as Renderable
+import M3e.Element as Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -59,9 +59,9 @@ head _ =
         |> Seo.website
 
 
-toHtml : Renderable.Renderable any msg -> Html msg
+toHtml : Element.Element any msg -> Html msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 pageHeading : Html msg
@@ -80,7 +80,7 @@ sectionHeading label =
 
 highlights : List ( String, String, String )
 highlights =
-    [ ( "tune", "Typed View API", "Every component is `M3e.Foo.view {required} [options]` returning typed `Renderable` content — the compiler refuses invalid compositions before runtime." )
+    [ ( "tune", "Typed View API", "Every component is `M3e.Foo.view {required} [options]` returning typed `Element` content — the compiler refuses invalid compositions before runtime." )
     , ( "design_services", "Material Design 3 Compliance", "All 53 modules track the M3 spec and the @m3e/web Custom Elements Manifest, with per-component enums in place of stringly-typed attributes." )
     , ( "verified", "Slot-Safe Composition", "Typed slots ensure an icon slot only accepts a M3e.Icon, a leading slot only accepts a leading — no orphan content quietly disappearing into the default slot." )
     , ( "palette", "Theme as Owned State", "A single M3e.Theme drives the dynamic-color engine, dark/light, contrast, density, and motion for its subtree. No app-wide globals." )
@@ -95,7 +95,7 @@ highlightCard ( iconName, title, body ) =
         [ Card.variant Card.Filled
         , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
         , Card.body
-            [ Renderable.html
+            [ Element.html
                 (div [ class "flex gap-3" ]
                     [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
                     , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
@@ -103,7 +103,7 @@ highlightCard ( iconName, title, body ) =
                 )
             ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml
 
 

@@ -38,9 +38,9 @@ as an inert attribute on `<m3e-select>` — that never wired the accessible labe
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -69,7 +69,7 @@ type alias Config msg =
     , required : Bool
     , disabled : Bool
     , onChange : Maybe (String -> msg)
-    , options : List (Renderable { selectOption : Supported } msg)
+    , options : List (Element { selectOption : Supported } msg)
     }
 
 
@@ -146,7 +146,7 @@ onChange f =
 
 {-| Supply the list of options to render inside `<m3e-select>`.
 -}
-options : List (Renderable { selectOption : Supported } msg) -> Option msg
+options : List (Element { selectOption : Supported } msg) -> Option msg
 options os =
     Internal.option (\c -> { c | options = os })
 
@@ -165,7 +165,7 @@ attribute so `event.target.value` on the select's `change` event returns it.
 option :
     { value : String, label : String }
     -> List (OptionOption msg)
-    -> Renderable { selectOption : Supported } msg
+    -> Element { selectOption : Supported } msg
 option req opts =
     let
         oc : OptionConfig
@@ -211,7 +211,7 @@ accessible-label association (#13).
 view :
     { label : String }
     -> List (Option msg)
-    -> Renderable { s | select : Supported } msg
+    -> Element { s | select : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -256,7 +256,7 @@ view req opts =
                         c.onChange
                     ]
                 )
-                (List.map Renderable.toNode c.options)
+                (List.map Element.toNode c.options)
             ]
         )
 

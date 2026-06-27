@@ -35,7 +35,7 @@ generated attrs and **all events** ride opaque in `RawAttr`. This is why a
 parent can wire a `<label for>` to a `<control id>` by rewriting data, and why a
 unit test can assert a DOM *property* that `Test.Html` is blind to.
 
-## Content & slots (`M3e.Renderable`)
+## Content & slots (`M3e.Element`)
 
 One content type with a phantom **row**. Children tag themselves (open row);
 slots list accepted kinds (closed row). The accepted set is decided by the
@@ -45,10 +45,10 @@ Material content taxonomy — see [CONVENTIONS.md](CONVENTIONS.md).
 
 ```elm
 M3e.IconButton.view { icon = "delete", name = "Delete" } [ M3e.IconButton.onClick Del ]
---                 └ required (incl a11y name) ┘  └ optionals fold like Html attrs ┘  -> Renderable {iconButton}
+--                 └ required (incl a11y name) ┘  └ optionals fold like Html attrs ┘  -> Element {iconButton}
 ```
 
-`view {required} [options] -> Renderable {tag}`: one concept, returns slot-ready
+`view {required} [options] -> Element {tag}`: one concept, returns slot-ready
 content directly, so slot lists fold with **no lift**. Required fields are
 mandatory; options are order-independent.
 
@@ -56,8 +56,8 @@ mandatory; options are order-independent.
 
 | Context | Escape | Why |
 |---|---|---|
-| default-slot region (card body) | `M3e.Renderable.html : Html msg -> …` | no slot injected; raw Html is fine |
-| named slot (app-bar trailing) | `M3e.Renderable.element {tag} attrs children -> …` | parent must inject `slot=`; you build a slot-capable element |
+| default-slot region (card body) | `M3e.Element.html : Html msg -> …` | no slot injected; raw Html is fine |
+| named slot (app-bar trailing) | `M3e.Element.element {tag} attrs children -> …` | parent must inject `slot=`; you build a slot-capable element |
 
 A named slot's accepted set lists `element`, **not** `html` — so raw Html in a
 named slot is a compile error, and a slot can never be silently dropped.
@@ -78,7 +78,7 @@ Real costs we accept (mostly *authoring* costs, not consumer/runtime):
   short, well-named slot aliases. Worst with large accepted sets — but large
   sets are the *free-row* (arbitrary) case, which has no constraint to violate.
 - **Annotations on the child side** use the open-row form
-  `Renderable { s | tag : Supported } msg` (the `s` leaks). Slot-side aliases are
+  `Element { s | tag : Supported } msg` (the `s` leaks). Slot-side aliases are
   clean and are what name the error.
 - **A parallel vDOM-lite** (`M3e.Node`, `Cem.M3e.*`) that the library maintains.
   Capabilities not yet modeled (keyed, lazy-inside-a-section, SVG namespace) fall
@@ -99,7 +99,7 @@ Assert against the IR, not the rendered Html:
 
 ```elm
 M3e.IconButton.view { icon = "delete", name = "Delete" } [ M3e.IconButton.selected True ]
-    |> M3e.Renderable.toNode
+    |> M3e.Element.toNode
     |> M3e.Node.findProperty "selected"      -- Test.Html cannot see this
     |> Maybe.map (Json.Encode.encode 0)
     |> Expect.equal (Just "true")

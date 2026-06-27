@@ -30,10 +30,10 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.Fab as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
@@ -135,7 +135,7 @@ download v =
 view :
     { icon : String, label : String, variant : Variant }
     -> List (Option msg)
-    -> Renderable { s | extendedFab : Supported } msg
+    -> Element { s | extendedFab : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -174,7 +174,7 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.download v)) c.download
                 ]
             )
-            [ Renderable.toNode (Icon.view { name = req.icon })
+            [ Element.toNode (Icon.view { name = req.icon })
             , Node.withSlot "label" (Node.element "span" [] [ Node.text req.label ])
             ]
         )

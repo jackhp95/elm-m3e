@@ -65,21 +65,21 @@ the whole app stays builder-data until the single root conversion.
 
 ### 2. Phantom-typed slots — type by Material content kind
 
-Slot content is one type, `M3e.Renderable`, carrying a phantom **row** that
+Slot content is one type, `M3e.Element`, carrying a phantom **row** that
 records which kinds a value is:
 
 ```elm
-type Renderable supported msg = Renderable (Node msg)   -- `supported` is phantom
+type Element supported msg = Element (Node msg)   -- `supported` is phantom
 type Supported = Supported
 ```
 
-A **child** tags itself with an **open** row (`Renderable { s | iconButton : Supported } msg`
+A **child** tags itself with an **open** row (`Element { s | iconButton : Supported } msg`
 — "I am an icon button; I fit any slot that lists `iconButton`"). A **parent
 slot** lists the **accepted child kinds** in a **closed** row:
 
 ```elm
 type alias Trailing msg =
-    Renderable { iconButton : Supported, search : Supported, avatar : Supported, element : Supported } msg
+    Element { iconButton : Supported, search : Supported, avatar : Supported, element : Supported } msg
 ```
 
 A child whose tag is not in the closed set is a compile error. The accepted set
@@ -87,7 +87,7 @@ is decided by the **Material content taxonomy** (see `docs/CONVENTIONS.md`):
 single child → one kind; homogeneous list → that kind; spec-heterogeneous region
 → the union of valid kinds; arbitrary region → a free row.
 
-### 3. View-style components — `view {required} [options] -> Renderable {tag}`
+### 3. View-style components — `view {required} [options] -> Element {tag}`
 
 Components are **one concept**: a `view` that returns slot-ready content
 directly (like `Html.div`), so heterogeneous slot lists fold with **no per-item
@@ -107,10 +107,10 @@ so conditional rendering is order-independent. This supersedes the pipe-builder
 
 ### 4. Two escapes, matched to the slot — `html` for regions, `element` for named slots
 
-- `M3e.Renderable.html : Html msg -> Renderable { s | html : Supported } msg` —
+- `M3e.Element.html : Html msg -> Element { s | html : Supported } msg` —
   for **default-slot regions** (card body), where no slot is injected, so raw
   `Html` is fine.
-- `M3e.Renderable.element : { tag : String } -> List (Node.Attr msg) -> List (Node msg) -> Renderable { s | element : Supported } msg` —
+- `M3e.Element.element : { tag : String } -> List (Node.Attr msg) -> List (Node msg) -> Element { s | element : Supported } msg` —
   for **named slots**, where the parent must stamp `slot=` onto the child; you
   build a slot-capable element, so the slot can never be silently dropped.
 

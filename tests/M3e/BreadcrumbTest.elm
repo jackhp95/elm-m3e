@@ -3,17 +3,17 @@ module M3e.BreadcrumbTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Breadcrumb as Breadcrumb
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
-crumb1 : Renderable.Renderable { breadcrumbItem : Renderable.Supported } msg
+crumb1 : Element.Element { breadcrumbItem : Element.Supported } msg
 crumb1 =
     Breadcrumb.item { label = "Dashboard" } [ Breadcrumb.itemHref "/dashboard" ]
 
 
-crumb2 : Renderable.Renderable { breadcrumbItem : Renderable.Supported } msg
+crumb2 : Element.Element { breadcrumbItem : Element.Supported } msg
 crumb2 =
     Breadcrumb.item { label = "Reports" } [ Breadcrumb.itemCurrent True ]
 
@@ -21,13 +21,13 @@ crumb2 =
 parentNode : List (Breadcrumb.BreadcrumbOption msg) -> Node.Node msg
 parentNode opts =
     Breadcrumb.view { items = [ crumb1, crumb2 ] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 itemNode : List (Breadcrumb.ItemOption msg) -> Node.Node msg
 itemNode opts =
     Breadcrumb.item { label = "Home" } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test

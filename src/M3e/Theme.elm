@@ -11,7 +11,7 @@ dynamic color, density, motion, and focus tokens from a seed color and applies
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     (the themed subtree — content IS what the element wraps)
   - Options: seedColor, scheme, variant, contrast, density, strongFocus,
     motion, onChange
@@ -32,9 +32,9 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.Theme as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Color scheme — follows the OS light/dark preference (`Auto`), or is
@@ -156,7 +156,7 @@ type alias Config msg =
 {-| Render the theme provider, wrapping `content` in `<m3e-theme>` so the
 derived color, density, motion, and focus tokens apply to that subtree.
 -}
-view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | theme : Supported } msg
+view : { content : List (Element any msg) } -> List (Option msg) -> Element { s | theme : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -185,7 +185,7 @@ view req opts =
                 , Maybe.map (\d -> Node.on "change" d) c.onChange
                 ]
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )
 
 

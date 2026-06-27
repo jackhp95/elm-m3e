@@ -3,14 +3,14 @@ module M3e.DividerTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Divider as Divider
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : List (Divider.Option msg) -> Node.Node msg
 node opts =
-    Divider.view opts |> Renderable.toNode
+    Divider.view opts |> Element.toNode
 
 
 suite : Test

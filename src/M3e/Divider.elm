@@ -19,7 +19,7 @@ Spec (per docs/CONVENTIONS.md):
 
 Because there are no required fields, `view` takes only the options list:
 
-    view : List (Option msg) -> Renderable { s | divider : Supported } msg
+    view : List (Option msg) -> Element { s | divider : Supported } msg
 
 @docs view
 @docs Option
@@ -28,9 +28,9 @@ Because there are no required fields, `view` takes only the options list:
 -}
 
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 type alias Config =
@@ -81,7 +81,7 @@ insetEnd b =
 
 {-| Render the divider.
 -}
-view : List (Option msg) -> Renderable { s | divider : Supported } msg
+view : List (Option msg) -> Element { s | divider : Supported } msg
 view opts =
     let
         c : Config

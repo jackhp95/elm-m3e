@@ -2,8 +2,8 @@ module M3e.TimePickerTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.TimePicker as TimePicker
 import Test exposing (Test, describe, test)
 
@@ -15,7 +15,7 @@ import Test exposing (Test, describe, test)
 viewNode : List (TimePicker.Option String) -> Node.Node String
 viewNode opts =
     TimePicker.view { label = "Meeting time" } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 labelChild : Node.Node msg -> Maybe (Node.Node msg)
@@ -147,14 +147,14 @@ suite =
         -- Slot children
         , test "hint adds a child with slot='hint'" <|
             \_ ->
-                viewNode [ TimePicker.hint (Renderable.text "24-hour format") ]
+                viewNode [ TimePicker.hint (Element.text "24-hour format") ]
                     |> Node.childrenOf
                     |> List.any (\n -> Node.findAttribute "slot" n == Just "hint")
                     |> not
                     |> Expect.equal False
         , test "error adds a child with slot='error'" <|
             \_ ->
-                viewNode [ TimePicker.error (Renderable.text "Invalid time") ]
+                viewNode [ TimePicker.error (Element.text "Invalid time") ]
                     |> Node.childrenOf
                     |> List.any (\n -> Node.findAttribute "slot" n == Just "error")
                     |> not

@@ -2,8 +2,8 @@ module M3e.SelectTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Select as Select
 import Test exposing (Test, describe, test)
 
@@ -15,7 +15,7 @@ import Test exposing (Test, describe, test)
 viewNode : List (Select.Option String) -> Node.Node String
 viewNode opts =
     Select.view { label = "Plan" } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 labelChild : Node.Node msg -> Maybe (Node.Node msg)
@@ -28,12 +28,12 @@ selectChild node =
     Node.childrenOf node |> List.drop 1 |> List.head
 
 
-freeOpt : Renderable.Renderable { selectOption : Renderable.Supported } String
+freeOpt : Element.Element { selectOption : Element.Supported } String
 freeOpt =
     Select.option { value = "free", label = "Free" } []
 
 
-proOpt : Renderable.Renderable { selectOption : Renderable.Supported } String
+proOpt : Element.Element { selectOption : Element.Supported } String
 proOpt =
     Select.option { value = "pro", label = "Pro" } [ Select.optionSelected True ]
 
@@ -140,26 +140,26 @@ suite =
         , test "option renders <m3e-option>" <|
             \_ ->
                 freeOpt
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-option")
         , test "option value is set as the 'value' attribute on <m3e-option>" <|
             \_ ->
                 freeOpt
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "value"
                     |> Expect.equal (Just "free")
         , test "optionSelected=true sets 'selected' DOM property on option" <|
             \_ ->
                 proOpt
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "optionSelected=false by default" <|
             \_ ->
                 freeOpt
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")

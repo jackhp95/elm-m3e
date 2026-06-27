@@ -68,9 +68,9 @@ re-renders.
 
 import Html exposing (Html)
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -136,7 +136,7 @@ linkBadge s =
 
 {-| Leading icon for this link.
 -}
-linkIcon : Renderable { icon : Supported } msg -> LinkOption msg
+linkIcon : Element { icon : Supported } msg -> LinkOption msg
 linkIcon ic =
     Internal.option (\c -> { c | icon = Just ic })
 
@@ -175,7 +175,7 @@ groupBadge s =
 
 {-| Leading icon for this group.
 -}
-groupIcon : Renderable { icon : Supported } msg -> GroupOption msg
+groupIcon : Element { icon : Supported } msg -> GroupOption msg
 groupIcon ic =
     Internal.option (\c -> { c | icon = Just ic })
 
@@ -237,7 +237,7 @@ content items =
 link :
     { label : String, href : String }
     -> List (LinkOption msg)
-    -> Renderable { navMenuItem : Supported } msg
+    -> Element { navMenuItem : Supported } msg
 link req opts =
     let
         cfg : LinkConfig msg
@@ -250,7 +250,7 @@ link req opts =
             (List.filterMap identity
                 [ Maybe.map
                     (\ic ->
-                        Renderable.toNode ic
+                        Element.toNode ic
                             |> Node.withSlot "icon"
                     )
                     cfg.icon
@@ -290,9 +290,9 @@ link req opts =
 -}
 group :
     { label : String }
-    -> List (Renderable { navMenuItem : Supported } msg)
+    -> List (Element { navMenuItem : Supported } msg)
     -> List (GroupOption msg)
-    -> Renderable { navMenuItem : Supported } msg
+    -> Element { navMenuItem : Supported } msg
 group req children opts =
     let
         cfg : GroupConfig msg
@@ -313,7 +313,7 @@ group req children opts =
             (List.filterMap identity
                 [ Maybe.map
                     (\ic ->
-                        Renderable.toNode ic
+                        Element.toNode ic
                             |> Node.withSlot "icon"
                     )
                     cfg.icon
@@ -330,7 +330,7 @@ group req children opts =
                     )
                     cfg.badge
                 ]
-                ++ List.map Renderable.toNode children
+                ++ List.map Element.toNode children
             )
         )
 
@@ -357,9 +357,9 @@ group req children opts =
 
 -}
 view :
-    { entries : List (Renderable { navMenuItem : Supported } msg) }
+    { entries : List (Element { navMenuItem : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | navigationDrawer : Supported } msg
+    -> Element { s | navigationDrawer : Supported } msg
 view req opts =
     let
         cfg : ContainerConfig msg
@@ -388,7 +388,7 @@ view req opts =
             )
             (Node.element "m3e-nav-menu"
                 [ Node.attribute "slot" slotAttr ]
-                (List.map Renderable.toNode req.entries)
+                (List.map Element.toNode req.entries)
                 :: List.map (\h -> Node.raw h) cfg.content
             )
         )
@@ -401,7 +401,7 @@ view req opts =
 type alias LinkConfig msg =
     { selected : Bool
     , badge : Maybe String
-    , icon : Maybe (Renderable { icon : Supported } msg)
+    , icon : Maybe (Element { icon : Supported } msg)
     , target : Maybe String
     }
 
@@ -415,7 +415,7 @@ type alias GroupConfig msg =
     { selected : Bool
     , open : Bool
     , badge : Maybe String
-    , icon : Maybe (Renderable { icon : Supported } msg)
+    , icon : Maybe (Element { icon : Supported } msg)
     }
 
 

@@ -10,7 +10,7 @@ import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Heading as Heading
 import M3e.Node as Node
-import M3e.Renderable as Renderable
+import M3e.Element as Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -58,9 +58,9 @@ head _ =
         |> Seo.website
 
 
-toHtml : Renderable.Renderable any msg -> Html msg
+toHtml : Element.Element any msg -> Html msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 {-| (label, bg utility, on-color utility) for each M3 color role pair.
@@ -144,9 +144,9 @@ forcedColorsCard =
         [ Card.variant Card.Outlined
         , Card.headline (Heading.view { label = "Test it", variant = Heading.Title } [])
         , Card.body
-            [ Renderable.html
+            [ Element.html
                 (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
             ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml

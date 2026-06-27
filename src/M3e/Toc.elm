@@ -29,9 +29,9 @@ Spec (per docs/CONVENTIONS.md):
 -}
 
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| An option configuring the `<m3e-toc>` element.
@@ -73,7 +73,7 @@ type alias Config =
 
 {-| Render the table of contents, indexing the content area named by `for`.
 -}
-view : { for : String } -> List (Option msg) -> Renderable { s | toc : Supported } msg
+view : { for : String } -> List (Option msg) -> Element { s | toc : Supported } msg
 view req opts =
     let
         c : Config

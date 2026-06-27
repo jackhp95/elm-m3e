@@ -56,9 +56,9 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 import Cem.M3e.Datepicker as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 
@@ -239,7 +239,7 @@ onChange f =
         ]
 
 -}
-view : List (Option msg) -> Renderable { s | datePicker : Supported } msg
+view : List (Option msg) -> Element { s | datePicker : Supported } msg
 view opts =
     let
         c : Config msg

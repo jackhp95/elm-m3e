@@ -4,15 +4,15 @@ import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Disclosure as Disclosure
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 sectionNode : List (Disclosure.SectionOption msg) -> Node.Node msg
 sectionNode opts =
     Disclosure.section { header = "FAQ", content = [] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 accordionNode : List (Disclosure.SectionOption msg) -> List (Disclosure.Option msg) -> Node.Node msg
@@ -20,7 +20,7 @@ accordionNode secOpts accOpts =
     Disclosure.view
         { sections = [ Disclosure.section { header = "FAQ", content = [] } secOpts ] }
         accOpts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -45,7 +45,7 @@ suite =
                         ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.filterMap Node.tagOf
                     |> Expect.equal [ "m3e-expansion-panel", "m3e-expansion-panel" ]
@@ -116,7 +116,7 @@ suite =
                 Disclosure.view
                     { sections = [ Disclosure.section { header = "X", content = [] } [] ] }
                     [ Disclosure.multi True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 1
@@ -124,10 +124,10 @@ suite =
             \_ ->
                 Disclosure.section
                     { header = "FAQ"
-                    , content = [ Renderable.html (Node.toHtml (Node.text "body")) ]
+                    , content = [ Element.html (Node.toHtml (Node.text "body")) ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2

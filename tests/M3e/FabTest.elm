@@ -2,15 +2,15 @@ module M3e.FabTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Fab as Fab
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : String -> List (Fab.Option msg) -> Node.Node msg
 node icon opts =
-    Fab.view { icon = icon, name = "Add item" } opts |> Renderable.toNode
+    Fab.view { icon = icon, name = "Add item" } opts |> Element.toNode
 
 
 suite : Test
@@ -24,7 +24,7 @@ suite =
         , test "aria-label equals the required name field" <|
             \_ ->
                 Fab.view { icon = "add", name = "Create note" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Create note")
         , test "disabled is a DOM property — introspectable" <|

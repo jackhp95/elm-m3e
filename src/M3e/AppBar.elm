@@ -42,9 +42,9 @@ slot can never be silently dropped.
 
 import Cem.M3e.AppBar as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -54,7 +54,7 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 {-| Valid children for the `trailing` slot.
 -}
 type alias Trailing msg =
-    Renderable
+    Element
         { iconButton : Supported
         , search : Supported
         , avatar : Supported
@@ -66,7 +66,7 @@ type alias Trailing msg =
 {-| Valid children for the `leading` slot.
 -}
 type alias Leading msg =
-    Renderable
+    Element
         { iconButton : Supported
         , element : Supported
         }
@@ -76,7 +76,7 @@ type alias Leading msg =
 {-| Valid children for the `title` and `subtitle` slots.
 -}
 type alias Title msg =
-    Renderable
+    Element
         { heading : Supported
         , element : Supported
         }
@@ -158,21 +158,21 @@ centered b =
 -}
 leading : Leading msg -> Option msg
 leading item =
-    Internal.option (\c -> { c | leading = Just (Node.withSlot "leading" (Renderable.toNode item)) })
+    Internal.option (\c -> { c | leading = Just (Node.withSlot "leading" (Element.toNode item)) })
 
 
 {-| Content for the `title` slot (a heading or element).
 -}
 title : Title msg -> Option msg
 title item =
-    Internal.option (\c -> { c | title = Just (Node.withSlot "title" (Renderable.toNode item)) })
+    Internal.option (\c -> { c | title = Just (Node.withSlot "title" (Element.toNode item)) })
 
 
 {-| Content for the `subtitle` slot (a heading or element).
 -}
 subtitle : Title msg -> Option msg
 subtitle item =
-    Internal.option (\c -> { c | subtitle = Just (Node.withSlot "subtitle" (Renderable.toNode item)) })
+    Internal.option (\c -> { c | subtitle = Just (Node.withSlot "subtitle" (Element.toNode item)) })
 
 
 {-| Append items to the `trailing` slot (icon buttons, search, avatar, or
@@ -185,7 +185,7 @@ trailing items =
             { c
                 | trailing =
                     c.trailing
-                        ++ List.map (Renderable.toNode >> Node.withSlot "trailing") items
+                        ++ List.map (Element.toNode >> Node.withSlot "trailing") items
             }
         )
 
@@ -196,7 +196,7 @@ trailing items =
 
 {-| Render the app bar as an introspectable IR node from a list of options.
 -}
-view : List (Option msg) -> Renderable { s | appBar : Supported } msg
+view : List (Option msg) -> Element { s | appBar : Supported } msg
 view opts =
     let
         cfg : Config msg

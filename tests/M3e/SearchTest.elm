@@ -2,16 +2,16 @@ module M3e.SearchTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Search as Search
 import Test exposing (Test, describe, test)
 
 
 node : String -> List (Search.Option msg) -> Node.Node msg
 node placeholder opts =
-    Search.view { placeholder = placeholder } opts |> Renderable.toNode
+    Search.view { placeholder = placeholder } opts |> Element.toNode
 
 
 suite : Test

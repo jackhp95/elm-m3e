@@ -9,8 +9,8 @@ handle between the panes.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { start : List (Renderable any msg)
-    , end : List (Renderable any msg) }
+  - Required: { start : List (Element any msg)
+    , end : List (Element any msg) }
     (arbitrary content regions for the two panes; both are
     free-row — the `html` escape is valid inside either)
   - Options: orientation, disabled, label (accessible label for the handle)
@@ -34,9 +34,9 @@ mirroring Ui.SplitPane) and assigned the appropriate slot name.
 
 import Cem.M3e.SplitPane as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Direction of the split.
@@ -91,11 +91,11 @@ each wrapped in an `<m3e-content-pane>` and placed in their named slots, with a
 movable drag handle between them.
 -}
 view :
-    { start : List (Renderable any msg)
-    , end : List (Renderable any msg)
+    { start : List (Element any msg)
+    , end : List (Element any msg)
     }
     -> List (Option msg)
-    -> Renderable { s | splitPane : Supported } msg
+    -> Element { s | splitPane : Supported } msg
 view req opts =
     let
         c : Config
@@ -118,12 +118,12 @@ view req opts =
             [ Node.withSlot "start"
                 (Node.element "m3e-content-pane"
                     []
-                    (List.map Renderable.toNode req.start)
+                    (List.map Element.toNode req.start)
                 )
             , Node.withSlot "end"
                 (Node.element "m3e-content-pane"
                     []
-                    (List.map Renderable.toNode req.end)
+                    (List.map Element.toNode req.end)
                 )
             ]
         )

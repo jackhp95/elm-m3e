@@ -4,18 +4,18 @@ import Expect
 import Json.Encode as Encode
 import M3e.BottomSheet as BottomSheet
 import M3e.Button as Button
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : List (BottomSheet.Option msg) -> Node.Node msg
 node opts =
     BottomSheet.view { content = [] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
-actionButton : Renderable.Renderable { button : Renderable.Supported } msg
+actionButton : Element.Element { button : Element.Supported } msg
 actionButton =
     Button.view { label = "Share", variant = Button.Tonal } []
 
@@ -61,8 +61,8 @@ suite =
             \_ ->
                 BottomSheet.view
                     { content = [] }
-                    [ BottomSheet.header [ Renderable.html (Node.toHtml (Node.text "Title")) ] ]
-                    |> Renderable.toNode
+                    [ BottomSheet.header [ Element.html (Node.toHtml (Node.text "Title")) ] ]
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.map
@@ -94,9 +94,9 @@ suite =
         , test "content renders in default slot (no slot attribute)" <|
             \_ ->
                 BottomSheet.view
-                    { content = [ Renderable.html (Node.toHtml (Node.text "body")) ] }
+                    { content = [ Element.html (Node.toHtml (Node.text "body")) ] }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 1

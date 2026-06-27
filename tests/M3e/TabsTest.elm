@@ -2,28 +2,28 @@ module M3e.TabsTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Tabs as Tabs
 import Test exposing (Test, describe, test)
 
 
-tab1 : Renderable.Renderable { tab : Renderable.Supported } msg
+tab1 : Element.Element { tab : Element.Supported } msg
 tab1 =
     Tabs.tab { label = "Tab 1" } [ Tabs.tabSelected True, Tabs.tabFor "p1" ]
 
 
-tab2 : Renderable.Renderable { tab : Renderable.Supported } msg
+tab2 : Element.Element { tab : Element.Supported } msg
 tab2 =
     Tabs.tab { label = "Tab 2" } [ Tabs.tabFor "p2" ]
 
 
-panel1 : Renderable.Renderable { tabPanel : Renderable.Supported } msg
+panel1 : Element.Element { tabPanel : Element.Supported } msg
 panel1 =
     Tabs.panel { content = [] } [ Tabs.panelId "p1" ]
 
 
-panel2 : Renderable.Renderable { tabPanel : Renderable.Supported } msg
+panel2 : Element.Element { tabPanel : Element.Supported } msg
 panel2 =
     Tabs.panel { content = [] } [ Tabs.panelId "p2" ]
 
@@ -35,7 +35,7 @@ stripNode opts =
         , panels = [ panel1, panel2 ]
         }
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -49,13 +49,13 @@ suite =
         , test "tab helper renders <m3e-tab>" <|
             \_ ->
                 tab1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-tab")
         , test "panel helper renders <m3e-tab-panel>" <|
             \_ ->
                 panel1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-tab-panel")
         , test "tabs land in the default slot (no slot attribute)" <|
@@ -75,40 +75,40 @@ suite =
         , test "selected=true is a DOM property on the tab" <|
             \_ ->
                 tab1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "selected=false is always emitted on unselected tab" <|
             \_ ->
                 tab2
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
         , test "tabFor sets the 'for' attribute" <|
             \_ ->
                 tab1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "for"
                     |> Expect.equal (Just "p1")
         , test "panelId sets the 'id' attribute on the panel" <|
             \_ ->
                 panel1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "id"
                     |> Expect.equal (Just "p1")
         , test "tabDisabled=true sets disabled DOM property" <|
             \_ ->
                 Tabs.tab { label = "Off" } [ Tabs.tabDisabled True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "disabled absent by default" <|
             \_ ->
                 tab1
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "disabled"
                     |> Expect.equal Nothing
         , test "stretch=true is a DOM property on the strip" <|

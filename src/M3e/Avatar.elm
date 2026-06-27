@@ -11,7 +11,7 @@ Spec (per docs/CONVENTIONS.md):
   - Required: { alt : String } (→ aria-label on m3e-avatar; also → img[alt]
     for the image variant)
   - Options: image (src String), initials (text String),
-    iconChild (icon Renderable)
+    iconChild (icon Element)
   - Slots: default (the content child — img, text, or icon)
   - Properties: none (CEM Avatar has no attributes)
   - Attrs: aria-label (from required `alt`)
@@ -36,9 +36,9 @@ An avatar with no content option renders an empty circle.
 
 -}
 
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -48,7 +48,7 @@ import M3e.Renderable as Renderable exposing (Renderable, Supported)
 type Content msg
     = ImgContent String
     | TextContent String
-    | IconContent (Renderable { icon : Supported } msg)
+    | IconContent (Element { icon : Supported } msg)
     | NoContent
 
 
@@ -75,7 +75,7 @@ initials text =
 
 {-| Display an icon glyph — the generic-identity fallback.
 -}
-iconChild : Renderable { icon : Supported } msg -> Option msg
+iconChild : Element { icon : Supported } msg -> Option msg
 iconChild icon =
     Internal.option (\_ -> IconContent icon)
 
@@ -87,7 +87,7 @@ iconChild icon =
 {-| Render the avatar. The required `alt` becomes the `aria-label` (and the
 `<img>` `alt` for the image variant).
 -}
-view : { alt : String } -> List (Option msg) -> Renderable { s | avatar : Supported } msg
+view : { alt : String } -> List (Option msg) -> Element { s | avatar : Supported } msg
 view req opts =
     let
         content : Content msg
@@ -109,7 +109,7 @@ view req opts =
                     [ Node.text text ]
 
                 IconContent icon ->
-                    [ Renderable.toNode icon ]
+                    [ Element.toNode icon ]
 
                 NoContent ->
                     []

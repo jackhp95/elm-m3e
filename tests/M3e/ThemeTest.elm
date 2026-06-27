@@ -2,8 +2,8 @@ module M3e.ThemeTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Text as Text
 import M3e.Theme as Theme
 import Test exposing (Test, describe, test)
@@ -11,7 +11,7 @@ import Test exposing (Test, describe, test)
 
 node : List (Theme.Option msg) -> Node.Node msg
 node opts =
-    Theme.view { content = [] } opts |> Renderable.toNode
+    Theme.view { content = [] } opts |> Element.toNode
 
 
 suite : Test
@@ -27,7 +27,7 @@ suite =
                 Theme.view
                     { content = [ Text.bodyLarge "Hello" ] }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen Node.tagOf

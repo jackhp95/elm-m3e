@@ -12,9 +12,9 @@ to a control by id (Material 3 Tooltips).
 Spec (per docs/CONVENTIONS.md):
 
   - Two constructors, same `tooltip` tag:
-    `plain : { anchorId, label } → List PlainOption → Renderable { tooltip }`
+    `plain : { anchorId, label } → List PlainOption → Element { tooltip }`
     → `<m3e-tooltip>`
-    `rich  : { anchorId, content } → List RichOption → Renderable { tooltip }`
+    `rich  : { anchorId, content } → List RichOption → Element { tooltip }`
     → `<m3e-rich-tooltip>`
   - Required (plain): anchorId (wired via `for` attribute), label text
   - Required (rich): anchorId, content (default-slot children; free row)
@@ -40,9 +40,9 @@ No Elm state is required for visibility; the element manages show/hide.
 import Cem.M3e.RichTooltip as CemRich
 import Cem.M3e.Tooltip as CemPlain
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -92,8 +92,8 @@ type RichOption msg
     = RichId String
     | RichPosition RichPosition
     | RichHideDelay Int
-    | RichSubhead (Renderable { element : Supported } msg)
-    | RichActions (List (Renderable { element : Supported } msg))
+    | RichSubhead (Element { element : Supported } msg)
+    | RichActions (List (Element { element : Supported } msg))
 
 
 
@@ -151,14 +151,14 @@ richHideDelay =
 {-| Set the `subhead` slot content of a rich tooltip (optional header line
 above the supporting text).
 -}
-richSubhead : Renderable { element : Supported } msg -> RichOption msg
+richSubhead : Element { element : Supported } msg -> RichOption msg
 richSubhead =
     RichSubhead
 
 
 {-| Set the `actions` slot content of a rich tooltip (buttons at the bottom).
 -}
-richActions : List (Renderable { element : Supported } msg) -> RichOption msg
+richActions : List (Element { element : Supported } msg) -> RichOption msg
 richActions =
     RichActions
 
@@ -178,7 +178,7 @@ to the element whose `id` matches `anchorId`.
 plain :
     { anchorId : String, label : String }
     -> List (PlainOption msg)
-    -> Renderable { s | tooltip : Supported } msg
+    -> Element { s | tooltip : Supported } msg
 plain req opts =
     let
         c : PlainConfig
@@ -205,7 +205,7 @@ for the named slots.
 
     M3e.Tooltip.rich
         { anchorId = "status-icon"
-        , content = [ Renderable.html (Html.p [] [ Html.text "More detail here." ]) ]
+        , content = [ Element.html (Html.p [] [ Html.text "More detail here." ]) ]
         }
         [ M3e.Tooltip.richSubhead myTitleElement
         , M3e.Tooltip.richActions [ learnMoreButton ]
@@ -213,9 +213,9 @@ for the named slots.
 
 -}
 rich :
-    { anchorId : String, content : List (Renderable any msg) }
+    { anchorId : String, content : List (Element any msg) }
     -> List (RichOption msg)
-    -> Renderable { s | tooltip : Supported } msg
+    -> Element { s | tooltip : Supported } msg
 rich req opts =
     let
         c : RichConfig msg
@@ -229,11 +229,11 @@ rich req opts =
                     []
 
                 Just r ->
-                    [ Node.withSlot "subhead" (Renderable.toNode r) ]
+                    [ Node.withSlot "subhead" (Element.toNode r) ]
 
         contentNodes : List (Node.Node msg)
         contentNodes =
-            List.map Renderable.toNode req.content
+            List.map Element.toNode req.content
 
         actionNodes : List (Node.Node msg)
         actionNodes =
@@ -244,7 +244,7 @@ rich req opts =
                 rs ->
                     [ Node.element "div"
                         [ Node.attribute "slot" "actions" ]
-                        (List.map Renderable.toNode rs)
+                        (List.map Element.toNode rs)
                     ]
     in
     Internal.fromNode
@@ -293,8 +293,8 @@ type alias RichConfig msg =
     { id : Maybe String
     , position : Maybe RichPosition
     , hideDelay : Maybe Int
-    , subhead : Maybe (Renderable { element : Supported } msg)
-    , actions : List (Renderable { element : Supported } msg)
+    , subhead : Maybe (Element { element : Supported } msg)
+    , actions : List (Element { element : Supported } msg)
     }
 
 

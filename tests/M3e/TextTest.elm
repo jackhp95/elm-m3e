@@ -1,15 +1,15 @@
 module M3e.TextTest exposing (suite)
 
 import Expect
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Text as Text
 import Test exposing (Test, describe, test)
 
 
 node : String -> Text.Role -> List (Text.Option msg) -> Node.Node msg
 node content role opts =
-    Text.view { content = content, role = role } opts |> Renderable.toNode
+    Text.view { content = content, role = role } opts |> Element.toNode
 
 
 firstChildText : Node.Node msg -> Maybe String
@@ -73,13 +73,13 @@ suite =
         , test "bodyLarge preset renders <p> with text-body-lg" <|
             \_ ->
                 Text.bodyLarge "Preset text"
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> (\n -> ( Node.tagOf n, Node.findAttribute "class" n ))
                     |> Expect.equal ( Just "p", Just "text-body-lg" )
         , test "labelSmall preset renders <p> with text-label-sm" <|
             \_ ->
                 Text.labelSmall "tiny"
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> (\n -> ( Node.tagOf n, Node.findAttribute "class" n ))
                     |> Expect.equal ( Just "p", Just "text-label-sm" )
         ]

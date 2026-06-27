@@ -35,9 +35,9 @@ Note on `checked`: `Cem.M3e.Switch.checked` delegates to
 import Cem.M3e.Switch as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| An option configuring a switch.
@@ -86,7 +86,7 @@ type alias Config msg =
 {-| Render the switch. `name` is the required accessible label (the switch has
 no visible text).
 -}
-view : { name : String } -> List (Option msg) -> Renderable { s | switch : Supported } msg
+view : { name : String } -> List (Option msg) -> Element { s | switch : Supported } msg
 view req opts =
     let
         c : Config msg

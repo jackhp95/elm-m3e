@@ -38,9 +38,9 @@ import Cem.M3e.SplitButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Button as Button
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Appearance variant (default `Filled`).
@@ -89,7 +89,7 @@ view :
     , onTriggerClick : msg
     }
     -> List (Option msg)
-    -> Renderable { s | splitButton : Supported } msg
+    -> Element { s | splitButton : Supported } msg
 view req opts =
     let
         c : Config
@@ -110,7 +110,7 @@ view req opts =
                         Nothing
                     ]
                 )
-                |> Renderable.toNode
+                |> Element.toNode
                 |> Node.withSlot "leading-button"
 
         -- Trailing button: m3e-icon-button (FIX #16 — not a native <button>)

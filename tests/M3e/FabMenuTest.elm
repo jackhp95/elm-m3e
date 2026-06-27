@@ -1,13 +1,13 @@
 module M3e.FabMenuTest exposing (suite)
 
 import Expect
+import M3e.Element as Element exposing (Element)
 import M3e.FabMenu as FabMenu
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable)
 import Test exposing (Test, describe, test)
 
 
-req : { triggerIcon : String, name : String, items : List (Renderable { fabMenuItem : Renderable.Supported } ()) }
+req : { triggerIcon : String, name : String, items : List (Element { fabMenuItem : Element.Supported } ()) }
 req =
     { triggerIcon = "add"
     , name = "Actions"
@@ -20,7 +20,7 @@ req =
 
 node : List (FabMenu.Option ()) -> Node.Node ()
 node opts =
-    FabMenu.view req opts |> Renderable.toNode
+    FabMenu.view req opts |> Element.toNode
 
 
 {-| Get the m3e-fab-menu node (second child of the root div).
@@ -92,7 +92,7 @@ suite =
         , test "BUG FIX #18: item helper emits <m3e-fab-menu-item>, NOT <m3e-menu-item>" <|
             \_ ->
                 FabMenu.item { icon = "share", label = "Share", onClick = () }
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-fab-menu-item")
         , test "BUG FIX #18: items inside m3e-fab-menu are <m3e-fab-menu-item>" <|
@@ -105,7 +105,7 @@ suite =
         , test "item icon is in a <span slot=icon>" <|
             \_ ->
                 FabMenu.item { icon = "share", label = "Share", onClick = () }
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.map (\n -> ( Node.tagOf n, Node.findAttribute "slot" n ))
@@ -113,7 +113,7 @@ suite =
         , test "item label is a text child of m3e-fab-menu-item" <|
             \_ ->
                 FabMenu.item { icon = "share", label = "Share", onClick = () }
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.drop 1
                     |> List.head

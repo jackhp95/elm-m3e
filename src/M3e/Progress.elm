@@ -35,9 +35,9 @@ Circular emits `indeterminate=true` DOM property).
 import Cem.M3e.CircularProgressIndicator as CemCircular
 import Cem.M3e.LinearProgressIndicator as CemLinear
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Selects the rendered element. `Linear` draws `<m3e-linear-progress-indicator>`;
@@ -107,7 +107,7 @@ type alias Config msg =
 {-| Render a progress indicator. `shape` selects `Linear` or `Circular`;
 without a `value` option the indicator is indeterminate.
 -}
-view : { shape : Shape } -> List (Option msg) -> Renderable { s | progress : Supported } msg
+view : { shape : Shape } -> List (Option msg) -> Element { s | progress : Supported } msg
 view req opts =
     let
         c : Config msg

@@ -2,9 +2,9 @@ module M3e.ShapeTest exposing (suite)
 
 import Cem.M3e.Shape
 import Expect
+import M3e.Element as Element
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Shape as Shape
 import Test exposing (Test, describe, test)
 
@@ -12,14 +12,14 @@ import Test exposing (Test, describe, test)
 {-| Build a universally-typed content item via `fromNode` (the prototype exposes
 this; in the published package it lives in an unexposed Internal module).
 -}
-item : String -> Renderable.Renderable any msg
+item : String -> Element.Element any msg
 item tag =
     Internal.fromNode (Node.element tag [] [])
 
 
-nodeWith : List (Shape.Option msg) -> List (Renderable.Renderable any msg) -> Node.Node msg
+nodeWith : List (Shape.Option msg) -> List (Element.Element any msg) -> Node.Node msg
 nodeWith opts content =
-    Shape.view { content = content } opts |> Renderable.toNode
+    Shape.view { content = content } opts |> Element.toNode
 
 
 suite : Test

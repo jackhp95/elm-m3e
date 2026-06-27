@@ -49,7 +49,7 @@ import M3e.Node as Node
 import M3e.Paginator as Paginator
 import M3e.Progress as Progress
 import M3e.RadioButton as RadioButton
-import M3e.Renderable as Renderable exposing (Renderable)
+import M3e.Element as Element exposing (Element)
 import M3e.ScrollContainer as ScrollContainer
 import M3e.Search as Search
 import M3e.SegmentedButton as SegmentedButton
@@ -261,7 +261,7 @@ memberRow m =
     Card.view
         [ Card.variant Card.Outlined
         , Card.body
-            [ Renderable.html
+            [ Element.html
                 (div []
                     [ highlightedElm "overflow-x-auto text-body-sm text-on-surface" sig
                     , if m.doc == "" then
@@ -332,7 +332,7 @@ subView s =
         [ h3Heading s.title
         , Card.view
             [ Card.variant Card.Outlined
-            , Card.body [ Renderable.html (div [ class "flex flex-wrap items-center gap-4" ] [ s.body ]) ]
+            , Card.body [ Element.html (div [ class "flex flex-wrap items-center gap-4" ] [ s.body ]) ]
             ]
             |> toHtml
         ]
@@ -578,11 +578,11 @@ noOp _ =
     PagesMsg.noOp
 
 
-{-| Convert any `Renderable` to `Html msg`.
+{-| Convert any `Element` to `Html msg`.
 -}
-toHtml : Renderable any msg -> Html msg
+toHtml : Element any msg -> Html msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 headingDemo : Heading.Variant -> Heading.Size -> String -> Html msg
@@ -615,14 +615,14 @@ demoSections slug =
                             , IconButton.view { icon = "more_vert", name = "More" } []
                             ]
                         ]
-                        |> Renderable.toNode
+                        |> Element.toNode
                         |> Node.toHtml
                     )
                 , sub "Sizes"
                     (div [ class "w-full space-y-3" ]
-                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Renderable.toNode |> Node.toHtml
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Renderable.toNode |> Node.toHtml
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Renderable.toNode |> Node.toHtml
+                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Element.toNode |> Node.toHtml
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Element.toNode |> Node.toHtml
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Element.toNode |> Node.toHtml
                         ]
                     )
                 , sub "Centered title"
@@ -631,7 +631,7 @@ demoSections slug =
                         , AppBar.centered True
                         , AppBar.leading (IconButton.view { icon = "arrow_back", name = "Back" } [])
                         ]
-                        |> Renderable.toNode
+                        |> Element.toNode
                         |> Node.toHtml
                     )
                 ]
@@ -795,19 +795,19 @@ demoSections slug =
                         [ Card.view
                             [ Card.variant Card.Elevated
                             , Card.headline (Heading.view { label = "Elevated", variant = Heading.Title } [])
-                            , Card.body [ Renderable.html (text "Raised shadow surface, highest emphasis.") ]
+                            , Card.body [ Element.html (text "Raised shadow surface, highest emphasis.") ]
                             ]
                             |> toHtml
                         , Card.view
                             [ Card.variant Card.Filled
                             , Card.headline (Heading.view { label = "Filled", variant = Heading.Title } [])
-                            , Card.body [ Renderable.html (text "Solid tonal surface, medium emphasis.") ]
+                            , Card.body [ Element.html (text "Solid tonal surface, medium emphasis.") ]
                             ]
                             |> toHtml
                         , Card.view
                             [ Card.variant Card.Outlined
                             , Card.headline (Heading.view { label = "Outlined", variant = Heading.Title } [])
-                            , Card.body [ Renderable.html (text "Bordered, no fill, lowest emphasis.") ]
+                            , Card.body [ Element.html (text "Bordered, no fill, lowest emphasis.") ]
                             ]
                             |> toHtml
                         ]
@@ -817,7 +817,7 @@ demoSections slug =
                         [ Card.variant Card.Outlined
                         , Card.headline (Heading.view { label = "Compliance scorecard", variant = Heading.Title } [])
                         , Card.subhead (Heading.view { label = "Updated 2 hours ago", variant = Heading.Label } [])
-                        , Card.body [ Renderable.html (text "Supporting body text gives context to the headline.") ]
+                        , Card.body [ Element.html (text "Supporting body text gives context to the headline.") ]
                         , Card.actions
                             [ Button.view { label = "Review", variant = Button.Filled } []
                             , Button.view { label = "Dismiss", variant = Button.Text } []
@@ -885,7 +885,7 @@ demoSections slug =
                             ]
                         , Dialog.view
                             { headline = "Confirm deletion"
-                            , content = [ Renderable.html (text "This action permanently removes the project and all of its files.") ]
+                            , content = [ Element.html (text "This action permanently removes the project and all of its files.") ]
                             }
                             [ Dialog.open False, Dialog.onClose PagesMsg.noOp ]
                             |> toHtml
@@ -901,7 +901,7 @@ demoSections slug =
                         { sections =
                             [ Disclosure.section
                                 { header = "Show more"
-                                , content = [ Renderable.html (p [ class "text-body-md" ] [ text "Expandable content lives here. Tap the headline to toggle." ]) ]
+                                , content = [ Element.html (p [ class "text-body-md" ] [ text "Expandable content lives here. Tap the headline to toggle." ]) ]
                                 }
                                 []
                             ]
@@ -1273,7 +1273,7 @@ demoSections slug =
                 [ sub "Top + bottom dividers"
                     (ScrollContainer.view
                         { content =
-                            [ Renderable.html
+                            [ Element.html
                                 (div [ class "h-32 overflow-auto p-3 text-body-md" ]
                                     [ p [] [ text "Item 1" ]
                                     , p [] [ text "Item 2" ]
@@ -1356,19 +1356,19 @@ demoSections slug =
             [ usage
                 [ sub "Decorative shapes"
                     (div [ class "flex flex-wrap items-center gap-4" ]
-                        [ Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-primary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Circle ] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-secondary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Flower ] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-24 h-16 bg-tertiary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Pill ] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-error-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Heart ] |> toHtml
+                        [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Circle ] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-secondary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Flower ] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-24 h-16 bg-tertiary-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Pill ] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-error-container" ] []) ] } [ Shape.name Cem.M3e.Shape.Heart ] |> toHtml
                         ]
                     )
                 , sub "Corner-radius scale"
                     (div [ class "flex flex-wrap items-end gap-4" ]
-                        [ Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-none" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-small" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-medium" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-large" ] []) ] } [] |> toHtml
-                        , Shape.view { content = [ Renderable.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-full" ] []) ] } [] |> toHtml
+                        [ Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-none" ] []) ] } [] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-small" ] []) ] } [] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-medium" ] []) ] } [] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-md-corner-large" ] []) ] } [] |> toHtml
+                        , Shape.view { content = [ Element.html (Html.div [ class "block w-16 h-16 bg-primary-container rounded-full" ] []) ] } [] |> toHtml
                         ]
                     )
                 ]
@@ -1395,15 +1395,15 @@ demoSections slug =
             [ usage
                 [ sub "Lines + block"
                     (div [ class "flex w-full flex-col gap-2" ]
-                        [ Skeleton.view { content = [ Renderable.html (Html.div [ class "h-5 w-2/3" ] []) ] } [] |> toHtml
-                        , Skeleton.view { content = [ Renderable.html (Html.div [ class "h-5 w-1/2" ] []) ] } [] |> toHtml
-                        , Skeleton.view { content = [ Renderable.html (Html.div [ class "h-32 w-full" ] []) ] } [] |> toHtml
+                        [ Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-2/3" ] []) ] } [] |> toHtml
+                        , Skeleton.view { content = [ Element.html (Html.div [ class "h-5 w-1/2" ] []) ] } [] |> toHtml
+                        , Skeleton.view { content = [ Element.html (Html.div [ class "h-32 w-full" ] []) ] } [] |> toHtml
                         ]
                     )
                 , sub "Loaded (reveals content)"
                     (Skeleton.view
                         { content =
-                            [ Renderable.html
+                            [ Element.html
                                 (div [ class "rounded bg-surface-container p-3 text-body-md" ]
                                     [ text "Real content, revealed once loaded." ]
                                 )
@@ -1423,7 +1423,7 @@ demoSections slug =
                             List.map
                                 (\( label, swatch ) ->
                                     Slide.slide
-                                        [ Renderable.html
+                                        [ Element.html
                                             (div [ class ("flex h-24 w-40 shrink-0 items-center justify-center rounded-md-corner-large text-on-surface " ++ swatch) ]
                                                 [ text label ]
                                             )
@@ -1490,8 +1490,8 @@ demoSections slug =
             [ usage
                 [ sub "Horizontal"
                     (SplitPane.view
-                        { start = [ Renderable.html (p [ class "p-4 text-body-md" ] [ text "Start pane" ]) ]
-                        , end = [ Renderable.html (p [ class "p-4 text-body-md" ] [ text "End pane" ]) ]
+                        { start = [ Element.html (p [ class "p-4 text-body-md" ] [ text "Start pane" ]) ]
+                        , end = [ Element.html (p [ class "p-4 text-body-md" ] [ text "End pane" ]) ]
                         }
                         []
                         |> toHtml
@@ -1653,8 +1653,8 @@ demoSections slug =
                         [ TextField.variant TextField.Outlined
                         , TextField.value ""
                         , TextField.onInput noOp
-                        , TextField.prefix (Renderable.text "$")
-                        , TextField.suffix (Renderable.text "USD")
+                        , TextField.prefix (Element.text "$")
+                        , TextField.suffix (Element.text "USD")
                         ]
                         |> toHtml
                     )
@@ -1675,7 +1675,7 @@ demoSections slug =
                 [ sub "Highlight a term"
                     (TextHighlight.view
                         { content =
-                            [ Renderable.html
+                            [ Element.html
                                 (text "M3e.TextHighlight wraps any inline content and highlights every occurrence of a search term.")
                             ]
                         }
@@ -1773,7 +1773,7 @@ demoSections slug =
                         { id = "field-project-name"
                         , label = Label.fromHtml (Html.text "Project name")
                         , control =
-                            Renderable.element { tag = "input" }
+                            Element.element { tag = "input" }
                                 [ Node.rawAttr (Attr.value "atlas") ]
                                 []
                         }

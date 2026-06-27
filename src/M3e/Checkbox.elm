@@ -40,9 +40,9 @@ Note on `checked`: `Cem.M3e.Checkbox.checked` delegates to
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 type alias Config msg =
@@ -91,7 +91,7 @@ onChange f =
 {-| Render the checkbox. The required `name` becomes the `aria-label` (the
 checkbox renders with no visible text).
 -}
-view : { name : String } -> List (Option msg) -> Renderable { s | checkbox : Supported } msg
+view : { name : String } -> List (Option msg) -> Element { s | checkbox : Supported } msg
 view req opts =
     let
         c : Config msg

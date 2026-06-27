@@ -12,9 +12,9 @@ Spec (per docs/CONVENTIONS.md):
   - Options: variant, actionable, inline, media, headline, subhead,
     body, actions, footer
   - Slots:
-    header : region (free row — any Renderable; wrapped in div[slot=header])
+    header : region (free row — any Element; wrapped in div[slot=header])
     content : region (free row — headline + subhead; wrapped in div[slot=content])
-    actions : homogeneous List (Renderable { button : Supported })
+    actions : homogeneous List (Element { button : Supported })
     footer : region (free row)
     (default): free row — body items, no slot injected
   - Properties: actionable, inline (DOM properties)
@@ -42,9 +42,9 @@ working: with only `body` set, the card's children are exactly the body items.
 
 import Cem.M3e.Card as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -121,44 +121,44 @@ inline b =
 
 {-| Media (e.g. an image) shown in the card's `header` slot.
 -}
-media : Renderable any msg -> Option msg
+media : Element any msg -> Option msg
 media item =
-    Internal.option (\c -> { c | media = Just (Renderable.toNode item) })
+    Internal.option (\c -> { c | media = Just (Element.toNode item) })
 
 
 {-| Headline shown in the card's `content` slot.
 -}
-headline : Renderable any msg -> Option msg
+headline : Element any msg -> Option msg
 headline item =
-    Internal.option (\c -> { c | headline = Just (Renderable.toNode item) })
+    Internal.option (\c -> { c | headline = Just (Element.toNode item) })
 
 
 {-| Subhead shown beneath the headline in the card's `content` slot.
 -}
-subhead : Renderable any msg -> Option msg
+subhead : Element any msg -> Option msg
 subhead item =
-    Internal.option (\c -> { c | subhead = Just (Renderable.toNode item) })
+    Internal.option (\c -> { c | subhead = Just (Element.toNode item) })
 
 
 {-| Body content placed in the card's default slot (no slot wrapper).
 -}
-body : List (Renderable any msg) -> Option msg
+body : List (Element any msg) -> Option msg
 body items =
-    Internal.option (\c -> { c | body = List.map Renderable.toNode items })
+    Internal.option (\c -> { c | body = List.map Element.toNode items })
 
 
 {-| Action buttons shown in the card's `actions` slot.
 -}
-actions : List (Renderable { s | button : Supported } msg) -> Option msg
+actions : List (Element { s | button : Supported } msg) -> Option msg
 actions items =
-    Internal.option (\c -> { c | actions = List.map Renderable.toNode items })
+    Internal.option (\c -> { c | actions = List.map Element.toNode items })
 
 
 {-| Footer content shown in the card's `footer` region.
 -}
-footer : Renderable any msg -> Option msg
+footer : Element any msg -> Option msg
 footer item =
-    Internal.option (\c -> { c | footer = Just (Renderable.toNode item) })
+    Internal.option (\c -> { c | footer = Just (Element.toNode item) })
 
 
 
@@ -167,7 +167,7 @@ footer item =
 
 {-| Render the card.
 -}
-view : List (Option msg) -> Renderable { s | card : Supported } msg
+view : List (Option msg) -> Element { s | card : Supported } msg
 view opts =
     let
         cfg : Config msg

@@ -37,9 +37,9 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.IconButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -181,7 +181,7 @@ onChange f =
 {-| Icon to show when the toggle button is selected. Slotted into
 `slot="selected"`.
 -}
-selectedIcon : Renderable { icon : Supported } msg -> Option msg
+selectedIcon : Element { icon : Supported } msg -> Option msg
 selectedIcon i =
     Internal.option (\c -> { c | selectedIcon = Just i })
 
@@ -190,9 +190,9 @@ selectedIcon i =
 The intended use is a slot-ready marker such as `M3e.Menu.triggerFor "my-menu"`,
 which makes the icon button open a menu (open/close is element-managed).
 -}
-extraContent : List (Renderable any msg) -> Option msg
+extraContent : List (Element any msg) -> Option msg
 extraContent items =
-    Internal.option (\c -> { c | extraContent = c.extraContent ++ List.map Renderable.toNode items })
+    Internal.option (\c -> { c | extraContent = c.extraContent ++ List.map Element.toNode items })
 
 
 
@@ -220,7 +220,7 @@ type alias Config msg =
     , rel : Maybe String
     , download : Maybe String
     , onChange : Maybe (Bool -> msg)
-    , selectedIcon : Maybe (Renderable { icon : Supported } msg)
+    , selectedIcon : Maybe (Element { icon : Supported } msg)
     , extraContent : List (Node.Node msg)
     }
 
@@ -259,7 +259,7 @@ text fallback).
         ]
 
 -}
-view : { icon : String, name : String } -> List (Option msg) -> Renderable { s | iconButton : Supported } msg
+view : { icon : String, name : String } -> List (Option msg) -> Element { s | iconButton : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -306,7 +306,7 @@ view req opts =
             )
             (List.filterMap identity
                 [ Just (Node.element "m3e-icon" [ Node.attribute "name" req.icon ] [])
-                , Maybe.map (\i -> Node.withSlot "selected" (Renderable.toNode i)) c.selectedIcon
+                , Maybe.map (\i -> Node.withSlot "selected" (Element.toNode i)) c.selectedIcon
                 ]
                 ++ c.extraContent
             )

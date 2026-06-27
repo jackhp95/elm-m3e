@@ -9,7 +9,7 @@ groups, M3 Expressive).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { buttons : List (Renderable { button : Supported } msg) }
+  - Required: { buttons : List (Element { button : Supported } msg) }
     (homogeneous list slot — a button-group is meaningless without
     buttons; typed list in the required record)
   - Options: variant, size, multi
@@ -35,9 +35,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Cem.M3e.ButtonGroup as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Group appearance variant.
@@ -96,9 +96,9 @@ multi b =
 {-| Render the button group wrapping the required `buttons`.
 -}
 view :
-    { buttons : List (Renderable { button : Supported } msg) }
+    { buttons : List (Element { button : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | buttonGroup : Supported } msg
+    -> Element { s | buttonGroup : Supported } msg
 view req opts =
     let
         c : Config
@@ -118,7 +118,7 @@ view req opts =
                     Nothing
                 ]
             )
-            (List.map Renderable.toNode req.buttons)
+            (List.map Element.toNode req.buttons)
         )
 
 

@@ -3,8 +3,8 @@ module M3e.ToolbarTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Toolbar as Toolbar
 import Test exposing (Test, describe, test)
 
@@ -12,7 +12,7 @@ import Test exposing (Test, describe, test)
 node : List (Toolbar.Option msg) -> Node.Node msg
 node opts =
     Toolbar.view { content = [] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -54,7 +54,7 @@ suite =
                         ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2
@@ -65,7 +65,7 @@ suite =
                         [ Button.view { label = "Save", variant = Button.Filled } [] ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
@@ -77,7 +77,7 @@ suite =
                         [ Button.view { label = "X", variant = Button.Text } [] ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.filterMap Node.tagOf
                     |> Expect.equal [ "m3e-button" ]
@@ -85,10 +85,10 @@ suite =
             \_ ->
                 Toolbar.view
                     { content =
-                        [ Renderable.html (Node.toHtml (Node.text "divider")) ]
+                        [ Element.html (Node.toHtml (Node.text "divider")) ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 1

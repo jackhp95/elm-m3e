@@ -22,7 +22,7 @@ import M3e.Divider as Divider
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.Node as Node
-import M3e.Renderable as Renderable
+import M3e.Element as Element
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -80,9 +80,9 @@ head _ =
         |> Seo.website
 
 
-toHtml : Renderable.Renderable any msg -> Html msg
+toHtml : Element.Element any msg -> Html msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -159,7 +159,7 @@ highlightCard iconName title body =
         [ Card.variant Card.Outlined
         , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
         , Card.body
-            [ Renderable.html
+            [ Element.html
                 (div [ class "flex gap-3" ]
                     [ Html.span [ class "shrink-0 text-primary" ] [ Icon.view { name = iconName } |> toHtml ]
                     , p [ class "text-body-md text-on-surface-variant" ] [ text body ]
@@ -167,7 +167,7 @@ highlightCard iconName title body =
                 )
             ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml
 
 
@@ -191,7 +191,7 @@ statusCard title body =
     Card.view
         [ Card.variant Card.Outlined
         , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
-        , Card.body [ Renderable.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
+        , Card.body [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml

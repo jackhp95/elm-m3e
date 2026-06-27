@@ -3,8 +3,8 @@ module M3e.SideSheetTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.SideSheet as SideSheet
 import Test exposing (Test, describe, test)
 
@@ -12,7 +12,7 @@ import Test exposing (Test, describe, test)
 node : List (SideSheet.Option msg) -> Node.Node msg
 node opts =
     SideSheet.view { content = [] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -56,10 +56,10 @@ suite =
             \_ ->
                 SideSheet.view
                     { content = [] }
-                    [ SideSheet.body [ Renderable.html (Node.toHtml (Node.text "sidebar")) ]
+                    [ SideSheet.body [ Element.html (Node.toHtml (Node.text "sidebar")) ]
                     , SideSheet.side SideSheet.End
                     ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.map
@@ -71,12 +71,12 @@ suite =
             \_ ->
                 SideSheet.view
                     { content =
-                        [ Renderable.html (Node.toHtml (Node.text "main"))
-                        , Renderable.html (Node.toHtml (Node.text "more"))
+                        [ Element.html (Node.toHtml (Node.text "main"))
+                        , Element.html (Node.toHtml (Node.text "more"))
                         ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     -- first child is the panel div, rest is page content
                     |> List.length
@@ -88,7 +88,7 @@ suite =
                     [ SideSheet.actions
                         [ Button.view { label = "Close", variant = Button.Text } [] ]
                     ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.map (Node.childrenOf >> List.length)
@@ -103,7 +103,7 @@ suite =
                     attrCount : Int
                     attrCount =
                         SideSheet.view { content = [] } [ SideSheet.onClose () ]
-                            |> Renderable.toNode
+                            |> Element.toNode
                             |> attrsOf
                             |> List.length
                 in

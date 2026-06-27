@@ -33,7 +33,7 @@ const SCRATCH = "/tmp/m3e-docs-gen";
 // Modules that exist in src/M3e but are NOT part of the *component* reference:
 // the IR primitives + escape-hatch (documented in the architecture guide, not
 // the per-component catalogue).
-const NOT_EXPOSED = new Set(["M3e.Internal", "M3e.Node", "M3e.Label", "M3e.Renderable"]);
+const NOT_EXPOSED = new Set(["M3e.Internal", "M3e.Node", "M3e.Label", "M3e.Element"]);
 
 // 1. Build a fresh scratch package project (idempotent).
 function setupScratch() {

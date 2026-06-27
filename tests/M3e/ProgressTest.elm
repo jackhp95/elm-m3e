@@ -2,20 +2,20 @@ module M3e.ProgressTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
 import M3e.Progress as Progress
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 linearNode : List (Progress.Option msg) -> Node.Node msg
 linearNode opts =
-    Progress.view { shape = Progress.Linear } opts |> Renderable.toNode
+    Progress.view { shape = Progress.Linear } opts |> Element.toNode
 
 
 circularNode : List (Progress.Option msg) -> Node.Node msg
 circularNode opts =
-    Progress.view { shape = Progress.Circular } opts |> Renderable.toNode
+    Progress.view { shape = Progress.Circular } opts |> Element.toNode
 
 
 suite : Test

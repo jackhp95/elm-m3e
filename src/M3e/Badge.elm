@@ -42,9 +42,9 @@ The `count` option applies M3's 999+ truncation: values above 999 render as
 -}
 
 import Cem.M3e.Badge as Cem
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Where the badge sits relative to its anchor element (`forId`).
@@ -123,7 +123,7 @@ type alias Config =
 
 {-| Render the badge as an introspectable IR node from a list of options.
 -}
-view : List (Option msg) -> Renderable { s | badge : Supported } msg
+view : List (Option msg) -> Element { s | badge : Supported } msg
 view opts =
     let
         c : Config

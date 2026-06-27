@@ -8,7 +8,7 @@ module M3e.Skeleton exposing
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     (the content being mimicked / revealed on load)
   - Options: loaded, shape, animation
   - Slots: default slot ← arbitrary content (free row)
@@ -28,9 +28,9 @@ standalone shimmer placeholder sized by the caller's classes.
 
 import Cem.M3e.Skeleton as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Placeholder shape. Mirrors the `m3e-skeleton` `shape` attribute. Default is
@@ -102,7 +102,7 @@ type alias Config msg =
 {-| Render a skeleton placeholder around `content`, showing a shimmer until
 `loaded` is set, then revealing the projected content.
 -}
-view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | skeleton : Supported } msg
+view : { content : List (Element any msg) } -> List (Option msg) -> Element { s | skeleton : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -127,7 +127,7 @@ view req opts =
                 ]
                 ++ c.attributes
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )
 
 

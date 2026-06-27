@@ -2,9 +2,9 @@ module M3e.RadioButtonTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
 import M3e.RadioButton as RadioButton
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -23,7 +23,7 @@ groupNode sel opts =
         , selected = sel
         }
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test

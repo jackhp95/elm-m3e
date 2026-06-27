@@ -5,7 +5,7 @@
 > (introspectable IR + phantom-typed slots + view-style components). The D1/D4
 > principles below (one module per component; no silent no-ops) still hold; **D2**
 > ("structural slots typed to child, never `Html msg`") and **D5** ("builder
-> pattern") are replaced by ADR 0006's phantom-row `Renderable` and view-style
+> pattern") are replaced by ADR 0006's phantom-row `Element` and view-style
 > components. Read ADR 0006 for current truth.
 
 > **Status:** Approved design spec (2026-06-22). Supersedes `src/elm/Ui/REDESIGN_PLAN.md` (now dead — to be deleted).

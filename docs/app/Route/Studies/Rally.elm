@@ -44,7 +44,7 @@ import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node
 import M3e.Paginator as Paginator
 import M3e.Progress as Progress
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.ScrollContainer as ScrollContainer
 import M3e.Search as Search
 import M3e.Select as Select
@@ -446,11 +446,11 @@ budgetCategories =
 -- VIEW -------------------------------------------------------------------
 
 
-{-| Convert any Renderable to Html within the Msg context.
+{-| Convert any Element to Html within the Msg context.
 -}
-toHtml : Renderable any Msg -> Html Msg
+toHtml : Element any Msg -> Html Msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
@@ -459,7 +459,7 @@ view _ _ model =
     , body =
         [ Theme.view
             { content =
-                [ Renderable.html
+                [ Element.html
                     (div [ class "overflow-hidden rounded-md-corner-large bg-surface text-on-surface" ]
                         [ Html.map PagesMsg.fromMsg (dashboard model) ]
                     )
@@ -470,7 +470,7 @@ view _ _ model =
             , Theme.seedColor "#1EB980"
             , Theme.motion Theme.MotionExpressive
             ]
-            |> Renderable.toNode
+            |> Element.toNode
             |> Node.toHtml
         ]
     }
@@ -491,7 +491,7 @@ dashboard model =
             , div [ class "border-b border-outline-variant px-2 pt-2 sm:px-4" ]
                 [ tabsBar model ]
             , ScrollContainer.view
-                { content = [ Renderable.html (div [ class "p-3 sm:p-6" ] [ tabPanel model ]) ] }
+                { content = [ Element.html (div [ class "p-3 sm:p-6" ] [ tabPanel model ]) ] }
                 [ ScrollContainer.thin True
                 , ScrollContainer.dividers ScrollContainer.None
                 ]
@@ -531,16 +531,16 @@ appBar model =
     AppBar.view
         [ AppBar.title (Heading.view { label = "Rally", variant = Heading.Title } [])
         , AppBar.leading
-            (Renderable.element { tag = "span" }
+            (Element.element { tag = "span" }
                 [ Node.rawAttr (Attr.class "px-2 text-primary") ]
-                [ Renderable.toNode (Icon.view { name = "savings" }) ]
+                [ Element.toNode (Icon.view { name = "savings" }) ]
             )
         , AppBar.trailing
-            [ Renderable.element { tag = "div" } [] [ Node.raw (monthSelect model) ]
-            , Renderable.element { tag = "div" } [] [ Node.raw (refreshButton model) ]
+            [ Element.element { tag = "div" } [] [ Node.raw (monthSelect model) ]
+            , Element.element { tag = "div" } [] [ Node.raw (refreshButton model) ]
             ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml
 
 
@@ -650,7 +650,7 @@ accountsPanel model =
         ]
 
 
-accountSection : Int -> AccountGroup -> Renderable { section : Supported } Msg
+accountSection : Int -> AccountGroup -> Element { section : Supported } Msg
 accountSection index group =
     Disclosure.section
         { header = group.label ++ " · " ++ formatMoney (groupTotalCents group)
@@ -660,15 +660,15 @@ accountSection index group =
         [ Disclosure.sectionOpen (index == 0) ]
 
 
-accountRow : Account -> Renderable { listItem : Supported } Msg
+accountRow : Account -> Element { listItem : Supported } Msg
 accountRow account =
     List_.item { headline = account.name }
         [ List_.staticOverline account.institution
         , List_.staticSupporting (formatMoney account.cents)
         , List_.staticLeading
-            (Renderable.element { tag = "span" }
+            (Element.element { tag = "span" }
                 []
-                [ Renderable.toNode (Icon.view { name = "account_circle" }) ]
+                [ Element.toNode (Icon.view { name = "account_circle" }) ]
             )
         ]
 
@@ -730,7 +730,7 @@ transactionRow query txn =
         , div [ class "min-w-0 flex-1" ]
             [ div [ class "truncate text-body-lg" ]
                 [ TextHighlight.view
-                    { content = [ Renderable.html (text txn.merchant) ] }
+                    { content = [ Element.html (text txn.merchant) ] }
                     [ TextHighlight.term query ]
                     |> toHtml
                 ]
@@ -798,7 +798,7 @@ billsPanel =
         ]
 
 
-billRow : Bill -> Renderable { listItem : Supported } Msg
+billRow : Bill -> Element { listItem : Supported } Msg
 billRow bill =
     List_.item { headline = bill.payee }
         [ List_.staticOverline ("Due " ++ bill.dueLabel)
@@ -812,9 +812,9 @@ billRow bill =
                    )
             )
         , List_.staticLeading
-            (Renderable.element { tag = "span" }
+            (Element.element { tag = "span" }
                 []
-                [ Renderable.toNode
+                [ Element.toNode
                     (Icon.view
                         { name =
                             if bill.autopay then
@@ -870,7 +870,7 @@ overviewCard =
                 []
             )
         , Card.body
-            [ Renderable.html
+            [ Element.html
                 (div [ class "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6" ]
                     [ div [ class "relative grid place-items-center self-center sm:self-auto" ]
                         [ span [ Attr.style "--m3e-progress-indicator-color" "var(--md-sys-color-primary)" ]
@@ -913,7 +913,7 @@ budgetCard category =
                 []
             )
         , Card.body
-            [ Renderable.html
+            [ Element.html
                 (div [ class "space-y-2" ]
                     [ div [ class "flex items-center gap-2" ]
                         [ Icon.view { name = category.icon } |> toHtml
@@ -957,7 +957,7 @@ categoryDetail =
         ]
 
 
-budgetDetailSection : BudgetCategory -> Renderable { section : Supported } Msg
+budgetDetailSection : BudgetCategory -> Element { section : Supported } Msg
 budgetDetailSection category =
     Disclosure.section
         { header = category.label ++ " · " ++ String.fromInt (budgetPercent category) ++ "%"
@@ -967,14 +967,14 @@ budgetDetailSection category =
         []
 
 
-budgetLineRow : ( String, Int ) -> Renderable { listItem : Supported } Msg
+budgetLineRow : ( String, Int ) -> Element { listItem : Supported } Msg
 budgetLineRow ( label, cents ) =
     List_.item { headline = label }
         [ List_.staticSupporting (formatMoney (negate cents))
         , List_.staticLeading
-            (Renderable.element { tag = "span" }
+            (Element.element { tag = "span" }
                 []
-                [ Renderable.toNode (Icon.view { name = "subdirectory_arrow_right" }) ]
+                [ Element.toNode (Icon.view { name = "subdirectory_arrow_right" }) ]
             )
         ]
 

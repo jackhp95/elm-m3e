@@ -2,18 +2,18 @@ module M3e.SegmentedButtonTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.SegmentedButton as SegmentedButton
 import Test exposing (Test, describe, test)
 
 
-seg1 : Renderable.Renderable { segment : Renderable.Supported } msg
+seg1 : Element.Element { segment : Element.Supported } msg
 seg1 =
     SegmentedButton.segment { label = "Day", checked = True } []
 
 
-seg2 : Renderable.Renderable { segment : Renderable.Supported } msg
+seg2 : Element.Element { segment : Element.Supported } msg
 seg2 =
     SegmentedButton.segment { label = "Week", checked = False } []
 
@@ -21,13 +21,13 @@ seg2 =
 parentNode : List (SegmentedButton.ParentOption msg) -> Node.Node msg
 parentNode opts =
     SegmentedButton.view { segments = [ seg1, seg2 ] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 segNode : Bool -> List (SegmentedButton.SegmentOption msg) -> Node.Node msg
 segNode ch opts =
     SegmentedButton.segment { label = "Day", checked = ch } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test

@@ -2,16 +2,16 @@ module M3e.IconButtonTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.IconButton as IB
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : String -> String -> List (IB.Option msg) -> Node.Node msg
 node icon name opts =
-    IB.view { icon = icon, name = name } opts |> Renderable.toNode
+    IB.view { icon = icon, name = name } opts |> Element.toNode
 
 
 suite : Test

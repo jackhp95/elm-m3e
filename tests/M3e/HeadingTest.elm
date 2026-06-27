@@ -2,15 +2,15 @@ module M3e.HeadingTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 nodeWith : { label : String, variant : Heading.Variant } -> List (Heading.Option msg) -> Node.Node msg
 nodeWith req opts =
-    Heading.view req opts |> Renderable.toNode
+    Heading.view req opts |> Element.toNode
 
 
 {-| Extract the text of the first Text child.

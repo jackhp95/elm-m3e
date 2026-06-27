@@ -9,7 +9,7 @@ viewport (Material 3 Bottom sheets).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     (default slot body region — free row, may include html escape)
   - Options: open, onClose, handle, hideable, modal, header, actions
   - Slots: header (<div slot="header"> wrapping the header content)
@@ -23,7 +23,7 @@ Spec (per docs/CONVENTIONS.md):
 **Fix F12** — The `m3e-bottom-sheet-action` sentinel element goes INSIDE each
 action button (the button closes the parent sheet when activated). Ui.BottomSheet
 previously had a bug where the action was positioned outside/wrapping the button.
-Here each action `Renderable { button }` has the sentinel injected as a child of
+Here each action `Element { button }` has the sentinel injected as a child of
 its rendered element node before it lands in the DOM.
 
 
@@ -42,9 +42,9 @@ its rendered element node before it lands in the DOM.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| A bottom sheet configuration option. Build with the option functions below
@@ -92,15 +92,15 @@ modal b =
 
 {-| Content for the sheet's `header` slot — rendered above the body region.
 -}
-header : List (Renderable any msg) -> Option msg
+header : List (Element any msg) -> Option msg
 header xs =
-    Internal.option (\c -> { c | header = List.map Renderable.toNode xs })
+    Internal.option (\c -> { c | header = List.map Element.toNode xs })
 
 
 {-| Action buttons. Each button will have `<m3e-bottom-sheet-action>` nested
 inside it (Fix F12), so activating the button closes the parent sheet.
 -}
-actions : List (Renderable { button : Supported } msg) -> Option msg
+actions : List (Element { button : Supported } msg) -> Option msg
 actions xs =
     Internal.option (\c -> { c | actions = xs })
 
@@ -112,7 +112,7 @@ type alias Config msg =
     , hideable : Bool
     , modal : Bool
     , header : List (Node.Node msg)
-    , actions : List (Renderable { button : Supported } msg)
+    , actions : List (Element { button : Supported } msg)
     }
 
 
@@ -141,9 +141,9 @@ defaultConfig =
 
 -}
 view :
-    { content : List (Renderable any msg) }
+    { content : List (Element any msg) }
     -> List (Option msg)
-    -> Renderable { s | bottomSheet : Supported } msg
+    -> Element { s | bottomSheet : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -180,8 +180,8 @@ view req opts =
 
                     hs ->
                         [ Node.element "div" [ Node.attribute "slot" "header" ] hs ]
-                , List.map Renderable.toNode req.content
-                , List.map (injectSheetAction << Renderable.toNode) c.actions
+                , List.map Element.toNode req.content
+                , List.map (injectSheetAction << Element.toNode) c.actions
                 ]
             )
         )

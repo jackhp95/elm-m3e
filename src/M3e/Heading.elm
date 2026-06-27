@@ -29,9 +29,9 @@ The `level` option is clamped to the CEM-permitted range 1..6 (same as
 
 import Cem.M3e.Heading as Cem
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
@@ -90,7 +90,7 @@ level l =
 
 {-| Render the heading with its required `label` and `variant`.
 -}
-view : { label : String, variant : Variant } -> List (Option msg) -> Renderable { s | heading : Supported } msg
+view : { label : String, variant : Variant } -> List (Option msg) -> Element { s | heading : Supported } msg
 view req opts =
     let
         c : Config

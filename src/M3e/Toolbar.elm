@@ -10,7 +10,7 @@ Toolbars).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     A spec-heterogeneous free row — buttons, icon buttons, dividers,
     custom controls, etc. No slot injection (default slot; html
     escape is valid).
@@ -18,7 +18,7 @@ Spec (per docs/CONVENTIONS.md):
   - Slots: default (content region — free row)
   - Properties: elevated, vertical (Bool DOM properties)
   - Attrs: shape, variant (rawAttr enums via Cem.M3e.Toolbar)
-  - Escape: html (default-slot region; include via Renderable.html)
+  - Escape: html (default-slot region; include via Element.html)
   - Tag: toolbar
 
 @docs view
@@ -30,9 +30,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Cem.M3e.Toolbar as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| The shape of the toolbar corners. `Square` is the element default.
@@ -107,19 +107,19 @@ defaultConfig =
         { content =
             [ M3e.Button.view { label = "Save", variant = M3e.Button.Filled }
                 [ M3e.Button.onClick Saved ]
-                |> M3e.Renderable.map identity
+                |> M3e.Element.map identity
             ]
         }
         [ M3e.Toolbar.elevated True ]
 
-Content is a free row — any `Renderable` kind is accepted, including the
-`Renderable.html` escape for raw Html.
+Content is a free row — any `Element` kind is accepted, including the
+`Element.html` escape for raw Html.
 
 -}
 view :
-    { content : List (Renderable any msg) }
+    { content : List (Element any msg) }
     -> List (Option msg)
-    -> Renderable { s | toolbar : Supported } msg
+    -> Element { s | toolbar : Supported } msg
 view req opts =
     let
         c : Config
@@ -143,7 +143,7 @@ view req opts =
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
                 ]
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )
 
 

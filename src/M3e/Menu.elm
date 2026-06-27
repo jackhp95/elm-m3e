@@ -58,9 +58,9 @@ via that control's escape/element slot or default slot.
 import Cem.M3e.Menu as CemMenu
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -129,14 +129,14 @@ type alias Option msg =
 
 {-| Add a leading icon to a plain menu item.
 -}
-itemLeadingIcon : Renderable { icon : Supported } msg -> ItemOption msg
+itemLeadingIcon : Element { icon : Supported } msg -> ItemOption msg
 itemLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Add a trailing icon to a plain menu item.
 -}
-itemTrailingIcon : Renderable { icon : Supported } msg -> ItemOption msg
+itemTrailingIcon : Element { icon : Supported } msg -> ItemOption msg
 itemTrailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
@@ -157,14 +157,14 @@ checkboxChecked b =
 
 {-| Add a leading icon to a checkbox item.
 -}
-checkboxLeadingIcon : Renderable { icon : Supported } msg -> CheckboxItemOption msg
+checkboxLeadingIcon : Element { icon : Supported } msg -> CheckboxItemOption msg
 checkboxLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Add a trailing icon to a checkbox item.
 -}
-checkboxTrailingIcon : Renderable { icon : Supported } msg -> CheckboxItemOption msg
+checkboxTrailingIcon : Element { icon : Supported } msg -> CheckboxItemOption msg
 checkboxTrailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
@@ -186,14 +186,14 @@ radioSelected b =
 
 {-| Add a leading icon to a radio item.
 -}
-radioLeadingIcon : Renderable { icon : Supported } msg -> RadioItemOption msg
+radioLeadingIcon : Element { icon : Supported } msg -> RadioItemOption msg
 radioLeadingIcon i =
     Internal.option (\c -> { c | leadingIcon = Just i })
 
 
 {-| Add a trailing icon to a radio item.
 -}
-radioTrailingIcon : Renderable { icon : Supported } msg -> RadioItemOption msg
+radioTrailingIcon : Element { icon : Supported } msg -> RadioItemOption msg
 radioTrailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
@@ -265,7 +265,7 @@ For a link item, pass `action = M3e.Menu.Link "https://example.com"`.
 item :
     { label : String, action : ItemAction msg }
     -> List (ItemOption msg)
-    -> Renderable { menuItem : Supported } msg
+    -> Element { menuItem : Supported } msg
 item req opts =
     let
         c : ItemConfig msg
@@ -304,7 +304,7 @@ displayed state with `checkboxChecked`.
 checkboxItem :
     { label : String, onChange : Bool -> msg }
     -> List (CheckboxItemOption msg)
-    -> Renderable { menuItem : Supported } msg
+    -> Element { menuItem : Supported } msg
 checkboxItem req opts =
     let
         c : CheckboxConfig msg
@@ -338,7 +338,7 @@ Mark the active one with `radioSelected`; group related radios with `group`.
 radioItem :
     { label : String, onClick : msg }
     -> List (RadioItemOption msg)
-    -> Renderable { menuItem : Supported } msg
+    -> Element { menuItem : Supported } msg
 radioItem req opts =
     let
         c : RadioConfig msg
@@ -363,7 +363,7 @@ radioItem req opts =
 
 {-| A thin separator row (`<m3e-divider>`) for use between menu items.
 -}
-divider : Renderable { menuItem : Supported } msg
+divider : Element { menuItem : Supported } msg
 divider =
     Internal.fromNode (Node.element "m3e-divider" [] [])
 
@@ -381,14 +381,14 @@ radio items. The `label` text goes in the element's `label` slot.
 
 -}
 group :
-    { label : String, items : List (Renderable { menuItem : Supported } msg) }
-    -> Renderable { menuItem : Supported } msg
+    { label : String, items : List (Element { menuItem : Supported } msg) }
+    -> Element { menuItem : Supported } msg
 group req =
     Internal.fromNode
         (Node.element "m3e-menu-item-group"
             []
             (Node.element "span" [ Node.attribute "slot" "label" ] [ Node.text req.label ]
-                :: List.map Renderable.toNode req.items
+                :: List.map Element.toNode req.items
             )
         )
 
@@ -404,11 +404,11 @@ control opens the menu that has the same `id`.
             [ M3e.Menu.triggerFor "row-actions" ]
         ]
 
-The returned `Renderable { element }` is slot-ready and carries the `for`
+The returned `Element { element }` is slot-ready and carries the `for`
 attribute so the element can inject it into any named slot.
 
 -}
-triggerFor : String -> Renderable { s | element : Supported } msg
+triggerFor : String -> Element { s | element : Supported } msg
 triggerFor menuId =
     Internal.fromNode
         (Node.element "m3e-menu-trigger" [ Node.attribute "for" menuId ] [])
@@ -434,9 +434,9 @@ element-managed — no Elm state is needed.
 
 -}
 view :
-    { items : List (Renderable { menuItem : Supported } msg) }
+    { items : List (Element { menuItem : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | menu : Supported } msg
+    -> Element { s | menu : Supported } msg
 view req opts =
     let
         c : ContainerConfig msg
@@ -465,7 +465,7 @@ view req opts =
                     c.onToggle
                 ]
             )
-            (List.map Renderable.toNode req.items)
+            (List.map Element.toNode req.items)
         )
 
 
@@ -474,8 +474,8 @@ view req opts =
 
 
 type alias ItemConfig msg =
-    { leadingIcon : Maybe (Renderable { icon : Supported } msg)
-    , trailingIcon : Maybe (Renderable { icon : Supported } msg)
+    { leadingIcon : Maybe (Element { icon : Supported } msg)
+    , trailingIcon : Maybe (Element { icon : Supported } msg)
     , disabled : Bool
     }
 
@@ -487,8 +487,8 @@ defaultItemConfig =
 
 type alias CheckboxConfig msg =
     { checked : Bool
-    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
-    , trailingIcon : Maybe (Renderable { icon : Supported } msg)
+    , leadingIcon : Maybe (Element { icon : Supported } msg)
+    , trailingIcon : Maybe (Element { icon : Supported } msg)
     , disabled : Bool
     }
 
@@ -500,8 +500,8 @@ defaultCheckboxConfig =
 
 type alias RadioConfig msg =
     { selected : Bool
-    , leadingIcon : Maybe (Renderable { icon : Supported } msg)
-    , trailingIcon : Maybe (Renderable { icon : Supported } msg)
+    , leadingIcon : Maybe (Element { icon : Supported } msg)
+    , trailingIcon : Maybe (Element { icon : Supported } msg)
     , disabled : Bool
     }
 
@@ -533,15 +533,15 @@ defaultConfig =
 
 
 itemChildren :
-    Maybe (Renderable { icon : Supported } msg)
-    -> Maybe (Renderable { icon : Supported } msg)
+    Maybe (Element { icon : Supported } msg)
+    -> Maybe (Element { icon : Supported } msg)
     -> String
     -> List (Node.Node msg)
 itemChildren leadingIcon_ trailingIcon_ label =
     List.filterMap identity
-        [ Maybe.map (\i -> Node.withSlot "icon" (Renderable.toNode i)) leadingIcon_
+        [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) leadingIcon_
         , Just (Node.text label)
-        , Maybe.map (\i -> Node.withSlot "trailing-icon" (Renderable.toNode i)) trailingIcon_
+        , Maybe.map (\i -> Node.withSlot "trailing-icon" (Element.toNode i)) trailingIcon_
         ]
 
 

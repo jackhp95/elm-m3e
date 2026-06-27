@@ -46,9 +46,9 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.List as CemList
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -102,14 +102,14 @@ type alias Option msg =
 
 {-| Add a leading element to a static item.
 -}
-staticLeading : Renderable { element : Supported } msg -> StaticItemOption msg
+staticLeading : Element { element : Supported } msg -> StaticItemOption msg
 staticLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
 
 {-| Add a trailing element to a static item.
 -}
-staticTrailing : Renderable { element : Supported } msg -> StaticItemOption msg
+staticTrailing : Element { element : Supported } msg -> StaticItemOption msg
 staticTrailing r =
     Internal.option (\c -> { c | trailing = Just r })
 
@@ -130,14 +130,14 @@ staticSupporting s =
 
 {-| Add a leading element to an action item.
 -}
-actionLeading : Renderable { element : Supported } msg -> ActionItemOption msg
+actionLeading : Element { element : Supported } msg -> ActionItemOption msg
 actionLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
 
 {-| Add a trailing element to an action item.
 -}
-actionTrailing : Renderable { element : Supported } msg -> ActionItemOption msg
+actionTrailing : Element { element : Supported } msg -> ActionItemOption msg
 actionTrailing r =
     Internal.option (\c -> { c | trailing = Just r })
 
@@ -172,7 +172,7 @@ actionOnClick msg =
 
 {-| Add a leading element to a selectable option item.
 -}
-optionLeading : Renderable { element : Supported } msg -> OptionItemOption msg
+optionLeading : Element { element : Supported } msg -> OptionItemOption msg
 optionLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
@@ -222,7 +222,7 @@ optionOnChange f =
 
 {-| Add a leading element to an expandable item.
 -}
-expandableLeading : Renderable { element : Supported } msg -> ExpandableItemOption msg
+expandableLeading : Element { element : Supported } msg -> ExpandableItemOption msg
 expandableLeading r =
     Internal.option (\c -> { c | leading = Just r })
 
@@ -284,7 +284,7 @@ variant v =
 item :
     { headline : String }
     -> List (StaticItemOption msg)
-    -> Renderable { listItem : Supported } msg
+    -> Element { listItem : Supported } msg
 item req opts =
     let
         c : StaticConfig msg
@@ -309,7 +309,7 @@ item req opts =
 actionItem :
     { headline : String }
     -> List (ActionItemOption msg)
-    -> Renderable { listItem : Supported } msg
+    -> Element { listItem : Supported } msg
 actionItem req opts =
     let
         c : ActionConfig msg
@@ -342,7 +342,7 @@ actionItem req opts =
 option :
     { headline : String }
     -> List (OptionItemOption msg)
-    -> Renderable { listItem : Supported } msg
+    -> Element { listItem : Supported } msg
 option req opts =
     let
         c : OptionConfig msg
@@ -370,7 +370,7 @@ option req opts =
 
 {-| A thin separator row (`<m3e-divider>`).
 -}
-divider : Renderable { listItem : Supported } msg
+divider : Element { listItem : Supported } msg
 divider =
     Internal.fromNode (Node.element "m3e-divider" [] [])
 
@@ -390,10 +390,10 @@ injected into the `items` slot automatically.
 -}
 expandable :
     { headline : String
-    , children : List (Renderable { listItem : Supported } msg)
+    , children : List (Element { listItem : Supported } msg)
     }
     -> List (ExpandableItemOption msg)
-    -> Renderable { listItem : Supported } msg
+    -> Element { listItem : Supported } msg
 expandable req opts =
     let
         c : ExpandableConfig msg
@@ -402,7 +402,7 @@ expandable req opts =
 
         childNodes : List (Node.Node msg)
         childNodes =
-            List.map (Node.withSlot "items" << Renderable.toNode) req.children
+            List.map (Node.withSlot "items" << Element.toNode) req.children
     in
     Internal.fromNode
         (Node.element "m3e-expandable-list-item"
@@ -443,9 +443,9 @@ expandable req opts =
 
 -}
 view :
-    { items : List (Renderable { listItem : Supported } msg) }
+    { items : List (Element { listItem : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | list : Supported } msg
+    -> Element { s | list : Supported } msg
 view req opts =
     let
         c : ContainerConfig
@@ -459,7 +459,7 @@ view req opts =
                 , Just (Node.rawAttr (CemList.variant (toCemVariant c.variant)))
                 ]
             )
-            (List.map Renderable.toNode req.items)
+            (List.map Element.toNode req.items)
         )
 
 
@@ -468,8 +468,8 @@ view req opts =
 
 
 type alias StaticConfig msg =
-    { leading : Maybe (Renderable { element : Supported } msg)
-    , trailing : Maybe (Renderable { element : Supported } msg)
+    { leading : Maybe (Element { element : Supported } msg)
+    , trailing : Maybe (Element { element : Supported } msg)
     , overline : Maybe String
     , supporting : Maybe String
     }
@@ -481,8 +481,8 @@ defaultStaticConfig =
 
 
 type alias ActionConfig msg =
-    { leading : Maybe (Renderable { element : Supported } msg)
-    , trailing : Maybe (Renderable { element : Supported } msg)
+    { leading : Maybe (Element { element : Supported } msg)
+    , trailing : Maybe (Element { element : Supported } msg)
     , overline : Maybe String
     , supporting : Maybe String
     , disabled : Bool
@@ -502,7 +502,7 @@ defaultActionConfig =
 
 
 type alias OptionConfig msg =
-    { leading : Maybe (Renderable { element : Supported } msg)
+    { leading : Maybe (Element { element : Supported } msg)
     , overline : Maybe String
     , supporting : Maybe String
     , disabled : Bool
@@ -525,7 +525,7 @@ defaultOptionConfig =
 
 
 type alias ExpandableConfig msg =
-    { leading : Maybe (Renderable { element : Supported } msg)
+    { leading : Maybe (Element { element : Supported } msg)
     , overline : Maybe String
     , supporting : Maybe String
     , disabled : Bool
@@ -552,19 +552,19 @@ defaultContainerConfig =
 {-| Build the common decoration children for any list item kind.
 -}
 decorationNodes :
-    Maybe (Renderable { element : Supported } msg)
+    Maybe (Element { element : Supported } msg)
     -> Maybe String
     -> Maybe String
-    -> Maybe (Renderable { element : Supported } msg)
+    -> Maybe (Element { element : Supported } msg)
     -> String
     -> List (Node.Node msg)
 decorationNodes leading_ overline_ supporting_ trailing_ headline =
     List.filterMap identity
-        [ Maybe.map (\r -> Node.withSlot "leading" (Renderable.toNode r)) leading_
+        [ Maybe.map (\r -> Node.withSlot "leading" (Element.toNode r)) leading_
         , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "overline" ] [ Node.text s ]) overline_
         , Just (Node.text headline)
         , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "supporting-text" ] [ Node.text s ]) supporting_
-        , Maybe.map (\r -> Node.withSlot "trailing" (Renderable.toNode r)) trailing_
+        , Maybe.map (\r -> Node.withSlot "trailing" (Element.toNode r)) trailing_
         ]
 
 

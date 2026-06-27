@@ -70,9 +70,9 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 import Cem.M3e.Calendar as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 
@@ -257,7 +257,7 @@ onChange f =
         ]
 
 -}
-view : List (Option msg) -> Renderable { s | calendar : Supported } msg
+view : List (Option msg) -> Element { s | calendar : Supported } msg
 view opts =
     let
         c : Config msg

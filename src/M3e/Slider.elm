@@ -31,9 +31,9 @@ Spec (per docs/CONVENTIONS.md):
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable exposing (Renderable, Supported)
 
 
 {-| An option configuring the `<m3e-slider>` element.
@@ -113,7 +113,7 @@ type alias Config msg =
 {-| Build the `<m3e-slider>` IR node. Requires `name`, used as the
 `aria-label` for this otherwise text-free control.
 -}
-view : { name : String } -> List (Option msg) -> Renderable { s | slider : Supported } msg
+view : { name : String } -> List (Option msg) -> Element { s | slider : Supported } msg
 view req opts =
     let
         c : Config msg

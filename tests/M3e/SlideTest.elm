@@ -2,8 +2,8 @@ module M3e.SlideTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Slide as Slide
 import M3e.Text as Text
 import Test exposing (Test, describe, test)
@@ -18,7 +18,7 @@ groupNode opts =
             ]
         }
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -32,7 +32,7 @@ suite =
         , test "slide helper renders <m3e-slide>" <|
             \_ ->
                 Slide.slide [ Text.bodyLarge "Content" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-slide")
         , test "slides become direct children of the group" <|
@@ -50,7 +50,7 @@ suite =
         , test "slide content lands inside the <m3e-slide>" <|
             \_ ->
                 Slide.slide [ Text.bodyLarge "Hello" ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen Node.tagOf

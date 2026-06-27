@@ -9,7 +9,7 @@ group with directional pagination controls.
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { slides : List (Renderable { slide : Supported } msg) }
+  - Required: { slides : List (Element { slide : Supported } msg) }
     (homogeneous list slot — a slide group is meaningless without
     slides; typed list constrains children to `slide`-tagged nodes)
   - Options: disabled, vertical, threshold
@@ -22,8 +22,8 @@ Spec (per docs/CONVENTIONS.md):
 
 ## Child constructor
 
-`slide content` wraps arbitrary `Renderable` content in an `<m3e-slide>`
-element and returns a `Renderable { s | slide : Supported }` that can be
+`slide content` wraps arbitrary `Element` content in an `<m3e-slide>`
+element and returns a `Element { s | slide : Supported }` that can be
 placed in the `slides` list.
 
 @docs Option
@@ -33,9 +33,9 @@ placed in the `slides` list.
 -}
 
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Configuration option for a slide group, built by the helpers below.
@@ -74,14 +74,14 @@ type alias Config =
 
 
 {-| Wrap arbitrary content in an `<m3e-slide>` element — the child unit of a
-slide group. Pass a list of `Renderable` children as the slide's content.
+slide group. Pass a list of `Element` children as the slide's content.
 -}
-slide : List (Renderable any msg) -> Renderable { s | slide : Supported } msg
+slide : List (Element any msg) -> Element { s | slide : Supported } msg
 slide content =
     Internal.fromNode
         (Node.element "m3e-slide"
             []
-            (List.map Renderable.toNode content)
+            (List.map Element.toNode content)
         )
 
 
@@ -89,9 +89,9 @@ slide content =
 pagination controls.
 -}
 view :
-    { slides : List (Renderable { slide : Supported } msg) }
+    { slides : List (Element { slide : Supported } msg) }
     -> List (Option msg)
-    -> Renderable { s | slide : Supported } msg
+    -> Element { s | slide : Supported } msg
 view req opts =
     let
         c : Config
@@ -115,5 +115,5 @@ view req opts =
                 , Maybe.map (\px -> Node.property "threshold" (Encode.float px)) c.threshold
                 ]
             )
-            (List.map Renderable.toNode req.slides)
+            (List.map Element.toNode req.slides)
         )

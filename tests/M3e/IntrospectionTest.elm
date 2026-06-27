@@ -6,9 +6,9 @@ import Json.Encode as Encode
 import M3e.AppBar as AppBar
 import M3e.Card as Card
 import M3e.Chip as Chip
+import M3e.Element as Element
 import M3e.IconButton as IconButton
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Search as Search
 import Test exposing (Test, describe, test)
 
@@ -24,14 +24,14 @@ suite =
         [ test "a DOM property is visible as data — Test.Html cannot do this" <|
             \_ ->
                 IconButton.view { icon = "delete", name = "Delete" } [ IconButton.selected True ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "required a11y name lands as aria-label" <|
             \_ ->
                 IconButton.view { icon = "delete", name = "Delete items" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Delete items")
         , test "no-lift heterogeneous slot folds like Html; parent injects slot=" <|
@@ -42,15 +42,15 @@ suite =
                         , IconButton.view { icon = "more_vert", name = "More" } [ IconButton.onClick "x" ]
                         ]
                     ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> firstChild
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "trailing")
         , test "element escape in a named slot DOES carry the injected slot (C+D)" <|
             \_ ->
                 AppBar.view
-                    [ AppBar.trailing [ Renderable.element { tag = "div" } [] [ Node.text "Custom" ] ] ]
-                    |> Renderable.toNode
+                    [ AppBar.trailing [ Element.element { tag = "div" } [] [ Node.text "Custom" ] ] ]
+                    |> Element.toNode
                     |> firstChild
                     |> Maybe.map (\n -> ( Node.tagOf n, Node.findAttribute "slot" n ))
                     |> Expect.equal (Just ( Just "div", Just "trailing" ))
@@ -59,10 +59,10 @@ suite =
                 Card.view
                     [ Card.body
                         [ Chip.view { label = "Featured" } []
-                        , Renderable.html (Html.text "raw escape")
+                        , Element.html (Html.text "raw escape")
                         ]
                     ]
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2

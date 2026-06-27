@@ -4,18 +4,18 @@ import Expect
 import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Dialog as Dialog
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : List (Dialog.Option msg) -> Node.Node msg
 node opts =
     Dialog.view { headline = "Delete item?", content = [] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
-actionButton : Renderable.Renderable { button : Renderable.Supported } msg
+actionButton : Element.Element { button : Element.Supported } msg
 actionButton =
     Button.view { label = "Confirm", variant = Button.Filled } []
 
@@ -57,10 +57,10 @@ suite =
             \_ ->
                 Dialog.view
                     { headline = "Confirm"
-                    , content = [ Renderable.html (node [] |> Node.toHtml) ]
+                    , content = [ Element.html (node [] |> Node.toHtml) ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2

@@ -34,9 +34,9 @@ format.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -135,18 +135,18 @@ disabled b =
 
 
 {-| Hint for the form-field's `hint` slot. A slottable element — use
-`Renderable.text` for a plain string, or `Renderable.element` for richer content.
+`Element.text` for a plain string, or `Element.element` for richer content.
 -}
-hint : Renderable { element : Supported } msg -> Option msg
+hint : Element { element : Supported } msg -> Option msg
 hint r =
-    Internal.option (\c -> { c | hint = Just (Renderable.toNode r) })
+    Internal.option (\c -> { c | hint = Just (Element.toNode r) })
 
 
 {-| Error for the form-field's `error` slot. See [`hint`](#hint).
 -}
-error : Renderable { element : Supported } msg -> Option msg
+error : Element { element : Supported } msg -> Option msg
 error r =
-    Internal.option (\c -> { c | error = Just (Renderable.toNode r) })
+    Internal.option (\c -> { c | error = Just (Element.toNode r) })
 
 
 {-| Handle the native `input` event. Receives the new time as `"HH:MM"`.
@@ -170,7 +170,7 @@ onChange f =
         ]
 
 -}
-view : { label : String } -> List (Option msg) -> Renderable { s | timePicker : Supported } msg
+view : { label : String } -> List (Option msg) -> Element { s | timePicker : Supported } msg
 view req opts =
     let
         c : Config msg

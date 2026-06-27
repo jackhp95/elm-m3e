@@ -1,4 +1,4 @@
-module M3e.Internal exposing (Option(..), Renderable(..), Supported(..), applyOptions, fromNode, option, slugify, toNode)
+module M3e.Internal exposing (Element(..), Option(..), Supported(..), applyOptions, fromNode, option, slugify, toNode)
 
 {-| Internal primitives — not part of the public surface.
 
@@ -11,8 +11,8 @@ when it becomes a package.
 import M3e.Node exposing (Node)
 
 
-type Renderable supported msg
-    = Renderable (Node msg)
+type Element supported msg
+    = Element (Node msg)
 
 
 type Supported
@@ -20,17 +20,17 @@ type Supported
 
 
 {-| Wrap a Node, pinning its phantom kind. Only components (and the
-`M3e.Renderable` convenience helpers) should call this.
+`M3e.Element` convenience helpers) should call this.
 -}
-fromNode : Node msg -> Renderable any msg
+fromNode : Node msg -> Element any msg
 fromNode =
-    Renderable
+    Element
 
 
 {-| Unwrap to the underlying Node for composition / rendering.
 -}
-toNode : Renderable supported msg -> Node msg
-toNode (Renderable n) =
+toNode : Element supported msg -> Node msg
+toNode (Element n) =
     n
 
 

@@ -3,14 +3,14 @@ module M3e.CheckboxTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Checkbox as Checkbox
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
 node : List (Checkbox.Option msg) -> Node.Node msg
 node opts =
-    Checkbox.view { name = "Accept terms" } opts |> Renderable.toNode
+    Checkbox.view { name = "Accept terms" } opts |> Element.toNode
 
 
 suite : Test
@@ -24,7 +24,7 @@ suite =
         , test "aria-label equals the required name field" <|
             \_ ->
                 Checkbox.view { name = "Subscribe to newsletter" } []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Subscribe to newsletter")
         , test "checked=true is visible as a DOM property" <|

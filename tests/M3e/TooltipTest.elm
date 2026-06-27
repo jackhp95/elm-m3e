@@ -3,8 +3,8 @@ module M3e.TooltipTest exposing (suite)
 import Expect
 import Html
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Tooltip as Tooltip
 import Test exposing (Test, describe, test)
 
@@ -13,21 +13,21 @@ import Test exposing (Test, describe, test)
 -- Helpers -----------------------------------------------------------------
 
 
-fakeElement : Renderable.Renderable { element : Renderable.Supported } msg
+fakeElement : Element.Element { element : Element.Supported } msg
 fakeElement =
-    Renderable.element { tag = "span" } [] []
+    Element.element { tag = "span" } [] []
 
 
 plainNode : List (Tooltip.PlainOption msg) -> Node.Node msg
 plainNode opts =
     Tooltip.plain { anchorId = "my-btn", label = "Delete" } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 richNode : List (Tooltip.RichOption msg) -> Node.Node msg
 richNode opts =
     Tooltip.rich { anchorId = "my-btn", content = [] } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
@@ -112,10 +112,10 @@ suite =
             \_ ->
                 Tooltip.rich
                     { anchorId = "x"
-                    , content = [ Renderable.html (Html.text "hello") ]
+                    , content = [ Element.html (Html.text "hello") ]
                     }
                     []
-                    |> Renderable.toNode
+                    |> Element.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Nothing)
                     |> List.length

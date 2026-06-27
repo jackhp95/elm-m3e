@@ -9,7 +9,7 @@ module M3e.TextHighlight exposing
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { content : List (Renderable any msg) }
+  - Required: { content : List (Element any msg) }
     (the text content to highlight inside; the type variable `any`
     means the content can include the raw `html` escape)
   - Options: term, mode, caseSensitive, disabled
@@ -32,9 +32,9 @@ it ships as a vendor utility. Included here for parity with the `Ui.*` surface.
 
 import Cem.M3e.TextHighlight as Cem
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| How the term is matched against the content. Default `Contains`.
@@ -93,7 +93,7 @@ type alias Config =
 {-| Build the `<m3e-text-highlight>` IR node. The `content` renders into the
 default slot, with substrings matching the configured `term` highlighted.
 -}
-view : { content : List (Renderable any msg) } -> List (Option msg) -> Renderable { s | textHighlight : Supported } msg
+view : { content : List (Element any msg) } -> List (Option msg) -> Element { s | textHighlight : Supported } msg
 view req opts =
     let
         c : Config
@@ -122,7 +122,7 @@ view req opts =
                     Nothing
                 ]
             )
-            (List.map Renderable.toNode req.content)
+            (List.map Element.toNode req.content)
         )
 
 

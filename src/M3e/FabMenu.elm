@@ -11,7 +11,7 @@ Spec (per docs/CONVENTIONS.md):
 
   - Required: { triggerIcon : String
     , name : String -- a11y aria-label for the FAB trigger
-    , items : List (Renderable { fabMenuItem : Supported } msg)
+    , items : List (Element { fabMenuItem : Supported } msg)
     }
     (items = homogeneous list of `m3e-fab-menu-item` children)
   - Options: variant (of the menu surface), menuId (relational wiring)
@@ -34,7 +34,7 @@ constructed directly via `Node.element`.
 
 `item { icon, label, onClick }` wraps an icon + label into an
 `<m3e-fab-menu-item>` with a click event, returning a
-`Renderable { s | fabMenuItem : Supported }` for the `items` list.
+`Element { s | fabMenuItem : Supported }` for the `items` list.
 
 @docs view, item
 @docs Option, Variant
@@ -44,9 +44,9 @@ constructed directly via `Node.element`.
 
 import Cem.M3e.FabMenu as Cem
 import Json.Decode as Decode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Appearance variant of the menu surface (default `Primary`).
@@ -93,7 +93,7 @@ BUG FIX #18: emits `m3e-fab-menu-item`, NOT `m3e-menu-item`.
 -}
 item :
     { icon : String, label : String, onClick : msg }
-    -> Renderable { s | fabMenuItem : Supported } msg
+    -> Element { s | fabMenuItem : Supported } msg
 item req =
     Internal.fromNode
         (Node.element "m3e-fab-menu-item"
@@ -113,10 +113,10 @@ item req =
 view :
     { triggerIcon : String
     , name : String
-    , items : List (Renderable { fabMenuItem : Supported } msg)
+    , items : List (Element { fabMenuItem : Supported } msg)
     }
     -> List (Option msg)
-    -> Renderable { s | fabMenu : Supported } msg
+    -> Element { s | fabMenu : Supported } msg
 view req opts =
     let
         c : Config
@@ -146,7 +146,7 @@ view req opts =
                 [ Node.attribute "id" c.menuId
                 , Node.rawAttr (Cem.variant (toCemVariant c.variant))
                 ]
-                (List.map Renderable.toNode req.items)
+                (List.map Element.toNode req.items)
     in
     Internal.fromNode
         (Node.element "div" [] [ fabTrigger, fabMenu ])

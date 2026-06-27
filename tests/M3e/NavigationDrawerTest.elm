@@ -3,11 +3,11 @@ module M3e.NavigationDrawerTest exposing (suite)
 import Expect
 import Html
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.NavigationDrawer as NavigationDrawer
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -24,7 +24,7 @@ viewNode opts =
             [ NavigationDrawer.link { label = "Home", href = "/" } [] ]
         }
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 {-| The `<m3e-nav-menu>` child of the container.
@@ -46,7 +46,7 @@ navMenuItems node =
 linkNode : List (NavigationDrawer.LinkOption String) -> Node.Node String
 linkNode opts =
     NavigationDrawer.link { label = "Overview", href = "/docs" } opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 groupNode : List (Node.Node String) -> List (NavigationDrawer.GroupOption String) -> Node.Node String
@@ -55,7 +55,7 @@ groupNode childNodes opts =
         { label = "Docs" }
         (List.map (\n -> Internal.fromNode n) childNodes)
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 
@@ -147,7 +147,7 @@ suite =
                         NavigationDrawer.view
                             { entries = [] }
                             [ NavigationDrawer.content [ Html.div [] [] ] ]
-                            |> Renderable.toNode
+                            |> Element.toNode
                 in
                 Node.childrenOf n
                     |> List.length
@@ -166,7 +166,7 @@ suite =
                                 ]
                             }
                             []
-                            |> Renderable.toNode
+                            |> Element.toNode
                 in
                 navMenuItems node
                     |> List.length
@@ -305,7 +305,7 @@ suite =
                     child : Node.Node msg
                     child =
                         NavigationDrawer.link { label = "Child", href = "/child" } []
-                            |> Renderable.toNode
+                            |> Element.toNode
 
                     g : Node.Node String
                     g =
@@ -321,9 +321,9 @@ suite =
                     children : List (Node.Node msg)
                     children =
                         [ NavigationDrawer.link { label = "A", href = "/a" } []
-                            |> Renderable.toNode
+                            |> Element.toNode
                         , NavigationDrawer.link { label = "B", href = "/b" } []
-                            |> Renderable.toNode
+                            |> Element.toNode
                         ]
 
                     g : Node.Node String

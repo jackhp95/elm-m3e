@@ -2,21 +2,21 @@ module M3e.SkeletonTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.Skeleton as Skeleton
 import Test exposing (Test, describe, test)
 
 
-item : String -> Renderable.Renderable any msg
+item : String -> Element.Element any msg
 item tag =
     Internal.fromNode (Node.element tag [] [])
 
 
-nodeWith : List (Skeleton.Option msg) -> List (Renderable.Renderable any msg) -> Node.Node msg
+nodeWith : List (Skeleton.Option msg) -> List (Element.Element any msg) -> Node.Node msg
 nodeWith opts content =
-    Skeleton.view { content = content } opts |> Renderable.toNode
+    Skeleton.view { content = content } opts |> Element.toNode
 
 
 suite : Test

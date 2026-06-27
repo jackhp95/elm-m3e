@@ -29,12 +29,12 @@ Four ideas (full detail in [ADR 0006](docs/adr/0006-m3e-architecture.md)):
   `Html msg`, converted to `Html` once at the app root. So a parent injects
   `slot=`/`for`/`id` by rewriting data, and a unit test asserts DOM **properties**
   and structure that `Test.Html` can't see.
-- **Phantom-typed slots (`M3e.Renderable`)** — a slot accepts exactly the
+- **Phantom-typed slots (`M3e.Element`)** — a slot accepts exactly the
   Material content kinds it should; a wrong child is a compile error.
-- **View-style components** — `view {required} [options] -> Renderable {tag}`:
+- **View-style components** — `view {required} [options] -> Element {tag}`:
   one concept, no lift, accessible name required by construction.
-- **Matched escapes** — `Renderable.html` for default-slot regions,
-  `Renderable.element` for named slots (so an injected `slot=` can never be
+- **Matched escapes** — `Element.html` for default-slot regions,
+  `Element.element` for named slots (so an injected `slot=` can never be
   dropped). The `element` escape + the public IR are the **extensibility seam**:
   the library ships no layout primitives; you build your own on top.
 
@@ -56,7 +56,7 @@ M3e.AppBar.new
 
 | Path | What |
 |------|------|
-| `src/M3e/` | The library — IR (`Node`, `Renderable`), components, `Field`/`Label`. |
+| `src/M3e/` | The library — IR (`Node`, `Element`), components, `Field`/`Label`. |
 | `vendor/elm-m3e/` | Generated `Cem.M3e.*` bindings. See `VENDORED_FROM.txt`. |
 | `docs/` | The documentation site — an elm-pages app rendering the real modules. |
 | `docs/adr/` | Architecture decision records ([0006](docs/adr/0006-m3e-architecture.md) is canonical). |

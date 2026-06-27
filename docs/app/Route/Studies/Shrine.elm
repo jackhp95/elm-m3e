@@ -52,7 +52,7 @@ import M3e.IconButton as IconButton
 import M3e.List as L
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
 import M3e.Shape as Shape
@@ -70,9 +70,9 @@ import UrlPath
 import View exposing (View)
 
 
-toHtml : Renderable any Msg -> Html Msg
+toHtml : Element any Msg -> Html Msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 
@@ -600,14 +600,14 @@ viewAppBar model =
             cartCount model.cart
 
         cartElem =
-            Renderable.element { tag = "div" }
+            Element.element { tag = "div" }
                 [ Node.attribute "class" "relative" ]
-                (Renderable.toNode
+                (Element.toNode
                     (IconButton.view { icon = "shopping_bag", name = "Open bag" }
                         [ IconButton.onClick CartOpened ]
                     )
                     :: (if count > 0 then
-                            [ Renderable.toNode (Badge.view [ Badge.count count ]) ]
+                            [ Element.toNode (Badge.view [ Badge.count count ]) ]
 
                         else
                             []
@@ -626,7 +626,7 @@ viewAppBar model =
             , cartElem
             ]
         ]
-        |> Renderable.toNode
+        |> Element.toNode
         |> Node.toHtml
 
 
@@ -661,7 +661,7 @@ viewRail model =
         |> toHtml
 
 
-railItem : Department -> Department -> Renderable { navItem : Renderable.Supported } Msg
+railItem : Department -> Department -> Element { navItem : Element.Supported } Msg
 railItem selectedDept dept =
     NavigationRail.item
         { icon = Icon.view { name = departmentIcon dept }, label = departmentLabel dept }
@@ -687,7 +687,7 @@ viewControls model =
         chipSet =
             ChipSet.filterSet { label = "Product filters" }
                 [ ChipSet.chips chips ]
-                |> Renderable.toNode
+                |> Element.toNode
                 |> Node.toHtml
 
         viewModeControl =
@@ -751,7 +751,7 @@ viewSkeletonGrid =
                     div [ class "flex flex-col gap-3 rounded-md-corner-large border border-outline-variant p-4" ]
                         [ Skeleton.view
                             { content =
-                                [ Renderable.html
+                                [ Element.html
                                     (div [ class "h-32 w-full rounded-md-corner-medium" ] [])
                                 ]
                             }
@@ -759,13 +759,13 @@ viewSkeletonGrid =
                             |> toHtml
                         , Skeleton.view
                             { content =
-                                [ Renderable.html (div [ class "h-5 w-2/3" ] []) ]
+                                [ Element.html (div [ class "h-5 w-2/3" ] []) ]
                             }
                             []
                             |> toHtml
                         , Skeleton.view
                             { content =
-                                [ Renderable.html (div [ class "h-4 w-1/3" ] []) ]
+                                [ Element.html (div [ class "h-4 w-1/3" ] []) ]
                             }
                             []
                             |> toHtml
@@ -798,7 +798,7 @@ productMedia : Product -> Html Msg
 productMedia product =
     Shape.view
         { content =
-            [ Renderable.html
+            [ Element.html
                 (div [ class ("flex h-full w-full items-center justify-center " ++ product.swatch) ]
                     [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
                 )
@@ -870,7 +870,7 @@ viewProductCard model product =
     Card.view
         [ Card.variant Card.Elevated
         , Card.media
-            (Renderable.html
+            (Element.html
                 (div
                     [ class "cursor-pointer"
                     , attribute "role" "button"
@@ -880,7 +880,7 @@ viewProductCard model product =
                     [ productMedia product ]
                 )
             )
-        , Card.body [ Renderable.html body ]
+        , Card.body [ Element.html body ]
         , Card.actions
             [ Button.view { label = "Add to bag", variant = Button.Filled }
                 [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
@@ -900,16 +900,16 @@ viewProductList _ filtered =
                     (\product ->
                         L.actionItem { headline = product.name }
                             [ L.actionLeading
-                                (Renderable.element { tag = "span" }
+                                (Element.element { tag = "span" }
                                     []
-                                    [ Renderable.toNode (Icon.view { name = categoryGlyph product.category }) ]
+                                    [ Element.toNode (Icon.view { name = categoryGlyph product.category }) ]
                                 )
                             , L.actionOverline (categoryLabel product.category)
                             , L.actionSupporting (formatPrice product.price)
                             , L.actionTrailing
-                                (Renderable.element { tag = "span" }
+                                (Element.element { tag = "span" }
                                     []
-                                    [ Renderable.toNode (Icon.view { name = "add_shopping_cart" }) ]
+                                    [ Element.toNode (Icon.view { name = "add_shopping_cart" }) ]
                                 )
                             , L.actionOnClick (AddedToBag product.id 1)
                             ]
@@ -964,12 +964,12 @@ viewCartSheet model =
                     )
     in
     BottomSheet.view
-        { content = [ Renderable.html body ] }
+        { content = [ Element.html body ] }
         [ BottomSheet.open model.cartOpen
         , BottomSheet.onClose CartClosed
         , BottomSheet.modal True
         , BottomSheet.handle True
-        , BottomSheet.header [ Renderable.html header ]
+        , BottomSheet.header [ Element.html header ]
         , BottomSheet.actions
             [ Button.view { label = "Checkout", variant = Button.Filled }
                 [ Button.leadingIcon (Icon.view { name = "lock" })
@@ -988,7 +988,7 @@ viewCartRow ( product, qty ) =
     div [ class "flex items-center gap-3" ]
         [ Shape.view
             { content =
-                [ Renderable.html
+                [ Element.html
                     (div [ class ("flex h-10 w-10 items-center justify-center " ++ product.swatch) ]
                         [ Icon.view { name = categoryGlyph product.category } |> toHtml ]
                     )
@@ -1044,7 +1044,7 @@ viewDetailDialog model =
                                 |> List.map
                                     (\i ->
                                         Slide.slide
-                                            [ Renderable.html
+                                            [ Element.html
                                                 (div
                                                     [ class ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch) ]
                                                     [ Icon.view { name = galleryGlyph product.category i } |> toHtml ]
@@ -1120,7 +1120,7 @@ viewDetailDialog model =
             in
             Dialog.view
                 { headline = product.name
-                , content = [ Renderable.html body ]
+                , content = [ Element.html body ]
                 }
                 [ Dialog.open True
                 , Dialog.onClose ProductClosed

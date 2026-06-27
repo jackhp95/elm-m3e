@@ -3,8 +3,8 @@ module M3e.DatePickerTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.DatePicker as DatePicker
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -15,7 +15,7 @@ import Test exposing (Test, describe, test)
 viewNode : List (DatePicker.Option String) -> Node.Node String
 viewNode opts =
     DatePicker.view opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 

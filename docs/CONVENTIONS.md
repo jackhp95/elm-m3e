@@ -10,7 +10,7 @@ Canonical rationale: [ADR 0006](adr/0006-m3e-architecture.md).
 Every component is **view-style**:
 
 ```elm
-view : { <required fields> } -> List (Option msg) -> Renderable { s | <tag> : Supported } msg
+view : { <required fields> } -> List (Option msg) -> Element { s | <tag> : Supported } msg
 ```
 
 - **One concept.** No separate builder type, no `|> into` lift. `view` returns
@@ -40,10 +40,10 @@ tables researched in `docs/research/`). Map to one of:
 
 | Content kind (M3) | Slot type |
 |---|---|
-| single child of a fixed kind (`icon`) | `Renderable { s | <childTag> : Supported } msg` |
-| homogeneous list (`chip-set → chip[]`) | `List (Renderable { s | <childTag> : Supported } msg)` |
+| single child of a fixed kind (`icon`) | `Element { s | <childTag> : Supported } msg` |
+| homogeneous list (`chip-set → chip[]`) | `List (Element { s | <childTag> : Supported } msg)` |
 | spec-heterogeneous region (app-bar `trailing`) | closed row listing each valid child kind **+ `element`** |
-| arbitrary region (card body) | `List (Renderable any msg)` (free row) |
+| arbitrary region (card body) | `List (Element any msg)` (free row) |
 
 Rules:
 - **Named slots inject `slot=`** (parent does `Node.withSlot "<name>"` over each

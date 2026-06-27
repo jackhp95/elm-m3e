@@ -2,8 +2,8 @@ module M3e.CalendarTest exposing (suite)
 
 import Expect
 import M3e.Calendar as Calendar
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -14,7 +14,7 @@ import Test exposing (Test, describe, test)
 viewNode : List (Calendar.Option String) -> Node.Node String
 viewNode opts =
     Calendar.view opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 

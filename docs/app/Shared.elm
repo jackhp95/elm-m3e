@@ -25,7 +25,7 @@ import M3e.Icon
 import M3e.IconButton
 import M3e.NavigationDrawer
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton
 import M3e.Theme as Theme
 import Pages.Flags
@@ -262,11 +262,11 @@ data =
 -- VIEW
 
 
-{-| Convenience alias: convert any `Renderable` to `Html`.
+{-| Convenience alias: convert any `Element` to `Html`.
 -}
-toHtml : Renderable any msg -> Html msg
+toHtml : Element any msg -> Html msg
 toHtml =
-    Renderable.toNode >> Node.toHtml
+    Element.toNode >> Node.toHtml
 
 
 view :
@@ -283,7 +283,7 @@ view _ page model toMsg pageView =
     let
         themed children =
             Theme.view
-                { content = List.map Renderable.html children }
+                { content = List.map Element.html children }
                 [ Theme.seedColor model.seed
                 , Theme.scheme model.scheme
                 , Theme.contrast model.contrast
@@ -369,7 +369,7 @@ appShellBar model =
                 , githubLink
                 ]
             ]
-            |> Renderable.toNode
+            |> Element.toNode
             |> Node.toHtml
         ]
 
@@ -387,14 +387,14 @@ until the shell layout puts the app bar inside the drawer.
 Wrapped in a `span.md:hidden` so the button is invisible on wider viewports
 (the side drawer is always visible there — no hamburger needed). Since
 `M3e.IconButton` no longer accepts arbitrary HTML attributes, the class is
-attached via `Renderable.element`.
+attached via `Element.element`.
 
 -}
 menuButton : Model -> M3e.AppBar.Leading Msg
 menuButton _ =
-    Renderable.element { tag = "span" }
+    Element.element { tag = "span" }
         [ Node.rawAttr (class "md:hidden") ]
-        [ Renderable.toNode
+        [ Element.toNode
             (M3e.IconButton.view
                 { icon = "menu", name = "Toggle navigation" }
                 [ M3e.IconButton.onClick MenuClicked ]
@@ -440,9 +440,9 @@ settings panel. Rendered as a single trailing slot item via `withTrailing`.
 -}
 settingsTriggerElement : Model -> M3e.AppBar.Trailing Msg
 settingsTriggerElement model =
-    Renderable.element { tag = "div" }
+    Element.element { tag = "div" }
         [ Node.rawAttr (class "relative") ]
-        [ Renderable.toNode
+        [ Element.toNode
             (M3e.IconButton.view
                 { icon = "tune", name = "Theme settings" }
                 [ M3e.IconButton.onClick ToggleSettings ]
@@ -466,9 +466,9 @@ settingsPanel model =
             , M3e.Card.headline
                 (M3e.Heading.view { label = "Theme settings", variant = M3e.Heading.Title } [])
             , M3e.Card.body
-                [ Renderable.html (settingsBody model) ]
+                [ Element.html (settingsBody model) ]
             ]
-            |> Renderable.toNode
+            |> Element.toNode
             |> Node.toHtml
         ]
 
@@ -655,7 +655,7 @@ drawerShell _ model page body =
         |> toHtml
 
 
-navEntries : String -> List (Renderable { navMenuItem : Supported } msg)
+navEntries : String -> List (Element { navMenuItem : Supported } msg)
 navEntries currentPath =
     List.map (sectionEntry currentPath) navSections
         ++ [ componentsEntry currentPath
@@ -666,12 +666,12 @@ navEntries currentPath =
            ]
 
 
-sectionEntry : String -> NavSection -> Renderable { navMenuItem : Supported } msg
+sectionEntry : String -> NavSection -> Element { navMenuItem : Supported } msg
 sectionEntry currentPath section =
     groupEntry currentPath section.icon section.title section.items
 
 
-componentsEntry : String -> Renderable { navMenuItem : Supported } msg
+componentsEntry : String -> Element { navMenuItem : Supported } msg
 componentsEntry currentPath =
     groupEntry currentPath
         "grid_view"
@@ -681,7 +681,7 @@ componentsEntry currentPath =
 
 {-| One collapsible group, expanded when it contains the current route.
 -}
-groupEntry : String -> String -> String -> List ( String, String ) -> Renderable { navMenuItem : Supported } msg
+groupEntry : String -> String -> String -> List ( String, String ) -> Element { navMenuItem : Supported } msg
 groupEntry currentPath glyph title items =
     M3e.NavigationDrawer.group
         { label = title }
@@ -691,7 +691,7 @@ groupEntry currentPath glyph title items =
         ]
 
 
-linkEntry : String -> ( String, String ) -> Renderable { navMenuItem : Supported } msg
+linkEntry : String -> ( String, String ) -> Element { navMenuItem : Supported } msg
 linkEntry currentPath ( path, label ) =
     M3e.NavigationDrawer.link
         { label = label, href = path }

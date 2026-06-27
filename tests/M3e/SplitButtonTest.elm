@@ -2,8 +2,8 @@ module M3e.SplitButtonTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import M3e.SplitButton as SplitButton
 import Test exposing (Test, describe, test)
 
@@ -20,7 +20,7 @@ req =
 
 node : List (SplitButton.Option ()) -> Node.Node ()
 node opts =
-    SplitButton.view req opts |> Renderable.toNode
+    SplitButton.view req opts |> Element.toNode
 
 
 {-| Find a child by its slot attribute.

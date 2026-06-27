@@ -12,10 +12,10 @@ workflow dividing content into ordered, selectable steps (Material 3 Stepper).
 Spec (per docs/CONVENTIONS.md):
 
   - Two sub-components:
-    `step      : { label : String } → List StepOption → Renderable { step }`
-    `stepPanel : { content }        → List PanelOption → Renderable { stepPanel }`
+    `step      : { label : String } → List StepOption → Element { step }`
+    `stepPanel : { content }        → List PanelOption → Element { stepPanel }`
   - View:
-    `view : { steps, panels } → List Option → Renderable { stepper }`
+    `view : { steps, panels } → List Option → Element { stepper }`
   - Steps → slot="step" (injected by view via Node.withSlot)
   - Panels → slot="panel" (injected by view via Node.withSlot)
   - Properties: selected, completed, optional, disabled, editable, invalid (step)
@@ -40,9 +40,9 @@ module emits `Node.attribute "slot" "actions"` directly and does NOT use
 
 import Cem.M3e.Stepper as CemStepper
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 {-| Where the step header sits relative to panel content (horizontal mode).
@@ -140,7 +140,7 @@ panelId s =
 `Cem.M3e.StepPanel.actionsSlot` which emits the buggy `slot="actions-"`.
 
 -}
-panelActions : List (Renderable { button : Supported } msg) -> PanelOption msg
+panelActions : List (Element { button : Supported } msg) -> PanelOption msg
 panelActions xs =
     Internal.option (\c -> { c | actions = xs })
 
@@ -206,7 +206,7 @@ defaultStepConfig =
         ]
 
 -}
-step : { label : String } -> List (StepOption msg) -> Renderable { s | step : Supported } msg
+step : { label : String } -> List (StepOption msg) -> Element { s | step : Supported } msg
 step req opts =
     let
         c : StepConfig
@@ -256,7 +256,7 @@ step req opts =
 
 type alias PanelConfig msg =
     { id : Maybe String
-    , actions : List (Renderable { button : Supported } msg)
+    , actions : List (Element { button : Supported } msg)
     }
 
 
@@ -279,7 +279,7 @@ defaultPanelConfig =
         ]
 
 -}
-stepPanel : { content : List (Renderable any msg) } -> List (PanelOption msg) -> Renderable { s | stepPanel : Supported } msg
+stepPanel : { content : List (Element any msg) } -> List (PanelOption msg) -> Element { s | stepPanel : Supported } msg
 stepPanel req opts =
     let
         c : PanelConfig msg
@@ -292,7 +292,7 @@ stepPanel req opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 ]
             )
-            (List.map Renderable.toNode req.content
+            (List.map Element.toNode req.content
                 ++ actionsNodes c.actions
             )
         )
@@ -303,7 +303,7 @@ The generated `Cem.M3e.StepPanel.actionsSlot` binding emits `slot="actions-"`
 (a stray trailing dash), which would mis-slot the content. We write the
 correct value here.
 -}
-actionsNodes : List (Renderable { button : Supported } msg) -> List (Node.Node msg)
+actionsNodes : List (Element { button : Supported } msg) -> List (Node.Node msg)
 actionsNodes xs =
     case xs of
         [] ->
@@ -312,7 +312,7 @@ actionsNodes xs =
         _ ->
             [ Node.element "div"
                 [ Node.attribute "slot" "actions" ]
-                (List.map Renderable.toNode xs)
+                (List.map Element.toNode xs)
             ]
 
 
@@ -359,11 +359,11 @@ Steps receive `slot="step"` and panels receive `slot="panel"` automatically.
 
 -}
 view :
-    { steps : List (Renderable { step : Supported } msg)
-    , panels : List (Renderable { stepPanel : Supported } msg)
+    { steps : List (Element { step : Supported } msg)
+    , panels : List (Element { stepPanel : Supported } msg)
     }
     -> List (Option msg)
-    -> Renderable { s | stepper : Supported } msg
+    -> Element { s | stepper : Supported } msg
 view req opts =
     let
         c : StripConfig
@@ -391,8 +391,8 @@ view req opts =
                     c.headerPosition
                 ]
             )
-            (List.map (Node.withSlot "step" << Renderable.toNode) req.steps
-                ++ List.map (Node.withSlot "panel" << Renderable.toNode) req.panels
+            (List.map (Node.withSlot "step" << Element.toNode) req.steps
+                ++ List.map (Node.withSlot "panel" << Element.toNode) req.panels
             )
         )
 

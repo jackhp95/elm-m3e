@@ -34,9 +34,9 @@ via the `for` attribute rather than by wrapping it.
 import Cem.M3e.FormField as CemFF
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
 
 
 
@@ -183,36 +183,36 @@ onInput f =
 
 
 {-| Content for the `prefix` slot of `<m3e-form-field>`, shown before the
-control (e.g. a currency symbol). A slottable element — use `Renderable.text`
-for a plain string, or `Renderable.element` for richer content.
+control (e.g. a currency symbol). A slottable element — use `Element.text`
+for a plain string, or `Element.element` for richer content.
 -}
-prefix : Renderable { element : Supported } msg -> Option msg
+prefix : Element { element : Supported } msg -> Option msg
 prefix r =
-    Internal.option (\c -> { c | prefix = Just (Renderable.toNode r) })
+    Internal.option (\c -> { c | prefix = Just (Element.toNode r) })
 
 
 {-| Content for the `suffix` slot of `<m3e-form-field>`, shown after the
 control (e.g. a unit indicator). See [`prefix`](#prefix).
 -}
-suffix : Renderable { element : Supported } msg -> Option msg
+suffix : Element { element : Supported } msg -> Option msg
 suffix r =
-    Internal.option (\c -> { c | suffix = Just (Renderable.toNode r) })
+    Internal.option (\c -> { c | suffix = Just (Element.toNode r) })
 
 
 {-| Hint for the form-field's `hint` slot — shown while the field is valid.
 Hidden when an error is also set (error takes precedence). See [`prefix`](#prefix).
 -}
-hint : Renderable { element : Supported } msg -> Option msg
+hint : Element { element : Supported } msg -> Option msg
 hint r =
-    Internal.option (\c -> { c | hint = Just (Renderable.toNode r) })
+    Internal.option (\c -> { c | hint = Just (Element.toNode r) })
 
 
 {-| Error for the form-field's `error` slot — shown while the field is invalid.
 Takes precedence over `hint`. See [`prefix`](#prefix).
 -}
-error : Renderable { element : Supported } msg -> Option msg
+error : Element { element : Supported } msg -> Option msg
 error r =
-    Internal.option (\c -> { c | error = Just (Renderable.toNode r) })
+    Internal.option (\c -> { c | error = Just (Element.toNode r) })
 
 
 {-| Render a `<textarea>` instead of an `<input>` (multi-line text entry).
@@ -263,7 +263,7 @@ For a multiline field that grows between 3 and 8 rows:
         ]
 
 -}
-view : { label : String } -> List (Option msg) -> Renderable { s | textField : Supported } msg
+view : { label : String } -> List (Option msg) -> Element { s | textField : Supported } msg
 view req opts =
     let
         c : Config msg

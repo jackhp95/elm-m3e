@@ -45,7 +45,7 @@ import M3e.List as List_
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node
 import M3e.RadioButton as RadioButton
-import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
 import M3e.Slider as Slider
@@ -321,11 +321,11 @@ resetSnackbar =
 -- VIEW -------------------------------------------------------------------
 
 
-{-| Convert any Renderable to Html within the Msg context.
+{-| Convert any Element to Html within the Msg context.
 -}
-toHtml : Renderable any Msg -> Html Msg
+toHtml : Element any Msg -> Html Msg
 toHtml r =
-    r |> Renderable.toNode |> Node.toHtml
+    r |> Element.toNode |> Node.toHtml
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
@@ -333,14 +333,14 @@ view _ _ model =
     { title = "Settings · Studies · elm-m3e"
     , body =
         [ Theme.view
-            { content = [ Renderable.html (Html.map PagesMsg.fromMsg (page model)) ] }
+            { content = [ Element.html (Html.map PagesMsg.fromMsg (page model)) ] }
             [ Theme.seedColor "#4F6BED"
             , Theme.variant Theme.Expressive
             , Theme.scheme (themeScheme model.theme)
             , Theme.density (densityValue model.density)
             , Theme.motion (motionScheme model.reduceMotion)
             ]
-            |> Renderable.toNode
+            |> Element.toNode
             |> Node.toHtml
         ]
     }
@@ -403,7 +403,7 @@ railColumn model =
         ]
 
 
-railItem : Section -> String -> String -> Section -> Renderable { navItem : Supported } Msg
+railItem : Section -> String -> String -> Section -> Element { navItem : Supported } Msg
 railItem currentSection glyph label itemSection =
     NavigationRail.item { icon = Icon.view { name = glyph }, label = label }
         [ NavigationRail.itemSelected (currentSection == itemSection)
@@ -694,28 +694,28 @@ privacyPanel model =
                     [ List_.actionItem { headline = "Download my data" }
                         [ List_.actionSupporting "Export a copy of your information."
                         , List_.actionLeading
-                            (Renderable.element { tag = "span" }
+                            (Element.element { tag = "span" }
                                 []
-                                [ Renderable.toNode (Icon.view { name = "download" }) ]
+                                [ Element.toNode (Icon.view { name = "download" }) ]
                             )
                         , List_.actionTrailing
-                            (Renderable.element { tag = "span" }
+                            (Element.element { tag = "span" }
                                 []
-                                [ Renderable.toNode (Icon.view { name = "chevron_right" }) ]
+                                [ Element.toNode (Icon.view { name = "chevron_right" }) ]
                             )
                         , List_.actionOnClick SaveRequested
                         ]
                     , List_.actionItem { headline = "Delete account" }
                         [ List_.actionSupporting "Permanently remove your account and data."
                         , List_.actionLeading
-                            (Renderable.element { tag = "span" }
+                            (Element.element { tag = "span" }
                                 []
-                                [ Renderable.toNode (Icon.view { name = "delete" }) ]
+                                [ Element.toNode (Icon.view { name = "delete" }) ]
                             )
                         , List_.actionTrailing
-                            (Renderable.element { tag = "span" }
+                            (Element.element { tag = "span" }
                                 []
-                                [ Renderable.toNode (Icon.view { name = "chevron_right" }) ]
+                                [ Element.toNode (Icon.view { name = "chevron_right" }) ]
                             )
                         , List_.actionOnClick ResetRequested
                         ]
@@ -770,7 +770,7 @@ advancedAccordion =
             [ Disclosure.section
                 { header = "Storage & cache"
                 , content =
-                    [ Renderable.html
+                    [ Element.html
                         (p [ class "text-body-md text-on-surface-variant" ]
                             [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
                         )
@@ -780,7 +780,7 @@ advancedAccordion =
             , Disclosure.section
                 { header = "Network"
                 , content =
-                    [ Renderable.html
+                    [ Element.html
                         (p [ class "text-body-md text-on-surface-variant" ]
                             [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
                         )
@@ -790,7 +790,7 @@ advancedAccordion =
             , Disclosure.section
                 { header = "Accessibility"
                 , content =
-                    [ Renderable.html
+                    [ Element.html
                         (p [ class "text-body-md text-on-surface-variant" ]
                             [ text "High-contrast mode, larger text, and screen-reader hints." ]
                         )
@@ -810,7 +810,7 @@ developerPanel model =
             [ Disclosure.section
                 { header = "Developer options"
                 , content =
-                    [ Renderable.html
+                    [ Element.html
                         (controlRow "Developer mode"
                             (Just "Show experimental flags and verbose logging.")
                             (Switch.view { name = "Developer mode" }
@@ -854,7 +854,7 @@ resetDialog model =
     Dialog.view
         { headline = "Reset to defaults?"
         , content =
-            [ Renderable.html
+            [ Element.html
                 (text "This restores every setting in this screen to its original value. This can't be undone.")
             ]
         }

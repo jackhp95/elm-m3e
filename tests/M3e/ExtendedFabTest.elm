@@ -2,9 +2,9 @@ module M3e.ExtendedFabTest exposing (suite)
 
 import Expect
 import Json.Encode as Encode
+import M3e.Element as Element
 import M3e.ExtendedFab as ExtendedFab
 import M3e.Node as Node
-import M3e.Renderable as Renderable
 import Test exposing (Test, describe, test)
 
 
@@ -13,7 +13,7 @@ node opts =
     ExtendedFab.view
         { icon = "add", label = "Create note", variant = ExtendedFab.PrimaryContainer }
         opts
-        |> Renderable.toNode
+        |> Element.toNode
 
 
 suite : Test
