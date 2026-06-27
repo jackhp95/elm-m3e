@@ -111,7 +111,7 @@ view req opts =
                 [ Maybe.map (\t -> Node.rawAttr (Cem.term t)) c.term
                 , Just (Node.rawAttr (Cem.mode (toCemMode c.mode)))
                 , if c.caseSensitive then
-                    Just (Node.property "case-sensitive" (Encode.bool True))
+                    Just (Node.property "caseSensitive" (Encode.bool True))
 
                   else
                     Nothing

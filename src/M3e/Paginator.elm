@@ -16,7 +16,7 @@ Spec (per docs/CONVENTIONS.md):
   - Options: pageIndex, pageSize, pageSizes, disabled, showFirstLastButtons,
     hidePageSize, onPage
   - Slots: none (leaf element)
-  - Properties: length, page-index, hide-page-size, show-first-last-buttons,
+  - Properties: length, pageIndex, hidePageSize, showFirstLastButtons,
     disabled (via Node.property — introspectable/testable)
   - Events: page (CustomEvent) → Int (decoded from detail.pageIndex)
   - Escape: none (leaf)
@@ -126,7 +126,7 @@ view req opts =
         (Node.element "m3e-paginator"
             (List.filterMap identity
                 [ Just (Node.property "length" (Encode.int req.length))
-                , Maybe.map (\v -> Node.property "page-index" (Encode.int v)) c.pageIndex
+                , Maybe.map (\v -> Node.property "pageIndex" (Encode.int v)) c.pageIndex
                 , Maybe.map (\v -> Node.attribute "page-size" (String.fromInt v)) c.pageSize
                 , Maybe.map (\v -> Node.attribute "page-sizes" (String.join "," (List.map String.fromInt v))) c.pageSizes
                 , if c.disabled then
@@ -135,12 +135,12 @@ view req opts =
                   else
                     Nothing
                 , if c.showFirstLastButtons then
-                    Just (Node.property "show-first-last-buttons" (Encode.bool True))
+                    Just (Node.property "showFirstLastButtons" (Encode.bool True))
 
                   else
                     Nothing
                 , if c.hidePageSize then
-                    Just (Node.property "hide-page-size" (Encode.bool True))
+                    Just (Node.property "hidePageSize" (Encode.bool True))
 
                   else
                     Nothing

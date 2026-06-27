@@ -369,8 +369,8 @@ autosizeNode : String -> { min : Int, max : Int } -> Node msg
 autosizeNode fieldId bounds =
     Node.element "m3e-textarea-autosize"
         [ Node.attribute "for" fieldId
-        , Node.property "min-rows" (Encode.float (toFloat bounds.min))
-        , Node.property "max-rows" (Encode.float (toFloat bounds.max))
+        , Node.property "minRows" (Encode.float (toFloat bounds.min))
+        , Node.property "maxRows" (Encode.float (toFloat bounds.max))
         ]
         []
 

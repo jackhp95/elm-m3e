@@ -46,13 +46,13 @@ suite =
         , test "strongFocus is a DOM property — introspectable" <|
             \_ ->
                 node [ Theme.strongFocus True ]
-                    |> Node.findProperty "strong-focus"
+                    |> Node.findProperty "strongFocus"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "strongFocus absent by default" <|
             \_ ->
                 node []
-                    |> Node.findProperty "strong-focus"
+                    |> Node.findProperty "strongFocus"
                     |> Expect.equal Nothing
         , test "seedColor option does not crash (rawAttr — not introspectable)" <|
             \_ ->

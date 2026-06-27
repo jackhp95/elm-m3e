@@ -107,12 +107,12 @@ view opts =
                   else
                     Nothing
                 , if c.insetStart then
-                    Just (Node.property "inset-start" (Encode.bool True))
+                    Just (Node.property "insetStart" (Encode.bool True))
 
                   else
                     Nothing
                 , if c.insetEnd then
-                    Just (Node.property "inset-end" (Encode.bool True))
+                    Just (Node.property "insetEnd" (Encode.bool True))
 
                   else
                     Nothing

@@ -191,7 +191,7 @@ plain req opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 , Just (Node.attribute "for" req.anchorId)
                 , Maybe.map (\p -> Node.rawAttr (CemPlain.position (toCemPlainPosition p))) c.position
-                , Maybe.map (\ms -> Node.property "hide-delay" (Encode.float (toFloat ms))) c.hideDelay
+                , Maybe.map (\ms -> Node.property "hideDelay" (Encode.float (toFloat ms))) c.hideDelay
                 ]
             )
             [ Node.text req.label ]
@@ -253,7 +253,7 @@ rich req opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 , Just (Node.attribute "for" req.anchorId)
                 , Maybe.map (\p -> Node.rawAttr (CemRich.position (toCemRichPosition p))) c.position
-                , Maybe.map (\ms -> Node.property "hide-delay" (Encode.float (toFloat ms))) c.hideDelay
+                , Maybe.map (\ms -> Node.property "hideDelay" (Encode.float (toFloat ms))) c.hideDelay
                 ]
             )
             (subheadNodes ++ contentNodes ++ actionNodes)

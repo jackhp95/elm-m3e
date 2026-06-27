@@ -42,13 +42,13 @@ suite =
         , test "caseSensitive=True is a DOM property — introspectable" <|
             \_ ->
                 nodeWith [ TextHighlight.caseSensitive True ] []
-                    |> Node.findProperty "case-sensitive"
+                    |> Node.findProperty "caseSensitive"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "caseSensitive absent by default" <|
             \_ ->
                 nodeWith [] []
-                    |> Node.findProperty "case-sensitive"
+                    |> Node.findProperty "caseSensitive"
                     |> Expect.equal Nothing
         , test "disabled=True is a DOM property — introspectable" <|
             \_ ->

@@ -63,13 +63,13 @@ suite =
         , test "plainHideDelay sets the hide-delay DOM property" <|
             \_ ->
                 plainNode [ Tooltip.plainHideDelay 500 ]
-                    |> Node.findProperty "hide-delay"
+                    |> Node.findProperty "hideDelay"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "500")
         , test "hide-delay absent by default on plain" <|
             \_ ->
                 plainNode []
-                    |> Node.findProperty "hide-delay"
+                    |> Node.findProperty "hideDelay"
                     |> Expect.equal Nothing
 
         -- Rich tooltip
@@ -91,7 +91,7 @@ suite =
         , test "richHideDelay sets the hide-delay DOM property" <|
             \_ ->
                 richNode [ Tooltip.richHideDelay 300 ]
-                    |> Node.findProperty "hide-delay"
+                    |> Node.findProperty "hideDelay"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "300")
         , test "richSubhead child lands in the subhead slot" <|

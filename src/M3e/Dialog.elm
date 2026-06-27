@@ -182,7 +182,7 @@ view req opts =
                   else
                     Nothing
                 , if not c.dismissible then
-                    Just (Node.property "disable-close" (Encode.bool True))
+                    Just (Node.property "disableClose" (Encode.bool True))
 
                   else
                     Nothing

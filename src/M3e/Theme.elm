@@ -180,7 +180,7 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.variant (toCemVariant v))) c.variant
                 , Maybe.map (\co -> Node.rawAttr (Cem.contrast (toCemContrast co))) c.contrast
                 , Maybe.map (\d -> Node.property "density" (Encode.float d)) c.density
-                , Maybe.map (\sf -> Node.property "strong-focus" (Encode.bool sf)) c.strongFocus
+                , Maybe.map (\sf -> Node.property "strongFocus" (Encode.bool sf)) c.strongFocus
                 , Maybe.map (\m -> Node.rawAttr (Cem.motion (toCemMotion m))) c.motion
                 , Maybe.map (\d -> Node.on "change" d) c.onChange
                 ]

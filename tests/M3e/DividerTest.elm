@@ -52,13 +52,13 @@ suite =
         , test "insetStart=true sets property inset-start" <|
             \_ ->
                 node [ Divider.insetStart True ]
-                    |> Node.findProperty "inset-start"
+                    |> Node.findProperty "insetStart"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "insetEnd=true sets property inset-end" <|
             \_ ->
                 node [ Divider.insetEnd True ]
-                    |> Node.findProperty "inset-end"
+                    |> Node.findProperty "insetEnd"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         ]

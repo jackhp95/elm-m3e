@@ -29,13 +29,13 @@ suite =
         , test "maxDepth is a DOM property — introspectable" <|
             \_ ->
                 node "content" [ Toc.maxDepth 3 ]
-                    |> Node.findProperty "max-depth"
+                    |> Node.findProperty "maxDepth"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "3")
         , test "maxDepth absent by default" <|
             \_ ->
                 node "content" []
-                    |> Node.findProperty "max-depth"
+                    |> Node.findProperty "maxDepth"
                     |> Expect.equal Nothing
         , test "title option injects a <span> with slot=title" <|
             \_ ->

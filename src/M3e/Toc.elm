@@ -85,7 +85,7 @@ view req opts =
         (Node.element "m3e-toc"
             (List.filterMap identity
                 [ Just (Node.attribute "for" req.for)
-                , Maybe.map (\d -> Node.property "max-depth" (Encode.float (toFloat d))) c.maxDepth
+                , Maybe.map (\d -> Node.property "maxDepth" (Encode.float (toFloat d))) c.maxDepth
                 ]
             )
             (List.filterMap identity

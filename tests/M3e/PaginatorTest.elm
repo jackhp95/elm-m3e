@@ -31,13 +31,13 @@ suite =
         , test "pageIndex is a DOM property when set" <|
             \_ ->
                 node [ Paginator.pageIndex 2 ]
-                    |> Node.findProperty "page-index"
+                    |> Node.findProperty "pageIndex"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "2")
         , test "pageIndex absent by default" <|
             \_ ->
                 node []
-                    |> Node.findProperty "page-index"
+                    |> Node.findProperty "pageIndex"
                     |> Expect.equal Nothing
         , test "disabled is a DOM property" <|
             \_ ->
@@ -53,13 +53,13 @@ suite =
         , test "showFirstLastButtons is a DOM property" <|
             \_ ->
                 node [ Paginator.showFirstLastButtons True ]
-                    |> Node.findProperty "show-first-last-buttons"
+                    |> Node.findProperty "showFirstLastButtons"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "hidePageSize is a DOM property" <|
             \_ ->
                 node [ Paginator.hidePageSize True ]
-                    |> Node.findProperty "hide-page-size"
+                    |> Node.findProperty "hidePageSize"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "pageSizes is a string attribute (not property)" <|

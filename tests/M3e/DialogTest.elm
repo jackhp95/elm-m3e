@@ -89,13 +89,13 @@ suite =
         , test "dismissible=false sets disable-close DOM property" <|
             \_ ->
                 node [ Dialog.dismissible False ]
-                    |> Node.findProperty "disable-close"
+                    |> Node.findProperty "disableClose"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "disable-close absent by default (dismissible=true)" <|
             \_ ->
                 node []
-                    |> Node.findProperty "disable-close"
+                    |> Node.findProperty "disableClose"
                     |> Expect.equal Nothing
         , test "actions render inside <div slot=\"actions\">" <|
             \_ ->

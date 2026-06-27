@@ -88,7 +88,7 @@ suite =
         , test "sectionHideToggle=true sets hide-toggle DOM property" <|
             \_ ->
                 sectionNode [ Disclosure.sectionHideToggle True ]
-                    |> Node.findProperty "hide-toggle"
+                    |> Node.findProperty "hideToggle"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "sectionActions render inside <div slot=\"actions\">" <|

@@ -160,7 +160,7 @@ section req opts =
                   else
                     Nothing
                 , if c.hideToggle then
-                    Just (Node.property "hide-toggle" (Encode.bool True))
+                    Just (Node.property "hideToggle" (Encode.bool True))
 
                   else
                     Nothing
