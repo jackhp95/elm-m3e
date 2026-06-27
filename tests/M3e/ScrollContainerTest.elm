@@ -4,13 +4,14 @@ import Expect
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import M3e.Internal as Internal
 import M3e.ScrollContainer as ScrollContainer
 import Test exposing (Test, describe, test)
 
 
 contentItem : Renderable.Renderable any msg
 contentItem =
-    Renderable.fromNode (Node.element "p" [] [ Node.text "Some content" ])
+    Internal.fromNode (Node.element "p" [] [ Node.text "Some content" ])
 
 
 node : List (ScrollContainer.Option msg) -> Node.Node msg

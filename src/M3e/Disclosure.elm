@@ -38,6 +38,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 type SectionOption msg
@@ -153,7 +154,7 @@ section req opts =
         c =
             List.foldl applySection defaultSectionConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-expansion-panel"
             (List.filterMap identity
                 [ Just (Node.property "open" (Encode.bool c.open))
@@ -234,7 +235,7 @@ view req opts =
         c =
             List.foldl applyAccordion defaultAccordionConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-accordion"
             (List.filterMap identity
                 [ if c.multi then

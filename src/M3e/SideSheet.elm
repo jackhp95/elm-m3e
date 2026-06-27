@@ -37,6 +37,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Which edge the panel anchors to. Default `End`. -}
@@ -162,7 +163,7 @@ view req opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-drawer-container"
             (List.filterMap identity
                 [ Just (openProperty c)

@@ -33,6 +33,7 @@ import Cem.M3e.LinearProgressIndicator as CemLinear
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Selects the rendered element. `Linear` draws `<m3e-linear-progress-indicator>`;
@@ -113,7 +114,7 @@ view req opts =
     in
     case req.shape of
         Linear ->
-            Renderable.fromNode
+            Internal.fromNode
                 (Node.element "m3e-linear-progress-indicator"
                     (List.filterMap identity
                         [ Just (Node.property "max" (Encode.float (toFloat c.max)))
@@ -130,7 +131,7 @@ view req opts =
                 )
 
         Circular ->
-            Renderable.fromNode
+            Internal.fromNode
                 (Node.element "m3e-circular-progress-indicator"
                     (List.filterMap identity
                         [ Just (Node.property "max" (Encode.float (toFloat c.max)))

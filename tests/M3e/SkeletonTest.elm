@@ -4,13 +4,14 @@ import Expect
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import M3e.Internal as Internal
 import M3e.Skeleton as Skeleton
 import Test exposing (Test, describe, test)
 
 
 item : String -> Renderable.Renderable any msg
 item tag =
-    Renderable.fromNode (Node.element tag [] [])
+    Internal.fromNode (Node.element tag [] [])
 
 
 nodeWith : List (Skeleton.Option msg) -> List (Renderable.Renderable any msg) -> Node.Node msg

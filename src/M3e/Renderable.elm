@@ -1,45 +1,50 @@
-module M3e.Renderable exposing (Renderable, Supported, fromNode, toNode, html, element)
+module M3e.Renderable exposing (Renderable, Supported, toNode, html, element)
 
 {-| One content type for every slot. Each component `view` pins its own kind by
-ANNOTATING its result (via `fromNode`). Two escapes:
+annotating its result (via `M3e.Internal.fromNode`). Two escapes:
 
   - `html` for default-slot REGIONS (no slot is injected, so raw Html is fine),
   - `element` for NAMED slots (you build a slot-capable element the parent can
     stamp `slot=` onto) — so the slot can never be silently dropped.
 
+`fromNode` is NOT exposed here — it lives in `M3e.Internal` so consumers
+cannot forge phantom slot tags. Components import `M3e.Internal as Internal`
+and call `Internal.fromNode` to annotate their output.
+
 -}
 
 import Html exposing (Html)
+import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 
 
-type Renderable supported msg
-    = Renderable (Node msg)
+{-| Transparent alias for `M3e.Internal.Renderable`. Public consumers use this
+name; the canonical definition lives in Internal. -}
+type alias Renderable supported msg =
+    Internal.Renderable supported msg
 
 
-type Supported
-    = Supported
+{-| Transparent alias for `M3e.Internal.Supported`. -}
+type alias Supported =
+    Internal.Supported
 
 
-{-| Internal primitive: a component annotates the result to fix its tag. In the
-published package this lives in an unexposed `M3e.Internal` module so consumers
-can't forge tags; exposed here for the prototype.
--}
-fromNode : Node msg -> Renderable any msg
-fromNode =
-    Renderable
-
-
+{-| Unwrap to the underlying `Node` for composition or rendering. -}
 toNode : Renderable supported msg -> Node msg
-toNode (Renderable n) =
-    n
+toNode =
+    Internal.toNode
 
 
+{-| Lift raw `Html` into a renderable that fits any **default-slot region**
+(`{ s | html : Supported }`). Do NOT use this in named slots — the slot
+attribute can't be stamped onto opaque `Html`. -}
 html : Html msg -> Renderable { s | html : Supported } msg
 html h =
-    Renderable (Node.raw h)
+    Internal.fromNode (Node.raw h)
 
 
+{-| Build a named-slot-capable element. The parent can stamp `slot=` onto this
+node because it is a real IR element (not opaque `Html`). -}
 element : { tag : String } -> List (Node.Attr msg) -> List (Node msg) -> Renderable { s | element : Supported } msg
 element config attrs children =
-    Renderable (Node.element config.tag attrs children)
+    Internal.fromNode (Node.element config.tag attrs children)

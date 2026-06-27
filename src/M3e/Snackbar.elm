@@ -41,6 +41,7 @@ import Cem.M3e.Snackbar as CemSnackbar
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- OPTION TYPE -------------------------------------------------------------
@@ -114,7 +115,7 @@ view req opts =
         c =
             List.foldl applyOption defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-snackbar"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id

@@ -25,6 +25,7 @@ import Cem.M3e.ButtonGroup as Cem
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Group appearance variant. -}
@@ -97,7 +98,7 @@ view req opts =
                 { variant = Standard, size = Small, multi = False }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-button-group"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))

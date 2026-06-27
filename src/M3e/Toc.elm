@@ -27,6 +27,7 @@ Spec (per docs/CONVENTIONS.md):
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 type Option msg
@@ -87,7 +88,7 @@ view req opts =
                 { maxDepth = Nothing, title = Nothing, overline = Nothing }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-toc"
             (List.filterMap identity
                 [ Just (Node.attribute "for" req.for)

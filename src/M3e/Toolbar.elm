@@ -26,6 +26,7 @@ import Cem.M3e.Toolbar as Cem
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| The shape of the toolbar corners. `Square` is the element default. -}
@@ -130,7 +131,7 @@ view req opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-toolbar"
             (List.filterMap identity
                 [ if c.elevated then

@@ -28,6 +28,7 @@ import Cem.M3e.TextHighlight as Cem
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| How the term is matched against the content. Default `Contains`.
@@ -112,7 +113,7 @@ view req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-text-highlight"
             (List.filterMap identity
                 [ Maybe.map (\t -> Node.rawAttr (Cem.term t)) c.term

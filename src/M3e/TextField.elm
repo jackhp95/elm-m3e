@@ -34,6 +34,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -271,7 +272,7 @@ view req opts =
         id =
             Maybe.withDefault (slugify req.label) c.id
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-form-field"
             (List.filterMap identity
                 [ Maybe.map (\v -> Node.attribute "variant" (variantString v)) c.variant

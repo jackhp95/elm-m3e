@@ -27,6 +27,7 @@ import Cem.M3e.Heading as Cem
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
@@ -107,7 +108,7 @@ view req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-heading"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))

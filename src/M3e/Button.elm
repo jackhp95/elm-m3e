@@ -31,6 +31,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 type Variant
@@ -176,7 +177,7 @@ view req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-button"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))

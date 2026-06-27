@@ -24,6 +24,7 @@ Spec (per docs/CONVENTIONS.md):
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Which dividers to show when content is scrolled. -}
@@ -77,7 +78,7 @@ view req opts =
         c =
             List.foldl apply { dividers = AboveBelow, thin = False } opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-scroll-container"
             (List.filterMap identity
                 [ Just (Node.attribute "dividers" (dividersToString c.dividers))

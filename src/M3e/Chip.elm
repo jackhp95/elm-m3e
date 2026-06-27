@@ -33,6 +33,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node exposing (Node)
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 
@@ -190,7 +191,7 @@ view req opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-chip"
             (List.filterMap identity
                 [ Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
@@ -237,7 +238,7 @@ genericChip tag label clickMsg opts =
                 Nothing ->
                     Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element tag
             (List.filterMap identity
                 [ Just (variantAttr c)
@@ -266,7 +267,7 @@ filter req opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-filter-chip"
             (List.filterMap identity
                 [ Just (variantAttr c)
@@ -300,7 +301,7 @@ input req opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-input-chip"
             (List.filterMap identity
                 [ Just (variantAttr c)

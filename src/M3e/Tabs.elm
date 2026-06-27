@@ -36,6 +36,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| The appearance variant of the tabs strip.
@@ -175,7 +176,7 @@ tab req opts =
         c =
             List.foldl applyTab defaultTabConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-tab"
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool c.selected))
@@ -225,7 +226,7 @@ panel req opts =
         c =
             List.foldl applyPanel defaultPanelConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-tab-panel"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
@@ -298,7 +299,7 @@ view req opts =
         c =
             List.foldl applyStrip defaultStripConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-tabs"
             (List.filterMap identity
                 [ if c.stretch then

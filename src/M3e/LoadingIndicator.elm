@@ -27,6 +27,7 @@ fraction, use `M3e.Progress`. For a content-placeholder shimmer, use
 import Cem.M3e.LoadingIndicator as Cem
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Visual style, mirroring the `m3e-loading-indicator` `variant` attribute.
@@ -66,7 +67,7 @@ view opts =
         c =
             List.foldl apply { variant = Uncontained } opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-loading-indicator"
             [ Node.rawAttr (Cem.variant (toCemVariant c.variant)) ]
             []

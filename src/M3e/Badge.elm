@@ -32,6 +32,7 @@ The `count` option applies M3's 999+ truncation: values above 999 render as
 import Cem.M3e.Badge as Cem
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Where the badge sits relative to its anchor element (`forId`).
@@ -153,7 +154,7 @@ view opts =
                 LabelContent s ->
                     ( Just (Node.rawAttr (Cem.size Cem.Large)), [ Node.text s ] )
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-badge"
             (List.filterMap identity
                 [ sizeAttr

@@ -30,6 +30,7 @@ placed in the `slides` list.
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 type Option msg
@@ -82,7 +83,7 @@ slide group. Pass a list of `Renderable` children as the slide's content.
 -}
 slide : List (Renderable any msg) -> Renderable { s | slide : Supported } msg
 slide content =
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-slide"
             []
             (List.map Renderable.toNode content)
@@ -100,7 +101,7 @@ view req opts =
                 { disabled = False, vertical = False, threshold = Nothing }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-slide-group"
             (List.filterMap identity
                 [ if c.disabled then Just (Node.property "disabled" (Encode.bool True)) else Nothing

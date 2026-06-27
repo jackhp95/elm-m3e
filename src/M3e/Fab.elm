@@ -30,6 +30,7 @@ import Json.Encode as Encode
 import M3e.Icon as Icon
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
@@ -184,7 +185,7 @@ view req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-fab"
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.name)

@@ -32,6 +32,7 @@ import Cem.M3e.SplitPane as Cem
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Direction of the split.
@@ -104,7 +105,7 @@ view req opts =
                 { orientation = Horizontal, disabled = False, label = Nothing }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-split-pane"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.orientation (toCemOrientation c.orientation)))

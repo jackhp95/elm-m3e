@@ -29,6 +29,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- ITEM (child) ------------------------------------------------------------
@@ -144,7 +145,7 @@ item req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-breadcrumb-item"
             (List.filterMap identity
                 [ Just (Node.attribute "item-label" req.label)
@@ -204,7 +205,7 @@ view req opts =
         c =
             List.foldl applyBreadcrumb { wrap = False } opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-breadcrumb"
             (List.filterMap identity
                 [ if c.wrap then

@@ -29,6 +29,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Color scheme — follows the OS light/dark preference (`Auto`), or is
@@ -189,7 +190,7 @@ view req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-theme"
             (List.filterMap identity
                 [ Maybe.map (\col -> Node.rawAttr (Cem.color col)) c.seedColor

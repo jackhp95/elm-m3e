@@ -27,6 +27,7 @@ surface; callers style the host element themselves.
 import Cem.M3e.Shape as Cem
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| The set of Material 3 shape names — re-exported from `Cem.M3e.Shape`.
@@ -65,7 +66,7 @@ view req opts =
         c =
             List.foldl apply { name = Nothing } opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-shape"
             (List.filterMap identity
                 [ Maybe.map (\n -> Node.rawAttr (Cem.name n)) c.name

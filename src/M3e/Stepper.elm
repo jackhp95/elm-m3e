@@ -39,6 +39,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Where the step header sits relative to panel content (horizontal mode).
@@ -230,7 +231,7 @@ step req opts =
         c =
             List.foldl applyStep defaultStepConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-step"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
@@ -312,7 +313,7 @@ stepPanel req opts =
         c =
             List.foldl applyPanel defaultPanelConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-step-panel"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
@@ -408,7 +409,7 @@ view req opts =
         c =
             List.foldl applyStrip defaultStripConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-stepper"
             (List.filterMap identity
                 [ if c.vertical then

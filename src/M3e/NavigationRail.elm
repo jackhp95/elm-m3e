@@ -30,6 +30,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -------------------------------------------------------------------
@@ -143,7 +144,7 @@ item req opts =
         c =
             List.foldl applyItem defaultItemConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-nav-item"
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool c.selected))
@@ -192,7 +193,7 @@ view req opts =
         c =
             List.foldl applyOption defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-nav-rail"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id

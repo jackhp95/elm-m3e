@@ -36,6 +36,7 @@ import Cem.M3e.Tooltip as CemPlain
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -------------------------------------------------------------------
@@ -157,7 +158,7 @@ plain req opts =
         c =
             List.foldl applyPlain defaultPlainConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-tooltip"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
@@ -215,7 +216,7 @@ rich req opts =
                         (List.map Renderable.toNode rs)
                     ]
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-rich-tooltip"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id

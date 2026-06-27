@@ -39,6 +39,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -------------------------------------------------------------------
@@ -229,7 +230,7 @@ item req opts =
         c =
             List.foldl applyItem defaultItemConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-menu-item"
             (List.filterMap identity
                 [ case req.action of
@@ -267,7 +268,7 @@ checkboxItem req opts =
         c =
             List.foldl applyCheckbox defaultCheckboxConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-menu-item-checkbox"
             (List.filterMap identity
                 [ Just (Node.property "checked" (Encode.bool c.checked))
@@ -300,7 +301,7 @@ radioItem req opts =
         c =
             List.foldl applyRadio defaultRadioConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-menu-item-radio"
             (List.filterMap identity
                 [ Just (Node.property "checked" (Encode.bool c.selected))
@@ -319,7 +320,7 @@ radioItem req opts =
 {-| A thin separator row (`<m3e-divider>`) for use between menu items. -}
 divider : Renderable { menuItem : Supported } msg
 divider =
-    Renderable.fromNode (Node.element "m3e-divider" [] [])
+    Internal.fromNode (Node.element "m3e-divider" [] [])
 
 
 {-| A labelled group of related items (`<m3e-menu-item-group>`), typically
@@ -338,7 +339,7 @@ group :
     { label : String, items : List (Renderable { menuItem : Supported } msg) }
     -> Renderable { menuItem : Supported } msg
 group req =
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-menu-item-group"
             []
             (Node.element "span" [ Node.attribute "slot" "label" ] [ Node.text req.label ]
@@ -364,7 +365,7 @@ attribute so the element can inject it into any named slot.
 -}
 triggerFor : String -> Renderable { s | element : Supported } msg
 triggerFor menuId =
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-menu-trigger" [ Node.attribute "for" menuId ] [])
 
 
@@ -395,7 +396,7 @@ view req opts =
         c =
             List.foldl applyOption defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-menu"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id

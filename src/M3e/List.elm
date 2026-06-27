@@ -41,6 +41,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -------------------------------------------------------------------
@@ -262,7 +263,7 @@ item req opts =
         c =
             List.foldl applyStatic defaultStaticConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-list-item"
             []
             (decorationNodes c.leading c.overline c.supporting True c.trailing req.headline)
@@ -286,7 +287,7 @@ actionItem req opts =
         c =
             List.foldl applyAction defaultActionConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-list-item-button"
             (List.filterMap identity
                 [ if c.disabled then
@@ -318,7 +319,7 @@ option req opts =
         c =
             List.foldl applyOptionItem defaultOptionConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-list-option"
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool c.selected))
@@ -340,7 +341,7 @@ option req opts =
 {-| A thin separator row (`<m3e-divider>`). -}
 divider : Renderable { listItem : Supported } msg
 divider =
-    Renderable.fromNode (Node.element "m3e-divider" [] [])
+    Internal.fromNode (Node.element "m3e-divider" [] [])
 
 
 {-| An expandable list item (`<m3e-expandable-list-item>`). Children are
@@ -370,7 +371,7 @@ expandable req opts =
         childNodes =
             List.map (Node.withSlot "items" << Renderable.toNode) req.children
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-expandable-list-item"
             (List.filterMap identity
                 [ if c.open then
@@ -416,7 +417,7 @@ view req opts =
         c =
             List.foldl applyContainerOption defaultContainerConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-list"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id

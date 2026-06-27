@@ -34,6 +34,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 type Option msg
@@ -161,7 +162,7 @@ view req opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-bottom-sheet"
             (List.filterMap identity
                 [ Just (Node.property "open" (Encode.bool c.open))

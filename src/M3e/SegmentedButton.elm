@@ -26,6 +26,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- SEGMENT (child) ---------------------------------------------------------
@@ -93,7 +94,7 @@ segment req opts =
         domValue =
             Maybe.withDefault req.label c.value
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-button-segment"
             (List.filterMap identity
                 [ Just (Node.property "checked" (Encode.bool req.checked))
@@ -158,7 +159,7 @@ view req opts =
                 { disabled = False, multi = False }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-segmented-button"
             (List.filterMap identity
                 [ if c.disabled then

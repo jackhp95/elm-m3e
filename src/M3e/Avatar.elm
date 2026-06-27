@@ -26,6 +26,7 @@ An avatar with no content option renders an empty circle.
 
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 
@@ -113,7 +114,7 @@ view req opts =
                 NoContent ->
                     []
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-avatar"
             [ Node.attribute "aria-label" req.alt ]
             children

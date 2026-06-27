@@ -62,6 +62,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -246,7 +247,7 @@ view opts =
         c =
             List.foldl apply defaultConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-calendar"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id

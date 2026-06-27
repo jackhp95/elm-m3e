@@ -36,6 +36,7 @@ import Json.Encode as Encode
 import M3e.Button as Button
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Appearance variant (default `Filled`). -}
@@ -117,7 +118,7 @@ view req opts =
                 [ Node.element "m3e-icon" [ Node.attribute "name" req.trailingIcon ] [] ]
                 |> Node.withSlot "trailing-button"
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-split-button"
             [ Node.rawAttr (Cem.variant (toCemVariant c.variant)) ]
             [ leadingButton, trailingButton ]

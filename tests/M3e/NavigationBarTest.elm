@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.NavigationBar as NavBar
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import M3e.Internal as Internal
 import Test exposing (Test, describe, test)
 
 
@@ -13,7 +14,7 @@ import Test exposing (Test, describe, test)
 
 fakeIcon : Renderable.Renderable { icon : Renderable.Supported } msg
 fakeIcon =
-    Renderable.fromNode (Node.element "m3e-icon" [] [ Node.text "home" ])
+    Internal.fromNode (Node.element "m3e-icon" [] [ Node.text "home" ])
 
 
 navNode : List (NavBar.Option msg) -> List (Renderable.Renderable { navItem : Renderable.Supported } msg) -> Node.Node msg

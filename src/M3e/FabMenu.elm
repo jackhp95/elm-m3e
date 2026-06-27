@@ -41,6 +41,7 @@ import Cem.M3e.FabMenu as Cem
 import Json.Decode as Decode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Appearance variant of the menu surface (default `Primary`). -}
@@ -96,7 +97,7 @@ item :
     { icon : String, label : String, onClick : msg }
     -> Renderable { s | fabMenuItem : Supported } msg
 item req =
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-fab-menu-item"
             [ Node.on "click" (Decode.succeed req.onClick) ]
             [ Node.element "span"
@@ -145,7 +146,7 @@ view req opts =
                 ]
                 (List.map Renderable.toNode req.items)
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "div" [] [ fabTrigger, fabMenu ])
 
 

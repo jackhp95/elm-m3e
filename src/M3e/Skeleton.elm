@@ -26,6 +26,7 @@ import Cem.M3e.Skeleton as Cem
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| Placeholder shape. Mirrors the `m3e-skeleton` `shape` attribute. Default is
@@ -108,7 +109,7 @@ view req opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-skeleton"
             (List.filterMap identity
                 [ if c.loaded then Just (Node.property "loaded" (Encode.bool True)) else Nothing

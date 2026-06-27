@@ -26,6 +26,7 @@ Because there are no required fields, `view` takes only the options list:
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 type Option msg
@@ -103,7 +104,7 @@ view opts =
                 }
                 opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-divider"
             (List.filterMap identity
                 [ if c.vertical then Just (Node.property "vertical" (Encode.bool True)) else Nothing

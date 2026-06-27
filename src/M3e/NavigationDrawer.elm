@@ -44,6 +44,7 @@ import Html exposing (Html)
 import Json.Encode as Encode
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 -- TYPES -----------------------------------------------------------------------
@@ -206,7 +207,7 @@ link req opts =
         cfg =
             List.foldl applyLink defaultLinkConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-nav-menu-item"
             [ Node.property "selected" (Encode.bool cfg.selected) ]
             (List.filterMap identity
@@ -260,7 +261,7 @@ group req children opts =
         cfg =
             List.foldl applyGroup defaultGroupConfig opts
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-nav-menu-item"
             (List.filterMap identity
                 [ Just (Node.property "selected" (Encode.bool cfg.selected))
@@ -333,7 +334,7 @@ view req opts =
                 End ->
                     ( "end", "end", "end-mode" )
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element "m3e-drawer-container"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") cfg.id

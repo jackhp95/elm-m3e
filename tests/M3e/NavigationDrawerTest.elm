@@ -7,6 +7,7 @@ import M3e.Icon as Icon
 import M3e.NavigationDrawer as NavigationDrawer
 import M3e.Node as Node
 import M3e.Renderable as Renderable
+import M3e.Internal as Internal
 import Test exposing (Test, describe, test)
 
 
@@ -48,7 +49,7 @@ groupNode : List (Node.Node String) -> List (NavigationDrawer.GroupOption String
 groupNode childNodes opts =
     NavigationDrawer.group
         { label = "Docs" }
-        (List.map (\n -> Renderable.fromNode n) childNodes)
+        (List.map (\n -> Internal.fromNode n) childNodes)
         opts
         |> Renderable.toNode
 

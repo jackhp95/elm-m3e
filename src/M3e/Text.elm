@@ -31,6 +31,7 @@ primitive.
 
 import M3e.Node as Node
 import M3e.Renderable as Renderable exposing (Renderable, Supported)
+import M3e.Internal as Internal
 
 
 {-| The M3 typescale role this text renders at — the **body** and **label**
@@ -124,7 +125,7 @@ view req opts =
             else
                 "p"
     in
-    Renderable.fromNode
+    Internal.fromNode
         (Node.element tag
             [ Node.attribute "class" (roleClass req.role) ]
             [ Node.text req.content ]
