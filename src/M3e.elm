@@ -22,6 +22,9 @@ module M3e exposing
     , selectOption, selectOptions, autocompleteOption, autocompleteOptions
     , step, stepPanel, tab, tabPanel, treeItem
     , chipFilterSet, chipInputSet
+    , Label, Role, ProgressShape, ItemAction
+    , labelFromHtml, menuClick, menuLink, progressLinear, progressCircular
+    , roleBodyLarge, roleBodyMedium, roleBodySmall, roleLabelLarge, roleLabelMedium, roleLabelSmall
     )
 
 {-| Top-level facade for the M3e component library, so the common case is a
@@ -126,6 +129,18 @@ becomes `menuItem`, `Select.option` becomes `selectOption`).
 @docs step, stepPanel, tab, tabPanel, treeItem
 @docs chipFilterSet, chipInputSet
 
+
+# Companion value types
+
+Required value types referenced by the entry points above. Their constructors
+live in the component modules and cannot be re-exported directly in Elm, so each
+is re-bound here (`Menu.Click` becomes `menuClick`, `Text.BodyLarge` becomes
+`roleBodyLarge`, …) to keep the components usable from the single import.
+
+@docs Label, Role, ProgressShape, ItemAction
+@docs labelFromHtml, menuClick, menuLink, progressLinear, progressCircular
+@docs roleBodyLarge, roleBodyMedium, roleBodySmall, roleLabelLarge, roleLabelMedium, roleLabelSmall
+
 -}
 
 import Html exposing (Html)
@@ -164,7 +179,7 @@ import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.IconButton as IconButton
 import M3e.Internal exposing (Option)
-import M3e.Label exposing (Label)
+import M3e.Label as MLabel
 import M3e.List as MList
 import M3e.LoadingIndicator as LoadingIndicator
 import M3e.Menu as Menu
@@ -560,7 +575,7 @@ headingLabel req =
 
 {-| Typographic text. Re-export of [`M3e.Text.view`](M3e-Text#view).
 -}
-typography : { content : String, role : Text.Role } -> List (Text.Option msg) -> Element { s | text : Supported } msg
+typography : { content : String, role : Role } -> List (Text.Option msg) -> Element { s | text : Supported } msg
 typography =
     Text.view
 
@@ -742,7 +757,7 @@ loadingIndicator =
 
 {-| A progress indicator. Re-export of [`M3e.Progress.view`](M3e-Progress#view).
 -}
-progress : { shape : Progress.Shape } -> List (Progress.Option msg) -> Element { s | progress : Supported } msg
+progress : { shape : ProgressShape } -> List (Progress.Option msg) -> Element { s | progress : Supported } msg
 progress =
     Progress.view
 
@@ -1061,7 +1076,7 @@ breadcrumbItem =
 
 {-| A menu item. Re-export of [`M3e.Menu.item`](M3e-Menu#item).
 -}
-menuItem : { label : String, action : Menu.ItemAction msg } -> List (Menu.ItemOption msg) -> Element { menuItem : Supported } msg
+menuItem : { label : String, action : ItemAction msg } -> List (Menu.ItemOption msg) -> Element { menuItem : Supported } msg
 menuItem =
     Menu.item
 
@@ -1260,3 +1275,112 @@ chipFilterSet =
 chipInputSet : { label : String } -> List (ChipSet.Option msg) -> Element { s | chipSet : Supported } msg
 chipInputSet =
     ChipSet.inputSet
+
+
+
+-- COMPANION VALUE TYPES --------------------------------------------------
+
+
+{-| A form-field label. Re-export of [`M3e.Label.Label`](M3e-Label#Label).
+-}
+type alias Label msg =
+    MLabel.Label msg
+
+
+{-| Build a [`Label`](#Label) from raw `Html`. Re-export of
+[`M3e.Label.fromHtml`](M3e-Label#fromHtml).
+-}
+labelFromHtml : Html msg -> Label msg
+labelFromHtml =
+    MLabel.fromHtml
+
+
+{-| A typescale role for [`typography`](#typography). Re-export of
+[`M3e.Text.Role`](M3e-Text#Role).
+-}
+type alias Role =
+    Text.Role
+
+
+{-| The `body-large` typescale role. Re-export of `M3e.Text.BodyLarge`.
+-}
+roleBodyLarge : Role
+roleBodyLarge =
+    Text.BodyLarge
+
+
+{-| The `body-medium` typescale role. Re-export of `M3e.Text.BodyMedium`.
+-}
+roleBodyMedium : Role
+roleBodyMedium =
+    Text.BodyMedium
+
+
+{-| The `body-small` typescale role. Re-export of `M3e.Text.BodySmall`.
+-}
+roleBodySmall : Role
+roleBodySmall =
+    Text.BodySmall
+
+
+{-| The `label-large` typescale role. Re-export of `M3e.Text.LabelLarge`.
+-}
+roleLabelLarge : Role
+roleLabelLarge =
+    Text.LabelLarge
+
+
+{-| The `label-medium` typescale role. Re-export of `M3e.Text.LabelMedium`.
+-}
+roleLabelMedium : Role
+roleLabelMedium =
+    Text.LabelMedium
+
+
+{-| The `label-small` typescale role. Re-export of `M3e.Text.LabelSmall`.
+-}
+roleLabelSmall : Role
+roleLabelSmall =
+    Text.LabelSmall
+
+
+{-| The shape of a [`progress`](#progress) indicator. Re-export of
+[`M3e.Progress.Shape`](M3e-Progress#Shape).
+-}
+type alias ProgressShape =
+    Progress.Shape
+
+
+{-| A linear (bar) progress indicator. Re-export of `M3e.Progress.Linear`.
+-}
+progressLinear : ProgressShape
+progressLinear =
+    Progress.Linear
+
+
+{-| A circular (ring) progress indicator. Re-export of `M3e.Progress.Circular`.
+-}
+progressCircular : ProgressShape
+progressCircular =
+    Progress.Circular
+
+
+{-| The action taken by a [`menuItem`](#menuItem). Re-export of
+[`M3e.Menu.ItemAction`](M3e-Menu#ItemAction).
+-}
+type alias ItemAction msg =
+    Menu.ItemAction msg
+
+
+{-| A menu item that fires a message on click. Re-export of `M3e.Menu.Click`.
+-}
+menuClick : msg -> ItemAction msg
+menuClick =
+    Menu.Click
+
+
+{-| A menu item that navigates to a URL. Re-export of `M3e.Menu.Link`.
+-}
+menuLink : String -> ItemAction msg
+menuLink =
+    Menu.Link

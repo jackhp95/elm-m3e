@@ -141,4 +141,22 @@ suite =
                     |> toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-tree-item")
+        , test "menuItem with menuClick (companion ItemAction) renders m3e-menu-item" <|
+            \_ ->
+                menuItem { label = "Open", action = menuClick Clicked } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-menu-item")
+        , test "progress with progressLinear (companion ProgressShape) renders linear indicator" <|
+            \_ ->
+                progress { shape = progressLinear } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-linear-progress-indicator")
+        , test "typography with roleBodyLarge (companion Role) renders a p" <|
+            \_ ->
+                typography { content = "Hello", role = roleBodyLarge } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "p")
         ]
