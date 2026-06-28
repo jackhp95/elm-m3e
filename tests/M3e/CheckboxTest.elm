@@ -10,7 +10,7 @@ import Test exposing (Test, describe, test)
 
 node : List (Checkbox.Option msg) -> Node msg
 node opts =
-    Checkbox.view { name = "Accept terms" } opts |> Element.toNode
+    Checkbox.view { ariaLabel = "Accept terms" } opts |> Element.toNode
 
 
 suite : Test
@@ -21,9 +21,9 @@ suite =
                 node []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-checkbox")
-        , test "aria-label equals the required name field" <|
+        , test "ariaLabel field is emitted as aria-label" <|
             \_ ->
-                Checkbox.view { name = "Subscribe to newsletter" } []
+                Checkbox.view { ariaLabel = "Subscribe to newsletter" } []
                     |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Subscribe to newsletter")
@@ -69,4 +69,19 @@ suite =
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 0
+        , test "name option emits name attribute (FormAssociated)" <|
+            \_ ->
+                node [ Checkbox.name "accepted" ]
+                    |> Node.findAttribute "name"
+                    |> Expect.equal (Just "accepted")
+        , test "value option emits value attribute (FormAssociated, default on)" <|
+            \_ ->
+                node [ Checkbox.value "yes" ]
+                    |> Node.findAttribute "value"
+                    |> Expect.equal (Just "yes")
+        , test "no name option — no name attribute emitted" <|
+            \_ ->
+                node []
+                    |> Node.findAttribute "name"
+                    |> Expect.equal Nothing
         ]

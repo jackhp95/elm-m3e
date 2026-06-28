@@ -138,7 +138,7 @@ suite =
         , test "fix-#63: fab can be placed in the nav rail (widened slot type)" <|
             \_ ->
                 NavRail.view
-                    { items = [ Fab.view { icon = "edit", name = "Create" } [] ] }
+                    { items = [ Fab.view { icon = "edit", ariaLabel = "Create" } [] ] }
                     []
                     |> Element.toNode
                     |> Node.childrenOf
@@ -147,7 +147,7 @@ suite =
         , test "fix-#63: icon-button can be placed in the nav rail (widened slot type)" <|
             \_ ->
                 NavRail.view
-                    { items = [ IconButton.view { icon = "menu", name = "Toggle" } [] ] }
+                    { items = [ IconButton.view { icon = "menu", ariaLabel = "Toggle" } [] ] }
                     []
                     |> Element.toNode
                     |> Node.childrenOf

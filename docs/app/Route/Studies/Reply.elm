@@ -581,7 +581,7 @@ viewAppBar model =
                         [ Node.element "div"
                             [ Node.attribute "class" "md:hidden" ]
                             [ Element.toNode
-                                (IconButton.view { icon = "arrow_back", name = "Back to inbox" }
+                                (IconButton.view { icon = "arrow_back", ariaLabel = "Back to inbox" }
                                     [ IconButton.onClick CloseReadingPane ]
                                 )
                             ]
@@ -589,13 +589,13 @@ viewAppBar model =
                             [ Node.attribute "class" "hidden md:block"
                             , Node.attribute "id" "reply-menu-anchor"
                             ]
-                            [ Element.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
+                            [ Element.toNode (IconButton.view { icon = "menu", ariaLabel = "Mailboxes" } []) ]
                         ]
 
                 Nothing ->
                     Element.element { tag = "div" }
                         [ Node.attribute "id" "reply-menu-anchor" ]
-                        [ Element.toNode (IconButton.view { icon = "menu", name = "Mailboxes" } []) ]
+                        [ Element.toNode (IconButton.view { icon = "menu", ariaLabel = "Mailboxes" } []) ]
 
         -- Search bar: visible md+
         searchElem =
@@ -608,7 +608,7 @@ viewAppBar model =
             Element.element { tag = "div" }
                 [ Node.attribute "class" "md:hidden" ]
                 [ Element.toNode
-                    (IconButton.view { icon = "search", name = "Search mail" } [])
+                    (IconButton.view { icon = "search", ariaLabel = "Search mail" } [])
                 ]
 
         -- Notifications with badge
@@ -620,7 +620,7 @@ viewAppBar model =
                 [ Node.attribute "class" "relative"
                 , Node.attribute "id" "reply-notifications"
                 ]
-                (Element.toNode (IconButton.view { icon = "notifications", name = "Notifications" } [])
+                (Element.toNode (IconButton.view { icon = "notifications", ariaLabel = "Notifications" } [])
                     :: (if total > 0 then
                             [ Element.toNode (Badge.view [ Badge.count total ]) ]
 
@@ -631,7 +631,7 @@ viewAppBar model =
 
         -- User avatar
         avatarElem =
-            Avatar.view { alt = "Jane Reed" }
+            Avatar.view { ariaLabel = "Jane Reed" }
                 [ Avatar.initials "Jane Reed" ]
     in
     AppBar.view
@@ -779,13 +779,13 @@ messageRow model message =
     in
     Layout.div ("flex items-start gap-3 px-3 py-3 transition-colors " ++ rowBg)
         [ Layout.div "pt-1"
-            [ Checkbox.view { name = "Select " ++ message.subject }
+            [ Checkbox.view { ariaLabel = "Select " ++ message.subject }
                 [ Checkbox.checked isChecked
                 , Checkbox.onChange (ToggleChecked message.id)
                 ]
                 |> Element.toNode
             ]
-        , Avatar.view { alt = message.sender }
+        , Avatar.view { ariaLabel = message.sender }
             [ Avatar.initials message.sender ]
             |> Element.toNode
         , Node.element "div"
@@ -830,7 +830,7 @@ messageRow model message =
             [ Node.element "div" [ Node.rawAttr (attribute "id" starId) ]
                 [ IconButton.view
                     { icon = "star"
-                    , name =
+                    , ariaLabel =
                         if message.starred then
                             "Unstar"
 
@@ -880,7 +880,7 @@ readingPane message =
                         ]
                     , Divider.view [] |> Element.toNode
                     , Layout.row
-                        [ Avatar.view { alt = message.sender }
+                        [ Avatar.view { ariaLabel = message.sender }
                             [ Avatar.initials message.sender ]
                             |> Element.toNode
                         , Node.raw
@@ -924,7 +924,7 @@ readingActions =
 
 closeReadingButton : Node Msg
 closeReadingButton =
-    IconButton.view { icon = "close", name = "Close conversation" }
+    IconButton.view { icon = "close", ariaLabel = "Close conversation" }
         [ IconButton.onClick CloseReadingPane ]
         |> Element.toNode
 
@@ -937,7 +937,7 @@ archiveButton =
     in
     Layout.div "flex flex-col items-center"
         [ Node.element "div" [ Node.rawAttr (attribute "id" anchor) ]
-            [ IconButton.view { icon = "archive", name = "Archive" }
+            [ IconButton.view { icon = "archive", ariaLabel = "Archive" }
                 [ IconButton.onClick ArchiveSelected ]
                 |> Element.toNode
             ]
@@ -948,7 +948,7 @@ archiveButton =
 overflowMenu : Node Msg
 overflowMenu =
     Node.element "div" [ Node.rawAttr (attribute "id" "reply-overflow"), Node.rawAttr (class "relative") ]
-        [ IconButton.view { icon = "more_vert", name = "More actions" }
+        [ IconButton.view { icon = "more_vert", ariaLabel = "More actions" }
             [ IconButton.extraContent [ Menu.triggerFor "reply-overflow-menu" ] ]
             |> Element.toNode
         , Menu.view
@@ -987,7 +987,7 @@ viewComposeFab model =
                     ""
     in
     Layout.div ("absolute bottom-20 right-4 z-10 md:bottom-6 md:right-6 " ++ compactHide)
-        [ Fab.view { icon = "edit", name = "Compose" }
+        [ Fab.view { icon = "edit", ariaLabel = "Compose" }
             [ Fab.label "Compose"
             , Fab.variant Fab.Primary
             , Fab.onClick OpenCompose

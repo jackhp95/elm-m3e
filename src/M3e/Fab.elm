@@ -1,30 +1,37 @@
 module M3e.Fab exposing
     ( view
-    , Option, Size(..), Variant(..)
+    , Option, Size(..), Variant(..), ButtonType(..)
     , variant, size, lowered, disabled, onClick, href, target, rel, download, label
+    , formType, name, value
     )
 
 {-| `<m3e-fab>` — a floating action button for the primary action on a screen.
 
+Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
+(attr, `FormSubmitterType`, default `"button"`).
+
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { icon : String, name : String }
-    (icon = glyph name; name = a11y label — FAB is icon-only with no
+  - Required: { icon : String, ariaLabel : String }
+    (icon = glyph name; ariaLabel = a11y label — FAB is icon-only with no
     visible text, so a required aria-label is mandatory)
   - Options: variant, size, lowered, disabled, onClick, href(+target/rel/download),
-    label (extended-FAB visible text → sets `extended` property + slot "label")
+    label (extended-FAB visible text → sets `extended` property + slot "label"),
+    formType, name, value
   - Slots: default slot ← `<m3e-icon>` for the glyph;
     "label" slot ← a span carrying the extended-FAB label text
   - Properties: disabled, lowered, extended (all via Node.property — introspectable/testable)
   - Attrs: variant/size via Cem.M3e.Fab.\* wrapped in Node.rawAttr
-    (codegen name+enum safety; opaque, which is fine — no parent introspects them)
+    (codegen name+enum safety; opaque, which is fine — no parent introspects them);
+    name/value/type via Node.attribute (introspectable)
   - Events: click
-  - A11y: aria-label = name (required; m3e aria-hides its icon slot)
+  - A11y: aria-label = ariaLabel (required; m3e aria-hides its icon slot)
   - Tag: m3e-fab
 
 @docs view
-@docs Option, Size, Variant
+@docs Option, Size, Variant, ButtonType
 @docs variant, size, lowered, disabled, onClick, href, target, rel, download, label
+@docs formType, name, value
 
 -}
 
@@ -68,7 +75,20 @@ type alias Config msg =
     , rel : Maybe String
     , download : Maybe String
     , label : Maybe String
+    , formType : Maybe ButtonType
+    , name : Maybe String
+    , value : Maybe String
     }
+
+
+{-| Form submission type for a FAB acting as a form submitter.
+Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
+default `"button"`.
+-}
+type ButtonType
+    = Submit
+    | Reset
+    | Button
 
 
 {-| Configuration option for `view`.
@@ -140,6 +160,36 @@ download v =
     Internal.option (\c -> { c | download = Just v })
 
 
+{-| Set the form submission type. Only meaningful when the FAB is inside a
+`<form>` without `href`. Upstream: `FormSubmitter` mixin → `type` attribute.
+
+  - `Submit` — submits the form (equivalent to `type="submit"`).
+  - `Reset` — resets the form (equivalent to `type="reset"`).
+  - `Button` — no default form action; use `onClick` for a custom handler.
+
+-}
+formType : ButtonType -> Option msg
+formType v =
+    Internal.option (\c -> { c | formType = Just v })
+
+
+{-| Set the form field name (the `name` attribute on `<m3e-fab>`).
+This identifies the FAB when its containing form is submitted.
+Upstream: `FormSubmitter` mixin → `name` attribute.
+-}
+name : String -> Option msg
+name v =
+    Internal.option (\c -> { c | name = Just v })
+
+
+{-| Set the submitted value (the `value` attribute on `<m3e-fab>`).
+Paired with `name` on form submission. Upstream: `FormSubmitter` mixin → `value` attribute.
+-}
+value : String -> Option msg
+value v =
+    Internal.option (\c -> { c | value = Just v })
+
+
 {-| Visible label for an extended FAB. Setting this option also sets the
 `extended` property on the element so it expands to show the label.
 -}
@@ -148,9 +198,9 @@ label v =
     Internal.option (\c -> { c | label = Just v })
 
 
-{-| Render the FAB with its required `icon` and `name` (aria-label).
+{-| Render the FAB with its required `icon` and `ariaLabel`.
 -}
-view : { icon : String, name : String } -> List (Option msg) -> Element { s | fab : Supported } msg
+view : { icon : String, ariaLabel : String } -> List (Option msg) -> Element { s | fab : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -166,12 +216,15 @@ view req opts =
                 , rel = Nothing
                 , download = Nothing
                 , label = Nothing
+                , formType = Nothing
+                , name = Nothing
+                , value = Nothing
                 }
     in
     Internal.fromNode
         (Node.element "m3e-fab"
             (List.filterMap identity
-                [ Just (Node.attribute "aria-label" req.name)
+                [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
                 , Just (Node.property "lowered" (Encode.bool c.lowered))
@@ -182,6 +235,9 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target
                 , Maybe.map (\v -> Node.rawAttr (Cem.rel v)) c.rel
                 , Maybe.map (\v -> Node.rawAttr (Cem.download v)) c.download
+                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) c.formType
+                , Maybe.map (\v -> Node.attribute "name" v) c.name
+                , Maybe.map (\v -> Node.attribute "value" v) c.value
                 ]
             )
             (List.filterMap identity
@@ -190,6 +246,19 @@ view req opts =
                 ]
             )
         )
+
+
+toTypeString : ButtonType -> String
+toTypeString t =
+    case t of
+        Submit ->
+            "submit"
+
+        Reset ->
+            "reset"
+
+        Button ->
+            "button"
 
 
 toCemVariant : Variant -> Cem.Variant

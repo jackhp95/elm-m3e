@@ -1,7 +1,8 @@
 module M3e.Button exposing
-    ( Option, Variant(..), Size(..), Shape(..)
+    ( Option, Variant(..), Size(..), Shape(..), ButtonType(..)
     , view
     , size, shape, disabled, onClick, href, target, rel, download, leadingIcon, trailingIcon
+    , formType, name, value
     )
 
 {-| `<m3e-button>` — a labeled action button (Material 3 Buttons, 1:1).
@@ -11,14 +12,17 @@ Spec (per docs/CONVENTIONS.md):
   - Required: { label : String, variant : Variant } (label is visible -> it IS
     the accessible name; no separate a11y field)
   - Options: size, shape, disabled, onClick, href(+target/rel/download),
-    leadingIcon, trailingIcon
+    leadingIcon, trailingIcon, formType, name, value
   - Slots: icon -> single M3e.Icon (slot "icon"); trailing-icon likewise
   - Properties: disabled (DOM property -> introspectable/testable)
   - Attrs: variant/size/shape/href/... via Cem.M3e.Button.\* as RawAttr
     (codegen name+enum safety; opaque, which is fine — no parent
-    introspects them)
+    introspects them); name/value/type via Node.attribute (introspectable)
   - Escape: none (leaf)
   - Tag: m3e-button
+
+Upstream mixin: `FormSubmitter` → `name` (attr), `value` (attr), `type`
+(attr, `FormSubmitterType`, default `"button"`).
 
 Action wiring (`onClick`/`href`) is last-write-wins options, not a required sum
 field — a button with no action is degenerate-but-valid (caught by a review rule,
@@ -27,7 +31,7 @@ per ADR 0006 / the prior NoActionlessButton design).
 
 # Types
 
-@docs Option, Variant, Size, Shape
+@docs Option, Variant, Size, Shape, ButtonType
 
 @docs view
 
@@ -35,6 +39,7 @@ per ADR 0006 / the prior NoActionlessButton design).
 # Options
 
 @docs size, shape, disabled, onClick, href, target, rel, download, leadingIcon, trailingIcon
+@docs formType, name, value
 
 -}
 
@@ -72,6 +77,20 @@ type Size
 type Shape
     = Rounded
     | Square
+
+
+{-| Form submission type for a button. Upstream: `FormSubmitter` mixin →
+`type` attribute (`FormSubmitterType`), default `"button"`.
+
+  - `Submit` — submits the containing form (equivalent to `type="submit"`).
+  - `Reset` — resets the containing form (equivalent to `type="reset"`).
+  - `Button` — no default form action; pair with `onClick` for custom behaviour.
+
+-}
+type ButtonType
+    = Submit
+    | Reset
+    | Button
 
 
 {-| A button configuration option. Build with the option functions below and
@@ -151,6 +170,30 @@ trailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
 
+{-| Set the form submission type. Only meaningful when the button is inside a
+`<form>` without `href`. Upstream: `FormSubmitter` mixin → `type` attribute.
+-}
+formType : ButtonType -> Option msg
+formType v =
+    Internal.option (\c -> { c | formType = Just v })
+
+
+{-| Set the form field name (the `name` attribute on `<m3e-button>`).
+Upstream: `FormSubmitter` mixin → `name` attribute.
+-}
+name : String -> Option msg
+name v =
+    Internal.option (\c -> { c | name = Just v })
+
+
+{-| Set the submitted value (the `value` attribute on `<m3e-button>`).
+Upstream: `FormSubmitter` mixin → `value` attribute.
+-}
+value : String -> Option msg
+value v =
+    Internal.option (\c -> { c | value = Just v })
+
+
 type alias Config msg =
     { size : Size
     , shape : Maybe Shape
@@ -162,6 +205,9 @@ type alias Config msg =
     , download : Maybe String
     , leadingIcon : Maybe (Element { icon : Supported } msg)
     , trailingIcon : Maybe (Element { icon : Supported } msg)
+    , formType : Maybe ButtonType
+    , name : Maybe String
+    , value : Maybe String
     }
 
 
@@ -184,6 +230,9 @@ view req opts =
                 , download = Nothing
                 , leadingIcon = Nothing
                 , trailingIcon = Nothing
+                , formType = Nothing
+                , name = Nothing
+                , value = Nothing
                 }
     in
     Internal.fromNode
@@ -198,6 +247,9 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target
                 , Maybe.map (\v -> Node.rawAttr (Cem.rel v)) c.rel
                 , Maybe.map (\v -> Node.rawAttr (Cem.download v)) c.download
+                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) c.formType
+                , Maybe.map (\v -> Node.attribute "name" v) c.name
+                , Maybe.map (\v -> Node.attribute "value" v) c.value
                 ]
             )
             (List.filterMap identity
@@ -207,6 +259,19 @@ view req opts =
                 ]
             )
         )
+
+
+toTypeString : ButtonType -> String
+toTypeString t =
+    case t of
+        Submit ->
+            "submit"
+
+        Reset ->
+            "reset"
+
+        Button ->
+            "button"
 
 
 toCemVariant : Variant -> Cem.Variant

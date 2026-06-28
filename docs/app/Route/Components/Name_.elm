@@ -603,10 +603,10 @@ demoSections slug =
                 [ sub "Basic"
                     (AppBar.view
                         [ AppBar.title (Heading.view { label = "Inbox", variant = Heading.Title } [])
-                        , AppBar.leading (IconButton.view { icon = "menu", name = "Open menu" } [])
+                        , AppBar.leading (IconButton.view { icon = "menu", ariaLabel = "Open menu" } [])
                         , AppBar.trailing
-                            [ IconButton.view { icon = "search", name = "Search" } []
-                            , IconButton.view { icon = "more_vert", name = "More" } []
+                            [ IconButton.view { icon = "search", ariaLabel = "Search" } []
+                            , IconButton.view { icon = "more_vert", ariaLabel = "More" } []
                             ]
                         ]
                         |> Element.toNode
@@ -622,7 +622,7 @@ demoSections slug =
                     (AppBar.view
                         [ AppBar.title (Heading.view { label = "Profile", variant = Heading.Title } [])
                         , AppBar.centered True
-                        , AppBar.leading (IconButton.view { icon = "arrow_back", name = "Back" } [])
+                        , AppBar.leading (IconButton.view { icon = "arrow_back", ariaLabel = "Back" } [])
                         ]
                         |> Element.toNode
                     )
@@ -632,12 +632,12 @@ demoSections slug =
         "avatar" ->
             [ usage
                 [ sub "Image"
-                    (Avatar.view { alt = "Sample" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode)
+                    (Avatar.view { ariaLabel = "Sample" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode)
                 , sub "Initials"
                     (Layout.div "flex flex-wrap items-center gap-3"
-                        [ Avatar.view { alt = "Jane Reed" } [ Avatar.initials "Jane Reed" ] |> Element.toNode
-                        , Avatar.view { alt = "AB" } [ Avatar.initials "AB" ] |> Element.toNode
-                        , Avatar.view { alt = "Pat Lee" } [ Avatar.initials "Pat Lee" ] |> Element.toNode
+                        [ Avatar.view { ariaLabel = "Jane Reed" } [ Avatar.initials "Jane Reed" ] |> Element.toNode
+                        , Avatar.view { ariaLabel = "AB" } [ Avatar.initials "AB" ] |> Element.toNode
+                        , Avatar.view { ariaLabel = "Pat Lee" } [ Avatar.initials "Pat Lee" ] |> Element.toNode
                         ]
                     )
                 ]
@@ -826,21 +826,21 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (Layout.div "flex flex-wrap items-center gap-6"
-                        [ Checkbox.view { name = "Unchecked" } [ Checkbox.checked False, Checkbox.onChange noOp ] |> Element.toNode
-                        , Checkbox.view { name = "Checked" } [ Checkbox.checked True, Checkbox.onChange noOp ] |> Element.toNode
+                        [ Checkbox.view { ariaLabel = "Unchecked" } [ Checkbox.checked False, Checkbox.onChange noOp ] |> Element.toNode
+                        , Checkbox.view { ariaLabel = "Checked" } [ Checkbox.checked True, Checkbox.onChange noOp ] |> Element.toNode
                         ]
                     )
                 , sub "Indeterminate (tristate)"
-                    (Checkbox.view { name = "Select all" }
+                    (Checkbox.view { ariaLabel = "Select all" }
                         [ Checkbox.indeterminate True, Checkbox.onChange noOp ]
                         |> Element.toNode
                     )
                 , sub "Disabling"
                     (Layout.div "flex flex-wrap items-center gap-6"
-                        [ Checkbox.view { name = "Disabled" }
+                        [ Checkbox.view { ariaLabel = "Disabled" }
                             [ Checkbox.checked False, Checkbox.disabled True, Checkbox.onChange noOp ]
                             |> Element.toNode
-                        , Checkbox.view { name = "Disabled checked" }
+                        , Checkbox.view { ariaLabel = "Disabled checked" }
                             [ Checkbox.checked True, Checkbox.disabled True, Checkbox.onChange noOp ]
                             |> Element.toNode
                         ]
@@ -944,26 +944,26 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (Layout.div "flex flex-wrap items-center gap-4"
-                        [ Fab.view { icon = "add", name = "Primary" } [ Fab.variant Fab.Primary ] |> Element.toNode
-                        , Fab.view { icon = "add", name = "Secondary" } [ Fab.variant Fab.Secondary ] |> Element.toNode
-                        , Fab.view { icon = "add", name = "Tertiary" } [ Fab.variant Fab.Tertiary ] |> Element.toNode
-                        , Fab.view { icon = "add", name = "Surface" } [ Fab.variant Fab.Surface ] |> Element.toNode
+                        [ Fab.view { icon = "add", ariaLabel = "Primary" } [ Fab.variant Fab.Primary ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Secondary" } [ Fab.variant Fab.Secondary ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Tertiary" } [ Fab.variant Fab.Tertiary ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Surface" } [ Fab.variant Fab.Surface ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (Layout.div "flex flex-wrap items-center gap-4"
-                        [ Fab.view { icon = "add", name = "Small" } [ Fab.variant Fab.Primary, Fab.size Fab.Small ] |> Element.toNode
-                        , Fab.view { icon = "add", name = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> Element.toNode
-                        , Fab.view { icon = "add", name = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> Element.toNode
+                        [ Fab.view { icon = "add", ariaLabel = "Small" } [ Fab.variant Fab.Primary, Fab.size Fab.Small ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> Element.toNode
                         ]
                     )
                 , sub "Lowered"
-                    (Fab.view { icon = "add", name = "Lowered" }
+                    (Fab.view { icon = "add", ariaLabel = "Lowered" }
                         [ Fab.variant Fab.Primary, Fab.lowered True ]
                         |> Element.toNode
                     )
                 , sub "Disabled"
-                    (Fab.view { icon = "add", name = "Disabled" }
+                    (Fab.view { icon = "add", ariaLabel = "Disabled" }
                         [ Fab.variant Fab.Primary, Fab.disabled True ]
                         |> Element.toNode
                     )
@@ -1052,38 +1052,38 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (buttonRow
-                        [ IconButton.view { icon = "favorite", name = "Like (standard)" } [] |> Element.toNode
-                        , IconButton.view { icon = "favorite", name = "Like (filled)" } [ IconButton.variant IconButton.Filled ] |> Element.toNode
-                        , IconButton.view { icon = "favorite", name = "Like (tonal)" } [ IconButton.variant IconButton.Tonal ] |> Element.toNode
-                        , IconButton.view { icon = "favorite", name = "Like (outlined)" } [ IconButton.variant IconButton.Outlined ] |> Element.toNode
+                        [ IconButton.view { icon = "favorite", ariaLabel = "Like (standard)" } [] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Like (filled)" } [ IconButton.variant IconButton.Filled ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Like (tonal)" } [ IconButton.variant IconButton.Tonal ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Like (outlined)" } [ IconButton.variant IconButton.Outlined ] |> Element.toNode
                         ]
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ IconButton.view { icon = "check", name = "Round" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Round ] |> Element.toNode
-                        , IconButton.view { icon = "check", name = "Square" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Square ] |> Element.toNode
+                        [ IconButton.view { icon = "check", ariaLabel = "Round" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Round ] |> Element.toNode
+                        , IconButton.view { icon = "check", ariaLabel = "Square" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ IconButton.view { icon = "add", name = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraSmall ] |> Element.toNode
-                        , IconButton.view { icon = "add", name = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Small ] |> Element.toNode
-                        , IconButton.view { icon = "add", name = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Medium ] |> Element.toNode
-                        , IconButton.view { icon = "add", name = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Large ] |> Element.toNode
-                        , IconButton.view { icon = "add", name = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraLarge ] |> Element.toNode
+                        [ IconButton.view { icon = "add", ariaLabel = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraSmall ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Small ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Medium ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Large ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Widths"
                     (buttonRow
-                        [ IconButton.view { icon = "add", name = "Narrow" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Narrow ] |> Element.toNode
-                        , IconButton.view { icon = "add", name = "Default" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Default ] |> Element.toNode
-                        , IconButton.view { icon = "add", name = "Wide" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Wide ] |> Element.toNode
+                        [ IconButton.view { icon = "add", ariaLabel = "Narrow" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Narrow ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Default" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Default ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Wide" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Wide ] |> Element.toNode
                         ]
                     )
                 , sub "Disabling"
                     (buttonRow
-                        [ IconButton.view { icon = "check", name = "Disabled" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
-                        , IconButton.view { icon = "check", name = "Disabled (soft)" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
+                        [ IconButton.view { icon = "check", ariaLabel = "Disabled" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
+                        , IconButton.view { icon = "check", ariaLabel = "Disabled (soft)" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1116,7 +1116,7 @@ demoSections slug =
             [ usage
                 [ sub "With trigger"
                     (Layout.div "flex items-center gap-2"
-                        [ IconButton.view { icon = "more_vert", name = "Open demo menu" }
+                        [ IconButton.view { icon = "more_vert", ariaLabel = "Open demo menu" }
                             [ IconButton.extraContent [ Menu.triggerFor "demo-menu" ] ]
                             |> Element.toNode
                         , Menu.view
@@ -1520,12 +1520,12 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (Layout.div "flex flex-wrap items-center gap-6"
-                        [ Switch.view { name = "Off" } [ Switch.checked False, Switch.onChange noOp ] |> Element.toNode
-                        , Switch.view { name = "On" } [ Switch.checked True, Switch.onChange noOp ] |> Element.toNode
+                        [ Switch.view { ariaLabel = "Off" } [ Switch.checked False, Switch.onChange noOp ] |> Element.toNode
+                        , Switch.view { ariaLabel = "On" } [ Switch.checked True, Switch.onChange noOp ] |> Element.toNode
                         ]
                     )
                 , sub "Handle icons"
-                    (Switch.view { name = "Notifications" }
+                    (Switch.view { ariaLabel = "Notifications" }
                         [ Switch.checked True
                         , Switch.icons Switch.Both
                         , Switch.onChange noOp
@@ -1534,10 +1534,10 @@ demoSections slug =
                     )
                 , sub "Disabled"
                     (Layout.div "flex flex-wrap items-center gap-6"
-                        [ Switch.view { name = "Off (disabled)" }
+                        [ Switch.view { ariaLabel = "Off (disabled)" }
                             [ Switch.checked False, Switch.disabled True, Switch.onChange noOp ]
                             |> Element.toNode
-                        , Switch.view { name = "On (disabled)" }
+                        , Switch.view { ariaLabel = "On (disabled)" }
                             [ Switch.checked True, Switch.disabled True, Switch.onChange noOp ]
                             |> Element.toNode
                         ]
@@ -1747,7 +1747,7 @@ demoSections slug =
                 [ sub "Plain tooltip"
                     (Layout.div "flex flex-wrap items-center gap-3"
                         [ Node.element "span" [ Node.rawAttr (Attr.id "tooltip-anchor-demo") ]
-                            [ IconButton.view { icon = "refresh", name = "Refresh" }
+                            [ IconButton.view { icon = "refresh", ariaLabel = "Refresh" }
                                 [ IconButton.variant IconButton.Tonal ]
                                 |> Element.toNode
                             ]
@@ -1764,7 +1764,7 @@ demoSections slug =
                     (Field.view
                         { id = "field-reduce-motion"
                         , label = Label.fromHtml (Html.text "Reduce motion")
-                        , control = Switch.view { name = "Reduce motion" } [ Switch.checked True ]
+                        , control = Switch.view { ariaLabel = "Reduce motion" } [ Switch.checked True ]
                         }
                     )
                 , sub "Outlined variant with error"

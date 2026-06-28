@@ -1,36 +1,42 @@
 module M3e.IconButton exposing
     ( view
     , Option
-    , Variant(..), Size(..), Shape(..), Width(..)
+    , Variant(..), Size(..), Shape(..), Width(..), ButtonType(..)
     , variant, size, shape, width
     , disabled, toggle, selected, onClick, onChange
     , href, target, rel, download
     , selectedIcon, extraContent
+    , formType, name, value
     )
 
 {-| `<m3e-icon-button>` — a one-tap icon action (Material 3 Icon buttons).
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { icon : String, name : String }
-    (`name` → `aria-label`; icon-only so no visible-text fallback)
+  - Required: { icon : String, ariaLabel : String }
+    (`ariaLabel` → `aria-label`; icon-only so no visible-text fallback)
   - Options: variant, size, shape, width, disabled, toggle, onClick, selected,
-    href, target, rel, download, onChange, selectedIcon
+    href, target, rel, download, onChange, selectedIcon, formType, name, value
   - Slots: icon (default, the <m3e-icon> child); selected → single icon
   - Properties: selected, disabled, toggle (DOM properties — introspectable)
   - Attrs: variant, size, shape, width via rawAttr; href/target/rel/download
-    via Node.attribute (introspectable string attrs)
+    via Node.attribute (introspectable string attrs);
+    name/value/type via Node.attribute (introspectable; form participation)
   - Events: click (onClick), change (onChange for toggle state)
   - Escape: none (leaf)
   - Tag: iconButton
 
+Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
+(attr, `FormSubmitterType`, default `"button"`).
+
 @docs view
 @docs Option
-@docs Variant, Size, Shape, Width
+@docs Variant, Size, Shape, Width, ButtonType
 @docs variant, size, shape, width
 @docs disabled, toggle, selected, onClick, onChange
 @docs href, target, rel, download
 @docs selectedIcon, extraContent
+@docs formType, name, value
 
 -}
 
@@ -79,6 +85,16 @@ type Width
     = Narrow
     | Default
     | Wide
+
+
+{-| Form submission type for an icon button acting as a form submitter.
+Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
+default `"button"`.
+-}
+type ButtonType
+    = Submit
+    | Reset
+    | Button
 
 
 
@@ -195,6 +211,30 @@ extraContent items =
     Internal.option (\c -> { c | extraContent = c.extraContent ++ List.map Element.toNode items })
 
 
+{-| Set the form submission type. Only meaningful when the button is inside a
+`<form>` without `href`. Upstream: `FormSubmitter` mixin → `type` attribute.
+-}
+formType : ButtonType -> Option msg
+formType v =
+    Internal.option (\c -> { c | formType = Just v })
+
+
+{-| Set the form field name (the `name` attribute on `<m3e-icon-button>`).
+Upstream: `FormSubmitter` mixin → `name` attribute.
+-}
+name : String -> Option msg
+name v =
+    Internal.option (\c -> { c | name = Just v })
+
+
+{-| Set the submitted value (the `value` attribute on `<m3e-icon-button>`).
+Upstream: `FormSubmitter` mixin → `value` attribute.
+-}
+value : String -> Option msg
+value v =
+    Internal.option (\c -> { c | value = Just v })
+
+
 
 -- CONFIG -----------------------------------------------------------------
 
@@ -222,6 +262,9 @@ type alias Config msg =
     , onChange : Maybe (Bool -> msg)
     , selectedIcon : Maybe (Element { icon : Supported } msg)
     , extraContent : List (Node msg)
+    , formType : Maybe ButtonType
+    , name : Maybe String
+    , value : Maybe String
     }
 
 
@@ -242,6 +285,9 @@ defaults =
     , onChange = Nothing
     , selectedIcon = Nothing
     , extraContent = []
+    , formType = Nothing
+    , name = Nothing
+    , value = Nothing
     }
 
 
@@ -250,16 +296,16 @@ defaults =
 
 
 {-| Render an `<m3e-icon-button>`. `icon` is the Material Symbols glyph name and
-`name` becomes the `aria-label` (the button is icon-only, so it has no visible
+`ariaLabel` becomes the `aria-label` (the button is icon-only, so it has no visible
 text fallback).
 
-    M3e.IconButton.view { icon = "settings", name = "Settings" }
+    M3e.IconButton.view { icon = "settings", ariaLabel = "Settings" }
         [ M3e.IconButton.variant M3e.IconButton.Filled
         , M3e.IconButton.onClick OpenSettings
         ]
 
 -}
-view : { icon : String, name : String } -> List (Option msg) -> Element { s | iconButton : Supported } msg
+view : { icon : String, ariaLabel : String } -> List (Option msg) -> Element { s | iconButton : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -269,7 +315,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-icon-button"
             (List.filterMap identity
-                [ Just (Node.attribute "aria-label" req.name)
+                [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
                 , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
@@ -282,6 +328,9 @@ view req opts =
                 , Maybe.map (Node.attribute "target") c.target
                 , Maybe.map (Node.attribute "rel") c.rel
                 , Maybe.map (Node.attribute "download") c.download
+                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) c.formType
+                , Maybe.map (\v -> Node.attribute "name" v) c.name
+                , Maybe.map (\v -> Node.attribute "value" v) c.value
                 , Maybe.map
                     (\f ->
                         Node.on "change"
@@ -299,6 +348,19 @@ view req opts =
                 ++ c.extraContent
             )
         )
+
+
+toTypeString : ButtonType -> String
+toTypeString t =
+    case t of
+        Submit ->
+            "submit"
+
+        Reset ->
+            "reset"
+
+        Button ->
+            "button"
 
 
 

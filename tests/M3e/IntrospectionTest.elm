@@ -23,14 +23,14 @@ suite =
     describe "Ux IR — introspection, the view-style model, and the escapes"
         [ test "a DOM property is visible as data — Test.Html cannot do this" <|
             \_ ->
-                IconButton.view { icon = "delete", name = "Delete" } [ IconButton.selected True ]
+                IconButton.view { icon = "delete", ariaLabel = "Delete" } [ IconButton.selected True ]
                     |> Element.toNode
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
         , test "required a11y name lands as aria-label" <|
             \_ ->
-                IconButton.view { icon = "delete", name = "Delete items" } []
+                IconButton.view { icon = "delete", ariaLabel = "Delete items" } []
                     |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Delete items")
@@ -39,7 +39,7 @@ suite =
                 AppBar.view
                     [ AppBar.trailing
                         [ Search.view { placeholder = "Search" } [ Search.onInput identity ]
-                        , IconButton.view { icon = "more_vert", name = "More" } [ IconButton.onClick "x" ]
+                        , IconButton.view { icon = "more_vert", ariaLabel = "More" } [ IconButton.onClick "x" ]
                         ]
                     ]
                     |> Element.toNode

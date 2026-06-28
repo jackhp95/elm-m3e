@@ -1,6 +1,7 @@
 module M3e.Card exposing
-    ( Option, Variant(..)
+    ( Option, Variant(..), ButtonType(..)
     , variant, actionable, inline, media, headline, subhead, body, actions, footer
+    , formType, name, value
     , view
     )
 
@@ -29,12 +30,13 @@ working: with only `body` set, the card's children are exactly the body items.
 
 # Type
 
-@docs Option, Variant
+@docs Option, Variant, ButtonType
 
 
 # Options
 
 @docs variant, actionable, inline, media, headline, subhead, body, actions, footer
+@docs formType, name, value
 
 @docs view
 
@@ -59,6 +61,17 @@ type Variant
     | Outlined
 
 
+{-| Form submission type for a card acting as a form submitter.
+Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
+default `"button"`. Only relevant when using the card as an interactive button
+in a form context (i.e. when `actionable = True`).
+-}
+type ButtonType
+    = Submit
+    | Reset
+    | Button
+
+
 type alias Config msg =
     { variant : Maybe Variant
     , actionable : Bool
@@ -69,6 +82,9 @@ type alias Config msg =
     , actions : List (Node msg)
     , footer : Maybe (Node msg)
     , body : List (Node msg)
+    , formType : Maybe ButtonType
+    , name : Maybe String
+    , value : Maybe String
     }
 
 
@@ -89,6 +105,9 @@ defaultConfig =
     , actions = []
     , footer = Nothing
     , body = []
+    , formType = Nothing
+    , name = Nothing
+    , value = Nothing
     }
 
 
@@ -161,6 +180,30 @@ footer item =
     Internal.option (\c -> { c | footer = Just (Element.toNode item) })
 
 
+{-| Set the form submission type. Only meaningful when the card is actionable
+and inside a `<form>`. Upstream: `FormSubmitter` mixin → `type` attribute.
+-}
+formType : ButtonType -> Option msg
+formType v =
+    Internal.option (\c -> { c | formType = Just v })
+
+
+{-| Set the form field name (the `name` attribute on `<m3e-card>`).
+Upstream: `FormSubmitter` mixin → `name` attribute.
+-}
+name : String -> Option msg
+name v =
+    Internal.option (\c -> { c | name = Just v })
+
+
+{-| Set the submitted value (the `value` attribute on `<m3e-card>`).
+Upstream: `FormSubmitter` mixin → `value` attribute.
+-}
+value : String -> Option msg
+value v =
+    Internal.option (\c -> { c | value = Just v })
+
+
 
 -- VIEW ------------------------------------------------------------------
 
@@ -180,6 +223,9 @@ view opts =
                 [ Maybe.map (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v))) cfg.variant
                 , Just (Node.property "actionable" (Encode.bool cfg.actionable))
                 , Just (Node.property "inline" (Encode.bool cfg.inline))
+                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) cfg.formType
+                , Maybe.map (\v -> Node.attribute "name" v) cfg.name
+                , Maybe.map (\v -> Node.attribute "value" v) cfg.value
                 ]
             )
             (List.filterMap identity
@@ -229,6 +275,19 @@ footerSection maybeFooter =
     Maybe.map
         (\f -> Node.element "div" [ Node.attribute "slot" "footer" ] [ f ])
         maybeFooter
+
+
+toTypeString : ButtonType -> String
+toTypeString t =
+    case t of
+        Submit ->
+            "submit"
+
+        Reset ->
+            "reset"
+
+        Button ->
+            "button"
 
 
 {-| Map the local variant to the generated `Cem.M3e.Card` enum, whose

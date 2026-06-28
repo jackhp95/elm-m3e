@@ -118,7 +118,7 @@ hero =
             , Button.view { label = "Browse the API reference", variant = Button.Outlined } [ Button.href "/reference" ] |> Element.toNode
             ]
         , Layout.div "flex items-center gap-3 pt-4"
-            [ Avatar.view { alt = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode
+            [ Avatar.view { ariaLabel = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode
             , Node.raw
                 (div [ class "flex gap-3" ]
                     [ div [ class "block w-10 h-10 bg-primary rounded-md-corner-large" ] []

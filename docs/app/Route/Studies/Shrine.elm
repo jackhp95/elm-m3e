@@ -600,7 +600,7 @@ viewAppBar model =
             Element.element { tag = "div" }
                 [ Node.attribute "class" "relative" ]
                 (Element.toNode
-                    (IconButton.view { icon = "shopping_bag", name = "Open bag" }
+                    (IconButton.view { icon = "shopping_bag", ariaLabel = "Open bag" }
                         [ IconButton.onClick CartOpened ]
                     )
                     :: (if count > 0 then
@@ -615,11 +615,11 @@ viewAppBar model =
         [ AppBar.id "shrine-appbar"
         , AppBar.size AppBar.Small
         , AppBar.leading
-            (IconButton.view { icon = "menu", name = "Menu" } [])
+            (IconButton.view { icon = "menu", ariaLabel = "Menu" } [])
         , AppBar.title
             (Heading.view { label = "Shrine", variant = Heading.Title } [])
         , AppBar.trailing
-            [ IconButton.view { icon = "search", name = "Search" } []
+            [ IconButton.view { icon = "search", ariaLabel = "Search" } []
             , cartElem
             ]
         ]
@@ -832,7 +832,7 @@ viewProductCard model product =
         favoriteButton =
             IconButton.view
                 { icon = "favorite"
-                , name = "Favorite " ++ product.name
+                , ariaLabel = "Favorite " ++ product.name
                 }
                 [ IconButton.toggle True
                 , IconButton.selected (List.member product.id model.favorites)
@@ -1002,18 +1002,18 @@ viewCartRow ( product, qty ) =
                 ]
             )
         , Layout.div "flex items-center gap-1"
-            [ IconButton.view { icon = "remove", name = "Decrease quantity" }
+            [ IconButton.view { icon = "remove", ariaLabel = "Decrease quantity" }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty - 1))
                 ]
                 |> Element.toNode
             , Node.raw (span [ class "w-6 text-center text-body-lg text-on-surface" ] [ text (String.fromInt qty) ])
-            , IconButton.view { icon = "add", name = "Increase quantity" }
+            , IconButton.view { icon = "add", ariaLabel = "Increase quantity" }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty + 1))
                 ]
                 |> Element.toNode
-            , IconButton.view { icon = "delete", name = "Remove " ++ product.name }
+            , IconButton.view { icon = "delete", ariaLabel = "Remove " ++ product.name }
                 [ IconButton.size IconButton.ExtraSmall
                 , IconButton.onClick (ItemRemoved product.id)
                 ]

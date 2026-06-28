@@ -10,14 +10,14 @@ import Test exposing (Test, describe, test)
 
 
 node : String -> String -> List (IB.Option msg) -> Node msg
-node icon name opts =
-    IB.view { icon = icon, name = name } opts |> Element.toNode
+node icon ariaLabel opts =
+    IB.view { icon = icon, ariaLabel = ariaLabel } opts |> Element.toNode
 
 
 suite : Test
 suite =
     describe "M3e.IconButton — expanded surface"
-        [ test "required a11y name lands as aria-label" <|
+        [ test "required ariaLabel lands as aria-label attribute" <|
             \_ ->
                 node "delete" "Delete" []
                     |> Node.findAttribute "aria-label"
@@ -59,4 +59,29 @@ suite =
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "selected")
                     |> List.length
                     |> Expect.equal 1
+        , test "name option emits name attribute (FormSubmitter)" <|
+            \_ ->
+                node "close" "Close" [ IB.name "action" ]
+                    |> Node.findAttribute "name"
+                    |> Expect.equal (Just "action")
+        , test "value option emits value attribute (FormSubmitter)" <|
+            \_ ->
+                node "close" "Close" [ IB.value "close" ]
+                    |> Node.findAttribute "value"
+                    |> Expect.equal (Just "close")
+        , test "formType Submit emits type=submit (FormSubmitter)" <|
+            \_ ->
+                node "close" "Close" [ IB.formType IB.Submit ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "submit")
+        , test "formType Button emits type=button (FormSubmitter)" <|
+            \_ ->
+                node "close" "Close" [ IB.formType IB.Button ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "button")
+        , test "no formType — no type attribute emitted by default" <|
+            \_ ->
+                node "close" "Close" []
+                    |> Node.findAttribute "type"
+                    |> Expect.equal Nothing
         ]

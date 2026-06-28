@@ -475,7 +475,7 @@ accountPanel : Model -> Node Msg
 accountPanel model =
     Layout.col
         [ Layout.section "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4"
-            [ Avatar.view { alt = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> Element.toNode
+            [ Avatar.view { ariaLabel = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> Element.toNode
             , Node.raw (div [ class "flex min-w-0 flex-col" ]
                 [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
                 , Html.span [ class "text-body-md text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
@@ -487,7 +487,7 @@ accountPanel model =
             "Security"
             [ controlRow "Two-factor authentication"
                 (Just "Require a verification code on every sign-in.")
-                (Switch.view { name = "Two-factor authentication" }
+                (Switch.view { ariaLabel = "Two-factor authentication" }
                     [ Switch.checked model.twoFactor
                     , Switch.onChange TwoFactorToggled
                     , Switch.icons Switch.Both
@@ -518,7 +518,7 @@ notificationsPanel model =
 
 channelSwitch : String -> Bool -> (Bool -> Msg) -> Node Msg
 channelSwitch label checked onChange_ =
-    Switch.view { name = label }
+    Switch.view { ariaLabel = label }
         [ Switch.checked checked
         , Switch.onChange onChange_
         ]
@@ -585,7 +585,7 @@ appearancePanel model =
             , Divider.view [ Divider.inset True ] |> Element.toNode
             , controlRow "Reduce motion"
                 (Just "Minimize non-essential animations.")
-                (Switch.view { name = "Reduce motion" }
+                (Switch.view { ariaLabel = "Reduce motion" }
                     [ Switch.checked model.reduceMotion
                     , Switch.onChange ReduceMotionToggled
                     ]
@@ -664,7 +664,7 @@ privacyPanel model =
                 (Just "Share anonymized usage data to help improve the product.")
                 (Layout.div "flex items-center gap-2"
                     [ infoIcon "telemetry-info" "We never sell your data."
-                    , Switch.view { name = "Usage analytics" }
+                    , Switch.view { ariaLabel = "Usage analytics" }
                         [ Switch.checked model.telemetry
                         , Switch.onChange TelemetryToggled
                         ]
@@ -674,7 +674,7 @@ privacyPanel model =
             , Divider.view [ Divider.inset True ] |> Element.toNode
             , controlRow "Personalized ads"
                 (Just "Use your activity to tailor advertising.")
-                (Switch.view { name = "Personalized ads" }
+                (Switch.view { ariaLabel = "Personalized ads" }
                     [ Switch.checked model.personalizedAds
                     , Switch.onChange PersonalizedAdsToggled
                     ]
@@ -802,7 +802,7 @@ developerPanel model =
                 , content =
                     [ Element.fromNode (controlRow "Developer mode"
                         (Just "Show experimental flags and verbose logging.")
-                        (Switch.view { name = "Developer mode" }
+                        (Switch.view { ariaLabel = "Developer mode" }
                             [ Switch.checked model.developerMode
                             , Switch.onChange DeveloperModeToggled
                             ]

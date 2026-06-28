@@ -2,6 +2,7 @@ module M3e.SplitPane exposing
     ( view
     , Option, Orientation(..)
     , orientation, disabled, label
+    , name, value
     )
 
 {-| `<m3e-split-pane>` — a resizable two-pane layout with a movable drag
@@ -29,6 +30,7 @@ mirroring Ui.SplitPane) and assigned the appropriate slot name.
 @docs view
 @docs Option, Orientation
 @docs orientation, disabled, label
+@docs name, value
 
 -}
 
@@ -79,10 +81,30 @@ label l =
     Internal.option (\c -> { c | label = Just l })
 
 
+{-| Set the form field name (the `name` attribute on `<m3e-split-pane>`).
+This identifies the split pane when its containing form is submitted.
+Upstream: `FormAssociated` mixin → `name` attribute.
+-}
+name : String -> Option msg
+name v =
+    Internal.option (\c -> { c | name = Just v })
+
+
+{-| Set the initial split position as a percentage (0–100). This is the
+`value` attribute on `<m3e-split-pane>`; upstream default is `50`.
+Upstream: `FormAssociated` mixin → `value` attribute (number, default `50`).
+-}
+value : Float -> Option msg
+value v =
+    Internal.option (\c -> { c | value = Just v })
+
+
 type alias Config =
     { orientation : Orientation
     , disabled : Bool
     , label : Maybe String
+    , name : Maybe String
+    , value : Maybe Float
     }
 
 
@@ -101,7 +123,12 @@ view req opts =
         c : Config
         c =
             Internal.applyOptions opts
-                { orientation = Horizontal, disabled = False, label = Nothing }
+                { orientation = Horizontal
+                , disabled = False
+                , label = Nothing
+                , name = Nothing
+                , value = Nothing
+                }
     in
     Internal.fromNode
         (Node.element "m3e-split-pane"
@@ -109,6 +136,8 @@ view req opts =
                 [ Just (Node.rawAttr (Cem.orientation (toCemOrientation c.orientation)))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (\l -> Node.attribute "label" l) c.label
+                , Maybe.map (\v -> Node.attribute "name" v) c.name
+                , Maybe.map (\v -> Node.attribute "value" (String.fromFloat v)) c.value
                 ]
             )
             [ Node.withSlot "start"

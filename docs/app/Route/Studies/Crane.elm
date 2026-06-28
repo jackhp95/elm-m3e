@@ -520,7 +520,7 @@ destinationField model =
                 ]
                 []
             , if model.query /= "" then
-                IconButton.view { icon = "close", name = "Clear search" }
+                IconButton.view { icon = "close", ariaLabel = "Clear search" }
                     [ IconButton.size IconButton.ExtraSmall
                     , IconButton.onClick (SetQuery "")
                     ]
@@ -818,7 +818,7 @@ favoriteButton d favorited =
         [ Node.element "span" [ Node.rawAttr (attribute "id" anchorId) ]
             [ IconButton.view
                 { icon = "favorite_border"
-                , name =
+                , ariaLabel =
                     if favorited then
                         "Remove " ++ d.name ++ " from favorites"
 

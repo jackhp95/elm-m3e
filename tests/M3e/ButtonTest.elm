@@ -35,6 +35,36 @@ suite =
                     |> List.head
                     |> Maybe.map (\n -> ( Node.tagOf n, Node.findAttribute "slot" n ))
                     |> Expect.equal (Just ( Just "m3e-icon", Just "icon" ))
+        , test "name option emits name attribute (FormSubmitter)" <|
+            \_ ->
+                node "Save" [ Button.name "action" ]
+                    |> Node.findAttribute "name"
+                    |> Expect.equal (Just "action")
+        , test "value option emits value attribute (FormSubmitter)" <|
+            \_ ->
+                node "Save" [ Button.value "save" ]
+                    |> Node.findAttribute "value"
+                    |> Expect.equal (Just "save")
+        , test "formType Submit emits type=submit (FormSubmitter)" <|
+            \_ ->
+                node "Submit" [ Button.formType Button.Submit ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "submit")
+        , test "formType Reset emits type=reset (FormSubmitter)" <|
+            \_ ->
+                node "Reset" [ Button.formType Button.Reset ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "reset")
+        , test "formType Button emits type=button (FormSubmitter)" <|
+            \_ ->
+                node "Button" [ Button.formType Button.Button ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "button")
+        , test "no formType — no type attribute emitted by default" <|
+            \_ ->
+                node "Save" []
+                    |> Node.findAttribute "type"
+                    |> Expect.equal Nothing
         ]
 
 

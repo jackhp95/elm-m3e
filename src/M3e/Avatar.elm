@@ -8,19 +8,25 @@ module M3e.Avatar exposing
 
 Spec (per docs/CONVENTIONS.md):
 
-  - Required: { alt : String } (→ aria-label on m3e-avatar; also → img[alt]
-    for the image variant)
+  - Required: { ariaLabel : String } (→ aria-label on m3e-avatar; also →
+    img[alt] for the image variant — upstream m3e-avatar has no attributes
+    of its own, so `ariaLabel` is the single string that serves both roles)
   - Options: image (src String), initials (text String),
     iconChild (icon Element)
   - Slots: default (the content child — img, text, or icon)
   - Properties: none (CEM Avatar has no attributes)
-  - Attrs: aria-label (from required `alt`)
+  - Attrs: aria-label (from required `ariaLabel`)
   - Escape: none (leaf)
   - Tag: avatar
 
 `Cem.M3e.Avatar` renders only its children (no fallback glyph), so content is
 supplied by exactly one of `image` / `initials` / `iconChild` (last-write-wins).
 An avatar with no content option renders an empty circle.
+
+**Note on naming:** the upstream `m3e-avatar` element declares no `alt` or
+`aria-label` attribute in its CEM — it relies on the host setting `aria-label`.
+The old `alt` field was renamed to `ariaLabel` to make the intent unambiguous;
+the same string still flows to the `<img alt>` attribute in the image variant.
 
 
 # Types
@@ -84,10 +90,10 @@ iconChild icon =
 -- VIEW -------------------------------------------------------------------
 
 
-{-| Render the avatar. The required `alt` becomes the `aria-label` (and the
-`<img>` `alt` for the image variant).
+{-| Render the avatar. The required `ariaLabel` becomes the `aria-label`
+attribute on the host element (and the `<img alt>` for the image variant).
 -}
-view : { alt : String } -> List (Option msg) -> Element { s | avatar : Supported } msg
+view : { ariaLabel : String } -> List (Option msg) -> Element { s | avatar : Supported } msg
 view req opts =
     let
         content : Content msg
@@ -100,7 +106,7 @@ view req opts =
                 ImgContent src ->
                     [ Node.element "img"
                         [ Node.attribute "src" src
-                        , Node.attribute "alt" req.alt
+                        , Node.attribute "alt" req.ariaLabel
                         ]
                         []
                     ]
@@ -116,6 +122,6 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-avatar"
-            [ Node.attribute "aria-label" req.alt ]
+            [ Node.attribute "aria-label" req.ariaLabel ]
             children
         )

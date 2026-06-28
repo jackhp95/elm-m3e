@@ -10,7 +10,7 @@ import Test exposing (Test, describe, test)
 
 node : List (Switch.Option msg) -> Node msg
 node opts =
-    Switch.view { name = "Dark mode" } opts |> Element.toNode
+    Switch.view { ariaLabel = "Dark mode" } opts |> Element.toNode
 
 
 suite : Test
@@ -21,9 +21,9 @@ suite =
                 node []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-switch")
-        , test "aria-label equals the required name field" <|
+        , test "ariaLabel field is emitted as aria-label" <|
             \_ ->
-                Switch.view { name = "Email notifications" } []
+                Switch.view { ariaLabel = "Email notifications" } []
                     |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Email notifications")
@@ -98,6 +98,21 @@ suite =
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 0
+        , test "name option emits name attribute (FormAssociated)" <|
+            \_ ->
+                node [ Switch.name "notifications" ]
+                    |> Node.findAttribute "name"
+                    |> Expect.equal (Just "notifications")
+        , test "value option emits value attribute (FormAssociated, default on)" <|
+            \_ ->
+                node [ Switch.value "enabled" ]
+                    |> Node.findAttribute "value"
+                    |> Expect.equal (Just "enabled")
+        , test "no name option — no name attribute emitted" <|
+            \_ ->
+                node []
+                    |> Node.findAttribute "name"
+                    |> Expect.equal Nothing
         ]
 
 

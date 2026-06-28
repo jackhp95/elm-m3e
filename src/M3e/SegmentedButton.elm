@@ -1,7 +1,7 @@
 module M3e.SegmentedButton exposing
     ( ParentOption, SegmentOption
     , view, segment
-    , disabled, multi
+    , disabled, multi, name
     , segmentDisabled, segmentOnClick, segmentValue
     )
 
@@ -22,7 +22,7 @@ Spec (per docs/CONVENTIONS.md):
 
 @docs ParentOption, SegmentOption
 @docs view, segment
-@docs disabled, multi
+@docs disabled, multi, name
 @docs segmentDisabled, segmentOnClick, segmentValue
 
 -}
@@ -133,6 +133,7 @@ below.
 type ParentOption msg
     = Disabled Bool
     | Multi Bool
+    | Name String
 
 
 {-| Disable the whole segmented button group.
@@ -149,9 +150,19 @@ multi =
     Multi
 
 
+{-| Set the form field name (the `name` attribute on `<m3e-segmented-button>`).
+This identifies the segmented button when its containing form is submitted.
+Upstream: `FormAssociated` mixin → `name` attribute.
+-}
+name : String -> ParentOption msg
+name =
+    Name
+
+
 type alias ParentConfig =
     { disabled : Bool
     , multi : Bool
+    , name : Maybe String
     }
 
 
@@ -163,6 +174,9 @@ applyParent opt c =
 
         Multi b ->
             { c | multi = b }
+
+        Name v ->
+            { c | name = Just v }
 
 
 {-| Render a segmented button group from a list of `segment` children.
@@ -176,13 +190,16 @@ view req opts =
         c : ParentConfig
         c =
             List.foldl applyParent
-                { disabled = False, multi = False }
+                { disabled = False, multi = False, name = Nothing }
                 opts
     in
     Internal.fromNode
         (Node.element "m3e-segmented-button"
-            [ Node.property "disabled" (Encode.bool c.disabled)
-            , Node.property "multi" (Encode.bool c.multi)
-            ]
+            (List.filterMap identity
+                [ Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "multi" (Encode.bool c.multi))
+                , Maybe.map (\v -> Node.attribute "name" v) c.name
+                ]
+            )
             (List.map Element.toNode req.segments)
         )

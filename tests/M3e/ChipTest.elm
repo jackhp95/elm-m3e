@@ -125,7 +125,7 @@ suite =
         , test "avatarChild on input chip is slotted into slot=avatar" <|
             \_ ->
                 Chip.input { label = "Jack", onRemove = () }
-                    [ Chip.avatarChild (Avatar.view { alt = "Jack" } []) ]
+                    [ Chip.avatarChild (Avatar.view { ariaLabel = "Jack" } []) ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "avatar")

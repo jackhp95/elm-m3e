@@ -17,7 +17,7 @@ suite =
             \_ ->
                 AppBar.view
                     [ AppBar.trailing
-                        [ IB.view { icon = "more_vert", name = "More" } [] ]
+                        [ IB.view { icon = "more_vert", ariaLabel = "More" } [] ]
                     ]
                     |> Element.toNode
                     |> Node.childrenOf
@@ -27,7 +27,7 @@ suite =
         , test "leading injects slot=leading" <|
             \_ ->
                 AppBar.view
-                    [ AppBar.leading (IB.view { icon = "menu", name = "Menu" } []) ]
+                    [ AppBar.leading (IB.view { icon = "menu", ariaLabel = "Menu" } []) ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head

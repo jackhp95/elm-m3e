@@ -13,19 +13,19 @@ suite =
     describe "M3e.Avatar — expanded surface"
         [ test "renders m3e-avatar at root" <|
             \_ ->
-                Avatar.view { alt = "Jack" } []
+                Avatar.view { ariaLabel = "Jack" } []
                     |> Element.toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-avatar")
-        , test "alt is emitted as aria-label" <|
+        , test "ariaLabel is emitted as aria-label" <|
             \_ ->
-                Avatar.view { alt = "Jack Peterson" } []
+                Avatar.view { ariaLabel = "Jack Peterson" } []
                     |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Jack Peterson")
         , test "image option renders an img child" <|
             \_ ->
-                Avatar.view { alt = "Jack" } [ Avatar.image "/photo.jpg" ]
+                Avatar.view { ariaLabel = "Jack" } [ Avatar.image "/photo.jpg" ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
@@ -33,15 +33,15 @@ suite =
                     |> Expect.equal (Just "img")
         , test "image child carries src attribute" <|
             \_ ->
-                Avatar.view { alt = "Jack" } [ Avatar.image "/photo.jpg" ]
+                Avatar.view { ariaLabel = "Jack" } [ Avatar.image "/photo.jpg" ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "src")
                     |> Expect.equal (Just "/photo.jpg")
-        , test "image child carries alt attribute from required field" <|
+        , test "image child carries alt attribute from ariaLabel field" <|
             \_ ->
-                Avatar.view { alt = "Jack Peterson" } [ Avatar.image "/photo.jpg" ]
+                Avatar.view { ariaLabel = "Jack Peterson" } [ Avatar.image "/photo.jpg" ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
@@ -49,7 +49,7 @@ suite =
                     |> Expect.equal (Just "Jack Peterson")
         , test "initials option renders a text child" <|
             \_ ->
-                Avatar.view { alt = "Jack" } [ Avatar.initials "JP" ]
+                Avatar.view { ariaLabel = "Jack" } [ Avatar.initials "JP" ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head
@@ -64,7 +64,7 @@ suite =
                     |> Expect.equal (Just "JP")
         , test "iconChild option renders an m3e-icon child" <|
             \_ ->
-                Avatar.view { alt = "Generic" } [ Avatar.iconChild (Icon.view { name = "person" }) ]
+                Avatar.view { ariaLabel = "Generic" } [ Avatar.iconChild (Icon.view { name = "person" }) ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head

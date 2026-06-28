@@ -64,8 +64,8 @@ suite =
             \_ ->
                 ButtonGroup.view
                     { buttons =
-                        [ IconButton.view { icon = "format_bold", name = "Bold" } []
-                        , IconButton.view { icon = "format_italic", name = "Italic" } []
+                        [ IconButton.view { icon = "format_bold", ariaLabel = "Bold" } []
+                        , IconButton.view { icon = "format_italic", ariaLabel = "Italic" } []
                         ]
                     }
                     []

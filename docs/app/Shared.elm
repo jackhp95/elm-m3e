@@ -399,7 +399,7 @@ menuButton _ =
         [ Node.rawAttr (class "md:hidden") ]
         [ Element.toNode
             (M3e.IconButton.view
-                { icon = "menu", name = "Toggle navigation" }
+                { icon = "menu", ariaLabel = "Toggle navigation" }
                 [ M3e.IconButton.onClick MenuClicked ]
             )
         ]
@@ -408,7 +408,7 @@ menuButton _ =
 githubLink : M3e.AppBar.Trailing Msg
 githubLink =
     M3e.IconButton.view
-        { icon = "code", name = "GitHub repository" }
+        { icon = "code", ariaLabel = "GitHub repository" }
         [ M3e.IconButton.href "https://github.com/jackhp95/elm-m3e"
         , M3e.IconButton.target "_blank"
         , M3e.IconButton.rel "noreferrer noopener"
@@ -429,7 +429,7 @@ schemeQuickToggle model =
                 Theme.Auto ->
                     ( Theme.Light, "light_mode", "Switch to light mode" )
     in
-    M3e.IconButton.view { icon = iconName, name = iconLabel }
+    M3e.IconButton.view { icon = iconName, ariaLabel = iconLabel }
         [ M3e.IconButton.onClick (SetScheme next) ]
 
 
@@ -447,7 +447,7 @@ settingsTriggerElement model =
         [ Node.rawAttr (class "relative") ]
         [ Element.toNode
             (M3e.IconButton.view
-                { icon = "tune", name = "Theme settings" }
+                { icon = "tune", ariaLabel = "Theme settings" }
                 [ M3e.IconButton.onClick ToggleSettings ]
             )
         , if model.settingsOpen then

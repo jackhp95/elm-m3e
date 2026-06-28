@@ -10,7 +10,7 @@ import Test exposing (Test, describe, test)
 
 node : String -> List (Fab.Option msg) -> Node msg
 node icon opts =
-    Fab.view { icon = icon, name = "Add item" } opts |> Element.toNode
+    Fab.view { icon = icon, ariaLabel = "Add item" } opts |> Element.toNode
 
 
 suite : Test
@@ -21,9 +21,9 @@ suite =
                 node "add" []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-fab")
-        , test "aria-label equals the required name field" <|
+        , test "ariaLabel field is emitted as aria-label" <|
             \_ ->
-                Fab.view { icon = "add", name = "Create note" } []
+                Fab.view { icon = "add", ariaLabel = "Create note" } []
                     |> Element.toNode
                     |> Node.findAttribute "aria-label"
                     |> Expect.equal (Just "Create note")
@@ -79,4 +79,34 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
+        , test "name option emits name attribute (FormSubmitter)" <|
+            \_ ->
+                node "add" [ Fab.name "create" ]
+                    |> Node.findAttribute "name"
+                    |> Expect.equal (Just "create")
+        , test "value option emits value attribute (FormSubmitter)" <|
+            \_ ->
+                node "add" [ Fab.value "item" ]
+                    |> Node.findAttribute "value"
+                    |> Expect.equal (Just "item")
+        , test "formType Submit emits type=submit (FormSubmitter)" <|
+            \_ ->
+                node "add" [ Fab.formType Fab.Submit ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "submit")
+        , test "formType Reset emits type=reset (FormSubmitter)" <|
+            \_ ->
+                node "add" [ Fab.formType Fab.Reset ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "reset")
+        , test "formType Button emits type=button (FormSubmitter)" <|
+            \_ ->
+                node "add" [ Fab.formType Fab.Button ]
+                    |> Node.findAttribute "type"
+                    |> Expect.equal (Just "button")
+        , test "no formType — no type attribute emitted by default" <|
+            \_ ->
+                node "add" []
+                    |> Node.findAttribute "type"
+                    |> Expect.equal Nothing
         ]

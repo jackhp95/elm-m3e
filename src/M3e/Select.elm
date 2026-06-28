@@ -2,6 +2,7 @@ module M3e.Select exposing
     ( Option, OptionOption
     , view, option, options
     , id, multi, required, disabled, onChange, onInput, onToggle, onMultiChange
+    , name
     , optionSelected, optionDisabled
     )
 
@@ -12,7 +13,7 @@ Spec (per docs/CONVENTIONS.md):
 
   - Required: `{ label : Label msg }` — visible accessible label
   - Options (container): id, multi, required, disabled, onChange, onInput,
-    onToggle, onMultiChange, options
+    onToggle, onMultiChange, options, name
   - Options (option): selected, disabled
   - Slots: `selectOption` — the `<m3e-option>` children
   - Properties: multi, required, disabled (web-component properties on m3e-select)
@@ -41,6 +42,7 @@ as an inert attribute on `<m3e-select>` — that never wired the accessible labe
 @docs Option, OptionOption
 @docs view, option, options
 @docs id, multi, required, disabled, onChange, onInput, onToggle, onMultiChange
+@docs name
 @docs optionSelected, optionDisabled
 
 -}
@@ -82,6 +84,7 @@ type alias Config msg =
     , onToggle : Maybe (Bool -> msg)
     , onMultiChange : Maybe (List String -> msg)
     , options : List (Element { selectOption : Supported } msg)
+    , name : Maybe String
     }
 
 
@@ -96,6 +99,7 @@ defaultConfig =
     , onToggle = Nothing
     , onMultiChange = Nothing
     , options = []
+    , name = Nothing
     }
 
 
@@ -196,6 +200,15 @@ options os =
     Internal.option (\c -> { c | options = os })
 
 
+{-| Set the form field name (the `name` attribute on `<m3e-select>`).
+This identifies the select when its containing form is submitted.
+Upstream: `FormAssociated` mixin → `name` attribute.
+-}
+name : String -> Option msg
+name v =
+    Internal.option (\c -> { c | name = Just v })
+
+
 
 -- ITEM CONSTRUCTOR ------------------------------------------------------------
 
@@ -273,6 +286,7 @@ view req opts =
                     , Just (Node.property "multi" (Encode.bool c.multi))
                     , Just (Node.property "required" (Encode.bool c.required))
                     , Just (Node.property "disabled" (Encode.bool c.disabled))
+                    , Maybe.map (\v -> Node.attribute "name" v) c.name
                     , Maybe.map
                         (\handler ->
                             Node.on "change"

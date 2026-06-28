@@ -570,7 +570,7 @@ refreshButton model =
         , Node.element "span" [ Node.rawAttr (Attr.id "rally-refresh-anchor") ]
             [ IconButton.view
                 { icon = "sync"
-                , name =
+                , ariaLabel =
                     if model.syncing then
                         "Stop sync"
 
@@ -975,7 +975,7 @@ adjustButton : Model -> Node Msg
 adjustButton model =
     Node.element "span" [ Node.rawAttr (Attr.id "rally-adjust-anchor") ]
         [ IconButton.view
-            { icon = "tune", name = "Adjust budgets" }
+            { icon = "tune", ariaLabel = "Adjust budgets" }
             [ IconButton.variant IconButton.Tonal
             , IconButton.onClick (BudgetAdjusted (monthLabel model.month))
             ]
