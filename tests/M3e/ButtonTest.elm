@@ -6,12 +6,13 @@ import M3e.Button as Button
 import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
 node : String -> List (Button.Option msg) -> Node msg
 node label opts =
-    Button.view { label = label, variant = Button.Filled } opts |> Element.toNode
+    Button.view { label = label, variant = Value.filled } opts |> Element.toNode
 
 
 suite : Test

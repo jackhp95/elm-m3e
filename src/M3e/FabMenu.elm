@@ -1,6 +1,6 @@
 module M3e.FabMenu exposing
     ( view, item
-    , Option, Variant(..)
+    , Option
     , variant, menuId
     )
 
@@ -37,28 +37,31 @@ constructed directly via `Node.element`.
 `Element { s | fabMenuItem : Supported }` for the `items` list.
 
 @docs view, item
-@docs Option, Variant
+@docs Option
 @docs variant, menuId
 
 -}
 
-import Cem.M3e.FabMenu as Cem
 import Json.Decode as Decode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
-{-| Appearance variant of the menu surface (default `Primary`).
+{-| Appearance variant of the menu surface (default `primary`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens (`primary`, `secondary`, `tertiary`).
 -}
-type Variant
-    = Primary
-    | Secondary
-    | Tertiary
+type alias Variants =
+    Value
+        { primary : Supported
+        , secondary : Supported
+        , tertiary : Supported
+        }
 
 
 type alias Config =
-    { variant : Variant
+    { variant : Variants
     , menuId : String
     }
 
@@ -69,9 +72,9 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the menu surface variant (default `Primary`).
+{-| Set the menu surface variant (default `primary`).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -122,7 +125,7 @@ view req opts =
         c : Config
         c =
             Internal.applyOptions opts
-                { variant = Primary, menuId = "fab-menu" }
+                { variant = Value.primary, menuId = "fab-menu" }
 
         -- The FAB trigger: m3e-fab with aria-label + icon + menu-trigger inside
         fabTrigger : Node msg
@@ -144,22 +147,9 @@ view req opts =
         fabMenu =
             Node.element "m3e-fab-menu"
                 [ Node.attribute "id" c.menuId
-                , Node.rawAttr (Cem.variant (toCemVariant c.variant))
+                , Node.attribute "variant" (Value.toString c.variant)
                 ]
                 (List.map Element.toNode req.items)
     in
     Internal.fromNode
         (Node.element "div" [] [ fabTrigger, fabMenu ])
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Primary ->
-            Cem.Primary
-
-        Secondary ->
-            Cem.Secondary
-
-        Tertiary ->
-            Cem.Tertiary

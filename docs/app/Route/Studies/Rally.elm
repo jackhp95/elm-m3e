@@ -24,7 +24,6 @@ All page interactivity is local state via `RouteBuilder.buildWithLocalState`.
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect exposing (Effect)
 import Head
@@ -37,6 +36,7 @@ import M3e.Calendar as Calendar
 import M3e.Card as Card
 import M3e.Disclosure as Disclosure
 import M3e.Divider as Divider
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.IconButton as IconButton
@@ -46,7 +46,6 @@ import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node exposing (Node)
 import M3e.Paginator as Paginator
 import M3e.Progress as Progress
-import M3e.Element as Element exposing (Element, Supported)
 import M3e.ScrollContainer as ScrollContainer
 import M3e.Search as Search
 import M3e.Select as Select
@@ -55,6 +54,7 @@ import M3e.Tabs as Tabs
 import M3e.TextHighlight as TextHighlight
 import M3e.Theme as Theme
 import M3e.Tooltip as Tooltip
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -461,7 +461,7 @@ view _ _ model =
                 ]
             }
             [ Theme.scheme Theme.Dark
-            , Theme.variant Theme.Expressive
+            , Theme.variant Value.expressive
             , Theme.seedColor "#1EB980"
             , Theme.motion Theme.MotionExpressive
             ]
@@ -523,7 +523,7 @@ rail model =
 appBar : Model -> Node Msg
 appBar model =
     AppBar.view
-        [ AppBar.title (Heading.view { label = "Rally", variant = Heading.Title } [])
+        [ AppBar.title (Heading.view { label = "Rally", variant = Value.title } [])
         , AppBar.leading
             (Element.element { tag = "span" }
                 [ Node.rawAttr (Attr.class "px-2 text-primary") ]
@@ -561,14 +561,16 @@ refreshButton : Model -> Node Msg
 refreshButton model =
     Layout.div "flex items-center gap-1 pr-1"
         [ if model.syncing then
-            Node.element "span" [ Node.rawAttr (class "text-primary"), Node.rawAttr (Attr.attribute "aria-label" "Syncing") ]
-                [ LoadingIndicator.view [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
+            Node.element "span"
+                [ Node.rawAttr (class "text-primary"), Node.rawAttr (Attr.attribute "aria-label" "Syncing") ]
+                [ LoadingIndicator.view [ LoadingIndicator.variant Value.uncontained ]
                     |> Element.toNode
                 ]
 
           else
             Node.text ""
-        , Node.element "span" [ Node.rawAttr (Attr.id "rally-refresh-anchor") ]
+        , Node.element "span"
+            [ Node.rawAttr (Attr.id "rally-refresh-anchor") ]
             [ IconButton.view
                 { icon = "sync"
                 , ariaLabel =
@@ -690,8 +692,10 @@ transactionsSection model =
                 ]
             ]
         , if List.isEmpty matches then
-            Node.raw (div [ class "rounded-md-corner-medium bg-surface-container px-4 py-8 text-center text-body-md text-on-surface-variant" ]
-                [ text ("No transactions match \"" ++ model.query ++ "\".") ])
+            Node.raw
+                (div [ class "rounded-md-corner-medium bg-surface-container px-4 py-8 text-center text-body-md text-on-surface-variant" ]
+                    [ text ("No transactions match \"" ++ model.query ++ "\".") ]
+                )
 
           else
             Layout.div "space-y-3"
@@ -727,19 +731,23 @@ transactionRow query txn =
                     [ TextHighlight.term query ]
                     |> Element.toNode
                 ]
-            , Node.raw (span [ class "block text-body-sm text-on-surface-variant" ]
-                [ text (txn.dateLabel ++ " · " ++ txn.category) ])
-            ]
-        , Node.raw (span
-            [ class
-                (if txn.cents >= 0 then
-                    "shrink-0 tabular-nums text-tertiary"
-
-                 else
-                    "shrink-0 tabular-nums text-on-surface"
+            , Node.raw
+                (span [ class "block text-body-sm text-on-surface-variant" ]
+                    [ text (txn.dateLabel ++ " · " ++ txn.category) ]
                 )
             ]
-            [ text (formatMoney txn.cents) ])
+        , Node.raw
+            (span
+                [ class
+                    (if txn.cents >= 0 then
+                        "shrink-0 tabular-nums text-tertiary"
+
+                     else
+                        "shrink-0 tabular-nums text-on-surface"
+                    )
+                ]
+                [ text (formatMoney txn.cents) ]
+            )
         ]
 
 
@@ -854,12 +862,12 @@ overviewCard =
             totalBudget budgetCategories
     in
     Card.view
-        [ Card.variant Card.Filled
-        , Card.headline (Heading.view { label = "March overview", variant = Heading.Title } [])
+        [ Card.variant Value.filled
+        , Card.headline (Heading.view { label = "March overview", variant = Value.title } [])
         , Card.subhead
             (Heading.view
                 { label = formatMoney spent ++ " of " ++ formatMoney budget ++ " spent"
-                , variant = Heading.Label
+                , variant = Value.label
                 }
                 []
             )
@@ -867,18 +875,25 @@ overviewCard =
             [ Element.fromNode
                 (Layout.div "flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6"
                     [ Layout.div "relative grid place-items-center self-center sm:self-auto"
-                        [ Node.element "span" [ Node.rawAttr (Attr.style "--m3e-progress-indicator-color" "var(--md-sys-color-primary)") ]
+                        [ Node.element "span"
+                            [ Node.rawAttr (Attr.style "--m3e-progress-indicator-color" "var(--md-sys-color-primary)") ]
                             [ Progress.view { shape = Progress.Circular } [ Progress.value percent ]
                                 |> Element.toNode
                             ]
-                        , Node.raw (span [ class "absolute text-title-lg font-medium tabular-nums" ]
-                            [ text (String.fromInt percent ++ "%") ])
+                        , Node.raw
+                            (span [ class "absolute text-title-lg font-medium tabular-nums" ]
+                                [ text (String.fromInt percent ++ "%") ]
+                            )
                         ]
                     , Layout.div "min-w-0 flex-1 space-y-1"
-                        [ Node.raw (span [ class "block text-body-md text-on-surface-variant" ]
-                            [ text "Remaining this month" ])
-                        , Node.raw (span [ class "block text-headline-sm font-medium tabular-nums" ]
-                            [ text (formatMoney (budget - spent)) ])
+                        [ Node.raw
+                            (span [ class "block text-body-md text-on-surface-variant" ]
+                                [ text "Remaining this month" ]
+                            )
+                        , Node.raw
+                            (span [ class "block text-headline-sm font-medium tabular-nums" ]
+                                [ text (formatMoney (budget - spent)) ]
+                            )
                         ]
                     ]
                 )
@@ -897,12 +912,12 @@ budgetCard category =
             isOverBudget category
     in
     Card.view
-        [ Card.variant Card.Outlined
-        , Card.headline (Heading.view { label = category.label, variant = Heading.Title } [])
+        [ Card.variant Value.outlined
+        , Card.headline (Heading.view { label = category.label, variant = Value.title } [])
         , Card.subhead
             (Heading.view
                 { label = formatMoney category.spentCents ++ " of " ++ formatMoney category.budgetCents
-                , variant = Heading.Label
+                , variant = Value.label
                 }
                 []
             )
@@ -911,25 +926,31 @@ budgetCard category =
                 (Layout.div "space-y-2"
                     [ Layout.div "flex items-center gap-2"
                         [ Icon.view { name = category.icon } [] |> Element.toNode
-                        , Node.raw (span [ class "ml-auto text-label-lg tabular-nums" ]
-                            [ text (String.fromInt percent ++ "%") ])
+                        , Node.raw
+                            (span [ class "ml-auto text-label-lg tabular-nums" ]
+                                [ text (String.fromInt percent ++ "%") ]
+                            )
                         ]
                     , Node.element "span"
                         [ Node.rawAttr (class "block")
-                        , Node.rawAttr (Attr.style "--m3e-progress-indicator-color"
-                            (if over then
-                                "var(--md-sys-color-error)"
+                        , Node.rawAttr
+                            (Attr.style "--m3e-progress-indicator-color"
+                                (if over then
+                                    "var(--md-sys-color-error)"
 
-                             else
-                                "var(--md-sys-color-primary)"
-                            ))
+                                 else
+                                    "var(--md-sys-color-primary)"
+                                )
+                            )
                         ]
                         [ Progress.view { shape = Progress.Linear } [ Progress.value percent ]
                             |> Element.toNode
                         ]
                     , if over then
-                        Node.raw (span [ class "block text-label-md text-error" ]
-                            [ text ("Over by " ++ formatMoney (category.spentCents - category.budgetCents)) ])
+                        Node.raw
+                            (span [ class "block text-label-md text-error" ]
+                                [ text ("Over by " ++ formatMoney (category.spentCents - category.budgetCents)) ]
+                            )
 
                       else
                         Node.text ""
@@ -975,10 +996,11 @@ budgetLineRow ( label, cents ) =
 
 adjustButton : Model -> Node Msg
 adjustButton model =
-    Node.element "span" [ Node.rawAttr (Attr.id "rally-adjust-anchor") ]
+    Node.element "span"
+        [ Node.rawAttr (Attr.id "rally-adjust-anchor") ]
         [ IconButton.view
             { icon = "tune", ariaLabel = "Adjust budgets" }
-            [ IconButton.variant IconButton.Tonal
+            [ IconButton.variant Value.tonal
             , IconButton.onClick (BudgetAdjusted (monthLabel model.month))
             ]
             |> Element.toNode
@@ -1017,7 +1039,7 @@ snackbarSlot model =
 sectionHeading : String -> String -> Node Msg
 sectionHeading title subtitle =
     Layout.div "space-y-1"
-        [ Heading.view { label = title, variant = Heading.Headline }
+        [ Heading.view { label = title, variant = Value.headline }
             [ Heading.size Value.small
             , Heading.level 2
             ]

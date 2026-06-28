@@ -1,6 +1,6 @@
 module M3e.Heading exposing
     ( view
-    , Option, Variant(..)
+    , Option
     , size, emphasized, level
     )
 
@@ -22,7 +22,7 @@ The `level` option is clamped to the CEM-permitted range 1..6 (same as
 `Ui.Heading.clampLevel`).
 
 @docs view
-@docs Option, Variant
+@docs Option
 @docs size, emphasized, level
 
 -}
@@ -35,13 +35,16 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
+{-| Typescale variant (`display`, `headline`, `title`, `label`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens. A required field of [`view`](#view).
 -}
-type Variant
-    = Display
-    | Headline
-    | Title
-    | Label
+type alias Variants =
+    Value
+        { display : Supported
+        , headline : Supported
+        , title : Supported
+        , label : Supported
+        }
 
 
 {-| Three-step size scale (`small`, `medium`, `large`), supplied as shared
@@ -94,7 +97,7 @@ level l =
 
 {-| Render the heading with its required `label` and `variant`.
 -}
-view : { label : String, variant : Variant } -> List (Option msg) -> Element { s | heading : Supported } msg
+view : { label : String, variant : Variants } -> List (Option msg) -> Element { s | heading : Supported } msg
 view req opts =
     let
         c : Config
@@ -108,7 +111,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-heading"
             (List.filterMap identity
-                [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
+                [ Just (Node.attribute "variant" (Value.toString req.variant))
                 , Maybe.map (\s -> Node.attribute "size" (Value.toString s)) c.size
                 , Just (Node.property "emphasized" (Encode.bool c.emphasized))
                 , Maybe.map (\l -> Node.rawAttr (Cem.level (String.fromInt l))) c.level
@@ -116,19 +119,3 @@ view req opts =
             )
             [ Node.text req.label ]
         )
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Display ->
-            Cem.Display
-
-        Headline ->
-            Cem.Headline
-
-        Title ->
-            Cem.Title
-
-        Label ->
-            Cem.Label

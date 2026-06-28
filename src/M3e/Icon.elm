@@ -1,5 +1,5 @@
 module M3e.Icon exposing
-    ( Option, Variant(..), Grade(..), Weight(..)
+    ( Option, Grade(..), Weight(..)
     , variant, grade, weight, opticalSize, filled
     , view
     )
@@ -21,7 +21,7 @@ Upstream defaults (CEM-confirmed):
 
 # Types
 
-@docs Option, Variant, Grade, Weight
+@docs Option, Grade, Weight
 
 
 # Options
@@ -37,25 +37,29 @@ import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| Icon glyph style variant (default `Outlined`).
+{-| Icon glyph style variant (default `outlined`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
-  - `Outlined` — default Material Symbols style.
-  - `Rounded` — rounded corners on the symbol paths.
-  - `Sharp` — sharp corners on the symbol paths.
+  - `outlined` — default Material Symbols style.
+  - `rounded` — rounded corners on the symbol paths.
+  - `sharp` — sharp corners on the symbol paths.
 
 Upstream: `variant` attribute on `<m3e-icon>`. CEM: `IconVariant`.
 
 -}
-type Variant
-    = Outlined
-    | Rounded
-    | Sharp
+type alias Variants =
+    Value
+        { outlined : Supported
+        , rounded : Supported
+        , sharp : Supported
+        }
 
 
 {-| Visual grade — adjusts icon weight for different backgrounds (default `Medium`).
@@ -90,7 +94,7 @@ type Weight
 
 
 type alias Config =
-    { variant : Maybe Variant
+    { variant : Maybe Variants
     , grade : Maybe Grade
     , weight : Maybe Weight
     , opticalSize : Maybe Int
@@ -108,13 +112,13 @@ type alias Option msg =
 -- OPTIONS ---------------------------------------------------------------------
 
 
-{-| Set the glyph style variant (`Outlined`, `Rounded`, or `Sharp`;
-default `Outlined`).
+{-| Set the glyph style variant (`outlined`, `rounded`, or `sharp`;
+default `outlined`).
 
 Upstream: `variant` attribute on `<m3e-icon>`.
 
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -173,7 +177,7 @@ name, set on the `name` attribute. Pass `[]` when no visual axes are needed.
 
     Icon.view { name = "favorite" }
         [ Icon.filled True
-        , Icon.variant Icon.Rounded
+        , Icon.variant M3e.Value.rounded
         , Icon.weight Icon.W600
         ]
 
@@ -195,7 +199,7 @@ view req opts =
         (Node.element "m3e-icon"
             (List.filterMap identity
                 [ Just (Node.attribute "name" req.name)
-                , Maybe.map (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v))) c.variant
+                , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                 , Maybe.map (\g -> Node.attribute "grade" (Cem.gradeToString (toCemGrade g))) c.grade
                 , Maybe.map (\w -> Node.attribute "weight" (weightToString w)) c.weight
                 , Maybe.map (\n -> Node.attribute "optical-size" (String.fromInt n)) c.opticalSize
@@ -208,19 +212,6 @@ view req opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Outlined ->
-            Cem.Outlined
-
-        Rounded ->
-            Cem.Rounded
-
-        Sharp ->
-            Cem.Sharp
 
 
 toCemGrade : Grade -> Cem.Grade

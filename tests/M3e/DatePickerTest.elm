@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.DatePicker as DatePicker
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -47,17 +48,17 @@ suite =
         -- Variant
         , test "variant Auto sets variant='auto'" <|
             \_ ->
-                viewNode [ DatePicker.variant DatePicker.Auto ]
+                viewNode [ DatePicker.variant Value.auto ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "auto")
         , test "variant Docked sets variant='docked'" <|
             \_ ->
-                viewNode [ DatePicker.variant DatePicker.Docked ]
+                viewNode [ DatePicker.variant Value.docked ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "docked")
         , test "variant Modal sets variant='modal'" <|
             \_ ->
-                viewNode [ DatePicker.variant DatePicker.Modal ]
+                viewNode [ DatePicker.variant Value.modal ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "modal")
 

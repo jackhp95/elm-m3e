@@ -1,6 +1,5 @@
 module Route.Styles.Shape exposing (ActionData, Data, Model, Msg, route)
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Cem.M3e.Shape as CemShape
 import FatalError exposing (FatalError)
@@ -15,6 +14,7 @@ import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
 import M3e.Shape as Shape
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -84,7 +84,7 @@ swatch ( cls, label ) =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Shape", variant = Heading.Display }
+    Heading.view { label = "Shape", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
@@ -120,8 +120,8 @@ view _ _ =
                 ]
             , Divider.view [] |> Element.toNode
             , Card.view
-                [ Card.variant Card.Outlined
-                , Card.headline (Heading.view { label = "M3e.Shape — named shapes", variant = Heading.Title } [])
+                [ Card.variant Value.outlined
+                , Card.headline (Heading.view { label = "M3e.Shape — named shapes", variant = Value.title } [])
                 , Card.body
                     [ Element.fromNode
                         (Layout.div "flex flex-wrap items-end gap-6"
@@ -139,8 +139,8 @@ view _ _ =
                 |> Element.toNode
             , Divider.view [] |> Element.toNode
             , Card.view
-                [ Card.variant Card.Outlined
-                , Card.headline (Heading.view { label = "Corner scale", variant = Heading.Title } [])
+                [ Card.variant Value.outlined
+                , Card.headline (Heading.view { label = "Corner scale", variant = Value.title } [])
                 , Card.body
                     [ Element.fromNode
                         (Layout.div "flex flex-wrap items-end gap-6"

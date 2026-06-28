@@ -6,6 +6,7 @@ import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
 import M3e.Text as Text
 import M3e.Theme as Theme
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -66,7 +67,7 @@ suite =
                     |> Expect.equal (Just "m3e-theme")
         , test "variant option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ Theme.variant Theme.Vibrant ]
+                node [ Theme.variant Value.vibrant ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-theme")
         , test "contrast option does not crash (rawAttr — not introspectable)" <|

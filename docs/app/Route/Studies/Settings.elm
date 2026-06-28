@@ -27,7 +27,6 @@ Everything is live via `RouteBuilder.buildWithLocalState`.
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect
 import Head
@@ -41,12 +40,12 @@ import M3e.Button as Button
 import M3e.Dialog as Dialog
 import M3e.Disclosure as Disclosure
 import M3e.Divider as Divider
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.List as List_
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node exposing (Node)
-import M3e.Element as Element exposing (Element, Supported)
 import M3e.RadioButton as RadioButton
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
@@ -55,6 +54,7 @@ import M3e.Snackbar as Snackbar
 import M3e.Switch as Switch
 import M3e.Theme as Theme
 import M3e.Tooltip as Tooltip
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -330,7 +330,7 @@ view _ _ model =
         [ Theme.view
             { content = [ Element.fromNode (Node.map PagesMsg.fromMsg (page model)) ] }
             [ Theme.seedColor "#4F6BED"
-            , Theme.variant Theme.Expressive
+            , Theme.variant Value.expressive
             , Theme.scheme (themeScheme model.theme)
             , Theme.density (densityValue model.density)
             , Theme.motion (motionScheme model.reduceMotion)
@@ -373,11 +373,13 @@ breadcrumbBar model =
             }
             []
             |> Element.toNode
-        , Heading.view { label = "Settings", variant = Heading.Display }
+        , Heading.view { label = "Settings", variant = Value.display }
             [ Heading.size Value.small, Heading.level 1 ]
             |> Element.toNode
-        , Node.raw (p [ class "text-body-lg text-on-surface-variant" ]
-            [ text "Manage your account, notifications, appearance, and privacy preferences." ])
+        , Node.raw
+            (p [ class "text-body-lg text-on-surface-variant" ]
+                [ text "Manage your account, notifications, appearance, and privacy preferences." ]
+            )
         ]
 
 
@@ -446,7 +448,7 @@ groupCard glyph title rows =
     Layout.section "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5"
         (Layout.div "flex items-center gap-2 text-on-surface"
             [ Icon.view { name = glyph } [] |> Element.toNode
-            , Heading.view { label = title, variant = Heading.Title }
+            , Heading.view { label = title, variant = Value.title }
                 [ Heading.size Value.medium, Heading.level 2 ]
                 |> Element.toNode
             ]
@@ -477,12 +479,14 @@ accountPanel model =
     Layout.col
         [ Layout.section "flex flex-col items-start gap-3 rounded-md-corner-large bg-surface-container-low p-5 sm:flex-row sm:items-center sm:gap-4"
             [ Avatar.view { ariaLabel = "Jack Peterson" } [ Avatar.initials "Jack Peterson" ] |> Element.toNode
-            , Node.raw (div [ class "flex min-w-0 flex-col" ]
-                [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
-                , Html.span [ class "text-body-md text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
-                , Html.span [ class "mt-1 w-max rounded-full bg-secondary-container px-2 py-0.5 text-label-sm text-on-secondary-container" ]
-                    [ text "Pro plan" ]
-                ])
+            , Node.raw
+                (div [ class "flex min-w-0 flex-col" ]
+                    [ Html.span [ class "text-title-md text-on-surface" ] [ text "Jack Peterson" ]
+                    , Html.span [ class "text-body-md text-on-surface-variant break-words" ] [ text "jack.peterson@avetta.com" ]
+                    , Html.span [ class "mt-1 w-max rounded-full bg-secondary-container px-2 py-0.5 text-label-sm text-on-secondary-container" ]
+                        [ text "Pro plan" ]
+                    ]
+                )
             ]
         , groupCard "security"
             "Security"
@@ -726,8 +730,10 @@ tooltip's anchor.
 -}
 infoIcon : String -> String -> Node Msg
 infoIcon anchorId label =
-    Node.element "span" []
-        [ Node.element "span" [ Node.rawAttr (Html.Attributes.id anchorId), Node.rawAttr (class "inline-flex text-on-surface-variant") ]
+    Node.element "span"
+        []
+        [ Node.element "span"
+            [ Node.rawAttr (Html.Attributes.id anchorId), Node.rawAttr (class "inline-flex text-on-surface-variant") ]
             [ Icon.view { name = "info" } [] |> Element.toNode ]
         , Tooltip.plain { anchorId = anchorId, label = label } [] |> Element.toNode
         ]
@@ -742,14 +748,14 @@ advancedColumns model =
     Layout.div "flex flex-col gap-4 lg:flex-row lg:items-start"
         [ Layout.div "min-w-0 flex-1"
             [ Heading.view
-                { label = "Advanced (accordion — one open at a time)", variant = Heading.Title }
+                { label = "Advanced (accordion — one open at a time)", variant = Value.title }
                 [ Heading.size Value.small, Heading.level 2 ]
                 |> Element.toNode
             , advancedAccordion
             ]
         , Layout.div "min-w-0 flex-1"
             [ Heading.view
-                { label = "Developer options (single panel)", variant = Heading.Title }
+                { label = "Developer options (single panel)", variant = Value.title }
                 [ Heading.size Value.small, Heading.level 2 ]
                 |> Element.toNode
             , developerPanel model
@@ -764,27 +770,36 @@ advancedAccordion =
             [ Disclosure.section
                 { header = "Storage & cache"
                 , content =
-                    [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
-                        ))
+                    [ Element.fromNode
+                        (Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "Cached data uses 248 MB. Clearing the cache will sign you out of some sites." ]
+                            )
+                        )
                     ]
                 }
                 []
             , Disclosure.section
                 { header = "Network"
                 , content =
-                    [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
-                        ))
+                    [ Element.fromNode
+                        (Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "Configure proxy, DNS-over-HTTPS, and connection preferences." ]
+                            )
+                        )
                     ]
                 }
                 []
             , Disclosure.section
                 { header = "Accessibility"
                 , content =
-                    [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "High-contrast mode, larger text, and screen-reader hints." ]
-                        ))
+                    [ Element.fromNode
+                        (Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "High-contrast mode, larger text, and screen-reader hints." ]
+                            )
+                        )
                     ]
                 }
                 []
@@ -801,15 +816,16 @@ developerPanel model =
             [ Disclosure.section
                 { header = "Developer options"
                 , content =
-                    [ Element.fromNode (controlRow "Developer mode"
-                        (Just "Show experimental flags and verbose logging.")
-                        (Switch.view { ariaLabel = "Developer mode" }
-                            [ Switch.checked model.developerMode
-                            , Switch.onChange DeveloperModeToggled
-                            ]
-                            |> Element.toNode
+                    [ Element.fromNode
+                        (controlRow "Developer mode"
+                            (Just "Show experimental flags and verbose logging.")
+                            (Switch.view { ariaLabel = "Developer mode" }
+                                [ Switch.checked model.developerMode
+                                , Switch.onChange DeveloperModeToggled
+                                ]
+                                |> Element.toNode
+                            )
                         )
-                      )
                     ]
                 }
                 []
@@ -826,12 +842,12 @@ developerPanel model =
 footerActions : Node Msg
 footerActions =
     Layout.div "flex flex-wrap items-center justify-end gap-3"
-        [ Button.view { label = "Reset to defaults", variant = Button.Text }
+        [ Button.view { label = "Reset to defaults", variant = Value.text }
             [ Button.leadingIcon (Icon.view { name = "restart_alt" } [])
             , Button.onClick ResetRequested
             ]
             |> Element.toNode
-        , Button.view { label = "Save changes", variant = Button.Filled }
+        , Button.view { label = "Save changes", variant = Value.filled }
             [ Button.leadingIcon (Icon.view { name = "save" } [])
             , Button.onClick SaveRequested
             ]
@@ -850,9 +866,9 @@ resetDialog model =
         [ Dialog.open model.confirmResetOpen
         , Dialog.onClose DialogClosed
         , Dialog.actions
-            [ Button.view { label = "Cancel", variant = Button.Text }
+            [ Button.view { label = "Cancel", variant = Value.text }
                 [ Button.onClick DialogClosed ]
-            , Button.view { label = "Reset", variant = Button.Filled }
+            , Button.view { label = "Reset", variant = Value.filled }
                 [ Button.onClick ResetConfirmed ]
             ]
         ]

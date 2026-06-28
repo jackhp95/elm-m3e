@@ -229,7 +229,7 @@ view app _ =
 headerBlock : Component -> Node (PagesMsg Msg)
 headerBlock c =
     Layout.section "space-y-3"
-        [ Heading.view { label = "M3e." ++ c.name, variant = Heading.Display }
+        [ Heading.view { label = "M3e." ++ c.name, variant = Value.display }
             [ Heading.size Value.small, Heading.level 1 ]
             |> Element.toNode
         , Node.raw (prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview)
@@ -279,7 +279,7 @@ memberRow m =
                 m.name ++ " : " ++ m.signature
     in
     Card.view
-        [ Card.variant Card.Outlined
+        [ Card.variant Value.outlined
         , Card.body
             [ Element.html
                 (div []
@@ -328,14 +328,14 @@ usage subs =
 
 h2Heading : String -> Node (PagesMsg Msg)
 h2Heading label =
-    Heading.view { label = label, variant = Heading.Headline }
+    Heading.view { label = label, variant = Value.headline }
         [ Heading.level 2, Heading.size Value.medium ]
         |> Element.toNode
 
 
 h3Heading : String -> Node (PagesMsg Msg)
 h3Heading label =
-    Heading.view { label = label, variant = Heading.Headline }
+    Heading.view { label = label, variant = Value.headline }
         [ Heading.level 3, Heading.size Value.small ]
         |> Element.toNode
 
@@ -351,7 +351,7 @@ subView s =
     Layout.section "space-y-3"
         [ h3Heading s.title
         , Card.view
-            [ Card.variant Card.Outlined
+            [ Card.variant Value.outlined
             , Card.body [ Element.fromNode (Layout.div "flex flex-wrap items-center gap-4" [ s.body ]) ]
             ]
             |> Element.toNode
@@ -598,7 +598,7 @@ noOp _ =
     PagesMsg.noOp
 
 
-headingDemo : Heading.Variant -> Value { small : Supported, medium : Supported, large : Supported } -> String -> Node (PagesMsg Msg)
+headingDemo : Value { display : Supported, headline : Supported, title : Supported, label : Supported } -> Value { small : Supported, medium : Supported, large : Supported } -> String -> Node (PagesMsg Msg)
 headingDemo variant size label =
     Heading.view { label = label, variant = variant }
         [ Heading.size size ]
@@ -621,7 +621,7 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (AppBar.view
-                        [ AppBar.title (Heading.view { label = "Inbox", variant = Heading.Title } [])
+                        [ AppBar.title (Heading.view { label = "Inbox", variant = Value.title } [])
                         , AppBar.leading (IconButton.view { icon = "menu", ariaLabel = "Open menu" } [])
                         , AppBar.trailing
                             [ IconButton.view { icon = "search", ariaLabel = "Search" } []
@@ -632,14 +632,14 @@ demoSections slug =
                     )
                 , sub "Sizes"
                     (Layout.div "w-full space-y-3"
-                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size Value.small ] |> Element.toNode
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size Value.medium ] |> Element.toNode
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size Value.large ] |> Element.toNode
+                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Value.title } []), AppBar.size Value.small ] |> Element.toNode
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Value.title } []), AppBar.size Value.medium ] |> Element.toNode
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Value.title } []), AppBar.size Value.large ] |> Element.toNode
                         ]
                     )
                 , sub "Centered title"
                     (AppBar.view
-                        [ AppBar.title (Heading.view { label = "Profile", variant = Heading.Title } [])
+                        [ AppBar.title (Heading.view { label = "Profile", variant = Value.title } [])
                         , AppBar.centered True
                         , AppBar.leading (IconButton.view { icon = "arrow_back", ariaLabel = "Back" } [])
                         ]
@@ -737,46 +737,46 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (buttonRow
-                        [ Button.view { label = "Elevated", variant = Button.Elevated } [] |> Element.toNode
-                        , Button.view { label = "Filled", variant = Button.Filled } [] |> Element.toNode
-                        , Button.view { label = "Tonal", variant = Button.Tonal } [] |> Element.toNode
-                        , Button.view { label = "Outlined", variant = Button.Outlined } [] |> Element.toNode
-                        , Button.view { label = "Text", variant = Button.Text } [] |> Element.toNode
+                        [ Button.view { label = "Elevated", variant = Value.elevated } [] |> Element.toNode
+                        , Button.view { label = "Filled", variant = Value.filled } [] |> Element.toNode
+                        , Button.view { label = "Tonal", variant = Value.tonal } [] |> Element.toNode
+                        , Button.view { label = "Outlined", variant = Value.outlined } [] |> Element.toNode
+                        , Button.view { label = "Text", variant = Value.text } [] |> Element.toNode
                         ]
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ Button.view { label = "Rounded", variant = Button.Filled } [ Button.shape Button.Rounded ] |> Element.toNode
-                        , Button.view { label = "Square", variant = Button.Filled } [ Button.shape Button.Square ] |> Element.toNode
+                        [ Button.view { label = "Rounded", variant = Value.filled } [ Button.shape Button.Rounded ] |> Element.toNode
+                        , Button.view { label = "Square", variant = Value.filled } [ Button.shape Button.Square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ Button.view { label = "XS", variant = Button.Tonal } [ Button.size Value.extraSmall ] |> Element.toNode
-                        , Button.view { label = "Small", variant = Button.Tonal } [ Button.size Value.small ] |> Element.toNode
-                        , Button.view { label = "Medium", variant = Button.Tonal } [ Button.size Value.medium ] |> Element.toNode
-                        , Button.view { label = "Large", variant = Button.Tonal } [ Button.size Value.large ] |> Element.toNode
-                        , Button.view { label = "XL", variant = Button.Tonal } [ Button.size Value.extraLarge ] |> Element.toNode
+                        [ Button.view { label = "XS", variant = Value.tonal } [ Button.size Value.extraSmall ] |> Element.toNode
+                        , Button.view { label = "Small", variant = Value.tonal } [ Button.size Value.small ] |> Element.toNode
+                        , Button.view { label = "Medium", variant = Value.tonal } [ Button.size Value.medium ] |> Element.toNode
+                        , Button.view { label = "Large", variant = Value.tonal } [ Button.size Value.large ] |> Element.toNode
+                        , Button.view { label = "XL", variant = Value.tonal } [ Button.size Value.extraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Icons"
                     (buttonRow
-                        [ Button.view { label = "Send", variant = Button.Tonal }
+                        [ Button.view { label = "Send", variant = Value.tonal }
                             [ Button.leadingIcon (Icon.view { name = "send" } []) ]
                             |> Element.toNode
-                        , Button.view { label = "Open", variant = Button.Tonal }
+                        , Button.view { label = "Open", variant = Value.tonal }
                             [ Button.trailingIcon (Icon.view { name = "open_in_new" } []) ]
                             |> Element.toNode
                         ]
                     )
                 , sub "Disabling"
                     (buttonRow
-                        [ Button.view { label = "Disabled", variant = Button.Filled } [ Button.disabled True ] |> Element.toNode
-                        , Button.view { label = "Disabled (soft)", variant = Button.Filled } [ Button.disabled True ] |> Element.toNode
+                        [ Button.view { label = "Disabled", variant = Value.filled } [ Button.disabled True ] |> Element.toNode
+                        , Button.view { label = "Disabled (soft)", variant = Value.filled } [ Button.disabled True ] |> Element.toNode
                         ]
                     )
                 , sub "Links"
-                    (Button.view { label = "Visit Google", variant = Button.Tonal }
+                    (Button.view { label = "Visit Google", variant = Value.tonal }
                         [ Button.trailingIcon (Icon.view { name = "open_in_new" } [])
                         , Button.href "https://www.google.com"
                         ]
@@ -790,9 +790,9 @@ demoSections slug =
                 [ sub "Basic"
                     (ButtonGroup.view
                         { buttons =
-                            [ Button.view { label = "One", variant = Button.Filled } []
-                            , Button.view { label = "Two", variant = Button.Filled } []
-                            , Button.view { label = "Three", variant = Button.Filled } []
+                            [ Button.view { label = "One", variant = Value.filled } []
+                            , Button.view { label = "Two", variant = Value.filled } []
+                            , Button.view { label = "Three", variant = Value.filled } []
                             ]
                         }
                         []
@@ -819,20 +819,20 @@ demoSections slug =
                 [ sub "Variants"
                     (Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-3 w-full"
                         [ Card.view
-                            [ Card.variant Card.Elevated
-                            , Card.headline (Heading.view { label = "Elevated", variant = Heading.Title } [])
+                            [ Card.variant Value.elevated
+                            , Card.headline (Heading.view { label = "Elevated", variant = Value.title } [])
                             , Card.body [ Element.html (text "Raised shadow surface, highest emphasis.") ]
                             ]
                             |> Element.toNode
                         , Card.view
-                            [ Card.variant Card.Filled
-                            , Card.headline (Heading.view { label = "Filled", variant = Heading.Title } [])
+                            [ Card.variant Value.filled
+                            , Card.headline (Heading.view { label = "Filled", variant = Value.title } [])
                             , Card.body [ Element.html (text "Solid tonal surface, medium emphasis.") ]
                             ]
                             |> Element.toNode
                         , Card.view
-                            [ Card.variant Card.Outlined
-                            , Card.headline (Heading.view { label = "Outlined", variant = Heading.Title } [])
+                            [ Card.variant Value.outlined
+                            , Card.headline (Heading.view { label = "Outlined", variant = Value.title } [])
                             , Card.body [ Element.html (text "Bordered, no fill, lowest emphasis.") ]
                             ]
                             |> Element.toNode
@@ -840,13 +840,13 @@ demoSections slug =
                     )
                 , sub "Anatomy"
                     (Card.view
-                        [ Card.variant Card.Outlined
-                        , Card.headline (Heading.view { label = "Compliance scorecard", variant = Heading.Title } [])
-                        , Card.subhead (Heading.view { label = "Updated 2 hours ago", variant = Heading.Label } [])
+                        [ Card.variant Value.outlined
+                        , Card.headline (Heading.view { label = "Compliance scorecard", variant = Value.title } [])
+                        , Card.subhead (Heading.view { label = "Updated 2 hours ago", variant = Value.label } [])
                         , Card.body [ Element.html (text "Supporting body text gives context to the headline.") ]
                         , Card.actions
-                            [ Button.view { label = "Review", variant = Button.Filled } []
-                            , Button.view { label = "Dismiss", variant = Button.Text } []
+                            [ Button.view { label = "Review", variant = Value.filled } []
+                            , Button.view { label = "Dismiss", variant = Value.text } []
                             ]
                         ]
                         |> Element.toNode
@@ -974,19 +974,19 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (Layout.div "flex flex-wrap items-center gap-3"
-                        [ ExtendedFab.view { icon = "edit", label = "Primary", variant = ExtendedFab.Primary } [] |> Element.toNode
-                        , ExtendedFab.view { icon = "edit", label = "Secondary", variant = ExtendedFab.Secondary } [] |> Element.toNode
-                        , ExtendedFab.view { icon = "edit", label = "Tertiary", variant = ExtendedFab.Tertiary } [] |> Element.toNode
-                        , ExtendedFab.view { icon = "edit", label = "Surface", variant = ExtendedFab.Surface } [] |> Element.toNode
+                        [ ExtendedFab.view { icon = "edit", label = "Primary", variant = Value.primary } [] |> Element.toNode
+                        , ExtendedFab.view { icon = "edit", label = "Secondary", variant = Value.secondary } [] |> Element.toNode
+                        , ExtendedFab.view { icon = "edit", label = "Tertiary", variant = Value.tertiary } [] |> Element.toNode
+                        , ExtendedFab.view { icon = "edit", label = "Surface", variant = Value.surface } [] |> Element.toNode
                         ]
                     )
                 , sub "Lowered"
-                    (ExtendedFab.view { icon = "edit", label = "Lowered", variant = ExtendedFab.Primary }
+                    (ExtendedFab.view { icon = "edit", label = "Lowered", variant = Value.primary }
                         [ ExtendedFab.lowered True ]
                         |> Element.toNode
                     )
                 , sub "Disabled"
-                    (ExtendedFab.view { icon = "edit", label = "Disabled", variant = ExtendedFab.Primary }
+                    (ExtendedFab.view { icon = "edit", label = "Disabled", variant = Value.primary }
                         [ ExtendedFab.disabled True ]
                         |> Element.toNode
                     )
@@ -997,37 +997,37 @@ demoSections slug =
             [ usage
                 [ sub "Variants"
                     (Layout.div "flex flex-wrap items-center gap-4"
-                        [ Fab.view { icon = "add", ariaLabel = "Primary" } [ Fab.variant Fab.Primary ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Secondary" } [ Fab.variant Fab.Secondary ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Tertiary" } [ Fab.variant Fab.Tertiary ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Surface" } [ Fab.variant Fab.Surface ] |> Element.toNode
+                        [ Fab.view { icon = "add", ariaLabel = "Primary" } [ Fab.variant Value.primary ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Secondary" } [ Fab.variant Value.secondary ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Tertiary" } [ Fab.variant Value.tertiary ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Surface" } [ Fab.variant Value.surface ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (Layout.div "flex flex-wrap items-center gap-4"
-                        [ Fab.view { icon = "add", ariaLabel = "Small" } [ Fab.variant Fab.Primary, Fab.size Value.small ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Medium" } [ Fab.variant Fab.Primary, Fab.size Value.medium ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Large" } [ Fab.variant Fab.Primary, Fab.size Value.large ] |> Element.toNode
+                        [ Fab.view { icon = "add", ariaLabel = "Small" } [ Fab.variant Value.primary, Fab.size Value.small ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Medium" } [ Fab.variant Value.primary, Fab.size Value.medium ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Large" } [ Fab.variant Value.primary, Fab.size Value.large ] |> Element.toNode
                         ]
                     )
                 , sub "Extended (with label)"
                     (Fab.view { icon = "edit", ariaLabel = "Compose" }
-                        [ Fab.variant Fab.Primary, Fab.label "Compose" ]
+                        [ Fab.variant Value.primary, Fab.label "Compose" ]
                         |> Element.toNode
                     )
                 , sub "Link (href)"
                     (Fab.view { icon = "open_in_new", ariaLabel = "Visit Material Design" }
-                        [ Fab.variant Fab.Surface, Fab.href "https://m3.material.io" ]
+                        [ Fab.variant Value.surface, Fab.href "https://m3.material.io" ]
                         |> Element.toNode
                     )
                 , sub "Lowered"
                     (Fab.view { icon = "add", ariaLabel = "Lowered" }
-                        [ Fab.variant Fab.Primary, Fab.lowered True ]
+                        [ Fab.variant Value.primary, Fab.lowered True ]
                         |> Element.toNode
                     )
                 , sub "Disabled"
                     (Fab.view { icon = "add", ariaLabel = "Disabled" }
-                        [ Fab.variant Fab.Primary, Fab.disabled True ]
+                        [ Fab.variant Value.primary, Fab.disabled True ]
                         |> Element.toNode
                     )
                 ]
@@ -1045,7 +1045,7 @@ demoSections slug =
                             , FabMenu.item { icon = "videocam", label = "Record video", onClick = PagesMsg.noOp }
                             ]
                         }
-                        [ FabMenu.variant FabMenu.Primary ]
+                        [ FabMenu.variant Value.primary ]
                         |> Element.toNode
                     )
                 ]
@@ -1055,30 +1055,30 @@ demoSections slug =
             [ usage
                 [ sub "Display"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Display Value.large "Display Large"
-                        , headingDemo Heading.Display Value.medium "Display Medium"
-                        , headingDemo Heading.Display Value.small "Display Small"
+                        [ headingDemo Value.display Value.large "Display Large"
+                        , headingDemo Value.display Value.medium "Display Medium"
+                        , headingDemo Value.display Value.small "Display Small"
                         ]
                     )
                 , sub "Headline"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Headline Value.large "Headline Large"
-                        , headingDemo Heading.Headline Value.medium "Headline Medium"
-                        , headingDemo Heading.Headline Value.small "Headline Small"
+                        [ headingDemo Value.headline Value.large "Headline Large"
+                        , headingDemo Value.headline Value.medium "Headline Medium"
+                        , headingDemo Value.headline Value.small "Headline Small"
                         ]
                     )
                 , sub "Title"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Title Value.large "Title Large"
-                        , headingDemo Heading.Title Value.medium "Title Medium"
-                        , headingDemo Heading.Title Value.small "Title Small"
+                        [ headingDemo Value.title Value.large "Title Large"
+                        , headingDemo Value.title Value.medium "Title Medium"
+                        , headingDemo Value.title Value.small "Title Small"
                         ]
                     )
                 , sub "Label"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Label Value.large "Label Large"
-                        , headingDemo Heading.Label Value.medium "Label Medium"
-                        , headingDemo Heading.Label Value.small "Label Small"
+                        [ headingDemo Value.label Value.large "Label Large"
+                        , headingDemo Value.label Value.medium "Label Medium"
+                        , headingDemo Value.label Value.small "Label Small"
                         ]
                     )
                 ]
@@ -1116,42 +1116,42 @@ demoSections slug =
                 [ sub "Variants"
                     (buttonRow
                         [ IconButton.view { icon = "favorite", ariaLabel = "Like (standard)" } [] |> Element.toNode
-                        , IconButton.view { icon = "favorite", ariaLabel = "Like (filled)" } [ IconButton.variant IconButton.Filled ] |> Element.toNode
-                        , IconButton.view { icon = "favorite", ariaLabel = "Like (tonal)" } [ IconButton.variant IconButton.Tonal ] |> Element.toNode
-                        , IconButton.view { icon = "favorite", ariaLabel = "Like (outlined)" } [ IconButton.variant IconButton.Outlined ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Like (filled)" } [ IconButton.variant Value.filled ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Like (tonal)" } [ IconButton.variant Value.tonal ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Like (outlined)" } [ IconButton.variant Value.outlined ] |> Element.toNode
                         ]
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ IconButton.view { icon = "check", ariaLabel = "Round" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Round ] |> Element.toNode
-                        , IconButton.view { icon = "check", ariaLabel = "Square" } [ IconButton.variant IconButton.Filled, IconButton.shape IconButton.Square ] |> Element.toNode
+                        [ IconButton.view { icon = "check", ariaLabel = "Round" } [ IconButton.variant Value.filled, IconButton.shape IconButton.Round ] |> Element.toNode
+                        , IconButton.view { icon = "check", ariaLabel = "Square" } [ IconButton.variant Value.filled, IconButton.shape IconButton.Square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ IconButton.view { icon = "add", ariaLabel = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.extraSmall ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.small ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.medium ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.large ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.extraLarge ] |> Element.toNode
+                        [ IconButton.view { icon = "add", ariaLabel = "XS" } [ IconButton.variant Value.tonal, IconButton.size Value.extraSmall ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Small" } [ IconButton.variant Value.tonal, IconButton.size Value.small ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Medium" } [ IconButton.variant Value.tonal, IconButton.size Value.medium ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Large" } [ IconButton.variant Value.tonal, IconButton.size Value.large ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "XL" } [ IconButton.variant Value.tonal, IconButton.size Value.extraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Widths"
                     (buttonRow
-                        [ IconButton.view { icon = "add", ariaLabel = "Narrow" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Narrow ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Default" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Default ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Wide" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Wide ] |> Element.toNode
+                        [ IconButton.view { icon = "add", ariaLabel = "Narrow" } [ IconButton.variant Value.tonal, IconButton.width IconButton.Narrow ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Default" } [ IconButton.variant Value.tonal, IconButton.width IconButton.Default ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Wide" } [ IconButton.variant Value.tonal, IconButton.width IconButton.Wide ] |> Element.toNode
                         ]
                     )
                 , sub "Toggle"
                     (buttonRow
-                        [ IconButton.view { icon = "favorite", ariaLabel = "Favourite (off)" } [ IconButton.variant IconButton.Tonal, IconButton.toggle True ] |> Element.toNode
-                        , IconButton.view { icon = "favorite", ariaLabel = "Favourite (on)" } [ IconButton.variant IconButton.Tonal, IconButton.toggle True, IconButton.selected True ] |> Element.toNode
+                        [ IconButton.view { icon = "favorite", ariaLabel = "Favourite (off)" } [ IconButton.variant Value.tonal, IconButton.toggle True ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Favourite (on)" } [ IconButton.variant Value.tonal, IconButton.toggle True, IconButton.selected True ] |> Element.toNode
                         ]
                     )
                 , sub "Disabling"
                     (buttonRow
-                        [ IconButton.view { icon = "check", ariaLabel = "Disabled" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
+                        [ IconButton.view { icon = "check", ariaLabel = "Disabled" } [ IconButton.variant Value.filled, IconButton.disabled True ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1319,7 +1319,7 @@ demoSections slug =
                 , sub "Toggle wiring (NavRailToggle)"
                     (Layout.div "flex items-start gap-3"
                         [ IconButton.view { icon = "menu", ariaLabel = "Toggle rail" }
-                            [ IconButton.variant IconButton.Tonal
+                            [ IconButton.variant Value.tonal
                             , IconButton.toggle True
                             , IconButton.extraContent
                                 [ Element.fromNode
@@ -1375,8 +1375,8 @@ demoSections slug =
                     )
                 , sub "Wavy variant"
                     (Layout.div "flex flex-wrap items-center gap-6"
-                        [ Progress.view { shape = Progress.Linear } [ Progress.value 75, Progress.variant Progress.Wavy ] |> Element.toNode
-                        , Progress.view { shape = Progress.Circular } [ Progress.value 50, Progress.variant Progress.Wavy ] |> Element.toNode
+                        [ Progress.view { shape = Progress.Linear } [ Progress.value 75, Progress.variant Value.wavy ] |> Element.toNode
+                        , Progress.view { shape = Progress.Circular } [ Progress.value 50, Progress.variant Value.wavy ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1739,7 +1739,7 @@ demoSections slug =
                                     [ Element.fromNode
                                         (buttonRow
                                             [ IconButton.view { icon = "arrow_forward", ariaLabel = "Next" }
-                                                [ IconButton.variant IconButton.Filled
+                                                [ IconButton.variant Value.filled
                                                 , IconButton.extraContent
                                                     [ Element.fromNode (StepperNext.view [] |> Element.toNode) ]
                                                 ]
@@ -1754,13 +1754,13 @@ demoSections slug =
                                     [ Element.fromNode
                                         (buttonRow
                                             [ IconButton.view { icon = "arrow_back", ariaLabel = "Back" }
-                                                [ IconButton.variant IconButton.Outlined
+                                                [ IconButton.variant Value.outlined
                                                 , IconButton.extraContent
                                                     [ Element.fromNode (StepperPrevious.view [] |> Element.toNode) ]
                                                 ]
                                                 |> Element.toNode
                                             , IconButton.view { icon = "arrow_forward", ariaLabel = "Next" }
-                                                [ IconButton.variant IconButton.Filled
+                                                [ IconButton.variant Value.filled
                                                 , IconButton.extraContent
                                                     [ Element.fromNode (StepperNext.view [] |> Element.toNode) ]
                                                 ]
@@ -1775,7 +1775,7 @@ demoSections slug =
                                     [ Element.fromNode
                                         (buttonRow
                                             [ IconButton.view { icon = "restart_alt", ariaLabel = "Start over" }
-                                                [ IconButton.variant IconButton.Tonal
+                                                [ IconButton.variant Value.tonal
                                                 , IconButton.extraContent
                                                     [ Element.fromNode (StepperReset.view [] |> Element.toNode) ]
                                                 ]
@@ -1880,13 +1880,13 @@ demoSections slug =
                 [ sub "Variants"
                     (Layout.div "w-full max-w-md space-y-4"
                         [ TextField.view { label = "Name (filled)" }
-                            [ TextField.variant TextField.Filled
+                            [ TextField.variant Value.filled
                             , TextField.value ""
                             , TextField.onInput noOp
                             ]
                             |> Element.toNode
                         , TextField.view { label = "Name (outlined)" }
-                            [ TextField.variant TextField.Outlined
+                            [ TextField.variant Value.outlined
                             , TextField.value ""
                             , TextField.onInput noOp
                             ]
@@ -1896,14 +1896,14 @@ demoSections slug =
                 , sub "Input types"
                     (Layout.div "w-full max-w-md space-y-4"
                         [ TextField.view { label = "Email" }
-                            [ TextField.variant TextField.Outlined
+                            [ TextField.variant Value.outlined
                             , TextField.value ""
                             , TextField.inputType TextField.Email
                             , TextField.onInput noOp
                             ]
                             |> Element.toNode
                         , TextField.view { label = "URL" }
-                            [ TextField.variant TextField.Outlined
+                            [ TextField.variant Value.outlined
                             , TextField.value ""
                             , TextField.inputType TextField.Url
                             , TextField.onInput noOp
@@ -1913,7 +1913,7 @@ demoSections slug =
                     )
                 , sub "Multiline"
                     (TextField.view { label = "Notes" }
-                        [ TextField.variant TextField.Outlined
+                        [ TextField.variant Value.outlined
                         , TextField.value ""
                         , TextField.onInput noOp
                         , TextField.multiline True
@@ -1923,7 +1923,7 @@ demoSections slug =
                     )
                 , sub "Prefix and suffix"
                     (TextField.view { label = "Price" }
-                        [ TextField.variant TextField.Outlined
+                        [ TextField.variant Value.outlined
                         , TextField.value ""
                         , TextField.onInput noOp
                         , TextField.prefix (Element.text "$")
@@ -1933,7 +1933,7 @@ demoSections slug =
                     )
                 , sub "Disabled"
                     (TextField.view { label = "Locked" }
-                        [ TextField.variant TextField.Outlined
+                        [ TextField.variant Value.outlined
                         , TextField.value "Read-only value"
                         , TextField.onInput noOp
                         , TextField.disabled True
@@ -2009,8 +2009,8 @@ demoSections slug =
                 [ sub "Basic"
                     (Toolbar.view
                         { content =
-                            [ Button.view { label = "Save", variant = Button.Filled } []
-                            , Button.view { label = "Discard", variant = Button.Text } []
+                            [ Button.view { label = "Save", variant = Value.filled } []
+                            , Button.view { label = "Discard", variant = Value.text } []
                             ]
                         }
                         []
@@ -2026,7 +2026,7 @@ demoSections slug =
                         [ Node.element "span"
                             [ Node.rawAttr (Attr.id "tooltip-anchor-demo") ]
                             [ IconButton.view { icon = "refresh", ariaLabel = "Refresh" }
-                                [ IconButton.variant IconButton.Tonal ]
+                                [ IconButton.variant Value.tonal ]
                                 |> Element.toNode
                             ]
                         , Tooltip.plain { anchorId = "tooltip-anchor-demo", label = "Refresh data" } []
@@ -2038,7 +2038,7 @@ demoSections slug =
                         [ Node.element "span"
                             [ Node.rawAttr (Attr.id "rich-tooltip-anchor-demo") ]
                             [ IconButton.view { icon = "info", ariaLabel = "More info" }
-                                [ IconButton.variant IconButton.Tonal ]
+                                [ IconButton.variant Value.tonal ]
                                 |> Element.toNode
                             ]
                         , Tooltip.rich
@@ -2087,7 +2087,7 @@ demoSections slug =
                             Checkbox.view { ariaLabel = "Subscribe to newsletter" }
                                 [ Checkbox.checked True, Checkbox.onChange noOp ]
                         }
-                        [ Field.variant Field.Filled ]
+                        [ Field.variant Value.filled ]
                     )
                 ]
             ]
@@ -2157,7 +2157,7 @@ demoSections slug =
                                 ]
                             )
                         , IconButton.view { icon = "expand_circle_down", ariaLabel = "Open bottom sheet" }
-                            [ IconButton.variant IconButton.Tonal
+                            [ IconButton.variant Value.tonal
                             , IconButton.extraContent
                                 [ Element.fromNode
                                     (BottomSheetTrigger.view [] [ BottomSheetTrigger.for "bst-demo-sheet" ]
@@ -2242,7 +2242,7 @@ demoSections slug =
                                 ]
                             )
                         , IconButton.view { icon = "calendar_month", ariaLabel = "Open date picker" }
-                            [ IconButton.variant IconButton.Tonal
+                            [ IconButton.variant Value.tonal
                             , IconButton.extraContent
                                 [ Element.fromNode
                                     (DatePickerToggle.view [ DatePickerToggle.for "dpt-demo-picker" ]
@@ -2271,7 +2271,7 @@ demoSections slug =
                                 ]
                             )
                         , IconButton.view { icon = "check_circle", ariaLabel = "Confirm" }
-                            [ IconButton.variant IconButton.Filled
+                            [ IconButton.variant Value.filled
                             , IconButton.extraContent
                                 [ Element.fromNode
                                     (DialogAction.view [] [ DialogAction.returnValue "confirm" ]
@@ -2299,7 +2299,7 @@ demoSections slug =
                                 ]
                             )
                         , IconButton.view { icon = "open_in_new", ariaLabel = "Open dialog" }
-                            [ IconButton.variant IconButton.Tonal
+                            [ IconButton.variant Value.tonal
                             , IconButton.extraContent
                                 [ Element.fromNode
                                     (DialogTrigger.view [ DialogTrigger.for "dt-demo-dialog" ]
@@ -2325,7 +2325,7 @@ demoSections slug =
                                 ]
                             )
                         , IconButton.view { icon = "menu", ariaLabel = "Toggle drawer" }
-                            [ IconButton.variant IconButton.Tonal
+                            [ IconButton.variant Value.tonal
                             , IconButton.toggle True
                             , IconButton.extraContent
                                 [ Element.fromNode
@@ -2369,7 +2369,7 @@ demoSections slug =
                                 ]
                             )
                         , IconButton.view { icon = "menu", ariaLabel = "Toggle rail" }
-                            [ IconButton.variant IconButton.Tonal
+                            [ IconButton.variant Value.tonal
                             , IconButton.toggle True
                             , IconButton.extraContent
                                 [ Element.fromNode
@@ -2414,7 +2414,7 @@ demoSections slug =
                         [ Node.element "span"
                             [ Node.rawAttr (Attr.id "rich-tt-action-anchor") ]
                             [ IconButton.view { icon = "info", ariaLabel = "More information" }
-                                [ IconButton.variant IconButton.Tonal ]
+                                [ IconButton.variant Value.tonal ]
                                 |> Element.toNode
                             ]
                         , Tooltip.rich
@@ -2461,7 +2461,7 @@ demoSections slug =
                                     [ Element.fromNode
                                         (buttonRow
                                             [ IconButton.view { icon = "arrow_forward", ariaLabel = "Next" }
-                                                [ IconButton.variant IconButton.Filled
+                                                [ IconButton.variant Value.filled
                                                 , IconButton.extraContent
                                                     [ Element.fromNode
                                                         (StepperNext.view [] |> Element.toNode)
@@ -2497,7 +2497,7 @@ demoSections slug =
                                     [ Element.fromNode
                                         (buttonRow
                                             [ IconButton.view { icon = "arrow_back", ariaLabel = "Back" }
-                                                [ IconButton.variant IconButton.Outlined
+                                                [ IconButton.variant Value.outlined
                                                 , IconButton.extraContent
                                                     [ Element.fromNode
                                                         (StepperPrevious.view [] |> Element.toNode)
@@ -2532,7 +2532,7 @@ demoSections slug =
                                     [ Element.fromNode
                                         (buttonRow
                                             [ IconButton.view { icon = "restart_alt", ariaLabel = "Restart" }
-                                                [ IconButton.variant IconButton.Tonal
+                                                [ IconButton.variant Value.tonal
                                                 , IconButton.extraContent
                                                     [ Element.fromNode
                                                         (StepperReset.view [] |> Element.toNode)
@@ -2581,10 +2581,10 @@ demoSections slug =
                     )
                 , sub "Palette variant"
                     (Layout.div "flex flex-wrap items-center gap-4"
-                        [ ThemeIcon.view [ ThemeIcon.color "#6750A4", ThemeIcon.variant ThemeIcon.TonalSpot ] |> Element.toNode
-                        , ThemeIcon.view [ ThemeIcon.color "#E91E63", ThemeIcon.variant ThemeIcon.Vibrant ] |> Element.toNode
-                        , ThemeIcon.view [ ThemeIcon.color "#4CAF50", ThemeIcon.variant ThemeIcon.Expressive ] |> Element.toNode
-                        , ThemeIcon.view [ ThemeIcon.color "#2196F3", ThemeIcon.variant ThemeIcon.Rainbow ] |> Element.toNode
+                        [ ThemeIcon.view [ ThemeIcon.color "#6750A4", ThemeIcon.variant Value.tonalSpot ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.color "#E91E63", ThemeIcon.variant Value.vibrant ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.color "#4CAF50", ThemeIcon.variant Value.expressive ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.color "#2196F3", ThemeIcon.variant Value.rainbow ] |> Element.toNode
                         ]
                     )
                 ]

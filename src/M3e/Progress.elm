@@ -1,6 +1,6 @@
 module M3e.Progress exposing
     ( view
-    , Shape(..), Variant(..), Option
+    , Shape(..), Option
     , value, max, variant, attributes
     )
 
@@ -27,17 +27,17 @@ when omitted it becomes indeterminate (Linear emits `mode=indeterminate`,
 Circular emits `indeterminate=true` DOM property).
 
 @docs view
-@docs Shape, Variant, Option
+@docs Shape, Option
 @docs value, max, variant, attributes
 
 -}
 
-import Cem.M3e.CircularProgressIndicator as CemCircular
 import Cem.M3e.LinearProgressIndicator as CemLinear
 import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Selects the rendered element. `Linear` draws `<m3e-linear-progress-indicator>`;
@@ -48,12 +48,15 @@ type Shape
     | Circular
 
 
-{-| Visual style of the indicator. `Flat` (default) is the standard bar/ring;
-`Wavy` renders an expressive wavy fill.
+{-| Visual style of the indicator (`flat` or `wavy`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens. `flat` (default) is the standard bar/ring;
+`wavy` renders an expressive wavy fill.
 -}
-type Variant
-    = Flat
-    | Wavy
+type alias Variants =
+    Value
+        { flat : Supported
+        , wavy : Supported
+        }
 
 
 {-| An option configuring a progress indicator.
@@ -78,9 +81,9 @@ max x =
     Internal.option (\c -> { c | max = x })
 
 
-{-| Set the visual style — `Flat` (default) or `Wavy`.
+{-| Set the visual style — `flat` (default) or `wavy`.
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant x =
     Internal.option (\c -> { c | variant = Just x })
 
@@ -99,7 +102,7 @@ attributes attrs =
 type alias Config msg =
     { value : Maybe Int
     , max : Int
-    , variant : Maybe Variant
+    , variant : Maybe Variants
     , attributes : List (Node.Attr msg)
     }
 
@@ -131,7 +134,7 @@ view req opts =
 
                             Nothing ->
                                 Just (Node.rawAttr (CemLinear.mode CemLinear.Indeterminate))
-                        , Maybe.map (\v -> Node.rawAttr (CemLinear.variant (toCemLinearVariant v))) c.variant
+                        , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                         ]
                         ++ c.attributes
                     )
@@ -149,29 +152,9 @@ view req opts =
 
                             Nothing ->
                                 Just (Node.property "indeterminate" (Encode.bool True))
-                        , Maybe.map (\v -> Node.rawAttr (CemCircular.variant (toCemCircularVariant v))) c.variant
+                        , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                         ]
                         ++ c.attributes
                     )
                     []
                 )
-
-
-toCemLinearVariant : Variant -> CemLinear.Variant
-toCemLinearVariant v =
-    case v of
-        Flat ->
-            CemLinear.Flat
-
-        Wavy ->
-            CemLinear.Wavy
-
-
-toCemCircularVariant : Variant -> CemCircular.Variant
-toCemCircularVariant v =
-    case v of
-        Flat ->
-            CemCircular.Flat
-
-        Wavy ->
-            CemCircular.Wavy

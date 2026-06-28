@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
 import M3e.TextField as TextField
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -95,12 +96,12 @@ suite =
         -- Variant
         , test "variant Filled sets variant='filled' on the form-field" <|
             \_ ->
-                viewNode [ TextField.variant TextField.Filled ]
+                viewNode [ TextField.variant Value.filled ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "filled")
         , test "variant Outlined sets variant='outlined'" <|
             \_ ->
-                viewNode [ TextField.variant TextField.Outlined ]
+                viewNode [ TextField.variant Value.outlined ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "outlined")
         , test "variant absent by default" <|

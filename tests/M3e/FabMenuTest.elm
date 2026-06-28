@@ -4,6 +4,7 @@ import Expect
 import M3e.Element as Element exposing (Element)
 import M3e.FabMenu as FabMenu
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -129,7 +130,7 @@ suite =
                     |> Expect.equal (Just "Share")
         , test "variant option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ FabMenu.variant FabMenu.Tertiary ]
+                node [ FabMenu.variant Value.tertiary ]
                     |> fabMenuNode
                     |> Maybe.andThen Node.tagOf
                     |> Expect.equal (Just "m3e-fab-menu")

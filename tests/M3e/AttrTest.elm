@@ -16,7 +16,7 @@ error. For example:
     Avatar.view { name = "A" } [ Attr.disabled True ]
 
     -- This DOES compile:
-    Button.view { label = "X", variant = Button.Filled } [ Attr.disabled True ]
+    Button.view { label = "X", variant = Value.filled } [ Attr.disabled True ]
 
     Checkbox.view { ariaLabel = "Y" } [ Attr.disabled True ]
 
@@ -31,6 +31,7 @@ import M3e.Chip as Chip
 import M3e.Element as Element
 import M3e.IconButton as IconButton
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -40,7 +41,7 @@ import Test exposing (Test, describe, test)
 
 buttonNode : List (Button.Option msg) -> Node msg
 buttonNode opts =
-    Button.view { label = "Save", variant = Button.Filled } opts
+    Button.view { label = "Save", variant = Value.filled } opts
         |> Element.toNode
 
 

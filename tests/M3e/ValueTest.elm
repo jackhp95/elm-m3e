@@ -14,11 +14,11 @@ live in `elm-test`, but the type boundary is clear — passing
 `M3e.Value.extraSmall` to a three-size component is a type error:
 
     -- Does NOT compile — Heading has no `extraSmall` in its size row:
-    Heading.view { label = "X", variant = Heading.Title }
+    Heading.view { label = "X", variant = Value.title }
         [ Heading.size Value.extraSmall ]
 
     -- DOES compile — Button's row includes `extraSmall`:
-    Button.view { label = "X", variant = Button.Filled }
+    Button.view { label = "X", variant = Value.filled }
         [ Button.size Value.extraSmall ]
 
 -}
@@ -39,7 +39,7 @@ import Test exposing (Test, describe, test)
 
 buttonNode : List (Button.Option msg) -> Node msg
 buttonNode opts =
-    Button.view { label = "Save", variant = Button.Filled } opts
+    Button.view { label = "Save", variant = Value.filled } opts
         |> Element.toNode
 
 
@@ -51,7 +51,7 @@ fabNode opts =
 
 headingNode : List (Heading.Option msg) -> Node msg
 headingNode opts =
-    Heading.view { label = "Title", variant = Heading.Title } opts
+    Heading.view { label = "Title", variant = Value.title } opts
         |> Element.toNode
 
 

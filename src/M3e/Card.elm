@@ -1,5 +1,5 @@
 module M3e.Card exposing
-    ( Option, Variant(..), Orientation(..), ButtonType(..)
+    ( Option, Orientation(..), ButtonType(..)
     , variant, orientation, actionable, inline, media, headline, subhead, body, actions, footer
     , formType, name, value
     , href, target, rel, download
@@ -31,7 +31,7 @@ working: with only `body` set, the card's children are exactly the body items.
 
 # Type
 
-@docs Option, Variant, Orientation, ButtonType
+@docs Option, Orientation, ButtonType
 
 
 # Options
@@ -50,18 +50,22 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES ------------------------------------------------------------------
 
 
-{-| Container style — `Elevated`, `Filled`, or `Outlined`.
+{-| Container style — `elevated`, `filled`, or `outlined`, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 -}
-type Variant
-    = Elevated
-    | Filled
-    | Outlined
+type alias Variants =
+    Value
+        { elevated : Supported
+        , filled : Supported
+        , outlined : Supported
+        }
 
 
 {-| Layout orientation of the card (default `Vertical`).
@@ -87,7 +91,7 @@ type ButtonType
 
 
 type alias Config msg =
-    { variant : Maybe Variant
+    { variant : Maybe Variants
     , orientation : Maybe Orientation
     , actionable : Bool
     , inline : Bool
@@ -139,9 +143,9 @@ defaultConfig =
 -- OPTIONS ------------------------------------------------------------------
 
 
-{-| Set the container style (`Elevated`, `Filled`, or `Outlined`).
+{-| Set the container style (`elevated`, `filled`, or `outlined`).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -296,7 +300,7 @@ view opts =
     Internal.fromNode
         (Node.element "m3e-card"
             (List.filterMap identity
-                [ Maybe.map (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v))) cfg.variant
+                [ Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) cfg.variant
                 , Maybe.map (\o -> Node.attribute "orientation" (Cem.orientationToString (toCemOrientation o))) cfg.orientation
                 , Just (Node.property "actionable" (Encode.bool cfg.actionable))
                 , Just (Node.property "inline" (Encode.bool cfg.inline))
@@ -369,23 +373,6 @@ toTypeString t =
 
         Button ->
             "button"
-
-
-{-| Map the local variant to the generated `Cem.M3e.Card` enum, whose
-`variantToString` is the single source of truth for the attribute value (kept
-in sync with the element's CEM, so the string can't drift — #45).
--}
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Elevated ->
-            Cem.Elevated
-
-        Filled ->
-            Cem.Filled
-
-        Outlined ->
-            Cem.Outlined
 
 
 toCemOrientation : Orientation -> Cem.Orientation

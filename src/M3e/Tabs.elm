@@ -1,6 +1,6 @@
 module M3e.Tabs exposing
     ( view, tab, panel
-    , Option, TabOption, PanelOption, Variant(..), HeaderPosition(..)
+    , Option, TabOption, PanelOption, HeaderPosition(..)
     , tabSelected, tabDisabled, tabFor, tabOnClick, tabIcon
     , panelId
     , stretch, variant, headerPosition
@@ -30,7 +30,7 @@ responsibility via `tabFor` / `panelId` options — they choose meaningful,
 stable ids.
 
 @docs view, tab, panel
-@docs Option, TabOption, PanelOption, Variant, HeaderPosition
+@docs Option, TabOption, PanelOption, HeaderPosition
 @docs tabSelected, tabDisabled, tabFor, tabOnClick, tabIcon
 @docs panelId
 @docs stretch, variant, headerPosition
@@ -44,15 +44,18 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
-{-| The appearance variant of the tabs strip.
-`Secondary` (default) is a subtler presentation; `Primary` emphasizes the
-active indicator.
+{-| The appearance variant of the tabs strip, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. `secondary` (default) is a subtler
+presentation; `primary` emphasizes the active indicator.
 -}
-type Variant
-    = Primary
-    | Secondary
+type alias Variants =
+    Value
+        { primary : Supported
+        , secondary : Supported
+        }
 
 
 {-| Where the header strip sits relative to its panels.
@@ -134,9 +137,10 @@ stretch b =
     Internal.option (\c -> { c | stretch = b })
 
 
-{-| Set the strip appearance variant. Default `Secondary`.
+{-| Set the strip appearance variant. Default
+[`M3e.Value.secondary`](M3e-Value#secondary).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -247,7 +251,7 @@ panel req opts =
 
 type alias StripConfig =
     { stretch : Bool
-    , variant : Variant
+    , variant : Variants
     , headerPosition : HeaderPosition
     }
 
@@ -255,7 +259,7 @@ type alias StripConfig =
 defaultStripConfig : StripConfig
 defaultStripConfig =
     { stretch = False
-    , variant = Secondary
+    , variant = Value.secondary
     , headerPosition = Before
     }
 
@@ -295,23 +299,13 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-tabs"
             [ Node.property "stretch" (Encode.bool c.stretch)
-            , Node.rawAttr (CemTabs.variant (toCemVariant c.variant))
+            , Node.attribute "variant" (Value.toString c.variant)
             , Node.rawAttr (CemTabs.headerPosition (toCemHeaderPosition c.headerPosition))
             ]
             (List.map Element.toNode req.tabs
                 ++ List.map (Node.withSlot "panel" << Element.toNode) req.panels
             )
         )
-
-
-toCemVariant : Variant -> CemTabs.Variant
-toCemVariant v =
-    case v of
-        Primary ->
-            CemTabs.Primary
-
-        Secondary ->
-            CemTabs.Secondary
 
 
 toCemHeaderPosition : HeaderPosition -> CemTabs.HeaderPosition

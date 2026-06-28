@@ -1,6 +1,12 @@
 module M3e.Value exposing
     ( Value, toString
     , extraSmall, small, medium, large, extraLarge
+    , elevated, filled, tonal, outlined, text, standard, connected
+    , primary, primaryContainer, secondary, secondaryContainer, tertiary, tertiaryContainer, surface
+    , display, headline, title, label
+    , vibrant, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
+    , flat, wavy, uncontained, contained, segmented
+    , rounded, sharp, auto, docked, modal
     )
 
 {-| Shared, phantom-tagged enum values for the M3e component library.
@@ -37,6 +43,16 @@ axis-specific spelling and cross-axis names (e.g. `rounded`) cannot collide.
 ## Sizes
 
 @docs extraSmall, small, medium, large, extraLarge
+
+
+## Variants
+
+@docs elevated, filled, tonal, outlined, text, standard, connected
+@docs primary, primaryContainer, secondary, secondaryContainer, tertiary, tertiaryContainer, surface
+@docs display, headline, title, label
+@docs vibrant, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
+@docs flat, wavy, uncontained, contained, segmented
+@docs rounded, sharp, auto, docked, modal
 
 -}
 
@@ -92,3 +108,266 @@ large =
 extraLarge : Value { a | extraLarge : Supported }
 extraLarge =
     Value "extra-large"
+
+
+
+-- VARIANTS ---------------------------------------------------------------
+
+
+{-| Emits `"elevated"`.
+-}
+elevated : Value { a | elevated : Supported }
+elevated =
+    Value "elevated"
+
+
+{-| Emits `"filled"`.
+-}
+filled : Value { a | filled : Supported }
+filled =
+    Value "filled"
+
+
+{-| Emits `"tonal"`.
+-}
+tonal : Value { a | tonal : Supported }
+tonal =
+    Value "tonal"
+
+
+{-| Emits `"outlined"`.
+-}
+outlined : Value { a | outlined : Supported }
+outlined =
+    Value "outlined"
+
+
+{-| Emits `"text"`.
+-}
+text : Value { a | text : Supported }
+text =
+    Value "text"
+
+
+{-| Emits `"standard"`.
+-}
+standard : Value { a | standard : Supported }
+standard =
+    Value "standard"
+
+
+{-| Emits `"connected"`.
+-}
+connected : Value { a | connected : Supported }
+connected =
+    Value "connected"
+
+
+{-| Emits `"primary"`.
+-}
+primary : Value { a | primary : Supported }
+primary =
+    Value "primary"
+
+
+{-| Emits `"primary-container"`.
+-}
+primaryContainer : Value { a | primaryContainer : Supported }
+primaryContainer =
+    Value "primary-container"
+
+
+{-| Emits `"secondary"`.
+-}
+secondary : Value { a | secondary : Supported }
+secondary =
+    Value "secondary"
+
+
+{-| Emits `"secondary-container"`.
+-}
+secondaryContainer : Value { a | secondaryContainer : Supported }
+secondaryContainer =
+    Value "secondary-container"
+
+
+{-| Emits `"tertiary"`.
+-}
+tertiary : Value { a | tertiary : Supported }
+tertiary =
+    Value "tertiary"
+
+
+{-| Emits `"tertiary-container"`.
+-}
+tertiaryContainer : Value { a | tertiaryContainer : Supported }
+tertiaryContainer =
+    Value "tertiary-container"
+
+
+{-| Emits `"surface"`.
+-}
+surface : Value { a | surface : Supported }
+surface =
+    Value "surface"
+
+
+{-| Emits `"display"`.
+-}
+display : Value { a | display : Supported }
+display =
+    Value "display"
+
+
+{-| Emits `"headline"`.
+-}
+headline : Value { a | headline : Supported }
+headline =
+    Value "headline"
+
+
+{-| Emits `"title"`.
+-}
+title : Value { a | title : Supported }
+title =
+    Value "title"
+
+
+{-| Emits `"label"`.
+-}
+label : Value { a | label : Supported }
+label =
+    Value "label"
+
+
+{-| Emits `"vibrant"`.
+-}
+vibrant : Value { a | vibrant : Supported }
+vibrant =
+    Value "vibrant"
+
+
+{-| Emits `"content"`.
+-}
+content : Value { a | content : Supported }
+content =
+    Value "content"
+
+
+{-| Emits `"expressive"`.
+-}
+expressive : Value { a | expressive : Supported }
+expressive =
+    Value "expressive"
+
+
+{-| Emits `"fidelity"`.
+-}
+fidelity : Value { a | fidelity : Supported }
+fidelity =
+    Value "fidelity"
+
+
+{-| Emits `"fruit-salad"`.
+-}
+fruitSalad : Value { a | fruitSalad : Supported }
+fruitSalad =
+    Value "fruit-salad"
+
+
+{-| Emits `"monochrome"`.
+-}
+monochrome : Value { a | monochrome : Supported }
+monochrome =
+    Value "monochrome"
+
+
+{-| Emits `"neutral"`.
+-}
+neutral : Value { a | neutral : Supported }
+neutral =
+    Value "neutral"
+
+
+{-| Emits `"rainbow"`.
+-}
+rainbow : Value { a | rainbow : Supported }
+rainbow =
+    Value "rainbow"
+
+
+{-| Emits `"tonal-spot"`.
+-}
+tonalSpot : Value { a | tonalSpot : Supported }
+tonalSpot =
+    Value "tonal-spot"
+
+
+{-| Emits `"flat"`.
+-}
+flat : Value { a | flat : Supported }
+flat =
+    Value "flat"
+
+
+{-| Emits `"wavy"`.
+-}
+wavy : Value { a | wavy : Supported }
+wavy =
+    Value "wavy"
+
+
+{-| Emits `"uncontained"`.
+-}
+uncontained : Value { a | uncontained : Supported }
+uncontained =
+    Value "uncontained"
+
+
+{-| Emits `"contained"`.
+-}
+contained : Value { a | contained : Supported }
+contained =
+    Value "contained"
+
+
+{-| Emits `"segmented"`.
+-}
+segmented : Value { a | segmented : Supported }
+segmented =
+    Value "segmented"
+
+
+{-| Emits `"rounded"`.
+-}
+rounded : Value { a | rounded : Supported }
+rounded =
+    Value "rounded"
+
+
+{-| Emits `"sharp"`.
+-}
+sharp : Value { a | sharp : Supported }
+sharp =
+    Value "sharp"
+
+
+{-| Emits `"auto"`.
+-}
+auto : Value { a | auto : Supported }
+auto =
+    Value "auto"
+
+
+{-| Emits `"docked"`.
+-}
+docked : Value { a | docked : Supported }
+docked =
+    Value "docked"
+
+
+{-| Emits `"modal"`.
+-}
+modal : Value { a | modal : Supported }
+modal =
+    Value "modal"

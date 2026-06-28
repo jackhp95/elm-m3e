@@ -1,6 +1,5 @@
 module Route.GettingStarted.Overview exposing (ActionData, Data, Model, Msg, route)
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -14,6 +13,7 @@ import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -63,14 +63,14 @@ head _ =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Overview", variant = Heading.Display }
+    Heading.view { label = "Overview", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 
 sectionHeading : String -> Node msg
 sectionHeading label =
-    Heading.view { label = label, variant = Heading.Headline }
+    Heading.view { label = label, variant = Value.headline }
         [ Heading.size Value.small, Heading.level 2 ]
         |> Element.toNode
 
@@ -89,8 +89,8 @@ highlights =
 highlightCard : ( String, String, String ) -> Node msg
 highlightCard ( iconName, title, body ) =
     Card.view
-        [ Card.variant Card.Filled
-        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        [ Card.variant Value.filled
+        , Card.headline (Heading.view { label = title, variant = Value.title } [])
         , Card.body
             [ Element.fromNode
                 (Layout.div "flex gap-3"

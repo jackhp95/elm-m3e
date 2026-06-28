@@ -1,6 +1,6 @@
 module M3e.Menu exposing
     ( view
-    , Option, Variant(..), PositionX(..), PositionY(..)
+    , Option, PositionX(..), PositionY(..)
     , id, menuVariant, positionX, positionY, submenu, onToggle
     , item, checkboxItem, radioItem, divider, group, triggerFor
     , ItemAction(..)
@@ -36,7 +36,7 @@ via that control's escape/element slot or default slot.
 # Container
 
 @docs view
-@docs Option, Variant, PositionX, PositionY
+@docs Option, PositionX, PositionY
 @docs id, menuVariant, positionX, positionY, submenu, onToggle
 
 
@@ -62,6 +62,7 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
@@ -82,11 +83,14 @@ type PositionY
     | Below
 
 
-{-| Visual style of the menu surface. Default `Standard`.
+{-| Visual style of the menu surface (`standard` or `vibrant`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens. Default `standard`.
 -}
-type Variant
-    = Standard
-    | Vibrant
+type alias Variants =
+    Value
+        { standard : Supported
+        , vibrant : Supported
+        }
 
 
 {-| The action a plain menu item performs — either a message or a link.
@@ -214,9 +218,10 @@ id =
     Attr.id
 
 
-{-| Set the menu's appearance variant. Default `Standard`.
+{-| Set the menu's appearance variant. Default
+[`M3e.Value.standard`](M3e-Value#standard).
 -}
-menuVariant : Variant -> Option msg
+menuVariant : Variants -> Option msg
 menuVariant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -433,7 +438,7 @@ view req opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
                 , Just (Node.property "submenu" (Encode.bool c.submenu))
-                , Maybe.map (\v -> Node.rawAttr (CemMenu.variant (toCemVariant v))) c.variant
+                , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                 , Maybe.map (\px -> Node.rawAttr (CemMenu.positionX (toCemPositionX px))) c.positionX
                 , Maybe.map (\py -> Node.rawAttr (CemMenu.positionY (toCemPositionY py))) c.positionY
                 , Maybe.map
@@ -495,7 +500,7 @@ defaultRadioConfig =
 type alias ContainerConfig msg =
     { id : Maybe String
     , submenu : Bool
-    , variant : Maybe Variant
+    , variant : Maybe Variants
     , positionX : Maybe PositionX
     , positionY : Maybe PositionY
     , onToggle : Maybe (Bool -> msg)
@@ -524,16 +529,6 @@ itemChildren leadingIcon trailingIcon label =
         , Just (Node.text label)
         , Maybe.map (\i -> Node.withSlot "trailing-icon" (Element.toNode i)) trailingIcon
         ]
-
-
-toCemVariant : Variant -> CemMenu.Variant
-toCemVariant v =
-    case v of
-        Standard ->
-            CemMenu.Standard
-
-        Vibrant ->
-            CemMenu.Vibrant
 
 
 toCemPositionX : PositionX -> CemMenu.PositionX

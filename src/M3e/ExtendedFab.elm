@@ -1,6 +1,6 @@
 module M3e.ExtendedFab exposing
     ( view
-    , Option, Variant(..)
+    , Option
     , size, lowered, disabled, onClick, href, target, rel, download
     )
 
@@ -22,7 +22,7 @@ Spec (per docs/CONVENTIONS.md):
   - Tag: extendedFab
 
 @docs view
-@docs Option, Variant
+@docs Option
 @docs size, lowered, disabled, onClick, href, target, rel, download
 
 -}
@@ -38,16 +38,19 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
+{-| FAB variant — seven M3 color roles, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. A required field of [`view`](#view).
 -}
-type Variant
-    = Primary
-    | PrimaryContainer
-    | Secondary
-    | SecondaryContainer
-    | Tertiary
-    | TertiaryContainer
-    | Surface
+type alias Variants =
+    Value
+        { primary : Supported
+        , primaryContainer : Supported
+        , secondary : Supported
+        , secondaryContainer : Supported
+        , tertiary : Supported
+        , tertiaryContainer : Supported
+        , surface : Supported
+        }
 
 
 {-| FAB sizes (`small`, `medium`, `large`; default `medium`), supplied as
@@ -138,7 +141,7 @@ download =
 {-| Render the extended FAB with its required `icon`, `label`, and `variant`.
 -}
 view :
-    { icon : String, label : String, variant : Variant }
+    { icon : String, label : String, variant : Variants }
     -> List (Option msg)
     -> Element { s | extendedFab : Supported } msg
 view req opts =
@@ -159,7 +162,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-fab"
             (List.filterMap identity
-                [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
+                [ Just (Node.attribute "variant" (Value.toString req.variant))
                 , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.property "extended" (Encode.bool True))
                 , Just (Node.property "lowered" (Encode.bool c.lowered))
@@ -175,28 +178,3 @@ view req opts =
             , Node.withSlot "label" (Node.element "span" [] [ Node.text req.label ])
             ]
         )
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Primary ->
-            Cem.Primary
-
-        PrimaryContainer ->
-            Cem.PrimaryContainer
-
-        Secondary ->
-            Cem.Secondary
-
-        SecondaryContainer ->
-            Cem.SecondaryContainer
-
-        Tertiary ->
-            Cem.Tertiary
-
-        TertiaryContainer ->
-            Cem.TertiaryContainer
-
-        Surface ->
-            Cem.Surface

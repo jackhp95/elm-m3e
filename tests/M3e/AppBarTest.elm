@@ -38,7 +38,7 @@ suite =
             \_ ->
                 AppBar.view
                     [ AppBar.title
-                        (Heading.view { label = "My App", variant = Heading.Title } [])
+                        (Heading.view { label = "My App", variant = Value.title } [])
                     ]
                     |> Element.toNode
                     |> Node.childrenOf
@@ -49,7 +49,7 @@ suite =
             \_ ->
                 AppBar.view
                     [ AppBar.subtitle
-                        (Heading.view { label = "Dashboard", variant = Heading.Label } [])
+                        (Heading.view { label = "Dashboard", variant = Value.label } [])
                     ]
                     |> Element.toNode
                     |> Node.childrenOf

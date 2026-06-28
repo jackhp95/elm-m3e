@@ -1,6 +1,6 @@
 module M3e.Fab exposing
     ( view
-    , Option, Variant(..), ButtonType(..)
+    , Option, ButtonType(..)
     , variant, size, lowered, disabled, onClick, href, target, rel, download, label
     , formType, name, value
     )
@@ -29,7 +29,7 @@ Spec (per docs/CONVENTIONS.md):
   - Tag: m3e-fab
 
 @docs view
-@docs Option, Variant, ButtonType
+@docs Option, ButtonType
 @docs variant, size, lowered, disabled, onClick, href, target, rel, download, label
 @docs formType, name, value
 
@@ -46,16 +46,19 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
+{-| FAB variant — seven M3 color roles (default `primaryContainer`), supplied
+as shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Variant
-    = Primary
-    | PrimaryContainer
-    | Secondary
-    | SecondaryContainer
-    | Tertiary
-    | TertiaryContainer
-    | Surface
+type alias Variants =
+    Value
+        { primary : Supported
+        , primaryContainer : Supported
+        , secondary : Supported
+        , secondaryContainer : Supported
+        , tertiary : Supported
+        , tertiaryContainer : Supported
+        , surface : Supported
+        }
 
 
 {-| FAB sizes (`small`, `medium`, `large`; default `medium`), supplied as
@@ -70,7 +73,7 @@ type alias Sizes =
 
 
 type alias Config msg =
-    { variant : Variant
+    { variant : Variants
     , size : Sizes
     , lowered : Bool
     , disabled : Bool
@@ -102,9 +105,10 @@ type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Set the FAB variant (one of the seven M3 color roles). Default `PrimaryContainer`.
+{-| Set the FAB variant (one of the seven M3 color roles). Default
+[`M3e.Value.primaryContainer`](M3e-Value#primaryContainer).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -211,7 +215,7 @@ view req opts =
         c : Config msg
         c =
             Internal.applyOptions opts
-                { variant = PrimaryContainer
+                { variant = Value.primaryContainer
                 , size = Value.medium
                 , lowered = False
                 , disabled = False
@@ -230,7 +234,7 @@ view req opts =
         (Node.element "m3e-fab"
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
-                , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
+                , Just (Node.attribute "variant" (Value.toString c.variant))
                 , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.property "lowered" (Encode.bool c.lowered))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
@@ -264,28 +268,3 @@ toTypeString t =
 
         Button ->
             "button"
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Primary ->
-            Cem.Primary
-
-        PrimaryContainer ->
-            Cem.PrimaryContainer
-
-        Secondary ->
-            Cem.Secondary
-
-        SecondaryContainer ->
-            Cem.SecondaryContainer
-
-        Tertiary ->
-            Cem.Tertiary
-
-        TertiaryContainer ->
-            Cem.TertiaryContainer
-
-        Surface ->
-            Cem.Surface

@@ -1,6 +1,6 @@
 module M3e.SplitButton exposing
     ( view
-    , Option, Variant(..)
+    , Option
     , variant, size, disabled
     )
 
@@ -29,12 +29,11 @@ port emits the correct element types by constructing the slot children via
 `M3e.Button.view` and a hand-built `<m3e-icon-button>` node respectively.
 
 @docs view
-@docs Option, Variant
+@docs Option
 @docs variant, size, disabled
 
 -}
 
-import Cem.M3e.SplitButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
@@ -45,13 +44,18 @@ import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Value)
 
 
-{-| Appearance variant (default `Filled`).
+{-| Appearance variant (default `filled`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens. The variant is forwarded verbatim to the
+leading `<m3e-button>`, so the full button variant row is accepted.
 -}
-type Variant
-    = Elevated
-    | Filled
-    | Tonal
-    | Outlined
+type alias Variants =
+    Value
+        { elevated : Supported
+        , filled : Supported
+        , tonal : Supported
+        , outlined : Supported
+        , text : Supported
+        }
 
 
 {-| Button sizes — `extraSmall` through `extraLarge` (default `small`),
@@ -76,9 +80,10 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the appearance variant (default `Filled`).
+{-| Set the appearance variant (default
+[`M3e.Value.filled`](M3e-Value#filled)).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -101,7 +106,7 @@ disabled =
 
 
 type alias Config =
-    { variant : Variant
+    { variant : Variants
     , size : Sizes
     , disabled : Bool
     }
@@ -118,7 +123,7 @@ supplied by the caller via `trailingContent`.
         , onPrimaryClick = SendMessage
         , onTriggerClick = ScheduleSend
         }
-        [ SplitButton.variant SplitButton.Filled ]
+        [ SplitButton.variant M3e.Value.filled ]
 
 To also open a menu from the trailing button, add `Menu.triggerFor` alongside
 the icon:
@@ -142,13 +147,13 @@ view req opts =
     let
         c : Config
         c =
-            Internal.applyOptions opts { variant = Filled, size = Value.small, disabled = False }
+            Internal.applyOptions opts { variant = Value.filled, size = Value.small, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
         leadingButton : Node msg
         leadingButton =
             Button.view
-                { label = req.label, variant = toButtonVariant c.variant }
+                { label = req.label, variant = c.variant }
                 (List.filterMap identity
                     [ Just (Button.onClick req.onPrimaryClick)
                     , if c.disabled then
@@ -176,40 +181,8 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-split-button"
-            [ Node.rawAttr (Cem.variant (toCemVariant c.variant))
+            [ Node.attribute "variant" (Value.toString c.variant)
             , Node.attribute "size" (Value.toString c.size)
             ]
             [ leadingButton, trailingButton ]
         )
-
-
-toButtonVariant : Variant -> Button.Variant
-toButtonVariant v =
-    case v of
-        Elevated ->
-            Button.Elevated
-
-        Filled ->
-            Button.Filled
-
-        Tonal ->
-            Button.Tonal
-
-        Outlined ->
-            Button.Outlined
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Elevated ->
-            Cem.Elevated
-
-        Filled ->
-            Cem.Filled
-
-        Tonal ->
-            Cem.Tonal
-
-        Outlined ->
-            Cem.Outlined

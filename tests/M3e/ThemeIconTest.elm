@@ -4,6 +4,7 @@ import Expect
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
 import M3e.ThemeIcon as ThemeIcon
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -58,12 +59,12 @@ suite =
                     |> Expect.equal Nothing
         , test "variant TonalSpot sets attribute to \"tonal-spot\"" <|
             \_ ->
-                node [ ThemeIcon.variant ThemeIcon.TonalSpot ]
+                node [ ThemeIcon.variant Value.tonalSpot ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "tonal-spot")
         , test "variant FruitSalad sets attribute to \"fruit-salad\"" <|
             \_ ->
-                node [ ThemeIcon.variant ThemeIcon.FruitSalad ]
+                node [ ThemeIcon.variant Value.fruitSalad ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "fruit-salad")
         , test "variant is absent by default" <|

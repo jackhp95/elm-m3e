@@ -6,6 +6,7 @@ import M3e.Button as Button
 import M3e.Disclosure as Disclosure
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -96,7 +97,7 @@ suite =
             \_ ->
                 sectionNode
                     [ Disclosure.sectionActions
-                        [ Button.view { label = "Learn more", variant = Button.Text } [] ]
+                        [ Button.view { label = "Learn more", variant = Value.text } [] ]
                     ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "actions")

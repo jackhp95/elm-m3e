@@ -1,5 +1,5 @@
 module M3e.Button exposing
-    ( Option, Variant(..), Shape(..), ButtonType(..)
+    ( Option, Shape(..), ButtonType(..)
     , view
     , size, shape, disabled, toggle, selected, onClick, href, target, rel, download
     , leadingIcon, trailingIcon, selectedIcon, selectedLabel
@@ -35,7 +35,7 @@ per ADR 0006 / the prior NoActionlessButton design).
 
 # Types
 
-@docs Option, Variant, Shape, ButtonType
+@docs Option, Shape, ButtonType
 
 @docs view
 
@@ -58,15 +58,18 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| Button style — `Elevated`, `Filled`, `Tonal`, `Outlined`, or `Text`.
-Supplied as a required field of [`view`](#view).
+{-| Button style — `elevated`, `filled`, `tonal`, `outlined`, or `text`,
+supplied as shared [`M3e.Value`](M3e-Value) tokens. A required field of
+[`view`](#view).
 -}
-type Variant
-    = Elevated
-    | Filled
-    | Tonal
-    | Outlined
-    | Text
+type alias Variants =
+    Value
+        { elevated : Supported
+        , filled : Supported
+        , tonal : Supported
+        , outlined : Supported
+        , text : Supported
+        }
 
 
 {-| The sizes this button supports, from `extraSmall` to `extraLarge`
@@ -271,7 +274,7 @@ type alias Config msg =
 {-| Render the button. The required `label` is the visible text and the
 accessible name; `variant` selects the M3 button style.
 -}
-view : { label : String, variant : Variant } -> List (Option msg) -> Element { s | button : Supported } msg
+view : { label : String, variant : Variants } -> List (Option msg) -> Element { s | button : Supported } msg
 view req opts =
     let
         c : Config msg
@@ -299,7 +302,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-button"
             (List.filterMap identity
-                [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
+                [ Just (Node.attribute "variant" (Value.toString req.variant))
                 , Just (Node.attribute "size" (Value.toString c.size))
                 , Maybe.map (\v -> Node.rawAttr (Cem.shape (toCemShape v))) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
@@ -337,25 +340,6 @@ toTypeString t =
 
         Button ->
             "button"
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Elevated ->
-            Cem.Elevated
-
-        Filled ->
-            Cem.Filled
-
-        Tonal ->
-            Cem.Tonal
-
-        Outlined ->
-            Cem.Outlined
-
-        Text ->
-            Cem.Text
 
 
 toCemShape : Shape -> Cem.Shape

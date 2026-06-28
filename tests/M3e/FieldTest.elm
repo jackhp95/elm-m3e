@@ -6,6 +6,7 @@ import M3e.Element as Element exposing (Element)
 import M3e.Field as Field
 import M3e.Label as Label
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -71,7 +72,7 @@ suite =
                     , label = Label.fromHtml (Html.text "L")
                     , control = inputElement
                     }
-                    [ Field.variant Field.Filled ]
+                    [ Field.variant Value.filled ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "filled")
         , test "fix-#66: Outlined variant emits variant=outlined" <|
@@ -81,7 +82,7 @@ suite =
                     , label = Label.fromHtml (Html.text "L")
                     , control = inputElement
                     }
-                    [ Field.variant Field.Outlined ]
+                    [ Field.variant Value.outlined ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "outlined")
         ]

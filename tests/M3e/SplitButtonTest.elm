@@ -102,7 +102,7 @@ suite =
                     |> Expect.equal (Just "true")
         , test "variant option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ SplitButton.variant SplitButton.Outlined ]
+                node [ SplitButton.variant Value.outlined ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
 

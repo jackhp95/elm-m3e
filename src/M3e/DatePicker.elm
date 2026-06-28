@@ -1,5 +1,5 @@
 module M3e.DatePicker exposing
-    ( Option, StartView(..), Variant(..)
+    ( Option, StartView(..)
     , id, date, variant, range, rangeStart, rangeEnd, minDate, maxDate, clearable, label
     , confirmLabel, dismissLabel, startAt, startView, onChange
     , view
@@ -42,7 +42,7 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 
 # Types
 
-@docs Option, StartView, Variant
+@docs Option, StartView
 
 
 # Options
@@ -61,23 +61,27 @@ import M3e.Attr as Attr
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| Appearance of the picker panel.
+{-| Appearance of the picker panel, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
-  - `Auto` — the element picks `Docked` or `Modal` based on viewport size.
-  - `Docked` — the calendar anchors beneath the text field.
-  - `Modal` — the calendar opens as a centered overlay.
+  - `auto` — the element picks `docked` or `modal` based on viewport size.
+  - `docked` — the calendar anchors beneath the text field.
+  - `modal` — the calendar opens as a centered overlay.
 
 -}
-type Variant
-    = Auto
-    | Docked
-    | Modal
+type alias Variants =
+    Value
+        { auto : Supported
+        , docked : Supported
+        , modal : Supported
+        }
 
 
 {-| Which view the embedded calendar opens to.
@@ -97,7 +101,7 @@ type alias Option msg =
 type alias Config msg =
     { id : Maybe String
     , date : Maybe String
-    , variant : Maybe Variant
+    , variant : Maybe Variants
     , range : Maybe Bool
     , rangeStart : Maybe String
     , rangeEnd : Maybe String
@@ -153,7 +157,7 @@ date s =
 
 {-| Choose the appearance variant.
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -262,7 +266,7 @@ onChange f =
     M3e.DatePicker.view
         [ M3e.DatePicker.label "Visit date"
         , M3e.DatePicker.minDate todayIso
-        , M3e.DatePicker.variant M3e.DatePicker.Docked
+        , M3e.DatePicker.variant M3e.Value.docked
         , M3e.DatePicker.onChange DateSelected
         ]
 
@@ -280,7 +284,7 @@ view opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 , Maybe.map (Node.attribute "date") c.date
                 , Maybe.map
-                    (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v)))
+                    (\v -> Node.attribute "variant" (Value.toString v))
                     c.variant
                 , Maybe.map
                     (\b -> Node.property "range" (Encode.bool b))
@@ -310,21 +314,6 @@ view opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-{-| Translate the local `Variant` to its `Cem.M3e.Datepicker` counterpart.
--}
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Auto ->
-            Cem.Auto
-
-        Docked ->
-            Cem.Docked
-
-        Modal ->
-            Cem.Modal
 
 
 {-| Translate the local `StartView` to its `Cem.M3e.Datepicker` counterpart.

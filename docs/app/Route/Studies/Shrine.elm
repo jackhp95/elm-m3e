@@ -26,19 +26,17 @@ Real product UX:
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
+import Cem.M3e.Shape
 import Dict exposing (Dict)
 import Effect exposing (Effect)
 import Head
 import Head.Seo as Seo
 import Html exposing (div, span, text)
 import Html.Attributes exposing (attribute, class)
-import Html.Attributes
 import Html.Events
 import Json.Decode as Decode
 import Layout
-import Cem.M3e.Shape
 import M3e.AppBar as AppBar
 import M3e.Badge as Badge
 import M3e.BottomSheet as BottomSheet
@@ -49,13 +47,13 @@ import M3e.Chip as Chip
 import M3e.ChipSet as ChipSet
 import M3e.Dialog as Dialog
 import M3e.Divider as Divider
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.IconButton as IconButton
 import M3e.List as L
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node exposing (Node)
-import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
 import M3e.Shape as Shape
@@ -63,6 +61,7 @@ import M3e.Skeleton as Skeleton
 import M3e.Slide as Slide
 import M3e.Slider as Slider
 import M3e.Snackbar as Snackbar
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import Process
@@ -618,7 +617,7 @@ viewAppBar model =
         , AppBar.leading
             (IconButton.view { icon = "menu", ariaLabel = "Menu" } [])
         , AppBar.title
-            (Heading.view { label = "Shrine", variant = Heading.Title } [])
+            (Heading.view { label = "Shrine", variant = Value.title } [])
         , AppBar.trailing
             [ IconButton.view { icon = "search", ariaLabel = "Search" } []
             , cartElem
@@ -715,8 +714,10 @@ viewControls model =
             , viewModeControl
             ]
         , Layout.div "max-w-md"
-            [ Node.raw (span [ class "text-label-md text-on-surface-variant" ]
-                [ text ("Up to " ++ formatPrice model.maxPrice) ])
+            [ Node.raw
+                (span [ class "text-label-md text-on-surface-variant" ]
+                    [ text ("Up to " ++ formatPrice model.maxPrice) ]
+                )
             , priceSlider
             ]
         ]
@@ -728,7 +729,7 @@ viewResultsBar _ filtered =
         [ Icon.view { name = "inventory_2" } [] |> Element.toNode
         , Heading.view
             { label = String.fromInt (List.length filtered) ++ " products"
-            , variant = Heading.Title
+            , variant = Value.title
             }
             [ Heading.size Value.small
             , Heading.level 2
@@ -846,7 +847,7 @@ viewProductCard model product =
         body =
             Layout.div "flex flex-col gap-2"
                 [ Layout.div "flex items-start justify-between gap-2"
-                    [ Heading.view { label = product.name, variant = Heading.Title }
+                    [ Heading.view { label = product.name, variant = Value.title }
                         [ Heading.size Value.medium
                         , Heading.level 3
                         ]
@@ -854,7 +855,7 @@ viewProductCard model product =
                     , favoriteButton
                     ]
                 , Layout.span "text-primary"
-                    [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
+                    [ Heading.view { label = formatPrice product.price, variant = Value.title }
                         [ Heading.size Value.small
                         , Heading.level 4
                         ]
@@ -863,7 +864,7 @@ viewProductCard model product =
                 ]
     in
     Card.view
-        [ Card.variant Card.Elevated
+        [ Card.variant Value.elevated
         , Card.media
             (Element.fromNode
                 (Node.element "div"
@@ -877,7 +878,7 @@ viewProductCard model product =
             )
         , Card.body [ Element.fromNode body ]
         , Card.actions
-            [ Button.view { label = "Add to bag", variant = Button.Filled }
+            [ Button.view { label = "Add to bag", variant = Value.filled }
                 [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" } [])
                 , Button.onClick (AddedToBag product.id 1)
                 ]
@@ -930,7 +931,7 @@ viewCartSheet model =
 
         header =
             Layout.div "flex items-center justify-between"
-                [ Heading.view { label = "Your bag", variant = Heading.Headline }
+                [ Heading.view { label = "Your bag", variant = Value.headline }
                     [ Heading.size Value.small
                     , Heading.level 2
                     ]
@@ -970,12 +971,12 @@ viewCartSheet model =
         , BottomSheet.handle True
         , BottomSheet.header [ Element.fromNode header ]
         , BottomSheet.actions
-            [ Button.view { label = "Checkout", variant = Button.Filled }
+            [ Button.view { label = "Checkout", variant = Value.filled }
                 [ Button.leadingIcon (Icon.view { name = "lock" } [])
                 , Button.disabled (List.isEmpty items)
                 , Button.onClick CartClosed
                 ]
-            , Button.view { label = "Keep shopping", variant = Button.Text }
+            , Button.view { label = "Keep shopping", variant = Value.text }
                 [ Button.onClick CartClosed ]
             ]
         ]
@@ -1084,17 +1085,17 @@ viewDetailDialog model =
                 buyActions =
                     ButtonGroup.view
                         { buttons =
-                            [ Button.view { label = "Buy now", variant = Button.Filled }
+                            [ Button.view { label = "Buy now", variant = Value.filled }
                                 [ Button.leadingIcon (Icon.view { name = "bolt" } [])
                                 , Button.onClick (AddedToBag product.id qty)
                                 ]
-                            , Button.view { label = "Add to bag", variant = Button.Tonal }
+                            , Button.view { label = "Add to bag", variant = Value.tonal }
                                 [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" } [])
                                 , Button.onClick (AddedToBag product.id qty)
                                 ]
                             ]
                         }
-                        [ ButtonGroup.variant ButtonGroup.Connected ]
+                        [ ButtonGroup.variant Value.connected ]
                         |> Element.toNode
 
                 body =
@@ -1102,7 +1103,7 @@ viewDetailDialog model =
                         [ gallery
                         , Layout.div "flex items-center justify-between"
                             [ Layout.span "text-primary"
-                                [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
+                                [ Heading.view { label = formatPrice product.price, variant = Value.title }
                                     [ Heading.size Value.large
                                     , Heading.level 3
                                     ]
@@ -1126,7 +1127,7 @@ viewDetailDialog model =
                 , Dialog.onClose ProductClosed
                 , Dialog.dismissible True
                 , Dialog.actions
-                    [ Button.view { label = "Close", variant = Button.Text }
+                    [ Button.view { label = "Close", variant = Value.text }
                         [ Button.onClick ProductClosed ]
                     ]
                 ]

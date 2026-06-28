@@ -1,7 +1,7 @@
 module M3e.Toolbar exposing
     ( view
     , Option
-    , Shape(..), Variant(..)
+    , Shape(..)
     , elevated, vertical, shape, variant
     )
 
@@ -23,7 +23,7 @@ Spec (per docs/CONVENTIONS.md):
 
 @docs view
 @docs Option
-@docs Shape, Variant
+@docs Shape
 @docs elevated, vertical, shape, variant
 
 -}
@@ -33,6 +33,7 @@ import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| The shape of the toolbar corners. `Square` is the element default.
@@ -42,11 +43,14 @@ type Shape
     | Rounded
 
 
-{-| The appearance variant of the toolbar. `Standard` is the element default.
+{-| The appearance variant of the toolbar (`standard` or `vibrant`), supplied
+as shared [`M3e.Value`](M3e-Value) tokens. `standard` is the element default.
 -}
-type Variant
-    = Standard
-    | Vibrant
+type alias Variants =
+    Value
+        { standard : Supported
+        , vibrant : Supported
+        }
 
 
 {-| An option configuring the `<m3e-toolbar>` element.
@@ -77,9 +81,10 @@ shape s =
     Internal.option (\c -> { c | shape = s })
 
 
-{-| Set the appearance variant. Default `Standard`.
+{-| Set the appearance variant. Default
+[`M3e.Value.standard`](M3e-Value#standard).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -88,7 +93,7 @@ type alias Config =
     { elevated : Bool
     , vertical : Bool
     , shape : Shape
-    , variant : Variant
+    , variant : Variants
     }
 
 
@@ -97,7 +102,7 @@ defaultConfig =
     { elevated = False
     , vertical = False
     , shape = Square
-    , variant = Standard
+    , variant = Value.standard
     }
 
 
@@ -105,7 +110,7 @@ defaultConfig =
 
     M3e.Toolbar.view
         { content =
-            [ M3e.Button.view { label = "Save", variant = M3e.Button.Filled }
+            [ M3e.Button.view { label = "Save", variant = M3e.Value.filled }
                 [ M3e.Button.onClick Saved ]
                 |> M3e.Element.map identity
             ]
@@ -131,7 +136,7 @@ view req opts =
             [ Node.property "elevated" (Encode.bool c.elevated)
             , Node.property "vertical" (Encode.bool c.vertical)
             , Node.rawAttr (Cem.shape (toCemShape c.shape))
-            , Node.rawAttr (Cem.variant (toCemVariant c.variant))
+            , Node.attribute "variant" (Value.toString c.variant)
             ]
             (List.map Element.toNode req.content)
         )
@@ -145,13 +150,3 @@ toCemShape s =
 
         Rounded ->
             Cem.Rounded
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Standard ->
-            Cem.Standard
-
-        Vibrant ->
-            Cem.Vibrant

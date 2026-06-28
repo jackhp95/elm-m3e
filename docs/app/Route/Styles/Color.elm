@@ -1,6 +1,5 @@
 module Route.Styles.Color exposing (ActionData, Data, Model, Msg, route)
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -13,6 +12,7 @@ import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -89,14 +89,14 @@ swatch ( label, bg, on ) =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Color", variant = Heading.Display }
+    Heading.view { label = "Color", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 
 sectionHeading : String -> Node msg
 sectionHeading label =
-    Heading.view { label = label, variant = Heading.Headline }
+    Heading.view { label = label, variant = Value.headline }
         [ Heading.size Value.small, Heading.level 2 ]
         |> Element.toNode
 
@@ -144,8 +144,8 @@ view _ _ =
 forcedColorsCard : Node msg
 forcedColorsCard =
     Card.view
-        [ Card.variant Card.Outlined
-        , Card.headline (Heading.view { label = "Test it", variant = Heading.Title } [])
+        [ Card.variant Value.outlined
+        , Card.headline (Heading.view { label = "Test it", variant = Value.title } [])
         , Card.body
             [ Element.html
                 (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")

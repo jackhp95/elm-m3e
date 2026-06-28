@@ -4,6 +4,7 @@ import Expect
 import M3e.Element as Element
 import M3e.LoadingIndicator as LoadingIndicator
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -28,12 +29,12 @@ suite =
                     |> Expect.equal 0
         , test "variant option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                nodeWith [ LoadingIndicator.variant LoadingIndicator.Contained ]
+                nodeWith [ LoadingIndicator.variant Value.contained ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-loading-indicator")
         , test "uncontained variant does not crash" <|
             \_ ->
-                nodeWith [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
+                nodeWith [ LoadingIndicator.variant Value.uncontained ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-loading-indicator")
         ]

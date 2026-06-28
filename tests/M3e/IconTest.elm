@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -59,17 +60,17 @@ suite =
         -- Variant
         , test "variant Outlined emits variant=outlined" <|
             \_ ->
-                node "home" [ Icon.variant Icon.Outlined ]
+                node "home" [ Icon.variant Value.outlined ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "outlined")
         , test "variant Rounded emits variant=rounded" <|
             \_ ->
-                node "home" [ Icon.variant Icon.Rounded ]
+                node "home" [ Icon.variant Value.rounded ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "rounded")
         , test "variant Sharp emits variant=sharp" <|
             \_ ->
-                node "home" [ Icon.variant Icon.Sharp ]
+                node "home" [ Icon.variant Value.sharp ]
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "sharp")
 

@@ -1,7 +1,7 @@
 module M3e.Theme exposing
     ( view
     , Option
-    , Scheme(..), Variant(..), Contrast(..), Motion(..)
+    , Scheme(..), Contrast(..), Motion(..)
     , seedColor, scheme, variant, contrast, density, strongFocus, motion, onChange
     )
 
@@ -24,7 +24,7 @@ Spec (per docs/CONVENTIONS.md):
 
 @docs view
 @docs Option
-@docs Scheme, Variant, Contrast, Motion
+@docs Scheme, Contrast, Motion
 @docs seedColor, scheme, variant, contrast, density, strongFocus, motion, onChange
 
 -}
@@ -35,6 +35,7 @@ import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Color scheme — follows the OS light/dark preference (`Auto`), or is
@@ -46,18 +47,21 @@ type Scheme
     | Dark
 
 
-{-| Dynamic-color palette-generation strategy. Default `Neutral`.
+{-| Dynamic-color palette-generation strategy (default `neutral`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Variant
-    = Content
-    | Vibrant
-    | Expressive
-    | Monochrome
-    | Neutral
-    | TonalSpot
-    | Fidelity
-    | Rainbow
-    | FruitSalad
+type alias Variants =
+    Value
+        { content : Supported
+        , vibrant : Supported
+        , expressive : Supported
+        , monochrome : Supported
+        , neutral : Supported
+        , tonalSpot : Supported
+        , fidelity : Supported
+        , rainbow : Supported
+        , fruitSalad : Supported
+        }
 
 
 {-| Contrast level. Default `Standard`.
@@ -97,9 +101,9 @@ scheme s =
     Internal.option (\c -> { c | scheme = Just s })
 
 
-{-| Set the dynamic-color variant (default `Neutral`).
+{-| Set the dynamic-color variant (default `neutral`).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -144,7 +148,7 @@ onChange d =
 type alias Config msg =
     { seedColor : Maybe String
     , scheme : Maybe Scheme
-    , variant : Maybe Variant
+    , variant : Maybe Variants
     , contrast : Maybe Contrast
     , density : Maybe Float
     , strongFocus : Maybe Bool
@@ -177,7 +181,7 @@ view req opts =
             (List.filterMap identity
                 [ Maybe.map (\col -> Node.rawAttr (Cem.color col)) c.seedColor
                 , Maybe.map (\s -> Node.rawAttr (Cem.scheme (toCemScheme s))) c.scheme
-                , Maybe.map (\v -> Node.rawAttr (Cem.variant (toCemVariant v))) c.variant
+                , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                 , Maybe.map (\co -> Node.rawAttr (Cem.contrast (toCemContrast co))) c.contrast
                 , Maybe.map (\d -> Node.property "density" (Encode.float d)) c.density
                 , Maybe.map (\sf -> Node.property "strongFocus" (Encode.bool sf)) c.strongFocus
@@ -200,37 +204,6 @@ toCemScheme s =
 
         Dark ->
             Cem.Dark
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Content ->
-            Cem.Content
-
-        Vibrant ->
-            Cem.Vibrant
-
-        Expressive ->
-            Cem.VariantExpressive
-
-        Monochrome ->
-            Cem.Monochrome
-
-        Neutral ->
-            Cem.Neutral
-
-        TonalSpot ->
-            Cem.TonalSpot
-
-        Fidelity ->
-            Cem.Fidelity
-
-        Rainbow ->
-            Cem.Rainbow
-
-        FruitSalad ->
-            Cem.FruitSalad
 
 
 toCemContrast : Contrast -> Cem.Contrast

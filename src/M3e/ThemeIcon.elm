@@ -1,7 +1,7 @@
 module M3e.ThemeIcon exposing
     ( view
     , Option
-    , Scheme(..), Variant(..)
+    , Scheme(..)
     , color, scheme, variant
     )
 
@@ -18,7 +18,7 @@ Spec (per upstream CEM):
 
 @docs view
 @docs Option
-@docs Scheme, Variant
+@docs Scheme
 @docs color, scheme, variant
 
 -}
@@ -26,6 +26,7 @@ Spec (per upstream CEM):
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| The colour scheme rendered by the icon.
@@ -43,21 +44,24 @@ type Scheme
     | Light
 
 
-{-| The colour variant used to generate the theme palette.
+{-| The colour variant used to generate the theme palette, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
 Upstream: `variant` attribute on `<m3e-theme-icon>`, `ThemeVariant` type.
 
 -}
-type Variant
-    = Content
-    | Expressive
-    | Fidelity
-    | FruitSalad
-    | Monochrome
-    | Neutral
-    | Rainbow
-    | TonalSpot
-    | Vibrant
+type alias Variants =
+    Value
+        { content : Supported
+        , expressive : Supported
+        , fidelity : Supported
+        , fruitSalad : Supported
+        , monochrome : Supported
+        , neutral : Supported
+        , rainbow : Supported
+        , tonalSpot : Supported
+        , vibrant : Supported
+        }
 
 
 {-| Private configuration record.
@@ -65,7 +69,7 @@ type Variant
 type alias Config =
     { color : Maybe String
     , scheme : Maybe Scheme
-    , variant : Maybe Variant
+    , variant : Maybe Variants
     }
 
 
@@ -92,9 +96,9 @@ scheme s =
 
 
 {-| Set the colour variant of the preview (the `variant` attribute).
-Default `Neutral`.
+Default `neutral`.
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -104,7 +108,7 @@ variant v =
     M3e.ThemeIcon.view
         [ M3e.ThemeIcon.color "#6750A4"
         , M3e.ThemeIcon.scheme M3e.ThemeIcon.Dark
-        , M3e.ThemeIcon.variant M3e.ThemeIcon.TonalSpot
+        , M3e.ThemeIcon.variant M3e.Value.tonalSpot
         ]
 
 -}
@@ -124,7 +128,7 @@ view opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "color") c.color
                 , Maybe.map (\s -> Node.attribute "scheme" (schemeToString s)) c.scheme
-                , Maybe.map (\v -> Node.attribute "variant" (variantToString v)) c.variant
+                , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                 ]
             )
             []
@@ -142,34 +146,3 @@ schemeToString s =
 
         Light ->
             "light"
-
-
-variantToString : Variant -> String
-variantToString v =
-    case v of
-        Content ->
-            "content"
-
-        Expressive ->
-            "expressive"
-
-        Fidelity ->
-            "fidelity"
-
-        FruitSalad ->
-            "fruit-salad"
-
-        Monochrome ->
-            "monochrome"
-
-        Neutral ->
-            "neutral"
-
-        Rainbow ->
-            "rainbow"
-
-        TonalSpot ->
-            "tonal-spot"
-
-        Vibrant ->
-            "vibrant"

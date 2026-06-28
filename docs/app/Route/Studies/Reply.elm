@@ -28,7 +28,6 @@ search, composing, archiving) via `RouteBuilder.buildWithLocalState`.
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect exposing (Effect)
 import Head
@@ -44,6 +43,7 @@ import M3e.BottomSheet as BottomSheet
 import M3e.Button as Button
 import M3e.Checkbox as Checkbox
 import M3e.Divider as Divider
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.Fab as Fab
 import M3e.Heading as Heading
 import M3e.Icon as Icon
@@ -52,7 +52,6 @@ import M3e.Menu as Menu
 import M3e.NavigationBar as NavigationBar
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node exposing (Node)
-import M3e.Element as Element exposing (Element, Supported)
 import M3e.ScrollContainer as ScrollContainer
 import M3e.Search as Search
 import M3e.Snackbar as Snackbar
@@ -61,6 +60,7 @@ import M3e.SplitPane as SplitPane
 import M3e.TextField as TextField
 import M3e.Theme as Theme
 import M3e.Tooltip as Tooltip
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -461,7 +461,7 @@ viewApp model =
             ]
         }
         [ Theme.seedColor "#4F6354"
-        , Theme.variant Theme.Vibrant
+        , Theme.variant Value.vibrant
         , Theme.scheme Theme.Light
         ]
         |> Element.toNode
@@ -578,7 +578,8 @@ viewAppBar model =
         leadingElem =
             case model.selected of
                 Just _ ->
-                    Element.element { tag = "div" } []
+                    Element.element { tag = "div" }
+                        []
                         [ Node.element "div"
                             [ Node.attribute "class" "md:hidden" ]
                             [ Element.toNode
@@ -640,7 +641,7 @@ viewAppBar model =
         , AppBar.size Value.small
         , AppBar.leading leadingElem
         , AppBar.title
-            (Heading.view { label = appBarTitle model, variant = Heading.Title } [])
+            (Heading.view { label = appBarTitle model, variant = Value.title } [])
         , AppBar.trailing [ searchElem, compactSearchElem, notifElem, avatarElem ]
         ]
         |> Element.toNode
@@ -828,7 +829,8 @@ messageRow model message =
             , Node.raw (p [ class "mt-0.5 line-clamp-1 text-body-sm text-on-surface-variant" ] [ text message.preview ])
             ]
         , Layout.div "flex flex-col items-center gap-1"
-            [ Node.element "div" [ Node.rawAttr (attribute "id" starId) ]
+            [ Node.element "div"
+                [ Node.rawAttr (attribute "id" starId) ]
                 [ IconButton.view
                     { icon = "star"
                     , ariaLabel =
@@ -872,7 +874,7 @@ readingPane message =
             [ Element.fromNode
                 (Layout.div "flex flex-col gap-4 p-4 md:p-6"
                     [ Layout.div "flex items-start justify-between gap-3"
-                        [ Heading.view { label = message.subject, variant = Heading.Headline }
+                        [ Heading.view { label = message.subject, variant = Value.headline }
                             [ Heading.size Value.small
                             , Heading.level 2
                             ]
@@ -894,12 +896,12 @@ readingPane message =
                     , Node.raw (p [ class "whitespace-pre-line text-body-lg leading-relaxed text-on-surface" ] [ text message.body ])
                     , Divider.view [] |> Element.toNode
                     , Layout.div "flex flex-wrap gap-2"
-                        [ Button.view { label = "Reply", variant = Button.Filled }
+                        [ Button.view { label = "Reply", variant = Value.filled }
                             [ Button.leadingIcon (Icon.view { name = "reply" } [])
                             , Button.onClick OpenCompose
                             ]
                             |> Element.toNode
-                        , Button.view { label = "Forward", variant = Button.Tonal }
+                        , Button.view { label = "Forward", variant = Value.tonal }
                             [ Button.leadingIcon (Icon.view { name = "forward" } [])
                             , Button.onClick OpenCompose
                             ]
@@ -937,7 +939,8 @@ archiveButton =
             "reply-archive"
     in
     Layout.div "flex flex-col items-center"
-        [ Node.element "div" [ Node.rawAttr (attribute "id" anchor) ]
+        [ Node.element "div"
+            [ Node.rawAttr (attribute "id" anchor) ]
             [ IconButton.view { icon = "archive", ariaLabel = "Archive" }
                 [ IconButton.onClick ArchiveSelected ]
                 |> Element.toNode
@@ -948,7 +951,8 @@ archiveButton =
 
 overflowMenu : Node Msg
 overflowMenu =
-    Node.element "div" [ Node.rawAttr (attribute "id" "reply-overflow"), Node.rawAttr (class "relative") ]
+    Node.element "div"
+        [ Node.rawAttr (attribute "id" "reply-overflow"), Node.rawAttr (class "relative") ]
         [ IconButton.view { icon = "more_vert", ariaLabel = "More actions" }
             [ IconButton.extraContent [ Menu.triggerFor "reply-overflow-menu" ] ]
             |> Element.toNode
@@ -990,7 +994,7 @@ viewComposeFab model =
     Layout.div ("absolute bottom-20 right-4 z-10 md:bottom-6 md:right-6 " ++ compactHide)
         [ Fab.view { icon = "edit", ariaLabel = "Compose" }
             [ Fab.label "Compose"
-            , Fab.variant Fab.Primary
+            , Fab.variant Value.primary
             , Fab.onClick OpenCompose
             ]
             |> Element.toNode
@@ -1009,7 +1013,7 @@ viewCompose model =
         , BottomSheet.modal True
         , BottomSheet.handle True
         , BottomSheet.header
-            [ Heading.view { label = "New message", variant = Heading.Title }
+            [ Heading.view { label = "New message", variant = Value.title }
                 [ Heading.size Value.large
                 , Heading.level 2
                 ]
@@ -1023,7 +1027,7 @@ composeBody fields =
     Layout.div "flex flex-col gap-4 pt-2"
         [ TextField.view { label = "To" }
             [ TextField.id "reply-compose-to"
-            , TextField.variant TextField.Outlined
+            , TextField.variant Value.outlined
             , TextField.inputType TextField.Email
             , TextField.value fields.to
             , TextField.onInput SetComposeTo
@@ -1031,14 +1035,14 @@ composeBody fields =
             |> Element.toNode
         , TextField.view { label = "Subject" }
             [ TextField.id "reply-compose-subject"
-            , TextField.variant TextField.Outlined
+            , TextField.variant Value.outlined
             , TextField.value fields.subject
             , TextField.onInput SetComposeSubject
             ]
             |> Element.toNode
         , TextField.view { label = "Message" }
             [ TextField.id "reply-compose-body"
-            , TextField.variant TextField.Outlined
+            , TextField.variant Value.outlined
             , TextField.multiline True
             , TextField.rows 5
             , TextField.value fields.body
@@ -1046,7 +1050,7 @@ composeBody fields =
             ]
             |> Element.toNode
         , Layout.div "flex items-center justify-between gap-2"
-            [ Button.view { label = "Discard", variant = Button.Text }
+            [ Button.view { label = "Discard", variant = Value.text }
                 [ Button.onClick CloseCompose ]
                 |> Element.toNode
             , SplitButton.view
@@ -1056,7 +1060,7 @@ composeBody fields =
                 , onPrimaryClick = SendMessage
                 , onTriggerClick = ScheduleSend
                 }
-                [ SplitButton.variant SplitButton.Filled ]
+                [ SplitButton.variant Value.filled ]
                 |> Element.toNode
             ]
         ]

@@ -9,7 +9,6 @@ sidebar nav, so this page is just the hero + highlights content.
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -25,6 +24,7 @@ import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -104,7 +104,7 @@ hero =
             (p [ class "text-label-lg uppercase tracking-wide text-primary" ]
                 [ text "elm-m3e · m3e-builder" ]
             )
-        , Heading.view { label = "Type-safe Material 3 Expressive for Elm", variant = Heading.Display }
+        , Heading.view { label = "Type-safe Material 3 Expressive for Elm", variant = Value.display }
             [ Heading.size Value.small, Heading.level 1 ]
             |> Element.toNode
         , Node.raw
@@ -115,8 +115,8 @@ hero =
                 ]
             )
         , Layout.div "flex flex-wrap items-center gap-3 pt-2"
-            [ Button.view { label = "Get started", variant = Button.Filled } [ Button.href "/getting-started/installation" ] |> Element.toNode
-            , Button.view { label = "Browse the API reference", variant = Button.Outlined } [ Button.href "/reference" ] |> Element.toNode
+            [ Button.view { label = "Get started", variant = Value.filled } [ Button.href "/getting-started/installation" ] |> Element.toNode
+            , Button.view { label = "Browse the API reference", variant = Value.outlined } [ Button.href "/reference" ] |> Element.toNode
             ]
         , Layout.div "flex items-center gap-3 pt-4"
             [ Avatar.view { ariaLabel = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode
@@ -133,7 +133,7 @@ hero =
 
 sectionHeading : String -> Node msg
 sectionHeading label =
-    Heading.view { label = label, variant = Heading.Headline }
+    Heading.view { label = label, variant = Value.headline }
         [ Heading.size Value.medium, Heading.level 2 ]
         |> Element.toNode
 
@@ -159,8 +159,8 @@ highlights =
 highlightCard : String -> String -> String -> Node msg
 highlightCard iconName title body =
     Card.view
-        [ Card.variant Card.Outlined
-        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        [ Card.variant Value.outlined
+        , Card.headline (Heading.view { label = title, variant = Value.title } [])
         , Card.body
             [ Element.fromNode
                 (Layout.div "flex gap-3"
@@ -194,8 +194,8 @@ statusGrid =
 statusCard : String -> String -> Node msg
 statusCard title body =
     Card.view
-        [ Card.variant Card.Outlined
-        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        [ Card.variant Value.outlined
+        , Card.headline (Heading.view { label = title, variant = Value.title } [])
         , Card.body [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
         ]
         |> Element.toNode

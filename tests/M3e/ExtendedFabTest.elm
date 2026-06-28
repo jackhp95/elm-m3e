@@ -5,13 +5,14 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.ExtendedFab as ExtendedFab
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
 node : List (ExtendedFab.Option msg) -> Node msg
 node opts =
     ExtendedFab.view
-        { icon = "add", label = "Create note", variant = ExtendedFab.PrimaryContainer }
+        { icon = "add", label = "Create note", variant = Value.primaryContainer }
         opts
         |> Element.toNode
 

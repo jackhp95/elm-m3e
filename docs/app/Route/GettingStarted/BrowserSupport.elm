@@ -1,6 +1,5 @@
 module Route.GettingStarted.BrowserSupport exposing (ActionData, Data, Model, Msg, route)
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -13,6 +12,7 @@ import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -72,14 +72,14 @@ supportRow browser note =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Browser Support", variant = Heading.Display }
+    Heading.view { label = "Browser Support", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 
 sectionHeading : String -> Node msg
 sectionHeading label =
-    Heading.view { label = label, variant = Heading.Headline }
+    Heading.view { label = label, variant = Value.headline }
         [ Heading.size Value.small, Heading.level 2 ]
         |> Element.toNode
 
@@ -100,7 +100,7 @@ view _ _ =
             , Layout.section "space-y-3"
                 [ sectionHeading "Supported browsers"
                 , Card.view
-                    [ Card.variant Card.Outlined
+                    [ Card.variant Value.outlined
                     , Card.body
                         [ Element.fromNode
                             (Layout.ul "px-2"

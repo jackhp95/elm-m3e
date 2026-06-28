@@ -10,7 +10,6 @@ toggle through `M3e.SegmentedButton`.
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Browser.Events
 import Effect exposing (Effect)
@@ -29,6 +28,7 @@ import M3e.NavigationDrawer
 import M3e.Node as Node
 import M3e.SegmentedButton
 import M3e.Theme as Theme
+import M3e.Value as Value
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Ports
@@ -363,9 +363,9 @@ appShellBar model =
             [ M3e.AppBar.id "docs-app-bar"
             , M3e.AppBar.size Value.small
             , M3e.AppBar.title
-                (M3e.Heading.view { label = "elm-m3e", variant = M3e.Heading.Title } [])
+                (M3e.Heading.view { label = "elm-m3e", variant = Value.title } [])
             , M3e.AppBar.subtitle
-                (M3e.Heading.view { label = "Material 3 Expressive for Elm", variant = M3e.Heading.Label } [])
+                (M3e.Heading.view { label = "Material 3 Expressive for Elm", variant = Value.label } [])
             , M3e.AppBar.leading (menuButton model)
             , M3e.AppBar.trailing
                 [ schemeQuickToggle model
@@ -466,9 +466,9 @@ settingsPanel model =
     -- `left-2 right-2` resolve to a 24px-wide column — the "narrow" complaint.
     Html.div [ class "fixed left-2 right-2 top-14 z-40 sm:left-auto sm:right-2 sm:w-72" ]
         [ M3e.Card.view
-            [ M3e.Card.variant M3e.Card.Filled
+            [ M3e.Card.variant Value.filled
             , M3e.Card.headline
-                (M3e.Heading.view { label = "Theme settings", variant = M3e.Heading.Title } [])
+                (M3e.Heading.view { label = "Theme settings", variant = Value.title } [])
             , M3e.Card.body
                 [ Element.html (settingsBody model) ]
             ]

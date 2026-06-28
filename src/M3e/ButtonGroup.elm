@@ -1,5 +1,5 @@
 module M3e.ButtonGroup exposing
-    ( Option, Variant(..)
+    ( Option
     , view
     , variant, size, multi
     )
@@ -22,7 +22,7 @@ Spec (per docs/CONVENTIONS.md):
 
 # Types
 
-@docs Option, Variant
+@docs Option
 
 @docs view
 
@@ -33,7 +33,6 @@ Spec (per docs/CONVENTIONS.md):
 
 -}
 
-import Cem.M3e.ButtonGroup as Cem
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -41,11 +40,14 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| Group appearance variant.
+{-| Group appearance variant (`standard` or `connected`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 -}
-type Variant
-    = Standard
-    | Connected
+type alias Variants =
+    Value
+        { standard : Supported
+        , connected : Supported
+        }
 
 
 {-| Sizes applied to the whole group, supplied as shared
@@ -62,7 +64,7 @@ type alias Sizes =
 
 
 type alias Config =
-    { variant : Variant
+    { variant : Variants
     , size : Sizes
     , multi : Bool
     }
@@ -75,9 +77,10 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the group appearance variant (default `Standard`).
+{-| Set the group appearance variant (default
+[`M3e.Value.standard`](M3e-Value#standard)).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -114,23 +117,13 @@ view req opts =
         c : Config
         c =
             Internal.applyOptions opts
-                { variant = Standard, size = Value.small, multi = False }
+                { variant = Value.standard, size = Value.small, multi = False }
     in
     Internal.fromNode
         (Node.element "m3e-button-group"
-            [ Node.rawAttr (Cem.variant (toCemVariant c.variant))
+            [ Node.attribute "variant" (Value.toString c.variant)
             , Node.attribute "size" (Value.toString c.size)
             , Node.property "multi" (Encode.bool c.multi)
             ]
             (List.map Element.toNode req.buttons)
         )
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Standard ->
-            Cem.Standard
-
-        Connected ->
-            Cem.Connected

@@ -1,7 +1,7 @@
 module M3e.IconButton exposing
     ( view
     , Option
-    , Variant(..), Shape(..), Width(..), ButtonType(..)
+    , Shape(..), Width(..), ButtonType(..)
     , variant, size, shape, width
     , disabled, toggle, selected, onClick, onChange
     , href, target, rel, download
@@ -31,7 +31,7 @@ Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
 
 @docs view
 @docs Option
-@docs Variant, Shape, Width, ButtonType
+@docs Shape, Width, ButtonType
 @docs variant, size, shape, width
 @docs disabled, toggle, selected, onClick, onChange
 @docs href, target, rel, download
@@ -54,14 +54,16 @@ import M3e.Value as Value exposing (Value)
 -- TYPES ------------------------------------------------------------------
 
 
-{-| Visual style of the icon button: `Standard` (default), `Filled`, `Tonal`,
-or `Outlined`.
+{-| Visual style of the icon button: `standard` (default), `filled`, `tonal`,
+or `outlined`, supplied as shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Variant
-    = Standard
-    | Filled
-    | Tonal
-    | Outlined
+type alias Variants =
+    Value
+        { standard : Supported
+        , filled : Supported
+        , tonal : Supported
+        , outlined : Supported
+        }
 
 
 {-| Touch-target sizes of the icon button, from `extraSmall` to `extraLarge`,
@@ -106,9 +108,9 @@ type ButtonType
 -- SMART CONSTRUCTORS ----------------------------------------------------
 
 
-{-| Set the visual variant. Default `Standard`.
+{-| Set the visual variant. Default [`M3e.Value.standard`](M3e-Value#standard).
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -252,7 +254,7 @@ type alias Option msg =
 
 
 type alias Config msg =
-    { variant : Variant
+    { variant : Variants
     , size : Sizes
     , width : Width
     , shape : Maybe Shape
@@ -275,7 +277,7 @@ type alias Config msg =
 
 defaults : Config msg
 defaults =
-    { variant = Standard
+    { variant = Value.standard
     , size = Value.small
     , width = Default
     , shape = Nothing
@@ -305,7 +307,7 @@ defaults =
 text fallback).
 
     M3e.IconButton.view { icon = "settings", ariaLabel = "Settings" }
-        [ M3e.IconButton.variant M3e.IconButton.Filled
+        [ M3e.IconButton.variant M3e.Value.filled
         , M3e.IconButton.onClick OpenSettings
         ]
 
@@ -321,7 +323,7 @@ view req opts =
         (Node.element "m3e-icon-button"
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
-                , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
+                , Just (Node.attribute "variant" (Value.toString c.variant))
                 , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
                 , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
@@ -370,22 +372,6 @@ toTypeString t =
 
 
 -- CONVERTERS ------------------------------------------------------------
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Standard ->
-            Cem.Standard
-
-        Filled ->
-            Cem.Filled
-
-        Tonal ->
-            Cem.Tonal
-
-        Outlined ->
-            Cem.Outlined
 
 
 toCemShape : Shape -> Cem.Shape

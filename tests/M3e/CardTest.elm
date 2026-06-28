@@ -8,6 +8,7 @@ import M3e.Card as Card
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Heading as Heading
 import M3e.Node as Node
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -33,7 +34,7 @@ suite =
                     |> Expect.equal 2
         , test "variant option emits variant attribute" <|
             \_ ->
-                Card.view [ Card.variant Card.Elevated ]
+                Card.view [ Card.variant Value.elevated ]
                     |> Element.toNode
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "elevated")
@@ -49,7 +50,7 @@ suite =
             \_ ->
                 Card.view
                     [ Card.headline
-                        (Heading.view { label = "Title", variant = Heading.Title } [])
+                        (Heading.view { label = "Title", variant = Value.title } [])
                     ]
                     |> Element.toNode
                     |> Node.childrenOf
@@ -60,7 +61,7 @@ suite =
             \_ ->
                 Card.view
                     [ Card.actions
-                        [ Button.view { label = "OK", variant = Button.Filled } [] ]
+                        [ Button.view { label = "OK", variant = Value.filled } [] ]
                     ]
                     |> Element.toNode
                     |> Node.childrenOf
@@ -85,9 +86,9 @@ suite =
         , test "headline + body gives 2 children (content-div + body item)" <|
             \_ ->
                 Card.view
-                    [ Card.variant Card.Outlined
+                    [ Card.variant Value.outlined
                     , Card.headline
-                        (Heading.view { label = "Title", variant = Heading.Title } [])
+                        (Heading.view { label = "Title", variant = Value.title } [])
                     , Card.body [ htmlText "body" ]
                     ]
                     |> Element.toNode

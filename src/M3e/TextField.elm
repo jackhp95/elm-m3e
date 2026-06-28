@@ -1,7 +1,7 @@
 module M3e.TextField exposing
     ( view
     , Option
-    , Variant(..), InputType(..)
+    , InputType(..)
     , id, value, placeholder, variant, inputType, disabled, required, readonly, onInput, prefix, suffix, hint, error, multiline, rows, autosize
     )
 
@@ -26,33 +26,36 @@ via the `for` attribute rather than by wrapping it.
 
 @docs view
 @docs Option
-@docs Variant, InputType
+@docs InputType
 @docs id, value, placeholder, variant, inputType, disabled, required, readonly, onInput, prefix, suffix, hint, error, multiline, rows, autosize
 
 -}
 
-import Cem.M3e.FormField as CemFF
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| Visual style of the field container.
+{-| Visual style of the field container, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
-  - `Filled` — higher-emphasis, floating label.
-  - `Outlined` — bordered; useful in dense or visually busy layouts.
+  - `filled` — higher-emphasis, floating label.
+  - `outlined` — bordered; useful in dense or visually busy layouts.
 
 -}
-type Variant
-    = Filled
-    | Outlined
+type alias Variants =
+    Value
+        { filled : Supported
+        , outlined : Supported
+        }
 
 
 {-| Input mode — maps to the native `<input type=…>` attribute for single-line
@@ -76,7 +79,7 @@ type alias Config msg =
     { id : Maybe String
     , value : Maybe String
     , placeholder : Maybe String
-    , variant : Maybe Variant
+    , variant : Maybe Variants
     , inputType : InputType
     , disabled : Bool
     , required : Bool
@@ -140,9 +143,9 @@ placeholder s =
     Internal.option (\c -> { c | placeholder = Just s })
 
 
-{-| Choose `Filled` or `Outlined` appearance.
+{-| Choose `filled` or `outlined` appearance.
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -248,7 +251,7 @@ autosize bounds =
 {-| Render the text field.
 
     M3e.TextField.view { label = "Email" }
-        [ M3e.TextField.variant M3e.TextField.Outlined
+        [ M3e.TextField.variant M3e.Value.outlined
         , M3e.TextField.inputType M3e.TextField.Email
         , M3e.TextField.value model.email
         , M3e.TextField.onInput EmailChanged
@@ -278,7 +281,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-form-field"
             (List.filterMap identity
-                [ Maybe.map (\v -> Node.attribute "variant" (CemFF.variantToString (toCemVariant v))) c.variant
+                [ Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                 ]
             )
             (List.filterMap identity
@@ -362,18 +365,6 @@ autosizeNode fieldId bounds =
 slugify : String -> String
 slugify =
     Internal.slugify "m3etf-"
-
-
-{-| Translate the local `Variant` to its `Cem.M3e.FormField` counterpart.
--}
-toCemVariant : Variant -> CemFF.Variant
-toCemVariant v =
-    case v of
-        Filled ->
-            CemFF.Filled
-
-        Outlined ->
-            CemFF.Outlined
 
 
 inputTypeString : InputType -> String

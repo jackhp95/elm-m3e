@@ -6,7 +6,6 @@ Accurate by construction — module overviews plus every exposed member's
 signature and doc comment.
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import BackendTask.File
 import FatalError exposing (FatalError)
@@ -21,6 +20,7 @@ import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -107,7 +107,7 @@ head _ =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Component reference", variant = Heading.Display }
+    Heading.view { label = "Component reference", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
@@ -179,7 +179,7 @@ memberRow m =
                 m.name ++ " : " ++ m.signature
     in
     Card.view
-        [ Card.variant Card.Outlined
+        [ Card.variant Value.outlined
         , Card.body
             [ Element.fromNode
                 (Node.element "div"

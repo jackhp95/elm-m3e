@@ -1,7 +1,7 @@
 module M3e.List exposing
     ( list, actionList, selectionList
     , item, actionItem, option, divider, expandable
-    , Variant(..), Option, SelectionOption
+    , Option, SelectionOption
     , StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption
     , id, variant
     , staticLeading, staticTrailing, staticOverline, staticSupporting
@@ -41,7 +41,7 @@ Spec (per docs/CONVENTIONS.md):
 
 ## Types
 
-@docs Variant, Option, SelectionOption
+@docs Option, SelectionOption
 @docs StaticItemOption, ActionItemOption, OptionItemOption, ExpandableItemOption
 
 
@@ -77,27 +77,28 @@ Spec (per docs/CONVENTIONS.md):
 
 -}
 
-import Cem.M3e.ActionList as CemActionList
-import Cem.M3e.List as CemList
 import Cem.M3e.ListAction as CemListAction
-import Cem.M3e.SelectionList as CemSelectionList
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Visual style of a list container. Default `Standard`.
+{-| Visual style of a list container (default `standard`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens (`standard` or `segmented`).
 -}
-type Variant
-    = Standard
-    | Segmented
+type alias Variants =
+    Value
+        { standard : Supported
+        , segmented : Supported
+        }
 
 
 
@@ -351,9 +352,9 @@ id =
     Attr.id
 
 
-{-| Set the visual style of the list. Default `Standard`.
+{-| Set the visual style of the list. Default `standard`.
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -369,9 +370,9 @@ selectionId newId =
     Internal.option (\c -> { c | id = Just newId })
 
 
-{-| Set the visual style of the selection list. Default `Standard`.
+{-| Set the visual style of the selection list. Default `standard`.
 -}
-selectionVariant : Variant -> SelectionOption msg
+selectionVariant : Variants -> SelectionOption msg
 selectionVariant v =
     Internal.option (\c -> { c | variant = v })
 
@@ -593,7 +594,7 @@ list req opts =
         (Node.element "m3e-list"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , Just (Node.rawAttr (CemList.variant (toCemListVariant c.variant)))
+                , Just (Node.attribute "variant" (Value.toString c.variant))
                 ]
             )
             (List.map Element.toNode req.items)
@@ -628,7 +629,7 @@ actionList req opts =
         (Node.element "m3e-action-list"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , Just (Node.rawAttr (CemActionList.variant (toCemActionListVariant c.variant)))
+                , Just (Node.attribute "variant" (Value.toString c.variant))
                 ]
             )
             (List.map Element.toNode req.items)
@@ -666,7 +667,7 @@ selectionList req opts =
         (Node.element "m3e-selection-list"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , Just (Node.rawAttr (CemSelectionList.variant (toCemSelectionListVariant c.variant)))
+                , Just (Node.attribute "variant" (Value.toString c.variant))
                 , Just (Node.property "multi" (Encode.bool c.multi))
                 , Maybe.map (Node.attribute "name") c.name
                 , Just (Node.property "hideSelectionIndicator" (Encode.bool c.hideSelectionIndicator))
@@ -762,18 +763,18 @@ defaultExpandableConfig =
 
 type alias ContainerConfig =
     { id : Maybe String
-    , variant : Variant
+    , variant : Variants
     }
 
 
 defaultContainerConfig : ContainerConfig
 defaultContainerConfig =
-    { id = Nothing, variant = Standard }
+    { id = Nothing, variant = Value.standard }
 
 
 type alias SelectionConfig =
     { id : Maybe String
-    , variant : Variant
+    , variant : Variants
     , multi : Bool
     , name : Maybe String
     , hideSelectionIndicator : Bool
@@ -784,7 +785,7 @@ type alias SelectionConfig =
 defaultSelectionConfig : SelectionConfig
 defaultSelectionConfig =
     { id = Nothing
-    , variant = Standard
+    , variant = Value.standard
     , multi = False
     , name = Nothing
     , hideSelectionIndicator = False
@@ -809,33 +810,3 @@ decorationNodes leading overline supporting trailing headline =
         , Maybe.map (\s -> Node.element "span" [ Node.attribute "slot" "supporting-text" ] [ Node.text s ]) supporting
         , Maybe.map (\r -> Node.withSlot "trailing" (Element.toNode r)) trailing
         ]
-
-
-toCemListVariant : Variant -> CemList.Variant
-toCemListVariant v =
-    case v of
-        Standard ->
-            CemList.Standard
-
-        Segmented ->
-            CemList.Segmented
-
-
-toCemActionListVariant : Variant -> CemActionList.Variant
-toCemActionListVariant v =
-    case v of
-        Standard ->
-            CemActionList.Standard
-
-        Segmented ->
-            CemActionList.Segmented
-
-
-toCemSelectionListVariant : Variant -> CemSelectionList.Variant
-toCemSelectionListVariant v =
-    case v of
-        Standard ->
-            CemSelectionList.Standard
-
-        Segmented ->
-            CemSelectionList.Segmented

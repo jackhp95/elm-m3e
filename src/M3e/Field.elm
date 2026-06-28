@@ -1,5 +1,5 @@
 module M3e.Field exposing
-    ( Option, Variant(..)
+    ( Option
     , variant
     , view
     )
@@ -17,7 +17,7 @@ plus the `element` escape — so a real form control (or a custom element via
 
 # Types
 
-@docs Option, Variant
+@docs Option
 
 
 # Options
@@ -28,33 +28,36 @@ plus the `element` escape — so a real form control (or a custom element via
 
 -}
 
-import Cem.M3e.FormField as CemField
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Label as Label exposing (Label)
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| Visual variant for the field container.
+{-| Visual variant for the field container, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
-  - `Outlined` — default; field with an outline border.
-  - `Filled` — field with a filled background.
+  - `outlined` — default; field with an outline border.
+  - `filled` — field with a filled background.
 
 Upstream: `variant` attribute on `<m3e-form-field>`.
 CEM: `FormFieldVariant` — default `"outlined"`.
 
 -}
-type Variant
-    = Outlined
-    | Filled
+type alias Variants =
+    Value
+        { outlined : Supported
+        , filled : Supported
+        }
 
 
 type alias Config =
-    { variant : Maybe Variant }
+    { variant : Maybe Variants }
 
 
 {-| An opaque option for [`view`](#view).
@@ -67,12 +70,12 @@ type alias Option msg =
 -- OPTIONS ---------------------------------------------------------------------
 
 
-{-| Set the field variant (`Outlined` or `Filled`; default `Outlined`).
+{-| Set the field variant (`outlined` or `filled`; default `outlined`).
 
 Upstream: `variant` attribute on `<m3e-form-field>`.
 
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
 
@@ -111,7 +114,7 @@ view config opts =
     in
     Node.element "m3e-form-field"
         (List.filterMap identity
-            [ Maybe.map (\v -> Node.attribute "variant" (CemField.variantToString (toCemVariant v))) c.variant
+            [ Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
             ]
         )
         [ Node.element "label"
@@ -120,17 +123,3 @@ view config opts =
         , Element.toNode config.control
             |> Node.setAttribute "id" config.id
         ]
-
-
-
--- INTERNAL --------------------------------------------------------------------
-
-
-toCemVariant : Variant -> CemField.Variant
-toCemVariant v =
-    case v of
-        Outlined ->
-            CemField.Outlined
-
-        Filled ->
-            CemField.Filled

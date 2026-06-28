@@ -5,7 +5,6 @@ many `Ui.*` components working together. The five studies are interactive
 routes that the sidebar already links to; this page is the gallery.
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -19,6 +18,7 @@ import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -78,7 +78,7 @@ studies =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Studies", variant = Heading.Display }
+    Heading.view { label = "Studies", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
@@ -90,11 +90,11 @@ studyCard ( slug, title, body ) =
             "/studies/" ++ slug
     in
     Card.view
-        [ Card.variant Card.Elevated
-        , Card.headline (Heading.view { label = title, variant = Heading.Title } [])
+        [ Card.variant Value.elevated
+        , Card.headline (Heading.view { label = title, variant = Value.title } [])
         , Card.body [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
         , Card.actions
-            [ Button.view { label = "Open " ++ title, variant = Button.Filled }
+            [ Button.view { label = "Open " ++ title, variant = Value.filled }
                 [ Button.href studyHref
                 , Button.target "_blank"
                 , Button.rel "noreferrer noopener"

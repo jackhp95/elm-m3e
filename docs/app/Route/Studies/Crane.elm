@@ -15,8 +15,8 @@ filtering, favoriting, fare search, itinerary sheet) lives here.
 
 -}
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
+import Cem.M3e.Shape
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -24,7 +24,6 @@ import Head.Seo as Seo
 import Html exposing (div, p, section, span, text)
 import Html.Attributes exposing (attribute, class)
 import Html.Events
-import Cem.M3e.Shape
 import Layout
 import M3e.Badge as Badge
 import M3e.BottomSheet as BottomSheet
@@ -32,13 +31,13 @@ import M3e.Button as Button
 import M3e.Card as Card
 import M3e.DatePicker as DatePicker
 import M3e.Divider as Divider
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.FabMenu as FabMenu
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.IconButton as IconButton
 import M3e.LoadingIndicator as LoadingIndicator
 import M3e.Node as Node exposing (Node)
-import M3e.Element as Element exposing (Element, Supported)
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Select as Select
 import M3e.Shape as Shape
@@ -46,6 +45,7 @@ import M3e.Tabs as Tabs
 import M3e.Theme as Theme
 import M3e.TimePicker as TimePicker
 import M3e.Tooltip as Tooltip
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import Process
@@ -340,13 +340,15 @@ intro : Node Msg
 intro =
     Layout.section "space-y-3"
         [ Node.raw (p [ class "text-label-lg uppercase tracking-wide text-primary" ] [ text "Studies" ])
-        , Heading.view { label = "Crane", variant = Heading.Display }
+        , Heading.view { label = "Crane", variant = Value.display }
             [ Heading.size Value.small
             , Heading.level 1
             ]
             |> Element.toNode
-        , Node.raw (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-            [ text "An expressive travel app: switch between Fly, Sleep, and Eat, set your trip, search fares, and browse a scrolling row of featured destinations — all composed from elm-m3e components under their own Crane-purple theme." ])
+        , Node.raw
+            (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                [ text "An expressive travel app: switch between Fly, Sleep, and Eat, set your trip, search fares, and browse a scrolling row of featured destinations — all composed from elm-m3e components under their own Crane-purple theme." ]
+            )
         ]
 
 
@@ -371,7 +373,7 @@ craneApp model =
             ]
         }
         [ Theme.seedColor "#5D3FD3"
-        , Theme.variant Theme.Expressive
+        , Theme.variant Value.expressive
         , Theme.motion Theme.MotionExpressive
         ]
         |> Element.toNode
@@ -392,7 +394,7 @@ appHeader model =
                     }
                     [ Shape.name Cem.M3e.Shape.Sunny ]
                     |> Element.toNode
-                , Heading.view { label = "Crane", variant = Heading.Title }
+                , Heading.view { label = "Crane", variant = Value.title }
                     [ Heading.size Value.large
                     , Heading.level 2
                     ]
@@ -436,7 +438,7 @@ planTripMenu _ =
             , FabMenu.item { icon = "restaurant", label = "Restaurants", onClick = PlanTrip Eat }
             ]
         }
-        [ FabMenu.variant FabMenu.Primary
+        [ FabMenu.variant Value.primary
         , FabMenu.menuId "crane-plan-trip"
         ]
         |> Element.toNode
@@ -450,7 +452,7 @@ searchForm : Model -> Node Msg
 searchForm model =
     Layout.section "space-y-4 rounded-md-corner-large bg-surface-container-lowest p-4 sm:p-5"
         [ Layout.div "flex flex-wrap items-center justify-between gap-3"
-            [ Heading.view { label = "Find your trip", variant = Heading.Title }
+            [ Heading.view { label = "Find your trip", variant = Value.title }
                 [ Heading.size Value.medium
                 , Heading.level 3
                 ]
@@ -502,7 +504,8 @@ destinationField model =
                 , Node.rawAttr (Html.Events.onClick (SetQuery d.name))
                 ]
                 [ Icon.view { name = categoryIcon d.category } [] |> Element.toNode
-                , Node.element "span" [ Node.rawAttr (class "flex flex-col") ]
+                , Node.element "span"
+                    [ Node.rawAttr (class "flex flex-col") ]
                     [ Node.raw (span [ class "text-body-md text-on-surface" ] [ text d.name ])
                     , Node.raw (span [ class "text-body-sm text-on-surface-variant" ] [ text d.country ])
                     ]
@@ -649,7 +652,7 @@ dateTrigger { targetId, label, value, icon } =
 
 searchButton : Model -> Node Msg
 searchButton model =
-    Button.view { label = "Search fares", variant = Button.Filled }
+    Button.view { label = "Search fares", variant = Value.filled }
         [ Button.size Value.large
         , Button.leadingIcon (Icon.view { name = "travel_explore" } [])
         , Button.disabled model.searching
@@ -663,7 +666,7 @@ searchingIndicator =
     Layout.div "flex items-center gap-2 text-body-md text-on-surface-variant"
         [ Layout.span "inline-block size-6"
             [ LoadingIndicator.view
-                [ LoadingIndicator.variant LoadingIndicator.Uncontained ]
+                [ LoadingIndicator.variant Value.uncontained ]
                 |> Element.toNode
             ]
         , Node.text "Searching fares…"
@@ -681,7 +684,7 @@ featuredCarousel model =
             List.filter .featured destinations
     in
     Layout.section "space-y-3"
-        [ Heading.view { label = "Featured destinations", variant = Heading.Title }
+        [ Heading.view { label = "Featured destinations", variant = Value.title }
             [ Heading.size Value.medium
             , Heading.level 3
             ]
@@ -730,7 +733,7 @@ resultsSection model =
         [ Layout.div "flex items-center justify-between gap-3"
             [ Heading.view
                 { label = categoryLabel model.category ++ " — " ++ String.fromInt (List.length results) ++ " places"
-                , variant = Heading.Title
+                , variant = Value.title
                 }
                 [ Heading.size Value.medium
                 , Heading.level 3
@@ -752,9 +755,11 @@ emptyState model =
     Layout.div "grid place-items-center rounded-md-corner-large border border-dashed border-outline-variant p-10 text-center"
         [ Layout.div "space-y-2"
             [ Icon.view { name = "search_off" } [] |> Element.toNode
-            , Node.raw (p [ class "text-body-md text-on-surface-variant" ]
-                [ text ("No " ++ categoryLabel model.category ++ " results for \u{201C}" ++ model.query ++ "\u{201D}.") ])
-            , Button.view { label = "Clear search", variant = Button.Text }
+            , Node.raw
+                (p [ class "text-body-md text-on-surface-variant" ]
+                    [ text ("No " ++ categoryLabel model.category ++ " results for “" ++ model.query ++ "”.") ]
+                )
+            , Button.view { label = "Clear search", variant = Value.text }
                 [ Button.onClick (SetQuery "") ]
                 |> Element.toNode
             ]
@@ -780,24 +785,26 @@ destinationCard model d =
                     [ Shape.name d.shape ]
                     |> Element.toNode
                 , Layout.div "absolute left-2 top-2 flex items-center gap-1"
-                    [ Node.raw (span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-sm text-on-surface" ]
-                        [ text ("★ " ++ d.rating) ])
+                    [ Node.raw
+                        (span [ attribute "id" (badgeAnchor d), class "rounded-md-corner-full bg-surface px-2 py-0.5 text-label-sm text-on-surface" ]
+                            [ text ("★ " ++ d.rating) ]
+                        )
                     , Badge.view [ Badge.label "Top rated", Badge.forId (badgeAnchor d) ] |> Element.toNode
                     ]
                 , Layout.div "absolute right-2 top-2" [ favoriteButton d favorited ]
                 ]
     in
     Card.view
-        [ Card.variant Card.Elevated
+        [ Card.variant Value.elevated
         , Card.media (Element.fromNode media)
-        , Card.headline (Heading.view { label = d.name, variant = Heading.Title } [])
-        , Card.subhead (Heading.view { label = d.country ++ " · " ++ d.price, variant = Heading.Label } [])
+        , Card.headline (Heading.view { label = d.name, variant = Value.title } [])
+        , Card.subhead (Heading.view { label = d.country ++ " · " ++ d.price, variant = Value.label } [])
         , Card.body
             [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ])) ]
         , Card.actions
-            [ Button.view { label = "Itinerary", variant = Button.Text }
+            [ Button.view { label = "Itinerary", variant = Value.text }
                 [ Button.onClick (OpenItinerary d.id) ]
-            , Button.view { label = "Select", variant = Button.Filled }
+            , Button.view { label = "Select", variant = Value.filled }
                 [ Button.onClick (OpenItinerary d.id) ]
             ]
         ]
@@ -815,8 +822,10 @@ favoriteButton d favorited =
         anchorId =
             "crane-fav-" ++ d.id
     in
-    Node.element "span" []
-        [ Node.element "span" [ Node.rawAttr (attribute "id" anchorId) ]
+    Node.element "span"
+        []
+        [ Node.element "span"
+            [ Node.rawAttr (attribute "id" anchorId) ]
             [ IconButton.view
                 { icon = "favorite_border"
                 , ariaLabel =
@@ -826,7 +835,7 @@ favoriteButton d favorited =
                     else
                         "Add " ++ d.name ++ " to favorites"
                 }
-                [ IconButton.variant IconButton.Filled
+                [ IconButton.variant Value.filled
                 , IconButton.size Value.small
                 , IconButton.toggle True
                 , IconButton.selected favorited
@@ -910,9 +919,9 @@ itinerarySheet model =
                 , BottomSheet.handle True
                 , BottomSheet.header [ Element.fromNode (headerHtml dest) ]
                 , BottomSheet.actions
-                    [ Button.view { label = "Close", variant = Button.Text }
+                    [ Button.view { label = "Close", variant = Value.text }
                         [ Button.onClick CloseItinerary ]
-                    , Button.view { label = "Book trip", variant = Button.Filled }
+                    , Button.view { label = "Book trip", variant = Value.filled }
                         [ Button.onClick CloseItinerary ]
                     ]
                 ]

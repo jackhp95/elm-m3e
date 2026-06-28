@@ -7,17 +7,18 @@ import M3e.ButtonGroup as ButtonGroup
 import M3e.Element as Element exposing (Element)
 import M3e.IconButton as IconButton
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
 button1 : Element { s | button : Element.Supported } msg
 button1 =
-    Button.view { label = "Save", variant = Button.Filled } []
+    Button.view { label = "Save", variant = Value.filled } []
 
 
 button2 : Element { s | button : Element.Supported } msg
 button2 =
-    Button.view { label = "Cancel", variant = Button.Text } []
+    Button.view { label = "Cancel", variant = Value.text } []
 
 
 node : List (ButtonGroup.Option msg) -> Node msg

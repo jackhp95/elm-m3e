@@ -1,7 +1,7 @@
 module M3e.LoadingIndicator exposing
     ( view
     , Option
-    , Variant(..), variant
+    , variant
     )
 
 {-| `<m3e-loading-indicator>` — an expressive, indeterminate spinner for short
@@ -24,22 +24,25 @@ fraction, use `M3e.Progress`. For a content-placeholder shimmer, use
 
 @docs view
 @docs Option
-@docs Variant, variant
+@docs variant
 
 -}
 
-import Cem.M3e.LoadingIndicator as Cem
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
-{-| Visual style, mirroring the `m3e-loading-indicator` `variant` attribute.
-Default `Uncontained`.
+{-| Visual style, mirroring the `m3e-loading-indicator` `variant` attribute
+(`uncontained` or `contained`), supplied as shared [`M3e.Value`](M3e-Value)
+tokens. Default `uncontained`.
 -}
-type Variant
-    = Uncontained
-    | Contained
+type alias Variants =
+    Value
+        { uncontained : Supported
+        , contained : Supported
+        }
 
 
 {-| An option configuring the `<m3e-loading-indicator>` element.
@@ -48,16 +51,17 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the visual style. Default `Uncontained`; use `Contained` to place the
-animation on its own surface.
+{-| Set the visual style. Default [`M3e.Value.uncontained`](M3e-Value#uncontained);
+use [`M3e.Value.contained`](M3e-Value#contained) to place the animation on its
+own surface.
 -}
-variant : Variant -> Option msg
+variant : Variants -> Option msg
 variant x =
     Internal.option (\c -> { c | variant = x })
 
 
 type alias Config =
-    { variant : Variant }
+    { variant : Variants }
 
 
 {-| Build the `<m3e-loading-indicator>` IR node — an indeterminate spinner.
@@ -67,20 +71,10 @@ view opts =
     let
         c : Config
         c =
-            Internal.applyOptions opts { variant = Uncontained }
+            Internal.applyOptions opts { variant = Value.uncontained }
     in
     Internal.fromNode
         (Node.element "m3e-loading-indicator"
-            [ Node.rawAttr (Cem.variant (toCemVariant c.variant)) ]
+            [ Node.attribute "variant" (Value.toString c.variant) ]
             []
         )
-
-
-toCemVariant : Variant -> Cem.Variant
-toCemVariant v =
-    case v of
-        Uncontained ->
-            Cem.Uncontained
-
-        Contained ->
-            Cem.Contained

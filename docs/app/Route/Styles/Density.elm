@@ -1,6 +1,5 @@
 module Route.Styles.Density exposing (ActionData, Data, Model, Msg, route)
 
-import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -14,6 +13,7 @@ import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -75,7 +75,7 @@ demoBar scaleValue =
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Button.view { label = "Action", variant = Button.Filled } [] |> Element.toNode
+                        Button.view { label = "Action", variant = Value.filled } [] |> Element.toNode
                     )
             )
         ]
@@ -83,7 +83,7 @@ demoBar scaleValue =
 
 pageHeading : Node msg
 pageHeading =
-    Heading.view { label = "Density", variant = Heading.Display }
+    Heading.view { label = "Density", variant = Value.display }
         [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
@@ -102,8 +102,8 @@ view _ _ =
                 ]
             , Divider.view [] |> Element.toNode
             , Card.view
-                [ Card.variant Card.Outlined
-                , Card.headline (Heading.view { label = "Density scale, 0 to -3", variant = Heading.Title } [])
+                [ Card.variant Value.outlined
+                , Card.headline (Heading.view { label = "Density scale, 0 to -3", variant = Value.title } [])
                 , Card.body
                     [ Element.fromNode
                         (Layout.div "space-y-6"
