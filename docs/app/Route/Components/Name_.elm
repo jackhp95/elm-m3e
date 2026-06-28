@@ -658,6 +658,11 @@ demoSections slug =
                         , Avatar.view { ariaLabel = "Pat Lee" } [ Avatar.initials "Pat Lee" ] |> Element.toNode
                         ]
                     )
+                , sub "Icon child"
+                    (Avatar.view { ariaLabel = "User" }
+                        [ Avatar.iconChild (Icon.view { name = "person" } []) ]
+                        |> Element.toNode
+                    )
                 ]
             ]
 
@@ -679,6 +684,14 @@ demoSections slug =
                     (Layout.div "relative"
                         [ Icon.view { name = "shopping_bag" } [] |> Element.toNode
                         , Badge.view [ Badge.label "New" ] |> Element.toNode
+                        ]
+                    )
+                , sub "Anchored via forId"
+                    (Layout.div "relative inline-flex items-center"
+                        [ Node.element "span"
+                            [ Node.rawAttr (Attr.id "badge-anchor-demo") ]
+                            [ Icon.view { name = "mail" } [] |> Element.toNode ]
+                        , Badge.view [ Badge.count 12, Badge.forId "badge-anchor-demo" ] |> Element.toNode
                         ]
                     )
                 ]
@@ -883,6 +896,16 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (DatePicker.view [ DatePicker.onChange noOp ] |> Element.toNode)
+                , sub "Date range"
+                    (DatePicker.view
+                        [ DatePicker.range True
+                        , DatePicker.rangeStart "2026-07-01"
+                        , DatePicker.rangeEnd "2026-07-15"
+                        , DatePicker.label "Select range"
+                        , DatePicker.onChange noOp
+                        ]
+                        |> Element.toNode
+                    )
                 ]
             ]
 
@@ -932,6 +955,17 @@ demoSections slug =
                     (Divider.view [] |> Element.toNode)
                 , sub "Inset start"
                     (Divider.view [ Divider.insetStart True ] |> Element.toNode)
+                , sub "Inset end"
+                    (Divider.view [ Divider.insetEnd True ] |> Element.toNode)
+                , sub "Inset (both)"
+                    (Divider.view [ Divider.inset True ] |> Element.toNode)
+                , sub "Vertical"
+                    (Layout.div "flex h-8 items-stretch gap-3"
+                        [ Node.text "Left"
+                        , Divider.view [ Divider.vertical True ] |> Element.toNode
+                        , Node.text "Right"
+                        ]
+                    )
                 ]
             ]
 
@@ -974,6 +1008,16 @@ demoSections slug =
                         , Fab.view { icon = "add", ariaLabel = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> Element.toNode
                         , Fab.view { icon = "add", ariaLabel = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> Element.toNode
                         ]
+                    )
+                , sub "Extended (with label)"
+                    (Fab.view { icon = "edit", ariaLabel = "Compose" }
+                        [ Fab.variant Fab.Primary, Fab.label "Compose" ]
+                        |> Element.toNode
+                    )
+                , sub "Link (href)"
+                    (Fab.view { icon = "open_in_new", ariaLabel = "Visit Material Design" }
+                        [ Fab.variant Fab.Surface, Fab.href "https://m3.material.io" ]
+                        |> Element.toNode
                     )
                 , sub "Lowered"
                     (Fab.view { icon = "add", ariaLabel = "Lowered" }
@@ -1257,6 +1301,45 @@ demoSections slug =
                         []
                         |> Element.toNode
                     )
+                , sub "Expanded mode"
+                    (NavigationRail.view
+                        { items =
+                            [ NavigationRail.item { icon = Icon.view { name = "home" } [], label = "Home" }
+                                [ NavigationRail.itemSelected True ]
+                            , NavigationRail.item { icon = Icon.view { name = "search" } [], label = "Search" }
+                                []
+                            , NavigationRail.item { icon = Icon.view { name = "settings" } [], label = "Settings" }
+                                []
+                            ]
+                        }
+                        [ NavigationRail.mode NavigationRail.Expanded ]
+                        |> Element.toNode
+                    )
+                , sub "Toggle wiring (NavRailToggle)"
+                    (Layout.div "flex items-start gap-3"
+                        [ IconButton.view { icon = "menu", ariaLabel = "Toggle rail" }
+                            [ IconButton.variant IconButton.Tonal
+                            , IconButton.toggle True
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (NavRailToggle.view [ NavRailToggle.for "demo-nav-rail-wired" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        , NavigationRail.view
+                            { items =
+                                [ NavigationRail.item { icon = Icon.view { name = "home" } [], label = "Home" }
+                                    [ NavigationRail.itemSelected True ]
+                                , NavigationRail.item { icon = Icon.view { name = "inbox" } [], label = "Inbox" }
+                                    []
+                                ]
+                            }
+                            [ NavigationRail.id "demo-nav-rail-wired" ]
+                            |> Element.toNode
+                        ]
+                    )
                 ]
             ]
 
@@ -1287,6 +1370,12 @@ demoSections slug =
                     (Layout.div "flex flex-wrap items-center gap-6"
                         [ Progress.view { shape = Progress.Linear } [] |> Element.toNode
                         , Progress.view { shape = Progress.Circular } [] |> Element.toNode
+                        ]
+                    )
+                , sub "Wavy variant"
+                    (Layout.div "flex flex-wrap items-center gap-6"
+                        [ Progress.view { shape = Progress.Linear } [ Progress.value 75, Progress.variant Progress.Wavy ] |> Element.toNode
+                        , Progress.view { shape = Progress.Circular } [ Progress.value 50, Progress.variant Progress.Wavy ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1337,6 +1426,20 @@ demoSections slug =
             [ usage
                 [ sub "Bar"
                     (Search.view { placeholder = "Search the docs" } [] |> Element.toNode)
+                , sub "With leading icon"
+                    (Search.view { placeholder = "Search" }
+                        [ Search.leadingIcon (Icon.view { name = "search" } []) ]
+                        |> Element.toNode
+                    )
+                , sub "Clearable"
+                    (Search.view { placeholder = "Type to search…" }
+                        [ Search.value "elm-m3e"
+                        , Search.clearable True
+                        , Search.clearLabel "Clear search"
+                        , Search.onClear PagesMsg.noOp
+                        ]
+                        |> Element.toNode
+                    )
                 ]
             ]
 
@@ -1431,6 +1534,30 @@ demoSections slug =
                             |> Element.toNode
                         ]
                     )
+                , sub "Mode — Over (modal overlay)"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw (p [ class "text-body-sm text-on-surface-variant" ] [ text "ModeOver overlays content with a scrim (closed here)." ])
+                        , SideSheet.view { content = [] }
+                            [ SideSheet.open False, SideSheet.mode SideSheet.ModeOver, SideSheet.onClose PagesMsg.noOp ]
+                            |> Element.toNode
+                        ]
+                    )
+                , sub "Mode — Push (no scrim)"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw (p [ class "text-body-sm text-on-surface-variant" ] [ text "ModePush slides content aside without a scrim (closed here)." ])
+                        , SideSheet.view { content = [] }
+                            [ SideSheet.open False, SideSheet.mode SideSheet.ModePush, SideSheet.onClose PagesMsg.noOp ]
+                            |> Element.toNode
+                        ]
+                    )
+                , sub "Mode — Auto"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw (p [ class "text-body-sm text-on-surface-variant" ] [ text "ModeAuto selects Side or Over based on viewport width (closed here)." ])
+                        , SideSheet.view { content = [] }
+                            [ SideSheet.open False, SideSheet.mode SideSheet.ModeAuto, SideSheet.onClose PagesMsg.noOp ]
+                            |> Element.toNode
+                        ]
+                    )
                 ]
             ]
 
@@ -1515,6 +1642,15 @@ demoSections slug =
                         ]
                         |> Element.toNode
                     )
+                , sub "Labelled thumb"
+                    (Slider.view { name = "Temperature" }
+                        [ Slider.value 22
+                        , Slider.min 0
+                        , Slider.max 40
+                        , Slider.labelled True
+                        ]
+                        |> Element.toNode
+                    )
                 , sub "Disabled"
                     (Slider.view { name = "Locked" }
                         [ Slider.value 50
@@ -1529,6 +1665,16 @@ demoSections slug =
             [ usage
                 [ sub "Basic"
                     (Snackbar.view { message = "Message sent" } [] |> Element.toNode)
+                , sub "With action"
+                    (Snackbar.view { message = "File deleted" }
+                        [ Snackbar.action "Undo" ]
+                        |> Element.toNode
+                    )
+                , sub "Dismissible"
+                    (Snackbar.view { message = "Saved to drafts" }
+                        [ Snackbar.dismissible True ]
+                        |> Element.toNode
+                    )
                 ]
             ]
 
@@ -1574,6 +1720,70 @@ demoSections slug =
                             [ Stepper.stepPanel { content = [] } [ Stepper.panelId "demo-panel-1" ]
                             , Stepper.stepPanel { content = [] } [ Stepper.panelId "demo-panel-2" ]
                             , Stepper.stepPanel { content = [] } [ Stepper.panelId "demo-panel-3" ]
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                , sub "Navigation flow (Next / Previous / Reset)"
+                    (Stepper.view
+                        { steps =
+                            [ Stepper.step { label = "Start" } [ Stepper.stepFor "flow-panel-1" ]
+                            , Stepper.step { label = "Details" } [ Stepper.stepFor "flow-panel-2" ]
+                            , Stepper.step { label = "Done" } [ Stepper.stepFor "flow-panel-3" ]
+                            ]
+                        , panels =
+                            [ Stepper.stepPanel
+                                { content =
+                                    [ Element.fromNode
+                                        (buttonRow
+                                            [ IconButton.view { icon = "arrow_forward", ariaLabel = "Next" }
+                                                [ IconButton.variant IconButton.Filled
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode (StepperNext.view [] |> Element.toNode) ]
+                                                ]
+                                                |> Element.toNode
+                                            ]
+                                        )
+                                    ]
+                                }
+                                [ Stepper.panelId "flow-panel-1" ]
+                            , Stepper.stepPanel
+                                { content =
+                                    [ Element.fromNode
+                                        (buttonRow
+                                            [ IconButton.view { icon = "arrow_back", ariaLabel = "Back" }
+                                                [ IconButton.variant IconButton.Outlined
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode (StepperPrevious.view [] |> Element.toNode) ]
+                                                ]
+                                                |> Element.toNode
+                                            , IconButton.view { icon = "arrow_forward", ariaLabel = "Next" }
+                                                [ IconButton.variant IconButton.Filled
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode (StepperNext.view [] |> Element.toNode) ]
+                                                ]
+                                                |> Element.toNode
+                                            ]
+                                        )
+                                    ]
+                                }
+                                [ Stepper.panelId "flow-panel-2" ]
+                            , Stepper.stepPanel
+                                { content =
+                                    [ Element.fromNode
+                                        (buttonRow
+                                            [ IconButton.view { icon = "restart_alt", ariaLabel = "Start over" }
+                                                [ IconButton.variant IconButton.Tonal
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode (StepperReset.view [] |> Element.toNode) ]
+                                                ]
+                                                |> Element.toNode
+                                            ]
+                                        )
+                                    ]
+                                }
+                                [ Stepper.panelId "flow-panel-3" ]
                             ]
                         }
                         []
@@ -1868,6 +2078,16 @@ demoSections slug =
                         }
                         []
                     )
+                , sub "Filled variant"
+                    (Field.view
+                        { id = "field-newsletter"
+                        , label = Label.fromHtml (text "Subscribe to newsletter")
+                        , control =
+                            Checkbox.view { ariaLabel = "Subscribe to newsletter" }
+                                [ Checkbox.checked True, Checkbox.onChange noOp ]
+                        }
+                        [ Field.variant Field.Filled ]
+                    )
                 ]
             ]
 
@@ -1885,6 +2105,12 @@ demoSections slug =
                         [ Text.labelLarge "Label large" |> Element.toNode
                         , Text.labelMedium "Label medium" |> Element.toNode
                         , Text.labelSmall "Label small" |> Element.toNode
+                        ]
+                    )
+                , sub "Inline (span)"
+                    (Layout.div "flex flex-wrap items-center gap-1"
+                        [ Text.view { content = "Inline label:", role = Text.LabelLarge } [ Text.inline ] |> Element.toNode
+                        , Text.view { content = "this span flows beside the label without a line break.", role = Text.BodyMedium } [ Text.inline ] |> Element.toNode
                         ]
                     )
                 ]
