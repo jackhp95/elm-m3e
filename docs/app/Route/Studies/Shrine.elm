@@ -638,7 +638,7 @@ viewCarousel =
 
         slideCard ( title, swatch, iconName ) =
             Layout.div ("flex h-32 w-56 shrink-0 flex-col justify-between rounded-md-corner-large p-4 text-on-surface " ++ swatch)
-                [ Icon.view { name = iconName } |> Element.toNode
+                [ Icon.view { name = iconName } [] |> Element.toNode
                 , Node.raw (span [ class "text-title-md font-medium" ] [ text title ])
                 ]
     in
@@ -659,7 +659,7 @@ viewRail model =
 railItem : Department -> Department -> Element { s | navItem : Element.Supported } Msg
 railItem selectedDept dept =
     NavigationRail.item
-        { icon = Icon.view { name = departmentIcon dept }, label = departmentLabel dept }
+        { icon = Icon.view { name = departmentIcon dept } [], label = departmentLabel dept }
         [ NavigationRail.itemSelected (dept == selectedDept)
         , NavigationRail.itemOnClick (DepartmentPicked dept)
         ]
@@ -724,7 +724,7 @@ viewControls model =
 viewResultsBar : Model -> List Product -> Node Msg
 viewResultsBar _ filtered =
     Layout.div "flex items-center gap-2 text-on-surface-variant"
-        [ Icon.view { name = "inventory_2" } |> Element.toNode
+        [ Icon.view { name = "inventory_2" } [] |> Element.toNode
         , Heading.view
             { label = String.fromInt (List.length filtered) ++ " products"
             , variant = Heading.Title
@@ -772,7 +772,7 @@ viewCatalog : Model -> List Product -> Node Msg
 viewCatalog model filtered =
     if List.isEmpty filtered then
         Layout.div "flex flex-col items-center gap-2 rounded-md-corner-large border border-outline-variant py-16 text-on-surface-variant"
-            [ Icon.view { name = "sentiment_dissatisfied" } |> Element.toNode
+            [ Icon.view { name = "sentiment_dissatisfied" } [] |> Element.toNode
             , Node.text "No products match these filters."
             ]
 
@@ -794,7 +794,7 @@ productMedia product =
         { content =
             [ Element.fromNode
                 (Layout.div ("flex h-full w-full items-center justify-center " ++ product.swatch)
-                    [ Icon.view { name = categoryGlyph product.category } |> Element.toNode ]
+                    [ Icon.view { name = categoryGlyph product.category } [] |> Element.toNode ]
                 )
             ]
         }
@@ -837,7 +837,7 @@ viewProductCard model product =
                 [ IconButton.toggle True
                 , IconButton.selected (List.member product.id model.favorites)
                 , IconButton.onChange (always (FavoriteToggled product.id))
-                , IconButton.selectedIcon (Icon.view { name = "favorite" })
+                , IconButton.selectedIcon (Icon.view { name = "favorite" } [])
                 , IconButton.size IconButton.Small
                 ]
                 |> Element.toNode
@@ -877,7 +877,7 @@ viewProductCard model product =
         , Card.body [ Element.fromNode body ]
         , Card.actions
             [ Button.view { label = "Add to bag", variant = Button.Filled }
-                [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
+                [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" } [])
                 , Button.onClick (AddedToBag product.id 1)
                 ]
             ]
@@ -896,14 +896,14 @@ viewProductList _ filtered =
                             [ L.actionLeading
                                 (Element.element { tag = "span" }
                                     []
-                                    [ Element.toNode (Icon.view { name = categoryGlyph product.category }) ]
+                                    [ Element.toNode (Icon.view { name = categoryGlyph product.category } []) ]
                                 )
                             , L.actionOverline (categoryLabel product.category)
                             , L.actionSupporting (formatPrice product.price)
                             , L.actionTrailing
                                 (Element.element { tag = "span" }
                                     []
-                                    [ Element.toNode (Icon.view { name = "add_shopping_cart" }) ]
+                                    [ Element.toNode (Icon.view { name = "add_shopping_cart" } []) ]
                                 )
                             , L.actionOnClick (AddedToBag product.id 1)
                             ]
@@ -943,7 +943,7 @@ viewCartSheet model =
         body =
             if List.isEmpty items then
                 Layout.div "flex flex-col items-center gap-2 py-8 text-on-surface-variant"
-                    [ Icon.view { name = "shopping_bag" } |> Element.toNode
+                    [ Icon.view { name = "shopping_bag" } [] |> Element.toNode
                     , Node.text "Your bag is empty."
                     ]
 
@@ -970,7 +970,7 @@ viewCartSheet model =
         , BottomSheet.header [ Element.fromNode header ]
         , BottomSheet.actions
             [ Button.view { label = "Checkout", variant = Button.Filled }
-                [ Button.leadingIcon (Icon.view { name = "lock" })
+                [ Button.leadingIcon (Icon.view { name = "lock" } [])
                 , Button.disabled (List.isEmpty items)
                 , Button.onClick CartClosed
                 ]
@@ -988,7 +988,7 @@ viewCartRow ( product, qty ) =
             { content =
                 [ Element.fromNode
                     (Layout.div ("flex h-10 w-10 items-center justify-center " ++ product.swatch)
-                        [ Icon.view { name = categoryGlyph product.category } |> Element.toNode ]
+                        [ Icon.view { name = categoryGlyph product.category } [] |> Element.toNode ]
                     )
                 ]
             }
@@ -1045,7 +1045,7 @@ viewDetailDialog model =
                                     (\i ->
                                         Element.fromNode
                                             (Layout.div ("flex h-40 items-center justify-center rounded-md-corner-large " ++ product.swatch)
-                                                [ Icon.view { name = galleryGlyph product.category i } |> Element.toNode ]
+                                                [ Icon.view { name = galleryGlyph product.category i } [] |> Element.toNode ]
                                             )
                                     )
                         }
@@ -1084,11 +1084,11 @@ viewDetailDialog model =
                     ButtonGroup.view
                         { buttons =
                             [ Button.view { label = "Buy now", variant = Button.Filled }
-                                [ Button.leadingIcon (Icon.view { name = "bolt" })
+                                [ Button.leadingIcon (Icon.view { name = "bolt" } [])
                                 , Button.onClick (AddedToBag product.id qty)
                                 ]
                             , Button.view { label = "Add to bag", variant = Button.Tonal }
-                                [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" })
+                                [ Button.leadingIcon (Icon.view { name = "add_shopping_cart" } [])
                                 , Button.onClick (AddedToBag product.id qty)
                                 ]
                             ]

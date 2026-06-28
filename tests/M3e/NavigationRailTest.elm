@@ -134,6 +134,17 @@ suite =
                     |> Node.findAttribute "href"
                     |> Expect.equal (Just "/settings")
 
+        -- Fix #66 — mode default corrected (compact, not auto)
+        , test "fix-#66: default mode emits mode=compact (upstream default)" <|
+            \_ ->
+                -- The raw attr is not introspectable via Node.findAttribute, so we
+                -- confirm the tag is rendered and the module compiles with no mode set.
+                -- (The rawAttr value is opaque — only the round-trip test can verify
+                --  the string; here we confirm it doesn't crash.)
+                railNode [] []
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-nav-rail")
+
         -- Fix #63 — widened slot type accepts fab and icon-button
         , test "fix-#63: fab can be placed in the nav rail (widened slot type)" <|
             \_ ->

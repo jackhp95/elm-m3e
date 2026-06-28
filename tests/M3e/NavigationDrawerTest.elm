@@ -227,7 +227,7 @@ suite =
                     |> Expect.equal False
         , test "link: linkIcon prepends a child with slot='icon'" <|
             \_ ->
-                linkNode [ NavigationDrawer.linkIcon (Icon.view { name = "home" }) ]
+                linkNode [ NavigationDrawer.linkIcon (Icon.view { name = "home" } []) ]
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
@@ -293,7 +293,7 @@ suite =
                     |> Expect.equal False
         , test "group: icon gets slot='icon' injected" <|
             \_ ->
-                groupNode [] [ NavigationDrawer.groupIcon (Icon.view { name = "folder" }) ]
+                groupNode [] [ NavigationDrawer.groupIcon (Icon.view { name = "folder" } []) ]
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")

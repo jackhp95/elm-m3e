@@ -124,4 +124,26 @@ suite =
                 viewNode [ DatePicker.onChange identity ]
                     |> Node.findAttribute "onchange"
                     |> Expect.equal Nothing
+
+        -- Fix #66 — rangeStart / rangeEnd
+        , test "fix-#66: rangeStart sets 'range-start' attribute" <|
+            \_ ->
+                viewNode [ DatePicker.rangeStart "2026-06-01" ]
+                    |> Node.findAttribute "range-start"
+                    |> Expect.equal (Just "2026-06-01")
+        , test "fix-#66: rangeEnd sets 'range-end' attribute" <|
+            \_ ->
+                viewNode [ DatePicker.rangeEnd "2026-06-30" ]
+                    |> Node.findAttribute "range-end"
+                    |> Expect.equal (Just "2026-06-30")
+        , test "fix-#66: rangeStart absent by default" <|
+            \_ ->
+                viewNode []
+                    |> Node.findAttribute "range-start"
+                    |> Expect.equal Nothing
+        , test "fix-#66: rangeEnd absent by default" <|
+            \_ ->
+                viewNode []
+                    |> Node.findAttribute "range-end"
+                    |> Expect.equal Nothing
         ]

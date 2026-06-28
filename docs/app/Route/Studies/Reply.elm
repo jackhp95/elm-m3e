@@ -514,7 +514,7 @@ navRail railMode model =
 railItem : Mailbox -> Mailbox -> Element { s | navItem : Supported } Msg
 railItem selectedMailbox mailbox =
     NavigationRail.item
-        { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
+        { icon = Icon.view { name = mailboxIcon mailbox } [], label = mailboxLabel mailbox }
         ([ NavigationRail.itemSelected (mailbox == selectedMailbox)
          , NavigationRail.itemOnClick (SelectMailbox mailbox)
          ]
@@ -553,7 +553,7 @@ viewBottomNav model =
 barItem : Mailbox -> Mailbox -> Element { navItem : Supported } Msg
 barItem selectedMailbox mailbox =
     NavigationBar.item
-        { icon = Icon.view { name = mailboxIcon mailbox }, label = mailboxLabel mailbox }
+        { icon = Icon.view { name = mailboxIcon mailbox } [], label = mailboxLabel mailbox }
         ([ NavigationBar.itemSelected (mailbox == selectedMailbox)
          , NavigationBar.itemOnClick (SelectMailbox mailbox)
          ]
@@ -740,7 +740,7 @@ listDivider =
 emptyState : String -> Node Msg
 emptyState query =
     Layout.div "flex flex-col items-center gap-2 px-6 py-16 text-center text-on-surface-variant"
-        [ Icon.view { name = "mail" } |> Element.toNode
+        [ Icon.view { name = "mail" } [] |> Element.toNode
         , Node.raw
             (p [ class "text-body-md" ]
                 [ text
@@ -841,7 +841,7 @@ messageRow model message =
                     , IconButton.toggle True
                     , IconButton.selected message.starred
                     , IconButton.onChange (ToggleStar message.id)
-                    , IconButton.selectedIcon (Icon.view { name = "star" })
+                    , IconButton.selectedIcon (Icon.view { name = "star" } [])
                     ]
                     |> Element.toNode
                 ]
@@ -894,12 +894,12 @@ readingPane message =
                     , Divider.view [] |> Element.toNode
                     , Layout.div "flex flex-wrap gap-2"
                         [ Button.view { label = "Reply", variant = Button.Filled }
-                            [ Button.leadingIcon (Icon.view { name = "reply" })
+                            [ Button.leadingIcon (Icon.view { name = "reply" } [])
                             , Button.onClick OpenCompose
                             ]
                             |> Element.toNode
                         , Button.view { label = "Forward", variant = Button.Tonal }
-                            [ Button.leadingIcon (Icon.view { name = "forward" })
+                            [ Button.leadingIcon (Icon.view { name = "forward" } [])
                             , Button.onClick OpenCompose
                             ]
                             |> Element.toNode
@@ -954,13 +954,13 @@ overflowMenu =
         , Menu.view
             { items =
                 [ Menu.item { label = "Mark as unread", action = Menu.Click NoOp }
-                    [ Menu.itemLeadingIcon (Icon.view { name = "mark_email_unread" }) ]
+                    [ Menu.itemLeadingIcon (Icon.view { name = "mark_email_unread" } []) ]
                 , Menu.item { label = "Move to", action = Menu.Click NoOp }
-                    [ Menu.itemLeadingIcon (Icon.view { name = "drive_file_move" }) ]
+                    [ Menu.itemLeadingIcon (Icon.view { name = "drive_file_move" } []) ]
                 , Menu.item { label = "Report spam", action = Menu.Click NoOp }
-                    [ Menu.itemLeadingIcon (Icon.view { name = "report" }) ]
+                    [ Menu.itemLeadingIcon (Icon.view { name = "report" } []) ]
                 , Menu.item { label = "Delete", action = Menu.Click ArchiveSelected }
-                    [ Menu.itemLeadingIcon (Icon.view { name = "delete" }) ]
+                    [ Menu.itemLeadingIcon (Icon.view { name = "delete" } []) ]
                 ]
             }
             [ Menu.id "reply-overflow-menu" ]
@@ -1051,7 +1051,7 @@ composeBody fields =
             , SplitButton.view
                 { label = "Send"
                 , name = "Schedule send"
-                , trailingContent = [ Icon.view { name = "schedule_send" } ]
+                , trailingContent = [ Icon.view { name = "schedule_send" } [] ]
                 , onPrimaryClick = SendMessage
                 , onTriggerClick = ScheduleSend
                 }

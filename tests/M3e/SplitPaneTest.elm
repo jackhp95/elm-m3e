@@ -75,4 +75,31 @@ suite =
                 node emptyPane [ SplitPane.label "Adjust panes" ]
                     |> Node.findAttribute "label"
                     |> Expect.equal (Just "Adjust panes")
+
+        -- Fix #66 — event handlers
+        , test "fix-#66: onChange does not leak as an inspectable attribute" <|
+            \_ ->
+                node emptyPane [ SplitPane.onChange () ]
+                    |> Node.findAttribute "onchange"
+                    |> Expect.equal Nothing
+        , test "fix-#66: onInput does not leak as an inspectable attribute" <|
+            \_ ->
+                node emptyPane [ SplitPane.onInput () ]
+                    |> Node.findAttribute "oninput"
+                    |> Expect.equal Nothing
+        , test "fix-#66: onBeforeInput does not leak as an inspectable attribute" <|
+            \_ ->
+                node emptyPane [ SplitPane.onBeforeInput () ]
+                    |> Node.findAttribute "onbeforeinput"
+                    |> Expect.equal Nothing
+        , test "fix-#66: event handlers do not affect the child count" <|
+            \_ ->
+                node emptyPane
+                    [ SplitPane.onChange ()
+                    , SplitPane.onInput ()
+                    , SplitPane.onBeforeInput ()
+                    ]
+                    |> Node.childrenOf
+                    |> List.length
+                    |> Expect.equal 2
         ]

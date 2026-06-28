@@ -54,7 +54,7 @@ suite =
                     |> Expect.equal (Just ( Just "m3e-icon", Just "add" ))
         , test "selectedIcon is slotted into slot=selected" <|
             \_ ->
-                node "heart" "Favourite" [ IB.selectedIcon (Icon.view { name = "heart_filled" }) ]
+                node "heart" "Favourite" [ IB.selectedIcon (Icon.view { name = "heart_filled" } []) ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "selected")
                     |> List.length

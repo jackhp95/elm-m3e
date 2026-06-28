@@ -41,8 +41,9 @@ import M3e.Node as Node
 -- TYPES -------------------------------------------------------------------
 
 
-{-| How items are laid out. `Compact` (icon only) is the m3e default; `Expanded`
-always shows labels; `Auto` switches based on available width.
+{-| How items are laid out. `Compact` (icon only) is the upstream default
+(`<m3e-nav-rail mode="compact">`); `Expanded` always shows labels; `Auto`
+switches based on available width.
 -}
 type Mode
     = Compact
@@ -124,7 +125,10 @@ id id_ =
     Internal.option (\c -> { c | id = Just id_ })
 
 
-{-| Set the display mode of the rail. Default `Auto`.
+{-| Set the display mode of the rail. Default `Compact`.
+
+Upstream default: `"compact"` (`<m3e-nav-rail mode="compact">`).
+
 -}
 mode : Mode -> Option msg
 mode m =
@@ -253,7 +257,9 @@ type alias ContainerConfig =
 
 defaultConfig : ContainerConfig
 defaultConfig =
-    { id = Nothing, mode = Auto }
+    -- Upstream default for <m3e-nav-rail mode="..."> is "compact" (CEM confirmed).
+    -- The previous default (Auto) was incorrect — this fixes the audit gap.
+    { id = Nothing, mode = Compact }
 
 
 toCemMode : Mode -> CemNavRail.Mode

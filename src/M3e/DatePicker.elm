@@ -1,6 +1,6 @@
 module M3e.DatePicker exposing
     ( Option, StartView(..), Variant(..)
-    , id, date, variant, range, minDate, maxDate, clearable, label
+    , id, date, variant, range, rangeStart, rangeEnd, minDate, maxDate, clearable, label
     , confirmLabel, dismissLabel, startAt, startView, onChange
     , view
     )
@@ -11,8 +11,9 @@ a date (or a date range). Material 3 Date Picker.
 Spec (per docs/CONVENTIONS.md):
 
   - Required: none (the picker carries its own label)
-  - Options: id, date (ISO seed), variant, range, minDate, maxDate, clearable,
-    label, confirmLabel, dismissLabel, startAt, startView, onChange
+  - Options: id, date (ISO seed), variant, range, rangeStart, rangeEnd,
+    minDate, maxDate, clearable, label, confirmLabel, dismissLabel, startAt,
+    startView, onChange
   - Properties: range, clearable (boolean DOM properties)
   - Events: `onChange` — fires when the user confirms a selection (see ⚠️)
   - Tag: `datePicker`
@@ -46,7 +47,7 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 
 # Options
 
-@docs id, date, variant, range, minDate, maxDate, clearable, label
+@docs id, date, variant, range, rangeStart, rangeEnd, minDate, maxDate, clearable, label
 @docs confirmLabel, dismissLabel, startAt, startView, onChange
 
 @docs view
@@ -97,6 +98,8 @@ type alias Config msg =
     , date : Maybe String
     , variant : Maybe Variant
     , range : Maybe Bool
+    , rangeStart : Maybe String
+    , rangeEnd : Maybe String
     , minDate : Maybe String
     , maxDate : Maybe String
     , clearable : Maybe Bool
@@ -115,6 +118,8 @@ defaultConfig =
     , date = Nothing
     , variant = Nothing
     , range = Nothing
+    , rangeStart = Nothing
+    , rangeEnd = Nothing
     , minDate = Nothing
     , maxDate = Nothing
     , clearable = Nothing
@@ -157,6 +162,28 @@ variant v =
 range : Bool -> Option msg
 range b =
     Internal.option (\c -> { c | range = Just b })
+
+
+{-| Seed the start of the date range (ISO-8601). Only meaningful when
+[`range`](#range) is `True`.
+
+Upstream: `range-start` attribute on `<m3e-datepicker>`.
+
+-}
+rangeStart : String -> Option msg
+rangeStart s =
+    Internal.option (\c -> { c | rangeStart = Just s })
+
+
+{-| Seed the end of the date range (ISO-8601). Only meaningful when
+[`range`](#range) is `True`.
+
+Upstream: `range-end` attribute on `<m3e-datepicker>`.
+
+-}
+rangeEnd : String -> Option msg
+rangeEnd s =
+    Internal.option (\c -> { c | rangeEnd = Just s })
 
 
 {-| Earliest selectable date (ISO-8601).
@@ -257,6 +284,8 @@ view opts =
                 , Maybe.map
                     (\b -> Node.property "range" (Encode.bool b))
                     c.range
+                , Maybe.map (Node.attribute "range-start") c.rangeStart
+                , Maybe.map (Node.attribute "range-end") c.rangeEnd
                 , Maybe.map (Node.attribute "min-date") c.minDate
                 , Maybe.map (Node.attribute "max-date") c.maxDate
                 , Maybe.map

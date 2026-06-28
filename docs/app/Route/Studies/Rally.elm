@@ -499,16 +499,16 @@ rail model =
     Layout.div "shrink-0"
         [ NavigationRail.view
             { items =
-                [ NavigationRail.item { icon = Icon.view { name = "account_balance_wallet" }, label = "Accounts" }
+                [ NavigationRail.item { icon = Icon.view { name = "account_balance_wallet" } [], label = "Accounts" }
                     [ NavigationRail.itemSelected (model.tab == Accounts)
                     , NavigationRail.itemOnClick (TabSelected Accounts)
                     ]
-                , NavigationRail.item { icon = Icon.view { name = "receipt_long" }, label = "Bills" }
+                , NavigationRail.item { icon = Icon.view { name = "receipt_long" } [], label = "Bills" }
                     [ NavigationRail.itemSelected (model.tab == Bills)
                     , NavigationRail.itemOnClick (TabSelected Bills)
                     , NavigationRail.itemBadge (String.fromInt (List.length bills))
                     ]
-                , NavigationRail.item { icon = Icon.view { name = "donut_small" }, label = "Budgets" }
+                , NavigationRail.item { icon = Icon.view { name = "donut_small" } [], label = "Budgets" }
                     [ NavigationRail.itemSelected (model.tab == Budgets)
                     , NavigationRail.itemOnClick (TabSelected Budgets)
                     ]
@@ -526,7 +526,7 @@ appBar model =
         , AppBar.leading
             (Element.element { tag = "span" }
                 [ Node.rawAttr (Attr.class "px-2 text-primary") ]
-                [ Element.toNode (Icon.view { name = "savings" }) ]
+                [ Element.toNode (Icon.view { name = "savings" } []) ]
             )
         , AppBar.trailing
             [ Element.element { tag = "div" } [] [ monthSelect model ]
@@ -660,7 +660,7 @@ accountRow account =
         , List_.staticLeading
             (Element.element { tag = "span" }
                 []
-                [ Element.toNode (Icon.view { name = "account_circle" }) ]
+                [ Element.toNode (Icon.view { name = "account_circle" } []) ]
             )
         ]
 
@@ -718,7 +718,7 @@ transactionRow : String -> Transaction -> Node Msg
 transactionRow query txn =
     Layout.div "flex items-center gap-3 bg-surface-container-low px-4 py-3"
         [ Layout.span "text-on-surface-variant"
-            [ Icon.view { name = categoryIcon txn.category } |> Element.toNode ]
+            [ Icon.view { name = categoryIcon txn.category } [] |> Element.toNode ]
         , Layout.div "min-w-0 flex-1"
             [ Layout.div "truncate text-body-lg"
                 [ TextHighlight.view
@@ -815,6 +815,7 @@ billRow bill =
                             else
                                 "event"
                         }
+                        []
                     )
                 ]
             )
@@ -908,7 +909,7 @@ budgetCard category =
             [ Element.fromNode
                 (Layout.div "space-y-2"
                     [ Layout.div "flex items-center gap-2"
-                        [ Icon.view { name = category.icon } |> Element.toNode
+                        [ Icon.view { name = category.icon } [] |> Element.toNode
                         , Node.raw (span [ class "ml-auto text-label-lg tabular-nums" ]
                             [ text (String.fromInt percent ++ "%") ])
                         ]
@@ -966,7 +967,7 @@ budgetLineRow ( label, cents ) =
         , List_.staticLeading
             (Element.element { tag = "span" }
                 []
-                [ Element.toNode (Icon.view { name = "subdirectory_arrow_right" }) ]
+                [ Element.toNode (Icon.view { name = "subdirectory_arrow_right" } []) ]
             )
         ]
 

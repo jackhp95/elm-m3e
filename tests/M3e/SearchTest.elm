@@ -48,14 +48,14 @@ suite =
                     |> Expect.equal (Just "Clear search")
         , test "leadingIcon child is slotted into slot=leading" <|
             \_ ->
-                node "Search" [ Search.leadingIcon (Icon.view { name = "search" }) ]
+                node "Search" [ Search.leadingIcon (Icon.view { name = "search" } []) ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "leading")
                     |> List.length
                     |> Expect.equal 1
         , test "trailingIcon child is slotted into slot=trailing" <|
             \_ ->
-                node "Search" [ Search.trailingIcon (Icon.view { name = "mic" }) ]
+                node "Search" [ Search.trailingIcon (Icon.view { name = "mic" } []) ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "trailing")
                     |> List.length

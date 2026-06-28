@@ -385,7 +385,7 @@ appHeader model =
                     { content =
                         [ Element.fromNode
                             (Layout.div "size-8 shrink-0 bg-primary text-on-primary grid place-items-center"
-                                [ Icon.view { name = "explore" } |> Element.toNode ]
+                                [ Icon.view { name = "explore" } [] |> Element.toNode ]
                             )
                         ]
                     }
@@ -500,7 +500,7 @@ destinationField model =
                 , Node.rawAttr (attribute "type" "button")
                 , Node.rawAttr (Html.Events.onClick (SetQuery d.name))
                 ]
-                [ Icon.view { name = categoryIcon d.category } |> Element.toNode
+                [ Icon.view { name = categoryIcon d.category } [] |> Element.toNode
                 , Node.element "span" [ Node.rawAttr (class "flex flex-col") ]
                     [ Node.raw (span [ class "text-body-md text-on-surface" ] [ text d.name ])
                     , Node.raw (span [ class "text-body-sm text-on-surface-variant" ] [ text d.country ])
@@ -510,7 +510,7 @@ destinationField model =
     Layout.div "relative flex min-w-0 flex-col gap-1.5"
         [ Node.raw (span [ class "text-label-md text-on-surface-variant" ] [ text "Where to" ])
         , Layout.div "flex min-h-12 items-center gap-2 rounded-md-corner-full bg-surface-container px-3 py-2.5"
-            [ Icon.view { name = "search" } |> Element.toNode
+            [ Icon.view { name = "search" } [] |> Element.toNode
             , Node.element "input"
                 [ Node.rawAttr (class "min-w-0 flex-1 bg-transparent text-body-lg text-on-surface outline-none placeholder:text-on-surface-variant")
                 , Node.rawAttr (attribute "placeholder" "Search destinations")
@@ -640,9 +640,9 @@ dateTrigger { targetId, label, value, icon } =
         , Node.rawAttr (attribute "popovertarget" targetId)
         , Node.rawAttr (attribute "aria-label" (label ++ " " ++ value))
         ]
-        [ Icon.view { name = icon } |> Element.toNode
+        [ Icon.view { name = icon } [] |> Element.toNode
         , Node.raw (span [ class "min-w-0 flex-1 truncate" ] [ text value ])
-        , Icon.view { name = "expand_more" } |> Element.toNode
+        , Icon.view { name = "expand_more" } [] |> Element.toNode
         ]
 
 
@@ -650,7 +650,7 @@ searchButton : Model -> Node Msg
 searchButton model =
     Button.view { label = "Search fares", variant = Button.Filled }
         [ Button.size Button.Large
-        , Button.leadingIcon (Icon.view { name = "travel_explore" })
+        , Button.leadingIcon (Icon.view { name = "travel_explore" } [])
         , Button.disabled model.searching
         , Button.onClick SearchFares
         ]
@@ -750,7 +750,7 @@ emptyState : Model -> Node Msg
 emptyState model =
     Layout.div "grid place-items-center rounded-md-corner-large border border-dashed border-outline-variant p-10 text-center"
         [ Layout.div "space-y-2"
-            [ Icon.view { name = "search_off" } |> Element.toNode
+            [ Icon.view { name = "search_off" } [] |> Element.toNode
             , Node.raw (p [ class "text-body-md text-on-surface-variant" ]
                 [ text ("No " ++ categoryLabel model.category ++ " results for \u{201C}" ++ model.query ++ "\u{201D}.") ])
             , Button.view { label = "Clear search", variant = Button.Text }
@@ -772,7 +772,7 @@ destinationCard model d =
                     { content =
                         [ Element.fromNode
                             (Layout.div "size-20 bg-primary text-on-primary grid place-items-center"
-                                [ Icon.view { name = categoryIcon d.category } |> Element.toNode ]
+                                [ Icon.view { name = categoryIcon d.category } [] |> Element.toNode ]
                             )
                         ]
                     }
@@ -830,7 +830,7 @@ favoriteButton d favorited =
                 , IconButton.toggle True
                 , IconButton.selected favorited
                 , IconButton.onChange (ToggleFavorite d.id)
-                , IconButton.selectedIcon (Icon.view { name = "favorite" })
+                , IconButton.selectedIcon (Icon.view { name = "favorite" } [])
                 ]
                 |> Element.toNode
             ]
@@ -855,7 +855,7 @@ itinerarySheet model =
                     { content =
                         [ Element.fromNode
                             (Layout.div "size-10 bg-primary text-on-primary grid place-items-center"
-                                [ Icon.view { name = categoryIcon dest.category } |> Element.toNode ]
+                                [ Icon.view { name = categoryIcon dest.category } [] |> Element.toNode ]
                             )
                         ]
                     }
@@ -869,7 +869,7 @@ itinerarySheet model =
 
         timelineRow icon title detail =
             Layout.div "flex items-start gap-3 py-2"
-                [ Icon.view { name = icon } |> Element.toNode
+                [ Icon.view { name = icon } [] |> Element.toNode
                 , Layout.div "flex flex-col"
                     [ Node.raw (span [ class "text-body-lg text-on-surface" ] [ text title ])
                     , Node.raw (span [ class "text-body-sm text-on-surface-variant" ] [ text detail ])

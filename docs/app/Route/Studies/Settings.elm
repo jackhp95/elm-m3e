@@ -398,7 +398,7 @@ railColumn model =
 
 railItem : Section -> String -> String -> Section -> Element { s | navItem : Supported } Msg
 railItem currentSection glyph label itemSection =
-    NavigationRail.item { icon = Icon.view { name = glyph }, label = label }
+    NavigationRail.item { icon = Icon.view { name = glyph } [], label = label }
         [ NavigationRail.itemSelected (currentSection == itemSection)
         , NavigationRail.itemOnClick (SectionSelected itemSection)
         ]
@@ -444,7 +444,7 @@ groupCard : String -> String -> List (Node Msg) -> Node Msg
 groupCard glyph title rows =
     Layout.section "flex flex-col gap-3 rounded-md-corner-large bg-surface-container-low p-5"
         (Layout.div "flex items-center gap-2 text-on-surface"
-            [ Icon.view { name = glyph } |> Element.toNode
+            [ Icon.view { name = glyph } [] |> Element.toNode
             , Heading.view { label = title, variant = Heading.Title }
                 [ Heading.size Heading.Medium, Heading.level 2 ]
                 |> Element.toNode
@@ -689,12 +689,12 @@ privacyPanel model =
                         , List_.actionLeading
                             (Element.element { tag = "span" }
                                 []
-                                [ Element.toNode (Icon.view { name = "download" }) ]
+                                [ Element.toNode (Icon.view { name = "download" } []) ]
                             )
                         , List_.actionTrailing
                             (Element.element { tag = "span" }
                                 []
-                                [ Element.toNode (Icon.view { name = "chevron_right" }) ]
+                                [ Element.toNode (Icon.view { name = "chevron_right" } []) ]
                             )
                         , List_.actionOnClick SaveRequested
                         ]
@@ -703,12 +703,12 @@ privacyPanel model =
                         , List_.actionLeading
                             (Element.element { tag = "span" }
                                 []
-                                [ Element.toNode (Icon.view { name = "delete" }) ]
+                                [ Element.toNode (Icon.view { name = "delete" } []) ]
                             )
                         , List_.actionTrailing
                             (Element.element { tag = "span" }
                                 []
-                                [ Element.toNode (Icon.view { name = "chevron_right" }) ]
+                                [ Element.toNode (Icon.view { name = "chevron_right" } []) ]
                             )
                         , List_.actionOnClick ResetRequested
                         ]
@@ -727,7 +727,7 @@ infoIcon : String -> String -> Node Msg
 infoIcon anchorId label =
     Node.element "span" []
         [ Node.element "span" [ Node.rawAttr (Html.Attributes.id anchorId), Node.rawAttr (class "inline-flex text-on-surface-variant") ]
-            [ Icon.view { name = "info" } |> Element.toNode ]
+            [ Icon.view { name = "info" } [] |> Element.toNode ]
         , Tooltip.plain { anchorId = anchorId, label = label } [] |> Element.toNode
         ]
 
@@ -826,12 +826,12 @@ footerActions : Node Msg
 footerActions =
     Layout.div "flex flex-wrap items-center justify-end gap-3"
         [ Button.view { label = "Reset to defaults", variant = Button.Text }
-            [ Button.leadingIcon (Icon.view { name = "restart_alt" })
+            [ Button.leadingIcon (Icon.view { name = "restart_alt" } [])
             , Button.onClick ResetRequested
             ]
             |> Element.toNode
         , Button.view { label = "Save changes", variant = Button.Filled }
-            [ Button.leadingIcon (Icon.view { name = "save" })
+            [ Button.leadingIcon (Icon.view { name = "save" } [])
             , Button.onClick SaveRequested
             ]
             |> Element.toNode

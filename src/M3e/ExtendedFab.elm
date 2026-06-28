@@ -166,7 +166,7 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.download v)) c.download
                 ]
             )
-            [ Element.toNode (Icon.view { name = req.icon })
+            [ Element.toNode (Icon.view { name = req.icon } [])
             , Node.withSlot "label" (Node.element "span" [] [ Node.text req.label ])
             ]
         )

@@ -3,6 +3,7 @@ module M3e.SplitPane exposing
     , Option, Orientation(..)
     , orientation, disabled, label
     , name, value
+    , onChange, onInput, onBeforeInput
     )
 
 {-| `<m3e-split-pane>` — a resizable two-pane layout with a movable drag
@@ -14,13 +15,15 @@ Spec (per docs/CONVENTIONS.md):
     , end : List (Element any msg) }
     (arbitrary content regions for the two panes; both are
     free-row — the `html` escape is valid inside either)
-  - Options: orientation, disabled, label (accessible label for the handle)
+  - Options: orientation, disabled, label, name, value,
+    onChange, onInput, onBeforeInput
   - Slots: "start" ← `m3e-content-pane` wrapping the start-side region;
     "end" ← `m3e-content-pane` wrapping the end-side region
     (named slots — each pane is wrapped automatically)
   - Properties: disabled (DOM property — introspectable)
   - Attrs: orientation via Node.rawAttr (Cem enum);
     label via Node.attribute (string attr)
+  - Events: change (drag end), input (during drag), beforeinput (before drag)
   - Escape: html (inside each pane region)
   - Tag: splitPane
 
@@ -31,10 +34,12 @@ mirroring Ui.SplitPane) and assigned the appropriate slot name.
 @docs Option, Orientation
 @docs orientation, disabled, label
 @docs name, value
+@docs onChange, onInput, onBeforeInput
 
 -}
 
 import Cem.M3e.SplitPane as Cem
+import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -57,7 +62,7 @@ type Orientation
 {-| An option configuring a split pane.
 -}
 type alias Option msg =
-    Internal.Option Config msg
+    Internal.Option (Config msg) msg
 
 
 {-| Set the split orientation (default `Horizontal`).
@@ -99,12 +104,47 @@ value v =
     Internal.option (\c -> { c | value = Just v })
 
 
-type alias Config =
+{-| Fire a message when the user releases the drag handle (the `change` event).
+
+Upstream: `change` event on `<m3e-split-pane>`.
+
+-}
+onChange : msg -> Option msg
+onChange msg =
+    Internal.option (\c -> { c | onChange = Just msg })
+
+
+{-| Fire a message continuously while the user drags the handle (the `input`
+event). Fires more frequently than [`onChange`](#onChange).
+
+Upstream: `input` event on `<m3e-split-pane>`.
+
+-}
+onInput : msg -> Option msg
+onInput msg =
+    Internal.option (\c -> { c | onInput = Just msg })
+
+
+{-| Fire a message just before each drag adjustment is committed (the
+`beforeinput` event).
+
+Upstream: `beforeinput` event on `<m3e-split-pane>`.
+
+-}
+onBeforeInput : msg -> Option msg
+onBeforeInput msg =
+    Internal.option (\c -> { c | onBeforeInput = Just msg })
+
+
+type alias Config msg =
     { orientation : Orientation
     , disabled : Bool
     , label : Maybe String
     , name : Maybe String
     , value : Maybe Float
+    , onChange : Maybe msg
+    , onInput : Maybe msg
+    , onBeforeInput : Maybe msg
     }
 
 
@@ -120,7 +160,7 @@ view :
     -> Element { s | splitPane : Supported } msg
 view req opts =
     let
-        c : Config
+        c : Config msg
         c =
             Internal.applyOptions opts
                 { orientation = Horizontal
@@ -128,6 +168,9 @@ view req opts =
                 , label = Nothing
                 , name = Nothing
                 , value = Nothing
+                , onChange = Nothing
+                , onInput = Nothing
+                , onBeforeInput = Nothing
                 }
     in
     Internal.fromNode
@@ -138,6 +181,9 @@ view req opts =
                 , Maybe.map (\l -> Node.attribute "label" l) c.label
                 , Maybe.map (\v -> Node.attribute "name" v) c.name
                 , Maybe.map (\v -> Node.attribute "value" (String.fromFloat v)) c.value
+                , Maybe.map (\msg -> Node.on "change" (Decode.succeed msg)) c.onChange
+                , Maybe.map (\msg -> Node.on "input" (Decode.succeed msg)) c.onInput
+                , Maybe.map (\msg -> Node.on "beforeinput" (Decode.succeed msg)) c.onBeforeInput
                 ]
             )
             [ Node.withSlot "start"

@@ -241,7 +241,7 @@ view req opts =
                 ]
             )
             (List.filterMap identity
-                [ Just (Element.toNode (Icon.view { name = req.icon }))
+                [ Just (Element.toNode (Icon.view { name = req.icon } []))
                 , Maybe.map (\lbl -> Node.withSlot "label" (Node.element "span" [] [ Node.text lbl ])) c.label
                 ]
             )

@@ -1,7 +1,7 @@
 module M3e.SplitButton exposing
     ( view
-    , Option, Variant(..)
-    , variant, disabled
+    , Option, Variant(..), Size(..)
+    , variant, size, disabled
     )
 
 {-| `<m3e-split-button>` — a primary action button paired with a trailing
@@ -15,11 +15,11 @@ Spec (per docs/CONVENTIONS.md):
     , onPrimaryClick : msg -- handler for the leading button
     , onTriggerClick : msg -- handler for the trailing icon-button
     }
-  - Options: variant, disabled
+  - Options: variant, size, disabled
   - Slots: "leading-button" ← `<m3e-button>` (the primary action)
     "trailing-button" ← `<m3e-icon-button>` (the dropdown trigger)
-  - Properties: none (variant is a string attribute)
-  - Attrs: variant via Node.rawAttr (Cem enum)
+  - Properties: none (variant/size are string attributes)
+  - Attrs: variant/size via Node.rawAttr (Cem enum)
   - Escape: none (strict: leading-button and trailing-button are fixed kinds)
   - Tag: splitButton
 
@@ -29,8 +29,8 @@ port emits the correct element types by constructing the slot children via
 `M3e.Button.view` and a hand-built `<m3e-icon-button>` node respectively.
 
 @docs view
-@docs Option, Variant
-@docs variant, disabled
+@docs Option, Variant, Size
+@docs variant, size, disabled
 
 -}
 
@@ -52,6 +52,20 @@ type Variant
     | Outlined
 
 
+{-| Button size — `ExtraSmall` through `ExtraLarge` (default `Small`).
+
+Upstream: `<m3e-split-button size="...">` attribute.
+CEM: `Cem.M3e.SplitButton.Size` — `"small"` default.
+
+-}
+type Size
+    = ExtraSmall
+    | Small
+    | Medium
+    | Large
+    | ExtraLarge
+
+
 {-| An option configuring a split button.
 -}
 type alias Option msg =
@@ -65,6 +79,16 @@ variant v =
     Internal.option (\c -> { c | variant = v })
 
 
+{-| Set the button size (default `Small`).
+
+Upstream: `size` attribute on `<m3e-split-button>`.
+
+-}
+size : Size -> Option msg
+size s =
+    Internal.option (\c -> { c | size = s })
+
+
 {-| Disable both the leading and trailing buttons.
 -}
 disabled : Bool -> Option msg
@@ -74,6 +98,7 @@ disabled b =
 
 type alias Config =
     { variant : Variant
+    , size : Size
     , disabled : Bool
     }
 
@@ -85,7 +110,7 @@ supplied by the caller via `trailingContent`.
     SplitButton.view
         { label = "Send"
         , name = "Schedule send"
-        , trailingContent = [ Icon.view { name = "schedule_send" } ]
+        , trailingContent = [ Icon.view { name = "schedule_send" } [] ]
         , onPrimaryClick = SendMessage
         , onTriggerClick = ScheduleSend
         }
@@ -95,7 +120,7 @@ To also open a menu from the trailing button, add `Menu.triggerFor` alongside
 the icon:
 
     trailingContent =
-        [ Icon.view { name = "expand_more" }
+        [ Icon.view { name = "expand_more" } []
         , Menu.triggerFor "my-menu"
         ]
 
@@ -113,7 +138,7 @@ view req opts =
     let
         c : Config
         c =
-            Internal.applyOptions opts { variant = Filled, disabled = False }
+            Internal.applyOptions opts { variant = Filled, size = Small, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
         leadingButton : Node msg
@@ -147,7 +172,9 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-split-button"
-            [ Node.rawAttr (Cem.variant (toCemVariant c.variant)) ]
+            [ Node.rawAttr (Cem.variant (toCemVariant c.variant))
+            , Node.rawAttr (Cem.size (toCemSize c.size))
+            ]
             [ leadingButton, trailingButton ]
         )
 
@@ -182,3 +209,22 @@ toCemVariant v =
 
         Outlined ->
             Cem.Outlined
+
+
+toCemSize : Size -> Cem.Size
+toCemSize s =
+    case s of
+        ExtraSmall ->
+            Cem.ExtraSmall
+
+        Small ->
+            Cem.Small
+
+        Medium ->
+            Cem.Medium
+
+        Large ->
+            Cem.Large
+
+        ExtraLarge ->
+            Cem.ExtraLarge

@@ -83,4 +83,18 @@ suite =
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "slot")
                     |> Expect.equal (Just "leading")
+
+        -- Fix #66 — for attribute (scroll-elevation attach target)
+        , test "fix-#66: for sets the 'for' attribute (scroll-elevation target)" <|
+            \_ ->
+                AppBar.view [ AppBar.for "scroll-container" ]
+                    |> Element.toNode
+                    |> Node.findAttribute "for"
+                    |> Expect.equal (Just "scroll-container")
+        , test "fix-#66: no for option — no for attribute by default" <|
+            \_ ->
+                AppBar.view []
+                    |> Element.toNode
+                    |> Node.findAttribute "for"
+                    |> Expect.equal Nothing
         ]

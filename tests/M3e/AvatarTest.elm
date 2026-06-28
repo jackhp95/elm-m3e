@@ -64,7 +64,7 @@ suite =
                     |> Expect.equal (Just "JP")
         , test "iconChild option renders an m3e-icon child" <|
             \_ ->
-                Avatar.view { ariaLabel = "Generic" } [ Avatar.iconChild (Icon.view { name = "person" }) ]
+                Avatar.view { ariaLabel = "Generic" } [ Avatar.iconChild (Icon.view { name = "person" } []) ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.head

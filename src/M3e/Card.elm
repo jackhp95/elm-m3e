@@ -1,7 +1,8 @@
 module M3e.Card exposing
-    ( Option, Variant(..), ButtonType(..)
-    , variant, actionable, inline, media, headline, subhead, body, actions, footer
+    ( Option, Variant(..), Orientation(..), ButtonType(..)
+    , variant, orientation, actionable, inline, media, headline, subhead, body, actions, footer
     , formType, name, value
+    , href, target, rel, download
     , view
     )
 
@@ -10,8 +11,8 @@ module M3e.Card exposing
 Spec (per docs/CONVENTIONS.md):
 
   - Required: (none — container only, variant optional)
-  - Options: variant, actionable, inline, media, headline, subhead,
-    body, actions, footer
+  - Options: variant, orientation, actionable, inline, media, headline, subhead,
+    body, actions, footer, href, target, rel, download
   - Slots:
     header : region (free row — any Element; wrapped in div[slot=header])
     content : region (free row — headline + subhead; wrapped in div[slot=content])
@@ -19,7 +20,7 @@ Spec (per docs/CONVENTIONS.md):
     footer : region (free row)
     (default): free row — body items, no slot injected
   - Properties: actionable, inline (DOM properties)
-  - Attrs: variant
+  - Attrs: variant, orientation, href, target, rel, download
   - Escape: html (default slot / all regions)
   - Tag: card
 
@@ -30,13 +31,14 @@ working: with only `body` set, the card's children are exactly the body items.
 
 # Type
 
-@docs Option, Variant, ButtonType
+@docs Option, Variant, Orientation, ButtonType
 
 
 # Options
 
-@docs variant, actionable, inline, media, headline, subhead, body, actions, footer
+@docs variant, orientation, actionable, inline, media, headline, subhead, body, actions, footer
 @docs formType, name, value
+@docs href, target, rel, download
 
 @docs view
 
@@ -61,6 +63,17 @@ type Variant
     | Outlined
 
 
+{-| Layout orientation of the card (default `Vertical`).
+
+Upstream: `orientation` attribute on `<m3e-card>`.
+CEM: `CardOrientation` — `"vertical"` or `"horizontal"`.
+
+-}
+type Orientation
+    = Vertical
+    | Horizontal
+
+
 {-| Form submission type for a card acting as a form submitter.
 Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
 default `"button"`. Only relevant when using the card as an interactive button
@@ -74,6 +87,7 @@ type ButtonType
 
 type alias Config msg =
     { variant : Maybe Variant
+    , orientation : Maybe Orientation
     , actionable : Bool
     , inline : Bool
     , media : Maybe (Node msg)
@@ -85,6 +99,10 @@ type alias Config msg =
     , formType : Maybe ButtonType
     , name : Maybe String
     , value : Maybe String
+    , href : Maybe String
+    , target : Maybe String
+    , rel : Maybe String
+    , download : Maybe String
     }
 
 
@@ -97,6 +115,7 @@ type alias Option msg =
 defaultConfig : Config msg
 defaultConfig =
     { variant = Nothing
+    , orientation = Nothing
     , actionable = False
     , inline = False
     , media = Nothing
@@ -108,6 +127,10 @@ defaultConfig =
     , formType = Nothing
     , name = Nothing
     , value = Nothing
+    , href = Nothing
+    , target = Nothing
+    , rel = Nothing
+    , download = Nothing
     }
 
 
@@ -120,6 +143,16 @@ defaultConfig =
 variant : Variant -> Option msg
 variant v =
     Internal.option (\c -> { c | variant = Just v })
+
+
+{-| Set the layout orientation (`Vertical` or `Horizontal`; default `Vertical`).
+
+Upstream: `orientation` attribute on `<m3e-card>`.
+
+-}
+orientation : Orientation -> Option msg
+orientation o =
+    Internal.option (\c -> { c | orientation = Just o })
 
 
 {-| Make the whole card a single interactive surface (the `actionable` DOM
@@ -204,6 +237,48 @@ value v =
     Internal.option (\c -> { c | value = Just v })
 
 
+{-| Make the card a link to the given URL.
+
+Upstream: `LinkButton` mixin → `href` attribute on `<m3e-card>`.
+
+-}
+href : String -> Option msg
+href v =
+    Internal.option (\c -> { c | href = Just v })
+
+
+{-| Set the link target (e.g. `"_blank"`); only meaningful with [`href`](#href).
+
+Upstream: `LinkButton` mixin → `target` attribute on `<m3e-card>`.
+
+-}
+target : String -> Option msg
+target v =
+    Internal.option (\c -> { c | target = Just v })
+
+
+{-| Set the link relationship (e.g. `"noreferrer noopener"`); only meaningful
+with [`href`](#href).
+
+Upstream: `LinkButton` mixin → `rel` attribute on `<m3e-card>`.
+
+-}
+rel : String -> Option msg
+rel v =
+    Internal.option (\c -> { c | rel = Just v })
+
+
+{-| Request the link target be downloaded (optionally with a new filename).
+Only meaningful with [`href`](#href).
+
+Upstream: `LinkButton` mixin → `download` attribute on `<m3e-card>`.
+
+-}
+download : String -> Option msg
+download v =
+    Internal.option (\c -> { c | download = Just v })
+
+
 
 -- VIEW ------------------------------------------------------------------
 
@@ -221,11 +296,16 @@ view opts =
         (Node.element "m3e-card"
             (List.filterMap identity
                 [ Maybe.map (\v -> Node.attribute "variant" (Cem.variantToString (toCemVariant v))) cfg.variant
+                , Maybe.map (\o -> Node.attribute "orientation" (Cem.orientationToString (toCemOrientation o))) cfg.orientation
                 , Just (Node.property "actionable" (Encode.bool cfg.actionable))
                 , Just (Node.property "inline" (Encode.bool cfg.inline))
                 , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) cfg.formType
                 , Maybe.map (\v -> Node.attribute "name" v) cfg.name
                 , Maybe.map (\v -> Node.attribute "value" v) cfg.value
+                , Maybe.map (\v -> Node.attribute "href" v) cfg.href
+                , Maybe.map (\v -> Node.attribute "target" v) cfg.target
+                , Maybe.map (\v -> Node.attribute "rel" v) cfg.rel
+                , Maybe.map (\v -> Node.attribute "download" v) cfg.download
                 ]
             )
             (List.filterMap identity
@@ -305,3 +385,13 @@ toCemVariant v =
 
         Outlined ->
             Cem.Outlined
+
+
+toCemOrientation : Orientation -> Cem.Orientation
+toCemOrientation o =
+    case o of
+        Vertical ->
+            Cem.Vertical
+
+        Horizontal ->
+            Cem.Horizontal

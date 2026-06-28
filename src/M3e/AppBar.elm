@@ -1,7 +1,7 @@
 module M3e.AppBar exposing
     ( Option, Size(..), Leading, Title, Trailing
     , view
-    , id, size, centered, leading, title, subtitle, trailing
+    , id, for, size, centered, leading, title, subtitle, trailing
     )
 
 {-| `<m3e-app-bar>` — top-of-screen chrome (Material 3 App bars).
@@ -36,7 +36,7 @@ slot can never be silently dropped.
 
 # Options
 
-@docs id, size, centered, leading, title, subtitle, trailing
+@docs id, for, size, centered, leading, title, subtitle, trailing
 
 -}
 
@@ -101,6 +101,7 @@ type Size
 
 type alias Config msg =
     { id : Maybe String
+    , for : Maybe String
     , size : Size
     , centered : Bool
     , leading : Maybe (Node msg)
@@ -120,6 +121,7 @@ type alias Option msg =
 defaultConfig : Config msg
 defaultConfig =
     { id = Nothing
+    , for = Nothing
     , size = Small
     , centered = False
     , leading = Nothing
@@ -138,6 +140,17 @@ defaultConfig =
 id : String -> Option msg
 id v =
     Internal.option (\c -> { c | id = Just v })
+
+
+{-| Attach the app bar to a scrollable container. The `for` value is the `id`
+of the element to observe; as it scrolls, the bar gains elevation.
+
+Upstream: `for` attribute on `<m3e-app-bar>`. CEM field: `htmlFor`.
+
+-}
+for : String -> Option msg
+for v =
+    Internal.option (\c -> { c | for = Just v })
 
 
 {-| Set the app bar size (`Small` / `Medium` / `Large`; default `Small`).
@@ -207,6 +220,7 @@ view opts =
         (Node.element "m3e-app-bar"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") cfg.id
+                , Maybe.map (Node.attribute "for") cfg.for
                 , Just (Node.attribute "size" (Cem.sizeToString (toCemSize cfg.size)))
                 , Just (Node.property "centered" (Encode.bool cfg.centered))
                 ]

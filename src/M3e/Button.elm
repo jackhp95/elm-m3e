@@ -1,7 +1,8 @@
 module M3e.Button exposing
     ( Option, Variant(..), Size(..), Shape(..), ButtonType(..)
     , view
-    , size, shape, disabled, onClick, href, target, rel, download, leadingIcon, trailingIcon
+    , size, shape, disabled, toggle, selected, onClick, href, target, rel, download
+    , leadingIcon, trailingIcon, selectedIcon, selectedLabel
     , formType, name, value
     )
 
@@ -11,10 +12,13 @@ Spec (per docs/CONVENTIONS.md):
 
   - Required: { label : String, variant : Variant } (label is visible -> it IS
     the accessible name; no separate a11y field)
-  - Options: size, shape, disabled, onClick, href(+target/rel/download),
-    leadingIcon, trailingIcon, formType, name, value
-  - Slots: icon -> single M3e.Icon (slot "icon"); trailing-icon likewise
-  - Properties: disabled (DOM property -> introspectable/testable)
+  - Options: size, shape, disabled, toggle, selected, onClick,
+    href(+target/rel/download), leadingIcon, trailingIcon, selectedIcon,
+    selectedLabel, formType, name, value
+  - Slots: icon -> single M3e.Icon (slot "icon"); trailing-icon likewise;
+    selected -> label when selected (slot "selected");
+    selected-icon -> icon when selected (slot "selected-icon")
+  - Properties: disabled, toggle, selected (DOM properties -> introspectable/testable)
   - Attrs: variant/size/shape/href/... via Cem.M3e.Button.\* as RawAttr
     (codegen name+enum safety; opaque, which is fine — no parent
     introspects them); name/value/type via Node.attribute (introspectable)
@@ -38,7 +42,8 @@ per ADR 0006 / the prior NoActionlessButton design).
 
 # Options
 
-@docs size, shape, disabled, onClick, href, target, rel, download, leadingIcon, trailingIcon
+@docs size, shape, disabled, toggle, selected, onClick, href, target, rel, download
+@docs leadingIcon, trailingIcon, selectedIcon, selectedLabel
 @docs formType, name, value
 
 -}
@@ -170,6 +175,49 @@ trailingIcon i =
     Internal.option (\c -> { c | trailingIcon = Just i })
 
 
+{-| Make the button a toggle button. When `True`, the button switches between
+selected and unselected states on each click.
+
+Upstream: `toggle` property on `<m3e-button>` (DOM property, default `false`).
+
+-}
+toggle : Bool -> Option msg
+toggle b =
+    Internal.option (\c -> { c | toggle = b })
+
+
+{-| Set the selected state of a toggle button (requires [`toggle True`](#toggle)).
+
+Upstream: `selected` property on `<m3e-button>` (DOM property, default `false`).
+
+-}
+selected : Bool -> Option msg
+selected b =
+    Internal.option (\c -> { c | selected = b })
+
+
+{-| Place an icon in the `selected-icon` slot, shown when the toggle button is
+selected (replaces the `icon` slot while selected).
+
+Upstream: `selected-icon` slot on `<m3e-button>`.
+
+-}
+selectedIcon : Element { icon : Supported } msg -> Option msg
+selectedIcon i =
+    Internal.option (\c -> { c | selectedIcon = Just i })
+
+
+{-| Set the label shown in the `selected` slot when the toggle button is
+selected. The text is wrapped in a `<span slot="selected">`.
+
+Upstream: `selected` slot on `<m3e-button>`.
+
+-}
+selectedLabel : String -> Option msg
+selectedLabel s =
+    Internal.option (\c -> { c | selectedLabel = Just s })
+
+
 {-| Set the form submission type. Only meaningful when the button is inside a
 `<form>` without `href`. Upstream: `FormSubmitter` mixin → `type` attribute.
 -}
@@ -198,6 +246,8 @@ type alias Config msg =
     { size : Size
     , shape : Maybe Shape
     , disabled : Bool
+    , toggle : Bool
+    , selected : Bool
     , onClick : Maybe msg
     , href : Maybe String
     , target : Maybe String
@@ -205,6 +255,8 @@ type alias Config msg =
     , download : Maybe String
     , leadingIcon : Maybe (Element { icon : Supported } msg)
     , trailingIcon : Maybe (Element { icon : Supported } msg)
+    , selectedIcon : Maybe (Element { icon : Supported } msg)
+    , selectedLabel : Maybe String
     , formType : Maybe ButtonType
     , name : Maybe String
     , value : Maybe String
@@ -223,6 +275,8 @@ view req opts =
                 { size = Small
                 , shape = Nothing
                 , disabled = False
+                , toggle = False
+                , selected = False
                 , onClick = Nothing
                 , href = Nothing
                 , target = Nothing
@@ -230,6 +284,8 @@ view req opts =
                 , download = Nothing
                 , leadingIcon = Nothing
                 , trailingIcon = Nothing
+                , selectedIcon = Nothing
+                , selectedLabel = Nothing
                 , formType = Nothing
                 , name = Nothing
                 , value = Nothing
@@ -242,6 +298,8 @@ view req opts =
                 , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
                 , Maybe.map (\v -> Node.rawAttr (Cem.shape (toCemShape v))) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "toggle" (Encode.bool c.toggle))
+                , Just (Node.property "selected" (Encode.bool c.selected))
                 , Maybe.map (\m -> Node.on "click" (Decode.succeed m)) c.onClick
                 , Maybe.map (\v -> Node.rawAttr (Cem.href v)) c.href
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target
@@ -255,6 +313,8 @@ view req opts =
             (List.filterMap identity
                 [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) c.leadingIcon
                 , Just (Node.text req.label)
+                , Maybe.map (\s -> Node.withSlot "selected" (Node.element "span" [] [ Node.text s ])) c.selectedLabel
+                , Maybe.map (\i -> Node.withSlot "selected-icon" (Element.toNode i)) c.selectedIcon
                 , Maybe.map (\i -> Node.withSlot "trailing-icon" (Element.toNode i)) c.trailingIcon
                 ]
             )

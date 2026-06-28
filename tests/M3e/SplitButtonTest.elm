@@ -105,6 +105,28 @@ suite =
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
 
+        -- Fix #66 — size option
+        , test "fix-#66: size option does not crash (rawAttr — not introspectable)" <|
+            \_ ->
+                node [ SplitButton.size SplitButton.Medium ]
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-split-button")
+        , test "fix-#66: Large size does not crash" <|
+            \_ ->
+                node [ SplitButton.size SplitButton.Large ]
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-split-button")
+        , test "fix-#66: ExtraLarge size does not crash" <|
+            \_ ->
+                node [ SplitButton.size SplitButton.ExtraLarge ]
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-split-button")
+        , test "fix-#66: ExtraSmall size does not crash" <|
+            \_ ->
+                node [ SplitButton.size SplitButton.ExtraSmall ]
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-split-button")
+
         -- Fix #63 — trailingContent is a typed slot input
         , test "fix-#63: trailingContent is rendered inside the trailing m3e-icon-button" <|
             \_ ->

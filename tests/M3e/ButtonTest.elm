@@ -30,7 +30,7 @@ suite =
                     |> Expect.equal (Just "true")
         , test "leadingIcon is slotted into slot=icon, and is an <m3e-icon>" <|
             \_ ->
-                node "Add" [ Button.leadingIcon (Icon.view { name = "add" }) ]
+                node "Add" [ Button.leadingIcon (Icon.view { name = "add" } []) ]
                     |> Node.childrenOf
                     |> List.head
                     |> Maybe.map (\n -> ( Node.tagOf n, Node.findAttribute "slot" n ))
@@ -65,6 +65,56 @@ suite =
                 node "Save" []
                     |> Node.findAttribute "type"
                     |> Expect.equal Nothing
+
+        -- Fix #66 — toggle + selected properties, selected/selected-icon slots
+        , test "fix-#66: toggle=false is DOM property by default" <|
+            \_ ->
+                node "Save" []
+                    |> Node.findProperty "toggle"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
+        , test "fix-#66: toggle True emits toggle DOM property" <|
+            \_ ->
+                node "Like" [ Button.toggle True ]
+                    |> Node.findProperty "toggle"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "true")
+        , test "fix-#66: selected=false is DOM property by default" <|
+            \_ ->
+                node "Save" []
+                    |> Node.findProperty "selected"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "false")
+        , test "fix-#66: selected True emits selected DOM property" <|
+            \_ ->
+                node "Like" [ Button.selected True ]
+                    |> Node.findProperty "selected"
+                    |> Maybe.map (Encode.encode 0)
+                    |> Expect.equal (Just "true")
+        , test "fix-#66: selectedIcon lands in slot=selected-icon" <|
+            \_ ->
+                node "Fav" [ Button.selectedIcon (Icon.view { name = "favorite" } []) ]
+                    |> Node.childrenOf
+                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "selected-icon")
+                    |> List.length
+                    |> Expect.equal 1
+        , test "fix-#66: selectedLabel is wrapped in a span with slot=selected" <|
+            \_ ->
+                node "Save" [ Button.selectedLabel "Saved" ]
+                    |> Node.childrenOf
+                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "selected")
+                    |> List.head
+                    |> Maybe.andThen Node.tagOf
+                    |> Expect.equal (Just "span")
+        , test "fix-#66: selectedLabel text is a child of the span" <|
+            \_ ->
+                node "Save" [ Button.selectedLabel "Saved" ]
+                    |> Node.childrenOf
+                    |> List.filter (\n -> Node.findAttribute "slot" n == Just "selected")
+                    |> List.head
+                    |> Maybe.map Node.childrenOf
+                    |> Maybe.andThen List.head
+                    |> Expect.equal (Just (Node.text "Saved"))
         ]
 
 

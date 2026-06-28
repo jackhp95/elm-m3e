@@ -230,7 +230,7 @@ content items =
     M3e.NavigationDrawer.link
         { label = "Overview", href = "/docs/overview" }
         [ M3e.NavigationDrawer.linkSelected True
-        , M3e.NavigationDrawer.linkIcon (M3e.Icon.view { name = "home" })
+        , M3e.NavigationDrawer.linkIcon (M3e.Icon.view { name = "home" } [])
         ]
 
 -}
@@ -284,7 +284,7 @@ link req opts =
         , M3e.NavigationDrawer.link { label = "Install", href = "/install" } []
         ]
         [ M3e.NavigationDrawer.groupOpen True
-        , M3e.NavigationDrawer.groupIcon (M3e.Icon.view { name = "rocket_launch" })
+        , M3e.NavigationDrawer.groupIcon (M3e.Icon.view { name = "rocket_launch" } [])
         ]
 
 -}

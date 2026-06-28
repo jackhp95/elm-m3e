@@ -94,7 +94,7 @@ highlightCard ( iconName, title, body ) =
             [ Element.fromNode
                 (Layout.div "flex gap-3"
                     [ Layout.span "shrink-0 text-primary"
-                        [ Icon.view { name = iconName } |> Element.toNode ]
+                        [ Icon.view { name = iconName } [] |> Element.toNode ]
                     , Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
                     ]
                 )

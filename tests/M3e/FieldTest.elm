@@ -29,6 +29,7 @@ suite =
                             , label = Label.fromHtml (Html.text "Email")
                             , control = inputElement
                             }
+                            []
 
                     kids : List (Node msg)
                     kids =
@@ -45,9 +46,42 @@ suite =
                     , label = Label.fromHtml (Html.text "Label")
                     , control = inputElement
                     }
+                    []
                     |> Node.childrenOf
                     |> List.drop 1
                     |> List.head
                     |> Maybe.andThen (Node.findAttribute "id")
                     |> Expect.equal (Just "ctrl-id")
+
+        -- Fix #66 — variant option
+        , test "fix-#66: no variant option — no variant attribute by default (upstream default outlined)" <|
+            \_ ->
+                Field.view
+                    { id = "f"
+                    , label = Label.fromHtml (Html.text "L")
+                    , control = inputElement
+                    }
+                    []
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal Nothing
+        , test "fix-#66: Filled variant emits variant=filled" <|
+            \_ ->
+                Field.view
+                    { id = "f"
+                    , label = Label.fromHtml (Html.text "L")
+                    , control = inputElement
+                    }
+                    [ Field.variant Field.Filled ]
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal (Just "filled")
+        , test "fix-#66: Outlined variant emits variant=outlined" <|
+            \_ ->
+                Field.view
+                    { id = "f"
+                    , label = Label.fromHtml (Html.text "L")
+                    , control = inputElement
+                    }
+                    [ Field.variant Field.Outlined ]
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal (Just "outlined")
         ]

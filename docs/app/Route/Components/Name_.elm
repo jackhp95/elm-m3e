@@ -647,19 +647,19 @@ demoSections slug =
             [ usage
                 [ sub "Dot"
                     (Layout.div "relative"
-                        [ Icon.view { name = "notifications" } |> Element.toNode
+                        [ Icon.view { name = "notifications" } [] |> Element.toNode
                         , Badge.view [ Badge.dot ] |> Element.toNode
                         ]
                     )
                 , sub "Count"
                     (Layout.div "relative"
-                        [ Icon.view { name = "inbox" } |> Element.toNode
+                        [ Icon.view { name = "inbox" } [] |> Element.toNode
                         , Badge.view [ Badge.count 5 ] |> Element.toNode
                         ]
                     )
                 , sub "Label"
                     (Layout.div "relative"
-                        [ Icon.view { name = "shopping_bag" } |> Element.toNode
+                        [ Icon.view { name = "shopping_bag" } [] |> Element.toNode
                         , Badge.view [ Badge.label "New" ] |> Element.toNode
                         ]
                     )
@@ -730,10 +730,10 @@ demoSections slug =
                 , sub "Icons"
                     (buttonRow
                         [ Button.view { label = "Send", variant = Button.Tonal }
-                            [ Button.leadingIcon (Icon.view { name = "send" }) ]
+                            [ Button.leadingIcon (Icon.view { name = "send" } []) ]
                             |> Element.toNode
                         , Button.view { label = "Open", variant = Button.Tonal }
-                            [ Button.trailingIcon (Icon.view { name = "open_in_new" }) ]
+                            [ Button.trailingIcon (Icon.view { name = "open_in_new" } []) ]
                             |> Element.toNode
                         ]
                     )
@@ -745,7 +745,7 @@ demoSections slug =
                     )
                 , sub "Links"
                     (Button.view { label = "Visit Google", variant = Button.Tonal }
-                        [ Button.trailingIcon (Icon.view { name = "open_in_new" })
+                        [ Button.trailingIcon (Icon.view { name = "open_in_new" } [])
                         , Button.href "https://www.google.com"
                         ]
                         |> Element.toNode
@@ -1025,24 +1025,24 @@ demoSections slug =
             [ usage
                 [ sub "Basic icons"
                     (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
-                        [ Icon.view { name = "home" } |> Element.toNode
-                        , Icon.view { name = "settings" } |> Element.toNode
-                        , Icon.view { name = "notifications" } |> Element.toNode
-                        , Icon.view { name = "search" } |> Element.toNode
+                        [ Icon.view { name = "home" } [] |> Element.toNode
+                        , Icon.view { name = "settings" } [] |> Element.toNode
+                        , Icon.view { name = "notifications" } [] |> Element.toNode
+                        , Icon.view { name = "search" } [] |> Element.toNode
                         ]
                     )
                 , sub "Filled axis"
                     (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
-                        [ Icon.view { name = "favorite" } |> Element.toNode
-                        , Icon.view { name = "favorite" } |> Element.toNode
+                        [ Icon.view { name = "favorite" } [] |> Element.toNode
+                        , Icon.view { name = "favorite" } [] |> Element.toNode
                         ]
                     )
                 , sub "Weight axis"
                     (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
-                        [ Icon.view { name = "circle" } |> Element.toNode
-                        , Icon.view { name = "circle" } |> Element.toNode
-                        , Icon.view { name = "circle" } |> Element.toNode
-                        , Icon.view { name = "circle" } |> Element.toNode
+                        [ Icon.view { name = "circle" } [] |> Element.toNode
+                        , Icon.view { name = "circle" } [] |> Element.toNode
+                        , Icon.view { name = "circle" } [] |> Element.toNode
+                        , Icon.view { name = "circle" } [] |> Element.toNode
                         ]
                     )
                 ]
@@ -1138,12 +1138,12 @@ demoSections slug =
                 [ sub "Basic"
                     (NavigationBar.view
                         { items =
-                            [ NavigationBar.item { icon = Icon.view { name = "home" }, label = "Home" }
+                            [ NavigationBar.item { icon = Icon.view { name = "home" } [], label = "Home" }
                                 [ NavigationBar.itemSelected True
                                 ]
-                            , NavigationBar.item { icon = Icon.view { name = "search" }, label = "Search" }
+                            , NavigationBar.item { icon = Icon.view { name = "search" } [], label = "Search" }
                                 []
-                            , NavigationBar.item { icon = Icon.view { name = "bookmark" }, label = "Saved" }
+                            , NavigationBar.item { icon = Icon.view { name = "bookmark" } [], label = "Saved" }
                                 []
                             ]
                         }
@@ -1153,14 +1153,14 @@ demoSections slug =
                 , sub "With badges"
                     (NavigationBar.view
                         { items =
-                            [ NavigationBar.item { icon = Icon.view { name = "inbox" }, label = "Inbox" }
+                            [ NavigationBar.item { icon = Icon.view { name = "inbox" } [], label = "Inbox" }
                                 [ NavigationBar.itemSelected True
                                 , NavigationBar.itemBadge "3"
                                 ]
-                            , NavigationBar.item { icon = Icon.view { name = "notifications" }, label = "Alerts" }
+                            , NavigationBar.item { icon = Icon.view { name = "notifications" } [], label = "Alerts" }
                                 [ NavigationBar.itemBadge "12"
                                 ]
-                            , NavigationBar.item { icon = Icon.view { name = "person" }, label = "Profile" }
+                            , NavigationBar.item { icon = Icon.view { name = "person" } [], label = "Profile" }
                                 []
                             ]
                         }
@@ -1177,13 +1177,13 @@ demoSections slug =
                         { entries =
                             [ NavigationDrawer.link { label = "Inbox", href = "#" }
                                 [ NavigationDrawer.linkSelected True
-                                , NavigationDrawer.linkIcon (Icon.view { name = "inbox" })
+                                , NavigationDrawer.linkIcon (Icon.view { name = "inbox" } [])
                                 ]
                             , NavigationDrawer.link { label = "Starred", href = "#" }
-                                [ NavigationDrawer.linkIcon (Icon.view { name = "star" })
+                                [ NavigationDrawer.linkIcon (Icon.view { name = "star" } [])
                                 ]
                             , NavigationDrawer.link { label = "Trash", href = "#" }
-                                [ NavigationDrawer.linkIcon (Icon.view { name = "delete" })
+                                [ NavigationDrawer.linkIcon (Icon.view { name = "delete" } [])
                                 ]
                             ]
                         }
@@ -1200,12 +1200,12 @@ demoSections slug =
                 [ sub "Basic"
                     (NavigationRail.view
                         { items =
-                            [ NavigationRail.item { icon = Icon.view { name = "home" }, label = "Home" }
+                            [ NavigationRail.item { icon = Icon.view { name = "home" } [], label = "Home" }
                                 [ NavigationRail.itemSelected True
                                 ]
-                            , NavigationRail.item { icon = Icon.view { name = "search" }, label = "Search" }
+                            , NavigationRail.item { icon = Icon.view { name = "search" } [], label = "Search" }
                                 []
-                            , NavigationRail.item { icon = Icon.view { name = "bookmark" }, label = "Saved" }
+                            , NavigationRail.item { icon = Icon.view { name = "bookmark" } [], label = "Saved" }
                                 []
                             ]
                         }
@@ -1472,7 +1472,7 @@ demoSections slug =
                     (SplitButton.view
                         { label = "Save"
                         , name = "More options"
-                        , trailingContent = [ Icon.view { name = "arrow_drop_down" } ]
+                        , trailingContent = [ Icon.view { name = "arrow_drop_down" } [] ]
                         , onPrimaryClick = PagesMsg.noOp
                         , onTriggerClick = PagesMsg.noOp
                         }
@@ -1766,6 +1766,7 @@ demoSections slug =
                         , label = Label.fromHtml (Html.text "Reduce motion")
                         , control = Switch.view { ariaLabel = "Reduce motion" } [ Switch.checked True ]
                         }
+                        []
                     )
                 , sub "Outlined variant with error"
                     (Field.view
@@ -1776,6 +1777,7 @@ demoSections slug =
                                 [ Node.rawAttr (Attr.value "atlas") ]
                                 []
                         }
+                        []
                     )
                 ]
             ]

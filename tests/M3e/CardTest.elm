@@ -94,4 +94,48 @@ suite =
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2
+
+        -- Fix #66 — orientation and link button options
+        , test "fix-#66: orientation Vertical emits orientation=vertical" <|
+            \_ ->
+                Card.view [ Card.orientation Card.Vertical ]
+                    |> Element.toNode
+                    |> Node.findAttribute "orientation"
+                    |> Expect.equal (Just "vertical")
+        , test "fix-#66: orientation Horizontal emits orientation=horizontal" <|
+            \_ ->
+                Card.view [ Card.orientation Card.Horizontal ]
+                    |> Element.toNode
+                    |> Node.findAttribute "orientation"
+                    |> Expect.equal (Just "horizontal")
+        , test "fix-#66: no orientation option — no orientation attribute by default" <|
+            \_ ->
+                Card.view []
+                    |> Element.toNode
+                    |> Node.findAttribute "orientation"
+                    |> Expect.equal Nothing
+        , test "fix-#66: href sets the href attribute (LinkButton)" <|
+            \_ ->
+                Card.view [ Card.href "/detail" ]
+                    |> Element.toNode
+                    |> Node.findAttribute "href"
+                    |> Expect.equal (Just "/detail")
+        , test "fix-#66: target sets the target attribute (LinkButton)" <|
+            \_ ->
+                Card.view [ Card.target "_blank" ]
+                    |> Element.toNode
+                    |> Node.findAttribute "target"
+                    |> Expect.equal (Just "_blank")
+        , test "fix-#66: rel sets the rel attribute (LinkButton)" <|
+            \_ ->
+                Card.view [ Card.rel "noreferrer" ]
+                    |> Element.toNode
+                    |> Node.findAttribute "rel"
+                    |> Expect.equal (Just "noreferrer")
+        , test "fix-#66: download sets the download attribute (LinkButton)" <|
+            \_ ->
+                Card.view [ Card.download "file.pdf" ]
+                    |> Element.toNode
+                    |> Node.findAttribute "download"
+                    |> Expect.equal (Just "file.pdf")
         ]

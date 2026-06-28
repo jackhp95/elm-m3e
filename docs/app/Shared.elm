@@ -689,7 +689,7 @@ groupEntry currentPath glyph title items =
     M3e.NavigationDrawer.group
         { label = title }
         (List.map (linkEntry currentPath) items)
-        [ M3e.NavigationDrawer.groupIcon (M3e.Icon.view { name = glyph })
+        [ M3e.NavigationDrawer.groupIcon (M3e.Icon.view { name = glyph } [])
         , M3e.NavigationDrawer.groupOpen (List.any (\( path, _ ) -> path == currentPath) items)
         ]
 

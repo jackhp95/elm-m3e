@@ -35,7 +35,7 @@ suite =
         , test "view: viewLeadingIcon renders in icon slot (advertised option is applied)" <|
             \_ ->
                 Chip.view { label = "Tag" }
-                    [ Chip.viewLeadingIcon (Icon.view { name = "star" }) ]
+                    [ Chip.viewLeadingIcon (Icon.view { name = "star" } []) ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "icon")
@@ -102,7 +102,7 @@ suite =
         , test "leadingIcon child is slotted into slot=icon" <|
             \_ ->
                 Chip.assist { label = "Search", onClick = () }
-                    [ Chip.leadingIcon (Icon.view { name = "search" }) ]
+                    [ Chip.leadingIcon (Icon.view { name = "search" } []) ]
                     |> Element.toNode
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "icon")
