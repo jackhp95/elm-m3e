@@ -69,7 +69,7 @@ gradeToString val_ =
 -}
 opticalSize : Float -> Html.Attribute msg
 opticalSize val_ =
-    Html.Attributes.property "optical-size" (Json.Encode.float val_)
+    Html.Attributes.property "opticalSize" (Json.Encode.float val_)
 
 
 {-| The name of the icon. (default: `""`)

@@ -52,7 +52,7 @@ for val_ =
 -}
 maxDepth : Float -> Html.Attribute msg
 maxDepth val_ =
-    Html.Attributes.property "max-depth" (Json.Encode.float val_)
+    Html.Attributes.property "maxDepth" (Json.Encode.float val_)
 
 
 {-| Renders the overline of the table of contents.

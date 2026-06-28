@@ -41,14 +41,14 @@ disabled val_ =
 -}
 showDelay : Float -> Html.Attribute msg
 showDelay val_ =
-    Html.Attributes.property "show-delay" (Json.Encode.float val_)
+    Html.Attributes.property "showDelay" (Json.Encode.float val_)
 
 
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`)
 -}
 hideDelay : Float -> Html.Attribute msg
 hideDelay val_ =
-    Html.Attributes.property "hide-delay" (Json.Encode.float val_)
+    Html.Attributes.property "hideDelay" (Json.Encode.float val_)
 
 
 {-| Values for the `touch-gestures` attribute.

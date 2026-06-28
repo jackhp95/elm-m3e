@@ -69,7 +69,7 @@ disabled val_ =
 -}
 hideToggle : Bool -> Html.Attribute msg
 hideToggle val_ =
-    Html.Attributes.property "hide-toggle" (Json.Encode.bool val_)
+    Html.Attributes.property "hideToggle" (Json.Encode.bool val_)
 
 
 {-| Whether the panel is expanded. (default: `false`)

@@ -72,14 +72,14 @@ scrollStrategyToString val_ =
 -}
 fitAnchorWidth : Bool -> Html.Attribute msg
 fitAnchorWidth val_ =
-    Html.Attributes.property "fit-anchor-width" (Json.Encode.bool val_)
+    Html.Attributes.property "fitAnchorWidth" (Json.Encode.bool val_)
 
 
 {-| The logical margin, in pixels, between the panel and its anchor. (default: `0`)
 -}
 anchorOffset : Float -> Html.Attribute msg
 anchorOffset val_ =
-    Html.Attributes.property "anchor-offset" (Json.Encode.float val_)
+    Html.Attributes.property "anchorOffset" (Json.Encode.float val_)
 
 
 {-| Dispatched before the toggle state changes.

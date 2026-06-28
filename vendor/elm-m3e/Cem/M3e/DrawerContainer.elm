@@ -97,7 +97,7 @@ endModeToString val_ =
 -}
 endDivider : Bool -> Html.Attribute msg
 endDivider val_ =
-    Html.Attributes.property "end-divider" (Json.Encode.bool val_)
+    Html.Attributes.property "endDivider" (Json.Encode.bool val_)
 
 
 {-| Whether the start drawer is open. (default: `false`)
@@ -143,7 +143,7 @@ startModeToString val_ =
 -}
 startDivider : Bool -> Html.Attribute msg
 startDivider val_ =
-    Html.Attributes.property "start-divider" (Json.Encode.bool val_)
+    Html.Attributes.property "startDivider" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the state of the start or end drawers change.

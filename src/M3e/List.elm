@@ -668,7 +668,7 @@ selectionList req opts =
                 , Just (Node.rawAttr (CemSelectionList.variant (toCemSelectionListVariant c.variant)))
                 , Just (Node.property "multi" (Encode.bool c.multi))
                 , Maybe.map (Node.attribute "name") c.name
-                , Just (Node.property "hide-selection-indicator" (Encode.bool c.hideSelectionIndicator))
+                , Just (Node.property "hideSelectionIndicator" (Encode.bool c.hideSelectionIndicator))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 ]
             )

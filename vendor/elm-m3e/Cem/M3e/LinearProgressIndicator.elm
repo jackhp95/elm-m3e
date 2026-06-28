@@ -39,7 +39,7 @@ component attributes children =
 -}
 bufferValue : Float -> Html.Attribute msg
 bufferValue val_ =
-    Html.Attributes.property "buffer-value" (Json.Encode.float val_)
+    Html.Attributes.property "bufferValue" (Json.Encode.float val_)
 
 
 {-| The maximum progress value. (default: `100`)

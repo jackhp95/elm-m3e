@@ -74,7 +74,7 @@ floatLabelToString val_ =
 -}
 hideRequiredMarker : Bool -> Html.Attribute msg
 hideRequiredMarker val_ =
-    Html.Attributes.property "hide-required-marker" (Json.Encode.bool val_)
+    Html.Attributes.property "hideRequiredMarker" (Json.Encode.bool val_)
 
 
 {-| Values for the `hide-subscript` attribute.

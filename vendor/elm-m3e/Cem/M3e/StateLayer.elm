@@ -42,7 +42,7 @@ be controlled manually using the `show` and `hide` methods. (default: `false`)
 -}
 disableHover : Bool -> Html.Attribute msg
 disableHover val_ =
-    Html.Attributes.property "disable-hover" (Json.Encode.bool val_)
+    Html.Attributes.property "disableHover" (Json.Encode.bool val_)
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`)

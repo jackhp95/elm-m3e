@@ -41,7 +41,7 @@ disabled val_ =
 -}
 disableHighlight : Bool -> Html.Attribute msg
 disableHighlight val_ =
-    Html.Attributes.property "disable-highlight" (Json.Encode.bool val_)
+    Html.Attributes.property "disableHighlight" (Json.Encode.bool val_)
 
 
 {-| Values for the `highlight-mode` attribute.

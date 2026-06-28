@@ -55,7 +55,7 @@ disabled val_ =
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
 
 
 {-| Whether multiple options can be selected. (default: `false`)

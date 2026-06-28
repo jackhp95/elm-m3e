@@ -96,7 +96,7 @@ hideable val_ =
 -}
 hideFriction : Float -> Html.Attribute msg
 hideFriction val_ =
-    Html.Attributes.property "hide-friction" (Json.Encode.float val_)
+    Html.Attributes.property "hideFriction" (Json.Encode.float val_)
 
 
 {-| Whether the bottom sheet behaves as modal. (default: `false`)
@@ -117,7 +117,7 @@ open val_ =
 -}
 overshootLimit : Float -> Html.Attribute msg
 overshootLimit val_ =
-    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
+    Html.Attributes.property "overshootLimit" (Json.Encode.float val_)
 
 
 {-| Dispatched when the sheet begins to open.

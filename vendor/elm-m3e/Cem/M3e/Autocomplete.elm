@@ -67,14 +67,14 @@ component attributes children =
 -}
 autoActivate : Bool -> Html.Attribute msg
 autoActivate val_ =
-    Html.Attributes.property "auto-activate" (Json.Encode.bool val_)
+    Html.Attributes.property "autoActivate" (Json.Encode.bool val_)
 
 
 {-| Whether filtering is case sensitive. (default: `false`)
 -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
+    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
 
 
 {-| Values for the `filter` attribute.
@@ -113,21 +113,21 @@ filterToString val_ =
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
 
 
 {-| Whether to hide the menu when loading options. (default: `false`)
 -}
 hideLoading : Bool -> Html.Attribute msg
 hideLoading val_ =
-    Html.Attributes.property "hide-loading" (Json.Encode.bool val_)
+    Html.Attributes.property "hideLoading" (Json.Encode.bool val_)
 
 
 {-| Whether to hide the menu when there are no options to show. (default: `false`)
 -}
 hideNoData : Bool -> Html.Attribute msg
 hideNoData val_ =
-    Html.Attributes.property "hide-no-data" (Json.Encode.bool val_)
+    Html.Attributes.property "hideNoData" (Json.Encode.bool val_)
 
 
 {-| Whether options are being loaded. (default: `false`)

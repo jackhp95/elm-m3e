@@ -40,14 +40,14 @@ inset val_ =
 -}
 insetStart : Bool -> Html.Attribute msg
 insetStart val_ =
-    Html.Attributes.property "inset-start" (Json.Encode.bool val_)
+    Html.Attributes.property "insetStart" (Json.Encode.bool val_)
 
 
 {-| Whether the divider is indented with padding on the trailing side. (default: `false`)
 -}
 insetEnd : Bool -> Html.Attribute msg
 insetEnd val_ =
-    Html.Attributes.property "inset-end" (Json.Encode.bool val_)
+    Html.Attributes.property "insetEnd" (Json.Encode.bool val_)
 
 
 {-| Whether the divider is vertically aligned with adjacent content. (default: `false`)

@@ -81,7 +81,7 @@ orientationToString val_ =
 -}
 noAnimate : Bool -> Html.Attribute msg
 noAnimate val_ =
-    Html.Attributes.property "no-animate" (Json.Encode.bool val_)
+    Html.Attributes.property "noAnimate" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the collapsible begins to open.

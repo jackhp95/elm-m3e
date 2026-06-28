@@ -116,7 +116,7 @@ orientationToString val_ =
 -}
 overshootLimit : Float -> Html.Attribute msg
 overshootLimit val_ =
-    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
+    Html.Attributes.property "overshootLimit" (Json.Encode.float val_)
 
 
 {-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`)
@@ -137,7 +137,7 @@ value =
 -}
 wrapDetents : Bool -> Html.Attribute msg
 wrapDetents val_ =
-    Html.Attributes.property "wrap-detents" (Json.Encode.bool val_)
+    Html.Attributes.property "wrapDetents" (Json.Encode.bool val_)
 
 
 {-| The name that identifies the element when submitting the associated form.

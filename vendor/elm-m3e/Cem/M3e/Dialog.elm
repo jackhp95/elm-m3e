@@ -76,7 +76,7 @@ closeLabel val_ =
 -}
 disableClose : Bool -> Html.Attribute msg
 disableClose val_ =
-    Html.Attributes.property "disable-close" (Json.Encode.bool val_)
+    Html.Attributes.property "disableClose" (Json.Encode.bool val_)
 
 
 {-| Whether a button is presented that can be used to close the dialog. (default: `false`)
@@ -90,7 +90,7 @@ dismissible val_ =
 -}
 noFocusTrap : Bool -> Html.Attribute msg
 noFocusTrap val_ =
-    Html.Attributes.property "no-focus-trap" (Json.Encode.bool val_)
+    Html.Attributes.property "noFocusTrap" (Json.Encode.bool val_)
 
 
 {-| Whether the dialog is open. (default: `false`)

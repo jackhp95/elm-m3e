@@ -74,7 +74,7 @@ firstPageLabel val_ =
 -}
 hidePageSize : Bool -> Html.Attribute msg
 hidePageSize val_ =
-    Html.Attributes.property "hide-page-size" (Json.Encode.bool val_)
+    Html.Attributes.property "hidePageSize" (Json.Encode.bool val_)
 
 
 {-| The label for the page size selector. (default: `"Items per page:"`)
@@ -109,7 +109,7 @@ nextPageLabel val_ =
 -}
 pageIndex : Float -> Html.Attribute msg
 pageIndex val_ =
-    Html.Attributes.property "page-index" (Json.Encode.float val_)
+    Html.Attributes.property "pageIndex" (Json.Encode.float val_)
 
 
 {-| The number of items to display in a page. (default: `50`)
@@ -161,7 +161,7 @@ previousPageLabel val_ =
 -}
 showFirstLastButtons : Bool -> Html.Attribute msg
 showFirstLastButtons val_ =
-    Html.Attributes.property "show-first-last-buttons" (Json.Encode.bool val_)
+    Html.Attributes.property "showFirstLastButtons" (Json.Encode.bool val_)
 
 
 {-| Dispatched when a user selects a different page size or navigates to another page.

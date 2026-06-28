@@ -165,7 +165,7 @@ view req opts =
         (Node.element "m3e-slide"
             (List.filterMap identity
                 [ Maybe.map
-                    (\i -> Node.property "selected-index" (Encode.float (toFloat i)))
+                    (\i -> Node.property "selectedIndex" (Encode.float (toFloat i)))
                     c.selectedIndex
                 ]
             )

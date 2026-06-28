@@ -33,4 +33,4 @@ component attributes children =
 -}
 selectedIndex : Float -> Html.Attribute msg
 selectedIndex val_ =
-    Html.Attributes.property "selected-index" (Json.Encode.float val_)
+    Html.Attributes.property "selectedIndex" (Json.Encode.float val_)

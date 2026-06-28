@@ -47,7 +47,7 @@ component attributes children =
 -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
+    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
 
 
 {-| A value indicating whether text highlighting is disabled. (default: `false`)

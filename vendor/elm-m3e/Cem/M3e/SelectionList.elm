@@ -53,7 +53,7 @@ component attributes children =
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
 
 
 {-| Whether multiple items can be selected. (default: `false`)

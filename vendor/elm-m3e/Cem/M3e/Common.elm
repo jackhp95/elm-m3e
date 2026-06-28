@@ -38,14 +38,14 @@ activeDate val_ =
 -}
 anchorOffset : Float -> Html.Attribute msg
 anchorOffset val_ =
-    Html.Attributes.property "anchor-offset" (Json.Encode.float val_)
+    Html.Attributes.property "anchorOffset" (Json.Encode.float val_)
 
 
 {-| Whether filtering is case sensitive. (default: `false`)
 -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
+    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
 
 
 {-| Whether the title and subtitle are centered. (default: `false`)
@@ -155,7 +155,7 @@ disabled val_ =
 -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
 
 
 {-| Whether a button is presented that can be used to close the snackbar. (default: `false`)
@@ -176,7 +176,7 @@ download val_ =
 -}
 fitAnchorWidth : Bool -> Html.Attribute msg
 fitAnchorWidth val_ =
-    Html.Attributes.property "fit-anchor-width" (Json.Encode.bool val_)
+    Html.Attributes.property "fitAnchorWidth" (Json.Encode.bool val_)
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`)
@@ -190,21 +190,21 @@ for val_ =
 -}
 hideDelay : Float -> Html.Attribute msg
 hideDelay val_ =
-    Html.Attributes.property "hide-delay" (Json.Encode.float val_)
+    Html.Attributes.property "hideDelay" (Json.Encode.float val_)
 
 
 {-| Whether to hide the selection indicator. (default: `false`)
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
 
 
 {-| Whether to hide the expansion toggle. (default: `false`)
 -}
 hideToggle : Bool -> Html.Attribute msg
 hideToggle val_ =
-    Html.Attributes.property "hide-toggle" (Json.Encode.bool val_)
+    Html.Attributes.property "hideToggle" (Json.Encode.bool val_)
 
 
 {-| The URL to which the link button points. (default: `""`)
@@ -302,7 +302,7 @@ nextYearLabel val_ =
 -}
 overshootLimit : Float -> Html.Attribute msg
 overshootLimit val_ =
-    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
+    Html.Attributes.property "overshootLimit" (Json.Encode.float val_)
 
 
 {-| Class or list of classes to be applied to the select's overlay panel. (default: `""`)
@@ -424,7 +424,7 @@ selected =
 -}
 showDelay : Float -> Html.Attribute msg
 showDelay val_ =
-    Html.Attributes.property "show-delay" (Json.Encode.float val_)
+    Html.Attributes.property "showDelay" (Json.Encode.float val_)
 
 
 {-| A date specifying the period (month or year) to start the calendar in. (default: `null`)

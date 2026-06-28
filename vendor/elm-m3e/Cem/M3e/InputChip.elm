@@ -72,7 +72,7 @@ disabled val_ =
 -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
 
 
 {-| Whether the chip is removable. (default: `false`)

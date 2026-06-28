@@ -65,13 +65,13 @@ suite =
             , test "selectedIndex sets selected-index DOM property" <|
                 \_ ->
                     slideNode [ Slide.selectedIndex 2 ]
-                        |> Node.findProperty "selected-index"
+                        |> Node.findProperty "selectedIndex"
                         |> Maybe.map (Encode.encode 0)
                         |> Expect.equal (Just "2")
             , test "selectedIndex=0 sets the property" <|
                 \_ ->
                     slideNode [ Slide.selectedIndex 0 ]
-                        |> Node.findProperty "selected-index"
+                        |> Node.findProperty "selectedIndex"
                         |> Maybe.map (Encode.encode 0)
                         |> Expect.equal (Just "0")
             , test "selected-index is absent by default (null semantics — not set)" <|
@@ -79,7 +79,7 @@ suite =
                     -- Without selectedIndex option the property is not emitted at all,
                     -- preserving the upstream default of null (inert carousel).
                     slideNode []
-                        |> Node.findProperty "selected-index"
+                        |> Node.findProperty "selectedIndex"
                         |> Expect.equal Nothing
             ]
 

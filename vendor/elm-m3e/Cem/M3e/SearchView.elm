@@ -120,7 +120,7 @@ closeLabel val_ =
 -}
 hideSearchIcon : Bool -> Html.Attribute msg
 hideSearchIcon val_ =
-    Html.Attributes.property "hide-search-icon" (Json.Encode.bool val_)
+    Html.Attributes.property "hideSearchIcon" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the view is opened or when the user modifies the search term.

@@ -33,4 +33,4 @@ component attributes children =
 -}
 disableRestoreFocus : Bool -> Html.Attribute msg
 disableRestoreFocus val_ =
-    Html.Attributes.property "disable-restore-focus" (Json.Encode.bool val_)
+    Html.Attributes.property "disableRestoreFocus" (Json.Encode.bool val_)

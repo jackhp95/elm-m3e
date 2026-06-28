@@ -67,7 +67,7 @@ disabled val_ =
 -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
+    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)

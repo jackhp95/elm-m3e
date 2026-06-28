@@ -117,7 +117,7 @@ schemeToString val_ =
 -}
 strongFocus : Bool -> Html.Attribute msg
 strongFocus val_ =
-    Html.Attributes.property "strong-focus" (Json.Encode.bool val_)
+    Html.Attributes.property "strongFocus" (Json.Encode.bool val_)
 
 
 {-| Values for the `variant` attribute.
