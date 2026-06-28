@@ -367,7 +367,7 @@ breadcrumbBar model =
         [ Breadcrumb.view
             { items =
                 [ Breadcrumb.item { label = "Settings" } [ Breadcrumb.itemHref "/studies/settings" ]
-                , Breadcrumb.item { label = sectionTitle model.section } [ Breadcrumb.itemCurrent True ]
+                , Breadcrumb.item { label = sectionTitle model.section } [ Breadcrumb.itemCurrent Breadcrumb.Page ]
                 ]
             }
             []
@@ -490,7 +490,7 @@ accountPanel model =
                 (Switch.view { name = "Two-factor authentication" }
                     [ Switch.checked model.twoFactor
                     , Switch.onChange TwoFactorToggled
-                    , Switch.handleIcons True
+                    , Switch.icons Switch.Both
                     ]
                     |> Element.toNode
                 )

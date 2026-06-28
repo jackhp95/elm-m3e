@@ -1,7 +1,7 @@
 module M3e.SideSheet exposing
-    ( Option, Side(..)
+    ( Option, Side(..), Mode(..)
     , view
-    , open, side, modal, onClose, body, actions
+    , open, side, mode, onClose, body, actions
     )
 
 {-| `<m3e-drawer-container>` used as a side sheet — a panel anchored to the
@@ -14,24 +14,28 @@ Spec (per docs/CONVENTIONS.md):
     The host's main page content, projected into the drawer
     container's default slot so the element manages open/close
     layout transitions.
-  - Options: open, side, modal, onClose, body, actions
+  - Options: open, side, mode, onClose, body, actions
   - Slots: start/end (panel body + actions), default (page content)
   - Properties: start or end (Bool DOM property, name depends on `side` option)
-    start-mode / end-mode (attribute, "over"|"side")
+    start-mode / end-mode (attribute, upstream DrawerMode enum)
   - Events: change → onClose (only on the CLOSED transition; see Fix A8)
   - Tag: sideSheet
 
 Note: m3e ships side-sheets via `<m3e-drawer-container>`. There is no
 dedicated `<m3e-side-sheet>` element.
 
+Upstream reference: `custom-elements.json` — `m3e-drawer-container`,
+properties `startMode` / `endMode`, parsedType `'auto' | 'over' | 'push' | 'side'`,
+default `"side"`.
+
 **Fix A8** — `onClose` fires only when the drawer CLOSES, not on every
 `change` event. The `change` event fires for both opening and closing; the
 decoder reads `event.target.end` (or `event.target.start`) and only fires the
 message when the relevant property transitions to `false`.
 
-@docs Option, Side
+@docs Option, Side, Mode
 @docs view
-@docs open, side, modal, onClose, body, actions
+@docs open, side, mode, onClose, body, actions
 
 -}
 
@@ -48,6 +52,21 @@ import M3e.Node as Node exposing (Node)
 type Side
     = Start
     | End
+
+
+{-| Drawer behaviour mode (upstream `DrawerMode`).
+
+  - `ModeSide` — the drawer occupies layout space beside the content (default, `"side"`)
+  - `ModeOver` — the drawer overlays content with a scrim (`"over"`)
+  - `ModePush` — the drawer pushes content aside without a scrim (`"push"`)
+  - `ModeAuto` — the browser chooses `side` or `over` based on viewport (`"auto"`)
+
+-}
+type Mode
+    = ModeSide
+    | ModeOver
+    | ModePush
+    | ModeAuto
 
 
 {-| Configuration option for the side sheet, built by the helpers below.
@@ -71,13 +90,15 @@ side s =
     Internal.option (\c -> { c | side = s })
 
 
-{-| Modal mode (scrim + dismisses on click-outside) vs non-modal (occupies
-layout). Modal → `end-mode="over"` (or `start-mode="over"`); non-modal →
-`"side"`. Default false (non-modal).
+{-| Drawer behaviour mode. Default `ModeSide` (upstream `"side"`).
+
+Use `ModeOver` for a modal-style overlay with a scrim; `ModePush` to push
+content aside without a scrim; `ModeAuto` to let the browser decide.
+
 -}
-modal : Bool -> Option msg
-modal b =
-    Internal.option (\c -> { c | modal = b })
+mode : Mode -> Option msg
+mode m =
+    Internal.option (\c -> { c | mode = m })
 
 
 {-| Handler fired when the sheet closes (Fix A8: only on the closed
@@ -106,7 +127,7 @@ actions xs =
 type alias Config msg =
     { open : Bool
     , side : Side
-    , modal : Bool
+    , mode : Mode
     , onClose : Maybe msg
     , body : List (Node msg)
     , actions : List (Element { button : Supported } msg)
@@ -117,7 +138,7 @@ defaultConfig : Config msg
 defaultConfig =
     { open = False
     , side = End
-    , modal = False
+    , mode = ModeSide
     , onClose = Nothing
     , body = []
     , actions = []
@@ -130,7 +151,7 @@ defaultConfig =
         { content = [ pageBody ] }
         [ M3e.SideSheet.open state.filtersOpen
         , M3e.SideSheet.side M3e.SideSheet.End
-        , M3e.SideSheet.modal True
+        , M3e.SideSheet.mode M3e.SideSheet.ModeOver
         , M3e.SideSheet.onClose FiltersClosed
         , M3e.SideSheet.body [ filtersForm ]
         ]
@@ -172,32 +193,48 @@ openProperty c =
             Node.property "end" (Encode.bool c.open)
 
 
-{-| The mode attribute for the correct side (over=modal, side=non-modal).
+{-| The mode attribute for the correct side.
 -}
 modeAttr : Config msg -> Node.Attr msg
 modeAttr c =
     case c.side of
         Start ->
-            Node.rawAttr
-                (Cem.startMode
-                    (if c.modal then
-                        Cem.StartModeOver
-
-                     else
-                        Cem.StartModeSide
-                    )
-                )
+            Node.rawAttr (Cem.startMode (toCemStartMode c.mode))
 
         End ->
-            Node.rawAttr
-                (Cem.endMode
-                    (if c.modal then
-                        Cem.EndModeOver
+            Node.rawAttr (Cem.endMode (toCemEndMode c.mode))
 
-                     else
-                        Cem.EndModeSide
-                    )
-                )
+
+toCemStartMode : Mode -> Cem.StartMode
+toCemStartMode m =
+    case m of
+        ModeSide ->
+            Cem.StartModeSide
+
+        ModeOver ->
+            Cem.StartModeOver
+
+        ModePush ->
+            Cem.StartModePush
+
+        ModeAuto ->
+            Cem.StartModeAuto
+
+
+toCemEndMode : Mode -> Cem.EndMode
+toCemEndMode m =
+    case m of
+        ModeSide ->
+            Cem.EndModeSide
+
+        ModeOver ->
+            Cem.EndModeOver
+
+        ModePush ->
+            Cem.EndModePush
+
+        ModeAuto ->
+            Cem.EndModeAuto
 
 
 {-| Fix A8: decode the `change` event and only fire `msg` when the drawer

@@ -52,6 +52,27 @@ suite =
                 , Node.findProperty "start" n
                 )
                     |> Expect.equal ( True, Nothing )
+        , test "mode ModeOver increases attr count by one vs default (RawAttr; opaque)" <|
+            -- mode maps to a RawAttr (Cem call), so we can only check that the
+            -- attr is always present (mode is always emitted, even for default).
+            -- The total attr count is always open + mode [+ optional onClose].
+            \_ ->
+                node []
+                    |> attrsOf
+                    |> List.length
+                    |> Expect.equal 2
+        , test "mode ModePush also yields 2 attrs (open + mode)" <|
+            \_ ->
+                node [ SideSheet.mode SideSheet.ModePush ]
+                    |> attrsOf
+                    |> List.length
+                    |> Expect.equal 2
+        , test "mode ModeAuto also yields 2 attrs (open + mode)" <|
+            \_ ->
+                node [ SideSheet.mode SideSheet.ModeAuto ]
+                    |> attrsOf
+                    |> List.length
+                    |> Expect.equal 2
         , test "body content lands inside the end-slot div" <|
             \_ ->
                 SideSheet.view

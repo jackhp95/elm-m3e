@@ -15,7 +15,7 @@ crumb1 =
 
 crumb2 : Element { breadcrumbItem : Element.Supported } msg
 crumb2 =
-    Breadcrumb.item { label = "Reports" } [ Breadcrumb.itemCurrent True ]
+    Breadcrumb.item { label = "Reports" } [ Breadcrumb.itemCurrent Breadcrumb.Page ]
 
 
 parentNode : List (Breadcrumb.BreadcrumbOption msg) -> Node msg
@@ -87,16 +87,41 @@ suite =
                     itemNode [ Breadcrumb.itemHref "/home" ]
                         |> Node.findAttribute "href"
                         |> Expect.equal (Just "/home")
-            , test "current=true sets the current attribute" <|
-                \_ ->
-                    itemNode [ Breadcrumb.itemCurrent True ]
-                        |> Node.findAttribute "current"
-                        |> Expect.equal (Just "true")
             , test "current attribute absent by default" <|
                 \_ ->
                     itemNode []
                         |> Node.findAttribute "current"
                         |> Expect.equal Nothing
+            , test "itemCurrent Page sets current=\"page\"" <|
+                \_ ->
+                    itemNode [ Breadcrumb.itemCurrent Breadcrumb.Page ]
+                        |> Node.findAttribute "current"
+                        |> Expect.equal (Just "page")
+            , test "itemCurrent Step sets current=\"step\"" <|
+                \_ ->
+                    itemNode [ Breadcrumb.itemCurrent Breadcrumb.Step ]
+                        |> Node.findAttribute "current"
+                        |> Expect.equal (Just "step")
+            , test "itemCurrent Location sets current=\"location\"" <|
+                \_ ->
+                    itemNode [ Breadcrumb.itemCurrent Breadcrumb.Location ]
+                        |> Node.findAttribute "current"
+                        |> Expect.equal (Just "location")
+            , test "itemCurrent Date sets current=\"date\"" <|
+                \_ ->
+                    itemNode [ Breadcrumb.itemCurrent Breadcrumb.Date ]
+                        |> Node.findAttribute "current"
+                        |> Expect.equal (Just "date")
+            , test "itemCurrent Time sets current=\"time\"" <|
+                \_ ->
+                    itemNode [ Breadcrumb.itemCurrent Breadcrumb.Time ]
+                        |> Node.findAttribute "current"
+                        |> Expect.equal (Just "time")
+            , test "itemCurrent AriaTrue sets current=\"true\"" <|
+                \_ ->
+                    itemNode [ Breadcrumb.itemCurrent Breadcrumb.AriaTrue ]
+                        |> Node.findAttribute "current"
+                        |> Expect.equal (Just "true")
             , test "disabled is a DOM property on the item" <|
                 \_ ->
                     itemNode [ Breadcrumb.itemDisabled True ]

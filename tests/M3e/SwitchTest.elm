@@ -51,6 +51,47 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
+        , test "icons None — no icons attr emitted (upstream default)" <|
+            \_ ->
+                node []
+                    |> Node.findAttribute "icons"
+                    |> Expect.equal Nothing
+        , test "icons Selected — icons attr absent (RawAttr; not introspectable via findAttribute)" <|
+            -- RawAttr is opaque; we can only verify the option compiles and the
+            -- total attr count increases relative to the baseline.
+            \_ ->
+                let
+                    withIcons : Int
+                    withIcons =
+                        node [ Switch.icons Switch.Selected ]
+                            |> attrsOf
+                            |> List.length
+
+                    withoutIcons : Int
+                    withoutIcons =
+                        node []
+                            |> attrsOf
+                            |> List.length
+                in
+                withIcons
+                    |> Expect.equal (withoutIcons + 1)
+        , test "icons Both — icons attr absent (RawAttr; not introspectable via findAttribute)" <|
+            \_ ->
+                let
+                    withIcons : Int
+                    withIcons =
+                        node [ Switch.icons Switch.Both ]
+                            |> attrsOf
+                            |> List.length
+
+                    withoutIcons : Int
+                    withoutIcons =
+                        node []
+                            |> attrsOf
+                            |> List.length
+                in
+                withIcons
+                    |> Expect.equal (withoutIcons + 1)
         , test "switch is a leaf — no children" <|
             \_ ->
                 node []
@@ -58,3 +99,13 @@ suite =
                     |> List.length
                     |> Expect.equal 0
         ]
+
+
+attrsOf : Node msg -> List (Node.Attr msg)
+attrsOf n =
+    case n of
+        Node.Element el ->
+            el.attrs
+
+        _ ->
+            []

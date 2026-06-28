@@ -1,5 +1,5 @@
 module M3e.Breadcrumb exposing
-    ( BreadcrumbOption, ItemOption
+    ( BreadcrumbOption, ItemOption, Current(..)
     , view, wrap
     , item, itemHref, itemCurrent, itemDisabled, itemOnClick, itemTarget, itemRel, itemDownload
     )
@@ -22,10 +22,14 @@ Spec (per docs/CONVENTIONS.md):
     (Node.attribute — relational/string attrs, non-property)
   - Tag: breadcrumb / breadcrumbItem
 
+Upstream reference: `custom-elements.json` — `m3e-breadcrumb-item`, property
+`current`, parsedType `'page' | 'step' | 'location' | 'date' | 'time' | 'true' | undefined`,
+default `undefined`.
+
 
 # Types
 
-@docs BreadcrumbOption, ItemOption
+@docs BreadcrumbOption, ItemOption, Current
 
 
 # Parent
@@ -52,13 +56,34 @@ import M3e.Node as Node
 
 type alias ItemConfig msg =
     { href : Maybe String
-    , current : Bool
+    , current : Maybe Current
     , disabled : Bool
     , onClick : Maybe msg
     , target : Maybe String
     , rel : Maybe String
     , download : Maybe String
     }
+
+
+{-| The aria-current value for a breadcrumb item (upstream `BreadcrumbItemCurrent`).
+
+  - `Page` — marks the current page (`"page"`)
+  - `Step` — marks the current step in a multi-step flow (`"step"`)
+  - `Location` — marks the current location in a tree or map (`"location"`)
+  - `Date` — marks the current date (`"date"`)
+  - `Time` — marks the current time (`"time"`)
+  - `AriaTrue` — generic "this is current" without a semantic type (`"true"`)
+
+Default: no `current` attribute (matching upstream `undefined`).
+
+-}
+type Current
+    = Page
+    | Step
+    | Location
+    | Date
+    | Time
+    | AriaTrue
 
 
 {-| A configuration option for a single breadcrumb [`item`](#item).
@@ -74,12 +99,13 @@ itemHref v =
     Internal.option (\c -> { c | href = Just v })
 
 
-{-| Mark this as the current (active, non-clickable) crumb. Sets
-`current="true"` on the element.
+{-| Set the aria-current value for this crumb (marks it as the active item in
+the trail). Pass one of the [`Current`](#Current) constructors.
+Omitting this option leaves the `current` attribute absent (upstream default).
 -}
-itemCurrent : Bool -> ItemOption msg
-itemCurrent b =
-    Internal.option (\c -> { c | current = b })
+itemCurrent : Current -> ItemOption msg
+itemCurrent v =
+    Internal.option (\c -> { c | current = Just v })
 
 
 {-| Disable this crumb — renders but its internal button is inert.
@@ -117,6 +143,28 @@ itemDownload v =
     Internal.option (\c -> { c | download = Just v })
 
 
+currentToString : Current -> String
+currentToString v =
+    case v of
+        Page ->
+            "page"
+
+        Step ->
+            "step"
+
+        Location ->
+            "location"
+
+        Date ->
+            "date"
+
+        Time ->
+            "time"
+
+        AriaTrue ->
+            "true"
+
+
 {-| A single `<m3e-breadcrumb-item>`. The `label` is rendered as text
 content (the visible crumb label) and also set as the `item-label`
 attribute (the internal button's accessible name).
@@ -131,7 +179,7 @@ item req opts =
         c =
             Internal.applyOptions opts
                 { href = Nothing
-                , current = False
+                , current = Nothing
                 , disabled = False
                 , onClick = Nothing
                 , target = Nothing
@@ -147,11 +195,7 @@ item req opts =
                 , Maybe.map (Node.attribute "target") c.target
                 , Maybe.map (Node.attribute "rel") c.rel
                 , Maybe.map (Node.attribute "download") c.download
-                , if c.current then
-                    Just (Node.attribute "current" "true")
-
-                  else
-                    Nothing
+                , Maybe.map (\v -> Node.attribute "current" (currentToString v)) c.current
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map
                     (\m -> Node.on "click" (Decode.succeed m))

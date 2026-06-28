@@ -692,7 +692,7 @@ demoSections slug =
                         { items =
                             [ Breadcrumb.item { label = "Home" } [ Breadcrumb.itemHref "#" ]
                             , Breadcrumb.item { label = "Components" } [ Breadcrumb.itemHref "#" ]
-                            , Breadcrumb.item { label = "Breadcrumb" } [ Breadcrumb.itemCurrent True ]
+                            , Breadcrumb.item { label = "Breadcrumb" } [ Breadcrumb.itemCurrent Breadcrumb.Page ]
                             ]
                         }
                         []
@@ -1527,7 +1527,7 @@ demoSections slug =
                 , sub "Handle icons"
                     (Switch.view { name = "Notifications" }
                         [ Switch.checked True
-                        , Switch.handleIcons True
+                        , Switch.icons Switch.Both
                         , Switch.onChange noOp
                         ]
                         |> Element.toNode
