@@ -1,17 +1,19 @@
 module Route.Styles.Shape exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import Cem.M3e.Shape as CemShape
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style)
 import Layout
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Shape as Shape
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -86,6 +88,23 @@ pageHeading =
         |> Element.toNode
 
 
+m3eShapeSwatch : ( CemShape.Name, String ) -> Node msg
+m3eShapeSwatch ( shapeName, label ) =
+    Layout.div "flex flex-col items-center gap-2 text-label-sm text-on-surface-variant"
+        [ Shape.view
+            { content =
+                [ Element.fromNode
+                    (Layout.div "w-full h-full bg-primary-container" [])
+                ]
+            }
+            [ Shape.name shapeName
+            , Shape.attributes [ Node.rawAttr (style "width" "4rem"), Node.rawAttr (style "height" "4rem") ]
+            ]
+            |> Element.toNode
+        , Node.text label
+        ]
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Shape · elm-m3e"
@@ -98,6 +117,25 @@ view _ _ =
                         [ text "Material 3 defines a corner-radius scale from none through full. Each step is a --md-sys-shape-corner-* token, mapped to a rounded-md-corner-* Tailwind utility. M3e.Shape renders a decorative <m3e-shape> surface that respects it." ]
                     )
                 ]
+            , Divider.view [] |> Element.toNode
+            , Card.view
+                [ Card.variant Card.Outlined
+                , Card.headline (Heading.view { label = "M3e.Shape — named shapes", variant = Heading.Title } [])
+                , Card.body
+                    [ Element.fromNode
+                        (Layout.div "flex flex-wrap items-end gap-6"
+                            (List.map m3eShapeSwatch
+                                [ ( CemShape.Circle, "Circle" )
+                                , ( CemShape.Flower, "Flower" )
+                                , ( CemShape.Heart, "Heart" )
+                                , ( CemShape.Pill, "Pill" )
+                                , ( CemShape.PixelCircle, "Pixel" )
+                                ]
+                            )
+                        )
+                    ]
+                ]
+                |> Element.toNode
             , Divider.view [] |> Element.toNode
             , Card.view
                 [ Card.variant Card.Outlined

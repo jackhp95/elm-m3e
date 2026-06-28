@@ -18,9 +18,11 @@ import Html.Attributes as Attr exposing (class)
 import Json.Decode as Decode
 import Layout
 import M3e.AppBar as AppBar
+import M3e.Autocomplete as Autocomplete
 import M3e.Avatar as Avatar
 import M3e.Badge as Badge
 import M3e.BottomSheet as BottomSheet
+import M3e.BottomSheetTrigger as BottomSheetTrigger
 import M3e.Breadcrumb as Breadcrumb
 import M3e.Button as Button
 import M3e.ButtonGroup as ButtonGroup
@@ -28,14 +30,22 @@ import M3e.Calendar as Calendar
 import M3e.Card as Card
 import M3e.Checkbox as Checkbox
 import M3e.Chip as Chip
+import M3e.Collapsible as Collapsible
+import M3e.ContentPane as ContentPane
 import M3e.DatePicker as DatePicker
+import M3e.DatePickerToggle as DatePickerToggle
 import M3e.Dialog as Dialog
+import M3e.DialogAction as DialogAction
+import M3e.DialogTrigger as DialogTrigger
 import M3e.Disclosure as Disclosure
 import M3e.Divider as Divider
+import M3e.DrawerToggle as DrawerToggle
+import M3e.Element as Element exposing (Element)
 import M3e.ExtendedFab as ExtendedFab
 import M3e.Fab as Fab
 import M3e.FabMenu as FabMenu
 import M3e.Field as Field
+import M3e.FloatingPanel as FloatingPanel
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.IconButton as IconButton
@@ -43,14 +53,16 @@ import M3e.Label as Label
 import M3e.List as List_
 import M3e.LoadingIndicator as LoadingIndicator
 import M3e.Menu as Menu
+import M3e.NavRailToggle as NavRailToggle
 import M3e.NavigationBar as NavigationBar
 import M3e.NavigationDrawer as NavigationDrawer
 import M3e.NavigationRail as NavigationRail
 import M3e.Node as Node exposing (Node)
+import M3e.OptionPanel as OptionPanel
 import M3e.Paginator as Paginator
 import M3e.Progress as Progress
 import M3e.RadioButton as RadioButton
-import M3e.Element as Element exposing (Element)
+import M3e.RichTooltipAction as RichTooltipAction
 import M3e.ScrollContainer as ScrollContainer
 import M3e.Search as Search
 import M3e.SegmentedButton as SegmentedButton
@@ -64,15 +76,21 @@ import M3e.Snackbar as Snackbar
 import M3e.SplitButton as SplitButton
 import M3e.SplitPane as SplitPane
 import M3e.Stepper as Stepper
+import M3e.StepperNext as StepperNext
+import M3e.StepperPrevious as StepperPrevious
+import M3e.StepperReset as StepperReset
 import M3e.Switch as Switch
 import M3e.Tabs as Tabs
 import M3e.Text as Text
 import M3e.TextField as TextField
 import M3e.TextHighlight as TextHighlight
+import M3e.TextOverflow as TextOverflow
+import M3e.ThemeIcon as ThemeIcon
 import M3e.TimePicker as TimePicker
 import M3e.Toc as Toc
 import M3e.Toolbar as Toolbar
 import M3e.Tooltip as Tooltip
+import M3e.Tree as Tree
 import Markdown.Block as Block
 import Markdown.Parser
 import Markdown.Renderer
@@ -1033,16 +1051,16 @@ demoSections slug =
                     )
                 , sub "Filled axis"
                     (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
-                        [ Icon.view { name = "favorite" } [] |> Element.toNode
-                        , Icon.view { name = "favorite" } [] |> Element.toNode
+                        [ Icon.view { name = "favorite" } [ Icon.filled False ] |> Element.toNode
+                        , Icon.view { name = "favorite" } [ Icon.filled True ] |> Element.toNode
                         ]
                     )
                 , sub "Weight axis"
                     (Layout.div "flex flex-wrap items-center gap-4 text-3xl"
-                        [ Icon.view { name = "circle" } [] |> Element.toNode
-                        , Icon.view { name = "circle" } [] |> Element.toNode
-                        , Icon.view { name = "circle" } [] |> Element.toNode
-                        , Icon.view { name = "circle" } [] |> Element.toNode
+                        [ Icon.view { name = "star" } [ Icon.weight Icon.W100 ] |> Element.toNode
+                        , Icon.view { name = "star" } [ Icon.weight Icon.W300 ] |> Element.toNode
+                        , Icon.view { name = "star" } [ Icon.weight Icon.W500 ] |> Element.toNode
+                        , Icon.view { name = "star" } [ Icon.weight Icon.W700 ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1080,10 +1098,15 @@ demoSections slug =
                         , IconButton.view { icon = "add", ariaLabel = "Wide" } [ IconButton.variant IconButton.Tonal, IconButton.width IconButton.Wide ] |> Element.toNode
                         ]
                     )
+                , sub "Toggle"
+                    (buttonRow
+                        [ IconButton.view { icon = "favorite", ariaLabel = "Favourite (off)" } [ IconButton.variant IconButton.Tonal, IconButton.toggle True ] |> Element.toNode
+                        , IconButton.view { icon = "favorite", ariaLabel = "Favourite (on)" } [ IconButton.variant IconButton.Tonal, IconButton.toggle True, IconButton.selected True ] |> Element.toNode
+                        ]
+                    )
                 , sub "Disabling"
                     (buttonRow
                         [ IconButton.view { icon = "check", ariaLabel = "Disabled" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
-                        , IconButton.view { icon = "check", ariaLabel = "Disabled (soft)" } [ IconButton.variant IconButton.Filled, IconButton.disabled True ] |> Element.toNode
                         ]
                     )
                 ]
@@ -1091,7 +1114,7 @@ demoSections slug =
 
         "list" ->
             [ usage
-                [ sub "Basic"
+                [ sub "Static list"
                     (List_.list
                         { items =
                             [ List_.item { headline = "First item" } []
@@ -1100,6 +1123,28 @@ demoSections slug =
                             ]
                         }
                         []
+                        |> Element.toNode
+                    )
+                , sub "Action list"
+                    (List_.actionList
+                        { items =
+                            [ List_.actionItem { headline = "Account" } [ List_.actionOnClick PagesMsg.noOp ]
+                            , List_.actionItem { headline = "Settings" } [ List_.actionOnClick PagesMsg.noOp ]
+                            , List_.actionItem { headline = "Sign out" } [ List_.actionOnClick PagesMsg.noOp ]
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                , sub "Selection list"
+                    (List_.selectionList
+                        { items =
+                            [ List_.option { headline = "News" } [ List_.optionSelected True, List_.optionValue "news", List_.optionOnChange noOp ]
+                            , List_.option { headline = "Updates" } [ List_.optionValue "updates", List_.optionOnChange noOp ]
+                            , List_.option { headline = "Offers" } [ List_.optionValue "offers", List_.optionOnChange noOp ]
+                            ]
+                        }
+                        [ List_.multi True, List_.selectionName "topics" ]
                         |> Element.toNode
                     )
                 ]
@@ -1415,7 +1460,7 @@ demoSections slug =
 
         "slide" ->
             [ usage
-                [ sub "Basic"
+                [ sub "Carousel"
                     (Slide.view
                         { items =
                             List.map
@@ -1432,6 +1477,27 @@ demoSections slug =
                                 ]
                         }
                         [ Slide.selectedIndex 0 ]
+                        |> Element.toNode
+                    )
+                , sub "Scroll group"
+                    (Slide.slideGroup
+                        { content =
+                            List.map
+                                (\( label, swatch ) ->
+                                    Element.html
+                                        (div [ class ("flex h-20 w-32 shrink-0 items-center justify-center rounded-md-corner-medium text-on-surface " ++ swatch) ]
+                                            [ text label ]
+                                        )
+                                )
+                                [ ( "Jan", "bg-primary-container" )
+                                , ( "Feb", "bg-secondary-container" )
+                                , ( "Mar", "bg-tertiary-container" )
+                                , ( "Apr", "bg-primary-container" )
+                                , ( "May", "bg-secondary-container" )
+                                , ( "Jun", "bg-tertiary-container" )
+                                ]
+                        }
+                        []
                         |> Element.toNode
                     )
                 ]
@@ -1566,9 +1632,9 @@ demoSections slug =
                 , sub "With icons"
                     (Tabs.view
                         { tabs =
-                            [ Tabs.tab { label = "Inbox" } [ Tabs.tabSelected True, Tabs.tabFor "demo-tab-panel-inbox" ]
-                            , Tabs.tab { label = "Sent" } [ Tabs.tabFor "demo-tab-panel-sent" ]
-                            , Tabs.tab { label = "Trash" } [ Tabs.tabFor "demo-tab-panel-trash" ]
+                            [ Tabs.tab { label = "Inbox" } [ Tabs.tabSelected True, Tabs.tabFor "demo-tab-panel-inbox", Tabs.tabIcon (Icon.view { name = "inbox" } []) ]
+                            , Tabs.tab { label = "Sent" } [ Tabs.tabFor "demo-tab-panel-sent", Tabs.tabIcon (Icon.view { name = "send" } []) ]
+                            , Tabs.tab { label = "Trash" } [ Tabs.tabFor "demo-tab-panel-trash", Tabs.tabIcon (Icon.view { name = "delete" } []) ]
                             ]
                         , panels =
                             [ Tabs.panel { content = [] } [ Tabs.panelId "demo-tab-panel-inbox" ]
@@ -1746,12 +1812,35 @@ demoSections slug =
             [ usage
                 [ sub "Plain tooltip"
                     (Layout.div "flex flex-wrap items-center gap-3"
-                        [ Node.element "span" [ Node.rawAttr (Attr.id "tooltip-anchor-demo") ]
+                        [ Node.element "span"
+                            [ Node.rawAttr (Attr.id "tooltip-anchor-demo") ]
                             [ IconButton.view { icon = "refresh", ariaLabel = "Refresh" }
                                 [ IconButton.variant IconButton.Tonal ]
                                 |> Element.toNode
                             ]
                         , Tooltip.plain { anchorId = "tooltip-anchor-demo", label = "Refresh data" } []
+                            |> Element.toNode
+                        ]
+                    )
+                , sub "Rich tooltip"
+                    (Layout.div "flex flex-wrap items-center gap-3"
+                        [ Node.element "span"
+                            [ Node.rawAttr (Attr.id "rich-tooltip-anchor-demo") ]
+                            [ IconButton.view { icon = "info", ariaLabel = "More info" }
+                                [ IconButton.variant IconButton.Tonal ]
+                                |> Element.toNode
+                            ]
+                        , Tooltip.rich
+                            { anchorId = "rich-tooltip-anchor-demo"
+                            , content =
+                                [ Element.html
+                                    (p [ class "text-body-sm" ]
+                                        [ text "Rich tooltips support a subhead, body text, and optional actions." ]
+                                    )
+                                ]
+                            }
+                            [ Tooltip.richSubhead (Element.fromNode (Node.text "Performance tip"))
+                            ]
                             |> Element.toNode
                         ]
                     )
@@ -1797,6 +1886,519 @@ demoSections slug =
                         , Text.labelMedium "Label medium" |> Element.toNode
                         , Text.labelSmall "Label small" |> Element.toNode
                         ]
+                    )
+                ]
+            ]
+
+        "autocomplete" ->
+            [ usage
+                [ sub "Static options"
+                    (Layout.div "w-full max-w-sm space-y-2"
+                        [ Node.element "label" [ Node.rawAttr (Attr.for "ac-demo") ] [ Node.text "Country" ]
+                        , Node.element "input"
+                            [ Node.rawAttr (Attr.id "ac-demo")
+                            , Node.rawAttr (Attr.placeholder "Start typing…")
+                            ]
+                            []
+                        , Autocomplete.view { for = "ac-demo" }
+                            [ Autocomplete.options
+                                [ Autocomplete.option { value = "au", label = "Australia" } []
+                                , Autocomplete.option { value = "ca", label = "Canada" } []
+                                , Autocomplete.option { value = "gb", label = "United Kingdom" } []
+                                , Autocomplete.option { value = "us", label = "United States" } []
+                                ]
+                            , Autocomplete.filter Autocomplete.StartsWith
+                            , Autocomplete.onChange (\_ -> PagesMsg.noOp)
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "bottomsheettrigger" ->
+            [ usage
+                [ sub "Trigger pattern"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "BottomSheetTrigger is a functional companion nested inside a clickable element. When activated it opens the BottomSheet whose "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "id" ]
+                                , text " matches the trigger's "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "for" ]
+                                , text "."
+                                ]
+                            )
+                        , IconButton.view { icon = "expand_circle_down", ariaLabel = "Open bottom sheet" }
+                            [ IconButton.variant IconButton.Tonal
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (BottomSheetTrigger.view [] [ BottomSheetTrigger.for "bst-demo-sheet" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "collapsible" ->
+            [ usage
+                [ sub "Open"
+                    (Collapsible.view
+                        { content =
+                            [ Element.html
+                                (p [ class "p-3 text-body-md text-on-surface" ]
+                                    [ text "This content is revealed when the collapsible is open." ]
+                                )
+                            ]
+                        }
+                        [ Collapsible.open True ]
+                        |> Element.toNode
+                    )
+                , sub "Closed"
+                    (Collapsible.view
+                        { content =
+                            [ Element.html
+                                (p [ class "p-3 text-body-md text-on-surface" ]
+                                    [ text "Hidden when closed." ]
+                                )
+                            ]
+                        }
+                        [ Collapsible.open False ]
+                        |> Element.toNode
+                    )
+                , sub "Horizontal"
+                    (Collapsible.view
+                        { content =
+                            [ Element.html
+                                (p [ class "p-3 text-body-md text-on-surface" ]
+                                    [ text "Horizontal expand." ]
+                                )
+                            ]
+                        }
+                        [ Collapsible.open True, Collapsible.orientation Collapsible.Horizontal ]
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "contentpane" ->
+            [ usage
+                [ sub "Basic"
+                    (ContentPane.view
+                        { content =
+                            [ Element.html
+                                (p [ class "p-4 text-body-md text-on-surface" ]
+                                    [ text "ContentPane is a shaped, scrollable surface for any content." ]
+                                )
+                            ]
+                        }
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "datepickertoggle" ->
+            [ usage
+                [ sub "Toggle + picker"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "DatePickerToggle is a functional companion nested inside a clickable element. Wire it to a DatePicker via matching "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "for" ]
+                                , text " / "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "id" ]
+                                , text "."
+                                ]
+                            )
+                        , IconButton.view { icon = "calendar_month", ariaLabel = "Open date picker" }
+                            [ IconButton.variant IconButton.Tonal
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (DatePickerToggle.view [ DatePickerToggle.for "dpt-demo-picker" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        , DatePicker.view [ DatePicker.onChange noOp ] |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "dialogaction" ->
+            [ usage
+                [ sub "Pattern"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "DialogAction is a functional companion nested inside a clickable element in a Dialog's actions area. When activated it closes the dialog and emits its "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "returnValue" ]
+                                , text " on the "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "close" ]
+                                , text " event."
+                                ]
+                            )
+                        , IconButton.view { icon = "check_circle", ariaLabel = "Confirm" }
+                            [ IconButton.variant IconButton.Filled
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (DialogAction.view [] [ DialogAction.returnValue "confirm" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "dialogtrigger" ->
+            [ usage
+                [ sub "Pattern"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "DialogTrigger is a functional companion nested inside a clickable element. Wire it to a Dialog via matching "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "for" ]
+                                , text " / dialog "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "id" ]
+                                , text "."
+                                ]
+                            )
+                        , IconButton.view { icon = "open_in_new", ariaLabel = "Open dialog" }
+                            [ IconButton.variant IconButton.Tonal
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (DialogTrigger.view [ DialogTrigger.for "dt-demo-dialog" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "drawertoggle" ->
+            [ usage
+                [ sub "Toggle button"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "DrawerToggle is a functional companion nested inside a toggle icon button. It opens/closes a NavigationDrawer by "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "id" ]
+                                , text " reference."
+                                ]
+                            )
+                        , IconButton.view { icon = "menu", ariaLabel = "Toggle drawer" }
+                            [ IconButton.variant IconButton.Tonal
+                            , IconButton.toggle True
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (DrawerToggle.view [ DrawerToggle.for "drt-demo-drawer" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "floatingpanel" ->
+            [ usage
+                [ sub "Content"
+                    (FloatingPanel.view
+                        { content =
+                            [ Element.html
+                                (p [ class "p-3 text-body-md text-on-surface" ]
+                                    [ text "FloatingPanel is a lightweight floating surface anchored to a trigger. Show/hide it via the JS show/hide/toggle methods." ]
+                                )
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "navrailtoggle" ->
+            [ usage
+                [ sub "Toggle button"
+                    (Layout.div "w-full space-y-3"
+                        [ Node.raw
+                            (p [ class "text-body-md text-on-surface-variant" ]
+                                [ text "NavRailToggle is a functional companion nested inside a toggle icon button. It expands/collapses a NavigationRail by "
+                                , code [ class "rounded bg-surface-container px-1.5 py-0.5" ] [ text "id" ]
+                                , text " reference."
+                                ]
+                            )
+                        , IconButton.view { icon = "menu", ariaLabel = "Toggle rail" }
+                            [ IconButton.variant IconButton.Tonal
+                            , IconButton.toggle True
+                            , IconButton.extraContent
+                                [ Element.fromNode
+                                    (NavRailToggle.view [ NavRailToggle.for "nrt-demo-rail" ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "optionpanel" ->
+            [ usage
+                [ sub "Content"
+                    (OptionPanel.view
+                        { content =
+                            [ Element.html
+                                (p [ class "p-3 text-body-md text-on-surface" ]
+                                    [ text "Option items appear here in the content state." ]
+                                )
+                            ]
+                        }
+                        [ OptionPanel.state OptionPanel.Content ]
+                        |> Element.toNode
+                    )
+                , sub "Loading"
+                    (OptionPanel.view
+                        { content = [] }
+                        [ OptionPanel.state OptionPanel.Loading ]
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "richtooltipaction" ->
+            [ usage
+                [ sub "Inside rich tooltip"
+                    (Layout.div "flex flex-wrap items-center gap-3"
+                        [ Node.element "span"
+                            [ Node.rawAttr (Attr.id "rich-tt-action-anchor") ]
+                            [ IconButton.view { icon = "info", ariaLabel = "More information" }
+                                [ IconButton.variant IconButton.Tonal ]
+                                |> Element.toNode
+                            ]
+                        , Tooltip.rich
+                            { anchorId = "rich-tt-action-anchor"
+                            , content =
+                                [ Element.html
+                                    (p [ class "text-body-sm" ]
+                                        [ text "Rich tooltips support subheads, body text, and a RichTooltipAction dismiss button." ]
+                                    )
+                                ]
+                            }
+                            [ Tooltip.richSubhead (Element.fromNode (Node.text "Did you know?"))
+                            , Tooltip.richActions
+                                [ Element.fromNode
+                                    (IconButton.view { icon = "close", ariaLabel = "Dismiss" }
+                                        [ IconButton.extraContent
+                                            [ Element.fromNode
+                                                (RichTooltipAction.view [] []
+                                                    |> Element.toNode
+                                                )
+                                            ]
+                                        ]
+                                        |> Element.toNode
+                                    )
+                                ]
+                            ]
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "steppernext" ->
+            [ usage
+                [ sub "Advance stepper"
+                    (Stepper.view
+                        { steps =
+                            [ Stepper.step { label = "Step 1" } [ Stepper.stepFor "sn-panel-1" ]
+                            , Stepper.step { label = "Step 2" } [ Stepper.stepFor "sn-panel-2" ]
+                            ]
+                        , panels =
+                            [ Stepper.stepPanel
+                                { content =
+                                    [ Element.fromNode
+                                        (buttonRow
+                                            [ IconButton.view { icon = "arrow_forward", ariaLabel = "Next" }
+                                                [ IconButton.variant IconButton.Filled
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode
+                                                        (StepperNext.view [] |> Element.toNode)
+                                                    ]
+                                                ]
+                                                |> Element.toNode
+                                            ]
+                                        )
+                                    ]
+                                }
+                                [ Stepper.panelId "sn-panel-1" ]
+                            , Stepper.stepPanel { content = [] } [ Stepper.panelId "sn-panel-2" ]
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "stepperprevious" ->
+            [ usage
+                [ sub "Go back"
+                    (Stepper.view
+                        { steps =
+                            [ Stepper.step { label = "Step 1" } [ Stepper.stepFor "sp-panel-1" ]
+                            , Stepper.step { label = "Step 2" } [ Stepper.stepFor "sp-panel-2" ]
+                            ]
+                        , panels =
+                            [ Stepper.stepPanel { content = [] } [ Stepper.panelId "sp-panel-1" ]
+                            , Stepper.stepPanel
+                                { content =
+                                    [ Element.fromNode
+                                        (buttonRow
+                                            [ IconButton.view { icon = "arrow_back", ariaLabel = "Back" }
+                                                [ IconButton.variant IconButton.Outlined
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode
+                                                        (StepperPrevious.view [] |> Element.toNode)
+                                                    ]
+                                                ]
+                                                |> Element.toNode
+                                            ]
+                                        )
+                                    ]
+                                }
+                                [ Stepper.panelId "sp-panel-2" ]
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "stepperreset" ->
+            [ usage
+                [ sub "Reset to start"
+                    (Stepper.view
+                        { steps =
+                            [ Stepper.step { label = "Step 1" } [ Stepper.stepFor "sr-panel-1" ]
+                            , Stepper.step { label = "Done" } [ Stepper.stepFor "sr-panel-2" ]
+                            ]
+                        , panels =
+                            [ Stepper.stepPanel { content = [] } [ Stepper.panelId "sr-panel-1" ]
+                            , Stepper.stepPanel
+                                { content =
+                                    [ Element.fromNode
+                                        (buttonRow
+                                            [ IconButton.view { icon = "restart_alt", ariaLabel = "Restart" }
+                                                [ IconButton.variant IconButton.Tonal
+                                                , IconButton.extraContent
+                                                    [ Element.fromNode
+                                                        (StepperReset.view [] |> Element.toNode)
+                                                    ]
+                                                ]
+                                                |> Element.toNode
+                                            ]
+                                        )
+                                    ]
+                                }
+                                [ Stepper.panelId "sr-panel-2" ]
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                ]
+            ]
+
+        "textoverflow" ->
+            [ usage
+                [ sub "Truncation"
+                    (Layout.div "w-40"
+                        [ TextOverflow.view
+                            { content =
+                                [ Element.html
+                                    (p [ class "text-body-md text-on-surface" ]
+                                        [ text "This label overflows and gets clipped with an ellipsis at the boundary." ]
+                                    )
+                                ]
+                            }
+                            |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "themeicon" ->
+            [ usage
+                [ sub "Scheme"
+                    (Layout.div "flex flex-wrap items-center gap-4"
+                        [ ThemeIcon.view [ ThemeIcon.scheme ThemeIcon.Light ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.scheme ThemeIcon.Auto ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.scheme ThemeIcon.Dark ] |> Element.toNode
+                        ]
+                    )
+                , sub "Palette variant"
+                    (Layout.div "flex flex-wrap items-center gap-4"
+                        [ ThemeIcon.view [ ThemeIcon.color "#6750A4", ThemeIcon.variant ThemeIcon.TonalSpot ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.color "#E91E63", ThemeIcon.variant ThemeIcon.Vibrant ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.color "#4CAF50", ThemeIcon.variant ThemeIcon.Expressive ] |> Element.toNode
+                        , ThemeIcon.view [ ThemeIcon.color "#2196F3", ThemeIcon.variant ThemeIcon.Rainbow ] |> Element.toNode
+                        ]
+                    )
+                ]
+            ]
+
+        "tree" ->
+            [ usage
+                [ sub "Basic hierarchy"
+                    (Tree.view
+                        { items =
+                            [ Tree.treeItem
+                                { label = "Getting Started"
+                                , children =
+                                    [ Tree.treeItem { label = "Overview", children = [] } []
+                                    , Tree.treeItem { label = "Installation", children = [] } []
+                                    ]
+                                }
+                                [ Tree.itemOpen True ]
+                            , Tree.treeItem
+                                { label = "Components", children = [] }
+                                []
+                            ]
+                        }
+                        []
+                        |> Element.toNode
+                    )
+                , sub "With icons"
+                    (Tree.view
+                        { items =
+                            [ Tree.treeItem { label = "Documents", children = [] }
+                                [ Tree.itemIcon (Element.fromNode (Icon.view { name = "folder" } [] |> Element.toNode)) ]
+                            , Tree.treeItem { label = "Images", children = [] }
+                                [ Tree.itemIcon (Element.fromNode (Icon.view { name = "image" } [] |> Element.toNode))
+                                , Tree.itemSelected True
+                                ]
+                            , Tree.treeItem { label = "Downloads", children = [] }
+                                [ Tree.itemIcon (Element.fromNode (Icon.view { name = "download" } [] |> Element.toNode)) ]
+                            ]
+                        }
+                        [ Tree.multi True ]
+                        |> Element.toNode
                     )
                 ]
             ]
