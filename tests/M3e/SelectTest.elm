@@ -3,7 +3,7 @@ module M3e.SelectTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element)
-import M3e.Node as Node exposing (Node)
+import M3e.Node as Node exposing (Attr(..), Node(..))
 import M3e.Select as Select
 import Test exposing (Test, describe, test)
 
@@ -16,6 +16,29 @@ viewNode : List (Select.Option String) -> Node String
 viewNode opts =
     Select.view { label = "Plan" } opts
         |> Element.toNode
+
+
+{-| Count RawAttr (opaque event listeners) on a node.
+-}
+countRawAttrs : Node msg -> Int
+countRawAttrs n =
+    case n of
+        Element { attrs } ->
+            List.length
+                (List.filter
+                    (\a ->
+                        case a of
+                            RawAttr _ ->
+                                True
+
+                            _ ->
+                                False
+                    )
+                    attrs
+                )
+
+        _ ->
+            0
 
 
 labelChild : Node msg -> Maybe (Node msg)
@@ -164,4 +187,82 @@ suite =
                     |> Node.findProperty "selected"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
+
+        -- Events
+        , test "onChange wires a 'change' event listener on m3e-select" <|
+            \_ ->
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        selectChild (viewNode []) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+
+                    withHandler : Int
+                    withHandler =
+                        selectChild (viewNode [ Select.onChange identity ]) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "onInput wires an 'input' event listener on m3e-select" <|
+            \_ ->
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        selectChild (viewNode []) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+
+                    withHandler : Int
+                    withHandler =
+                        selectChild (viewNode [ Select.onInput identity ]) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "onToggle wires a 'toggle' event listener on m3e-select" <|
+            \_ ->
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        selectChild (viewNode []) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+
+                    withHandler : Int
+                    withHandler =
+                        selectChild (viewNode [ Select.onToggle (\_ -> "") ]) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "onMultiChange wires a 'change' listener for multi-select (list decoder)" <|
+            \_ ->
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        selectChild (viewNode []) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+
+                    withHandler : Int
+                    withHandler =
+                        selectChild (viewNode [ Select.onMultiChange (\_ -> "") ]) |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "all four event options each add an independent RawAttr" <|
+            \_ ->
+                selectChild
+                    (viewNode
+                        [ Select.onChange identity
+                        , Select.onInput identity
+                        , Select.onToggle (\_ -> "")
+                        , Select.onMultiChange (\_ -> "")
+                        ]
+                    )
+                    |> Maybe.map countRawAttrs
+                    |> Expect.equal (Just 4)
         ]

@@ -3,7 +3,7 @@ module M3e.RadioButtonTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node exposing (Node)
+import M3e.Node as Node exposing (Attr(..), Node(..))
 import M3e.RadioButton as RadioButton
 import Test exposing (Test, describe, test)
 
@@ -24,6 +24,30 @@ groupNode sel opts =
         }
         opts
         |> Element.toNode
+
+
+{-| Count the number of RawAttr (event listeners / opaque attrs) on an element
+node. Used to verify that event handlers are registered.
+-}
+countRawAttrs : Node msg -> Int
+countRawAttrs node =
+    case node of
+        Element { attrs } ->
+            List.length
+                (List.filter
+                    (\a ->
+                        case a of
+                            RawAttr _ ->
+                                True
+
+                            _ ->
+                                False
+                    )
+                    attrs
+                )
+
+        _ ->
+            0
 
 
 suite : Test
@@ -116,4 +140,45 @@ suite =
                     |> Maybe.andThen List.head
                     |> Maybe.andThen (Node.findAttribute "name")
                     |> Expect.equal (Just "Billing cycle")
+        , test "each radio carries a value attribute matching its option value" <|
+            \_ ->
+                -- Required so event.target.value on the group's change event
+                -- returns the correct option value string.
+                groupNode Nothing []
+                    |> Node.childrenOf
+                    |> List.head
+                    |> Maybe.map Node.childrenOf
+                    |> Maybe.andThen List.head
+                    |> Maybe.andThen (Node.findAttribute "value")
+                    |> Expect.equal (Just "monthly")
+        , test "onChange wires a 'change' event on the group (not a per-radio click)" <|
+            \_ ->
+                -- The change event handler is placed on <m3e-radio-group>,
+                -- not on individual <m3e-radio> elements. Without onChange
+                -- the group has 0 RawAttrs; with it, 1.
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        groupNode Nothing [] |> countRawAttrs
+
+                    withHandler : Int
+                    withHandler =
+                        groupNode Nothing [ RadioButton.onChange identity ] |> countRawAttrs
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "onChange does NOT add a RawAttr to individual radios (group-level event)" <|
+            \_ ->
+                -- The <m3e-radio> child should have NO opaque event listeners;
+                -- the change handler lives on the group element.
+                groupNode Nothing [ RadioButton.onChange identity ]
+                    |> Node.childrenOf
+                    |> List.head
+                    |> Maybe.map Node.childrenOf
+                    |> Maybe.andThen List.head
+                    |> Maybe.map countRawAttrs
+                    |> Expect.equal (Just 0)
         ]

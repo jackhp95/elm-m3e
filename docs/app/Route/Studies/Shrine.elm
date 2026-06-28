@@ -704,7 +704,7 @@ viewControls model =
                 , Slider.step 5
                 , Slider.discrete True
                 , Slider.labelled True
-                , Slider.onChange MaxPriceChanged
+                , Slider.onInput MaxPriceChanged
                 ]
                 |> Element.toNode
     in
@@ -1076,7 +1076,7 @@ viewDetailDialog model =
                         , Slider.step 1
                         , Slider.discrete True
                         , Slider.labelled True
-                        , Slider.onChange DetailQtyChanged
+                        , Slider.onInput DetailQtyChanged
                         ]
                         |> Element.toNode
 

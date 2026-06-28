@@ -574,7 +574,7 @@ appearancePanel model =
                 (Layout.div "w-full sm:w-72"
                     [ Slider.view { name = "Brightness" }
                         [ Slider.value model.brightness
-                        , Slider.onChange BrightnessChanged
+                        , Slider.onInput BrightnessChanged
                         , Slider.min 0
                         , Slider.max 100
                         , Slider.step 1

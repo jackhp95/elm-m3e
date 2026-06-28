@@ -2,7 +2,7 @@ module M3e.Slider exposing
     ( view
     , Option
     , value, min, max, step
-    , discrete, labelled, disabled, onChange
+    , discrete, labelled, disabled, onChange, onInput
     )
 
 {-| `<m3e-slider>` — a control for choosing a numeric value from a range
@@ -13,19 +13,26 @@ Spec (per docs/CONVENTIONS.md):
   - Required: { name : String }
     (bare control with no visible text — a required aria-label
     is mandatory for accessibility)
-  - Options: value, min, max, step, discrete, labelled, disabled, onChange
+  - Options: value, min, max, step, discrete, labelled, disabled,
+    onChange, onInput
   - Slots: one `<m3e-slider-thumb>` child (default slot)
   - Properties: min, max, step, discrete, labelled, disabled — on the
     slider element (via Node.property — introspectable/testable);
     value — on the thumb child (Node.property "value")
-  - Events: input on the thumb → Float (decoded from target.value)
+  - Events (upstream `M3eSliderThumbElement` and `M3eSliderElement`):
+    `input` — fires continuously during drag → decoded as Float from
+    `event.target.value` — exposed as `onInput`
+    `change` — fires once when the drag commits → decoded as Float
+    from `event.target.value` — exposed as `onChange`
+    Both events bubble from `<m3e-slider-thumb>` to `<m3e-slider>`;
+    the handler is attached on the thumb child.
   - A11y: aria-label = name
   - Tag: slider
 
 @docs view
 @docs Option
 @docs value, min, max, step
-@docs discrete, labelled, disabled, onChange
+@docs discrete, labelled, disabled, onChange, onInput
 
 -}
 
@@ -91,11 +98,22 @@ disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Wire a change handler. Receives the new Float value from the thumb.
+{-| Wire a committed-change handler. Fires once when the user releases
+the thumb (the `change` event on `<m3e-slider-thumb>`). Receives the
+final Float value decoded from `event.target.value`.
 -}
 onChange : (Float -> msg) -> Option msg
 onChange f =
     Internal.option (\c -> { c | onChange = Just f })
+
+
+{-| Wire a live-input handler. Fires continuously while the user drags
+the thumb (the `input` event on `<m3e-slider-thumb>`). Receives the
+current Float value decoded from `event.target.value`.
+-}
+onInput : (Float -> msg) -> Option msg
+onInput f =
+    Internal.option (\c -> { c | onInput = Just f })
 
 
 type alias Config msg =
@@ -107,6 +125,7 @@ type alias Config msg =
     , labelled : Bool
     , disabled : Bool
     , onChange : Maybe (Float -> msg)
+    , onInput : Maybe (Float -> msg)
     }
 
 
@@ -127,6 +146,7 @@ view req opts =
                 , labelled = False
                 , disabled = False
                 , onChange = Nothing
+                , onInput = Nothing
                 }
     in
     Internal.fromNode
@@ -152,15 +172,21 @@ thumbNode c =
             [ Maybe.map
                 (\v -> Node.property "value" (Encode.float v))
                 c.value
-            , Maybe.map
-                (\f ->
-                    Node.on "input"
-                        (Decode.at [ "target", "value" ] Decode.string
-                            |> Decode.map (\s -> String.toFloat s |> Maybe.withDefault 0)
-                            |> Decode.map f
-                        )
-                )
-                c.onChange
+            , Maybe.map (decodeThumbValue "change") c.onChange
+            , Maybe.map (decodeThumbValue "input") c.onInput
             ]
         )
         []
+
+
+{-| Decode `event.target.value` as a Float for either "change" or "input"
+events on `<m3e-slider-thumb>`. The element exposes the value as a
+numeric string via its form-associated `value` attribute.
+-}
+decodeThumbValue : String -> (Float -> msg) -> Node.Attr msg
+decodeThumbValue eventName f =
+    Node.on eventName
+        (Decode.at [ "target", "value" ] Decode.string
+            |> Decode.map (String.toFloat >> Maybe.withDefault 0)
+            |> Decode.map f
+        )

@@ -3,7 +3,7 @@ module M3e.SliderTest exposing (suite)
 import Expect
 import Json.Encode as Encode
 import M3e.Element as Element
-import M3e.Node as Node exposing (Node)
+import M3e.Node as Node exposing (Attr(..), Node(..))
 import M3e.Slider as Slider
 import Test exposing (Test, describe, test)
 
@@ -11,6 +11,34 @@ import Test exposing (Test, describe, test)
 node : List (Slider.Option msg) -> Node msg
 node opts =
     Slider.view { name = "Volume" } opts |> Element.toNode
+
+
+thumbNode : List (Slider.Option msg) -> Maybe (Node msg)
+thumbNode opts =
+    node opts |> Node.childrenOf |> List.head
+
+
+{-| Count RawAttr (opaque event listeners) on a node.
+-}
+countRawAttrs : Node msg -> Int
+countRawAttrs n =
+    case n of
+        Element { attrs } ->
+            List.length
+                (List.filter
+                    (\a ->
+                        case a of
+                            RawAttr _ ->
+                                True
+
+                            _ ->
+                                False
+                    )
+                    attrs
+                )
+
+        _ ->
+            0
 
 
 suite : Test
@@ -83,4 +111,46 @@ suite =
                     |> List.head
                     |> Maybe.andThen (Node.findProperty "value")
                     |> Expect.equal Nothing
+        , test "onChange wires a 'change' (committed) listener on the thumb" <|
+            \_ ->
+                -- Committed change event: fires once when drag is released.
+                -- Without onChange, thumb has 0 RawAttrs; with it, 1+.
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        thumbNode [] |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+
+                    withHandler : Int
+                    withHandler =
+                        thumbNode [ Slider.onChange (\_ -> ()) ] |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "onInput wires a 'input' (live) listener on the thumb" <|
+            \_ ->
+                -- Live input event: fires continuously during drag.
+                -- Without onInput, thumb has 0 RawAttrs; with it, 1+.
+                let
+                    withoutHandler : Int
+                    withoutHandler =
+                        thumbNode [] |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+
+                    withHandler : Int
+                    withHandler =
+                        thumbNode [ Slider.onInput (\_ -> ()) ] |> Maybe.map countRawAttrs |> Maybe.withDefault 0
+                in
+                Expect.all
+                    [ \_ -> withoutHandler |> Expect.equal 0
+                    , \_ -> withHandler |> Expect.greaterThan 0
+                    ]
+                    ()
+        , test "onChange and onInput produce independent listeners on the thumb" <|
+            \_ ->
+                -- Both onChange and onInput each add one RawAttr.
+                thumbNode [ Slider.onChange (\_ -> ()), Slider.onInput (\_ -> ()) ]
+                    |> Maybe.map countRawAttrs
+                    |> Expect.equal (Just 2)
         ]

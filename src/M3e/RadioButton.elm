@@ -18,7 +18,11 @@ Spec (per docs/CONVENTIONS.md):
   - Slots: none (radios rendered as children of the group)
   - Properties: disabled (group), required (group), checked (per radio)
     all via Node.property — introspectable/testable
-  - Events: click on each radio → String (the clicked option value)
+  - Events: `change` on `<m3e-radio-group>` → String decoded from
+    `event.target.value` (the selected radio's value attribute).
+    Upstream ref: `M3eRadioGroupElement` emits `change` when the
+    checked state of any radio changes; `event.target.value` is
+    `string | null`.
   - A11y: aria-label = name on `<m3e-radio-group>`
   - Tag: radioButton
 
@@ -28,9 +32,13 @@ wrapped in a `<label>` element, with the `<m3e-radio>` and the label
 text as **siblings** inside the label:
 
     <label>
-      <m3e-radio name="..." checked /> ← zero children
-      Label text                        ← sibling, not child
+      <m3e-radio name="..." value="..." checked /> ← zero children
+      Label text                                    ← sibling, not child
     </label>
+
+Each `<m3e-radio>` carries a `value` attribute so that
+`event.target.value` on the group's `change` event returns the
+correct value string.
 
 @docs Option
 @docs view
@@ -65,8 +73,10 @@ required b =
     Internal.option (\c -> { c | required = b })
 
 
-{-| Wire a change handler. Receives the `value` string of the clicked
-radio option.
+{-| Wire a change handler. Receives the `value` string of the newly
+selected radio option, decoded from `event.target.value` on the
+`<m3e-radio-group>`'s `change` event. Fired on both mouse click and
+keyboard selection (unlike the old `click` approach).
 -}
 onChange : (String -> msg) -> Option msg
 onChange f =
@@ -100,11 +110,21 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-radio-group"
-            [ Node.attribute "aria-label" req.name
-            , Node.attribute "name" req.name
-            , Node.property "disabled" (Encode.bool c.disabled)
-            , Node.property "required" (Encode.bool c.required)
-            ]
+            (List.filterMap identity
+                [ Just (Node.attribute "aria-label" req.name)
+                , Just (Node.attribute "name" req.name)
+                , Just (Node.property "disabled" (Encode.bool c.disabled))
+                , Just (Node.property "required" (Encode.bool c.required))
+                , Maybe.map
+                    (\f ->
+                        Node.on "change"
+                            (Decode.at [ "target", "value" ] Decode.string
+                                |> Decode.map f
+                            )
+                    )
+                    c.onChange
+                ]
+            )
             (List.map (renderOption req.name req.selected c) req.options)
         )
 
@@ -124,15 +144,11 @@ renderOption groupName selected cfg opt =
     Node.element "label"
         []
         [ Node.element "m3e-radio"
-            (List.filterMap identity
-                [ Just (Node.attribute "name" groupName)
-                , Just (Node.property "checked" (Encode.bool isChecked))
-                , Just (Node.property "disabled" (Encode.bool cfg.disabled))
-                , Maybe.map
-                    (\f -> Node.on "click" (Decode.succeed (f opt.value)))
-                    cfg.onChange
-                ]
-            )
+            [ Node.attribute "name" groupName
+            , Node.attribute "value" opt.value
+            , Node.property "checked" (Encode.bool isChecked)
+            , Node.property "disabled" (Encode.bool cfg.disabled)
+            ]
             []
         , Node.text opt.label
         ]

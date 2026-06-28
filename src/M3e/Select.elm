@@ -1,7 +1,7 @@
 module M3e.Select exposing
     ( Option, OptionOption
     , view, option, options
-    , id, multi, required, disabled, onChange
+    , id, multi, required, disabled, onChange, onInput, onToggle, onMultiChange
     , optionSelected, optionDisabled
     )
 
@@ -11,12 +11,21 @@ module M3e.Select exposing
 Spec (per docs/CONVENTIONS.md):
 
   - Required: `{ label : Label msg }` — visible accessible label
-  - Options (container): id, multi, required, disabled, onChange, options
+  - Options (container): id, multi, required, disabled, onChange, onInput,
+    onToggle, onMultiChange, options
   - Options (option): selected, disabled
   - Slots: `selectOption` — the `<m3e-option>` children
   - Properties: multi, required, disabled (web-component properties on m3e-select)
-  - Events: `onChange` — fires on the `change` event, decodes
-    `event.target.value` as the selected option's value string
+  - Events (upstream `M3eSelectElement`):
+    `change` → `onChange` (single-select) / `onMultiChange` (multi).
+    `event.target.value` is `string | null` (single) or
+    `readonly string[] | null` (multi).
+    `input` → `onInput` (single-select live); same signal as `change`
+    but fires synchronously. Decoded as String.
+    `toggle` → `onToggle`: `ToggleEvent`, decoded from
+    `event.newState == "open"` as Bool (`True` = panel opened).
+    (`beforeinput` is also emitted upstream but is not exposed — it arrives
+    before state changes and cannot be cancelled from Elm.)
   - Tag: `select`
 
 **Fix #13 — relational label:** the label is rendered as `<label for=selectId>`
@@ -31,7 +40,7 @@ as an inert attribute on `<m3e-select>` — that never wired the accessible labe
 
 @docs Option, OptionOption
 @docs view, option, options
-@docs id, multi, required, disabled, onChange
+@docs id, multi, required, disabled, onChange, onInput, onToggle, onMultiChange
 @docs optionSelected, optionDisabled
 
 -}
@@ -69,6 +78,9 @@ type alias Config msg =
     , required : Bool
     , disabled : Bool
     , onChange : Maybe (String -> msg)
+    , onInput : Maybe (String -> msg)
+    , onToggle : Maybe (Bool -> msg)
+    , onMultiChange : Maybe (List String -> msg)
     , options : List (Element { selectOption : Supported } msg)
     }
 
@@ -80,6 +92,9 @@ defaultConfig =
     , required = False
     , disabled = False
     , onChange = Nothing
+    , onInput = Nothing
+    , onToggle = Nothing
+    , onMultiChange = Nothing
     , options = []
     }
 
@@ -136,12 +151,42 @@ disabled b =
     Internal.option (\c -> { c | disabled = b })
 
 
-{-| Handle selection changes. The handler receives the value string of the
-newly selected option (from `event.target.value` on the `change` event).
+{-| Handle selection changes (single-select). The handler receives the
+value string of the newly selected option decoded from `event.target.value`
+on the `change` event. Use `onMultiChange` instead when `multi = True`.
 -}
 onChange : (String -> msg) -> Option msg
 onChange f =
     Internal.option (\c -> { c | onChange = Just f })
+
+
+{-| Handle live selection changes (single-select). Fires on the `input`
+event — synchronously as the selected state changes, before the `change`
+event. Decodes `event.target.value` as a String. Useful for real-time
+validation or previews.
+-}
+onInput : (String -> msg) -> Option msg
+onInput f =
+    Internal.option (\c -> { c | onInput = Just f })
+
+
+{-| Handle the dropdown panel opening and closing. The handler receives
+`True` when the panel opens and `False` when it closes, decoded from
+`event.newState` on the `toggle` event (`ToggleEvent`).
+-}
+onToggle : (Bool -> msg) -> Option msg
+onToggle f =
+    Internal.option (\c -> { c | onToggle = Just f })
+
+
+{-| Handle selection changes in multi-select mode (`multi = True`). The
+handler receives the full list of selected values decoded from
+`event.target.value` on the `change` event — the element's value is
+`readonly string[] | null` in multi mode.
+-}
+onMultiChange : (List String -> msg) -> Option msg
+onMultiChange f =
+    Internal.option (\c -> { c | onMultiChange = Just f })
 
 
 {-| Supply the list of options to render inside `<m3e-select>`.
@@ -236,6 +281,30 @@ view req opts =
                                 )
                         )
                         c.onChange
+                    , Maybe.map
+                        (\handler ->
+                            Node.on "input"
+                                (Decode.at [ "target", "value" ] Decode.string
+                                    |> Decode.map handler
+                                )
+                        )
+                        c.onInput
+                    , Maybe.map
+                        (\handler ->
+                            Node.on "toggle"
+                                (Decode.at [ "newState" ] Decode.string
+                                    |> Decode.map (\s -> handler (s == "open"))
+                                )
+                        )
+                        c.onToggle
+                    , Maybe.map
+                        (\handler ->
+                            Node.on "change"
+                                (Decode.at [ "target", "value" ] (Decode.list Decode.string)
+                                    |> Decode.map handler
+                                )
+                        )
+                        c.onMultiChange
                     ]
                 )
                 (List.map Element.toNode c.options)
