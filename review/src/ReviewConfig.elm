@@ -129,10 +129,12 @@ constructor exists for consumers we cannot see in this repo.
 
 Reviewing the library in isolation (no docs app, no consuming app) makes
 `NoUnused.Exports`, `NoUnused.Modules`, and `NoUnused.CustomTypeConstructors`
-fire on the entire public API. We ignore `src/M3e/` for those rules so they
-still catch genuinely-dead code in any non-public helper directories while
-leaving the public surface alone. (`vendor/` is ignored too — generated
-bindings are equally "unused-by-self".) See README §"Relaxed rules".
+fire on the entire public API. We ignore `src/M3e/` (and the top-level
+`src/M3e.elm` facade file, whose re-exports are unused-by-self until consumers
+import them) for those rules so they still catch genuinely-dead code in any
+non-public helper directories while leaving the public surface alone.
+(`vendor/` is ignored too — generated bindings are equally "unused-by-self".)
+See README §"Relaxed rules".
 
 `NoMissingTypeExpose` is relaxed here for the same directory: each component's
 `type alias Option msg = Internal.Option (Config msg) msg` deliberately keeps
@@ -146,8 +148,10 @@ present so that the ignore works regardless of working directory.
 
 -}
 ignorePublicApi : Rule -> Rule
-ignorePublicApi =
-    Rule.ignoreErrorsForDirectories [ "src/M3e/", "../src/M3e/" ]
+ignorePublicApi rule =
+    rule
+        |> Rule.ignoreErrorsForDirectories [ "src/M3e/", "../src/M3e/" ]
+        |> Rule.ignoreErrorsForFiles [ "src/M3e.elm", "../src/M3e.elm" ]
 
 
 
@@ -157,7 +161,10 @@ ignorePublicApi =
 common : List Rule
 common =
     [ NoExposingEverything.rule |> ignoreVendor
-    , NoImportingEverything.rule [] |> ignoreVendor
+
+    -- `M3e` is whitelisted: the top-level facade is purpose-built for
+    -- `import M3e exposing (..)` (the single-import goal of facade epic #52).
+    , NoImportingEverything.rule [ "M3e" ] |> ignoreVendor
     , NoMissingTypeAnnotation.rule |> ignoreVendor
     , NoMissingTypeAnnotationInLetIn.rule |> ignoreVendor
     , NoMissingTypeExpose.rule |> ignoreVendor |> ignorePublicApi

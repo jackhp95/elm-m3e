@@ -13,6 +13,7 @@ row-polymorphism.
     import M3e.Attr as Attr
     import M3e.Button as Button
     import M3e.Checkbox as Checkbox
+    import M3e.Value as Value
 
 
     -- The SAME value is valid for Button AND Checkbox:
@@ -21,7 +22,7 @@ row-polymorphism.
         True
 
     buttonNode =
-        Button.view { label = "Save", variant = Button.Filled }
+        Button.view { label = "Save", variant = Value.filled }
             [ Attr.disabled isDisabled, Attr.onClick Saved ]
 
     checkboxNode =
