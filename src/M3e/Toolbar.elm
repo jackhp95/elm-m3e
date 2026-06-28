@@ -1,7 +1,6 @@
 module M3e.Toolbar exposing
     ( view
     , Option
-    , Shape(..)
     , elevated, vertical, shape, variant
     )
 
@@ -23,12 +22,10 @@ Spec (per docs/CONVENTIONS.md):
 
 @docs view
 @docs Option
-@docs Shape
 @docs elevated, vertical, shape, variant
 
 -}
 
-import Cem.M3e.Toolbar as Cem
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -36,11 +33,14 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| The shape of the toolbar corners. `Square` is the element default.
+{-| The shape of the toolbar corners (`square` or `rounded`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens. `square` is the element default.
 -}
-type Shape
-    = Square
-    | Rounded
+type alias Shapes =
+    Value
+        { square : Supported
+        , rounded : Supported
+        }
 
 
 {-| The appearance variant of the toolbar (`standard` or `vibrant`), supplied
@@ -74,9 +74,9 @@ vertical b =
     Internal.option (\c -> { c | vertical = b })
 
 
-{-| Set the toolbar's corner shape. Default `Square`.
+{-| Set the toolbar's corner shape. Default `square`.
 -}
-shape : Shape -> Option msg
+shape : Shapes -> Option msg
 shape s =
     Internal.option (\c -> { c | shape = s })
 
@@ -92,7 +92,7 @@ variant v =
 type alias Config =
     { elevated : Bool
     , vertical : Bool
-    , shape : Shape
+    , shape : Shapes
     , variant : Variants
     }
 
@@ -101,7 +101,7 @@ defaultConfig : Config
 defaultConfig =
     { elevated = False
     , vertical = False
-    , shape = Square
+    , shape = Value.square
     , variant = Value.standard
     }
 
@@ -135,18 +135,8 @@ view req opts =
         (Node.element "m3e-toolbar"
             [ Node.property "elevated" (Encode.bool c.elevated)
             , Node.property "vertical" (Encode.bool c.vertical)
-            , Node.rawAttr (Cem.shape (toCemShape c.shape))
+            , Node.attribute "shape" (Value.toString c.shape)
             , Node.attribute "variant" (Value.toString c.variant)
             ]
             (List.map Element.toNode req.content)
         )
-
-
-toCemShape : Shape -> Cem.Shape
-toCemShape s =
-    case s of
-        Square ->
-            Cem.Square
-
-        Rounded ->
-            Cem.Rounded

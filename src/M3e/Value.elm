@@ -7,6 +7,7 @@ module M3e.Value exposing
     , vibrant, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
     , flat, wavy, uncontained, contained, segmented
     , rounded, sharp, auto, docked, modal
+    , square, circular
     )
 
 {-| Shared, phantom-tagged enum values for the M3e component library.
@@ -53,6 +54,14 @@ axis-specific spelling and cross-axis names (e.g. `rounded`) cannot collide.
 @docs vibrant, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
 @docs flat, wavy, uncontained, contained, segmented
 @docs rounded, sharp, auto, docked, modal
+
+
+## Shapes
+
+`rounded` and `auto` (above) are shared with the variant axis; the
+shape-only tokens are:
+
+@docs square, circular
 
 -}
 
@@ -371,3 +380,17 @@ docked =
 modal : Value { a | modal : Supported }
 modal =
     Value "modal"
+
+
+{-| Emits `"square"`.
+-}
+square : Value { a | square : Supported }
+square =
+    Value "square"
+
+
+{-| Emits `"circular"`.
+-}
+circular : Value { a | circular : Supported }
+circular =
+    Value "circular"

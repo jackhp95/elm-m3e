@@ -6,6 +6,7 @@ import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Skeleton as Skeleton
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -51,11 +52,11 @@ suite =
                     |> Node.findProperty "loaded"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "false")
-        , test "shape option does not crash (rawAttr — not introspectable)" <|
+        , test "shape emits the shared Value token as an introspectable attribute" <|
             \_ ->
-                nodeWith [ Skeleton.shape Skeleton.Circular ] []
-                    |> Node.tagOf
-                    |> Expect.equal (Just "m3e-skeleton")
+                nodeWith [ Skeleton.shape Value.circular ] []
+                    |> Node.findAttribute "shape"
+                    |> Expect.equal (Just "circular")
         , test "animation option does not crash (rawAttr — not introspectable)" <|
             \_ ->
                 nodeWith [ Skeleton.animation Skeleton.Pulse ] []

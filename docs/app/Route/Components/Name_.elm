@@ -746,8 +746,8 @@ demoSections slug =
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ Button.view { label = "Rounded", variant = Value.filled } [ Button.shape Button.Rounded ] |> Element.toNode
-                        , Button.view { label = "Square", variant = Value.filled } [ Button.shape Button.Square ] |> Element.toNode
+                        [ Button.view { label = "Rounded", variant = Value.filled } [ Button.shape Value.rounded ] |> Element.toNode
+                        , Button.view { label = "Square", variant = Value.filled } [ Button.shape Value.square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"
@@ -1123,8 +1123,8 @@ demoSections slug =
                     )
                 , sub "Shapes"
                     (buttonRow
-                        [ IconButton.view { icon = "check", ariaLabel = "Round" } [ IconButton.variant Value.filled, IconButton.shape IconButton.Round ] |> Element.toNode
-                        , IconButton.view { icon = "check", ariaLabel = "Square" } [ IconButton.variant Value.filled, IconButton.shape IconButton.Square ] |> Element.toNode
+                        [ IconButton.view { icon = "check", ariaLabel = "Round" } [ IconButton.variant Value.filled, IconButton.shape Value.rounded ] |> Element.toNode
+                        , IconButton.view { icon = "check", ariaLabel = "Square" } [ IconButton.variant Value.filled, IconButton.shape Value.square ] |> Element.toNode
                         ]
                     )
                 , sub "Sizes"

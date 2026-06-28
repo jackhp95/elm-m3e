@@ -1,7 +1,7 @@
 module M3e.IconButton exposing
     ( view
     , Option
-    , Shape(..), Width(..), ButtonType(..)
+    , Width(..), ButtonType(..)
     , variant, size, shape, width
     , disabled, toggle, selected, onClick, onChange
     , href, target, rel, download
@@ -31,7 +31,7 @@ Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
 
 @docs view
 @docs Option
-@docs Shape, Width, ButtonType
+@docs Width, ButtonType
 @docs variant, size, shape, width
 @docs disabled, toggle, selected, onClick, onChange
 @docs href, target, rel, download
@@ -79,11 +79,14 @@ type alias Sizes =
         }
 
 
-{-| Container shape: `Round` (pill) or `Square`.
+{-| Container shape (`rounded` pill or `square`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 -}
-type Shape
-    = Round
-    | Square
+type alias Shapes =
+    Value
+        { rounded : Supported
+        , square : Supported
+        }
 
 
 {-| Container width: `Narrow`, `Default`, or `Wide`.
@@ -122,9 +125,9 @@ size s =
     Internal.option (\c -> { c | size = s })
 
 
-{-| Set the container shape (`Round` or `Square`).
+{-| Set the container shape (`rounded` or `square`).
 -}
-shape : Shape -> Option msg
+shape : Shapes -> Option msg
 shape s =
     Internal.option (\c -> { c | shape = Just s })
 
@@ -257,7 +260,7 @@ type alias Config msg =
     { variant : Variants
     , size : Sizes
     , width : Width
-    , shape : Maybe Shape
+    , shape : Maybe Shapes
     , disabled : Bool
     , toggle : Bool
     , onClick : Maybe msg
@@ -326,7 +329,7 @@ view req opts =
                 , Just (Node.attribute "variant" (Value.toString c.variant))
                 , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
-                , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
+                , Maybe.map (\s -> Node.attribute "shape" (Value.toString s)) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Just (Node.property "toggle" (Encode.bool c.toggle))
                 , Just (Node.property "selected" (Encode.bool c.selected))
@@ -372,16 +375,6 @@ toTypeString t =
 
 
 -- CONVERTERS ------------------------------------------------------------
-
-
-toCemShape : Shape -> Cem.Shape
-toCemShape s =
-    case s of
-        Round ->
-            Cem.Rounded
-
-        Square ->
-            Cem.Square
 
 
 toCemWidth : Width -> Cem.Width

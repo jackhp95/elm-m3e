@@ -1,6 +1,6 @@
 module M3e.Skeleton exposing
     ( view
-    , Shape(..), Animation(..), Option
+    , Animation(..), Option
     , loaded, shape, animation, attributes
     )
 
@@ -21,7 +21,7 @@ Passing an empty `content` list is valid — the skeleton then acts as a
 standalone shimmer placeholder sized by the caller's classes.
 
 @docs view
-@docs Shape, Animation, Option
+@docs Animation, Option
 @docs loaded, shape, animation, attributes
 
 -}
@@ -31,16 +31,20 @@ import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
-{-| Placeholder shape. Mirrors the `m3e-skeleton` `shape` attribute. Default is
-`Auto` (adapts to the mimicked content).
+{-| Placeholder shape, supplied as shared [`M3e.Value`](M3e-Value) tokens
+(`auto`, `circular`, `rounded`, or `square`). Default is `auto` (adapts to the
+mimicked content).
 -}
-type Shape
-    = Auto
-    | Circular
-    | Rounded
-    | Square
+type alias Shapes =
+    Value
+        { auto : Supported
+        , circular : Supported
+        , rounded : Supported
+        , square : Supported
+        }
 
 
 {-| Loading animation. Mirrors the `m3e-skeleton` `animation` attribute.
@@ -67,9 +71,9 @@ loaded b =
     Internal.option (\c -> { c | loaded = b })
 
 
-{-| Set the placeholder shape (default `Auto`). Maps to the `shape` attribute.
+{-| Set the placeholder shape (default `auto`). Maps to the `shape` attribute.
 -}
-shape : Shape -> Option msg
+shape : Shapes -> Option msg
 shape s =
     Internal.option (\c -> { c | shape = Just s })
 
@@ -93,7 +97,7 @@ attributes attrs =
 
 type alias Config msg =
     { loaded : Bool
-    , shape : Maybe Shape
+    , shape : Maybe Shapes
     , animation : Maybe Animation
     , attributes : List (Node.Attr msg)
     }
@@ -118,29 +122,13 @@ view req opts =
         (Node.element "m3e-skeleton"
             (List.filterMap identity
                 [ Just (Node.property "loaded" (Encode.bool c.loaded))
-                , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
+                , Maybe.map (\s -> Node.attribute "shape" (Value.toString s)) c.shape
                 , Maybe.map (\a -> Node.rawAttr (Cem.animation (toCemAnimation a))) c.animation
                 ]
                 ++ c.attributes
             )
             (List.map Element.toNode req.content)
         )
-
-
-toCemShape : Shape -> Cem.Shape
-toCemShape s =
-    case s of
-        Auto ->
-            Cem.Auto
-
-        Circular ->
-            Cem.Circular
-
-        Rounded ->
-            Cem.Rounded
-
-        Square ->
-            Cem.Square
 
 
 toCemAnimation : Animation -> Cem.Animation

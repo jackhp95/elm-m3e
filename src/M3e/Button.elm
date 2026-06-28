@@ -1,5 +1,5 @@
 module M3e.Button exposing
-    ( Option, Shape(..), ButtonType(..)
+    ( Option, ButtonType(..)
     , view
     , size, shape, disabled, toggle, selected, onClick, href, target, rel, download
     , leadingIcon, trailingIcon, selectedIcon, selectedLabel
@@ -35,7 +35,7 @@ per ADR 0006 / the prior NoActionlessButton design).
 
 # Types
 
-@docs Option, Shape, ButtonType
+@docs Option, ButtonType
 
 @docs view
 
@@ -85,11 +85,14 @@ type alias Sizes =
         }
 
 
-{-| Button corner shape — `Rounded` or `Square`.
+{-| Button corner shape (`rounded` or `square`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 -}
-type Shape
-    = Rounded
-    | Square
+type alias Shapes =
+    Value
+        { rounded : Supported
+        , square : Supported
+        }
 
 
 {-| Form submission type for a button. Upstream: `FormSubmitter` mixin →
@@ -122,7 +125,7 @@ size v =
 
 {-| Set the button corner shape.
 -}
-shape : Shape -> Option msg
+shape : Shapes -> Option msg
 shape v =
     Internal.option (\c -> { c | shape = Just v })
 
@@ -252,7 +255,7 @@ value v =
 
 type alias Config msg =
     { size : Sizes
-    , shape : Maybe Shape
+    , shape : Maybe Shapes
     , disabled : Bool
     , toggle : Bool
     , selected : Bool
@@ -304,7 +307,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "variant" (Value.toString req.variant))
                 , Just (Node.attribute "size" (Value.toString c.size))
-                , Maybe.map (\v -> Node.rawAttr (Cem.shape (toCemShape v))) c.shape
+                , Maybe.map (\v -> Node.attribute "shape" (Value.toString v)) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Just (Node.property "toggle" (Encode.bool c.toggle))
                 , Just (Node.property "selected" (Encode.bool c.selected))
@@ -340,13 +343,3 @@ toTypeString t =
 
         Button ->
             "button"
-
-
-toCemShape : Shape -> Cem.Shape
-toCemShape s =
-    case s of
-        Rounded ->
-            Cem.Rounded
-
-        Square ->
-            Cem.Square
