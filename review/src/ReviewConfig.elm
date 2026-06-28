@@ -24,6 +24,7 @@ import NoDebug.TodoOrToString
 import NoExposingEverything
 import NoFunctionOutsideOfModules
 import NoImportingEverything
+import NoMissingFacadeEntry
 import NoMissingTypeAnnotation
 import NoMissingTypeAnnotationInLetIn
 import NoMissingTypeExpose
@@ -209,6 +210,7 @@ materialDiscipline =
     , NoProprietaryDsClasses.rule
     , NoUntypedSlot.rule |> ignoreTests
     , NoRawLayoutOutsideLayoutModule.rule |> ignoreGenerated
+    , NoMissingFacadeEntry.rule
     ]
 
 

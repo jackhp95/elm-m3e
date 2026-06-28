@@ -69,4 +69,40 @@ suite =
                     |> toNode
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "outlined")
+        , test "iconButton (req + options re-bind) renders m3e-icon-button" <|
+            \_ ->
+                iconButton { icon = "add", ariaLabel = "Add" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-icon-button")
+        , test "badge (options-only re-bind) renders m3e-badge" <|
+            \_ ->
+                badge []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-badge")
+        , test "extendedFabSecondary bakes variant=secondary" <|
+            \_ ->
+                extendedFabSecondary { icon = "add", label = "Compose" } []
+                    |> toNode
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal (Just "secondary")
+        , test "headingTitle bakes variant=title" <|
+            \_ ->
+                headingTitle { label = "Section" } []
+                    |> toNode
+                    |> Node.findAttribute "variant"
+                    |> Expect.equal (Just "title")
+        , test "navigationBar (container re-bind) renders m3e-navigation-bar" <|
+            \_ ->
+                navigationBar { items = [] } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-nav-bar")
+        , test "tooltipPlain (multi-constructor re-bind) renders m3e-tooltip" <|
+            \_ ->
+                tooltipPlain { anchorId = "anchor", label = "Hint" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-tooltip")
         ]
