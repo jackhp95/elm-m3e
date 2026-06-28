@@ -1,7 +1,7 @@
-# elm-m3e — Work-in-progress handoff (2026-06-27)
+# elm-m3e — Work-in-progress handoff (2026-06-28)
 
 Resume point for continuing on another device/session. Everything below is on
-`main` and **pushed to `origin/main`**. Latest commit: see `git log -1`.
+`main` and **pushed to `origin/main`**. Latest commit: `4c4f6a3` (see `git log -1`).
 
 ---
 
@@ -10,13 +10,15 @@ Resume point for continuing on another device/session. Everything below is on
 - **Two epics fully done & closed this session:** the *tidy/consolidate wave*
   (rename, View→IR, elm-review, Layout) and the **#58 @m3e/web alignment epic**
   (11 children — all correctness defects, missing components, docs parity).
-- **Facade epic #52 is in progress:** #53 (`M3e.Attr`) **done**; **#54 has a
-  pending strategic decision (see "Concerns" §1)**; #56/#55/#57 not started.
-- **Metrics:** 55 → **73 components**; tests **610 → 896**; `elm-review` green
+- **Facade epic #52 is in progress:** #53 (`M3e.Attr`) **done**; **#54
+  (`M3e.Value` shared tokens) done — all three axes shipped**; #56/#55/#57 not
+  started.
+- **Metrics:** 55 → **73 components**; tests **610 → 909**; `elm-review` green
   (toHtml gate + 4 rule families; 230 suppressed legacy findings).
 - **All four gates green on `main`.** CI fixed to be push-safe.
-- **Open GitHub issues:** **#52** (facade epic) and **jackhp95/elm-cem#1**
-  (generator retarget). Everything else closed.
+- **Open GitHub issues:** **#52** (facade epic), **#54** (impl done — body
+  updated, safe to close), **#70** (typed-attribute follow-up), and
+  **jackhp95/elm-cem#1** (generator retarget). Everything else closed.
 
 ---
 
@@ -62,6 +64,15 @@ Facade epic #52 (in progress):
   `rel`/`download`/`id` as polymorphic extensible-record options; 88
   per-component constructors re-aliased to it. `tests/M3e/AttrTest.elm` proves
   the cross-component guarantee. **This is the facade foundation and it works.**
+- `a3803a3`+`139e593`+`4c4f6a3` **#54 `M3e.Value`** — shared phantom-tagged
+  tokens, shipped across all three axes (size → 8 components, variant → 21,
+  shape → 4). **Built as a single `M3e.Value` type** spanning all axes with
+  **bare, axis-neutral token names** (`Value.large`, `Value.filled`,
+  `Value.rounded`) — NOT separate `Variant`/`Size`/`Shape` modules. A token
+  carries only the emitted string; the component supplies the attribute name, so
+  one `Value.rounded` serves both a variant axis and a shape axis. Values now
+  emit via introspectable `Node.attribute "variant"/"size"/"shape"` (DOM
+  unchanged). See Concerns §1 for what this resolved + the one known leak (#70).
 
 ---
 
@@ -70,71 +81,67 @@ Facade epic #52 (in progress):
 | # | Status | What |
 |---|---|---|
 | #53 | ✅ done | `M3e.Attr` shared attributes |
-| **#54** | **DECISION PENDING** | shared phantom-tagged variant/size *values* — see Concerns §1 |
-| #56 | not started | disambiguate flat-namespace collisions (depends on #54 decision) |
+| #54 | ✅ done | `M3e.Value` shared phantom-tagged tokens (size/variant/shape) |
+| #56 | not started | disambiguate flat-namespace collisions |
 | #55 | not started | top-level `M3e` module + component-prefixed entry points (`M3e.buttonOutlined`) |
 | #57 | not started | migrate docs to `import M3e exposing (..)` (acceptance test) |
 
-Recommended order once #54 is decided: #54 (or skip) → #56 → #55 → #57.
+Recommended order: #56 → #55 → #57.
 
 ---
 
 ## Concerns (with examples) — READ BEFORE RESUMING
 
-### §1. The #54 strategic fork (UNDECIDED — needs your call)
+### §1. #54 — RESOLVED (shipped a unified `M3e.Value`)
 
-`M3e.Attr` (#53) already shares *attributes*. The question for #54 is whether to
-also share *enum values* (variant/size). This is the **biggest, riskiest remaining
-refactor** and may be **largely redundant with #55's entry points**.
+The earlier fork (skip / size-only / full) was resolved by going **fuller than
+Path B but unified**: a **single `M3e.Value` type spans all three axes**
+(variant/size/shape), with **bare, axis-neutral token names**. This avoids the
+"21 semantically-different Variant types" problem because the type doesn't model
+the axis at all — a token carries only its emitted *string* and the component
+supplies the *attribute name*. So `Value.rounded` (emits `"rounded"`) serves
+both Icon's variant axis and Button/IconButton's shape axis; same-meaning tokens
+(`Value.large`) collapse across components for free.
 
-**Path A — skip #54, lean on #55 entry points (my recommendation).**
-The single-import goal is met for the common case without touching any enum:
-```elm
-import M3e exposing (..)
--- #55 mints per-variant entry points that bake the variant in:
-M3e.buttonOutlined { label = "Save" } [ M3e.disabled True ]   -- one import
-M3e.chipAssist { label = "Add" } [ M3e.onClick Add ]
-```
-The rare *dynamic* variant case keeps the component enum:
 ```elm
 import M3e.Button as Button
-Button.view { label = "Save", variant = chosenVariant } []
+import M3e.Value as Value
+Button.view { label = "Save", variant = Value.filled } [ Button.size Value.large ]
+-- Value.filled : Value { a | filled : Supported }
+-- Button's variant field is a CLOSED row { elevated, filled, tonal, outlined, text };
+--   a token outside that row is a compile error.
 ```
-Cost: ~0 enum churn. Close #54 as "superseded by #55".
 
-**Path B — do #54 fully (shared phantom-tagged values).**
-```elm
-import M3e exposing (..)
-M3e.button { label = "Save", variant = M3e.filled } []   -- dynamic variant, one import
--- M3e.filled : Variant { s | filled : Supported }
--- M3e.button accepts Variant { filled, tonal, elevated, outlined, text };
---   M3e.chipAssist's `assist` is rejected at compile time.
-```
-This is the proven spike mechanism, but applied to **21 `Variant` enums + 8
-`Size` enums + every call site** — a very large breaking refactor. The 21
-"Variant" types are *semantically different* axes that happen to share the name
-(Button = visual style filled/tonal/…; Chip = kind assist/filter/input/
-suggestion; Card = elevated/filled/outlined), so collapsing them needs care.
-Benefit over Path A: single-import for the *dynamic-variant* case only.
+Each component publishes a closed supported-row per field; row unification
+accepts members and rejects outsiders. Values emit via introspectable
+`Node.attribute` (testable; DOM output unchanged from the old `Cem` rawAttr).
+Shipped in `a3803a3` (size, 8 comps) → `139e593` (variant, 21) → `4c4f6a3`
+(shape, 4). Issue #54 body updated to match the as-built design.
 
-**Path C — hybrid:** shared values for SIZE only (clean t-shirt vocabulary
-extraSmall…extraLarge, real collapse across Button/Fab/IconButton/…), entry
-points for variants.
-
-**My recommendation: Path A** (or C). Path B is a lot of risk for marginal gain
-now that #53 + #55 exist.
+**Known leak (tracked in #70):** a token is structurally untyped w.r.t. axis, so
+a component whose closed row admits a token accepts it even if the upstream web
+component doesn't honor that combination — e.g. `SplitButton.Variants` had to
+widen 4→5 members to match Button's required row. A future opt-in
+**typed-attribute helper** (token → named `Attr`) could re-tighten this without
+abandoning bare-name sharing. Out-of-scope tokens deliberately left per-component:
+`Progress.Shape` (HTML-tag selector linear/circular) and `M3e.Shape.Name`
+(Material shape-name concept) — neither is a Value axis.
 
 ### §2. Naming collisions the facade (#55/#56) must resolve — concrete examples
-- **`M3e.Shape` already exists** (the `m3e-shape` *component*). A shared
-  shape-token module can't reuse that name. (Reinforces leaving shape per-component.)
+- **`M3e.Shape` already exists** (the `m3e-shape` *component*). This is why the
+  shared shape tokens live in **`M3e.Value`** (`Value.rounded`/`Value.square`/…),
+  not a `M3e.Shape` token module — no collision, and shape shares the same
+  facade as variant/size. (Resolved by #54; see §1.)
 - **`text` variant vs `text` builder:** `M3e.Element.text : String -> Element …`
   (a text node) collides with Button's `Text` variant if both are re-exposed flat
   as `text`. The facade must rename one (e.g. keep `text` = builder, expose the
   variant as `textVariant` or via the `buttonText` entry point).
 - **`view`** exists in all 73 modules; the facade can't expose a bare `view` —
   it must use prefixed entry points (`M3e.button`, `M3e.buttonOutlined`).
-- Enum constructors like `Small`/`Filled`/`Rounded` repeat across modules — only
-  the shared-value approach (#54 Path B) or prefixed entry points avoid clashes.
+- ~~Enum constructors like `Small`/`Filled`/`Rounded` repeat across modules~~ —
+  **resolved by #54**: these are now shared `M3e.Value` tokens, no per-module
+  constructors to clash. (Remaining per-component enums — e.g. `Skeleton.Animation`,
+  `IconButton.Width`, `ButtonType` — are axis-specific and not yet shared.)
 
 ### §3. elm-cem generator drift (jackhp95/elm-cem#1) — vendor patches are interim
 #69 hand-patched 41 vendored `Cem.M3e.*` atoms (kebab→camelCase property keys).
@@ -181,7 +188,7 @@ phantom errors (this bit two subagents).
 **Gate commands** (run from repo root; **`build`/`gen` BEFORE `elm-review`**):
 ```bash
 node_modules/.bin/elm-format --validate src/ tests/ review/src/      # → []
-node_modules/.bin/elm-test --compiler docs/node_modules/.bin/elm     # → 896 pass
+node_modules/.bin/elm-test --compiler docs/node_modules/.bin/elm     # → 909 pass
 cd docs && npm run build                                             # → "Success - Adapter script complete"
 cd docs && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm  # → "I found no errors!" (230 suppressed)
 cd docs && npm run test:browser                                     # Playwright (serves built dist/)
