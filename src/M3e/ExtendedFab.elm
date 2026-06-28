@@ -35,7 +35,7 @@ import M3e.Element as Element exposing (Element, Supported)
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 {-| FAB variant — seven M3 color roles, supplied as shared
@@ -53,19 +53,18 @@ type alias Variants =
         }
 
 
-{-| FAB sizes (`small`, `medium`, `large`; default `medium`), supplied as
-shared [`M3e.Value`](M3e-Value) tokens.
+{-| FAB sizes (`small`, `medium`, `large`; default `medium`). The
+supported-value row for the `size` axis.
 -}
 type alias Sizes =
-    Value
-        { small : Supported
-        , medium : Supported
-        , large : Supported
-        }
+    { small : Supported
+    , medium : Supported
+    , large : Supported
+    }
 
 
 type alias Config msg =
-    { size : Sizes
+    { size : AxisSupports Sizes
     , lowered : Bool
     , disabled : Bool
     , onClick : Maybe msg
@@ -83,10 +82,11 @@ type alias Option msg =
 
 
 {-| Set the FAB size (`small`, `medium`, `large`). Default `medium`.
+Re-export of [`M3e.Attr.size`](M3e-Attr#size).
 -}
-size : Sizes -> Option msg
-size s =
-    Internal.option (\c -> { c | size = s })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Use the lowered (less-elevated) style. Default `False`.
@@ -149,7 +149,7 @@ view req opts =
         c : Config msg
         c =
             Internal.applyOptions opts
-                { size = Value.medium
+                { size = Value.emptyAxis
                 , lowered = False
                 , disabled = False
                 , onClick = Nothing
@@ -163,7 +163,7 @@ view req opts =
         (Node.element "m3e-fab"
             (List.filterMap identity
                 [ Just (Node.attribute "variant" (Value.toString req.variant))
-                , Just (Node.attribute "size" (Value.toString c.size))
+                , Just (Node.attribute "size" (Value.axisStringOr Value.medium c.size))
                 , Just (Node.property "extended" (Encode.bool True))
                 , Just (Node.property "lowered" (Encode.bool c.lowered))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))

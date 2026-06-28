@@ -55,7 +55,7 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 {-| Button style — `elevated`, `filled`, `tonal`, `outlined`, or `text`,
@@ -73,16 +73,15 @@ type alias Variants =
 
 
 {-| The sizes this button supports, from `extraSmall` to `extraLarge`
-(default `small`), supplied as shared [`M3e.Value`](M3e-Value) tokens.
+(default `small`). The supported-value row for the `size` axis.
 -}
 type alias Sizes =
-    Value
-        { extraSmall : Supported
-        , small : Supported
-        , medium : Supported
-        , large : Supported
-        , extraLarge : Supported
-        }
+    { extraSmall : Supported
+    , small : Supported
+    , medium : Supported
+    , large : Supported
+    , extraLarge : Supported
+    }
 
 
 {-| Button corner shape (`rounded` or `square`), supplied as shared
@@ -117,10 +116,11 @@ type alias Option msg =
 
 
 {-| Set the button size (default [`M3e.Value.small`](M3e-Value#small)).
+Re-export of [`M3e.Attr.size`](M3e-Attr#size).
 -}
-size : Sizes -> Option msg
-size v =
-    Internal.option (\c -> { c | size = v })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Set the button corner shape.
@@ -254,7 +254,7 @@ value v =
 
 
 type alias Config msg =
-    { size : Sizes
+    { size : AxisSupports Sizes
     , shape : Maybe Shapes
     , disabled : Bool
     , toggle : Bool
@@ -283,7 +283,7 @@ view req opts =
         c : Config msg
         c =
             Internal.applyOptions opts
-                { size = Value.small
+                { size = Value.emptyAxis
                 , shape = Nothing
                 , disabled = False
                 , toggle = False
@@ -306,7 +306,7 @@ view req opts =
         (Node.element "m3e-button"
             (List.filterMap identity
                 [ Just (Node.attribute "variant" (Value.toString req.variant))
-                , Just (Node.attribute "size" (Value.toString c.size))
+                , Just (Node.attribute "size" (Value.axisStringOr Value.small c.size))
                 , Maybe.map (\v -> Node.attribute "shape" (Value.toString v)) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Just (Node.property "toggle" (Encode.bool c.toggle))

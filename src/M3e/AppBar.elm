@@ -45,7 +45,7 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 
@@ -89,14 +89,13 @@ type alias Title msg =
 
 
 {-| App bar sizes — the `size` attribute (`small` / `medium` / `large`;
-default `small`), supplied as shared [`M3e.Value`](M3e-Value) tokens.
+default `small`). The supported-value row for the `size` axis.
 -}
 type alias Sizes =
-    Value
-        { small : Supported
-        , medium : Supported
-        , large : Supported
-        }
+    { small : Supported
+    , medium : Supported
+    , large : Supported
+    }
 
 
 
@@ -106,7 +105,7 @@ type alias Sizes =
 type alias Config msg =
     { id : Maybe String
     , for : Maybe String
-    , size : Sizes
+    , size : AxisSupports Sizes
     , centered : Bool
     , leading : Maybe (Node msg)
     , title : Maybe (Node msg)
@@ -126,7 +125,7 @@ defaultConfig : Config msg
 defaultConfig =
     { id = Nothing
     , for = Nothing
-    , size = Value.small
+    , size = Value.emptyAxis
     , centered = False
     , leading = Nothing
     , title = Nothing
@@ -158,10 +157,11 @@ for v =
 
 
 {-| Set the app bar size (`small` / `medium` / `large`; default `small`).
+Re-export of [`M3e.Attr.size`](M3e-Attr#size).
 -}
-size : Sizes -> Option msg
-size s =
-    Internal.option (\c -> { c | size = s })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Center the title within the app bar (the `centered` DOM property).
@@ -225,7 +225,7 @@ view opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") cfg.id
                 , Maybe.map (Node.attribute "for") cfg.for
-                , Just (Node.attribute "size" (Value.toString cfg.size))
+                , Just (Node.attribute "size" (Value.axisStringOr Value.small cfg.size))
                 , Just (Node.property "centered" (Encode.bool cfg.centered))
                 ]
             )

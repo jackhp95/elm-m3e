@@ -2,6 +2,7 @@ module M3e.Attr exposing
     ( disabled, onClick
     , href, target, rel, download
     , id
+    , size, sizeExtraSmall, sizeSmall, sizeMedium, sizeLarge, sizeExtraLarge
     )
 
 {-| Universal, polymorphic attribute builders for the M3e component library.
@@ -48,9 +49,22 @@ unchanged.
 
 @docs id
 
+
+## Size axis
+
+The `size` axis is set explicitly: pass a shared [`M3e.Value`](M3e-Value) token
+(`Attr.size Value.medium`) or use a combined shorthand (`Attr.sizeMedium`). A
+bare value alone cannot assert the axis — the builder is what names it. Each
+component publishes a closed supported-row, so a size it does not offer is a
+compile error.
+
+@docs size, sizeExtraSmall, sizeSmall, sizeMedium, sizeLarge, sizeExtraLarge
+
 -}
 
+import M3e.Element exposing (Supported)
 import M3e.Internal as Internal exposing (Option)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 {-| Disable a component. Sets the `disabled : Bool` field in the Config.
@@ -143,3 +157,55 @@ variants in Stepper and Tabs.
 id : String -> Option { c | id : Maybe String } msg
 id v =
     Internal.option (\c -> { c | id = Just v })
+
+
+{-| Set the `size` axis to a shared [`M3e.Value`](M3e-Value) token. Sets the
+`size : AxisSupports values` field in the Config.
+
+Compatible with any component whose `Config` has a `size : AxisSupports values`
+field: AppBar, Button, ButtonGroup, ExtendedFab, Fab, Heading, IconButton, and
+SplitButton. The token's row must be one the component lists, so passing a size
+it does not support is a compile error.
+
+    Button.view { label = "Save", variant = Value.filled }
+        [ Attr.size Value.large ]
+
+-}
+size : Value values -> Option { c | size : AxisSupports values } msg
+size v =
+    Internal.option (\c -> { c | size = Value.toAxis v })
+
+
+{-| `size Value.extraSmall` — the combined `extra-small` shorthand.
+-}
+sizeExtraSmall : Option { c | size : AxisSupports { v | extraSmall : Supported } } msg
+sizeExtraSmall =
+    size Value.extraSmall
+
+
+{-| `size Value.small` — the combined `small` shorthand.
+-}
+sizeSmall : Option { c | size : AxisSupports { v | small : Supported } } msg
+sizeSmall =
+    size Value.small
+
+
+{-| `size Value.medium` — the combined `medium` shorthand.
+-}
+sizeMedium : Option { c | size : AxisSupports { v | medium : Supported } } msg
+sizeMedium =
+    size Value.medium
+
+
+{-| `size Value.large` — the combined `large` shorthand.
+-}
+sizeLarge : Option { c | size : AxisSupports { v | large : Supported } } msg
+sizeLarge =
+    size Value.large
+
+
+{-| `size Value.extraLarge` — the combined `extra-large` shorthand.
+-}
+sizeExtraLarge : Option { c | size : AxisSupports { v | extraLarge : Supported } } msg
+sizeExtraLarge =
+    size Value.extraLarge

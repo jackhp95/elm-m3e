@@ -47,7 +47,7 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 
@@ -66,17 +66,16 @@ type alias Variants =
         }
 
 
-{-| Touch-target sizes of the icon button, from `extraSmall` to `extraLarge`,
-supplied as shared [`M3e.Value`](M3e-Value) tokens.
+{-| Touch-target sizes of the icon button, from `extraSmall` to `extraLarge`.
+The supported-value row for the `size` axis.
 -}
 type alias Sizes =
-    Value
-        { extraSmall : Supported
-        , small : Supported
-        , medium : Supported
-        , large : Supported
-        , extraLarge : Supported
-        }
+    { extraSmall : Supported
+    , small : Supported
+    , medium : Supported
+    , large : Supported
+    , extraLarge : Supported
+    }
 
 
 {-| Container shape (`rounded` pill or `square`), supplied as shared
@@ -119,10 +118,11 @@ variant v =
 
 
 {-| Set the touch-target size. Default [`M3e.Value.small`](M3e-Value#small).
+Re-export of [`M3e.Attr.size`](M3e-Attr#size).
 -}
-size : Sizes -> Option msg
-size s =
-    Internal.option (\c -> { c | size = s })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Set the container shape (`rounded` or `square`).
@@ -258,7 +258,7 @@ type alias Option msg =
 
 type alias Config msg =
     { variant : Variants
-    , size : Sizes
+    , size : AxisSupports Sizes
     , width : Width
     , shape : Maybe Shapes
     , disabled : Bool
@@ -281,7 +281,7 @@ type alias Config msg =
 defaults : Config msg
 defaults =
     { variant = Value.standard
-    , size = Value.small
+    , size = Value.emptyAxis
     , width = Default
     , shape = Nothing
     , disabled = False
@@ -327,7 +327,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.attribute "variant" (Value.toString c.variant))
-                , Just (Node.attribute "size" (Value.toString c.size))
+                , Just (Node.attribute "size" (Value.axisStringOr Value.small c.size))
                 , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
                 , Maybe.map (\s -> Node.attribute "shape" (Value.toString s)) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))

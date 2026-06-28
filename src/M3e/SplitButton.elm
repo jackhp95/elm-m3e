@@ -41,7 +41,7 @@ import M3e.Button as Button
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 {-| Appearance variant (default `filled`), supplied as shared
@@ -65,13 +65,12 @@ Upstream: `<m3e-split-button size="...">` attribute.
 
 -}
 type alias Sizes =
-    Value
-        { extraSmall : Supported
-        , small : Supported
-        , medium : Supported
-        , large : Supported
-        , extraLarge : Supported
-        }
+    { extraSmall : Supported
+    , small : Supported
+    , medium : Supported
+    , large : Supported
+    , extraLarge : Supported
+    }
 
 
 {-| An option configuring a split button.
@@ -93,9 +92,9 @@ variant v =
 Upstream: `size` attribute on `<m3e-split-button>`.
 
 -}
-size : Sizes -> Option msg
-size s =
-    Internal.option (\c -> { c | size = s })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Disable both the leading and trailing buttons.
@@ -107,7 +106,7 @@ disabled =
 
 type alias Config =
     { variant : Variants
-    , size : Sizes
+    , size : AxisSupports Sizes
     , disabled : Bool
     }
 
@@ -147,7 +146,7 @@ view req opts =
     let
         c : Config
         c =
-            Internal.applyOptions opts { variant = Value.filled, size = Value.small, disabled = False }
+            Internal.applyOptions opts { variant = Value.filled, size = Value.emptyAxis, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
         leadingButton : Node msg
@@ -182,7 +181,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-split-button"
             [ Node.attribute "variant" (Value.toString c.variant)
-            , Node.attribute "size" (Value.toString c.size)
+            , Node.attribute "size" (Value.axisStringOr Value.small c.size)
             ]
             [ leadingButton, trailingButton ]
         )

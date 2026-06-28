@@ -29,10 +29,11 @@ The `level` option is clamped to the CEM-permitted range 1..6 (same as
 
 import Cem.M3e.Heading as Cem
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 {-| Typescale variant (`display`, `headline`, `title`, `label`), supplied as
@@ -47,19 +48,18 @@ type alias Variants =
         }
 
 
-{-| Three-step size scale (`small`, `medium`, `large`), supplied as shared
-[`M3e.Value`](M3e-Value) tokens. Mirrors `m3e-heading` `size` enum.
+{-| Three-step size scale (`small`, `medium`, `large`). The supported-value row
+for the `size` axis. Mirrors `m3e-heading` `size` enum.
 -}
 type alias Sizes =
-    Value
-        { small : Supported
-        , medium : Supported
-        , large : Supported
-        }
+    { small : Supported
+    , medium : Supported
+    , large : Supported
+    }
 
 
 type alias Config =
-    { size : Maybe Sizes
+    { size : AxisSupports Sizes
     , emphasized : Bool
     , level : Maybe Int
     }
@@ -71,11 +71,12 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the heading size (`small`, `medium`, `large`). Default `medium`.
+{-| Set the heading size (`small`, `medium`, `large`). Omitted when unset.
+Re-export of [`M3e.Attr.size`](M3e-Attr#size).
 -}
-size : Sizes -> Option msg
-size s =
-    Internal.option (\c -> { c | size = Just s })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Toggle the emphasized typescale (default `False`). When `True`, the heading
@@ -103,7 +104,7 @@ view req opts =
         c : Config
         c =
             Internal.applyOptions opts
-                { size = Nothing
+                { size = Value.emptyAxis
                 , emphasized = False
                 , level = Nothing
                 }
@@ -112,7 +113,7 @@ view req opts =
         (Node.element "m3e-heading"
             (List.filterMap identity
                 [ Just (Node.attribute "variant" (Value.toString req.variant))
-                , Maybe.map (\s -> Node.attribute "size" (Value.toString s)) c.size
+                , Maybe.map (Node.attribute "size") (Value.axisString c.size)
                 , Just (Node.property "emphasized" (Encode.bool c.emphasized))
                 , Maybe.map (\l -> Node.rawAttr (Cem.level (String.fromInt l))) c.level
                 ]

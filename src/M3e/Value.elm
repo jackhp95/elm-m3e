@@ -1,5 +1,6 @@
 module M3e.Value exposing
     ( Value, toString
+    , AxisSupports, emptyAxis, toAxis, axisString, axisStringOr
     , extraSmall, small, medium, large, extraLarge
     , elevated, filled, tonal, outlined, textVariant, standard, connected
     , primary, primaryContainer, secondary, secondaryContainer, tertiary, tertiaryContainer, surface
@@ -39,6 +40,18 @@ axis-specific spelling and cross-axis names (e.g. `rounded`) cannot collide.
 ## Type
 
 @docs Value, toString
+
+
+## Axis fields
+
+A component stores an enum-valued attribute (e.g. `size`) as an `AxisSupports`
+field rather than a bare [`Value`](#Value): the field's phantom row records the
+set the component accepts, and its runtime payload is the chosen value's string
+(or none). The universal axis builders in [`M3e.Attr`](M3e-Attr) (`Attr.size`,
+`Attr.sizeMedium`, …) set this field; the helpers below read it back out inside
+a component's `view`.
+
+@docs AxisSupports, emptyAxis, toAxis, axisString, axisStringOr
 
 
 ## Sizes
@@ -82,6 +95,54 @@ is `"small"`). Used internally by component `view` functions.
 toString : Value tags -> String
 toString (Value s) =
     s
+
+
+{-| A component's enum-valued attribute field. The `values` row is the **closed**
+set the component supports (so a value outside it is a compile error); the
+runtime payload is the chosen value's string, or `Nothing` when unset.
+
+A component declares the field as `AxisSupports { small : Supported, … }` and
+defaults it to [`emptyAxis`](#emptyAxis); the universal [`M3e.Attr`](M3e-Attr)
+axis builders fill it.
+
+-}
+type AxisSupports values
+    = AxisSupports (Maybe String)
+
+
+{-| The unset axis field — emits no attribute. The component's default `view`
+value applies (see [`axisStringOr`](#axisStringOr)).
+-}
+emptyAxis : AxisSupports values
+emptyAxis =
+    AxisSupports Nothing
+
+
+{-| Lift a chosen [`Value`](#Value) into an [`AxisSupports`](#AxisSupports)
+field. Used by the universal axis builders in [`M3e.Attr`](M3e-Attr); the row is
+carried through so the field keeps the value's membership proof.
+-}
+toAxis : Value values -> AxisSupports values
+toAxis (Value s) =
+    AxisSupports (Just s)
+
+
+{-| The chosen value's string, or `Nothing` when unset. Use in a `view` for an
+attribute the component omits when unset.
+-}
+axisString : AxisSupports values -> Maybe String
+axisString (AxisSupports m) =
+    m
+
+
+{-| The chosen value's string, falling back to the given default when unset. The
+fallback is a [`Value`](#Value) typed against the same row, so a component can
+only default to a value it actually supports. Use in a `view` for an attribute
+the component always emits.
+-}
+axisStringOr : Value values -> AxisSupports values -> String
+axisStringOr (Value fallback) (AxisSupports m) =
+    Maybe.withDefault fallback m
 
 
 {-| The smallest size step. Emits `"extra-small"`.

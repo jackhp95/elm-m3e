@@ -2,6 +2,7 @@ module M3e exposing
     ( Element, Supported, Node
     , text, html, toNode
     , disabled, onClick, href, target, rel, download, id
+    , size, sizeExtraSmall, sizeSmall, sizeMedium, sizeLarge, sizeExtraLarge
     , buttonElevated, buttonFilled, buttonTonal, buttonOutlined, buttonText
     , iconButton, fab, fabMenu, splitButton, segmentedButton, buttonGroup
     , extendedFabPrimary, extendedFabPrimaryContainer, extendedFabSecondary, extendedFabSecondaryContainer, extendedFabTertiary, extendedFabTertiaryContainer, extendedFabSurface
@@ -60,6 +61,7 @@ the single import.
 # Shared attributes
 
 @docs disabled, onClick, href, target, rel, download, id
+@docs size, sizeExtraSmall, sizeSmall, sizeMedium, sizeLarge, sizeExtraLarge
 
 
 # Buttons and FABs
@@ -221,7 +223,7 @@ import M3e.Toc as Toc
 import M3e.Toolbar as Toolbar
 import M3e.Tooltip as Tooltip
 import M3e.Tree as Tree
-import M3e.Value as Value
+import M3e.Value as Value exposing (Value)
 
 
 
@@ -323,6 +325,54 @@ download =
 id : String -> Option { c | id : Maybe String } msg
 id =
     Attr.id
+
+
+{-| Set the `size` axis to a shared [`M3e.Value`](M3e-Value) token. Re-export of
+[`M3e.Attr.size`](M3e-Attr#size).
+-}
+size : Value values -> Option { c | size : Value.AxisSupports values } msg
+size =
+    Attr.size
+
+
+{-| The combined `extra-small` shorthand. Re-export of
+[`M3e.Attr.sizeExtraSmall`](M3e-Attr#sizeExtraSmall).
+-}
+sizeExtraSmall : Option { c | size : Value.AxisSupports { v | extraSmall : Supported } } msg
+sizeExtraSmall =
+    Attr.sizeExtraSmall
+
+
+{-| The combined `small` shorthand. Re-export of
+[`M3e.Attr.sizeSmall`](M3e-Attr#sizeSmall).
+-}
+sizeSmall : Option { c | size : Value.AxisSupports { v | small : Supported } } msg
+sizeSmall =
+    Attr.sizeSmall
+
+
+{-| The combined `medium` shorthand. Re-export of
+[`M3e.Attr.sizeMedium`](M3e-Attr#sizeMedium).
+-}
+sizeMedium : Option { c | size : Value.AxisSupports { v | medium : Supported } } msg
+sizeMedium =
+    Attr.sizeMedium
+
+
+{-| The combined `large` shorthand. Re-export of
+[`M3e.Attr.sizeLarge`](M3e-Attr#sizeLarge).
+-}
+sizeLarge : Option { c | size : Value.AxisSupports { v | large : Supported } } msg
+sizeLarge =
+    Attr.sizeLarge
+
+
+{-| The combined `extra-large` shorthand. Re-export of
+[`M3e.Attr.sizeExtraLarge`](M3e-Attr#sizeExtraLarge).
+-}
+sizeExtraLarge : Option { c | size : Value.AxisSupports { v | extraLarge : Supported } } msg
+sizeExtraLarge =
+    Attr.sizeExtraLarge
 
 
 

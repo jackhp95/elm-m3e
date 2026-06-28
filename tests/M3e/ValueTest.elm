@@ -24,6 +24,7 @@ live in `elm-test`, but the type boundary is clear — passing
 -}
 
 import Expect
+import M3e.Attr as Attr
 import M3e.Button as Button
 import M3e.Element as Element
 import M3e.Fab as Fab
@@ -117,6 +118,51 @@ suite =
                     buttonNode [ Button.size Value.extraLarge ]
                         |> Node.findAttribute "size"
                         |> Expect.equal (Just "extra-large")
+            ]
+
+        -- Universal axis builder (M3e.Attr.size) ---------------------------
+        , describe "universal axis builder threads through components"
+            [ test "Attr.size Value.large on Button emits size=large" <|
+                \_ ->
+                    buttonNode [ Attr.size Value.large ]
+                        |> Node.findAttribute "size"
+                        |> Expect.equal (Just "large")
+            , test "Attr.size Value.large on Fab emits size=large" <|
+                \_ ->
+                    fabNode [ Attr.size Value.large ]
+                        |> Node.findAttribute "size"
+                        |> Expect.equal (Just "large")
+            , test "the same Attr.size value drives Button and Fab identically" <|
+                \_ ->
+                    let
+                        viaButton : Maybe String
+                        viaButton =
+                            buttonNode [ Attr.size Value.medium ] |> Node.findAttribute "size"
+
+                        viaFab : Maybe String
+                        viaFab =
+                            fabNode [ Attr.size Value.medium ] |> Node.findAttribute "size"
+                    in
+                    Expect.equal viaButton viaFab
+            ]
+
+        -- Combined shorthands (Attr.sizeXxx) -------------------------------
+        , describe "combined shorthands equal the explicit axis + value form"
+            [ test "Attr.sizeLarge equals Attr.size Value.large on Button" <|
+                \_ ->
+                    Expect.equal
+                        (buttonNode [ Attr.sizeLarge ] |> Node.findAttribute "size")
+                        (buttonNode [ Attr.size Value.large ] |> Node.findAttribute "size")
+            , test "Attr.sizeExtraSmall emits size=extra-small on Button" <|
+                \_ ->
+                    buttonNode [ Attr.sizeExtraSmall ]
+                        |> Node.findAttribute "size"
+                        |> Expect.equal (Just "extra-small")
+            , test "Attr.sizeMedium emits size=medium on Heading (omit-when-unset axis)" <|
+                \_ ->
+                    headingNode [ Attr.sizeMedium ]
+                        |> Node.findAttribute "size"
+                        |> Expect.equal (Just "medium")
             ]
 
         -- Defaults ---------------------------------------------------------

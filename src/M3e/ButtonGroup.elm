@@ -34,10 +34,11 @@ Spec (per docs/CONVENTIONS.md):
 -}
 
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
-import M3e.Value as Value exposing (Value)
+import M3e.Value as Value exposing (AxisSupports, Value)
 
 
 {-| Group appearance variant (`standard` or `connected`), supplied as shared
@@ -50,22 +51,21 @@ type alias Variants =
         }
 
 
-{-| Sizes applied to the whole group, supplied as shared
-[`M3e.Value`](M3e-Value) tokens.
+{-| Sizes applied to the whole group. The supported-value row for the `size`
+axis.
 -}
 type alias Sizes =
-    Value
-        { extraSmall : Supported
-        , small : Supported
-        , medium : Supported
-        , large : Supported
-        , extraLarge : Supported
-        }
+    { extraSmall : Supported
+    , small : Supported
+    , medium : Supported
+    , large : Supported
+    , extraLarge : Supported
+    }
 
 
 type alias Config =
     { variant : Variants
-    , size : Sizes
+    , size : AxisSupports Sizes
     , multi : Bool
     }
 
@@ -86,11 +86,12 @@ variant v =
 
 
 {-| Set the size applied to the whole group (default
-[`M3e.Value.small`](M3e-Value#small)).
+[`M3e.Value.small`](M3e-Value#small)). Re-export of
+[`M3e.Attr.size`](M3e-Attr#size).
 -}
-size : Sizes -> Option msg
-size s =
-    Internal.option (\c -> { c | size = s })
+size : Value Sizes -> Option msg
+size =
+    Attr.size
 
 
 {-| Allow more than one toggle button in the group to be selected at
@@ -117,12 +118,12 @@ view req opts =
         c : Config
         c =
             Internal.applyOptions opts
-                { variant = Value.standard, size = Value.small, multi = False }
+                { variant = Value.standard, size = Value.emptyAxis, multi = False }
     in
     Internal.fromNode
         (Node.element "m3e-button-group"
             [ Node.attribute "variant" (Value.toString c.variant)
-            , Node.attribute "size" (Value.toString c.size)
+            , Node.attribute "size" (Value.axisStringOr Value.small c.size)
             , Node.property "multi" (Encode.bool c.multi)
             ]
             (List.map Element.toNode req.buttons)
