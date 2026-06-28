@@ -58,6 +58,7 @@ via that control's escape/element slot or default slot.
 import Cem.M3e.Menu as CemMenu
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -144,8 +145,8 @@ itemTrailingIcon i =
 {-| Disable a plain menu item.
 -}
 itemDisabled : Bool -> ItemOption msg
-itemDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+itemDisabled =
+    Attr.disabled
 
 
 {-| Set the checked state of a checkbox item (the `checked` DOM property).
@@ -172,8 +173,8 @@ checkboxTrailingIcon i =
 {-| Disable a checkbox item.
 -}
 checkboxDisabled : Bool -> CheckboxItemOption msg
-checkboxDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+checkboxDisabled =
+    Attr.disabled
 
 
 {-| Mark a radio item as selected (the `checked` DOM property on
@@ -201,16 +202,16 @@ radioTrailingIcon i =
 {-| Disable a radio item.
 -}
 radioDisabled : Bool -> RadioItemOption msg
-radioDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+radioDisabled =
+    Attr.disabled
 
 
 {-| Set the `id` attribute on the `<m3e-menu>` element (for the trigger to
 reference via `triggerFor`).
 -}
 id : String -> Option msg
-id s =
-    Internal.option (\c -> { c | id = Just s })
+id =
+    Attr.id
 
 
 {-| Set the menu's appearance variant. Default `Standard`.

@@ -57,6 +57,7 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 import Cem.M3e.Datepicker as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -139,8 +140,8 @@ defaultConfig =
 {-| Set the `id` attribute.
 -}
 id : String -> Option msg
-id s =
-    Internal.option (\c -> { c | id = Just s })
+id =
+    Attr.id
 
 
 {-| Seed the picker with an initially selected date (ISO-8601).

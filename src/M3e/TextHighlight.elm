@@ -32,6 +32,7 @@ it ships as a vendor utility. Included here for parity with the `Ui.*` surface.
 
 import Cem.M3e.TextHighlight as Cem
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -78,8 +79,8 @@ caseSensitive b =
 Maps to the `disabled` DOM property.
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 type alias Config =

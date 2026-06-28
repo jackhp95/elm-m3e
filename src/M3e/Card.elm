@@ -46,6 +46,7 @@ working: with only `body` set, the card's children are exactly the body items.
 
 import Cem.M3e.Card as Cem
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -243,8 +244,8 @@ Upstream: `LinkButton` mixin → `href` attribute on `<m3e-card>`.
 
 -}
 href : String -> Option msg
-href v =
-    Internal.option (\c -> { c | href = Just v })
+href =
+    Attr.href
 
 
 {-| Set the link target (e.g. `"_blank"`); only meaningful with [`href`](#href).
@@ -253,8 +254,8 @@ Upstream: `LinkButton` mixin → `target` attribute on `<m3e-card>`.
 
 -}
 target : String -> Option msg
-target v =
-    Internal.option (\c -> { c | target = Just v })
+target =
+    Attr.target
 
 
 {-| Set the link relationship (e.g. `"noreferrer noopener"`); only meaningful
@@ -264,8 +265,8 @@ Upstream: `LinkButton` mixin → `rel` attribute on `<m3e-card>`.
 
 -}
 rel : String -> Option msg
-rel v =
-    Internal.option (\c -> { c | rel = Just v })
+rel =
+    Attr.rel
 
 
 {-| Request the link target be downloaded (optionally with a new filename).
@@ -275,8 +276,8 @@ Upstream: `LinkButton` mixin → `download` attribute on `<m3e-card>`.
 
 -}
 download : String -> Option msg
-download v =
-    Internal.option (\c -> { c | download = Just v })
+download =
+    Attr.download
 
 
 

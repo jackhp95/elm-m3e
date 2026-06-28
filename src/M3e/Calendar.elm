@@ -72,6 +72,7 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 import Cem.M3e.Calendar as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -143,8 +144,8 @@ defaultConfig =
 {-| Set the `id` attribute on `<m3e-calendar>`.
 -}
 id : String -> Option msg
-id s =
-    Internal.option (\c -> { c | id = Just s })
+id =
+    Attr.id
 
 
 {-| Seed the calendar with an initially selected date (ISO-8601 string).

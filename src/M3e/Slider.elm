@@ -38,6 +38,7 @@ Spec (per docs/CONVENTIONS.md):
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -94,8 +95,8 @@ labelled b =
 {-| Mark the slider disabled — non-interactive.
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Wire a committed-change handler. Fires once when the user releases

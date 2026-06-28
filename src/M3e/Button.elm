@@ -51,6 +51,7 @@ per ADR 0006 / the prior NoActionlessButton design).
 import Cem.M3e.Button as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -122,43 +123,43 @@ shape v =
 {-| Disable the button (sets the `disabled` DOM property).
 -}
 disabled : Bool -> Option msg
-disabled v =
-    Internal.option (\c -> { c | disabled = v })
+disabled =
+    Attr.disabled
 
 
 {-| Wire a click handler for the button.
 -}
 onClick : msg -> Option msg
-onClick m =
-    Internal.option (\c -> { c | onClick = Just m })
+onClick =
+    Attr.onClick
 
 
 {-| Render the button as a link to the given URL.
 -}
 href : String -> Option msg
-href v =
-    Internal.option (\c -> { c | href = Just v })
+href =
+    Attr.href
 
 
 {-| Set the link `target` (e.g. `"_blank"`); only meaningful with [`href`](#href).
 -}
 target : String -> Option msg
-target v =
-    Internal.option (\c -> { c | target = Just v })
+target =
+    Attr.target
 
 
 {-| Set the link `rel` (e.g. `"noreferrer noopener"`); only meaningful with [`href`](#href).
 -}
 rel : String -> Option msg
-rel v =
-    Internal.option (\c -> { c | rel = Just v })
+rel =
+    Attr.rel
 
 
 {-| Request the link target be downloaded; only meaningful with [`href`](#href).
 -}
 download : String -> Option msg
-download v =
-    Internal.option (\c -> { c | download = Just v })
+download =
+    Attr.download
 
 
 {-| Place an icon in the `icon` slot, before the label.

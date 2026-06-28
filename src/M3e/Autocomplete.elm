@@ -90,6 +90,7 @@ cannot be set from Elm — it is omitted.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -394,8 +395,8 @@ Disabled options are displayed but cannot be selected.
 
 -}
 optionDisabled : Bool -> OptionOption msg
-optionDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+optionDisabled =
+    Attr.disabled
 
 
 

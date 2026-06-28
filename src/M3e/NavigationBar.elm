@@ -32,6 +32,7 @@ item and wire `itemOnClick` on each destination to update your model.
 import Cem.M3e.NavBar as CemNavBar
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -83,8 +84,8 @@ itemSelected b =
 {-| Fire a message when this destination is chosen.
 -}
 itemOnClick : msg -> ItemOption msg
-itemOnClick msg =
-    Internal.option (\c -> { c | onClick = Just msg })
+itemOnClick =
+    Attr.onClick
 
 
 {-| Attach a badge count to the item. Rendered as an `<m3e-badge>` inside the
@@ -106,22 +107,22 @@ itemSelectedIcon r =
 {-| Disable this destination.
 -}
 itemDisabled : Bool -> ItemOption msg
-itemDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+itemDisabled =
+    Attr.disabled
 
 
 {-| Make this destination a link (the `href` attribute).
 -}
 itemHref : String -> ItemOption msg
-itemHref s =
-    Internal.option (\c -> { c | href = Just s })
+itemHref =
+    Attr.href
 
 
 {-| Set the `id` attribute on the `<m3e-nav-bar>` element.
 -}
 id : String -> Option msg
-id id_ =
-    Internal.option (\c -> { c | id = Just id_ })
+id =
+    Attr.id
 
 
 {-| Set the display mode of the bar. Default `Auto`.

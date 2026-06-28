@@ -34,6 +34,7 @@ via the `for` attribute rather than by wrapping it.
 import Cem.M3e.FormField as CemFF
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -121,8 +122,8 @@ the matching `for` on the `<label>` and any autosize sibling). Without this, an
 id is derived from the label text.
 -}
 id : String -> Option msg
-id s =
-    Internal.option (\c -> { c | id = Just s })
+id =
+    Attr.id
 
 
 {-| Drive the input value (sets the DOM `value` property).
@@ -157,8 +158,8 @@ inputType t =
 {-| Disable the field.
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Mark the field as required for form validation.

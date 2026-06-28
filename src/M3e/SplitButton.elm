@@ -37,6 +37,7 @@ port emits the correct element types by constructing the slot children via
 import Cem.M3e.SplitButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Button as Button
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -92,8 +93,8 @@ size s =
 {-| Disable both the leading and trailing buttons.
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 type alias Config =

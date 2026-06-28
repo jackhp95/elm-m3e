@@ -43,6 +43,7 @@ Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
 import Cem.M3e.IconButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -132,8 +133,8 @@ width w =
 {-| Disable the button (the `disabled` DOM property).
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Make the button a toggle (the `toggle` DOM property), so taps flip its
@@ -147,8 +148,8 @@ toggle b =
 {-| Fire a message when the button is clicked.
 -}
 onClick : msg -> Option msg
-onClick m =
-    Internal.option (\c -> { c | onClick = Just m })
+onClick =
+    Attr.onClick
 
 
 {-| Mark a toggle button as selected (the `selected` DOM property).
@@ -161,29 +162,29 @@ selected b =
 {-| Render the button as a link by setting its `href`.
 -}
 href : String -> Option msg
-href v =
-    Internal.option (\c -> { c | href = Just v })
+href =
+    Attr.href
 
 
 {-| Set the link `target` (used with `href`).
 -}
 target : String -> Option msg
-target v =
-    Internal.option (\c -> { c | target = Just v })
+target =
+    Attr.target
 
 
 {-| Set the link `rel` (used with `href`).
 -}
 rel : String -> Option msg
-rel v =
-    Internal.option (\c -> { c | rel = Just v })
+rel =
+    Attr.rel
 
 
 {-| Set the link `download` attribute (used with `href`).
 -}
 download : String -> Option msg
-download v =
-    Internal.option (\c -> { c | download = Just v })
+download =
+    Attr.download
 
 
 {-| Wire the toggle-state change event. Invoked with the new `selected` Bool

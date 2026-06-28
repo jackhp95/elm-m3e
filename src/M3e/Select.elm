@@ -49,6 +49,7 @@ as an inert attribute on `<m3e-select>` — that never wired the accessible labe
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -129,8 +130,8 @@ optionDisabled b =
 {-| Set the `id` attribute on the `<m3e-select>`.
 -}
 id : String -> Option msg
-id s =
-    Internal.option (\c -> { c | id = Just s })
+id =
+    Attr.id
 
 
 {-| Enable multi-select (sets the `multi` DOM property on `<m3e-select>`).
@@ -151,8 +152,8 @@ required b =
 {-| Disable the select.
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Handle selection changes (single-select). The handler receives the

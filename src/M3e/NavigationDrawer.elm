@@ -68,6 +68,7 @@ re-renders.
 
 import Html exposing (Html)
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -144,8 +145,8 @@ linkIcon ic =
 {-| Set the `target` attribute on the anchor (e.g. `"_blank"`).
 -}
 linkTarget : String -> LinkOption msg
-linkTarget s =
-    Internal.option (\c -> { c | target = Just s })
+linkTarget =
+    Attr.target
 
 
 
@@ -187,8 +188,8 @@ groupIcon ic =
 {-| Set the `id` attribute on the `<m3e-drawer-container>`.
 -}
 id : String -> Option msg
-id s =
-    Internal.option (\c -> { c | id = Just s })
+id =
+    Attr.id
 
 
 {-| Control whether the drawer is open. Default `True` (open — the usual

@@ -83,6 +83,7 @@ import Cem.M3e.ListAction as CemListAction
 import Cem.M3e.SelectionList as CemSelectionList
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -206,43 +207,43 @@ actionSupporting s =
 {-| Disable an action item.
 -}
 actionDisabled : Bool -> ActionItemOption msg
-actionDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+actionDisabled =
+    Attr.disabled
 
 
 {-| Set the link URL. When set the item renders as an `<a>` inside the element.
 -}
 actionHref : String -> ActionItemOption msg
-actionHref v =
-    Internal.option (\c -> { c | href = Just v })
+actionHref =
+    Attr.href
 
 
 {-| Set the link `target` (e.g. `"_blank"`); only meaningful with `actionHref`.
 -}
 actionTarget : String -> ActionItemOption msg
-actionTarget v =
-    Internal.option (\c -> { c | target = Just v })
+actionTarget =
+    Attr.target
 
 
 {-| Set the link `rel` (e.g. `"noreferrer noopener"`); only meaningful with `actionHref`.
 -}
 actionRel : String -> ActionItemOption msg
-actionRel v =
-    Internal.option (\c -> { c | rel = Just v })
+actionRel =
+    Attr.rel
 
 
 {-| Request the link target be downloaded; only meaningful with `actionHref`.
 -}
 actionDownload : String -> ActionItemOption msg
-actionDownload v =
-    Internal.option (\c -> { c | download = Just v })
+actionDownload =
+    Attr.download
 
 
 {-| Wire a click handler for an action item.
 -}
 actionOnClick : msg -> ActionItemOption msg
-actionOnClick msg =
-    Internal.option (\c -> { c | onClick = Just msg })
+actionOnClick =
+    Attr.onClick
 
 
 
@@ -273,8 +274,8 @@ optionSupporting s =
 {-| Disable a selectable option item.
 -}
 optionDisabled : Bool -> OptionItemOption msg
-optionDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+optionDisabled =
+    Attr.disabled
 
 
 {-| Set whether a selectable option item is selected (the `selected` DOM property).
@@ -346,8 +347,8 @@ expandableOpen b =
 {-| Set the `id` attribute on the list element.
 -}
 id : String -> Option msg
-id newId =
-    Internal.option (\c -> { c | id = Just newId })
+id =
+    Attr.id
 
 
 {-| Set the visual style of the list. Default `Standard`.

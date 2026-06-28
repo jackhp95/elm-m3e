@@ -46,6 +46,7 @@ This is cleaner and avoids the confusing split API.
 import Cem.M3e.Accordion as CemAccordion
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -73,8 +74,8 @@ sectionOpen b =
 {-| Disable the section (cannot be toggled by the user). Default false.
 -}
 sectionDisabled : Bool -> SectionOption msg
-sectionDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+sectionDisabled =
+    Attr.disabled
 
 
 {-| Hide the expansion toggle icon. Default false.

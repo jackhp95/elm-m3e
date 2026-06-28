@@ -48,6 +48,7 @@ correct value string.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -62,8 +63,8 @@ type alias Option msg =
 {-| Disable the whole group (and every radio within it).
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Mark the group as required for form submission.

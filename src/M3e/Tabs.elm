@@ -40,6 +40,7 @@ stable ids.
 import Cem.M3e.Tabs as CemTabs
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -91,8 +92,8 @@ tabSelected b =
 {-| Disable the tab. Sets the `disabled` DOM property.
 -}
 tabDisabled : Bool -> TabOption msg
-tabDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+tabDisabled =
+    Attr.disabled
 
 
 {-| Wire the tab to a panel via its panel's id (the `for` attribute).
@@ -105,8 +106,8 @@ tabFor s =
 {-| Fire a message when the tab is clicked.
 -}
 tabOnClick : msg -> TabOption msg
-tabOnClick m =
-    Internal.option (\c -> { c | onClick = Just m })
+tabOnClick =
+    Attr.onClick
 
 
 {-| Inject an icon into the tab's `icon` slot (rendered before the label).
@@ -122,8 +123,8 @@ tabIcon i =
 on its paired `m3e-tab`.
 -}
 panelId : String -> PanelOption msg
-panelId s =
-    Internal.option (\c -> { c | id = Just s })
+panelId =
+    Attr.id
 
 
 {-| Stretch tabs to fill the header width. Default false.

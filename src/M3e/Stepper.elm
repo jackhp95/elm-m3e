@@ -40,6 +40,7 @@ module emits `Node.attribute "slot" "actions"` directly and does NOT use
 
 import Cem.M3e.Stepper as CemStepper
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -74,8 +75,8 @@ type alias Option msg =
 {-| Set the DOM `id` on the step element (used by the panel's paired `for`).
 -}
 stepId : String -> StepOption msg
-stepId s =
-    Internal.option (\c -> { c | id = Just s })
+stepId =
+    Attr.id
 
 
 {-| Link this step to its panel via the panel's `id` (the `for` attribute).
@@ -109,8 +110,8 @@ stepOptional b =
 {-| Disable the step (shown but cannot be selected).
 -}
 stepDisabled : Bool -> StepOption msg
-stepDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+stepDisabled =
+    Attr.disabled
 
 
 {-| Mark the step as editable (returns to it after completion).
@@ -130,8 +131,8 @@ stepInvalid b =
 {-| Set the DOM `id` on the panel (paired with the step's `stepFor`).
 -}
 panelId : String -> PanelOption msg
-panelId s =
-    Internal.option (\c -> { c | id = Just s })
+panelId =
+    Attr.id
 
 
 {-| Action buttons for the panel's actions region.

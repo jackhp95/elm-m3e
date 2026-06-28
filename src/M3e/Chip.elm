@@ -53,6 +53,7 @@ behaviour its kind demands.
 import Cem.M3e.Chip as CemChip
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -73,8 +74,8 @@ type alias Option msg =
 required argument; this lets options replace it).
 -}
 onClick : msg -> Option msg
-onClick m =
-    Internal.option (\c -> { c | onClick = Just m })
+onClick =
+    Attr.onClick
 
 
 {-| Set the chip's selected state (the `selected` DOM property).
@@ -87,8 +88,8 @@ selected b =
 {-| Disable the chip (the `disabled` DOM property).
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Use the elevated variant rather than outlined.
@@ -101,8 +102,8 @@ elevated b =
 {-| Render the chip as a link to the given URL (sets the `href` attribute).
 -}
 href : String -> Option msg
-href v =
-    Internal.option (\c -> { c | href = Just v })
+href =
+    Attr.href
 
 
 {-| Accessible label for the remove button (the `remove-label` attribute).

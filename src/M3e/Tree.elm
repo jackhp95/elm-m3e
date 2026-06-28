@@ -62,6 +62,7 @@ Import: `import "@m3e/web/tree";` (separate bundle from the main m3e build).
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -181,8 +182,8 @@ when the Elm value is `False`.
 
 -}
 itemDisabled : Bool -> ItemOption msg
-itemDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+itemDisabled =
+    Attr.disabled
 
 
 {-| Mark a tree item's selection state as indeterminate.
@@ -293,8 +294,8 @@ itemOnClosed msg =
 {-| React to a click on the item (`click` event on `<m3e-tree-item>`).
 -}
 itemOnClick : msg -> ItemOption msg
-itemOnClick msg =
-    Internal.option (\c -> { c | onClick = Just msg })
+itemOnClick =
+    Attr.onClick
 
 
 

@@ -42,6 +42,7 @@ slot can never be silently dropped.
 
 import Cem.M3e.AppBar as Cem
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
@@ -138,8 +139,8 @@ defaultConfig =
 {-| Set the `id` attribute on the app bar (e.g. so a badge can anchor to it).
 -}
 id : String -> Option msg
-id v =
-    Internal.option (\c -> { c | id = Just v })
+id =
+    Attr.id
 
 
 {-| Attach the app bar to a scrollable container. The `for` value is the `id`

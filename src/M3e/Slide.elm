@@ -48,6 +48,7 @@ Spec (per docs/CONVENTIONS.md):
 -}
 
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -82,8 +83,8 @@ selectedIndex i =
 renders, controls go inert).
 -}
 disabled : Bool -> SlideGroupOption msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Set vertical orientation for a `<m3e-slide-group>` — content flows

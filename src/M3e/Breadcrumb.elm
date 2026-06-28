@@ -45,6 +45,7 @@ default `undefined`.
 
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -95,8 +96,8 @@ type alias ItemOption msg =
 {-| Set the URL this breadcrumb crumb links to.
 -}
 itemHref : String -> ItemOption msg
-itemHref v =
-    Internal.option (\c -> { c | href = Just v })
+itemHref =
+    Attr.href
 
 
 {-| Set the aria-current value for this crumb (marks it as the active item in
@@ -111,36 +112,36 @@ itemCurrent v =
 {-| Disable this crumb — renders but its internal button is inert.
 -}
 itemDisabled : Bool -> ItemOption msg
-itemDisabled b =
-    Internal.option (\c -> { c | disabled = b })
+itemDisabled =
+    Attr.disabled
 
 
 {-| Wire a click handler for this crumb.
 -}
 itemOnClick : msg -> ItemOption msg
-itemOnClick m =
-    Internal.option (\c -> { c | onClick = Just m })
+itemOnClick =
+    Attr.onClick
 
 
 {-| Set the link `target` (e.g. `"_blank"`).
 -}
 itemTarget : String -> ItemOption msg
-itemTarget v =
-    Internal.option (\c -> { c | target = Just v })
+itemTarget =
+    Attr.target
 
 
 {-| Set the link `rel` (e.g. `"noreferrer noopener"`).
 -}
 itemRel : String -> ItemOption msg
-itemRel v =
-    Internal.option (\c -> { c | rel = Just v })
+itemRel =
+    Attr.rel
 
 
 {-| Request the link target be downloaded; optionally sets the filename.
 -}
 itemDownload : String -> ItemOption msg
-itemDownload v =
-    Internal.option (\c -> { c | download = Just v })
+itemDownload =
+    Attr.download
 
 
 currentToString : Current -> String

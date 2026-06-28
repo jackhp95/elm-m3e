@@ -41,6 +41,7 @@ mirroring Ui.SplitPane) and assigned the appropriate slot name.
 import Cem.M3e.SplitPane as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
@@ -75,8 +76,8 @@ orientation o =
 {-| Disable the drag handle (content still renders, controls go inert).
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Accessible label for the drag handle (default: "Resize panes").

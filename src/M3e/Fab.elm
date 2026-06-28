@@ -38,6 +38,7 @@ Spec (per docs/CONVENTIONS.md):
 import Cem.M3e.Fab as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
+import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Icon as Icon
 import M3e.Internal as Internal
@@ -121,43 +122,43 @@ lowered b =
 {-| Disable the FAB. Default `False`.
 -}
 disabled : Bool -> Option msg
-disabled b =
-    Internal.option (\c -> { c | disabled = b })
+disabled =
+    Attr.disabled
 
 
 {-| Wire a click handler.
 -}
 onClick : msg -> Option msg
-onClick m =
-    Internal.option (\c -> { c | onClick = Just m })
+onClick =
+    Attr.onClick
 
 
 {-| Render the FAB as a link to the given URL.
 -}
 href : String -> Option msg
-href v =
-    Internal.option (\c -> { c | href = Just v })
+href =
+    Attr.href
 
 
 {-| Set the `target` for a link FAB (used with `href`).
 -}
 target : String -> Option msg
-target v =
-    Internal.option (\c -> { c | target = Just v })
+target =
+    Attr.target
 
 
 {-| Set the `rel` for a link FAB (used with `href`).
 -}
 rel : String -> Option msg
-rel v =
-    Internal.option (\c -> { c | rel = Just v })
+rel =
+    Attr.rel
 
 
 {-| Set the `download` for a link FAB (used with `href`).
 -}
 download : String -> Option msg
-download v =
-    Internal.option (\c -> { c | download = Just v })
+download =
+    Attr.download
 
 
 {-| Set the form submission type. Only meaningful when the FAB is inside a
