@@ -976,7 +976,7 @@ viewCartSheet model =
                 , Button.disabled (List.isEmpty items)
                 , Button.onClick CartClosed
                 ]
-            , Button.view { label = "Keep shopping", variant = Value.text }
+            , Button.view { label = "Keep shopping", variant = Value.textVariant }
                 [ Button.onClick CartClosed ]
             ]
         ]
@@ -1127,7 +1127,7 @@ viewDetailDialog model =
                 , Dialog.onClose ProductClosed
                 , Dialog.dismissible True
                 , Dialog.actions
-                    [ Button.view { label = "Close", variant = Value.text }
+                    [ Button.view { label = "Close", variant = Value.textVariant }
                         [ Button.onClick ProductClosed ]
                     ]
                 ]

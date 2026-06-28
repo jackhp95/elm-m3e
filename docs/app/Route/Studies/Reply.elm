@@ -1050,7 +1050,7 @@ composeBody fields =
             ]
             |> Element.toNode
         , Layout.div "flex items-center justify-between gap-2"
-            [ Button.view { label = "Discard", variant = Value.text }
+            [ Button.view { label = "Discard", variant = Value.textVariant }
                 [ Button.onClick CloseCompose ]
                 |> Element.toNode
             , SplitButton.view

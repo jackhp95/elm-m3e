@@ -53,7 +53,7 @@ suite =
                 Toolbar.view
                     { content =
                         [ Button.view { label = "Save", variant = Value.filled } []
-                        , Button.view { label = "Discard", variant = Value.text } []
+                        , Button.view { label = "Discard", variant = Value.textVariant } []
                         ]
                     }
                     []
@@ -77,7 +77,7 @@ suite =
             \_ ->
                 Toolbar.view
                     { content =
-                        [ Button.view { label = "X", variant = Value.text } [] ]
+                        [ Button.view { label = "X", variant = Value.textVariant } [] ]
                     }
                     []
                     |> Element.toNode

@@ -842,7 +842,7 @@ developerPanel model =
 footerActions : Node Msg
 footerActions =
     Layout.div "flex flex-wrap items-center justify-end gap-3"
-        [ Button.view { label = "Reset to defaults", variant = Value.text }
+        [ Button.view { label = "Reset to defaults", variant = Value.textVariant }
             [ Button.leadingIcon (Icon.view { name = "restart_alt" } [])
             , Button.onClick ResetRequested
             ]
@@ -866,7 +866,7 @@ resetDialog model =
         [ Dialog.open model.confirmResetOpen
         , Dialog.onClose DialogClosed
         , Dialog.actions
-            [ Button.view { label = "Cancel", variant = Value.text }
+            [ Button.view { label = "Cancel", variant = Value.textVariant }
                 [ Button.onClick DialogClosed ]
             , Button.view { label = "Reset", variant = Value.filled }
                 [ Button.onClick ResetConfirmed ]

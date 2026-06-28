@@ -18,7 +18,7 @@ button1 =
 
 button2 : Element { s | button : Element.Supported } msg
 button2 =
-    Button.view { label = "Cancel", variant = Value.text } []
+    Button.view { label = "Cancel", variant = Value.textVariant } []
 
 
 node : List (ButtonGroup.Option msg) -> Node msg

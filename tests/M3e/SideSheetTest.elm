@@ -108,7 +108,7 @@ suite =
                 SideSheet.view
                     { content = [] }
                     [ SideSheet.actions
-                        [ Button.view { label = "Close", variant = Value.text } [] ]
+                        [ Button.view { label = "Close", variant = Value.textVariant } [] ]
                     ]
                     |> Element.toNode
                     |> Node.childrenOf

@@ -1,7 +1,7 @@
 module M3e.Value exposing
     ( Value, toString
     , extraSmall, small, medium, large, extraLarge
-    , elevated, filled, tonal, outlined, text, standard, connected
+    , elevated, filled, tonal, outlined, textVariant, standard, connected
     , primary, primaryContainer, secondary, secondaryContainer, tertiary, tertiaryContainer, surface
     , display, headline, title, label
     , vibrant, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
@@ -48,7 +48,7 @@ axis-specific spelling and cross-axis names (e.g. `rounded`) cannot collide.
 
 ## Variants
 
-@docs elevated, filled, tonal, outlined, text, standard, connected
+@docs elevated, filled, tonal, outlined, textVariant, standard, connected
 @docs primary, primaryContainer, secondary, secondaryContainer, tertiary, tertiaryContainer, surface
 @docs display, headline, title, label
 @docs vibrant, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
@@ -153,8 +153,8 @@ outlined =
 
 {-| Emits `"text"`.
 -}
-text : Value { a | text : Supported }
-text =
+textVariant : Value { a | text : Supported }
+textVariant =
     Value "text"
 
 

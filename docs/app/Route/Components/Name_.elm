@@ -741,7 +741,7 @@ demoSections slug =
                         , Button.view { label = "Filled", variant = Value.filled } [] |> Element.toNode
                         , Button.view { label = "Tonal", variant = Value.tonal } [] |> Element.toNode
                         , Button.view { label = "Outlined", variant = Value.outlined } [] |> Element.toNode
-                        , Button.view { label = "Text", variant = Value.text } [] |> Element.toNode
+                        , Button.view { label = "Text", variant = Value.textVariant } [] |> Element.toNode
                         ]
                     )
                 , sub "Shapes"
@@ -846,7 +846,7 @@ demoSections slug =
                         , Card.body [ Element.html (text "Supporting body text gives context to the headline.") ]
                         , Card.actions
                             [ Button.view { label = "Review", variant = Value.filled } []
-                            , Button.view { label = "Dismiss", variant = Value.text } []
+                            , Button.view { label = "Dismiss", variant = Value.textVariant } []
                             ]
                         ]
                         |> Element.toNode
@@ -2010,7 +2010,7 @@ demoSections slug =
                     (Toolbar.view
                         { content =
                             [ Button.view { label = "Save", variant = Value.filled } []
-                            , Button.view { label = "Discard", variant = Value.text } []
+                            , Button.view { label = "Discard", variant = Value.textVariant } []
                             ]
                         }
                         []

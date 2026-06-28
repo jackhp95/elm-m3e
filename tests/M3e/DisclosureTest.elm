@@ -97,7 +97,7 @@ suite =
             \_ ->
                 sectionNode
                     [ Disclosure.sectionActions
-                        [ Button.view { label = "Learn more", variant = Value.text } [] ]
+                        [ Button.view { label = "Learn more", variant = Value.textVariant } [] ]
                     ]
                     |> Node.childrenOf
                     |> List.filter (\n -> Node.findAttribute "slot" n == Just "actions")

@@ -759,7 +759,7 @@ emptyState model =
                 (p [ class "text-body-md text-on-surface-variant" ]
                     [ text ("No " ++ categoryLabel model.category ++ " results for “" ++ model.query ++ "”.") ]
                 )
-            , Button.view { label = "Clear search", variant = Value.text }
+            , Button.view { label = "Clear search", variant = Value.textVariant }
                 [ Button.onClick (SetQuery "") ]
                 |> Element.toNode
             ]
@@ -802,7 +802,7 @@ destinationCard model d =
         , Card.body
             [ Element.fromNode (Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text d.blurb ])) ]
         , Card.actions
-            [ Button.view { label = "Itinerary", variant = Value.text }
+            [ Button.view { label = "Itinerary", variant = Value.textVariant }
                 [ Button.onClick (OpenItinerary d.id) ]
             , Button.view { label = "Select", variant = Value.filled }
                 [ Button.onClick (OpenItinerary d.id) ]
@@ -919,7 +919,7 @@ itinerarySheet model =
                 , BottomSheet.handle True
                 , BottomSheet.header [ Element.fromNode (headerHtml dest) ]
                 , BottomSheet.actions
-                    [ Button.view { label = "Close", variant = Value.text }
+                    [ Button.view { label = "Close", variant = Value.textVariant }
                         [ Button.onClick CloseItinerary ]
                     , Button.view { label = "Book trip", variant = Value.filled }
                         [ Button.onClick CloseItinerary ]
