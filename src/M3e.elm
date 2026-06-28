@@ -15,6 +15,13 @@ module M3e exposing
     , menu, list, actionList, selectionList, tree, disclosure, collapsible
     , bottomSheet, bottomSheetTrigger, sideSheet, floatingPanel, scrollContainer, splitPane, contentPane, optionPanel, slide
     , field, theme, richTooltipAction
+    , breadcrumbItem, menuItem, menuCheckboxItem, menuRadioItem, menuGroup, menuTriggerFor
+    , navBarItem, navRailItem, navDrawerLink, navDrawerGroup
+    , listItem, listActionItem, listOption, listDivider, listExpandable
+    , fabMenuItem, disclosureSection, segment, slideGroup
+    , selectOption, selectOptions, autocompleteOption, autocompleteOptions
+    , step, stepPanel, tab, tabPanel, treeItem
+    , chipFilterSet, chipInputSet
     )
 
 {-| Top-level facade for the M3e component library, so the common case is a
@@ -35,10 +42,10 @@ Per-variant entry points bake the variant in for IDE discovery and brevity:
 
 Component-specific options that take shared [`M3e.Value`](M3e-Value) tokens
 (e.g. `Button.size Value.large`) still come from the component module; only the
-universally-shared attributes are re-exposed here. Likewise, the child-element
-builders for container components (`NavigationBar.item`, `Menu.item`,
-`Stepper`-step elements, …) are reached via their own modules; the facade
-exposes the container entry points themselves.
+universally-shared attributes are re-exposed here. The child-element builders
+for container components (`Menu.item`, `Stepper.step`, …) are re-bound under
+namespaced names (`menuItem`, `step`, …) so a container is fully usable from
+the single import.
 
 
 # Core vocabulary
@@ -103,6 +110,21 @@ exposes the container entry points themselves.
 # Layout and misc
 
 @docs field, theme, richTooltipAction
+
+
+# Container child elements
+
+Builders for the children of container components, re-bound under namespaced
+names to avoid collisions in `import M3e exposing (..)` (e.g. `Menu.item`
+becomes `menuItem`, `Select.option` becomes `selectOption`).
+
+@docs breadcrumbItem, menuItem, menuCheckboxItem, menuRadioItem, menuGroup, menuTriggerFor
+@docs navBarItem, navRailItem, navDrawerLink, navDrawerGroup
+@docs listItem, listActionItem, listOption, listDivider, listExpandable
+@docs fabMenuItem, disclosureSection, segment, slideGroup
+@docs selectOption, selectOptions, autocompleteOption, autocompleteOptions
+@docs step, stepPanel, tab, tabPanel, treeItem
+@docs chipFilterSet, chipInputSet
 
 -}
 
@@ -1024,3 +1046,217 @@ theme =
 richTooltipAction : List (Element any msg) -> List (RichTooltipAction.Option msg) -> Element { s | richTooltipAction : Supported } msg
 richTooltipAction =
     RichTooltipAction.view
+
+
+
+-- CONTAINER CHILD ELEMENTS -----------------------------------------------
+
+
+{-| A breadcrumb item. Re-export of [`M3e.Breadcrumb.item`](M3e-Breadcrumb#item).
+-}
+breadcrumbItem : { label : String } -> List (Breadcrumb.ItemOption msg) -> Element { s | breadcrumbItem : Supported } msg
+breadcrumbItem =
+    Breadcrumb.item
+
+
+{-| A menu item. Re-export of [`M3e.Menu.item`](M3e-Menu#item).
+-}
+menuItem : { label : String, action : Menu.ItemAction msg } -> List (Menu.ItemOption msg) -> Element { menuItem : Supported } msg
+menuItem =
+    Menu.item
+
+
+{-| A menu checkbox item. Re-export of [`M3e.Menu.checkboxItem`](M3e-Menu#checkboxItem).
+-}
+menuCheckboxItem : { label : String, onChange : Bool -> msg } -> List (Menu.CheckboxItemOption msg) -> Element { menuItem : Supported } msg
+menuCheckboxItem =
+    Menu.checkboxItem
+
+
+{-| A menu radio item. Re-export of [`M3e.Menu.radioItem`](M3e-Menu#radioItem).
+-}
+menuRadioItem : { label : String, onClick : msg } -> List (Menu.RadioItemOption msg) -> Element { menuItem : Supported } msg
+menuRadioItem =
+    Menu.radioItem
+
+
+{-| A nested menu group. Re-export of [`M3e.Menu.group`](M3e-Menu#group).
+-}
+menuGroup : { label : String, items : List (Element { menuItem : Supported } msg) } -> Element { menuItem : Supported } msg
+menuGroup =
+    Menu.group
+
+
+{-| A submenu trigger. Re-export of [`M3e.Menu.triggerFor`](M3e-Menu#triggerFor).
+-}
+menuTriggerFor : String -> Element { s | element : Supported } msg
+menuTriggerFor =
+    Menu.triggerFor
+
+
+{-| A navigation-bar item. Re-export of [`M3e.NavigationBar.item`](M3e-NavigationBar#item).
+-}
+navBarItem : { icon : Element { icon : Supported } msg, label : String } -> List (NavigationBar.ItemOption msg) -> Element { navItem : Supported } msg
+navBarItem =
+    NavigationBar.item
+
+
+{-| A navigation-rail item. Re-export of [`M3e.NavigationRail.item`](M3e-NavigationRail#item).
+-}
+navRailItem : { icon : Element { icon : Supported } msg, label : String } -> List (NavigationRail.ItemOption msg) -> Element { s | navItem : Supported } msg
+navRailItem =
+    NavigationRail.item
+
+
+{-| A navigation-drawer link. Re-export of [`M3e.NavigationDrawer.link`](M3e-NavigationDrawer#link).
+-}
+navDrawerLink : { label : String, href : String } -> List (NavigationDrawer.LinkOption msg) -> Element { navMenuItem : Supported } msg
+navDrawerLink =
+    NavigationDrawer.link
+
+
+{-| A navigation-drawer group. Re-export of [`M3e.NavigationDrawer.group`](M3e-NavigationDrawer#group).
+-}
+navDrawerGroup : { label : String } -> List (Element { navMenuItem : Supported } msg) -> List (NavigationDrawer.GroupOption msg) -> Element { navMenuItem : Supported } msg
+navDrawerGroup =
+    NavigationDrawer.group
+
+
+{-| A static list item. Re-export of [`M3e.List.item`](M3e-List#item).
+-}
+listItem : { headline : String } -> List (MList.StaticItemOption msg) -> Element { listItem : Supported } msg
+listItem =
+    MList.item
+
+
+{-| An action list item. Re-export of [`M3e.List.actionItem`](M3e-List#actionItem).
+-}
+listActionItem : { headline : String } -> List (MList.ActionItemOption msg) -> Element { actionItem : Supported } msg
+listActionItem =
+    MList.actionItem
+
+
+{-| A selection list option. Re-export of [`M3e.List.option`](M3e-List#option).
+-}
+listOption : { headline : String } -> List (MList.OptionItemOption msg) -> Element { optionItem : Supported } msg
+listOption =
+    MList.option
+
+
+{-| A list divider. Re-export of [`M3e.List.divider`](M3e-List#divider).
+-}
+listDivider : Element { listItem : Supported } msg
+listDivider =
+    MList.divider
+
+
+{-| An expandable list item. Re-export of [`M3e.List.expandable`](M3e-List#expandable).
+-}
+listExpandable : { headline : String, children : List (Element { listItem : Supported } msg) } -> List (MList.ExpandableItemOption msg) -> Element { listItem : Supported } msg
+listExpandable =
+    MList.expandable
+
+
+{-| A FAB-menu item. Re-export of [`M3e.FabMenu.item`](M3e-FabMenu#item).
+-}
+fabMenuItem : { icon : String, label : String, onClick : msg } -> Element { s | fabMenuItem : Supported } msg
+fabMenuItem =
+    FabMenu.item
+
+
+{-| A disclosure section. Re-export of [`M3e.Disclosure.section`](M3e-Disclosure#section).
+-}
+disclosureSection : { header : String, content : List (Element any msg) } -> List (Disclosure.SectionOption msg) -> Element { s | section : Supported } msg
+disclosureSection =
+    Disclosure.section
+
+
+{-| A segmented-button segment. Re-export of [`M3e.SegmentedButton.segment`](M3e-SegmentedButton#segment).
+-}
+segment : { label : String, checked : Bool } -> List (SegmentedButton.SegmentOption msg) -> Element { s | segment : Supported } msg
+segment =
+    SegmentedButton.segment
+
+
+{-| A slide group. Re-export of [`M3e.Slide.slideGroup`](M3e-Slide#slideGroup).
+-}
+slideGroup : { content : List (Element any msg) } -> List (Slide.SlideGroupOption msg) -> Element { s | slideGroup : Supported } msg
+slideGroup =
+    Slide.slideGroup
+
+
+{-| A select option. Re-export of [`M3e.Select.option`](M3e-Select#option).
+-}
+selectOption : { value : String, label : String } -> List (Select.OptionOption msg) -> Element { selectOption : Supported } msg
+selectOption =
+    Select.option
+
+
+{-| The select options setter. Re-export of [`M3e.Select.options`](M3e-Select#options).
+-}
+selectOptions : List (Element { selectOption : Supported } msg) -> Select.Option msg
+selectOptions =
+    Select.options
+
+
+{-| An autocomplete option. Re-export of [`M3e.Autocomplete.option`](M3e-Autocomplete#option).
+-}
+autocompleteOption : { value : String, label : String } -> List (Autocomplete.OptionOption msg) -> Element { s | autocompleteOption : Supported } msg
+autocompleteOption =
+    Autocomplete.option
+
+
+{-| The autocomplete options setter. Re-export of [`M3e.Autocomplete.options`](M3e-Autocomplete#options).
+-}
+autocompleteOptions : List (Element { autocompleteOption : Supported } msg) -> Autocomplete.Option msg
+autocompleteOptions =
+    Autocomplete.options
+
+
+{-| A stepper step. Re-export of [`M3e.Stepper.step`](M3e-Stepper#step).
+-}
+step : { label : String } -> List (Stepper.StepOption msg) -> Element { s | step : Supported } msg
+step =
+    Stepper.step
+
+
+{-| A stepper step panel. Re-export of [`M3e.Stepper.stepPanel`](M3e-Stepper#stepPanel).
+-}
+stepPanel : { content : List (Element any msg) } -> List (Stepper.PanelOption msg) -> Element { s | stepPanel : Supported } msg
+stepPanel =
+    Stepper.stepPanel
+
+
+{-| A tab. Re-export of [`M3e.Tabs.tab`](M3e-Tabs#tab).
+-}
+tab : { label : String } -> List (Tabs.TabOption msg) -> Element { t | tab : Supported } msg
+tab =
+    Tabs.tab
+
+
+{-| A tab panel. Re-export of [`M3e.Tabs.panel`](M3e-Tabs#panel).
+-}
+tabPanel : { content : List (Element any msg) } -> List (Tabs.PanelOption msg) -> Element { p | tabPanel : Supported } msg
+tabPanel =
+    Tabs.panel
+
+
+{-| A tree item. Re-export of [`M3e.Tree.treeItem`](M3e-Tree#treeItem).
+-}
+treeItem : { label : String, children : List (Element { treeItem : Supported } msg) } -> List (Tree.ItemOption msg) -> Element { s | treeItem : Supported } msg
+treeItem =
+    Tree.treeItem
+
+
+{-| A filter chip set. Re-export of [`M3e.ChipSet.filterSet`](M3e-ChipSet#filterSet).
+-}
+chipFilterSet : { label : String } -> List (ChipSet.Option msg) -> Element { s | chipSet : Supported } msg
+chipFilterSet =
+    ChipSet.filterSet
+
+
+{-| An input chip set. Re-export of [`M3e.ChipSet.inputSet`](M3e-ChipSet#inputSet).
+-}
+chipInputSet : { label : String } -> List (ChipSet.Option msg) -> Element { s | chipSet : Supported } msg
+chipInputSet =
+    ChipSet.inputSet

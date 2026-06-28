@@ -105,4 +105,40 @@ suite =
                     |> toNode
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-tooltip")
+        , test "breadcrumbItem (child builder) renders m3e-breadcrumb-item" <|
+            \_ ->
+                breadcrumbItem { label = "Home" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-breadcrumb-item")
+        , test "listItem (child builder) renders m3e-list-item" <|
+            \_ ->
+                listItem { headline = "Inbox" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-list-item")
+        , test "step (child builder) renders m3e-step" <|
+            \_ ->
+                step { label = "First" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-step")
+        , test "tab (child builder) renders m3e-tab" <|
+            \_ ->
+                tab { label = "Overview" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-tab")
+        , test "selectOption (child builder) renders m3e-option" <|
+            \_ ->
+                selectOption { value = "us", label = "United States" } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-option")
+        , test "treeItem (child builder) renders m3e-tree-item" <|
+            \_ ->
+                treeItem { label = "Root", children = [] } []
+                    |> toNode
+                    |> Node.tagOf
+                    |> Expect.equal (Just "m3e-tree-item")
         ]
