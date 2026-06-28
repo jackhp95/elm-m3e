@@ -1,7 +1,7 @@
 module M3e.IconButton exposing
     ( view
     , Option
-    , Variant(..), Size(..), Shape(..), Width(..), ButtonType(..)
+    , Variant(..), Shape(..), Width(..), ButtonType(..)
     , variant, size, shape, width
     , disabled, toggle, selected, onClick, onChange
     , href, target, rel, download
@@ -31,7 +31,7 @@ Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
 
 @docs view
 @docs Option
-@docs Variant, Size, Shape, Width, ButtonType
+@docs Variant, Shape, Width, ButtonType
 @docs variant, size, shape, width
 @docs disabled, toggle, selected, onClick, onChange
 @docs href, target, rel, download
@@ -47,6 +47,7 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
@@ -63,14 +64,17 @@ type Variant
     | Outlined
 
 
-{-| Touch-target size of the icon button, from `ExtraSmall` to `ExtraLarge`.
+{-| Touch-target sizes of the icon button, from `extraSmall` to `extraLarge`,
+supplied as shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Size
-    = ExtraSmall
-    | Small
-    | Medium
-    | Large
-    | ExtraLarge
+type alias Sizes =
+    Value
+        { extraSmall : Supported
+        , small : Supported
+        , medium : Supported
+        , large : Supported
+        , extraLarge : Supported
+        }
 
 
 {-| Container shape: `Round` (pill) or `Square`.
@@ -109,9 +113,9 @@ variant v =
     Internal.option (\c -> { c | variant = v })
 
 
-{-| Set the touch-target size. Default `Small`.
+{-| Set the touch-target size. Default [`M3e.Value.small`](M3e-Value#small).
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
@@ -249,7 +253,7 @@ type alias Option msg =
 
 type alias Config msg =
     { variant : Variant
-    , size : Size
+    , size : Sizes
     , width : Width
     , shape : Maybe Shape
     , disabled : Bool
@@ -272,7 +276,7 @@ type alias Config msg =
 defaults : Config msg
 defaults =
     { variant = Standard
-    , size = Small
+    , size = Value.small
     , width = Default
     , shape = Nothing
     , disabled = False
@@ -318,7 +322,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
-                , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
+                , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
                 , Maybe.map (\s -> Node.rawAttr (Cem.shape (toCemShape s))) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
@@ -382,25 +386,6 @@ toCemVariant v =
 
         Outlined ->
             Cem.Outlined
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        ExtraSmall ->
-            Cem.ExtraSmall
-
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large
-
-        ExtraLarge ->
-            Cem.ExtraLarge
 
 
 toCemShape : Shape -> Cem.Shape

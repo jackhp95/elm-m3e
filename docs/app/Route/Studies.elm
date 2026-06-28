@@ -5,6 +5,7 @@ many `Ui.*` components working together. The five studies are interactive
 routes that the sidebar already links to; this page is the gallery.
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -78,7 +79,7 @@ studies =
 pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Studies", variant = Heading.Display }
-        [ Heading.size Heading.Small, Heading.level 1 ]
+        [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 

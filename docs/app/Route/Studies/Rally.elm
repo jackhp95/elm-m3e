@@ -24,6 +24,7 @@ All page interactivity is local state via `RouteBuilder.buildWithLocalState`.
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect exposing (Effect)
 import Head
@@ -1017,7 +1018,7 @@ sectionHeading : String -> String -> Node Msg
 sectionHeading title subtitle =
     Layout.div "space-y-1"
         [ Heading.view { label = title, variant = Heading.Headline }
-            [ Heading.size Heading.Small
+            [ Heading.size Value.small
             , Heading.level 2
             ]
             |> Element.toNode

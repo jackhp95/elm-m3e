@@ -40,7 +40,7 @@ import M3e.DialogTrigger as DialogTrigger
 import M3e.Disclosure as Disclosure
 import M3e.Divider as Divider
 import M3e.DrawerToggle as DrawerToggle
-import M3e.Element as Element exposing (Element)
+import M3e.Element as Element exposing (Element, Supported)
 import M3e.ExtendedFab as ExtendedFab
 import M3e.Fab as Fab
 import M3e.FabMenu as FabMenu
@@ -91,6 +91,7 @@ import M3e.Toc as Toc
 import M3e.Toolbar as Toolbar
 import M3e.Tooltip as Tooltip
 import M3e.Tree as Tree
+import M3e.Value as Value exposing (Value)
 import Markdown.Block as Block
 import Markdown.Parser
 import Markdown.Renderer
@@ -229,7 +230,7 @@ headerBlock : Component -> Node (PagesMsg Msg)
 headerBlock c =
     Layout.section "space-y-3"
         [ Heading.view { label = "M3e." ++ c.name, variant = Heading.Display }
-            [ Heading.size Heading.Small, Heading.level 1 ]
+            [ Heading.size Value.small, Heading.level 1 ]
             |> Element.toNode
         , Node.raw (prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview)
         ]
@@ -328,14 +329,14 @@ usage subs =
 h2Heading : String -> Node (PagesMsg Msg)
 h2Heading label =
     Heading.view { label = label, variant = Heading.Headline }
-        [ Heading.level 2, Heading.size Heading.Medium ]
+        [ Heading.level 2, Heading.size Value.medium ]
         |> Element.toNode
 
 
 h3Heading : String -> Node (PagesMsg Msg)
 h3Heading label =
     Heading.view { label = label, variant = Heading.Headline }
-        [ Heading.level 3, Heading.size Heading.Small ]
+        [ Heading.level 3, Heading.size Value.small ]
         |> Element.toNode
 
 
@@ -597,7 +598,7 @@ noOp _ =
     PagesMsg.noOp
 
 
-headingDemo : Heading.Variant -> Heading.Size -> String -> Node (PagesMsg Msg)
+headingDemo : Heading.Variant -> Value { small : Supported, medium : Supported, large : Supported } -> String -> Node (PagesMsg Msg)
 headingDemo variant size label =
     Heading.view { label = label, variant = variant }
         [ Heading.size size ]
@@ -631,9 +632,9 @@ demoSections slug =
                     )
                 , sub "Sizes"
                     (Layout.div "w-full space-y-3"
-                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size AppBar.Small ] |> Element.toNode
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size AppBar.Medium ] |> Element.toNode
-                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size AppBar.Large ] |> Element.toNode
+                        [ AppBar.view [ AppBar.title (Heading.view { label = "Small", variant = Heading.Title } []), AppBar.size Value.small ] |> Element.toNode
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Medium", variant = Heading.Title } []), AppBar.size Value.medium ] |> Element.toNode
+                        , AppBar.view [ AppBar.title (Heading.view { label = "Large", variant = Heading.Title } []), AppBar.size Value.large ] |> Element.toNode
                         ]
                     )
                 , sub "Centered title"
@@ -751,11 +752,11 @@ demoSections slug =
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ Button.view { label = "XS", variant = Button.Tonal } [ Button.size Button.ExtraSmall ] |> Element.toNode
-                        , Button.view { label = "Small", variant = Button.Tonal } [ Button.size Button.Small ] |> Element.toNode
-                        , Button.view { label = "Medium", variant = Button.Tonal } [ Button.size Button.Medium ] |> Element.toNode
-                        , Button.view { label = "Large", variant = Button.Tonal } [ Button.size Button.Large ] |> Element.toNode
-                        , Button.view { label = "XL", variant = Button.Tonal } [ Button.size Button.ExtraLarge ] |> Element.toNode
+                        [ Button.view { label = "XS", variant = Button.Tonal } [ Button.size Value.extraSmall ] |> Element.toNode
+                        , Button.view { label = "Small", variant = Button.Tonal } [ Button.size Value.small ] |> Element.toNode
+                        , Button.view { label = "Medium", variant = Button.Tonal } [ Button.size Value.medium ] |> Element.toNode
+                        , Button.view { label = "Large", variant = Button.Tonal } [ Button.size Value.large ] |> Element.toNode
+                        , Button.view { label = "XL", variant = Button.Tonal } [ Button.size Value.extraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Icons"
@@ -1004,9 +1005,9 @@ demoSections slug =
                     )
                 , sub "Sizes"
                     (Layout.div "flex flex-wrap items-center gap-4"
-                        [ Fab.view { icon = "add", ariaLabel = "Small" } [ Fab.variant Fab.Primary, Fab.size Fab.Small ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Medium" } [ Fab.variant Fab.Primary, Fab.size Fab.Medium ] |> Element.toNode
-                        , Fab.view { icon = "add", ariaLabel = "Large" } [ Fab.variant Fab.Primary, Fab.size Fab.Large ] |> Element.toNode
+                        [ Fab.view { icon = "add", ariaLabel = "Small" } [ Fab.variant Fab.Primary, Fab.size Value.small ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Medium" } [ Fab.variant Fab.Primary, Fab.size Value.medium ] |> Element.toNode
+                        , Fab.view { icon = "add", ariaLabel = "Large" } [ Fab.variant Fab.Primary, Fab.size Value.large ] |> Element.toNode
                         ]
                     )
                 , sub "Extended (with label)"
@@ -1054,30 +1055,30 @@ demoSections slug =
             [ usage
                 [ sub "Display"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Display Heading.Large "Display Large"
-                        , headingDemo Heading.Display Heading.Medium "Display Medium"
-                        , headingDemo Heading.Display Heading.Small "Display Small"
+                        [ headingDemo Heading.Display Value.large "Display Large"
+                        , headingDemo Heading.Display Value.medium "Display Medium"
+                        , headingDemo Heading.Display Value.small "Display Small"
                         ]
                     )
                 , sub "Headline"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Headline Heading.Large "Headline Large"
-                        , headingDemo Heading.Headline Heading.Medium "Headline Medium"
-                        , headingDemo Heading.Headline Heading.Small "Headline Small"
+                        [ headingDemo Heading.Headline Value.large "Headline Large"
+                        , headingDemo Heading.Headline Value.medium "Headline Medium"
+                        , headingDemo Heading.Headline Value.small "Headline Small"
                         ]
                     )
                 , sub "Title"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Title Heading.Large "Title Large"
-                        , headingDemo Heading.Title Heading.Medium "Title Medium"
-                        , headingDemo Heading.Title Heading.Small "Title Small"
+                        [ headingDemo Heading.Title Value.large "Title Large"
+                        , headingDemo Heading.Title Value.medium "Title Medium"
+                        , headingDemo Heading.Title Value.small "Title Small"
                         ]
                     )
                 , sub "Label"
                     (Layout.div "w-full space-y-2"
-                        [ headingDemo Heading.Label Heading.Large "Label Large"
-                        , headingDemo Heading.Label Heading.Medium "Label Medium"
-                        , headingDemo Heading.Label Heading.Small "Label Small"
+                        [ headingDemo Heading.Label Value.large "Label Large"
+                        , headingDemo Heading.Label Value.medium "Label Medium"
+                        , headingDemo Heading.Label Value.small "Label Small"
                         ]
                     )
                 ]
@@ -1128,11 +1129,11 @@ demoSections slug =
                     )
                 , sub "Sizes"
                     (buttonRow
-                        [ IconButton.view { icon = "add", ariaLabel = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraSmall ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Small ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Medium ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.Large ] |> Element.toNode
-                        , IconButton.view { icon = "add", ariaLabel = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size IconButton.ExtraLarge ] |> Element.toNode
+                        [ IconButton.view { icon = "add", ariaLabel = "XS" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.extraSmall ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Small" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.small ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Medium" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.medium ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "Large" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.large ] |> Element.toNode
+                        , IconButton.view { icon = "add", ariaLabel = "XL" } [ IconButton.variant IconButton.Tonal, IconButton.size Value.extraLarge ] |> Element.toNode
                         ]
                     )
                 , sub "Widths"

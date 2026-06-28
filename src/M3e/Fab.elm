@@ -1,6 +1,6 @@
 module M3e.Fab exposing
     ( view
-    , Option, Size(..), Variant(..), ButtonType(..)
+    , Option, Variant(..), ButtonType(..)
     , variant, size, lowered, disabled, onClick, href, target, rel, download, label
     , formType, name, value
     )
@@ -29,7 +29,7 @@ Spec (per docs/CONVENTIONS.md):
   - Tag: m3e-fab
 
 @docs view
-@docs Option, Size, Variant, ButtonType
+@docs Option, Variant, ButtonType
 @docs variant, size, lowered, disabled, onClick, href, target, rel, download, label
 @docs formType, name, value
 
@@ -43,6 +43,7 @@ import M3e.Element as Element exposing (Element, Supported)
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
@@ -57,17 +58,20 @@ type Variant
     | Surface
 
 
-{-| FAB size. Default `Medium`.
+{-| FAB sizes (`small`, `medium`, `large`; default `medium`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Size
-    = Small
-    | Medium
-    | Large
+type alias Sizes =
+    Value
+        { small : Supported
+        , medium : Supported
+        , large : Supported
+        }
 
 
 type alias Config msg =
     { variant : Variant
-    , size : Size
+    , size : Sizes
     , lowered : Bool
     , disabled : Bool
     , onClick : Maybe msg
@@ -105,9 +109,9 @@ variant v =
     Internal.option (\c -> { c | variant = v })
 
 
-{-| Set the FAB size (`Small`, `Medium`, `Large`). Default `Medium`.
+{-| Set the FAB size (`small`, `medium`, `large`). Default `medium`.
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
@@ -208,7 +212,7 @@ view req opts =
         c =
             Internal.applyOptions opts
                 { variant = PrimaryContainer
-                , size = Medium
+                , size = Value.medium
                 , lowered = False
                 , disabled = False
                 , onClick = Nothing
@@ -227,7 +231,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.rawAttr (Cem.variant (toCemVariant c.variant)))
-                , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
+                , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.property "lowered" (Encode.bool c.lowered))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Just (Node.property "extended" (Encode.bool (c.label /= Nothing)))
@@ -285,16 +289,3 @@ toCemVariant v =
 
         Surface ->
             Cem.Surface
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large

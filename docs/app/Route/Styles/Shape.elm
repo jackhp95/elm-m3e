@@ -1,5 +1,6 @@
 module Route.Styles.Shape exposing (ActionData, Data, Model, Msg, route)
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Cem.M3e.Shape as CemShape
 import FatalError exposing (FatalError)
@@ -84,7 +85,7 @@ swatch ( cls, label ) =
 pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Shape", variant = Heading.Display }
-        [ Heading.size Heading.Small, Heading.level 1 ]
+        [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 

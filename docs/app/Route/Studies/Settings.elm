@@ -27,6 +27,7 @@ Everything is live via `RouteBuilder.buildWithLocalState`.
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect
 import Head
@@ -373,7 +374,7 @@ breadcrumbBar model =
             []
             |> Element.toNode
         , Heading.view { label = "Settings", variant = Heading.Display }
-            [ Heading.size Heading.Small, Heading.level 1 ]
+            [ Heading.size Value.small, Heading.level 1 ]
             |> Element.toNode
         , Node.raw (p [ class "text-body-lg text-on-surface-variant" ]
             [ text "Manage your account, notifications, appearance, and privacy preferences." ])
@@ -446,7 +447,7 @@ groupCard glyph title rows =
         (Layout.div "flex items-center gap-2 text-on-surface"
             [ Icon.view { name = glyph } [] |> Element.toNode
             , Heading.view { label = title, variant = Heading.Title }
-                [ Heading.size Heading.Medium, Heading.level 2 ]
+                [ Heading.size Value.medium, Heading.level 2 ]
                 |> Element.toNode
             ]
             :: rows
@@ -742,14 +743,14 @@ advancedColumns model =
         [ Layout.div "min-w-0 flex-1"
             [ Heading.view
                 { label = "Advanced (accordion — one open at a time)", variant = Heading.Title }
-                [ Heading.size Heading.Small, Heading.level 2 ]
+                [ Heading.size Value.small, Heading.level 2 ]
                 |> Element.toNode
             , advancedAccordion
             ]
         , Layout.div "min-w-0 flex-1"
             [ Heading.view
                 { label = "Developer options (single panel)", variant = Heading.Title }
-                [ Heading.size Heading.Small, Heading.level 2 ]
+                [ Heading.size Value.small, Heading.level 2 ]
                 |> Element.toNode
             , developerPanel model
             ]

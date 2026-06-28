@@ -1,6 +1,6 @@
 module M3e.Heading exposing
     ( view
-    , Option, Size(..), Variant(..)
+    , Option, Variant(..)
     , size, emphasized, level
     )
 
@@ -22,7 +22,7 @@ The `level` option is clamped to the CEM-permitted range 1..6 (same as
 `Ui.Heading.clampLevel`).
 
 @docs view
-@docs Option, Size, Variant
+@docs Option, Variant
 @docs size, emphasized, level
 
 -}
@@ -32,6 +32,7 @@ import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Typescale variant. Mirrors `m3e-heading` `variant` enum. Default `Display`.
@@ -43,16 +44,19 @@ type Variant
     | Label
 
 
-{-| Three-step size scale. Mirrors `m3e-heading` `size` enum. Default `Medium`.
+{-| Three-step size scale (`small`, `medium`, `large`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens. Mirrors `m3e-heading` `size` enum.
 -}
-type Size
-    = Small
-    | Medium
-    | Large
+type alias Sizes =
+    Value
+        { small : Supported
+        , medium : Supported
+        , large : Supported
+        }
 
 
 type alias Config =
-    { size : Maybe Size
+    { size : Maybe Sizes
     , emphasized : Bool
     , level : Maybe Int
     }
@@ -64,9 +68,9 @@ type alias Option msg =
     Internal.Option Config msg
 
 
-{-| Set the heading size (`Small`, `Medium`, `Large`). Default `Medium`.
+{-| Set the heading size (`small`, `medium`, `large`). Default `medium`.
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = Just s })
 
@@ -105,7 +109,7 @@ view req opts =
         (Node.element "m3e-heading"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
-                , Maybe.map (\s -> Node.rawAttr (Cem.size (toCemSize s))) c.size
+                , Maybe.map (\s -> Node.attribute "size" (Value.toString s)) c.size
                 , Just (Node.property "emphasized" (Encode.bool c.emphasized))
                 , Maybe.map (\l -> Node.rawAttr (Cem.level (String.fromInt l))) c.level
                 ]
@@ -128,16 +132,3 @@ toCemVariant v =
 
         Label ->
             Cem.Label
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large

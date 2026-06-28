@@ -6,6 +6,7 @@ Accurate by construction — module overviews plus every exposed member's
 signature and doc comment.
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import BackendTask.File
 import FatalError exposing (FatalError)
@@ -107,7 +108,7 @@ head _ =
 pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Component reference", variant = Heading.Display }
-        [ Heading.size Heading.Small, Heading.level 1 ]
+        [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 

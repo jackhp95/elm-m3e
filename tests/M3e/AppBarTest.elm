@@ -7,6 +7,7 @@ import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.IconButton as IB
 import M3e.Node as Node
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -57,7 +58,7 @@ suite =
                     |> Expect.equal (Just "subtitle")
         , test "size emits size attribute" <|
             \_ ->
-                AppBar.view [ AppBar.size AppBar.Large ]
+                AppBar.view [ AppBar.size Value.large ]
                     |> Element.toNode
                     |> Node.findAttribute "size"
                     |> Expect.equal (Just "large")

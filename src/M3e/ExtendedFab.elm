@@ -1,6 +1,6 @@
 module M3e.ExtendedFab exposing
     ( view
-    , Option, Size(..), Variant(..)
+    , Option, Variant(..)
     , size, lowered, disabled, onClick, href, target, rel, download
     )
 
@@ -22,7 +22,7 @@ Spec (per docs/CONVENTIONS.md):
   - Tag: extendedFab
 
 @docs view
-@docs Option, Size, Variant
+@docs Option, Variant
 @docs size, lowered, disabled, onClick, href, target, rel, download
 
 -}
@@ -35,6 +35,7 @@ import M3e.Element as Element exposing (Element, Supported)
 import M3e.Icon as Icon
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| FAB variant — seven M3 color roles. Default `PrimaryContainer`.
@@ -49,16 +50,19 @@ type Variant
     | Surface
 
 
-{-| FAB size. Default `Medium`.
+{-| FAB sizes (`small`, `medium`, `large`; default `medium`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Size
-    = Small
-    | Medium
-    | Large
+type alias Sizes =
+    Value
+        { small : Supported
+        , medium : Supported
+        , large : Supported
+        }
 
 
 type alias Config msg =
-    { size : Size
+    { size : Sizes
     , lowered : Bool
     , disabled : Bool
     , onClick : Maybe msg
@@ -75,9 +79,9 @@ type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Set the FAB size (`Small`, `Medium`, `Large`). Default `Medium`.
+{-| Set the FAB size (`small`, `medium`, `large`). Default `medium`.
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
@@ -142,7 +146,7 @@ view req opts =
         c : Config msg
         c =
             Internal.applyOptions opts
-                { size = Medium
+                { size = Value.medium
                 , lowered = False
                 , disabled = False
                 , onClick = Nothing
@@ -156,7 +160,7 @@ view req opts =
         (Node.element "m3e-fab"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
-                , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
+                , Just (Node.attribute "size" (Value.toString c.size))
                 , Just (Node.property "extended" (Encode.bool True))
                 , Just (Node.property "lowered" (Encode.bool c.lowered))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
@@ -196,16 +200,3 @@ toCemVariant v =
 
         Surface ->
             Cem.Surface
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large

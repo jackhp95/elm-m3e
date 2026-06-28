@@ -1,5 +1,5 @@
 module M3e.AppBar exposing
-    ( Option, Size(..), Leading, Title, Trailing
+    ( Option, Leading, Title, Trailing
     , view
     , id, for, size, centered, leading, title, subtitle, trailing
     )
@@ -29,7 +29,7 @@ slot can never be silently dropped.
 
 # Types
 
-@docs Option, Size, Leading, Title, Trailing
+@docs Option, Leading, Title, Trailing
 
 @docs view
 
@@ -40,12 +40,12 @@ slot can never be silently dropped.
 
 -}
 
-import Cem.M3e.AppBar as Cem
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
@@ -88,12 +88,15 @@ type alias Title msg =
 -- SIZE -------------------------------------------------------------------
 
 
-{-| App bar size — the `size` attribute (default `Small`).
+{-| App bar sizes — the `size` attribute (`small` / `medium` / `large`;
+default `small`), supplied as shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Size
-    = Small
-    | Medium
-    | Large
+type alias Sizes =
+    Value
+        { small : Supported
+        , medium : Supported
+        , large : Supported
+        }
 
 
 
@@ -103,7 +106,7 @@ type Size
 type alias Config msg =
     { id : Maybe String
     , for : Maybe String
-    , size : Size
+    , size : Sizes
     , centered : Bool
     , leading : Maybe (Node msg)
     , title : Maybe (Node msg)
@@ -123,7 +126,7 @@ defaultConfig : Config msg
 defaultConfig =
     { id = Nothing
     , for = Nothing
-    , size = Small
+    , size = Value.small
     , centered = False
     , leading = Nothing
     , title = Nothing
@@ -154,9 +157,9 @@ for v =
     Internal.option (\c -> { c | for = Just v })
 
 
-{-| Set the app bar size (`Small` / `Medium` / `Large`; default `Small`).
+{-| Set the app bar size (`small` / `medium` / `large`; default `small`).
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
@@ -222,7 +225,7 @@ view opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") cfg.id
                 , Maybe.map (Node.attribute "for") cfg.for
-                , Just (Node.attribute "size" (Cem.sizeToString (toCemSize cfg.size)))
+                , Just (Node.attribute "size" (Value.toString cfg.size))
                 , Just (Node.property "centered" (Encode.bool cfg.centered))
                 ]
             )
@@ -234,16 +237,3 @@ view opts =
                 ++ cfg.trailing
             )
         )
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large

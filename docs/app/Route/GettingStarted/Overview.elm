@@ -1,5 +1,6 @@
 module Route.GettingStarted.Overview exposing (ActionData, Data, Model, Msg, route)
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -63,14 +64,14 @@ head _ =
 pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Overview", variant = Heading.Display }
-        [ Heading.size Heading.Small, Heading.level 1 ]
+        [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 
 sectionHeading : String -> Node msg
 sectionHeading label =
     Heading.view { label = label, variant = Heading.Headline }
-        [ Heading.size Heading.Small, Heading.level 2 ]
+        [ Heading.size Value.small, Heading.level 2 ]
         |> Element.toNode
 
 

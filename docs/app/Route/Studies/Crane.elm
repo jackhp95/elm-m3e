@@ -15,6 +15,7 @@ filtering, favoriting, fare search, itinerary sheet) lives here.
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
@@ -340,7 +341,7 @@ intro =
     Layout.section "space-y-3"
         [ Node.raw (p [ class "text-label-lg uppercase tracking-wide text-primary" ] [ text "Studies" ])
         , Heading.view { label = "Crane", variant = Heading.Display }
-            [ Heading.size Heading.Small
+            [ Heading.size Value.small
             , Heading.level 1
             ]
             |> Element.toNode
@@ -392,7 +393,7 @@ appHeader model =
                     [ Shape.name Cem.M3e.Shape.Sunny ]
                     |> Element.toNode
                 , Heading.view { label = "Crane", variant = Heading.Title }
-                    [ Heading.size Heading.Large
+                    [ Heading.size Value.large
                     , Heading.level 2
                     ]
                     |> Element.toNode
@@ -450,7 +451,7 @@ searchForm model =
     Layout.section "space-y-4 rounded-md-corner-large bg-surface-container-lowest p-4 sm:p-5"
         [ Layout.div "flex flex-wrap items-center justify-between gap-3"
             [ Heading.view { label = "Find your trip", variant = Heading.Title }
-                [ Heading.size Heading.Medium
+                [ Heading.size Value.medium
                 , Heading.level 3
                 ]
                 |> Element.toNode
@@ -521,7 +522,7 @@ destinationField model =
                 []
             , if model.query /= "" then
                 IconButton.view { icon = "close", ariaLabel = "Clear search" }
-                    [ IconButton.size IconButton.ExtraSmall
+                    [ IconButton.size Value.extraSmall
                     , IconButton.onClick (SetQuery "")
                     ]
                     |> Element.toNode
@@ -649,7 +650,7 @@ dateTrigger { targetId, label, value, icon } =
 searchButton : Model -> Node Msg
 searchButton model =
     Button.view { label = "Search fares", variant = Button.Filled }
-        [ Button.size Button.Large
+        [ Button.size Value.large
         , Button.leadingIcon (Icon.view { name = "travel_explore" } [])
         , Button.disabled model.searching
         , Button.onClick SearchFares
@@ -681,7 +682,7 @@ featuredCarousel model =
     in
     Layout.section "space-y-3"
         [ Heading.view { label = "Featured destinations", variant = Heading.Title }
-            [ Heading.size Heading.Medium
+            [ Heading.size Value.medium
             , Heading.level 3
             ]
             |> Element.toNode
@@ -731,7 +732,7 @@ resultsSection model =
                 { label = categoryLabel model.category ++ " — " ++ String.fromInt (List.length results) ++ " places"
                 , variant = Heading.Title
                 }
-                [ Heading.size Heading.Medium
+                [ Heading.size Value.medium
                 , Heading.level 3
                 ]
                 |> Element.toNode
@@ -826,7 +827,7 @@ favoriteButton d favorited =
                         "Add " ++ d.name ++ " to favorites"
                 }
                 [ IconButton.variant IconButton.Filled
-                , IconButton.size IconButton.Small
+                , IconButton.size Value.small
                 , IconButton.toggle True
                 , IconButton.selected favorited
                 , IconButton.onChange (ToggleFavorite d.id)

@@ -9,6 +9,7 @@ sidebar nav, so this page is just the hero + highlights content.
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -104,7 +105,7 @@ hero =
                 [ text "elm-m3e · m3e-builder" ]
             )
         , Heading.view { label = "Type-safe Material 3 Expressive for Elm", variant = Heading.Display }
-            [ Heading.size Heading.Small, Heading.level 1 ]
+            [ Heading.size Value.small, Heading.level 1 ]
             |> Element.toNode
         , Node.raw
             (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
@@ -133,7 +134,7 @@ hero =
 sectionHeading : String -> Node msg
 sectionHeading label =
     Heading.view { label = label, variant = Heading.Headline }
-        [ Heading.size Heading.Medium, Heading.level 2 ]
+        [ Heading.size Value.medium, Heading.level 2 ]
         |> Element.toNode
 
 

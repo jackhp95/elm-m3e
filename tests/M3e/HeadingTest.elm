@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -57,7 +58,7 @@ suite =
                     |> Expect.equal (Just "m3e-heading")
         , test "size option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                nodeWith { label = "Hi", variant = Heading.Title } [ Heading.size Heading.Large ]
+                nodeWith { label = "Hi", variant = Heading.Title } [ Heading.size Value.large ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-heading")
         , test "level is clamped to 1..6 (below 1 → 1)" <|

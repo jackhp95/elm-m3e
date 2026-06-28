@@ -1,5 +1,5 @@
 module M3e.Button exposing
-    ( Option, Variant(..), Size(..), Shape(..), ButtonType(..)
+    ( Option, Variant(..), Shape(..), ButtonType(..)
     , view
     , size, shape, disabled, toggle, selected, onClick, href, target, rel, download
     , leadingIcon, trailingIcon, selectedIcon, selectedLabel
@@ -35,7 +35,7 @@ per ADR 0006 / the prior NoActionlessButton design).
 
 # Types
 
-@docs Option, Variant, Size, Shape, ButtonType
+@docs Option, Variant, Shape, ButtonType
 
 @docs view
 
@@ -55,6 +55,7 @@ import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Button style — `Elevated`, `Filled`, `Tonal`, `Outlined`, or `Text`.
@@ -68,14 +69,17 @@ type Variant
     | Text
 
 
-{-| Button size, from `ExtraSmall` to `ExtraLarge` (default `Small`).
+{-| The sizes this button supports, from `extraSmall` to `extraLarge`
+(default `small`), supplied as shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type Size
-    = ExtraSmall
-    | Small
-    | Medium
-    | Large
-    | ExtraLarge
+type alias Sizes =
+    Value
+        { extraSmall : Supported
+        , small : Supported
+        , medium : Supported
+        , large : Supported
+        , extraLarge : Supported
+        }
 
 
 {-| Button corner shape — `Rounded` or `Square`.
@@ -106,9 +110,9 @@ type alias Option msg =
     Internal.Option (Config msg) msg
 
 
-{-| Set the button size (default `Small`).
+{-| Set the button size (default [`M3e.Value.small`](M3e-Value#small)).
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size v =
     Internal.option (\c -> { c | size = v })
 
@@ -244,7 +248,7 @@ value v =
 
 
 type alias Config msg =
-    { size : Size
+    { size : Sizes
     , shape : Maybe Shape
     , disabled : Bool
     , toggle : Bool
@@ -273,7 +277,7 @@ view req opts =
         c : Config msg
         c =
             Internal.applyOptions opts
-                { size = Small
+                { size = Value.small
                 , shape = Nothing
                 , disabled = False
                 , toggle = False
@@ -296,7 +300,7 @@ view req opts =
         (Node.element "m3e-button"
             (List.filterMap identity
                 [ Just (Node.rawAttr (Cem.variant (toCemVariant req.variant)))
-                , Just (Node.rawAttr (Cem.size (toCemSize c.size)))
+                , Just (Node.attribute "size" (Value.toString c.size))
                 , Maybe.map (\v -> Node.rawAttr (Cem.shape (toCemShape v))) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Just (Node.property "toggle" (Encode.bool c.toggle))
@@ -352,25 +356,6 @@ toCemVariant v =
 
         Text ->
             Cem.Text
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        ExtraSmall ->
-            Cem.ExtraSmall
-
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large
-
-        ExtraLarge ->
-            Cem.ExtraLarge
 
 
 toCemShape : Shape -> Cem.Shape

@@ -1,5 +1,6 @@
 module Route.GettingStarted.Installation exposing (ActionData, Data, Model, Msg, route)
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -113,14 +114,14 @@ code_ lang s =
 pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Installation", variant = Heading.Display }
-        [ Heading.size Heading.Small, Heading.level 1 ]
+        [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 
 stepHeading : String -> Node msg
 stepHeading label =
     Heading.view { label = label, variant = Heading.Headline }
-        [ Heading.size Heading.Small, Heading.level 2 ]
+        [ Heading.size Value.small, Heading.level 2 ]
         |> Element.toNode
 
 

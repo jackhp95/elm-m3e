@@ -10,6 +10,7 @@ toggle through `M3e.SegmentedButton`.
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Browser.Events
 import Effect exposing (Effect)
@@ -360,7 +361,7 @@ appShellBar model =
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
         [ M3e.AppBar.view
             [ M3e.AppBar.id "docs-app-bar"
-            , M3e.AppBar.size M3e.AppBar.Small
+            , M3e.AppBar.size Value.small
             , M3e.AppBar.title
                 (M3e.Heading.view { label = "elm-m3e", variant = M3e.Heading.Title } [])
             , M3e.AppBar.subtitle

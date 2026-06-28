@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element exposing (Element)
 import M3e.Node as Node exposing (Node)
 import M3e.SplitButton as SplitButton
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -108,22 +109,22 @@ suite =
         -- Fix #66 — size option
         , test "fix-#66: size option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ SplitButton.size SplitButton.Medium ]
+                node [ SplitButton.size Value.medium ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
         , test "fix-#66: Large size does not crash" <|
             \_ ->
-                node [ SplitButton.size SplitButton.Large ]
+                node [ SplitButton.size Value.large ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
         , test "fix-#66: ExtraLarge size does not crash" <|
             \_ ->
-                node [ SplitButton.size SplitButton.ExtraLarge ]
+                node [ SplitButton.size Value.extraLarge ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
         , test "fix-#66: ExtraSmall size does not crash" <|
             \_ ->
-                node [ SplitButton.size SplitButton.ExtraSmall ]
+                node [ SplitButton.size Value.extraSmall ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-split-button")
 

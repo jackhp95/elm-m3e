@@ -1,6 +1,6 @@
 module M3e.SplitButton exposing
     ( view
-    , Option, Variant(..), Size(..)
+    , Option, Variant(..)
     , variant, size, disabled
     )
 
@@ -29,7 +29,7 @@ port emits the correct element types by constructing the slot children via
 `M3e.Button.view` and a hand-built `<m3e-icon-button>` node respectively.
 
 @docs view
-@docs Option, Variant, Size
+@docs Option, Variant
 @docs variant, size, disabled
 
 -}
@@ -42,6 +42,7 @@ import M3e.Button as Button
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 {-| Appearance variant (default `Filled`).
@@ -53,18 +54,20 @@ type Variant
     | Outlined
 
 
-{-| Button size — `ExtraSmall` through `ExtraLarge` (default `Small`).
+{-| Button sizes — `extraSmall` through `extraLarge` (default `small`),
+supplied as shared [`M3e.Value`](M3e-Value) tokens.
 
 Upstream: `<m3e-split-button size="...">` attribute.
-CEM: `Cem.M3e.SplitButton.Size` — `"small"` default.
 
 -}
-type Size
-    = ExtraSmall
-    | Small
-    | Medium
-    | Large
-    | ExtraLarge
+type alias Sizes =
+    Value
+        { extraSmall : Supported
+        , small : Supported
+        , medium : Supported
+        , large : Supported
+        , extraLarge : Supported
+        }
 
 
 {-| An option configuring a split button.
@@ -80,12 +83,12 @@ variant v =
     Internal.option (\c -> { c | variant = v })
 
 
-{-| Set the button size (default `Small`).
+{-| Set the button size (default [`M3e.Value.small`](M3e-Value#small)).
 
 Upstream: `size` attribute on `<m3e-split-button>`.
 
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
@@ -99,7 +102,7 @@ disabled =
 
 type alias Config =
     { variant : Variant
-    , size : Size
+    , size : Sizes
     , disabled : Bool
     }
 
@@ -139,7 +142,7 @@ view req opts =
     let
         c : Config
         c =
-            Internal.applyOptions opts { variant = Filled, size = Small, disabled = False }
+            Internal.applyOptions opts { variant = Filled, size = Value.small, disabled = False }
 
         -- Leading button: m3e-button (FIX #16 — not a native <button>)
         leadingButton : Node msg
@@ -174,7 +177,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-split-button"
             [ Node.rawAttr (Cem.variant (toCemVariant c.variant))
-            , Node.rawAttr (Cem.size (toCemSize c.size))
+            , Node.attribute "size" (Value.toString c.size)
             ]
             [ leadingButton, trailingButton ]
         )
@@ -210,22 +213,3 @@ toCemVariant v =
 
         Outlined ->
             Cem.Outlined
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        ExtraSmall ->
-            Cem.ExtraSmall
-
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large
-
-        ExtraLarge ->
-            Cem.ExtraLarge

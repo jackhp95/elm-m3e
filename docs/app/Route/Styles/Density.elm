@@ -1,5 +1,6 @@
 module Route.Styles.Density exposing (ActionData, Data, Model, Msg, route)
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
 import Head
@@ -83,7 +84,7 @@ demoBar scaleValue =
 pageHeading : Node msg
 pageHeading =
     Heading.view { label = "Density", variant = Heading.Display }
-        [ Heading.size Heading.Small, Heading.level 1 ]
+        [ Heading.size Value.small, Heading.level 1 ]
         |> Element.toNode
 
 

@@ -1,5 +1,5 @@
 module M3e.ButtonGroup exposing
-    ( Option, Variant(..), Size(..)
+    ( Option, Variant(..)
     , view
     , variant, size, multi
     )
@@ -22,7 +22,7 @@ Spec (per docs/CONVENTIONS.md):
 
 # Types
 
-@docs Option, Variant, Size
+@docs Option, Variant
 
 @docs view
 
@@ -38,6 +38,7 @@ import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Group appearance variant.
@@ -47,19 +48,22 @@ type Variant
     | Connected
 
 
-{-| Size applied to the whole group.
+{-| Sizes applied to the whole group, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 -}
-type Size
-    = ExtraSmall
-    | Small
-    | Medium
-    | Large
-    | ExtraLarge
+type alias Sizes =
+    Value
+        { extraSmall : Supported
+        , small : Supported
+        , medium : Supported
+        , large : Supported
+        , extraLarge : Supported
+        }
 
 
 type alias Config =
     { variant : Variant
-    , size : Size
+    , size : Sizes
     , multi : Bool
     }
 
@@ -78,9 +82,10 @@ variant v =
     Internal.option (\c -> { c | variant = v })
 
 
-{-| Set the size applied to the whole group (default `Small`).
+{-| Set the size applied to the whole group (default
+[`M3e.Value.small`](M3e-Value#small)).
 -}
-size : Size -> Option msg
+size : Sizes -> Option msg
 size s =
     Internal.option (\c -> { c | size = s })
 
@@ -109,12 +114,12 @@ view req opts =
         c : Config
         c =
             Internal.applyOptions opts
-                { variant = Standard, size = Small, multi = False }
+                { variant = Standard, size = Value.small, multi = False }
     in
     Internal.fromNode
         (Node.element "m3e-button-group"
             [ Node.rawAttr (Cem.variant (toCemVariant c.variant))
-            , Node.rawAttr (Cem.size (toCemSize c.size))
+            , Node.attribute "size" (Value.toString c.size)
             , Node.property "multi" (Encode.bool c.multi)
             ]
             (List.map Element.toNode req.buttons)
@@ -129,22 +134,3 @@ toCemVariant v =
 
         Connected ->
             Cem.Connected
-
-
-toCemSize : Size -> Cem.Size
-toCemSize s =
-    case s of
-        ExtraSmall ->
-            Cem.ExtraSmall
-
-        Small ->
-            Cem.Small
-
-        Medium ->
-            Cem.Medium
-
-        Large ->
-            Cem.Large
-
-        ExtraLarge ->
-            Cem.ExtraLarge

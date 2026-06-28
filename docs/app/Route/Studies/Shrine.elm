@@ -26,6 +26,7 @@ Real product UX:
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Dict exposing (Dict)
 import Effect exposing (Effect)
@@ -613,7 +614,7 @@ viewAppBar model =
     in
     AppBar.view
         [ AppBar.id "shrine-appbar"
-        , AppBar.size AppBar.Small
+        , AppBar.size Value.small
         , AppBar.leading
             (IconButton.view { icon = "menu", ariaLabel = "Menu" } [])
         , AppBar.title
@@ -729,7 +730,7 @@ viewResultsBar _ filtered =
             { label = String.fromInt (List.length filtered) ++ " products"
             , variant = Heading.Title
             }
-            [ Heading.size Heading.Small
+            [ Heading.size Value.small
             , Heading.level 2
             ]
             |> Element.toNode
@@ -838,7 +839,7 @@ viewProductCard model product =
                 , IconButton.selected (List.member product.id model.favorites)
                 , IconButton.onChange (always (FavoriteToggled product.id))
                 , IconButton.selectedIcon (Icon.view { name = "favorite" } [])
-                , IconButton.size IconButton.Small
+                , IconButton.size Value.small
                 ]
                 |> Element.toNode
 
@@ -846,7 +847,7 @@ viewProductCard model product =
             Layout.div "flex flex-col gap-2"
                 [ Layout.div "flex items-start justify-between gap-2"
                     [ Heading.view { label = product.name, variant = Heading.Title }
-                        [ Heading.size Heading.Medium
+                        [ Heading.size Value.medium
                         , Heading.level 3
                         ]
                         |> Element.toNode
@@ -854,7 +855,7 @@ viewProductCard model product =
                     ]
                 , Layout.span "text-primary"
                     [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
-                        [ Heading.size Heading.Small
+                        [ Heading.size Value.small
                         , Heading.level 4
                         ]
                         |> Element.toNode
@@ -930,7 +931,7 @@ viewCartSheet model =
         header =
             Layout.div "flex items-center justify-between"
                 [ Heading.view { label = "Your bag", variant = Heading.Headline }
-                    [ Heading.size Heading.Small
+                    [ Heading.size Value.small
                     , Heading.level 2
                     ]
                     |> Element.toNode
@@ -1003,18 +1004,18 @@ viewCartRow ( product, qty ) =
             )
         , Layout.div "flex items-center gap-1"
             [ IconButton.view { icon = "remove", ariaLabel = "Decrease quantity" }
-                [ IconButton.size IconButton.ExtraSmall
+                [ IconButton.size Value.extraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty - 1))
                 ]
                 |> Element.toNode
             , Node.raw (span [ class "w-6 text-center text-body-lg text-on-surface" ] [ text (String.fromInt qty) ])
             , IconButton.view { icon = "add", ariaLabel = "Increase quantity" }
-                [ IconButton.size IconButton.ExtraSmall
+                [ IconButton.size Value.extraSmall
                 , IconButton.onClick (QuantityChanged product.id (qty + 1))
                 ]
                 |> Element.toNode
             , IconButton.view { icon = "delete", ariaLabel = "Remove " ++ product.name }
-                [ IconButton.size IconButton.ExtraSmall
+                [ IconButton.size Value.extraSmall
                 , IconButton.onClick (ItemRemoved product.id)
                 ]
                 |> Element.toNode
@@ -1102,7 +1103,7 @@ viewDetailDialog model =
                         , Layout.div "flex items-center justify-between"
                             [ Layout.span "text-primary"
                                 [ Heading.view { label = formatPrice product.price, variant = Heading.Title }
-                                    [ Heading.size Heading.Large
+                                    [ Heading.size Value.large
                                     , Heading.level 3
                                     ]
                                     |> Element.toNode

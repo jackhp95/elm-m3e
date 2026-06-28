@@ -28,6 +28,7 @@ search, composing, archiving) via `RouteBuilder.buildWithLocalState`.
 
 -}
 
+import M3e.Value as Value
 import BackendTask exposing (BackendTask)
 import Effect exposing (Effect)
 import Head
@@ -636,7 +637,7 @@ viewAppBar model =
     in
     AppBar.view
         [ AppBar.id "reply-appbar"
-        , AppBar.size AppBar.Small
+        , AppBar.size Value.small
         , AppBar.leading leadingElem
         , AppBar.title
             (Heading.view { label = appBarTitle model, variant = Heading.Title } [])
@@ -837,7 +838,7 @@ messageRow model message =
                         else
                             "Star"
                     }
-                    [ IconButton.size IconButton.Small
+                    [ IconButton.size Value.small
                     , IconButton.toggle True
                     , IconButton.selected message.starred
                     , IconButton.onChange (ToggleStar message.id)
@@ -872,7 +873,7 @@ readingPane message =
                 (Layout.div "flex flex-col gap-4 p-4 md:p-6"
                     [ Layout.div "flex items-start justify-between gap-3"
                         [ Heading.view { label = message.subject, variant = Heading.Headline }
-                            [ Heading.size Heading.Small
+                            [ Heading.size Value.small
                             , Heading.level 2
                             ]
                             |> Element.toNode
@@ -1009,7 +1010,7 @@ viewCompose model =
         , BottomSheet.handle True
         , BottomSheet.header
             [ Heading.view { label = "New message", variant = Heading.Title }
-                [ Heading.size Heading.Large
+                [ Heading.size Value.large
                 , Heading.level 2
                 ]
             ]
