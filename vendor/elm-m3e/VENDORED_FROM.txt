@@ -7,6 +7,13 @@ Command: node bin/elm-cem.js --flags-from=<@m3e/web>/dist/custom-elements.json \
          --output=vendor/elm-m3e --module-prefix=Cem.M3e
 Then: elm-format vendor/elm-m3e --yes
 
+--- HAND-PATCH: @m3e/web 2.5.13 `active` (2026-06-28) ---
+Bumped @m3e/web 2.5.12 -> 2.5.13. The only custom-element binding-surface delta
+is a new `active` boolean attribute (default false, inherited from
+CalendarViewElementBase) on m3e-month-view, m3e-year-view, m3e-multi-year-view.
+Applied by hand in generator style (`property "active" (Json.Encode.bool …)`)
+rather than regenerating, to avoid clobbering hand-patches (see elm-cem#1 §3).
+
 --- VALUE VOCABULARY (2026-06-28) ---
 Regenerated with the shared design-token generator: enum attributes/properties no
 longer emit per-component unions (`type Variant = …` / `*ToString`). They are now

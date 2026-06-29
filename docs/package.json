@@ -21,7 +21,7 @@
     "vite": "^7.3.2"
   },
   "dependencies": {
-    "@m3e/web": "^2.5.12",
+    "@m3e/web": "^2.5.13",
     "@netlify/functions": "^5.2.0",
     "tslib": "^2.8.1"
   },

@@ -1,11 +1,11 @@
 module Cem.M3e.MultiYearView exposing
-    ( component, today, date, activeDate, minDate, maxDate
+    ( component, today, date, active, activeDate, minDate, maxDate
     , onChange, onActiveChange
     )
 
 {-| An internal component used to display a year selector in a calendar.
 
-@docs component, today, date, activeDate, minDate, maxDate
+@docs component, today, date, active, activeDate, minDate, maxDate
 @docs onChange, onActiveChange
 
 -}
@@ -14,6 +14,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| An internal component used to display a year selector in a calendar.
@@ -45,6 +46,13 @@ today val_ =
 date : String -> Html.Attribute msg
 date val_ =
     Html.Attributes.attribute "date" val_
+
+
+{-| Whether the view is active. (default: `false`)
+-}
+active : Bool -> Html.Attribute msg
+active val_ =
+    Html.Attributes.property "active" (Json.Encode.bool val_)
 
 
 {-| The active date. (default: `new Date()`)
