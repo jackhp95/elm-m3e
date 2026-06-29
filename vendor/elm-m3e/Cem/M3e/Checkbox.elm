@@ -1,25 +1,14 @@
 module Cem.M3e.Checkbox exposing
-    ( component
-    , checked, disabled, indeterminate, name, required, value
-    , onBeforeinput, onInput, onChange, onInvalid, onClick
+    ( component, checked, disabled, indeterminate, name, required
+    , value, dirty, pristine, touched, untouched, willvalidate
+    , validationmessage, onBeforeinput, onInput, onChange, onInvalid, onClick
     )
 
 {-| A checkbox that allows a user to select one or more options from a limited number of choices.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs checked, disabled, indeterminate, name, required, value
-
-
-### Events
-
-@docs onBeforeinput, onInput, onChange, onInvalid, onClick
+@docs component, checked, disabled, indeterminate, name, required
+@docs value, dirty, pristine, touched, untouched, willvalidate
+@docs validationmessage, onBeforeinput, onInput, onChange, onInvalid, onClick
 
 -}
 
@@ -39,6 +28,36 @@ import Json.Encode
   - `change`: Dispatched when the checked state changes.
   - `invalid`: Dispatched when a form is submitted and the element fails constraint validation.
   - `click`: Dispatched when the element is clicked.
+
+**CSS Custom Properties:**
+
+  - `--m3e-checkbox-icon-size`: Size of the checkbox icon inside the container.
+  - `--m3e-checkbox-container-size`: Base size of the checkbox container.
+  - `--m3e-checkbox-container-shape`: Border radius of the icon container.
+  - `--m3e-checkbox-unselected-outline-thickness`: Border thickness for unselected state.
+  - `--m3e-checkbox-unselected-outline-color`: Border color for unselected state.
+  - `--m3e-checkbox-unselected-hover-outline-color`: Border color on hover when unselected.
+  - `--m3e-checkbox-unselected-disabled-outline-color`: Base color for disabled unselected outline.
+  - `--m3e-checkbox-unselected-disabled-outline-opacity`: Opacity for disabled unselected outline.
+  - `--m3e-checkbox-unselected-error-outline-color`: Border color for invalid unselected state.
+  - `--m3e-checkbox-selected-container-color`: Background color for selected container.
+  - `--m3e-checkbox-selected-icon-color`: Icon color for selected state.
+  - `--m3e-checkbox-selected-disabled-container-color`: Base color for disabled selected container.
+  - `--m3e-checkbox-selected-disabled-container-opacity`: Opacity for disabled selected container.
+  - `--m3e-checkbox-selected-disabled-icon-color`: Base color for disabled selected icon.
+  - `--m3e-checkbox-selected-disabled-icon-opacity`: Opacity for disabled selected icon.
+  - `--m3e-checkbox-unselected-hover-color`: Ripple hover color for unselected state.
+  - `--m3e-checkbox-unselected-focus-color`: Ripple focus color for unselected state.
+  - `--m3e-checkbox-unselected-ripple-color`: Ripple base color for unselected state.
+  - `--m3e-checkbox-selected-hover-color`: Ripple hover color for selected state.
+  - `--m3e-checkbox-selected-focus-color`: Ripple focus color for selected state.
+  - `--m3e-checkbox-selected-ripple-color`: Ripple base color for selected state.
+  - `--m3e-checkbox-unselected-error-hover-color`: Ripple hover color for invalid unselected state.
+  - `--m3e-checkbox-unselected-error-focus-color`: Ripple focus color for invalid unselected state.
+  - `--m3e-checkbox-unselected-error-ripple-color`: Ripple base color for invalid unselected state.
+  - `--m3e-checkbox-selected-error-hover-color`: Ripple hover color for invalid selected state.
+  - `--m3e-checkbox-selected-error-focus-color`: Ripple focus color for invalid selected state.
+  - `--m3e-checkbox-selected-error-ripple-color`: Ripple base color for invalid selected state.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -86,6 +105,48 @@ required val_ =
 value : String -> Html.Attribute msg
 value =
     Html.Attributes.value
+
+
+{-| Whether the user has modified the value of the element.
+-}
+dirty : Bool -> Html.Attribute msg
+dirty val_ =
+    Html.Attributes.property "dirty" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not modified the value of the element.
+-}
+pristine : Bool -> Html.Attribute msg
+pristine val_ =
+    Html.Attributes.property "pristine" (Json.Encode.bool val_)
+
+
+{-| Whether the user has interacted when the element.
+-}
+touched : Bool -> Html.Attribute msg
+touched val_ =
+    Html.Attributes.property "touched" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not interacted when the element.
+-}
+untouched : Bool -> Html.Attribute msg
+untouched val_ =
+    Html.Attributes.property "untouched" (Json.Encode.bool val_)
+
+
+{-| Whether the element is a submittable element that is a candidate for constraint validation.
+-}
+willvalidate : Bool -> Html.Attribute msg
+willvalidate val_ =
+    Html.Attributes.property "willValidate" (Json.Encode.bool val_)
+
+
+{-| The error message that would be displayed if the user submits the form, or an empty string if no error message.
+-}
+validationmessage : String -> Html.Attribute msg
+validationmessage val_ =
+    Html.Attributes.property "validationMessage" (Json.Encode.string val_)
 
 
 {-| Dispatched before the checked state changes.

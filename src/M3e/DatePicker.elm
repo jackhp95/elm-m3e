@@ -1,5 +1,5 @@
 module M3e.DatePicker exposing
-    ( Option, StartView(..)
+    ( Option, StartView
     , id, date, variant, range, rangeStart, rangeEnd, minDate, maxDate, clearable, label
     , confirmLabel, dismissLabel, startAt, startView, onChange
     , view
@@ -54,7 +54,6 @@ This works with Elm 0.19 / elm/json 1.1.4. If it breaks, the fix is:
 
 -}
 
-import Cem.M3e.Datepicker as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
@@ -84,12 +83,16 @@ type alias Variants =
         }
 
 
-{-| Which view the embedded calendar opens to.
+{-| Which view the embedded calendar opens to, supplied as shared
+[`M3e.Value`](M3e-Value) tokens ([`month`](M3e-Value#month),
+[`year`](M3e-Value#year), or [`multiYear`](M3e-Value#multiYear)).
 -}
-type StartView
-    = MonthView
-    | YearView
-    | MultiYearView
+type alias StartView =
+    Value
+        { month : Supported
+        , year : Supported
+        , multiYear : Supported
+        }
 
 
 {-| An opaque configuration option for [`view`](#view).
@@ -301,7 +304,7 @@ view opts =
                 , Maybe.map (Node.attribute "dismiss-label") c.dismissLabel
                 , Maybe.map (Node.attribute "start-at") c.startAt
                 , Maybe.map
-                    (\sv -> Node.attribute "start-view" (Cem.startViewToString (toCemStartView sv)))
+                    (\sv -> Node.attribute "start-view" (Value.toString sv))
                     c.startView
                 , Maybe.map
                     (\handler -> Node.on "change" (datePropertyDecoder |> Decode.map handler))
@@ -314,21 +317,6 @@ view opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-{-| Translate the local `StartView` to its `Cem.M3e.Datepicker` counterpart.
--}
-toCemStartView : StartView -> Cem.StartView
-toCemStartView sv =
-    case sv of
-        MonthView ->
-            Cem.Month
-
-        YearView ->
-            Cem.Year
-
-        MultiYearView ->
-            Cem.MultiYear
 
 
 {-| Decode the ISO string from `event.target.date` (a JS Date object).

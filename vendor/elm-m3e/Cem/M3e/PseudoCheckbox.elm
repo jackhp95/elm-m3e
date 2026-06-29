@@ -1,19 +1,8 @@
-module Cem.M3e.PseudoCheckbox exposing
-    ( component
-    , checked, disabled, indeterminate
-    )
+module Cem.M3e.PseudoCheckbox exposing (component, checked, disabled, indeterminate)
 
 {-| An element which looks like a checkbox.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs checked, disabled, indeterminate
+@docs component, checked, disabled, indeterminate
 
 -}
 
@@ -23,6 +12,22 @@ import Json.Encode
 
 
 {-| An element which looks like a checkbox.
+
+**CSS Custom Properties:**
+
+  - `--m3e-checkbox-icon-size`: Size of the checkbox icon.
+  - `--m3e-checkbox-container-shape`: Border radius of the checkbox container.
+  - `--m3e-checkbox-unselected-outline-thickness`: Outline thickness for unselected state.
+  - `--m3e-checkbox-unselected-outline-color`: Outline color for unselected state.
+  - `--m3e-checkbox-selected-container-color`: Background color for selected state.
+  - `--m3e-checkbox-selected-icon-color`: Icon color for selected state.
+  - `--m3e-checkbox-unselected-disabled-outline-color`: Outline color for unselected disabled state.
+  - `--m3e-checkbox-unselected-disabled-outline-opacity`: Outline opacity for unselected disabled state.
+  - `--m3e-checkbox-selected-disabled-container-color`: Background color for selected disabled state.
+  - `--m3e-checkbox-selected-disabled-container-opacity`: Background opacity for selected disabled state.
+  - `--m3e-checkbox-selected-disabled-icon-color`: Icon color for selected disabled state.
+  - `--m3e-checkbox-selected-disabled-icon-opacity`: Icon opacity for selected disabled state.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =

@@ -1,7 +1,7 @@
 module M3e.TextHighlight exposing
     ( view
     , Option
-    , MatchMode(..)
+    , MatchMode
     , term, mode, caseSensitive, disabled
     )
 
@@ -30,20 +30,23 @@ it ships as a vendor utility. Included here for parity with the `Ui.*` surface.
 
 -}
 
-import Cem.M3e.TextHighlight as Cem
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
-{-| How the term is matched against the content. Default `Contains`.
+{-| How the term is matched against the content. Default
+[`M3e.Value.contains`](M3e-Value#contains).
 -}
-type MatchMode
-    = Contains
-    | StartsWith
-    | EndsWith
+type alias MatchMode =
+    Value
+        { contains : Supported
+        , startsWith : Supported
+        , endsWith : Supported
+        }
 
 
 {-| An option configuring the `<m3e-text-highlight>` element.
@@ -101,7 +104,7 @@ view req opts =
         c =
             Internal.applyOptions opts
                 { term = Nothing
-                , mode = Contains
+                , mode = Value.contains
                 , caseSensitive = False
                 , disabled = False
                 }
@@ -109,24 +112,11 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-text-highlight"
             (List.filterMap identity
-                [ Maybe.map (\t -> Node.rawAttr (Cem.term t)) c.term
-                , Just (Node.rawAttr (Cem.mode (toCemMode c.mode)))
+                [ Maybe.map (\t -> Node.attribute "term" t) c.term
+                , Just (Node.attribute "mode" (Value.toString c.mode))
                 , Just (Node.property "caseSensitive" (Encode.bool c.caseSensitive))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 ]
             )
             (List.map Element.toNode req.content)
         )
-
-
-toCemMode : MatchMode -> Cem.Mode
-toCemMode m =
-    case m of
-        Contains ->
-            Cem.Contains
-
-        StartsWith ->
-            Cem.StartsWith
-
-        EndsWith ->
-            Cem.EndsWith

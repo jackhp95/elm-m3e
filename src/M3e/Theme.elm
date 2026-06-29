@@ -1,7 +1,7 @@
 module M3e.Theme exposing
     ( view
     , Option
-    , Scheme(..), Contrast(..), Motion(..)
+    , Scheme, Contrast, Motion
     , seedColor, scheme, variant, contrast, density, strongFocus, motion, onChange
     )
 
@@ -38,13 +38,16 @@ import M3e.Node as Node
 import M3e.Value as Value exposing (Value)
 
 
-{-| Color scheme — follows the OS light/dark preference (`Auto`), or is
-forced to `Light` or `Dark`.
+{-| Color scheme, supplied as shared [`M3e.Value`](M3e-Value) tokens — follows
+the OS light/dark preference ([`auto`](M3e-Value#auto)), or is forced to
+[`light`](M3e-Value#light) or [`dark`](M3e-Value#dark).
 -}
-type Scheme
-    = Auto
-    | Light
-    | Dark
+type alias Scheme =
+    Value
+        { auto : Supported
+        , light : Supported
+        , dark : Supported
+        }
 
 
 {-| Dynamic-color palette-generation strategy (default `neutral`), supplied as
@@ -64,20 +67,26 @@ type alias Variants =
         }
 
 
-{-| Contrast level. Default `Standard`.
+{-| Contrast level, supplied as shared [`M3e.Value`](M3e-Value) tokens. Default
+[`standard`](M3e-Value#standard).
 -}
-type Contrast
-    = Medium
-    | Standard
-    | High
+type alias Contrast =
+    Value
+        { medium : Supported
+        , standard : Supported
+        , high : Supported
+        }
 
 
-{-| Motion scheme — `MotionStandard` for the default easing set,
-`MotionExpressive` for the springier M3 Expressive set.
+{-| Motion scheme, supplied as shared [`M3e.Value`](M3e-Value) tokens —
+[`standard`](M3e-Value#standard) for the default easing set,
+[`expressive`](M3e-Value#expressive) for the springier M3 Expressive set.
 -}
-type Motion
-    = MotionStandard
-    | MotionExpressive
+type alias Motion =
+    Value
+        { standard : Supported
+        , expressive : Supported
+        }
 
 
 {-| An option configuring the `<m3e-theme>` provider.
@@ -180,50 +189,14 @@ view req opts =
         (Node.element "m3e-theme"
             (List.filterMap identity
                 [ Maybe.map (\col -> Node.rawAttr (Cem.color col)) c.seedColor
-                , Maybe.map (\s -> Node.rawAttr (Cem.scheme (toCemScheme s))) c.scheme
+                , Maybe.map (\s -> Node.attribute "scheme" (Value.toString s)) c.scheme
                 , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
-                , Maybe.map (\co -> Node.rawAttr (Cem.contrast (toCemContrast co))) c.contrast
+                , Maybe.map (\co -> Node.attribute "contrast" (Value.toString co)) c.contrast
                 , Maybe.map (\d -> Node.property "density" (Encode.float d)) c.density
                 , Maybe.map (\sf -> Node.property "strongFocus" (Encode.bool sf)) c.strongFocus
-                , Maybe.map (\m -> Node.rawAttr (Cem.motion (toCemMotion m))) c.motion
+                , Maybe.map (\m -> Node.attribute "motion" (Value.toString m)) c.motion
                 , Maybe.map (\d -> Node.on "change" d) c.onChange
                 ]
             )
             (List.map Element.toNode req.content)
         )
-
-
-toCemScheme : Scheme -> Cem.Scheme
-toCemScheme s =
-    case s of
-        Auto ->
-            Cem.Auto
-
-        Light ->
-            Cem.Light
-
-        Dark ->
-            Cem.Dark
-
-
-toCemContrast : Contrast -> Cem.Contrast
-toCemContrast co =
-    case co of
-        Medium ->
-            Cem.Medium
-
-        Standard ->
-            Cem.ContrastStandard
-
-        High ->
-            Cem.High
-
-
-toCemMotion : Motion -> Cem.Motion
-toCemMotion m =
-    case m of
-        MotionStandard ->
-            Cem.MotionStandard
-
-        MotionExpressive ->
-            Cem.MotionExpressive

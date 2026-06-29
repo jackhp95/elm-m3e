@@ -48,17 +48,17 @@ suite =
                     |> Expect.equal (Just "save")
         , test "formType Submit emits type=submit (FormSubmitter)" <|
             \_ ->
-                node "Submit" [ Button.formType Button.Submit ]
+                node "Submit" [ Button.formType Value.submit ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "submit")
         , test "formType Reset emits type=reset (FormSubmitter)" <|
             \_ ->
-                node "Reset" [ Button.formType Button.Reset ]
+                node "Reset" [ Button.formType Value.reset ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "reset")
         , test "formType Button emits type=button (FormSubmitter)" <|
             \_ ->
-                node "Button" [ Button.formType Button.Button ]
+                node "Button" [ Button.formType Value.button ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "button")
         , test "no formType — no type attribute emitted by default" <|

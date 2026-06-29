@@ -9,6 +9,24 @@ module M3e.Value exposing
     , flat, wavy, uncontained, contained, segmented
     , rounded, sharp, auto, docked, modal
     , square, circular
+    , before, after, above, below
+    , aboveAfter, aboveBefore, belowAfter, belowBefore, aboveBelow
+    , horizontal, vertical
+    , none
+    , month, multiYear, year
+    , submit, reset, button
+    , compact, expanded, over, push, side
+    , hide, reposition
+    , loading, noData
+    , pulse, wave
+    , both, selected
+    , default, narrow, wide
+    , low, high, dark, light
+    , contains, startsWith, endsWith
+    , indeterminate
+    , value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie
+    , arch, arrow, boom, bun, burst, circle, diamond, fan, flower, gem, ghostIsh, heart, hexagon, oval, pentagon, pill
+    , pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny, triangle, verySunny
     )
 
 {-| Shared, phantom-tagged enum values for the M3e component library.
@@ -75,6 +93,40 @@ a component's `view`.
 shape-only tokens are:
 
 @docs square, circular
+
+
+## Header / overlay positions
+
+@docs before, after, above, below
+@docs aboveAfter, aboveBefore, belowAfter, belowBefore, aboveBelow
+
+
+## Orientations
+
+@docs horizontal, vertical
+
+
+## Miscellaneous axis values
+
+@docs none
+@docs month, multiYear, year
+@docs submit, reset, button
+@docs compact, expanded, over, push, side
+@docs hide, reposition
+@docs loading, noData
+@docs pulse, wave
+@docs both, selected
+@docs default, narrow, wide
+@docs low, high, dark, light
+@docs contains, startsWith, endsWith
+@docs indeterminate
+
+
+## Shape names
+
+@docs value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie
+@docs arch, arrow, boom, bun, burst, circle, diamond, fan, flower, gem, ghostIsh, heart, hexagon, oval, pentagon, pill
+@docs pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny, triangle, verySunny
 
 -}
 
@@ -455,3 +507,539 @@ square =
 circular : Value { a | circular : Supported }
 circular =
     Value "circular"
+
+
+{-| Emits `"before"`.
+-}
+before : Value { a | before : Supported }
+before =
+    Value "before"
+
+
+{-| Emits `"after"`.
+-}
+after : Value { a | after : Supported }
+after =
+    Value "after"
+
+
+{-| Emits `"above"`.
+-}
+above : Value { a | above : Supported }
+above =
+    Value "above"
+
+
+{-| Emits `"below"`.
+-}
+below : Value { a | below : Supported }
+below =
+    Value "below"
+
+
+{-| Emits `"horizontal"`.
+-}
+horizontal : Value { a | horizontal : Supported }
+horizontal =
+    Value "horizontal"
+
+
+{-| Emits `"vertical"`.
+-}
+vertical : Value { a | vertical : Supported }
+vertical =
+    Value "vertical"
+
+
+{-| Emits `"above-after"`.
+-}
+aboveAfter : Value { a | aboveAfter : Supported }
+aboveAfter =
+    Value "above-after"
+
+
+{-| Emits `"above-before"`.
+-}
+aboveBefore : Value { a | aboveBefore : Supported }
+aboveBefore =
+    Value "above-before"
+
+
+{-| Emits `"below-after"`.
+-}
+belowAfter : Value { a | belowAfter : Supported }
+belowAfter =
+    Value "below-after"
+
+
+{-| Emits `"below-before"`.
+-}
+belowBefore : Value { a | belowBefore : Supported }
+belowBefore =
+    Value "below-before"
+
+
+{-| Emits `"above-below"`.
+-}
+aboveBelow : Value { a | aboveBelow : Supported }
+aboveBelow =
+    Value "above-below"
+
+
+{-| Emits `"none"`.
+-}
+none : Value { a | none : Supported }
+none =
+    Value "none"
+
+
+{-| Emits `"month"`.
+-}
+month : Value { a | month : Supported }
+month =
+    Value "month"
+
+
+{-| Emits `"multi-year"`.
+-}
+multiYear : Value { a | multiYear : Supported }
+multiYear =
+    Value "multi-year"
+
+
+{-| Emits `"year"`.
+-}
+year : Value { a | year : Supported }
+year =
+    Value "year"
+
+
+{-| Emits `"submit"`.
+-}
+submit : Value { a | submit : Supported }
+submit =
+    Value "submit"
+
+
+{-| Emits `"reset"`.
+-}
+reset : Value { a | reset : Supported }
+reset =
+    Value "reset"
+
+
+{-| Emits `"button"`.
+-}
+button : Value { a | button : Supported }
+button =
+    Value "button"
+
+
+{-| Emits `"compact"`.
+-}
+compact : Value { a | compact : Supported }
+compact =
+    Value "compact"
+
+
+{-| Emits `"expanded"`.
+-}
+expanded : Value { a | expanded : Supported }
+expanded =
+    Value "expanded"
+
+
+{-| Emits `"over"`.
+-}
+over : Value { a | over : Supported }
+over =
+    Value "over"
+
+
+{-| Emits `"push"`.
+-}
+push : Value { a | push : Supported }
+push =
+    Value "push"
+
+
+{-| Emits `"side"`.
+-}
+side : Value { a | side : Supported }
+side =
+    Value "side"
+
+
+{-| Emits `"hide"`.
+-}
+hide : Value { a | hide : Supported }
+hide =
+    Value "hide"
+
+
+{-| Emits `"reposition"`.
+-}
+reposition : Value { a | reposition : Supported }
+reposition =
+    Value "reposition"
+
+
+{-| Emits `"loading"`.
+-}
+loading : Value { a | loading : Supported }
+loading =
+    Value "loading"
+
+
+{-| Emits `"no-data"`.
+-}
+noData : Value { a | noData : Supported }
+noData =
+    Value "no-data"
+
+
+{-| Emits `"pulse"`.
+-}
+pulse : Value { a | pulse : Supported }
+pulse =
+    Value "pulse"
+
+
+{-| Emits `"wave"`.
+-}
+wave : Value { a | wave : Supported }
+wave =
+    Value "wave"
+
+
+{-| Emits `"both"`.
+-}
+both : Value { a | both : Supported }
+both =
+    Value "both"
+
+
+{-| Emits `"selected"`.
+-}
+selected : Value { a | selected : Supported }
+selected =
+    Value "selected"
+
+
+{-| Emits `"default"`.
+-}
+default : Value { a | default : Supported }
+default =
+    Value "default"
+
+
+{-| Emits `"narrow"`.
+-}
+narrow : Value { a | narrow : Supported }
+narrow =
+    Value "narrow"
+
+
+{-| Emits `"wide"`.
+-}
+wide : Value { a | wide : Supported }
+wide =
+    Value "wide"
+
+
+{-| Emits `"low"`.
+-}
+low : Value { a | low : Supported }
+low =
+    Value "low"
+
+
+{-| Emits `"high"`.
+-}
+high : Value { a | high : Supported }
+high =
+    Value "high"
+
+
+{-| Emits `"dark"`.
+-}
+dark : Value { a | dark : Supported }
+dark =
+    Value "dark"
+
+
+{-| Emits `"light"`.
+-}
+light : Value { a | light : Supported }
+light =
+    Value "light"
+
+
+{-| Emits `"contains"`.
+-}
+contains : Value { a | contains : Supported }
+contains =
+    Value "contains"
+
+
+{-| Emits `"starts-with"`.
+-}
+startsWith : Value { a | startsWith : Supported }
+startsWith =
+    Value "starts-with"
+
+
+{-| Emits `"ends-with"`.
+-}
+endsWith : Value { a | endsWith : Supported }
+endsWith =
+    Value "ends-with"
+
+
+{-| Emits `"indeterminate"`.
+-}
+indeterminate : Value { a | indeterminate : Supported }
+indeterminate =
+    Value "indeterminate"
+
+
+
+-- SHAPE NAMES ------------------------------------------------------------
+
+
+{-| Emits `"12-sided-cookie"`.
+-}
+value12SidedCookie : Value { a | value12SidedCookie : Supported }
+value12SidedCookie =
+    Value "12-sided-cookie"
+
+
+{-| Emits `"4-leaf-clover"`.
+-}
+value4LeafClover : Value { a | value4LeafClover : Supported }
+value4LeafClover =
+    Value "4-leaf-clover"
+
+
+{-| Emits `"4-sided-cookie"`.
+-}
+value4SidedCookie : Value { a | value4SidedCookie : Supported }
+value4SidedCookie =
+    Value "4-sided-cookie"
+
+
+{-| Emits `"6-sided-cookie"`.
+-}
+value6SidedCookie : Value { a | value6SidedCookie : Supported }
+value6SidedCookie =
+    Value "6-sided-cookie"
+
+
+{-| Emits `"7-sided-cookie"`.
+-}
+value7SidedCookie : Value { a | value7SidedCookie : Supported }
+value7SidedCookie =
+    Value "7-sided-cookie"
+
+
+{-| Emits `"8-leaf-clover"`.
+-}
+value8LeafClover : Value { a | value8LeafClover : Supported }
+value8LeafClover =
+    Value "8-leaf-clover"
+
+
+{-| Emits `"9-sided-cookie"`.
+-}
+value9SidedCookie : Value { a | value9SidedCookie : Supported }
+value9SidedCookie =
+    Value "9-sided-cookie"
+
+
+{-| Emits `"arch"`.
+-}
+arch : Value { a | arch : Supported }
+arch =
+    Value "arch"
+
+
+{-| Emits `"arrow"`.
+-}
+arrow : Value { a | arrow : Supported }
+arrow =
+    Value "arrow"
+
+
+{-| Emits `"boom"`.
+-}
+boom : Value { a | boom : Supported }
+boom =
+    Value "boom"
+
+
+{-| Emits `"bun"`.
+-}
+bun : Value { a | bun : Supported }
+bun =
+    Value "bun"
+
+
+{-| Emits `"burst"`.
+-}
+burst : Value { a | burst : Supported }
+burst =
+    Value "burst"
+
+
+{-| Emits `"circle"`.
+-}
+circle : Value { a | circle : Supported }
+circle =
+    Value "circle"
+
+
+{-| Emits `"diamond"`.
+-}
+diamond : Value { a | diamond : Supported }
+diamond =
+    Value "diamond"
+
+
+{-| Emits `"fan"`.
+-}
+fan : Value { a | fan : Supported }
+fan =
+    Value "fan"
+
+
+{-| Emits `"flower"`.
+-}
+flower : Value { a | flower : Supported }
+flower =
+    Value "flower"
+
+
+{-| Emits `"gem"`.
+-}
+gem : Value { a | gem : Supported }
+gem =
+    Value "gem"
+
+
+{-| Emits `"ghost-ish"`.
+-}
+ghostIsh : Value { a | ghostIsh : Supported }
+ghostIsh =
+    Value "ghost-ish"
+
+
+{-| Emits `"heart"`.
+-}
+heart : Value { a | heart : Supported }
+heart =
+    Value "heart"
+
+
+{-| Emits `"hexagon"`.
+-}
+hexagon : Value { a | hexagon : Supported }
+hexagon =
+    Value "hexagon"
+
+
+{-| Emits `"oval"`.
+-}
+oval : Value { a | oval : Supported }
+oval =
+    Value "oval"
+
+
+{-| Emits `"pentagon"`.
+-}
+pentagon : Value { a | pentagon : Supported }
+pentagon =
+    Value "pentagon"
+
+
+{-| Emits `"pill"`.
+-}
+pill : Value { a | pill : Supported }
+pill =
+    Value "pill"
+
+
+{-| Emits `"pixel-circle"`.
+-}
+pixelCircle : Value { a | pixelCircle : Supported }
+pixelCircle =
+    Value "pixel-circle"
+
+
+{-| Emits `"pixel-triangle"`.
+-}
+pixelTriangle : Value { a | pixelTriangle : Supported }
+pixelTriangle =
+    Value "pixel-triangle"
+
+
+{-| Emits `"puffy"`.
+-}
+puffy : Value { a | puffy : Supported }
+puffy =
+    Value "puffy"
+
+
+{-| Emits `"puffy-diamond"`.
+-}
+puffyDiamond : Value { a | puffyDiamond : Supported }
+puffyDiamond =
+    Value "puffy-diamond"
+
+
+{-| Emits `"semicircle"`.
+-}
+semicircle : Value { a | semicircle : Supported }
+semicircle =
+    Value "semicircle"
+
+
+{-| Emits `"slanted"`.
+-}
+slanted : Value { a | slanted : Supported }
+slanted =
+    Value "slanted"
+
+
+{-| Emits `"soft-boom"`.
+-}
+softBoom : Value { a | softBoom : Supported }
+softBoom =
+    Value "soft-boom"
+
+
+{-| Emits `"soft-burst"`.
+-}
+softBurst : Value { a | softBurst : Supported }
+softBurst =
+    Value "soft-burst"
+
+
+{-| Emits `"sunny"`.
+-}
+sunny : Value { a | sunny : Supported }
+sunny =
+    Value "sunny"
+
+
+{-| Emits `"triangle"`.
+-}
+triangle : Value { a | triangle : Supported }
+triangle =
+    Value "triangle"
+
+
+{-| Emits `"very-sunny"`.
+-}
+verySunny : Value { a | verySunny : Supported }
+verySunny =
+    Value "very-sunny"

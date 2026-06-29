@@ -1,23 +1,12 @@
-module Cem.M3e.ProgressElementIndicatorBase exposing
-    ( component
-    , value, maxAttr, Variant(..), variant
-    , variantToString
-    )
+module Cem.M3e.ProgressElementIndicatorBase exposing (component, value, maxAttr, variant)
 
 {-| A base implementation for an element used to convey progress. This class must be inherited.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs value, maxAttr, Variant, variant
+@docs component, value, maxAttr, variant
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Json.Encode
@@ -44,25 +33,13 @@ maxAttr val_ =
     Html.Attributes.property "max" (Json.Encode.float val_)
 
 
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Flat
-    | Wavy
-
-
 {-| The appearance of the indicator. (default: `"flat"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Flat ->
-            "flat"
-
-        Wavy ->
-            "wavy"
+variant :
+    Cem.M3e.Common.Value
+        { flat : Cem.M3e.Common.Supported
+        , wavy : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant

@@ -1,35 +1,16 @@
 module Cem.M3e.BreadcrumbItem exposing
-    ( component
-    , itemLabel, disabled, Current(..), current, href, target, download, rel
-    , onClick
-    , iconSlot
-    , currentToString
+    ( component, itemLabel, disabled, current, href, target
+    , download, rel, onClick, iconSlot
     )
 
 {-| An item in a breadcrumb.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs itemLabel, disabled, Current, current, href, target, download, rel
-
-
-### Events
-
-@docs onClick
-
-
-### Slots
-
-@docs iconSlot
+@docs component, itemLabel, disabled, current, href, target
+@docs download, rel, onClick, iconSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -46,6 +27,30 @@ import Json.Encode
 **Slots:**
 
   - `icon`: Renders an icon before the item's label.
+
+**CSS Custom Properties:**
+
+  - `--m3e-breadcrumb-item-shape`: Shape of the internal breadcrumb item button.
+  - `--m3e-breadcrumb-item-container-height`: Height of the internal breadcrumb item button container.
+  - `--m3e-breadcrumb-item-icon-color`: Color of breadcrumb item icon-only content.
+  - `--m3e-breadcrumb-item-icon-padding-inline`: Horizontal padding for icon-only breadcrumb items.
+  - `--m3e-breadcrumb-item-icon-hover-state-layer-color`: Hover state layer color for icon-only breadcrumb items.
+  - `--m3e-breadcrumb-item-icon-focus-state-layer-color`: Focus state layer color for icon-only breadcrumb items.
+  - `--m3e-breadcrumb-item-icon-pressed-state-layer-color`: Pressed state layer color for icon-only breadcrumb items.
+  - `--m3e-breadcrumb-item-label-color`: Color of breadcrumb item label content.
+  - `--m3e-breadcrumb-item-label-font-size`: Font size of breadcrumb item label content.
+  - `--m3e-breadcrumb-item-label-font-weight`: Font weight of breadcrumb item label content.
+  - `--m3e-breadcrumb-item-label-line-height`: Line height of breadcrumb item label content.
+  - `--m3e-breadcrumb-item-label-tracking`: Letter spacing of breadcrumb item label content.
+  - `--m3e-breadcrumb-item-label-padding-inline`: Horizontal padding for label breadcrumb items.
+  - `--m3e-breadcrumb-item-label-hover-state-layer-color`: Hover state layer color for label breadcrumb items.
+  - `--m3e-breadcrumb-item-label-focus-state-layer-color`: Focus state layer color for label breadcrumb items.
+  - `--m3e-breadcrumb-item-label-pressed-state-layer-color`: Pressed state layer color for label breadcrumb items.
+  - `--m3e-breadcrumb-item-last-color`: Color used for the current breadcrumb item.
+  - `--m3e-breadcrumb-item-icon-label-space`: Space between icon and label.
+  - `--m3e-breadcrumb-item-icon-size`: Size of the icon.
+  - `--m3e-breadcrumb-item-disabled-color`: Disabled color used by the breadcrumb item button.
+  - `--m3e-breadcrumb-item-disabled-opacity`: Disabled opacity used by the breadcrumb item button.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -67,44 +72,20 @@ disabled val_ =
     Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
-{-| Values for the `current` attribute.
--}
-type Current
-    = Date
-    | Location
-    | Page
-    | Step
-    | Time
-    | True
-
-
 {-| Indicates the current item in the breadcrumb path.
 -}
-current : Current -> Html.Attribute msg
-current val_ =
-    Html.Attributes.attribute "current" (currentToString val_)
-
-
-currentToString : Current -> String
-currentToString val_ =
-    case val_ of
-        Date ->
-            "date"
-
-        Location ->
-            "location"
-
-        Page ->
-            "page"
-
-        Step ->
-            "step"
-
-        Time ->
-            "time"
-
-        True ->
-            "true"
+current :
+    Cem.M3e.Common.Value
+        { date : Cem.M3e.Common.Supported
+        , location : Cem.M3e.Common.Supported
+        , page : Cem.M3e.Common.Supported
+        , step : Cem.M3e.Common.Supported
+        , time : Cem.M3e.Common.Supported
+        , true : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+current =
+    Cem.M3e.Common.current
 
 
 {-| The URL to which the internal breadcrumb link button points. (default: `""`)

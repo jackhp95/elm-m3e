@@ -1,19 +1,8 @@
-module Cem.M3e.Accordion exposing
-    ( component
-    , multi
-    )
+module Cem.M3e.Accordion exposing (component, multi)
 
 {-| Combines multiple expansion panels in to an accordion.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs multi
+@docs component, multi
 
 -}
 

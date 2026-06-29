@@ -1,31 +1,13 @@
-module Cem.M3e.FabMenu exposing
-    ( component
-    , Variant(..), variant
-    , onBeforetoggle, onToggle
-    , variantToString
-    )
+module Cem.M3e.FabMenu exposing (component, variant, onBeforetoggle, onToggle)
 
 {-| A menu, opened from a floating action button (FAB), used to display multiple related actions.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs Variant, variant
-
-
-### Events
-
-@docs onBeforetoggle, onToggle
+@docs component, variant, onBeforetoggle, onToggle
 
 -}
 
+import Cem.M3e.Common
 import Html
-import Html.Attributes
 import Html.Events
 import Json.Decode
 
@@ -37,38 +19,43 @@ import Json.Decode
   - `beforetoggle`: Dispatched before the toggle state changes.
   - `toggle`: Dispatched after the toggle state has changed.
 
+**CSS Custom Properties:**
+
+  - `--m3e-fab-menu-spacing`: Vertical gap between menu items.
+  - `--m3e-fab-menu-max-width`: Maximum width of the menu.
+  - `--m3e-primary-fab-color`: Foreground color for primary variant items.
+  - `--m3e-primary-fab-container-color`: Container color for primary variant items.
+  - `--m3e-primary-fab-hover-color`: Hover background color for primary variant items.
+  - `--m3e-primary-fab-focus-color`: Focus background color for primary variant items.
+  - `--m3e-primary-fab-ripple-color`: Ripple color for primary variant items.
+  - `--m3e-secondary-fab-color`: Foreground color for secondary variant items.
+  - `--m3e-secondary-fab-container-color`: Container color for secondary variant items.
+  - `--m3e-secondary-fab-hover-color`: Hover background color for secondary variant items.
+  - `--m3e-secondary-fab-focus-color`: Focus background color for secondary variant items.
+  - `--m3e-secondary-fab-ripple-color`: Ripple color for secondary variant items.
+  - `--m3e-tertiary-fab-color`: Foreground color for tertiary variant items.
+  - `--m3e-tertiary-fab-container-color`: Container color for tertiary variant items.
+  - `--m3e-tertiary-fab-hover-color`: Hover background color for tertiary variant items.
+  - `--m3e-tertiary-fab-focus-color`: Focus background color for tertiary variant items.
+  - `--m3e-tertiary-fab-ripple-color`: Ripple color for tertiary variant items.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-fab-menu" attributes children
 
 
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Primary
-    | Secondary
-    | Tertiary
-
-
 {-| The appearance variant of the menu. (default: `"primary"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Primary ->
-            "primary"
-
-        Secondary ->
-            "secondary"
-
-        Tertiary ->
-            "tertiary"
+variant :
+    Cem.M3e.Common.Value
+        { primary : Cem.M3e.Common.Supported
+        , secondary : Cem.M3e.Common.Supported
+        , tertiary : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
 {-| Dispatched before the toggle state changes.

@@ -1,35 +1,18 @@
 module Cem.M3e.Tabs exposing
-    ( component
-    , disablePagination, HeaderPosition(..), headerPosition, nextPageLabel, previousPageLabel, stretch, Variant(..), variant
-    , onChange, onBeforeinput, onInput
-    , panelSlot, nextIconSlot, prevIconSlot
-    , headerPositionToString, variantToString
+    ( component, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+    , variant, selectedindex, onChange, onBeforeinput, onInput, panelSlot
+    , nextIconSlot, prevIconSlot
     )
 
 {-| Organizes content into separate views where only one view can be visible at a time.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disablePagination, HeaderPosition, headerPosition, nextPageLabel, previousPageLabel, stretch, Variant, variant
-
-
-### Events
-
-@docs onChange, onBeforeinput, onInput
-
-
-### Slots
-
-@docs panelSlot, nextIconSlot, prevIconSlot
+@docs component, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+@docs variant, selectedindex, onChange, onBeforeinput, onInput, panelSlot
+@docs nextIconSlot, prevIconSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -51,6 +34,16 @@ import Json.Encode
   - `next-icon`: Renders the icon to present for the next button used to paginate.
   - `prev-icon`: Renders the icon to present for the previous button used to paginate.
 
+**CSS Custom Properties:**
+
+  - `--m3e-tabs-paginator-button-icon-size`: Overrides the icon size for paginator buttons.
+  - `--m3e-tabs-active-indicator-color`: Color of the active tab indicator.
+  - `--m3e-tabs-primary-before-active-indicator-shape`: Border radius for active indicator when header is before and variant is primary.
+  - `--m3e-tabs-primary-after-active-indicator-shape`: Border radius for active indicator when header is after and variant is primary.
+  - `--m3e-tabs-primary-active-indicator-inset`: Inset for primary variant's active indicator.
+  - `--m3e-tabs-primary-active-indicator-thickness`: Thickness for primary variant's active indicator.
+  - `--m3e-tabs-secondary-active-indicator-thickness`: Thickness for secondary variant's active indicator.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -64,28 +57,16 @@ disablePagination val_ =
     Html.Attributes.attribute "disable-pagination" val_
 
 
-{-| Values for the `header-position` attribute.
--}
-type HeaderPosition
-    = After
-    | Before
-
-
 {-| The position of the tab headers. (default: `"before"`)
 -}
-headerPosition : HeaderPosition -> Html.Attribute msg
-headerPosition val_ =
-    Html.Attributes.attribute "header-position" (headerPositionToString val_)
-
-
-headerPositionToString : HeaderPosition -> String
-headerPositionToString val_ =
-    case val_ of
-        After ->
-            "after"
-
-        Before ->
-            "before"
+headerPosition :
+    Cem.M3e.Common.Value
+        { after : Cem.M3e.Common.Supported
+        , before : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+headerPosition =
+    Cem.M3e.Common.headerPosition
 
 
 {-| The accessible label given to the button used to move to the next page. (default: `"Next page"`)
@@ -109,28 +90,23 @@ stretch val_ =
     Html.Attributes.property "stretch" (Json.Encode.bool val_)
 
 
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Primary
-    | Secondary
-
-
 {-| The appearance variant of the tabs. (default: `"secondary"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
+variant :
+    Cem.M3e.Common.Value
+        { primary : Cem.M3e.Common.Supported
+        , secondary : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Primary ->
-            "primary"
-
-        Secondary ->
-            "secondary"
+{-| The zero-based index of the selected tab.
+-}
+selectedindex : Float -> Html.Attribute msg
+selectedindex val_ =
+    Html.Attributes.property "selectedIndex" (Json.Encode.float val_)
 
 
 {-| Dispatched when the selected tab changes.

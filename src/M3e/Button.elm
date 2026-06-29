@@ -1,5 +1,5 @@
 module M3e.Button exposing
-    ( Option, ButtonType(..)
+    ( Option, ButtonType
     , view
     , size, shape, disabled, toggle, selected, onClick, href, target, rel, download
     , leadingIcon, trailingIcon, selectedIcon, selectedLabel
@@ -94,18 +94,21 @@ type alias Shapes =
         }
 
 
-{-| Form submission type for a button. Upstream: `FormSubmitter` mixin →
-`type` attribute (`FormSubmitterType`), default `"button"`.
+{-| Form submission type for a button, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. Upstream: `FormSubmitter` mixin → `type`
+attribute (`FormSubmitterType`), default `"button"`.
 
-  - `Submit` — submits the containing form (equivalent to `type="submit"`).
-  - `Reset` — resets the containing form (equivalent to `type="reset"`).
-  - `Button` — no default form action; pair with `onClick` for custom behaviour.
+  - [`submit`](M3e-Value#submit) — submits the containing form (`type="submit"`).
+  - [`reset`](M3e-Value#reset) — resets the containing form (`type="reset"`).
+  - [`button`](M3e-Value#button) — no default form action; pair with `onClick`.
 
 -}
-type ButtonType
-    = Submit
-    | Reset
-    | Button
+type alias ButtonType =
+    Value
+        { submit : Supported
+        , reset : Supported
+        , button : Supported
+        }
 
 
 {-| A button configuration option. Build with the option functions below and
@@ -316,7 +319,7 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target
                 , Maybe.map (\v -> Node.rawAttr (Cem.rel v)) c.rel
                 , Maybe.map (\v -> Node.rawAttr (Cem.download v)) c.download
-                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) c.formType
+                , Maybe.map (\t -> Node.attribute "type" (Value.toString t)) c.formType
                 , Maybe.map (\v -> Node.attribute "name" v) c.name
                 , Maybe.map (\v -> Node.attribute "value" v) c.value
                 ]
@@ -330,16 +333,3 @@ view req opts =
                 ]
             )
         )
-
-
-toTypeString : ButtonType -> String
-toTypeString t =
-    case t of
-        Submit ->
-            "submit"
-
-        Reset ->
-            "reset"
-
-        Button ->
-            "button"

@@ -1,6 +1,6 @@
 module M3e.ScrollContainer exposing
     ( view
-    , Dividers(..), Option
+    , Dividers, Option
     , dividers, thin, attributes
     )
 
@@ -25,20 +25,22 @@ Spec (per docs/CONVENTIONS.md):
 
 -}
 
-import Cem.M3e.ScrollContainer as Cem
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Which dividers to show when content is scrolled.
 -}
-type Dividers
-    = AboveBelow
-    | Above
-    | Below
-    | None
+type alias Dividers =
+    Value
+        { aboveBelow : Supported
+        , above : Supported
+        , below : Supported
+        , none : Supported
+        }
 
 
 {-| An option configuring a scroll container.
@@ -90,32 +92,14 @@ view req opts =
     let
         c : Config msg
         c =
-            Internal.applyOptions opts { dividers = AboveBelow, thin = False, attributes = [] }
+            Internal.applyOptions opts { dividers = Value.aboveBelow, thin = False, attributes = [] }
     in
     Internal.fromNode
         (Node.element "m3e-scroll-container"
-            ([ Node.attribute "dividers" (Cem.dividersToString (toCemDividers c.dividers))
+            ([ Node.attribute "dividers" (Value.toString c.dividers)
              , Node.property "thin" (Encode.bool c.thin)
              ]
                 ++ c.attributes
             )
             (List.map Element.toNode req.content)
         )
-
-
-{-| Translate the local `Dividers` to its `Cem.M3e.ScrollContainer` counterpart.
--}
-toCemDividers : Dividers -> Cem.Dividers
-toCemDividers d =
-    case d of
-        AboveBelow ->
-            Cem.AboveBelow
-
-        Above ->
-            Cem.Above
-
-        Below ->
-            Cem.Below
-
-        None ->
-            Cem.None

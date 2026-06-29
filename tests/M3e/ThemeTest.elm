@@ -62,7 +62,7 @@ suite =
                     |> Expect.equal (Just "m3e-theme")
         , test "scheme option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ Theme.scheme Theme.Dark ]
+                node [ Theme.scheme Value.dark ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-theme")
         , test "variant option does not crash (rawAttr — not introspectable)" <|
@@ -72,12 +72,12 @@ suite =
                     |> Expect.equal (Just "m3e-theme")
         , test "contrast option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ Theme.contrast Theme.High ]
+                node [ Theme.contrast Value.high ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-theme")
         , test "motion option does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                node [ Theme.motion Theme.MotionExpressive ]
+                node [ Theme.motion Value.expressive ]
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-theme")
         ]

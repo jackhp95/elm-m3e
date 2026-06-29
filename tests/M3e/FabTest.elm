@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Fab as Fab
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -91,17 +92,17 @@ suite =
                     |> Expect.equal (Just "item")
         , test "formType Submit emits type=submit (FormSubmitter)" <|
             \_ ->
-                node "add" [ Fab.formType Fab.Submit ]
+                node "add" [ Fab.formType Value.submit ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "submit")
         , test "formType Reset emits type=reset (FormSubmitter)" <|
             \_ ->
-                node "add" [ Fab.formType Fab.Reset ]
+                node "add" [ Fab.formType Value.reset ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "reset")
         , test "formType Button emits type=button (FormSubmitter)" <|
             \_ ->
-                node "add" [ Fab.formType Fab.Button ]
+                node "add" [ Fab.formType Value.button ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "button")
         , test "no formType — no type attribute emitted by default" <|

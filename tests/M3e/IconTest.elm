@@ -75,19 +75,19 @@ suite =
                     |> Expect.equal (Just "sharp")
 
         -- Grade
-        , test "grade Low emits grade=low" <|
+        , test "grade low emits grade=low" <|
             \_ ->
-                node "home" [ Icon.grade Icon.Low ]
+                node "home" [ Icon.grade Value.low ]
                     |> Node.findAttribute "grade"
                     |> Expect.equal (Just "low")
-        , test "grade Medium emits grade=medium" <|
+        , test "grade medium emits grade=medium" <|
             \_ ->
-                node "home" [ Icon.grade Icon.Medium ]
+                node "home" [ Icon.grade Value.medium ]
                     |> Node.findAttribute "grade"
                     |> Expect.equal (Just "medium")
-        , test "grade High emits grade=high" <|
+        , test "grade high emits grade=high" <|
             \_ ->
-                node "home" [ Icon.grade Icon.High ]
+                node "home" [ Icon.grade Value.high ]
                     |> Node.findAttribute "grade"
                     |> Expect.equal (Just "high")
 

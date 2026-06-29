@@ -1,30 +1,15 @@
 module Cem.M3e.Select exposing
-    ( component
-    , disabled, hideSelectionIndicator, multi, name, panelClass, required
-    , onChange, onToggle, onBeforeinput, onInput
+    ( component, disabled, hideSelectionIndicator, multi, name, panelClass
+    , required, shouldlabelfloat, dirty, pristine, touched, untouched
+    , willvalidate, validationmessage, onChange, onToggle, onBeforeinput, onInput
     , arrowSlot, valueSlot
     )
 
 {-| A form control that allows users to select a value from a set of predefined options.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, hideSelectionIndicator, multi, name, panelClass, required
-
-
-### Events
-
-@docs onChange, onToggle, onBeforeinput, onInput
-
-
-### Slots
-
+@docs component, disabled, hideSelectionIndicator, multi, name, panelClass
+@docs required, shouldlabelfloat, dirty, pristine, touched, untouched
+@docs willvalidate, validationmessage, onChange, onToggle, onBeforeinput, onInput
 @docs arrowSlot, valueSlot
 
 -}
@@ -50,6 +35,17 @@ import Json.Encode
   - `arrow`: Renders the dropdown arrow.
   - `value`: Renders the selected value(s).
 
+**CSS Custom Properties:**
+
+  - `--m3e-form-field-font-size`: The font size of the select control.
+  - `--m3e-form-field-font-weight`: The font weight of the select control.
+  - `--m3e-form-field-line-height`: The line height of the select control.
+  - `--m3e-form-field-tracking`: The letter spacing of the select control.
+  - `--m3e-select-container-shape`: The corner radius of the select container.
+  - `--m3e-select-disabled-color`: The text color when the select is disabled.
+  - `--m3e-select-disabled-color-opacity`: The opacity level applied to the disabled text color.
+  - `--m3e-select-icon-size`: The size of the dropdown arrow icon.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -67,7 +63,7 @@ disabled val_ =
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
 
 
 {-| Whether multiple options can be selected. (default: `false`)
@@ -96,6 +92,55 @@ panelClass val_ =
 required : Bool -> Html.Attribute msg
 required val_ =
     Html.Attributes.property "required" (Json.Encode.bool val_)
+
+
+{-| Set the `shouldLabelFloat` property.
+-}
+shouldlabelfloat : Bool -> Html.Attribute msg
+shouldlabelfloat val_ =
+    Html.Attributes.property "shouldLabelFloat" (Json.Encode.bool val_)
+
+
+{-| Whether the user has modified the value of the element.
+-}
+dirty : Bool -> Html.Attribute msg
+dirty val_ =
+    Html.Attributes.property "dirty" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not modified the value of the element.
+-}
+pristine : Bool -> Html.Attribute msg
+pristine val_ =
+    Html.Attributes.property "pristine" (Json.Encode.bool val_)
+
+
+{-| Whether the user has interacted when the element.
+-}
+touched : Bool -> Html.Attribute msg
+touched val_ =
+    Html.Attributes.property "touched" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not interacted when the element.
+-}
+untouched : Bool -> Html.Attribute msg
+untouched val_ =
+    Html.Attributes.property "untouched" (Json.Encode.bool val_)
+
+
+{-| Whether the element is a submittable element that is a candidate for constraint validation.
+-}
+willvalidate : Bool -> Html.Attribute msg
+willvalidate val_ =
+    Html.Attributes.property "willValidate" (Json.Encode.bool val_)
+
+
+{-| The error message that would be displayed if the user submits the form, or an empty string if no error message.
+-}
+validationmessage : String -> Html.Attribute msg
+validationmessage val_ =
+    Html.Attributes.property "validationMessage" (Json.Encode.string val_)
 
 
 {-| Dispatched when the selected state changes.

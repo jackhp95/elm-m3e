@@ -1,29 +1,20 @@
 module Cem.M3e.Datepicker exposing
-    ( component
-    , Variant(..), variant, clearable, date, maxDate, minDate, range, rangeEnd, rangeStart, startAt, StartView(..), startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label
-    , onChange, onBeforetoggle, onToggle
-    , startViewToString, variantToString
+    ( component, variant, clearable, date, maxDate, minDate
+    , range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
+    , nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
+    , confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
     )
 
 {-| Presents a date picker on a temporary surface.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs Variant, variant, clearable, date, maxDate, minDate, range, rangeEnd, rangeStart, startAt, StartView, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label
-
-
-### Events
-
-@docs onChange, onBeforetoggle, onToggle
+@docs component, variant, clearable, date, maxDate, minDate
+@docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
+@docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
+@docs confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -39,38 +30,49 @@ import Json.Encode
   - `beforetoggle`: Dispatched before the toggle state changes.
   - `toggle`: Dispatched after the toggle state has changed.
 
+**CSS Custom Properties:**
+
+  - `--m3e-datepicker-container-padding-block`: Block‑axis padding of the date picker container.
+  - `--m3e-datepicker-container-padding-inline`: Inline‑axis padding of the date picker container.
+  - `--m3e-datepicker-container-color`: Background color of the standard container surface.
+  - `--m3e-datepicker-container-elevation`: Elevation shadow applied to the container surface.
+  - `--m3e-datepicker-modal-headline-color`: Color used for the modal headline text.
+  - `--m3e-datepicker-modal-headline-font-size`: Font size used for the modal headline text.
+  - `--m3e-datepicker-modal-headline-font-weight`: Font weight used for the modal headline text.
+  - `--m3e-datepicker-modal-headline-line-height`: Line height used for the modal headline text.
+  - `--m3e-datepicker-modal-headline-tracking`: Letter spacing used for the modal headline text.
+  - `--m3e-datepicker-modal-supporting-text-color`: Color used for supporting text in modal mode.
+  - `--m3e-datepicker-modal-supporting-text-font-size`: Font size used for supporting text in modal mode.
+  - `--m3e-datepicker-modal-supporting-text-font-weight`: Font weight used for supporting text in modal mode.
+  - `--m3e-datepicker-modal-supporting-text-line-height`: Line height used for supporting text in modal mode.
+  - `--m3e-datepicker-modal-supporting-text-tracking`: Letter spacing used for supporting text in modal mode.
+  - `--m3e-datepicker-actions-padding-inline`: Inline‑axis padding of the action row.
+  - `--m3e-datepicker-docked-container-color`: Background color of the container in docked mode.
+  - `--m3e-datepicker-docked-container-shape`: Corner radius of the container in docked mode.
+  - `--m3e-datepicker-modal-container-color`: Background color of the container in modal mode.
+  - `--m3e-datepicker-modal-container-shape`: Corner radius of the container in modal mode.
+  - `--m3e-divider-thickness`: Thickness of divider elements within the picker.
+  - `--m3e-divider-color`: Color of divider rules within the picker.
+  - `--m3e-dialog-scrim-color`: Base color used for the modal scrim behind the picker.
+  - `--m3e-dialog-scrim-opacity`: Opacity applied to the scrim color in modal mode.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-datepicker" attributes children
 
 
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Auto
-    | Docked
-    | Modal
-
-
 {-| The appearance variant of the picker. (default: `"docked"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Docked ->
-            "docked"
-
-        Modal ->
-            "modal"
+variant :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , docked : Cem.M3e.Common.Supported
+        , modal : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
 {-| Whether the user can clear the selected date and close the picker. (default: `false`)
@@ -129,32 +131,17 @@ startAt val_ =
     Html.Attributes.attribute "start-at" val_
 
 
-{-| Values for the `start-view` attribute.
--}
-type StartView
-    = Month
-    | MultiYear
-    | Year
-
-
 {-| The initial view used to select a date. (default: `"month"`)
 -}
-startView : StartView -> Html.Attribute msg
-startView val_ =
-    Html.Attributes.attribute "start-view" (startViewToString val_)
-
-
-startViewToString : StartView -> String
-startViewToString val_ =
-    case val_ of
-        Month ->
-            "month"
-
-        MultiYear ->
-            "multi-year"
-
-        Year ->
-            "year"
+startView :
+    Cem.M3e.Common.Value
+        { month : Cem.M3e.Common.Supported
+        , multiYear : Cem.M3e.Common.Supported
+        , year : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+startView =
+    Cem.M3e.Common.startView
 
 
 {-| The accessible label given to the button used to move to the previous month. (default: `"Previous month"`)

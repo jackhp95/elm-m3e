@@ -1,19 +1,8 @@
-module Cem.M3e.TextareaAutosize exposing
-    ( component
-    , disabled, for, maxRows, minRows
-    )
+module Cem.M3e.TextareaAutosize exposing (component, disabled, for, maxRows, minRows)
 
 {-| A non-visual element used to automatically resize a `textarea` to fit its content.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, for, maxRows, minRows
+@docs component, disabled, for, maxRows, minRows
 
 -}
 
@@ -47,11 +36,11 @@ for val_ =
 -}
 maxRows : Float -> Html.Attribute msg
 maxRows val_ =
-    Html.Attributes.property "maxRows" (Json.Encode.float val_)
+    Html.Attributes.property "max-rows" (Json.Encode.float val_)
 
 
 {-| The minimum amount of rows in the `textarea`. (default: `0`)
 -}
 minRows : Float -> Html.Attribute msg
 minRows val_ =
-    Html.Attributes.property "minRows" (Json.Encode.float val_)
+    Html.Attributes.property "min-rows" (Json.Encode.float val_)

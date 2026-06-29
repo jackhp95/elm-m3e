@@ -1,5 +1,5 @@
 module M3e.Collapsible exposing
-    ( Option, Orientation(..)
+    ( Option, Orientation
     , open, orientation, noAnimate
     , onOpening, onOpened, onClosing, onClosed
     , view
@@ -34,27 +34,30 @@ Spec (per docs/CONVENTIONS.md):
 
 -}
 
-import Cem.M3e.Collapsible as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES ------------------------------------------------------------------
 
 
-{-| Layout orientation of collapsible content. Default `Vertical`.
+{-| Layout orientation of collapsible content, supplied as shared
+[`M3e.Value`](M3e-Value) tokens ([`vertical`](M3e-Value#vertical) or
+[`horizontal`](M3e-Value#horizontal)). The element default is `vertical`.
 
 Upstream: `orientation` attribute on `<m3e-collapsible>`.
-CEM: `CollapsibleOrientation` — `"vertical"` or `"horizontal"`.
 
 -}
-type Orientation
-    = Vertical
-    | Horizontal
+type alias Orientation =
+    Value
+        { vertical : Supported
+        , horizontal : Supported
+        }
 
 
 type alias Config msg =
@@ -98,8 +101,9 @@ open b =
     Internal.option (\c -> { c | open = b })
 
 
-{-| Set the orientation of the collapsible animation (`Vertical` or `Horizontal`;
-default `Vertical`).
+{-| Set the orientation of the collapsible animation
+([`vertical`](M3e-Value#vertical) or [`horizontal`](M3e-Value#horizontal);
+element default `vertical`).
 
 Upstream: `orientation` attribute on `<m3e-collapsible>`.
 
@@ -172,7 +176,7 @@ view req opts =
         (Node.element "m3e-collapsible"
             (List.filterMap identity
                 [ Just (Node.property "open" (Encode.bool cfg.open))
-                , Maybe.map (\o -> Node.attribute "orientation" (Cem.orientationToString (toCemOrientation o))) cfg.orientation
+                , Maybe.map (\o -> Node.attribute "orientation" (Value.toString o)) cfg.orientation
                 , Just (Node.property "noAnimate" (Encode.bool cfg.noAnimate))
                 , Maybe.map (\msg -> Node.on "opening" (Decode.succeed msg)) cfg.onOpening
                 , Maybe.map (\msg -> Node.on "opened" (Decode.succeed msg)) cfg.onOpened
@@ -182,21 +186,3 @@ view req opts =
             )
             (List.map Element.toNode req.content)
         )
-
-
-
--- INTERNAL HELPERS -----------------------------------------------
-
-
-{-| Map the local `Orientation` to the generated `Cem.M3e.Collapsible` enum,
-whose `orientationToString` is the single source of truth for the attribute
-value (kept in sync with the element's CEM — #45).
--}
-toCemOrientation : Orientation -> Cem.Orientation
-toCemOrientation o =
-    case o of
-        Vertical ->
-            Cem.Vertical
-
-        Horizontal ->
-            Cem.Horizontal

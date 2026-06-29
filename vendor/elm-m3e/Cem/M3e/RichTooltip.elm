@@ -1,35 +1,16 @@
 module Cem.M3e.RichTooltip exposing
-    ( component
-    , disabled, for, hideDelay, Position(..), position, showDelay, TouchGestures(..), touchGestures
-    , onBeforetoggle, onToggle
-    , subheadSlot, actionsSlot
-    , positionToString, touchGesturesToString
+    ( component, disabled, for, hideDelay, position, showDelay
+    , touchGestures, isopen, onBeforetoggle, onToggle, subheadSlot, actionsSlot
     )
 
 {-| Provides contextual details for a control, such as explaining the value or purpose of a feature.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, for, hideDelay, Position, position, showDelay, TouchGestures, touchGestures
-
-
-### Events
-
-@docs onBeforetoggle, onToggle
-
-
-### Slots
-
-@docs subheadSlot, actionsSlot
+@docs component, disabled, for, hideDelay, position, showDelay
+@docs touchGestures, isopen, onBeforetoggle, onToggle, subheadSlot, actionsSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -52,6 +33,29 @@ import Json.Encode
 
   - `subhead`: Optional subhead text displayed above the supporting content.
   - `actions`: Optional action elements displayed at the bottom of the tooltip.
+
+**CSS Custom Properties:**
+
+  - `--m3e-rich-tooltip-padding-top`: Top padding of the tooltip container.
+  - `--m3e-rich-tooltip-padding-bottom`: Bottom padding of the tooltip container (when no actions are present).
+  - `--m3e-rich-tooltip-padding-inline`: Horizontal padding of the tooltip container.
+  - `--m3e-rich-tooltip-max-width`: Maximum width of the tooltip surface.
+  - `--m3e-rich-tooltip-shape`: Border‑radius of the tooltip container.
+  - `--m3e-rich-tooltip-container-color`: Background color of the tooltip surface.
+  - `--m3e-rich-tooltip-subhead-color`: Color of the subhead text.
+  - `--m3e-rich-tooltip-subhead-font-size`: Font size of the subhead text.
+  - `--m3e-rich-tooltip-subhead-font-weight`: Font weight of the subhead text.
+  - `--m3e-rich-tooltip-subhead-line-height`: Line height of the subhead text.
+  - `--m3e-rich-tooltip-subhead-tracking`: Letter‑spacing of the subhead text.
+  - `--m3e-rich-tooltip-subhead-bottom-space`: Space below the subhead before the supporting text.
+  - `--m3e-rich-tooltip-supporting-text-color`: Color of the supporting text.
+  - `--m3e-rich-tooltip-supporting-text-font-size`: Font size of the supporting text.
+  - `--m3e-rich-tooltip-supporting-text-font-weight`: Font weight of the supporting text.
+  - `--m3e-rich-tooltip-supporting-text-line-height`: Line height of the supporting text.
+  - `--m3e-rich-tooltip-supporting-text-tracking`: Letter‑spacing of the supporting text.
+  - `--m3e-rich-tooltip-actions-padding-inline`: Horizontal padding applied to the actions slot area.
+  - `--m3e-rich-tooltip-actions-top-space`: Space above the actions slot.
+  - `--m3e-rich-tooltip-actions-bottom-space`: Space below the actions slot.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -77,90 +81,52 @@ for val_ =
 -}
 hideDelay : Float -> Html.Attribute msg
 hideDelay val_ =
-    Html.Attributes.property "hideDelay" (Json.Encode.float val_)
-
-
-{-| Values for the `position` attribute.
--}
-type Position
-    = Above
-    | AboveAfter
-    | AboveBefore
-    | After
-    | Before
-    | Below
-    | BelowAfter
-    | BelowBefore
+    Html.Attributes.property "hide-delay" (Json.Encode.float val_)
 
 
 {-| The position of the tooltip. (default: `"below-after"`)
 -}
-position : Position -> Html.Attribute msg
-position val_ =
-    Html.Attributes.attribute "position" (positionToString val_)
-
-
-positionToString : Position -> String
-positionToString val_ =
-    case val_ of
-        Above ->
-            "above"
-
-        AboveAfter ->
-            "above-after"
-
-        AboveBefore ->
-            "above-before"
-
-        After ->
-            "after"
-
-        Before ->
-            "before"
-
-        Below ->
-            "below"
-
-        BelowAfter ->
-            "below-after"
-
-        BelowBefore ->
-            "below-before"
+position :
+    Cem.M3e.Common.Value
+        { above : Cem.M3e.Common.Supported
+        , aboveAfter : Cem.M3e.Common.Supported
+        , aboveBefore : Cem.M3e.Common.Supported
+        , after : Cem.M3e.Common.Supported
+        , before : Cem.M3e.Common.Supported
+        , below : Cem.M3e.Common.Supported
+        , belowAfter : Cem.M3e.Common.Supported
+        , belowBefore : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+position =
+    Cem.M3e.Common.position
 
 
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`)
 -}
 showDelay : Float -> Html.Attribute msg
 showDelay val_ =
-    Html.Attributes.property "showDelay" (Json.Encode.float val_)
-
-
-{-| Values for the `touch-gestures` attribute.
--}
-type TouchGestures
-    = Auto
-    | Off
-    | On
+    Html.Attributes.property "show-delay" (Json.Encode.float val_)
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`)
 -}
-touchGestures : TouchGestures -> Html.Attribute msg
-touchGestures val_ =
-    Html.Attributes.attribute "touch-gestures" (touchGesturesToString val_)
+touchGestures :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , off : Cem.M3e.Common.Supported
+        , on : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+touchGestures =
+    Cem.M3e.Common.touchGestures
 
 
-touchGesturesToString : TouchGestures -> String
-touchGesturesToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Off ->
-            "off"
-
-        On ->
-            "on"
+{-| Whether the tooltip is currently open.
+-}
+isopen : Bool -> Html.Attribute msg
+isopen val_ =
+    Html.Attributes.property "isOpen" (Json.Encode.bool val_)
 
 
 {-| Dispatched before the toggle state changes.

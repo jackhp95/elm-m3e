@@ -2,9 +2,6 @@ module Cem.M3e.StepperReset exposing (component)
 
 {-| An element, nested within a clickable element, used to reset a stepper to its initial state.
 
-
-## Component
-
 @docs component
 
 -}

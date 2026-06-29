@@ -99,13 +99,13 @@ suite =
         -- Fix #66 — orientation and link button options
         , test "fix-#66: orientation Vertical emits orientation=vertical" <|
             \_ ->
-                Card.view [ Card.orientation Card.Vertical ]
+                Card.view [ Card.orientation Value.vertical ]
                     |> Element.toNode
                     |> Node.findAttribute "orientation"
                     |> Expect.equal (Just "vertical")
         , test "fix-#66: orientation Horizontal emits orientation=horizontal" <|
             \_ ->
-                Card.view [ Card.orientation Card.Horizontal ]
+                Card.view [ Card.orientation Value.horizontal ]
                     |> Element.toNode
                     |> Node.findAttribute "orientation"
                     |> Expect.equal (Just "horizontal")

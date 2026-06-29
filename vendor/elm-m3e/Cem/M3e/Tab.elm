@@ -1,31 +1,12 @@
 module Cem.M3e.Tab exposing
-    ( component
-    , disabled, for, selected
-    , onBeforeinput, onInput, onChange, onClick
-    , iconSlot
+    ( component, disabled, for, selected, onBeforeinput, onInput
+    , onChange, onClick, iconSlot
     )
 
 {-| An interactive element that, when activated, presents an associated tab panel.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, for, selected
-
-
-### Events
-
-@docs onBeforeinput, onInput, onChange, onClick
-
-
-### Slots
-
-@docs iconSlot
+@docs component, disabled, for, selected, onBeforeinput, onInput
+@docs onChange, onClick, iconSlot
 
 -}
 
@@ -48,6 +29,28 @@ import Json.Encode
 **Slots:**
 
   - `icon`: Renders an icon before the tab's label.
+
+**CSS Custom Properties:**
+
+  - `--m3e-tab-font-size`: Font size for tab label.
+  - `--m3e-tab-font-weight`: Font weight for tab label.
+  - `--m3e-tab-line-height`: Line height for tab label.
+  - `--m3e-tab-tracking`: Letter spacing for tab label.
+  - `--m3e-tab-padding-start`: Padding on the inline start of the tab.
+  - `--m3e-tab-padding-end`: Padding on the inline end of the tab.
+  - `--m3e-tab-focus-ring-shape`: Border radius for the focus ring.
+  - `--m3e-tab-selected-color`: Text color for selected tab.
+  - `--m3e-tab-selected-container-hover-color`: Hover state-layer color for selected tab.
+  - `--m3e-tab-selected-container-focus-color`: Focus state-layer color for selected tab.
+  - `--m3e-tab-selected-ripple-color`: Ripple color for selected tab.
+  - `--m3e-tab-unselected-color`: Text color for unselected tab.
+  - `--m3e-tab-unselected-container-hover-color`: Hover state-layer color for unselected tab.
+  - `--m3e-tab-unselected-container-focus-color`: Focus state-layer color for unselected tab.
+  - `--m3e-tab-unselected-ripple-color`: Ripple color for unselected tab.
+  - `--m3e-tab-disabled-color`: Text color for disabled tab.
+  - `--m3e-tab-disabled-opacity`: Text opacity for disabled tab.
+  - `--m3e-tab-spacing`: Column gap between icon and label.
+  - `--m3e-tab-icon-size`: Font size for slotted icon.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg

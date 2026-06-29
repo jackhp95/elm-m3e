@@ -1,5 +1,5 @@
 module M3e.Card exposing
-    ( Option, Orientation(..), ButtonType(..)
+    ( Option, Orientation, ButtonType
     , variant, orientation, actionable, inline, media, headline, subhead, body, actions, footer
     , formType, name, value
     , href, target, rel, download
@@ -44,7 +44,6 @@ working: with only `body` set, the card's children are exactly the body items.
 
 -}
 
-import Cem.M3e.Card as Cem
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
@@ -68,26 +67,33 @@ type alias Variants =
         }
 
 
-{-| Layout orientation of the card (default `Vertical`).
+{-| Layout orientation of the card, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. Default
+[`vertical`](M3e-Value#vertical).
 
-Upstream: `orientation` attribute on `<m3e-card>`.
-CEM: `CardOrientation` — `"vertical"` or `"horizontal"`.
+Upstream: `orientation` attribute on `<m3e-card>` — `"vertical"` or
+`"horizontal"`.
 
 -}
-type Orientation
-    = Vertical
-    | Horizontal
+type alias Orientation =
+    Value
+        { vertical : Supported
+        , horizontal : Supported
+        }
 
 
-{-| Form submission type for a card acting as a form submitter.
-Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
-default `"button"`. Only relevant when using the card as an interactive button
-in a form context (i.e. when `actionable = True`).
+{-| Form submission type for a card acting as a form submitter, supplied as
+shared [`M3e.Value`](M3e-Value) tokens. Upstream: `FormSubmitter` mixin →
+`type` attribute (`FormSubmitterType`), default
+[`button`](M3e-Value#button). Only relevant when using the card as an
+interactive button in a form context (i.e. when `actionable = True`).
 -}
-type ButtonType
-    = Submit
-    | Reset
-    | Button
+type alias ButtonType =
+    Value
+        { submit : Supported
+        , reset : Supported
+        , button : Supported
+        }
 
 
 type alias Config msg =
@@ -301,10 +307,10 @@ view opts =
         (Node.element "m3e-card"
             (List.filterMap identity
                 [ Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) cfg.variant
-                , Maybe.map (\o -> Node.attribute "orientation" (Cem.orientationToString (toCemOrientation o))) cfg.orientation
+                , Maybe.map (\o -> Node.attribute "orientation" (Value.toString o)) cfg.orientation
                 , Just (Node.property "actionable" (Encode.bool cfg.actionable))
                 , Just (Node.property "inline" (Encode.bool cfg.inline))
-                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) cfg.formType
+                , Maybe.map (\t -> Node.attribute "type" (Value.toString t)) cfg.formType
                 , Maybe.map (\v -> Node.attribute "name" v) cfg.name
                 , Maybe.map (\v -> Node.attribute "value" v) cfg.value
                 , Maybe.map (\v -> Node.attribute "href" v) cfg.href
@@ -362,24 +368,3 @@ footerSection maybeFooter =
         maybeFooter
 
 
-toTypeString : ButtonType -> String
-toTypeString t =
-    case t of
-        Submit ->
-            "submit"
-
-        Reset ->
-            "reset"
-
-        Button ->
-            "button"
-
-
-toCemOrientation : Orientation -> Cem.Orientation
-toCemOrientation o =
-    case o of
-        Vertical ->
-            Cem.Vertical
-
-        Horizontal ->
-            Cem.Horizontal

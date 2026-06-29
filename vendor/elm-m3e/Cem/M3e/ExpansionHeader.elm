@@ -1,35 +1,16 @@
 module Cem.M3e.ExpansionHeader exposing
-    ( component
-    , hideToggle, ToggleDirection(..), toggleDirection, TogglePosition(..), togglePosition, disabled
-    , onClick
+    ( component, hideToggle, toggleDirection, togglePosition, disabled, onClick
     , toggleIconSlot
-    , toggleDirectionToString, togglePositionToString
     )
 
 {-| A button used to toggle the expanded state of an expansion panel.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs hideToggle, ToggleDirection, toggleDirection, TogglePosition, togglePosition, disabled
-
-
-### Events
-
-@docs onClick
-
-
-### Slots
-
+@docs component, hideToggle, toggleDirection, togglePosition, disabled, onClick
 @docs toggleIconSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -47,6 +28,19 @@ import Json.Encode
 
   - `toggle-icon`: Renders the icon of the expansion toggle.
 
+**CSS Custom Properties:**
+
+  - `--m3e-expansion-header-collapsed-height`: Height of the header when the panel is collapsed.
+  - `--m3e-expansion-header-expanded-height`: Height of the header when the panel is expanded.
+  - `--m3e-expansion-header-padding-left`: Left padding inside the header.
+  - `--m3e-expansion-header-padding-right`: Right padding inside the header.
+  - `--m3e-expansion-header-spacing`: Spacing between header elements.
+  - `--m3e-expansion-header-toggle-icon-size`: Size of the toggle icon (e.g. chevron).
+  - `--m3e-expansion-header-font-size`: The font size of the header text.
+  - `--m3e-expansion-header-font-weight`: The font weight of the header text.
+  - `--m3e-expansion-header-line-height`: The line height of the header text.
+  - `--m3e-expansion-header-tracking`: Letter spacing (tracking) of the header text.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -57,55 +51,31 @@ component attributes children =
 -}
 hideToggle : Bool -> Html.Attribute msg
 hideToggle val_ =
-    Html.Attributes.property "hideToggle" (Json.Encode.bool val_)
-
-
-{-| Values for the `toggle-direction` attribute.
--}
-type ToggleDirection
-    = Horizontal
-    | Vertical
+    Html.Attributes.property "hide-toggle" (Json.Encode.bool val_)
 
 
 {-| The direction of the expansion toggle. (default: `"vertical"`)
 -}
-toggleDirection : ToggleDirection -> Html.Attribute msg
-toggleDirection val_ =
-    Html.Attributes.attribute "toggle-direction" (toggleDirectionToString val_)
-
-
-toggleDirectionToString : ToggleDirection -> String
-toggleDirectionToString val_ =
-    case val_ of
-        Horizontal ->
-            "horizontal"
-
-        Vertical ->
-            "vertical"
-
-
-{-| Values for the `toggle-position` attribute.
--}
-type TogglePosition
-    = After
-    | Before
+toggleDirection :
+    Cem.M3e.Common.Value
+        { horizontal : Cem.M3e.Common.Supported
+        , vertical : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+toggleDirection =
+    Cem.M3e.Common.toggleDirection
 
 
 {-| The position of the expansion toggle. (default: `"after"`)
 -}
-togglePosition : TogglePosition -> Html.Attribute msg
-togglePosition val_ =
-    Html.Attributes.attribute "toggle-position" (togglePositionToString val_)
-
-
-togglePositionToString : TogglePosition -> String
-togglePositionToString val_ =
-    case val_ of
-        After ->
-            "after"
-
-        Before ->
-            "before"
+togglePosition :
+    Cem.M3e.Common.Value
+        { after : Cem.M3e.Common.Supported
+        , before : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+togglePosition =
+    Cem.M3e.Common.togglePosition
 
 
 {-| Whether the element is disabled. (default: `false`)

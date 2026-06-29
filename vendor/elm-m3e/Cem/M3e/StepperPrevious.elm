@@ -2,9 +2,6 @@ module Cem.M3e.StepperPrevious exposing (component)
 
 {-| An element, nested within a clickable element, used to move a stepper to the previous step.
 
-
-## Component
-
 @docs component
 
 -}

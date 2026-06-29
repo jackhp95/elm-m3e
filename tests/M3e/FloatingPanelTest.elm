@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.FloatingPanel as FloatingPanel
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -26,14 +27,14 @@ suite =
                 node []
                     |> Node.findAttribute "scroll-strategy"
                     |> Expect.equal Nothing
-        , test "scrollStrategy Hide emits scroll-strategy=hide" <|
+        , test "scrollStrategy hide emits scroll-strategy=hide" <|
             \_ ->
-                node [ FloatingPanel.scrollStrategy FloatingPanel.Hide ]
+                node [ FloatingPanel.scrollStrategy Value.hide ]
                     |> Node.findAttribute "scroll-strategy"
                     |> Expect.equal (Just "hide")
-        , test "scrollStrategy Reposition emits scroll-strategy=reposition" <|
+        , test "scrollStrategy reposition emits scroll-strategy=reposition" <|
             \_ ->
-                node [ FloatingPanel.scrollStrategy FloatingPanel.Reposition ]
+                node [ FloatingPanel.scrollStrategy Value.reposition ]
                     |> Node.findAttribute "scroll-strategy"
                     |> Expect.equal (Just "reposition")
         , test "fitAnchorWidth=false is always emitted as a DOM property" <|

@@ -1,19 +1,8 @@
-module Cem.M3e.Divider exposing
-    ( component
-    , inset, insetStart, insetEnd, vertical
-    )
+module Cem.M3e.Divider exposing (component, inset, insetStart, insetEnd, vertical)
 
 {-| A thin line that separates content in lists or other containers.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs inset, insetStart, insetEnd, vertical
+@docs component, inset, insetStart, insetEnd, vertical
 
 -}
 
@@ -23,6 +12,15 @@ import Json.Encode
 
 
 {-| A thin line that separates content in lists or other containers.
+
+**CSS Custom Properties:**
+
+  - `--m3e-divider-thickness`: Thickness of the divider line.
+  - `--m3e-divider-color`: Color of the divider line.
+  - `--m3e-divider-inset-size`: When inset, fallback inset size used when no specific start or end inset is provided.
+  - `--m3e-divider-inset-start-size`: When inset, leading inset size.
+  - `--m3e-divider-inset-end-size`: When inset, trailing inset size.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -40,14 +38,14 @@ inset val_ =
 -}
 insetStart : Bool -> Html.Attribute msg
 insetStart val_ =
-    Html.Attributes.property "insetStart" (Json.Encode.bool val_)
+    Html.Attributes.property "inset-start" (Json.Encode.bool val_)
 
 
 {-| Whether the divider is indented with padding on the trailing side. (default: `false`)
 -}
 insetEnd : Bool -> Html.Attribute msg
 insetEnd val_ =
-    Html.Attributes.property "insetEnd" (Json.Encode.bool val_)
+    Html.Attributes.property "inset-end" (Json.Encode.bool val_)
 
 
 {-| Whether the divider is vertically aligned with adjacent content. (default: `false`)

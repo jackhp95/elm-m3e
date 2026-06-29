@@ -2,9 +2,6 @@ module Cem.M3e.MenuItemGroup exposing (component)
 
 {-| Groups related items (such a radios) in a menu.
 
-
-## Component
-
 @docs component
 
 -}

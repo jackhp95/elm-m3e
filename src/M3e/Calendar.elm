@@ -1,5 +1,5 @@
 module M3e.Calendar exposing
-    ( Option, StartView(..)
+    ( Option, StartView
     , id, date, minDate, maxDate, rangeStart, rangeEnd, startView, startAt
     , previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
     , previousMultiYearLabel, nextMultiYearLabel, onChange
@@ -69,25 +69,29 @@ authoritative fix is a tiny JS shim that listens to `change` and re-fires:
 
 -}
 
-import Cem.M3e.Calendar as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -----------------------------------------------------------------------
 
 
-{-| The view the calendar opens to.
+{-| The view the calendar opens to, supplied as shared
+[`M3e.Value`](M3e-Value) tokens ([`month`](M3e-Value#month),
+[`year`](M3e-Value#year), or [`multiYear`](M3e-Value#multiYear)).
 -}
-type StartView
-    = MonthView
-    | YearView
-    | MultiYearView
+type alias StartView =
+    Value
+        { month : Supported
+        , year : Supported
+        , multiYear : Supported
+        }
 
 
 {-| An opaque configuration option for [`view`](#view).
@@ -183,7 +187,8 @@ rangeEnd s =
     Internal.option (\c -> { c | rangeEnd = Just s })
 
 
-{-| Set the initial view (`MonthView`, `YearView`, `MultiYearView`).
+{-| Set the initial view ([`month`](M3e-Value#month), [`year`](M3e-Value#year),
+or [`multiYear`](M3e-Value#multiYear)).
 -}
 startView : StartView -> Option msg
 startView sv =
@@ -287,7 +292,7 @@ view opts =
                 , Maybe.map (Node.attribute "range-start") c.rangeStart
                 , Maybe.map (Node.attribute "range-end") c.rangeEnd
                 , Maybe.map
-                    (\sv -> Node.attribute "start-view" (Cem.startViewToString (toCemStartView sv)))
+                    (\sv -> Node.attribute "start-view" (Value.toString sv))
                     c.startView
                 , Maybe.map (Node.attribute "start-at") c.startAt
                 , Maybe.map (Node.attribute "previous-month-label") c.previousMonthLabel
@@ -310,21 +315,6 @@ view opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-{-| Translate the local `StartView` to its `Cem.M3e.Calendar` counterpart.
--}
-toCemStartView : StartView -> Cem.StartView
-toCemStartView sv =
-    case sv of
-        MonthView ->
-            Cem.Month
-
-        YearView ->
-            Cem.Year
-
-        MultiYearView ->
-            Cem.MultiYear
 
 
 {-| Decode the ISO string from `event.target.date` (a JS Date object).

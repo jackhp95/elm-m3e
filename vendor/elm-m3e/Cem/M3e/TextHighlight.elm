@@ -1,29 +1,16 @@
 module Cem.M3e.TextHighlight exposing
-    ( component
-    , caseSensitive, disabled, Mode(..), mode, term
+    ( component, caseSensitive, disabled, mode, term, issupported
     , onHighlight
-    , modeToString
     )
 
 {-| Highlights text which matches a given search term.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs caseSensitive, disabled, Mode, mode, term
-
-
-### Events
-
+@docs component, caseSensitive, disabled, mode, term, issupported
 @docs onHighlight
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -37,6 +24,13 @@ import Json.Encode
 
   - `highlight`: Dispatched when content is highlighted.
 
+**CSS Custom Properties:**
+
+  - `--m3e-text-highlight-container-color`: Background color applied to highlighted text ranges.
+  - `--m3e-text-highlight-color`: Foreground color of highlighted text content.
+  - `--m3e-text-highlight-decoration`: Optional text decoration (e.g., underline, line-through) for highlighted text.
+  - `--m3e-text-highlight-shadow`: Optional text shadow for emphasis or contrast.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -47,7 +41,7 @@ component attributes children =
 -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
+    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
 
 
 {-| A value indicating whether text highlighting is disabled. (default: `false`)
@@ -57,32 +51,17 @@ disabled val_ =
     Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
-{-| Values for the `mode` attribute.
--}
-type Mode
-    = Contains
-    | EndsWith
-    | StartsWith
-
-
 {-| The mode in which to highlight text. (default: `"contains"`)
 -}
-mode : Mode -> Html.Attribute msg
-mode val_ =
-    Html.Attributes.attribute "mode" (modeToString val_)
-
-
-modeToString : Mode -> String
-modeToString val_ =
-    case val_ of
-        Contains ->
-            "contains"
-
-        EndsWith ->
-            "ends-with"
-
-        StartsWith ->
-            "starts-with"
+mode :
+    Cem.M3e.Common.Value
+        { contains : Cem.M3e.Common.Supported
+        , endsWith : Cem.M3e.Common.Supported
+        , startsWith : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+mode =
+    Cem.M3e.Common.mode
 
 
 {-| The term to highlight. (default: `""`)
@@ -90,6 +69,13 @@ modeToString val_ =
 term : String -> Html.Attribute msg
 term val_ =
     Html.Attributes.attribute "term" val_
+
+
+{-| A value indicating whether text highlighting is supported by the browser.
+-}
+issupported : Bool -> Html.Attribute msg
+issupported val_ =
+    Html.Attributes.property "isSupported" (Json.Encode.bool val_)
 
 
 {-| Dispatched when content is highlighted.

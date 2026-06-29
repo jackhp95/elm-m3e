@@ -2,9 +2,6 @@ module Cem.M3e.BottomSheetAction exposing (component)
 
 {-| An element, nested within a clickable element, used to close a parenting bottom sheet.
 
-
-## Component
-
 @docs component
 
 -}

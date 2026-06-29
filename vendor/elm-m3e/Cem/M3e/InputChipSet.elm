@@ -1,31 +1,14 @@
 module Cem.M3e.InputChipSet exposing
-    ( component
-    , disabled, name, required, vertical
-    , onChange
-    , inputSlot
+    ( component, disabled, name, required, vertical, shouldlabelfloat
+    , willvalidate, validationmessage, dirty, pristine, touched, untouched
+    , onChange, inputSlot
     )
 
 {-| A container that transforms user input into a cohesive set of interactive chips, supporting entry, editing, and removal of discrete values.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, name, required, vertical
-
-
-### Events
-
-@docs onChange
-
-
-### Slots
-
-@docs inputSlot
+@docs component, disabled, name, required, vertical, shouldlabelfloat
+@docs willvalidate, validationmessage, dirty, pristine, touched, untouched
+@docs onChange, inputSlot
 
 -}
 
@@ -49,6 +32,10 @@ import Json.Encode
 **Slots:**
 
   - `input`: Renders the input element used to add new chips to the set.
+
+**CSS Custom Properties:**
+
+  - `--m3e-chip-set-spacing`: The spacing (gap) between chips in the set.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -82,6 +69,55 @@ required val_ =
 vertical : Bool -> Html.Attribute msg
 vertical val_ =
     Html.Attributes.property "vertical" (Json.Encode.bool val_)
+
+
+{-| Set the `shouldLabelFloat` property.
+-}
+shouldlabelfloat : Bool -> Html.Attribute msg
+shouldlabelfloat val_ =
+    Html.Attributes.property "shouldLabelFloat" (Json.Encode.bool val_)
+
+
+{-| Whether the element is a submittable element that is a candidate for constraint validation.
+-}
+willvalidate : Bool -> Html.Attribute msg
+willvalidate val_ =
+    Html.Attributes.property "willValidate" (Json.Encode.bool val_)
+
+
+{-| The error message that would be displayed if the user submits the form, or an empty string if no error message.
+-}
+validationmessage : String -> Html.Attribute msg
+validationmessage val_ =
+    Html.Attributes.property "validationMessage" (Json.Encode.string val_)
+
+
+{-| Whether the user has modified the value of the element.
+-}
+dirty : Bool -> Html.Attribute msg
+dirty val_ =
+    Html.Attributes.property "dirty" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not modified the value of the element.
+-}
+pristine : Bool -> Html.Attribute msg
+pristine val_ =
+    Html.Attributes.property "pristine" (Json.Encode.bool val_)
+
+
+{-| Whether the user has interacted when the element.
+-}
+touched : Bool -> Html.Attribute msg
+touched val_ =
+    Html.Attributes.property "touched" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not interacted when the element.
+-}
+untouched : Bool -> Html.Attribute msg
+untouched val_ =
+    Html.Attributes.property "untouched" (Json.Encode.bool val_)
 
 
 {-| Dispatched when a chip is added to, or removed from, the set.

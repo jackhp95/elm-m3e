@@ -1,29 +1,31 @@
-module Cem.M3e.Toolbar exposing
-    ( component
-    , elevated, Shape(..), shape, Variant(..), variant, vertical
-    , shapeToString, variantToString
-    )
+module Cem.M3e.Toolbar exposing (component, elevated, shape, variant, vertical)
 
 {-| Presents frequently used actions relevant to the current page.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs elevated, Shape, shape, Variant, variant, vertical
+@docs component, elevated, shape, variant, vertical
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Json.Encode
 
 
 {-| Presents frequently used actions relevant to the current page.
+
+**CSS Custom Properties:**
+
+  - `--m3e-toolbar-size`: The size (height or width) of the toolbar.
+  - `--m3e-toolbar-spacing`: The gap between toolbar items.
+  - `--m3e-toolbar-rounded-shape`: Border radius for rounded shape.
+  - `--m3e-toolbar-rounded-padding`: Padding for rounded shape.
+  - `--m3e-toolbar-square-padding`: Padding for square shape.
+  - `--m3e-toolbar-standard-container-color`: Container color for the standard variant.
+  - `--m3e-toolbar-standard-color`: Foreground color for the standard variant.
+  - `--m3e-toolbar-vibrant-container-color`: Container color for the vibrant variant.
+  - `--m3e-toolbar-vibrant-color`: Foreground color for the vibrant variant.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -37,52 +39,28 @@ elevated val_ =
     Html.Attributes.property "elevated" (Json.Encode.bool val_)
 
 
-{-| Values for the `shape` attribute.
--}
-type Shape
-    = Rounded
-    | Square
-
-
 {-| The shape of the toolbar. (default: `"square"`)
 -}
-shape : Shape -> Html.Attribute msg
-shape val_ =
-    Html.Attributes.attribute "shape" (shapeToString val_)
-
-
-shapeToString : Shape -> String
-shapeToString val_ =
-    case val_ of
-        Rounded ->
-            "rounded"
-
-        Square ->
-            "square"
-
-
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Standard
-    | Vibrant
+shape :
+    Cem.M3e.Common.Value
+        { rounded : Cem.M3e.Common.Supported
+        , square : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+shape =
+    Cem.M3e.Common.shape
 
 
 {-| The appearance variant of the toolbar. (default: `"standard"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Standard ->
-            "standard"
-
-        Vibrant ->
-            "vibrant"
+variant :
+    Cem.M3e.Common.Value
+        { standard : Cem.M3e.Common.Supported
+        , vibrant : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
 {-| Whether the element is oriented vertically. (default: `false`)

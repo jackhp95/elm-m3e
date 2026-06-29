@@ -1,11 +1,11 @@
 module M3e.ShapeTest exposing (suite)
 
-import Cem.M3e.Shape
 import Expect
 import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.Shape as Shape
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -48,9 +48,9 @@ suite =
                     |> Node.childrenOf
                     |> List.length
                     |> Expect.equal 2
-        , test "name option does not crash (rawAttr — not introspectable)" <|
+        , test "name option emits the shared Value token as the name attribute" <|
             \_ ->
-                nodeWith [ Shape.name Cem.M3e.Shape.Circle ] []
-                    |> Node.tagOf
-                    |> Expect.equal (Just "m3e-shape")
+                nodeWith [ Shape.name Value.circle ] []
+                    |> Node.findAttribute "name"
+                    |> Expect.equal (Just "circle")
         ]

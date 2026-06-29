@@ -1,28 +1,28 @@
-module Cem.M3e.ThemeIcon exposing
-    ( component
-    , color, Scheme(..), scheme, Variant(..), variant
-    , schemeToString, variantToString
-    )
+module Cem.M3e.ThemeIcon exposing (component, color, scheme, variant, isdark)
 
 {-| An icon that visually presents a preview of a theme.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs color, Scheme, scheme, Variant, variant
+@docs component, color, scheme, variant, isdark
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
+import Json.Encode
 
 
 {-| An icon that visually presents a preview of a theme.
+
+**CSS Custom Properties:**
+
+  - `--m3e-theme-icon-size`: Size of the theme icon.
+  - `--m3e-theme-icon-shape`: Border radius of the icon container.
+  - `--m3e-theme-icon-outline-color`: Outline stroke color of the icon border.
+  - `--m3e-theme-icon-outline-opacity`: Opacity percentage applied to the outline color.
+  - `--m3e-theme-icon-container-color`: Fill color for the container layer of the previewed theme.
+  - `--m3e-theme-icon-color`: Fill color for the primary layer of the previewed theme.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -36,81 +36,40 @@ color val_ =
     Html.Attributes.attribute "color" val_
 
 
-{-| Values for the `scheme` attribute.
--}
-type Scheme
-    = Auto
-    | Dark
-    | Light
-
-
 {-| The color scheme of the theme. (default: `"auto"`)
 -}
-scheme : Scheme -> Html.Attribute msg
-scheme val_ =
-    Html.Attributes.attribute "scheme" (schemeToString val_)
-
-
-schemeToString : Scheme -> String
-schemeToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Dark ->
-            "dark"
-
-        Light ->
-            "light"
-
-
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Content
-    | Expressive
-    | Fidelity
-    | FruitSalad
-    | Monochrome
-    | Neutral
-    | Rainbow
-    | TonalSpot
-    | Vibrant
+scheme :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , dark : Cem.M3e.Common.Supported
+        , light : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+scheme =
+    Cem.M3e.Common.scheme
 
 
 {-| The color variant of the theme. (default: `"neutral"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
+variant :
+    Cem.M3e.Common.Value
+        { content : Cem.M3e.Common.Supported
+        , expressive : Cem.M3e.Common.Supported
+        , fidelity : Cem.M3e.Common.Supported
+        , fruitSalad : Cem.M3e.Common.Supported
+        , monochrome : Cem.M3e.Common.Supported
+        , neutral : Cem.M3e.Common.Supported
+        , rainbow : Cem.M3e.Common.Supported
+        , tonalSpot : Cem.M3e.Common.Supported
+        , vibrant : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Content ->
-            "content"
-
-        Expressive ->
-            "expressive"
-
-        Fidelity ->
-            "fidelity"
-
-        FruitSalad ->
-            "fruit-salad"
-
-        Monochrome ->
-            "monochrome"
-
-        Neutral ->
-            "neutral"
-
-        Rainbow ->
-            "rainbow"
-
-        TonalSpot ->
-            "tonal-spot"
-
-        Vibrant ->
-            "vibrant"
+{-| Whether a dark theme is applied.
+-}
+isdark : Bool -> Html.Attribute msg
+isdark val_ =
+    Html.Attributes.property "isDark" (Json.Encode.bool val_)

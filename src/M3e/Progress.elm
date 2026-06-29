@@ -32,7 +32,6 @@ Circular emits `indeterminate=true` DOM property).
 
 -}
 
-import Cem.M3e.LinearProgressIndicator as CemLinear
 import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -133,7 +132,7 @@ view req opts =
                                 Just (Node.property "value" (Encode.float (toFloat v)))
 
                             Nothing ->
-                                Just (Node.rawAttr (CemLinear.mode CemLinear.Indeterminate))
+                                Just (Node.attribute "mode" (Value.toString Value.indeterminate))
                         , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
                         ]
                         ++ c.attributes

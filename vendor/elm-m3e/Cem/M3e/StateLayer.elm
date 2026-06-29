@@ -1,19 +1,8 @@
-module Cem.M3e.StateLayer exposing
-    ( component
-    , disabled, disableHover, for
-    )
+module Cem.M3e.StateLayer exposing (component, disabled, disableHover, for)
 
 {-| Provides focus and hover state layer treatment for an interactive element.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, disableHover, for
+@docs component, disabled, disableHover, for
 
 -}
 
@@ -23,6 +12,16 @@ import Json.Encode
 
 
 {-| Provides focus and hover state layer treatment for an interactive element.
+
+**CSS Custom Properties:**
+
+  - `--m3e-state-layer-duration`: Duration of state layer changes.
+  - `--m3e-state-layer-easing`: Easing curve of state layer changes.
+  - `--m3e-state-layer-focus-color`: Color on hover.
+  - `--m3e-state-layer-focus-opacity`: Opacity on focus.
+  - `--m3e-state-layer-hover-color`: Color on hover.
+  - `--m3e-state-layer-hover-opacity`: Opacity on hover.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -42,7 +41,7 @@ be controlled manually using the `show` and `hide` methods. (default: `false`)
 -}
 disableHover : Bool -> Html.Attribute msg
 disableHover val_ =
-    Html.Attributes.property "disableHover" (Json.Encode.bool val_)
+    Html.Attributes.property "disable-hover" (Json.Encode.bool val_)
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`)

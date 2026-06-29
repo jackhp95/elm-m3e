@@ -1,7 +1,7 @@
 module M3e.Tooltip exposing
     ( plain, rich
     , PlainOption, RichOption
-    , PlainPosition(..), RichPosition(..)
+    , PlainPosition, RichPosition
     , plainId, plainPosition, plainHideDelay
     , richId, richPosition, richHideDelay, richSubhead, richActions
     )
@@ -37,39 +37,44 @@ No Elm state is required for visibility; the element manages show/hide.
 
 -}
 
-import Cem.M3e.RichTooltip as CemRich
-import Cem.M3e.Tooltip as CemPlain
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Tooltip position relative to the anchor element (plain tooltips).
+{-| Tooltip position relative to the anchor element (plain tooltips), supplied
+as shared [`M3e.Value`](M3e-Value) tokens.
 -}
-type PlainPosition
-    = PlainAbove
-    | PlainBelow
-    | PlainBefore
-    | PlainAfter
+type alias PlainPosition =
+    Value
+        { above : Supported
+        , below : Supported
+        , before : Supported
+        , after : Supported
+        }
 
 
 {-| Tooltip position relative to the anchor element (rich tooltips; includes
-diagonal variants supported by `<m3e-rich-tooltip>`).
+diagonal variants supported by `<m3e-rich-tooltip>`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 -}
-type RichPosition
-    = RichAbove
-    | RichAboveAfter
-    | RichAboveBefore
-    | RichAfter
-    | RichBefore
-    | RichBelow
-    | RichBelowAfter
-    | RichBelowBefore
+type alias RichPosition =
+    Value
+        { above : Supported
+        , aboveAfter : Supported
+        , aboveBefore : Supported
+        , after : Supported
+        , before : Supported
+        , below : Supported
+        , belowAfter : Supported
+        , belowBefore : Supported
+        }
 
 
 
@@ -190,7 +195,7 @@ plain req opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
                 , Just (Node.attribute "for" req.anchorId)
-                , Maybe.map (\p -> Node.rawAttr (CemPlain.position (toCemPlainPosition p))) c.position
+                , Maybe.map (\p -> Node.attribute "position" (Value.toString p)) c.position
                 , Maybe.map (\ms -> Node.property "hideDelay" (Encode.float (toFloat ms))) c.hideDelay
                 ]
             )
@@ -252,7 +257,7 @@ rich req opts =
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
                 , Just (Node.attribute "for" req.anchorId)
-                , Maybe.map (\p -> Node.rawAttr (CemRich.position (toCemRichPosition p))) c.position
+                , Maybe.map (\p -> Node.attribute "position" (Value.toString p)) c.position
                 , Maybe.map (\ms -> Node.property "hideDelay" (Encode.float (toFloat ms))) c.hideDelay
                 ]
             )
@@ -320,47 +325,3 @@ applyRich opt c =
 
         RichActions rs ->
             { c | actions = rs }
-
-
-toCemPlainPosition : PlainPosition -> CemPlain.Position
-toCemPlainPosition p =
-    case p of
-        PlainAbove ->
-            CemPlain.Above
-
-        PlainBelow ->
-            CemPlain.Below
-
-        PlainBefore ->
-            CemPlain.Before
-
-        PlainAfter ->
-            CemPlain.After
-
-
-toCemRichPosition : RichPosition -> CemRich.Position
-toCemRichPosition p =
-    case p of
-        RichAbove ->
-            CemRich.Above
-
-        RichAboveAfter ->
-            CemRich.AboveAfter
-
-        RichAboveBefore ->
-            CemRich.AboveBefore
-
-        RichAfter ->
-            CemRich.After
-
-        RichBefore ->
-            CemRich.Before
-
-        RichBelow ->
-            CemRich.Below
-
-        RichBelowAfter ->
-            CemRich.BelowAfter
-
-        RichBelowBefore ->
-            CemRich.BelowBefore

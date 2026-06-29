@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Collapsible as Collapsible
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -50,14 +51,14 @@ suite =
                 node []
                     |> Node.findAttribute "orientation"
                     |> Expect.equal Nothing
-        , test "orientation Vertical emits orientation=vertical" <|
+        , test "orientation vertical emits orientation=vertical" <|
             \_ ->
-                node [ Collapsible.orientation Collapsible.Vertical ]
+                node [ Collapsible.orientation Value.vertical ]
                     |> Node.findAttribute "orientation"
                     |> Expect.equal (Just "vertical")
-        , test "orientation Horizontal emits orientation=horizontal" <|
+        , test "orientation horizontal emits orientation=horizontal" <|
             \_ ->
-                node [ Collapsible.orientation Collapsible.Horizontal ]
+                node [ Collapsible.orientation Value.horizontal ]
                     |> Node.findAttribute "orientation"
                     |> Expect.equal (Just "horizontal")
         , test "content renders into the default slot" <|

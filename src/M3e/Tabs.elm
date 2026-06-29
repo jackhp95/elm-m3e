@@ -1,6 +1,6 @@
 module M3e.Tabs exposing
     ( view, tab, panel
-    , Option, TabOption, PanelOption, HeaderPosition(..)
+    , Option, TabOption, PanelOption
     , tabSelected, tabDisabled, tabFor, tabOnClick, tabIcon
     , panelId
     , stretch, variant, headerPosition
@@ -30,14 +30,13 @@ responsibility via `tabFor` / `panelId` options — they choose meaningful,
 stable ids.
 
 @docs view, tab, panel
-@docs Option, TabOption, PanelOption, HeaderPosition
+@docs Option, TabOption, PanelOption
 @docs tabSelected, tabDisabled, tabFor, tabOnClick, tabIcon
 @docs panelId
 @docs stretch, variant, headerPosition
 
 -}
 
-import Cem.M3e.Tabs as CemTabs
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
@@ -58,13 +57,15 @@ type alias Variants =
         }
 
 
-{-| Where the header strip sits relative to its panels.
-`Before` (default) places the strip ahead of the panels; `After` places it
-after.
+{-| Where the header strip sits relative to its panels, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. [`before`](M3e-Value#before) (default) places
+the strip ahead of the panels; [`after`](M3e-Value#after) places it after.
 -}
-type HeaderPosition
-    = Before
-    | After
+type alias HeaderPositions =
+    Value
+        { before : Supported
+        , after : Supported
+        }
 
 
 {-| An option configuring an individual tab.
@@ -145,9 +146,10 @@ variant v =
     Internal.option (\c -> { c | variant = v })
 
 
-{-| Where the header strip sits relative to panels. Default `Before`.
+{-| Where the header strip sits relative to panels. Default
+[`M3e.Value.before`](M3e-Value#before).
 -}
-headerPosition : HeaderPosition -> Option msg
+headerPosition : HeaderPositions -> Option msg
 headerPosition hp =
     Internal.option (\c -> { c | headerPosition = hp })
 
@@ -252,7 +254,7 @@ panel req opts =
 type alias StripConfig =
     { stretch : Bool
     , variant : Variants
-    , headerPosition : HeaderPosition
+    , headerPosition : HeaderPositions
     }
 
 
@@ -260,7 +262,7 @@ defaultStripConfig : StripConfig
 defaultStripConfig =
     { stretch = False
     , variant = Value.secondary
-    , headerPosition = Before
+    , headerPosition = Value.before
     }
 
 
@@ -300,19 +302,9 @@ view req opts =
         (Node.element "m3e-tabs"
             [ Node.property "stretch" (Encode.bool c.stretch)
             , Node.attribute "variant" (Value.toString c.variant)
-            , Node.rawAttr (CemTabs.headerPosition (toCemHeaderPosition c.headerPosition))
+            , Node.attribute "header-position" (Value.toString c.headerPosition)
             ]
             (List.map Element.toNode req.tabs
                 ++ List.map (Node.withSlot "panel" << Element.toNode) req.panels
             )
         )
-
-
-toCemHeaderPosition : HeaderPosition -> CemTabs.HeaderPosition
-toCemHeaderPosition hp =
-    case hp of
-        Before ->
-            CemTabs.Before
-
-        After ->
-            CemTabs.After

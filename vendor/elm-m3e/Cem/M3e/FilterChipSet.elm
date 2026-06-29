@@ -1,26 +1,15 @@
 module Cem.M3e.FilterChipSet exposing
-    ( component
-    , disabled, hideSelectionIndicator, multi, name, vertical
-    , onChange, onBeforeinput, onInput
+    ( component, disabled, hideSelectionIndicator, multi, name, vertical
+    , dirty, pristine, touched, untouched, onChange, onBeforeinput
+    , onInput
     )
 
 {-| A container that organizes filter chips into a cohesive group, enabling selection and
 deselection of values used to refine content or trigger contextual behavior.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, hideSelectionIndicator, multi, name, vertical
-
-
-### Events
-
-@docs onChange, onBeforeinput, onInput
+@docs component, disabled, hideSelectionIndicator, multi, name, vertical
+@docs dirty, pristine, touched, untouched, onChange, onBeforeinput
+@docs onInput
 
 -}
 
@@ -44,6 +33,10 @@ deselection of values used to refine content or trigger contextual behavior.
   - `beforeinput`: Dispatched before the selected state of a chip changes.
   - `input`: Dispatched when the selected state of a chip changes.
 
+**CSS Custom Properties:**
+
+  - `--m3e-chip-set-spacing`: The spacing (gap) between chips in the set.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -61,7 +54,7 @@ disabled val_ =
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
 
 
 {-| Whether multiple chips can be selected. (default: `false`)
@@ -83,6 +76,34 @@ name val_ =
 vertical : Bool -> Html.Attribute msg
 vertical val_ =
     Html.Attributes.property "vertical" (Json.Encode.bool val_)
+
+
+{-| Whether the user has modified the value of the element.
+-}
+dirty : Bool -> Html.Attribute msg
+dirty val_ =
+    Html.Attributes.property "dirty" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not modified the value of the element.
+-}
+pristine : Bool -> Html.Attribute msg
+pristine val_ =
+    Html.Attributes.property "pristine" (Json.Encode.bool val_)
+
+
+{-| Whether the user has interacted when the element.
+-}
+touched : Bool -> Html.Attribute msg
+touched val_ =
+    Html.Attributes.property "touched" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not interacted when the element.
+-}
+untouched : Bool -> Html.Attribute msg
+untouched val_ =
+    Html.Attributes.property "untouched" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the selected state of a chip changes.

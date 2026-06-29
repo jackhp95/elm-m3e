@@ -1,19 +1,8 @@
-module Cem.M3e.BottomSheetTrigger exposing
-    ( component
-    , detent, secondary, for
-    )
+module Cem.M3e.BottomSheetTrigger exposing (component, detent, secondary, for)
 
 {-| An element, nested within a clickable element, used to trigger a bottom sheet.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs detent, secondary, for
+@docs component, detent, secondary, for
 
 -}
 

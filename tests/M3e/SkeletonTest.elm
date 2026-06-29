@@ -57,9 +57,9 @@ suite =
                 nodeWith [ Skeleton.shape Value.circular ] []
                     |> Node.findAttribute "shape"
                     |> Expect.equal (Just "circular")
-        , test "animation option does not crash (rawAttr — not introspectable)" <|
+        , test "animation emits the shared Value token as an introspectable attribute" <|
             \_ ->
-                nodeWith [ Skeleton.animation Skeleton.Pulse ] []
-                    |> Node.tagOf
-                    |> Expect.equal (Just "m3e-skeleton")
+                nodeWith [ Skeleton.animation Value.pulse ] []
+                    |> Node.findAttribute "animation"
+                    |> Expect.equal (Just "pulse")
         ]

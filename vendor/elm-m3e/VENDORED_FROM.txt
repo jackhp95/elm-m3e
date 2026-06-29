@@ -1,6 +1,22 @@
-f1fefe8dbb8cb2dc2adfff403e6497c12ba4872c
+5d0221fc4da53b6ab29fd448afcd22980b1d3d17
+
+Generator: elm-cem @ feat/resolve-ts-aliases-to-enums (commit above).
+Source: @m3e/web 2.5.12 (dist/custom-elements.json, with TS string-literal
+aliases inlined from the shipped .d.ts).
+Command: node bin/elm-cem.js --flags-from=<@m3e/web>/dist/custom-elements.json \
+         --output=vendor/elm-m3e --module-prefix=Cem.M3e
+Then: elm-format vendor/elm-m3e --yes
+
+--- VALUE VOCABULARY (2026-06-28) ---
+Regenerated with the shared design-token generator: enum attributes/properties no
+longer emit per-component unions (`type Variant = …` / `*ToString`). They are now
+closed-row re-exports of a library-wide phantom `Value` vocabulary in Cem.M3e.Common
+(`type Value values`, `type Supported`, bare tokens, universal axis builders).
+Setters still return `Html.Attribute msg`; the introspectable IR stays hand-owned
+in elm-m3e's `M3e.Node` (emitting an IR from the generator was evaluated and
+rejected — phantom protection lives on the setter argument, not the output).
 
 --- LOCAL RE-NAMESPACE (2026-06-26) ---
 Modules re-namespaced M3e.* -> Cem.M3e.* in this repo (ADR 0006), freeing M3e.* for
-the library layer. Upstream elm-cem still emits M3e.*; retargeting it to emit Cem.M3e.*
-(and to emit M3e.Node IR) is the deferred "bigger cem refactor".
+the library layer. The generator now emits the Cem.M3e.* prefix directly via
+--module-prefix.

@@ -1,19 +1,8 @@
-module Cem.M3e.NavRailToggle exposing
-    ( component
-    , for
-    )
+module Cem.M3e.NavRailToggle exposing (component, for)
 
 {-| An element, nested within a clickable element, used to toggle the expanded state of a navigation rail.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs for
+@docs component, for
 
 -}
 

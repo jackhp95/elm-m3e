@@ -1,19 +1,8 @@
-module Cem.M3e.DialogAction exposing
-    ( component
-    , returnValue
-    )
+module Cem.M3e.DialogAction exposing (component, returnValue)
 
 {-| An element, nested within a clickable element, used to close a parenting dialog.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs returnValue
+@docs component, returnValue
 
 -}
 

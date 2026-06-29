@@ -1,24 +1,11 @@
 module Cem.M3e.MultiYearView exposing
-    ( component
-    , today, date, activeDate, minDate, maxDate
+    ( component, today, date, activeDate, minDate, maxDate
     , onChange, onActiveChange
     )
 
 {-| An internal component used to display a year selector in a calendar.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs today, date, activeDate, minDate, maxDate
-
-
-### Events
-
+@docs component, today, date, activeDate, minDate, maxDate
 @docs onChange, onActiveChange
 
 -}

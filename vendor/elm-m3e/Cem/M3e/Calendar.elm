@@ -1,39 +1,25 @@
 module Cem.M3e.Calendar exposing
-    ( component
-    , date, maxDate, minDate, rangeEnd, rangeStart, startAt, StartView(..), startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
-    , onChange
+    ( component, date, maxDate, minDate, rangeEnd, rangeStart
+    , startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+    , previousMultiYearLabel, nextMultiYearLabel, periodlabel, canmovepreviousperiod, canmovenextperiod, onChange
     , headerSlot
-    , startViewToString
     )
 
 {-| A calendar used to select a date.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs date, maxDate, minDate, rangeEnd, rangeStart, startAt, StartView, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
-
-
-### Events
-
-@docs onChange
-
-
-### Slots
-
+@docs component, date, maxDate, minDate, rangeEnd, rangeStart
+@docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+@docs previousMultiYearLabel, nextMultiYearLabel, periodlabel, canmovepreviousperiod, canmovenextperiod, onChange
 @docs headerSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| A calendar used to select a date.
@@ -45,6 +31,45 @@ import Json.Decode
 **Slots:**
 
   - `header`: Renders the header of the calendar.
+
+**CSS Custom Properties:**
+
+  - `--m3e-calendar-container-color`: Background color of the container surface.
+  - `--m3e-calendar-container-elevation`: Elevation shadow applied to the container surface.
+  - `--m3e-calendar-container-shape`: Corner radius of the container surface.
+  - `--m3e-calendar-padding`: Padding applied to the calendar header and body.
+  - `--m3e-calendar-period-button-text-color`: Text color used for the period‑navigation buttons in the header.
+  - `--m3e-calendar-weekday-font-size`: Font size of weekday labels in month view.
+  - `--m3e-calendar-weekday-font-weight`: Font weight of weekday labels in month view.
+  - `--m3e-calendar-weekday-line-height`: Line height of weekday labels in month view.
+  - `--m3e-calendar-weekday-tracking`: Letter spacing of weekday labels in month view.
+  - `--m3e-calendar-weekday-color`: Text color for weekday labels in month view.
+  - `--m3e-calendar-date-font-size`: Font size of date cells in month view.
+  - `--m3e-calendar-date-font-weight`: Font weight of date cells in month view.
+  - `--m3e-calendar-date-line-height`: Line height of date cells in month view.
+  - `--m3e-calendar-date-tracking`: Letter spacing of date cells in month view.
+  - `--m3e-calendar-item-font-size`: Font size of items in year and multi‑year views.
+  - `--m3e-calendar-item-font-weight`: Font weight of items in year and multi‑year views.
+  - `--m3e-calendar-item-line-height`: Line height of items in year and multi‑year views.
+  - `--m3e-calendar-item-tracking`: Letter spacing of items in year and multi‑year views.
+  - `--m3e-calendar-item-color`: Text color for date items.
+  - `--m3e-calendar-item-selected-color`: Text color for selected date items.
+  - `--m3e-calendar-item-selected-container-color`: Background color for selected date items.
+  - `--m3e-calendar-item-selected-ripple-color`: Ripple color used when interacting with selected date items.
+  - `--m3e-calendar-item-selected-hover-color`: Hover color used when interacting with selected date items.
+  - `--m3e-calendar-item-selected-focus-color`: Focus color used when interacting with selected date items.
+  - `--m3e-calendar-item-current-outline-thickness`: Outline thickness used to indicate the current date.
+  - `--m3e-calendar-item-current-outline-color`: Outline color used to indicate the current date.
+  - `--m3e-calendar-item-special-color`: Text color for dates marked as special.
+  - `--m3e-calendar-item-special-container-color`: Background color for dates marked as special.
+  - `--m3e-calendar-item-special-ripple-color`: Ripple color used when interacting with dates marked as special.
+  - `--m3e-calendar-item-special-hover-color`: Hover color used when interacting with dates marked as special.
+  - `--m3e-calendar-item-special-focus-color`: Focus color used when interacting with dates marked as special.
+  - `--m3e-calendar-range-container-color`: Background color applied to the selected date range.
+  - `--m3e-calendar-range-color`: Text color for dates within a selected range.
+  - `--m3e-calendar-item-disabled-color`: Color used for disabled date items.
+  - `--m3e-calendar-item-disabled-color-opacity`: Opacity applied to the disabled item color.
+  - `--m3e-calendar-slide-animation-duration`: Duration of slide transitions between calendar views.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -94,32 +119,17 @@ startAt val_ =
     Html.Attributes.attribute "start-at" val_
 
 
-{-| Values for the `start-view` attribute.
--}
-type StartView
-    = Month
-    | MultiYear
-    | Year
-
-
 {-| The initial view used to select a date. (default: `"month"`)
 -}
-startView : StartView -> Html.Attribute msg
-startView val_ =
-    Html.Attributes.attribute "start-view" (startViewToString val_)
-
-
-startViewToString : StartView -> String
-startViewToString val_ =
-    case val_ of
-        Month ->
-            "month"
-
-        MultiYear ->
-            "multi-year"
-
-        Year ->
-            "year"
+startView :
+    Cem.M3e.Common.Value
+        { month : Cem.M3e.Common.Supported
+        , multiYear : Cem.M3e.Common.Supported
+        , year : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+startView =
+    Cem.M3e.Common.startView
 
 
 {-| The accessible label given to the button used to move to the previous month. (default: `"Previous month"`)
@@ -162,6 +172,27 @@ previousMultiYearLabel val_ =
 nextMultiYearLabel : String -> Html.Attribute msg
 nextMultiYearLabel val_ =
     Html.Attributes.attribute "next-multi-year-label" val_
+
+
+{-| The label to present for the current period.
+-}
+periodlabel : String -> Html.Attribute msg
+periodlabel val_ =
+    Html.Attributes.property "periodLabel" (Json.Encode.string val_)
+
+
+{-| Whether the calendar can move to the previous period.
+-}
+canmovepreviousperiod : Bool -> Html.Attribute msg
+canmovepreviousperiod val_ =
+    Html.Attributes.property "canMovePreviousPeriod" (Json.Encode.bool val_)
+
+
+{-| Whether the calendar can move to the next period.
+-}
+canmovenextperiod : Bool -> Html.Attribute msg
+canmovenextperiod val_ =
+    Html.Attributes.property "canMoveNextPeriod" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the selected date changes.

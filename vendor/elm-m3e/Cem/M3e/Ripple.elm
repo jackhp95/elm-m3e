@@ -1,19 +1,8 @@
-module Cem.M3e.Ripple exposing
-    ( component
-    , centered, disabled, for, radius, unbounded
-    )
+module Cem.M3e.Ripple exposing (component, centered, disabled, for, radius, unbounded)
 
 {-| Connects user input to screen reactions using ripples.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs centered, disabled, for, radius, unbounded
+@docs component, centered, disabled, for, radius, unbounded
 
 -}
 
@@ -23,6 +12,16 @@ import Json.Encode
 
 
 {-| Connects user input to screen reactions using ripples.
+
+**CSS Custom Properties:**
+
+  - `--m3e-ripple-color`: The color of the ripple.
+  - `--m3e-ripple-enter-duration`: The duration for the enter animation (expansion from point of contact).
+  - `--m3e-ripple-exit-duration`: The duration for the exit animation (fade-out).
+  - `--m3e-ripple-opacity`: The opacity of the ripple.
+  - `--m3e-ripple-scale-factor`: The factor by which to scale the ripple.
+  - `--m3e-ripple-shape`: The shape of the ripple.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =

@@ -64,13 +64,13 @@ suite =
                     |> Expect.equal 2
         , test "mode ModePush also yields 2 attrs (open + mode)" <|
             \_ ->
-                node [ SideSheet.mode SideSheet.ModePush ]
+                node [ SideSheet.mode Value.push ]
                     |> attrsOf
                     |> List.length
                     |> Expect.equal 2
         , test "mode ModeAuto also yields 2 attrs (open + mode)" <|
             \_ ->
-                node [ SideSheet.mode SideSheet.ModeAuto ]
+                node [ SideSheet.mode Value.auto ]
                     |> attrsOf
                     |> List.length
                     |> Expect.equal 2

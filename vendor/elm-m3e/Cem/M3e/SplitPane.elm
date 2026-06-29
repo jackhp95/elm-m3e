@@ -1,32 +1,10 @@
 module Cem.M3e.SplitPane exposing
-    ( component
-    , label, maxAttr, minAttr, Orientation(..), orientation, overshootLimit, step, value, wrapDetents, name, disabled
-    , onChange, onBeforeinput, onInput
-    , startSlot, endSlot
-    , orientationToString
+    ( component, label, maxAttr, minAttr, orientation, overshootLimit
+    , step, value, wrapDetents, name, disabled, formvalue
+    , onChange, onBeforeinput, onInput, startSlot, endSlot
     )
 
 {-| A dual-view layout that separates content with a movable drag handle.
-
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs label, maxAttr, minAttr, Orientation, orientation, overshootLimit, step, value, wrapDetents, name, disabled
-
-
-### Events
-
-@docs onChange, onBeforeinput, onInput
-
-
-### Slots
-
-@docs startSlot, endSlot
 
 
 ### Omitted Attributes
@@ -35,8 +13,13 @@ The following attribute setters were omitted because Elm cannot pass DOM element
 
   - `detents`: string[]
 
+@docs component, label, maxAttr, minAttr, orientation, overshootLimit
+@docs step, value, wrapDetents, name, disabled, formvalue
+@docs onChange, onBeforeinput, onInput, startSlot, endSlot
+
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -56,6 +39,22 @@ import Json.Encode
 
   - `start`: Renders content at the logical start side of the pane.
   - `end`: Renders content at the logical end side of the pane.
+
+**CSS Custom Properties:**
+
+  - `--m3e-split-pane-drag-handle-hover-color`: Color used for the drag handle hover state.
+  - `--m3e-split-pane-drag-handle-hover-opacity`: Opacity used for the drag handle hover state.
+  - `--m3e-split-pane-drag-handle-focus-color`: Color used for the drag handle focus state.
+  - `--m3e-split-pane-drag-handle-focus-opacity`: Opacity used for the drag handle focus state.
+  - `--m3e-split-pane-drag-handle-color`: Background color of the drag handle when not pressed.
+  - `--m3e-split-pane-drag-handle-shape`: Corner shape of the drag handle when not pressed.
+  - `--m3e-split-pane-drag-handle-pressed-color`: Background color of the drag handle when pressed.
+  - `--m3e-split-pane-drag-handle-pressed-shape`: Corner shape of the drag handle when pressed.
+  - `--m3e-split-pane-drag-handle-container-width`: Width of the drag handle container.
+  - `--m3e-split-pane-drag-handle-width`: Thickness of the drag handle when not pressed.
+  - `--m3e-split-pane-drag-handle-height`: Length of the drag handle when not pressed.
+  - `--m3e-split-pane-drag-handle-pressed-width`: Thickness of the drag handle when pressed.
+  - `--m3e-split-pane-drag-handle-pressed-height`: Length of the drag handle when pressed.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -84,39 +83,24 @@ minAttr val_ =
     Html.Attributes.property "min" (Json.Encode.float val_)
 
 
-{-| Values for the `orientation` attribute.
--}
-type Orientation
-    = Auto
-    | Horizontal
-    | Vertical
-
-
 {-| The orientation of the split. (default: `"horizontal"`)
 -}
-orientation : Orientation -> Html.Attribute msg
-orientation val_ =
-    Html.Attributes.attribute "orientation" (orientationToString val_)
-
-
-orientationToString : Orientation -> String
-orientationToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Horizontal ->
-            "horizontal"
-
-        Vertical ->
-            "vertical"
+orientation :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , horizontal : Cem.M3e.Common.Supported
+        , vertical : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+orientation =
+    Cem.M3e.Common.orientation
 
 
 {-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`)
 -}
 overshootLimit : Float -> Html.Attribute msg
 overshootLimit val_ =
-    Html.Attributes.property "overshootLimit" (Json.Encode.float val_)
+    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
 
 
 {-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`)
@@ -137,7 +121,7 @@ value =
 -}
 wrapDetents : Bool -> Html.Attribute msg
 wrapDetents val_ =
-    Html.Attributes.property "wrapDetents" (Json.Encode.bool val_)
+    Html.Attributes.property "wrap-detents" (Json.Encode.bool val_)
 
 
 {-| The name that identifies the element when submitting the associated form.
@@ -152,6 +136,20 @@ name val_ =
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
     Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| Set the `[formValue]` property.
+-}
+formvalue :
+    Cem.M3e.Common.Value
+        { file : Cem.M3e.Common.Supported
+        , formdata : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+formvalue val_ =
+    Html.Attributes.property
+        "[formValue]"
+        (Json.Encode.string (Cem.M3e.Common.toString val_))
 
 
 {-| Dispatched when the user finishes adjusting the drag handle.

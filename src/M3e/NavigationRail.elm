@@ -1,6 +1,6 @@
 module M3e.NavigationRail exposing
     ( view, item
-    , Option, ItemOption, Mode(..)
+    , Option, ItemOption, Mode
     , id, mode
     , itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
     )
@@ -29,27 +29,29 @@ Items are the same `<m3e-nav-item>` element used by `M3e.NavigationBar`;
 
 -}
 
-import Cem.M3e.NavRail as CemNavRail
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| How items are laid out. `Compact` (icon only) is the upstream default
-(`<m3e-nav-rail mode="compact">`); `Expanded` always shows labels; `Auto`
+{-| How items are laid out. `compact` (icon only) is the upstream default
+(`<m3e-nav-rail mode="compact">`); `expanded` always shows labels; `auto`
 switches based on available width.
 -}
-type Mode
-    = Compact
-    | Expanded
-    | Auto
+type alias Mode =
+    Value
+        { compact : Supported
+        , expanded : Supported
+        , auto : Supported
+        }
 
 
 
@@ -218,7 +220,7 @@ view req opts =
         (Node.element "m3e-nav-rail"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , Just (Node.rawAttr (CemNavRail.mode (toCemMode c.mode)))
+                , Just (Node.attribute "mode" (Value.toString c.mode))
                 ]
             )
             (List.map Element.toNode req.items)
@@ -260,17 +262,4 @@ defaultConfig : ContainerConfig
 defaultConfig =
     -- Upstream default for <m3e-nav-rail mode="..."> is "compact" (CEM confirmed).
     -- The previous default (Auto) was incorrect — this fixes the audit gap.
-    { id = Nothing, mode = Compact }
-
-
-toCemMode : Mode -> CemNavRail.Mode
-toCemMode m =
-    case m of
-        Compact ->
-            CemNavRail.Compact
-
-        Expanded ->
-            CemNavRail.Expanded
-
-        Auto ->
-            CemNavRail.Auto
+    { id = Nothing, mode = Value.compact }

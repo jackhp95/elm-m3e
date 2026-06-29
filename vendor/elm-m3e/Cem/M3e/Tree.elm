@@ -1,25 +1,8 @@
-module Cem.M3e.Tree exposing
-    ( component
-    , multi, cascade
-    , onChange
-    )
+module Cem.M3e.Tree exposing (component, multi, cascade, onChange)
 
 {-| Presents hierarchical data in a tree structure.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs multi, cascade
-
-
-### Events
-
-@docs onChange
+@docs component, multi, cascade, onChange
 
 -}
 
@@ -35,6 +18,11 @@ import Json.Encode
 **Events:**
 
   - `change`: Dispatched when the selected state changes.
+
+**CSS Custom Properties:**
+
+  - `--m3e-tree-scrollbar-width`: Width of the tree scrollbar.
+  - `--m3e-tree-scrollbar-color`: Color of the tree scrollbar.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg

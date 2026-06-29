@@ -1,19 +1,8 @@
-module Cem.M3e.Slide exposing
-    ( component
-    , selectedIndex
-    )
+module Cem.M3e.Slide exposing (component, selectedIndex)
 
 {-| A carousel-like container used to horizontally cycle through slotted items.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs selectedIndex
+@docs component, selectedIndex
 
 -}
 
@@ -23,6 +12,11 @@ import Json.Encode
 
 
 {-| A carousel-like container used to horizontally cycle through slotted items.
+
+**CSS Custom Properties:**
+
+  - `--m3e-slide-animation-duration`: The duration of transitions between slotted items.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -33,4 +27,4 @@ component attributes children =
 -}
 selectedIndex : Float -> Html.Attribute msg
 selectedIndex val_ =
-    Html.Attributes.property "selectedIndex" (Json.Encode.float val_)
+    Html.Attributes.property "selected-index" (Json.Encode.float val_)

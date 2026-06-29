@@ -2,9 +2,6 @@ module Cem.M3e.TextOverflow exposing (component)
 
 {-| An inline container which presents an ellipsis when content overflows.
 
-
-## Component
-
 @docs component
 
 -}

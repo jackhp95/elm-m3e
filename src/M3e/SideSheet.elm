@@ -1,5 +1,5 @@
 module M3e.SideSheet exposing
-    ( Option, Side(..), Mode(..)
+    ( Option, Side(..), Mode
     , view
     , open, side, mode, onClose, body, actions
     )
@@ -39,12 +39,12 @@ message when the relevant property transitions to `false`.
 
 -}
 
-import Cem.M3e.DrawerContainer as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 {-| Which edge the panel anchors to. Default `End`.
@@ -54,19 +54,24 @@ type Side
     | End
 
 
-{-| Drawer behaviour mode (upstream `DrawerMode`).
+{-| Drawer behaviour mode (upstream `DrawerMode`), supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
-  - `ModeSide` — the drawer occupies layout space beside the content (default, `"side"`)
-  - `ModeOver` — the drawer overlays content with a scrim (`"over"`)
-  - `ModePush` — the drawer pushes content aside without a scrim (`"push"`)
-  - `ModeAuto` — the browser chooses `side` or `over` based on viewport (`"auto"`)
+  - [`side`](M3e-Value#side) — the drawer occupies layout space beside the
+    content (default).
+  - [`over`](M3e-Value#over) — the drawer overlays content with a scrim.
+  - [`push`](M3e-Value#push) — the drawer pushes content aside without a scrim.
+  - [`auto`](M3e-Value#auto) — the browser chooses `side` or `over` based on
+    viewport.
 
 -}
-type Mode
-    = ModeSide
-    | ModeOver
-    | ModePush
-    | ModeAuto
+type alias Mode =
+    Value
+        { side : Supported
+        , over : Supported
+        , push : Supported
+        , auto : Supported
+        }
 
 
 {-| Configuration option for the side sheet, built by the helpers below.
@@ -90,10 +95,11 @@ side s =
     Internal.option (\c -> { c | side = s })
 
 
-{-| Drawer behaviour mode. Default `ModeSide` (upstream `"side"`).
+{-| Drawer behaviour mode. Default [`side`](M3e-Value#side).
 
-Use `ModeOver` for a modal-style overlay with a scrim; `ModePush` to push
-content aside without a scrim; `ModeAuto` to let the browser decide.
+Use [`over`](M3e-Value#over) for a modal-style overlay with a scrim;
+[`push`](M3e-Value#push) to push content aside without a scrim;
+[`auto`](M3e-Value#auto) to let the browser decide.
 
 -}
 mode : Mode -> Option msg
@@ -138,7 +144,7 @@ defaultConfig : Config msg
 defaultConfig =
     { open = False
     , side = End
-    , mode = ModeSide
+    , mode = Value.side
     , onClose = Nothing
     , body = []
     , actions = []
@@ -151,7 +157,7 @@ defaultConfig =
         { content = [ pageBody ] }
         [ M3e.SideSheet.open state.filtersOpen
         , M3e.SideSheet.side M3e.SideSheet.End
-        , M3e.SideSheet.mode M3e.SideSheet.ModeOver
+        , M3e.SideSheet.mode M3e.Value.over
         , M3e.SideSheet.onClose FiltersClosed
         , M3e.SideSheet.body [ filtersForm ]
         ]
@@ -199,42 +205,10 @@ modeAttr : Config msg -> Node.Attr msg
 modeAttr c =
     case c.side of
         Start ->
-            Node.rawAttr (Cem.startMode (toCemStartMode c.mode))
+            Node.attribute "start-mode" (Value.toString c.mode)
 
         End ->
-            Node.rawAttr (Cem.endMode (toCemEndMode c.mode))
-
-
-toCemStartMode : Mode -> Cem.StartMode
-toCemStartMode m =
-    case m of
-        ModeSide ->
-            Cem.StartModeSide
-
-        ModeOver ->
-            Cem.StartModeOver
-
-        ModePush ->
-            Cem.StartModePush
-
-        ModeAuto ->
-            Cem.StartModeAuto
-
-
-toCemEndMode : Mode -> Cem.EndMode
-toCemEndMode m =
-    case m of
-        ModeSide ->
-            Cem.EndModeSide
-
-        ModeOver ->
-            Cem.EndModeOver
-
-        ModePush ->
-            Cem.EndModePush
-
-        ModeAuto ->
-            Cem.EndModeAuto
+            Node.attribute "end-mode" (Value.toString c.mode)
 
 
 {-| Fix A8: decode the `change` event and only fire `msg` when the drawer

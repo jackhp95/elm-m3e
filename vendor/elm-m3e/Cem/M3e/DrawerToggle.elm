@@ -1,19 +1,8 @@
-module Cem.M3e.DrawerToggle exposing
-    ( component
-    , for
-    )
+module Cem.M3e.DrawerToggle exposing (component, for)
 
 {-| An element, nested within a clickable element, used to toggle the opened state of a drawer.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs for
+@docs component, for
 
 -}
 

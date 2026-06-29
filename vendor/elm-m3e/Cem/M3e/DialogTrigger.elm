@@ -1,19 +1,8 @@
-module Cem.M3e.DialogTrigger exposing
-    ( component
-    , for
-    )
+module Cem.M3e.DialogTrigger exposing (component, for)
 
 {-| An element, nested within a clickable element, used to open a dialog.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs for
+@docs component, for
 
 -}
 

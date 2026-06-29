@@ -1,26 +1,9 @@
-module Cem.M3e.Breadcrumb exposing
-    ( component
-    , wrap
-    , separatorSlot
-    )
+module Cem.M3e.Breadcrumb exposing (component, wrap, separatorSlot)
 
 {-| Displays a hierarchical navigation path and identifies the user's
 current location within an application.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs wrap
-
-
-### Slots
-
-@docs separatorSlot
+@docs component, wrap, separatorSlot
 
 -}
 

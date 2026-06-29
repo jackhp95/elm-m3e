@@ -6,6 +6,7 @@ import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.IconButton as IB
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -71,12 +72,12 @@ suite =
                     |> Expect.equal (Just "close")
         , test "formType Submit emits type=submit (FormSubmitter)" <|
             \_ ->
-                node "close" "Close" [ IB.formType IB.Submit ]
+                node "close" "Close" [ IB.formType Value.submit ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "submit")
         , test "formType Button emits type=button (FormSubmitter)" <|
             \_ ->
-                node "close" "Close" [ IB.formType IB.Button ]
+                node "close" "Close" [ IB.formType Value.button ]
                     |> Node.findAttribute "type"
                     |> Expect.equal (Just "button")
         , test "no formType — no type attribute emitted by default" <|

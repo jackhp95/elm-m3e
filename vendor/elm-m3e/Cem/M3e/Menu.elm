@@ -1,29 +1,16 @@
 module Cem.M3e.Menu exposing
-    ( component
-    , PositionX(..), positionX, PositionY(..), positionY, Variant(..), variant, submenu
-    , onBeforetoggle, onToggle
-    , positionXToString, positionYToString, variantToString
+    ( component, positionX, positionY, variant, submenu, onBeforetoggle
+    , onToggle
     )
 
 {-| Presents a list of choices on a temporary surface.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs PositionX, positionX, PositionY, positionY, Variant, variant, submenu
-
-
-### Events
-
-@docs onBeforetoggle, onToggle
+@docs component, positionX, positionY, variant, submenu, onBeforetoggle
+@docs onToggle
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -38,82 +25,61 @@ import Json.Encode
   - `beforetoggle`: Dispatched before the toggle state changes.
   - `toggle`: Dispatched after the toggle state has changed.
 
+**CSS Custom Properties:**
+
+  - `--m3e-menu-container-shape`: Controls the corner radius of the menu container.
+  - `--m3e-menu-active-container-shape`: Controls the corner radius of the menu container when active.
+  - `--m3e-menu-container-min-width`: Minimum width of the menu container.
+  - `--m3e-menu-container-max-width`: Maximum width of the menu container.
+  - `--m3e-menu-container-max-height`: Maximum height of the menu container.
+  - `--m3e-menu-container-padding-block`: Vertical padding inside the menu container.
+  - `--m3e-menu-container-padding-inline`: Horizontal padding inside the menu container.
+  - `--m3e-menu-container-color`: Background color of the menu container.
+  - `--m3e-menu-container-elevation`: Box shadow elevation of the menu container.
+  - `--m3e-vibrant-menu-container-color`: Background color of the menu container for vibrant variant.
+  - `--m3e-menu-divider-spacing`: Vertical spacing around slotted `m3e-divider` elements.
+  - `--m3e-menu-gap`: Gap between content in the menu.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-menu" attributes children
 
 
-{-| Values for the `position-x` attribute.
--}
-type PositionX
-    = After
-    | Before
-
-
 {-| The position of the menu, on the x-axis. (default: `"after"`)
 -}
-positionX : PositionX -> Html.Attribute msg
-positionX val_ =
-    Html.Attributes.attribute "position-x" (positionXToString val_)
-
-
-positionXToString : PositionX -> String
-positionXToString val_ =
-    case val_ of
-        After ->
-            "after"
-
-        Before ->
-            "before"
-
-
-{-| Values for the `position-y` attribute.
--}
-type PositionY
-    = Above
-    | Below
+positionX :
+    Cem.M3e.Common.Value
+        { after : Cem.M3e.Common.Supported
+        , before : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+positionX =
+    Cem.M3e.Common.positionX
 
 
 {-| The position of the menu, on the y-axis. (default: `"below"`)
 -}
-positionY : PositionY -> Html.Attribute msg
-positionY val_ =
-    Html.Attributes.attribute "position-y" (positionYToString val_)
-
-
-positionYToString : PositionY -> String
-positionYToString val_ =
-    case val_ of
-        Above ->
-            "above"
-
-        Below ->
-            "below"
-
-
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Standard
-    | Vibrant
+positionY :
+    Cem.M3e.Common.Value
+        { above : Cem.M3e.Common.Supported
+        , below : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+positionY =
+    Cem.M3e.Common.positionY
 
 
 {-| The appearance variant of the menu. (default: `"standard"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Standard ->
-            "standard"
-
-        Vibrant ->
-            "vibrant"
+variant :
+    Cem.M3e.Common.Value
+        { standard : Cem.M3e.Common.Supported
+        , vibrant : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
 {-| A value indicating whether the menu is a submenu. (default: `false`)

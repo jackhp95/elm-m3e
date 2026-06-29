@@ -1,7 +1,7 @@
 module M3e.IconButton exposing
     ( view
     , Option
-    , Width(..), ButtonType(..)
+    , Width, ButtonType
     , variant, size, shape, width
     , disabled, toggle, selected, onClick, onChange
     , href, target, rel, download
@@ -40,7 +40,6 @@ Upstream mixins: `FormSubmitter` → `name` (attr), `value` (attr), `type`
 
 -}
 
-import Cem.M3e.IconButton as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
@@ -88,22 +87,29 @@ type alias Shapes =
         }
 
 
-{-| Container width: `Narrow`, `Default`, or `Wide`.
+{-| Container width, supplied as shared [`M3e.Value`](M3e-Value) tokens —
+[`narrow`](M3e-Value#narrow), [`default`](M3e-Value#default), or
+[`wide`](M3e-Value#wide).
 -}
-type Width
-    = Narrow
-    | Default
-    | Wide
+type alias Width =
+    Value
+        { narrow : Supported
+        , default : Supported
+        , wide : Supported
+        }
 
 
-{-| Form submission type for an icon button acting as a form submitter.
-Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
-default `"button"`.
+{-| Form submission type for an icon button acting as a form submitter,
+supplied as shared [`M3e.Value`](M3e-Value) tokens. Upstream: `FormSubmitter`
+mixin → `type` attribute (`FormSubmitterType`), default
+[`button`](M3e-Value#button).
 -}
-type ButtonType
-    = Submit
-    | Reset
-    | Button
+type alias ButtonType =
+    Value
+        { submit : Supported
+        , reset : Supported
+        , button : Supported
+        }
 
 
 
@@ -132,7 +138,7 @@ shape s =
     Internal.option (\c -> { c | shape = Just s })
 
 
-{-| Set the container width. Default `Default`.
+{-| Set the container width. Default [`default`](M3e-Value#default).
 -}
 width : Width -> Option msg
 width w =
@@ -282,7 +288,7 @@ defaults : Config msg
 defaults =
     { variant = Value.standard
     , size = Value.emptyAxis
-    , width = Default
+    , width = Value.default
     , shape = Nothing
     , disabled = False
     , toggle = False
@@ -328,7 +334,7 @@ view req opts =
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.attribute "variant" (Value.toString c.variant))
                 , Just (Node.attribute "size" (Value.axisStringOr Value.small c.size))
-                , Just (Node.rawAttr (Cem.width (toCemWidth c.width)))
+                , Just (Node.attribute "width" (Value.toString c.width))
                 , Maybe.map (\s -> Node.attribute "shape" (Value.toString s)) c.shape
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Just (Node.property "toggle" (Encode.bool c.toggle))
@@ -338,7 +344,7 @@ view req opts =
                 , Maybe.map (Node.attribute "target") c.target
                 , Maybe.map (Node.attribute "rel") c.rel
                 , Maybe.map (Node.attribute "download") c.download
-                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) c.formType
+                , Maybe.map (\t -> Node.attribute "type" (Value.toString t)) c.formType
                 , Maybe.map (\v -> Node.attribute "name" v) c.name
                 , Maybe.map (\v -> Node.attribute "value" v) c.value
                 , Maybe.map
@@ -360,31 +366,3 @@ view req opts =
         )
 
 
-toTypeString : ButtonType -> String
-toTypeString t =
-    case t of
-        Submit ->
-            "submit"
-
-        Reset ->
-            "reset"
-
-        Button ->
-            "button"
-
-
-
--- CONVERTERS ------------------------------------------------------------
-
-
-toCemWidth : Width -> Cem.Width
-toCemWidth w =
-    case w of
-        Narrow ->
-            Cem.Narrow
-
-        Default ->
-            Cem.Default
-
-        Wide ->
-            Cem.Wide

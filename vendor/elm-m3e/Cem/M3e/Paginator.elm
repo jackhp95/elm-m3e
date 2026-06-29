@@ -1,35 +1,20 @@
 module Cem.M3e.Paginator exposing
-    ( component
-    , disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, PageSizeVariant(..), pageSizeVariant, previousPageLabel, showFirstLastButtons
-    , onPage
+    ( component, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+    , length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
+    , previousPageLabel, showFirstLastButtons, pagecount, haspreviouspage, hasnextpage, onPage
     , firstPageIconSlot, previousPageIconSlot, nextPageIconSlot, lastPageIconSlot
-    , pageSizeVariantToString
     )
 
 {-| Provides navigation for paged information, typically used with a table.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, PageSizeVariant, pageSizeVariant, previousPageLabel, showFirstLastButtons
-
-
-### Events
-
-@docs onPage
-
-
-### Slots
-
+@docs component, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+@docs length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
+@docs previousPageLabel, showFirstLastButtons, pagecount, haspreviouspage, hasnextpage, onPage
 @docs firstPageIconSlot, previousPageIconSlot, nextPageIconSlot, lastPageIconSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -49,6 +34,13 @@ import Json.Encode
   - `previous-page-icon`: Slot for a custom previous-page icon.
   - `next-page-icon`: Slot for a custom next-page icon.
   - `last-page-icon`: Slot for a custom last-page icon.
+
+**CSS Custom Properties:**
+
+  - `--m3e-paginator-font-size`: The font size used for paginator text.
+  - `--m3e-paginator-font-weight`: The font weight used for paginator text.
+  - `--m3e-paginator-line-height`: The line height used for paginator text.
+  - `--m3e-paginator-tracking`: The letter-spacing used for paginator text.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -74,7 +66,7 @@ firstPageLabel val_ =
 -}
 hidePageSize : Bool -> Html.Attribute msg
 hidePageSize val_ =
-    Html.Attributes.property "hidePageSize" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-page-size" (Json.Encode.bool val_)
 
 
 {-| The label for the page size selector. (default: `"Items per page:"`)
@@ -109,7 +101,7 @@ nextPageLabel val_ =
 -}
 pageIndex : Float -> Html.Attribute msg
 pageIndex val_ =
-    Html.Attributes.property "pageIndex" (Json.Encode.float val_)
+    Html.Attributes.property "page-index" (Json.Encode.float val_)
 
 
 {-| The number of items to display in a page. (default: `50`)
@@ -126,28 +118,16 @@ pageSizes val_ =
     Html.Attributes.attribute "page-sizes" val_
 
 
-{-| Values for the `page-size-variant` attribute.
--}
-type PageSizeVariant
-    = Filled
-    | Outlined
-
-
 {-| The appearance variant of the page size field. (default: `"outlined"`)
 -}
-pageSizeVariant : PageSizeVariant -> Html.Attribute msg
-pageSizeVariant val_ =
-    Html.Attributes.attribute "page-size-variant" (pageSizeVariantToString val_)
-
-
-pageSizeVariantToString : PageSizeVariant -> String
-pageSizeVariantToString val_ =
-    case val_ of
-        Filled ->
-            "filled"
-
-        Outlined ->
-            "outlined"
+pageSizeVariant :
+    Cem.M3e.Common.Value
+        { filled : Cem.M3e.Common.Supported
+        , outlined : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+pageSizeVariant =
+    Cem.M3e.Common.pageSizeVariant
 
 
 {-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`)
@@ -161,7 +141,28 @@ previousPageLabel val_ =
 -}
 showFirstLastButtons : Bool -> Html.Attribute msg
 showFirstLastButtons val_ =
-    Html.Attributes.property "showFirstLastButtons" (Json.Encode.bool val_)
+    Html.Attributes.property "show-first-last-buttons" (Json.Encode.bool val_)
+
+
+{-| The total number of pages.
+-}
+pagecount : Float -> Html.Attribute msg
+pagecount val_ =
+    Html.Attributes.property "pageCount" (Json.Encode.float val_)
+
+
+{-| Whether a previous page can be displayed.
+-}
+haspreviouspage : Bool -> Html.Attribute msg
+haspreviouspage val_ =
+    Html.Attributes.property "hasPreviousPage" (Json.Encode.bool val_)
+
+
+{-| Whether a next page can be displayed.
+-}
+hasnextpage : Bool -> Html.Attribute msg
+hasnextpage val_ =
+    Html.Attributes.property "hasNextPage" (Json.Encode.bool val_)
 
 
 {-| Dispatched when a user selects a different page size or navigates to another page.

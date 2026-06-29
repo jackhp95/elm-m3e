@@ -1,35 +1,18 @@
 module Cem.M3e.NavItem exposing
-    ( component
-    , disabled, disabledInteractive, download, href, Orientation(..), orientation, rel, selected, target
-    , onBeforeinput, onInput, onChange, onClick
-    , iconSlot, selectedIconSlot
-    , orientationToString
+    ( component, disabled, disabledInteractive, download, href, orientation
+    , rel, selected, target, onBeforeinput, onInput, onChange
+    , onClick, iconSlot, selectedIconSlot
     )
 
 {-| An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, disabledInteractive, download, href, Orientation, orientation, rel, selected, target
-
-
-### Events
-
-@docs onBeforeinput, onInput, onChange, onClick
-
-
-### Slots
-
-@docs iconSlot, selectedIconSlot
+@docs component, disabled, disabledInteractive, download, href, orientation
+@docs rel, selected, target, onBeforeinput, onInput, onChange
+@docs onClick, iconSlot, selectedIconSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -51,6 +34,37 @@ import Json.Encode
   - `icon`: Renders the icon of the item.
   - `selected-icon`: Renders the icon of the item when selected.
 
+**CSS Custom Properties:**
+
+  - `--m3e-nav-item-label-text-font-size`: Font size for the label text.
+  - `--m3e-nav-item-label-text-font-weight`: Font weight for the label text.
+  - `--m3e-nav-item-label-text-line-height`: Line height for the label text.
+  - `--m3e-nav-item-label-text-tracking`: Letter spacing for the label text.
+  - `--m3e-nav-item-shape`: Border radius of the nav item.
+  - `--m3e-nav-item-icon-size`: Size of the icon.
+  - `--m3e-nav-item-spacing`: Spacing between icon and label.
+  - `--m3e-nav-item-inactive-label-text-color`: Color of the label text when inactive.
+  - `--m3e-nav-item-inactive-icon-color`: Color of the icon when inactive.
+  - `--m3e-nav-item-inactive-hover-state-layer-color`: State layer color on hover when inactive.
+  - `--m3e-nav-item-inactive-focus-state-layer-color`: State layer color on focus when inactive.
+  - `--m3e-nav-item-inactive-pressed-state-layer-color`: State layer color on press when inactive.
+  - `--m3e-nav-item-active-label-text-color`: Color of the label text when active/selected.
+  - `--m3e-nav-item-active-icon-color`: Color of the icon when active/selected.
+  - `--m3e-nav-item-active-container-color`: Container color when active/selected.
+  - `--m3e-nav-item-active-hover-state-layer-color`: State layer color on hover when active.
+  - `--m3e-nav-item-active-focus-state-layer-color`: State layer color on focus when active.
+  - `--m3e-nav-item-active-pressed-state-layer-color`: State layer color on press when active.
+  - `--m3e-nav-item-focus-ring-shape`: Border radius for the focus ring.
+  - `--m3e-nav-item-disabled-label-text-color`: Color of the label text when disabled.
+  - `--m3e-nav-item-disabled-label-text-opacity`: Opacity of the label text when disabled.
+  - `--m3e-nav-item-disabled-icon-color`: Color of the icon when disabled.
+  - `--m3e-nav-item-disabled-icon-opacity`: Opacity of the icon when disabled.
+  - `--m3e-horizontal-nav-item-padding`: Padding for horizontal orientation.
+  - `--m3e-horizontal-nav-item-active-indicator-height`: Height of the active indicator in horizontal orientation.
+  - `--m3e-vertical-nav-item-active-indicator-width`: Width of the active indicator in vertical orientation.
+  - `--m3e-vertical-nav-item-active-indicator-height`: Height of the active indicator in vertical orientation.
+  - `--m3e-vertical-nav-item-active-indicator-margin`: Margin for the active indicator in vertical orientation.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -68,7 +82,7 @@ disabled val_ =
 -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`)
@@ -85,28 +99,16 @@ href val_ =
     Html.Attributes.attribute "href" val_
 
 
-{-| Values for the `orientation` attribute.
--}
-type Orientation
-    = Horizontal
-    | Vertical
-
-
 {-| The layout orientation of the item. (default: `"vertical"`)
 -}
-orientation : Orientation -> Html.Attribute msg
-orientation val_ =
-    Html.Attributes.attribute "orientation" (orientationToString val_)
-
-
-orientationToString : Orientation -> String
-orientationToString val_ =
-    case val_ of
-        Horizontal ->
-            "horizontal"
-
-        Vertical ->
-            "vertical"
+orientation :
+    Cem.M3e.Common.Value
+        { horizontal : Cem.M3e.Common.Supported
+        , vertical : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+orientation =
+    Cem.M3e.Common.orientation
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`)

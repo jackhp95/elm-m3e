@@ -1,31 +1,14 @@
 module Cem.M3e.TreeItem exposing
-    ( component
-    , disabled, indeterminate, open, selected
-    , onOpening, onOpened, onClosing, onClosed, onClick
-    , labelSlot, iconSlot, selectedIconSlot, toggleIconSlot, openToggleIconSlot
+    ( component, disabled, indeterminate, open, selected, visible
+    , haschilditems, level, onOpening, onOpened, onClosing, onClosed
+    , onClick, labelSlot, iconSlot, selectedIconSlot, toggleIconSlot, openToggleIconSlot
     )
 
 {-| An expandable item in a tree.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, indeterminate, open, selected
-
-
-### Events
-
-@docs onOpening, onOpened, onClosing, onClosed, onClick
-
-
-### Slots
-
-@docs labelSlot, iconSlot, selectedIconSlot, toggleIconSlot, openToggleIconSlot
+@docs component, disabled, indeterminate, open, selected, visible
+@docs haschilditems, level, onOpening, onOpened, onClosing, onClosed
+@docs onClick, labelSlot, iconSlot, selectedIconSlot, toggleIconSlot, openToggleIconSlot
 
 -}
 
@@ -53,6 +36,29 @@ import Json.Encode
   - `selected-icon`: Renders the icon of the item when selected.
   - `toggle-icon`: Renders the toggle icon.
   - `open-toggle-icon`: Renders the toggle icon when selected.
+
+**CSS Custom Properties:**
+
+  - `--m3e-tree-item-font-size`: Font size for the item label.
+  - `--m3e-tree-item-font-weight`: Font weight for the item label.
+  - `--m3e-tree-item-line-height`: Line height for the item label.
+  - `--m3e-tree-item-tracking`: Letter spacing for the item label.
+  - `--m3e-tree-item-padding`: Inline padding for the item.
+  - `--m3e-tree-item-height`: Height of the item.
+  - `--m3e-tree-item-shape`: Border radius of the item and focus ring.
+  - `--m3e-tree-item-icon-size`: Size of the icon.
+  - `--m3e-tree-item-inset`: Indentation for nested items.
+  - `--m3e-tree-item-label-color`: Text color for the item label.
+  - `--m3e-tree-item-selected-label-color`: Text color for selected item label.
+  - `--m3e-tree-item-selected-container-color`: Background color for selected item.
+  - `--m3e-tree-item-selected-container-focus-color`: Focus color for selected item container.
+  - `--m3e-tree-item-selected-container-hover-color`: Hover color for selected item container.
+  - `--m3e-tree-item-selected-ripple-color`: Ripple color for selected item.
+  - `--m3e-tree-item-unselected-container-focus-color`: Focus color for unselected item container.
+  - `--m3e-tree-item-unselected-container-hover-color`: Hover color for unselected item container.
+  - `--m3e-tree-item-unselected-ripple-color`: Ripple color for unselected item.
+  - `--m3e-tree-item-disabled-color`: Text color for disabled item.
+  - `--m3e-tree-item-disabled-color-opacity`: Opacity for disabled item text color.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -86,6 +92,27 @@ open val_ =
 selected : Bool -> Html.Attribute msg
 selected =
     Html.Attributes.selected
+
+
+{-| Whether the item is visible.
+-}
+visible : Bool -> Html.Attribute msg
+visible val_ =
+    Html.Attributes.property "visible" (Json.Encode.bool val_)
+
+
+{-| Whether the item has child items.
+-}
+haschilditems : Bool -> Html.Attribute msg
+haschilditems val_ =
+    Html.Attributes.property "hasChildItems" (Json.Encode.bool val_)
+
+
+{-| The one-based level of the item.
+-}
+level : Float -> Html.Attribute msg
+level val_ =
+    Html.Attributes.property "level" (Json.Encode.float val_)
 
 
 {-| Dispatched when the item begins to open.

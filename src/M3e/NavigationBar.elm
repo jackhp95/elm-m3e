@@ -1,6 +1,6 @@
 module M3e.NavigationBar exposing
     ( view, item
-    , Option, ItemOption, Mode(..)
+    , Option, ItemOption, Mode
     , id, mode
     , itemSelected, itemOnClick, itemBadge, itemSelectedIcon, itemDisabled, itemHref
     )
@@ -29,26 +29,28 @@ item and wire `itemOnClick` on each destination to update your model.
 
 -}
 
-import Cem.M3e.NavBar as CemNavBar
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES -------------------------------------------------------------------
 
 
-{-| How items are laid out. `Compact` (icon only) is the m3e default; `Expanded`
-always shows labels; `Auto` switches based on available width.
+{-| How items are laid out. `compact` (icon only) is the m3e default; `expanded`
+always shows labels; `auto` switches based on available width.
 -}
-type Mode
-    = Compact
-    | Expanded
-    | Auto
+type alias Mode =
+    Value
+        { compact : Supported
+        , expanded : Supported
+        , auto : Supported
+        }
 
 
 
@@ -215,7 +217,7 @@ view req opts =
         (Node.element "m3e-nav-bar"
             (List.filterMap identity
                 [ Maybe.map (Node.attribute "id") c.id
-                , Just (Node.rawAttr (CemNavBar.mode (toCemMode c.mode)))
+                , Just (Node.attribute "mode" (Value.toString c.mode))
                 ]
             )
             (List.map Element.toNode req.items)
@@ -255,17 +257,4 @@ type alias ContainerConfig =
 
 defaultConfig : ContainerConfig
 defaultConfig =
-    { id = Nothing, mode = Auto }
-
-
-toCemMode : Mode -> CemNavBar.Mode
-toCemMode m =
-    case m of
-        Compact ->
-            CemNavBar.Compact
-
-        Expanded ->
-            CemNavBar.Expanded
-
-        Auto ->
-            CemNavBar.Auto
+    { id = Nothing, mode = Value.auto }

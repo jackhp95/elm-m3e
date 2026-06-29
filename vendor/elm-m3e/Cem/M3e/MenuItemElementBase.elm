@@ -1,25 +1,8 @@
-module Cem.M3e.MenuItemElementBase exposing
-    ( component
-    , disabled
-    , onClick
-    )
+module Cem.M3e.MenuItemElementBase exposing (component, disabled, onClick)
 
 {-| A base implementation for an item of a menu. This class must be inherited.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled
-
-
-### Events
-
-@docs onClick
+@docs component, disabled, onClick
 
 -}
 

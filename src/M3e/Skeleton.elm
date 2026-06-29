@@ -1,6 +1,6 @@
 module M3e.Skeleton exposing
     ( view
-    , Animation(..), Option
+    , Animation, Option
     , loaded, shape, animation, attributes
     )
 
@@ -26,7 +26,6 @@ standalone shimmer placeholder sized by the caller's classes.
 
 -}
 
-import Cem.M3e.Skeleton as Cem
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -47,13 +46,17 @@ type alias Shapes =
         }
 
 
-{-| Loading animation. Mirrors the `m3e-skeleton` `animation` attribute.
-Default is `Wave`.
+{-| Loading animation, supplied as shared [`M3e.Value`](M3e-Value) tokens
+([`none`](M3e-Value#none), [`pulse`](M3e-Value#pulse), or
+[`wave`](M3e-Value#wave)). Mirrors the `m3e-skeleton` `animation` attribute.
+The element default is `wave`.
 -}
-type Animation
-    = None
-    | Pulse
-    | Wave
+type alias Animation =
+    Value
+        { none : Supported
+        , pulse : Supported
+        , wave : Supported
+        }
 
 
 {-| An option configuring a skeleton placeholder.
@@ -78,7 +81,7 @@ shape s =
     Internal.option (\c -> { c | shape = Just s })
 
 
-{-| Set the loading animation (default `Wave`). Maps to the `animation`
+{-| Set the loading animation (default `wave`). Maps to the `animation`
 attribute.
 -}
 animation : Animation -> Option msg
@@ -123,22 +126,9 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.property "loaded" (Encode.bool c.loaded))
                 , Maybe.map (\s -> Node.attribute "shape" (Value.toString s)) c.shape
-                , Maybe.map (\a -> Node.rawAttr (Cem.animation (toCemAnimation a))) c.animation
+                , Maybe.map (\a -> Node.attribute "animation" (Value.toString a)) c.animation
                 ]
                 ++ c.attributes
             )
             (List.map Element.toNode req.content)
         )
-
-
-toCemAnimation : Animation -> Cem.Animation
-toCemAnimation a =
-    case a of
-        None ->
-            Cem.None
-
-        Pulse ->
-            Cem.Pulse
-
-        Wave ->
-            Cem.Wave

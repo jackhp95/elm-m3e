@@ -6,6 +6,7 @@ import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.TextHighlight as TextHighlight
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -70,12 +71,12 @@ suite =
                     |> Expect.equal (Just "m3e-text-highlight")
         , test "mode StartsWith does not crash (rawAttr — not introspectable)" <|
             \_ ->
-                nodeWith [ TextHighlight.mode TextHighlight.StartsWith ] []
+                nodeWith [ TextHighlight.mode Value.startsWith ] []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-text-highlight")
         , test "mode EndsWith does not crash" <|
             \_ ->
-                nodeWith [ TextHighlight.mode TextHighlight.EndsWith ] []
+                nodeWith [ TextHighlight.mode Value.endsWith ] []
                     |> Node.tagOf
                     |> Expect.equal (Just "m3e-text-highlight")
         ]

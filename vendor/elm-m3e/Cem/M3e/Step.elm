@@ -1,30 +1,13 @@
 module Cem.M3e.Step exposing
-    ( component
-    , completed, disabled, editable, for, optional, selected, invalid
-    , onBeforeinput, onInput, onChange, onClick
+    ( component, completed, disabled, editable, for, optional
+    , selected, invalid, onBeforeinput, onInput, onChange, onClick
     , iconSlot, doneIconSlot, editIconSlot, errorIconSlot, hintSlot, errorSlot
     )
 
 {-| A step in a wizard-like workflow.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs completed, disabled, editable, for, optional, selected, invalid
-
-
-### Events
-
-@docs onBeforeinput, onInput, onChange, onClick
-
-
-### Slots
-
+@docs component, completed, disabled, editable, for, optional
+@docs selected, invalid, onBeforeinput, onInput, onChange, onClick
 @docs iconSlot, doneIconSlot, editIconSlot, errorIconSlot, hintSlot, errorSlot
 
 -}
@@ -53,6 +36,36 @@ import Json.Encode
   - `error-icon`: Renders icon of an invalid step.
   - `hint`: Renders the hint text of the step.
   - `error`: Renders the error message for an invalid step.
+
+**CSS Custom Properties:**
+
+  - `--m3e-step-shape`: Border radius of the step container, defining its visual shape.
+  - `--m3e-step-padding`: Internal padding of the step container, used for layout spacing.
+  - `--m3e-step-icon-shape`: Border radius of the icon container, controlling its geometric form.
+  - `--m3e-step-icon-size`: Width and height of the icon container and icon glyph.
+  - `--m3e-step-selected-icon-container-color`: Background color of the icon when the step is selected.
+  - `--m3e-step-selected-icon-color`: Foreground color of the icon when the step is selected.
+  - `--m3e-step-completed-icon-container-color`: Background color of the icon when the step is completed.
+  - `--m3e-step-completed-icon-color`: Foreground color of the icon when the step is completed.
+  - `--m3e-step-unselected-icon-container-color`: Background color of the icon when the step is inactive.
+  - `--m3e-step-unselected-icon-color`: Foreground color of the icon when the step is inactive.
+  - `--m3e-step-icon-error-color`: Foreground color of the icon when the step is invalid.
+  - `--m3e-step-disabled-icon-container-color`: Base color used to mix the disabled icon background.
+  - `--m3e-step-disabled-icon-color`: Base color used to mix the disabled icon foreground.
+  - `--m3e-step-label-color`: Text color of the step label in its default state.
+  - `--m3e-step-label-error-color`: Text color of the step label when the step is invalid.
+  - `--m3e-step-disabled-label-color`: Base color used to mix the disabled label foreground.
+  - `--m3e-step-font-size`: Font size of the step label.
+  - `--m3e-step-font-weight`: Font weight of the step label.
+  - `--m3e-step-line-height`: Line height of the step label.
+  - `--m3e-step-tracking`: Letter spacing of the step label.
+  - `--m3e-step-icon-label-space`: Gap between icon and label.
+  - `--m3e-step-hint-font-size`: Font size of hint and error messages.
+  - `--m3e-step-hint-font-weight`: Font weight of hint and error messages.
+  - `--m3e-step-hint-line-height`: Line height of hint and error messages.
+  - `--m3e-step-hint-tracking`: Letter spacing of hint and error messages.
+  - `--m3e-step-hint-color`: Text color of hint messages in valid state.
+  - `--m3e-step-disabled-hint-color`: Base color used to mix the disabled hint foreground.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg

@@ -7,6 +7,7 @@ import M3e.Chip as Chip
 import M3e.Element as Element
 import M3e.Icon as Icon
 import M3e.Node as Node
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -26,9 +27,9 @@ suite =
                     |> Element.toNode
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "outlined")
-        , test "view: viewElevated True sets variant=elevated (advertised option is applied)" <|
+        , test "view: viewVariant elevated sets variant=elevated (advertised option is applied)" <|
             \_ ->
-                Chip.view { label = "Tag" } [ Chip.viewElevated True ]
+                Chip.view { label = "Tag" } [ Chip.viewVariant Value.elevated ]
                     |> Element.toNode
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "elevated")
@@ -81,9 +82,9 @@ suite =
                     |> Node.findProperty "disabled"
                     |> Maybe.map (Encode.encode 0)
                     |> Expect.equal (Just "true")
-        , test "elevated emits variant=elevated attribute" <|
+        , test "variant elevated emits variant=elevated attribute" <|
             \_ ->
-                Chip.assist { label = "Auto", onClick = () } [ Chip.elevated True ]
+                Chip.assist { label = "Auto", onClick = () } [ Chip.variant Value.elevated ]
                     |> Element.toNode
                     |> Node.findAttribute "variant"
                     |> Expect.equal (Just "elevated")

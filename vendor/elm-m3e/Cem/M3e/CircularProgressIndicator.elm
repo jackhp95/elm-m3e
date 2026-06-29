@@ -1,23 +1,12 @@
-module Cem.M3e.CircularProgressIndicator exposing
-    ( component
-    , indeterminate, maxAttr, value, Variant(..), variant
-    , variantToString
-    )
+module Cem.M3e.CircularProgressIndicator exposing (component, indeterminate, maxAttr, value, variant)
 
 {-| A circular indicator of progress and activity.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs indeterminate, maxAttr, value, Variant, variant
+@docs component, indeterminate, maxAttr, value, variant
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Json.Encode
@@ -28,6 +17,16 @@ import Json.Encode
 **Component Info:**
 
   - **Extends:** `ProgressElementIndicatorBase` from `/src/progress-indicator/ProgressElementIndicatorBase`
+
+**CSS Custom Properties:**
+
+  - `--m3e-circular-flat-progress-indicator-diameter`: Diameter of the `flat` variant.
+  - `--m3e-circular-wavy-progress-indicator-diameter`: Diameter of the `wavy` variant.
+  - `--m3e-circular-wavy-progress-indicator-amplitude`: Amplitude of the `wavy` variant.
+  - `--m3e-circular-wavy-progress-indicator-wavelength`: Wavelength of the `wavy` variant.
+  - `--m3e-circular-progress-indicator-thickness`: Thickness of the progress indicator.
+  - `--m3e-progress-indicator-track-color`: Track color of the progress indicator (background).
+  - `--m3e-progress-indicator-color`: Color of the progress indicator (foreground).
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -56,25 +55,13 @@ value =
     Html.Attributes.value
 
 
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Flat
-    | Wavy
-
-
 {-| The appearance of the indicator. (default: `"flat"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Flat ->
-            "flat"
-
-        Wavy ->
-            "wavy"
+variant :
+    Cem.M3e.Common.Value
+        { flat : Cem.M3e.Common.Supported
+        , wavy : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant

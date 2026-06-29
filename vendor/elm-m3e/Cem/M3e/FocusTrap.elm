@@ -1,19 +1,8 @@
-module Cem.M3e.FocusTrap exposing
-    ( component
-    , disabled
-    )
+module Cem.M3e.FocusTrap exposing (component, disabled)
 
 {-| A non-visual element used to trap focus within nested content.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled
+@docs component, disabled
 
 -}
 

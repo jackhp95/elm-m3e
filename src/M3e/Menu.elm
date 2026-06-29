@@ -1,6 +1,6 @@
 module M3e.Menu exposing
     ( view
-    , Option, PositionX(..), PositionY(..)
+    , Option, PositionX, PositionY
     , id, menuVariant, positionX, positionY, submenu, onToggle
     , item, checkboxItem, radioItem, divider, group, triggerFor
     , ItemAction(..)
@@ -55,7 +55,6 @@ via that control's escape/element slot or default slot.
 
 -}
 
-import Cem.M3e.Menu as CemMenu
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
@@ -69,18 +68,24 @@ import M3e.Value as Value exposing (Value)
 -- TYPES -------------------------------------------------------------------
 
 
-{-| Horizontal placement of the menu relative to its trigger. Default `After`.
+{-| Horizontal placement of the menu relative to its trigger, supplied as
+shared [`M3e.Value`](M3e-Value) tokens. Default [`after`](M3e-Value#after).
 -}
-type PositionX
-    = After
-    | Before
+type alias PositionX =
+    Value
+        { after : Supported
+        , before : Supported
+        }
 
 
-{-| Vertical placement of the menu relative to its trigger. Default `Below`.
+{-| Vertical placement of the menu relative to its trigger, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. Default [`below`](M3e-Value#below).
 -}
-type PositionY
-    = Above
-    | Below
+type alias PositionY =
+    Value
+        { above : Supported
+        , below : Supported
+        }
 
 
 {-| Visual style of the menu surface (`standard` or `vibrant`), supplied as
@@ -439,8 +444,8 @@ view req opts =
                 [ Maybe.map (Node.attribute "id") c.id
                 , Just (Node.property "submenu" (Encode.bool c.submenu))
                 , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
-                , Maybe.map (\px -> Node.rawAttr (CemMenu.positionX (toCemPositionX px))) c.positionX
-                , Maybe.map (\py -> Node.rawAttr (CemMenu.positionY (toCemPositionY py))) c.positionY
+                , Maybe.map (\px -> Node.attribute "position-x" (Value.toString px)) c.positionX
+                , Maybe.map (\py -> Node.attribute "position-y" (Value.toString py)) c.positionY
                 , Maybe.map
                     (\toMsg ->
                         Node.on "toggle"
@@ -531,21 +536,3 @@ itemChildren leadingIcon trailingIcon label =
         ]
 
 
-toCemPositionX : PositionX -> CemMenu.PositionX
-toCemPositionX p =
-    case p of
-        After ->
-            CemMenu.After
-
-        Before ->
-            CemMenu.Before
-
-
-toCemPositionY : PositionY -> CemMenu.PositionY
-toCemPositionY p =
-    case p of
-        Above ->
-            CemMenu.Above
-
-        Below ->
-            CemMenu.Below

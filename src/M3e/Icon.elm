@@ -1,5 +1,5 @@
 module M3e.Icon exposing
-    ( Option, Grade(..), Weight(..)
+    ( Option, Grade, Weight(..)
     , variant, grade, weight, opticalSize, filled
     , view
     )
@@ -32,7 +32,6 @@ Upstream defaults (CEM-confirmed):
 
 -}
 
-import Cem.M3e.Icon as Cem
 import Json.Encode as Encode
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
@@ -62,19 +61,22 @@ type alias Variants =
         }
 
 
-{-| Visual grade — adjusts icon weight for different backgrounds (default `Medium`).
+{-| Visual grade — adjusts icon weight for different backgrounds (default
+`medium`), supplied as shared [`M3e.Value`](M3e-Value) tokens.
 
-  - `Low` — lighter visual weight (good on dark surfaces), maps to `"low"`.
-  - `Medium` — default (neutral), maps to `"medium"`.
-  - `High` — heavier visual weight (good for emphasis), maps to `"high"`.
+  - [`low`](M3e-Value#low) — lighter visual weight (good on dark surfaces).
+  - [`medium`](M3e-Value#medium) — default (neutral).
+  - [`high`](M3e-Value#high) — heavier visual weight (good for emphasis).
 
-Upstream: `grade` attribute on `<m3e-icon>`. CEM: `IconGrade`.
+Upstream: `grade` attribute on `<m3e-icon>`.
 
 -}
-type Grade
-    = Low
-    | Medium
-    | High
+type alias Grade =
+    Value
+        { low : Supported
+        , medium : Supported
+        , high : Supported
+        }
 
 
 {-| Stroke weight of the icon glyph (default `W400`).
@@ -123,7 +125,8 @@ variant v =
     Internal.option (\c -> { c | variant = Just v })
 
 
-{-| Set the visual grade (`Low`, `Medium`, or `High`; default `Medium`).
+{-| Set the visual grade ([`low`](M3e-Value#low), [`medium`](M3e-Value#medium),
+or [`high`](M3e-Value#high); default `medium`).
 
 Upstream: `grade` attribute on `<m3e-icon>`.
 
@@ -200,7 +203,7 @@ view req opts =
             (List.filterMap identity
                 [ Just (Node.attribute "name" req.name)
                 , Maybe.map (\v -> Node.attribute "variant" (Value.toString v)) c.variant
-                , Maybe.map (\g -> Node.attribute "grade" (Cem.gradeToString (toCemGrade g))) c.grade
+                , Maybe.map (\g -> Node.attribute "grade" (Value.toString g)) c.grade
                 , Maybe.map (\w -> Node.attribute "weight" (weightToString w)) c.weight
                 , Maybe.map (\n -> Node.attribute "optical-size" (String.fromInt n)) c.opticalSize
                 , Just (Node.property "filled" (Encode.bool c.filled))
@@ -212,19 +215,6 @@ view req opts =
 
 
 -- INTERNAL --------------------------------------------------------------------
-
-
-toCemGrade : Grade -> Cem.Grade
-toCemGrade g =
-    case g of
-        Low ->
-            Cem.Low
-
-        Medium ->
-            Cem.Medium
-
-        High ->
-            Cem.High
 
 
 weightToString : Weight -> String

@@ -1,5 +1,5 @@
 module M3e.FloatingPanel exposing
-    ( Option, ScrollStrategy(..)
+    ( Option, ScrollStrategy
     , scrollStrategy, fitAnchorWidth, anchorOffset
     , onBeforetoggle, onToggle
     , view
@@ -39,30 +39,32 @@ they are not modelled here (use a port or custom event to drive them from Elm).
 
 -}
 
-import Cem.M3e.FloatingPanel as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES ------------------------------------------------------------------
 
 
-{-| How the panel behaves when its trigger scrolls out of view.
+{-| How the panel behaves when its trigger scrolls out of view, supplied as
+shared [`M3e.Value`](M3e-Value) tokens.
 
-  - `Hide` — panel is hidden when the trigger scrolls (default).
-  - `Reposition` — panel repositions to follow the trigger.
+  - [`hide`](M3e-Value#hide) — panel is hidden when the trigger scrolls (default).
+  - [`reposition`](M3e-Value#reposition) — panel repositions to follow the trigger.
 
 Upstream: `scroll-strategy` attribute on `<m3e-floating-panel>`.
-CEM: `FloatingPanelScrollStrategy` — `"hide"` or `"reposition"`.
 
 -}
-type ScrollStrategy
-    = Hide
-    | Reposition
+type alias ScrollStrategy =
+    Value
+        { hide : Supported
+        , reposition : Supported
+        }
 
 
 type alias Config msg =
@@ -94,7 +96,8 @@ defaultConfig =
 -- OPTIONS ------------------------------------------------------------------
 
 
-{-| Set the scroll strategy (`Hide` or `Reposition`; default `Hide`).
+{-| Set the scroll strategy ([`hide`](M3e-Value#hide) or
+[`reposition`](M3e-Value#reposition); default `hide`).
 
 Upstream: `scroll-strategy` attribute on `<m3e-floating-panel>`.
 
@@ -163,7 +166,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-floating-panel"
             (List.filterMap identity
-                [ Maybe.map (\s -> Node.attribute "scroll-strategy" (Cem.scrollStrategyToString (toCemScrollStrategy s))) cfg.scrollStrategy
+                [ Maybe.map (\s -> Node.attribute "scroll-strategy" (Value.toString s)) cfg.scrollStrategy
                 , Just (Node.property "fitAnchorWidth" (Encode.bool cfg.fitAnchorWidth))
                 , Just (Node.property "anchorOffset" (Encode.float cfg.anchorOffset))
                 , Maybe.map (\msg -> Node.on "beforetoggle" (Decode.succeed msg)) cfg.onBeforetoggle
@@ -172,21 +175,3 @@ view req opts =
             )
             (List.map Element.toNode req.content)
         )
-
-
-
--- INTERNAL HELPERS -----------------------------------------------
-
-
-{-| Map the local `ScrollStrategy` to the generated `Cem.M3e.FloatingPanel`
-enum, whose `scrollStrategyToString` is the single source of truth for the
-attribute value (kept in sync with the element's CEM — #45).
--}
-toCemScrollStrategy : ScrollStrategy -> Cem.ScrollStrategy
-toCemScrollStrategy s =
-    case s of
-        Hide ->
-            Cem.Hide
-
-        Reposition ->
-            Cem.Reposition

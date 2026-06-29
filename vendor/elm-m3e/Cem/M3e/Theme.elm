@@ -1,29 +1,16 @@
 module Cem.M3e.Theme exposing
-    ( component
-    , color, Contrast(..), contrast, density, Scheme(..), scheme, strongFocus, Variant(..), variant, Motion(..), motion
-    , onChange
-    , contrastToString, motionToString, schemeToString, variantToString
+    ( component, color, contrast, density, scheme, strongFocus
+    , variant, motion, isdark, onChange
     )
 
 {-| A non-visual element responsible for application-level theming.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs color, Contrast, contrast, density, Scheme, scheme, strongFocus, Variant, variant, Motion, motion
-
-
-### Events
-
-@docs onChange
+@docs component, color, contrast, density, scheme, strongFocus
+@docs variant, motion, isdark, onChange
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -50,32 +37,17 @@ color val_ =
     Html.Attributes.attribute "color" val_
 
 
-{-| Values for the `contrast` attribute.
--}
-type Contrast
-    = High
-    | Medium
-    | ContrastStandard
-
-
 {-| The contrast level of the theme. (default: `"standard"`)
 -}
-contrast : Contrast -> Html.Attribute msg
-contrast val_ =
-    Html.Attributes.attribute "contrast" (contrastToString val_)
-
-
-contrastToString : Contrast -> String
-contrastToString val_ =
-    case val_ of
-        High ->
-            "high"
-
-        Medium ->
-            "medium"
-
-        ContrastStandard ->
-            "standard"
+contrast :
+    Cem.M3e.Common.Value
+        { high : Cem.M3e.Common.Supported
+        , medium : Cem.M3e.Common.Supported
+        , standard : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+contrast =
+    Cem.M3e.Common.contrast
 
 
 {-| The density scale (0, -1, -2). (default: `0`)
@@ -85,115 +57,62 @@ density val_ =
     Html.Attributes.property "density" (Json.Encode.float val_)
 
 
-{-| Values for the `scheme` attribute.
--}
-type Scheme
-    = Auto
-    | Dark
-    | Light
-
-
 {-| The color scheme of the theme. (default: `"auto"`)
 -}
-scheme : Scheme -> Html.Attribute msg
-scheme val_ =
-    Html.Attributes.attribute "scheme" (schemeToString val_)
-
-
-schemeToString : Scheme -> String
-schemeToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Dark ->
-            "dark"
-
-        Light ->
-            "light"
+scheme :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , dark : Cem.M3e.Common.Supported
+        , light : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+scheme =
+    Cem.M3e.Common.scheme
 
 
 {-| Whether to enable strong focus indicators. (default: `false`)
 -}
 strongFocus : Bool -> Html.Attribute msg
 strongFocus val_ =
-    Html.Attributes.property "strongFocus" (Json.Encode.bool val_)
-
-
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Content
-    | VariantExpressive
-    | Fidelity
-    | FruitSalad
-    | Monochrome
-    | Neutral
-    | Rainbow
-    | TonalSpot
-    | Vibrant
+    Html.Attributes.property "strong-focus" (Json.Encode.bool val_)
 
 
 {-| The color variant of the theme. (default: `"neutral"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Content ->
-            "content"
-
-        VariantExpressive ->
-            "expressive"
-
-        Fidelity ->
-            "fidelity"
-
-        FruitSalad ->
-            "fruit-salad"
-
-        Monochrome ->
-            "monochrome"
-
-        Neutral ->
-            "neutral"
-
-        Rainbow ->
-            "rainbow"
-
-        TonalSpot ->
-            "tonal-spot"
-
-        Vibrant ->
-            "vibrant"
-
-
-{-| Values for the `motion` attribute.
--}
-type Motion
-    = MotionExpressive
-    | MotionStandard
+variant :
+    Cem.M3e.Common.Value
+        { content : Cem.M3e.Common.Supported
+        , expressive : Cem.M3e.Common.Supported
+        , fidelity : Cem.M3e.Common.Supported
+        , fruitSalad : Cem.M3e.Common.Supported
+        , monochrome : Cem.M3e.Common.Supported
+        , neutral : Cem.M3e.Common.Supported
+        , rainbow : Cem.M3e.Common.Supported
+        , tonalSpot : Cem.M3e.Common.Supported
+        , vibrant : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
 {-| The motion scheme. (default: `"standard"`)
 -}
-motion : Motion -> Html.Attribute msg
-motion val_ =
-    Html.Attributes.attribute "motion" (motionToString val_)
+motion :
+    Cem.M3e.Common.Value
+        { expressive : Cem.M3e.Common.Supported
+        , standard : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+motion =
+    Cem.M3e.Common.motion
 
 
-motionToString : Motion -> String
-motionToString val_ =
-    case val_ of
-        MotionExpressive ->
-            "expressive"
-
-        MotionStandard ->
-            "standard"
+{-| Whether a dark theme is applied.
+-}
+isdark : Bool -> Html.Attribute msg
+isdark val_ =
+    Html.Attributes.property "isDark" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the theme changes.

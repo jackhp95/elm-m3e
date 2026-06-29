@@ -1,19 +1,8 @@
-module Cem.M3e.FocusRing exposing
-    ( component
-    , disabled, inward, for
-    )
+module Cem.M3e.FocusRing exposing (component, disabled, inward, for)
 
 {-| A focus ring used to depict a strong focus indicator.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, inward, for
+@docs component, disabled, inward, for
 
 -}
 
@@ -23,6 +12,17 @@ import Json.Encode
 
 
 {-| A focus ring used to depict a strong focus indicator.
+
+**CSS Custom Properties:**
+
+  - `--m3e-focus-ring-color`: The color of the focus ring.
+  - `--m3e-focus-ring-duration`: The duration of the focus ring animation.
+  - `--m3e-focus-ring-growth-factor`: The factor by which the focus ring grows.
+  - `--m3e-focus-ring-thickness`: The thickness of the focus ring.
+  - `--m3e-focus-ring-visibility`: The visibility of the focus ring.
+  - `--m3e-focus-ring-outward-offset`: Offset of an outward focus ring.
+  - `--m3e-focus-ring-inward-offset`: Offset of an inward focus ring.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =

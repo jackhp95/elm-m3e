@@ -4,6 +4,7 @@ import Expect
 import M3e.Calendar as Calendar
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -68,19 +69,19 @@ suite =
                     |> Expect.equal (Just "2026-06-30")
 
         -- Start view
-        , test "startView MonthView sets start-view='month'" <|
+        , test "startView month sets start-view='month'" <|
             \_ ->
-                viewNode [ Calendar.startView Calendar.MonthView ]
+                viewNode [ Calendar.startView Value.month ]
                     |> Node.findAttribute "start-view"
                     |> Expect.equal (Just "month")
-        , test "startView YearView sets start-view='year'" <|
+        , test "startView year sets start-view='year'" <|
             \_ ->
-                viewNode [ Calendar.startView Calendar.YearView ]
+                viewNode [ Calendar.startView Value.year ]
                     |> Node.findAttribute "start-view"
                     |> Expect.equal (Just "year")
-        , test "startView MultiYearView sets start-view='multi-year'" <|
+        , test "startView multiYear sets start-view='multi-year'" <|
             \_ ->
-                viewNode [ Calendar.startView Calendar.MultiYearView ]
+                viewNode [ Calendar.startView Value.multiYear ]
                     |> Node.findAttribute "start-view"
                     |> Expect.equal (Just "multi-year")
 

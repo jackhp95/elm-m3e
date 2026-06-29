@@ -1,23 +1,16 @@
 module Cem.M3e.Tooltip exposing
-    ( component
-    , disabled, for, hideDelay, Position(..), position, showDelay, TouchGestures(..), touchGestures
-    , positionToString, touchGesturesToString
+    ( component, disabled, for, hideDelay, position, showDelay
+    , touchGestures, isopen
     )
 
 {-| Adds additional context to a button or other UI element.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, for, hideDelay, Position, position, showDelay, TouchGestures, touchGestures
+@docs component, disabled, for, hideDelay, position, showDelay
+@docs touchGestures, isopen
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Json.Encode
@@ -28,6 +21,21 @@ import Json.Encode
 **Component Info:**
 
   - **Extends:** `TooltipElementBase` from `/src/tooltip/TooltipElementBase`
+
+**CSS Custom Properties:**
+
+  - `--m3e-tooltip-padding`: Internal spacing of the tooltip container.
+  - `--m3e-tooltip-min-width`: Minimum width of the tooltip.
+  - `--m3e-tooltip-max-width`: Maximum width of the tooltip.
+  - `--m3e-tooltip-min-height`: Minimum height of the tooltip container.
+  - `--m3e-tooltip-max-height`: Maximum height of the tooltip.
+  - `--m3e-tooltip-shape`: Border radius of the tooltip container.
+  - `--m3e-tooltip-container-color`: Background color of the tooltip.
+  - `--m3e-tooltip-supporting-text-color`: Text color of supporting text.
+  - `--m3e-tooltip-supporting-text-font-size`: Font size of supporting text.
+  - `--m3e-tooltip-supporting-text-font-weight`: Font weight of supporting text.
+  - `--m3e-tooltip-supporting-text-line-height`: Line height of supporting text.
+  - `--m3e-tooltip-supporting-text-tracking`: Letter spacing of supporting text.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -53,71 +61,45 @@ for val_ =
 -}
 hideDelay : Float -> Html.Attribute msg
 hideDelay val_ =
-    Html.Attributes.property "hideDelay" (Json.Encode.float val_)
-
-
-{-| Values for the `position` attribute.
--}
-type Position
-    = Above
-    | After
-    | Before
-    | Below
+    Html.Attributes.property "hide-delay" (Json.Encode.float val_)
 
 
 {-| The position of the tooltip. (default: `"below"`)
 -}
-position : Position -> Html.Attribute msg
-position val_ =
-    Html.Attributes.attribute "position" (positionToString val_)
-
-
-positionToString : Position -> String
-positionToString val_ =
-    case val_ of
-        Above ->
-            "above"
-
-        After ->
-            "after"
-
-        Before ->
-            "before"
-
-        Below ->
-            "below"
+position :
+    Cem.M3e.Common.Value
+        { above : Cem.M3e.Common.Supported
+        , after : Cem.M3e.Common.Supported
+        , before : Cem.M3e.Common.Supported
+        , below : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+position =
+    Cem.M3e.Common.position
 
 
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`)
 -}
 showDelay : Float -> Html.Attribute msg
 showDelay val_ =
-    Html.Attributes.property "showDelay" (Json.Encode.float val_)
-
-
-{-| Values for the `touch-gestures` attribute.
--}
-type TouchGestures
-    = Auto
-    | Off
-    | On
+    Html.Attributes.property "show-delay" (Json.Encode.float val_)
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`)
 -}
-touchGestures : TouchGestures -> Html.Attribute msg
-touchGestures val_ =
-    Html.Attributes.attribute "touch-gestures" (touchGesturesToString val_)
+touchGestures :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , off : Cem.M3e.Common.Supported
+        , on : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+touchGestures =
+    Cem.M3e.Common.touchGestures
 
 
-touchGesturesToString : TouchGestures -> String
-touchGesturesToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Off ->
-            "off"
-
-        On ->
-            "on"
+{-| Whether the tooltip is currently open.
+-}
+isopen : Bool -> Html.Attribute msg
+isopen val_ =
+    Html.Attributes.property "isOpen" (Json.Encode.bool val_)

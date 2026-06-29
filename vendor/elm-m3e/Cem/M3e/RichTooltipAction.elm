@@ -1,19 +1,8 @@
-module Cem.M3e.RichTooltipAction exposing
-    ( component
-    , disableRestoreFocus
-    )
+module Cem.M3e.RichTooltipAction exposing (component, disableRestoreFocus)
 
 {-| An element, nested within a clickable element, used to dismiss a parenting rich tooltip.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disableRestoreFocus
+@docs component, disableRestoreFocus
 
 -}
 
@@ -33,4 +22,4 @@ component attributes children =
 -}
 disableRestoreFocus : Bool -> Html.Attribute msg
 disableRestoreFocus val_ =
-    Html.Attributes.property "disableRestoreFocus" (Json.Encode.bool val_)
+    Html.Attributes.property "disable-restore-focus" (Json.Encode.bool val_)

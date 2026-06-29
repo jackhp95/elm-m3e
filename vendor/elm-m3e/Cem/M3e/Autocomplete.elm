@@ -1,32 +1,11 @@
 module Cem.M3e.Autocomplete exposing
-    ( component
-    , autoActivate, caseSensitive, Filter(..), filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
-    , onChange, onQuery, onToggle
-    , loadingSlot, noDataSlot
-    , filterToString
+    ( component, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+    , hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
+    , for, value, onChange, onQuery, onToggle, loadingSlot
+    , noDataSlot
     )
 
 {-| Enhances a text input with suggested options.
-
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs autoActivate, caseSensitive, Filter, filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
-
-
-### Events
-
-@docs onChange, onQuery, onToggle
-
-
-### Slots
-
-@docs loadingSlot, noDataSlot
 
 
 ### Omitted Attributes
@@ -35,8 +14,14 @@ The following attribute setters were omitted because Elm cannot pass DOM element
 
   - `results-label`: string | ((count: number) => string)
 
+@docs component, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+@docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
+@docs for, value, onChange, onQuery, onToggle, loadingSlot
+@docs noDataSlot
+
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -67,67 +52,49 @@ component attributes children =
 -}
 autoActivate : Bool -> Html.Attribute msg
 autoActivate val_ =
-    Html.Attributes.property "autoActivate" (Json.Encode.bool val_)
+    Html.Attributes.property "auto-activate" (Json.Encode.bool val_)
 
 
 {-| Whether filtering is case sensitive. (default: `false`)
 -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
-
-
-{-| Values for the `filter` attribute.
--}
-type Filter
-    = Contains
-    | EndsWith
-    | None
-    | StartsWith
+    Html.Attributes.property "case-sensitive" (Json.Encode.bool val_)
 
 
 {-| Mode in which to filter options. (default: `"contains"`)
 -}
-filter : Filter -> Html.Attribute msg
-filter val_ =
-    Html.Attributes.attribute "filter" (filterToString val_)
-
-
-filterToString : Filter -> String
-filterToString val_ =
-    case val_ of
-        Contains ->
-            "contains"
-
-        EndsWith ->
-            "ends-with"
-
-        None ->
-            "none"
-
-        StartsWith ->
-            "starts-with"
+filter :
+    Cem.M3e.Common.Value
+        { contains : Cem.M3e.Common.Supported
+        , endsWith : Cem.M3e.Common.Supported
+        , none : Cem.M3e.Common.Supported
+        , startsWith : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+filter =
+    Cem.M3e.Common.filter
 
 
 {-| Whether to hide the selection indicator. (default: `false`)
 -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-selection-indicator" (Json.Encode.bool val_)
 
 
 {-| Whether to hide the menu when loading options. (default: `false`)
 -}
 hideLoading : Bool -> Html.Attribute msg
 hideLoading val_ =
-    Html.Attributes.property "hideLoading" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-loading" (Json.Encode.bool val_)
 
 
 {-| Whether to hide the menu when there are no options to show. (default: `false`)
 -}
 hideNoData : Bool -> Html.Attribute msg
 hideNoData val_ =
-    Html.Attributes.property "hideNoData" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-no-data" (Json.Encode.bool val_)
 
 
 {-| Whether options are being loaded. (default: `false`)
@@ -170,6 +137,13 @@ required val_ =
 for : String -> Html.Attribute msg
 for val_ =
     Html.Attributes.attribute "for" val_
+
+
+{-| The selected (enabled) value.
+-}
+value : String -> Html.Attribute msg
+value =
+    Html.Attributes.value
 
 
 {-| Dispatched when the committed value changes due to selecting an option or clearing the input.

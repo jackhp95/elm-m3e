@@ -1,19 +1,8 @@
-module Cem.M3e.Elevation exposing
-    ( component
-    , disabled, for, level
-    )
+module Cem.M3e.Elevation exposing (component, disabled, for, level)
 
 {-| Visually depicts elevation using a shadow.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, for, level
+@docs component, disabled, for, level
 
 -}
 
@@ -23,6 +12,19 @@ import Json.Encode
 
 
 {-| Visually depicts elevation using a shadow.
+
+**CSS Custom Properties:**
+
+  - `--m3e-elevation-color`: Color used to depict elevation.
+  - `--m3e-elevation-lift-duration`: Duration when lifting.
+  - `--m3e-elevation-lift-easing`: Easing curve when lifting.
+  - `--m3e-elevation-settle-duration`: Duration when settling.
+  - `--m3e-elevation-settle-easing`: Easing curve when settling.
+  - `--m3e-elevation-level`: Elevation when resting (box-shadow).
+  - `--m3e-elevation-hover-level`: Elevation on hover (box-shadow).
+  - `--m3e-elevation-focus-level`: Elevation on focus (box-shadow).
+  - `--m3e-elevation-pressed-level`: Elevation on pressed (box-shadow).
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =

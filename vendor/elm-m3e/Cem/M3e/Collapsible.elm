@@ -1,29 +1,16 @@
 module Cem.M3e.Collapsible exposing
-    ( component
-    , open, Orientation(..), orientation, noAnimate
-    , onOpening, onOpened, onClosing, onClosed
-    , orientationToString
+    ( component, open, orientation, noAnimate, onOpening, onOpened
+    , onClosing, onClosed
     )
 
 {-| A container used to expand and collapse content.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs open, Orientation, orientation, noAnimate
-
-
-### Events
-
-@docs onOpening, onOpened, onClosing, onClosed
+@docs component, open, orientation, noAnimate, onOpening, onOpened
+@docs onClosing, onClosed
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -40,6 +27,10 @@ import Json.Encode
   - `closing`: Dispatched when the collapsible begins to close.
   - `closed`: Dispatched when the collapsible has closed.
 
+**CSS Custom Properties:**
+
+  - `--m3e-collapsible-animation-duration`: The duration of the expand / collapse animation.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -53,35 +44,23 @@ open val_ =
     Html.Attributes.property "open" (Json.Encode.bool val_)
 
 
-{-| Values for the `orientation` attribute.
--}
-type Orientation
-    = Horizontal
-    | Vertical
-
-
 {-| Orientation of collapsible content. (default: `"vertical"`)
 -}
-orientation : Orientation -> Html.Attribute msg
-orientation val_ =
-    Html.Attributes.attribute "orientation" (orientationToString val_)
-
-
-orientationToString : Orientation -> String
-orientationToString val_ =
-    case val_ of
-        Horizontal ->
-            "horizontal"
-
-        Vertical ->
-            "vertical"
+orientation :
+    Cem.M3e.Common.Value
+        { horizontal : Cem.M3e.Common.Supported
+        , vertical : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+orientation =
+    Cem.M3e.Common.orientation
 
 
 {-| Whether to disable animation. (default: `false`)
 -}
 noAnimate : Bool -> Html.Attribute msg
 noAnimate val_ =
-    Html.Attributes.property "noAnimate" (Json.Encode.bool val_)
+    Html.Attributes.property "no-animate" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the collapsible begins to open.

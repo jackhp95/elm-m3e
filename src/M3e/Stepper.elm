@@ -1,9 +1,9 @@
 module M3e.Stepper exposing
     ( view, step, stepPanel
-    , Option, StepOption, PanelOption, HeaderPosition(..)
+    , Option, StepOption, PanelOption
     , stepId, stepFor, stepSelected, stepCompleted, stepOptional, stepDisabled, stepEditable, stepInvalid
     , panelId, panelActions
-    , vertical, linear, stepperHeaderPosition
+    , orientation, linear, stepperHeaderPosition
     )
 
 {-| `<m3e-stepper>` + `<m3e-step>` + `<m3e-step-panel>` — a wizard-like
@@ -20,7 +20,7 @@ Spec (per docs/CONVENTIONS.md):
   - Panels → slot="panel" (injected by view via Node.withSlot)
   - Properties: selected, completed, optional, disabled, editable, invalid (step)
     linear (stepper)
-  - Attrs: id, for (relational); orientation, header-position (strip rawAttr)
+  - Attrs: id, for (relational); orientation, header-position (strip, M3e.Value)
   - Events: (none at this layer; add onClick to step options if needed)
   - Tag: stepper
 
@@ -31,27 +31,42 @@ module emits `Node.attribute "slot" "actions"` directly and does NOT use
 `Cem.M3e.StepPanel.actionsSlot`.
 
 @docs view, step, stepPanel
-@docs Option, StepOption, PanelOption, HeaderPosition
+@docs Option, StepOption, PanelOption
 @docs stepId, stepFor, stepSelected, stepCompleted, stepOptional, stepDisabled, stepEditable, stepInvalid
 @docs panelId, panelActions
-@docs vertical, linear, stepperHeaderPosition
+@docs orientation, linear, stepperHeaderPosition
 
 -}
 
-import Cem.M3e.Stepper as CemStepper
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
-{-| Where the step header sits relative to panel content (horizontal mode).
-`Above` is the element default; `Below` places headers after panels.
+{-| Where the step header sits relative to panel content (horizontal mode),
+supplied as shared [`M3e.Value`](M3e-Value) tokens.
+[`above`](M3e-Value#above) is the element default; [`below`](M3e-Value#below)
+places headers after panels.
 -}
-type HeaderPosition
-    = Above
-    | Below
+type alias HeaderPositions =
+    Value
+        { above : Supported
+        , below : Supported
+        }
+
+
+{-| The layout axis of the stepper, supplied as shared
+[`M3e.Value`](M3e-Value) tokens. [`horizontal`](M3e-Value#horizontal) is the
+element default; [`vertical`](M3e-Value#vertical) stacks the steps.
+-}
+type alias Orientations =
+    Value
+        { horizontal : Supported
+        , vertical : Supported
+        }
 
 
 {-| An option configuring an individual step.
@@ -146,12 +161,12 @@ panelActions xs =
     Internal.option (\c -> { c | actions = xs })
 
 
-{-| Orient the stepper vertically (`orientation="vertical"`). Default false
-(horizontal).
+{-| Set the stepper's layout axis. Omitted when unset, so the element's own
+default ([`horizontal`](M3e-Value#horizontal)) applies.
 -}
-vertical : Bool -> Option msg
-vertical b =
-    Internal.option (\c -> { c | vertical = b })
+orientation : Orientations -> Option msg
+orientation o =
+    Internal.option (\c -> { c | orientation = Just o })
 
 
 {-| Require linear progression — validity of previous steps is checked before
@@ -164,7 +179,7 @@ linear b =
 
 {-| Set where the step header sits relative to panel content (horizontal mode).
 -}
-stepperHeaderPosition : HeaderPosition -> Option msg
+stepperHeaderPosition : HeaderPositions -> Option msg
 stepperHeaderPosition hp =
     Internal.option (\c -> { c | headerPosition = Just hp })
 
@@ -302,15 +317,15 @@ actionsNodes xs =
 
 
 type alias StripConfig =
-    { vertical : Bool
+    { orientation : Maybe Orientations
     , linear : Bool
-    , headerPosition : Maybe HeaderPosition
+    , headerPosition : Maybe HeaderPositions
     }
 
 
 defaultStripConfig : StripConfig
 defaultStripConfig =
-    { vertical = False
+    { orientation = Nothing
     , linear = False
     , headerPosition = Nothing
     }
@@ -354,31 +369,12 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-stepper"
             (List.filterMap identity
-                [ if c.vertical then
-                    Just (Node.rawAttr (CemStepper.orientation CemStepper.Vertical))
-
-                  else
-                    Nothing
+                [ Maybe.map (\o -> Node.attribute "orientation" (Value.toString o)) c.orientation
                 , Just (Node.property "linear" (Encode.bool c.linear))
-                , Maybe.map
-                    (\hp ->
-                        Node.rawAttr
-                            (CemStepper.headerPosition (toCemHeaderPosition hp))
-                    )
-                    c.headerPosition
+                , Maybe.map (\hp -> Node.attribute "header-position" (Value.toString hp)) c.headerPosition
                 ]
             )
             (List.map (Node.withSlot "step" << Element.toNode) req.steps
                 ++ List.map (Node.withSlot "panel" << Element.toNode) req.panels
             )
         )
-
-
-toCemHeaderPosition : HeaderPosition -> CemStepper.HeaderPosition
-toCemHeaderPosition hp =
-    case hp of
-        Above ->
-            CemStepper.Above
-
-        Below ->
-            CemStepper.HeaderPositionBelow

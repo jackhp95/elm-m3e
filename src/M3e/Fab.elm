@@ -1,6 +1,6 @@
 module M3e.Fab exposing
     ( view
-    , Option, ButtonType(..)
+    , Option, ButtonType
     , variant, size, lowered, disabled, onClick, href, target, rel, download, label
     , formType, name, value
     )
@@ -88,14 +88,16 @@ type alias Config msg =
     }
 
 
-{-| Form submission type for a FAB acting as a form submitter.
-Upstream: `FormSubmitter` mixin → `type` attribute (`FormSubmitterType`),
-default `"button"`.
+{-| Form submission type for a FAB acting as a form submitter, supplied as
+shared [`M3e.Value`](M3e-Value) tokens. Upstream: `FormSubmitter` mixin →
+`type` attribute (`FormSubmitterType`), default [`button`](M3e-Value#button).
 -}
-type ButtonType
-    = Submit
-    | Reset
-    | Button
+type alias ButtonType =
+    Value
+        { submit : Supported
+        , reset : Supported
+        , button : Supported
+        }
 
 
 {-| Configuration option for `view`.
@@ -172,9 +174,9 @@ download =
 {-| Set the form submission type. Only meaningful when the FAB is inside a
 `<form>` without `href`. Upstream: `FormSubmitter` mixin → `type` attribute.
 
-  - `Submit` — submits the form (equivalent to `type="submit"`).
-  - `Reset` — resets the form (equivalent to `type="reset"`).
-  - `Button` — no default form action; use `onClick` for a custom handler.
+  - [`submit`](M3e-Value#submit) — submits the form (`type="submit"`).
+  - [`reset`](M3e-Value#reset) — resets the form (`type="reset"`).
+  - [`button`](M3e-Value#button) — no default form action; use `onClick`.
 
 -}
 formType : ButtonType -> Option msg
@@ -244,7 +246,7 @@ view req opts =
                 , Maybe.map (\v -> Node.rawAttr (Cem.target v)) c.target
                 , Maybe.map (\v -> Node.rawAttr (Cem.rel v)) c.rel
                 , Maybe.map (\v -> Node.rawAttr (Cem.download v)) c.download
-                , Maybe.map (\t -> Node.attribute "type" (toTypeString t)) c.formType
+                , Maybe.map (\t -> Node.attribute "type" (Value.toString t)) c.formType
                 , Maybe.map (\v -> Node.attribute "name" v) c.name
                 , Maybe.map (\v -> Node.attribute "value" v) c.value
                 ]
@@ -255,16 +257,3 @@ view req opts =
                 ]
             )
         )
-
-
-toTypeString : ButtonType -> String
-toTypeString t =
-    case t of
-        Submit ->
-            "submit"
-
-        Reset ->
-            "reset"
-
-        Button ->
-            "button"

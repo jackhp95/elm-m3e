@@ -1,29 +1,16 @@
 module Cem.M3e.BreadcrumbItemButton exposing
-    ( component
-    , Current(..), current, href, target, rel, download, disabled
-    , onClick
-    , currentToString
+    ( component, current, href, target, rel, download
+    , disabled, onClick
     )
 
 {-|
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs Current, current, href, target, rel, download, disabled
-
-
-### Events
-
-@docs onClick
+@docs component, current, href, target, rel, download
+@docs disabled, onClick
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -43,44 +30,20 @@ component attributes children =
     Html.node "m3e-breadcrumb-item-button" attributes children
 
 
-{-| Values for the `current` attribute.
--}
-type Current
-    = Date
-    | Location
-    | Page
-    | Step
-    | Time
-    | True
-
-
 {-| Indicates the current item in the breadcrumb path.
 -}
-current : Current -> Html.Attribute msg
-current val_ =
-    Html.Attributes.attribute "current" (currentToString val_)
-
-
-currentToString : Current -> String
-currentToString val_ =
-    case val_ of
-        Date ->
-            "date"
-
-        Location ->
-            "location"
-
-        Page ->
-            "page"
-
-        Step ->
-            "step"
-
-        Time ->
-            "time"
-
-        True ->
-            "true"
+current :
+    Cem.M3e.Common.Value
+        { date : Cem.M3e.Common.Supported
+        , location : Cem.M3e.Common.Supported
+        , page : Cem.M3e.Common.Supported
+        , step : Cem.M3e.Common.Supported
+        , time : Cem.M3e.Common.Supported
+        , true : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+current =
+    Cem.M3e.Common.current
 
 
 {-| The URL to which the link button points. (default: `""`)

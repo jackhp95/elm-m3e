@@ -1,6 +1,6 @@
 module M3e.Switch exposing
     ( view
-    , Option, Icons(..)
+    , Option, Icons
     , checked, disabled, icons, onChange
     , name, value
     )
@@ -40,13 +40,13 @@ parsedType `'none' | 'selected' | 'both'`, default `"none"`.
 
 -}
 
-import Cem.M3e.Switch as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Which handle icons to show on the switch track.
@@ -56,10 +56,12 @@ import M3e.Node as Node
   - `Both` — icon when on AND when off (`"both"`)
 
 -}
-type Icons
-    = None
-    | Selected
-    | Both
+type alias Icons =
+    Value
+        { none : Supported
+        , selected : Supported
+        , both : Supported
+        }
 
 
 {-| An option configuring a switch.
@@ -148,7 +150,7 @@ view req opts =
                 [ Just (Node.attribute "aria-label" req.ariaLabel)
                 , Just (Node.property "checked" (Encode.bool c.checked))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
-                , Maybe.map (\v -> Node.rawAttr (Cem.icons (toCemIcons v))) c.icons
+                , Maybe.map (\v -> Node.attribute "icons" (Value.toString v)) c.icons
                 , Maybe.map (\v -> Node.attribute "name" v) c.name
                 , Maybe.map (\v -> Node.attribute "value" v) c.value
                 , Maybe.map
@@ -161,16 +163,3 @@ view req opts =
             )
             []
         )
-
-
-toCemIcons : Icons -> Cem.Icons
-toCemIcons v =
-    case v of
-        None ->
-            Cem.None
-
-        Selected ->
-            Cem.Selected
-
-        Both ->
-            Cem.Both

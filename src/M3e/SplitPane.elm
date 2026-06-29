@@ -1,6 +1,6 @@
 module M3e.SplitPane exposing
     ( view
-    , Option, Orientation(..)
+    , Option, Orientation
     , orientation, disabled, label
     , name, value
     , onChange, onInput, onBeforeInput
@@ -38,26 +38,28 @@ mirroring Ui.SplitPane) and assigned the appropriate slot name.
 
 -}
 
-import Cem.M3e.SplitPane as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 {-| Direction of the split.
 
-  - **Horizontal** — panes side by side; handle moves left/right (default).
-  - **Vertical** — panes stacked; handle moves up/down.
-  - **Auto** — let the element decide based on available space.
+  - **horizontal** — panes side by side; handle moves left/right (default).
+  - **vertical** — panes stacked; handle moves up/down.
+  - **auto** — let the element decide based on available space.
 
 -}
-type Orientation
-    = Horizontal
-    | Vertical
-    | Auto
+type alias Orientation =
+    Value
+        { horizontal : Supported
+        , vertical : Supported
+        , auto : Supported
+        }
 
 
 {-| An option configuring a split pane.
@@ -164,7 +166,7 @@ view req opts =
         c : Config msg
         c =
             Internal.applyOptions opts
-                { orientation = Horizontal
+                { orientation = Value.horizontal
                 , disabled = False
                 , label = Nothing
                 , name = Nothing
@@ -177,7 +179,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-split-pane"
             (List.filterMap identity
-                [ Just (Node.rawAttr (Cem.orientation (toCemOrientation c.orientation)))
+                [ Just (Node.attribute "orientation" (Value.toString c.orientation))
                 , Just (Node.property "disabled" (Encode.bool c.disabled))
                 , Maybe.map (\l -> Node.attribute "label" l) c.label
                 , Maybe.map (\v -> Node.attribute "name" v) c.name
@@ -199,16 +201,3 @@ view req opts =
                 )
             ]
         )
-
-
-toCemOrientation : Orientation -> Cem.Orientation
-toCemOrientation o =
-    case o of
-        Horizontal ->
-            Cem.Horizontal
-
-        Vertical ->
-            Cem.Vertical
-
-        Auto ->
-            Cem.Auto

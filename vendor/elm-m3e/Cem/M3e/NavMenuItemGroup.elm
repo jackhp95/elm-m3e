@@ -1,19 +1,8 @@
-module Cem.M3e.NavMenuItemGroup exposing
-    ( component
-    , labelSlot
-    )
+module Cem.M3e.NavMenuItemGroup exposing (component, labelSlot)
 
 {-| A top-level semantic grouping of items in a navigation menu.
 
-
-## Component
-
-@docs component
-
-
-### Slots
-
-@docs labelSlot
+@docs component, labelSlot
 
 -}
 
@@ -26,6 +15,11 @@ import Html.Attributes
 **Slots:**
 
   - `label`: Renders the label of the group.
+
+**CSS Custom Properties:**
+
+  - `--m3e-nav-menu-item-group-label-inset`: Insets the label from the start edge of the group.
+  - `--m3e-nav-menu-item-group-label-space`: Vertical spacing around the group's label.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg

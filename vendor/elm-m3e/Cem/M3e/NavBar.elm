@@ -1,31 +1,13 @@
-module Cem.M3e.NavBar exposing
-    ( component
-    , Mode(..), mode
-    , onChange, onBeforeinput, onInput
-    , modeToString
-    )
+module Cem.M3e.NavBar exposing (component, mode, onChange, onBeforeinput, onInput)
 
 {-| A horizontal bar, typically used on smaller devices, that allows a user to switch between 3-5 views.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs Mode, mode
-
-
-### Events
-
-@docs onChange, onBeforeinput, onInput
+@docs component, mode, onChange, onBeforeinput, onInput
 
 -}
 
+import Cem.M3e.Common
 import Html
-import Html.Attributes
 import Html.Events
 import Json.Decode
 
@@ -38,38 +20,29 @@ import Json.Decode
   - `beforeinput`: Dispatched before the selected state of an item changes.
   - `input`: Dispatched when the selected state of an item changes.
 
+**CSS Custom Properties:**
+
+  - `--m3e-nav-bar-height`: Height of the navigation bar.
+  - `--m3e-nav-bar-container-color`: Background color of the navigation bar container.
+  - `--m3e-nav-bar-vertical-item-width`: Minimum width of vertical nav items.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-nav-bar" attributes children
 
 
-{-| Values for the `mode` attribute.
--}
-type Mode
-    = Auto
-    | Compact
-    | Expanded
-
-
 {-| The mode in which items in the bar are presented. (default: `"compact"`)
 -}
-mode : Mode -> Html.Attribute msg
-mode val_ =
-    Html.Attributes.attribute "mode" (modeToString val_)
-
-
-modeToString : Mode -> String
-modeToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Compact ->
-            "compact"
-
-        Expanded ->
-            "expanded"
+mode :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , compact : Cem.M3e.Common.Supported
+        , expanded : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+mode =
+    Cem.M3e.Common.mode
 
 
 {-| Dispatched when the selected state of an item changes.

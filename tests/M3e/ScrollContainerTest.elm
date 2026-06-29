@@ -6,6 +6,7 @@ import M3e.Element as Element exposing (Element)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
 import M3e.ScrollContainer as ScrollContainer
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -35,17 +36,17 @@ suite =
                     |> Expect.equal (Just "above-below")
         , test "dividers attribute can be overridden" <|
             \_ ->
-                node [ ScrollContainer.dividers ScrollContainer.None ]
+                node [ ScrollContainer.dividers Value.none ]
                     |> Node.findAttribute "dividers"
                     |> Expect.equal (Just "none")
         , test "dividers Above renders 'above'" <|
             \_ ->
-                node [ ScrollContainer.dividers ScrollContainer.Above ]
+                node [ ScrollContainer.dividers Value.above ]
                     |> Node.findAttribute "dividers"
                     |> Expect.equal (Just "above")
         , test "dividers Below renders 'below'" <|
             \_ ->
-                node [ ScrollContainer.dividers ScrollContainer.Below ]
+                node [ ScrollContainer.dividers Value.below ]
                     |> Node.findAttribute "dividers"
                     |> Expect.equal (Just "below")
         , test "thin=true is a DOM property — introspectable" <|

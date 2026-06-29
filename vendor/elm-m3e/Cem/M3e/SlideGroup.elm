@@ -1,24 +1,11 @@
 module Cem.M3e.SlideGroup exposing
-    ( component
-    , disabled, nextPageLabel, previousPageLabel, threshold, vertical
+    ( component, disabled, nextPageLabel, previousPageLabel, threshold, vertical
     , nextIconSlot, prevIconSlot
     )
 
 {-| Presents pagination controls used to scroll overflowing content.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, nextPageLabel, previousPageLabel, threshold, vertical
-
-
-### Slots
-
+@docs component, disabled, nextPageLabel, previousPageLabel, threshold, vertical
 @docs nextIconSlot, prevIconSlot
 
 -}
@@ -34,6 +21,13 @@ import Json.Encode
 
   - `next-icon`: Renders the icon to present for the next button.
   - `prev-icon`: Renders the icon to present for the previous button.
+
+**CSS Custom Properties:**
+
+  - `--m3e-slide-group-button-icon-size`: Sets icon size for scroll buttons; overrides default small icon size.
+  - `--m3e-slide-group-button-size`: Defines scroll button size; used for width (horizontal) or height (vertical).
+  - `--m3e-slide-group-divider-top`: Adds top border to content container for visual separation.
+  - `--m3e-slide-group-divider-bottom`: Adds bottom border to content container for visual separation.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg

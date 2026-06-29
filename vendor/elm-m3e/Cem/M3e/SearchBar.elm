@@ -1,31 +1,12 @@
 module Cem.M3e.SearchBar exposing
-    ( component
-    , clearable, clearLabel
-    , onClear
-    , leadingSlot, inputSlot, trailingSlot
+    ( component, clearable, clearLabel, onClear, leadingSlot, inputSlot
+    , trailingSlot
     )
 
 {-| A bar that provides a prominent entry point for search.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs clearable, clearLabel
-
-
-### Events
-
-@docs onClear
-
-
-### Slots
-
-@docs leadingSlot, inputSlot, trailingSlot
+@docs component, clearable, clearLabel, onClear, leadingSlot, inputSlot
+@docs trailingSlot
 
 -}
 
@@ -47,6 +28,32 @@ import Json.Encode
   - `leading`: Renders content before the input of the bar.
   - `input`: Renders the input of the bar.
   - `trailing`: Renders content after the input of the bar.
+
+**CSS Custom Properties:**
+
+  - `--m3e-search-bar-container-color`: Background color of the search bar container.
+  - `--m3e-search-bar-leading-icon-color`: Color of the leading icon.
+  - `--m3e-search-bar-trailing-icon-color`: Color of the trailing icon.
+  - `--m3e-search-bar-container-height`: Height of the search bar container.
+  - `--m3e-search-bar-container-shape`: Shape (border radius) of the search bar container.
+  - `--m3e-search-bar-icon-size`: Size of icons inside the search bar.
+  - `--m3e-search-bar-supporting-text-color`: Color of the supporting text.
+  - `--m3e-search-bar-supporting-text-font-size`: Font size of the supporting text.
+  - `--m3e-search-bar-supporting-text-font-weight`: Font weight of the supporting text.
+  - `--m3e-search-bar-supporting-text-line-height`: Line height of the supporting text.
+  - `--m3e-search-bar-supporting-text-tracking`: Letter spacing of the supporting text.
+  - `--m3e-search-bar-input-color`: Color of the input text.
+  - `--m3e-search-bar-input-text-font-size`: Font size of the input text.
+  - `--m3e-search-bar-input-text-font-weight`: Font weight of the input text.
+  - `--m3e-search-bar-input-text-line-height`: Line height of the input text.
+  - `--m3e-search-bar-input-text-tracking`: Letter spacing of the input text.
+  - `--m3e-search-bar-leading-space`: Space before the leading icon.
+  - `--m3e-search-bar-trailing-space`: Space after the trailing icon.
+  - `--m3e-search-bar-no-actions-leading-space`: Leading padding when no actions are present.
+  - `--m3e-search-bar-no-actions-trailing-space`: Trailing padding when no actions are present.
+  - `--m3e-search-bar-leading-actions-trailing-space`: Space between leading actions and the input.
+  - `--m3e-search-bar-trailing-actions-leading-space`: Space between the input and trailing actions.
+  - `--m3e-search-bar-actions-gap`: Gap between action icons.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg

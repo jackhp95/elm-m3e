@@ -1,31 +1,10 @@
 module Cem.M3e.BottomSheet exposing
-    ( component
-    , detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit
-    , onOpening, onClosing, onCancel, onOpened, onClosed
-    , headerSlot
+    ( component, detent, handle, handleLabel, hideable, hideFriction
+    , modal, open, overshootLimit, onOpening, onClosing, onCancel
+    , onOpened, onClosed, headerSlot
     )
 
 {-| A sheet used to show secondary content anchored to the bottom of the screen.
-
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit
-
-
-### Events
-
-@docs onOpening, onClosing, onCancel, onOpened, onClosed
-
-
-### Slots
-
-@docs headerSlot
 
 
 ### Omitted Attributes
@@ -33,6 +12,10 @@ module Cem.M3e.BottomSheet exposing
 The following attribute setters were omitted because Elm cannot pass DOM element references:
 
   - `detents`: string[]
+
+@docs component, detent, handle, handleLabel, hideable, hideFriction
+@docs modal, open, overshootLimit, onOpening, onClosing, onCancel
+@docs onOpened, onClosed, headerSlot
 
 -}
 
@@ -56,6 +39,41 @@ import Json.Encode
 **Slots:**
 
   - `header`: Renders the header of the sheet.
+
+**CSS Custom Properties:**
+
+  - `--m3e-bottom-sheet-width`: The width of the sheet.
+  - `--m3e-bottom-sheet-max-width`: The maximum width of the sheet.
+  - `--m3e-bottom-sheet-container-color`: The background color of the sheet container.
+  - `--m3e-bottom-sheet-elevation`: The elevation level when not modal.
+  - `--m3e-bottom-sheet-modal-elevation`: The elevation level when modal.
+  - `--m3e-bottom-sheet-full-elevation`: The elevation level when full height.
+  - `--m3e-bottom-sheet-z-index`: The z-index of the non-modal sheet.
+  - `--m3e-bottom-sheet-minimized-container-shape`: The border radius when minimized.
+  - `--m3e-bottom-sheet-container-shape`: The border radius of the sheet container.
+  - `--m3e-bottom-sheet-full-container-shape`: The border radius when full height.
+  - `--m3e-bottom-sheet-scrim-color`: The color of the scrim overlay.
+  - `--m3e-bottom-sheet-scrim-opacity`: The opacity of the scrim overlay.
+  - `--m3e-bottom-sheet-peek-height`: The visible height when minimized.
+  - `--m3e-bottom-sheet-compact-top-space`: The top space in compact mode.
+  - `--m3e-bottom-sheet-top-space`: The top space in standard mode.
+  - `--m3e-bottom-sheet-padding-block`: The vertical padding.
+  - `--m3e-bottom-sheet-padding-inline`: The horizontal padding.
+  - `--m3e-bottom-sheet-handle-container-height`: The height of the drag handle container.
+  - `--m3e-bottom-sheet-handle-width`: The width of the drag handle.
+  - `--m3e-bottom-sheet-handle-height`: The height of the drag handle.
+  - `--m3e-bottom-sheet-handle-shape`: The border radius of the handle.
+  - `--m3e-bottom-sheet-handle-color`: The color of the drag handle.
+  - `--m3e-bottom-sheet-handle-focus-ring-offset`: The offset of the focus ring around the handle.
+  - `--m3e-bottom-sheet-color`: The foreground (text) color of the sheet.
+  - `--m3e-bottom-sheet-content-font-size`: Font size for the sheet content.
+  - `--m3e-bottom-sheet-content-font-weight`: Font weight for the sheet content.
+  - `--m3e-bottom-sheet-content-line-height`: Line height for the sheet content.
+  - `--m3e-bottom-sheet-content-tracking`: Letter spacing (tracking) for the sheet content.
+  - `--m3e-bottom-sheet-header-font-size`: Font size for the sheet header.
+  - `--m3e-bottom-sheet-header-font-weight`: Font weight for the sheet header.
+  - `--m3e-bottom-sheet-header-line-height`: Line height for the sheet header.
+  - `--m3e-bottom-sheet-header-tracking`: Letter spacing (tracking) for the sheet header.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -96,7 +114,7 @@ hideable val_ =
 -}
 hideFriction : Float -> Html.Attribute msg
 hideFriction val_ =
-    Html.Attributes.property "hideFriction" (Json.Encode.float val_)
+    Html.Attributes.property "hide-friction" (Json.Encode.float val_)
 
 
 {-| Whether the bottom sheet behaves as modal. (default: `false`)
@@ -117,7 +135,7 @@ open val_ =
 -}
 overshootLimit : Float -> Html.Attribute msg
 overshootLimit val_ =
-    Html.Attributes.property "overshootLimit" (Json.Encode.float val_)
+    Html.Attributes.property "overshoot-limit" (Json.Encode.float val_)
 
 
 {-| Dispatched when the sheet begins to open.

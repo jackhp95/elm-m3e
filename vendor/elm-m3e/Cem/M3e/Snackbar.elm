@@ -1,31 +1,12 @@
 module Cem.M3e.Snackbar exposing
-    ( component
-    , action, closeLabel, dismissible, duration
-    , onBeforetoggle, onToggle
-    , closeIconSlot
+    ( component, action, closeLabel, dismissible, duration, isactiontaken
+    , onBeforetoggle, onToggle, closeIconSlot
     )
 
 {-| Presents short updates about application processes at the bottom of the screen.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs action, closeLabel, dismissible, duration
-
-
-### Events
-
-@docs onBeforetoggle, onToggle
-
-
-### Slots
-
-@docs closeIconSlot
+@docs component, action, closeLabel, dismissible, duration, isactiontaken
+@docs onBeforetoggle, onToggle, closeIconSlot
 
 -}
 
@@ -46,6 +27,15 @@ import Json.Encode
 **Slots:**
 
   - `close-icon`: Renders the icon of the button used to close the snackbar.
+
+**CSS Custom Properties:**
+
+  - `--m3e-snackbar-margin`: Vertical offset from the bottom of the viewport.
+  - `--m3e-snackbar-container-shape`: Border radius of the snackbar container.
+  - `--m3e-snackbar-container-color`: Background color of the snackbar.
+  - `--m3e-snackbar-padding`: Internal spacing of the snackbar container.
+  - `--m3e-snackbar-min-width`: Minimum width of the snackbar.
+  - `--m3e-snackbar-max-width`: Maximum width of the snackbar.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -79,6 +69,13 @@ dismissible val_ =
 duration : Float -> Html.Attribute msg
 duration val_ =
     Html.Attributes.property "duration" (Json.Encode.float val_)
+
+
+{-| Whether the user clicked the action.
+-}
+isactiontaken : Bool -> Html.Attribute msg
+isactiontaken val_ =
+    Html.Attributes.property "isActionTaken" (Json.Encode.bool val_)
 
 
 {-| Dispatched before the toggle state changes.

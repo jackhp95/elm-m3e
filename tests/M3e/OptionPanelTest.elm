@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
 import M3e.OptionPanel as OptionPanel
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -28,17 +29,17 @@ suite =
                     |> Expect.equal Nothing
         , test "state Content emits state=content" <|
             \_ ->
-                node [ OptionPanel.state OptionPanel.Content ]
+                node [ OptionPanel.state Value.content ]
                     |> Node.findAttribute "state"
                     |> Expect.equal (Just "content")
         , test "state Loading emits state=loading" <|
             \_ ->
-                node [ OptionPanel.state OptionPanel.Loading ]
+                node [ OptionPanel.state Value.loading ]
                     |> Node.findAttribute "state"
                     |> Expect.equal (Just "loading")
         , test "state NoData emits state=no-data" <|
             \_ ->
-                node [ OptionPanel.state OptionPanel.NoData ]
+                node [ OptionPanel.state Value.noData ]
                     |> Node.findAttribute "state"
                     |> Expect.equal (Just "no-data")
         , test "no scroll-strategy attribute by default" <|
@@ -48,7 +49,7 @@ suite =
                     |> Expect.equal Nothing
         , test "scrollStrategy Reposition emits scroll-strategy=reposition" <|
             \_ ->
-                node [ OptionPanel.scrollStrategy OptionPanel.Reposition ]
+                node [ OptionPanel.scrollStrategy Value.reposition ]
                     |> Node.findAttribute "scroll-strategy"
                     |> Expect.equal (Just "reposition")
         , test "fitAnchorWidth=false is always emitted as a DOM property" <|

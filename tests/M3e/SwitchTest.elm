@@ -5,6 +5,7 @@ import Json.Encode as Encode
 import M3e.Element as Element
 import M3e.Node as Node exposing (Node)
 import M3e.Switch as Switch
+import M3e.Value as Value
 import Test exposing (Test, describe, test)
 
 
@@ -63,7 +64,7 @@ suite =
                 let
                     withIcons : Int
                     withIcons =
-                        node [ Switch.icons Switch.Selected ]
+                        node [ Switch.icons Value.selected ]
                             |> attrsOf
                             |> List.length
 
@@ -80,7 +81,7 @@ suite =
                 let
                     withIcons : Int
                     withIcons =
-                        node [ Switch.icons Switch.Both ]
+                        node [ Switch.icons Value.both ]
                             |> attrsOf
                             |> List.length
 

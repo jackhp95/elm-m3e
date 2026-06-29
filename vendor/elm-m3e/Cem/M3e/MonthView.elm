@@ -1,25 +1,12 @@
 module Cem.M3e.MonthView exposing
-    ( component
-    , rangeStart, rangeEnd, today, date, activeDate, minDate, maxDate
-    , onChange, onActiveChange
+    ( component, rangeStart, rangeEnd, today, date, activeDate
+    , minDate, maxDate, onChange, onActiveChange
     )
 
 {-| An internal component used to display a single month in a calendar.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs rangeStart, rangeEnd, today, date, activeDate, minDate, maxDate
-
-
-### Events
-
-@docs onChange, onActiveChange
+@docs component, rangeStart, rangeEnd, today, date, activeDate
+@docs minDate, maxDate, onChange, onActiveChange
 
 -}
 

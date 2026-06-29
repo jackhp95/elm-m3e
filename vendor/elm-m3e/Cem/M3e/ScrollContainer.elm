@@ -1,65 +1,46 @@
-module Cem.M3e.ScrollContainer exposing
-    ( component
-    , Dividers(..), dividers, thin
-    , dividersToString
-    )
+module Cem.M3e.ScrollContainer exposing (component, dividers, thin)
 
 {-| A vertically oriented content container which presents dividers above and below content when scrolled.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs Dividers, dividers, thin
+@docs component, dividers, thin
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Json.Encode
 
 
 {-| A vertically oriented content container which presents dividers above and below content when scrolled.
+
+**CSS Custom Properties:**
+
+  - `--m3e-divider-thickness`: Thickness of the divider lines above and below content.
+  - `--m3e-divider-color`: Color of the divider lines when visible.
+  - `--m3e-focus-ring-color`: Color of the focus ring outline.
+  - `--m3e-focus-ring-thickness`: Thickness of the focus ring outline.
+  - `--m3e-focus-ring-factor`: Animation factor for focus ring thickness.
+  - `--m3e-focus-ring-duration`: Duration of the focus ring animation.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-scroll-container" attributes children
 
 
-{-| Values for the `dividers` attribute.
--}
-type Dividers
-    = Above
-    | AboveBelow
-    | Below
-    | None
-
-
 {-| The dividers used to separate scrollable content. (default: `"above-below"`)
 -}
-dividers : Dividers -> Html.Attribute msg
-dividers val_ =
-    Html.Attributes.attribute "dividers" (dividersToString val_)
-
-
-dividersToString : Dividers -> String
-dividersToString val_ =
-    case val_ of
-        Above ->
-            "above"
-
-        AboveBelow ->
-            "above-below"
-
-        Below ->
-            "below"
-
-        None ->
-            "none"
+dividers :
+    Cem.M3e.Common.Value
+        { above : Cem.M3e.Common.Supported
+        , aboveBelow : Cem.M3e.Common.Supported
+        , below : Cem.M3e.Common.Supported
+        , none : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+dividers =
+    Cem.M3e.Common.dividers
 
 
 {-| Whether to present thin scrollbars. (default: `false`)

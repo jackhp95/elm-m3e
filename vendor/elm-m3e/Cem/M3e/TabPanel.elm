@@ -2,9 +2,6 @@ module Cem.M3e.TabPanel exposing (component)
 
 {-| A panel presented for a tab.
 
-
-## Component
-
 @docs component
 
 -}

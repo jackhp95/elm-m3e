@@ -14,7 +14,7 @@ Spec (per docs/CONVENTIONS.md):
   - Slots: default slot ← arbitrary content (free row; no slot is injected,
     so the raw `html` escape is valid inside `content`)
   - Properties: none (no boolean DOM properties)
-  - Attrs: name via Cem.M3e.Shape.name (codegen attr; opaque/non-introspectable)
+  - Attrs: name via Node.attribute "name" (shared M3e.Value token)
   - Escape: html (default-slot region; include via Element.html)
   - Tag: shape
 
@@ -29,17 +29,54 @@ the host. Per ADR 0007 that goes through the `attributes` escape
 
 -}
 
-import Cem.M3e.Shape as Cem
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
-{-| The set of Material 3 shape names — re-exported from `Cem.M3e.Shape`.
-Use the constructors from that module directly (e.g. `Cem.M3e.Shape.Circle`).
+{-| The set of Material 3 shape names, supplied as shared
+[`M3e.Value`](M3e-Value) tokens (e.g. [`Value.circle`](M3e-Value#circle),
+[`Value.heart`](M3e-Value#heart), [`Value.value12SidedCookie`](M3e-Value#value12SidedCookie)).
 -}
 type alias Name =
-    Cem.Name
+    Value
+        { value12SidedCookie : Supported
+        , value4LeafClover : Supported
+        , value4SidedCookie : Supported
+        , value6SidedCookie : Supported
+        , value7SidedCookie : Supported
+        , value8LeafClover : Supported
+        , value9SidedCookie : Supported
+        , arch : Supported
+        , arrow : Supported
+        , boom : Supported
+        , bun : Supported
+        , burst : Supported
+        , circle : Supported
+        , diamond : Supported
+        , fan : Supported
+        , flower : Supported
+        , gem : Supported
+        , ghostIsh : Supported
+        , heart : Supported
+        , hexagon : Supported
+        , oval : Supported
+        , pentagon : Supported
+        , pill : Supported
+        , pixelCircle : Supported
+        , pixelTriangle : Supported
+        , puffy : Supported
+        , puffyDiamond : Supported
+        , semicircle : Supported
+        , slanted : Supported
+        , softBoom : Supported
+        , softBurst : Supported
+        , square : Supported
+        , sunny : Supported
+        , triangle : Supported
+        , verySunny : Supported
+        }
 
 
 {-| An option configuring a shape container.
@@ -83,7 +120,7 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-shape"
             (List.filterMap identity
-                [ Maybe.map (\n -> Node.rawAttr (Cem.name n)) c.name
+                [ Maybe.map (\n -> Node.attribute "name" (Value.toString n)) c.name
                 ]
                 ++ c.attributes
             )

@@ -1,19 +1,8 @@
-module Cem.M3e.PseudoRadio exposing
-    ( component
-    , checked, disabled
-    )
+module Cem.M3e.PseudoRadio exposing (component, checked, disabled)
 
 {-| An element which looks like a radio button.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs checked, disabled
+@docs component, checked, disabled
 
 -}
 
@@ -23,6 +12,14 @@ import Json.Encode
 
 
 {-| An element which looks like a radio button.
+
+**CSS Custom Properties:**
+
+  - `--m3e-radio-icon-size`: Size of the radio icon.
+  - `--m3e-radio-unselected-icon-color`: Color of the unselected radio icon.
+  - `--m3e-radio-selected-icon-color`: Color of the selected radio icon.
+  - `--m3e-radio-disabled-icon-color`: Color of the disabled radio icon.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =

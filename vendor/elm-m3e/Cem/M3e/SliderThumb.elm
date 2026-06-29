@@ -1,28 +1,18 @@
 module Cem.M3e.SliderThumb exposing
-    ( component
-    , disabled, name, value
-    , onValueChange, onBeforeinput, onInput, onChange, onClick
+    ( component, disabled, name, value, formvalue, dirty
+    , pristine, touched, untouched, onValueChange, onBeforeinput, onInput
+    , onChange, onClick
     )
 
 {-| A thumb used to select a value in a slider.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs disabled, name, value
-
-
-### Events
-
-@docs onValueChange, onBeforeinput, onInput, onChange, onClick
+@docs component, disabled, name, value, formvalue, dirty
+@docs pristine, touched, untouched, onValueChange, onBeforeinput, onInput
+@docs onChange, onClick
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -39,6 +29,22 @@ import Json.Encode
   - `input`: Dispatched when the value changes.
   - `change`: Dispatched when the value changes.
   - `click`: Dispatched when the element is clicked.
+
+**CSS Custom Properties:**
+
+  - `--m3e-slider-thumb-width`: Width of the slider thumb.
+  - `--m3e-slider-thumb-padding`: Horizontal padding around the thumb.
+  - `--m3e-slider-thumb-color`: Active color of the slider thumb when enabled.
+  - `--m3e-slider-thumb-pressed-width`: Width of the thumb when pressed.
+  - `--m3e-slider-thumb-disabled-color`: Color of the thumb when disabled.
+  - `--m3e-slider-thumb-disabled-opacity`: Opacity of the thumb when disabled.
+  - `--m3e-slider-label-width`: Width of the floating label above the thumb.
+  - `--m3e-slider-label-container-color`: Background color of the label container.
+  - `--m3e-slider-label-color`: Text color of the label.
+  - `--m3e-slider-label-font-size`: Font size of the label text.
+  - `--m3e-slider-label-font-weight`: Font weight of the label text.
+  - `--m3e-slider-label-line-height`: Line height of the label text.
+  - `--m3e-slider-label-tracking`: Letter spacing of the label text.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -65,6 +71,48 @@ name val_ =
 value : String -> Html.Attribute msg
 value =
     Html.Attributes.value
+
+
+{-| Set the `[formValue]` property.
+-}
+formvalue :
+    Cem.M3e.Common.Value
+        { file : Cem.M3e.Common.Supported
+        , formdata : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+formvalue val_ =
+    Html.Attributes.property
+        "[formValue]"
+        (Json.Encode.string (Cem.M3e.Common.toString val_))
+
+
+{-| Whether the user has modified the value of the element.
+-}
+dirty : Bool -> Html.Attribute msg
+dirty val_ =
+    Html.Attributes.property "dirty" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not modified the value of the element.
+-}
+pristine : Bool -> Html.Attribute msg
+pristine val_ =
+    Html.Attributes.property "pristine" (Json.Encode.bool val_)
+
+
+{-| Whether the user has interacted when the element.
+-}
+touched : Bool -> Html.Attribute msg
+touched val_ =
+    Html.Attributes.property "touched" (Json.Encode.bool val_)
+
+
+{-| Whether the user has not interacted when the element.
+-}
+untouched : Bool -> Html.Attribute msg
+untouched val_ =
+    Html.Attributes.property "untouched" (Json.Encode.bool val_)
 
 
 {-| Listen for `value-change` events.

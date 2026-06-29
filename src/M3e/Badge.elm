@@ -1,5 +1,5 @@
 module M3e.Badge exposing
-    ( Option, Position(..)
+    ( Option, Position
     , view
     , dot, count, label, position, forId
     )
@@ -41,24 +41,27 @@ The `count` option applies M3's 999+ truncation: values above 999 render as
 
 -}
 
-import Cem.M3e.Badge as Cem
 import M3e.Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
-{-| Where the badge sits relative to its anchor element (`forId`).
-Mirrors the m3e-badge `position` enum. Default `AboveAfter`.
+{-| Where the badge sits relative to its anchor element (`forId`), supplied as
+shared [`M3e.Value`](M3e-Value) tokens. Mirrors the m3e-badge `position` enum.
+Default [`aboveAfter`](M3e-Value#aboveAfter).
 -}
-type Position
-    = Above
-    | AboveAfter
-    | AboveBefore
-    | After
-    | Before
-    | Below
-    | BelowAfter
-    | BelowBefore
+type alias Position =
+    Value
+        { above : Supported
+        , aboveAfter : Supported
+        , aboveBefore : Supported
+        , after : Supported
+        , before : Supported
+        , below : Supported
+        , belowAfter : Supported
+        , belowBefore : Supported
+        }
 
 
 {-| A badge configuration option. Build with the option functions below and
@@ -140,19 +143,19 @@ view opts =
                     ( Nothing, [] )
 
                 DotContent ->
-                    ( Just (Node.rawAttr (Cem.size Cem.Small)), [] )
+                    ( Just (Node.attribute "size" (Value.toString Value.small)), [] )
 
                 CountContent n ->
-                    ( Just (Node.rawAttr (Cem.size Cem.Large)), [ Node.text (countLabel n) ] )
+                    ( Just (Node.attribute "size" (Value.toString Value.large)), [ Node.text (countLabel n) ] )
 
                 LabelContent s ->
-                    ( Just (Node.rawAttr (Cem.size Cem.Large)), [ Node.text s ] )
+                    ( Just (Node.attribute "size" (Value.toString Value.large)), [ Node.text s ] )
     in
     Internal.fromNode
         (Node.element "m3e-badge"
             (List.filterMap identity
                 [ sizeAttr
-                , Maybe.map (\p -> Node.rawAttr (Cem.position (toCemPosition p))) c.position
+                , Maybe.map (\p -> Node.attribute "position" (Value.toString p)) c.position
                 , Maybe.map (Node.attribute "for") c.for
                 ]
             )
@@ -167,31 +170,3 @@ countLabel n =
 
     else
         String.fromInt n
-
-
-toCemPosition : Position -> Cem.Position
-toCemPosition p =
-    case p of
-        Above ->
-            Cem.Above
-
-        AboveAfter ->
-            Cem.AboveAfter
-
-        AboveBefore ->
-            Cem.AboveBefore
-
-        After ->
-            Cem.After
-
-        Before ->
-            Cem.Before
-
-        Below ->
-            Cem.Below
-
-        BelowAfter ->
-            Cem.BelowAfter
-
-        BelowBefore ->
-            Cem.BelowBefore

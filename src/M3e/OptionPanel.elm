@@ -1,5 +1,5 @@
 module M3e.OptionPanel exposing
-    ( Option, PanelState(..), ScrollStrategy(..)
+    ( Option, PanelState, ScrollStrategy
     , state, scrollStrategy, fitAnchorWidth, anchorOffset
     , onBeforetoggle, onToggle
     , view
@@ -40,47 +40,54 @@ they are not modelled here (use a port or custom event to drive them from Elm).
 
 -}
 
-import Cem.M3e.OptionPanel as Cem
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node
+import M3e.Value as Value exposing (Value)
 
 
 
 -- TYPES ------------------------------------------------------------------
 
 
-{-| The display state of the option panel.
+{-| The display state of the option panel, supplied as shared
+[`M3e.Value`](M3e-Value) tokens.
 
-  - `Content` — show the option list (default).
-  - `Loading` — show a loading indicator.
-  - `NoData` — show the empty-state slot.
+  - [`content`](M3e-Value#content) — show the option list (default).
+  - [`loading`](M3e-Value#loading) — show a loading indicator.
+  - [`noData`](M3e-Value#noData) — show the empty-state slot.
 
-Upstream: `state` attribute on `<m3e-option-panel>`.
-CEM: `OptionPanelState` — `"content"`, `"loading"`, or `"no-data"`.
-
--}
-type PanelState
-    = Content
-    | Loading
-    | NoData
-
-
-{-| How the panel behaves when its trigger scrolls out of view.
-
-  - `Hide` — panel is hidden when the trigger scrolls (default).
-  - `Reposition` — panel repositions to follow the trigger.
-
-Upstream: `scroll-strategy` attribute on `<m3e-option-panel>` (inherited
-from `m3e-floating-panel`).
-CEM: `FloatingPanelScrollStrategy` — `"hide"` or `"reposition"`.
+Upstream: `state` attribute on `<m3e-option-panel>` — `"content"`,
+`"loading"`, or `"no-data"`.
 
 -}
-type ScrollStrategy
-    = Hide
-    | Reposition
+type alias PanelState =
+    Value
+        { content : Supported
+        , loading : Supported
+        , noData : Supported
+        }
+
+
+{-| How the panel behaves when its trigger scrolls out of view, supplied as
+shared [`M3e.Value`](M3e-Value) tokens.
+
+  - [`hide`](M3e-Value#hide) — panel is hidden when the trigger scrolls
+    (default).
+  - [`reposition`](M3e-Value#reposition) — panel repositions to follow the
+    trigger.
+
+Upstream: `scroll-strategy` attribute on `<m3e-option-panel>` (inherited from
+`m3e-floating-panel`) — `"hide"` or `"reposition"`.
+
+-}
+type alias ScrollStrategy =
+    Value
+        { hide : Supported
+        , reposition : Supported
+        }
 
 
 type alias Config msg =
@@ -174,7 +181,7 @@ onToggle msg =
     M3e.OptionPanel.view
         { content = [ optionItems ] }
         [ M3e.OptionPanel.fitAnchorWidth True
-        , M3e.OptionPanel.state M3e.OptionPanel.Content
+        , M3e.OptionPanel.state M3e.Value.content
         ]
 
 The panel is shown/hidden imperatively via the JS `show`/`hide`/`toggle`
@@ -194,8 +201,8 @@ view req opts =
     Internal.fromNode
         (Node.element "m3e-option-panel"
             (List.filterMap identity
-                [ Maybe.map (\s -> Node.attribute "state" (Cem.stateToString (toCemState s))) cfg.state
-                , Maybe.map (\s -> Node.attribute "scroll-strategy" (Cem.scrollStrategyToString (toCemScrollStrategy s))) cfg.scrollStrategy
+                [ Maybe.map (\s -> Node.attribute "state" (Value.toString s)) cfg.state
+                , Maybe.map (\s -> Node.attribute "scroll-strategy" (Value.toString s)) cfg.scrollStrategy
                 , Just (Node.property "fitAnchorWidth" (Encode.bool cfg.fitAnchorWidth))
                 , Just (Node.property "anchorOffset" (Encode.float cfg.anchorOffset))
                 , Maybe.map (\msg -> Node.on "beforetoggle" (Decode.succeed msg)) cfg.onBeforetoggle
@@ -205,37 +212,3 @@ view req opts =
             (List.map Element.toNode req.content)
         )
 
-
-
--- INTERNAL HELPERS -----------------------------------------------
-
-
-{-| Map the local `PanelState` to the generated `Cem.M3e.OptionPanel` enum,
-whose `stateToString` is the single source of truth for the attribute value
-(kept in sync with the element's CEM — #45).
--}
-toCemState : PanelState -> Cem.State
-toCemState s =
-    case s of
-        Content ->
-            Cem.Content
-
-        Loading ->
-            Cem.Loading
-
-        NoData ->
-            Cem.NoData
-
-
-{-| Map the local `ScrollStrategy` to the generated `Cem.M3e.OptionPanel`
-enum, whose `scrollStrategyToString` is the single source of truth for the
-attribute value (kept in sync with the element's CEM — #45).
--}
-toCemScrollStrategy : ScrollStrategy -> Cem.ScrollStrategy
-toCemScrollStrategy s =
-    case s of
-        Hide ->
-            Cem.Hide
-
-        Reposition ->
-            Cem.Reposition

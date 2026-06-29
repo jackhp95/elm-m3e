@@ -1,8 +1,8 @@
 module M3e.Chip exposing
-    ( Option, ViewOption
+    ( Option, ViewOption, Variants
     , view, assist, suggestion, filter, input
-    , onClick, selected, disabled, elevated, href, removeLabel, leadingIcon, avatarChild
-    , viewElevated, viewLeadingIcon
+    , onClick, selected, disabled, variant, href, removeLabel, leadingIcon, avatarChild
+    , viewVariant, viewLeadingIcon
     )
 
 {-| `<m3e-*-chip>` family — compact, often dynamic choices.
@@ -31,7 +31,7 @@ behaviour its kind demands.
 
 # Types
 
-@docs Option, ViewOption
+@docs Option, ViewOption, Variants
 
 
 # Chips
@@ -41,26 +41,37 @@ behaviour its kind demands.
 
 # Options (interactive chips)
 
-@docs onClick, selected, disabled, elevated, href, removeLabel, leadingIcon, avatarChild
+@docs onClick, selected, disabled, variant, href, removeLabel, leadingIcon, avatarChild
 
 
 # Options (display chip)
 
-@docs viewElevated, viewLeadingIcon
+@docs viewVariant, viewLeadingIcon
 
 -}
 
-import Cem.M3e.Chip as CemChip
 import Json.Decode as Decode
 import Json.Encode as Encode
 import M3e.Attr as Attr
 import M3e.Element as Element exposing (Element, Supported)
 import M3e.Internal as Internal
 import M3e.Node as Node exposing (Node)
+import M3e.Value as Value exposing (Value)
 
 
 
 -- OPTION TYPE (interactive chips) ----------------------------------------
+
+
+{-| The chip's container style, supplied as shared
+[`M3e.Value`](M3e-Value) tokens — [`outlined`](M3e-Value#outlined) (default)
+or [`elevated`](M3e-Value#elevated). Mirrors the `variant` attribute.
+-}
+type alias Variants =
+    Value
+        { elevated : Supported
+        , outlined : Supported
+        }
 
 
 {-| An opaque option for the interactive chips (`assist`, `suggestion`,
@@ -92,11 +103,12 @@ disabled =
     Attr.disabled
 
 
-{-| Use the elevated variant rather than outlined.
+{-| Set the chip's container style (default
+[`outlined`](M3e-Value#outlined)).
 -}
-elevated : Bool -> Option msg
-elevated b =
-    Internal.option (\c -> { c | elevated = b })
+variant : Variants -> Option msg
+variant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 {-| Render the chip as a link to the given URL (sets the `href` attribute).
@@ -138,11 +150,12 @@ type alias ViewOption msg =
     Internal.Option (ViewConfig msg) msg
 
 
-{-| Set the elevated variant on the display chip.
+{-| Set the container style on the display chip (default
+[`outlined`](M3e-Value#outlined)).
 -}
-viewElevated : Bool -> ViewOption msg
-viewElevated b =
-    Internal.option (\c -> { c | elevated = b })
+viewVariant : Variants -> ViewOption msg
+viewVariant v =
+    Internal.option (\c -> { c | variant = v })
 
 
 {-| Add a leading icon to the display chip (rendered in the `icon` slot).
@@ -160,7 +173,7 @@ type alias Config msg =
     { onClick : Maybe msg
     , selected : Bool
     , disabled : Bool
-    , elevated : Bool
+    , variant : Variants
     , href : Maybe String
     , removeLabel : Maybe String
     , leadingIcon : Maybe (Element { icon : Supported } msg)
@@ -173,7 +186,7 @@ defaultConfig =
     { onClick = Nothing
     , selected = False
     , disabled = False
-    , elevated = False
+    , variant = Value.outlined
     , href = Nothing
     , removeLabel = Nothing
     , leadingIcon = Nothing
@@ -186,14 +199,14 @@ defaultConfig =
 
 
 type alias ViewConfig msg =
-    { elevated : Bool
+    { variant : Variants
     , leadingIcon : Maybe (Element { icon : Supported } msg)
     }
 
 
 defaultViewConfig : ViewConfig msg
 defaultViewConfig =
-    { elevated = False, leadingIcon = Nothing }
+    { variant = Value.outlined, leadingIcon = Nothing }
 
 
 
@@ -209,15 +222,7 @@ iconChild c =
 
 variantAttr : Config msg -> Node.Attr msg
 variantAttr c =
-    Node.attribute "variant"
-        (CemChip.variantToString
-            (if c.elevated then
-                CemChip.Elevated
-
-             else
-                CemChip.Outlined
-            )
-        )
+    Node.attribute "variant" (Value.toString c.variant)
 
 
 disabledAttr : Config msg -> Maybe (Node.Attr msg)
@@ -242,16 +247,7 @@ view req opts =
     in
     Internal.fromNode
         (Node.element "m3e-chip"
-            [ Node.attribute "variant"
-                (CemChip.variantToString
-                    (if vc.elevated then
-                        CemChip.Elevated
-
-                     else
-                        CemChip.Outlined
-                    )
-                )
-            ]
+            [ Node.attribute "variant" (Value.toString vc.variant) ]
             (List.filterMap identity
                 [ Maybe.map (\i -> Node.withSlot "icon" (Element.toNode i)) vc.leadingIcon
                 , Just (Node.text req.label)

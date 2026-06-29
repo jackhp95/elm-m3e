@@ -1,35 +1,16 @@
 module Cem.M3e.Stepper exposing
-    ( component
-    , HeaderPosition(..), headerPosition, LabelPosition(..), labelPosition, linear, Orientation(..), orientation
-    , onChange, onBeforeinput, onInput
-    , stepSlot, panelSlot
-    , headerPositionToString, labelPositionToString, orientationToString
+    ( component, headerPosition, labelPosition, linear, orientation, selectedindex
+    , onChange, onBeforeinput, onInput, stepSlot, panelSlot
     )
 
 {-| Provides a wizard-like workflow by dividing content into logical steps.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs HeaderPosition, headerPosition, LabelPosition, labelPosition, linear, Orientation, orientation
-
-
-### Events
-
-@docs onChange, onBeforeinput, onInput
-
-
-### Slots
-
-@docs stepSlot, panelSlot
+@docs component, headerPosition, labelPosition, linear, orientation, selectedindex
+@docs onChange, onBeforeinput, onInput, stepSlot, panelSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -50,58 +31,40 @@ import Json.Encode
   - `step`: Renders a step.
   - `panel`: Renders a panel.
 
+**CSS Custom Properties:**
+
+  - `--m3e-step-divider-thickness`: Thickness of the divider line between steps.
+  - `--m3e-step-divider-color`: Color of the divider line between steps.
+  - `--m3e-step-divider-inset`: Inset offset for divider alignment within step layout.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
     Html.node "m3e-stepper" attributes children
 
 
-{-| Values for the `header-position` attribute.
--}
-type HeaderPosition
-    = Above
-    | HeaderPositionBelow
-
-
 {-| The position of the step header, when oriented horizontally. (default: `"above"`)
 -}
-headerPosition : HeaderPosition -> Html.Attribute msg
-headerPosition val_ =
-    Html.Attributes.attribute "header-position" (headerPositionToString val_)
-
-
-headerPositionToString : HeaderPosition -> String
-headerPositionToString val_ =
-    case val_ of
-        Above ->
-            "above"
-
-        HeaderPositionBelow ->
-            "below"
-
-
-{-| Values for the `label-position` attribute.
--}
-type LabelPosition
-    = LabelPositionBelow
-    | End
+headerPosition :
+    Cem.M3e.Common.Value
+        { above : Cem.M3e.Common.Supported
+        , below : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+headerPosition =
+    Cem.M3e.Common.headerPosition
 
 
 {-| The position of the step labels, when oriented horizontally. (default: `"end"`)
 -}
-labelPosition : LabelPosition -> Html.Attribute msg
-labelPosition val_ =
-    Html.Attributes.attribute "label-position" (labelPositionToString val_)
-
-
-labelPositionToString : LabelPosition -> String
-labelPositionToString val_ =
-    case val_ of
-        LabelPositionBelow ->
-            "below"
-
-        End ->
-            "end"
+labelPosition :
+    Cem.M3e.Common.Value
+        { below : Cem.M3e.Common.Supported
+        , end : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+labelPosition =
+    Cem.M3e.Common.labelPosition
 
 
 {-| Whether the validity of previous steps should be checked or not. (default: `false`)
@@ -111,32 +74,24 @@ linear val_ =
     Html.Attributes.property "linear" (Json.Encode.bool val_)
 
 
-{-| Values for the `orientation` attribute.
--}
-type Orientation
-    = Auto
-    | Horizontal
-    | Vertical
-
-
 {-| The orientation of the stepper. (default: `"horizontal"`)
 -}
-orientation : Orientation -> Html.Attribute msg
-orientation val_ =
-    Html.Attributes.attribute "orientation" (orientationToString val_)
+orientation :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , horizontal : Cem.M3e.Common.Supported
+        , vertical : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+orientation =
+    Cem.M3e.Common.orientation
 
 
-orientationToString : Orientation -> String
-orientationToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Horizontal ->
-            "horizontal"
-
-        Vertical ->
-            "vertical"
+{-| The zero-based index of the selected step.
+-}
+selectedindex : Float -> Html.Attribute msg
+selectedindex val_ =
+    Html.Attributes.property "selectedIndex" (Json.Encode.float val_)
 
 
 {-| Dispatched when the selected step changes.

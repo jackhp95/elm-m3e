@@ -1,35 +1,18 @@
 module Cem.M3e.SearchView exposing
-    ( component
-    , contained, Mode(..), mode, open, clearLabel, closeLabel, hideSearchIcon
-    , onQuery, onClear, onBeforetoggle, onToggle
-    , inputSlot, openLeadingSlot, openTrailingSlot, closedLeadingSlot, closedTrailingSlot
-    , modeToString
+    ( component, contained, mode, open, clearLabel, closeLabel
+    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, inputSlot
+    , openLeadingSlot, openTrailingSlot, closedLeadingSlot, closedTrailingSlot
     )
 
 {-| A surface that presents suggestions and results for a search.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs contained, Mode, mode, open, clearLabel, closeLabel, hideSearchIcon
-
-
-### Events
-
-@docs onQuery, onClear, onBeforetoggle, onToggle
-
-
-### Slots
-
-@docs inputSlot, openLeadingSlot, openTrailingSlot, closedLeadingSlot, closedTrailingSlot
+@docs component, contained, mode, open, clearLabel, closeLabel
+@docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, inputSlot
+@docs openLeadingSlot, openTrailingSlot, closedLeadingSlot, closedTrailingSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -54,6 +37,31 @@ import Json.Encode
   - `closed-leading`: When closed, renders content before the input of the view.
   - `closed-trailing`: When closed, renders content after the input of the view.
 
+**CSS Custom Properties:**
+
+  - `--m3e-search-view-container-color`: Background color of the view container.
+  - `--m3e-search-view-contained-container-color`: Background color of the contained view container.
+  - `--m3e-search-view-divider-color`: Color of the divider separating header and results.
+  - `--m3e-search-view-divider-thickness`: Thickness of the divider separating header and results.
+  - `--m3e-search-view-full-screen-container-shape`: Shape of the fullscreen view container.
+  - `--m3e-search-view-full-screen-header-container-height`: Height of the header container in fullscreen mode.
+  - `--m3e-search-view-docked-container-shape`: Shape of the docked view container.
+  - `--m3e-search-view-docked-header-container-height`: Height of the header container in docked mode.
+  - `--m3e-search-view-contained-leading-margin`: Leading margin for the contained view.
+  - `--m3e-search-view-contained-trailing-margin`: Trailing margin for the contained view.
+  - `--m3e-search-view-contained-focused-leading-margin`: Leading margin when the contained view is focused.
+  - `--m3e-search-view-contained-focused-trailing-margin`: Trailing margin when the contained view is focused.
+  - `--m3e-search-view-contained-docked-bar-results-gap`: Gap between the contained docked bar and results.
+  - `--m3e-search-view-contained-docked-results-shape`: Shape of the results container in contained docked mode.
+  - `--m3e-search-view-contained-docked-bar-shape`: Shape of the bar in contained docked mode.
+  - `--m3e-search-view-contained-full-screen-bar-container-height`: Height of the bar container in contained fullscreen mode.
+  - `--m3e-search-view-docked-container-min-height`: Minimum height of the docked view container.
+  - `--m3e-search-view-docked-container-max-height`: Maximum height of the docked view container.
+  - `--m3e-search-view-contained-docked-results-space`: Space above the results in contained docked mode.
+  - `--m3e-search-view-docked-results-bottom-space`: Space below the results in docked mode.
+  - `--m3e-search-view-docked-scrim-color`: Color of the scrim behind the docked view.
+  - `--m3e-search-view-docked-scrim-opacity`: Opacity of the scrim behind the docked view.
+
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 component attributes children =
@@ -67,32 +75,17 @@ contained val_ =
     Html.Attributes.property "contained" (Json.Encode.bool val_)
 
 
-{-| Values for the `mode` attribute.
--}
-type Mode
-    = Auto
-    | Docked
-    | Fullscreen
-
-
 {-| The behavior mode of the view. (default: `"docked"`)
 -}
-mode : Mode -> Html.Attribute msg
-mode val_ =
-    Html.Attributes.attribute "mode" (modeToString val_)
-
-
-modeToString : Mode -> String
-modeToString val_ =
-    case val_ of
-        Auto ->
-            "auto"
-
-        Docked ->
-            "docked"
-
-        Fullscreen ->
-            "fullscreen"
+mode :
+    Cem.M3e.Common.Value
+        { auto : Cem.M3e.Common.Supported
+        , docked : Cem.M3e.Common.Supported
+        , fullscreen : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+mode =
+    Cem.M3e.Common.mode
 
 
 {-| Whether the view is expanded to show results. (default: `false`)
@@ -120,7 +113,7 @@ closeLabel val_ =
 -}
 hideSearchIcon : Bool -> Html.Attribute msg
 hideSearchIcon val_ =
-    Html.Attributes.property "hideSearchIcon" (Json.Encode.bool val_)
+    Html.Attributes.property "hide-search-icon" (Json.Encode.bool val_)
 
 
 {-| Dispatched when the view is opened or when the user modifies the search term.

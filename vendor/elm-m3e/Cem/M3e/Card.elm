@@ -1,35 +1,20 @@
 module Cem.M3e.Card exposing
-    ( component
-    , actionable, inline, Orientation(..), orientation, Variant(..), variant, href, target, rel, download, name, value, Type(..), type_, disabledInteractive, disabled
-    , onClick
-    , headerSlot, contentSlot, actionsSlot, footerSlot
-    , orientationToString, typeToString, variantToString
+    ( component, actionable, inline, orientation, variant, href
+    , target, rel, download, name, value, type_
+    , disabledInteractive, disabled, onClick, headerSlot, contentSlot, actionsSlot
+    , footerSlot
     )
 
 {-| A content container for text, images (or other media), and actions in the context of a single subject.
 
-
-## Component
-
-@docs component
-
-
-### Attributes
-
-@docs actionable, inline, Orientation, orientation, Variant, variant, href, target, rel, download, name, value, Type, type_, disabledInteractive, disabled
-
-
-### Events
-
-@docs onClick
-
-
-### Slots
-
-@docs headerSlot, contentSlot, actionsSlot, footerSlot
+@docs component, actionable, inline, orientation, variant, href
+@docs target, rel, download, name, value, type_
+@docs disabledInteractive, disabled, onClick, headerSlot, contentSlot, actionsSlot
+@docs footerSlot
 
 -}
 
+import Cem.M3e.Common
 import Html
 import Html.Attributes
 import Html.Events
@@ -49,6 +34,82 @@ import Json.Encode
   - `content`: Renders the content of the card with padding.
   - `actions`: Renders the actions of the card.
   - `footer`: Renders the footer of the card.
+
+**CSS Custom Properties:**
+
+  - `--m3e-card-padding`: Internal spacing for all slotted regions
+  - `--m3e-card-shape`: Corner radius of the card container.
+  - `--m3e-filled-card-text-color`: Foreground color for text content in filled cards.
+  - `--m3e-filled-card-container-color`: Background color of the filled card container.
+  - `--m3e-filled-card-container-elevation`: Elevation level for filled card container.
+  - `--m3e-filled-card-disabled-text-color`: Text color when filled card is disabled.
+  - `--m3e-filled-card-disabled-text-opacity`: Opacity applied to text when disabled.
+  - `--m3e-filled-card-disabled-container-color`: Background color when disabled.
+  - `--m3e-filled-card-disabled-container-elevation`: Elevation level when disabled.
+  - `--m3e-filled-card-disabled-container-elevation-color`: Shadow color when disabled.
+  - `--m3e-filled-card-disabled-container-elevation-opacity`: Shadow opacity when disabled.
+  - `--m3e-filled-card-disabled-container-opacity`: Overall container opacity when disabled.
+  - `--m3e-filled-card-hover-text-color`: Text color on hover.
+  - `--m3e-filled-card-hover-state-layer-color`: State layer color on hover.
+  - `--m3e-filled-card-hover-state-layer-opacity`: State layer opacity on hover.
+  - `--m3e-filled-card-hover-container-elevation`: Elevation level on hover.
+  - `--m3e-filled-card-focus-text-color`: Text color on focus.
+  - `--m3e-filled-card-focus-state-layer-color`: State layer color on focus.
+  - `--m3e-filled-card-focus-state-layer-opacity`: State layer opacity on focus.
+  - `--m3e-filled-card-focus-container-elevation`: Elevation level on focus.
+  - `--m3e-filled-card-pressed-text-color`: Text color on press.
+  - `--m3e-filled-card-pressed-state-layer-color`: State layer color on press.
+  - `--m3e-filled-card-pressed-state-layer-opacity`: State layer opacity on press.
+  - `--m3e-filled-card-pressed-container-elevation`: Elevation level on press.
+  - `--m3e-elevated-card-text-color`: Foreground color for text content in elevated cards.
+  - `--m3e-elevated-card-container-color`: Background color of the elevated card container.
+  - `--m3e-elevated-card-container-elevation`: Elevation level for elevated card container.
+  - `--m3e-elevated-card-disabled-text-color`: Text color when elevated card is disabled.
+  - `--m3e-elevated-card-disabled-text-opacity`: Opacity applied to text when disabled.
+  - `--m3e-elevated-card-disabled-container-color`: Background color when disabled.
+  - `--m3e-elevated-card-disabled-container-elevation`: Elevation level when disabled.
+  - `--m3e-elevated-card-disabled-container-elevation-color`: Shadow color when disabled.
+  - `--m3e-elevated-card-disabled-container-elevation-opacity`: Shadow opacity when disabled.
+  - `--m3e-elevated-card-disabled-container-opacity`: Overall container opacity when disabled.
+  - `--m3e-elevated-card-hover-text-color`: Text color on hover.
+  - `--m3e-elevated-card-hover-state-layer-color`: State layer color on hover.
+  - `--m3e-elevated-card-hover-state-layer-opacity`: State layer opacity on hover.
+  - `--m3e-elevated-card-hover-container-elevation`: Elevation level on hover.
+  - `--m3e-elevated-card-focus-text-color`: Text color on focus.
+  - `--m3e-elevated-card-focus-state-layer-color`: State layer color on focus.
+  - `--m3e-elevated-card-focus-state-layer-opacity`: State layer opacity on focus.
+  - `--m3e-elevated-card-focus-container-elevation`: Elevation level on focus.
+  - `--m3e-elevated-card-pressed-text-color`: Text color on press.
+  - `--m3e-elevated-card-pressed-state-layer-color`: State layer color on press.
+  - `--m3e-elevated-card-pressed-state-layer-opacity`: State layer opacity on press.
+  - `--m3e-elevated-card-pressed-container-elevation`: Elevation level on press.
+  - `--m3e-outlined-card-text-color`: Foreground color for text content in outlined cards.
+  - `--m3e-outlined-card-container-color`: Background color of the outlined card container.
+  - `--m3e-outlined-card-container-elevation`: Elevation level for outlined card container.
+  - `--m3e-outlined-card-outline-color`: Border color for outlined cards.
+  - `--m3e-outlined-card-outline-thickness`: Border thickness for outlined cards.
+  - `--m3e-outlined-card-disabled-text-color`: Text color when outlined card is disabled.
+  - `--m3e-outlined-card-disabled-text-opacity`: Opacity applied to text when disabled.
+  - `--m3e-outlined-card-disabled-container-elevation`: Elevation level when disabled.
+  - `--m3e-outlined-card-disabled-container-elevation-color`: Shadow color when disabled.
+  - `--m3e-outlined-card-disabled-container-elevation-opacity`: Shadow opacity when disabled.
+  - `--m3e-outlined-card-disabled-outline-color`: Border color when disabled.
+  - `--m3e-outlined-card-disabled-outline-opacity`: Border opacity when disabled.
+  - `--m3e-outlined-card-hover-text-color`: Text color on hover.
+  - `--m3e-outlined-card-hover-state-layer-color`: State layer color on hover.
+  - `--m3e-outlined-card-hover-state-layer-opacity`: State layer opacity on hover.
+  - `--m3e-outlined-card-hover-container-elevation`: Elevation level on hover.
+  - `--m3e-outlined-card-hover-outline-color`: Border color on hover.
+  - `--m3e-outlined-card-focus-text-color`: Text color on focus.
+  - `--m3e-outlined-card-focus-state-layer-color`: State layer color on focus.
+  - `--m3e-outlined-card-focus-state-layer-opacity`: State layer opacity on focus.
+  - `--m3e-outlined-card-focus-container-elevation`: Elevation level on focus.
+  - `--m3e-outlined-card-focus-outline-color`: Border color on focus.
+  - `--m3e-outlined-card-pressed-text-color`: Text color on press.
+  - `--m3e-outlined-card-pressed-state-layer-color`: State layer color on press.
+  - `--m3e-outlined-card-pressed-state-layer-opacity`: State layer opacity on press.
+  - `--m3e-outlined-card-pressed-container-elevation`: Elevation level on press.
+  - `--m3e-outlined-card-pressed-outline-color`: Border color on press.
 
 -}
 component : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
@@ -70,56 +131,29 @@ inline val_ =
     Html.Attributes.property "inline" (Json.Encode.bool val_)
 
 
-{-| Values for the `orientation` attribute.
--}
-type Orientation
-    = Horizontal
-    | Vertical
-
-
 {-| The orientation of the card. (default: `"vertical"`)
 -}
-orientation : Orientation -> Html.Attribute msg
-orientation val_ =
-    Html.Attributes.attribute "orientation" (orientationToString val_)
-
-
-orientationToString : Orientation -> String
-orientationToString val_ =
-    case val_ of
-        Horizontal ->
-            "horizontal"
-
-        Vertical ->
-            "vertical"
-
-
-{-| Values for the `variant` attribute.
--}
-type Variant
-    = Elevated
-    | Filled
-    | Outlined
+orientation :
+    Cem.M3e.Common.Value
+        { horizontal : Cem.M3e.Common.Supported
+        , vertical : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+orientation =
+    Cem.M3e.Common.orientation
 
 
 {-| The appearance variant of the card. (default: `"filled"`)
 -}
-variant : Variant -> Html.Attribute msg
-variant val_ =
-    Html.Attributes.attribute "variant" (variantToString val_)
-
-
-variantToString : Variant -> String
-variantToString val_ =
-    case val_ of
-        Elevated ->
-            "elevated"
-
-        Filled ->
-            "filled"
-
-        Outlined ->
-            "outlined"
+variant :
+    Cem.M3e.Common.Value
+        { elevated : Cem.M3e.Common.Supported
+        , filled : Cem.M3e.Common.Supported
+        , outlined : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+variant =
+    Cem.M3e.Common.variant
 
 
 {-| The URL to which the link button points. (default: `""`)
@@ -166,39 +200,24 @@ value =
     Html.Attributes.value
 
 
-{-| Values for the `type` attribute.
--}
-type Type
-    = Button
-    | Reset
-    | Submit
-
-
 {-| The type of the element. (default: `"button"`)
 -}
-type_ : Type -> Html.Attribute msg
-type_ val_ =
-    Html.Attributes.attribute "type" (typeToString val_)
-
-
-typeToString : Type -> String
-typeToString val_ =
-    case val_ of
-        Button ->
-            "button"
-
-        Reset ->
-            "reset"
-
-        Submit ->
-            "submit"
+type_ :
+    Cem.M3e.Common.Value
+        { button : Cem.M3e.Common.Supported
+        , reset : Cem.M3e.Common.Supported
+        , submit : Cem.M3e.Common.Supported
+        }
+    -> Html.Attribute msg
+type_ =
+    Cem.M3e.Common.type_
 
 
 {-| Whether the element is disabled and interactive. (default: `false`)
 -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    Html.Attributes.property "disabled-interactive" (Json.Encode.bool val_)
 
 
 {-| Whether the element is disabled. (default: `false`)
