@@ -61,8 +61,46 @@ BottomSheet (action injection), RadioButton (slotless-radio label wrap), Search
 
 ## Declarative requirements (need external-input files)
 
-### R4 — Slot → children typing  *(elm-cem#1 external input #1; the big one)*
-- **DECL. Pervasive.** Naive emits bare `iconSlot : Html.Attribute`; the hand layer types slots: `leadingIcon : Element { icon : Supported }`, `actions : List (Element { button : Supported })`, item rows like `Element { menuItem : Supported }`. A slot with no entry ⇒ free-form `Element any` (this map also decides typed-vs-free-form). **Needs `slots.json`.**
+### R4 — Slot → children typing + the closed-row composition model  *(elm-cem#1 external input #1; the big one)*
+- **DECL. Pervasive.** Naive emits bare `iconSlot : Html.Attribute`; the hand layer types slots so children are documented and (optionally) enforced. **Needs `slots.json`** — per slot: the allowed child kinds + an `arbitraryAllowed` flag (does the Material spec permit arbitrary children here?).
+
+#### Verified row mechanics (compiled probes against the real API, 2026-06-29)
+
+These were settled empirically with `elm make`, not asserted — the behavior is non-obvious and easy to get wrong.
+
+- **Open slot rows are affordance, NOT enforcement.** The current hand layer types slots with *open* rows, e.g. `Card.actions : List (Element { s | button : Supported } msg)`. Elm merges any two open records, so the row keeps **nothing** out:
+  - `Card.actions [ Icon.view … ]` — wrong kind (`{ s | icon }`) → **compiles**.
+  - `Card.actions [ M3e.html … ]` — raw html (`{ s | html }`) → **compiles**.
+  The row only drives autocomplete and documents intent. **Contrast R3:** `Value` setters use *closed* rows, so `Button.view { variant = Value.small … }` is a **TYPE MISMATCH** (small ∉ the closed `{ elevated, filled, tonal, outlined, text }`). So **R3 enforces at compile time; open-row R4 does not** — exactly the "protection lives on the setter argument" note.
+
+- **Closed slot rows DO enforce — without killing escapes.** Switching the typed-shorthand setter to a *closed* row (no `s |`) recovers real compile-time safety:
+  - `actions : List (Element { button : Supported } msg)` ← `Button.view` ✅; ← `Icon.view` ❌ *TYPE MISMATCH* (compiler even hints "Maybe icon should be button?"); ← `M3e.html` ❌ *TYPE MISMATCH*.
+  - Escapes survive, because they live elsewhere: (a) the universal `Element.fromNode : Node msg -> Element any msg` — `any` is a bare type variable, so it punches through *any* row by design (the loudest, elm-review-greppable hatch); and (b) separate named escape setters (below).
+
+- **Open producers + closed consumers ⇒ heterogeneous coexistence WITH enforcement.** Because component `view`s return *open* rows, a mixed child list widens to the *union* row, which is then checked against the closed slot:
+  - multi-kind slot `{ button, iconButton }` ← `[ Button.view, IconButton.view ]` → ✅ (both coexist);
+  - single-kind slot `{ button }` ← `[ Button.view, IconButton.view ]` → ❌ (iconButton rejected);
+  - multi-kind slot `{ button, iconButton }` ← `[ …, Icon.view ]` → ❌ (icon rejected).
+  - **Generator rule:** generated `view`s MUST return open rows (`Element { s | tag : Supported } msg`); generated typed slots SHOULD use closed rows enumerating every allowed kind (`{ button : Supported, iconButton : Supported }`).
+
+#### The named per-slot gradient (the emitted API shape)
+
+For each slot, `slots.json` gives the allowed kinds + `arbitraryAllowed`; the generator emits a gradient whose **name loudness encodes distance from the happy path**:
+
+| name | accepts | emitted when |
+|---|---|---|
+| `trailingIcon` (typed shorthand, often a constructor `{ name : String } -> Option`) | the blessed kind | one per allowed child kind |
+| `trailing` / `trailingSlot` | arbitrary spec-allowed content — a closed row of *all* allowed kinds (or `Element any` if the slot is genuinely open) | **only if** `arbitraryAllowed` |
+| `trailing_Element` | `Element any msg` — an off-spec IR element | always (escape) |
+| `trailing_ESCAPE_HATCH_HTML` | raw `Html msg` — out-of-our-hands / third-party markup | always (escape) |
+
+The *presence* of a friendly `trailingSlot` is itself the signal that arbitrary content is blessed; its *absence* marks an opinionated slot. The `element` escape is the extensibility seam — e.g. a company logo where only Material icons are "blessed" — letting consumers define their own helpers cleanly. `html` / `fromRawHtml` is the last resort for markup we can't express in the IR (third-party widgets, etc.).
+
+- **Proposed `fromRawHtml : Html msg -> Element any msg`** — a *universal-row* raw-html lift (fits everywhere, like `fromNode`), replacing today's row-restricted `M3e.html : Html msg -> Element { s | html : Supported }` (which a closed slot correctly rejects). "html allowed anywhere," gated by elm-review rather than by types.
+
+#### Enforcement split (the resolved model)
+
+The **type system** (closed slot rows) polices the easy/common path — wrong kind or stray html is a compile error with a helpful hint. **elm-review** polices *only* the explicit escapes (`*_Element`, `*_ESCAPE_HATCH_HTML`, `fromNode`/`fromRawHtml`), proposing an alternative or requiring a suppression. The two split the work; together they make **easy path = correct path**. This is a stronger position than "open rows everywhere + elm-review as sole enforcer" — that was only forced by the hand layer's *choice* of open slot rows, not by the type system.
 
 ### R5 — Multi-tag grouping  *(elm-cem#1 external input #3 — but FAR bigger than "Progress")*
 - **DECL. ~20 components.** The dominant structural pattern: one logical module spans several CEM tags. Two flavors the schema must express:
@@ -130,10 +168,14 @@ These cannot be captured by any declarative input; they stay hand-written (the r
 
 ## Implied external-input schema (expanded from elm-cem#1)
 
-1. **`slots.json`** — per component, per slot: allowed child element kinds (R4) **and** the wrapper template `none|div[slot]|span[slot]|<element>` (R8). Doubles as the typed-vs-free-form switch.
+1. **`slots.json`** — per component, per slot: allowed child element kinds + `arbitraryAllowed` (R4, drives the closed-row typed shorthands and whether a friendly `…Slot` rung is emitted) **and** the wrapper template `none|div[slot]|span[slot]|<element>` (R8).
 2. **`overrides.<component>`** — required-content/a11y-name designation (R6), multi-tag grouping definition (R5), event-decoder descriptors (R9), typed-argument overrides (R12), surface skip-list (R13), static-attr injections + auto-id + renames (R-EXTRA), and a `hand-owned` flag (R-HAND) that tells the generator to skip / leave a hole.
 
 Everything else flows mechanically from CEM (R0, R1, R3, R7, R10).
+
+## Resolved design decisions
+
+- **R4 slot enforcement (settled 2026-06-29, verified by compiled probes):** generated `view`s return *open* rows (enable heterogeneous child coexistence); generated typed slots use *closed* rows enumerating allowed kinds (real compile-time enforcement). Escapes relocate to named siblings (`*_Element`, `*_ESCAPE_HATCH_HTML`) + universal `fromNode`/`fromRawHtml`, policed by elm-review. Easy path = correct path.
 
 ## Open design decisions
 
