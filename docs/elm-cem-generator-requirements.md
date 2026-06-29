@@ -19,18 +19,19 @@ by which generator capability would absorb it, and tag reducibility:
 ## Headline conclusion (the "capture it entirely" number)
 
 **Capture ceiling ≈ 80%.** Of ~74 components, roughly **55–60 are fully reducible**
-(MECH + DECL) and **~14 carry an irreducibly hand-owned aspect**. So the honest goal
+(MECH + DECL) and **~13 carry an irreducibly hand-owned aspect**. So the honest goal
 is *"the generator owns the mechanical+declarative majority; a small hand-owned set
 remains for genuinely imperative / multi-native-element / cross-component cases."*
-"Eliminate the hand layer" → realistically "shrink it from ~74 modules to ~14, and
-make those 14 the only thing anyone hand-writes."
+"Eliminate the hand layer" → realistically "shrink it from ~74 modules to ~13, and
+make those 13 the only thing anyone hand-writes."
 
-The irreducible ~14 (see R-HAND below): Calendar, DatePicker (JS-Date decode),
+The irreducible ~13 (see R-HAND below): DatePicker (form-field composition, *verify*),
 Snackbar (imperative open), SplitButton (cross-component composition), Field,
 TextField, Select, TimePicker (form-field + native-element compositions),
 BottomSheet (action injection), RadioButton (slotless-radio label wrap), Search
 (inner input), Slider (auto-thumb), plus the no-element modules Text / Theme-helpers
-/ Label / StepperNext.
+/ Label / StepperNext. **Calendar was removed (2026-06-29):** its only hand-aspect
+was the JS-Date event read-back, now a reusable generated decoder (R9).
 
 ---
 
@@ -123,14 +124,17 @@ The **type system** (closed slot rows) polices the easy/common path — wrong ki
   - **Injected child elements absent from CEM**: BottomSheet (`injectSheetAction` mutates the node tree), Search (inner `<input type=search slot=input>`), Slider (auto `<m3e-slider-thumb>`), RadioButton (`<label>` sibling wrap of slotless `<m3e-radio>`), SplitPane (`<m3e-content-pane>` wrap), Nav* (badge as `<m3e-badge>` child), Fab (icon child).
   - The schema needs a per-slot **wrapper template** (`none` | `div[slot]` | `span[slot]` | named-element) and a way to declare default-slot placement. The node-tree *mutations* (BottomSheet, Field) are HAND.
 
-### R9 — Event → typed-payload decoders  *(elm-cem#1 external input #6 — also bigger than "a few")*
-- **DECL (mostly) + HAND (two cases).** Almost every interactive component bakes a specific decoder instead of passing a raw `Decoder msg`:
-  - `target.value` / `target.checked` / `target.selected` extraction (all form controls).
-  - `detail.X` extraction (Paginator `detail.pageIndex`; Menu/Select `newState`).
-  - multi-event → one msg (`onClose` ← `closed`+`cancel`; `onToggle` ← `opened`/`closed` → Bool).
+### R9 — Event → typed-payload decoders  *(elm-cem#1 external input #6)*
+- **Fully DECL/MECH — NO truly-HAND cases** (corrected 2026-06-29 after inspecting codegen + the Calendar/Tree hand modules). The modular base is **already shipped in codegen**: each component emits the generic listener `onX : Json.Decode.Decoder msg -> Html.Attribute msg`, and `Cem.M3e.Common` exposes reusable decoders (e.g. `targetValue`) — codegen docstrings even teach `onChange (Json.Decode.map ValueChanged Cem.M3e.Common.targetValue)`. So "listener + bring-your-own-decoder + compose" (the requested modularity) exists today.
+- What the hand layer adds is the **typed-payload convenience** `onX : (payload -> msg) -> Option` with the decoder pre-baked. The generator should emit these from an event-override descriptor:
+  - `target.value` / `target.checked` / `target.selected` (form controls) — shared `Common` decoders.
+  - `detail.X` extraction (Paginator `detail.pageIndex`; Menu/Select `newState`) — `Common.detailField "pageIndex"`.
+  - multi-event → one msg (`onClose` ← `closed`+`cancel`; `onToggle` ← `opened`/`closed` → Bool) — override lists the source events.
   - `Decode.succeed msg` for plain clicks.
-  - **HAND**: Calendar/DatePicker decode a JS `Date` object by abusing `elm/json`'s `JSON.stringify` path to coerce it to an ISO string with no JS interop. Tree uses plain-msg because the event carries non-serialisable live DOM refs.
-- Schema: per-event a small decoder descriptor (source path + target type + multi-event fan-in); an `opaque`/`hand` escape for the irreducible ones.
+- **The two cases I previously marked HAND both dissolve:**
+  - **Date is a reusable helper, not hand code.** Calendar's `datePropertyDecoder` is generic except for one JSON path: `Decode.at ["target","date"] Decode.value |> andThen (Encode.encode 0 >> decodeString string)` — `Encode.encode` triggers `Date.prototype.toJSON()` → ISO string. Generalizes to `Common.dateValue` / `dateAt : List String -> Decoder String`. CEM can't *infer* Date-ness (the `change` event is prose-only), so the event-override declares `{ source: target.date, type: Date }`; the generator then emits the convenience from the built-in Date→ISO helper.
+  - **Tree degrades to plain-msg, which is mechanical.** `Tree.onChange : msg -> Option` — the event carries non-serialisable live DOM refs, so no payload decoder is *possible*; that's a data limitation expressed as "no typed-payload convenience available," generated as `Decode.succeed msg`. Not hand-written.
+- Schema: per-event a small decoder descriptor (source path + target type + multi-event fan-in); a `plain` form (no payload) for the Tree-style case. No `hand` escape needed.
 
 ### R10 — Universal escape hatches  *(elm-cem#1 comment 2)*
 - **MECH + DECL.** Confirmed prototypes: `attributes : List (Node.Attr msg)` on Shape, ScrollContainer, Skeleton, Progress (ADR 0007 CSS-var passthrough). Plus `href/target/rel/download` via `Node.rawAttr` (Button, Fab, ExtendedFab), IconButton.extraContent, NavigationDrawer.content. Generalize: every component gets `extraAttrs` + a shared `M3e.Attr.attributes`. Content escape (`M3e.html`/`fromNode`) already universal.
@@ -156,9 +160,9 @@ The **type system** (closed slot rows) polices the easy/common path — wrong ki
 These cannot be captured by any declarative input; they stay hand-written (the residual "hand layer"), and the generator should leave designated holes for them:
 
 - **No custom element / Tailwind**: `Text`, `Label`, Theme typescale helpers (elm-cem#1 #4 skip list).
-- **Native-element compositions** (`m3e-form-field` + native `<input>`/`<label>`/`<textarea>`): `Field`, `TextField`, `Select`, `TimePicker`. Includes `Node.setAttribute` IR-rewrite (Field stamps `id` onto the control node).
+- **Native-element compositions** (`m3e-form-field` + native `<input>`/`<label>`/`<textarea>`): `Field`, `TextField`, `Select`, `TimePicker`, and `DatePicker` (toggle + input + calendar composition — *verify separately; HAND for composition, not for dates*). Includes `Node.setAttribute` IR-rewrite (Field stamps `id` onto the control node).
 - **Imperative-only**: `Snackbar` (opened via JS `M3eSnackbar.open`, no declarative `open`); needs the JS wrapper / port.
-- **JS-Date decode**: `Calendar`, `DatePicker` (`JSON.stringify` Date coercion).
+- ~~**JS-Date decode**: `Calendar`, `DatePicker`~~ — **REMOVED (2026-06-29).** The Date read-back is a reusable generated decoder (R9), not hand code. `Calendar` verified **fully reducible** (date/label attrs + `startView` enum + clean `header` slot + the R9 Date convenience) and leaves this list. `DatePicker` stays below for its form-field/multi-element *composition*, not for dates *(verify separately)*.
 - **Cross-component composition**: `SplitButton` calls `Button.view` for its leading slot — this is also the **#70 phantom-row leak** (SplitButton's variant row widened to match Button's, admits `Value.text` upstream rejects).
 - **Node-tree mutation**: `BottomSheet` (`injectSheetAction`).
 - **Slotless-element workarounds**: `RadioButton` (`<label>` sibling wrap), `Search` (inner `<input>`), `Slider` (hidden auto-thumb).
