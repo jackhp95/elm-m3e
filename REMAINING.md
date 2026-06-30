@@ -37,14 +37,17 @@ The generator now emits the locked three-layer partial-application model
   NOT fold** (items are reused, e.g. menu-item ∈ menu & fab-menu), so it's config, not new code.
 - **Naming fix (F18)** — `decapitalize` (pascal→camel) so multi-word fns/kinds are `menuItem`.
 
-### Remaining — two contained generator refinements + authoring
-- **Variant-split folding** (Progress linear/circular, Fab/ExtendedFab) — the ONLY genuine fold
-  (tags are alternatives, not reused). Combined module with member constructors. *(Ergonomic; the
-  components work as separate modules today.)*
-- **`Action` integration** — components take an `action` field; suppress the overlapping
-  `onClick`/`href`. Module exists; integration is per-component curation.
-- **Config authoring for the ~125 components** (child kinds, required content, a11y names, the few
-  variant-split groups) — the bulk; domain knowledge from `@m3e/web` docs. Best in reviewable batches.
+### ALL GENERATOR MECHANISMS NOW DONE
+- ✅ **Variant-split folding** — `config.group` folds member tags into one module (Progress
+  `linear`/`circular`; standalone tops folded). Add more via config (e.g. Fab/ExtendedFab).
+- ✅ **`Action` integration** — `required` kind `action:click,link` ⇒ an `Action` field; the
+  overlapping `onClick`/`href` are suppressed. (AssistChip authored.)
+
+### The ONLY remaining work: config-authoring COVERAGE (for your review)
+The generator is complete. `config/slots.json` covers ~28 components (containers, a11y, action,
+required content, the Progress group), all evidence-based from `@m3e/web`. The other ~96 are at
+safe defaults (free child row, no required) — still compile. Extending them (child kinds, required
+content, a11y, groups) is domain authoring, per-component. **This is the part you said you'd review.**
 
 ### Remaining — Generator (elm-cem) [original list, mostly superseded above]
 1. **Enum → `Value` vocabulary (R3, net-new — elm-cem#5).** Today enums fall back to per-attr
