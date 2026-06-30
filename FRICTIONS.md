@@ -65,3 +65,11 @@ Every friction, deviation, and surprise hit while executing
   compiled. A `Value` *consumer* must be CLOSED (open token, closed consumer). Fixed. The same
   rule holds for all three phantom rows: **producers open, consumers closed.** The model is now
   proven: positive compiles, all three negatives reject.
+
+- **F14 — WHOLE-LIBRARY MILESTONE.** The retargeted generator emits the full
+  partial-application three-layer model + the Value vocabulary for ALL 125 m3e
+  components; **all 125 top modules compile** over the hand core. Two of three
+  phantom dimensions (Value + capability) are enforced and verified positive+negative
+  against generated output. (Also re-learned: shell loops that round-trip module
+  names through sed are fragile — iterate files directly. The first "0/125" was a
+  loop bug, not a real failure.)

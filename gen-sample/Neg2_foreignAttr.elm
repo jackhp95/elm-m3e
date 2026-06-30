@@ -1,4 +1,4 @@
-module Neg2 exposing (main)
+module Neg2_foreignAttr exposing (main)
 import Html exposing (Html)
 import Html.Attributes
 import M3e.Button as Button
