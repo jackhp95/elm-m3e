@@ -91,3 +91,13 @@ Every friction, deviation, and surprise hit while executing
   under `_runtime`, emitted with prefix substitution. Whole library 125/125 from generator output
   alone. (Prefix substitution is a plain `String.replace "M3e" <lib>` — safe for these tiny files;
   watch for false matches if a library name ever contains the token.)
+
+- **F16 — the mechanical/design boundary.** Built straight through: config/typed-slots, core
+  generation (F7), events, required-content/a11y, and the `M3e.Action` module — all verified,
+  whole library 125/125 throughout. The remaining items are no longer "mechanical generation"
+  but **design + per-component curation**: (a) `Action` *integration* (which components take it;
+  suppressing the overlapping onClick/href; the action-vs-stateful read), and (b) **R5 groups** —
+  folding multiple CEM tags into one module (Menu/List/Chip families), which **restructures the
+  public module layout** (e.g. `M3e.MenuItem` → `M3e.Menu.item`). Plus authoring `config` for all
+  125 components (domain knowledge). Not a technical block; flagging because (b) changes the public
+  API shape and warrants a confirm before I restructure the generation pipeline around it.

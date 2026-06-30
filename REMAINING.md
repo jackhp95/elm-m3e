@@ -21,7 +21,17 @@ The generator now emits the locked three-layer partial-application model
 
 ## Remaining (largest → smallest, with the relevant issue)
 
-### Generator (elm-cem)
+### Also DONE since (this session, continued)
+- **Config support** (`--config-from`, single JSON file) — typed-slot children (3rd phantom row),
+  config-free path preserved. *(elm-cem `496879e`)*
+- **Core generation** (resolves F7) — IR core emitted verbatim from `runtime/` templates via the
+  transparent `Elm.File` record; output 100% generated, 125/125. *(`619091e`)*
+- **Events (R9 generic form)** — `onX : Decoder msg -> Attr {c|onX} msg` across all layers; event
+  caps in the closed row. *(`f3216ad`)*
+- **Required content + a11y** — config `required` (content ⇒ `Element` child; ariaLabel ⇒ required
+  `String` → `aria-label`); top `view` gains a `{required}` record. *(`a2ef94d`)*
+
+### Remaining — Generator (elm-cem)
 1. **Enum → `Value` vocabulary (R3, net-new — elm-cem#5).** Today enums fall back to per-attr
    unions (middle) or `String` (top, when alias-inlining is skipped). Build the shared phantom
    `Value` token vocab + closed supported-rows; wire top-layer enum setters to it. *Biggest item.*
