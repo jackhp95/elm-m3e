@@ -1,3 +1,4 @@
 {
-  "Button": { "children": ["icon", "element"] }
+  "Button": { "children": ["icon", "element"], "required": { "label": "content" } },
+  "IconButton": { "required": { "name": "ariaLabel" } }
 }
