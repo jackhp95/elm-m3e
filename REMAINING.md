@@ -31,7 +31,22 @@ The generator now emits the locked three-layer partial-application model
 - **Required content + a11y** — config `required` (content ⇒ `Element` child; ariaLabel ⇒ required
   `String` → `aria-label`); top `view` gains a `{required}` record. *(`a2ef94d`)*
 
-### Remaining — Generator (elm-cem)
+### Also DONE (continued further)
+- **Typed events** — derived from the controlled property (checked→Bool, value→String), no config.
+- **Menu/FabMenu typed containers** — via typed-slot config; **key finding (F17): container+items do
+  NOT fold** (items are reused, e.g. menu-item ∈ menu & fab-menu), so it's config, not new code.
+- **Naming fix (F18)** — `decapitalize` (pascal→camel) so multi-word fns/kinds are `menuItem`.
+
+### Remaining — two contained generator refinements + authoring
+- **Variant-split folding** (Progress linear/circular, Fab/ExtendedFab) — the ONLY genuine fold
+  (tags are alternatives, not reused). Combined module with member constructors. *(Ergonomic; the
+  components work as separate modules today.)*
+- **`Action` integration** — components take an `action` field; suppress the overlapping
+  `onClick`/`href`. Module exists; integration is per-component curation.
+- **Config authoring for the ~125 components** (child kinds, required content, a11y names, the few
+  variant-split groups) — the bulk; domain knowledge from `@m3e/web` docs. Best in reviewable batches.
+
+### Remaining — Generator (elm-cem) [original list, mostly superseded above]
 1. **Enum → `Value` vocabulary (R3, net-new — elm-cem#5).** Today enums fall back to per-attr
    unions (middle) or `String` (top, when alias-inlining is skipped). Build the shared phantom
    `Value` token vocab + closed supported-rows; wire top-layer enum setters to it. *Biggest item.*
