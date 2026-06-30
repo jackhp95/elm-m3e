@@ -141,7 +141,7 @@ The hand layer splits into separate constructors/modules whenever a component ha
 The fix uses vocabulary we already have — an opaque wrapper carrying a `Supported` **capability row** (same idea as `Element`'s `supported` row):
 
 ```elm
-module M3e.Action exposing (Action, onClick, link, linkWith, toggle, remove, toAttrs)
+module M3e.Action exposing (Action, onClick, link, linkWith, remove, toAttrs)
 
 type Action capability msg
     = Action (Payload msg)
@@ -149,8 +149,7 @@ type Action capability msg
 type Payload msg                       -- private; never exported
     = OnClick msg
     | Link LinkSpec
-    | Toggle msg                       -- fires on `change`
-    | Remove msg
+    | Remove msg                       -- dismiss affordance (input chip); fires on `remove`
 
 type alias LinkSpec =
     { href : String, target : Maybe String, rel : Maybe String, download : Maybe String }
@@ -158,7 +157,6 @@ type alias LinkSpec =
 onClick  : msg -> Action { c | click : Supported } msg
 link     : String -> Action { c | link : Supported } msg          -- 90% case (href only)
 linkWith : LinkSpec -> Action { c | link : Supported } msg        -- full anchor (Button/Fab)
-toggle   : msg -> Action { c | toggle : Supported } msg
 remove   : msg -> Action { c | remove : Supported } msg
 
 link url = linkWith { href = url, target = Nothing, rel = Nothing, download = Nothing }
@@ -169,11 +167,10 @@ toAttrs : Action capability msg -> List (Node.Attr msg)   -- the SINGLE source o
 A consumer pins the capability row to declare which actions it admits; the row is fixed at each constructor, so the built value is monomorphic and composes with the homogeneous option list.
 
 - **Required-vs-optional moves to the binding site, not separate functions/modules:**
-  - **Required** (Chip kinds, Menu `item`): `action` is a required record field —
+  - **Required** (Chip `assist`/`suggestion`/`input`, Menu `item`): `action` is a required record field —
     `assist : { label : String, action : Action { click : Supported, link : Supported } msg } -> …`,
-    `input  : { …, action : Action { remove : Supported } msg } -> …`,
-    `filter : { …, action : Action { toggle : Supported } msg } -> …`.
-    `Action.toggle x` passed to `assist` is a **type error** (its row has no `toggle`) — this is "Never on the other," generalized. href XOR onClick is now structural: `action` is one field, so both can't coexist.
+    `input  : { …, action : Action { remove : Supported } msg } -> …`.
+    `Action.remove x` passed to `assist` is a **type error** (its row has no `remove`) — this is "Never on the other," generalized. href XOR onClick is now structural: `action` is one field, so both can't coexist. (`filter` is *not* here — it's a stateful member; see the action-vs-stateful rule below.)
   - **Optional** (Button — honoring Button.elm's deliberate "no action is degenerate-but-valid, caught by NoActionlessButton review rule"): `action : Action { click, link } msg -> Option msg`. Same value, different binding site; the review rule is unchanged.
 - **`Fab`/`ExtendedFab` merge.** `Fab.view` *already* sets `extended` when `label` is supplied; the only real difference is a11y (icon-only needs `ariaLabel`; extended's visible `label` *is* the accessible name). Same discriminated-required-arg pattern → one constructor, drop the `ExtendedFab` module:
   ```elm
@@ -184,7 +181,22 @@ A consumer pins the capability row to declare which actions it admits; the row i
   `set : { chips : List (Element { chip : Supported } msg) } -> List (SetOption msg) -> Element { s | chipSet : Supported } msg`.
 - **`target`/`rel`/`download` bundle into the link** (decided 2026-06-29). Today they're free-floating options on Button/Fab — a footgun (`target "_blank"` with no `href` renders a dead attribute). Folding them into `LinkSpec` makes "target without href" unrepresentable; `toAttrs` standardizes on plain `Node.attribute "href"` (not the `Cem.href` rawAttr wrappers — href/target/rel/download are universal free-string anchor attrs with no enum to guard, and `Action` is a shared cross-component module). Net: 8 hand-written options across 2 modules → 3 optional `LinkSpec` fields wired once.
 - **What `Action` deletes:** `ItemAction` (Menu); Chip's `onClick`/`href` options + the runtime `case c.href`; Button/Fab `target`/`rel`/`download` options (+ Config fields, defaults, rawAttr lines); `ExtendedFab.elm` (~180 lines); the three copies of the action-wiring cluster. (`Chip.removeLabel` *stays* — it's the remove button's accessible label, an a11y attribute, not the handler.)
-- **Where `Action` STOPS (deliberately not over-unified):** Menu `checkboxItem`/`radioItem` carry **stateful** bindings (`onChange : Bool -> msg`, `checked`/`selected` property) — a form-control concern, not a fire-and-forget action. And the `itemLeadingIcon`/`checkboxLeadingIcon`/`radioLeadingIcon` triplication is **parallel-config-type** duplication, not an action problem. Both belong to the container+items structural pass.
+- **Action-vs-stateful is a mechanical CEM read (settled 2026-06-29, verified across the control set).** The boundary is *not* an editorial "fire-and-forget vs form-control" judgement — it is one signal in the manifest:
+
+  > **Does the element pair a controlled-state property (`checked`/`selected`/`value` the element mutates) with a `change`/`input` event that reports that mutation?**
+
+  | | controlled state + `change`/`input`? | binding | callback |
+  |---|---|---|---|
+  | **Action** | no — pure activation (`click`/`remove`/navigation) | `M3e.Action` (`onClick`/`link`/`linkWith`/`remove`) | bare `msg` / navigation |
+  | **stateful** | yes | controlled field/option (`checked`/`selected`/`value`) + required handler | `<propType> -> msg` (may be bare `msg` when the value is derivable) |
+
+  - **Verified pairing (no counterexamples):** stateful — `Switch` (`checked`+`change`), `Radio` (`checked`+`value`+`change`), `ListOption` (`selected`+`value`+`change`), `FilterChip` (`selected`+`change`); Action — `AssistChip`/`SuggestionChip` (`onClick` only, no controlled state), `InputChip` (`onRemove`/`remove` event, `value` is a creation-time token, no toggle), `Button`/`Fab`.
+  - **`Action.toggle` is therefore dropped** (was the lone constructor crossing the line): `FilterChip` is a controlled `selected : Bool` + `change`, structurally identical to a checkbox — so `filter` binds **stateful** (`{ selected : Bool, onChange : Bool -> msg }`), not `Action { toggle }`. This also makes the un-Elm-like "element self-manages `selected`, program only gets pinged" pattern unrepresentable: you control the state, as TEA wants.
+  - **Callback arity is not the discriminator.** Radio's handler is a bare `msg` (the value is implicit — selecting always means `True`/this-value), yet it is *stateful* by the pairing rule. What makes a binding stateful is the controlled-state+`change` pairing, never the `msg` vs `value -> msg` shape.
+  - **Two shapes the schema must admit (surfaced by the verification):**
+    - **Dual-affordance members.** `InputChip` carries a required `Action { remove }` *and* an optional chip-body `onClick` — a member may bind a required action *plus* option-bound actions. (No new syntax: required field + optional option.)
+    - **Container-level stateful.** `SelectionList` exposes an aggregate `onChange` ("selected state of an option changes"), so a `stateful` binding can attach to a **container**, not only a member.
+  - The `itemLeadingIcon`/`checkboxLeadingIcon`/`radioLeadingIcon` triplication is **parallel-config-type** duplication, not an action problem — handled by the container+items pass (capability-tagged options).
 - **Schema impact.** The variant-split descriptor declares, per member: tag, the required-arg's accepted `Action` capability row (or `discriminator` like Fab's `FabContent` / Progress's `shape`), and whether the action binds as a required field or an option. `Progress` (linear/circular by `shape`) stays a discriminator with no `Action` (no behavioral arg).
 
 #### Resolved 2026-06-29 — the container+items flavor is two reuses of the R4 row mechanism (verified by compiled probe)
@@ -212,10 +224,89 @@ The whole flavor (Menu/List/Tree/Tabs/…) reduces to mechanisms already shipped
   - **Compiled-probe results (2026-06-29):** shared options reused on both kinds ✅; kind-specific option on its kind ✅; `checked` on `item` ❌ *TYPE MISMATCH naming the stray `checkbox` field*; `selected` on `checkboxItem` ❌ *names `radio`*; empty list ✅; one shared list passed to both kinds, annotated **and** unannotated (top-level), ✅. `applyOptions` folds unchanged (capability is phantom). Caveat: as with R3/R4 rows, annotations on intermediate `let`-bound lists are load-bearing (an over-wide inferred row defers the error) — not a new tax.
 - **Recursion (Tree) needs no new vocabulary.** `treeItem`'s `children : List (Element { treeItem : Supported } msg)` is just a child slot whose row references the constructor's *own* output kind. Schema: a member self-reference flag (`childKind: self`).
 - **Container × item matrix (List, 8 tags) is R4 again.** The container's `items` field is a **closed row = the union of accepted item kinds** (`{ listItem : Supported, divider : Supported, subheader : Supported }`); items are open-row producers, so heterogeneous lists coexist iff every kind is in the union. No new design.
-- **Stateful bindings stay required record fields**, not `Action`: `checkboxItem { …, onChange : Bool -> msg }`, `radioItem { …, onClick : msg }` (a control without its handler is degenerate). This honors the Action boundary drawn above.
+- **Stateful bindings stay required record fields**, not `Action` — per the mechanical action-vs-stateful rule above: `checkboxItem { …, onChange : Bool -> msg }`, `radioItem { …, onClick : msg }`, `filterChip { …, selected : Bool, onChange : Bool -> msg }` (controlled `selected`/`checked` + `change` event → stateful). A control without its handler is degenerate. The handler may also sit on the **container** (`SelectionList`'s aggregate `onChange`), not only the member.
 - **`triggerFor` is not a container+item concern** — an ordinary sibling helper `triggerFor : String -> Element { s | element : Supported } msg` referencing a menu's `id` via a runtime string. No type-level link worth inventing (the id is a DOM attribute). Schema: a plain "trigger" member.
 - **Shared config carries every field** (`checked`/`selected`/`onChange`) even for plain items, sitting at defaults — a slightly wider record, but the closed rows prevent *setting* them, so no wrong behavior. Accepted cost vs. per-kind configs.
 - **Schema impact.** The container+items descriptor declares, per group: container tag + the accepted item-kind **union row**; per member — tag, kind-row name, which shared/capability options apply, required behavioral fields (Action vs. stateful handler), and a `childKind: self` flag for recursion. Cross-module reuse is the *pattern* (capability rows, `Action`, `Element`), not one global `Item` type — Menu/List/Tree item shapes differ enough that a single shared `M3e.Item` would over-unify.
+
+#### Resolved 2026-06-29 — the single `groups` descriptor (both flavors, one sparse shape)
+
+Both flavors serialize through **one** `overrides.<component>.groups` descriptor. Every section is optional and defaults to CEM (option bodies, R1/R3) or `slots.json` (accepted-kind union rows, R4) — so `groups` is a **sparse overlay of annotations**, never a parallel option definition. The only thing it authors is what CEM cannot express: which tags fold into a module, which member carries which behavioral binding, and the phantom-capability tag where it diverges from an option's own name.
+
+```
+groups.<groupName>:
+  discriminator: <field>      # OPTIONAL — variant-split by a required Value field that selects the tag
+  containers:                 # OPTIONAL — present iff the group has wrapper tags
+    <name>: { tag, stateful? }            #   stateful? = container-level aggregate handler (SelectionList)
+  members:
+    <name>:
+      tag: <m3e-tag>          # REQUIRED per member
+      action?:   { capability }           # required Action field; row pinned by `capability`
+      onClick?:  true                     # OPTIONAL extra chip-body Action (dual-affordance members)
+      stateful?: { <handler>: <type> }    # controlled-state control → required handler field
+      childKind: self                     # OPTIONAL — recursion (children are this same kind)
+  itemOptions:                # OPTIONAL, SPARSE — only entries that diverge from the default
+    <optionName>: { capability }          #   capability defaults to the option's own name; omit when equal
+```
+
+Derived, *not* declared: option bodies (CEM per member tag, deduped by name — kills the `itemLeadingIcon` triplication); each member's closed admits-row (= the option names present in that tag's CEM); each container's accepted-kind union row (`slots.json`). A member with no `action`/`stateful`/`childKind` is a plain item. `discriminator` and `containers` never co-occur with each other in practice but are not mutually exclusive by rule.
+
+**Worked fills (the five cases that pin the shape):**
+
+```yaml
+# Fab — single tag ⇒ NO groups entry. Variant difference is required-content (R6), not grouping.
+overrides.Fab.requiredContent: { discriminator: [iconOnly, extended] }   # ExtendedFab.elm deletes; nothing to skip
+
+# Progress — variant-split across two tags, discriminator only (no container, no behavioral arg)
+groups.progress:
+  discriminator: shape
+  members:
+    linear:   { tag: m3e-linear-progress-indicator }
+    circular: { tag: m3e-circular-progress-indicator }
+  # itemOptions only for an option on one tag but not the other (capability = member name)
+
+# Menu — container+items; one stateful member; capability diverges only for checked/selected
+groups.menuItem:
+  members:
+    item:         { tag: m3e-menu-item }
+    checkboxItem: { tag: m3e-menu-item-checkbox, stateful: { onChange: "Bool -> msg" } }
+    radioItem:    { tag: m3e-menu-item-radio,    stateful: { onClick: "msg" } }
+  itemOptions:
+    checked:  { capability: checkbox }
+    selected: { capability: radio }
+
+# Chip — both flavors at once: 3 containers + 4 item kinds; mixed action / stateful members
+groups.chip:
+  containers:                                   # union rows derived from slots.json
+    set:       { tag: m3e-chip-set }
+    filterSet: { tag: m3e-filter-chip-set }
+    inputSet:  { tag: m3e-input-chip-set }
+  members:
+    assist:     { tag: m3e-assist-chip,     action: { capability: clickOrLink } }
+    suggestion: { tag: m3e-suggestion-chip, action: { capability: clickOrLink } }
+    filter:     { tag: m3e-filter-chip,     stateful: { onChange: "Bool -> msg" } }   # NOT Action.toggle
+    input:      { tag: m3e-input-chip,      action: { capability: remove }, onClick: true }  # dual-affordance
+  itemOptions:
+    selected: { capability: filter }            # filter-chip's controlled-state option
+
+# List — the full-stress case: 3 containers + 5 item kinds; action + stateful + recursion together
+groups.list:
+  containers:
+    list:          { tag: m3e-list }
+    actionList:    { tag: m3e-action-list }
+    selectionList: { tag: m3e-selection-list, stateful: { onChange: "..." } }   # container-level aggregate
+  members:
+    item:        { tag: m3e-list-item }
+    itemButton:  { tag: m3e-list-item-button, action: { capability: clickOrLink } }
+    action:      { tag: m3e-list-action,      action: { capability: clickOrLink } }
+    option:      { tag: m3e-list-option,      stateful: { onChange: "Bool -> msg" } }
+    expandable:  { tag: m3e-expandable-list-item, childKind: self }
+  itemOptions:
+    selected: { capability: option }
+    expanded: { capability: expandable }
+```
+
+What each case proves: **Fab** — one tag stays *out* of `groups` (variant difference → R6); **Progress** — variant-split and container+items share the same capability overlay (variants vs items is not a different machine); **Menu** — `itemOptions` is sparse (only the two diverging capabilities; `leadingIcon`/`trailingIcon`/`disabled` get no entry); **Chip** — containers + per-member Action + the `filter`-as-stateful correction + a dual-affordance `input` member all compose; **List** — `action`/`stateful`/`childKind: self`/sparse `itemOptions` are orthogonal slots that coexist in one `members` block (8 tags, ~14 annotation lines, zero emission machinery). The shape is stable across all five.
 
 ### R6 — Required-content / accessible-name designation  *(elm-cem#1 external input #2)*
 - **DECL. Pervasive.** Two sub-types:
@@ -336,7 +427,7 @@ These cannot be captured by any declarative input; they stay hand-written (the r
 ## Implied external-input schema (expanded from elm-cem#1)
 
 1. **`slots.json`** — per component, per slot: allowed child element kinds + `arbitraryAllowed` (R4, drives the closed-row typed shorthands and whether a friendly `…Slot` rung is emitted) **and** a wrapper mode `wrap: container-div | direct | text-span | none` (R8 — required because m3e's `::slotted` CSS imposes per-slot contracts CEM doesn't expose; verified on Card/Dialog). Each mode maps to one shared helper (`group`/`intoSlot`/`Element.toNode`), not bespoke markup. Bespoke element-*injection* (BottomSheet, Search, Slider, RadioButton) is declared separately and is HAND.
-2. **`overrides.<component>`** — required-content/a11y-name designation (R6), multi-tag grouping definition (R5), event-decoder descriptors (R9), typed-argument overrides (R12), surface skip-list (R13), static-attr injections + auto-id + renames (R-EXTRA), and a `hand-owned` flag (R-HAND) that tells the generator to skip / leave a hole.
+2. **`overrides.<component>`** — required-content/a11y-name designation (R6), the sparse `groups` multi-tag descriptor (R5 — both flavors; sections default to CEM/`slots.json`), event-decoder descriptors (R9), typed-argument overrides (R12), surface skip-list (R13), static-attr injections + auto-id + renames (R-EXTRA), and a `hand-owned` flag (R-HAND) that tells the generator to skip / leave a hole.
 
 Everything else flows mechanically from CEM (R0, R1, R3, R7, R10).
 
@@ -345,15 +436,15 @@ Everything else flows mechanically from CEM (R0, R1, R3, R7, R10).
 - **R4 slot enforcement (settled 2026-06-29, verified by compiled probes):** generated `view`s return *open* rows (enable heterogeneous child coexistence); generated typed slots use *closed* rows enumerating allowed kinds (real compile-time enforcement). Escapes relocate to named siblings (`*_Element`, `*_ESCAPE_HATCH_HTML`) + universal `fromNode`/`fromRawHtml`, policed by elm-review. Easy path = correct path.
 - **Slot placement / wrappers (settled 2026-06-29, verified against m3e CSS):** wrapping is driven by a per-slot `wrap` mode (`container-div`/`direct`/`text-span`/`none`), each mapped to one shared helper — not bespoke per-component markup. m3e's `::slotted` CSS imposes the contract: container-region slots (Card/Dialog actions, Card header/footer) **need** a single `div[slot]` (verified `column-gap`/`[end]` styling); direct-child slots (`img[slot=header]`) must **not** be wrapped; text/single-element slots stamp directly; raw is never auto-wrapped. Same-named slots coexist at the platform level but the component CSS overrides that for layout regions.
 - **Text as a resolver (settled 2026-06-29):** rendered content positions take `Element { s | element : Supported } msg`, not `String`; `M3e.text` is the lazy default constructor and consumers can supply their own (e.g. a `<translate>` resolver) with no ambient config. Attribute-valued text stays `String`. (See R4 / R11.)
-- **Shared `Action` value for variant-split components (settled 2026-06-29):** the recurring "required behavioral arg differs by variant" root cause (Chip kinds, Fab/ExtendedFab, Menu `ItemAction`, href/onClick precedence) collapses onto one opaque `M3e.Action` carrying a `Supported` capability row + a single `toAttrs` wiring function. Required-vs-optional is decided at the binding site (record field vs option), not by separate constructors/modules. `linkWith`/`LinkSpec` bundles `target/rel/download` with `href` (unrepresentable without it). `ExtendedFab` and `ChipSet` modules dissolve (FabContent discriminator; `Chip.set`). Does NOT cover stateful checkbox/radio bindings or parallel-config-type duplication. (See R5.)
-- **Container+items via capability-tagged options (settled 2026-06-29, compiled-probe-verified):** per-member option triplication (`itemLeadingIcon`/`checkboxLeadingIcon`/`radioLeadingIcon`) collapses to one shared item config + one capability-tagged option type, reusing R4's open-producer/closed-consumer rule on the option list — shared options written once, wrong-kind options become compile errors. Recursion (Tree) falls out of self-referential kind rows; container×item matrix (List) is a closed union row; stateful item handlers stay required fields; `triggerFor` is a plain sibling helper. Option type is item-family-local (`Internal.Option` untouched). (See R5.)
+- **Shared `Action` value for variant-split components (settled 2026-06-29):** the recurring "required behavioral arg differs by variant" root cause (Chip kinds, Fab/ExtendedFab, Menu `ItemAction`, href/onClick precedence) collapses onto one opaque `M3e.Action` carrying a `Supported` capability row + a single `toAttrs` wiring function. Required-vs-optional is decided at the binding site (record field vs option), not by separate constructors/modules. `linkWith`/`LinkSpec` bundles `target/rel/download` with `href` (unrepresentable without it). `ExtendedFab` and `ChipSet` modules dissolve (FabContent discriminator; `Chip.set`). **Action vs stateful is a mechanical CEM read** (controlled `checked`/`selected`/`value` + `change`/`input` event ⇒ stateful; else Action) — so `Action.toggle` is dropped and `FilterChip` binds stateful like a checkbox; `Action` keeps `onClick`/`link`/`linkWith`/`remove`. Does NOT cover stateful (checkbox/radio/switch/filter) bindings or parallel-config-type duplication. (See R5.)
+- **Container+items via capability-tagged options (settled 2026-06-29, compiled-probe-verified):** per-member option triplication (`itemLeadingIcon`/`checkboxLeadingIcon`/`radioLeadingIcon`) collapses to one shared item config + one capability-tagged option type, reusing R4's open-producer/closed-consumer rule on the option list — shared options written once, wrong-kind options become compile errors. Recursion (Tree) falls out of self-referential kind rows; container×item matrix (List) is a closed union row; stateful item handlers stay required fields; `triggerFor` is a plain sibling helper. Option type is item-family-local (`Internal.Option` untouched). **Both flavors serialize through one sparse `groups` descriptor** (sections all optional, defaulting to CEM/`slots.json`); worked fills for Fab/Progress/Menu/Chip/List pin the shape. (See R5.)
 
 ## Open design decisions
 
 - **Surface curation default** (R13): full-surface-then-skip vs curated-default. *Recommend full + skip-list.*
 - ~~**Wrapper-mode coverage** (R8)~~ — **RESOLVED 2026-06-29.** Audited SideSheet/SplitPane/Tooltip/List/Menu/Toc/Tree `::slotted` CSS; wrap modes assigned (see R8 audit table). Confirmed the direct-child media/icon pattern is platform-wide (Card `mediaSection` bug confirmed), `container-div` is rare (action bars + full panels only), and SplitPane is element-injection (HAND). `wrap` co-varies with R4 allowed-kinds.
 - **Decoder descriptor language** (R9): how much of the `target.x`/`detail.x`/multi-event space is declarative vs `opaque`.
-- ~~**Multi-tag grouping** (R5)~~ — **RESOLVED 2026-06-29.** Both flavors settled in R5: variant-split → shared `M3e.Action`; container+items → two reuses of the R4 row mechanism (closed item-kind union rows for containers; capability-tagged options for the per-member collision, verified by compiled probe) + required-field stateful bindings + self-referential child rows for recursion. Remaining sub-item: write the single `groups` schema covering both flavors (descriptor fields enumerated in R5).
+- ~~**Multi-tag grouping** (R5)~~ — **RESOLVED 2026-06-29.** Both flavors settled in R5: variant-split → shared `M3e.Action`; container+items → two reuses of the R4 row mechanism (closed item-kind union rows for containers; capability-tagged options for the per-member collision, verified by compiled probe) + required-field stateful bindings + self-referential child rows for recursion. The single sparse `groups` descriptor (both flavors, all sections optional) is now written in R5 with worked fills for Fab/Progress/Menu/Chip/List; action-vs-stateful is a mechanical CEM read (`Action.toggle` dropped, `FilterChip` → stateful).
 
 ## Internal-inconsistency cleanups (not generator concerns, but noted)
 - `SegmentedButton` and `Tooltip` use bespoke `Option` ADTs + manual `foldl` instead of `Internal.Option`/`applyOptions`. Normalize before/while generating.
