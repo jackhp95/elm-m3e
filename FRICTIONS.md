@@ -81,3 +81,13 @@ Every friction, deviation, and surprise hit while executing
   config-free whole-library regen still 125/125. All three phantom rows (Value, capability,
   element-kind) now enforced in generated output. No friction of note — the `_config`-in-flags
   approach kept the change small (no new elm-codegen flag channel).
+
+- **F7 — RESOLVED.** The "hand-written core" is now generator output. Explored elm-codegen's embed
+  options: `Elm.parse` (parses source → declarations) **drops imports** (verified — emitted a
+  module missing `import Html`); `Elm.unsafe` injects a raw string mid-file (bad for imports). The
+  clean mechanism is that **`Elm.File` is a transparent `{ path, contents, warnings }` record** — so
+  the generator emits hand-written, type-checked source *verbatim* (imports intact) by constructing
+  a `File` directly. Core authored in `elm-cem/runtime/` (single source of truth), injected by bin
+  under `_runtime`, emitted with prefix substitution. Whole library 125/125 from generator output
+  alone. (Prefix substitution is a plain `String.replace "M3e" <lib>` — safe for these tiny files;
+  watch for false matches if a library name ever contains the token.)
