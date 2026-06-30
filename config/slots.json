@@ -29,5 +29,132 @@
     "required": {
       "action": "action:click,link"
     }
+  },
+  "List": {
+    "children": [
+      "listItem",
+      "listItemButton",
+      "listOption",
+      "listAction",
+      "actionList",
+      "expandableListItem",
+      "divider"
+    ]
+  },
+  "ActionList": {
+    "children": [
+      "listItem",
+      "listItemButton",
+      "listAction",
+      "divider"
+    ]
+  },
+  "SelectionList": {
+    "children": [
+      "listOption",
+      "divider"
+    ]
+  },
+  "Tabs": {
+    "children": [
+      "tab"
+    ]
+  },
+  "Stepper": {
+    "children": [
+      "step"
+    ]
+  },
+  "Breadcrumb": {
+    "children": [
+      "breadcrumbItem",
+      "breadcrumbItemButton"
+    ]
+  },
+  "Tree": {
+    "children": [
+      "treeItem"
+    ]
+  },
+  "TreeItem": {
+    "children": [
+      "treeItem"
+    ]
+  },
+  "NavBar": {
+    "children": [
+      "navItem"
+    ]
+  },
+  "NavRail": {
+    "children": [
+      "navItem"
+    ]
+  },
+  "NavMenu": {
+    "children": [
+      "navMenuItem",
+      "navMenuItemGroup"
+    ]
+  },
+  "SegmentedButton": {
+    "children": [
+      "buttonSegment"
+    ]
+  },
+  "Toc": {
+    "children": [
+      "tocItem"
+    ]
+  },
+  "ChipSet": {
+    "children": [
+      "assistChip",
+      "suggestionChip",
+      "filterChip",
+      "inputChip"
+    ]
+  },
+  "FilterChipSet": {
+    "children": [
+      "filterChip"
+    ]
+  },
+  "InputChipSet": {
+    "children": [
+      "inputChip"
+    ]
+  },
+  "MenuItemGroup": {
+    "children": [
+      "menuItem",
+      "menuItemCheckbox",
+      "menuItemRadio"
+    ]
+  },
+  "Checkbox": {
+    "required": {
+      "name": "ariaLabel"
+    }
+  },
+  "Switch": {
+    "required": {
+      "name": "ariaLabel"
+    }
+  },
+  "Radio": {
+    "required": {
+      "name": "ariaLabel"
+    }
+  },
+  "Fab": {
+    "required": {
+      "name": "ariaLabel"
+    }
+  },
+  "Slider": {
+    "required": {
+      "name": "ariaLabel"
+    }
   }
 }

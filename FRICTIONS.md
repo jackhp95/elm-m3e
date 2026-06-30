@@ -115,3 +115,14 @@ Every friction, deviation, and surprise hit while executing
   to `Naming.decapitalize`. (The whole library still compiled before the fix — internally
   consistent — so only a cross-module probe like "Menu accepts MenuItem" surfaced it. Another case
   of negative/integration probes earning their keep.)
+
+- **F19 — required-param shadowing (F9 class, 3rd time).** The view's `required` record param
+  shadowed the `required` form attribute setter on Checkbox/Radio. Renamed to `req_`. The recurring
+  lesson: NO generated binder may be an attr-derived word; the safe set is fixed (`val_`/`cfg_`/`req_`/
+  `f_`/`erased`/`ch`). Caught only when the config batch turned on required fields for form controls.
+- **F20 — config authoring batch (for review).** Authored 27 components from `@m3e/web` evidence
+  (`::slotted` kinds + CEM slots/attrs): containers (List/Tabs/Stepper/Breadcrumb/Tree/Nav*/
+  SegmentedButton/Toc/ChipSet*/SelectionList/MenuItemGroup) with typed child-kind rows; a11y names
+  for the textless controls (Checkbox/Switch/Radio/Fab/Slider); AssistChip action. Whole library
+  125/125. The remaining ~98 components are at safe defaults (free child row, no required) and are
+  the user's to review/extend — child-kind/required decisions are domain judgments.
