@@ -73,3 +73,11 @@ Every friction, deviation, and surprise hit while executing
   against generated output. (Also re-learned: shell loops that round-trip module
   names through sed are fragile — iterate files directly. The first "0/125" was a
   loop bug, not a real failure.)
+
+- **F15 — Config support landed (3rd phantom dimension).** `--config-from=<json>` is merged into
+  the CEM flags under `_config` by bin (flag stripped; absent ⇒ generic config-free path). The top
+  `view`'s children become a CLOSED kind-row when configured, a free row otherwise. Verified: a
+  Button `{children:[icon,element]}` accepts icon+text children and REJECTS a button child;
+  config-free whole-library regen still 125/125. All three phantom rows (Value, capability,
+  element-kind) now enforced in generated output. No friction of note — the `_config`-in-flags
+  approach kept the change small (no new elm-codegen flag channel).

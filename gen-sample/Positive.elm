@@ -6,4 +6,7 @@ import M3e.Icon as Icon
 import M3e.Node as Node
 import M3e.Value as Value
 main : Html msg
-main = Button.button [ Button.variant Value.filled, Button.disabled True ] [ Icon.icon [] [] ] |> Element.toNode |> Node.toHtml
+main =
+    Button.button [ Button.variant Value.filled ]
+        [ Icon.icon [] [], Element.text "Save" ]   -- icon ✓ and element ✓
+        |> Element.toNode |> Node.toHtml

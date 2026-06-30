@@ -30,7 +30,9 @@ button :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported
+    , element : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
 button attributes children =
     M3e.Element.fromNode
