@@ -59,3 +59,9 @@ Every friction, deviation, and surprise hit while executing
   *(NB: enum→`Value` shared vocab is still separate, foundational, remaining work.)*
 - **F9 — already lasting** (emitter uses collision-proof binder names).
 - **F7/F12** remain deliberate deviation / environmental, as logged.
+
+- **F13 — open-vs-closed caught by a negative probe (the reason we test negatives).** First cut
+  made the `variant` setter's accepted `Value` row OPEN (`{ v | … }`); `Value.small` then wrongly
+  compiled. A `Value` *consumer* must be CLOSED (open token, closed consumer). Fixed. The same
+  rule holds for all three phantom rows: **producers open, consumers closed.** The model is now
+  proven: positive compiles, all three negatives reject.
