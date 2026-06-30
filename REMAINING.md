@@ -4,14 +4,20 @@ State after the autonomous session of 2026-06-30. What's **done** is a verified
 proof-of-pipeline; what's **below** is the bulk of the full retarget. Ordered
 roughly by dependency. Tracked against elm-cem#1 / elm-m3e#71.
 
-## Done (this session)
-- **M1** — three-layer namespace flip + bottom layer (`<Lib>.Cem.Html.*` plain html,
-  `<Lib>.Cem.*` middle, `<Lib>.Cem.Common`). Generates 125×3+1 modules for m3e; lower
-  layers compile. *(elm-cem `3a692ce`)*
-- **M2** — top layer (`<Lib>.<Component>`): `Config`/`Option`/`defaultConfig`/setters/`view`
-  returning the `Element`/`Node` IR, importing the hand core. Bool/number/string options.
-  Verified: 5 components compile + `M3e.Button` passes 4/4 IR tests incl. R1 reset.
-  *(elm-cem `69dcf48`)*
+## Done (the partial-application retarget — verified, whole library 125/125)
+The generator now emits the locked three-layer partial-application model
+([THREE_LAYER_PATTERN.md](THREE_LAYER_PATTERN.md)) for every component:
+- **Bottom** (`<Lib>.Cem.Html.*`) — partial-applied elm/html (point-free element + attrs).
+- **Middle** (`<Lib>.Cem.*`) — capability-typed `Attr` setters reusing the bottom; `Value`-typed
+  enum setters; eager component.
+- **Top** (`<Lib>.*`) — lazy IR `view`; aliased setters; phantom kind-row result.
+- **`Value` vocabulary** (`<Lib>.Value`) — ~140 manifest-wide tokens over a hand `Value.Core`.
+- **Config** (`--config-from`) — typed-slot children (closed kind-row); config-free path generic.
+- **All three phantom dimensions enforced + verified** against generated output (positive +
+  negatives): `Value` (wrong value ✗), capability (foreign attr ✗), element-kind (wrong child ✗).
+- Whole library compiles 125/125 (config-free and config-driven).
+- Commits: elm-cem `aa0e4af`(bottom) `568b56d`(middle+top) `2caa42f`(Value) `496879e`(config);
+  elm-m3e `baed195`/`f6e7d62` (snapshot + config). *(M1/M2 superseded.)*
 
 ## Remaining (largest → smallest, with the relevant issue)
 
