@@ -1,5 +1,28 @@
 # elm-cem generator requirements — extracted from the elm-m3e hand layer
 
+> **⚑ Converged 2026-06-30 — read this first.** The grilling pass that followed
+> this audit changed three conclusions; where the R-by-R derivation below disagrees,
+> the ADRs win:
+>
+> 1. **Full three-layer retarget** ([ADR 8](adr/0008-three-layer-generator-retarget.md)).
+>    The generator emits the whole `M3e.*` surface as a gradient `M3e.*` →
+>    `M3e.Cem.*` → `M3e.Cem.Html.*`, **and generates the IR core**. This repo
+>    becomes config + 100%-generated output.
+> 2. **Composition over injection** ([ADR 9](adr/0009-composition-over-injection.md)).
+>    The declarative element-injection primitive (an early draft below) is
+>    **eliminated**. Added structure is always composition: m3e children → R5
+>    item families / R4 slots; slot-placed native HTML → native-HTML IR
+>    constructors. The library is exactly **R4 + R5**.
+> 3. **`Hand = ∅` for components** ([ADR 10](adr/0010-hand-zero-native-ir.md)).
+>    Zero hand-written component modules — the "~13 irreducible" / "capture ceiling
+>    ≈ 80%" numbers below are superseded. Native-HTML IR (flat phantom rows,
+>    `nativeHtmlInput`…) + the Label-as-text-resolver + structural a11y close the
+>    gap. Imperative behaviours (Snackbar `open`) are app-level JS+port patterns,
+>    not modules.
+>
+> Implementation phasing: [elm-cem-retarget-plan.md](elm-cem-retarget-plan.md).
+> The requirement-by-requirement derivation below remains the evidence base.
+
 > Derived 2026-06-29 by auditing all ~74 hand-written `src/M3e/*.elm` wrappers
 > against their naive codegen counterparts in `vendor/elm-m3e/Cem/M3e/*.elm`.
 > The hand layer is the worked example of "what the generator should emit"; every
@@ -16,22 +39,26 @@ by which generator capability would absorb it, and tag reducibility:
 - **DECL** — needs a declarative external-input file (slots map + per-component overrides). Never imperative function-body injection.
 - **HAND** — irreducibly hand-owned; no reasonable declarative input captures it.
 
-## Headline conclusion (the "capture it entirely" number)
+## Headline conclusion ~~(the "capture it entirely" number)~~ — SUPERSEDED
 
-**Capture ceiling ≈ 80%.** Of ~74 components, roughly **55–60 are fully reducible**
-(MECH + DECL) and **~13 carry an irreducibly hand-owned aspect**. So the honest goal
-is *"the generator owns the mechanical+declarative majority; a small hand-owned set
-remains for genuinely imperative / multi-native-element / cross-component cases."*
-"Eliminate the hand layer" → realistically "shrink it from ~74 modules to ~13, and
-make those 13 the only thing anyone hand-writes."
+> **The original conclusion below is superseded by [ADR 10](adr/0010-hand-zero-native-ir.md).**
+> Re-examination against the real `@m3e/web` source found **zero** runtime-imperative
+> component cases: every "irreducible" module is a pure IR-producing function
+> expressible as composition. The true goal is **`Hand = ∅` for components**, not
+> "shrink to ~13." Each former-`R-HAND` module's new fate:
+>
+> | module(s) | new fate |
+> |---|---|
+> | Slider, BottomSheet, SplitButton | R5/R4 composition (m3e children are typed slots / item members) |
+> | Field, TextField, Select, TimePicker, Search, RadioButton, DatePicker | native-HTML IR constructors composed into typed slots |
+> | Snackbar | declarative node generates; imperative `open` is an app-level JS+port pattern |
+> | Label | type alias for placeable content + `M3e.text` resolver (not a module) |
+> | Text / Theme typescale helpers | dropped (no m3e tag; break uniformity) |
+> | StepperNext | upstream CEM tagging bug — fix upstream, not a hand module |
 
-The irreducible ~13 (see R-HAND below): DatePicker (form-field composition, *verify*),
-Snackbar (imperative open), SplitButton (cross-component composition), Field,
-TextField, Select, TimePicker (form-field + native-element compositions),
-BottomSheet (action injection), RadioButton (slotless-radio label wrap), Search
-(inner input), Slider (auto-thumb), plus the no-element modules Text / Theme-helpers
-/ Label / StepperNext. **Calendar was removed (2026-06-29):** its only hand-aspect
-was the JS-Date event read-back, now a reusable generated decoder (R9).
+**~~Capture ceiling ≈ 80%~~.** *(historical)* Of ~74 components, roughly 55–60 fully
+reducible and ~13 with an irreducibly hand-owned aspect. *(This framing is retained
+only as the audit's starting point; the ADRs above close the residue to zero.)*
 
 ---
 
@@ -317,6 +344,14 @@ What each case proves: **Fab** — one tag stays *out* of `groups` (variant diff
 - **DECL/MECH.** elm-cem#1's optionality rule. **Confirmed live divergences**: `Button.variant`, `Heading.variant`, `ExtendedFab.variant` are hand-coded as *required* despite non-sentinel CEM defaults (`text`/`display`/`primary-container`). Under the rule they become optional. (Card already does it right.) Sentinel defaults (`null`/`""`/`0`) may stay required by editorial choice (Paginator.length, Toc.for).
 
 ### R8 — Slot placement (the hand layer's wrapper markup is mostly deletable)  *(NEW — only partly implied by elm-cem#1 #1)*
+
+> **Partly superseded.** The per-slot **`wrap` mode** (`container-div`/`direct`/
+> `text-span`/`none`) **survives** — it's in `slots.json` and is real. But the
+> "**genuine element injection stays HAND**" conclusion below is **replaced by
+> composition** ([ADR 9](adr/0009-composition-over-injection.md)): Slider thumb,
+> BottomSheet action, Search/Field/TextField/RadioButton native controls are now
+> composed (R5 item members / native-HTML IR in typed slots), not injected. There
+> is no element-injection primitive.
 - **DECL (a small per-slot `wrap` mode → one shared helper) + a little HAND (genuine element injection).** CEM names slots but never describes the *wrapper markup* the hand layer injects, and m3e's shadow-DOM `::slotted` CSS makes some of it mandatory. Inventory of where the hand layer currently wraps:
   - **`div[slot=x]` region wrappers**: Card (header/content/footer/actions), Dialog (actions), Disclosure, SideSheet (start/end), SplitPane (content-pane), Tooltip (rich actions). Card also groups headline+subhead into one `content` div.
   - **`span[slot=x]` text wrappers**: Button.selectedLabel, Fab/ExtendedFab label, List overline/supporting-text, Tree label, Toc title/overline, Menu group, Dialog headline, Disclosure header.
@@ -409,9 +444,15 @@ What each case proves: **Fab** — one tag stays *out* of `groups` (variant diff
 
 ---
 
-## Irreducibly hand-owned  (R-HAND — the ~20% / ~14 modules)
+## ~~Irreducibly hand-owned  (R-HAND — the ~20% / ~14 modules)~~ — SUPERSEDED
 
-These cannot be captured by any declarative input; they stay hand-written (the residual "hand layer"), and the generator should leave designated holes for them:
+> **Superseded by [ADR 10](adr/0010-hand-zero-native-ir.md): `Hand = ∅` for
+> components.** None of the below is runtime-imperative; each is composition
+> (m3e children → R5/R4) or native-HTML IR in a typed slot. See the headline-
+> conclusion table above for each module's fate. The list is kept as the audit's
+> raw inventory.
+
+These ~~cannot be captured by any declarative input; they stay hand-written (the residual "hand layer"), and the generator should leave designated holes for them~~ *(historical — now all composition)*:
 
 - **No custom element / Tailwind**: `Text`, `Label`, Theme typescale helpers (elm-cem#1 #4 skip list).
 - **Native-element compositions** (`m3e-form-field` + native `<input>`/`<label>`/`<textarea>`): `Field`, `TextField`, `Select`, `TimePicker`, and `DatePicker` (toggle + input + calendar composition — *verify separately; HAND for composition, not for dates*). Includes `Node.setAttribute` IR-rewrite (Field stamps `id` onto the control node).

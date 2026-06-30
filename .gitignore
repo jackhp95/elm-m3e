@@ -6,3 +6,6 @@ dist/
 
 .playwright-mcp/
 *.png
+
+# temporary working clone of the elm-cem generator (ADR 8 workflow; delete after push)
+/elm-cem/
