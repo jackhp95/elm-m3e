@@ -45,3 +45,17 @@ Every friction, deviation, and surprise hit while executing
   works on a representative set.
 - **F12 — `elm make` in a fresh project hangs on registry fetch** (~7 min timeout) in this sandbox.
   Workaround: reuse elm-m3e's cached ELM_HOME by copying its elm.json deps; never `elm init` here.
+
+## Resolutions (2026-06-30, follow-up)
+
+- **F6 — RESOLVED (lasting).** Root cause: `elm-test-rs@^3.0.0` is not on npm (only prereleases);
+  the binary is pinned in `elm-tooling.json` and installed by **elm-tooling** (the elm install tool).
+  Fix: dropped the bogus `elm-test-rs` npm devDep from `elm-cem/package.json`. `npm install` now
+  succeeds and `elm-tooling install` reports elm/elm-format/elm-test-rs "all good". The clone is
+  self-sufficient. *(elm-cem, committed.)*
+- **F10 — RESOLVED (lasting).** Now that the clone has its tools, verification runs through
+  `bin/elm-cem.js`, which inlines the TS aliases (206 refs) so enums classify as `AEnum` (typed
+  unions) instead of `String`. The earlier `String` degrade was an artifact of bypassing bin.
+  *(NB: enum→`Value` shared vocab is still separate, foundational, remaining work.)*
+- **F9 — already lasting** (emitter uses collision-proof binder names).
+- **F7/F12** remain deliberate deviation / environmental, as logged.
