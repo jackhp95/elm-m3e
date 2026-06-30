@@ -24,5 +24,10 @@
     "children": [
       "menuItem"
     ]
+  },
+  "AssistChip": {
+    "required": {
+      "action": "action:click,link"
+    }
   }
 }
