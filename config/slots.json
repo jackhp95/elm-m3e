@@ -1,4 +1,28 @@
 {
-  "Button": { "children": ["icon", "element"], "required": { "label": "content" } },
-  "IconButton": { "required": { "name": "ariaLabel" } }
+  "Button": {
+    "children": [
+      "icon",
+      "element"
+    ],
+    "required": {
+      "label": "content"
+    }
+  },
+  "IconButton": {
+    "required": {
+      "name": "ariaLabel"
+    }
+  },
+  "Menu": {
+    "children": [
+      "menuItem",
+      "menuItemCheckbox",
+      "menuItemRadio"
+    ]
+  },
+  "FabMenu": {
+    "children": [
+      "menuItem"
+    ]
+  }
 }

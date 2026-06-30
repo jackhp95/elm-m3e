@@ -101,3 +101,17 @@ Every friction, deviation, and surprise hit while executing
   public module layout** (e.g. `M3e.MenuItem` → `M3e.Menu.item`). Plus authoring `config` for all
   125 components (domain knowledge). Not a technical block; flagging because (b) changes the public
   API shape and warrants a confirm before I restructure the generation pipeline around it.
+
+- **F17 — KEY DESIGN FINDING: container+items should NOT fold (validates the usage rule).**
+  `@m3e/web` shows `m3e-menu-item` used in BOTH `m3e-menu` and `m3e-fab-menu` (`@tag m3e-menu-item`
+  in fab-menu.js). So folding it into `M3e.Menu.item` would break its reuse. **Conclusion: keep
+  item modules standalone; containers accept them via the typed-slot `children` config (the
+  mechanism already built).** Folding is reserved for true VARIANT-SPLITS (Progress linear/circular)
+  where the tags are alternatives of one concept and not reused. This shrinks "R5 groups" massively:
+  most families are just typed-slot config, no new generator code. (Authored Menu/FabMenu as typed
+  containers; Menu accepts {menuItem,menuItemCheckbox,menuItemRadio}, rejects a Button — verified.)
+- **F18 — naming bug caught by the Menu probe.** `Naming.camel` on a PascalCase module name
+  lowercased everything (`menuitem`); multi-word components had all-lowercase fn/kind names. Fixed
+  to `Naming.decapitalize`. (The whole library still compiled before the fix — internally
+  consistent — so only a cross-module probe like "Menu accepts MenuItem" surfaced it. Another case
+  of negative/integration probes earning their keep.)
