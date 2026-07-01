@@ -14,11 +14,13 @@ import Html.Attributes exposing (class)
 import Layout
 import M3e.Button as Button
 import M3e.Card as Card
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -76,47 +78,51 @@ studies =
     ]
 
 
-pageHeading : Node msg
+pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { label = "Studies", variant = Value.display }
-        [ Heading.size Value.small, Heading.level 1 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text "Studies" }
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        []
+       
 
 
-studyCard : ( String, String, String ) -> Node msg
+studyCard : ( String, String, String ) -> Element { s | card : Supported } msg
 studyCard ( slug, title, body ) =
     let
         studyHref =
             "/studies/" ++ slug
     in
     Card.view
-        [ Card.variant Value.elevated
-        , Card.headline (Heading.view { label = title, variant = Value.title } [])
-        , Card.body [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
+        [ Card.variant Value.elevated ]
+        [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
+        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ]))
         , Card.actions
-            [ Button.view { label = "Open " ++ title, variant = Value.filled }
-                [ Button.href studyHref
+            (Button.view
+                [ Button.variant Value.filled
+                , Button.href studyHref
                 , Button.target "_blank"
                 , Button.rel "noreferrer noopener"
                 ]
-            ]
+                [ Button.child (Kit.text ("Open " ++ title)) ]
+            )
         ]
-        |> Element.toNode
+       
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Studies · elm-m3e"
     , body =
-        [ Layout.container
+        List.map Element.toNode
+            [ Layout.container
             [ Layout.section "space-y-3"
                 [ pageHeading
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                         [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
                     )
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "grid gap-4 sm:grid-cols-2"
                 (List.map studyCard studies)
             ]
