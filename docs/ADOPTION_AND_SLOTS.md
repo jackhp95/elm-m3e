@@ -205,6 +205,30 @@ usages** and either fixes the app's misuse or fixes the codegen'd package (a fee
 signal, not just a hole). This is the pressure-release that keeps the phantom rows strict
 without trapping users.
 
+### Proven (scratch compile, 2026-06-30 — Elm 0.19.1, over the real runtime core)
+```elm
+-- producers (OPEN rows), canonized via Seam, no suppression:
+text : String -> Element { k | text : Supported } msg
+link : String -> List (Element s msg) -> Element { k | link : Supported } msg
+Seam.asElement  : Node msg -> Element supported msg          -- DS files: build+stamp a kind
+Seam.asAttribute : Html.Attribute msg -> Attr capability msg
+
+-- native-HTML IR (carry the `html` kind → fit `any`, or a specific slot via EscapeHatch):
+M3e.Html.p : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
+
+-- slot consumers:
+iconSlot : Element { icon : Supported } msg -> …   -- CLOSED: rejects text/html/link
+anySlot  : Element any msg -> …                    -- `any` = a lowercase TYPE VARIABLE; accepts everything
+
+-- break-glass (any file, audited):
+EscapeHatch.asElement : Element a msg -> Element b msg     -- coerce phantom (stripPhantom)
+EscapeHatch.fromHtml  : Html msg -> Element supported msg
+```
+Verified: `anySlot` accepts text/icon/link/native-`p`; `iconSlot (text …)` and
+`iconSlot (H.p …)` **fail** to compile; `iconSlot (EscapeHatch.asElement (text …))`
+compiles. So `any` needs **no alias** — it's just a type var — and the producer-open /
+consumer-closed rule holds. Scratch: `scratchpad/proto/`.
+
 ### Kind universe (updated)
 > **{ CEM component kinds } ∪ { `any` = open row } ∪ { native-HTML IR } ∪ { userland
 > producers: `text`, `link`, … }**, with `element`/html escape implicit everywhere and
