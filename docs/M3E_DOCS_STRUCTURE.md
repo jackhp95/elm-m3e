@@ -74,6 +74,11 @@ Everything else is a real component. That is the bar: if a page reaches for a cu
    can't express — grids, gaps, wraps — never for chrome a component provides.
 6. **Nav is `NavMenu > NavMenuItem` groups+leaves**, never hand-rolled links.
 7. **Settings/aux panels are the drawer `end` slot**, not floating cards.
+8. **Slotted content must be an ELEMENT, never a bare `Kit.text`.** A slot value is
+   stamped with `slot="…"` on its node; a text node can't carry an attribute, so it
+   silently falls into the default slot and renders invisibly. Wrap text destined for a
+   named slot in a `<span>` (`EscapeHatch.asElement (Native.span [] [ Kit.text … ])`) or
+   use an element that already slots (`Kit.link → <a>`). (Bit us on the nav group labels.)
 
 ## Next (the epic)
 Shell (`Shared.elm`) → content pages to the ContentPane/Card pattern → then the Studies
