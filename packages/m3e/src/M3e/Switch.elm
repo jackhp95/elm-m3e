@@ -16,7 +16,7 @@ import M3e.Value
 
 {-| Build the `<m3e-switch>` element (lazy IR). -}
 switch :
-    { name : String }
+    { ariaLabel : String }
     -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , icons : M3e.Value.Supported
@@ -42,7 +42,7 @@ switch req_ attributes content_ =
                     [ M3e.Cem.Attr.forget
                         (M3e.Cem.Attr.attribute
                             (Html.Attributes.attribute "aria-label")
-                            req_.name
+                            req_.ariaLabel
                         )
                     ]
                     (List.map M3e.Cem.Attr.forget attributes)

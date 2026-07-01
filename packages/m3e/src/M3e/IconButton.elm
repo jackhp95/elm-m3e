@@ -17,7 +17,7 @@ import M3e.Value
 {-| Build the `<m3e-icon-button>` element (lazy IR). -}
 iconButton :
     { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
-    , name : String
+    , ariaLabel : String
     }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
@@ -56,7 +56,7 @@ iconButton req_ attributes content_ =
                     [ M3e.Cem.Attr.forget
                         (M3e.Cem.Attr.attribute
                             (Html.Attributes.attribute "aria-label")
-                            req_.name
+                            req_.ariaLabel
                         )
                     ]
                     (List.map M3e.Cem.Attr.forget attributes)

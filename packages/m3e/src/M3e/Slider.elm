@@ -16,7 +16,7 @@ import M3e.Value
 
 {-| Build the `<m3e-slider>` element (lazy IR). -}
 slider :
-    { name : String }
+    { ariaLabel : String }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , discrete : M3e.Value.Supported
     , labelled : M3e.Value.Supported
@@ -43,7 +43,7 @@ slider req_ attributes content_ =
                     [ M3e.Cem.Attr.forget
                         (M3e.Cem.Attr.attribute
                             (Html.Attributes.attribute "aria-label")
-                            req_.name
+                            req_.ariaLabel
                         )
                     ]
                     (List.map M3e.Cem.Attr.forget attributes)
