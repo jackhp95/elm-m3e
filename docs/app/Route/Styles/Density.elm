@@ -9,14 +9,18 @@ import Html.Attributes exposing (class, style)
 import Layout
 import M3e.Button as Button
 import M3e.Card as Card
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
+import Native
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -61,61 +65,61 @@ head _ =
         |> Seo.website
 
 
-demoBar : Int -> Node msg
+demoBar : Int -> Element { s | html : Supported } msg
 demoBar scaleValue =
     Layout.div "space-y-2"
-        [ Node.raw
+        [ EscapeHatch.fromHtml
             (p [ class "text-label-lg text-on-surface-variant" ]
                 [ text ("density scale " ++ String.fromInt scaleValue) ]
             )
-        , Node.element "div"
-            [ Node.rawAttr (style "--md-sys-density-scale" (String.fromInt scaleValue))
-            , Node.rawAttr (class "flex flex-wrap gap-2")
+        , Native.node (Html.node "div")
+            [ Seam.asAttribute (style "--md-sys-density-scale" (String.fromInt scaleValue))
+            , Seam.asAttribute (class "flex flex-wrap gap-2")
             ]
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Button.view { label = "Action", variant = Value.filled } [] |> Element.toNode
+                        Button.view [ Button.variant Value.filled ] [ Button.child (Kit.text "Action") ]
                     )
             )
         ]
 
 
-pageHeading : Node msg
+pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { label = "Density", variant = Value.display }
-        [ Heading.size Value.small, Heading.level 1 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text "Density" }
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        []
+       
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Density · elm-m3e"
     , body =
-        [ Layout.container
+        List.map Element.toNode
+            [ Layout.container
             [ Layout.section "space-y-3"
                 [ pageHeading
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                         [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
                     )
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Card.view
-                [ Card.variant Value.outlined
-                , Card.headline (Heading.view { label = "Density scale, 0 to -3", variant = Value.title } [])
-                , Card.body
-                    [ Element.fromNode
-                        (Layout.div "space-y-6"
-                            [ demoBar 0
-                            , demoBar -1
-                            , demoBar -2
-                            , demoBar -3
-                            ]
-                        )
-                    ]
+                [ Card.variant Value.outlined ]
+                [ Card.header (Heading.view { content = Kit.text "Density scale, 0 to -3" } [ Heading.variant Value.title ] [])
+                , Card.content
+                    (Layout.div "space-y-6"
+                        [ demoBar 0
+                        , demoBar -1
+                        , demoBar -2
+                        , demoBar -3
+                        ]
+                    )
                 ]
-                |> Element.toNode
+               
             ]
         ]
     }
