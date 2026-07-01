@@ -1,3 +1,10 @@
+> ⚠️ **STALE — predates the component-agnostic/Vocab redesign and the adoption.** The
+> "ALL GENERATOR MECHANISMS DONE / 125/125" framing below describes an *earlier* finish
+> line. Since then: the library was adopted into `packages/m3e/` (double-list), then the
+> **Vocab redesign** started (not finished) with a **known `M3e.Attr` bug**, and the docs
+> migration hasn't run. **For the current state + next steps, read `HANDOFF.md`** and
+> `docs/COMPONENT_AGNOSTIC_API.md` §9b. Kept below for historical context only.
+
 # Remaining work — elm-cem retarget
 
 State after the autonomous session of 2026-06-30. What's **done** is a verified

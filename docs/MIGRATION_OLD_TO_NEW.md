@@ -1,5 +1,14 @@
 # Old → new API migration spec (the ornith task)
 
+> ⚠️ **STALE re: the target API.** This spec documents the per-component-setter shape
+> (`Button.button`, `Icon.name`, `Heading.variant`). That is **superseded** by the
+> Vocab / component-agnostic API in `COMPONENT_AGNOSTIC_API.md` §9b (single `import M3e`,
+> shared polymorphic attrs, `variantFilled`, constructor = `.view`). **Rewrite the
+> transform rules below to the Vocab API before running a real migration.** The
+> *structural* guidance (§1b Node-vs-Element, §2 IR-helper→kit, §3 renames) is still
+> valid; only the per-component call shapes change. See `HANDOFF.md`.
+
+
 > The hand `M3e.*` library (deleted) is replaced by the generated double-list
 > library in `packages/m3e/` plus the userland kit in `packages/m3e-kit/`. This
 > spec is the exact transformation for migrating consumers (the docs app: 21 files,
