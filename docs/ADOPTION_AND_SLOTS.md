@@ -103,6 +103,23 @@ Derived API shape (proposed):
   **optional-singular** slot the generator takes a **deterministic** one (documented),
   rather than relying on Html.
 
+### The kind taxonomy (a slot's `kinds`) — four distinct things
+Review 2026-06-30 surfaced that "empty kinds" was overloaded. The correct taxonomy:
+- **specific kinds** (`["icon","text"]`) — the slot accepts those component kinds; the
+  slot's phantom row is closed to them.
+- **`any`** — the slot accepts **arbitrary** children by design (Card content, Dialog
+  body, panel/prefix/suffix regions): its phantom row is **open to every kind**. Set
+  when the element imposes NO restriction (no specific `::slotted` selector, no
+  `querySelector` for a tag, no `instanceof` filter). **This was the big miss** — ~31
+  open slots were wrongly authored as closed because `any` wasn't in the vocabulary.
+- **`element` (implicit, never listed)** — the raw element/html **escape hatch** is
+  available on *every* slot regardless; it's the type-escape, not the slot's intent.
+- **`[]` empty (rare)** — genuinely no typed children; only when the element rejects
+  element children. If a slot exists and is unrestricted, it's **`any`, not `[]`.**
+
+`text`/`link` remain userland producers referenced as kinds. Corrected pass re-derives
+with `any`; the pre-`any` state is checkpointed at `d20250b`.
+
 ### RESOLVED (see ADR 0011) — PLUS one part deferred
 - **Q-card → advisory enforcement (decided); API shape (DEFERRED).** Cardinality is
   NOT type-enforced as `Maybe`/record fields (too noisy — TreeItem alone has 4 icon

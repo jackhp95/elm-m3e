@@ -1,417 +1,417 @@
 {
   "Collapsible": {
-    "default": "@slot - Renders the collapsible content.; render: <slot @slotchange=...></slot>; ::slotted(*) { --m3e-collapsible-animation-duration: initial; }"
+    "default": "@slot - Renders the collapsible content. template: <slot @slotchange=...>; ::slotted(*) { --m3e-collapsible-animation-duration: initial; } — no type restriction on slotted children"
   },
   "ScrollContainer": {
-    "default": "@slot - Renders the scrollable content.; render: <slot @slotchange=\"${this._updateScroll}\"></slot>"
+    "default": "@slot - Renders the scrollable content. template: <slot @slotchange=...>; no ::slotted type-restricting selector"
   },
   "Slide": {
-    "default": "@slot - Renders the items through which to cycle.; render: <slot @slotchange=...></slot>; ::slotted(*) { width: 100%; ... }; ::slotted(.-before), ::slotted(.-after) (implies multiple items)"
+    "default": "@slot - Renders the items through which to cycle. template: <slot @slotchange=...>; ::slotted(*) with no tag restriction; handler iterates all assignedElements() and assigns -before/-after CSS classes"
   },
   "TextHighlight": {
-    "default": "@slot - Renders the content to highlight.; render: <slot @slotchange=...></slot>; _findTextNodes walks all assigned nodes (supports multiple text-bearing elements); example: <p>Lorem ipsum…</p>"
+    "default": "@slot - Renders the content to highlight. template: <slot @slotchange=...>; handler walks arbitrary text nodes in any element structure; no ::slotted type restriction"
   },
   "TextOverflow": {
-    "default": "@slot - Renders the content to truncate with an ellipsis.; render: <span class=\"base\"><slot></slot></span>; styles: white-space: nowrap; text-overflow: ellipsis (single-line truncation); example shows plain text content"
+    "default": "@slot - Renders the content to truncate with an ellipsis. template: <span class=\"base\"><slot></slot></span>; example usage is plain text string; no ::slotted selector at all — clear text-label intent"
   },
   "FocusTrap": {
-    "default": "@slot - Renders content for which to trap focus. (core-a11y.js); render: ${trap}<slot></slot>${trap}; walkSlot/walkTree traverse all assigned children"
+    "default": "@slot - Renders content for which to trap focus. template: ${trap}<slot></slot>${trap}; handler walks all child elements regardless of type to find focusable descendants; no ::slotted restriction"
   },
   "FloatingPanel": {
-    "default": "@slot - Renders the contents of the panel. (core-anchoring.js); render: <div class=\"base\"><slot></slot></div>"
+    "default": "@slot - Renders the contents of the panel. template: <div class=\"base\"><slot></slot></div>; no ::slotted restriction; panel is a generic floating surface accepting arbitrary content"
   },
   "AppBar": {
-    "leading": "@slot leading - Renders content positioned at the start of the bar. Template: <slot name=\"leading\"> inside .leading-icon div. JSDoc example shows <m3e-icon-button slot=\"leading-icon\"> (now leading). No ::slotted CSS but handler is _handleLeadingIconSlotChange (singular).",
-    "title": "@slot title - Renders the title of the bar. Template: <slot name=\"title\"> inside .title div. JSDoc example: <span slot=\"title\">Top 10 hiking trails</span>. Handler: _handleTitleSlotChange (singular). CSS hides .title when .base:not(.with-title).",
-    "subtitle": "@slot subtitle - Renders the subtitle of the bar. Template: <slot name=\"subtitle\"> inside .subtitle div. JSDoc example: <span slot=\"subtitle\">Discover popular trails</span>. Handler: _handleSubtitleSlotChange (singular). CSS hides .subtitle when .base:not(.with-subtitle).",
-    "trailing": "@slot trailing - Renders one or more action buttons aligned to the end of the bar. Template: <slot name=\"trailing\"> inside .trailing-icon div. Handler: _handleTrailingIconsSlotChange (pluralized — confirms multi). JSDoc example: <m3e-icon-button slot=\"trailing-icon\"> (now trailing)."
+    "leading": "@slot leading - Renders content positioned at the start of the bar; handler _handleLeadingIconSlotChange (singular); example shows <m3e-icon-button slot=\"leading-icon\">; no ::slotted restriction but Material 3 leading position is canonically a single icon button",
+    "title": "@slot title - Renders the title of the bar; example <span slot=\"title\">Top 10 hiking trails</span>; handler _handleTitleSlotChange; template: <slot name=\"title\">; no ::slotted restriction; clear text-label intent",
+    "subtitle": "@slot subtitle - Renders the subtitle of the bar; example <span slot=\"subtitle\">Discover popular trails</span>; handler _handleSubtitleSlotChange; template: <slot name=\"subtitle\">; no ::slotted restriction; clear text-label intent",
+    "trailing": "@slot trailing - Renders one or more action buttons aligned to the end of the bar; handler _handleTrailingIconsSlotChange (pluralised → multi:true); example shows <m3e-icon-button slot=\"trailing-icon\">; no ::slotted type restriction but description explicitly says action buttons"
   },
   "Option": {
-    "default": "@slot - Renders the label of the option. Template: unnamed <slot> inside <m3e-text-highlight>; handleSlotChange calls getTextContent(e.target) to derive option label/value."
+    "default": "@slot - Renders the label of the option. Render: <slot> inside <m3e-text-highlight>. Handler calls getTextContent(e.target) and stores to #textContent; get value() falls back to this textContent — option is non-functional without a label."
   },
   "Optgroup": {
-    "default": "@slot - Renders the options of the group. Template: unnamed <slot></slot>; handleMutation querySelectorAll(\"m3e-option\") confirms expected children are m3e-option elements.",
-    "label": "@slot label - Renders the label of the group. Template: <slot name=\"label\"> inside <m3e-text-overflow>; handleLabelSlotChange uses assignedElements()[0] to wire aria-labelledby."
+    "default": "@slot - Renders the options of the group. MutationController (via OptionPanel) calls querySelectorAll('m3e-option') and checks option.parentElement instanceof M3eOptGroupElement, confirming the group's default slot holds m3e-option elements.",
+    "label": "@slot label - Renders the label of the group. Handler _M3eOptGroupElement_handleLabelSlotChange: e.target.assignedElements({flatten:true})[0] wired to aria-labelledby; no ::slotted type restriction; CSS .label has font-size/color styling — intent is a text label."
   },
   "OptionPanel": {
-    "default": "@slot - Renders the contents of the list. Template: unnamed <slot>; handleMutation querySelectorAll(\"m3e-option\") + instanceof M3eOptGroupElement; CSS registerStyleSheet 'm3e-option-panel > m3e-divider { margin-block: ... }' confirms divider as valid child.",
-    "no-data": "Not in @slot JSDoc (discrepancy vs template). Template: <slot name=\"no-data\"> inside .no-data div; handleNoDataSlotChange toggles --with-no-data state. Accepts arbitrary empty-state content; text is the primary use case.",
-    "loading": "Not in @slot JSDoc (discrepancy vs template). Template: <slot name=\"loading\"> inside .loading div; handleLoadingSlotChange calls querySelector(\"m3e-loading-indicator[slot='loading'], m3e-circular-progress-indicator[slot='loading']\") to set --with-loading-indicator state."
+    "default": "@slot - Renders the contents of the list. querySelectorAll('m3e-option') at panel level; option.parentElement instanceof M3eOptGroupElement confirms optgroup nesting; global style: m3e-option-panel > m3e-divider { margin-block: var(--m3e-option-panel-divider-spacing, 0.5rem) } documents divider as expected direct child.",
+    "no-data": "Render: <slot name='no-data'>. Handler _M3eOptionPanelElement_handleNoDataSlotChange only calls hasAssignedNodes(e.target) — no type restriction. CSS .no-data has text colour/font styling suggesting general content; no ::slotted type selector.",
+    "loading": "Render: <slot name='loading'>. Handler _M3eOptionPanelElement_handleLoadingSlotChange: querySelector(\"m3e-loading-indicator[slot='loading'], m3e-circular-progress-indicator[slot='loading']\") detects indicator elements for --with-loading-indicator state; CSS .loading has text font/colour styling confirming plain-text use is also designed."
   },
   "FormField": {
-    "default": "@slot - Renders the control of the field.; KNOWN_FORM_FIELD_TAGS = [\"m3e-input-chip-set\", \"m3e-select\"]; isFormFieldControl checks instanceof HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement; ::slotted(input), ::slotted(textarea), ::slotted(select), ::slotted(m3e-select), ::slotted(m3e-input-chip-set)",
-    "label": "NOT in @slot JSDoc (lines 90-96) or CEM, but render template has <slot name=\"label\" @slotchange=\"...handleLabelSlotChange\"> and CSS has ::slotted([slot=\"label\"]) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }; usage example at line 83: <label slot=\"label\" for=\"field\">Text field</label>. Template/CSS trusted over absent JSDoc.",
-    "prefix": "@slot prefix - Renders content before the fields's control.; no ::slotted kind constraints for this slot",
-    "prefix-text": "@slot prefix-text - Renders text before the fields's control.",
-    "suffix": "@slot suffix - Renders content after the fields's control.; no ::slotted kind constraints for this slot",
-    "suffix-text": "@slot suffix-text - Renders text after the fields's control.",
-    "hint": "@slot hint - Renders hint text in the fields's subscript, when the control is valid.",
-    "error": "@slot error - Renders error text in the fields's subscript, when the control is invalid.; template: <slot name=\"error\">${this._validationMessage}</slot> (fallback to internal validation message)"
+    "default": "@slot - Renders the control of the field.; isFormFieldControl: instanceof HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement || KNOWN_FORM_FIELD_TAGS=['m3e-input-chip-set','m3e-select']; ::slotted(input), ::slotted(textarea), ::slotted(select), ::slotted(m3e-select), ::slotted(m3e-input-chip-set); handleSlotChange calls findFormFieldControl returning first control",
+    "prefix": "@slot prefix - Renders content before the fields's control.; handlePrefixSlotChange only checks assignedElements.length for --with-prefix state, no type restriction; --m3e-form-field-icon-size CSS prop mentions 'prefix and suffix icons' as typical but handler is unrestricted",
+    "prefix-text": "@slot prefix-text - Renders text before the fields's control.; no slotchange handler; rendered inside <span class='prefix-text'>; clear text-label intent (e.g. currency symbol)",
+    "label": "NOT in @slot JSDoc or CEM — discrepancy: template has <slot name='label' @slotchange='handleLabelSlotChange'>; example shows <label slot='label' for='field'>Text field</label>; ::slotted([slot='label']) applies text-overflow styling; handleLabelSlotChange reads assignedElements[0]?.textContent with no type restriction; trusting template/CSS over omitted JSDoc",
+    "suffix": "@slot suffix - Renders content after the fields's control.; handleSuffixSlotChange only checks assignedElements.length for --with-suffix state, no type restriction; --m3e-form-field-icon-size mentions suffix icons as typical but slot is unrestricted",
+    "suffix-text": "@slot suffix-text - Renders text after the fields's control.; no slotchange handler; rendered inside <span class='suffix-text'>; clear text-label intent (e.g. unit suffix)",
+    "hint": "@slot hint - Renders hint text in the fields's subscript, when the control is valid.; MutationObserver (hintMutationController) reads text content; no type restriction; specific purpose is user-authored hint text",
+    "error": "@slot error - Renders error text in the fields's subscript, when the control is invalid.; MutationObserver (errorMutationController) reads text content; template shows <slot name='error'>${this._validationMessage}</slot> fallback; specific purpose is user-authored error text"
   },
   "Autocomplete": {
-    "default": "@slot - Renders the options of the autocomplete.; render template: <slot></slot> inside <div class=\"options\">; querySelectorAll(\"m3e-option\") and querySelectorAll(\"m3e-optgroup\") on light DOM clone; example shows multiple <m3e-option> children",
-    "loading": "@slot loading - Renders content when loading options.; querySelector(\"[slot='loading']\") detects presence; fallback (line 608-614) creates a <span slot=\"loading\"> containing a text span — template has no <slot name=\"loading\">, projection handled via custom clone mechanism",
-    "no-data": "@slot no-data - Renders content when there are no options to show.; querySelector(\"[slot='no-data']\") detects presence; fallback (line 598-605) creates a <span slot=\"no-data\"> containing a text span — template has no <slot name=\"no-data\">, projection handled via custom clone mechanism"
+    "default": "@slot - Renders the options of the autocomplete.; render template: <slot></slot>; querySelectorAll(\"m3e-option\") + querySelectorAll(\"m3e-optgroup\") + instanceof M3eOptionElement confirm option/optgroup kinds",
+    "loading": "@slot loading - Renders content when loading options.; detected via querySelector(\"[slot='loading']\") on clone; fallback span[slot=loading] auto-created if absent; no type restriction on user-provided content",
+    "no-data": "@slot no-data - Renders content when there are no options to show.; detected via querySelector(\"[slot='no-data']\") on clone; fallback span[slot=no-data] auto-created if absent; no type restriction on user-provided content"
   },
   "Avatar": {
-    "default": "@slot - Renders the content of the avatar.; render: <slot></slot>; ::slotted(img) { display: block; ... }; examples show text initials (\"AB\"), <m3e-icon>, and <img>"
+    "default": "@slot - Renders the content of the avatar.; template: <slot></slot>; CSS ::slotted(img) styles but does not restrict; examples show text initials, m3e-icon, and img — no querySelector/instanceof filter"
   },
   "Badge": {
-    "default": "@slot - Renders the content of the badge. | template: <slot @slotchange=\"...\"><span aria-hidden=\"true\">&nbsp;</span></slot> (fallback present → not required) | singular handler _M3eBadgeElement_handleSlotChange → multi false"
+    "default": "@slot - Renders the content of the badge. | template: unnamed <slot> with <span aria-hidden='true'>&nbsp;</span> fallback (dot badge when empty); slotchange handler inspects this.textContent.length to adjust padding — confirms text content intent; no ::slotted type restriction, no querySelector/instanceof check"
   },
   "BottomSheetAction": {
-    "default": "@slot - Renders the content of the action.; ActionElementBase.render() = html`<slot></slot>`; .d.ts example shows text 'Google Keep'; ActionElementBase.styles: ::slotted(.material-icons) confirms icon support"
+    "default": "@slot - Renders the content of the action.; example usage shows text-only content (\"Google Keep\", \"Google Docs\"); no ::slotted or querySelector restriction; element acts as clickable label nested within m3e-list-action"
   },
   "BottomSheet": {
-    "default": "@slot - Renders the content of the sheet.; render template: <slot></slot>; BottomSheetElement.d.ts example shows <m3e-action-list> directly in the sheet's default slot",
-    "header": "@slot header - Renders the header of the sheet.; render template: <slot name=\"header\"></slot>"
+    "default": "@slot - Renders the content of the sheet.; template (line 350): <slot></slot> inside .content div; no ::slotted type selector or querySelector restriction; example places m3e-action-list with multiple m3e-list-action children here",
+    "header": "@slot header - Renders the header of the sheet.; template (line 350): <slot name=\"header\"></slot> inside .header div; global CSS adds margin only (m3e-bottom-sheet > [slot=\"header\"] { margin... }); no ::slotted type restriction; --m3e-app-bar-container-color set on .header suggests app-bar is possible but not required"
   },
   "BottomSheetTrigger": {
-    "default": "@slot - Renders the content of the trigger.; ActionElementBase.render() = html`<slot></slot>`; .d.ts example shows text 'Open Bottom sheet' in slot; ActionElementBase.styles: ::slotted(.material-icons) confirms icon support"
-  },
-  "BreadcrumbItemButton": {
-    "icon": "Template: `<slot class=\"icon\" name=\"icon\" aria-hidden=\"true\"></slot>`; CSS: `::slotted([slot=\"icon\"]) { font-size: inherit !important; flex: none; }` and `::slotted(svg[slot=\"icon\"]) { width: 1em; height: 1em; }`",
-    "default": "Template: `<slot @slotchange=\"...\"></slot>` inside `<m3e-text-overflow>`; handleSlotChange calls `isIconOnly(e.target)` confirming slot accepts either text label or a single icon"
-  },
-  "BreadcrumbItem": {
-    "icon": "@slot icon - Renders an icon before the item's label; updateIconFilled uses `querySelectorAll(\"m3e-icon\")` confirming icon kind; template: `<slot name=\"icon\" slot=\"icon\" @slotchange=\"...\"></slot>`",
-    "default": "@slot - Renders the content of the breadcrumb item; handleSlotChange calls `isIconOnly(e.target)` confirming slot accepts either text label or icon (icon-only mode)"
+    "default": "@slot - Renders the content of the trigger.; example usage: <m3e-bottom-sheet-trigger for=\"bottomSheet\">Open Bottom sheet</m3e-bottom-sheet-trigger>; text label for the trigger button; no ::slotted or querySelector restriction"
   },
   "Breadcrumb": {
-    "default": "@slot - Renders breadcrumb items; handleSlotChange uses `querySelectorAll(\"m3e-breadcrumb-item\")` and iterates with for-loop over all items; wrapper is `role=\"list\"`",
-    "separator": "@slot separator - Renders a custom separator between breadcrumb items; template: `<slot name=\"separator\" @slotchange=\"...\"></slot>`; no ::slotted selector or instanceof constraint — accepts arbitrary custom separator content"
+    "default": "@slot - Renders breadcrumb items.; handleSlotChange: querySelectorAll('m3e-breadcrumb-item') iterates all children — breadcrumbItem is the only meaningful content",
+    "separator": "@slot separator - Renders a custom separator between breadcrumb items.; handleSeparatorSlotChange collects assignedElements() with no instanceof/querySelector restriction and clones them verbatim"
+  },
+  "BreadcrumbItemButton": {
+    "icon": "render: <slot class='icon' name='icon' aria-hidden='true'>; CSS: ::slotted([slot='icon']) { font-size: inherit; flex: none; } + ::slotted(svg[slot='icon']) { width: 1em; height: 1em; }; CEM has no @slot entry (internal element) but template is definitive",
+    "default": "render: <m3e-text-overflow class='overflow'><slot @slotchange>; isIconOnly() checks if single element ≤28×28px in this slot — icon-only mode explicitly supported; no ::slotted restriction; primary use is text label"
+  },
+  "BreadcrumbItem": {
+    "default": "@slot - Renders the content of the breadcrumb item.; handleSlotChange: isIconOnly() detects single small element; _updateIconFilled: querySelectorAll('m3e-icon') sets filled — icon explicitly supported alongside text label",
+    "icon": "@slot icon - Renders an icon before the item's label.; forwarded via slot='icon' to inner m3e-breadcrumb-item-button; _updateIconFilled: querySelectorAll('m3e-icon') confirms icon kind"
   },
   "Button": {
-    "default": "@slot - Renders the label of the button. Template: <slot></slot> inside .label div; also used as fallback inside <slot name=\"selected\"><slot></slot></slot>",
-    "icon": "@slot icon - Renders an icon before the button's label. Template: <slot class=\"icon\" name=\"icon\" aria-hidden=\"true\">. CSS: ::slotted([slot=\"icon\"])",
-    "selected": "@slot selected - Renders the label of the button, when selected. Template: <slot name=\"selected\"><slot></slot></slot> (only rendered when toggle && selected)",
-    "selected-icon": "@slot selected-icon - Renders an icon before the button's label, when selected. Template: <slot class=\"icon\" name=\"selected-icon\" aria-hidden=\"true\">. CSS: ::slotted([slot=\"selected-icon\"]). Handler: _M3eButtonElement_handleSelectedIconSlotChange (singular)",
-    "trailing-icon": "@slot trailing-icon - Renders an icon after the button's label. Template: <slot class=\"icon\" name=\"trailing-icon\" aria-hidden=\"true\">. CSS: ::slotted([slot=\"trailing-icon\"])"
+    "default": "@slot - Renders the label of the button. Template: <slot></slot> in .label div, unrestricted; intent is button label text.",
+    "icon": "@slot icon - Renders an icon before the button's label. CSS: ::slotted([slot=\"icon\"]) { font-size: inherit; flex: none; } ::slotted(svg[slot=\"icon\"]) { width: 1em; height: 1em; }",
+    "selected": "@slot selected - Renders the label of the button, when selected. Template: <slot name=\"selected\"><slot></slot></slot> wrapping default slot as fallback; label text intent.",
+    "selected-icon": "@slot selected-icon - Renders an icon before the button's label, when selected. CSS: ::slotted([slot=\"selected-icon\"]) { font-size: inherit; flex: none; } ::slotted(svg[slot=\"selected-icon\"]) { width: 1em; height: 1em; }",
+    "trailing-icon": "@slot trailing-icon - Renders an icon after the button's label. CSS: ::slotted([slot=\"trailing-icon\"]) { font-size: inherit; flex: none; } ::slotted(svg[slot=\"trailing-icon\"]) { width: 1em; height: 1em; }"
   },
   "IconButton": {
-    "default": "@slot - Renders the icon of the button. | template: <slot class=\"icon\" aria-hidden=\"true\"> (always rendered) | ::slotted(svg) { width: 1em; height: 1em; }",
-    "selected": "@slot selected - Renders an icon, when selected. | template: <slot class=\"icon\" name=\"selected\" aria-hidden=\"true\" @slotchange=\"..._handleSelectedIconSlotChange\"> only rendered when toggle attr present; CSS hides it when not [selected]"
+    "default": "@slot - Renders the icon of the button. | render: <slot class=\"icon\" aria-hidden=\"true\"></slot> | updated(): querySelectorAll(\"m3e-icon\") — explicit icon manipulation; ::slotted(svg) also covered by ::slotted(*)",
+    "selected": "@slot selected - Renders an icon, when selected. | render: ${this.toggle ? html`<slot class=\"icon\" name=\"selected\" ...></slot>` : nothing} — only rendered when toggle=true; updated(): querySelectorAll(\"m3e-icon\") toggles filled attribute on slotted icons"
   },
   "ButtonGroup": {
-    "default": "@slot - Renders the buttons of the group.; render template has bare <slot>; queryAssignedElements({ slot: \"\", selector: \"m3e-button,m3e-icon-button\" }); handleChange guards on e.target.tagName === \"M3E-BUTTON\" || \"M3E-ICON-BUTTON\""
+    "default": "@slot - Renders the buttons of the group.; queryAssignedElements({ slot: \"\", selector: \"m3e-button,m3e-icon-button\", flatten: true }); handleChange checks e.target.tagName === \"M3E-BUTTON\" || e.target.tagName === \"M3E-ICON-BUTTON\"; render template has a single unnamed <slot>"
   },
   "RichTooltipAction": {
-    "default": "@slot - Renders the content of the action.; ActionElementBase.render() returns html`<slot></slot>`; example shows text 'Learn more' as child"
+    "default": "@slot - Renders the content of the action. (CEM confirms unnamed slot); ActionElementBase provides the default slot; example shows plain text: <m3e-rich-tooltip-action>Learn more</m3e-rich-tooltip-action>; no ::slotted restrictions"
   },
   "RichTooltip": {
-    "default": "@slot - The main supporting text of the tooltip.; template: <slot @slotchange='...'> inside div.content; handleContentSlotChange reads text",
-    "subhead": "@slot subhead - Optional subhead text displayed above the supporting content.; template: <slot name='subhead'> inside div.subhead; .base:not(.has-subhead) .subhead { display: none } confirms optional",
-    "actions": "@slot actions - Optional action elements displayed at the bottom of the tooltip.; template: <slot name='actions'> in div.actions; ::slotted([slot='actions']) { flex: none; display: flex; ... } targets each slotted element; example: <div slot='actions'><m3e-button>...</m3e-button></div>; .base:not(.has-actions) .actions { display: none } confirms optional"
+    "default": "@slot - The main supporting text of the tooltip.; render template: <slot @slotchange='...'> (unnamed); _handleContentSlotChange calls getTextContent(e.target, true) — text extraction confirms text semantic; example shows plain prose text; _interactive check uses findInteractiveElements(this) covering ALL slots, not restricting this slot",
+    "subhead": "@slot subhead - Optional subhead text displayed above the supporting content.; render template: <slot name='subhead' @slotchange='...'>; _handleSubheadSlotChange calls getTextContent(e.target, true); example shows <span slot='subhead'>New settings available</span>",
+    "actions": "@slot actions - Optional action elements displayed at the bottom of the tooltip.; render template: <slot name='actions' @slotchange='...'>; ::slotted([slot='actions']) applies only flex layout styling — no element-type constraint; ::slotted([slot='actions'][end]) similarly no type constraint; example uses <div slot='actions'> as a generic container wrapping buttons"
   },
   "Tooltip": {
-    "default": "@slot - Renders the content of the tooltip.; template: <slot @slotchange='...'> inside div.base; handleSlotChange calls getTextContent(e.target, true) to extract aria-description text; example: <m3e-tooltip for='button'>Go Back</m3e-tooltip>"
+    "default": "@slot - Renders the content of the tooltip.; render template: <slot @slotchange='...'> (unnamed); _handleSlotChange calls getTextContent(e.target, true) and uses result as aria description message; example shows plain text: <m3e-tooltip for='button'>Go Back</m3e-tooltip>; no ::slotted CSS selectors present"
   },
   "Calendar": {
-    "header": "@slot header - Renders the header of the calendar.; template: <slot name=\"header\">${renderHeader()}</slot> with default fallback content; no ::slotted selectors or instanceof constraints"
+    "header": "@slot header - Renders the header of the calendar.; render (line 934): <slot name=\"header\">${renderHeader()}</slot> with default fallback content, no ::slotted restriction"
   },
   "Card": {
-    "default": "@slot - Renders the content of the card without padding; render template: unnamed <slot> is fallback inside <slot name=\"content\">, so default children render when no content slot is used",
-    "header": "@slot header - Renders the header of the card; ::slotted(img[slot=\"header\"]), ::slotted(video[slot=\"header\"]) { border-radius: ... } — accepts img/video as header media (not in vocabulary) and generic content; no instanceof check restricts to a specific vocabulary kind",
-    "content": "@slot content - Renders the content of the card with padding; ::slotted([slot=\"content\"]) { flex: 1 1 auto; } — single flex content region",
-    "actions": "@slot actions - Renders the actions of the card; ::slotted([slot=\"actions\"][end]) { justify-content: flex-end; } — [end] attribute targets individual action elements for alignment; M3 card taxonomy places multiple action buttons here",
-    "footer": "@slot footer - Renders the footer of the card; ::slotted([slot=\"footer\"]) { flex: none; display: flex; align-items: center; } — single footer region"
+    "default": "@slot - Renders the content of the card without padding. Template: <slot @slotchange=handleDefaultSlotChange> nested inside <slot name=\"content\"> as fallback. No ::slotted type restriction; ::slotted(img), ::slotted(video) are layout styling only, not kind constraints. Handler name is singular.",
+    "header": "@slot header - Renders the header of the card. ::slotted([slot=\"header\"]) applies flex layout; ::slotted(img[slot=\"header\"]), ::slotted(video[slot=\"header\"]) are styling-only (handler checks x.tagName===\"IMG\"||\"VIDEO\" only to toggle has-header-media class, not restrict). No kind restriction. Singular handler _M3eCardElement_handleHeaderSlotChange.",
+    "content": "@slot content - Renders the content of the card with padding. ::slotted([slot=\"content\"]) { flex: 1 1 auto } is layout-only. No kind restriction. Singular handler _M3eCardElement_handleContentSlotChange.",
+    "actions": "@slot actions - Renders the actions of the card. ::slotted([slot=\"actions\"][end]) { justify-content: flex-end } targets a single container element with [end] attribute; no kind restriction. Singular handler _M3eCardElement_handleActionsSlotChange.",
+    "footer": "@slot footer - Renders the footer of the card. ::slotted([slot=\"footer\"]) applies flex layout only. No kind restriction. Singular handler _M3eCardElement_handleFooterSlotChange."
   },
   "Chip": {
-    "default": "@slot - Renders the label of the chip.; render template: _renderSlot() returns <slot @slotchange=\"...\">; chip is non-functional without a label",
-    "icon": "@slot icon - Renders an icon before the chip's label.; _renderIcon() returns <slot name=\"icon\" aria-hidden=\"true\">; ::slotted([slot=\"icon\"]) { flex: none; width: 1em; font-size: var(--m3e-chip-icon-size) }",
-    "trailing-icon": "@slot trailing-icon - Renders an icon after the chip's label.; _renderTrailingIcon() returns <slot name=\"trailing-icon\" aria-hidden=\"true\">; ::slotted([slot=\"trailing-icon\"]) { flex: none; width: 1em; font-size: var(--m3e-chip-icon-size) }"
+    "default": "@slot - Renders the label of the chip.; _renderSlot() renders <slot @slotchange>; _handleSlotChange uses getTextContent(e.target) to track text content",
+    "icon": "@slot icon - Renders an icon before the chip's label.; _renderIcon() renders <slot name=\"icon\">; ::slotted([slot=\"icon\"]) { flex: none; width: 1em; font-size: var(--m3e-chip-icon-size, 1.125rem) !important; }",
+    "trailing-icon": "@slot trailing-icon - Renders an icon after the chip's label.; _renderTrailingIcon() renders <slot name=\"trailing-icon\">; ::slotted([slot=\"trailing-icon\"]) { flex: none; width: 1em; ... }"
   },
   "AssistChip": {
-    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() from M3eChipElement (not overridden); _renderTrailingIcon() overridden to return nothing — trailing-icon slot absent",
-    "icon": "@slot icon - Renders an icon before the chip's label.; inherits _renderIcon() → <slot name=\"icon\" aria-hidden=\"true\"> from M3eChipElement"
+    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() from M3eChipElement; _handleSlotChange uses getTextContent",
+    "icon": "@slot icon - Renders an icon before the chip's label.; inherits _renderIcon() rendering <slot name=\"icon\">; ::slotted([slot=\"icon\"]) from M3eChipElement.styles"
   },
   "ChipSet": {
-    "default": "@slot - Renders the chips of the set.; render template: html`<slot></slot>`; generic flex container — examples show m3e-chip, m3e-assist-chip, m3e-suggestion-chip; no querySelector restriction"
+    "default": "@slot - Renders the chips of the set.; render() returns html`<slot></slot>`; no querySelectorAll, instanceof, or ::slotted type-selector in M3eChipSetElement — unrestricted container"
   },
   "FilterChip": {
-    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() → <slot @slotchange=\"...\"> from M3eChipElement",
-    "icon": "@slot icon - Renders an icon before the chip's label.; _renderIcon() override wraps super._renderIcon() which renders <slot name=\"icon\">; ::slotted([slot=\"icon\"] ) { display: none !important } when selected (per CSS)",
-    "trailing-icon": "@slot trailing-icon - Renders an icon after the chip's label.; _renderTrailingIcon() NOT overridden in FilterChip — inherits <slot name=\"trailing-icon\" aria-hidden=\"true\"> from M3eChipElement; FilterChip styles include ::slotted([slot=\"trailing-icon\"]) color rules"
+    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() from M3eChipElement; _handleSlotChange uses getTextContent",
+    "icon": "@slot icon - Renders an icon before the chip's label.; _renderIcon() override wraps super._renderIcon() which renders <slot name=\"icon\">; ::slotted([slot=\"icon\"]) in inherited + FilterChip styles",
+    "trailing-icon": "@slot trailing-icon - Renders an icon after the chip's label.; M3eFilterChipElement does NOT override _renderTrailingIcon(), so inherits <slot name=\"trailing-icon\"> from M3eChipElement; ::slotted([slot=\"trailing-icon\"]) in FilterChip.styles"
   },
   "FilterChipSet": {
-    "default": "@slot - Renders the chips of the set.; _handleSlotChange calls querySelectorAll('m3e-filter-chip') to build selection manager items"
+    "default": "@slot - Renders the chips of the set.; _handleSlotChange does this.querySelectorAll(\"m3e-filter-chip\") to build selection set"
   },
   "InputChip": {
-    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() → <slot @slotchange=\"...\"> from M3eChipElement; rendered inside .label div in InputChip's own render()",
-    "avatar": "@slot avatar - Renders an avatar before the chip's label.; render(): <slot name=\"avatar\" @slotchange=\"_handleAvatarSlotChange\">; ::slotted(m3e-avatar[slot=\"avatar\"]) { --m3e-avatar-size: ... }",
-    "icon": "@slot icon - Renders an icon before the chip's label.; inherits _renderIcon() → <slot name=\"icon\" aria-hidden=\"true\">; CSS hides it when avatar present: :host(:is(:state(--with-avatar),...)) ::slotted([slot=\"icon\"]) { display: none }",
-    "remove-icon": "@slot remove-icon - Renders the icon for the button used to remove the chip.; _renderTrailingIcon(): <slot name=\"remove-icon\"><svg class=\"remove-icon\" ...>fallback X</svg></slot> inside m3e-icon-button"
+    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() rendering <slot>; _handleSlotChange uses getTextContent; programmatic chip creation uses appendChild(createTextNode(value))",
+    "avatar": "@slot avatar - Renders an avatar before the chip's label.; render() has <slot name=\"avatar\" @slotchange=\"...\">; ::slotted(m3e-avatar[slot=\"avatar\"]) { --m3e-avatar-size: ...; --m3e-avatar-font-size: ...; }",
+    "icon": "@slot icon - Renders an icon before the chip's label.; inherits _renderIcon() rendering <slot name=\"icon\">; ::slotted([slot=\"icon\"]) { flex: none; width: 1em; ... }; hidden when avatar is present",
+    "remove-icon": "@slot remove-icon - Renders the icon for the button used to remove the chip.; _renderTrailingIcon() renders <slot name=\"remove-icon\"><svg class=\"remove-icon\">...</svg></slot> inside m3e-icon-button — SVG is the fallback, slot accepts a replacement icon"
   },
   "InputChipSet": {
-    "default": "@slot - Renders the chips of the set.; _handleSlotChange calls querySelectorAll('m3e-input-chip'); ::slotted(m3e-input-chip) { min-width: 0 }",
-    "input": "@slot input - Renders the input element used to add new chips to the set.; <slot name=\"input\" @slotchange=\"_handleInputSlotChange\">; handler does querySelector('input') — native HTML <input> element, no M3E vocabulary kind applies"
+    "default": "@slot - Renders the chips of the set.; _handleSlotChange does this.querySelectorAll(\"m3e-input-chip\") to build list; ::slotted(m3e-input-chip) { min-width: 0; } in InputChipSetElement.styles",
+    "input": "@slot input - Renders the input element used to add new chips to the set.; _handleInputSlotChange does this.querySelector(\"input\") and wires HTMLInputElement events; ::slotted([slot=\"input\"]) has no tag-type restriction in CSS; no kind in vocabulary for <input> element"
   },
   "SuggestionChip": {
-    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() → <slot @slotchange=\"...\"> from M3eChipElement; _renderTrailingIcon() overridden to return nothing — trailing-icon slot absent",
-    "icon": "@slot icon - Renders an icon before the chip's label.; inherits _renderIcon() → <slot name=\"icon\" aria-hidden=\"true\"> from M3eChipElement"
+    "default": "@slot - Renders the label of the chip.; inherits _renderSlot() from M3eChipElement; _handleSlotChange uses getTextContent",
+    "icon": "@slot icon - Renders an icon before the chip's label.; inherits _renderIcon() rendering <slot name=\"icon\">; ::slotted([slot=\"icon\"]) from M3eChipElement.styles; M3eSuggestionChipElement only overrides _renderTrailingIcon() to return nothing"
   },
   "ContentPane": {
-    "default": "@slot - Renders the content of the pane. (line 29); render template confirms unnamed <slot></slot> inside .scroll-container (line 52); no ::slotted selectors or instanceof checks — accepts arbitrary content"
+    "default": "@slot - Renders the content of the pane.; template: <slot></slot> inside .scroll-container; no ::slotted selector, no querySelector/instanceof restriction"
   },
   "DialogAction": {
-    "default": "@slot - Renders the content of the action.; example: <m3e-dialog-action return-value=\"ok\">Close</m3e-dialog-action> (text label)"
+    "default": "@slot - Renders the content of the action. No ::slotted type restriction visible; ActionElementBase render not in this file but CEM confirms slot exists. Usage example shows text: <m3e-dialog-action return-value=\"ok\">Close</m3e-dialog-action>."
   },
   "Dialog": {
-    "default": "@slot - Renders the content of the dialog.; template: <slot> inside <m3e-scroll-container class=\"content\">",
-    "header": "@slot header - Renders the header of the dialog.; ::slotted([slot=\"header\"]) applies headline.small typography (flex:1 1 auto)",
-    "actions": "@slot actions - Renders the actions of the dialog.; template: <slot name=\"actions\" @slotchange>; ::slotted([slot=\"actions\"]) styles as flex; example places a generic <div slot=\"actions\"> wrapper — no specific component kind",
-    "close-icon": "@slot close-icon - Renders the icon of the button used to close the dialog.; template: <slot name=\"close-icon\"><svg>…</svg></slot> inside <m3e-icon-button>; ::slotted([slot=\"close-icon\"]) width:1em; has SVG default so not required"
+    "default": "@slot - Renders the content of the dialog. Template: <slot></slot> inside <m3e-scroll-container class=\"content\">. No ::slotted type restriction; general body content region.",
+    "header": "@slot header - Renders the header of the dialog. Template: <slot name=\"header\" id=\"m3e-dialog-...-header\">; used as aria-labelledby target (dialog ARIA label). ::slotted([slot=\"header\"]) applies headline.small typography. Example: <span slot=\"header\">Dialog Title</span>.",
+    "actions": "@slot actions - Renders the actions of the dialog. Template: <slot name=\"actions\" @slotchange=\"handleActionsSlotChange\">; ::slotted([slot=\"actions\"]) applies flex layout only (no tag-type restriction). handleActionsSlotChange only checks assignedNodes().length > 0. Example: <div slot=\"actions\" end> container.",
+    "close-icon": "@slot close-icon - Renders the icon of the button used to close the dialog. Rendered inside <m3e-icon-button>; ::slotted([slot=\"close-icon\"]) sets width:1em and icon font-size. Default fallback is an SVG close icon."
   },
   "DrawerContainer": {
-    "default": "@slot - Renders the main content. Confirmed by unnamed <slot></slot> inside .content div in render template.",
-    "start": "@slot start - Renders the start drawer. Confirmed by <slot name=\"start\"> inside .start/.m3e-focus-trap div; ::slotted([slot=\"start\"]) CSS applies height:100% and width token.",
-    "end": "@slot end - Renders the end drawer. Confirmed by <slot name=\"end\"> inside .end/.m3e-focus-trap div; ::slotted([slot=\"end\"]) CSS applies height:100% and width token."
+    "default": "@slot - Renders the main content.; template: <slot></slot> inside .content div; no ::slotted type restriction",
+    "start": "@slot start - Renders the start drawer.; ::slotted([slot=\"start\"]) { height: 100%; width: ... } — attribute-only selector, no element-type restriction; handler: handleStartSlotChange (singular)",
+    "end": "@slot end - Renders the end drawer.; ::slotted([slot=\"end\"]) { height: 100%; width: ... } — attribute-only selector, no element-type restriction; handler: handleEndSlotChange (singular)"
   },
   "Accordion": {
-    "default": "@slot - Renders the panels of the accordion; ::slotted(m3e-expansion-panel) in styles; querySelectorAll(\"m3e-expansion-panel\") in _M3eAccordionElement_handleSlotChange"
+    "default": "@slot - Renders the panels of the accordion.; ::slotted(m3e-expansion-panel) in styles; querySelectorAll('m3e-expansion-panel') in handleSlotChange — plural 'panels' + type-restricted to m3e-expansion-panel"
   },
   "ExpansionHeader": {
-    "default": "@slot - Renders the content of the header; render: <div class=\"content\"><slot></slot></div>",
-    "toggle-icon": "@slot toggle-icon - Renders the icon of the expansion toggle; ::slotted([slot=\"toggle-icon\"]) { font-size: inherit !important; flex: none; }; ::slotted(svg[slot=\"toggle-icon\"]) { width: 1em; height: 1em; }"
+    "default": "@slot - Renders the content of the header.; <slot> inside <div class='content'>; no ::slotted type restriction on default slot; CSS props --m3e-expansion-header-font-size/weight/line-height/tracking confirm text content intent",
+    "toggle-icon": "@slot toggle-icon - Renders the icon of the expansion toggle.; ::slotted([slot='toggle-icon']) { font-size: inherit !important; flex: none } and ::slotted(svg[slot='toggle-icon']) { width: 1em; height: 1em; } — chevron/arrow icon slot"
   },
   "ExpansionPanel": {
-    "default": "@slot - Renders the detail of the panel; render: <div class=\"content\"><slot></slot></div>",
-    "header": "@slot header - Renders the header content; render: <slot name=\"header\"></slot> inside internal m3e-expansion-header; example shows <span slot=\"header\">Panel 1</span>",
-    "actions": "@slot actions - Renders the actions bar of the panel; ::slotted([slot=\"actions\"]) { flex: none; display: flex; align-items: center; column-gap: ...; }; ::slotted([slot=\"actions\"][end]) { justify-content: flex-end; } — [end] variant implies multiple action groups can be slotted simultaneously",
-    "toggle-icon": "@slot toggle-icon - Renders the expansion toggle icon; ::slotted([slot=\"toggle-icon\"]) { font-size: inherit !important; flex: none; }; ::slotted(svg[slot=\"toggle-icon\"]) { width: 1em; height: 1em; } in ExpansionPanelStyle"
+    "default": "@slot - Renders the detail of the panel.; <slot> inside <div class='content'>; no ::slotted type restriction — general content area",
+    "actions": "@slot actions - Renders the actions bar of the panel.; ::slotted([slot='actions']) { flex: none; display: flex; align-items: center; column-gap: ... }; ::slotted([slot='actions'][end]) { justify-content: flex-end }; cssprop --m3e-expansion-panel-actions-spacing 'spacing between action buttons or elements'; plural 'actions' implies multi",
+    "header": "@slot header - Renders the header content.; <slot name='header'> forwarded into m3e-expansion-header; example: <span slot='header'>Panel 1</span>; CSS props --m3e-expansion-header-font-* confirm text label intent; no ::slotted type restriction",
+    "toggle-icon": "@slot toggle-icon - Renders the expansion toggle icon.; ::slotted([slot='toggle-icon']) { font-size: inherit !important; flex: none } and ::slotted(svg[slot='toggle-icon']) { width: 1em; height: 1em; } in ExpansionPanel styles; forwarded via <div slot='toggle-icon' class='toggle'><slot name='toggle-icon'>"
   },
   "Fab": {
-    "default": "@slot - Renders the icon of the button. | template: <slot class=\"icon\" aria-hidden=\"true\" @slotchange=...> | CSS: ::slotted(:not([slot])), ::slotted(svg:not([slot])) | slotchange handler: this.querySelector(\"m3e-fab-menu-trigger\") — trigger has no named slot so lands here",
-    "close-icon": "@slot close-icon - Renders the close icon when used to open a FAB menu. | template: <slot name=\"close-icon\"> with default SVG fallback (close X) | CSS: ::slotted([slot=\"close-icon\"]), ::slotted(svg[slot=\"close-icon\"])",
-    "label": "@slot label - Renders the label of an extended button. | template: <slot name=\"label\" @slotchange=...> inside <m3e-collapsible> | CSS: .base.with-menu ::slotted([slot=\"label\"]) { display: none }"
+    "default": "@slot - Renders the icon of the button.; JSDoc example places <m3e-icon> here (no slot attr); ::slotted(svg:not([slot])) { width:1em; height:1em }; querySelector(\"m3e-fab-menu-trigger\") at line 1048 confirms fab-menu-trigger also lands in default slot",
+    "label": "@slot label - Renders the label of an extended button.; <slot name=\"label\"> in template; ::slotted([slot=\"label\"]) { display: none } in .base.with-menu context",
+    "close-icon": "@slot close-icon - Renders the close icon when used to open a FAB menu.; template provides fallback <svg class=\"close-icon\"> so slot is optional; ::slotted(svg[slot=\"close-icon\"]) { width:1em; height:1em }"
   },
   "MenuItem": {
-    "default": "@slot - Renders the label of the item.; template: <slot @slotchange='…'>; _M3eMenuItemElement_defaultSlotChangeHandler checks assignedElements for instanceof M3eMenuTriggerElement (submenu pattern uses <m3e-menu-trigger> in this slot)",
-    "icon": "@slot icon - Renders an icon before the items's label.; template: <slot name='icon' aria-hidden='true'>; ::slotted([slot='icon']) { flex:none; width:1em; font-size: --m3e-menu-item-icon-size }",
-    "trailing-icon": "@slot trailing-icon - Renders an icon after the item's label.; template: <slot name='trailing-icon' aria-hidden='true'> (only rendered when !_hasSubmenu); ::slotted([slot='trailing-icon']) { flex:none; width:1em }"
+    "default": "@slot - Renders the label of the item.; _M3eMenuItemElement_defaultSlotChangeHandler does assignedElements().find(x => x instanceof M3eMenuTriggerElement) — confirms menuTrigger is an accepted child alongside text labels.",
+    "icon": "@slot icon - Renders an icon before the items's label.; ::slotted([slot=\"icon\"]) style selector (no element-type restriction, but icon semantic clear); _M3eMenuItemElement_iconSlotChangeHandler sets --with-icon state.",
+    "trailing-icon": "@slot trailing-icon - Renders an icon after the item's label.; ::slotted([slot=\"trailing-icon\"]) style selector; _M3eMenuItemElement_trailingIconSlotChangeHandler sets --with-trailing-icon state. Slot is conditionally rendered: hidden when _hasSubmenu is true."
   },
   "FabMenu": {
-    "default": "@slot - Renders the contents of the menu.; slotchange handler does querySelectorAll(\"m3e-fab-menu-item\"); example shows 6 fabMenuItems"
+    "default": "@slot - Renders the contents of the menu. / slotchange handler: querySelectorAll(\"m3e-fab-menu-item\") confirms fabMenuItem restriction; render: <slot @slotchange=\"...\"></slot>"
   },
   "Heading": {
-    "default": "@slot - Renders the content of the heading. | render(): html`<slot></slot>` | examples show plain text content only; no ::slotted selectors or named slots present"
+    "default": "@slot - Renders the content of the heading. Template: `<slot></slot>` (line 178). No ::slotted selectors, no querySelector/instanceof checks. Usage example: `<m3e-heading ...>Page title</m3e-heading>` confirms text-label intent."
   },
   "ListItem": {
-    "default": "@slot - Renders the content of the list item.; template: <slot></slot> inside .content div; ::slotted(:not([slot])) applies body.large font styles",
-    "leading": "@slot leading - Renders the leading content of the list item.; template: <slot name=\"leading\">; ::slotted(m3e-icon[slot=\"leading\"]) sets icon size/color; _getSlotContentType checks tagName M3E-AVATAR and M3E-ICON",
-    "overline": "@slot overline - Renders the overline of the list item.; template: <slot name=\"overline\">; ::slotted([slot=\"overline\"]) applies label.small font styles",
-    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; template: <slot name=\"supporting-text\">; ::slotted([slot=\"supporting-text\"]) applies body.medium font styles",
-    "trailing": "@slot trailing - Renders the trailing content of the list item.; template: <slot name=\"trailing\">; ::slotted(span[slot=\"trailing\"]) label.small text styles; ::slotted(m3e-icon[slot=\"trailing\"]); _getSlotContentType checks M3E-AVATAR and M3E-ICON for this slot"
+    "default": "@slot - Renders the content of the list item.; ::slotted(:not([slot])) { font-size: var(--m3e-list-item-font-size,...) } (headline/body typography applied to default slot)",
+    "leading": "@slot leading - Renders the leading content of the list item.; ::slotted(m3e-icon[slot='leading']); _getSlotContentType checks tagName M3E-AVATAR and M3E-ICON; ::slotted(m3e-avatar) in disabled CSS",
+    "overline": "@slot overline - Renders the overline of the list item.; ::slotted([slot='overline']) { font-size: var(--m3e-list-item-overline-font-size,...) }",
+    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; ::slotted([slot='supporting-text']) { font-size: var(--m3e-list-item-supporting-text-font-size,...) }",
+    "trailing": "@slot trailing - Renders the trailing content of the list item.; ::slotted(span[slot='trailing']) { white-space: nowrap; font-size: var(--m3e-list-item-trailing-text-font-size,...) }; ::slotted(m3e-icon[slot='trailing'])"
   },
   "List": {
-    "default": "@slot - Renders the items of the list.; template: <slot @slotchange>; _M3eListElement_handleSlotChange filters assignedElements instanceof M3eListItemElement"
+    "default": "@slot - Renders the items of the list.; handleSlotChange filters instanceof M3eListItemElement (covers all user-facing item subtypes); :host([variant='segmented']) ::slotted(m3e-divider) { display: none } confirms divider is accepted"
   },
   "ListItemButton": {
-    "default": "Inherited from M3eListItemElement (CEM inheritedFrom); render() calls super._renderBase() which renders <slot></slot> in .content div; ::slotted(:not([slot])) font styles",
-    "leading": "Inherited from M3eListItemElement; super._renderBase() renders <slot name=\"leading\">; ::slotted(m3e-icon[slot=\"leading\"]); _getSlotContentType checks M3E-AVATAR, M3E-ICON",
-    "overline": "Inherited from M3eListItemElement; super._renderBase() renders <slot name=\"overline\">; ::slotted([slot=\"overline\"]) styles",
-    "supporting-text": "Inherited from M3eListItemElement; super._renderBase() renders <slot name=\"supporting-text\">; ::slotted([slot=\"supporting-text\"]) styles",
-    "trailing": "Inherited from M3eListItemElement; super._renderBase() renders <slot name=\"trailing\">; ::slotted(span[slot=\"trailing\"]), ::slotted(m3e-icon[slot=\"trailing\"]); _getSlotContentType checks M3E-AVATAR"
+    "default": "render() calls super._renderBase() from M3eListItemElement which renders <slot> inside .content; CEM inheritedFrom M3eListItemElement; ::slotted(:not([slot])) typography CSS",
+    "leading": "render() calls super._renderBase(); inherits <slot name='leading'> with _handleLeadingSlotChange; ::slotted(m3e-icon[slot='leading']); _getSlotContentType checks M3E-AVATAR/M3E-ICON",
+    "overline": "render() calls super._renderBase(); inherits <slot name='overline'>; ::slotted([slot='overline']) { font-size:... }",
+    "supporting-text": "render() calls super._renderBase(); inherits <slot name='supporting-text'>; ::slotted([slot='supporting-text']) { font-size:... }",
+    "trailing": "render() calls super._renderBase(); inherits <slot name='trailing'>; ::slotted(span[slot='trailing']) { white-space:nowrap }; ::slotted(m3e-icon[slot='trailing']); slot[name='trailing'] { align-self: var(--_list-item-button-trailing-align-self) }"
   },
   "ListAction": {
-    "default": "@slot - Renders the content of the list item.; template: <slot> forwarded to m3e-list-item-button via re-slot pattern",
-    "leading": "@slot leading - Renders the leading content of the list item.; template: <slot name=\"leading\" slot=\"leading\" @slotchange=\"_handleLeadingSlotChange\"> forwarded; ::slotted(m3e-icon[slot=\"leading\"])",
-    "overline": "@slot overline - Renders the overline of the list item.; template: <slot name=\"overline\" slot=\"overline\"> forwarded",
-    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; template: <slot name=\"supporting-text\" slot=\"supporting-text\"> forwarded",
-    "trailing": "@slot trailing - Renders the trailing content of the list item.; template: <slot name=\"trailing\" slot=\"trailing\" @slotchange=\"_handleTrailingSlotChange\"> forwarded; ::slotted(m3e-icon[slot=\"trailing\"])"
+    "default": "@slot - Renders the content of the list item.; render() has <slot> piped to inner m3e-list-item-button; ::slotted(:not([slot])) typography CSS inherited",
+    "leading": "@slot leading - Renders the leading content of the list item.; render(): <slot name='leading' slot='leading' @slotchange='_handleLeadingSlotChange'>; ::slotted(m3e-icon[slot='leading'])",
+    "overline": "@slot overline - Renders the overline of the list item.; render(): <slot name='overline' slot='overline'>",
+    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; render(): <slot name='supporting-text' slot='supporting-text'>",
+    "trailing": "@slot trailing - Renders the trailing content of the list item.; render(): <slot name='trailing' slot='trailing' @slotchange='_handleTrailingSlotChange'>; ::slotted(m3e-icon[slot='trailing']); ::slotted(span[slot='trailing']) text styling"
   },
   "ExpandableListItem": {
-    "default": "@slot - Renders the content of the list item.; template: <slot> forwarded to m3e-list-item-button (headline label for the expandable row)",
-    "leading": "@slot leading - Renders the leading content of the list item.; template: <slot name=\"leading\" slot=\"leading\" @slotchange=\"_handleLeadingSlotChange\"> forwarded to button",
-    "overline": "@slot overline - Renders the overline of the list item.; template: <slot name=\"overline\" slot=\"overline\"> forwarded to button",
-    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; template: <slot name=\"supporting-text\" slot=\"supporting-text\"> forwarded to button",
-    "toggle-icon": "@slot toggle-icon - Renders a custom icon for the expand/collapse toggle.; template: <slot name=\"toggle-icon\"><svg ...default chevron...></svg></slot>; ::slotted(svg[slot=\"toggle-icon\"]) { width:1em; height:1em }",
-    "items": "@slot items - Container for child list items displayed when expanded.; template: <slot name=\"items\"> inside m3e-collapsible; ::slotted([slot=\"items\"]) display:flex flex-direction:column; handler traverses assignedElements' .childNodes filtering instanceof M3eListItemElement — slot takes a wrapper element (e.g. div), not items directly"
+    "default": "@slot - Renders the content of the list item.; render(): <slot> piped into inner m3e-list-item-button default slot",
+    "leading": "@slot leading - Renders the leading content of the list item.; render(): <slot name='leading' slot='leading' @slotchange='_handleLeadingSlotChange'>; ::slotted(m3e-icon[slot='leading'])",
+    "overline": "@slot overline - Renders the overline of the list item.; render(): <slot name='overline' slot='overline'>",
+    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; render(): <slot name='supporting-text' slot='supporting-text'>",
+    "toggle-icon": "@slot toggle-icon - Renders a custom icon for the expand/collapse toggle.; render(): <slot name='toggle-icon'> with SVG fallback; ::slotted(svg[slot='toggle-icon']) { width: 1em; height: 1em; }",
+    "items": "@slot items - Container for child list items displayed when expanded.; ::slotted([slot='items']) { display: flex; flex-direction: column } no type restriction; handleSlotChange: assignedElements().flatMap(x => x.childNodes.filter(instanceof M3eListItemElement)) — slot takes a wrapper element whose children are items"
   },
   "ActionList": {
-    "default": "@slot - Renders the items of the list.; inherited from M3eListElement; notifyItemsChange querySelectorAll('m3e-list-action,m3e-expandable-list-item'); parent _handleSlotChange filters instanceof M3eListItemElement"
+    "default": "@slot - Renders the items of the list.; notifyItemsChange: querySelectorAll('m3e-list-action,m3e-expandable-list-item'); inherits ::slotted(m3e-divider) CSS from M3eListElement"
   },
   "ListOption": {
-    "default": "@slot - Renders the content of the list item.; template: <slot @slotchange=\"_handleSlotChange\"> in .content div; _handleSlotChange calls getTextContent for value fallback",
-    "leading": "@slot leading - Renders the leading content of the list item.; template: <slot name=\"leading\" @slotchange=\"_handleLeadingSlotChange\">; ::slotted(m3e-icon[slot=\"leading\"]) styles",
-    "overline": "@slot overline - Renders the overline of the list item.; template: <slot name=\"overline\">",
-    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; template: <slot name=\"supporting-text\">",
-    "trailing": "@slot trailing - Renders the trailing content of the list item.; template: <slot name=\"trailing\" @slotchange=\"_handleTrailingSlotChange\">; note: CSS hides trailing when selection indicator active — ::slotted([slot=\"trailing\"]) { display:none } unless --hide-selection state set"
+    "default": "@slot - Renders the content of the list item.; render(): <slot @slotchange='handleSlotChange'> inside .content; handleSlotChange calls getTextContent(e.target) for value tracking",
+    "leading": "@slot leading - Renders the leading content of the list item.; render(): <slot name='leading' @slotchange='_handleLeadingSlotChange'>; ::slotted(m3e-icon[slot='leading']); _getSlotContentType checks M3E-AVATAR/M3E-ICON",
+    "overline": "@slot overline - Renders the overline of the list item.; render(): <slot name='overline'> inside .content div",
+    "supporting-text": "@slot supporting-text - Renders the supporting text of the list item.; render(): <slot name='supporting-text'> inside .content div",
+    "trailing": "@slot trailing - Renders the trailing content of the list item.; render(): <slot name='trailing' @slotchange='_handleTrailingSlotChange'>; CSS note: :host(:not(:state(--hide-selection))) ::slotted([slot='trailing']) { display: none } — trailing is hidden unless selection indicator is hidden"
   },
   "SelectionList": {
-    "default": "@slot - Renders the items of the list.; inherited from M3eListElement; notifyItemsChange filters this.items instanceof M3eListOptionElement only"
+    "default": "@slot - Renders the items of the list.; notifyItemsChange: this.items.filter(x => x instanceof M3eListOptionElement); inherits ::slotted(m3e-divider) CSS from M3eListElement"
   },
   "MenuTrigger": {
-    "default": "@slot - Renders the contents of the trigger.; usage shows <m3e-menu-trigger for='…'>Basic menu</m3e-menu-trigger> — text label content"
+    "default": "@slot - Renders the contents of the trigger. No render() override in M3eMenuTriggerElement; no ::slotted type restriction."
   },
   "Menu": {
-    "default": "@slot - Renders the contents of the menu.; template: <slot @slotchange='…'>; _handleSlotChange queries querySelectorAll('m3e-menu-item,m3e-menu-item-checkbox,m3e-menu-item-radio'); registerStyleSheet: 'm3e-menu > m3e-divider { margin-block: var(--m3e-menu-divider-spacing) }'"
+    "default": "@slot - Renders the contents of the menu.; _M3eMenuElement_handleSlotChange: querySelectorAll(\"m3e-menu-item,m3e-menu-item-checkbox,m3e-menu-item-radio\"); global registerStyleSheet: m3e-menu > m3e-divider targets dividers; menuItemGroup is a valid structural child."
   },
   "MenuItemCheckbox": {
-    "default": "@slot - Renders the label of the item.; template: <slot> after the icon div",
-    "icon": "@slot icon - Renders an icon before the items's label.; template: <slot name='icon' @slotchange='…'> inside .icon div alongside the check SVG; ::slotted([slot='icon']) sizing inherited from MenuItemElementBase.styles",
-    "trailing-icon": "@slot trailing-icon - Renders an icon after the item's label.; template: <slot name='trailing-icon' aria-hidden='true' @slotchange='…'>; ::slotted([slot='trailing-icon']) sizing inherited from MenuItemElementBase.styles"
+    "default": "@slot - Renders the label of the item.; slotchange handler only calls setCustomState (no instanceof filter); no menuTrigger lookup unlike MenuItem.",
+    "icon": "@slot icon - Renders an icon before the items's label.; ::slotted([slot=\"icon\"]) { display: none !important } when checked; _M3eMenuItemCheckboxElement_handleIconSlotChange sets --with-icon state.",
+    "trailing-icon": "@slot trailing-icon - Renders an icon after the item's label.; ::slotted([slot=\"trailing-icon\"]) style selector from MenuItemElementBase.styles; _M3eMenuItemCheckboxElement_handleTrailingIconSlotChange sets --with-trailing-icon state."
   },
   "MenuItemGroup": {
-    "default": "@slot - Renders the contents of the group.; template: <slot>; M3eMenuItemRadioElement.update() does this.closest('[role=group]')?.querySelectorAll('m3e-menu-item-radio') — confirms radio items are primary children; host has display:contents"
+    "default": "@slot - Renders the contents of the group.; render() = html`<slot></slot>`; no ::slotted type selector, no querySelectorAll, no instanceof filter on this element; display:contents host."
   },
   "MenuItemRadio": {
-    "default": "@slot - Renders the label of the item.; template: <slot> after the icon div (mirrors MenuItemCheckbox structure)",
-    "icon": "@slot icon - Renders an icon before the items's label.; template: <slot name='icon' @slotchange='…'> inside .icon div; ::slotted([slot='icon']) sizing inherited from MenuItemElementBase.styles",
-    "trailing-icon": "@slot trailing-icon - Renders an icon after the item's label.; template: <slot name='trailing-icon' aria-hidden='true' @slotchange='…'>; styles reuse M3eMenuItemCheckboxElement.styles"
+    "default": "@slot - Renders the label of the item.; slotchange handler only calls setCustomState (no instanceof filter, identical pattern to MenuItemCheckbox).",
+    "icon": "@slot icon - Renders an icon before the items's label.; ::slotted([slot=\"icon\"]) style only; _M3eMenuItemRadioElement_handleIconSlotChange sets --with-icon state.",
+    "trailing-icon": "@slot trailing-icon - Renders an icon after the item's label.; ::slotted([slot=\"trailing-icon\"]) style only; _M3eMenuItemRadioElement_handleTrailingIconSlotChange sets --with-trailing-icon state."
   },
   "NavBar": {
-    "default": "@slot - Renders the items of the bar. | render: <slot @slotchange=...></slot> | slotchange handler: this.querySelectorAll(\"m3e-nav-item\") confirms navItem kind; plural 'items' and NodeList collection confirm multi"
+    "default": "@slot - Renders the items of the bar.; handleSlotChange does querySelectorAll(\"m3e-nav-item\") — strongly typed to navItem children; unnamed <slot> in render template"
   },
   "NavItem": {
-    "default": "@slot - Renders the label of the item. | render: <div class=\"label\"><slot></slot></div> | example shows bare text children (News, Global, etc.); label is required for M3 nav item to be functional",
-    "icon": "@slot icon - Renders the icon of the item. | render: <slot name=\"icon\"></slot> | ::slotted([slot=\"icon\"]) { width: 1em; font-size: var(--m3e-nav-item-icon-size, 1.5rem) !important; } | example: <m3e-icon slot=\"icon\" name=\"news\">",
-    "selected-icon": "@slot selected-icon - Renders the icon of the item when selected. | render: <slot name=\"selected-icon\" @slotchange=_handleSelectedIconSlotChange> | ::slotted([slot=\"selected-icon\"]) { width: 1em; font-size: var(--m3e-nav-item-icon-size, 1.5rem) !important; } | setCustomState(this, \"--with-selected-icon\", hasAssignedNodes(e.target))"
+    "default": "@slot - Renders the label of the item.; unnamed <slot> placed inside <div class=\"label\"> in render template; example shows plain text node as content",
+    "icon": "@slot icon - Renders the icon of the item.; ::slotted([slot=\"icon\"]) { font-size: var(--m3e-nav-item-icon-size, 1.5rem) !important }; querySelectorAll(\"m3e-icon\") in update() to toggle filled attribute",
+    "selected-icon": "@slot selected-icon - Renders the icon of the item when selected.; ::slotted([slot=\"selected-icon\"]) { font-size: var(--m3e-nav-item-icon-size, 1.5rem) !important }; handleSelectedIconSlotChange sets --with-selected-icon custom state; querySelectorAll(\"m3e-icon\") in update()"
   },
   "NavMenuItem": {
-    "default": "@slot - Renders the nested child items.; template: <slot @slotchange=handleItemSlotChange> inside <m3e-collapsible>; handler: .filter(x => x instanceof M3eNavMenuItemElement_1)",
-    "label": "@slot label - Renders the label of the item.; handleSlotChange finds HTMLAnchorElement via instanceof; CSS: ::slotted(a[slot=\"label\"]) { all: unset; }",
-    "icon": "@slot icon - Renders the icon of the item.; ::slotted([slot=\"icon\"]) styled width/height 1em at --m3e-nav-menu-item-icon-size",
-    "badge": "@slot badge - Renders the badge of the item.; ::slotted([slot=\"badge\"]) with badge-specific label.large typescale CSS",
-    "selected-icon": "@slot selected-icon - Renders the icon of the item when selected.; ::slotted([slot=\"selected-icon\"]) styled 1em×1em icon; rendered only when selected and no child items",
-    "toggle-icon": "@slot toggle-icon - Renders the toggle icon.; ::slotted([slot=\"toggle-icon\"]) styled 1em×1em icon; default SVG fallback in template"
+    "default": "@slot - Renders the nested child items.; handleItemSlotChange: .filter(x => x instanceof M3eNavMenuItemElement_1); unnamed <slot> inside <m3e-collapsible>",
+    "label": "@slot label - Renders the label of the item.; ::slotted(a[slot=\"label\"]) { all: unset; }; handleSlotChange finds HTMLAnchorElement via .find(x => x instanceof HTMLAnchorElement)",
+    "icon": "@slot icon - Renders the icon of the item.; ::slotted([slot=\"icon\"]) { vertical-align: middle; width: 1em; height: 1em; font-size: ... }; examples: <m3e-icon slot=\"icon\">",
+    "badge": "@slot badge - Renders the badge of the item.; ::slotted([slot=\"badge\"]) { flex: none; font-size/font-weight/line-height/letter-spacing typography styles }",
+    "selected-icon": "@slot selected-icon - Renders the icon of the item when selected.; ::slotted([slot=\"selected-icon\"]) { vertical-align: middle; width: 1em; height: 1em; }; renderIcon wraps icon slot as fallback",
+    "toggle-icon": "@slot toggle-icon - Renders the toggle icon.; ::slotted([slot=\"toggle-icon\"]) { vertical-align: middle; width: 1em; height: 1em; }; has SVG fallback in template"
   },
   "NavMenu": {
-    "default": "@slot - Renders the items of the menu.; handleSlotChange: querySelectorAll(\"m3e-nav-menu-item\") for selection management and querySelectorAll(\"m3e-divider\") to set ariaHidden; navMenuItemGroup (display:contents) groups items"
+    "default": "@slot - Renders the items of the menu.; handleSlotChange: querySelectorAll(\"m3e-nav-menu-item\") for selection management + querySelectorAll(\"m3e-divider\") for aria-hidden; examples show m3e-nav-menu-item-group as direct children too"
   },
   "NavMenuItemGroup": {
-    "default": "@slot - Renders the items of the group.; template: bare <slot></slot>; group component wraps navMenuItems per Material 3 nav menu taxonomy",
-    "label": "@slot label - Renders the label of the group.; handleLabelSlotChange: assignedElements().find(label) then sets aria-labelledby from element id; CSS hides .label when --with-label state absent"
+    "label": "@slot label - Renders the label of the group.; handleLabelSlotChange sets aria-labelledby on assigned element; examples: <m3e-heading slot=\"label\" variant=\"label\" size=\"large\">",
+    "default": "@slot - Renders the items of the group.; unnamed <slot> in render template; examples show m3e-nav-menu-item as direct children of the group"
   },
   "NavRail": {
-    "default": "CEM slot name=\"\" description 'Renders the items of the bar.' (inherited from M3eNavBarElement); render template in nav-bar.js: html`<div class=\"base\"><slot @change=... @slotchange=...></slot></div>` — single unnamed slot; ::slotted(*) { flex: none }; ::slotted(m3e-fab) sets fab elevation tokens; external registerStyleSheet CSS: 'm3e-nav-rail > m3e-icon-button, m3e-nav-rail > m3e-fab { margin-block-end: ... }'; _updateOrientation: querySelectorAll(\"m3e-fab\"); usage example shows m3e-icon-button, m3e-fab, and multiple m3e-nav-item children"
+    "default": "@slot - Renders the items of the bar. (inherited from M3eNavBarElement); template: <slot @slotchange=...></slot>; ::slotted(*) flex:none + ::slotted(m3e-fab) specific elevation vars in NavRail styles; global CSS m3e-nav-rail > m3e-icon-button, m3e-nav-rail > m3e-fab; querySelectorAll(\"m3e-fab\") in _updateOrientation; example shows iconButton, fab, navItem as direct children"
   },
   "Select": {
-    "default": "@slot - Renders the options of the select.; render: <slot></slot> inside .options div; _handleMutation does querySelectorAll(\"m3e-option\"); menu is hidden when _options.length == 0, making options required for functionality",
-    "arrow": "@slot arrow - Renders the dropdown arrow.; render: <slot name=\"arrow\"><svg class=\"arrow\" ...></svg></slot> — has SVG fallback so not required; CSS: ::slotted([slot=\"arrow\"])",
-    "value": "@slot value - Renders the selected value(s).; render: <slot name=\"value\">${this.selected...map(x.label)}</slot> — default renders text labels of selected options; no ::slotted selector; not required as default rendering exists"
+    "default": "@slot - Renders the options of the select.; template: <slot> inside .options div; this.querySelectorAll(\"m3e-option\") + instanceof M3eOptionElement checks confirm only m3e-option children are processed",
+    "arrow": "@slot arrow - Renders the dropdown arrow.; ::slotted([slot=\"arrow\"]) { width: 1em; height: 1em; font-size: var(--m3e-select-icon-size, 1.5rem) } — sized as an icon; default fallback is an inline SVG arrow",
+    "value": "@slot value - Renders the selected value(s).; template: <slot name=\"value\">${this.selected...label}</slot>; no ::slotted type restriction; default renders selected option label text; slot allows arbitrary override of value display"
   },
   "Paginator": {
-    "first-page-icon": "@slot first-page-icon - Slot for a custom first-page icon. Template: <slot name=\"first-page-icon\"><svg ...></slot> inside <m3e-icon-button>. CSS: ::slotted([slot=\"first-page-icon\"]) { width: 1em; font-size: var(--m3e-icon-button-medium-icon-size, 1.5rem) }",
-    "previous-page-icon": "@slot previous-page-icon - Slot for a custom previous-page icon. Template: <slot name=\"previous-page-icon\"><svg ...></slot> inside <m3e-icon-button>. CSS: ::slotted([slot=\"previous-page-icon\"]) { width: 1em; font-size: var(--m3e-icon-button-medium-icon-size, 1.5rem) }",
-    "next-page-icon": "@slot next-page-icon - Slot for a custom next-page icon. Template: <slot name=\"next-page-icon\"><svg ...></slot> inside <m3e-icon-button>. CSS: ::slotted([slot=\"next-page-icon\"]) { width: 1em; font-size: var(--m3e-icon-button-medium-icon-size, 1.5rem) }",
-    "last-page-icon": "@slot last-page-icon - Slot for a custom last-page icon. Template: <slot name=\"last-page-icon\"><svg ...></slot> inside <m3e-icon-button>. CSS: ::slotted([slot=\"last-page-icon\"]) { width: 1em; font-size: var(--m3e-icon-button-medium-icon-size, 1.5rem) }"
+    "first-page-icon": "@slot first-page-icon - Slot for a custom first-page icon.; <slot name=\"first-page-icon\"> inside <m3e-icon-button>; ::slotted([slot=\"first-page-icon\"]) applies SVG sizing",
+    "previous-page-icon": "@slot previous-page-icon - Slot for a custom previous-page icon.; <slot name=\"previous-page-icon\"> inside <m3e-icon-button>; ::slotted([slot=\"previous-page-icon\"]) applies SVG sizing",
+    "next-page-icon": "@slot next-page-icon - Slot for a custom next-page icon.; <slot name=\"next-page-icon\"> inside <m3e-icon-button>; ::slotted([slot=\"next-page-icon\"]) applies SVG sizing",
+    "last-page-icon": "@slot last-page-icon - Slot for a custom last-page icon.; <slot name=\"last-page-icon\"> inside <m3e-icon-button>; ::slotted([slot=\"last-page-icon\"]) applies SVG sizing"
   },
   "CircularProgressIndicator": {
-    "default": "@slot - Renders the content inside the progress indicator. | template: <div class=\"content\" aria-hidden=\"true\"><slot></slot></div> (line 300). No ::slotted selector or instanceof check; no kind constraints."
+    "default": "@slot - Renders the content inside the progress indicator. | template line 300: <slot></slot> inside <div class=\"content\">; no ::slotted selector, no querySelector/instanceof restriction"
   },
   "RadioGroup": {
-    "default": "@slot - Renders the radio buttons of the group. | unnamed <slot> in render template | handleSlotChange calls querySelectorAll(\"m3e-radio\") confirming multi-radio content"
+    "default": "@slot - Renders the radio buttons of the group.; template line 313: bare <slot>; slotchange handler calls this.querySelectorAll(\"m3e-radio\")"
   },
   "SearchBar": {
-    "leading": "@slot leading - Renders content before the input of the bar.; CSS: slot[name=\"leading\"] { --m3e-icon-color: ...; --m3e-icon-button-icon-color: ...; --m3e-icon-size: ... }; ::slotted(svg[slot=\"leading\"])",
-    "input": "@slot input - Renders the input of the bar.; template: <slot name=\"input\">; instanceof check: x instanceof HTMLInputElement — native <input> expected, no vocab kind applies",
-    "trailing": "@slot trailing - Renders content after the input of the bar.; CSS: slot[name=\"trailing\"] { --m3e-icon-color: ...; --m3e-icon-button-icon-color: ...; column-gap: ... }; ::slotted(svg[slot=\"trailing\"]); singular handler handleTrailingSlotChange",
-    "clear-icon": "Not in JSDoc/CEM @slot list; template: <slot name=\"clear-icon\"><svg class=\"clear-icon\" ...> (fallback SVG); CSS: ::slotted([slot=\"clear-icon\"]); slot[name=\"clear-icon\"] { --m3e-icon-size: ... }"
+    "leading": "@slot leading - Renders content before the input of the bar. CSS: slot[name=\"leading\"] sets --m3e-icon-color, --m3e-icon-button-icon-color, --m3e-icon-size; ::slotted(svg[slot=\"leading\"]) sizes bare SVGs; column-gap on flex container implies multiple icons.",
+    "input": "@slot input - Renders the input of the bar. Template: <slot name=\"input\">. Code uses .find(x => x instanceof HTMLInputElement) (line 208) to wire up events — accepts native <input>; no vocabulary kind matches, so 'any'.",
+    "trailing": "@slot trailing - Renders content after the input of the bar. CSS: slot[name=\"trailing\"] sets --m3e-icon-color, --m3e-icon-button-icon-color, --m3e-icon-size; ::slotted(svg[slot=\"trailing\"]) sizes bare SVGs; column-gap on flex container implies multiple action icons.",
+    "clear-icon": "Template (line 192): <slot name=\"clear-icon\"><svg class=\"clear-icon\">...</svg></slot> inside icon-button — override slot for the clear-button icon. CSS: ::slotted([slot=\"clear-icon\"]) and slot[name=\"clear-icon\"] { --m3e-icon-size }. Not in CEM but present in template."
   },
   "SearchView": {
-    "default": "@slot - When open, renders the results content of the view.; template: <slot></slot> inside .scroll-container; results area inherently holds multiple items",
-    "input": "@slot input - Renders the input of the view.; template: <slot name=\"input\" slot=\"input\">; instanceof check: x instanceof HTMLInputElement — native <input> expected, no vocab kind applies",
-    "open-leading": "@slot open-leading - When open, renders content before the input of the view.; template: <slot name=\"open-leading\" slot=\"leading\"> forwarded to inner m3e-search-bar leading slot",
-    "open-trailing": "@slot open-trailing - When open, renders content after the input of the view.; template: <slot name=\"open-trailing\" slot=\"trailing\"> forwarded to inner m3e-search-bar trailing slot",
-    "closed-leading": "@slot closed-leading - When closed, renders content before the input of the view.; template: <slot name=\"closed-leading\" slot=\"leading\"> forwarded to inner m3e-search-bar leading slot",
-    "closed-trailing": "@slot closed-trailing - When closed, renders content after the input of the view.; template: <slot name=\"closed-trailing\" slot=\"trailing\"> forwarded to inner m3e-search-bar trailing slot",
-    "search-icon": "Not in JSDoc/CEM @slot list; template (renderIcon): <slot name=\"search-icon\"><svg class=\"search-icon\" ...> (fallback SVG); CSS: ::slotted([slot=\"search-icon\"])",
-    "close-icon": "Not in JSDoc/CEM @slot list; template (renderBackButton): <slot name=\"close-icon\"><svg class=\"close-icon\" ...> (fallback SVG); CSS: ::slotted([slot=\"close-icon\"])",
-    "clear-icon": "Not in JSDoc/CEM @slot list; template (renderClearButton): <slot name=\"clear-icon\"><svg class=\"clear-icon\" ...> (fallback SVG); CSS: ::slotted([slot=\"clear-icon\"]); slot[name=\"clear-icon\"] { --m3e-icon-size: ... }"
+    "default": "@slot - When open, renders the results content of the view. Template (line 451): <slot></slot> inside .scroll-container — unrestricted results area, no ::slotted type selector, no instanceof filter.",
+    "input": "@slot input - Renders the input of the view. Template: <slot name=\"input\" slot=\"input\"> forwarded to inner m3e-search-bar. Code uses .find(x => x instanceof HTMLInputElement) (line 499). No vocabulary kind matches native <input>.",
+    "open-leading": "@slot open-leading - When open, renders content before the input of the view. Template: forwarded as slot=\"leading\" to inner m3e-search-bar when open; inherits same icon/iconButton CSS tokens (--m3e-icon-color, --m3e-icon-button-icon-color, column-gap) as SearchBar leading slot.",
+    "open-trailing": "@slot open-trailing - When open, renders content after the input of the view. Template: forwarded as slot=\"trailing\" to inner m3e-search-bar when open; inherits icon/iconButton CSS tokens and column-gap from SearchBar trailing slot.",
+    "closed-leading": "@slot closed-leading - When closed, renders content before the input of the view. Template: forwarded as slot=\"leading\" to inner m3e-search-bar when not open; same icon/iconButton constraints as SearchBar leading.",
+    "closed-trailing": "@slot closed-trailing - When closed, renders content after the input of the view. Template: forwarded as slot=\"trailing\" to inner m3e-search-bar when not open; same icon/iconButton constraints as SearchBar trailing.",
+    "search-icon": "Template (line 478): <slot name=\"search-icon\"><svg class=\"search-icon\">...</svg></slot> — override for the search icon shown when closed. CSS: ::slotted([slot=\"search-icon\"]) { width: 1em; font-size: iconSize }. Not in CEM but present in template.",
+    "close-icon": "Template (line 481): <slot name=\"close-icon\"><svg class=\"close-icon\">...</svg></slot> inside m3e-icon-button — override for the back/close icon shown when open. CSS: ::slotted([slot=\"close-icon\"]) { width: 1em; font-size: iconSize }. Not in CEM but present in template.",
+    "clear-icon": "Template (line 484): <slot name=\"clear-icon\"><svg class=\"clear-icon\">...</svg></slot> inside m3e-icon-button — override for the clear button icon. CSS: ::slotted([slot=\"clear-icon\"]) and slot[name=\"clear-icon\"] { --m3e-icon-size }. Not in CEM but present in template."
   },
   "ButtonSegment": {
-    "default": "@slot - Renders the label of the option. / <slot></slot> in render template inside .label div; icon-only segments are valid so not required",
-    "icon": "@slot icon - Renders an icon before the option's label. / ::slotted([slot=\"icon\"]) in CSS / singular handler _M3eButtonSegmentElement_handleIconSlotChange (not pluralized)"
+    "default": "@slot - Renders the label of the option. Wrapped in div.label in render template; no ::slotted tag restriction but purpose is clearly a text label.",
+    "icon": "@slot icon - Renders an icon before the option's label. CSS: .check, ::slotted([slot=\"icon\"]) { width: 1em; font-size: var(--m3e-segmented-button-icon-size, 1.125rem) !important; }"
   },
   "SegmentedButton": {
-    "default": "@slot - Renders the segments of the button. / querySelectorAll(\"m3e-button-segment\") in _M3eSegmentedButtonElement_handleSlotChange confirms buttonSegment kind; plural wording + multiple items in all examples confirms multi:true; non-functional without segments confirms required:true"
+    "default": "@slot - Renders the segments of the button. handleSlotChange does querySelectorAll(\"m3e-button-segment\") to register items; ::slotted(:is(:state(--first), :--first)) and ::slotted(:is(:state(--last), :--last)) CSS shapes the first/last slotted segments."
   },
   "Shape": {
-    "default": "@slot - Renders the clipped content of the shape.; render: <slot></slot>; ::slotted(img), ::slotted(video) — accepts img/video but no matching vocabulary kind"
+    "default": "@slot - Renders the clipped content of the shape. | render: <slot></slot> | ::slotted(img), ::slotted(video) listed in CSS but slot is unrestricted — any content accepted"
   },
   "Skeleton": {
-    "default": "@slot \"\" — \"Renders the content to be mimicked by the skeleton.\"; render template: unnamed `<slot ?inert=... @slotchange=...>`; `_createShapes` does `for (const element of slot.assignedElements({flatten:true}).filter(x => x instanceof HTMLElement))` — explicitly iterates multiple assigned elements; no ::slotted selectors constrain accepted kinds"
+    "default": "@slot - Renders the content to be mimicked by the skeleton.; template: <slot ?inert=\"${!this.loaded}\" @slotchange=\"...\"></slot>; #createShapes iterates slot.assignedElements() with no type filter — accepts arbitrary elements"
   },
   "SlideGroup": {
-    "default": "@slot - Renders the content to paginate; template: <slot></slot> inside .content div; no instanceof checks constrain to anything narrower, but M3e taxonomy pairs slideGroup with slide items",
-    "prev-icon": "@slot prev-icon - Renders the icon to present for the previous button; template: <slot name=\"prev-icon\"> inside m3e-icon-button with SVG chevron fallback; ::slotted(prev-icon) CSS styles icon dimensions",
-    "next-icon": "@slot next-icon - Renders the icon to present for the next button; template: <slot name=\"next-icon\"> inside m3e-icon-button with SVG chevron fallback; ::slotted(next-icon) CSS styles icon dimensions"
+    "default": "@slot - Renders the content to paginate. Template: <slot></slot> inside .content div. No ::slotted type selector or instanceof/querySelector restriction on the default slot. Example shows plain <div> children.",
+    "next-icon": "@slot next-icon - Renders the icon to present for the next button. Template: <slot name=\"next-icon\">...</slot> inside <m3e-icon-button>. CSS: ::slotted(next-icon) applies icon sizing. Has default SVG fallback so not required.",
+    "prev-icon": "@slot prev-icon - Renders the icon to present for the previous button. Template: <slot name=\"prev-icon\">...</slot> inside <m3e-icon-button>. CSS: ::slotted(prev-icon) applies icon sizing. Has default SVG fallback so not required."
   },
   "Slider": {
-    "default": "@slot - Renders the thumbs of the slider. Template: <slot @slotchange=\"...\">. Handler _M3eSliderElement_handleSlotChange filters via x instanceof M3eSliderThumbElement; supports 1–2 thumbs (single vs range), capped at 2 in slotchange handler."
+    "default": "@slot - Renders the thumbs of the slider.; render template: unnamed <slot @slotchange=...>; _handleSlotChange filters assignedElements by instanceof M3eSliderThumbElement; examples show 1–2 thumbs; code clamps _thumbs.length to max 2"
   },
   "Snackbar": {
-    "default": "@slot - Renders the content of the snackbar.; template: <span class=\"supporting-text\"><slot></slot></span> — snackbar is non-functional without message content",
-    "close-icon": "@slot close-icon - Renders the icon of the button used to close the snackbar.; ::slotted([slot=\"close-icon\"]); template renders inside <m3e-icon-button> with default SVG close icon fallback"
+    "default": "@slot - Renders the content of the snackbar.; render: <span class=\"supporting-text\"><slot></slot></span>; M3eSnackbar.open() always appends a text node (document.createTextNode), confirming text-only intent; no ::slotted restriction but semantic purpose is clear",
+    "close-icon": "@slot close-icon - Renders the icon of the button used to close the snackbar.; render: <slot name=\"close-icon\"><svg class=\"close-icon\" ...></svg></slot> (has SVG fallback so not required); ::slotted([slot=\"close-icon\"]) { width: 1em; font-size: var(--m3e-icon-button-icon-size, 1.5rem) }"
   },
   "SplitButton": {
-    "leading-button": "@slot leading-button - The leading button used to perform the primary action. Template: <slot name=\"leading-button\" @slotchange=\"handleLeadingSlotChange\">. CEM private field #leadingButton: M3eButtonElement | undefined. JSDoc example: <m3e-button slot=\"leading-button\">.",
-    "trailing-button": "@slot trailing-button - The trailing icon button used to open a menu of related actions. Template: <slot name=\"trailing-button\" @slotchange=\"handleTrailingSlotChange\">. CEM private field #trailingButton: M3eIconButtonElement | undefined. JSDoc example: <m3e-icon-button slot=\"trailing-button\">."
+    "leading-button": "@slot leading-button - The leading button used to perform the primary action. Handler: .find(x => x instanceof M3eButtonElement) at line 166. ::slotted([slot=\"leading-button\"]) CSS confirms.",
+    "trailing-button": "@slot trailing-button - The trailing icon button used to open a menu of related actions. Handler: .find(x => x instanceof M3eIconButtonElement) at line 179. ::slotted([slot=\"trailing-button\"]) CSS confirms."
   },
   "SplitPane": {
-    "start": "@slot start - Renders content at the logical start side of the pane.; template: <slot name=\"start\" @slotchange=\"...\"></slot>; no ::slotted selectors or instanceof checks",
-    "end": "@slot end - Renders content at the logical end side of the pane.; template: <slot name=\"end\" @slotchange=\"...\"></slot>; no ::slotted selectors or instanceof checks"
-  },
-  "StepPanel": {
-    "default": "@slot - Renders the content of the panel.; template: <div><slot></slot></div>",
-    "actions": "JSDoc says '@slot actions-' (trailing-dash typo); template has <slot name=\"actions\"></slot> confirming name is 'actions' (no dash); CSS ::slotted([slot=\"actions\"])"
-  },
-  "Step": {
-    "default": "@slot - Renders the label of the step.; template: <div class=\"label\"><slot></slot>",
-    "icon": "@slot icon - Renders the icon of the step.; template: <slot name=\"icon\">; ::slotted([slot=\"icon\"]) sized to --m3e-step-icon-size",
-    "done-icon": "@slot done-icon - Renders the icon of a completed step.; template: <slot name=\"done-icon\"> with SVG checkmark fallback; ::slotted([slot=\"done-icon\"])",
-    "edit-icon": "@slot edit-icon - Renders the icon of a completed editable step.; template: <slot name=\"edit-icon\"> with SVG pencil fallback; ::slotted([slot=\"edit-icon\"])",
-    "error-icon": "@slot error-icon - Renders icon of an invalid step.; template: <slot name=\"error-icon\"> with SVG warning fallback; ::slotted([slot=\"error-icon\"])",
-    "hint": "@slot hint - Renders the hint text of the step.; template: <slot name=\"hint\">; ::slotted([slot=\"hint\"]) with body-small typography",
-    "error": "@slot error - Renders the error message for an invalid step.; template: <slot name=\"error\"> with hint slot as fallback; ::slotted([slot=\"error\"])"
+    "start": "@slot start - Renders content at the logical start side of the pane.; template: <slot name=\"start\">; no ::slotted type restriction present; slotchange handler only checks instanceof HTMLElement (generic); example usage shows <m3e-card slot=\"start\"> but no enforcement",
+    "end": "@slot end - Renders content at the logical end side of the pane.; template: <slot name=\"end\">; no ::slotted type restriction present; slotchange handler only checks instanceof HTMLElement (generic); example usage shows <m3e-card slot=\"end\"> but no enforcement"
   },
   "Stepper": {
-    "step": "@slot step - Renders a step.; template: <slot name=\"step\" @slotchange=\"handleSlotChange\">; CSS ::slotted([slot=\"step\"]:not(:first-of-type)) and :not(:last-of-type) confirm multiple; querySelectorAll used on panel slot sibling",
-    "panel": "@slot panel - Renders a panel.; template: <slot name=\"panel\">; querySelectorAll(\"[slot='panel']\") to index multiple panels; CSS ::slotted([slot=\"panel\"]:not(:last-of-type))"
+    "step": "@slot step - Renders a step. | template: <slot name=\"step\" @slotchange=\"...\"> | CSS: ::slotted([slot=\"step\"]) {align-self: stretch} | querySelectorAll(\"[slot='panel']\") companion confirms multi-child pattern",
+    "panel": "@slot panel - Renders a panel. | template: <slot name=\"panel\"> (appears twice for above/below header) | querySelectorAll(\"[slot='panel']\") at line 601 confirms multiple panels"
+  },
+  "StepPanel": {
+    "default": "@slot - Renders the content of the panel. | template: <div><slot></slot></div> — no ::slotted type restriction; examples show forms and arbitrary content",
+    "actions": "@slot actions- Renders the actions bar of the panel. | CSS: ::slotted([slot=\"actions\"]) {flex: none; display: flex; align-items: center; min-height:...} — only layout styling, no type restriction; examples show a single <div slot=\"actions\"> container"
+  },
+  "Step": {
+    "default": "@slot - Renders the label of the step. | template: <div class=\"label\"><slot></slot> — specific purpose is the visible step label text; non-functional (unlabeled) without it",
+    "icon": "@slot icon - Renders the icon of the step. | CSS: ::slotted([slot=\"icon\"]) {width: 1em; font-size: var(--m3e-step-icon-size, 1.5rem) !important} | template: <slot name=\"icon\">${this.index + 1}</slot>",
+    "done-icon": "@slot done-icon - Renders the icon of a completed step. | CSS: ::slotted([slot=\"done-icon\"]) {width: 1em; font-size: var(--m3e-step-icon-size) !important} | template has SVG fallback",
+    "edit-icon": "@slot edit-icon - Renders the icon of a completed editable step. | CSS: ::slotted([slot=\"edit-icon\"]) {width: 1em; font-size: var(--m3e-step-icon-size) !important} | template has SVG fallback",
+    "error-icon": "@slot error-icon - Renders icon of an invalid step. | CSS: ::slotted([slot=\"error-icon\"]) {width: 1em; font-size: var(--m3e-step-icon-size) !important} | template has SVG fallback",
+    "hint": "@slot hint - Renders the hint text of the step. | CSS: ::slotted([slot=\"hint\"]) {font-size: var(--m3e-step-hint-font-size); ...} — text typography styling; template: <slot name=\"hint\"> with optional '(Optional)' span fallback",
+    "error": "@slot error - Renders the error message for an invalid step. | CSS: ::slotted([slot=\"error\"]) {font-size: var(--m3e-step-hint-font-size); ...} — text typography styling; template: <slot name=\"error\">${hint}</slot>"
   },
   "StepperPrevious": {
-    "default": "@slot - Renders the content of the action.; StepperButtonElementBase extends ActionElementBase whose render() returns html`<slot></slot>`"
+    "default": "@slot - Renders the content of the action. | inherits ActionElementBase.render(): html`<slot></slot>` | ActionElementBase.styles: ::slotted(.material-icons) — accepts text or icon content; no type restriction"
   },
   "StepperReset": {
-    "default": "@slot - Renders the content of the action.; StepperButtonElementBase extends ActionElementBase whose render() returns html`<slot></slot>`"
+    "default": "@slot - Renders the content of the action. | inherits ActionElementBase.render(): html`<slot></slot>` | ActionElementBase.styles: ::slotted(.material-icons) — accepts text or icon content; no type restriction"
   },
   "Tab": {
-    "default": "@slot - Renders the label of the tab. / render: <slot></slot> inside <span class=\"label\">",
-    "icon": "@slot icon - Renders an icon before the tab's label. / render: <slot name=\"icon\" aria-hidden=\"true\"> / CSS: ::slotted([slot=\"icon\"]) { font-size: var(--m3e-tab-icon-size, 1.5rem) !important; }"
+    "default": "@slot - Renders the label of the tab. Template: <span class=\"label\"><slot></slot></span> — default slot is wrapped in a label span, confirming text/label purpose.",
+    "icon": "@slot icon - Renders an icon before the tab's label. CSS: ::slotted([slot=\"icon\"]) { width: 1em; font-size: var(--m3e-tab-icon-size, 1.5rem) !important; } — icon sizing applied."
   },
   "TabPanel": {
-    "default": "@slot - Renders the content of the panel. / render: <slot></slot> (sole slot in element); example shows plain text: <m3e-tab-panel id=\"videos\">Videos</m3e-tab-panel>"
+    "default": "@slot - Renders the content of the panel. Template: <slot></slot> with no ::slotted type selectors or instanceof checks — unrestricted general content."
   },
   "Tabs": {
-    "default": "@slot - Renders the tabs. / _handleSlotChange: querySelectorAll(\"m3e-tab\") confirms kind=tab and multi; render: unnamed <slot @slotchange> in tablist header",
-    "panel": "@slot panel - Renders the panels of the tabs. / render: <slot name=\"panel\"> inside <m3e-slide> / CSS: ::slotted([slot=\"panel\"]) / querySelectorAll(\"[slot='panel']\")",
-    "next-icon": "@slot next-icon - Renders the icon to present for the next button used to paginate. / render: <slot name=\"next-icon\" slot=\"next-icon\"> forwarded to m3e-slide-group / CSS: ::slotted(next-icon)",
-    "prev-icon": "@slot prev-icon - Renders the icon to present for the previous button used to paginate. / render: <slot name=\"prev-icon\" slot=\"prev-icon\"> forwarded to m3e-slide-group / CSS: ::slotted(prev-icon)"
+    "default": "@slot - Renders the tabs. handleSlotChange does: this[selectionManager].setItems([...this.querySelectorAll(\"m3e-tab\")]) — explicitly queries for m3e-tab children, confirming tab kind; multiple tabs expected.",
+    "panel": "@slot panel - Renders the panels of the tabs. Template: <slot name=\"panel\"></slot>. Code: [...this.querySelectorAll(\"[slot='panel']\")].indexOf(...) for panel indexing; CSS ::slotted([slot=\"panel\"]) styles panels. Multiple panels expected.",
+    "next-icon": "@slot next-icon - Renders the icon to present for the next button used to paginate. CSS: ::slotted(next-icon) { font-size: var(--m3e-tabs-paginator-button-icon-size) !important; } — icon sizing applied; default is an SVG chevron.",
+    "prev-icon": "@slot prev-icon - Renders the icon to present for the previous button used to paginate. CSS: ::slotted(prev-icon) { font-size: var(--m3e-tabs-paginator-button-icon-size) !important; } — icon sizing applied; default is an SVG chevron."
   },
   "Theme": {
-    "default": "@slot - Renders content styled by the theme. | render(): html`<slot></slot>` — unnamed slot, no ::slotted selectors or slotchange handlers; accepts arbitrary app content"
+    "default": "@slot - Renders content styled by the theme. | render: html`<slot></slot>` — bare unnamed slot, no ::slotted selectors or querySelector restrictions"
   },
   "TocItem": {
-    "default": "@slot - Renders the label of the item. / template: <slot></slot> inside <div class='base'> / parent _M3eTocElement_renderNode projects ${node.label} text"
+    "default": "@slot - Renders the label of the item. | template: <div class=\"base\"><slot></slot></div> — no ::slotted type restriction; purpose is unambiguously a text label"
   },
   "Toc": {
-    "overline": "@slot overline - Renders the overline of the table of contents. / ::slotted([slot=\"overline\"]) applies label.small typography / CSS hides .overline div when slot is empty",
-    "title": "@slot title - Renders the title of the table of contents. / ::slotted([slot=\"title\"]) applies headline.small typography / CSS hides .title div when slot is empty",
-    "default": "@slot - Renders content between the header and items. / template: unnamed <slot></slot> between <div class='header'> and <ul class='list'>; no ::slotted constraint, generic content"
+    "default": "@slot - Renders content between the header and items. | template: <slot></slot> between .header and .list — no ::slotted or instanceof restriction on default slot; general content region",
+    "overline": "@slot overline - Renders the overline of the table of contents. | template: <slot name=\"overline\" @slotchange=\"...\"> | ::slotted([slot=\"overline\"]) applies only typographic styling, no element-type restriction; clear text-label purpose",
+    "title": "@slot title - Renders the title of the table of contents. | template: <slot name=\"title\" @slotchange=\"...\"> | ::slotted([slot=\"title\"]) applies only typographic styling, no element-type restriction; clear text-label purpose"
   },
   "Toolbar": {
-    "default": "@slot - Renders the content of the toolbar. render template: <slot @slotchange=...></slot> (unnamed). Example shows multiple <m3e-icon-button> children; slotchange handler collects items array via findInteractiveElements."
+    "default": "@slot - Renders the content of the toolbar.; render template has bare <slot> (unnamed, no name attr); no ::slotted CSS selectors; handleSlotChange uses findInteractiveElements (unrestricted); handleClick checks instanceof HTMLElement only; JSDoc example shows 5 m3e-icon-button children confirming multi"
   },
   "TreeItem": {
-    "default": "@slot - Renders the nested child items.; _M3eTreeItemElement_handleItemSlotChange filters assigned elements by instanceof M3eTreeItemElement_1",
-    "label": "@slot label - Renders the label of the item.; ::slotted(a[slot=\"label\"]) { all: unset; }; _M3eTreeItemElement_handleSlotChange checks instanceof HTMLAnchorElement and stores as link",
-    "icon": "@slot icon - Renders the icon of the item.; ::slotted([slot=\"icon\"]); querySelectorAll(\":scope > m3e-icon[slot]:not([slot='toggle-icon']):not([slot='open-toggle-icon'])\")",
-    "selected-icon": "@slot selected-icon - Renders the icon of the item when selected.; ::slotted([slot=\"selected-icon\"]); querySelectorAll(\":scope > m3e-icon[slot]...\") in update()",
-    "toggle-icon": "@slot toggle-icon - Renders the toggle icon.; ::slotted([slot=\"toggle-icon\"]); template renders default SVG fallback inside this slot",
-    "open-toggle-icon": "@slot open-toggle-icon - Renders the toggle icon when selected.; ::slotted([slot=\"open-toggle-icon\"]); _M3eTreeItemElement_handleOpenToggleIconSlotChange tracks presence via setCustomState"
+    "default": "@slot - Renders the nested child items. Template: <slot @slotchange=handleItemSlotChange> inside <m3e-collapsible>. Handler filters: instanceof M3eTreeItemElement_1. querySelectorAll('m3e-tree-item') confirms kind.",
+    "label": "@slot label - Renders the label of the item. Handler _handleSlotChange checks instanceof HTMLAnchorElement and stores as _link. CSS: ::slotted(a[slot=\"label\"]) { all: unset; } — explicit anchor reset confirms link kind.",
+    "icon": "@slot icon - Renders the icon of the item. CSS: ::slotted([slot=\"icon\"]) width/height/font-size constraints. querySelectorAll(':scope > m3e-icon[slot]...') at line 199 grabs m3e-icon for this slot.",
+    "selected-icon": "@slot selected-icon - Renders the icon of the item when selected. CSS: ::slotted([slot=\"selected-icon\"]) with icon-size styling. querySelectorAll(':scope > m3e-icon[slot]...') at line 199 includes this slot.",
+    "toggle-icon": "@slot toggle-icon - Renders the toggle icon. Template: <slot name=\"toggle-icon\"><svg class=\"toggle-icon\" ...>. CSS: ::slotted([slot=\"toggle-icon\"]) with width/height/font-size icon sizing.",
+    "open-toggle-icon": "@slot open-toggle-icon - Renders the toggle icon when selected (i.e. when open). Template: <slot name=\"open-toggle-icon\" @slotchange=handleOpenToggleIconSlotChange>. CSS: ::slotted([slot=\"open-toggle-icon\"]) with icon-size styling."
   },
   "Tree": {
-    "default": "@slot - Renders the items of the tree.; _M3eTreeElement_handleSlotChange uses querySelectorAll(\"m3e-tree-item\") to collect all items; render template: <slot @slotchange=\"...\"></slot>"
+    "default": "@slot - Renders the items of the tree. Template: <slot @slotchange=handleSlotChange>. Handler calls querySelectorAll('m3e-tree-item'). Line 659: instanceof M3eTreeItemElement filter confirms treeItem kind. Plural 'items' → multi true."
   }
 }

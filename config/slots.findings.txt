@@ -3,3 +3,12 @@ components: 96  slots: 223
 
 - OFF-VOCAB FabMenu.default: dropped ["fabMenuItem"] (not a manifested kind) → falls back to element escape
 - DEDUP MenuItem: replaced with richer menu authoring (3 > 2)
+
+Reconciliation after the any-pass (semantic containers restored to specific per ADR 6, Material-intent > DOM):
+- ChipSet.default, SlideGroup.default, MenuItemGroup.default: restored (siblings kept specific; over-broadened by the strict no-DOM-restriction rule).
+
+FLAGGED for review (kept any; specific may be intended):
+- Card.actions / RichTooltip.actions: any (actions are usually button|iconButton, but links are plausible).
+- Toolbar.default: any (holds varied controls).
+- Avatar.default: any (img/icon/text/initials).
+- Select.value: any (renders the selected option display).
