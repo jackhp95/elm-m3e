@@ -669,7 +669,15 @@ navGroup : String -> String -> String -> List ( String, String ) -> Element { na
 navGroup currentPath glyph title items =
     NavMenuItem.view
         { label = Kit.text title }
-        [ NavMenuItem.open (List.any (\( path, _ ) -> path == currentPath) items) ]
+        -- Only SET `open` when this group holds the current route. `open` is a
+        -- controlled property, so setting it False pins the group closed and the
+        -- user can't expand it; leaving it unset lets the component toggle freely.
+        (if List.any (\( path, _ ) -> path == currentPath) items then
+            [ NavMenuItem.open True ]
+
+         else
+            []
+        )
         (NavMenuItem.icon (Icon.view [ Icon.name glyph ] [])
             :: NavMenuItem.children (List.map (navLeaf currentPath) items)
         )
