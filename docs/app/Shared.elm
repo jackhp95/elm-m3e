@@ -637,7 +637,9 @@ drawerShell _ model page body =
             (navMenu currentPath)
         , DrawerContainer.child
             (Native.div
-                [ Seam.asAttribute (class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12") ]
+                -- the ContentPane provides its own container padding; keep only a
+                -- modest inline margin like matraic's #body (margin-inline: 1rem).
+                [ Seam.asAttribute (class "mx-auto w-full max-w-5xl px-2 py-2") ]
                 (List.map EscapeHatch.fromHtml body)
             )
         ]
