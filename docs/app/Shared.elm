@@ -553,7 +553,7 @@ seedColorInput model =
                 , attribute "aria-label" "Source color"
                 ]
                 []
-            , Html.code [ class "text-body-sm text-on-surface-variant" ] [ Html.text model.seed ]
+            , Html.code [ class "text-body-md text-on-surface-variant" ] [ Html.text model.seed ]
             ]
         ]
 

@@ -98,7 +98,7 @@ highlightCard ( iconName, title, body ) =
             (Layout.div "flex gap-3"
                 [ Layout.span "shrink-0 text-primary"
                     [ Icon.view [ Icon.name iconName ] [] ]
-                , EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
+                , EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ])
                 ]
             )
         ]
@@ -120,7 +120,7 @@ view _ _ =
                     , EscapeHatch.fromHtml
                         (p [ class "text-body-lg text-on-surface-variant" ]
                             [ text "elm-m3e (the m3e-builder project) is a type-safe Elm binding layer over "
-                            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
+                            , code [] [ text "@m3e/web" ]
                             , text ", matraic's Material 3 Expressive web component library."
                             ]
                         )
@@ -139,7 +139,7 @@ view _ _ =
                             [ text "Every M3e.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
                         )
                     , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
                             [ li [] [ text "Typed slots — an icon slot only accepts a M3e.Icon, never arbitrary Html." ]
                             , li [] [ text "Builders with required collaborators — you can't render an avatar without content." ]
                             , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
@@ -152,7 +152,7 @@ view _ _ =
                     , EscapeHatch.fromHtml
                         (p [ class "text-body-lg text-on-surface-variant" ]
                             [ text "@m3e/web ships the custom elements, the dynamic-color "
-                            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "<m3e-theme>" ]
+                            , code [] [ text "<m3e-theme>" ]
                             , text " engine, and the M3 design tokens. elm-m3e wraps each element in a typed Elm builder and the tokens flow through Tailwind utilities (the tailwind-m3e-web bridge)."
                             ]
                         )

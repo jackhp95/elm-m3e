@@ -89,7 +89,7 @@ row : ( String, String ) -> Element { s | html : Supported } msg
 row ( cls, label ) =
     Layout.div "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0"
         [ Layout.span (cls ++ " text-on-surface") [ Kit.text label ]
-        , Native.node (Html.node "code") [ Seam.asAttribute (class "text-body-sm text-on-surface-variant") ] [ Kit.text cls ]
+        , Native.node (Html.node "code") [ Seam.asAttribute (class "text-body-md text-on-surface-variant") ] [ Kit.text cls ]
         ]
 
 

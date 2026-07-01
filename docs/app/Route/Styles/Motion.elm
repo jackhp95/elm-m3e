@@ -98,7 +98,7 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ sectionHeading "Schemes"
                     , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
                             [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
                             , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
                             ]
@@ -108,7 +108,7 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ sectionHeading "Token families"
                     , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
                             [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
                             , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
                             ]

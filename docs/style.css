@@ -134,4 +134,34 @@
     line-height: var(--md-sys-typescale-body-large-line-height);
     letter-spacing: var(--md-sys-typescale-body-large-tracking);
   }
+
+  /* Match matraic's docs typography (their main.css): prose inherits body-large,
+     inline code + code blocks are 0.875em with a subtle primary tint, blocks wrap.
+     Content prose should NOT set a smaller text-body-* — let this base + the
+     <m3e-heading> type scale carry it, like the reference. */
+  code {
+    background-color: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-primary);
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    font-size: 0.875em;
+    font-weight: inherit;
+  }
+
+  pre {
+    color: var(--md-sys-color-primary);
+    font-size: 0.875em;
+    font-weight: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Code inside a block (incl. syntax-highlighted) drops the inline chip styling. */
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    border-radius: 0;
+  }
 }

@@ -121,7 +121,7 @@ hero =
         , EscapeHatch.fromHtml
             (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                 [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
-                , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
+                , code [] [ text "@m3e/web" ]
                 , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
                 ]
             )
@@ -176,7 +176,7 @@ highlightCard iconName title body =
             (Layout.div "flex gap-3"
                 [ Layout.span "shrink-0 text-primary"
                     [ Icon.view [ Icon.name iconName ] [] ]
-                , EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
+                , EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ])
                 ]
             )
         ]
@@ -204,5 +204,5 @@ statusCard title body =
     Card.view
         [ Card.variant Value.outlined ]
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
-        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ]))
+        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ]))
         ]

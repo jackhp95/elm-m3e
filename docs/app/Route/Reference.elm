@@ -132,7 +132,7 @@ view app _ =
                 , EscapeHatch.fromHtml
                     (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
                         [ text "Every "
-                        , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
+                        , code [] [ text "Ui.*" ]
                         , text " module, its overview, and every exposed value — extracted from the library source at build time."
                         ]
                     )
@@ -170,7 +170,7 @@ componentBlock c =
             (Html.h2 [ class "text-headline-sm" ]
                 [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
             )
-        , prose "max-w-2xl text-body-md text-on-surface-variant" c.overview
+        , prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview
         , Layout.div "space-y-3"
             (List.map memberRow c.members)
         ]
@@ -199,7 +199,7 @@ memberRow m =
                     Kit.text ""
 
                   else
-                    prose "mt-2 text-body-sm text-on-surface-variant" m.doc
+                    prose "mt-2 text-body-md text-on-surface-variant" m.doc
                 ]
             )
         ]
@@ -207,7 +207,7 @@ memberRow m =
 
 pre_ : String -> Html.Html msg
 pre_ s =
-    Html.pre [ class "overflow-x-auto text-body-sm text-on-surface" ]
+    Html.pre [ class "overflow-x-auto" ]
         [ code [] [ text s ] ]
 
 

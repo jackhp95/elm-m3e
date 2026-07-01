@@ -132,7 +132,7 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ sectionHeading "Dynamic color"
                     , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                             [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
                         )
                     ]
@@ -140,7 +140,7 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ sectionHeading "Forced colors"
                     , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                             [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
                         )
                     , forcedColorsCard

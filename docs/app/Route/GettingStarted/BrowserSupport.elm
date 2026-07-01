@@ -68,7 +68,7 @@ supportRow browser note =
     Layout.li "flex items-baseline justify-between gap-4 border-b border-outline-variant py-2.5 last:border-0"
         [ Layout.span "text-title-sm text-on-surface"
             [ Kit.text browser ]
-        , Layout.span "text-body-md text-on-surface-variant"
+        , Layout.span "text-body-lg text-on-surface-variant"
             [ Kit.text note ]
         ]
 
@@ -124,7 +124,7 @@ view _ _ =
                 , Layout.section "space-y-3"
                     [ sectionHeading "Platform features used"
                     , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
                             [ li [] [ text "Custom Elements v1 and Shadow DOM for the @m3e/web components." ]
                             , li [] [ text "ES modules for component registration (no-bundler import-map usage is also supported upstream)." ]
                             , li [] [ text "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode." ]

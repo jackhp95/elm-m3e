@@ -95,7 +95,7 @@ studyCard ( slug, title, body ) =
     Card.view
         [ Card.variant Value.elevated ]
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
-        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ]))
+        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ]))
         , Card.actions
             (Button.view
                 [ Button.variant Value.filled
