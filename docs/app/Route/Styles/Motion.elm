@@ -10,7 +10,6 @@ import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -94,7 +93,6 @@ view _ _ =
                             [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Schemes"
                     , EscapeHatch.fromHtml
@@ -104,7 +102,6 @@ view _ _ =
                             ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Token families"
                     , EscapeHatch.fromHtml

@@ -22,7 +22,6 @@ import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
@@ -99,9 +98,7 @@ view _ _ =
         List.map Element.toNode
             [ pane
                 [ hero
-                , Divider.view [] []
                 , highlights
-                , Divider.view [] []
                 , statusGrid
                 ]
             ]

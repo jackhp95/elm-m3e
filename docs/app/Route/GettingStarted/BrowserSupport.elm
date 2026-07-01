@@ -11,7 +11,6 @@ import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -105,7 +104,6 @@ view _ _ =
                             [ text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Supported browsers"
                     , Card.view
@@ -120,7 +118,6 @@ view _ _ =
                             )
                         ]
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Platform features used"
                     , EscapeHatch.fromHtml

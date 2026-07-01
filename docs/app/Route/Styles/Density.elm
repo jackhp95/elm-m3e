@@ -12,7 +12,6 @@ import Layout
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -111,7 +110,6 @@ view _ _ =
                             [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
                         )
                     ]
-                , Divider.view [] []
                 , Card.view
                     [ Card.variant Value.outlined ]
                     [ Card.header (Heading.view { content = Kit.text "Density scale, 0 to -3" } [ Heading.variant Value.title ] [])

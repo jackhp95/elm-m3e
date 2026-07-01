@@ -10,7 +10,6 @@ import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -146,7 +145,6 @@ view _ _ =
                             [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ stepHeading "1. Add the Elm source"
                     , EscapeHatch.fromHtml
@@ -159,7 +157,6 @@ view _ _ =
 }
 """
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ stepHeading "2. Register the web components"
                     , EscapeHatch.fromHtml
@@ -173,7 +170,6 @@ npm i @m3e/web
 import "@m3e/web/all";
 """
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ stepHeading "3. Import the token + utility bridge"
                     , EscapeHatch.fromHtml
@@ -187,7 +183,6 @@ import "@m3e/web/all";
 @import "tailwind-m3e-web/generated/utilities.css";
 """
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ stepHeading "4. Wrap your app in a theme"
                     , EscapeHatch.fromHtml

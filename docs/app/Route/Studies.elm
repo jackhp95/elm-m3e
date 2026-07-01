@@ -17,7 +17,6 @@ import Layout
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -126,7 +125,6 @@ view _ _ =
                             [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "grid gap-4 sm:grid-cols-2"
                     (List.map studyCard studies)
                 ]

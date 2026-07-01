@@ -11,7 +11,6 @@ import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
@@ -125,13 +124,11 @@ view _ _ =
                             ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-4"
                     [ sectionHeading "What you get"
                     , Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2"
                         (List.map highlightCard highlights)
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "The MISI philosophy"
                     , EscapeHatch.fromHtml
@@ -146,7 +143,6 @@ view _ _ =
                             ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Relationship to @m3e/web"
                     , EscapeHatch.fromHtml

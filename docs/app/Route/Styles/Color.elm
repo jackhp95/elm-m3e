@@ -11,7 +11,6 @@ import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -122,13 +121,11 @@ view _ _ =
                             [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Color roles"
                     , Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
                         (List.map swatch roles)
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Dynamic color"
                     , EscapeHatch.fromHtml
@@ -136,7 +133,6 @@ view _ _ =
                             [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "Forced colors"
                     , EscapeHatch.fromHtml

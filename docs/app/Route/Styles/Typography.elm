@@ -11,7 +11,6 @@ import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -125,7 +124,6 @@ view _ _ =
                             [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
                         )
                     ]
-                , Divider.view [] []
                 , Layout.section "space-y-3"
                     [ sectionHeading "The scale, live"
                     , Card.view
