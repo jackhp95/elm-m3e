@@ -9,6 +9,7 @@ import Html.Attributes exposing (class, style)
 import Layout
 import M3e.Button as Button
 import M3e.Card as Card
+import M3e.ContentPane as ContentPane
 import EscapeHatch
 import Kit
 import M3e.Divider as Divider
@@ -93,12 +94,17 @@ pageHeading =
        
 
 
+pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
+pane items =
+    ContentPane.view [] (List.map ContentPane.child items)
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Density · elm-m3e"
     , body =
         List.map Element.toNode
-            [ Layout.container
+            [ pane
             [ Layout.section "space-y-3"
                 [ pageHeading
                 , EscapeHatch.fromHtml

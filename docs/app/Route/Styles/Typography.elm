@@ -10,6 +10,7 @@ import Layout
 import EscapeHatch
 import Kit
 import M3e.Card as Card
+import M3e.ContentPane as ContentPane
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
@@ -108,12 +109,17 @@ sectionHeading label =
        
 
 
+pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
+pane items =
+    ContentPane.view [] (List.map ContentPane.child items)
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Typography · elm-m3e"
     , body =
         List.map Element.toNode
-            [ Layout.container
+            [ pane
             [ Layout.section "space-y-3"
                 [ pageHeading
                 , EscapeHatch.fromHtml
