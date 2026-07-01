@@ -1,16 +1,16 @@
 module Route.GettingStarted.Installation exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (code, div, p, pre, text)
 import Html.Attributes exposing (class)
-import Layout
-import EscapeHatch
 import Kit
-import M3e.Divider as Divider
+import Layout
 import M3e.ContentPane as ContentPane
+import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -119,7 +119,6 @@ pageHeading =
     Heading.view { content = Kit.text "Installation" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 stepHeading : String -> Element { s | heading : Supported } msg
@@ -127,7 +126,6 @@ stepHeading label =
     Heading.view { content = Kit.text label }
         [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
         []
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -141,62 +139,62 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-lg text-on-surface-variant" ]
-                        [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ stepHeading "1. Add the Elm source"
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "Copy the M3e.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
-                    )
-                , code_ Json """
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-lg text-on-surface-variant" ]
+                            [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ stepHeading "1. Add the Elm source"
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "Copy the M3e.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
+                        )
+                    , code_ Json """
 {
   "source-directories": [ "src", "vendor/elm-m3e" ]
 }
 """
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ stepHeading "2. Register the web components"
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
-                    )
-                , code_ Shell """
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ stepHeading "2. Register the web components"
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
+                        )
+                    , code_ Shell """
 npm i @m3e/web
 
 // m3e-entry.js
 import "@m3e/web/all";
 """
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ stepHeading "3. Import the token + utility bridge"
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …):" ]
-                    )
-                , code_ NoLang """
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ stepHeading "3. Import the token + utility bridge"
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …):" ]
+                        )
+                    , code_ NoLang """
 /* style.css */
 @import "tailwindcss";
 @import "tailwind-m3e-web/src/index.css";
 @import "tailwind-m3e-web/generated/utilities.css";
 """
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ stepHeading "4. Wrap your app in a theme"
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-md text-on-surface-variant" ]
-                        [ text "A single M3e.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
-                    )
-                , code_ Elm """
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ stepHeading "4. Wrap your app in a theme"
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-md text-on-surface-variant" ]
+                            [ text "A single M3e.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
+                        )
+                    , code_ Elm """
 import M3e.Theme as Theme
 
 Theme.new
@@ -204,7 +202,7 @@ Theme.new
     |> Theme.withScheme Theme.Auto
     |> Theme.view [ yourApp ]
 """
+                    ]
                 ]
             ]
-        ]
     }

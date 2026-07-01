@@ -10,25 +10,25 @@ sidebar nav, so this page is just the hero + highlights content.
 -}
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (code, div, p, text)
 import Html.Attributes exposing (class)
+import Kit
 import Layout
 import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import EscapeHatch
-import Kit
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.Node as Node exposing (Node)
-import Native
 import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -98,13 +98,13 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ hero
-            , Divider.view [] []
-            , highlights
-            , Divider.view [] []
-            , statusGrid
+                [ hero
+                , Divider.view [] []
+                , highlights
+                , Divider.view [] []
+                , statusGrid
+                ]
             ]
-        ]
     }
 
 
@@ -118,7 +118,6 @@ hero =
         , Heading.view { content = Kit.text "Type-safe Material 3 Expressive for Elm" }
             [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
             []
-           
         , EscapeHatch.fromHtml
             (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                 [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
@@ -148,7 +147,6 @@ sectionHeading label =
     Heading.view { content = Kit.text label }
         [ Heading.variant Value.headline, Heading.size Value.medium, Heading.level "2" ]
         []
-       
 
 
 highlights : Element { s | html : Supported } msg
@@ -182,7 +180,6 @@ highlightCard iconName title body =
                 ]
             )
         ]
-       
 
 
 statusGrid : Element { s | html : Supported } msg
@@ -209,4 +206,3 @@ statusCard title body =
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
         , Card.content (EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ]))
         ]
-       

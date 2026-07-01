@@ -1,12 +1,12 @@
 module Route.Styles.Color exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (code, p, text)
 import Html.Attributes exposing (class)
-import EscapeHatch
 import Kit
 import Layout
 import M3e.Card as Card
@@ -95,7 +95,6 @@ pageHeading =
     Heading.view { content = Kit.text "Color" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 sectionHeading : String -> Element { s | heading : Supported } msg
@@ -103,7 +102,6 @@ sectionHeading label =
     Heading.view { content = Kit.text label }
         [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
         []
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -117,38 +115,38 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                        [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "Color roles"
-                , Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
-                    (List.map swatch roles)
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "Dynamic color"
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
-                        [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "Forced colors"
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
-                        [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
-                    )
-                , forcedColorsCard
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                            [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "Color roles"
+                    , Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+                        (List.map swatch roles)
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "Dynamic color"
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
+                            [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "Forced colors"
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-md text-on-surface-variant" ]
+                            [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                        )
+                    , forcedColorsCard
+                    ]
                 ]
             ]
-        ]
     }
 
 
@@ -162,4 +160,3 @@ forcedColorsCard =
                 (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
             )
         ]
-       

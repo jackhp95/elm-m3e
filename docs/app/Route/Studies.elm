@@ -6,17 +6,17 @@ routes that the sidebar already links to; this page is the gallery.
 -}
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class)
+import Kit
 import Layout
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import EscapeHatch
-import Kit
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
@@ -84,7 +84,6 @@ pageHeading =
     Heading.view { content = Kit.text "Studies" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 studyCard : ( String, String, String ) -> Element { s | card : Supported } msg
@@ -107,7 +106,6 @@ studyCard ( slug, title, body ) =
                 [ Button.child (Kit.text ("Open " ++ title)) ]
             )
         ]
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -121,16 +119,16 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                        [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
-                    )
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                            [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "grid gap-4 sm:grid-cols-2"
+                    (List.map studyCard studies)
                 ]
-            , Divider.view [] []
-            , Layout.section "grid gap-4 sm:grid-cols-2"
-                (List.map studyCard studies)
             ]
-        ]
     }

@@ -1,23 +1,23 @@
 module Route.Styles.Density exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class, style)
+import Kit
 import Layout
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import EscapeHatch
-import Kit
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import Native
 import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -91,7 +91,6 @@ pageHeading =
     Heading.view { content = Kit.text "Density" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -105,27 +104,26 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                        [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
-                    )
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                            [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Card.view
+                    [ Card.variant Value.outlined ]
+                    [ Card.header (Heading.view { content = Kit.text "Density scale, 0 to -3" } [ Heading.variant Value.title ] [])
+                    , Card.content
+                        (Layout.div "space-y-6"
+                            [ demoBar 0
+                            , demoBar -1
+                            , demoBar -2
+                            , demoBar -3
+                            ]
+                        )
+                    ]
                 ]
-            , Divider.view [] []
-            , Card.view
-                [ Card.variant Value.outlined ]
-                [ Card.header (Heading.view { content = Kit.text "Density scale, 0 to -3" } [ Heading.variant Value.title ] [])
-                , Card.content
-                    (Layout.div "space-y-6"
-                        [ demoBar 0
-                        , demoBar -1
-                        , demoBar -2
-                        , demoBar -3
-                        ]
-                    )
-                ]
-               
             ]
-        ]
     }

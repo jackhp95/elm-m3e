@@ -1,26 +1,26 @@
 module Route.Styles.Typography exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (p, text)
 import Html.Attributes exposing (class)
-import Layout
-import EscapeHatch
 import Kit
+import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
-import Native
 import M3e.Value as Value exposing (Supported)
-import Seam
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -98,7 +98,6 @@ pageHeading =
     Heading.view { content = Kit.text "Typography" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 sectionHeading : String -> Element { s | heading : Supported } msg
@@ -106,7 +105,6 @@ sectionHeading label =
     Heading.view { content = Kit.text label }
         [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
         []
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -120,25 +118,24 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                        [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "The scale, live"
-                , Card.view
-                    [ Card.variant Value.outlined ]
-                    [ Card.content
-                        (Layout.div "px-2"
-                            (List.map row scale)
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                            [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
                         )
                     ]
-                   
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "The scale, live"
+                    , Card.view
+                        [ Card.variant Value.outlined ]
+                        [ Card.content
+                            (Layout.div "px-2"
+                                (List.map row scale)
+                            )
+                        ]
+                    ]
                 ]
             ]
-        ]
     }

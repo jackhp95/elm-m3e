@@ -1,16 +1,16 @@
 module Route.GettingStarted.Overview exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (a, code, div, li, p, text, ul)
 import Html.Attributes exposing (class, href)
+import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import EscapeHatch
-import Kit
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
@@ -69,7 +69,6 @@ pageHeading =
     Heading.view { content = Kit.text "Overview" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 sectionHeading : String -> Element { s | heading : Supported } msg
@@ -77,7 +76,6 @@ sectionHeading label =
     Heading.view { content = Kit.text label }
         [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
         []
-       
 
 
 highlights : List ( String, String, String )
@@ -104,7 +102,6 @@ highlightCard ( iconName, title, body ) =
                 ]
             )
         ]
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -118,55 +115,55 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-lg text-on-surface-variant" ]
-                        [ text "elm-m3e (the m3e-builder project) is a type-safe Elm binding layer over "
-                        , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
-                        , text ", matraic's Material 3 Expressive web component library."
-                        ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-4"
-                [ sectionHeading "What you get"
-                , Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2"
-                    (List.map highlightCard highlights)
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "The MISI philosophy"
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-lg text-on-surface-variant" ]
-                        [ text "Every M3e.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
-                    )
-                , EscapeHatch.fromHtml
-                    (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
-                        [ li [] [ text "Typed slots — an icon slot only accepts a M3e.Icon, never arbitrary Html." ]
-                        , li [] [ text "Builders with required collaborators — you can't render an avatar without content." ]
-                        , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
-                        ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "Relationship to @m3e/web"
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-lg text-on-surface-variant" ]
-                        [ text "@m3e/web ships the custom elements, the dynamic-color "
-                        , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "<m3e-theme>" ]
-                        , text " engine, and the M3 design tokens. elm-m3e wraps each element in a typed Elm builder and the tokens flow through Tailwind utilities (the tailwind-m3e-web bridge)."
-                        ]
-                    )
-                , EscapeHatch.fromHtml
-                    (p [ class "text-body-lg text-on-surface-variant" ]
-                        [ text "Next: "
-                        , a [ href "/getting-started/installation", class "text-primary hover:underline" ] [ text "Installation" ]
-                        , text "."
-                        ]
-                    )
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-lg text-on-surface-variant" ]
+                            [ text "elm-m3e (the m3e-builder project) is a type-safe Elm binding layer over "
+                            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
+                            , text ", matraic's Material 3 Expressive web component library."
+                            ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-4"
+                    [ sectionHeading "What you get"
+                    , Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2"
+                        (List.map highlightCard highlights)
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "The MISI philosophy"
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-lg text-on-surface-variant" ]
+                            [ text "Every M3e.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
+                        )
+                    , EscapeHatch.fromHtml
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                            [ li [] [ text "Typed slots — an icon slot only accepts a M3e.Icon, never arbitrary Html." ]
+                            , li [] [ text "Builders with required collaborators — you can't render an avatar without content." ]
+                            , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
+                            ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "Relationship to @m3e/web"
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-lg text-on-surface-variant" ]
+                            [ text "@m3e/web ships the custom elements, the dynamic-color "
+                            , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "<m3e-theme>" ]
+                            , text " engine, and the M3 design tokens. elm-m3e wraps each element in a typed Elm builder and the tokens flow through Tailwind utilities (the tailwind-m3e-web bridge)."
+                            ]
+                        )
+                    , EscapeHatch.fromHtml
+                        (p [ class "text-body-lg text-on-surface-variant" ]
+                            [ text "Next: "
+                            , a [ href "/getting-started/installation", class "text-primary hover:underline" ] [ text "Installation" ]
+                            , text "."
+                            ]
+                        )
+                    ]
                 ]
             ]
-        ]
     }

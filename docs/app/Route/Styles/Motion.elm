@@ -1,16 +1,16 @@
 module Route.Styles.Motion exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (code, li, p, text, ul)
 import Html.Attributes exposing (class)
-import Layout
-import EscapeHatch
 import Kit
-import M3e.Divider as Divider
+import Layout
 import M3e.ContentPane as ContentPane
+import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
@@ -67,7 +67,6 @@ pageHeading =
     Heading.view { content = Kit.text "Motion" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 sectionHeading : String -> Element { s | heading : Supported } msg
@@ -75,7 +74,6 @@ sectionHeading label =
     Heading.view { content = Kit.text label }
         [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
         []
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -89,33 +87,33 @@ view _ _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ Layout.section "space-y-3"
-                [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                        [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "Schemes"
-                , EscapeHatch.fromHtml
-                    (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
-                        [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
-                        , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
-                        ]
-                    )
-                ]
-            , Divider.view [] []
-            , Layout.section "space-y-3"
-                [ sectionHeading "Token families"
-                , EscapeHatch.fromHtml
-                    (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
-                        [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
-                        , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
-                        ]
-                    )
+                [ Layout.section "space-y-3"
+                    [ pageHeading
+                    , EscapeHatch.fromHtml
+                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
+                            [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "Schemes"
+                    , EscapeHatch.fromHtml
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                            [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
+                            , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
+                            ]
+                        )
+                    ]
+                , Divider.view [] []
+                , Layout.section "space-y-3"
+                    [ sectionHeading "Token families"
+                    , EscapeHatch.fromHtml
+                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
+                            [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
+                            , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
+                            ]
+                        )
+                    ]
                 ]
             ]
-        ]
     }

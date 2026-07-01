@@ -8,23 +8,23 @@ signature and doc comment.
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html exposing (a, code, p, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
+import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
-import EscapeHatch
-import Kit
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import Native
 import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -115,7 +115,6 @@ pageHeading =
     Heading.view { content = Kit.text "Component reference" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
-       
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -129,19 +128,19 @@ view app _ =
     , body =
         List.map Element.toNode
             [ pane
-            [ pageHeading
-            , EscapeHatch.fromHtml
-                (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
-                    [ text "Every "
-                    , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
-                    , text " module, its overview, and every exposed value — extracted from the library source at build time."
-                    ]
-                )
-            , indexGrid app.data
-            , Layout.div "mt-12 space-y-12"
-                (List.map componentBlock app.data)
+                [ pageHeading
+                , EscapeHatch.fromHtml
+                    (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
+                        [ text "Every "
+                        , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
+                        , text " module, its overview, and every exposed value — extracted from the library source at build time."
+                        ]
+                    )
+                , indexGrid app.data
+                , Layout.div "mt-12 space-y-12"
+                    (List.map componentBlock app.data)
+                ]
             ]
-        ]
     }
 
 
@@ -193,18 +192,17 @@ memberRow m =
     Card.view
         [ Card.variant Value.outlined ]
         [ Card.content
-                (Native.node (Html.node "div")
-                    []
-                    [ EscapeHatch.fromHtml (pre_ sig)
-                    , if m.doc == "" then
-                        Kit.text ""
+            (Native.node (Html.node "div")
+                []
+                [ EscapeHatch.fromHtml (pre_ sig)
+                , if m.doc == "" then
+                    Kit.text ""
 
-                      else
-                        prose "mt-2 text-body-sm text-on-surface-variant" m.doc
-                    ]
-                )
+                  else
+                    prose "mt-2 text-body-sm text-on-surface-variant" m.doc
+                ]
+            )
         ]
-       
 
 
 pre_ : String -> Html.Html msg

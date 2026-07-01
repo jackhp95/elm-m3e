@@ -1,7 +1,7 @@
 module Route.Studies.Crane exposing (ActionData, Data, Model, Msg, route)
 
 {-| STUB (migration): the original rich view is preserved in git history and will be
-restored by the ornith pass (docs/ORNITH_MIGRATION_PLAN.md). Route wiring + exposed
+restored by the ornith pass (docs/ORNITH\_MIGRATION\_PLAN.md). Route wiring + exposed
 signatures are unchanged so the app compiles.
 -}
 
