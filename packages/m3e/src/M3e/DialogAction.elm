@@ -1,7 +1,7 @@
-module M3e.DialogAction exposing (child, children, dialogAction)
+module M3e.DialogAction exposing (child, children, returnValue, view)
 
 {-| 
-@docs dialogAction, child, children
+@docs view, returnValue, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-dialog-action>` element (lazy IR). -}
-dialogAction :
+view :
     List (M3e.Cem.Attr.Attr { returnValue : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | dialogAction : M3e.Value.Supported } msg
-dialogAction attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,6 +31,13 @@ dialogAction attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The value to return from the dialog. (default: `""`) -}
+returnValue :
+    String -> M3e.Cem.Attr.Attr { c | returnValue : M3e.Value.Supported } msg
+returnValue =
+    M3e.Cem.DialogAction.returnValue
 
 
 {-| Place content in the `(default)` slot. -}

@@ -1,7 +1,7 @@
-module M3e.FilterChip exposing (filterChip, icon, trailingIcon)
+module M3e.FilterChip exposing (disabled, disabledInteractive, icon, onBeforeinput, onChange, onClick, onInput, selected, trailingIcon, value, variant, view)
 
 {-| 
-@docs filterChip, icon, trailingIcon
+@docs view, disabled, disabledInteractive, selected, value, variant, onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-filter-chip>` element (lazy IR). -}
-filterChip :
+view :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
@@ -31,7 +31,7 @@ filterChip :
     , trailingIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | filterChip : M3e.Value.Supported } msg
-filterChip req_ attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -48,6 +48,71 @@ filterChip req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.FilterChip.disabled
+
+
+{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive :
+    Bool
+    -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
+disabledInteractive =
+    M3e.Cem.FilterChip.disabledInteractive
+
+
+{-| A value indicating whether the element is selected. (default: `false`) -}
+selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
+selected =
+    M3e.Cem.FilterChip.selected
+
+
+{-| A string representing the value of the chip. -}
+value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.FilterChip.value
+
+
+{-| The appearance variant of the chip. (default: `"outlined"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.FilterChip.variant
+
+
+{-| Listen for `beforeinput` events. -}
+onBeforeinput :
+    (Bool -> msg)
+    -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
+onBeforeinput =
+    M3e.Cem.FilterChip.onBeforeinput
+
+
+{-| Listen for `input` events. -}
+onInput :
+    (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
+onInput =
+    M3e.Cem.FilterChip.onInput
+
+
+{-| Listen for `change` events. -}
+onChange :
+    (Bool -> msg)
+    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange =
+    M3e.Cem.FilterChip.onChange
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.FilterChip.onClick
 
 
 {-| Place content in the `icon` slot. -}

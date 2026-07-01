@@ -1,7 +1,7 @@
-module M3e.MenuTrigger exposing (child, children, menuTrigger)
+module M3e.MenuTrigger exposing (child, children, for, view)
 
 {-| 
-@docs menuTrigger, child, children
+@docs view, for, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-menu-trigger>` element (lazy IR). -}
-menuTrigger :
+view :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | menuTrigger : M3e.Value.Supported } msg
-menuTrigger attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,6 +31,12 @@ menuTrigger attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
+for =
+    M3e.Cem.MenuTrigger.for
 
 
 {-| Place content in the `(default)` slot. -}

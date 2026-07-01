@@ -1,7 +1,7 @@
-module M3e.ExpansionPanel exposing (actions, child, children, expansionPanel, header, toggleIcon)
+module M3e.ExpansionPanel exposing (actions, child, children, disabled, header, hideToggle, onClosed, onClosing, onOpened, onOpening, open, toggleDirection, toggleIcon, togglePosition, view)
 
 {-| 
-@docs expansionPanel, child, actions, header, toggleIcon, children
+@docs view, disabled, hideToggle, open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed, child, actions, header, toggleIcon, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-expansion-panel>` element (lazy IR). -}
-expansionPanel :
+view :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , hideToggle : M3e.Value.Supported
     , open : M3e.Value.Supported
@@ -32,7 +32,7 @@ expansionPanel :
     , toggleIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | expansionPanel : M3e.Value.Supported } msg
-expansionPanel attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -43,6 +43,69 @@ expansionPanel attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.ExpansionPanel.disabled
+
+
+{-| Whether to hide the expansion toggle. (default: `false`) -}
+hideToggle :
+    Bool -> M3e.Cem.Attr.Attr { c | hideToggle : M3e.Value.Supported } msg
+hideToggle =
+    M3e.Cem.ExpansionPanel.hideToggle
+
+
+{-| Whether the panel is expanded. (default: `false`) -}
+open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
+open =
+    M3e.Cem.ExpansionPanel.open
+
+
+{-| The direction of the expansion toggle. (default: `"vertical"`) -}
+toggleDirection :
+    M3e.Value.Value { horizontal : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | toggleDirection : M3e.Value.Supported } msg
+toggleDirection =
+    M3e.Cem.ExpansionPanel.toggleDirection
+
+
+{-| The position of the expansion toggle. (default: `"after"`) -}
+togglePosition :
+    M3e.Value.Value { after : M3e.Value.Supported
+    , before : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | togglePosition : M3e.Value.Supported } msg
+togglePosition =
+    M3e.Cem.ExpansionPanel.togglePosition
+
+
+{-| Listen for `opening` events. -}
+onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
+onOpening =
+    M3e.Cem.ExpansionPanel.onOpening
+
+
+{-| Listen for `opened` events. -}
+onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
+onOpened =
+    M3e.Cem.ExpansionPanel.onOpened
+
+
+{-| Listen for `closing` events. -}
+onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
+onClosing =
+    M3e.Cem.ExpansionPanel.onClosing
+
+
+{-| Listen for `closed` events. -}
+onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
+onClosed =
+    M3e.Cem.ExpansionPanel.onClosed
 
 
 {-| Place content in the `(default)` slot. -}

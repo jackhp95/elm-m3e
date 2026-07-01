@@ -135,495 +135,495 @@ import M3e.YearView
 
 
 tree =
-    M3e.Tree.tree
+    M3e.Tree.view
 
 
 treeItem =
-    M3e.TreeItem.treeItem
+    M3e.TreeItem.view
 
 
 toolbar =
-    M3e.Toolbar.toolbar
+    M3e.Toolbar.view
 
 
 toc =
-    M3e.Toc.toc
+    M3e.Toc.view
 
 
 tocItem =
-    M3e.TocItem.tocItem
+    M3e.TocItem.view
 
 
 themeIcon =
-    M3e.ThemeIcon.themeIcon
+    M3e.ThemeIcon.view
 
 
 theme =
-    M3e.Theme.theme
+    M3e.Theme.view
 
 
 textareaAutosize =
-    M3e.TextareaAutosize.textareaAutosize
+    M3e.TextareaAutosize.view
 
 
 tabs =
-    M3e.Tabs.tabs
+    M3e.Tabs.view
 
 
 tabPanel =
-    M3e.TabPanel.tabPanel
+    M3e.TabPanel.view
 
 
 tab =
-    M3e.Tab.tab
+    M3e.Tab.view
 
 
 switch =
-    M3e.Switch.switch
+    M3e.Switch.view
 
 
 stepperReset =
-    M3e.StepperReset.stepperReset
+    M3e.StepperReset.view
 
 
 stepperPrevious =
-    M3e.StepperPrevious.stepperPrevious
+    M3e.StepperPrevious.view
 
 
 step =
-    M3e.Step.step
+    M3e.Step.view
 
 
 stepPanel =
-    M3e.StepPanel.stepPanel
+    M3e.StepPanel.view
 
 
 stepper =
-    M3e.Stepper.stepper
+    M3e.Stepper.view
 
 
 splitPane =
-    M3e.SplitPane.splitPane
+    M3e.SplitPane.view
 
 
 splitButton =
-    M3e.SplitButton.splitButton
+    M3e.SplitButton.view
 
 
 snackbar =
-    M3e.Snackbar.snackbar
+    M3e.Snackbar.view
 
 
 slider =
-    M3e.Slider.slider
+    M3e.Slider.view
 
 
 sliderThumb =
-    M3e.SliderThumb.sliderThumb
+    M3e.SliderThumb.view
 
 
 slideGroup =
-    M3e.SlideGroup.slideGroup
+    M3e.SlideGroup.view
 
 
 skeleton =
-    M3e.Skeleton.skeleton
+    M3e.Skeleton.view
 
 
 shape =
-    M3e.Shape.shape
+    M3e.Shape.view
 
 
 segmentedButton =
-    M3e.SegmentedButton.segmentedButton
+    M3e.SegmentedButton.view
 
 
 buttonSegment =
-    M3e.ButtonSegment.buttonSegment
+    M3e.ButtonSegment.view
 
 
 searchView =
-    M3e.SearchView.searchView
+    M3e.SearchView.view
 
 
 searchBar =
-    M3e.SearchBar.searchBar
+    M3e.SearchBar.view
 
 
 radioGroup =
-    M3e.RadioGroup.radioGroup
+    M3e.RadioGroup.view
 
 
 radio =
-    M3e.Radio.radio
+    M3e.Radio.view
 
 
 progressElementIndicatorBase =
-    M3e.ProgressElementIndicatorBase.progressElementIndicatorBase
+    M3e.ProgressElementIndicatorBase.view
 
 
 paginator =
-    M3e.Paginator.paginator
+    M3e.Paginator.view
 
 
 select =
-    M3e.Select.select
+    M3e.Select.view
 
 
 navRailToggle =
-    M3e.NavRailToggle.navRailToggle
+    M3e.NavRailToggle.view
 
 
 navRail =
-    M3e.NavRail.navRail
+    M3e.NavRail.view
 
 
 navMenuItemGroup =
-    M3e.NavMenuItemGroup.navMenuItemGroup
+    M3e.NavMenuItemGroup.view
 
 
 navMenu =
-    M3e.NavMenu.navMenu
+    M3e.NavMenu.view
 
 
 navMenuItem =
-    M3e.NavMenuItem.navMenuItem
+    M3e.NavMenuItem.view
 
 
 navBar =
-    M3e.NavBar.navBar
+    M3e.NavBar.view
 
 
 navItem =
-    M3e.NavItem.navItem
+    M3e.NavItem.view
 
 
 menuItemRadio =
-    M3e.MenuItemRadio.menuItemRadio
+    M3e.MenuItemRadio.view
 
 
 menuItemGroup =
-    M3e.MenuItemGroup.menuItemGroup
+    M3e.MenuItemGroup.view
 
 
 menuItemCheckbox =
-    M3e.MenuItemCheckbox.menuItemCheckbox
+    M3e.MenuItemCheckbox.view
 
 
 menu =
-    M3e.Menu.menu
+    M3e.Menu.view
 
 
 menuItem =
-    M3e.MenuItem.menuItem
+    M3e.MenuItem.view
 
 
 menuTrigger =
-    M3e.MenuTrigger.menuTrigger
+    M3e.MenuTrigger.view
 
 
 menuItemElementBase =
-    M3e.MenuItemElementBase.menuItemElementBase
+    M3e.MenuItemElementBase.view
 
 
 loadingIndicator =
-    M3e.LoadingIndicator.loadingIndicator
+    M3e.LoadingIndicator.view
 
 
 selectionList =
-    M3e.SelectionList.selectionList
+    M3e.SelectionList.view
 
 
 listOption =
-    M3e.ListOption.listOption
+    M3e.ListOption.view
 
 
 actionList =
-    M3e.ActionList.actionList
+    M3e.ActionList.view
 
 
 expandableListItem =
-    M3e.ExpandableListItem.expandableListItem
+    M3e.ExpandableListItem.view
 
 
 listAction =
-    M3e.ListAction.listAction
+    M3e.ListAction.view
 
 
 listItemButton =
-    M3e.ListItemButton.listItemButton
+    M3e.ListItemButton.view
 
 
 list =
-    M3e.List.list
+    M3e.List.view
 
 
 listItem =
-    M3e.ListItem.listItem
+    M3e.ListItem.view
 
 
 icon =
-    M3e.Icon.icon
+    M3e.Icon.view
 
 
 heading =
-    M3e.Heading.heading
+    M3e.Heading.view
 
 
 fabMenuTrigger =
-    M3e.FabMenuTrigger.fabMenuTrigger
+    M3e.FabMenuTrigger.view
 
 
 fabMenu =
-    M3e.FabMenu.fabMenu
+    M3e.FabMenu.view
 
 
 fab =
-    M3e.Fab.fab
+    M3e.Fab.view
 
 
 accordion =
-    M3e.Accordion.accordion
+    M3e.Accordion.view
 
 
 expansionPanel =
-    M3e.ExpansionPanel.expansionPanel
+    M3e.ExpansionPanel.view
 
 
 expansionHeader =
-    M3e.ExpansionHeader.expansionHeader
+    M3e.ExpansionHeader.view
 
 
 drawerToggle =
-    M3e.DrawerToggle.drawerToggle
+    M3e.DrawerToggle.view
 
 
 drawerContainer =
-    M3e.DrawerContainer.drawerContainer
+    M3e.DrawerContainer.view
 
 
 divider =
-    M3e.Divider.divider
+    M3e.Divider.view
 
 
 dialogTrigger =
-    M3e.DialogTrigger.dialogTrigger
+    M3e.DialogTrigger.view
 
 
 dialog =
-    M3e.Dialog.dialog
+    M3e.Dialog.view
 
 
 dialogAction =
-    M3e.DialogAction.dialogAction
+    M3e.DialogAction.view
 
 
 datepickerToggle =
-    M3e.DatepickerToggle.datepickerToggle
+    M3e.DatepickerToggle.view
 
 
 datepicker =
-    M3e.Datepicker.datepicker
+    M3e.Datepicker.view
 
 
 contentPane =
-    M3e.ContentPane.contentPane
+    M3e.ContentPane.view
 
 
 suggestionChip =
-    M3e.SuggestionChip.suggestionChip
+    M3e.SuggestionChip.view
 
 
 inputChipSet =
-    M3e.InputChipSet.inputChipSet
+    M3e.InputChipSet.view
 
 
 inputChip =
-    M3e.InputChip.inputChip
+    M3e.InputChip.view
 
 
 filterChipSet =
-    M3e.FilterChipSet.filterChipSet
+    M3e.FilterChipSet.view
 
 
 filterChip =
-    M3e.FilterChip.filterChip
+    M3e.FilterChip.view
 
 
 chipSet =
-    M3e.ChipSet.chipSet
+    M3e.ChipSet.view
 
 
 assistChip =
-    M3e.AssistChip.assistChip
+    M3e.AssistChip.view
 
 
 chip =
-    M3e.Chip.chip
+    M3e.Chip.view
 
 
 checkbox =
-    M3e.Checkbox.checkbox
+    M3e.Checkbox.view
 
 
 card =
-    M3e.Card.card
+    M3e.Card.view
 
 
 calendar =
-    M3e.Calendar.calendar
+    M3e.Calendar.view
 
 
 yearView =
-    M3e.YearView.yearView
+    M3e.YearView.view
 
 
 multiYearView =
-    M3e.MultiYearView.multiYearView
+    M3e.MultiYearView.view
 
 
 monthView =
-    M3e.MonthView.monthView
+    M3e.MonthView.view
 
 
 tooltip =
-    M3e.Tooltip.tooltip
+    M3e.Tooltip.view
 
 
 richTooltip =
-    M3e.RichTooltip.richTooltip
+    M3e.RichTooltip.view
 
 
 tooltipElementBase =
-    M3e.TooltipElementBase.tooltipElementBase
+    M3e.TooltipElementBase.view
 
 
 richTooltipAction =
-    M3e.RichTooltipAction.richTooltipAction
+    M3e.RichTooltipAction.view
 
 
 buttonGroup =
-    M3e.ButtonGroup.buttonGroup
+    M3e.ButtonGroup.view
 
 
 iconButton =
-    M3e.IconButton.iconButton
+    M3e.IconButton.view
 
 
 button =
-    M3e.Button.button
+    M3e.Button.view
 
 
 breadcrumb =
-    M3e.Breadcrumb.breadcrumb
+    M3e.Breadcrumb.view
 
 
 breadcrumbItem =
-    M3e.BreadcrumbItem.breadcrumbItem
+    M3e.BreadcrumbItem.view
 
 
 breadcrumbItemButton =
-    M3e.BreadcrumbItemButton.breadcrumbItemButton
+    M3e.BreadcrumbItemButton.view
 
 
 bottomSheetTrigger =
-    M3e.BottomSheetTrigger.bottomSheetTrigger
+    M3e.BottomSheetTrigger.view
 
 
 bottomSheet =
-    M3e.BottomSheet.bottomSheet
+    M3e.BottomSheet.view
 
 
 bottomSheetAction =
-    M3e.BottomSheetAction.bottomSheetAction
+    M3e.BottomSheetAction.view
 
 
 badge =
-    M3e.Badge.badge
+    M3e.Badge.view
 
 
 avatar =
-    M3e.Avatar.avatar
+    M3e.Avatar.view
 
 
 autocomplete =
-    M3e.Autocomplete.autocomplete
+    M3e.Autocomplete.view
 
 
 formField =
-    M3e.FormField.formField
+    M3e.FormField.view
 
 
 optionPanel =
-    M3e.OptionPanel.optionPanel
+    M3e.OptionPanel.view
 
 
 floatingPanel =
-    M3e.FloatingPanel.floatingPanel
+    M3e.FloatingPanel.view
 
 
 optgroup =
-    M3e.Optgroup.optgroup
+    M3e.Optgroup.view
 
 
 option =
-    M3e.Option.option
+    M3e.Option.view
 
 
 focusTrap =
-    M3e.FocusTrap.focusTrap
+    M3e.FocusTrap.view
 
 
 appBar =
-    M3e.AppBar.appBar
+    M3e.AppBar.view
 
 
 textOverflow =
-    M3e.TextOverflow.textOverflow
+    M3e.TextOverflow.view
 
 
 textHighlight =
-    M3e.TextHighlight.textHighlight
+    M3e.TextHighlight.view
 
 
 stateLayer =
-    M3e.StateLayer.stateLayer
+    M3e.StateLayer.view
 
 
 slide =
-    M3e.Slide.slide
+    M3e.Slide.view
 
 
 scrollContainer =
-    M3e.ScrollContainer.scrollContainer
+    M3e.ScrollContainer.view
 
 
 ripple =
-    M3e.Ripple.ripple
+    M3e.Ripple.view
 
 
 pseudoRadio =
-    M3e.PseudoRadio.pseudoRadio
+    M3e.PseudoRadio.view
 
 
 pseudoCheckbox =
-    M3e.PseudoCheckbox.pseudoCheckbox
+    M3e.PseudoCheckbox.view
 
 
 focusRing =
-    M3e.FocusRing.focusRing
+    M3e.FocusRing.view
 
 
 elevation =
-    M3e.Elevation.elevation
+    M3e.Elevation.view
 
 
 collapsible =
-    M3e.Collapsible.collapsible
+    M3e.Collapsible.view
 
 
 actionElementBase =
-    M3e.ActionElementBase.actionElementBase
+    M3e.ActionElementBase.view
 
 
 {-| The label of the snackbar's action. (default: `""`) -}

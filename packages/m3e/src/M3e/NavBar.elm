@@ -1,7 +1,7 @@
-module M3e.NavBar exposing (child, children, navBar)
+module M3e.NavBar exposing (child, children, mode, onBeforeinput, onChange, onInput, view)
 
 {-| 
-@docs navBar, child, children
+@docs view, mode, onChange, onBeforeinput, onInput, child, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-nav-bar>` element (lazy IR). -}
-navBar :
+view :
     List (M3e.Cem.Attr.Attr { mode : M3e.Value.Supported
     , onChange : M3e.Value.Supported
     , onBeforeinput : M3e.Value.Supported
@@ -23,7 +23,7 @@ navBar :
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navBar : M3e.Value.Supported } msg
-navBar attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -32,6 +32,36 @@ navBar attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The mode in which items in the bar are presented. (default: `"compact"`) -}
+mode :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , compact : M3e.Value.Supported
+    , expanded : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
+mode =
+    M3e.Cem.NavBar.mode
+
+
+{-| Listen for `change` events. -}
+onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange =
+    M3e.Cem.NavBar.onChange
+
+
+{-| Listen for `beforeinput` events. -}
+onBeforeinput :
+    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
+onBeforeinput =
+    M3e.Cem.NavBar.onBeforeinput
+
+
+{-| Listen for `input` events. -}
+onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
+onInput =
+    M3e.Cem.NavBar.onInput
 
 
 {-| Place content in the `(default)` slot. -}

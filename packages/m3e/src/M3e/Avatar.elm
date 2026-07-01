@@ -1,7 +1,7 @@
-module M3e.Avatar exposing (avatar, child, children)
+module M3e.Avatar exposing (child, children, view)
 
 {-| 
-@docs avatar, child, children
+@docs view, child, children
 -}
 
 
@@ -14,11 +14,11 @@ import M3e.Value
 
 
 {-| Build the `<m3e-avatar>` element (lazy IR). -}
-avatar :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | avatar : M3e.Value.Supported } msg
-avatar attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

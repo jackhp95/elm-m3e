@@ -1,7 +1,7 @@
-module M3e.TextHighlight exposing (child, children, textHighlight)
+module M3e.TextHighlight exposing (caseSensitive, child, children, disabled, mode, onHighlight, term, view)
 
 {-| 
-@docs textHighlight, child, children
+@docs view, caseSensitive, disabled, mode, term, onHighlight, child, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-text-highlight>` element (lazy IR). -}
-textHighlight :
+view :
     List (M3e.Cem.Attr.Attr { caseSensitive : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , mode : M3e.Value.Supported
@@ -24,7 +24,7 @@ textHighlight :
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | textHighlight : M3e.Value.Supported } msg
-textHighlight attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -35,6 +35,43 @@ textHighlight attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether matching is case sensitive. (default: `false`) -}
+caseSensitive :
+    Bool -> M3e.Cem.Attr.Attr { c | caseSensitive : M3e.Value.Supported } msg
+caseSensitive =
+    M3e.Cem.TextHighlight.caseSensitive
+
+
+{-| A value indicating whether text highlighting is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.TextHighlight.disabled
+
+
+{-| The mode in which to highlight text. (default: `"contains"`) -}
+mode :
+    M3e.Value.Value { contains : M3e.Value.Supported
+    , endsWith : M3e.Value.Supported
+    , startsWith : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
+mode =
+    M3e.Cem.TextHighlight.mode
+
+
+{-| The term to highlight. (default: `""`) -}
+term : String -> M3e.Cem.Attr.Attr { c | term : M3e.Value.Supported } msg
+term =
+    M3e.Cem.TextHighlight.term
+
+
+{-| Listen for `highlight` events. -}
+onHighlight :
+    msg -> M3e.Cem.Attr.Attr { c | onHighlight : M3e.Value.Supported } msg
+onHighlight =
+    M3e.Cem.TextHighlight.onHighlight
 
 
 {-| Place content in the `(default)` slot. -}

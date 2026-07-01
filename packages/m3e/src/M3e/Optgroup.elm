@@ -1,7 +1,7 @@
-module M3e.Optgroup exposing (child, children, label, optgroup)
+module M3e.Optgroup exposing (child, children, label, view)
 
 {-| 
-@docs optgroup, child, label, children
+@docs view, child, label, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-optgroup>` element (lazy IR). -}
-optgroup :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
     , label : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | optgroup : M3e.Value.Supported } msg
-optgroup attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

@@ -1,7 +1,7 @@
-module M3e.ActionList exposing (actionList, child, children)
+module M3e.ActionList exposing (child, children, variant, view)
 
 {-| 
-@docs actionList, child, children
+@docs view, variant, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-action-list>` element (lazy IR). -}
-actionList :
+view :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | actionList : M3e.Value.Supported } msg
-actionList attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,6 +31,16 @@ actionList attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The appearance variant of the list. (default: `"standard"`) -}
+variant :
+    M3e.Value.Value { segmented : M3e.Value.Supported
+    , standard : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.ActionList.variant
 
 
 {-| Place content in the `(default)` slot. -}

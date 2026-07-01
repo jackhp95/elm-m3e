@@ -1,7 +1,7 @@
-module M3e.ButtonSegment exposing (buttonSegment, child, children, icon)
+module M3e.ButtonSegment exposing (checked, child, children, disabled, icon, onBeforeinput, onChange, onClick, onInput, value, view)
 
 {-| 
-@docs buttonSegment, child, icon, children
+@docs view, checked, disabled, value, onBeforeinput, onInput, onChange, onClick, child, icon, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-button-segment>` element (lazy IR). -}
-buttonSegment :
+view :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , value : M3e.Value.Supported
@@ -28,7 +28,7 @@ buttonSegment :
     , icon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | buttonSegment : M3e.Value.Supported } msg
-buttonSegment attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -39,6 +39,53 @@ buttonSegment attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
+checked =
+    M3e.Cem.ButtonSegment.checked
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.ButtonSegment.disabled
+
+
+{-| A string representing the value of the segment. (default: `"on"`) -}
+value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.ButtonSegment.value
+
+
+{-| Listen for `beforeinput` events. -}
+onBeforeinput :
+    (Bool -> msg)
+    -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
+onBeforeinput =
+    M3e.Cem.ButtonSegment.onBeforeinput
+
+
+{-| Listen for `input` events. -}
+onInput :
+    (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
+onInput =
+    M3e.Cem.ButtonSegment.onInput
+
+
+{-| Listen for `change` events. -}
+onChange :
+    (Bool -> msg)
+    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange =
+    M3e.Cem.ButtonSegment.onChange
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.ButtonSegment.onClick
 
 
 {-| Place content in the `(default)` slot. -}

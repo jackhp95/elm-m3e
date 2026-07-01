@@ -1,7 +1,7 @@
-module M3e.InputChip exposing (avatar, icon, inputChip, removeIcon)
+module M3e.InputChip exposing (avatar, disabled, disabledInteractive, icon, onClick, onRemove, removable, removeIcon, removeLabel, value, variant, view)
 
 {-| 
-@docs inputChip, avatar, icon, removeIcon
+@docs view, disabled, disabledInteractive, removable, removeLabel, value, variant, onRemove, onClick, avatar, icon, removeIcon
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-input-chip>` element (lazy IR). -}
-inputChip :
+view :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
@@ -31,7 +31,7 @@ inputChip :
     , removeIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
-inputChip req_ attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -48,6 +48,62 @@ inputChip req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.InputChip.disabled
+
+
+{-| Whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive :
+    Bool
+    -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
+disabledInteractive =
+    M3e.Cem.InputChip.disabledInteractive
+
+
+{-| Whether the chip is removable. (default: `false`) -}
+removable :
+    Bool -> M3e.Cem.Attr.Attr { c | removable : M3e.Value.Supported } msg
+removable =
+    M3e.Cem.InputChip.removable
+
+
+{-| The accessible label given to the button used to remove the chip. (default: `"Remove"`) -}
+removeLabel :
+    String -> M3e.Cem.Attr.Attr { c | removeLabel : M3e.Value.Supported } msg
+removeLabel =
+    M3e.Cem.InputChip.removeLabel
+
+
+{-| A string representing the value of the chip. -}
+value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.InputChip.value
+
+
+{-| The appearance variant of the chip. (default: `"outlined"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.InputChip.variant
+
+
+{-| Listen for `remove` events. -}
+onRemove : msg -> M3e.Cem.Attr.Attr { c | onRemove : M3e.Value.Supported } msg
+onRemove =
+    M3e.Cem.InputChip.onRemove
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.InputChip.onClick
 
 
 {-| Place content in the `avatar` slot. -}

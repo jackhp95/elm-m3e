@@ -1,7 +1,7 @@
-module M3e.Elevation exposing (elevation)
+module M3e.Elevation exposing (disabled, for, level, view)
 
 {-| 
-@docs elevation
+@docs view, disabled, for, level
 -}
 
 
@@ -13,7 +13,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-elevation>` element (lazy IR). -}
-elevation :
+view :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , level : M3e.Value.Supported
@@ -21,7 +21,7 @@ elevation :
     } msg)
     -> List (M3e.Element.Element child msg)
     -> M3e.Element.Element { s | elevation : M3e.Value.Supported } msg
-elevation attributes children =
+view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -32,3 +32,21 @@ elevation attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
+
+
+{-| Whether hover and press events will not trigger changes in elevation, when attached to an interactive element. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.Elevation.disabled
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
+for =
+    M3e.Cem.Elevation.for
+
+
+{-| The level at which to visually depict elevation. (default: `null`) -}
+level : String -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
+level =
+    M3e.Cem.Elevation.level

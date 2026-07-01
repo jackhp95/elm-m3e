@@ -1,7 +1,7 @@
-module M3e.DrawerContainer exposing (child, children, drawerContainer, endSlot, startSlot)
+module M3e.DrawerContainer exposing (child, children, end, endDivider, endMode, endSlot, onChange, start, startDivider, startMode, startSlot, view)
 
 {-| 
-@docs drawerContainer, child, startSlot, endSlot, children
+@docs view, end, endMode, endDivider, start, startMode, startDivider, onChange, child, startSlot, endSlot, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-drawer-container>` element (lazy IR). -}
-drawerContainer :
+view :
     List (M3e.Cem.Attr.Attr { end : M3e.Value.Supported
     , endMode : M3e.Value.Supported
     , endDivider : M3e.Value.Supported
@@ -29,7 +29,7 @@ drawerContainer :
     , end : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | drawerContainer : M3e.Value.Supported } msg
-drawerContainer attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -40,6 +40,62 @@ drawerContainer attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the end drawer is open. (default: `false`) -}
+end : Bool -> M3e.Cem.Attr.Attr { c | end : M3e.Value.Supported } msg
+end =
+    M3e.Cem.DrawerContainer.end
+
+
+{-| The behavior mode of the end drawer. (default: `"side"`) -}
+endMode :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , over : M3e.Value.Supported
+    , push : M3e.Value.Supported
+    , side : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | endMode : M3e.Value.Supported } msg
+endMode =
+    M3e.Cem.DrawerContainer.endMode
+
+
+{-| Whether to show a divider between the end drawer and content for `side` mode. (default: `false`) -}
+endDivider :
+    Bool -> M3e.Cem.Attr.Attr { c | endDivider : M3e.Value.Supported } msg
+endDivider =
+    M3e.Cem.DrawerContainer.endDivider
+
+
+{-| Whether the start drawer is open. (default: `false`) -}
+start : Bool -> M3e.Cem.Attr.Attr { c | start : M3e.Value.Supported } msg
+start =
+    M3e.Cem.DrawerContainer.start
+
+
+{-| The behavior mode of the start drawer. (default: `"side"`) -}
+startMode :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , over : M3e.Value.Supported
+    , push : M3e.Value.Supported
+    , side : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | startMode : M3e.Value.Supported } msg
+startMode =
+    M3e.Cem.DrawerContainer.startMode
+
+
+{-| Whether to show a divider between the start drawer and content for `side` mode. (default: `false`) -}
+startDivider :
+    Bool -> M3e.Cem.Attr.Attr { c | startDivider : M3e.Value.Supported } msg
+startDivider =
+    M3e.Cem.DrawerContainer.startDivider
+
+
+{-| Listen for `change` events. -}
+onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange =
+    M3e.Cem.DrawerContainer.onChange
 
 
 {-| Place content in the `(default)` slot. -}

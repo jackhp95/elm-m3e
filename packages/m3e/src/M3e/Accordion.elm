@@ -1,7 +1,7 @@
-module M3e.Accordion exposing (accordion, child, children)
+module M3e.Accordion exposing (child, children, multi, view)
 
 {-| 
-@docs accordion, child, children
+@docs view, multi, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-accordion>` element (lazy IR). -}
-accordion :
+view :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | accordion : M3e.Value.Supported } msg
-accordion attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,6 +31,12 @@ accordion attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether multiple expansion panels can be open at the same time. (default: `false`) -}
+multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
+multi =
+    M3e.Cem.Accordion.multi
 
 
 {-| Place content in the `(default)` slot. -}

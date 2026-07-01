@@ -1,7 +1,7 @@
-module M3e.FocusTrap exposing (child, children, focusTrap)
+module M3e.FocusTrap exposing (child, children, disabled, view)
 
 {-| 
-@docs focusTrap, child, children
+@docs view, disabled, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-focus-trap>` element (lazy IR). -}
-focusTrap :
+view :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | focusTrap : M3e.Value.Supported } msg
-focusTrap attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,6 +31,12 @@ focusTrap attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Disables the focus trap. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.FocusTrap.disabled
 
 
 {-| Place content in the `(default)` slot. -}

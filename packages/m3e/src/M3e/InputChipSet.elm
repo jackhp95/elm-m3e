@@ -1,7 +1,7 @@
-module M3e.InputChipSet exposing (child, children, input, inputChipSet)
+module M3e.InputChipSet exposing (child, children, disabled, input, name, onChange, required, vertical, view)
 
 {-| 
-@docs inputChipSet, child, input, children
+@docs view, disabled, name, required, vertical, onChange, child, input, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-input-chip-set>` element (lazy IR). -}
-inputChipSet :
+view :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
     , required : M3e.Value.Supported
@@ -26,7 +26,7 @@ inputChipSet :
     , input : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | inputChipSet : M3e.Value.Supported } msg
-inputChipSet attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -37,6 +37,36 @@ inputChipSet attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.InputChipSet.disabled
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+name =
+    M3e.Cem.InputChipSet.name
+
+
+{-| Whether a value is required for the element. (default: `false`) -}
+required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
+required =
+    M3e.Cem.InputChipSet.required
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
+vertical =
+    M3e.Cem.InputChipSet.vertical
+
+
+{-| Listen for `change` events. -}
+onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange =
+    M3e.Cem.InputChipSet.onChange
 
 
 {-| Place content in the `(default)` slot. -}

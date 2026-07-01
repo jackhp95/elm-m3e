@@ -1,7 +1,7 @@
-module M3e.Slide exposing (child, children, slide)
+module M3e.Slide exposing (child, children, selectedIndex, view)
 
 {-| 
-@docs slide, child, children
+@docs view, selectedIndex, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-slide>` element (lazy IR). -}
-slide :
+view :
     List (M3e.Cem.Attr.Attr { selectedIndex : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | slide : M3e.Value.Supported } msg
-slide attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -29,6 +29,13 @@ slide attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The zero-based index of the visible item. (default: `null`) -}
+selectedIndex :
+    Float -> M3e.Cem.Attr.Attr { c | selectedIndex : M3e.Value.Supported } msg
+selectedIndex =
+    M3e.Cem.Slide.selectedIndex
 
 
 {-| Place content in the `(default)` slot. -}

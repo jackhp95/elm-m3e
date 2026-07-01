@@ -1,7 +1,7 @@
-module M3e.Card exposing (actions, card, child, children, content, footer, header)
+module M3e.Card exposing (actionable, actions, child, children, content, disabled, disabledInteractive, download, footer, header, href, inline, name, onClick, orientation, rel, target, type_, value, variant, view)
 
 {-| 
-@docs card, child, header, content, actions, footer, children
+@docs view, actionable, inline, orientation, variant, href, target, rel, download, name, value, type_, disabledInteractive, disabled, onClick, child, header, content, actions, footer, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-card>` element (lazy IR). -}
-card :
+view :
     List (M3e.Cem.Attr.Attr { actionable : M3e.Value.Supported
     , inline : M3e.Value.Supported
     , orientation : M3e.Value.Supported
@@ -38,7 +38,7 @@ card :
     , footer : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | card : M3e.Value.Supported } msg
-card attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -47,6 +47,112 @@ card attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the card is "actionable" and will respond to use interaction. (default: `false`) -}
+actionable :
+    Bool -> M3e.Cem.Attr.Attr { c | actionable : M3e.Value.Supported } msg
+actionable =
+    M3e.Cem.Card.actionable
+
+
+{-| Whether to present the card inline with surrounding content. (default: `false`) -}
+inline : Bool -> M3e.Cem.Attr.Attr { c | inline : M3e.Value.Supported } msg
+inline =
+    M3e.Cem.Card.inline
+
+
+{-| The orientation of the card. (default: `"vertical"`) -}
+orientation :
+    M3e.Value.Value { horizontal : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
+orientation =
+    M3e.Cem.Card.orientation
+
+
+{-| The appearance variant of the card. (default: `"filled"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , filled : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.Card.variant
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
+href =
+    M3e.Cem.Card.href
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
+target =
+    M3e.Cem.Card.target
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
+rel =
+    M3e.Cem.Card.rel
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded,
+optionally specifying the new name of the file. (default: `null`)
+-}
+download :
+    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
+download =
+    M3e.Cem.Card.download
+
+
+{-| The name of the element, submitted as a pair with the element's `value`
+as part of form data, when the element is used to submit a form.
+-}
+name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+name =
+    M3e.Cem.Card.name
+
+
+{-| The value associated with the element's name when it's submitted with form data. -}
+value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.Card.value
+
+
+{-| The type of the element. (default: `"button"`) -}
+type_ :
+    M3e.Value.Value { button : M3e.Value.Supported
+    , reset : M3e.Value.Supported
+    , submit : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
+type_ =
+    M3e.Cem.Card.type_
+
+
+{-| Whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive :
+    Bool
+    -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
+disabledInteractive =
+    M3e.Cem.Card.disabledInteractive
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.Card.disabled
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.Card.onClick
 
 
 {-| Place content in the `(default)` slot. -}

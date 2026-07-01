@@ -1,7 +1,7 @@
-module M3e.ListItem exposing (child, children, leading, listItem, overline, supportingText, trailing)
+module M3e.ListItem exposing (child, children, leading, overline, supportingText, trailing, view)
 
 {-| 
-@docs listItem, child, leading, overline, supportingText, trailing, children
+@docs view, child, leading, overline, supportingText, trailing, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-list-item>` element (lazy IR). -}
-listItem :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
     , leading : M3e.Value.Supported
@@ -23,7 +23,7 @@ listItem :
     , trailing : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | listItem : M3e.Value.Supported } msg
-listItem attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

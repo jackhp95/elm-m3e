@@ -1,7 +1,7 @@
-module M3e.FabMenu exposing (child, children, fabMenu)
+module M3e.FabMenu exposing (child, children, onBeforetoggle, onToggle, variant, view)
 
 {-| 
-@docs fabMenu, child, children
+@docs view, variant, onBeforetoggle, onToggle, child, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-fab-menu>` element (lazy IR). -}
-fabMenu :
+view :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , onBeforetoggle : M3e.Value.Supported
     , onToggle : M3e.Value.Supported
@@ -22,7 +22,7 @@ fabMenu :
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | fabMenu : M3e.Value.Supported } msg
-fabMenu attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,6 +31,30 @@ fabMenu attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The appearance variant of the menu. (default: `"primary"`) -}
+variant :
+    M3e.Value.Value { primary : M3e.Value.Supported
+    , secondary : M3e.Value.Supported
+    , tertiary : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.FabMenu.variant
+
+
+{-| Listen for `beforetoggle` events. -}
+onBeforetoggle :
+    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
+onBeforetoggle =
+    M3e.Cem.FabMenu.onBeforetoggle
+
+
+{-| Listen for `toggle` events. -}
+onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
+onToggle =
+    M3e.Cem.FabMenu.onToggle
 
 
 {-| Place content in the `(default)` slot. -}

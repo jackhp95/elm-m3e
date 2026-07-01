@@ -1,7 +1,7 @@
-module M3e.FabMenuTrigger exposing (fabMenuTrigger)
+module M3e.FabMenuTrigger exposing (for, view)
 
 {-| 
-@docs fabMenuTrigger
+@docs view, for
 -}
 
 
@@ -13,13 +13,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-fab-menu-trigger>` element (lazy IR). -}
-fabMenuTrigger :
+view :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Element.Element child msg)
     -> M3e.Element.Element { s | fabMenuTrigger : M3e.Value.Supported } msg
-fabMenuTrigger attributes children =
+view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -30,3 +30,9 @@ fabMenuTrigger attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
+for =
+    M3e.Cem.FabMenuTrigger.for

@@ -1,7 +1,7 @@
-module M3e.MenuItem exposing (child, children, icon, menuItem, trailingIcon)
+module M3e.MenuItem exposing (child, children, disabled, download, href, icon, onClick, rel, target, trailingIcon, view)
 
 {-| 
-@docs menuItem, child, icon, trailingIcon, children
+@docs view, disabled, download, href, rel, target, onClick, child, icon, trailingIcon, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-menu-item>` element (lazy IR). -}
-menuItem :
+view :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , download : M3e.Value.Supported
     , href : M3e.Value.Supported
@@ -28,7 +28,7 @@ menuItem :
     , trailingIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | menuItem : M3e.Value.Supported } msg
-menuItem attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -39,6 +39,43 @@ menuItem attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.MenuItem.disabled
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download :
+    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
+download =
+    M3e.Cem.MenuItem.download
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
+href =
+    M3e.Cem.MenuItem.href
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
+rel =
+    M3e.Cem.MenuItem.rel
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
+target =
+    M3e.Cem.MenuItem.target
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.MenuItem.onClick
 
 
 {-| Place content in the `(default)` slot. -}

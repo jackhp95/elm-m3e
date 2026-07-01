@@ -1,7 +1,7 @@
-module M3e.ActionElementBase exposing (actionElementBase)
+module M3e.ActionElementBase exposing (view)
 
 {-| 
-@docs actionElementBase
+@docs view
 -}
 
 
@@ -13,11 +13,11 @@ import M3e.Value
 
 
 {-| Build the `<div>` element (lazy IR). -}
-actionElementBase :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Element.Element child msg)
     -> M3e.Element.Element { s | actionElementBase : M3e.Value.Supported } msg
-actionElementBase attributes children =
+view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

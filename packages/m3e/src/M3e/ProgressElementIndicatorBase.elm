@@ -1,7 +1,7 @@
-module M3e.ProgressElementIndicatorBase exposing (progressElementIndicatorBase)
+module M3e.ProgressElementIndicatorBase exposing (max, value, variant, view)
 
 {-| 
-@docs progressElementIndicatorBase
+@docs view, value, max, variant
 -}
 
 
@@ -13,7 +13,7 @@ import M3e.Value
 
 
 {-| Build the `<div>` element (lazy IR). -}
-progressElementIndicatorBase :
+view :
     List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
     , max : M3e.Value.Supported
     , variant : M3e.Value.Supported
@@ -23,7 +23,7 @@ progressElementIndicatorBase :
     -> M3e.Element.Element { s
         | progressElementIndicatorBase : M3e.Value.Supported
     } msg
-progressElementIndicatorBase attributes children =
+view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -34,3 +34,23 @@ progressElementIndicatorBase attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
+
+
+{-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
+value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.ProgressElementIndicatorBase.value
+
+
+{-| The maximum progress value. (default: `100`) -}
+max : Float -> M3e.Cem.Attr.Attr { c | max : M3e.Value.Supported } msg
+max =
+    M3e.Cem.ProgressElementIndicatorBase.max
+
+
+{-| The appearance of the indicator. (default: `"flat"`) -}
+variant :
+    M3e.Value.Value { flat : M3e.Value.Supported, wavy : M3e.Value.Supported }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.ProgressElementIndicatorBase.variant

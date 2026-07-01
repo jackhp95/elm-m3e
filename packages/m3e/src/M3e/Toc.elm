@@ -1,7 +1,7 @@
-module M3e.Toc exposing (child, children, overline, title, toc)
+module M3e.Toc exposing (child, children, for, maxDepth, overline, title, view)
 
 {-| 
-@docs toc, child, overline, title, children
+@docs view, for, maxDepth, child, overline, title, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-toc>` element (lazy IR). -}
-toc :
+view :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , maxDepth : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -24,7 +24,7 @@ toc :
     , title : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | toc : M3e.Value.Supported } msg
-toc attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -33,6 +33,18 @@ toc attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
+for =
+    M3e.Cem.Toc.for
+
+
+{-| The maximum depth of the table of contents. (default: `2`) -}
+maxDepth : Float -> M3e.Cem.Attr.Attr { c | maxDepth : M3e.Value.Supported } msg
+maxDepth =
+    M3e.Cem.Toc.maxDepth
 
 
 {-| Place content in the `(default)` slot. -}

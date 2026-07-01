@@ -1,7 +1,7 @@
-module M3e.TocItem exposing (tocItem)
+module M3e.TocItem exposing (disabled, onClick, selected, view)
 
 {-| 
-@docs tocItem
+@docs view, disabled, selected, onClick
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-toc-item>` element (lazy IR). -}
-tocItem :
+view :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -23,7 +23,7 @@ tocItem :
     } msg)
     -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | tocItem : M3e.Value.Supported } msg
-tocItem req_ attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -38,3 +38,21 @@ tocItem req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.TocItem.disabled
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
+selected =
+    M3e.Cem.TocItem.selected
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.TocItem.onClick

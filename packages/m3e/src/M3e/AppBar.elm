@@ -1,7 +1,7 @@
-module M3e.AppBar exposing (appBar, leading, subtitle, title, trailing)
+module M3e.AppBar exposing (centered, for, leading, size, subtitle, title, trailing, view)
 
 {-| 
-@docs appBar, leading, title, subtitle, trailing
+@docs view, centered, for, size, leading, title, subtitle, trailing
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-app-bar>` element (lazy IR). -}
-appBar :
+view :
     List (M3e.Cem.Attr.Attr { centered : M3e.Value.Supported
     , for : M3e.Value.Supported
     , size : M3e.Value.Supported
@@ -26,7 +26,7 @@ appBar :
     , trailing : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
-appBar attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -35,6 +35,29 @@ appBar attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the title and subtitle are centered. (default: `false`) -}
+centered : Bool -> M3e.Cem.Attr.Attr { c | centered : M3e.Value.Supported } msg
+centered =
+    M3e.Cem.AppBar.centered
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
+for =
+    M3e.Cem.AppBar.for
+
+
+{-| The size of the bar. (default: `"small"`) -}
+size :
+    M3e.Value.Value { large : M3e.Value.Supported
+    , medium : M3e.Value.Supported
+    , small : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
+size =
+    M3e.Cem.AppBar.size
 
 
 {-| Place content in the `leading` slot. -}

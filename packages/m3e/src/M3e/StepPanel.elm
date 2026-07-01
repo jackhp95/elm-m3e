@@ -1,7 +1,7 @@
-module M3e.StepPanel exposing (actions, child, children, stepPanel)
+module M3e.StepPanel exposing (actions, child, children, view)
 
 {-| 
-@docs stepPanel, child, actions, children
+@docs view, child, actions, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-step-panel>` element (lazy IR). -}
-stepPanel :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
     , actions : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | stepPanel : M3e.Value.Supported } msg
-stepPanel attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

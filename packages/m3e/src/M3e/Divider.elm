@@ -1,7 +1,7 @@
-module M3e.Divider exposing (divider)
+module M3e.Divider exposing (inset, insetEnd, insetStart, vertical, view)
 
 {-| 
-@docs divider
+@docs view, inset, insetStart, insetEnd, vertical
 -}
 
 
@@ -13,7 +13,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-divider>` element (lazy IR). -}
-divider :
+view :
     List (M3e.Cem.Attr.Attr { inset : M3e.Value.Supported
     , insetStart : M3e.Value.Supported
     , insetEnd : M3e.Value.Supported
@@ -22,7 +22,7 @@ divider :
     } msg)
     -> List (M3e.Element.Element child msg)
     -> M3e.Element.Element { s | divider : M3e.Value.Supported } msg
-divider attributes children =
+view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -31,3 +31,28 @@ divider attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
+
+
+{-| Whether the divider is indented with equal padding on both sides. (default: `false`) -}
+inset : Bool -> M3e.Cem.Attr.Attr { c | inset : M3e.Value.Supported } msg
+inset =
+    M3e.Cem.Divider.inset
+
+
+{-| Whether the divider is indented with padding on the leading side. (default: `false`) -}
+insetStart :
+    Bool -> M3e.Cem.Attr.Attr { c | insetStart : M3e.Value.Supported } msg
+insetStart =
+    M3e.Cem.Divider.insetStart
+
+
+{-| Whether the divider is indented with padding on the trailing side. (default: `false`) -}
+insetEnd : Bool -> M3e.Cem.Attr.Attr { c | insetEnd : M3e.Value.Supported } msg
+insetEnd =
+    M3e.Cem.Divider.insetEnd
+
+
+{-| Whether the divider is vertically aligned with adjacent content. (default: `false`) -}
+vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
+vertical =
+    M3e.Cem.Divider.vertical

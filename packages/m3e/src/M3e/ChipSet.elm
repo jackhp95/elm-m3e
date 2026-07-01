@@ -1,7 +1,7 @@
-module M3e.ChipSet exposing (child, children, chipSet)
+module M3e.ChipSet exposing (child, children, vertical, view)
 
 {-| 
-@docs chipSet, child, children
+@docs view, vertical, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-chip-set>` element (lazy IR). -}
-chipSet :
+view :
     List (M3e.Cem.Attr.Attr { vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | chipSet : M3e.Value.Supported } msg
-chipSet attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -29,6 +29,12 @@ chipSet attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
+vertical =
+    M3e.Cem.ChipSet.vertical
 
 
 {-| Place content in the `(default)` slot. -}

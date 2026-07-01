@@ -1,7 +1,7 @@
-module M3e.NavMenuItemGroup exposing (child, children, label, navMenuItemGroup)
+module M3e.NavMenuItemGroup exposing (child, children, label, view)
 
 {-| 
-@docs navMenuItemGroup, label, child, children
+@docs view, label, child, children
 -}
 
 
@@ -14,13 +14,13 @@ import M3e.Value
 
 
 {-| Build the `<m3e-nav-menu-item-group>` element (lazy IR). -}
-navMenuItemGroup :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { label : M3e.Value.Supported
     , default : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | navMenuItemGroup : M3e.Value.Supported } msg
-navMenuItemGroup attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

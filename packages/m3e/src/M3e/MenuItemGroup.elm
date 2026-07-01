@@ -1,7 +1,7 @@
-module M3e.MenuItemGroup exposing (child, children, menuItemGroup)
+module M3e.MenuItemGroup exposing (child, children, view)
 
 {-| 
-@docs menuItemGroup, child, children
+@docs view, child, children
 -}
 
 
@@ -14,11 +14,11 @@ import M3e.Value
 
 
 {-| Build the `<m3e-menu-item-group>` element (lazy IR). -}
-menuItemGroup :
+view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | menuItemGroup : M3e.Value.Supported } msg
-menuItemGroup attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->

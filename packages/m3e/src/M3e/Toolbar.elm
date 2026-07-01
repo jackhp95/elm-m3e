@@ -1,7 +1,7 @@
-module M3e.Toolbar exposing (child, children, toolbar)
+module M3e.Toolbar exposing (child, children, elevated, shape, variant, vertical, view)
 
 {-| 
-@docs toolbar, child, children
+@docs view, elevated, shape, variant, vertical, child, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-toolbar>` element (lazy IR). -}
-toolbar :
+view :
     List (M3e.Cem.Attr.Attr { elevated : M3e.Value.Supported
     , shape : M3e.Value.Supported
     , variant : M3e.Value.Supported
@@ -23,7 +23,7 @@ toolbar :
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | toolbar : M3e.Value.Supported } msg
-toolbar attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -32,6 +32,38 @@ toolbar attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the toolbar is elevated. (default: `false`) -}
+elevated : Bool -> M3e.Cem.Attr.Attr { c | elevated : M3e.Value.Supported } msg
+elevated =
+    M3e.Cem.Toolbar.elevated
+
+
+{-| The shape of the toolbar. (default: `"square"`) -}
+shape :
+    M3e.Value.Value { rounded : M3e.Value.Supported
+    , square : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | shape : M3e.Value.Supported } msg
+shape =
+    M3e.Cem.Toolbar.shape
+
+
+{-| The appearance variant of the toolbar. (default: `"standard"`) -}
+variant :
+    M3e.Value.Value { standard : M3e.Value.Supported
+    , vibrant : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant =
+    M3e.Cem.Toolbar.variant
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
+vertical =
+    M3e.Cem.Toolbar.vertical
 
 
 {-| Place content in the `(default)` slot. -}

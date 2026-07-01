@@ -1,7 +1,7 @@
-module M3e.ListAction exposing (child, children, leading, listAction, overline, supportingText, trailing)
+module M3e.ListAction exposing (child, children, disabled, download, href, leading, onClick, overline, rel, supportingText, target, trailing, view)
 
 {-| 
-@docs listAction, child, leading, overline, supportingText, trailing, children
+@docs view, disabled, download, href, rel, target, onClick, child, leading, overline, supportingText, trailing, children
 -}
 
 
@@ -14,7 +14,7 @@ import M3e.Value
 
 
 {-| Build the `<m3e-list-action>` element (lazy IR). -}
-listAction :
+view :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , download : M3e.Value.Supported
     , href : M3e.Value.Supported
@@ -30,7 +30,7 @@ listAction :
     , trailing : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | listAction : M3e.Value.Supported } msg
-listAction attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
             (\erased ch ->
@@ -41,6 +41,43 @@ listAction attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+disabled =
+    M3e.Cem.ListAction.disabled
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download :
+    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
+download =
+    M3e.Cem.ListAction.download
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
+href =
+    M3e.Cem.ListAction.href
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
+rel =
+    M3e.Cem.ListAction.rel
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
+target =
+    M3e.Cem.ListAction.target
+
+
+{-| Listen for `click` events. -}
+onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
+onClick =
+    M3e.Cem.ListAction.onClick
 
 
 {-| Place content in the `(default)` slot. -}
