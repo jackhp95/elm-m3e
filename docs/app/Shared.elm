@@ -8,31 +8,40 @@ and a persistent left sidebar mirroring matraic's IA. Every icon goes
 through `M3e.Icon`; every action through `M3e.IconButton`; every theme
 toggle through `M3e.SegmentedButton`.
 
+Migrated to the Vocab API (2026-07-01): the old hand `Theme.Scheme`/`Theme.Contrast`
+unions are now local (the new `M3e.Theme` is token-driven), and every constructor
+is `Module.view [attrs] [content]`.
+
 -}
 
 import BackendTask exposing (BackendTask)
 import Browser.Events
 import Effect exposing (Effect)
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class)
 import Html.Events
 import Json.Decode as Decode
-import M3e.AppBar
-import M3e.Card
-import M3e.Element as Element exposing (Element, Supported)
-import M3e.Heading
-import M3e.Icon
-import M3e.IconButton
-import M3e.NavigationDrawer
+import Kit
+import M3e.AppBar as AppBar
+import M3e.ButtonSegment as ButtonSegment
+import M3e.Card as Card
+import M3e.DrawerContainer as DrawerContainer
+import M3e.Element as Element exposing (Element)
+import M3e.Heading as Heading
+import M3e.Icon as Icon
+import M3e.IconButton as IconButton
 import M3e.Node as Node
-import M3e.SegmentedButton
+import M3e.SegmentedButton as SegmentedButton
 import M3e.Theme as Theme
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Ports
 import Route exposing (Route)
+import Seam
 import SharedTemplate exposing (SharedTemplate)
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -53,12 +62,29 @@ template =
 -- MODEL
 
 
+{-| The color scheme toggle. The new `M3e.Theme` is token-driven (no `Theme.Scheme`
+union), so this lives locally now; it maps to `Value.auto|light|dark`.
+-}
+type Scheme
+    = Auto
+    | Light
+    | Dark
+
+
+{-| The contrast toggle — local for the same reason; maps to `Value.standard|medium|high`.
+-}
+type Contrast
+    = Standard
+    | Medium
+    | High
+
+
 type alias Model =
     { showMenu : Bool
     , viewportWidth : Int
-    , scheme : Theme.Scheme
+    , scheme : Scheme
     , seed : String
-    , contrast : Theme.Contrast
+    , contrast : Contrast
     , density : Float
     , dir : Direction
     , settingsOpen : Bool
@@ -67,16 +93,6 @@ type alias Model =
 
 {-| The Tailwind `md` breakpoint — kept in Elm only because the drawer's
 `start` is a Lit JS property, not CSS state.
-
-Hiding/showing chrome (the hamburger, the settings popover layout) is pure
-Tailwind — `class "md:hidden"` etc. The hold-out is `m3e-drawer-container`:
-its open state lives in a `@property({ type: Boolean, reflect: true }) start`
-on the custom element, and the `.start` panel sits inside the element's
-shadow DOM (no `::part` exposure). CSS can't reach in to flip it
-responsively, so Elm has to know the viewport to set the initial value at
-hydration and re-set it on the mobile↔desktop transition (`auto` mode
-only autoCloses going side→over; never autoOpens going over→side).
-
 -}
 mdBreakpointPx : Int
 mdBreakpointPx =
@@ -106,9 +122,9 @@ type Msg
     | MenuChanged Bool
     | ViewportResized Int
     | ToggleSettings
-    | SetScheme Theme.Scheme
+    | SetScheme Scheme
     | SetSeed String
-    | SetContrast Theme.Contrast
+    | SetContrast Contrast
     | SetDensity Float
     | SetDirection Direction
 
@@ -135,7 +151,7 @@ init flags _ =
       , viewportWidth = initialViewportWidth flags
       , scheme = schemeFromFlags flags
       , seed = "#6750A4"
-      , contrast = Theme.Standard
+      , contrast = Standard
       , density = 0
       , dir = Ltr
       , settingsOpen = False
@@ -146,7 +162,6 @@ init flags _ =
 
 {-| Read `flags.width` (passed by docs/index.ts on the client). Falls back to
 a desktop-leaning width so server-rendered HTML defaults to the side drawer.
-See `mdBreakpointPx` for why this can't be a pure-CSS concern.
 -}
 initialViewportWidth : Pages.Flags.Flags -> Int
 initialViewportWidth flags =
@@ -162,43 +177,43 @@ initialViewportWidth flags =
 {-| The initial color scheme: the value persisted in `localStorage` (passed by
 `index.ts` as `flags.scheme`), else **Auto** — follow the OS light/dark setting.
 -}
-schemeFromFlags : Pages.Flags.Flags -> Theme.Scheme
+schemeFromFlags : Pages.Flags.Flags -> Scheme
 schemeFromFlags flags =
     case flags of
         Pages.Flags.BrowserFlags raw ->
             Decode.decodeValue (Decode.field "scheme" Decode.string) raw
                 |> Result.toMaybe
                 |> Maybe.andThen schemeFromString
-                |> Maybe.withDefault Theme.Auto
+                |> Maybe.withDefault Auto
 
         Pages.Flags.PreRenderFlags ->
-            Theme.Auto
+            Auto
 
 
-schemeToString : Theme.Scheme -> String
+schemeToString : Scheme -> String
 schemeToString scheme =
     case scheme of
-        Theme.Auto ->
+        Auto ->
             "auto"
 
-        Theme.Light ->
+        Light ->
             "light"
 
-        Theme.Dark ->
+        Dark ->
             "dark"
 
 
-schemeFromString : String -> Maybe Theme.Scheme
+schemeFromString : String -> Maybe Scheme
 schemeFromString s =
     case s of
         "auto" ->
-            Just Theme.Auto
+            Just Auto
 
         "light" ->
-            Just Theme.Light
+            Just Light
 
         "dark" ->
-            Just Theme.Dark
+            Just Dark
 
         _ ->
             Nothing
@@ -243,11 +258,8 @@ update msg model =
             ( { model | dir = dir }, Effect.none )
 
 
-{-| Watch viewport width specifically to re-open the side drawer when the
-user crosses from mobile to desktop. m3e-drawer-container's `mode=auto`
-autoCloses going side→over (caught via the old `withOnChange`, now dropped),
-but it doesn't autoOpen going over→side — so without this subscription, a
-closed drawer on mobile stays closed (no sidebar) after resizing up.
+{-| Watch viewport width to re-open the side drawer when the user crosses from
+mobile to desktop.
 -}
 subscriptions : UrlPath -> Model -> Sub Msg
 subscriptions _ _ =
@@ -270,6 +282,32 @@ toHtml =
     Element.toNode >> Node.toHtml
 
 
+schemeToken : Scheme -> Value.Value { a | auto : Supported, dark : Supported, light : Supported }
+schemeToken scheme =
+    case scheme of
+        Auto ->
+            Value.auto
+
+        Light ->
+            Value.light
+
+        Dark ->
+            Value.dark
+
+
+contrastToken : Contrast -> Value.Value { a | high : Supported, medium : Supported, standard : Supported }
+contrastToken contrast =
+    case contrast of
+        Standard ->
+            Value.standard
+
+        Medium ->
+            Value.medium
+
+        High ->
+            Value.high
+
+
 view :
     Data
     ->
@@ -282,17 +320,17 @@ view :
     -> { body : List (Html msg), title : String }
 view _ page model toMsg pageView =
     let
-        -- `themed` takes a list of `Node msg` values, wraps them in
-        -- `<m3e-theme>`, and does the single `Node.toHtml` conversion.
-        themed : List (Node.Node msg) -> Html msg
+        -- `themed` wraps content Elements in `<m3e-theme>` and does the single
+        -- `Node.toHtml` conversion.
+        themed : List (Element { html : Supported } msg) -> Html msg
         themed children =
             Theme.view
-                { content = List.map Element.fromNode children }
-                [ Theme.seedColor model.seed
-                , Theme.scheme model.scheme
-                , Theme.contrast model.contrast
+                [ Theme.color model.seed
+                , Theme.scheme (schemeToken model.scheme)
+                , Theme.contrast (contrastToken model.contrast)
                 , Theme.density model.density
                 ]
+                (List.map Theme.child children)
                 |> toHtml
 
         absolutePath =
@@ -301,31 +339,25 @@ view _ page model toMsg pageView =
     { title = pageView.title
     , body =
         if String.startsWith "/studies/" absolutePath then
-            -- Individual study routes (`/studies/<slug>`) take the full
-            -- viewport; they already include their own m3e nav chrome, so
-            -- skip the docs shell to avoid double-nav.
-            --
-            -- Full-bleed: no outer gutter. These are app clones — their own
-            -- internal layout (app bars, frames, content padding) owns the
-            -- spacing, so the study content reaches the viewport edges like a
-            -- real app rather than sitting inside a docs gutter.
+            -- Individual study routes take the full viewport; they include their
+            -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
             [ themed
-                [ Node.element "div"
-                    [ Node.rawAttr (class "min-h-screen bg-surface text-on-surface")
-                    , Node.rawAttr (attribute "dir" (directionAttr model.dir))
+                [ Native.div
+                    [ Seam.asAttribute (class "min-h-screen bg-surface text-on-surface")
+                    , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    pageView.body
+                    (List.map Element.fromNode pageView.body)
                 ]
             ]
 
         else
             [ themed
-                [ Node.element "div"
-                    [ Node.rawAttr (class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface")
-                    , Node.rawAttr (attribute "dir" (directionAttr model.dir))
+                [ Native.div
+                    [ Seam.asAttribute (class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface")
+                    , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    [ Node.raw (Html.map toMsg (appShellBar model))
-                    , Node.raw (drawerShell toMsg model page (List.map Node.toHtml pageView.body))
+                    [ EscapeHatch.fromHtml (Html.map toMsg (appShellBar model))
+                    , EscapeHatch.fromHtml (drawerShell toMsg model page (List.map Node.toHtml pageView.body))
                     ]
                 ]
             ]
@@ -359,121 +391,99 @@ appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
-        [ M3e.AppBar.view
-            [ M3e.AppBar.id "docs-app-bar"
-            , M3e.AppBar.size Value.small
-            , M3e.AppBar.title
-                (M3e.Heading.view { label = "elm-m3e", variant = Value.title } [])
-            , M3e.AppBar.subtitle
-                (M3e.Heading.view { label = "Material 3 Expressive for Elm", variant = Value.label } [])
-            , M3e.AppBar.leading (menuButton model)
-            , M3e.AppBar.trailing
-                [ schemeQuickToggle model
-                , settingsTriggerElement model
-                , githubLink
-                ]
+        [ AppBar.view
+            [ AppBar.size Value.small
+            , Seam.asAttribute (Attr.id "docs-app-bar")
             ]
-            |> Element.toNode
-            |> Node.toHtml
+            [ AppBar.title (Kit.text "elm-m3e")
+            , AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
+            , AppBar.leading (EscapeHatch.asElement (menuButton model))
+            , AppBar.trailing (EscapeHatch.asElement (schemeQuickToggle model))
+            , AppBar.trailing (EscapeHatch.asElement (settingsTriggerElement model))
+            , AppBar.trailing (EscapeHatch.asElement githubLink)
+            ]
+            |> toHtml
         ]
 
 
-{-| The mobile hamburger. Drives the drawer through `MenuClicked` → showMenu →
-`drawerShell`'s `open`, which emits `start` as an HTML attribute so
-the drawer-container's CSS selectors actually react.
-
-Why not `m3e-drawer-toggle`? Its `_toggleDrawer` does
-`this.control.closest("m3e-drawer-container")` to find its target — our app
-bar sits in a SIBLING of the drawer-container, not a descendant, so the
-canonical toggle silently no-ops here. The Elm round-trip is the right call
-until the shell layout puts the app bar inside the drawer.
-
-Wrapped in a `span.md:hidden` so the button is invisible on wider viewports
-(the side drawer is always visible there — no hamburger needed). Since
-`M3e.IconButton` no longer accepts arbitrary HTML attributes, the class is
-attached via `Element.element`.
-
+{-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
+viewports (the side drawer is always visible there).
 -}
-menuButton : Model -> M3e.AppBar.Leading Msg
+menuButton : Model -> Element { html : Supported } Msg
 menuButton _ =
-    Element.element { tag = "span" }
-        [ Node.rawAttr (class "md:hidden") ]
-        [ Element.toNode
-            (M3e.IconButton.view
-                { icon = "menu", ariaLabel = "Toggle navigation" }
-                [ M3e.IconButton.onClick MenuClicked ]
-            )
+    Native.span
+        [ Seam.asAttribute (class "md:hidden") ]
+        [ IconButton.view
+            { content = Icon.view [ Icon.name "menu" ] [], ariaLabel = "Toggle navigation" }
+            [ IconButton.onClick MenuClicked ]
+            []
         ]
 
 
-githubLink : M3e.AppBar.Trailing Msg
+githubLink : Element { iconButton : Supported } Msg
 githubLink =
-    M3e.IconButton.view
-        { icon = "code", ariaLabel = "GitHub repository" }
-        [ M3e.IconButton.href "https://github.com/jackhp95/elm-m3e"
-        , M3e.IconButton.target "_blank"
-        , M3e.IconButton.rel "noreferrer noopener"
+    IconButton.view
+        { content = Icon.view [ Icon.name "code" ] [], ariaLabel = "GitHub repository" }
+        [ IconButton.href "https://github.com/jackhp95/elm-m3e"
+        , IconButton.target "_blank"
+        , IconButton.rel "noreferrer noopener"
         ]
+        []
 
 
-schemeQuickToggle : Model -> M3e.AppBar.Trailing Msg
+schemeQuickToggle : Model -> Element { iconButton : Supported } Msg
 schemeQuickToggle model =
     let
         ( next, iconName, iconLabel ) =
             case model.scheme of
-                Theme.Light ->
-                    ( Theme.Dark, "dark_mode", "Switch to dark mode" )
+                Light ->
+                    ( Dark, "dark_mode", "Switch to dark mode" )
 
-                Theme.Dark ->
-                    ( Theme.Auto, "brightness_auto", "Use system color scheme" )
+                Dark ->
+                    ( Auto, "brightness_auto", "Use system color scheme" )
 
-                Theme.Auto ->
-                    ( Theme.Light, "light_mode", "Switch to light mode" )
+                Auto ->
+                    ( Light, "light_mode", "Switch to light mode" )
     in
-    M3e.IconButton.view { icon = iconName, ariaLabel = iconLabel }
-        [ M3e.IconButton.onClick (SetScheme next) ]
+    IconButton.view
+        { content = Icon.view [ Icon.name iconName ] [], ariaLabel = iconLabel }
+        [ IconButton.onClick (SetScheme next) ]
+        []
 
 
 
 -- SETTINGS POPOVER (anchored to a relative-positioned wrapper)
 
 
-{-| The trailing settings control: a `relative`-positioned wrapper (so the
-popover can anchor) holding the trigger icon button and — when open — the
-settings panel. Rendered as a single trailing slot item via `withTrailing`.
+{-| The trailing settings control: a `relative`-positioned wrapper holding the
+trigger icon button and — when open — the settings panel.
 -}
-settingsTriggerElement : Model -> M3e.AppBar.Trailing Msg
+settingsTriggerElement : Model -> Element { html : Supported } Msg
 settingsTriggerElement model =
-    Element.element { tag = "div" }
-        [ Node.rawAttr (class "relative") ]
-        [ Element.toNode
-            (M3e.IconButton.view
-                { icon = "tune", ariaLabel = "Theme settings" }
-                [ M3e.IconButton.onClick ToggleSettings ]
-            )
+    Native.div
+        [ Seam.asAttribute (class "relative") ]
+        [ IconButton.view
+            { content = Icon.view [ Icon.name "tune" ] [], ariaLabel = "Theme settings" }
+            [ IconButton.onClick ToggleSettings ]
+            []
         , if model.settingsOpen then
-            Node.raw (settingsPanel model)
+            EscapeHatch.fromHtml (settingsPanel model)
 
           else
-            Node.raw (Html.text "")
+            EscapeHatch.fromHtml (Html.text "")
         ]
 
 
 settingsPanel : Model -> Html Msg
 settingsPanel model =
-    -- `fixed` anchors to the viewport. With `absolute`, the nearest positioned
-    -- ancestor was the tiny icon-button-wrapper (~40px wide), which made
-    -- `left-2 right-2` resolve to a 24px-wide column — the "narrow" complaint.
     Html.div [ class "fixed left-2 right-2 top-14 z-40 sm:left-auto sm:right-2 sm:w-72" ]
-        [ M3e.Card.view
-            [ M3e.Card.variant Value.filled
-            , M3e.Card.headline
-                (M3e.Heading.view { label = "Theme settings", variant = Value.title } [])
-            , M3e.Card.body
-                [ Element.html (settingsBody model) ]
+        [ Card.view
+            [ Card.variant Value.filled ]
+            [ Card.header
+                (Heading.view { content = Kit.text "Theme settings" } [ Heading.variant Value.title ] [])
+            , Card.content (EscapeHatch.fromHtml (settingsBody model))
             ]
-            |> Element.toNode
-            |> Node.toHtml
+            |> toHtml
         ]
 
 
@@ -488,42 +498,41 @@ settingsBody model =
         ]
 
 
+{-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
+children, each a checked/label/onClick triple.
+-}
+segmented : List ( String, Bool, Msg ) -> Html Msg
+segmented segments =
+    SegmentedButton.view []
+        (List.map
+            (\( label, checked, msg ) ->
+                SegmentedButton.child
+                    (ButtonSegment.view
+                        [ ButtonSegment.checked checked, ButtonSegment.onClick msg ]
+                        [ ButtonSegment.child (Kit.text label) ]
+                    )
+            )
+            segments
+        )
+        |> toHtml
+
+
 schemeSegmented : Model -> Html Msg
 schemeSegmented model =
-    M3e.SegmentedButton.view
-        { segments =
-            [ M3e.SegmentedButton.segment
-                { label = "Light", checked = model.scheme == Theme.Light }
-                [ M3e.SegmentedButton.segmentOnClick (SetScheme Theme.Light) ]
-            , M3e.SegmentedButton.segment
-                { label = "System", checked = model.scheme == Theme.Auto }
-                [ M3e.SegmentedButton.segmentOnClick (SetScheme Theme.Auto) ]
-            , M3e.SegmentedButton.segment
-                { label = "Dark", checked = model.scheme == Theme.Dark }
-                [ M3e.SegmentedButton.segmentOnClick (SetScheme Theme.Dark) ]
-            ]
-        }
-        []
-        |> toHtml
+    segmented
+        [ ( "Light", model.scheme == Light, SetScheme Light )
+        , ( "System", model.scheme == Auto, SetScheme Auto )
+        , ( "Dark", model.scheme == Dark, SetScheme Dark )
+        ]
 
 
 contrastSegmented : Model -> Html Msg
 contrastSegmented model =
-    M3e.SegmentedButton.view
-        { segments =
-            [ M3e.SegmentedButton.segment
-                { label = "Standard", checked = model.contrast == Theme.Standard }
-                [ M3e.SegmentedButton.segmentOnClick (SetContrast Theme.Standard) ]
-            , M3e.SegmentedButton.segment
-                { label = "Medium", checked = model.contrast == Theme.Medium }
-                [ M3e.SegmentedButton.segmentOnClick (SetContrast Theme.Medium) ]
-            , M3e.SegmentedButton.segment
-                { label = "High", checked = model.contrast == Theme.High }
-                [ M3e.SegmentedButton.segmentOnClick (SetContrast Theme.High) ]
-            ]
-        }
-        []
-        |> toHtml
+    segmented
+        [ ( "Standard", model.contrast == Standard, SetContrast Standard )
+        , ( "Medium", model.contrast == Medium, SetContrast Medium )
+        , ( "High", model.contrast == High, SetContrast High )
+        ]
 
 
 seedColorInput : Model -> Html Msg
@@ -549,40 +558,20 @@ seedColorInput model =
 
 densitySegmented : Model -> Html Msg
 densitySegmented model =
-    M3e.SegmentedButton.view
-        { segments =
-            [ M3e.SegmentedButton.segment
-                { label = "0", checked = model.density == 0 }
-                [ M3e.SegmentedButton.segmentOnClick (SetDensity 0) ]
-            , M3e.SegmentedButton.segment
-                { label = "-1", checked = model.density == -1 }
-                [ M3e.SegmentedButton.segmentOnClick (SetDensity -1) ]
-            , M3e.SegmentedButton.segment
-                { label = "-2", checked = model.density == -2 }
-                [ M3e.SegmentedButton.segmentOnClick (SetDensity -2) ]
-            , M3e.SegmentedButton.segment
-                { label = "-3", checked = model.density == -3 }
-                [ M3e.SegmentedButton.segmentOnClick (SetDensity -3) ]
-            ]
-        }
-        []
-        |> toHtml
+    segmented
+        [ ( "0", model.density == 0, SetDensity 0 )
+        , ( "-1", model.density == -1, SetDensity -1 )
+        , ( "-2", model.density == -2, SetDensity -2 )
+        , ( "-3", model.density == -3, SetDensity -3 )
+        ]
 
 
 directionSegmented : Model -> Html Msg
 directionSegmented model =
-    M3e.SegmentedButton.view
-        { segments =
-            [ M3e.SegmentedButton.segment
-                { label = "LTR", checked = model.dir == Ltr }
-                [ M3e.SegmentedButton.segmentOnClick (SetDirection Ltr) ]
-            , M3e.SegmentedButton.segment
-                { label = "RTL", checked = model.dir == Rtl }
-                [ M3e.SegmentedButton.segmentOnClick (SetDirection Rtl) ]
-            ]
-        }
-        []
-        |> toHtml
+    segmented
+        [ ( "LTR", model.dir == Ltr, SetDirection Ltr )
+        , ( "RTL", model.dir == Rtl, SetDirection Rtl )
+        ]
 
 
 
@@ -627,20 +616,9 @@ navSections =
     ]
 
 
-{-| The whole below-app-bar shell: a side `m3e-drawer-container` (via
-`M3e.NavigationDrawer`) whose `start` panel is the hierarchical nav-menu and
-whose content region holds the page body. The rounded floating content pane
-and the panel chrome come from the primitive — no hand-styled surfaces.
-
-The nav is pure `a[href]` links (no messages), so this is `Html msg`, letting
-the page body keep its own message type without a `Html.map`.
-
-NOTE: `M3e.NavigationDrawer` has no `withOnChange` option — the callback that
-kept `model.showMenu` in sync with drawer-initiated closes is therefore
-dropped. `showMenu` is still toggled by `MenuClicked` (hamburger) and reset
-to `False` by `CloseMenu` (page navigation). The `toMsg` argument is retained
-in the signature to avoid breaking the call-site in `view`.
-
+{-| The whole below-app-bar shell: a side `m3e-drawer-container` whose `start`
+panel is the hierarchical nav-menu and whose default content is the page body.
+The nav is `NavItem` links inside `NavMenuItem` groups inside a `NavMenu`.
 -}
 drawerShell : (Msg -> msg) -> Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
 drawerShell _ model page body =
@@ -648,58 +626,66 @@ drawerShell _ model page body =
         currentPath =
             normalizePath (UrlPath.toAbsolute page.path)
     in
-    M3e.NavigationDrawer.view
-        { entries = navEntries currentPath }
-        [ M3e.NavigationDrawer.id "docs-drawer"
-        , M3e.NavigationDrawer.mode M3e.NavigationDrawer.ModeAuto
-        , M3e.NavigationDrawer.open (not (isMobile model) || model.showMenu)
-        , M3e.NavigationDrawer.content
-            [ Html.div [ class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12" ] body ]
+    DrawerContainer.view
+        [ Seam.asAttribute (Attr.id "docs-drawer")
+        , DrawerContainer.startMode Value.auto
+        , DrawerContainer.start (not (isMobile model) || model.showMenu)
+        ]
+        [ DrawerContainer.startSlot
+            (navPanel currentPath)
+        , DrawerContainer.child
+            (Native.div
+                [ Seam.asAttribute (class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12") ]
+                (List.map EscapeHatch.fromHtml body)
+            )
         ]
         |> toHtml
 
 
-navEntries : String -> List (Element { navMenuItem : Supported } msg)
-navEntries currentPath =
-    List.map (sectionEntry currentPath) navSections
-        ++ [ componentsEntry currentPath
-           , groupEntry currentPath
-                "menu_book"
-                "Reference"
-                [ ( "/reference", "Full API reference" ) ]
-           ]
-
-
-sectionEntry : String -> NavSection -> Element { navMenuItem : Supported } msg
-sectionEntry currentPath section =
-    groupEntry currentPath section.icon section.title section.items
-
-
-componentsEntry : String -> Element { navMenuItem : Supported } msg
-componentsEntry currentPath =
-    groupEntry currentPath
-        "grid_view"
-        "Components"
-        (List.map (\( slug, label ) -> ( "/components/" ++ slug, label )) componentList)
-
-
-{-| One collapsible group, expanded when it contains the current route.
+{-| TODO(migrate): the old nav used `NavigationDrawer.group`/`link`; the new
+`M3e.NavMenu`/`NavMenuItem` hierarchy has a different (nested-item, not a[href])
+model that needs a design decision. For now the nav is faithfully reproduced as
+the "pure a[href] links" the old code documented, via the Native escape — a Seam
+candidate to component-ify once the NavMenu model is settled.
 -}
-groupEntry : String -> String -> String -> List ( String, String ) -> Element { navMenuItem : Supported } msg
-groupEntry currentPath glyph title items =
-    M3e.NavigationDrawer.group
-        { label = title }
-        (List.map (linkEntry currentPath) items)
-        [ M3e.NavigationDrawer.groupIcon (M3e.Icon.view { name = glyph } [])
-        , M3e.NavigationDrawer.groupOpen (List.any (\( path, _ ) -> path == currentPath) items)
+navPanel : String -> Element { html : Supported } msg
+navPanel currentPath =
+    let
+        groups =
+            List.map (\s -> ( s.icon, s.title, s.items )) navSections
+                ++ [ ( "grid_view", "Components", List.map (\( slug, label ) -> ( "/components/" ++ slug, label )) componentList )
+                   , ( "menu_book", "Reference", [ ( "/reference", "Full API reference" ) ] )
+                   ]
+    in
+    Native.nav [ Seam.asAttribute (class "flex min-w-64 flex-col gap-2 p-3") ]
+        (List.map (\( glyph, title, items ) -> navGroup currentPath glyph title items) groups)
+
+
+navGroup : String -> String -> String -> List ( String, String ) -> Element { html : Supported } msg
+navGroup currentPath glyph title items =
+    Native.div [ Seam.asAttribute (class "flex flex-col gap-0.5") ]
+        (Native.div
+            [ Seam.asAttribute (class "flex items-center gap-2 px-3 py-1.5 text-label-lg text-on-surface-variant") ]
+            [ Icon.view [ Icon.name glyph ] [], Kit.text title ]
+            :: List.map (navLink currentPath) items
+        )
+
+
+navLink : String -> ( String, String ) -> Element { html : Supported } msg
+navLink currentPath ( path, label ) =
+    Native.a
+        [ Seam.asAttribute (Attr.href path)
+        , Seam.asAttribute
+            (class
+                (if path == currentPath then
+                    "block rounded-full px-4 py-2 bg-secondary-container text-on-secondary-container"
+
+                 else
+                    "block rounded-full px-4 py-2 text-on-surface hover:bg-surface-container-high"
+                )
+            )
         ]
-
-
-linkEntry : String -> ( String, String ) -> Element { navMenuItem : Supported } msg
-linkEntry currentPath ( path, label ) =
-    M3e.NavigationDrawer.link
-        { label = label, href = path }
-        [ M3e.NavigationDrawer.linkSelected (path == currentPath) ]
+        [ Kit.text label ]
 
 
 {-| (slug, label) for every documented component, kept in sync with
