@@ -666,9 +666,7 @@ navMenu currentPath =
 navGroup : String -> String -> String -> List ( String, String ) -> Element { navMenuItem : Supported, navMenuItemGroup : Supported, divider : Supported } msg
 navGroup currentPath glyph title items =
     NavMenuItem.view
-        -- the label must be a slottable ELEMENT (a text node can't carry slot="label"),
-        -- so wrap it in a <span> like the reference's <span slot="label">.
-        { label = EscapeHatch.asElement (Native.span [] [ Kit.text title ]) }
+        { label = Kit.text title }
         [ NavMenuItem.open (List.any (\( path, _ ) -> path == currentPath) items) ]
         (NavMenuItem.icon (Icon.view [ Icon.name glyph ] [])
             :: NavMenuItem.children (List.map (navLeaf currentPath) items)

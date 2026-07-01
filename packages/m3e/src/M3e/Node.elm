@@ -20,7 +20,17 @@ addAttr : Attr () msg -> Node msg -> Node msg
 addAttr a node =
     case node of
         Element d -> Element { d | attrs = a :: d.attrs }
-        _ -> node
+        Text s ->
+            -- A text node can't carry an attribute (slot=, class=, …), so applying one
+            -- would silently drop it. Promote the text to a <span> that holds the
+            -- attribute — so `text "x"` placed in a named slot becomes
+            -- `<span slot="x">x</span>` automatically, with no userland wrapping.
+            Element
+                { component = \attrs kids -> Html.span (List.map Attr.toAttribute attrs) kids
+                , attrs = [ a ]
+                , children = [ Text s ]
+                }
+        Raw _ -> node
 
 text : String -> Node msg
 text = Text
