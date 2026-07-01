@@ -1,70 +1,71 @@
 # Overnight status — 2026-07-01 (night)
 
-Morning handoff. Everything below is **committed and pushed to `main`** on both
-repos (`elm-m3e` and the gitignored generator `elm-cem`) unless noted. Nothing is
-half-broken; each commit compiles.
+Morning handoff. Everything below is **committed and pushed to `main`** on both repos.
 
-## What I shipped tonight (verified)
+## Shipped tonight (verified, pushed)
 
-1. **Ornith harness refit** (`scratchpad/ornith-agent.mjs`) — committed/pushed:
-   - SYSTEM prompt retargeted to the **built Vocab API**: constructor is always
-     `view` (not `Comp.comp`/`Icon.icon`); setters via component module or barrel;
-     read `exposing` for exact names; enum inputs are `M3e.Value` tokens.
-   - Added the **HARD single-file / signature-preserving constraint** to the prompt.
-   - **Signature-lock guard**: snapshots exposed type annotations before/after; on
-     drift it reverts and exits `3` (→ opus lane). Tested the extractor (handles
-     multi-line annotations). Optional whole-project compile via `ORNITH_ENTRYPOINTS`.
-   - Parked `ornith-migrate.mjs` (whole-file regurgitation) in favour of the agent.
+1. **Ornith harness refit** (`scratchpad/ornith-agent.mjs`): prompt retargeted to the
+   Vocab API (`view`, not `Comp.comp`); the single-file/signature-preserving constraint;
+   a **signature-lock guard** (reverts + routes to the opus lane on exposed-signature
+   drift; extractor tested); optional whole-project compile. Parked `ornith-migrate.mjs`.
 
-2. **`M3e.Review.Facts`** — generated + compiled + committed/pushed:
-   - New generator function `generateReviewFacts` emits a data module: per component,
-     the **valid enum token names per attribute**, plus **required** and **multi**
-     slot names. This is ADR 0012's facts substrate for the codegen-aware rules.
-   - Verified: `elm make src/M3e/Review/Facts.elm` green; full lib still 379 modules.
+2. **`M3e.Review.Facts`** generated (per-component valid enum tokens, required/multi
+   slots) — the ADR-0012 substrate for the codegen-aware rules. Compiles; committed.
 
-3. **Docs from the grill** (earlier, pushed): ADR 0012 (codegen-aware elm-review),
-   `docs/ORNITH_MIGRATION_PLAN.md`, CONTEXT.md terms.
+3. **Docs migration STARTED — the two hardest/most-instructive files are done:**
+   - **`Shared.elm`** (the app shell, ~763 lines) — Theme/Card/AppBar/IconButton/
+     SegmentedButton on real components; nav faithfully kept as a Native escape
+     (`TODO(migrate)` — the `M3e.NavMenu`/`NavMenuItem` hierarchy needs a design call).
+   - **`Route.Styles.Color`** — a fully-migrated **proof route** that nails down the
+     repeatable pattern below.
 
-## A finding that de-risks the migration
+## IMPORTANT correction to last night's read
 
-While reading the generated facts I caught my own earlier mistake: the new
-`<m3e-theme>` **does** expose a `scheme` attribute accepting `auto | dark | light`
-(the facts prove it) — that's the old `Theme.Scheme = Auto | Light | Dark`. So the
-docs app's **dark-mode toggle maps cleanly**: `Theme.scheme model.scheme` →
-`M3e.Theme.scheme (Value.auto | Value.light | Value.dark)`. The `variant` attr is
-the color-generation algorithm (`tonalSpot`, `vibrant`, …). So `Shared.elm` is less
-fuzzy than I feared — its Theme, Contrast, and Density controls all map to real
-`M3e.Theme` setters.
+The docs app is **uniformly on the old hand API** — *no* route compiled before, and my
+earlier per-route "error counts" were unreliable (Elm caps reported errors, and the
+`Shared` dependency error confounded them). Also key: the docs `Layout` module is
+already **Element-based** (returns `Element`, built on `Native`), so each route's
+Node/Element composition must be reconciled, not just its component calls. That's why
+the blind sed pass backfired (reverted via git — the safety net worked).
 
-## What I deliberately did NOT do, and why
+## The route-migration cookbook (validated on Color.elm)
 
-- **The `ValidEnumValue` rule itself** (task #8). It must `import M3e.Review.Facts`,
-  which means adding `../packages/m3e/src` to `review/elm.json` source-dirs, and the
-  old-era review config must be ported first (task #7). Writing an elm-review rule I
-  can't run + unit-test tonight would be unverified — against the discipline this
-  project holds. The facts substrate it needs is done and waiting.
-- **The docs-app migration / tunnel.** A running app needs *all* routes compiling
-  (~1073 sites). `Shared.elm` alone is a 763-line near-total rewrite off the deleted
-  hand API. It's tractable now (Theme de-fuzzed), but it's the opus lane and wants
-  your eyes on the result — which is exactly what the tunnel was for. Doing it blind
-  overnight risked a large wrong rewrite. It's teed up, not started.
+Per route, apply and compile:
+1. **Imports:** add `import EscapeHatch`, `import Kit`; make the Element *type* and
+   `Supported` visible: `import M3e.Element as Element exposing (Element)`,
+   `import M3e.Value as Value exposing (Supported)`. Module renames per
+   `docs/MIGRATION_OLD_TO_NEW.md` §3 (NavigationRail→NavRail, RadioButton→Radio, …).
+2. **Heading:** `Heading.view { label = X, variant = V } [attrs]`
+   → `Heading.view { content = Kit.text X } [ Heading.variant V, ...attrs ] []`.
+   `Heading.level` takes a **String** now (`"1"`, not `1`).
+3. **Card:** single mixed list → two lists `[attrs] [content]`; `Card.headline`→`header`,
+   `Card.body [ els ]`→`Card.content (el)`.
+4. **Divider:** `Divider.view []` → `Divider.view [] []` (two lists).
+5. **IconButton:** `{ content = Icon.view [ Icon.name g ] [], ariaLabel = l } [attrs] []`
+   (required-record shape; icon is the `content` field, 3 args).
+6. **Node→Element composition:** `Node.text`→`Kit.text`, `Node.raw h`→`EscapeHatch.fromHtml h`,
+   `Element.html h`→`EscapeHatch.fromHtml h`. Drop inner `|> Element.toNode`; convert
+   once at the `View.body` boundary with `body = List.map Element.toNode [ … ]`
+   (`View.body` is `List (Node msg)`; `Layout.*` return `Element`).
+7. **Leaf-helper annotations:** open rows `Element { s | heading : Supported } msg` etc.
+   (closed rows won't unify in mixed lists).
+8. **Slot kinds:** typed slots want a specific kind (`AppBar.leading` wants `{iconButton}`,
+   `AppBar.title` wants `{text}` so use `Kit.text`); coerce with `EscapeHatch.asElement`
+   when you must place a wrapped element into a typed slot.
 
-## Concrete next steps (in order)
+## Remaining docs routes (all follow the cookbook)
 
-1. **Port the review config to the new world** (task #7): re-point `review/` off the
-   dead `src/M3e/` + `vendor/` + `Ui.*` paths; generalize `NoRawLayoutOutsideLayoutModule`
-   into the configurable Seam gate; retire `NoMissingFacadeEntry` (the barrel is
-   generated now — it currently misfires on `M3e.Progress`, which surfaces a *real*
-   gap: variant-group modules aren't in the barrel).
-2. **Write `ValidEnumValue`** (task #8) against `M3e.Review.Facts`, unit-tested via
-   `review/tests`.
-3. **Migrate `Shared.elm`** (opus lane) — Theme/Contrast/Density → `M3e.Theme.*`;
-   AppBar/Card/Icon/IconButton/Heading → their `view [attrs] [content]`; the drawer +
-   segmented controls are the remaining genuine unknowns (new `DrawerContainer` /
-   `SegmentedButton` APIs differ — surface, don't guess). Then the mechanical routes
-   compile and a tunnel becomes possible.
+`GettingStarted/{Overview,Installation}`, `Styles/{Typography,Density,Motion,Shape}`,
+`Index`, `Reference`, `Studies` + `Studies/{Reply,Shrine,Rally,Crane,Settings}`,
+`Components/Name_` (the big showcase). This is now mechanical-but-manual — ideal for
+ornith (prompt is updated) with an opus per-file review, or continued opus passes.
+A full elm-pages build + tunnel needs **all** of them green (elm-pages compiles every route).
 
-## Task board
+## Still teed up (not started)
 
-`#5` facts module ✅ · `#6` ornith refit ✅ · `#7` port review config (next) ·
-`#8` ValidEnumValue rule (needs #7) · plus the docs migration (opus lane).
+- **Task #7** port the old review config off dead paths (it currently misfires — e.g.
+  `NoMissingFacadeEntry` on `M3e.Progress`, surfacing a real gap: variant-group modules
+  aren't in the barrel). Generalize `NoRawLayoutOutsideLayoutModule` → configurable Seam gate.
+- **Task #8** the `ValidEnumValue` rule (`rule : List Fact -> Rule`, facts injected) —
+  blocked on #7 + adding `../packages/m3e/src` to `review/elm.json` source-dirs; no
+  `elm-test` binary here to unit-test it tonight.
