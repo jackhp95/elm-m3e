@@ -1,0 +1,5 @@
+Slot investigation findings (review these)
+components: 96  slots: 223
+
+- OFF-VOCAB FabMenu.default: dropped ["fabMenuItem"] (not a manifested kind) → falls back to element escape
+- DEDUP MenuItem: replaced with richer menu authoring (3 > 2)
