@@ -16,14 +16,18 @@ import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import Layout
 import M3e.Card as Card
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
+import Native
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -105,20 +109,22 @@ head _ =
         |> Seo.website
 
 
-pageHeading : Node msg
+pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { label = "Component reference", variant = Value.display }
-        [ Heading.size Value.small, Heading.level 1 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text "Component reference" }
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        []
+       
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
-        [ Layout.div "mx-auto max-w-5xl"
+        List.map Element.toNode
+            [ Layout.div "mx-auto max-w-5xl"
             [ pageHeading
-            , Node.raw
+            , EscapeHatch.fromHtml
                 (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
                     [ text "Every "
                     , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "Ui.*" ]
@@ -133,12 +139,12 @@ view app _ =
     }
 
 
-indexGrid : List Component -> Node msg
+indexGrid : List Component -> Element { s | html : Supported } msg
 indexGrid components =
     Layout.div "mt-8 flex flex-wrap gap-2"
         (List.map
             (\c ->
-                Node.raw
+                EscapeHatch.fromHtml
                     (a
                         [ href ("#" ++ c.slug)
                         , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
@@ -150,12 +156,12 @@ indexGrid components =
         )
 
 
-componentBlock : Component -> Node msg
+componentBlock : Component -> Element { s | html : Supported } msg
 componentBlock c =
-    Node.element "section"
-        [ Node.rawAttr (id c.slug), Node.rawAttr (class "scroll-mt-6 space-y-4") ]
-        [ Divider.view [] |> Element.toNode
-        , Node.raw
+    Native.node (Html.node "section")
+        [ Seam.asAttribute (id c.slug), Seam.asAttribute (class "scroll-mt-6 space-y-4") ]
+        [ Divider.view [] []
+        , EscapeHatch.fromHtml
             (Html.h2 [ class "text-headline-sm" ]
                 [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
             )
@@ -165,7 +171,7 @@ componentBlock c =
         ]
 
 
-memberRow : Member -> Node msg
+memberRow : Member -> Element { s | card : Supported } msg
 memberRow m =
     let
         sig =
@@ -179,22 +185,20 @@ memberRow m =
                 m.name ++ " : " ++ m.signature
     in
     Card.view
-        [ Card.variant Value.outlined
-        , Card.body
-            [ Element.fromNode
-                (Node.element "div"
+        [ Card.variant Value.outlined ]
+        [ Card.content
+                (Native.node (Html.node "div")
                     []
-                    [ Node.raw (pre_ sig)
+                    [ EscapeHatch.fromHtml (pre_ sig)
                     , if m.doc == "" then
-                        Node.text ""
+                        Kit.text ""
 
                       else
                         prose "mt-2 text-body-sm text-on-surface-variant" m.doc
                     ]
                 )
-            ]
         ]
-        |> Element.toNode
+       
 
 
 pre_ : String -> Html.Html msg
@@ -205,11 +209,11 @@ pre_ s =
 
 {-| Render \\n\\n-separated text as paragraphs.
 -}
-prose : String -> String -> Node msg
+prose : String -> String -> Element { s | html : Supported } msg
 prose cls s =
     Layout.div cls
         (s
             |> String.split "\n\n"
             |> List.filter (\para -> String.trim para /= "")
-            |> List.map (\para -> Node.raw (p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ]))
+            |> List.map (\para -> EscapeHatch.fromHtml (p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ]))
         )
