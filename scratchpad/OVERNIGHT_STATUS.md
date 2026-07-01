@@ -1,90 +1,55 @@
-# Overnight status — 2026-07-01 (night)
+# Overnight status — matraic-matching pass (night 2, 2026-07-01)
 
-Morning handoff. Everything below is **committed and pushed to `main`** on both repos.
+Tunnel (rebuilt after every change): **https://lounge-guardian-posts-parcel.trycloudflare.com**
+All work committed + pushed to `main`. Reference blueprint: `docs/M3E_DOCS_STRUCTURE.md`.
 
-## Shipped tonight (verified, pushed)
+## Done tonight — converging the docs on matraic.github.io/m3e
 
-1. **Ornith harness refit** (`scratchpad/ornith-agent.mjs`): prompt retargeted to the
-   Vocab API (`view`, not `Comp.comp`); the single-file/signature-preserving constraint;
-   a **signature-lock guard** (reverts + routes to the opus lane on exposed-signature
-   drift; extractor tested); optional whole-project compile. Parked `ornith-migrate.mjs`.
+**Shell (`app/Shared.elm`)**
+- Nav is the real `m3e-nav-menu > m3e-nav-menu-item` hierarchy (groups w/ icon slot +
+  label, leaves = `Kit.link`), matching the reference (was a Native `<a>` punt).
+- **Bug fixed at the library layer:** applying an attribute to a *text node* now
+  promotes it to a `<span>` (`M3e.Node.addAttr`), so slotted text (e.g. nav group
+  labels) renders `<span slot="label">…</span>` automatically — no userland wrapping.
+  (Regenerated; `elm-cem` runtime + `packages/m3e` both committed.)
+- Page-body wrapper padding trimmed `py-10/px-12` → `py-2/px-2` (ContentPane already
+  pads; matraic's `#body` just has `margin-inline: 1rem`).
 
-2. **`M3e.Review.Facts`** generated (per-component valid enum tokens, required/multi
-   slots) — the ADR-0012 substrate for the codegen-aware rules. Compiles; committed.
+**Content pages**
+- Every page wrapped in real `m3e-content-pane` (was custom `Layout.container`/`div`).
+- **Typography now matches matraic:** prose is body-large (bumped `text-body-md`→`lg`);
+  inline `code` + `pre` are `0.875em` with a subtle `surface-container-low` tint +
+  primary text (base rules in `style.css`, like matraic's `main.css`). Code/pre no
+  longer carry the smaller conflicting `text-body-*` utilities.
+- Section **dividers removed** — matraic separates with heading/card margins, not rules.
 
-3. **Docs migration STARTED — the two hardest/most-instructive files are done:**
-   - **`Shared.elm`** (the app shell, ~763 lines) — Theme/Card/AppBar/IconButton/
-     SegmentedButton on real components; nav faithfully kept as a Native escape
-     (`TODO(migrate)` — the `M3e.NavMenu`/`NavMenuItem` hierarchy needs a design call).
-   - **`Route.Styles.Color`** — a fully-migrated **proof route** that nails down the
-     repeatable pattern below.
+**Tooling / hygiene**
+- Adopted `elm-format` after every `.elm` edit (docs/node_modules/.bin) — prevents the
+  scripted-edit indentation breakage; banked to project memory.
 
-## IMPORTANT correction to last night's read
+## The remaining matraic gap — content demos → **showcase Cards**
 
-The docs app is **uniformly on the old hand API** — *no* route compiled before, and my
-earlier per-route "error counts" were unreliable (Elm caps reported errors, and the
-`Shared` dependency error confounded them). Also key: the docs `Layout` module is
-already **Element-based** (returns `Element`, built on `Native`), so each route's
-Node/Element composition must be reconciled, not just its component calls. That's why
-the blind sed pass backfired (reverted via git — the safety net worked).
+The one structural difference left: matraic wraps live component demos in
+`m3e-card class="showcase"` (a `div[slot=content]` holding the components) and code in
+`m3e-card class="example/install"` (a `pre[slot=content]`). Ours still shows demos in
+bare `Layout.div` grids. Converting them:
+- Highest "showcase the components" value; also naturally tightens spacing.
+- **Best done with your eyes on the tunnel** — it's per-page and visual, and I can't
+  see pixels. The pattern per page: wrap the demo row in `Card.view [ Card.variant
+  Value.outlined ] [ Card.content (Native.div "…grid…" [ demos ]) ]`; code samples in a
+  Card `content` `pre`. Pages: Styles/{Color,Typography,Density,Motion}, Getting-Started.
 
-## The route-migration cookbook (validated on Color.elm)
+## Layer notes (per your hint)
+- Typography/spacing = **docs app** (CSS base + content classes); the components carry
+  the type scale, we just stopped overriding it. Right layer.
+- The text-node-slot fix = **library runtime** (M3e.Node) — it's a primitive-level
+  correctness fix, so it lives there and now protects every consumer.
+- If the per-component reference pages (`/components/:name`, currently stubbed) are
+  restored, matching matraic's generated component pages (install card + usage +
+  variants showcase) is a **data-driven/generator** concern — pull from the CEM/facts
+  (`M3e.Review.Facts` + `m3e-docs/data`) rather than hand-writing 50 pages.
 
-Per route, apply and compile:
-1. **Imports:** add `import EscapeHatch`, `import Kit`; make the Element *type* and
-   `Supported` visible: `import M3e.Element as Element exposing (Element)`,
-   `import M3e.Value as Value exposing (Supported)`. Module renames per
-   `docs/MIGRATION_OLD_TO_NEW.md` §3 (NavigationRail→NavRail, RadioButton→Radio, …).
-2. **Heading:** `Heading.view { label = X, variant = V } [attrs]`
-   → `Heading.view { content = Kit.text X } [ Heading.variant V, ...attrs ] []`.
-   `Heading.level` takes a **String** now (`"1"`, not `1`).
-3. **Card:** single mixed list → two lists `[attrs] [content]`; `Card.headline`→`header`,
-   `Card.body [ els ]`→`Card.content (el)`.
-4. **Divider:** `Divider.view []` → `Divider.view [] []` (two lists).
-5. **IconButton:** `{ content = Icon.view [ Icon.name g ] [], ariaLabel = l } [attrs] []`
-   (required-record shape; icon is the `content` field, 3 args).
-6. **Node→Element composition:** `Node.text`→`Kit.text`, `Node.raw h`→`EscapeHatch.fromHtml h`,
-   `Element.html h`→`EscapeHatch.fromHtml h`. Drop inner `|> Element.toNode`; convert
-   once at the `View.body` boundary with `body = List.map Element.toNode [ … ]`
-   (`View.body` is `List (Node msg)`; `Layout.*` return `Element`).
-7. **Leaf-helper annotations:** open rows `Element { s | heading : Supported } msg` etc.
-   (closed rows won't unify in mixed lists).
-8. **Slot kinds:** typed slots want a specific kind (`AppBar.leading` wants `{iconButton}`,
-   `AppBar.title` wants `{text}` so use `Kit.text`); coerce with `EscapeHatch.asElement`
-   when you must place a wrapped element into a typed slot.
-
-## Docs migration progress — 9 files done (all compile, committed)
-
-**Done:** `Shared` (shell) + routes `Styles/{Color,Typography,Motion,Density}`,
-`GettingStarted/{BrowserSupport,Overview,Installation}`, `Reference`.
-
-**Reusable helper saved:** `scratchpad/route_migrate.py` — `migrate_common(s)` does the
-safe cookbook transforms (imports, `Node.text`→`Kit.text`, `Node.raw`/`Element.html`
-→`EscapeHatch.fromHtml`, `Node.element "X"`→`Native.node (Html.node "X")`,
-`Node.rawAttr`→`Seam.asAttribute`, `Heading.level` Int→String, `Card.headline`→`header`,
-`Divider.view []`→`[] []`, drop inner `|> Element.toNode`); `fix_headings(s)` does the
-`Heading.view { label, variant }`→`{ content = Kit.text .. }` split. Then per file:
-hand-fix Card two-list splits, add open-row annotations (`{ s | heading }` for headings,
-`{ s | card }` for cards, `{ s | html }` for Layout/Native), and wrap `View.body` with
-`List.map Element.toNode [ … ]`. Compile after each.
-
-**Remaining routes** (same cookbook; a few have component-specific rebuilds):
-- `Index` — Button `{label,variant}`→`[attrs][Button.child (Kit.text ..)]`; **Avatar**
-  rebuild (new `M3e.Avatar` is `view [] [child]` with no `image`/`ariaLabel` — put a
-  `Native.img` in the default slot + aria via `Seam`); Icon `{name}`→`[Icon.name ..]`; 2 Cards.
-- `Styles/Shape` — **surface-don't-guess**: uses a `CemShape` enum module, `Shape.name`,
-  and `Shape.attributes` (raw passthrough); the new `M3e.Shape` API differs. Needs a design call.
-- `Studies` + `Studies/{Reply,Shrine,Rally,Crane,Settings}` — the app-clone demos (heavier).
-- `Components/Name_` — the 375-site component showcase (largest).
-
-A full elm-pages build + tunnel needs **all** routes green (elm-pages compiles every route),
-so the tunnel is still gated on finishing the remaining ~8 files.
-
-## Still teed up (not started)
-
-- **Task #7** port the old review config off dead paths (it currently misfires — e.g.
-  `NoMissingFacadeEntry` on `M3e.Progress`, surfacing a real gap: variant-group modules
-  aren't in the barrel). Generalize `NoRawLayoutOutsideLayoutModule` → configurable Seam gate.
-- **Task #8** the `ValidEnumValue` rule (`rule : List Fact -> Rule`, facts injected) —
-  blocked on #7 + adding `../packages/m3e/src` to `review/elm.json` source-dirs; no
-  `elm-test` binary here to unit-test it tonight.
+## Also still open (earlier)
+- Studies (5) + Name_ + Shape are compiling **stubs** (rich views in git) → ornith.
+- elm-review rules: `ValidEnumValue` (#8) on the shipped `M3e.Review.Facts`; port the
+  old-era review config (#7).
