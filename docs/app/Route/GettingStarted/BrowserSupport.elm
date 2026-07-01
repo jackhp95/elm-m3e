@@ -8,11 +8,13 @@ import Html exposing (li, p, text, ul)
 import Html.Attributes exposing (class)
 import Layout
 import M3e.Card as Card
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -60,64 +62,65 @@ head _ =
         |> Seo.website
 
 
-supportRow : String -> String -> Node msg
+supportRow : String -> String -> Element { s | html : Supported } msg
 supportRow browser note =
     Layout.li "flex items-baseline justify-between gap-4 border-b border-outline-variant py-2.5 last:border-0"
         [ Layout.span "text-title-sm text-on-surface"
-            [ Node.text browser ]
+            [ Kit.text browser ]
         , Layout.span "text-body-md text-on-surface-variant"
-            [ Node.text note ]
+            [ Kit.text note ]
         ]
 
 
-pageHeading : Node msg
+pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { label = "Browser Support", variant = Value.display }
-        [ Heading.size Value.small, Heading.level 1 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text "Browser Support" }
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        []
+       
 
 
-sectionHeading : String -> Node msg
+sectionHeading : String -> Element { s | heading : Supported } msg
 sectionHeading label =
-    Heading.view { label = label, variant = Value.headline }
-        [ Heading.size Value.small, Heading.level 2 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text label }
+        [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+        []
+       
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Browser Support · elm-m3e"
     , body =
-        [ Layout.div "mx-auto max-w-3xl space-y-8"
+        List.map Element.toNode
+            [ Layout.div "mx-auto max-w-3xl space-y-8"
             [ Layout.section "space-y-3"
                 [ pageHeading
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "text-body-lg text-on-surface-variant" ]
                         [ text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                     )
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ sectionHeading "Supported browsers"
                 , Card.view
-                    [ Card.variant Value.outlined
-                    , Card.body
-                        [ Element.fromNode
-                            (Layout.ul "px-2"
-                                [ supportRow "Chrome / Edge" "Latest 2 versions"
-                                , supportRow "Firefox" "Latest 2 versions"
-                                , supportRow "Safari" "Latest 2 versions"
-                                , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
-                                ]
-                            )
-                        ]
+                    [ Card.variant Value.outlined ]
+                    [ Card.content
+                        (Layout.ul "px-2"
+                            [ supportRow "Chrome / Edge" "Latest 2 versions"
+                            , supportRow "Firefox" "Latest 2 versions"
+                            , supportRow "Safari" "Latest 2 versions"
+                            , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
+                            ]
+                        )
                     ]
-                    |> Element.toNode
+                   
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ sectionHeading "Platform features used"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                         [ li [] [ text "Custom Elements v1 and Shadow DOM for the @m3e/web components." ]
                         , li [] [ text "ES modules for component registration (no-bundler import-map usage is also supported upstream)." ]
