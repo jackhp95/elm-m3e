@@ -7,6 +7,7 @@ module M3e exposing (accordion, action, actionElementBase, actionList, actionabl
 
 import Json.Decode
 import M3e.Accordion
+import M3e.Action
 import M3e.ActionElementBase
 import M3e.ActionList
 import M3e.AppBar
@@ -31,6 +32,7 @@ import M3e.Checkbox
 import M3e.Chip
 import M3e.ChipSet
 import M3e.Collapsible
+import M3e.Content
 import M3e.ContentPane
 import M3e.Datepicker
 import M3e.DatepickerToggle
@@ -40,6 +42,7 @@ import M3e.DialogTrigger
 import M3e.Divider
 import M3e.DrawerContainer
 import M3e.DrawerToggle
+import M3e.Element
 import M3e.Elevation
 import M3e.ExpandableListItem
 import M3e.ExpansionHeader
@@ -134,494 +137,1960 @@ import M3e.Value
 import M3e.YearView
 
 
+tree :
+    List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
+    , cascade : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | tree : M3e.Value.Supported } msg
 tree =
     M3e.Tree.view
 
 
+treeItem :
+    { label :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , indeterminate : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , selectedIcon : M3e.Value.Supported
+    , toggleIcon : M3e.Value.Supported
+    , openToggleIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | treeItem : M3e.Value.Supported } msg
 treeItem =
     M3e.TreeItem.view
 
 
+toolbar :
+    List (M3e.Cem.Attr.Attr { elevated : M3e.Value.Supported
+    , shape : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | toolbar : M3e.Value.Supported } msg
 toolbar =
     M3e.Toolbar.view
 
 
+toc :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , maxDepth : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , overline : M3e.Value.Supported
+    , title : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | toc : M3e.Value.Supported } msg
 toc =
     M3e.Toc.view
 
 
+tocItem :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | tocItem : M3e.Value.Supported } msg
 tocItem =
     M3e.TocItem.view
 
 
+themeIcon :
+    List (M3e.Cem.Attr.Attr { color : M3e.Value.Supported
+    , scheme : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | themeIcon : M3e.Value.Supported } msg
 themeIcon =
     M3e.ThemeIcon.view
 
 
+theme :
+    List (M3e.Cem.Attr.Attr { color : M3e.Value.Supported
+    , contrast : M3e.Value.Supported
+    , density : M3e.Value.Supported
+    , scheme : M3e.Value.Supported
+    , strongFocus : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , motion : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | theme : M3e.Value.Supported } msg
 theme =
     M3e.Theme.view
 
 
+textareaAutosize :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , maxRows : M3e.Value.Supported
+    , minRows : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | textareaAutosize : M3e.Value.Supported } msg
 textareaAutosize =
     M3e.TextareaAutosize.view
 
 
+tabs :
+    List (M3e.Cem.Attr.Attr { disablePagination : M3e.Value.Supported
+    , headerPosition : M3e.Value.Supported
+    , nextPageLabel : M3e.Value.Supported
+    , previousPageLabel : M3e.Value.Supported
+    , stretch : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , panel : M3e.Value.Supported
+    , nextIcon : M3e.Value.Supported
+    , prevIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | tabs : M3e.Value.Supported } msg
 tabs =
     M3e.Tabs.view
 
 
+tabPanel :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | tabPanel : M3e.Value.Supported } msg
 tabPanel =
     M3e.TabPanel.view
 
 
+tab :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | tab : M3e.Value.Supported } msg
 tab =
     M3e.Tab.view
 
 
+switch :
+    { ariaLabel : String }
+    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , icons : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | switch : M3e.Value.Supported } msg
 switch =
     M3e.Switch.view
 
 
+stepperReset :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | stepperReset : M3e.Value.Supported } msg
 stepperReset =
     M3e.StepperReset.view
 
 
+stepperPrevious :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | stepperPrevious : M3e.Value.Supported } msg
 stepperPrevious =
     M3e.StepperPrevious.view
 
 
+step :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { completed : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , editable : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , optional : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , invalid : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
+    , doneIcon : M3e.Value.Supported
+    , editIcon : M3e.Value.Supported
+    , errorIcon : M3e.Value.Supported
+    , hint : M3e.Value.Supported
+    , error : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
 step =
     M3e.Step.view
 
 
+stepPanel :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , actions : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | stepPanel : M3e.Value.Supported } msg
 stepPanel =
     M3e.StepPanel.view
 
 
+stepper :
+    List (M3e.Cem.Attr.Attr { headerPosition : M3e.Value.Supported
+    , labelPosition : M3e.Value.Supported
+    , linear : M3e.Value.Supported
+    , orientation : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { step : M3e.Value.Supported
+    , panel : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | stepper : M3e.Value.Supported } msg
 stepper =
     M3e.Stepper.view
 
 
+splitPane :
+    List (M3e.Cem.Attr.Attr { label : M3e.Value.Supported
+    , max : M3e.Value.Supported
+    , min : M3e.Value.Supported
+    , orientation : M3e.Value.Supported
+    , overshootLimit : M3e.Value.Supported
+    , step : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , wrapDetents : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { start : M3e.Value.Supported
+    , end : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | splitPane : M3e.Value.Supported } msg
 splitPane =
     M3e.SplitPane.view
 
 
+splitButton :
+    { leadingButton : M3e.Element.Element { button : M3e.Value.Supported } msg
+    , trailingButton :
+        M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
 splitButton =
     M3e.SplitButton.view
 
 
+snackbar :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { action : M3e.Value.Supported
+    , closeLabel : M3e.Value.Supported
+    , dismissible : M3e.Value.Supported
+    , duration : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { closeIcon : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
 snackbar =
     M3e.Snackbar.view
 
 
+slider :
+    { ariaLabel : String }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , discrete : M3e.Value.Supported
+    , labelled : M3e.Value.Supported
+    , max : M3e.Value.Supported
+    , min : M3e.Value.Supported
+    , step : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | slider : M3e.Value.Supported } msg
 slider =
     M3e.Slider.view
 
 
+sliderThumb :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , onValueChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | sliderThumb : M3e.Value.Supported } msg
 sliderThumb =
     M3e.SliderThumb.view
 
 
+slideGroup :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , nextPageLabel : M3e.Value.Supported
+    , previousPageLabel : M3e.Value.Supported
+    , threshold : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , nextIcon : M3e.Value.Supported
+    , prevIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | slideGroup : M3e.Value.Supported } msg
 slideGroup =
     M3e.SlideGroup.view
 
 
+skeleton :
+    List (M3e.Cem.Attr.Attr { animation : M3e.Value.Supported
+    , shape : M3e.Value.Supported
+    , loaded : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | skeleton : M3e.Value.Supported } msg
 skeleton =
     M3e.Skeleton.view
 
 
+shape :
+    List (M3e.Cem.Attr.Attr { name : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | shape : M3e.Value.Supported } msg
 shape =
     M3e.Shape.view
 
 
+segmentedButton :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , hideSelectionIndicator : M3e.Value.Supported
+    , multi : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | segmentedButton : M3e.Value.Supported } msg
 segmentedButton =
     M3e.SegmentedButton.view
 
 
+buttonSegment :
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | buttonSegment : M3e.Value.Supported } msg
 buttonSegment =
     M3e.ButtonSegment.view
 
 
+searchView :
+    { input : M3e.Element.Element any msg }
+    -> List (M3e.Cem.Attr.Attr { contained : M3e.Value.Supported
+    , mode : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , clearLabel : M3e.Value.Supported
+    , closeLabel : M3e.Value.Supported
+    , hideSearchIcon : M3e.Value.Supported
+    , onQuery : M3e.Value.Supported
+    , onClear : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , openLeading : M3e.Value.Supported
+    , openTrailing : M3e.Value.Supported
+    , closedLeading : M3e.Value.Supported
+    , closedTrailing : M3e.Value.Supported
+    , searchIcon : M3e.Value.Supported
+    , closeIcon : M3e.Value.Supported
+    , clearIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | searchView : M3e.Value.Supported } msg
 searchView =
     M3e.SearchView.view
 
 
+searchBar :
+    { input : M3e.Element.Element any msg }
+    -> List (M3e.Cem.Attr.Attr { clearable : M3e.Value.Supported
+    , clearLabel : M3e.Value.Supported
+    , onClear : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { leading : M3e.Value.Supported
+    , trailing : M3e.Value.Supported
+    , clearIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | searchBar : M3e.Value.Supported } msg
 searchBar =
     M3e.SearchBar.view
 
 
+radioGroup :
+    List (M3e.Cem.Attr.Attr { ariaInvalid : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , required : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | radioGroup : M3e.Value.Supported } msg
 radioGroup =
     M3e.RadioGroup.view
 
 
+radio :
+    { ariaLabel : String }
+    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , required : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | radio : M3e.Value.Supported } msg
 radio =
     M3e.Radio.view
 
 
+progressElementIndicatorBase :
+    List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
+    , max : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s
+        | progressElementIndicatorBase : M3e.Value.Supported
+    } msg
 progressElementIndicatorBase =
     M3e.ProgressElementIndicatorBase.view
 
 
+paginator :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , firstPageLabel : M3e.Value.Supported
+    , hidePageSize : M3e.Value.Supported
+    , itemsPerPageLabel : M3e.Value.Supported
+    , lastPageLabel : M3e.Value.Supported
+    , length : M3e.Value.Supported
+    , nextPageLabel : M3e.Value.Supported
+    , pageIndex : M3e.Value.Supported
+    , pageSize : M3e.Value.Supported
+    , pageSizes : M3e.Value.Supported
+    , pageSizeVariant : M3e.Value.Supported
+    , previousPageLabel : M3e.Value.Supported
+    , showFirstLastButtons : M3e.Value.Supported
+    , onPage : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { firstPageIcon : M3e.Value.Supported
+    , previousPageIcon : M3e.Value.Supported
+    , nextPageIcon : M3e.Value.Supported
+    , lastPageIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | paginator : M3e.Value.Supported } msg
 paginator =
     M3e.Paginator.view
 
 
+select :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , hideSelectionIndicator : M3e.Value.Supported
+    , multi : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , panelClass : M3e.Value.Supported
+    , required : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , arrow : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | select : M3e.Value.Supported } msg
 select =
     M3e.Select.view
 
 
+navRailToggle :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | navRailToggle : M3e.Value.Supported } msg
 navRailToggle =
     M3e.NavRailToggle.view
 
 
+navRail :
+    List (M3e.Cem.Attr.Attr { mode : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | navRail : M3e.Value.Supported } msg
 navRail =
     M3e.NavRail.view
 
 
+navMenuItemGroup :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { label : M3e.Value.Supported
+    , default : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | navMenuItemGroup : M3e.Value.Supported } msg
 navMenuItemGroup =
     M3e.NavMenuItemGroup.view
 
 
+navMenu :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | navMenu : M3e.Value.Supported } msg
 navMenu =
     M3e.NavMenu.view
 
 
+navMenuItem :
+    { label :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , badge : M3e.Value.Supported
+    , selectedIcon : M3e.Value.Supported
+    , toggleIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | navMenuItem : M3e.Value.Supported } msg
 navMenuItem =
     M3e.NavMenuItem.view
 
 
+navBar :
+    List (M3e.Cem.Attr.Attr { mode : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | navBar : M3e.Value.Supported } msg
 navBar =
     M3e.NavBar.view
 
 
+navItem :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , orientation : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , selectedIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | navItem : M3e.Value.Supported } msg
 navItem =
     M3e.NavItem.view
 
 
+menuItemRadio :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , checked : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | menuItemRadio : M3e.Value.Supported } msg
 menuItemRadio =
     M3e.MenuItemRadio.view
 
 
+menuItemGroup :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | menuItemGroup : M3e.Value.Supported } msg
 menuItemGroup =
     M3e.MenuItemGroup.view
 
 
+menuItemCheckbox :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , checked : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | menuItemCheckbox : M3e.Value.Supported } msg
 menuItemCheckbox =
     M3e.MenuItemCheckbox.view
 
 
+menu :
+    List (M3e.Cem.Attr.Attr { positionX : M3e.Value.Supported
+    , positionY : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , submenu : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | menu : M3e.Value.Supported } msg
 menu =
     M3e.Menu.view
 
 
+menuItem :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | menuItem : M3e.Value.Supported } msg
 menuItem =
     M3e.MenuItem.view
 
 
+menuTrigger :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | menuTrigger : M3e.Value.Supported } msg
 menuTrigger =
     M3e.MenuTrigger.view
 
 
+menuItemElementBase :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | menuItemElementBase : M3e.Value.Supported } msg
 menuItemElementBase =
     M3e.MenuItemElementBase.view
 
 
+loadingIndicator :
+    List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | loadingIndicator : M3e.Value.Supported } msg
 loadingIndicator =
     M3e.LoadingIndicator.view
 
 
+selectionList :
+    List (M3e.Cem.Attr.Attr { hideSelectionIndicator : M3e.Value.Supported
+    , multi : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | selectionList : M3e.Value.Supported } msg
 selectionList =
     M3e.SelectionList.view
 
 
+listOption :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , leading : M3e.Value.Supported
+    , overline : M3e.Value.Supported
+    , supportingText : M3e.Value.Supported
+    , trailing : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | listOption : M3e.Value.Supported } msg
 listOption =
     M3e.ListOption.view
 
 
+actionList :
+    List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | actionList : M3e.Value.Supported } msg
 actionList =
     M3e.ActionList.view
 
 
+expandableListItem :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , leading : M3e.Value.Supported
+    , overline : M3e.Value.Supported
+    , supportingText : M3e.Value.Supported
+    , toggleIcon : M3e.Value.Supported
+    , items : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | expandableListItem : M3e.Value.Supported } msg
 expandableListItem =
     M3e.ExpandableListItem.view
 
 
+listAction :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , leading : M3e.Value.Supported
+    , overline : M3e.Value.Supported
+    , supportingText : M3e.Value.Supported
+    , trailing : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | listAction : M3e.Value.Supported } msg
 listAction =
     M3e.ListAction.view
 
 
+listItemButton :
+    List (M3e.Cem.Attr.Attr { href : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , leading : M3e.Value.Supported
+    , overline : M3e.Value.Supported
+    , supportingText : M3e.Value.Supported
+    , trailing : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | listItemButton : M3e.Value.Supported } msg
 listItemButton =
     M3e.ListItemButton.view
 
 
+list :
+    List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | list : M3e.Value.Supported } msg
 list =
     M3e.List.view
 
 
+listItem :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , leading : M3e.Value.Supported
+    , overline : M3e.Value.Supported
+    , supportingText : M3e.Value.Supported
+    , trailing : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | listItem : M3e.Value.Supported } msg
 listItem =
     M3e.ListItem.view
 
 
+icon :
+    List (M3e.Cem.Attr.Attr { filled : M3e.Value.Supported
+    , grade : M3e.Value.Supported
+    , opticalSize : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , weight : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | icon : M3e.Value.Supported } msg
 icon =
     M3e.Icon.view
 
 
+heading :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { emphasized : M3e.Value.Supported
+    , level : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | heading : M3e.Value.Supported } msg
 heading =
     M3e.Heading.view
 
 
+fabMenuTrigger :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | fabMenuTrigger : M3e.Value.Supported } msg
 fabMenuTrigger =
     M3e.FabMenuTrigger.view
 
 
+fabMenu :
+    List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | fabMenu : M3e.Value.Supported } msg
 fabMenu =
     M3e.FabMenu.view
 
 
+fab :
+    { ariaLabel : String }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , extended : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , lowered : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , type_ : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , label : M3e.Value.Supported
+    , closeIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
 fab =
     M3e.Fab.view
 
 
+accordion :
+    List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | accordion : M3e.Value.Supported } msg
 accordion =
     M3e.Accordion.view
 
 
+expansionPanel :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , hideToggle : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , toggleDirection : M3e.Value.Supported
+    , togglePosition : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , actions : M3e.Value.Supported
+    , header : M3e.Value.Supported
+    , toggleIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | expansionPanel : M3e.Value.Supported } msg
 expansionPanel =
     M3e.ExpansionPanel.view
 
 
+expansionHeader :
+    List (M3e.Cem.Attr.Attr { hideToggle : M3e.Value.Supported
+    , toggleDirection : M3e.Value.Supported
+    , togglePosition : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , toggleIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | expansionHeader : M3e.Value.Supported } msg
 expansionHeader =
     M3e.ExpansionHeader.view
 
 
+drawerToggle :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | drawerToggle : M3e.Value.Supported } msg
 drawerToggle =
     M3e.DrawerToggle.view
 
 
+drawerContainer :
+    List (M3e.Cem.Attr.Attr { end : M3e.Value.Supported
+    , endMode : M3e.Value.Supported
+    , endDivider : M3e.Value.Supported
+    , start : M3e.Value.Supported
+    , startMode : M3e.Value.Supported
+    , startDivider : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , start : M3e.Value.Supported
+    , end : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | drawerContainer : M3e.Value.Supported } msg
 drawerContainer =
     M3e.DrawerContainer.view
 
 
+divider :
+    List (M3e.Cem.Attr.Attr { inset : M3e.Value.Supported
+    , insetStart : M3e.Value.Supported
+    , insetEnd : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | divider : M3e.Value.Supported } msg
 divider =
     M3e.Divider.view
 
 
+dialogTrigger :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | dialogTrigger : M3e.Value.Supported } msg
 dialogTrigger =
     M3e.DialogTrigger.view
 
 
+dialog :
+    List (M3e.Cem.Attr.Attr { alert : M3e.Value.Supported
+    , closeLabel : M3e.Value.Supported
+    , disableClose : M3e.Value.Supported
+    , dismissible : M3e.Value.Supported
+    , noFocusTrap : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , onCancel : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , header : M3e.Value.Supported
+    , actions : M3e.Value.Supported
+    , closeIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | dialog : M3e.Value.Supported } msg
 dialog =
     M3e.Dialog.view
 
 
+dialogAction :
+    List (M3e.Cem.Attr.Attr { returnValue : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | dialogAction : M3e.Value.Supported } msg
 dialogAction =
     M3e.DialogAction.view
 
 
+datepickerToggle :
+    List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | datepickerToggle : M3e.Value.Supported } msg
 datepickerToggle =
     M3e.DatepickerToggle.view
 
 
+datepicker :
+    List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    , clearable : M3e.Value.Supported
+    , date : M3e.Value.Supported
+    , maxDate : M3e.Value.Supported
+    , minDate : M3e.Value.Supported
+    , range : M3e.Value.Supported
+    , rangeEnd : M3e.Value.Supported
+    , rangeStart : M3e.Value.Supported
+    , startAt : M3e.Value.Supported
+    , startView : M3e.Value.Supported
+    , previousMonthLabel : M3e.Value.Supported
+    , nextMonthLabel : M3e.Value.Supported
+    , previousYearLabel : M3e.Value.Supported
+    , nextYearLabel : M3e.Value.Supported
+    , previousMultiYearLabel : M3e.Value.Supported
+    , nextMultiYearLabel : M3e.Value.Supported
+    , clearLabel : M3e.Value.Supported
+    , confirmLabel : M3e.Value.Supported
+    , dismissLabel : M3e.Value.Supported
+    , label : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | datepicker : M3e.Value.Supported } msg
 datepicker =
     M3e.Datepicker.view
 
 
+contentPane :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | contentPane : M3e.Value.Supported } msg
 contentPane =
     M3e.ContentPane.view
 
 
+suggestionChip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , type_ : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | suggestionChip : M3e.Value.Supported } msg
 suggestionChip =
     M3e.SuggestionChip.view
 
 
+inputChipSet :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , required : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , input : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | inputChipSet : M3e.Value.Supported } msg
 inputChipSet =
     M3e.InputChipSet.view
 
 
+inputChip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , removable : M3e.Value.Supported
+    , removeLabel : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onRemove : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { avatar : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , removeIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
 inputChip =
     M3e.InputChip.view
 
 
+filterChipSet :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , hideSelectionIndicator : M3e.Value.Supported
+    , multi : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | filterChipSet : M3e.Value.Supported } msg
 filterChipSet =
     M3e.FilterChipSet.view
 
 
+filterChip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | filterChip : M3e.Value.Supported } msg
 filterChip =
     M3e.FilterChip.view
 
 
+chipSet :
+    List (M3e.Cem.Attr.Attr { vertical : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | chipSet : M3e.Value.Supported } msg
 chipSet =
     M3e.ChipSet.view
 
 
+assistChip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , type_ : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | assistChip : M3e.Value.Supported } msg
 assistChip =
     M3e.AssistChip.view
 
 
+chip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | chip : M3e.Value.Supported } msg
 chip =
     M3e.Chip.view
 
 
+checkbox :
+    { ariaLabel : String }
+    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , indeterminate : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , required : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onInvalid : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | checkbox : M3e.Value.Supported } msg
 checkbox =
     M3e.Checkbox.view
 
 
+card :
+    List (M3e.Cem.Attr.Attr { actionable : M3e.Value.Supported
+    , inline : M3e.Value.Supported
+    , orientation : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , type_ : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , header : M3e.Value.Supported
+    , content : M3e.Value.Supported
+    , actions : M3e.Value.Supported
+    , footer : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | card : M3e.Value.Supported } msg
 card =
     M3e.Card.view
 
 
+calendar :
+    List (M3e.Cem.Attr.Attr { date : M3e.Value.Supported
+    , maxDate : M3e.Value.Supported
+    , minDate : M3e.Value.Supported
+    , rangeEnd : M3e.Value.Supported
+    , rangeStart : M3e.Value.Supported
+    , startAt : M3e.Value.Supported
+    , startView : M3e.Value.Supported
+    , previousMonthLabel : M3e.Value.Supported
+    , nextMonthLabel : M3e.Value.Supported
+    , previousYearLabel : M3e.Value.Supported
+    , nextYearLabel : M3e.Value.Supported
+    , previousMultiYearLabel : M3e.Value.Supported
+    , nextMultiYearLabel : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { header : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | calendar : M3e.Value.Supported } msg
 calendar =
     M3e.Calendar.view
 
 
+yearView :
+    List (M3e.Cem.Attr.Attr { today : M3e.Value.Supported
+    , date : M3e.Value.Supported
+    , activeDate : M3e.Value.Supported
+    , minDate : M3e.Value.Supported
+    , maxDate : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onActiveChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | yearView : M3e.Value.Supported } msg
 yearView =
     M3e.YearView.view
 
 
+multiYearView :
+    List (M3e.Cem.Attr.Attr { today : M3e.Value.Supported
+    , date : M3e.Value.Supported
+    , activeDate : M3e.Value.Supported
+    , minDate : M3e.Value.Supported
+    , maxDate : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onActiveChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | multiYearView : M3e.Value.Supported } msg
 multiYearView =
     M3e.MultiYearView.view
 
 
+monthView :
+    List (M3e.Cem.Attr.Attr { rangeStart : M3e.Value.Supported
+    , rangeEnd : M3e.Value.Supported
+    , today : M3e.Value.Supported
+    , date : M3e.Value.Supported
+    , activeDate : M3e.Value.Supported
+    , minDate : M3e.Value.Supported
+    , maxDate : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onActiveChange : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | monthView : M3e.Value.Supported } msg
 monthView =
     M3e.MonthView.view
 
 
+tooltip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , hideDelay : M3e.Value.Supported
+    , position : M3e.Value.Supported
+    , showDelay : M3e.Value.Supported
+    , touchGestures : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | tooltip : M3e.Value.Supported } msg
 tooltip =
     M3e.Tooltip.view
 
 
+richTooltip :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , hideDelay : M3e.Value.Supported
+    , position : M3e.Value.Supported
+    , showDelay : M3e.Value.Supported
+    , touchGestures : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { subhead : M3e.Value.Supported
+    , actions : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | richTooltip : M3e.Value.Supported } msg
 richTooltip =
     M3e.RichTooltip.view
 
 
+tooltipElementBase :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , showDelay : M3e.Value.Supported
+    , hideDelay : M3e.Value.Supported
+    , touchGestures : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | tooltipElementBase : M3e.Value.Supported } msg
 tooltipElementBase =
     M3e.TooltipElementBase.view
 
 
+richTooltipAction :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | richTooltipAction : M3e.Value.Supported } msg
 richTooltipAction =
     M3e.RichTooltipAction.view
 
 
+buttonGroup :
+    List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | buttonGroup : M3e.Value.Supported } msg
 buttonGroup =
     M3e.ButtonGroup.view
 
 
+iconButton :
+    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
+    , ariaLabel : String
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , shape : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , toggle : M3e.Value.Supported
+    , type_ : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , width : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { selected : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | iconButton : M3e.Value.Supported } msg
 iconButton =
     M3e.IconButton.view
 
 
+button :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disabledInteractive : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , shape : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , toggle : M3e.Value.Supported
+    , type_ : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , selectedIcon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
 button =
     M3e.Button.view
 
 
+breadcrumb :
+    List (M3e.Cem.Attr.Attr { wrap : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , separator : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | breadcrumb : M3e.Value.Supported } msg
 breadcrumb =
     M3e.Breadcrumb.view
 
 
+breadcrumbItem :
+    List (M3e.Cem.Attr.Attr { itemLabel : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , current : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | breadcrumbItem : M3e.Value.Supported } msg
 breadcrumbItem =
     M3e.BreadcrumbItem.view
 
 
+breadcrumbItemButton :
+    List (M3e.Cem.Attr.Attr { current : M3e.Value.Supported
+    , href : M3e.Value.Supported
+    , target : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
+    , default : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s
+        | breadcrumbItemButton : M3e.Value.Supported
+    } msg
 breadcrumbItemButton =
     M3e.BreadcrumbItemButton.view
 
 
+bottomSheetTrigger :
+    List (M3e.Cem.Attr.Attr { detent : M3e.Value.Supported
+    , secondary : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | bottomSheetTrigger : M3e.Value.Supported } msg
 bottomSheetTrigger =
     M3e.BottomSheetTrigger.view
 
 
+bottomSheet :
+    List (M3e.Cem.Attr.Attr { detent : M3e.Value.Supported
+    , handle : M3e.Value.Supported
+    , handleLabel : M3e.Value.Supported
+    , hideable : M3e.Value.Supported
+    , hideFriction : M3e.Value.Supported
+    , modal : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , overshootLimit : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onCancel : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , header : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | bottomSheet : M3e.Value.Supported } msg
 bottomSheet =
     M3e.BottomSheet.view
 
 
+bottomSheetAction :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | bottomSheetAction : M3e.Value.Supported } msg
 bottomSheetAction =
     M3e.BottomSheetAction.view
 
 
+badge :
+    List (M3e.Cem.Attr.Attr { size : M3e.Value.Supported
+    , position : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | badge : M3e.Value.Supported } msg
 badge =
     M3e.Badge.view
 
 
+avatar :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | avatar : M3e.Value.Supported } msg
 avatar =
     M3e.Avatar.view
 
 
+autocomplete :
+    List (M3e.Cem.Attr.Attr { autoActivate : M3e.Value.Supported
+    , caseSensitive : M3e.Value.Supported
+    , filter : M3e.Value.Supported
+    , hideSelectionIndicator : M3e.Value.Supported
+    , hideLoading : M3e.Value.Supported
+    , hideNoData : M3e.Value.Supported
+    , loading : M3e.Value.Supported
+    , loadingLabel : M3e.Value.Supported
+    , noDataLabel : M3e.Value.Supported
+    , panelClass : M3e.Value.Supported
+    , required : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onQuery : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , loading : M3e.Value.Supported
+    , noData : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | autocomplete : M3e.Value.Supported } msg
 autocomplete =
     M3e.Autocomplete.view
 
 
+formField :
+    { content :
+        M3e.Element.Element { select : M3e.Value.Supported
+        , inputChipSet : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { floatLabel : M3e.Value.Supported
+    , hideRequiredMarker : M3e.Value.Supported
+    , hideSubscript : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { prefix : M3e.Value.Supported
+    , prefixText : M3e.Value.Supported
+    , label : M3e.Value.Supported
+    , suffix : M3e.Value.Supported
+    , suffixText : M3e.Value.Supported
+    , hint : M3e.Value.Supported
+    , error : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | formField : M3e.Value.Supported } msg
 formField =
     M3e.FormField.view
 
 
+optionPanel :
+    List (M3e.Cem.Attr.Attr { state : M3e.Value.Supported
+    , scrollStrategy : M3e.Value.Supported
+    , fitAnchorWidth : M3e.Value.Supported
+    , anchorOffset : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , noData : M3e.Value.Supported
+    , loading : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | optionPanel : M3e.Value.Supported } msg
 optionPanel =
     M3e.OptionPanel.view
 
 
+floatingPanel :
+    List (M3e.Cem.Attr.Attr { scrollStrategy : M3e.Value.Supported
+    , fitAnchorWidth : M3e.Value.Supported
+    , anchorOffset : M3e.Value.Supported
+    , onBeforetoggle : M3e.Value.Supported
+    , onToggle : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | floatingPanel : M3e.Value.Supported } msg
 floatingPanel =
     M3e.FloatingPanel.view
 
 
+optgroup :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , label : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | optgroup : M3e.Value.Supported } msg
 optgroup =
     M3e.Optgroup.view
 
 
+option :
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disableHighlight : M3e.Value.Supported
+    , highlightMode : M3e.Value.Supported
+    , selected : M3e.Value.Supported
+    , term : M3e.Value.Supported
+    , value : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content {} msg)
+    -> M3e.Element.Element { s | option : M3e.Value.Supported } msg
 option =
     M3e.Option.view
 
 
+focusTrap :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | focusTrap : M3e.Value.Supported } msg
 focusTrap =
     M3e.FocusTrap.view
 
 
+appBar :
+    List (M3e.Cem.Attr.Attr { centered : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , size : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { leading : M3e.Value.Supported
+    , title : M3e.Value.Supported
+    , subtitle : M3e.Value.Supported
+    , trailing : M3e.Value.Supported
+    } msg)
+    -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 appBar =
     M3e.AppBar.view
 
 
+textOverflow :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | textOverflow : M3e.Value.Supported } msg
 textOverflow =
     M3e.TextOverflow.view
 
 
+textHighlight :
+    List (M3e.Cem.Attr.Attr { caseSensitive : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , mode : M3e.Value.Supported
+    , term : M3e.Value.Supported
+    , onHighlight : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | textHighlight : M3e.Value.Supported } msg
 textHighlight =
     M3e.TextHighlight.view
 
 
+stateLayer :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , disableHover : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | stateLayer : M3e.Value.Supported } msg
 stateLayer =
     M3e.StateLayer.view
 
 
+slide :
+    List (M3e.Cem.Attr.Attr { selectedIndex : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | slide : M3e.Value.Supported } msg
 slide =
     M3e.Slide.view
 
 
+scrollContainer :
+    List (M3e.Cem.Attr.Attr { dividers : M3e.Value.Supported
+    , thin : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | scrollContainer : M3e.Value.Supported } msg
 scrollContainer =
     M3e.ScrollContainer.view
 
 
+ripple :
+    List (M3e.Cem.Attr.Attr { centered : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , radius : M3e.Value.Supported
+    , unbounded : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | ripple : M3e.Value.Supported } msg
 ripple =
     M3e.Ripple.view
 
 
+pseudoRadio :
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | pseudoRadio : M3e.Value.Supported } msg
 pseudoRadio =
     M3e.PseudoRadio.view
 
 
+pseudoCheckbox :
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , indeterminate : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | pseudoCheckbox : M3e.Value.Supported } msg
 pseudoCheckbox =
     M3e.PseudoCheckbox.view
 
 
+focusRing :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , inward : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | focusRing : M3e.Value.Supported } msg
 focusRing =
     M3e.FocusRing.view
 
 
+elevation :
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , for : M3e.Value.Supported
+    , level : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | elevation : M3e.Value.Supported } msg
 elevation =
     M3e.Elevation.view
 
 
+collapsible :
+    List (M3e.Cem.Attr.Attr { open : M3e.Value.Supported
+    , orientation : M3e.Value.Supported
+    , noAnimate : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> M3e.Element.Element { s | collapsible : M3e.Value.Supported } msg
 collapsible =
     M3e.Collapsible.view
 
 
+actionElementBase :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element child msg)
+    -> M3e.Element.Element { s | actionElementBase : M3e.Value.Supported } msg
 actionElementBase =
     M3e.ActionElementBase.view
 
