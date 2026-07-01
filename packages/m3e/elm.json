@@ -345,6 +345,7 @@
         "M3e.PseudoRadio",
         "M3e.Radio",
         "M3e.RadioGroup",
+        "M3e.Review.Facts",
         "M3e.RichTooltip",
         "M3e.RichTooltipAction",
         "M3e.Ripple",
