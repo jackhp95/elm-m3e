@@ -5,6 +5,7 @@
     "license": "MIT",
     "version": "1.0.0",
     "exposed-modules": [
+        "M3e",
         "M3e.Accordion",
         "M3e.Action",
         "M3e.ActionElementBase",
