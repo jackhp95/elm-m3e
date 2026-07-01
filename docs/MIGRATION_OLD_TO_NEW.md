@@ -1,33 +1,48 @@
 # Old → new API migration spec (the ornith task)
 
-> ⚠️ **STALE re: the target API.** This spec documents the per-component-setter shape
-> (`Button.button`, `Icon.name`, `Heading.variant`). That is **superseded** by the
-> Vocab / component-agnostic API in `COMPONENT_AGNOSTIC_API.md` §9b (single `import M3e`,
-> shared polymorphic attrs, `variantFilled`, constructor = `.view`). **Rewrite the
-> transform rules below to the Vocab API before running a real migration.** The
-> *structural* guidance (§1b Node-vs-Element, §2 IR-helper→kit, §3 renames) is still
-> valid; only the per-component call shapes change. See `HANDOFF.md`.
+> **Target = the built Vocab API** (`COMPONENT_AGNOSTIC_API.md` §9b, shipped in
+> `packages/m3e/`). This spec is current as of 2026-07-01. The structural guidance
+> (§1b Node-vs-Element, §2 IR-helper→kit, §3 renames, §4 conceptual replacements) is
+> unchanged; the only shape change from earlier drafts is the constructor name — it
+> is **`view`** (in each `M3e.<Comp>` module), not the lowercase component noun.
 
 
 > The hand `M3e.*` library (deleted) is replaced by the generated double-list
 > library in `packages/m3e/` plus the userland kit in `packages/m3e-kit/`. This
 > spec is the exact transformation for migrating consumers (the docs app: 21 files,
 > ~1073 call sites; then other elm+m3e repos). Verify with `elm make` per file.
-> Written 2026-07-01.
 
 ## 0. What changed (the shape)
-- **`X.view { record } opts`  →  `X.x { required } [attrs] [content]`.** Every
-  component's fn is now the **lowercase component name** (`Button.button`,
-  `Icon.icon`, …), and takes up to three args: an optional **required record**, an
-  **attrs list**, and a **content list**. The old single `opts` list splits into the
-  two typed lists.
+- **`X.view { record } opts`  →  `X.view { required } [attrs] [content]`.** Every
+  component's constructor is now **`view`**, in its own module `M3e.<Comp>`, taking
+  up to three args: an optional **required record**, an **attrs list**, and a
+  **content list**. The old single `opts` list splits into the two typed lists.
+- **Recommended target — the per-module strict API** (self-contained: constructor +
+  its setters + its slots all in `M3e.<Comp>`, enum inputs value-checked):
+  ```elm
+  import M3e.Button as Button
+  import M3e.Value as Value
+  Button.view [ Button.variant Value.filled, Button.disabled True ] [ Button.child label ]
+  ```
+  This is a near-mechanical rename of the old per-component-setter code: `Button.button`
+  → `Button.view`; the setters (`Button.variant`, `Button.icon`, `Button.child`, …) are
+  UNCHANGED. `Button.variant` rejects a non-button token at compile time.
+- **One-import alternative — the barrel.** `import M3e exposing (..)` re-exposes every
+  constructor under its **noun** (`button`, `icon`, `divider` = `M3e.Button.view` …)
+  plus the whole shared attribute/event vocabulary (`disabled`, `variant`, `onClick`,
+  …) as ONE *loose* polymorphic function per name: `button [ variant filled ] [ … ]`.
+  Loose = the value isn't per-component-checked (that's a future elm-review rule).
+  **Slot content setters are NOT in the barrel** — for slots (`Button.child`,
+  `Fab.icon`) you still import the component module. Where a component name collides
+  with an attribute the attribute is suffixed (`shapeAttr`, `stepAttr`).
 - **The IR no longer introspects.** `Node.findProperty/findAttribute/childrenOf/
   tagOf` are gone (they only appeared in tests, already deleted).
 - **Raw HTML / text / native elements move to the userland kit** (`packages/m3e-kit`):
   `Kit`, `Native`, `EscapeHatch`, `Seam`.
 
 ## 1. The per-call mechanical rewrite
-`X.view ARG1 OPTS`  →  `X.x [REQ] ATTRS CONTENT` where each old field routes by kind:
+`X.view ARG1 OPTS`  →  `X.view [REQ] ATTRS CONTENT` where each old field routes by kind
+(setters shown qualified per-module, e.g. `Icon.name`; the barrel's bare `name` works too):
 
 | old field / call | new destination |
 |---|---|
@@ -41,23 +56,23 @@
 | default children (a container's items) | content `X.child el` (one) or `X.children [ … ]` (bulk) |
 
 - **`opts` (old, one list)** splits: attribute setters → the **attrs** list; slot
-  content → the **content** list. If a component has no required record, drop that arg:
-  `Divider.view []` → `Divider.divider [] []`.
+  content → the **content** list. If a component has no required record, it takes just
+  the two lists: `Divider.view [] []`.
 - **The required record only appears when the component has a required-singular slot
   or an aria/action field** (Button label, Icon has none, Switch `{ariaLabel}`, …).
 
 ### Worked examples
 ```elm
-Icon.view    { name = glyph } []                    →  Icon.icon [ Icon.name glyph ] []
+Icon.view    { name = glyph } []                    →  Icon.view [ Icon.name glyph ] []
 Heading.view { label = "x", variant = Value.title } []
-                                                     →  Heading.heading [ Heading.variant Value.title ] [ Kit.text "x" ]
-Divider.view []                                      →  Divider.divider [] []
-Switch.view  { ariaLabel = "2FA" }                   →  Switch.switch { ariaLabel = "2FA" } [] []
-Fab.view     { icon = "edit", ariaLabel = "Compose" }→  Fab.fab { ariaLabel = "Compose" } [] [ Fab.icon (Icon.icon [ Icon.name "edit" ] []) ]
-IconButton.view { icon = g, ariaLabel = l } []       →  IconButton.iconButton { ariaLabel = l } [] [ IconButton.content (Icon.icon [ Icon.name g ] []) ]
+                                                     →  Heading.view [ Heading.variant Value.title ] [ Kit.text "x" ]
+Divider.view []                                      →  Divider.view [] []
+Switch.view  { ariaLabel = "2FA" }                   →  Switch.view { ariaLabel = "2FA" } [] []
+Fab.view     { icon = "edit", ariaLabel = "Compose" }→  Fab.view { ariaLabel = "Compose" } [] [ Fab.icon (Icon.view [ Icon.name "edit" ] []) ]
+IconButton.view { icon = g, ariaLabel = l } []       →  IconButton.view { ariaLabel = l } [] [ IconButton.content (Icon.view [ Icon.name g ] []) ]
 ```
-(For per-component slot/attr names, read the module's `exposing (…)` line in
-`packages/m3e/src/M3e/<Comp>.elm` — the setters are named there.)
+(The constructor is always `view`; for per-component slot/attr names read the module's
+`exposing (…)` line in `packages/m3e/src/M3e/<Comp>.elm` — the setters are named there.)
 
 ## 1b. Node-level vs Element-level code (important)
 Some consumer code works at the **`Node` level** (returns `Node msg`, builds with the
