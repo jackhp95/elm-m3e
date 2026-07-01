@@ -1,59 +1,68 @@
 # HANDOFF — start here
 
-The single "read this first" doc for resuming work. Written 2026-07-01. If a doc
-below contradicts this file, this file is newer — but verify against the code.
+The single "read this first" doc for resuming work. Updated 2026-07-01 (Vocab core
+BUILT). If a doc below contradicts this file, this file is newer — but verify
+against the code.
 
-## Current on-disk state (honest — it's mid-refactor)
+## Current on-disk state — Vocab core is BUILT ✅
 
-- `packages/m3e/` **ships the generated library** and compiles green
-  (`cd packages/m3e && elm make`). The old hand `src/M3e` + `vendor/` are gone.
-- The generator (`elm-cem/`, a separate repo cloned in, gitignored) emits it from the
-  `@m3e/web` CEM + `config/slots.json`.
-- **We are mid-way through the "component-agnostic / Vocab" redesign.** The generated
-  output is an **intermediate hybrid**, NOT the final shape:
-  - ✅ shared attrs collapsed to one module; component top-modules are constructor +
-    slot setters (no per-component attr setters).
-  - ⚠️ **BUG (known):** that shared module is `M3e.Attr` and its setters return
-    `Html.Attribute msg`, **not** the phantom `M3e.Cem.Attr.Attr { c | cap } msg` the
-    constructors require — so there is currently **no working way to pass an attribute
-    to a top-layer component.** It compiles only because nothing consumes it yet.
-  - ❌ the final **`Vocab`** architecture is DOCUMENTED (`docs/COMPONENT_AGNOSTIC_API.md`
-    §9b) but NOT built. `M3e.Attr` is a superseded intermediate — the end state has
-    **no `M3e.Attr`**; the vocab is it.
+- `packages/m3e/` **ships the generated library** and compiles green — 379 modules
+  (`cd packages/m3e && npx elm make src/M3e.elm --output=/dev/null`). Old hand `src/M3e`
+  + `vendor/` are gone.
+- The generator (`elm-cem/`, a **separate git repo** cloned in, gitignored — commit
+  it separately) emits it from the `@m3e/web` CEM + `config/slots.json`. Work is on
+  branch **`feat/vocab-architecture`** in BOTH repos.
+- **The `docs/COMPONENT_AGNOSTIC_API.md` §9b Vocab architecture is now built.** The
+  old bug (`M3e.Attr` returned raw `Html.Attribute`, unconsumable) is GONE. Shape now:
+  - **`M3e.Cem.Html.Vocab`** — shared bottom, raw `elm/html`, every merged attr+event.
+  - **`M3e.Cem.Vocab`** — the phantom shared vocab: `disabled : Bool -> M3e.Cem.Attr.Attr
+    { c | disabled : Supported } msg`, etc. Wraps the bottom vocab. ONE loose,
+    component-agnostic function per attr/event name (enum inputs union every
+    component's values).
+  - **`M3e.<Comp>`** (e.g. `M3e.Button`) — `view` (the constructor) + the component's
+    OWN **strict** attr/event setters (aliases of the middle; enum inputs closed to
+    THIS component's values, so `M3e.Button.variant M3e.Value.circular` is rejected) +
+    typed slot setters. Group/variant-split modules keep natural names (`linear`/`circular`).
+  - **`M3e`** (barrel) — one import re-exposing every constructor (as its noun,
+    `M3e.button = M3e.Button.view`) + the whole loose vocab, all with **materialized
+    type annotations** (all 313 exposed decls annotated). Collision guard: `shape`/`step`
+    are both components and attrs → the attribute is suffixed (`shapeAttr`/`stepAttr`).
 
-## The immediate next build (do this first)
+  **Two surfaces:** `import M3e.Button` = strict/value-checked; `import M3e exposing (..)`
+  = loose one-import. Both verified with probes (positive compiles; wrong-capability and
+  wrong-enum-value both fail).
 
-Implement the Vocab architecture (`docs/COMPONENT_AGNOSTIC_API.md` §9b, build order).
-Step 1 both *fixes the bug* and is the foundation:
+## What's left
 
-1. **Phantom attr emit.** In `elm-cem/codegen/Emit.elm`, the four setter emitters
-   (enum ~L185, property ~L211, string ~L226, builtin ~L267) all end
-   `|> Elm.withType (Type.function [..] htmlAttr)` where `htmlAttr` (L28-29) is
-   `Html.Attribute msg`. The vocab needs its OWN emit that instead wraps each in
-   `M3e.Cem.Attr.attribute` and returns `M3e.Cem.Attr.Attr { c | <cap> : Supported }
-   msg` — exactly how the *middle* already does it (`M3e.Cem.Button.disabled =
-   M3e.Cem.Attr.attribute M3e.Cem.Html.Button.disabled`). Do NOT flip `Emit` globally —
-   the BOTTOM modules use it and must stay raw `htmlAttr`. **Subtlety:** the middle
-   wraps a *per-component* bottom (`M3e.Cem.Html.Button.disabled`); a SHARED vocab has
-   no single component, so either construct the html inline in the wrapper or emit a
-   shared bottom vocab and wrap that.
-2. `M3e.Cem.Vocab` (internal) = the phantom attr/event vocab, defined once.
-3. `M3e.Vocab` (internal) = top-only new concepts (constructors → `Element`,
-   `Content`/slot setters). Reuses the middle attr vocab (same `Attr` phantom).
-4. Barrel `M3e` = pure aliases of the full vocab; it is the compile-time collision
-   guard. **Also fix:** barrel re-bindings currently have NO type annotations
-   (`accordion = M3e.Accordion.accordion`) — materialize them.
-5. Component modules `M3e.<Comp>` = aliases, suffix-stripped, constructor → `view`
-   (grouped/variant-split modules keep natural names — can't have two `view`s).
-6. elm-review rules (generated) — `PreferSpecificSlot`, `ValidEnumValue`, and the
-   ADR-0011 advisory `RequireSlot`/`SingularSlot`. AFTER core lands. The hand rules in
-   `review/` are OLD-era artifacts, unrelated — decide delete vs keep later.
+1. **elm-review rules (generated) — step 6, NOT yet built.** `ValidEnumValue` (flag a
+   loose `variant Value.circular` on a Button — the backstop the loose barrel needs),
+   `PreferSpecificSlot` (rewrite general `trailingSlot`→`appBarTrailingSlot`), and the
+   ADR-0011 advisory `RequireSlot`/`SingularSlot`. The strict `M3e.<Comp>` API already
+   gives full type safety; these only backstop the LOOSE barrel/general-slot path. The
+   hand rules in `review/` are OLD Ui.*-era artifacts — decide delete vs keep.
+2. **`M3e.Vocab` internal consolidation (§9b step 3) — deliberately SKIPPED.** The doc
+   wanted an internal `M3e.Vocab` that both the barrel and component modules alias, to
+   avoid duplication/cycles. The built structure already defines each constructor once
+   (in `M3e.<Comp>`) with the barrel aliasing it — no duplication, no cycles — so the
+   extra indirection wasn't built. Revisit only if it buys something concrete.
+3. **Full `elm publish` docs-readiness** — 4 runtime templates (`M3e.Value.Core`,
+   `M3e.Element`, `M3e.Node`, `M3e.Cem.Attr`) lack module doc comments, so `elm make
+   --docs` fails. NOT needed for the product (consumers use source-dirs, not the
+   published package) — only for actually publishing to package.elm-lang.org.
 
-Verify each increment: regenerate via `elm-cem/bin/elm-cem.js` (NOT bare `elm-codegen
-run` — see FRICTIONS F10) into `packages/m3e/src`, then `cd packages/m3e && elm make`
-(all ~383 modules) + a negative-probe scratch file that must FAIL to compile.
+## Regenerate + verify (the loop)
 
-## Then: migrate consumers (blocked on the above)
+Regenerate via `bin/elm-cem.js` (NOT bare `elm-codegen run` — see FRICTIONS F10):
+```
+node elm-cem/bin/elm-cem.js \
+  --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+  --config-from=config/slots.json --output=packages/m3e/src
+cd packages/m3e && npx elm make src/M3e.elm --output=/dev/null    # expect: 379 modules
+```
+For a change, edit `elm-cem/codegen/Generate.elm`, regenerate, `elm make`, and drop a
+scratch `packages/m3e/src/Probe.elm` that must FAIL to compile (then delete it).
+
+## Then: migrate consumers (now UNBLOCKED)
 
 The docs app (`docs/`, elm-pages, ~18 files) still uses the OLD `.view` API and does
 NOT compile against the new library. Migrate it (and later sibling repos) — see
