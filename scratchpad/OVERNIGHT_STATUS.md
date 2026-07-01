@@ -53,13 +53,32 @@ Per route, apply and compile:
    `AppBar.title` wants `{text}` so use `Kit.text`); coerce with `EscapeHatch.asElement`
    when you must place a wrapped element into a typed slot.
 
-## Remaining docs routes (all follow the cookbook)
+## Docs migration progress — 9 files done (all compile, committed)
 
-`GettingStarted/{Overview,Installation}`, `Styles/{Typography,Density,Motion,Shape}`,
-`Index`, `Reference`, `Studies` + `Studies/{Reply,Shrine,Rally,Crane,Settings}`,
-`Components/Name_` (the big showcase). This is now mechanical-but-manual — ideal for
-ornith (prompt is updated) with an opus per-file review, or continued opus passes.
-A full elm-pages build + tunnel needs **all** of them green (elm-pages compiles every route).
+**Done:** `Shared` (shell) + routes `Styles/{Color,Typography,Motion,Density}`,
+`GettingStarted/{BrowserSupport,Overview,Installation}`, `Reference`.
+
+**Reusable helper saved:** `scratchpad/route_migrate.py` — `migrate_common(s)` does the
+safe cookbook transforms (imports, `Node.text`→`Kit.text`, `Node.raw`/`Element.html`
+→`EscapeHatch.fromHtml`, `Node.element "X"`→`Native.node (Html.node "X")`,
+`Node.rawAttr`→`Seam.asAttribute`, `Heading.level` Int→String, `Card.headline`→`header`,
+`Divider.view []`→`[] []`, drop inner `|> Element.toNode`); `fix_headings(s)` does the
+`Heading.view { label, variant }`→`{ content = Kit.text .. }` split. Then per file:
+hand-fix Card two-list splits, add open-row annotations (`{ s | heading }` for headings,
+`{ s | card }` for cards, `{ s | html }` for Layout/Native), and wrap `View.body` with
+`List.map Element.toNode [ … ]`. Compile after each.
+
+**Remaining routes** (same cookbook; a few have component-specific rebuilds):
+- `Index` — Button `{label,variant}`→`[attrs][Button.child (Kit.text ..)]`; **Avatar**
+  rebuild (new `M3e.Avatar` is `view [] [child]` with no `image`/`ariaLabel` — put a
+  `Native.img` in the default slot + aria via `Seam`); Icon `{name}`→`[Icon.name ..]`; 2 Cards.
+- `Styles/Shape` — **surface-don't-guess**: uses a `CemShape` enum module, `Shape.name`,
+  and `Shape.attributes` (raw passthrough); the new `M3e.Shape` API differs. Needs a design call.
+- `Studies` + `Studies/{Reply,Shrine,Rally,Crane,Settings}` — the app-clone demos (heavier).
+- `Components/Name_` — the 375-site component showcase (largest).
+
+A full elm-pages build + tunnel needs **all** routes green (elm-pages compiles every route),
+so the tunnel is still gated on finishing the remaining ~8 files.
 
 ## Still teed up (not started)
 
