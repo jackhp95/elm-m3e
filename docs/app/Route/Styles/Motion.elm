@@ -7,11 +7,13 @@ import Head.Seo as Seo
 import Html exposing (code, li, p, text, ul)
 import Html.Attributes exposing (class)
 import Layout
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -59,46 +61,49 @@ head _ =
         |> Seo.website
 
 
-pageHeading : Node msg
+pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { label = "Motion", variant = Value.display }
-        [ Heading.size Value.small, Heading.level 1 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text "Motion" }
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        []
+       
 
 
-sectionHeading : String -> Node msg
+sectionHeading : String -> Element { s | heading : Supported } msg
 sectionHeading label =
-    Heading.view { label = label, variant = Value.headline }
-        [ Heading.size Value.small, Heading.level 2 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text label }
+        [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+        []
+       
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Motion · elm-m3e"
     , body =
-        [ Layout.div "mx-auto max-w-3xl space-y-8"
+        List.map Element.toNode
+            [ Layout.div "mx-auto max-w-3xl space-y-8"
             [ Layout.section "space-y-3"
                 [ pageHeading
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                         [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
                     )
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ sectionHeading "Schemes"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                         [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
                         , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
                         ]
                     )
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ sectionHeading "Token families"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (ul [ class "list-disc space-y-1.5 pl-5 text-body-md text-on-surface-variant" ]
                         [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
                         , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
