@@ -94,6 +94,38 @@ The generator emits rules (shipped alongside, opt-in):
   capability*, elm-review guarantees the finer per-component/per-value correctness.
 - **Config resilience** — hand-rolled config can be wrong; loose+review absorbs that.
 
+## 9b. The Vocab architecture (converged refinement — supersedes §2/§3/§7 mechanics)
+
+Everything is defined **once** in an internal **`Vocab`** per layer, and every public
+module is a thin **alias** of it. This avoids duplication and, because aliases only
+ever point *down*, avoids circular imports.
+
+- **`Vocab` is internal and holds only the concepts NEW to its layer, reusing below.**
+  The middle and top share the exact `Attr { c | cap } msg` phantom, so the **attr
+  vocab is defined once at the middle level** (`M3e.Cem.Vocab`) and the **top reuses
+  it**; the top vocab (`M3e.Vocab`) adds only what's new up there — constructors
+  returning `Element`, and the `Content`/slot setters. Bottom vocab = raw `htmlAttr`;
+  middle wraps it in `M3e.Cem.Attr.attribute` → phantom `Attr`.
+- **Names are disambiguated in Vocab, attribute-first + component-suffixed:**
+  `variantButton`, `variantChip` (so autocomplete on `variant` surfaces the typed
+  ones), shared `disabled` (no suffix — only *type-divergent* attrs get a suffix),
+  constructors `button`/`card`.
+- **The barrel `M3e` aliases the full vocab** (loose general `variant` + all the
+  disambiguated names + constructors). `import M3e exposing (..)` = everything. The
+  barrel is also the **compile-time collision guard** — if two aliases share a name it
+  won't compile, so Vocab may be split into as many internal modules as is clean.
+- **Component modules alias the barrel/vocab and strip the component suffix**, renaming
+  the constructor to `view`: `M3e.Button` → `view` (= `button`), `variant`
+  (= `variantButton`, the *strict* one), `disabled` (shared, unchanged). **Exception:**
+  combined-group modules (variant-split, e.g. `Progress` = `linear`/`circular`) can't
+  have two `view`s — their sub-components keep their natural vocab names.
+- **No `M3e.Attr` module** — the vocab is it. (This also fixes the opaque-`Html` bug:
+  the vocab is defined at the phantom level.)
+
+Build order: phantom middle-vocab emit → `M3e.Cem.Vocab` → `M3e.Vocab` (constructors +
+slots) → barrel aliases both → component alias modules (suffix-strip + `view`) →
+elm-review auto-prefix rule.
+
 ## 10. Open micro-decisions (proceeding with these defaults)
 - Slot naming: `<slot>Slot` (general) / `<component><Slot>Slot` (specific).
 - elm-review rules: authored **after** the core generation lands (loose types work without them).
