@@ -1,4 +1,4 @@
-module Native exposing (node, div, span, p, a, strong, em, small, ul, ol, li, img, br, hr)
+module Native exposing (node, div, section, nav, header, footer, span, p, a, strong, em, small, ul, ol, li, img, br, hr)
 
 {-| Native-HTML IR producers (prose/inline/block). Each carries the `html` kind, so
 it drops into any `any` slot directly, and into a specific slot via `EscapeHatch`.
@@ -28,6 +28,26 @@ node tag attrs kids =
 div : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 div =
     node Html.div
+
+
+section : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
+section =
+    node Html.section
+
+
+nav : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
+nav =
+    node Html.nav
+
+
+header : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
+header =
+    node Html.header
+
+
+footer : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
+footer =
+    node Html.footer
 
 
 span : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg

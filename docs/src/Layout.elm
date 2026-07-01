@@ -39,9 +39,11 @@ than inlined.
 
 -}
 
-import Html
 import Html.Attributes as Attr
-import M3e.Node as Node exposing (Node)
+import M3e.Element exposing (Element)
+import M3e.Value exposing (Supported)
+import Native
+import Seam
 
 
 {-| A flex row with centred vertical alignment and a 3-unit gap.
@@ -52,7 +54,7 @@ Use this preset only when the original class string is **exactly**
 `"flex items-center gap-3"`.
 
 -}
-row : List (Node msg) -> Node msg
+row : List (Element s msg) -> Element { k | html : Supported } msg
 row =
     div "flex items-center gap-3"
 
@@ -65,7 +67,7 @@ Use this preset only when the original class string is **exactly**
 `"flex flex-col gap-4"`.
 
 -}
-col : List (Node msg) -> Node msg
+col : List (Element s msg) -> Element { k | html : Supported } msg
 col =
     div "flex flex-col gap-4"
 
@@ -78,7 +80,7 @@ Use this preset only when the original class string is **exactly**
 `"space-y-4"`.
 
 -}
-stack : List (Node msg) -> Node msg
+stack : List (Element s msg) -> Element { k | html : Supported } msg
 stack =
     div "space-y-4"
 
@@ -91,7 +93,7 @@ Use this preset only when the original class string is **exactly**
 `"mx-auto"`.
 
 -}
-center : List (Node msg) -> Node msg
+center : List (Element s msg) -> Element { k | html : Supported } msg
 center =
     div "mx-auto"
 
@@ -104,7 +106,7 @@ Use this preset only when the original class string is **exactly**
 `"mx-auto max-w-4xl space-y-8"`.
 
 -}
-container : List (Node msg) -> Node msg
+container : List (Element s msg) -> Element { k | html : Supported } msg
 container =
     div "mx-auto max-w-4xl space-y-8"
 
@@ -119,7 +121,7 @@ Use this when the row's classes differ from the `row` preset. The class
 argument is passed through byte-for-byte — never alter it.
 
 -}
-rowWith : String -> List (Node msg) -> Node msg
+rowWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 rowWith =
     div
 
@@ -129,7 +131,7 @@ rowWith =
 Use this when the column's classes differ from the `col` preset.
 
 -}
-colWith : String -> List (Node msg) -> Node msg
+colWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 colWith =
     div
 
@@ -139,7 +141,7 @@ colWith =
 Use this when the stack's classes differ from the `stack` preset.
 
 -}
-stackWith : String -> List (Node msg) -> Node msg
+stackWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 stackWith =
     div
 
@@ -150,7 +152,7 @@ The class argument should include the `grid` utility and any column/gap
 configuration; it is passed through byte-for-byte.
 
 -}
-gridWith : String -> List (Node msg) -> Node msg
+gridWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 gridWith =
     div
 
@@ -161,7 +163,7 @@ Use for semantic sections when the class differs from the common
 `"space-y-3"` or `"space-y-4"` patterns.
 
 -}
-sectionWith : String -> List (Node msg) -> Node msg
+sectionWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 sectionWith =
     section
 
@@ -172,7 +174,7 @@ Use this when the centring wrapper needs a width constraint or spacing
 that differs from the `center` preset.
 
 -}
-centerWith : String -> List (Node msg) -> Node msg
+centerWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 centerWith =
     div
 
@@ -182,7 +184,7 @@ centerWith =
 Use this when the page wrapper's class differs from the `container` preset.
 
 -}
-containerWith : String -> List (Node msg) -> Node msg
+containerWith : String -> List (Element s msg) -> Element { k | html : Supported } msg
 containerWith =
     div
 
@@ -198,9 +200,9 @@ match a preset should use this function. The class string is passed through
 exactly — never add, drop, or reorder classes here.
 
 -}
-div : String -> List (Node msg) -> Node msg
+div : String -> List (Element s msg) -> Element { k | html : Supported } msg
 div cls children =
-    Node.raw (Html.div [ Attr.class cls ] (List.map Node.toHtml children))
+    Native.div [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<section>` element carrying the given Tailwind class string verbatim.
@@ -209,9 +211,9 @@ Use for semantic page sections (headings, content areas) whose classes do
 not match the `sectionWith` shorthand.
 
 -}
-section : String -> List (Node msg) -> Node msg
+section : String -> List (Element s msg) -> Element { k | html : Supported } msg
 section cls children =
-    Node.raw (Html.section [ Attr.class cls ] (List.map Node.toHtml children))
+    Native.section [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<span>` element carrying the given Tailwind class string verbatim.
@@ -219,9 +221,9 @@ section cls children =
 Use for inline layout wrappers (icon containers, badge anchors, etc.).
 
 -}
-span : String -> List (Node msg) -> Node msg
+span : String -> List (Element s msg) -> Element { k | html : Supported } msg
 span cls children =
-    Node.raw (Html.span [ Attr.class cls ] (List.map Node.toHtml children))
+    Native.span [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<nav>` element carrying the given Tailwind class string verbatim.
@@ -229,9 +231,9 @@ span cls children =
 Use for navigation landmark wrappers.
 
 -}
-nav : String -> List (Node msg) -> Node msg
+nav : String -> List (Element s msg) -> Element { k | html : Supported } msg
 nav cls children =
-    Node.raw (Html.nav [ Attr.class cls ] (List.map Node.toHtml children))
+    Native.nav [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<ul>` element carrying the given Tailwind class string verbatim.
@@ -239,9 +241,9 @@ nav cls children =
 Use for unstyled or utility-classed unordered lists.
 
 -}
-ul : String -> List (Node msg) -> Node msg
+ul : String -> List (Element s msg) -> Element { k | html : Supported } msg
 ul cls children =
-    Node.raw (Html.ul [ Attr.class cls ] (List.map Node.toHtml children))
+    Native.ul [ Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<li>` element carrying the given Tailwind class string verbatim.
@@ -249,6 +251,6 @@ ul cls children =
 Use for list items whose layout is driven by Tailwind utilities.
 
 -}
-li : String -> List (Node msg) -> Node msg
+li : String -> List (Element s msg) -> Element { k | html : Supported } msg
 li cls children =
-    Node.raw (Html.li [ Attr.class cls ] (List.map Node.toHtml children))
+    Native.li [ Seam.asAttribute (Attr.class cls) ] children
