@@ -39,6 +39,7 @@ than inlined.
 
 -}
 
+import Html
 import Html.Attributes as Attr
 import M3e.Node as Node exposing (Node)
 
@@ -199,7 +200,7 @@ exactly — never add, drop, or reorder classes here.
 -}
 div : String -> List (Node msg) -> Node msg
 div cls children =
-    Node.element "div" [ Node.rawAttr (Attr.class cls) ] children
+    Node.raw (Html.div [ Attr.class cls ] (List.map Node.toHtml children))
 
 
 {-| A `<section>` element carrying the given Tailwind class string verbatim.
@@ -210,7 +211,7 @@ not match the `sectionWith` shorthand.
 -}
 section : String -> List (Node msg) -> Node msg
 section cls children =
-    Node.element "section" [ Node.rawAttr (Attr.class cls) ] children
+    Node.raw (Html.section [ Attr.class cls ] (List.map Node.toHtml children))
 
 
 {-| A `<span>` element carrying the given Tailwind class string verbatim.
@@ -220,7 +221,7 @@ Use for inline layout wrappers (icon containers, badge anchors, etc.).
 -}
 span : String -> List (Node msg) -> Node msg
 span cls children =
-    Node.element "span" [ Node.rawAttr (Attr.class cls) ] children
+    Node.raw (Html.span [ Attr.class cls ] (List.map Node.toHtml children))
 
 
 {-| A `<nav>` element carrying the given Tailwind class string verbatim.
@@ -230,7 +231,7 @@ Use for navigation landmark wrappers.
 -}
 nav : String -> List (Node msg) -> Node msg
 nav cls children =
-    Node.element "nav" [ Node.rawAttr (Attr.class cls) ] children
+    Node.raw (Html.nav [ Attr.class cls ] (List.map Node.toHtml children))
 
 
 {-| A `<ul>` element carrying the given Tailwind class string verbatim.
@@ -240,7 +241,7 @@ Use for unstyled or utility-classed unordered lists.
 -}
 ul : String -> List (Node msg) -> Node msg
 ul cls children =
-    Node.element "ul" [ Node.rawAttr (Attr.class cls) ] children
+    Node.raw (Html.ul [ Attr.class cls ] (List.map Node.toHtml children))
 
 
 {-| A `<li>` element carrying the given Tailwind class string verbatim.
@@ -250,4 +251,4 @@ Use for list items whose layout is driven by Tailwind utilities.
 -}
 li : String -> List (Node msg) -> Node msg
 li cls children =
-    Node.element "li" [ Node.rawAttr (Attr.class cls) ] children
+    Node.raw (Html.li [ Attr.class cls ] (List.map Node.toHtml children))

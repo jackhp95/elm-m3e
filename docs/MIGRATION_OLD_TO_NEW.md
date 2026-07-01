@@ -50,7 +50,21 @@ IconButton.view { icon = g, ariaLabel = l } []       →  IconButton.iconButton 
 (For per-component slot/attr names, read the module's `exposing (…)` line in
 `packages/m3e/src/M3e/<Comp>.elm` — the setters are named there.)
 
-## 2. IR-helper / escape mappings (add the imports)
+## 1b. Node-level vs Element-level code (important)
+Some consumer code works at the **`Node` level** (returns `Node msg`, builds with the
+old `Node.element`/`Node.rawAttr`) rather than the component/`Element` level. Those do
+**NOT** map to the kit (`Native`/`EscapeHatch` produce `Element`, not `Node`). Rebuild
+them with `Node.raw` + plain `Html.*`:
+```elm
+-- old (Node-level layout helper):
+div cls children = Node.element "div" [ Node.rawAttr (Attr.class cls) ] children
+-- new:
+div cls children = Node.raw (Html.div [ Attr.class cls ] (List.map Node.toHtml children))
+```
+The kit mappings in §2 are for **Element-level** (component-composition) code. Check
+the function's return type first: `Node msg` → §1b; `Element … msg` → §2.
+
+## 2. IR-helper / escape mappings — for ELEMENT-level code (add the imports)
 | old | new | import |
 |---|---|---|
 | `Node.raw html` | `EscapeHatch.fromHtml html` | `import EscapeHatch` |
