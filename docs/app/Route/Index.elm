@@ -19,6 +19,7 @@ import Layout
 import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
+import M3e.ContentPane as ContentPane
 import EscapeHatch
 import Kit
 import M3e.Divider as Divider
@@ -86,12 +87,17 @@ head _ =
         |> Seo.website
 
 
+pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
+pane items =
+    ContentPane.view [] (List.map ContentPane.child items)
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
     , body =
         List.map Element.toNode
-            [ Layout.div "mx-auto max-w-5xl space-y-16"
+            [ pane
             [ hero
             , Divider.view [] []
             , highlights

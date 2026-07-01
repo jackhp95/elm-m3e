@@ -16,6 +16,7 @@ import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import Layout
 import M3e.Card as Card
+import M3e.ContentPane as ContentPane
 import EscapeHatch
 import Kit
 import M3e.Divider as Divider
@@ -117,12 +118,17 @@ pageHeading =
        
 
 
+pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
+pane items =
+    ContentPane.view [] (List.map ContentPane.child items)
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
         List.map Element.toNode
-            [ Layout.div "mx-auto max-w-5xl"
+            [ pane
             [ pageHeading
             , EscapeHatch.fromHtml
                 (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
