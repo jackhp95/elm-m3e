@@ -63,7 +63,50 @@ layers: top → middle → bottom → raw `elm/html`. The review surface lives o
 explicit steps outward.
 _Avoid_: fallback chain, escape hatches (plural)
 
+### API shape
+
+**API shape**: the *calling convention* of a constructor. The bottom and middle
+[[Layer]]s each expose a single fixed shape; only the **top** layer varies, across
+three. So there are **five addressable API surfaces** in all (bottom + middle +
+three top shapes) — not a 3×3 grid — and a [[Codegen-aware rule]] should be able
+to translate a call between any two of the five.
+_Avoid_: signature, form, style
+
+**Double-list shape** (top):
+`view [ attrs ] [ content ]` — one attribute list, one content list. No required
+or arity protection; needs a rule to flag missing required attrs/content. The
+currently-shipped top shape.
+
+**Required-record shape** (top):
+`view { required } [ opts ]` — a required record guarantees mandatory arguments
+are present, but attributes and content are jumbled together. Needs a rule to
+enforce arity and to sort attributes before content.
+
+**Phantom-builder shape** (top):
+A required-typed phantom builder — the compiler alone catches every arity,
+presence, and validity error, so it needs no elm-review support.
+
 ### Mechanisms
+
+**Codegen-aware rule**:
+An elm-review rule that knows the CEM/config the library was generated from —
+per-component required/multi/valid-enum facts and the shorthand-vs-specific
+naming (`variant` vs `variantButton`). It reports or auto-fixes layer-/shape-
+specific issues and can translate a call between [[Layer]]s and [[API shape]]s.
+_Avoid_: lint rule, static check
+
+**Seam**:
+A blessed insertion of non-generated code (a class on a native element, a layout
+primitive, a markdown/table wrapper) *within* the generated structures — the
+sanctioned counterpart to the louder [[Hand]] escape.
+_Avoid_: escape hatch, injection
+
+**Seam module**:
+A repo-designated module — one of possibly several, configured in the
+[[Codegen-aware rule]] — that is the *only* sanctioned home for [[Seam]] usage,
+where a team keeps its layout primitives and non-generated wrappers so those
+patterns are easy to find and later unify. (The docs app's is `Layout.elm`.)
+_Avoid_: Utils, Helpers, Custom
 
 **Composition over injection**:
 The governing rule. Added structure is always built by the consumer composing
