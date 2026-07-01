@@ -32,6 +32,8 @@ import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.IconButton as IconButton
+import M3e.NavMenu as NavMenu
+import M3e.NavMenuItem as NavMenuItem
 import M3e.Node as Node
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Theme as Theme
@@ -632,7 +634,7 @@ drawerShell _ model page body =
         , DrawerContainer.start (not (isMobile model) || model.showMenu)
         ]
         [ DrawerContainer.startSlot
-            (navPanel currentPath)
+            (navMenu currentPath)
         , DrawerContainer.child
             (Native.div
                 [ Seam.asAttribute (class "mx-auto max-w-5xl px-4 py-10 sm:px-6 md:px-12") ]
@@ -648,8 +650,8 @@ model that needs a design decision. For now the nav is faithfully reproduced as
 the "pure a[href] links" the old code documented, via the Native escape — a Seam
 candidate to component-ify once the NavMenu model is settled.
 -}
-navPanel : String -> Element { html : Supported } msg
-navPanel currentPath =
+navMenu : String -> Element { s | navMenu : Supported } msg
+navMenu currentPath =
     let
         groups =
             List.map (\s -> ( s.icon, s.title, s.items )) navSections
@@ -657,35 +659,26 @@ navPanel currentPath =
                    , ( "menu_book", "Reference", [ ( "/reference", "Full API reference" ) ] )
                    ]
     in
-    Native.nav [ Seam.asAttribute (class "flex min-w-64 flex-col gap-2 p-3") ]
-        (List.map (\( glyph, title, items ) -> navGroup currentPath glyph title items) groups)
+    NavMenu.view []
+        (NavMenu.children (List.map (\( glyph, title, items ) -> navGroup currentPath glyph title items) groups))
 
 
-navGroup : String -> String -> String -> List ( String, String ) -> Element { html : Supported } msg
+navGroup : String -> String -> String -> List ( String, String ) -> Element { navMenuItem : Supported, navMenuItemGroup : Supported, divider : Supported } msg
 navGroup currentPath glyph title items =
-    Native.div [ Seam.asAttribute (class "flex flex-col gap-0.5") ]
-        (Native.div
-            [ Seam.asAttribute (class "flex items-center gap-2 px-3 py-1.5 text-label-lg text-on-surface-variant") ]
-            [ Icon.view [ Icon.name glyph ] [], Kit.text title ]
-            :: List.map (navLink currentPath) items
+    NavMenuItem.view
+        { label = Kit.text title }
+        [ NavMenuItem.open (List.any (\( path, _ ) -> path == currentPath) items) ]
+        (NavMenuItem.icon (Icon.view [ Icon.name glyph ] [])
+            :: NavMenuItem.children (List.map (navLeaf currentPath) items)
         )
 
 
-navLink : String -> ( String, String ) -> Element { html : Supported } msg
-navLink currentPath ( path, label ) =
-    Native.a
-        [ Seam.asAttribute (Attr.href path)
-        , Seam.asAttribute
-            (class
-                (if path == currentPath then
-                    "block rounded-full px-4 py-2 bg-secondary-container text-on-secondary-container"
-
-                 else
-                    "block rounded-full px-4 py-2 text-on-surface hover:bg-surface-container-high"
-                )
-            )
-        ]
-        [ Kit.text label ]
+navLeaf : String -> ( String, String ) -> Element { navMenuItem : Supported } msg
+navLeaf currentPath ( path, label ) =
+    NavMenuItem.view
+        { label = Kit.link path [ Kit.text label ] }
+        [ NavMenuItem.selected (path == currentPath) ]
+        []
 
 
 {-| (slug, label) for every documented component, kept in sync with
