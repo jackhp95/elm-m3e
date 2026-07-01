@@ -169,6 +169,47 @@ Constant across all candidates: required slots → a required record; kind/capab
 MISI at the type level; cardinality/required-presence via elm-review + docs;
 per-slot `kinds`/`multi`/`required` config. Tracked: **elm-m3e#77** (to be filed).
 
+## 8. Escapes & extensibility gradient (2026-06-30 decisions)
+
+Four decisions on how open the system is, and how you escape it:
+
+### `any` = the universal/open row; permissive default you trim
+- **Representation:** a slot with `any` accepts an `Element` of **any kind** — in Elm, a
+  **polymorphic/open row** (setter takes `Element k msg`, `k` free). Expose a nameable
+  **alias** for it so `any` slots read clearly (e.g. `M3e.Kind.Any` / an `anyChild`
+  producer), rather than an anonymous open var.
+- **Generation model (confirmed):** the process should emit the **FULL permissive
+  schema — every composition enabled — and the author removes what they don't want to
+  support.** Clearer than authoring restrictions from nothing; the investigated config
+  is that trim already applied from code-evidence. (Same principle as the first-run
+  prunable DECL.) Config sugar: `"any"` = "all kinds".
+- **Consulting m3e-docs confirmed** the permissive lean (Card "custom layouts", Avatar
+  img/icon/text). The config process to date read only **CSS/JS** (code inference);
+  **m3e-docs (Material spec/guidelines) is a richer INTENT source** and a good input for
+  a future cross-check pass. Codegen means being wrong is cheap — fix and regen.
+
+### Native-HTML IR (extends [ADR 10](adr/0010-hand-zero-native-ir.md))
+Ship **native-HTML IR producers beyond form controls** — prose/inline elements
+(`p`, `strong`, `span`, `em`, `a`, `img`, `ul`/`li`, …) as first-class IR `Element`s so
+teams get normal HTML functionality **inside** our composition. Rationale: if we don't,
+teams roll their own; better to provide it. Teams wanting design-system purity opt into
+an **elm-review** rule that discourages/corrects native usage — so the guardrail is
+opt-in, not baked in. Native elements carry the implicit escape kind, so they slot in
+anywhere (and specifically anywhere `any`).
+
+### `stripPhantom` — the auditable escape valve
+Provide `stripPhantom : Element a msg -> Element b msg` (coerces the phantom kind row)
+for when a consumer believes the design system is wrong and needs to compose something
+it forbids. It's **loud and greppable** — the design-system team **audits `stripPhantom`
+usages** and either fixes the app's misuse or fixes the codegen'd package (a feedback
+signal, not just a hole). This is the pressure-release that keeps the phantom rows strict
+without trapping users.
+
+### Kind universe (updated)
+> **{ CEM component kinds } ∪ { `any` = open row } ∪ { native-HTML IR } ∪ { userland
+> producers: `text`, `link`, … }**, with `element`/html escape implicit everywhere and
+> `stripPhantom` as the explicit, audited override.
+
 ## 6. Hard constraints (unchanged)
 elm-cem stays separate + m3e-agnostic (no merge); prerelease, breaking changes fine;
 **do not publish**; three phantom rows mandatory on public return types; single-source
