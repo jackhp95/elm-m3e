@@ -1,0 +1,35 @@
+module M3e.Cem.Html.ProgressElementIndicatorBase exposing (max, progressElementIndicatorBase, value, variant)
+
+{-| 
+@docs progressElementIndicatorBase, value, max, variant
+-}
+
+
+import Html
+import Html.Attributes
+import Json.Encode
+
+
+{-| The raw `<div>` element — a partial application of `Html.node`. -}
+progressElementIndicatorBase :
+    List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
+progressElementIndicatorBase =
+    Html.node "div"
+
+
+{-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
+value : Float -> Html.Attribute msg
+value val_ =
+    Html.Attributes.property "value" (Json.Encode.float val_)
+
+
+{-| The maximum progress value. (default: `100`) -}
+max : Float -> Html.Attribute msg
+max val_ =
+    Html.Attributes.property "max" (Json.Encode.float val_)
+
+
+{-| The appearance of the indicator. (default: `"flat"`) -}
+variant : String -> Html.Attribute msg
+variant =
+    Html.Attributes.attribute "variant"

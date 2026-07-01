@@ -1,0 +1,116 @@
+module M3e.Cem.Tabs exposing (disablePagination, headerPosition, nextPageLabel, onBeforeinput, onChange, onInput, previousPageLabel, stretch, tabs, variant)
+
+{-| 
+@docs tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
+-}
+
+
+import Html
+import Json.Decode
+import M3e.Cem.Attr
+import M3e.Cem.Html.Tabs
+import M3e.Value
+
+
+{-| Organizes content into separate views where only one view can be visible at a time.
+
+**Events:**
+- `change`: Dispatched when the selected tab changes.
+- `beforeinput`: Dispatched before the selected state of a tab changes.
+- `input`: Dispatched when the selected state of a tab changes.
+
+**Slots:**
+- `panel`: Renders the panels of the tabs.
+- `next-icon`: Renders the icon to present for the next button used to paginate.
+- `prev-icon`: Renders the icon to present for the previous button used to paginate.
+-}
+tabs :
+    List (M3e.Cem.Attr.Attr { disablePagination : M3e.Value.Supported
+    , headerPosition : M3e.Value.Supported
+    , nextPageLabel : M3e.Value.Supported
+    , previousPageLabel : M3e.Value.Supported
+    , stretch : M3e.Value.Supported
+    , variant : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (Html.Html msg)
+    -> Html.Html msg
+tabs attributes children =
+    M3e.Cem.Html.Tabs.tabs
+        (List.map M3e.Cem.Attr.toAttribute attributes)
+        children
+
+
+{-| Whether scroll buttons are disabled. -}
+disablePagination :
+    String
+    -> M3e.Cem.Attr.Attr { c | disablePagination : M3e.Value.Supported } msg
+disablePagination =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.disablePagination
+
+
+{-| The position of the tab headers. (default: `"before"`) -}
+headerPosition :
+    M3e.Value.Value { after : M3e.Value.Supported
+    , before : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | headerPosition : M3e.Value.Supported } msg
+headerPosition v_ =
+    M3e.Cem.Attr.attribute
+        M3e.Cem.Html.Tabs.headerPosition
+        (M3e.Value.toString v_)
+
+
+{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
+nextPageLabel :
+    String -> M3e.Cem.Attr.Attr { c | nextPageLabel : M3e.Value.Supported } msg
+nextPageLabel =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.nextPageLabel
+
+
+{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
+previousPageLabel :
+    String
+    -> M3e.Cem.Attr.Attr { c | previousPageLabel : M3e.Value.Supported } msg
+previousPageLabel =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.previousPageLabel
+
+
+{-| Whether tabs are stretched to fill the header. (default: `false`) -}
+stretch : Bool -> M3e.Cem.Attr.Attr { c | stretch : M3e.Value.Supported } msg
+stretch =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.stretch
+
+
+{-| The appearance variant of the tabs. (default: `"secondary"`) -}
+variant :
+    M3e.Value.Value { primary : M3e.Value.Supported
+    , secondary : M3e.Value.Supported
+    }
+    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
+variant v_ =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.variant (M3e.Value.toString v_)
+
+
+{-| Listen for `change` events. -}
+onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange f_ =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onChange (Json.Decode.succeed f_)
+
+
+{-| Listen for `beforeinput` events. -}
+onBeforeinput :
+    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
+onBeforeinput f_ =
+    M3e.Cem.Attr.attribute
+        M3e.Cem.Html.Tabs.onBeforeinput
+        (Json.Decode.succeed f_)
+
+
+{-| Listen for `input` events. -}
+onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
+onInput f_ =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onInput (Json.Decode.succeed f_)

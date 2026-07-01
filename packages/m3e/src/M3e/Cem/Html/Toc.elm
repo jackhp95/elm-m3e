@@ -1,0 +1,28 @@
+module M3e.Cem.Html.Toc exposing (for, maxDepth, toc)
+
+{-| 
+@docs toc, for, maxDepth
+-}
+
+
+import Html
+import Html.Attributes
+import Json.Encode
+
+
+{-| The raw `<m3e-toc>` element — a partial application of `Html.node`. -}
+toc : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
+toc =
+    Html.node "m3e-toc"
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for =
+    Html.Attributes.attribute "for"
+
+
+{-| The maximum depth of the table of contents. (default: `2`) -}
+maxDepth : Float -> Html.Attribute msg
+maxDepth val_ =
+    Html.Attributes.property "maxDepth" (Json.Encode.float val_)

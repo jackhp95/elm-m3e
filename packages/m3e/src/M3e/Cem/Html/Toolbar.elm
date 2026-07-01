@@ -1,0 +1,40 @@
+module M3e.Cem.Html.Toolbar exposing (elevated, shape, toolbar, variant, vertical)
+
+{-| 
+@docs toolbar, elevated, shape, variant, vertical
+-}
+
+
+import Html
+import Html.Attributes
+import Json.Encode
+
+
+{-| The raw `<m3e-toolbar>` element — a partial application of `Html.node`. -}
+toolbar : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
+toolbar =
+    Html.node "m3e-toolbar"
+
+
+{-| Whether the toolbar is elevated. (default: `false`) -}
+elevated : Bool -> Html.Attribute msg
+elevated val_ =
+    Html.Attributes.property "elevated" (Json.Encode.bool val_)
+
+
+{-| The shape of the toolbar. (default: `"square"`) -}
+shape : String -> Html.Attribute msg
+shape =
+    Html.Attributes.attribute "shape"
+
+
+{-| The appearance variant of the toolbar. (default: `"standard"`) -}
+variant : String -> Html.Attribute msg
+variant =
+    Html.Attributes.attribute "variant"
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical : Bool -> Html.Attribute msg
+vertical val_ =
+    Html.Attributes.property "vertical" (Json.Encode.bool val_)

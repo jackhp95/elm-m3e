@@ -1,0 +1,50 @@
+module M3e.Cem.Html.Ripple exposing (centered, disabled, for, radius, ripple, unbounded)
+
+{-| 
+@docs ripple, centered, disabled, for, radius, unbounded
+-}
+
+
+import Html
+import Html.Attributes
+import Json.Encode
+
+
+{-| The raw `<m3e-ripple>` element — a partial application of `Html.node`. -}
+ripple : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
+ripple =
+    Html.node "m3e-ripple"
+
+
+{-| Whether the ripple always originates from the center of the element's bounds, rather
+than originating from the location of the click event. (default: `false`)
+-}
+centered : Bool -> Html.Attribute msg
+centered val_ =
+    Html.Attributes.property "centered" (Json.Encode.bool val_)
+
+
+{-| Whether click events will not trigger the ripple.
+Ripples can be still controlled manually by using the `show` and 'hide' methods. (default: `false`)
+-}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for : String -> Html.Attribute msg
+for =
+    Html.Attributes.attribute "for"
+
+
+{-| The radius, in pixels, of the ripple. (default: `null`) -}
+radius : Float -> Html.Attribute msg
+radius val_ =
+    Html.Attributes.property "radius" (Json.Encode.float val_)
+
+
+{-| Whether the ripple is visible outside the element's bounds. (default: `false`) -}
+unbounded : Bool -> Html.Attribute msg
+unbounded val_ =
+    Html.Attributes.property "unbounded" (Json.Encode.bool val_)

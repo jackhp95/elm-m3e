@@ -1,0 +1,46 @@
+module M3e.Cem.Html.SlideGroup exposing (disabled, nextPageLabel, previousPageLabel, slideGroup, threshold, vertical)
+
+{-| 
+@docs slideGroup, disabled, nextPageLabel, previousPageLabel, threshold, vertical
+-}
+
+
+import Html
+import Html.Attributes
+import Json.Encode
+
+
+{-| The raw `<m3e-slide-group>` element — a partial application of `Html.node`. -}
+slideGroup : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
+slideGroup =
+    Html.node "m3e-slide-group"
+
+
+{-| Whether scroll buttons are disabled. (default: `false`) -}
+disabled : Bool -> Html.Attribute msg
+disabled val_ =
+    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+
+
+{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
+nextPageLabel : String -> Html.Attribute msg
+nextPageLabel =
+    Html.Attributes.attribute "next-page-label"
+
+
+{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
+previousPageLabel : String -> Html.Attribute msg
+previousPageLabel =
+    Html.Attributes.attribute "previous-page-label"
+
+
+{-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`) -}
+threshold : Float -> Html.Attribute msg
+threshold val_ =
+    Html.Attributes.property "threshold" (Json.Encode.float val_)
+
+
+{-| Whether content is oriented vertically. (default: `false`) -}
+vertical : Bool -> Html.Attribute msg
+vertical val_ =
+    Html.Attributes.property "vertical" (Json.Encode.bool val_)
