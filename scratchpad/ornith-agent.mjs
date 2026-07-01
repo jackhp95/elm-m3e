@@ -71,10 +71,21 @@ NEW API essentials (the built Vocab API):
 - Node-level code (returns Node, old Node.element/Node.rawAttr) -> rebuild with the kit's Native.* (Element-level), never Node.raw(Html.*) (opaque HTML is banned).
 - Userland kit modules (add_import as needed): Kit (text, link), Native (div, section, nav, span, p, a, ul, li, ... — native HTML as Element), EscapeHatch (fromHtml, asElement, asAttribute), Seam (asAttribute for a class on a Native element).
 - Mappings: Node.raw h -> EscapeHatch.fromHtml h ; Node.rawAttr a / class -> Seam.asAttribute a ; Element.html -> EscapeHatch.fromHtml ; X.view {rec} opts -> X.view {req} [attrs] [content] ; a glyph label -> Kit.text ; renames: NavigationDrawer->DrawerContainer, RadioButton->Radio, NavigationBar->NavBar, NavigationRail->NavRail, DatePicker->Datepicker.
-Start by calling compile.`;
+Start by calling compile, then IMMEDIATELY fix the first error with add_import (renamed/missing module) or patch/set_decl. Do NOT call get/list/search unless an error names something you genuinely must inspect — exploration wastes the context window and stalls the migration.`;
+
+const NUM_CTX = Number(process.env.ORNITH_NUM_CTX || 32768);
+
+// Keep the conversation bounded: system + the migrate instruction + the most recent
+// exchanges. The harness re-injects the current file state (via the model's own
+// edits) and the current compile error every round, so old tool output is dead
+// weight that otherwise overflows the context window (the failure on large files).
+function windowed(messages, keep = 12) {
+  if (messages.length <= keep + 2) return messages;
+  return [messages[0], messages[1], ...messages.slice(-keep)];
+}
 
 async function chat(messages) {
-  const res = await fetch(`${OLLAMA}/api/chat`, { method: "POST", body: JSON.stringify({ model: MODEL, messages, tools: TOOLS, stream: false, options: { num_ctx: 8192, temperature: 0.1 } }) });
+  const res = await fetch(`${OLLAMA}/api/chat`, { method: "POST", body: JSON.stringify({ model: MODEL, messages: windowed(messages), tools: TOOLS, stream: false, options: { num_ctx: NUM_CTX, temperature: 0.1 } }) });
   const j = await res.json();
   if (!j.message) throw new Error("ollama: " + (j.error || "no message"));
   return j.message;
@@ -110,7 +121,13 @@ const originalSigs = exposedSignatures(original);
 const messages = [{ role: "system", content: SYSTEM }, { role: "user", content: `Migrate ${rel}.` }];
 let done = false;
 for (let round = 1; round <= MAX_ROUNDS; round++) {
-  const m = await chat(messages);
+  let m;
+  try {
+    m = await chat(messages);
+  } catch (e) {
+    console.log(`  [${round}] chat error (${String(e.message).slice(0, 120)}) — stopping`);
+    break;
+  }
   messages.push(m);
   if (m.tool_calls?.length) {
     for (const tc of m.tool_calls) {
