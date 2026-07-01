@@ -1,7 +1,7 @@
-module M3e.RadioGroup exposing (ariaInvalid, child, children, disabled, name, onBeforeinput, onChange, onInput, radioGroup, required)
+module M3e.RadioGroup exposing (child, children, radioGroup)
 
 {-| 
-@docs radioGroup, ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange, child, children
+@docs radioGroup, child, children
 -}
 
 
@@ -37,50 +37,6 @@ radioGroup attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Set the `aria-invalid` attribute. -}
-ariaInvalid :
-    String -> M3e.Cem.Attr.Attr { c | ariaInvalid : M3e.Value.Supported } msg
-ariaInvalid =
-    M3e.Cem.RadioGroup.ariaInvalid
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.RadioGroup.disabled
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.RadioGroup.name
-
-
-{-| Whether the element is required. (default: `false`) -}
-required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
-required =
-    M3e.Cem.RadioGroup.required
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.RadioGroup.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.RadioGroup.onInput
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.RadioGroup.onChange
 
 
 {-| Place content in the `(default)` slot. -}

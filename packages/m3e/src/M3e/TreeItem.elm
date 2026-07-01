@@ -1,7 +1,7 @@
-module M3e.TreeItem exposing (child, children, disabled, icon, indeterminate, onClick, onClosed, onClosing, onOpened, onOpening, open, openToggleIcon, selected, selectedIcon, toggleIcon, treeItem)
+module M3e.TreeItem exposing (child, children, icon, openToggleIcon, selectedIcon, toggleIcon, treeItem)
 
 {-| 
-@docs treeItem, disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick, child, icon, selectedIcon, toggleIcon, openToggleIcon, children
+@docs treeItem, child, icon, selectedIcon, toggleIcon, openToggleIcon, children
 -}
 
 
@@ -55,61 +55,6 @@ treeItem req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.TreeItem.disabled
-
-
-{-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`) -}
-indeterminate :
-    Bool -> M3e.Cem.Attr.Attr { c | indeterminate : M3e.Value.Supported } msg
-indeterminate =
-    M3e.Cem.TreeItem.indeterminate
-
-
-{-| Whether the item is expanded. (default: `false`) -}
-open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
-    M3e.Cem.TreeItem.open
-
-
-{-| Whether the item is selected. (default: `false`) -}
-selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
-selected =
-    M3e.Cem.TreeItem.selected
-
-
-{-| Listen for `opening` events. -}
-onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
-onOpening =
-    M3e.Cem.TreeItem.onOpening
-
-
-{-| Listen for `opened` events. -}
-onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
-onOpened =
-    M3e.Cem.TreeItem.onOpened
-
-
-{-| Listen for `closing` events. -}
-onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
-onClosing =
-    M3e.Cem.TreeItem.onClosing
-
-
-{-| Listen for `closed` events. -}
-onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
-onClosed =
-    M3e.Cem.TreeItem.onClosed
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.TreeItem.onClick
 
 
 {-| Place content in the `(default)` slot. -}

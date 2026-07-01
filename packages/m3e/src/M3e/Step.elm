@@ -1,7 +1,7 @@
-module M3e.Step exposing (completed, disabled, doneIcon, editIcon, editable, error, errorIcon, for, hint, icon, invalid, onBeforeinput, onChange, onClick, onInput, optional, selected, step)
+module M3e.Step exposing (doneIcon, editIcon, error, errorIcon, hint, icon, step)
 
 {-| 
-@docs step, completed, disabled, editable, for, optional, selected, invalid, onBeforeinput, onInput, onChange, onClick, icon, doneIcon, editIcon, errorIcon, hint, error
+@docs step, icon, doneIcon, editIcon, errorIcon, hint, error
 -}
 
 
@@ -52,78 +52,6 @@ step req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether the step has been completed. (default: `false`) -}
-completed :
-    Bool -> M3e.Cem.Attr.Attr { c | completed : M3e.Value.Supported } msg
-completed =
-    M3e.Cem.Step.completed
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.Step.disabled
-
-
-{-| Whether the step is editable and users can return to it after completion. (default: `false`) -}
-editable : Bool -> M3e.Cem.Attr.Attr { c | editable : M3e.Value.Supported } msg
-editable =
-    M3e.Cem.Step.editable
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.Step.for
-
-
-{-| Whether the step is optional. (default: `false`) -}
-optional : Bool -> M3e.Cem.Attr.Attr { c | optional : M3e.Value.Supported } msg
-optional =
-    M3e.Cem.Step.optional
-
-
-{-| Whether the element is selected. (default: `false`) -}
-selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
-selected =
-    M3e.Cem.Step.selected
-
-
-{-| Whether the step has an error. (default: `false`) -}
-invalid : Bool -> M3e.Cem.Attr.Attr { c | invalid : M3e.Value.Supported } msg
-invalid =
-    M3e.Cem.Step.invalid
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    (Bool -> msg)
-    -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.Step.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput :
-    (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.Step.onInput
-
-
-{-| Listen for `change` events. -}
-onChange :
-    (Bool -> msg)
-    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Step.onChange
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.Step.onClick
 
 
 {-| Place content in the `icon` slot. -}

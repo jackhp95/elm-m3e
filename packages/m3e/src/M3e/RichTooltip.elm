@@ -1,7 +1,7 @@
-module M3e.RichTooltip exposing (actions, disabled, for, hideDelay, onBeforetoggle, onToggle, position, richTooltip, showDelay, subhead, touchGestures)
+module M3e.RichTooltip exposing (actions, richTooltip, subhead)
 
 {-| 
-@docs richTooltip, disabled, for, hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle, subhead, actions
+@docs richTooltip, subhead, actions
 -}
 
 
@@ -47,72 +47,6 @@ richTooltip req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.RichTooltip.disabled
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.RichTooltip.for
-
-
-{-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
-hideDelay :
-    Float -> M3e.Cem.Attr.Attr { c | hideDelay : M3e.Value.Supported } msg
-hideDelay =
-    M3e.Cem.RichTooltip.hideDelay
-
-
-{-| The position of the tooltip. (default: `"below-after"`) -}
-position :
-    M3e.Value.Value { above : M3e.Value.Supported
-    , aboveAfter : M3e.Value.Supported
-    , aboveBefore : M3e.Value.Supported
-    , after : M3e.Value.Supported
-    , before : M3e.Value.Supported
-    , below : M3e.Value.Supported
-    , belowAfter : M3e.Value.Supported
-    , belowBefore : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | position : M3e.Value.Supported } msg
-position =
-    M3e.Cem.RichTooltip.position
-
-
-{-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
-showDelay :
-    Float -> M3e.Cem.Attr.Attr { c | showDelay : M3e.Value.Supported } msg
-showDelay =
-    M3e.Cem.RichTooltip.showDelay
-
-
-{-| The mode in which to handle touch gestures. (default: `"auto"`) -}
-touchGestures :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , off : M3e.Value.Supported
-    , on : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | touchGestures : M3e.Value.Supported } msg
-touchGestures =
-    M3e.Cem.RichTooltip.touchGestures
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.RichTooltip.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.RichTooltip.onToggle
 
 
 {-| Place content in the `subhead` slot. -}

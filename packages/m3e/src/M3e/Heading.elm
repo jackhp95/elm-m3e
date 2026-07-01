@@ -1,7 +1,7 @@
-module M3e.Heading exposing (emphasized, heading, level, size, variant)
+module M3e.Heading exposing (heading)
 
 {-| 
-@docs heading, emphasized, level, size, variant
+@docs heading
 -}
 
 
@@ -39,39 +39,3 @@ heading req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether the heading uses an emphasized typescale. (default: `false`) -}
-emphasized :
-    Bool -> M3e.Cem.Attr.Attr { c | emphasized : M3e.Value.Supported } msg
-emphasized =
-    M3e.Cem.Heading.emphasized
-
-
-{-| The accessibility level of the heading. -}
-level : String -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
-level =
-    M3e.Cem.Heading.level
-
-
-{-| The size of the heading. (default: `"medium"`) -}
-size :
-    M3e.Value.Value { large : M3e.Value.Supported
-    , medium : M3e.Value.Supported
-    , small : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
-size =
-    M3e.Cem.Heading.size
-
-
-{-| The appearance variant of the heading. (default: `"display"`) -}
-variant :
-    M3e.Value.Value { display : M3e.Value.Supported
-    , headline : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , title : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.Heading.variant

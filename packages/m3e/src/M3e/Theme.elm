@@ -1,7 +1,7 @@
-module M3e.Theme exposing (child, children, color, contrast, density, motion, onChange, scheme, strongFocus, theme, variant)
+module M3e.Theme exposing (child, children, theme)
 
 {-| 
-@docs theme, color, contrast, density, scheme, strongFocus, variant, motion, onChange, child, children
+@docs theme, child, children
 -}
 
 
@@ -36,80 +36,6 @@ theme attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The hex color from which to derive dynamic color palettes. (default: `"#6750A4"`) -}
-color : String -> M3e.Cem.Attr.Attr { c | color : M3e.Value.Supported } msg
-color =
-    M3e.Cem.Theme.color
-
-
-{-| The contrast level of the theme. (default: `"standard"`) -}
-contrast :
-    M3e.Value.Value { high : M3e.Value.Supported
-    , medium : M3e.Value.Supported
-    , standard : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | contrast : M3e.Value.Supported } msg
-contrast =
-    M3e.Cem.Theme.contrast
-
-
-{-| The density scale (0, -1, -2). (default: `0`) -}
-density : Float -> M3e.Cem.Attr.Attr { c | density : M3e.Value.Supported } msg
-density =
-    M3e.Cem.Theme.density
-
-
-{-| The color scheme of the theme. (default: `"auto"`) -}
-scheme :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , dark : M3e.Value.Supported
-    , light : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | scheme : M3e.Value.Supported } msg
-scheme =
-    M3e.Cem.Theme.scheme
-
-
-{-| Whether to enable strong focus indicators. (default: `false`) -}
-strongFocus :
-    Bool -> M3e.Cem.Attr.Attr { c | strongFocus : M3e.Value.Supported } msg
-strongFocus =
-    M3e.Cem.Theme.strongFocus
-
-
-{-| The color variant of the theme. (default: `"neutral"`) -}
-variant :
-    M3e.Value.Value { content : M3e.Value.Supported
-    , expressive : M3e.Value.Supported
-    , fidelity : M3e.Value.Supported
-    , fruitSalad : M3e.Value.Supported
-    , monochrome : M3e.Value.Supported
-    , neutral : M3e.Value.Supported
-    , rainbow : M3e.Value.Supported
-    , tonalSpot : M3e.Value.Supported
-    , vibrant : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.Theme.variant
-
-
-{-| The motion scheme. (default: `"standard"`) -}
-motion :
-    M3e.Value.Value { expressive : M3e.Value.Supported
-    , standard : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | motion : M3e.Value.Supported } msg
-motion =
-    M3e.Cem.Theme.motion
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Theme.onChange
 
 
 {-| Place content in the `(default)` slot. -}

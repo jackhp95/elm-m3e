@@ -1,7 +1,7 @@
-module M3e.TocItem exposing (disabled, onClick, selected, tocItem)
+module M3e.TocItem exposing (tocItem)
 
 {-| 
-@docs tocItem, disabled, selected, onClick
+@docs tocItem
 -}
 
 
@@ -38,21 +38,3 @@ tocItem req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| A value indicating whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.TocItem.disabled
-
-
-{-| Whether the element is selected. (default: `false`) -}
-selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
-selected =
-    M3e.Cem.TocItem.selected
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.TocItem.onClick

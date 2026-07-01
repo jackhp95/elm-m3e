@@ -1,7 +1,7 @@
-module M3e.LoadingIndicator exposing (loadingIndicator, variant)
+module M3e.LoadingIndicator exposing (loadingIndicator)
 
 {-| 
-@docs loadingIndicator, variant
+@docs loadingIndicator
 -}
 
 
@@ -30,13 +30,3 @@ loadingIndicator attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| The appearance variant of the indicator. (default: `"uncontained"`) -}
-variant :
-    M3e.Value.Value { contained : M3e.Value.Supported
-    , uncontained : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.LoadingIndicator.variant

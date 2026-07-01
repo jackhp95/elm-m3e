@@ -1,7 +1,7 @@
-module M3e.FabMenuTrigger exposing (fabMenuTrigger, for)
+module M3e.FabMenuTrigger exposing (fabMenuTrigger)
 
 {-| 
-@docs fabMenuTrigger, for
+@docs fabMenuTrigger
 -}
 
 
@@ -30,9 +30,3 @@ fabMenuTrigger attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.FabMenuTrigger.for

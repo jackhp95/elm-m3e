@@ -1,7 +1,7 @@
-module M3e.ChipSet exposing (child, children, chipSet, vertical)
+module M3e.ChipSet exposing (child, children, chipSet)
 
 {-| 
-@docs chipSet, vertical, child, children
+@docs chipSet, child, children
 -}
 
 
@@ -29,12 +29,6 @@ chipSet attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is oriented vertically. (default: `false`) -}
-vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
-vertical =
-    M3e.Cem.ChipSet.vertical
 
 
 {-| Place content in the `(default)` slot. -}

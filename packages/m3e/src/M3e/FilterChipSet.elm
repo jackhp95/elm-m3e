@@ -1,7 +1,7 @@
-module M3e.FilterChipSet exposing (child, children, disabled, filterChipSet, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, vertical)
+module M3e.FilterChipSet exposing (child, children, filterChipSet)
 
 {-| 
-@docs filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical, onChange, onBeforeinput, onInput, child, children
+@docs filterChipSet, child, children
 -}
 
 
@@ -38,59 +38,6 @@ filterChipSet attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.FilterChipSet.disabled
-
-
-{-| Whether to hide the selection indicator. (default: `false`) -}
-hideSelectionIndicator :
-    Bool
-    -> M3e.Cem.Attr.Attr { c
-        | hideSelectionIndicator : M3e.Value.Supported
-    } msg
-hideSelectionIndicator =
-    M3e.Cem.FilterChipSet.hideSelectionIndicator
-
-
-{-| Whether multiple chips can be selected. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
-    M3e.Cem.FilterChipSet.multi
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.FilterChipSet.name
-
-
-{-| Whether the element is oriented vertically. (default: `false`) -}
-vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
-vertical =
-    M3e.Cem.FilterChipSet.vertical
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.FilterChipSet.onChange
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.FilterChipSet.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.FilterChipSet.onInput
 
 
 {-| Place content in the `(default)` slot. -}

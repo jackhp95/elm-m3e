@@ -1,7 +1,7 @@
-module M3e.NavRail exposing (child, children, mode, navRail, onBeforeinput, onChange, onInput)
+module M3e.NavRail exposing (child, children, navRail)
 
 {-| 
-@docs navRail, mode, onBeforeinput, onInput, onChange, child, children
+@docs navRail, child, children
 -}
 
 
@@ -32,36 +32,6 @@ navRail attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The mode in which items in the rail are presented. (default: `"compact"`) -}
-mode :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , compact : M3e.Value.Supported
-    , expanded : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
-mode =
-    M3e.Cem.NavRail.mode
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.NavRail.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.NavRail.onInput
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.NavRail.onChange
 
 
 {-| Place content in the `(default)` slot. -}

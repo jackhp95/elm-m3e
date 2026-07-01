@@ -1,7 +1,7 @@
-module M3e.Accordion exposing (accordion, child, children, multi)
+module M3e.Accordion exposing (accordion, child, children)
 
 {-| 
-@docs accordion, multi, child, children
+@docs accordion, child, children
 -}
 
 
@@ -31,12 +31,6 @@ accordion attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether multiple expansion panels can be open at the same time. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
-    M3e.Cem.Accordion.multi
 
 
 {-| Place content in the `(default)` slot. -}

@@ -1,7 +1,7 @@
-module M3e.FocusTrap exposing (child, children, disabled, focusTrap)
+module M3e.FocusTrap exposing (child, children, focusTrap)
 
 {-| 
-@docs focusTrap, disabled, child, children
+@docs focusTrap, child, children
 -}
 
 
@@ -31,12 +31,6 @@ focusTrap attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Disables the focus trap. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.FocusTrap.disabled
 
 
 {-| Place content in the `(default)` slot. -}

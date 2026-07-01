@@ -1,7 +1,7 @@
-module M3e.Snackbar exposing (action, closeIcon, closeLabel, dismissible, duration, onBeforetoggle, onToggle, snackbar)
+module M3e.Snackbar exposing (closeIcon, snackbar)
 
 {-| 
-@docs snackbar, action, closeLabel, dismissible, duration, onBeforetoggle, onToggle, closeIcon
+@docs snackbar, closeIcon
 -}
 
 
@@ -43,45 +43,6 @@ snackbar req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| The label of the snackbar's action. (default: `""`) -}
-action : String -> M3e.Cem.Attr.Attr { c | action : M3e.Value.Supported } msg
-action =
-    M3e.Cem.Snackbar.action
-
-
-{-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`) -}
-closeLabel :
-    String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
-closeLabel =
-    M3e.Cem.Snackbar.closeLabel
-
-
-{-| Whether a button is presented that can be used to close the snackbar. (default: `false`) -}
-dismissible :
-    Bool -> M3e.Cem.Attr.Attr { c | dismissible : M3e.Value.Supported } msg
-dismissible =
-    M3e.Cem.Snackbar.dismissible
-
-
-{-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`) -}
-duration : Float -> M3e.Cem.Attr.Attr { c | duration : M3e.Value.Supported } msg
-duration =
-    M3e.Cem.Snackbar.duration
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.Snackbar.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.Snackbar.onToggle
 
 
 {-| Place content in the `close-icon` slot. -}

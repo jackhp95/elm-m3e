@@ -1,7 +1,7 @@
-module M3e.OptionPanel exposing (anchorOffset, child, children, fitAnchorWidth, loading, noData, onBeforetoggle, onToggle, optionPanel, scrollStrategy, state)
+module M3e.OptionPanel exposing (child, children, loading, noData, optionPanel)
 
 {-| 
-@docs optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, child, noData, loading, children
+@docs optionPanel, child, noData, loading, children
 -}
 
 
@@ -39,54 +39,6 @@ optionPanel attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The state for which to present content. (default: `"content"`) -}
-state :
-    M3e.Value.Value { content : M3e.Value.Supported
-    , loading : M3e.Value.Supported
-    , noData : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | state : M3e.Value.Supported } msg
-state =
-    M3e.Cem.OptionPanel.state
-
-
-{-| The strategy that controls how the panel behaves when its trigger scrolls. (default: `"hide"`) -}
-scrollStrategy :
-    M3e.Value.Value { hide : M3e.Value.Supported
-    , reposition : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | scrollStrategy : M3e.Value.Supported } msg
-scrollStrategy =
-    M3e.Cem.OptionPanel.scrollStrategy
-
-
-{-| Whether the panel's width should match its anchor's width. (default: `false`) -}
-fitAnchorWidth :
-    Bool -> M3e.Cem.Attr.Attr { c | fitAnchorWidth : M3e.Value.Supported } msg
-fitAnchorWidth =
-    M3e.Cem.OptionPanel.fitAnchorWidth
-
-
-{-| The logical margin, in pixels, between the panel and its anchor. (default: `0`) -}
-anchorOffset :
-    Float -> M3e.Cem.Attr.Attr { c | anchorOffset : M3e.Value.Supported } msg
-anchorOffset =
-    M3e.Cem.OptionPanel.anchorOffset
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.OptionPanel.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.OptionPanel.onToggle
 
 
 {-| Place content in the `(default)` slot. -}

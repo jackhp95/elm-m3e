@@ -1,7 +1,7 @@
-module M3e.DialogAction exposing (child, children, dialogAction, returnValue)
+module M3e.DialogAction exposing (child, children, dialogAction)
 
 {-| 
-@docs dialogAction, returnValue, child, children
+@docs dialogAction, child, children
 -}
 
 
@@ -31,13 +31,6 @@ dialogAction attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The value to return from the dialog. (default: `""`) -}
-returnValue :
-    String -> M3e.Cem.Attr.Attr { c | returnValue : M3e.Value.Supported } msg
-returnValue =
-    M3e.Cem.DialogAction.returnValue
 
 
 {-| Place content in the `(default)` slot. -}

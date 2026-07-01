@@ -1,7 +1,7 @@
-module M3e.RichTooltipAction exposing (disableRestoreFocus, richTooltipAction)
+module M3e.RichTooltipAction exposing (richTooltipAction)
 
 {-| 
-@docs richTooltipAction, disableRestoreFocus
+@docs richTooltipAction
 -}
 
 
@@ -38,11 +38,3 @@ richTooltipAction req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether to focus should not be restored to the trigger when activated. (default: `false`) -}
-disableRestoreFocus :
-    Bool
-    -> M3e.Cem.Attr.Attr { c | disableRestoreFocus : M3e.Value.Supported } msg
-disableRestoreFocus =
-    M3e.Cem.RichTooltipAction.disableRestoreFocus

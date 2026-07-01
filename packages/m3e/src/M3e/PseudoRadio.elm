@@ -1,7 +1,7 @@
-module M3e.PseudoRadio exposing (checked, disabled, pseudoRadio)
+module M3e.PseudoRadio exposing (pseudoRadio)
 
 {-| 
-@docs pseudoRadio, checked, disabled
+@docs pseudoRadio
 -}
 
 
@@ -31,15 +31,3 @@ pseudoRadio attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| A value indicating whether the element is checked. (default: `false`) -}
-checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
-checked =
-    M3e.Cem.PseudoRadio.checked
-
-
-{-| A value indicating whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.PseudoRadio.disabled

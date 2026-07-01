@@ -1,7 +1,7 @@
-module M3e.Radio exposing (checked, disabled, name, onBeforeinput, onChange, onClick, onInput, radio, required, value)
+module M3e.Radio exposing (radio)
 
 {-| 
-@docs radio, checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
+@docs radio
 -}
 
 
@@ -50,63 +50,3 @@ radio req_ attributes content_ =
             )
             (List.append [] (List.map M3e.Content.toNode content_))
         )
-
-
-{-| Whether the element is checked. (default: `false`) -}
-checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
-checked =
-    M3e.Cem.Radio.checked
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.Radio.disabled
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.Radio.name
-
-
-{-| Whether the element is required. -}
-required :
-    String -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
-required =
-    M3e.Cem.Radio.required
-
-
-{-| A string representing the value of the radio. (default: `"on"`) -}
-value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
-value =
-    M3e.Cem.Radio.value
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    (Bool -> msg)
-    -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.Radio.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput :
-    (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.Radio.onInput
-
-
-{-| Listen for `change` events. -}
-onChange :
-    (Bool -> msg)
-    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Radio.onChange
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.Radio.onClick

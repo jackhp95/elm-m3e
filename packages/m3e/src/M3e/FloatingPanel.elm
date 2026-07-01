@@ -1,7 +1,7 @@
-module M3e.FloatingPanel exposing (anchorOffset, child, children, fitAnchorWidth, floatingPanel, onBeforetoggle, onToggle, scrollStrategy)
+module M3e.FloatingPanel exposing (child, children, floatingPanel)
 
 {-| 
-@docs floatingPanel, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, child, children
+@docs floatingPanel, child, children
 -}
 
 
@@ -35,43 +35,6 @@ floatingPanel attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The strategy that controls how the panel behaves when its trigger scrolls. (default: `"hide"`) -}
-scrollStrategy :
-    M3e.Value.Value { hide : M3e.Value.Supported
-    , reposition : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | scrollStrategy : M3e.Value.Supported } msg
-scrollStrategy =
-    M3e.Cem.FloatingPanel.scrollStrategy
-
-
-{-| Whether the panel's width should match its anchor's width. (default: `false`) -}
-fitAnchorWidth :
-    Bool -> M3e.Cem.Attr.Attr { c | fitAnchorWidth : M3e.Value.Supported } msg
-fitAnchorWidth =
-    M3e.Cem.FloatingPanel.fitAnchorWidth
-
-
-{-| The logical margin, in pixels, between the panel and its anchor. (default: `0`) -}
-anchorOffset :
-    Float -> M3e.Cem.Attr.Attr { c | anchorOffset : M3e.Value.Supported } msg
-anchorOffset =
-    M3e.Cem.FloatingPanel.anchorOffset
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.FloatingPanel.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.FloatingPanel.onToggle
 
 
 {-| Place content in the `(default)` slot. -}

@@ -1,7 +1,7 @@
-module M3e.ThemeIcon exposing (color, scheme, themeIcon, variant)
+module M3e.ThemeIcon exposing (themeIcon)
 
 {-| 
-@docs themeIcon, color, scheme, variant
+@docs themeIcon
 -}
 
 
@@ -32,37 +32,3 @@ themeIcon attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| The hex color of the theme to preview (default: `"#6750A4"`) -}
-color : String -> M3e.Cem.Attr.Attr { c | color : M3e.Value.Supported } msg
-color =
-    M3e.Cem.ThemeIcon.color
-
-
-{-| The color scheme of the theme. (default: `"auto"`) -}
-scheme :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , dark : M3e.Value.Supported
-    , light : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | scheme : M3e.Value.Supported } msg
-scheme =
-    M3e.Cem.ThemeIcon.scheme
-
-
-{-| The color variant of the theme. (default: `"neutral"`) -}
-variant :
-    M3e.Value.Value { content : M3e.Value.Supported
-    , expressive : M3e.Value.Supported
-    , fidelity : M3e.Value.Supported
-    , fruitSalad : M3e.Value.Supported
-    , monochrome : M3e.Value.Supported
-    , neutral : M3e.Value.Supported
-    , rainbow : M3e.Value.Supported
-    , tonalSpot : M3e.Value.Supported
-    , vibrant : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.ThemeIcon.variant

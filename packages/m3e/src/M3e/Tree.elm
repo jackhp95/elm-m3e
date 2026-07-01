@@ -1,7 +1,7 @@
-module M3e.Tree exposing (cascade, child, children, multi, onChange, tree)
+module M3e.Tree exposing (child, children, tree)
 
 {-| 
-@docs tree, multi, cascade, onChange, child, children
+@docs tree, child, children
 -}
 
 
@@ -31,24 +31,6 @@ tree attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether multiple items can be selected. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
-    M3e.Cem.Tree.multi
-
-
-{-| Whether multiple item selection cascades to child items. (default: `false`) -}
-cascade : Bool -> M3e.Cem.Attr.Attr { c | cascade : M3e.Value.Supported } msg
-cascade =
-    M3e.Cem.Tree.cascade
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Tree.onChange
 
 
 {-| Place content in the `(default)` slot. -}

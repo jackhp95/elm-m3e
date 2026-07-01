@@ -1,7 +1,7 @@
-module M3e.SuggestionChip exposing (disabled, disabledInteractive, download, href, icon, name, onClick, rel, suggestionChip, target, type_, value, variant)
+module M3e.SuggestionChip exposing (icon, suggestionChip)
 
 {-| 
-@docs suggestionChip, disabled, disabledInteractive, download, href, name, rel, target, type_, value, variant, onClick, icon
+@docs suggestionChip, icon
 -}
 
 
@@ -48,84 +48,6 @@ suggestionChip req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| A value indicating whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.SuggestionChip.disabled
-
-
-{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
-disabledInteractive :
-    Bool
-    -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
-disabledInteractive =
-    M3e.Cem.SuggestionChip.disabledInteractive
-
-
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
-download :
-    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
-    M3e.Cem.SuggestionChip.download
-
-
-{-| The URL to which the link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
-    M3e.Cem.SuggestionChip.href
-
-
-{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.SuggestionChip.name
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
-    M3e.Cem.SuggestionChip.rel
-
-
-{-| The target of the link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
-    M3e.Cem.SuggestionChip.target
-
-
-{-| The type of the element. (default: `"button"`) -}
-type_ :
-    M3e.Value.Value { button : M3e.Value.Supported
-    , reset : M3e.Value.Supported
-    , submit : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
-type_ =
-    M3e.Cem.SuggestionChip.type_
-
-
-{-| A string representing the value of the chip. -}
-value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
-value =
-    M3e.Cem.SuggestionChip.value
-
-
-{-| The appearance variant of the chip. (default: `"outlined"`) -}
-variant :
-    M3e.Value.Value { elevated : M3e.Value.Supported
-    , outlined : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.SuggestionChip.variant
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.SuggestionChip.onClick
 
 
 {-| Place content in the `icon` slot. -}

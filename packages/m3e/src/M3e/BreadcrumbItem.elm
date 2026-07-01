@@ -1,7 +1,7 @@
-module M3e.BreadcrumbItem exposing (breadcrumbItem, child, children, current, disabled, download, href, icon, itemLabel, onClick, rel, target)
+module M3e.BreadcrumbItem exposing (breadcrumbItem, child, children, icon)
 
 {-| 
-@docs breadcrumbItem, itemLabel, disabled, current, href, target, download, rel, onClick, child, icon, children
+@docs breadcrumbItem, child, icon, children
 -}
 
 
@@ -40,64 +40,6 @@ breadcrumbItem attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The accessible label given to the item's internal button. (default: `""`) -}
-itemLabel :
-    String -> M3e.Cem.Attr.Attr { c | itemLabel : M3e.Value.Supported } msg
-itemLabel =
-    M3e.Cem.BreadcrumbItem.itemLabel
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.BreadcrumbItem.disabled
-
-
-{-| Indicates the current item in the breadcrumb path. -}
-current :
-    M3e.Value.Value { date : M3e.Value.Supported
-    , location : M3e.Value.Supported
-    , page : M3e.Value.Supported
-    , step : M3e.Value.Supported
-    , time : M3e.Value.Supported
-    , true : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | current : M3e.Value.Supported } msg
-current =
-    M3e.Cem.BreadcrumbItem.current
-
-
-{-| The URL to which the internal breadcrumb link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
-    M3e.Cem.BreadcrumbItem.href
-
-
-{-| The target of the internal breadcrumb link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
-    M3e.Cem.BreadcrumbItem.target
-
-
-{-| A value indicating whether the internal link target will be downloaded, optionally specifying a file name. (default: `null`) -}
-download :
-    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
-    M3e.Cem.BreadcrumbItem.download
-
-
-{-| The relationship between the internal link target and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
-    M3e.Cem.BreadcrumbItem.rel
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.BreadcrumbItem.onClick
 
 
 {-| Place content in the `(default)` slot. -}

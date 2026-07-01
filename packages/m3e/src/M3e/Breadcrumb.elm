@@ -1,7 +1,7 @@
-module M3e.Breadcrumb exposing (breadcrumb, child, children, separator, wrap)
+module M3e.Breadcrumb exposing (breadcrumb, child, children, separator)
 
 {-| 
-@docs breadcrumb, wrap, child, separator, children
+@docs breadcrumb, child, separator, children
 -}
 
 
@@ -33,12 +33,6 @@ breadcrumb attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether items wrap to a new line. (default: `false`) -}
-wrap : Bool -> M3e.Cem.Attr.Attr { c | wrap : M3e.Value.Supported } msg
-wrap =
-    M3e.Cem.Breadcrumb.wrap
 
 
 {-| Place content in the `(default)` slot. -}

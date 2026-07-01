@@ -1,7 +1,7 @@
-module M3e.Collapsible exposing (child, children, collapsible, noAnimate, onClosed, onClosing, onOpened, onOpening, open, orientation)
+module M3e.Collapsible exposing (child, children, collapsible)
 
 {-| 
-@docs collapsible, open, orientation, noAnimate, onOpening, onOpened, onClosing, onClosed, child, children
+@docs collapsible, child, children
 -}
 
 
@@ -37,53 +37,6 @@ collapsible attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether content is visible. (default: `false`) -}
-open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
-    M3e.Cem.Collapsible.open
-
-
-{-| Orientation of collapsible content. (default: `"vertical"`) -}
-orientation :
-    M3e.Value.Value { horizontal : M3e.Value.Supported
-    , vertical : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
-orientation =
-    M3e.Cem.Collapsible.orientation
-
-
-{-| Whether to disable animation. (default: `false`) -}
-noAnimate :
-    Bool -> M3e.Cem.Attr.Attr { c | noAnimate : M3e.Value.Supported } msg
-noAnimate =
-    M3e.Cem.Collapsible.noAnimate
-
-
-{-| Listen for `opening` events. -}
-onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
-onOpening =
-    M3e.Cem.Collapsible.onOpening
-
-
-{-| Listen for `opened` events. -}
-onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
-onOpened =
-    M3e.Cem.Collapsible.onOpened
-
-
-{-| Listen for `closing` events. -}
-onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
-onClosing =
-    M3e.Cem.Collapsible.onClosing
-
-
-{-| Listen for `closed` events. -}
-onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
-onClosed =
-    M3e.Cem.Collapsible.onClosed
 
 
 {-| Place content in the `(default)` slot. -}

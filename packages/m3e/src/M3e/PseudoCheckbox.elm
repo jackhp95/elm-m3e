@@ -1,7 +1,7 @@
-module M3e.PseudoCheckbox exposing (checked, disabled, indeterminate, pseudoCheckbox)
+module M3e.PseudoCheckbox exposing (pseudoCheckbox)
 
 {-| 
-@docs pseudoCheckbox, checked, disabled, indeterminate
+@docs pseudoCheckbox
 -}
 
 
@@ -32,22 +32,3 @@ pseudoCheckbox attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| A value indicating whether the element is checked. (default: `false`) -}
-checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
-checked =
-    M3e.Cem.PseudoCheckbox.checked
-
-
-{-| A value indicating whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.PseudoCheckbox.disabled
-
-
-{-| A value indicating whether the element's checked state is indeterminate. (default: `false`) -}
-indeterminate :
-    Bool -> M3e.Cem.Attr.Attr { c | indeterminate : M3e.Value.Supported } msg
-indeterminate =
-    M3e.Cem.PseudoCheckbox.indeterminate

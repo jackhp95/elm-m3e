@@ -1,7 +1,7 @@
-module M3e.FocusRing exposing (disabled, focusRing, for, inward)
+module M3e.FocusRing exposing (focusRing)
 
 {-| 
-@docs focusRing, disabled, inward, for
+@docs focusRing
 -}
 
 
@@ -32,23 +32,3 @@ focusRing attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| Whether the focus events will not trigger the focus ring.
-Focus rings can be still controlled manually by using the `show` and `hide` methods. (default: `false`)
--}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.FocusRing.disabled
-
-
-{-| Whether the focus ring animates inward instead of outward. (default: `false`) -}
-inward : Bool -> M3e.Cem.Attr.Attr { c | inward : M3e.Value.Supported } msg
-inward =
-    M3e.Cem.FocusRing.inward
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.FocusRing.for

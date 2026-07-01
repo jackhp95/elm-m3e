@@ -1,7 +1,7 @@
-module M3e.FabMenu exposing (child, children, fabMenu, onBeforetoggle, onToggle, variant)
+module M3e.FabMenu exposing (child, children, fabMenu)
 
 {-| 
-@docs fabMenu, variant, onBeforetoggle, onToggle, child, children
+@docs fabMenu, child, children
 -}
 
 
@@ -31,30 +31,6 @@ fabMenu attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The appearance variant of the menu. (default: `"primary"`) -}
-variant :
-    M3e.Value.Value { primary : M3e.Value.Supported
-    , secondary : M3e.Value.Supported
-    , tertiary : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.FabMenu.variant
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.FabMenu.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.FabMenu.onToggle
 
 
 {-| Place content in the `(default)` slot. -}

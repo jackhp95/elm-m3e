@@ -1,7 +1,7 @@
-module M3e.FormField exposing (error, floatLabel, formField, hideRequiredMarker, hideSubscript, hint, label, prefix, prefixText, suffix, suffixText, variant)
+module M3e.FormField exposing (error, formField, hint, label, prefix, prefixText, suffix, suffixText)
 
 {-| 
-@docs formField, floatLabel, hideRequiredMarker, hideSubscript, variant, prefix, prefixText, label, suffix, suffixText, hint, error
+@docs formField, prefix, prefixText, label, suffix, suffixText, hint, error
 -}
 
 
@@ -52,43 +52,6 @@ formField req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Specifies whether the label should float always or only when necessary. (default: `"auto"`) -}
-floatLabel :
-    M3e.Value.Value { always : M3e.Value.Supported, auto : M3e.Value.Supported }
-    -> M3e.Cem.Attr.Attr { c | floatLabel : M3e.Value.Supported } msg
-floatLabel =
-    M3e.Cem.FormField.floatLabel
-
-
-{-| Whether the required marker should be hidden. (default: `false`) -}
-hideRequiredMarker :
-    Bool
-    -> M3e.Cem.Attr.Attr { c | hideRequiredMarker : M3e.Value.Supported } msg
-hideRequiredMarker =
-    M3e.Cem.FormField.hideRequiredMarker
-
-
-{-| Whether subscript content is hidden. (default: `"auto"`) -}
-hideSubscript :
-    M3e.Value.Value { always : M3e.Value.Supported
-    , auto : M3e.Value.Supported
-    , never : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | hideSubscript : M3e.Value.Supported } msg
-hideSubscript =
-    M3e.Cem.FormField.hideSubscript
-
-
-{-| The appearance variant of the field. (default: `"outlined"`) -}
-variant :
-    M3e.Value.Value { filled : M3e.Value.Supported
-    , outlined : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.FormField.variant
 
 
 {-| Place content in the `prefix` slot. -}

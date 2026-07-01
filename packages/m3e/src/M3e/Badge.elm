@@ -1,7 +1,7 @@
-module M3e.Badge exposing (badge, child, children, for, position, size)
+module M3e.Badge exposing (badge, child, children)
 
 {-| 
-@docs badge, size, position, for, child, children
+@docs badge, child, children
 -}
 
 
@@ -31,39 +31,6 @@ badge attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The size of the badge. (default: `"medium"`) -}
-size :
-    M3e.Value.Value { large : M3e.Value.Supported
-    , medium : M3e.Value.Supported
-    , small : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
-size =
-    M3e.Cem.Badge.size
-
-
-{-| The position of the badge, when attached to another element. (default: `"above-after"`) -}
-position :
-    M3e.Value.Value { above : M3e.Value.Supported
-    , aboveAfter : M3e.Value.Supported
-    , aboveBefore : M3e.Value.Supported
-    , after : M3e.Value.Supported
-    , before : M3e.Value.Supported
-    , below : M3e.Value.Supported
-    , belowAfter : M3e.Value.Supported
-    , belowBefore : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | position : M3e.Value.Supported } msg
-position =
-    M3e.Cem.Badge.position
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.Badge.for
 
 
 {-| Place content in the `(default)` slot. -}

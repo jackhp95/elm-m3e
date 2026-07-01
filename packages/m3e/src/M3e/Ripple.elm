@@ -1,7 +1,7 @@
-module M3e.Ripple exposing (centered, disabled, for, radius, ripple, unbounded)
+module M3e.Ripple exposing (ripple)
 
 {-| 
-@docs ripple, centered, disabled, for, radius, unbounded
+@docs ripple
 -}
 
 
@@ -32,38 +32,3 @@ ripple attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| Whether the ripple always originates from the center of the element's bounds, rather
-than originating from the location of the click event. (default: `false`)
--}
-centered : Bool -> M3e.Cem.Attr.Attr { c | centered : M3e.Value.Supported } msg
-centered =
-    M3e.Cem.Ripple.centered
-
-
-{-| Whether click events will not trigger the ripple.
-Ripples can be still controlled manually by using the `show` and 'hide' methods. (default: `false`)
--}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.Ripple.disabled
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.Ripple.for
-
-
-{-| The radius, in pixels, of the ripple. (default: `null`) -}
-radius : Float -> M3e.Cem.Attr.Attr { c | radius : M3e.Value.Supported } msg
-radius =
-    M3e.Cem.Ripple.radius
-
-
-{-| Whether the ripple is visible outside the element's bounds. (default: `false`) -}
-unbounded :
-    Bool -> M3e.Cem.Attr.Attr { c | unbounded : M3e.Value.Supported } msg
-unbounded =
-    M3e.Cem.Ripple.unbounded

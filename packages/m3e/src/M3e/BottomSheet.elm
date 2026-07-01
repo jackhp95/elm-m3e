@@ -1,7 +1,7 @@
-module M3e.BottomSheet exposing (bottomSheet, child, children, detent, handle, handleLabel, header, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open, overshootLimit)
+module M3e.BottomSheet exposing (bottomSheet, child, children, header)
 
 {-| 
-@docs bottomSheet, detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed, child, header, children
+@docs bottomSheet, child, header, children
 -}
 
 
@@ -45,89 +45,6 @@ bottomSheet attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The zero‑based index of the detent the sheet should open to. (default: `0`) -}
-detent : Float -> M3e.Cem.Attr.Attr { c | detent : M3e.Value.Supported } msg
-detent =
-    M3e.Cem.BottomSheet.detent
-
-
-{-| Whether to display a drag handle and enable the top region of the sheet as a gesture
-surface for dragging between detents. (default: `false`)
--}
-handle : Bool -> M3e.Cem.Attr.Attr { c | handle : M3e.Value.Supported } msg
-handle =
-    M3e.Cem.BottomSheet.handle
-
-
-{-| The accessible label given to the drag handle. (default: `"Drag handle"`) -}
-handleLabel :
-    String -> M3e.Cem.Attr.Attr { c | handleLabel : M3e.Value.Supported } msg
-handleLabel =
-    M3e.Cem.BottomSheet.handleLabel
-
-
-{-| Whether the bottom sheet can hide when its swiped down. (default: `false`) -}
-hideable : Bool -> M3e.Cem.Attr.Attr { c | hideable : M3e.Value.Supported } msg
-hideable =
-    M3e.Cem.BottomSheet.hideable
-
-
-{-| The friction coefficient to hide the sheet. (default: `0.5`) -}
-hideFriction :
-    Float -> M3e.Cem.Attr.Attr { c | hideFriction : M3e.Value.Supported } msg
-hideFriction =
-    M3e.Cem.BottomSheet.hideFriction
-
-
-{-| Whether the bottom sheet behaves as modal. (default: `false`) -}
-modal : Bool -> M3e.Cem.Attr.Attr { c | modal : M3e.Value.Supported } msg
-modal =
-    M3e.Cem.BottomSheet.modal
-
-
-{-| Whether the bottom sheet is open. (default: `false`) -}
-open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
-    M3e.Cem.BottomSheet.open
-
-
-{-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`) -}
-overshootLimit :
-    Float -> M3e.Cem.Attr.Attr { c | overshootLimit : M3e.Value.Supported } msg
-overshootLimit =
-    M3e.Cem.BottomSheet.overshootLimit
-
-
-{-| Listen for `opening` events. -}
-onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
-onOpening =
-    M3e.Cem.BottomSheet.onOpening
-
-
-{-| Listen for `closing` events. -}
-onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
-onClosing =
-    M3e.Cem.BottomSheet.onClosing
-
-
-{-| Listen for `cancel` events. -}
-onCancel : msg -> M3e.Cem.Attr.Attr { c | onCancel : M3e.Value.Supported } msg
-onCancel =
-    M3e.Cem.BottomSheet.onCancel
-
-
-{-| Listen for `opened` events. -}
-onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
-onOpened =
-    M3e.Cem.BottomSheet.onOpened
-
-
-{-| Listen for `closed` events. -}
-onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
-onClosed =
-    M3e.Cem.BottomSheet.onClosed
 
 
 {-| Place content in the `(default)` slot. -}

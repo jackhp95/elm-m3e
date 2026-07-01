@@ -1,7 +1,7 @@
-module M3e.SegmentedButton exposing (child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, segmentedButton)
+module M3e.SegmentedButton exposing (child, children, segmentedButton)
 
 {-| 
-@docs segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput, child, children
+@docs segmentedButton, child, children
 -}
 
 
@@ -37,53 +37,6 @@ segmentedButton attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.SegmentedButton.disabled
-
-
-{-| Whether to hide the selection indicator. (default: `false`) -}
-hideSelectionIndicator :
-    Bool
-    -> M3e.Cem.Attr.Attr { c
-        | hideSelectionIndicator : M3e.Value.Supported
-    } msg
-hideSelectionIndicator =
-    M3e.Cem.SegmentedButton.hideSelectionIndicator
-
-
-{-| Whether multiple options can be selected. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
-    M3e.Cem.SegmentedButton.multi
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.SegmentedButton.name
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.SegmentedButton.onChange
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.SegmentedButton.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.SegmentedButton.onInput
 
 
 {-| Place content in the `(default)` slot. -}

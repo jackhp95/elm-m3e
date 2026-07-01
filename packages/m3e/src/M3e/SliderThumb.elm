@@ -1,7 +1,7 @@
-module M3e.SliderThumb exposing (disabled, name, onBeforeinput, onChange, onClick, onInput, onValueChange, sliderThumb, value)
+module M3e.SliderThumb exposing (sliderThumb)
 
 {-| 
-@docs sliderThumb, disabled, name, value, onValueChange, onBeforeinput, onInput, onChange, onClick
+@docs sliderThumb
 -}
 
 
@@ -37,53 +37,3 @@ sliderThumb attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.SliderThumb.disabled
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.SliderThumb.name
-
-
-{-| The value of the thumb. (default: `null`) -}
-value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
-value =
-    M3e.Cem.SliderThumb.value
-
-
-{-| Listen for `value-change` events. -}
-onValueChange :
-    msg -> M3e.Cem.Attr.Attr { c | onValueChange : M3e.Value.Supported } msg
-onValueChange =
-    M3e.Cem.SliderThumb.onValueChange
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.SliderThumb.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.SliderThumb.onInput
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.SliderThumb.onChange
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.SliderThumb.onClick

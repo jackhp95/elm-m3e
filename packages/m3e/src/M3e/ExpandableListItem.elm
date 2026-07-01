@@ -1,7 +1,7 @@
-module M3e.ExpandableListItem exposing (child, children, disabled, expandableListItem, items, leading, onClosed, onClosing, onOpened, onOpening, open, overline, supportingText, toggleIcon)
+module M3e.ExpandableListItem exposing (child, children, expandableListItem, items, leading, overline, supportingText, toggleIcon)
 
 {-| 
-@docs expandableListItem, disabled, open, onOpening, onOpened, onClosing, onClosed, child, leading, overline, supportingText, toggleIcon, items, children
+@docs expandableListItem, child, leading, overline, supportingText, toggleIcon, items, children
 -}
 
 
@@ -42,42 +42,6 @@ expandableListItem attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.ExpandableListItem.disabled
-
-
-{-| Whether the item is expanded. (default: `false`) -}
-open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
-    M3e.Cem.ExpandableListItem.open
-
-
-{-| Listen for `opening` events. -}
-onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
-onOpening =
-    M3e.Cem.ExpandableListItem.onOpening
-
-
-{-| Listen for `opened` events. -}
-onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
-onOpened =
-    M3e.Cem.ExpandableListItem.onOpened
-
-
-{-| Listen for `closing` events. -}
-onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
-onClosing =
-    M3e.Cem.ExpandableListItem.onClosing
-
-
-{-| Listen for `closed` events. -}
-onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
-onClosed =
-    M3e.Cem.ExpandableListItem.onClosed
 
 
 {-| Place content in the `(default)` slot. -}

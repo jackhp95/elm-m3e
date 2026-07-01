@@ -1,7 +1,7 @@
-module M3e.Select exposing (arrow, child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, onToggle, panelClass, required, select, value)
+module M3e.Select exposing (arrow, child, children, select, value)
 
 {-| 
-@docs select, disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput, child, arrow, value, children
+@docs select, child, arrow, value, children
 -}
 
 
@@ -41,72 +41,6 @@ select attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.Select.disabled
-
-
-{-| Whether to hide the selection indicator for single select options. (default: `false`) -}
-hideSelectionIndicator :
-    Bool
-    -> M3e.Cem.Attr.Attr { c
-        | hideSelectionIndicator : M3e.Value.Supported
-    } msg
-hideSelectionIndicator =
-    M3e.Cem.Select.hideSelectionIndicator
-
-
-{-| Whether multiple options can be selected. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
-    M3e.Cem.Select.multi
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.Select.name
-
-
-{-| Class or list of classes to be applied to the select's overlay panel. (default: `""`) -}
-panelClass :
-    String -> M3e.Cem.Attr.Attr { c | panelClass : M3e.Value.Supported } msg
-panelClass =
-    M3e.Cem.Select.panelClass
-
-
-{-| Whether the element is required. (default: `false`) -}
-required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
-required =
-    M3e.Cem.Select.required
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Select.onChange
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.Select.onToggle
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.Select.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.Select.onInput
 
 
 {-| Place content in the `(default)` slot. -}

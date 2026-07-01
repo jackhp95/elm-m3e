@@ -1,7 +1,7 @@
-module M3e.TextareaAutosize exposing (disabled, for, maxRows, minRows, textareaAutosize)
+module M3e.TextareaAutosize exposing (textareaAutosize)
 
 {-| 
-@docs textareaAutosize, disabled, for, maxRows, minRows
+@docs textareaAutosize
 -}
 
 
@@ -33,27 +33,3 @@ textareaAutosize attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| Whether auto-sizing is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.TextareaAutosize.disabled
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.TextareaAutosize.for
-
-
-{-| The maximum amount of rows in the `textarea`. (default: `0`) -}
-maxRows : Float -> M3e.Cem.Attr.Attr { c | maxRows : M3e.Value.Supported } msg
-maxRows =
-    M3e.Cem.TextareaAutosize.maxRows
-
-
-{-| The minimum amount of rows in the `textarea`. (default: `0`) -}
-minRows : Float -> M3e.Cem.Attr.Attr { c | minRows : M3e.Value.Supported } msg
-minRows =
-    M3e.Cem.TextareaAutosize.minRows

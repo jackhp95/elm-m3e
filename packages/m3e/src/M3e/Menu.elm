@@ -1,7 +1,7 @@
-module M3e.Menu exposing (child, children, menu, onBeforetoggle, onToggle, positionX, positionY, submenu, variant)
+module M3e.Menu exposing (child, children, menu)
 
 {-| 
-@docs menu, positionX, positionY, variant, submenu, onBeforetoggle, onToggle, child, children
+@docs menu, child, children
 -}
 
 
@@ -34,53 +34,6 @@ menu attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The position of the menu, on the x-axis. (default: `"after"`) -}
-positionX :
-    M3e.Value.Value { after : M3e.Value.Supported
-    , before : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | positionX : M3e.Value.Supported } msg
-positionX =
-    M3e.Cem.Menu.positionX
-
-
-{-| The position of the menu, on the y-axis. (default: `"below"`) -}
-positionY :
-    M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
-    -> M3e.Cem.Attr.Attr { c | positionY : M3e.Value.Supported } msg
-positionY =
-    M3e.Cem.Menu.positionY
-
-
-{-| The appearance variant of the menu. (default: `"standard"`) -}
-variant :
-    M3e.Value.Value { standard : M3e.Value.Supported
-    , vibrant : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.Menu.variant
-
-
-{-| A value indicating whether the menu is a submenu. (default: `false`) -}
-submenu : Bool -> M3e.Cem.Attr.Attr { c | submenu : M3e.Value.Supported } msg
-submenu =
-    M3e.Cem.Menu.submenu
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.Menu.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.Menu.onToggle
 
 
 {-| Place content in the `(default)` slot. -}

@@ -1,7 +1,7 @@
-module M3e.AssistChip exposing (assistChip, disabled, disabledInteractive, icon, name, type_, value, variant)
+module M3e.AssistChip exposing (assistChip, icon)
 
 {-| 
-@docs assistChip, disabled, disabledInteractive, name, type_, value, variant, icon
+@docs assistChip, icon
 -}
 
 
@@ -49,53 +49,6 @@ assistChip req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| A value indicating whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.AssistChip.disabled
-
-
-{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
-disabledInteractive :
-    Bool
-    -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
-disabledInteractive =
-    M3e.Cem.AssistChip.disabledInteractive
-
-
-{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.AssistChip.name
-
-
-{-| The type of the element. (default: `"button"`) -}
-type_ :
-    M3e.Value.Value { button : M3e.Value.Supported
-    , reset : M3e.Value.Supported
-    , submit : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
-type_ =
-    M3e.Cem.AssistChip.type_
-
-
-{-| A string representing the value of the chip. -}
-value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
-value =
-    M3e.Cem.AssistChip.value
-
-
-{-| The appearance variant of the chip. (default: `"outlined"`) -}
-variant :
-    M3e.Value.Value { elevated : M3e.Value.Supported
-    , outlined : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.AssistChip.variant
 
 
 {-| Place content in the `icon` slot. -}

@@ -1,7 +1,7 @@
-module M3e.Slide exposing (child, children, selectedIndex, slide)
+module M3e.Slide exposing (child, children, slide)
 
 {-| 
-@docs slide, selectedIndex, child, children
+@docs slide, child, children
 -}
 
 
@@ -29,13 +29,6 @@ slide attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The zero-based index of the visible item. (default: `null`) -}
-selectedIndex :
-    Float -> M3e.Cem.Attr.Attr { c | selectedIndex : M3e.Value.Supported } msg
-selectedIndex =
-    M3e.Cem.Slide.selectedIndex
 
 
 {-| Place content in the `(default)` slot. -}

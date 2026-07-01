@@ -1,7 +1,7 @@
-module M3e.Tab exposing (child, children, disabled, for, icon, onBeforeinput, onChange, onClick, onInput, selected, tab)
+module M3e.Tab exposing (child, children, icon, tab)
 
 {-| 
-@docs tab, disabled, for, selected, onBeforeinput, onInput, onChange, onClick, child, icon, children
+@docs tab, child, icon, children
 -}
 
 
@@ -37,53 +37,6 @@ tab attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.Tab.disabled
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.Tab.for
-
-
-{-| Whether the element is selected. (default: `false`) -}
-selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
-selected =
-    M3e.Cem.Tab.selected
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    (Bool -> msg)
-    -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.Tab.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput :
-    (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.Tab.onInput
-
-
-{-| Listen for `change` events. -}
-onChange :
-    (Bool -> msg)
-    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Tab.onChange
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.Tab.onClick
 
 
 {-| Place content in the `(default)` slot. -}

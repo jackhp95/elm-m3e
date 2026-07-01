@@ -1,7 +1,7 @@
-module M3e.BottomSheetTrigger exposing (bottomSheetTrigger, child, children, detent, for, secondary)
+module M3e.BottomSheetTrigger exposing (bottomSheetTrigger, child, children)
 
 {-| 
-@docs bottomSheetTrigger, detent, secondary, for, child, children
+@docs bottomSheetTrigger, child, children
 -}
 
 
@@ -33,25 +33,6 @@ bottomSheetTrigger attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The zero‑based index of the detent the sheet should open to. -}
-detent : Float -> M3e.Cem.Attr.Attr { c | detent : M3e.Value.Supported } msg
-detent =
-    M3e.Cem.BottomSheetTrigger.detent
-
-
-{-| Marks this trigger as a secondary trigger for accessibility. Secondary triggers do not receive ARIA ownership. (default: `false`) -}
-secondary :
-    Bool -> M3e.Cem.Attr.Attr { c | secondary : M3e.Value.Supported } msg
-secondary =
-    M3e.Cem.BottomSheetTrigger.secondary
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.BottomSheetTrigger.for
 
 
 {-| Place content in the `(default)` slot. -}

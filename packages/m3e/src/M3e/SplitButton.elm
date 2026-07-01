@@ -1,7 +1,7 @@
-module M3e.SplitButton exposing (size, splitButton, variant)
+module M3e.SplitButton exposing (splitButton)
 
 {-| 
-@docs splitButton, variant, size
+@docs splitButton
 -}
 
 
@@ -46,28 +46,3 @@ splitButton req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| The appearance variant of the button. (default: `"filled"`) -}
-variant :
-    M3e.Value.Value { elevated : M3e.Value.Supported
-    , filled : M3e.Value.Supported
-    , outlined : M3e.Value.Supported
-    , tonal : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.SplitButton.variant
-
-
-{-| The size of the button. (default: `"small"`) -}
-size :
-    M3e.Value.Value { extraLarge : M3e.Value.Supported
-    , extraSmall : M3e.Value.Supported
-    , large : M3e.Value.Supported
-    , medium : M3e.Value.Supported
-    , small : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
-size =
-    M3e.Cem.SplitButton.size

@@ -1,7 +1,7 @@
-module M3e.SearchBar exposing (clearIcon, clearLabel, clearable, leading, onClear, searchBar, trailing)
+module M3e.SearchBar exposing (clearIcon, leading, searchBar, trailing)
 
 {-| 
-@docs searchBar, clearable, clearLabel, onClear, leading, trailing, clearIcon
+@docs searchBar, leading, trailing, clearIcon
 -}
 
 
@@ -43,26 +43,6 @@ searchBar req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether the bar presents a button used to clear the search term. (default: `false`) -}
-clearable :
-    Bool -> M3e.Cem.Attr.Attr { c | clearable : M3e.Value.Supported } msg
-clearable =
-    M3e.Cem.SearchBar.clearable
-
-
-{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
-clearLabel :
-    String -> M3e.Cem.Attr.Attr { c | clearLabel : M3e.Value.Supported } msg
-clearLabel =
-    M3e.Cem.SearchBar.clearLabel
-
-
-{-| Listen for `clear` events. -}
-onClear : msg -> M3e.Cem.Attr.Attr { c | onClear : M3e.Value.Supported } msg
-onClear =
-    M3e.Cem.SearchBar.onClear
 
 
 {-| Place content in the `leading` slot. -}

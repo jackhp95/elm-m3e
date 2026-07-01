@@ -1,7 +1,7 @@
-module M3e.SelectionList exposing (child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, selectionList, variant)
+module M3e.SelectionList exposing (child, children, selectionList)
 
 {-| 
-@docs selectionList, hideSelectionIndicator, multi, variant, name, disabled, onChange, onBeforeinput, onInput, child, children
+@docs selectionList, child, children
 -}
 
 
@@ -38,63 +38,6 @@ selectionList attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether to hide the selection indicator. (default: `false`) -}
-hideSelectionIndicator :
-    Bool
-    -> M3e.Cem.Attr.Attr { c
-        | hideSelectionIndicator : M3e.Value.Supported
-    } msg
-hideSelectionIndicator =
-    M3e.Cem.SelectionList.hideSelectionIndicator
-
-
-{-| Whether multiple items can be selected. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
-    M3e.Cem.SelectionList.multi
-
-
-{-| The appearance variant of the list. (default: `"standard"`) -}
-variant :
-    M3e.Value.Value { segmented : M3e.Value.Supported
-    , standard : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.SelectionList.variant
-
-
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
-    M3e.Cem.SelectionList.name
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.SelectionList.disabled
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.SelectionList.onChange
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.SelectionList.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.SelectionList.onInput
 
 
 {-| Place content in the `(default)` slot. -}

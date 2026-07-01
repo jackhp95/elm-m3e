@@ -1,7 +1,7 @@
-module M3e.MenuItemCheckbox exposing (checked, child, children, disabled, icon, menuItemCheckbox, onClick, trailingIcon)
+module M3e.MenuItemCheckbox exposing (child, children, icon, menuItemCheckbox, trailingIcon)
 
 {-| 
-@docs menuItemCheckbox, disabled, checked, onClick, child, icon, trailingIcon, children
+@docs menuItemCheckbox, child, icon, trailingIcon, children
 -}
 
 
@@ -36,24 +36,6 @@ menuItemCheckbox attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.MenuItemCheckbox.disabled
-
-
-{-| Whether the element is checked. (default: `false`) -}
-checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
-checked =
-    M3e.Cem.MenuItemCheckbox.checked
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.MenuItemCheckbox.onClick
 
 
 {-| Place content in the `(default)` slot. -}

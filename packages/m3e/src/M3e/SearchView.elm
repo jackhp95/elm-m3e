@@ -1,7 +1,7 @@
-module M3e.SearchView exposing (child, children, clearIcon, clearLabel, closeIcon, closeLabel, closedLeading, closedTrailing, contained, hideSearchIcon, mode, onBeforetoggle, onClear, onQuery, onToggle, open, openLeading, openTrailing, searchIcon, searchView)
+module M3e.SearchView exposing (child, children, clearIcon, closeIcon, closedLeading, closedTrailing, openLeading, openTrailing, searchIcon, searchView)
 
 {-| 
-@docs searchView, contained, mode, open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child, openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon, children
+@docs searchView, child, openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon, children
 -}
 
 
@@ -55,76 +55,6 @@ searchView req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| Whether the view features a persistent, filled search container. (default: `false`) -}
-contained :
-    Bool -> M3e.Cem.Attr.Attr { c | contained : M3e.Value.Supported } msg
-contained =
-    M3e.Cem.SearchView.contained
-
-
-{-| The behavior mode of the view. (default: `"docked"`) -}
-mode :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , docked : M3e.Value.Supported
-    , fullscreen : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
-mode =
-    M3e.Cem.SearchView.mode
-
-
-{-| Whether the view is expanded to show results. (default: `false`) -}
-open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
-    M3e.Cem.SearchView.open
-
-
-{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
-clearLabel :
-    String -> M3e.Cem.Attr.Attr { c | clearLabel : M3e.Value.Supported } msg
-clearLabel =
-    M3e.Cem.SearchView.clearLabel
-
-
-{-| The accessible label given to the button used to collapse the view. (default: `"Close"`) -}
-closeLabel :
-    String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
-closeLabel =
-    M3e.Cem.SearchView.closeLabel
-
-
-{-| Whether to hide the search icon. (default: `false`) -}
-hideSearchIcon :
-    Bool -> M3e.Cem.Attr.Attr { c | hideSearchIcon : M3e.Value.Supported } msg
-hideSearchIcon =
-    M3e.Cem.SearchView.hideSearchIcon
-
-
-{-| Listen for `query` events. -}
-onQuery : msg -> M3e.Cem.Attr.Attr { c | onQuery : M3e.Value.Supported } msg
-onQuery =
-    M3e.Cem.SearchView.onQuery
-
-
-{-| Listen for `clear` events. -}
-onClear : msg -> M3e.Cem.Attr.Attr { c | onClear : M3e.Value.Supported } msg
-onClear =
-    M3e.Cem.SearchView.onClear
-
-
-{-| Listen for `beforetoggle` events. -}
-onBeforetoggle :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
-onBeforetoggle =
-    M3e.Cem.SearchView.onBeforetoggle
-
-
-{-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
-onToggle =
-    M3e.Cem.SearchView.onToggle
 
 
 {-| Place content in the `(default)` slot. -}

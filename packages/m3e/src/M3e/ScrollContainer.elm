@@ -1,7 +1,7 @@
-module M3e.ScrollContainer exposing (child, children, dividers, scrollContainer, thin)
+module M3e.ScrollContainer exposing (child, children, scrollContainer)
 
 {-| 
-@docs scrollContainer, dividers, thin, child, children
+@docs scrollContainer, child, children
 -}
 
 
@@ -32,24 +32,6 @@ scrollContainer attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The dividers used to separate scrollable content. (default: `"above-below"`) -}
-dividers :
-    M3e.Value.Value { above : M3e.Value.Supported
-    , aboveBelow : M3e.Value.Supported
-    , below : M3e.Value.Supported
-    , none : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | dividers : M3e.Value.Supported } msg
-dividers =
-    M3e.Cem.ScrollContainer.dividers
-
-
-{-| Whether to present thin scrollbars. (default: `false`) -}
-thin : Bool -> M3e.Cem.Attr.Attr { c | thin : M3e.Value.Supported } msg
-thin =
-    M3e.Cem.ScrollContainer.thin
 
 
 {-| Place content in the `(default)` slot. -}

@@ -1,7 +1,7 @@
-module M3e.SlideGroup exposing (child, children, disabled, nextIcon, nextPageLabel, prevIcon, previousPageLabel, slideGroup, threshold, vertical)
+module M3e.SlideGroup exposing (child, children, nextIcon, prevIcon, slideGroup)
 
 {-| 
-@docs slideGroup, disabled, nextPageLabel, previousPageLabel, threshold, vertical, child, nextIcon, prevIcon, children
+@docs slideGroup, child, nextIcon, prevIcon, children
 -}
 
 
@@ -38,40 +38,6 @@ slideGroup attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether scroll buttons are disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.SlideGroup.disabled
-
-
-{-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
-nextPageLabel :
-    String -> M3e.Cem.Attr.Attr { c | nextPageLabel : M3e.Value.Supported } msg
-nextPageLabel =
-    M3e.Cem.SlideGroup.nextPageLabel
-
-
-{-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
-previousPageLabel :
-    String
-    -> M3e.Cem.Attr.Attr { c | previousPageLabel : M3e.Value.Supported } msg
-previousPageLabel =
-    M3e.Cem.SlideGroup.previousPageLabel
-
-
-{-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`) -}
-threshold :
-    Float -> M3e.Cem.Attr.Attr { c | threshold : M3e.Value.Supported } msg
-threshold =
-    M3e.Cem.SlideGroup.threshold
-
-
-{-| Whether content is oriented vertically. (default: `false`) -}
-vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
-vertical =
-    M3e.Cem.SlideGroup.vertical
 
 
 {-| Place content in the `(default)` slot. -}

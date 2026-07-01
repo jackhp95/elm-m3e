@@ -1,7 +1,7 @@
-module M3e.MenuItemElementBase exposing (disabled, menuItemElementBase, onClick)
+module M3e.MenuItemElementBase exposing (menuItemElementBase)
 
 {-| 
-@docs menuItemElementBase, disabled, onClick
+@docs menuItemElementBase
 -}
 
 
@@ -31,15 +31,3 @@ menuItemElementBase attributes children =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Element.toNode children)
         )
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
-    M3e.Cem.MenuItemElementBase.disabled
-
-
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.MenuItemElementBase.onClick

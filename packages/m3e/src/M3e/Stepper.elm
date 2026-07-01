@@ -1,7 +1,7 @@
-module M3e.Stepper exposing (headerPosition, labelPosition, linear, onBeforeinput, onChange, onInput, orientation, panel, step, stepper)
+module M3e.Stepper exposing (panel, step, stepper)
 
 {-| 
-@docs stepper, headerPosition, labelPosition, linear, orientation, onChange, onBeforeinput, onInput, step, panel
+@docs stepper, step, panel
 -}
 
 
@@ -37,58 +37,6 @@ stepper attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The position of the step header, when oriented horizontally. (default: `"above"`) -}
-headerPosition :
-    M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
-    -> M3e.Cem.Attr.Attr { c | headerPosition : M3e.Value.Supported } msg
-headerPosition =
-    M3e.Cem.Stepper.headerPosition
-
-
-{-| The position of the step labels, when oriented horizontally. (default: `"end"`) -}
-labelPosition :
-    M3e.Value.Value { below : M3e.Value.Supported, end : M3e.Value.Supported }
-    -> M3e.Cem.Attr.Attr { c | labelPosition : M3e.Value.Supported } msg
-labelPosition =
-    M3e.Cem.Stepper.labelPosition
-
-
-{-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
-linear : Bool -> M3e.Cem.Attr.Attr { c | linear : M3e.Value.Supported } msg
-linear =
-    M3e.Cem.Stepper.linear
-
-
-{-| The orientation of the stepper. (default: `"horizontal"`) -}
-orientation :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , horizontal : M3e.Value.Supported
-    , vertical : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
-orientation =
-    M3e.Cem.Stepper.orientation
-
-
-{-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
-onChange =
-    M3e.Cem.Stepper.onChange
-
-
-{-| Listen for `beforeinput` events. -}
-onBeforeinput :
-    msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
-onBeforeinput =
-    M3e.Cem.Stepper.onBeforeinput
-
-
-{-| Listen for `input` events. -}
-onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
-onInput =
-    M3e.Cem.Stepper.onInput
 
 
 {-| Place content in the `step` slot. -}

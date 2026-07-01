@@ -1,7 +1,7 @@
-module M3e.MenuTrigger exposing (child, children, for, menuTrigger)
+module M3e.MenuTrigger exposing (child, children, menuTrigger)
 
 {-| 
-@docs menuTrigger, for, child, children
+@docs menuTrigger, child, children
 -}
 
 
@@ -31,12 +31,6 @@ menuTrigger attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
-    M3e.Cem.MenuTrigger.for
 
 
 {-| Place content in the `(default)` slot. -}

@@ -1,7 +1,7 @@
-module M3e.Dialog exposing (actions, alert, child, children, closeIcon, closeLabel, dialog, disableClose, dismissible, header, noFocusTrap, onCancel, onClosed, onClosing, onOpened, onOpening, open)
+module M3e.Dialog exposing (actions, child, children, closeIcon, dialog, header)
 
 {-| 
-@docs dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel, child, header, actions, closeIcon, children
+@docs dialog, child, header, actions, closeIcon, children
 -}
 
 
@@ -43,76 +43,6 @@ dialog attributes content_ =
             (List.map M3e.Cem.Attr.forget attributes)
             (List.map M3e.Content.toNode content_)
         )
-
-
-{-| Whether the dialog is an alert. (default: `false`) -}
-alert : Bool -> M3e.Cem.Attr.Attr { c | alert : M3e.Value.Supported } msg
-alert =
-    M3e.Cem.Dialog.alert
-
-
-{-| The accessible label given to the button used to dismiss the dialog. (default: `"Close"`) -}
-closeLabel :
-    String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
-closeLabel =
-    M3e.Cem.Dialog.closeLabel
-
-
-{-| Whether users cannot click the backdrop or press ESC to dismiss the dialog. (default: `false`) -}
-disableClose :
-    Bool -> M3e.Cem.Attr.Attr { c | disableClose : M3e.Value.Supported } msg
-disableClose =
-    M3e.Cem.Dialog.disableClose
-
-
-{-| Whether a button is presented that can be used to close the dialog. (default: `false`) -}
-dismissible :
-    Bool -> M3e.Cem.Attr.Attr { c | dismissible : M3e.Value.Supported } msg
-dismissible =
-    M3e.Cem.Dialog.dismissible
-
-
-{-| Whether to disable focus trapping, which keeps keyboard `Tab` navigation within the dialog. (default: `false`) -}
-noFocusTrap :
-    Bool -> M3e.Cem.Attr.Attr { c | noFocusTrap : M3e.Value.Supported } msg
-noFocusTrap =
-    M3e.Cem.Dialog.noFocusTrap
-
-
-{-| Whether the dialog is open. (default: `false`) -}
-open : String -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
-    M3e.Cem.Dialog.open
-
-
-{-| Listen for `opening` events. -}
-onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
-onOpening =
-    M3e.Cem.Dialog.onOpening
-
-
-{-| Listen for `opened` events. -}
-onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
-onOpened =
-    M3e.Cem.Dialog.onOpened
-
-
-{-| Listen for `closing` events. -}
-onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
-onClosing =
-    M3e.Cem.Dialog.onClosing
-
-
-{-| Listen for `closed` events. -}
-onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
-onClosed =
-    M3e.Cem.Dialog.onClosed
-
-
-{-| Listen for `cancel` events. -}
-onCancel : msg -> M3e.Cem.Attr.Attr { c | onCancel : M3e.Value.Supported } msg
-onCancel =
-    M3e.Cem.Dialog.onCancel
 
 
 {-| Place content in the `(default)` slot. -}

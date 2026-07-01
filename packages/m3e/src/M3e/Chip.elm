@@ -1,7 +1,7 @@
-module M3e.Chip exposing (chip, icon, trailingIcon, value, variant)
+module M3e.Chip exposing (chip, icon, trailingIcon)
 
 {-| 
-@docs chip, value, variant, icon, trailingIcon
+@docs chip, icon, trailingIcon
 -}
 
 
@@ -39,22 +39,6 @@ chip req_ attributes content_ =
                 (List.map M3e.Content.toNode content_)
             )
         )
-
-
-{-| A string representing the value of the chip. -}
-value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
-value =
-    M3e.Cem.Chip.value
-
-
-{-| The appearance variant of the chip. (default: `"outlined"`) -}
-variant :
-    M3e.Value.Value { elevated : M3e.Value.Supported
-    , outlined : M3e.Value.Supported
-    }
-    -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
-    M3e.Cem.Chip.variant
 
 
 {-| Place content in the `icon` slot. -}
