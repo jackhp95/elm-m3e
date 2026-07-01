@@ -1,74 +1,66 @@
 # elm-m3e · `M3e.*` — type-safe Material 3 Expressive for Elm
 
-A **Make-Impossible-States-Impossible** Elm layer over matraic's
-[`@m3e/web`](https://github.com/matraic/m3e) Material 3 Expressive web
-components. Its invariant is the **Material 3 spec + accessibility**, not the
-DOM: slots are typed to the kinds M3 allows, accessible names are required by
-construction, and components render to an **introspectable IR** that a parent can
-compose and a unit test can inspect.
+A **Make-Impossible-States-Impossible** Elm surface over matraic's
+[`@m3e/web`](https://github.com/matraic/m3e) Material 3 Expressive web components.
+The invariant is the **Material 3 spec + accessibility**, not the DOM: slots are
+typed to the kinds M3 allows, accessible names are required by construction, and the
+whole library is **generated** — you learn two or three components and you know them
+all, because they came from the same machine.
 
-> **Status: pre-1.0, architecture finalized.** The `M3e.*` layer (introspectable
-> IR + phantom-typed slots + view-style components) is described in
-> [ADR 0006](docs/adr/0006-m3e-architecture.md) and being ported from the prior
-> `Ui.*` builders. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the
-> guide and [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) for the per-component
-> rules.
+> **Status: prerelease, not yet published.** Breaking changes are embraced; the
+> priority is correctness and uniformity over back-compat.
 
-## Architecture
+## What's in the repo
 
 ```
-@m3e/web         vendored Material 3 Expressive custom elements (the runtime)
-  └─ Cem.M3e.*   generated CEM bindings — one module per element, no opinions, the escape hatch
-       ↘
-        M3e.*    THIS library — introspectable IR + phantom-typed composition + MISI + a11y
+packages/m3e/          THE library — generated M3e.* modules (components + IR core).
+                       A standalone Elm package (own elm.json, exposed-modules synced).
+packages/m3e-kit/      Userland producer kit (copyable, NOT in the package):
+                       Kit (text/link), Native (native-HTML IR), EscapeHatch, Seam.
+config/slots.json      The declarative config that shapes the generated top layer
+                       (per-slot kinds/multi/required + aria/action/variant groups).
+elm-cem/               The library-agnostic generator (its own repo, cloned here to
+                       work; regenerates packages/m3e from the @m3e/web CEM + config).
+docs/                  The elm-pages docs site + the design docs (read order below).
 ```
 
-Four ideas (full detail in [ADR 0006](docs/adr/0006-m3e-architecture.md)):
+## The API — a double list per component
 
-- **Introspectable IR (`M3e.Node`)** — components render to data, not opaque
-  `Html msg`, converted to `Html` once at the app root. So a parent injects
-  `slot=`/`for`/`id` by rewriting data, and a unit test asserts DOM **properties**
-  and structure that `Test.Html` can't see.
-- **Phantom-typed slots (`M3e.Element`)** — a slot accepts exactly the
-  Material content kinds it should; a wrong child is a compile error.
-- **View-style components** — `view {required} [options] -> Element {tag}`:
-  one concept, no lift, accessible name required by construction.
-- **Matched escapes** — `Element.html` for default-slot regions,
-  `Element.element` for named slots (so an injected `slot=` can never be
-  dropped). The `element` escape + the public IR are the **extensibility seam**:
-  the library ships no layout primitives; you build your own on top.
+Every component is its lowercase name taking up to three arguments: an optional
+**required record**, an **attributes list**, and a **content list**:
 
 ```elm
-M3e.AppBar.new
-    |> M3e.AppBar.withTrailing
-        [ M3e.Search.view { placeholder = "Search mail" } []
-        , M3e.IconButton.view { icon = "more_vert", name = "More" } [ M3e.IconButton.onClick Menu ]
-        ]
+M3e.TreeItem.treeItem
+    { label = Kit.text "Getting Started" }                  -- required-singular slots (record)
+    [ TreeItem.disabled True ]                              -- attributes (phantom capability row)
+    [ TreeItem.icon (Icon.icon [ Icon.name "folder" ] [])  -- content (phantom slot row)
+    , TreeItem.child (TreeItem.treeItem { label = Kit.text "Child" } [] [])
+    ]
 ```
 
-## Naming
+- **Type-level (the MISI that matters):** kind + capability validity via extensible
+  phantom rows. A wrong attribute or a wrong-kind slot child is a **compile error**.
+- **`any` slots** accept any element (a plain type variable). **`EscapeHatch`** is the
+  loud, auditable break-glass when the design system is wrong.
+- **Advisory (generated elm-review + docs):** required-presence and singular
+  cardinality — see [ADR 0011](docs/adr/0011-ir-faithfulness-advisory-cardinality.md).
+- The IR is for **composition**, not introspection; it renders once at
+  `M3e.Node.toHtml`.
 
-- **`M3e.*`** — the library (package `m3e`). What you import.
-- **`Cem.M3e.*`** — the generated CEM bindings (the `Cem.` prefix marks origin
-  and that they are generated). Used as the escape hatch; the two coexist.
+## How it's built
 
-## Repository layout
-
-| Path | What |
-|------|------|
-| `src/M3e/` | The library — IR (`Node`, `Element`), components, `Field`/`Label`. |
-| `vendor/elm-m3e/` | Generated `Cem.M3e.*` bindings. See `VENDORED_FROM.txt`. |
-| `docs/` | The documentation site — an elm-pages app rendering the real modules. |
-| `docs/adr/` | Architecture decision records ([0006](docs/adr/0006-m3e-architecture.md) is canonical). |
-| `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md` | The guide and the per-component rules. |
-| `docs/research/` | Historical dogfooding logs (superseded by ADR 0006). |
+`elm-cem` reads the `@m3e/web` **Custom Elements Manifest** plus `config/slots.json`
+and emits all layers (bottom partial-applied `elm/html` → middle `M3e.Cem.*` → top
+`M3e.*` double-list) plus the IR core. On a new `@m3e/web` release you regenerate and
+it "just works". The generator carries **no m3e opinions** — all m3e specifics live in
+`config/`.
 
 ## Documentation site
 
 The docs are an [elm-pages](https://elm-pages.com) app that renders **the real
-library modules**, styled with Tailwind v4 + the
-[`tailwind-m3e-web`](https://github.com/jackhp95/tailwind-m3e-web) bridge (zero
-hand-written CSS).
+library modules** (source-dirs point at `packages/m3e/src` + `packages/m3e-kit/src`),
+styled with Tailwind v4 + the
+[`tailwind-m3e-web`](https://github.com/jackhp95/tailwind-m3e-web) bridge.
 
 ```bash
 cd docs
@@ -77,22 +69,24 @@ npm run build      # -> docs/dist  (also rebuilds public/style.css + public/m3e.
 npm start          # local dev server
 ```
 
-Deploy (Netlify): **Add new site → Import from Git**, **Base directory** =
-`docs`; build command and publish dir come from `docs/netlify.toml`.
+Deploy (Netlify): **Base directory** = `docs`; build/publish come from
+`docs/netlify.toml`.
 
 ## Testing
 
-- `elm-test` — unit assertions against the IR (tags, accessible names,
-  properties, slot/relational wiring), plus negative compile checks for slot
-  constraints.
-- `docs/tests-browser/` — a Playwright contract harness for the things only a
-  real browser shows (event dispatch, shadow-DOM rendering).
+The old IR-introspection unit suite was removed — the double-list makes those facts
+compile-time guarantees. Coverage now lives in **the type system** (a green
+`elm make packages/m3e` proves every slot/attr invariant) plus
+`docs/tests-browser/` (Playwright, for what only a real browser shows). A lean
+render/`Test.Html.Query` suite may be added later for runtime-only behaviors.
 
-## Further reading
+## Docs (read order)
 
-- [ADR 0006](docs/adr/0006-m3e-architecture.md) — the canonical architecture.
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — narrative guide + cost ledger.
-- [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) — per-component rules / spec template.
-- [`docs/research/`](docs/research/) — historical logs from dogfooding `Ui.*`.
+- [`docs/THE_COMPLETE_EFFORT.md`](docs/THE_COMPLETE_EFFORT.md) — the vision + every decision.
+- [`docs/ADOPTION_AND_SLOTS.md`](docs/ADOPTION_AND_SLOTS.md) — the slot model, `any`,
+  the escape/extensibility gradient (§8), and the proven encodings.
+- [`docs/THREE_LAYER_PATTERN.md`](docs/THREE_LAYER_PATTERN.md) — the layer mechanics.
+- [`docs/MIGRATION_OLD_TO_NEW.md`](docs/MIGRATION_OLD_TO_NEW.md) — old→new API migration.
+- [`docs/adr/`](docs/adr/) — the architecture decisions (0008–0011 are current).
 
 See the repo's GitHub issues for tracked work.
