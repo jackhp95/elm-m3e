@@ -7,11 +7,13 @@ import Head.Seo as Seo
 import Html exposing (code, div, p, pre, text)
 import Html.Attributes exposing (class)
 import Layout
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -67,7 +69,7 @@ type Lang
     | NoLang
 
 
-code_ : Lang -> String -> Node msg
+code_ : Lang -> String -> Element { s | html : Supported } msg
 code_ lang s =
     let
         trimmed : String
@@ -99,48 +101,51 @@ code_ lang s =
         Ok highlighted ->
             -- SyntaxHighlight.toBlockHtml emits <pre class="elmsh">, so the
             -- outer wrapper is a <div> to keep the markup valid.
-            Node.raw
+            EscapeHatch.fromHtml
                 (div [ class wrapperClass ]
                     [ SyntaxHighlight.toBlockHtml Nothing highlighted ]
                 )
 
         Err _ ->
-            Node.raw
+            EscapeHatch.fromHtml
                 (pre [ class wrapperClass ]
                     [ code [] [ text trimmed ] ]
                 )
 
 
-pageHeading : Node msg
+pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { label = "Installation", variant = Value.display }
-        [ Heading.size Value.small, Heading.level 1 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text "Installation" }
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        []
+       
 
 
-stepHeading : String -> Node msg
+stepHeading : String -> Element { s | heading : Supported } msg
 stepHeading label =
-    Heading.view { label = label, variant = Value.headline }
-        [ Heading.size Value.small, Heading.level 2 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text label }
+        [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+        []
+       
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Installation · elm-m3e"
     , body =
-        [ Layout.div "mx-auto max-w-3xl space-y-8"
+        List.map Element.toNode
+            [ Layout.div "mx-auto max-w-3xl space-y-8"
             [ Layout.section "space-y-3"
                 [ pageHeading
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "text-body-lg text-on-surface-variant" ]
                         [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
                     )
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ stepHeading "1. Add the Elm source"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "text-body-md text-on-surface-variant" ]
                         [ text "Copy the M3e.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
                     )
@@ -150,10 +155,10 @@ view _ _ =
 }
 """
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ stepHeading "2. Register the web components"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "text-body-md text-on-surface-variant" ]
                         [ text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
                     )
@@ -164,10 +169,10 @@ npm i @m3e/web
 import "@m3e/web/all";
 """
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ stepHeading "3. Import the token + utility bridge"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "text-body-md text-on-surface-variant" ]
                         [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …):" ]
                     )
@@ -178,10 +183,10 @@ import "@m3e/web/all";
 @import "tailwind-m3e-web/generated/utilities.css";
 """
                 ]
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , Layout.section "space-y-3"
                 [ stepHeading "4. Wrap your app in a theme"
-                , Node.raw
+                , EscapeHatch.fromHtml
                     (p [ class "text-body-md text-on-surface-variant" ]
                         [ text "A single M3e.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
                     )
