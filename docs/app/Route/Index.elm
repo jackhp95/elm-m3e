@@ -19,15 +19,19 @@ import Layout
 import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
+import EscapeHatch
+import Kit
 import M3e.Divider as Divider
-import M3e.Element as Element
+import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
 import M3e.Node as Node exposing (Node)
-import M3e.Value as Value
+import Native
+import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -86,28 +90,30 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
     , body =
-        [ Layout.div "mx-auto max-w-5xl space-y-16"
+        List.map Element.toNode
+            [ Layout.div "mx-auto max-w-5xl space-y-16"
             [ hero
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , highlights
-            , Divider.view [] |> Element.toNode
+            , Divider.view [] []
             , statusGrid
             ]
         ]
     }
 
 
-hero : Node msg
+hero : Element { s | html : Supported } msg
 hero =
     Layout.section "space-y-5"
-        [ Node.raw
+        [ EscapeHatch.fromHtml
             (p [ class "text-label-lg uppercase tracking-wide text-primary" ]
                 [ text "elm-m3e · m3e-builder" ]
             )
-        , Heading.view { label = "Type-safe Material 3 Expressive for Elm", variant = Value.display }
-            [ Heading.size Value.small, Heading.level 1 ]
-            |> Element.toNode
-        , Node.raw
+        , Heading.view { content = Kit.text "Type-safe Material 3 Expressive for Elm" }
+            [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+            []
+           
+        , EscapeHatch.fromHtml
             (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                 [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
                 , code [ class "rounded bg-surface-container px-1.5 py-0.5 text-body-md" ] [ text "@m3e/web" ]
@@ -115,12 +121,12 @@ hero =
                 ]
             )
         , Layout.div "flex flex-wrap items-center gap-3 pt-2"
-            [ Button.view { label = "Get started", variant = Value.filled } [ Button.href "/getting-started/installation" ] |> Element.toNode
-            , Button.view { label = "Browse the API reference", variant = Value.outlined } [ Button.href "/reference" ] |> Element.toNode
+            [ Button.view [ Button.variant Value.filled, Button.href "/getting-started/installation" ] [ Button.child (Kit.text "Get started") ]
+            , Button.view [ Button.variant Value.outlined, Button.href "/reference" ] [ Button.child (Kit.text "Browse the API reference") ]
             ]
         , Layout.div "flex items-center gap-3 pt-4"
-            [ Avatar.view { ariaLabel = "Sample avatar" } [ Avatar.image "/avatar-sample.svg" ] |> Element.toNode
-            , Node.raw
+            [ Avatar.view [ Seam.asAttribute (Html.Attributes.attribute "aria-label" "Sample avatar") ] [ Avatar.child (Native.img [ Seam.asAttribute (Html.Attributes.src "/avatar-sample.svg") ]) ]
+            , EscapeHatch.fromHtml
                 (div [ class "flex gap-3" ]
                     [ div [ class "block w-10 h-10 bg-primary rounded-md-corner-large" ] []
                     , div [ class "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" ] []
@@ -131,14 +137,15 @@ hero =
         ]
 
 
-sectionHeading : String -> Node msg
+sectionHeading : String -> Element { s | heading : Supported } msg
 sectionHeading label =
-    Heading.view { label = label, variant = Value.headline }
-        [ Heading.size Value.medium, Heading.level 2 ]
-        |> Element.toNode
+    Heading.view { content = Kit.text label }
+        [ Heading.variant Value.headline, Heading.size Value.medium, Heading.level "2" ]
+        []
+       
 
 
-highlights : Node msg
+highlights : Element { s | html : Supported } msg
 highlights =
     Layout.section "space-y-6"
         [ sectionHeading "Why elm-m3e"
@@ -156,29 +163,27 @@ highlights =
         ]
 
 
-highlightCard : String -> String -> String -> Node msg
+highlightCard : String -> String -> String -> Element { s | card : Supported } msg
 highlightCard iconName title body =
     Card.view
-        [ Card.variant Value.outlined
-        , Card.headline (Heading.view { label = title, variant = Value.title } [])
-        , Card.body
-            [ Element.fromNode
-                (Layout.div "flex gap-3"
-                    [ Layout.span "shrink-0 text-primary"
-                        [ Icon.view { name = iconName } [] |> Element.toNode ]
-                    , Node.raw (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
-                    ]
-                )
-            ]
+        [ Card.variant Value.outlined ]
+        [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
+        , Card.content
+            (Layout.div "flex gap-3"
+                [ Layout.span "shrink-0 text-primary"
+                    [ Icon.view [ Icon.name iconName ] [] ]
+                , EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ])
+                ]
+            )
         ]
-        |> Element.toNode
+       
 
 
-statusGrid : Node msg
+statusGrid : Element { s | html : Supported } msg
 statusGrid =
     Layout.section "space-y-6"
         [ sectionHeading "Status & roadmap"
-        , Node.raw
+        , EscapeHatch.fromHtml
             (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
                 [ text "The honest current state of the standalone library." ]
             )
@@ -191,11 +196,11 @@ statusGrid =
         ]
 
 
-statusCard : String -> String -> Node msg
+statusCard : String -> String -> Element { s | card : Supported } msg
 statusCard title body =
     Card.view
-        [ Card.variant Value.outlined
-        , Card.headline (Heading.view { label = title, variant = Value.title } [])
-        , Card.body [ Element.html (p [ class "text-body-md text-on-surface-variant" ] [ text body ]) ]
+        [ Card.variant Value.outlined ]
+        [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
+        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-md text-on-surface-variant" ] [ text body ]))
         ]
-        |> Element.toNode
+       
