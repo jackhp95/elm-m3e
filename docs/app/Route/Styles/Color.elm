@@ -108,6 +108,13 @@ pane items =
     ContentPane.view [] (List.map ContentPane.child items)
 
 
+{-| A matraic-style "showcase" card: live demos in an outlined card's content slot.
+-}
+showcase : Element { s | html : Supported } msg -> Element { r | card : Supported } msg
+showcase content =
+    Card.view [ Card.variant Value.outlined ] [ Card.content content ]
+
+
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Color · elm-m3e"
@@ -123,8 +130,10 @@ view _ _ =
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Color roles"
-                    , Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
-                        (List.map swatch roles)
+                    , showcase
+                        (Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+                            (List.map swatch roles)
+                        )
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Dynamic color"
