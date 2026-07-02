@@ -6,7 +6,8 @@ import Test exposing (Test, describe, test)
 
 
 {-| A component whose default slot is BOTH required and repeatable (required-multi): the
-type system can't enforce it, so the rule must. -}
+type system can't enforce it, so the rule must.
+-}
 facts : List { component : String, module_ : String, enums : List ( String, List String ), requiredSlots : List String, multiSlots : List String }
 facts =
     [ { component = "grid"
@@ -50,6 +51,17 @@ import M3e exposing (grid, child)
 
 v =
     grid [] [ child a ]
+"""
+                    |> Review.Test.run (rule facts)
+                    |> Review.Test.expectNoErrors
+        , test "stays silent when content is built dynamically (List.map)" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e exposing (grid, child)
+
+v =
+    grid [] (List.map child items)
 """
                     |> Review.Test.run (rule facts)
                     |> Review.Test.expectNoErrors

@@ -23,7 +23,8 @@ import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
-{-| Build from the generated facts (`M3e.Review.Facts.facts`). -}
+{-| Build from the generated facts (`M3e.Review.Facts.facts`).
+-}
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "RequireSlot" (initContext (buildIndex facts))
@@ -31,7 +32,8 @@ rule facts =
         |> Rule.fromModuleRuleSchema
 
 
-{-| component noun -> content-setter names that must appear at least once (required ∩ multi). -}
+{-| component noun -> content-setter names that must appear at least once (required ∩ multi).
+-}
 type alias Index =
     Dict String (List String)
 
@@ -90,53 +92,47 @@ expressionVisitor node context =
             ( [], context )
 
 
-{-| The content list is the *last* list argument (present only when the constructor takes
-two lists, `view [attrs] [content]`); flag required setters absent from it. -}
+{-| The content is the _last_ argument of a fully-applied constructor (`view [attrs]
+[content]`). We can only judge presence when that argument is a **list literal** — if
+content is built dynamically (`List.map …`, a variable, `++`), we can't see into it, so
+the rule stays silent rather than false-positive.
+-}
 checkCall : List String -> { start : { row : Int, column : Int }, end : { row : Int, column : Int } } -> List (Node Expression) -> List (Error {})
 checkCall required range args =
-    let
-        present =
-            contentList args
-                |> List.filterMap elementSetter
-    in
-    required
-        |> List.filter (\name -> not (List.member name present))
-        |> List.map (\name -> error name range)
+    case contentElements args of
+        Just elements ->
+            let
+                present =
+                    List.filterMap elementSetter elements
+            in
+            required
+                |> List.filter (\name -> not (List.member name present))
+                |> List.map (\name -> error name range)
 
-
-contentList : List (Node Expression) -> List (Node Expression)
-contentList args =
-    case List.filter isListExpr args of
-        _ :: rest ->
-            case List.reverse rest of
-                last :: _ ->
-                    listElements last
-
-                [] ->
-                    []
-
-        [] ->
+        Nothing ->
             []
 
 
-isListExpr : Node Expression -> Bool
-isListExpr node =
-    case Node.value node of
-        Expression.ListExpr _ ->
-            True
+{-| `Just` the literal content list's elements, or `Nothing` when there's no content
+argument (partial application / void) or it's a non-literal expression.
+-}
+contentElements : List (Node Expression) -> Maybe (List (Node Expression))
+contentElements args =
+    if List.length args >= 2 then
+        case List.reverse args of
+            last :: _ ->
+                case Node.value last of
+                    Expression.ListExpr elements ->
+                        Just elements
 
-        _ ->
-            False
+                    _ ->
+                        Nothing
 
+            [] ->
+                Nothing
 
-listElements : Node Expression -> List (Node Expression)
-listElements node =
-    case Node.value node of
-        Expression.ListExpr elements ->
-            elements
-
-        _ ->
-            []
+    else
+        Nothing
 
 
 elementSetter : Node Expression -> Maybe String

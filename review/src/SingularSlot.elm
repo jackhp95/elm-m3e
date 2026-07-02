@@ -21,7 +21,8 @@ import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
-{-| Build from the generated facts (`M3e.Review.Facts.facts`). -}
+{-| Build from the generated facts (`M3e.Review.Facts.facts`).
+-}
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "SingularSlot" (initContext (buildIndex facts))
@@ -29,7 +30,8 @@ rule facts =
         |> Rule.fromModuleRuleSchema
 
 
-{-| component noun -> set of setter names that MAY repeat (the multi slots, camelCased). -}
+{-| component noun -> set of setter names that MAY repeat (the multi slots, camelCased).
+-}
 type alias Index =
     Dict String (List String)
 
@@ -42,7 +44,8 @@ buildIndex facts =
 
 
 {-| The content-setter name for a slot: the default slot's setter is `child`/`children`;
-a named slot's setter is its camelCased name (e.g. `trailing-icon` -> `trailingIcon`). -}
+a named slot's setter is its camelCased name (e.g. `trailing-icon` -> `trailingIcon`).
+-}
 slotSetter : String -> String
 slotSetter slot =
     if slot == "default" then
@@ -70,7 +73,12 @@ expressionVisitor node context =
                 Just noun ->
                     case Dict.get noun context.index of
                         Just multi ->
-                            ( checkArg multi (contentList args), context )
+                            case contentElements args of
+                                Just elements ->
+                                    ( checkArg multi elements, context )
+
+                                Nothing ->
+                                    ( [], context )
 
                         Nothing ->
                             ( [], context )
@@ -82,46 +90,33 @@ expressionVisitor node context =
             ( [], context )
 
 
-{-| The content list is the *last* list argument, and only exists when the constructor
-takes two lists (`view [attrs] [content]`). A void component (`img [attrs]`, one list)
-has no content list, so its repeated attrs are never mistaken for repeated slots. -}
-contentList : List (Node Expression) -> List (Node Expression)
-contentList args =
-    case List.filter isListExpr args of
-        _ :: rest ->
-            -- ≥2 lists: the last is content. `rest` non-empty ⇒ there were ≥2.
-            case List.reverse rest of
-                last :: _ ->
-                    listElements last
+{-| The content is the _last_ argument of a fully-applied constructor (`view [attrs]
+[content]`). We only analyze it when it's a **list literal**: a void component
+(`img [attrs]`, one arg) has no content, and dynamically-built content (`List.map …`)
+can't be seen into — in both cases we stay silent rather than mistake attrs (or nothing)
+for repeated slots.
+-}
+contentElements : List (Node Expression) -> Maybe (List (Node Expression))
+contentElements args =
+    if List.length args >= 2 then
+        case List.reverse args of
+            last :: _ ->
+                case Node.value last of
+                    Expression.ListExpr elements ->
+                        Just elements
 
-                [] ->
-                    []
+                    _ ->
+                        Nothing
 
-        [] ->
-            []
+            [] ->
+                Nothing
 
-
-isListExpr : Node Expression -> Bool
-isListExpr node =
-    case Node.value node of
-        Expression.ListExpr _ ->
-            True
-
-        _ ->
-            False
+    else
+        Nothing
 
 
-listElements : Node Expression -> List (Node Expression)
-listElements node =
-    case Node.value node of
-        Expression.ListExpr elements ->
-            elements
-
-        _ ->
-            []
-
-
-{-| Flag any singular setter that appears more than once in the content list. -}
+{-| Flag any singular setter that appears more than once in the content list.
+-}
 checkArg : List String -> List (Node Expression) -> List (Error {})
 checkArg multi elements =
     let

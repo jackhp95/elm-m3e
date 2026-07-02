@@ -17,6 +17,7 @@ import CognitiveComplexity
 import Docs.ReviewAtDocs
 import Docs.ReviewLinksAndSections
 import Docs.UpToDateReadmeLinks
+import M3e.Review.Facts
 import NoConfusingPrefixOperator
 import NoDebug.Log
 import NoDebug.TodoOrToString
@@ -39,8 +40,11 @@ import NoUnused.Modules
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
+import RequireSlot
 import Review.Rule as Rule exposing (Rule)
 import Simplify
+import SingularSlot
+import ValidEnumValue
 
 
 config : List Rule
@@ -51,6 +55,7 @@ config =
         , docs
         , correctness
         , materialDiscipline
+        , codegenAware
         , codeStyle
         , complexity
         , toHtmlGate
@@ -203,14 +208,30 @@ configurable `NoSeamOutsideAllowedModules`), `PreferBadgeCount` (`M3e.Badge` has
 `count`/`label`), and `NoMissingFacadeEntry` (the facade epic #52 is closed).
 
 `NoProprietaryDsClasses` survives unchanged — it still inspects `Attr.class` string
-literals for proprietary `ds-`/`t-` tokens. The Vocab-API rules (`NoActionlessButton`,
-the facts-driven `ValidEnumValue`/`SingularSlot`/`RequireSlot`, and the Seam gate) live
-in `CodegenReviewConfig`, ready to enable here once an `elm-review` run confirms the
-docs pass clean.
+literals for proprietary `ds-`/`t-` tokens.
+
 -}
 materialDiscipline : List Rule
 materialDiscipline =
     [ NoProprietaryDsClasses.rule
+    ]
+
+
+{-| The facts-driven Vocab-API rules (ADR 0012), enabled here after an `elm-review` run
+confirmed the docs pass clean. They read the generated `M3e.Review.Facts`, so a
+`@m3e/web` bump only regenerates the facts — the rule logic is unchanged.
+
+Two Vocab rules stay out of this repo config and live only in `CodegenReviewConfig` (the
+reusable set for consumers): `NoActionlessButton` (the docs' component demos are inert
+_on purpose_) and `NoSeamOutsideAllowedModules` (the docs use `Seam` for Tailwind by
+design). Both are correct — just not appropriate to gate _this_ repo on.
+
+-}
+codegenAware : List Rule
+codegenAware =
+    [ ValidEnumValue.rule M3e.Review.Facts.facts
+    , SingularSlot.rule M3e.Review.Facts.facts
+    , RequireSlot.rule M3e.Review.Facts.facts
     ]
 
 
