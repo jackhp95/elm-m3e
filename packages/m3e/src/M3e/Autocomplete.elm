@@ -1,7 +1,47 @@
-module M3e.Autocomplete exposing (autoActivate, caseSensitive, child, children, filter, for, hideLoading, hideNoData, hideSelectionIndicator, loading, loadingLabel, loadingSlot, noData, noDataLabel, onChange, onQuery, onToggle, panelClass, required, view)
+module M3e.Autocomplete exposing
+    ( view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+    , hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
+    , onChange, onQuery, onToggle, child, loadingSlot, noData, children
+    )
 
-{-| 
-@docs view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for, onChange, onQuery, onToggle, child, loadingSlot, noData, children
+{-|
+Enhances a text input with suggested options.
+
+**Events:**
+- `change`: Dispatched when the committed value changes due to selecting an option or clearing the input.
+- `query`: Dispatched when the input is focused or when the user modifies its value.
+- `toggle`: Dispatched when the options menu opens or closes.
+
+**Slots:**
+- `loading`: Renders content when loading options.
+- `no-data`: Renders content when there are no options to show.
+
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Favorite fruit autocomplete with auto-activation" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]
+    , Native.node Html.input [] []
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit", M3e.Autocomplete.autoActivate True, M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text "Apples" } [] [], M3e.Option.view { content = Kit.text "Oranges" } [] [], M3e.Option.view { content = Kit.text "Bananas" } [] [], M3e.Option.view { content = Kit.text "Grapes" } [] [] ])
+    ]
+```
+
+<!-- elm-cem:example title="Starts-with country search with no-data message" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Country" ]
+    , Native.node Html.input [] []
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "country", M3e.Autocomplete.filter M3e.Value.startsWith, M3e.Autocomplete.noDataLabel "No matching countries" ] ([ M3e.Autocomplete.noData (Native.span [] [ Kit.text "Try a different spelling" ]) ] ++ M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text "Australia" } [] [], M3e.Option.view { content = Kit.text "Brazil" } [] [], M3e.Option.view { content = Kit.text "Canada" } [] [], M3e.Option.view { content = Kit.text "Denmark" } [] [] ])
+    ]
+```
+
+@docs view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+@docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
+@docs for, onChange, onQuery, onToggle, child, loadingSlot
+@docs noData, children
 -}
 
 
@@ -40,13 +80,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Autocomplete.autocomplete
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Autocomplete.autocomplete
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

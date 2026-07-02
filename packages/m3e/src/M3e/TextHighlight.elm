@@ -1,7 +1,16 @@
-module M3e.TextHighlight exposing (caseSensitive, child, children, disabled, mode, onHighlight, term, view)
+module M3e.TextHighlight exposing
+    ( view, caseSensitive, disabled, mode, term, onHighlight
+    , child, children
+    )
 
-{-| 
-@docs view, caseSensitive, disabled, mode, term, onHighlight, child, children
+{-|
+Highlights text which matches a given search term.
+
+**Events:**
+- `highlight`: Dispatched when content is highlighted.
+
+@docs view, caseSensitive, disabled, mode, term, onHighlight
+@docs child, children
 -}
 
 
@@ -27,13 +36,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.TextHighlight.textHighlight
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.TextHighlight.textHighlight
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

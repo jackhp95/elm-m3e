@@ -1,6 +1,10 @@
-module M3e.Cem.Html.FormField exposing (floatLabel, formField, hideRequiredMarker, hideSubscript, variant)
+module M3e.Cem.Html.FormField exposing
+    ( formField, floatLabel, hideRequiredMarker, hideSubscript, variant
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-form-field>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs formField, floatLabel, hideRequiredMarker, hideSubscript, variant
 -}
 

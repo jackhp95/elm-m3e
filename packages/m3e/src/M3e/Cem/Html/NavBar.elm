@@ -1,6 +1,10 @@
-module M3e.Cem.Html.NavBar exposing (mode, navBar, onBeforeinput, onChange, onInput)
+module M3e.Cem.Html.NavBar exposing
+    ( navBar, mode, onChange, onBeforeinput, onInput
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-nav-bar>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs navBar, mode, onChange, onBeforeinput, onInput
 -}
 

@@ -1,7 +1,17 @@
-module M3e.SlideGroup exposing (child, children, disabled, nextIcon, nextPageLabel, prevIcon, previousPageLabel, threshold, vertical, view)
+module M3e.SlideGroup exposing
+    ( view, disabled, nextPageLabel, previousPageLabel, threshold, vertical
+    , child, nextIcon, prevIcon, children
+    )
 
-{-| 
-@docs view, disabled, nextPageLabel, previousPageLabel, threshold, vertical, child, nextIcon, prevIcon, children
+{-|
+Presents pagination controls used to scroll overflowing content.
+
+**Slots:**
+- `next-icon`: Renders the icon to present for the next button.
+- `prev-icon`: Renders the icon to present for the previous button.
+
+@docs view, disabled, nextPageLabel, previousPageLabel, threshold, vertical
+@docs child, nextIcon, prevIcon, children
 -}
 
 
@@ -30,13 +40,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SlideGroup.slideGroup
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.SlideGroup.slideGroup
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

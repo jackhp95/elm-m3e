@@ -1,7 +1,27 @@
-module M3e.Dialog exposing (actions, alert, child, children, closeIcon, closeLabel, disableClose, dismissible, header, noFocusTrap, onCancel, onClosed, onClosing, onOpened, onOpening, open, view)
+module M3e.Dialog exposing
+    ( view, alert, closeLabel, disableClose, dismissible, noFocusTrap
+    , open, onOpening, onOpened, onClosing, onClosed, onCancel, child
+    , header, actions, closeIcon, children
+    )
 
-{-| 
-@docs view, alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel, child, header, actions, closeIcon, children
+{-|
+A dialog that provides important prompts in a user flow.
+
+**Events:**
+- `opening`: Dispatched when the dialog begins to open.
+- `opened`: Dispatched when the dialog has opened.
+- `closing`: Dispatched when the dialog begins to close.
+- `closed`: Dispatched when the dialog has closed.
+- `cancel`: Dispatched when the dialog is cancelled.
+
+**Slots:**
+- `header`: Renders the header of the dialog.
+- `actions`: Renders the actions of the dialog.
+- `close-icon`: Renders the icon of the button used to close the dialog.
+
+@docs view, alert, closeLabel, disableClose, dismissible, noFocusTrap
+@docs open, onOpening, onOpened, onClosing, onClosed, onCancel
+@docs child, header, actions, closeIcon, children
 -}
 
 
@@ -37,11 +57,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Dialog.dialog (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Dialog.dialog (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

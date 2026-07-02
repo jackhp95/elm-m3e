@@ -1,6 +1,11 @@
-module M3e.StepPanel exposing (actions, child, children, view)
+module M3e.StepPanel exposing ( view, child, actions, children )
 
-{-| 
+{-|
+A panel presented for a step in a wizard-like workflow.
+
+**Slots:**
+- `actions-`: Renders the actions bar of the panel.
+
 @docs view, child, actions, children
 -}
 
@@ -23,13 +28,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.StepPanel.stepPanel
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.StepPanel.stepPanel
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

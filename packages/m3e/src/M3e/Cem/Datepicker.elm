@@ -1,7 +1,17 @@
-module M3e.Cem.Datepicker exposing (clearLabel, clearable, confirmLabel, date, datepicker, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, onBeforetoggle, onChange, onToggle, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, startView, variant)
+module M3e.Cem.Datepicker exposing
+    ( datepicker, variant, clearable, date, maxDate, minDate
+    , range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
+    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel
+    , label, onChange, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs datepicker, variant, clearable, date, maxDate, minDate, range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+{-|
+Middle layer for `<m3e-datepicker>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Datepicker` module for everyday use.
+
+@docs datepicker, variant, clearable, date, maxDate, minDate
+@docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
+@docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
+@docs confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
 -}
 
 

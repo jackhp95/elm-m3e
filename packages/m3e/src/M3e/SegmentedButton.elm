@@ -1,7 +1,34 @@
-module M3e.SegmentedButton exposing (child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, view)
+module M3e.SegmentedButton exposing
+    ( view, disabled, hideSelectionIndicator, multi, name, onChange
+    , onBeforeinput, onInput, child, children
+    )
 
-{-| 
-@docs view, disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput, child, children
+{-|
+A button that allows a user to select from a limited set of options.
+
+**Events:**
+- `change`: Dispatched when the checked state of a segment changes.
+- `beforeinput`: Dispatched before the checked state of a segment changes.
+- `input`: Dispatched when the checked state of a segment changes.
+
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Segmented button with icons" -->
+```elm
+M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value "paste", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "content_paste" ] []), M3e.ButtonSegment.child (Kit.text "Paste") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value "file" ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "upload_file" ] []), M3e.ButtonSegment.child (Kit.text "File") ] ])
+```
+
+<!-- elm-cem:example title="Segmented button for value selection" -->
+```elm
+M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value "0.75" ] [ M3e.ButtonSegment.child (Kit.text "0.75x") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value "1", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "1x") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value "1.5" ] [ M3e.ButtonSegment.child (Kit.text "1.5x") ] ])
+```
+
+@docs view, disabled, hideSelectionIndicator, multi, name, onChange
+@docs onBeforeinput, onInput, child, children
 -}
 
 
@@ -29,13 +56,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SegmentedButton.segmentedButton
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.SegmentedButton.segmentedButton
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

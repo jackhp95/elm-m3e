@@ -1,7 +1,29 @@
-module M3e.SearchView exposing (child, children, clearIcon, clearLabel, closeIcon, closeLabel, closedLeading, closedTrailing, contained, hideSearchIcon, mode, onBeforetoggle, onClear, onQuery, onToggle, open, openLeading, openTrailing, searchIcon, view)
+module M3e.SearchView exposing
+    ( view, contained, mode, open, clearLabel, closeLabel
+    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child, openLeading
+    , openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon, children
+    )
 
-{-| 
-@docs view, contained, mode, open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child, openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon, children
+{-|
+A surface that presents suggestions and results for a search.
+
+**Events:**
+- `query`: Dispatched when the view is opened or when the user modifies the search term.
+- `clear`: Dispatched when the search term is cleared.
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+**Slots:**
+- `input`: Renders the input of the view.
+- `open-leading`: When open, renders content before the input of the view.
+- `open-trailing`: When open, renders content after the input of the view.
+- `closed-leading`: When closed, renders content before the input of the view.
+- `closed-trailing`: When closed, renders content after the input of the view.
+
+@docs view, contained, mode, open, clearLabel, closeLabel
+@docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child
+@docs openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon
+@docs clearIcon, children
 -}
 
 
@@ -41,19 +63,20 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SearchView.searchView
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input) ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.SearchView.searchView
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

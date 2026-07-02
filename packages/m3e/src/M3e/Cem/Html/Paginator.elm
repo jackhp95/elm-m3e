@@ -1,7 +1,15 @@
-module M3e.Cem.Html.Paginator exposing (disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, onPage, pageIndex, pageSize, pageSizeVariant, pageSizes, paginator, previousPageLabel, showFirstLastButtons)
+module M3e.Cem.Html.Paginator exposing
+    ( paginator, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+    , length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant, previousPageLabel
+    , showFirstLastButtons, onPage
+    )
 
-{-| 
-@docs paginator, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage
+{-|
+Bottom layer for `<m3e-paginator>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs paginator, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+@docs length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
+@docs previousPageLabel, showFirstLastButtons, onPage
 -}
 
 

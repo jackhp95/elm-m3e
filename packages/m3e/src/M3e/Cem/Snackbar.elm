@@ -1,7 +1,13 @@
-module M3e.Cem.Snackbar exposing (action, closeLabel, dismissible, duration, onBeforetoggle, onToggle, snackbar)
+module M3e.Cem.Snackbar exposing
+    ( snackbar, action, closeLabel, dismissible, duration, onBeforetoggle
+    , onToggle
+    )
 
-{-| 
-@docs snackbar, action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
+{-|
+Middle layer for `<m3e-snackbar>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Snackbar` module for everyday use.
+
+@docs snackbar, action, closeLabel, dismissible, duration, onBeforetoggle
+@docs onToggle
 -}
 
 

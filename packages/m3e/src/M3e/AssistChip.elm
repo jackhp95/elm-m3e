@@ -1,7 +1,23 @@
-module M3e.AssistChip exposing (disabled, disabledInteractive, icon, name, type_, value, variant, view)
+module M3e.AssistChip exposing
+    ( view, disabled, disabledInteractive, name, type_, value
+    , variant, icon
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, name, type_, value, variant, icon
+{-|
+A chip users interact with to perform a smart or automated action that can span multiple applications.
+
+**Component Info:**
+- **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the chip's label.
+- `trailing-icon`: Renders an icon after the chip's label.
+
+@docs view, disabled, disabledInteractive, name, type_, value
+@docs variant, icon
 -}
 
 
@@ -35,19 +51,20 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.AssistChip.assistChip
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action))
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.AssistChip.assistChip
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  )
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

@@ -1,7 +1,107 @@
-module M3e exposing (accordion, action, actionElementBase, actionList, actionable, activeDate, alert, anchorOffset, animation, appBar, ariaInvalid, assistChip, autoActivate, autocomplete, avatar, badge, bottomSheet, bottomSheetAction, bottomSheetTrigger, breadcrumb, breadcrumbItem, breadcrumbItemButton, bufferValue, button, buttonGroup, buttonSegment, calendar, card, cascade, caseSensitive, centered, checkbox, checked, chip, chipSet, clearLabel, clearable, closeLabel, collapsible, color, completed, confirmLabel, contained, contentPane, contrast, current, date, datepicker, datepickerToggle, density, detent, dialog, dialogAction, dialogTrigger, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, divider, dividers, download, drawerContainer, drawerToggle, duration, editable, elevated, elevation, emphasized, end, endDivider, endMode, expandableListItem, expansionHeader, expansionPanel, extended, fab, fabMenu, fabMenuTrigger, filled, filter, filterChip, filterChipSet, firstPageLabel, fitAnchorWidth, floatLabel, floatingPanel, focusRing, focusTrap, for, formField, grade, handle, handleLabel, headerPosition, heading, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href, icon, iconButton, icons, indeterminate, inline, inputChip, inputChipSet, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length, level, linear, list, listAction, listItem, listItemButton, listOption, loaded, loading, loadingIndicator, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, menu, menuItem, menuItemCheckbox, menuItemElementBase, menuItemGroup, menuItemRadio, menuTrigger, min, minDate, minRows, modal, mode, monthView, motion, multi, multiYearView, name, navBar, navItem, navMenu, navMenuItem, navMenuItemGroup, navRail, navRailToggle, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, onActiveChange, onBeforeinput, onBeforetoggle, onCancel, onChange, onClear, onClick, onClosed, onClosing, onHighlight, onInput, onInvalid, onOpened, onOpening, onPage, onQuery, onRemove, onToggle, onValueChange, open, optgroup, opticalSize, option, optionPanel, optional, orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, paginator, panelClass, position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, progressElementIndicatorBase, pseudoCheckbox, pseudoRadio, radio, radioGroup, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, returnValue, richTooltip, richTooltipAction, ripple, scheme, scrollContainer, scrollStrategy, searchBar, searchView, secondary, segmentedButton, select, selected, selectedIndex, selectionList, shape, shapeAttr, showDelay, showFirstLastButtons, size, skeleton, slide, slideGroup, slider, sliderThumb, snackbar, splitButton, splitPane, start, startAt, startDivider, startMode, startView, state, stateLayer, step, stepAttr, stepPanel, stepper, stepperPrevious, stepperReset, stretch, strongFocus, submenu, suggestionChip, switch, tab, tabPanel, tabs, target, term, textHighlight, textOverflow, textareaAutosize, theme, themeIcon, thin, threshold, toc, tocItem, today, toggle, toggleDirection, togglePosition, toolbar, tooltip, tooltipElementBase, touchGestures, tree, treeItem, type_, unbounded, value, variant, vertical, weight, width, wrap, wrapDetents, yearView)
+module M3e exposing
+    ( tree, treeItem, toolbar, toc, tocItem, themeIcon
+    , theme, textareaAutosize, tabs, tabPanel, tab, switch, stepperReset
+    , stepperPrevious, step, stepPanel, stepper, splitPane, splitButton, snackbar
+    , slider, sliderThumb, slideGroup, skeleton, shape, segmentedButton, buttonSegment
+    , searchView, searchBar, radioGroup, radio, progressElementIndicatorBase, paginator, select
+    , navRailToggle, navRail, navMenuItemGroup, navMenu, navMenuItem, navBar, navItem
+    , menuItemRadio, menuItemGroup, menuItemCheckbox, menu, menuItem, menuTrigger, menuItemElementBase
+    , loadingIndicator, selectionList, listOption, actionList, expandableListItem, listAction, listItemButton
+    , list, listItem, icon, heading, fabMenuTrigger, fabMenu, fab
+    , accordion, expansionPanel, expansionHeader, drawerToggle, drawerContainer, divider, dialogTrigger
+    , dialog, dialogAction, datepickerToggle, datepicker, contentPane, suggestionChip, inputChipSet
+    , inputChip, filterChipSet, filterChip, chipSet, assistChip, chip, checkbox
+    , card, calendar, yearView, multiYearView, monthView, tooltip, richTooltip
+    , tooltipElementBase, richTooltipAction, buttonGroup, iconButton, button, breadcrumb, breadcrumbItem
+    , breadcrumbItemButton, bottomSheetTrigger, bottomSheet, bottomSheetAction, badge, avatar, autocomplete
+    , formField, optionPanel, floatingPanel, optgroup, option, focusTrap, appBar
+    , textOverflow, textHighlight, stateLayer, slide, scrollContainer, ripple, pseudoRadio
+    , pseudoCheckbox, focusRing, elevation, collapsible, actionElementBase, action, actionable
+    , activeDate, alert, anchorOffset, animation, ariaInvalid, autoActivate, bufferValue
+    , cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel
+    , color, completed, confirmLabel, contained, contrast, current, date
+    , density, detent, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus
+    , disabled, disabledInteractive, discrete, dismissLabel, dismissible, dividers, download
+    , duration, editable, elevated, emphasized, end, endDivider, endMode
+    , extended, filled, filter, firstPageLabel, fitAnchorWidth, floatLabel, for
+    , grade, handle, handleLabel, headerPosition, hideDelay, hideFriction, hideLoading
+    , hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle
+    , hideable, highlightMode, href, icons, indeterminate, inline, inset
+    , insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label
+    , labelPosition, labelled, lastPageLabel, length, level, linear, loaded
+    , loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows
+    , min, minDate, minRows, modal, mode, motion, multi
+    , name, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel
+    , noFocusTrap, open, opticalSize, optional, orientation, overshootLimit, pageIndex
+    , pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
+    , previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd
+    , rangeStart, rel, removable, removeLabel, required, returnValue, scheme
+    , scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons
+    , size, start, startAt, startDivider, startMode, startView, state
+    , stepAttr, stretch, strongFocus, submenu, target, term, thin
+    , threshold, today, toggle, toggleDirection, togglePosition, touchGestures, type_
+    , unbounded, value, variant, vertical, weight, width, wrap
+    , wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed, onClick
+    , onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
+    , onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+    )
 
-{-| 
-@docs tree, treeItem, toolbar, toc, tocItem, themeIcon, theme, textareaAutosize, tabs, tabPanel, tab, switch, stepperReset, stepperPrevious, step, stepPanel, stepper, splitPane, splitButton, snackbar, slider, sliderThumb, slideGroup, skeleton, shape, segmentedButton, buttonSegment, searchView, searchBar, radioGroup, radio, progressElementIndicatorBase, paginator, select, navRailToggle, navRail, navMenuItemGroup, navMenu, navMenuItem, navBar, navItem, menuItemRadio, menuItemGroup, menuItemCheckbox, menu, menuItem, menuTrigger, menuItemElementBase, loadingIndicator, selectionList, listOption, actionList, expandableListItem, listAction, listItemButton, list, listItem, icon, heading, fabMenuTrigger, fabMenu, fab, accordion, expansionPanel, expansionHeader, drawerToggle, drawerContainer, divider, dialogTrigger, dialog, dialogAction, datepickerToggle, datepicker, contentPane, suggestionChip, inputChipSet, inputChip, filterChipSet, filterChip, chipSet, assistChip, chip, checkbox, card, calendar, yearView, multiYearView, monthView, tooltip, richTooltip, tooltipElementBase, richTooltipAction, buttonGroup, iconButton, button, breadcrumb, breadcrumbItem, breadcrumbItemButton, bottomSheetTrigger, bottomSheet, bottomSheetAction, badge, avatar, autocomplete, formField, optionPanel, floatingPanel, optgroup, option, focusTrap, appBar, textOverflow, textHighlight, stateLayer, slide, scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing, elevation, collapsible, actionElementBase, action, actionable, activeDate, alert, anchorOffset, animation, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained, contrast, current, date, density, detent, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, dividers, download, duration, editable, elevated, emphasized, end, endDivider, endMode, extended, filled, filter, firstPageLabel, fitAnchorWidth, floatLabel, for, grade, handle, handleLabel, headerPosition, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href, icons, indeterminate, inline, inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length, level, linear, loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows, min, minDate, minRows, modal, mode, motion, multi, name, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart, rel, removable, removeLabel, required, returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons, size, start, startAt, startDivider, startMode, startView, state, stepAttr, stretch, strongFocus, submenu, target, term, thin, threshold, today, toggle, toggleDirection, togglePosition, touchGestures, type_, unbounded, value, variant, vertical, weight, width, wrap, wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+{-|
+The one-import barrel. Re-exposes every component constructor plus the whole shared attribute/event vocabulary, so `import M3e exposing (..)` gives you every constructor together with `disabled`/`variant`/`onClick`/… . Token values stay in `M3e.Value` (re-exposing hundreds here would bloat the namespace). Each constructor takes `[attributes] [content]`; reach for the per-component `M3e.<Component>` modules when you want the strict, component-scoped types.
+
+@docs tree, treeItem, toolbar, toc, tocItem, themeIcon
+@docs theme, textareaAutosize, tabs, tabPanel, tab, switch
+@docs stepperReset, stepperPrevious, step, stepPanel, stepper, splitPane
+@docs splitButton, snackbar, slider, sliderThumb, slideGroup, skeleton
+@docs shape, segmentedButton, buttonSegment, searchView, searchBar, radioGroup
+@docs radio, progressElementIndicatorBase, paginator, select, navRailToggle, navRail
+@docs navMenuItemGroup, navMenu, navMenuItem, navBar, navItem, menuItemRadio
+@docs menuItemGroup, menuItemCheckbox, menu, menuItem, menuTrigger, menuItemElementBase
+@docs loadingIndicator, selectionList, listOption, actionList, expandableListItem, listAction
+@docs listItemButton, list, listItem, icon, heading, fabMenuTrigger
+@docs fabMenu, fab, accordion, expansionPanel, expansionHeader, drawerToggle
+@docs drawerContainer, divider, dialogTrigger, dialog, dialogAction, datepickerToggle
+@docs datepicker, contentPane, suggestionChip, inputChipSet, inputChip, filterChipSet
+@docs filterChip, chipSet, assistChip, chip, checkbox, card
+@docs calendar, yearView, multiYearView, monthView, tooltip, richTooltip
+@docs tooltipElementBase, richTooltipAction, buttonGroup, iconButton, button, breadcrumb
+@docs breadcrumbItem, breadcrumbItemButton, bottomSheetTrigger, bottomSheet, bottomSheetAction, badge
+@docs avatar, autocomplete, formField, optionPanel, floatingPanel, optgroup
+@docs option, focusTrap, appBar, textOverflow, textHighlight, stateLayer
+@docs slide, scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing
+@docs elevation, collapsible, actionElementBase, action, actionable, activeDate
+@docs alert, anchorOffset, animation, ariaInvalid, autoActivate, bufferValue
+@docs cascade, caseSensitive, centered, checked, clearLabel, clearable
+@docs closeLabel, color, completed, confirmLabel, contained, contrast
+@docs current, date, density, detent, disableClose, disableHighlight
+@docs disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete
+@docs dismissLabel, dismissible, dividers, download, duration, editable
+@docs elevated, emphasized, end, endDivider, endMode, extended
+@docs filled, filter, firstPageLabel, fitAnchorWidth, floatLabel, for
+@docs grade, handle, handleLabel, headerPosition, hideDelay, hideFriction
+@docs hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator
+@docs hideSubscript, hideToggle, hideable, highlightMode, href, icons
+@docs indeterminate, inline, inset, insetEnd, insetStart, invalid
+@docs inward, itemLabel, itemsPerPageLabel, label, labelPosition, labelled
+@docs lastPageLabel, length, level, linear, loaded, loading
+@docs loadingLabel, lowered, max, maxDate, maxDepth, maxRows
+@docs min, minDate, minRows, modal, mode, motion
+@docs multi, name, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel
+@docs noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
+@docs orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes
+@docs panelClass, position, positionX, positionY, previousMonthLabel, previousMultiYearLabel
+@docs previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart
+@docs rel, removable, removeLabel, required, returnValue, scheme
+@docs scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay
+@docs showFirstLastButtons, size, start, startAt, startDivider, startMode
+@docs startView, state, stepAttr, stretch, strongFocus, submenu
+@docs target, term, thin, threshold, today, toggle
+@docs toggleDirection, togglePosition, touchGestures, type_, unbounded, value
+@docs variant, vertical, weight, width, wrap, wrapDetents
+@docs onChange, onOpening, onOpened, onClosing, onClosed, onClick
+@docs onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
+@docs onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
+@docs onHighlight
 -}
 
 
@@ -253,7 +353,7 @@ textareaAutosize :
     , minRows : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | textareaAutosize : M3e.Value.Supported } msg
 textareaAutosize =
     M3e.TextareaAutosize.view
@@ -905,7 +1005,7 @@ loadingIndicator :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | loadingIndicator : M3e.Value.Supported } msg
 loadingIndicator =
     M3e.LoadingIndicator.view
@@ -1205,7 +1305,7 @@ divider :
     , vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | divider : M3e.Value.Supported } msg
 divider =
     M3e.Divider.view

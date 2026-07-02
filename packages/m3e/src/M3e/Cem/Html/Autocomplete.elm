@@ -1,7 +1,15 @@
-module M3e.Cem.Html.Autocomplete exposing (autoActivate, autocomplete, caseSensitive, filter, for, hideLoading, hideNoData, hideSelectionIndicator, loading, loadingLabel, noDataLabel, onChange, onQuery, onToggle, panelClass, required)
+module M3e.Cem.Html.Autocomplete exposing
+    ( autocomplete, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+    , hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
+    , onChange, onQuery, onToggle
+    )
 
-{-| 
-@docs autocomplete, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for, onChange, onQuery, onToggle
+{-|
+Bottom layer for `<m3e-autocomplete>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs autocomplete, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+@docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
+@docs for, onChange, onQuery, onToggle
 -}
 
 

@@ -1,6 +1,8 @@
-module M3e.Cem.Avatar exposing (avatar)
+module M3e.Cem.Avatar exposing ( avatar )
 
-{-| 
+{-|
+Middle layer for `<m3e-avatar>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Avatar` module for everyday use.
+
 @docs avatar
 -}
 

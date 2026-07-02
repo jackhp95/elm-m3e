@@ -1,7 +1,13 @@
-module M3e.Cem.Tabs exposing (disablePagination, headerPosition, nextPageLabel, onBeforeinput, onChange, onInput, previousPageLabel, stretch, tabs, variant)
+module M3e.Cem.Tabs exposing
+    ( tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+    , variant, onChange, onBeforeinput, onInput
+    )
 
-{-| 
-@docs tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
+{-|
+Middle layer for `<m3e-tabs>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Tabs` module for everyday use.
+
+@docs tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+@docs variant, onChange, onBeforeinput, onInput
 -}
 
 

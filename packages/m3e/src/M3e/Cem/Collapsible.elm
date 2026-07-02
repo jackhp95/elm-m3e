@@ -1,7 +1,13 @@
-module M3e.Cem.Collapsible exposing (collapsible, noAnimate, onClosed, onClosing, onOpened, onOpening, open, orientation)
+module M3e.Cem.Collapsible exposing
+    ( collapsible, open, orientation, noAnimate, onOpening, onOpened
+    , onClosing, onClosed
+    )
 
-{-| 
-@docs collapsible, open, orientation, noAnimate, onOpening, onOpened, onClosing, onClosed
+{-|
+Middle layer for `<m3e-collapsible>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Collapsible` module for everyday use.
+
+@docs collapsible, open, orientation, noAnimate, onOpening, onOpened
+@docs onClosing, onClosed
 -}
 
 

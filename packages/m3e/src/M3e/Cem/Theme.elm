@@ -1,7 +1,13 @@
-module M3e.Cem.Theme exposing (color, contrast, density, motion, onChange, scheme, strongFocus, theme, variant)
+module M3e.Cem.Theme exposing
+    ( theme, color, contrast, density, scheme, strongFocus
+    , variant, motion, onChange
+    )
 
-{-| 
-@docs theme, color, contrast, density, scheme, strongFocus, variant, motion, onChange
+{-|
+Middle layer for `<m3e-theme>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Theme` module for everyday use.
+
+@docs theme, color, contrast, density, scheme, strongFocus
+@docs variant, motion, onChange
 -}
 
 

@@ -1,7 +1,13 @@
-module M3e.Icon exposing (filled, grade, name, opticalSize, variant, view, weight)
+module M3e.Icon exposing
+    ( view, filled, grade, opticalSize, name, variant
+    , weight
+    )
 
-{-| 
-@docs view, filled, grade, opticalSize, name, variant, weight
+{-|
+A small symbol used to easily identify an action or category.
+
+@docs view, filled, grade, opticalSize, name, variant
+@docs weight
 -}
 
 
@@ -27,11 +33,11 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Icon.icon (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.Icon.icon (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

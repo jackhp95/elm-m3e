@@ -1,7 +1,17 @@
-module M3e.Menu exposing (child, children, onBeforetoggle, onToggle, positionX, positionY, submenu, variant, view)
+module M3e.Menu exposing
+    ( view, positionX, positionY, variant, submenu, onBeforetoggle
+    , onToggle, child, children
+    )
 
-{-| 
-@docs view, positionX, positionY, variant, submenu, onBeforetoggle, onToggle, child, children
+{-|
+Presents a list of choices on a temporary surface.
+
+**Events:**
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+@docs view, positionX, positionY, variant, submenu, onBeforetoggle
+@docs onToggle, child, children
 -}
 
 
@@ -28,11 +38,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Menu.menu (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Menu.menu (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

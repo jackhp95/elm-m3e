@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Select exposing (disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, onToggle, panelClass, required, select)
+module M3e.Cem.Html.Select exposing
+    ( select, disabled, hideSelectionIndicator, multi, name, panelClass
+    , required, onChange, onToggle, onBeforeinput, onInput
+    )
 
-{-| 
-@docs select, disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-select>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs select, disabled, hideSelectionIndicator, multi, name, panelClass
+@docs required, onChange, onToggle, onBeforeinput, onInput
 -}
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.FilterChipSet exposing (disabled, filterChipSet, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, vertical)
+module M3e.Cem.Html.FilterChipSet exposing
+    ( filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical
+    , onChange, onBeforeinput, onInput
+    )
 
-{-| 
-@docs filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical, onChange, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-filter-chip-set>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical
+@docs onChange, onBeforeinput, onInput
 -}
 
 

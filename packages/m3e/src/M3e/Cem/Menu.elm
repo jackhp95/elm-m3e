@@ -1,7 +1,13 @@
-module M3e.Cem.Menu exposing (menu, onBeforetoggle, onToggle, positionX, positionY, submenu, variant)
+module M3e.Cem.Menu exposing
+    ( menu, positionX, positionY, variant, submenu, onBeforetoggle
+    , onToggle
+    )
 
-{-| 
-@docs menu, positionX, positionY, variant, submenu, onBeforetoggle, onToggle
+{-|
+Middle layer for `<m3e-menu>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Menu` module for everyday use.
+
+@docs menu, positionX, positionY, variant, submenu, onBeforetoggle
+@docs onToggle
 -}
 
 

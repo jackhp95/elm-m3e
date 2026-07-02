@@ -1,6 +1,8 @@
-module M3e.Cem.RichTooltipAction exposing (disableRestoreFocus, richTooltipAction)
+module M3e.Cem.RichTooltipAction exposing ( richTooltipAction, disableRestoreFocus )
 
-{-| 
+{-|
+Middle layer for `<m3e-rich-tooltip-action>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.RichTooltipAction` module for everyday use.
+
 @docs richTooltipAction, disableRestoreFocus
 -}
 

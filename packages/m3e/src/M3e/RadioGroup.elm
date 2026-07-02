@@ -1,7 +1,18 @@
-module M3e.RadioGroup exposing (ariaInvalid, child, children, disabled, name, onBeforeinput, onChange, onInput, required, view)
+module M3e.RadioGroup exposing
+    ( view, ariaInvalid, disabled, name, required, onBeforeinput
+    , onInput, onChange, child, children
+    )
 
-{-| 
-@docs view, ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange, child, children
+{-|
+A container for a set of radio buttons.
+
+**Events:**
+- `beforeinput`: Dispatched before the checked state of a radio button changes.
+- `input`: Dispatched when the checked state of a radio button changes.
+- `change`: Dispatched when the checked state of a radio button changes.
+
+@docs view, ariaInvalid, disabled, name, required, onBeforeinput
+@docs onInput, onChange, child, children
 -}
 
 
@@ -29,13 +40,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.RadioGroup.radioGroup
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.RadioGroup.radioGroup
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

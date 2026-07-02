@@ -1,7 +1,13 @@
-module M3e.Cem.SelectionList exposing (disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, selectionList, variant)
+module M3e.Cem.SelectionList exposing
+    ( selectionList, hideSelectionIndicator, multi, variant, name, disabled
+    , onChange, onBeforeinput, onInput
+    )
 
-{-| 
-@docs selectionList, hideSelectionIndicator, multi, variant, name, disabled, onChange, onBeforeinput, onInput
+{-|
+Middle layer for `<m3e-selection-list>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SelectionList` module for everyday use.
+
+@docs selectionList, hideSelectionIndicator, multi, variant, name, disabled
+@docs onChange, onBeforeinput, onInput
 -}
 
 

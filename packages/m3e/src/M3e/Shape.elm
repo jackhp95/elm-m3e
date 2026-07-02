@@ -1,6 +1,24 @@
-module M3e.Shape exposing (child, children, name, view)
+module M3e.Shape exposing ( view, name, child, children )
 
-{-| 
+{-|
+A shape used to add emphasis and decorative flair.
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Decorative sunny shape with icon" -->
+```elm
+M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (M3e.Icon.view [ M3e.Icon.name "star" ] []) ]
+```
+
+<!-- elm-cem:example title="Row of expressive decorative shapes" -->
+```elm
+Native.div [] [ M3e.Shape.view [ M3e.Shape.name M3e.Value.value4LeafClover ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.heart ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.diamond ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.burst ] [] ]
+```
+
 @docs view, name, child, children
 -}
 
@@ -23,11 +41,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Shape.shape (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Shape.shape (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

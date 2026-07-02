@@ -1,7 +1,13 @@
-module M3e.Cem.Select exposing (disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, onToggle, panelClass, required, select)
+module M3e.Cem.Select exposing
+    ( select, disabled, hideSelectionIndicator, multi, name, panelClass
+    , required, onChange, onToggle, onBeforeinput, onInput
+    )
 
-{-| 
-@docs select, disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput
+{-|
+Middle layer for `<m3e-select>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Select` module for everyday use.
+
+@docs select, disabled, hideSelectionIndicator, multi, name, panelClass
+@docs required, onChange, onToggle, onBeforeinput, onInput
 -}
 
 

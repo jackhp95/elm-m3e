@@ -1,6 +1,10 @@
-module M3e.Cem.FloatingPanel exposing (anchorOffset, fitAnchorWidth, floatingPanel, onBeforetoggle, onToggle, scrollStrategy)
+module M3e.Cem.FloatingPanel exposing
+    ( floatingPanel, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-floating-panel>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FloatingPanel` module for everyday use.
+
 @docs floatingPanel, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
 -}
 

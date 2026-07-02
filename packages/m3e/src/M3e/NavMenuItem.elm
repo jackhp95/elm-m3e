@@ -1,7 +1,29 @@
-module M3e.NavMenuItem exposing (badge, child, children, disabled, icon, onClick, onClosed, onClosing, onOpened, onOpening, open, selected, selectedIcon, toggleIcon, view)
+module M3e.NavMenuItem exposing
+    ( view, disabled, open, selected, onOpening, onOpened
+    , onClosing, onClosed, onClick, child, icon, badge, selectedIcon
+    , toggleIcon, children
+    )
 
-{-| 
-@docs view, disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick, child, icon, badge, selectedIcon, toggleIcon, children
+{-|
+An expandable item, selectable item within a navigation menu.
+
+**Events:**
+- `opening`: Dispatched when the item begins to open.
+- `opened`: Dispatched when the item has opened.
+- `closing`: Dispatched when the item begins to close.
+- `closed`: Dispatched when the item has closed.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `label`: Renders the label of the item.
+- `icon`: Renders the icon of the item.
+- `badge`: Renders the badge of the item.
+- `selected-icon`: Renders the icon of the item when selected.
+- `toggle-icon`: Renders the toggle icon.
+
+@docs view, disabled, open, selected, onOpening, onOpened
+@docs onClosing, onClosed, onClick, child, icon, badge
+@docs selectedIcon, toggleIcon, children
 -}
 
 
@@ -40,19 +62,20 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.NavMenuItem.navMenuItem
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode (M3e.Element.withSlot "label" req_.label) ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.NavMenuItem.navMenuItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "label" req_.label)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

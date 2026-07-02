@@ -1,7 +1,25 @@
-module M3e.NavItem exposing (child, children, disabled, disabledInteractive, download, href, icon, onBeforeinput, onChange, onClick, onInput, orientation, rel, selected, selectedIcon, target, view)
+module M3e.NavItem exposing
+    ( view, disabled, disabledInteractive, download, href, orientation
+    , rel, selected, target, onBeforeinput, onInput, onChange, onClick
+    , child, icon, selectedIcon, children
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, download, href, orientation, rel, selected, target, onBeforeinput, onInput, onChange, onClick, child, icon, selectedIcon, children
+{-|
+An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
+
+**Events:**
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
+- `change`: Dispatched when the selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders the icon of the item.
+- `selected-icon`: Renders the icon of the item when selected.
+
+@docs view, disabled, disabledInteractive, download, href, orientation
+@docs rel, selected, target, onBeforeinput, onInput, onChange
+@docs onClick, child, icon, selectedIcon, children
 -}
 
 
@@ -37,11 +55,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.NavItem.navItem (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.NavItem.navItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

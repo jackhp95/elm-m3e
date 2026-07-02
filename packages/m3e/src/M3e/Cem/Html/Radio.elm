@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Radio exposing (checked, disabled, name, onBeforeinput, onChange, onClick, onInput, radio, required, value)
+module M3e.Cem.Html.Radio exposing
+    ( radio, checked, disabled, name, required, value
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs radio, checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-radio>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs radio, checked, disabled, name, required, value
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 

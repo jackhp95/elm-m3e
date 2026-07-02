@@ -1,6 +1,8 @@
-module M3e.FocusTrap exposing (child, children, disabled, view)
+module M3e.FocusTrap exposing ( view, disabled, child, children )
 
-{-| 
+{-|
+A non-visual element used to trap focus within nested content.
+
 @docs view, disabled, child, children
 -}
 
@@ -23,13 +25,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FocusTrap.focusTrap
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.FocusTrap.focusTrap
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

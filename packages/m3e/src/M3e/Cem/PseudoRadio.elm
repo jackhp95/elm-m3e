@@ -1,6 +1,8 @@
-module M3e.Cem.PseudoRadio exposing (checked, disabled, pseudoRadio)
+module M3e.Cem.PseudoRadio exposing ( pseudoRadio, checked, disabled )
 
-{-| 
+{-|
+Middle layer for `<m3e-pseudo-radio>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.PseudoRadio` module for everyday use.
+
 @docs pseudoRadio, checked, disabled
 -}
 

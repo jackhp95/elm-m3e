@@ -1,7 +1,25 @@
-module M3e.Paginator exposing (disabled, firstPageIcon, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageIcon, lastPageLabel, length, nextPageIcon, nextPageLabel, onPage, pageIndex, pageSize, pageSizeVariant, pageSizes, previousPageIcon, previousPageLabel, showFirstLastButtons, view)
+module M3e.Paginator exposing
+    ( view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+    , length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant, previousPageLabel
+    , showFirstLastButtons, onPage, firstPageIcon, previousPageIcon, nextPageIcon, lastPageIcon
+    )
 
-{-| 
-@docs view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon, nextPageIcon, lastPageIcon
+{-|
+Provides navigation for paged information, typically used with a table.
+
+**Events:**
+- `page`: Dispatched when a user selects a different page size or navigates to another page.
+
+**Slots:**
+- `first-page-icon`: Slot for a custom first-page icon.
+- `previous-page-icon`: Slot for a custom previous-page icon.
+- `next-page-icon`: Slot for a custom next-page icon.
+- `last-page-icon`: Slot for a custom last-page icon.
+
+@docs view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+@docs length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
+@docs previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon, nextPageIcon
+@docs lastPageIcon
 -}
 
 
@@ -40,13 +58,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Paginator.paginator
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Paginator.paginator
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,6 +1,10 @@
-module M3e.Cem.TooltipElementBase exposing (disabled, for, hideDelay, showDelay, tooltipElementBase, touchGestures)
+module M3e.Cem.TooltipElementBase exposing
+    ( tooltipElementBase, disabled, showDelay, hideDelay, touchGestures, for
+    )
 
-{-| 
+{-|
+Middle layer for `<TooltipElementBase>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.TooltipElementBase` module for everyday use.
+
 @docs tooltipElementBase, disabled, showDelay, hideDelay, touchGestures, for
 -}
 

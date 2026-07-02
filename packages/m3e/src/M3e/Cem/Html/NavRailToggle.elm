@@ -1,6 +1,8 @@
-module M3e.Cem.Html.NavRailToggle exposing (for, navRailToggle)
+module M3e.Cem.Html.NavRailToggle exposing ( navRailToggle, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-nav-rail-toggle>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs navRailToggle, for
 -}
 

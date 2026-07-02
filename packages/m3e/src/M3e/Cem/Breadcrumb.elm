@@ -1,6 +1,8 @@
-module M3e.Cem.Breadcrumb exposing (breadcrumb, wrap)
+module M3e.Cem.Breadcrumb exposing ( breadcrumb, wrap )
 
-{-| 
+{-|
+Middle layer for `<m3e-breadcrumb>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Breadcrumb` module for everyday use.
+
 @docs breadcrumb, wrap
 -}
 

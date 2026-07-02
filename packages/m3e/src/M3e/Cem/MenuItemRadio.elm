@@ -1,6 +1,8 @@
-module M3e.Cem.MenuItemRadio exposing (checked, disabled, menuItemRadio, onClick)
+module M3e.Cem.MenuItemRadio exposing ( menuItemRadio, disabled, checked, onClick )
 
-{-| 
+{-|
+Middle layer for `<m3e-menu-item-radio>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MenuItemRadio` module for everyday use.
+
 @docs menuItemRadio, disabled, checked, onClick
 -}
 

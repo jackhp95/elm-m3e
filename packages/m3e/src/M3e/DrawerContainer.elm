@@ -1,7 +1,20 @@
-module M3e.DrawerContainer exposing (child, children, end, endDivider, endMode, endSlot, onChange, start, startDivider, startMode, startSlot, view)
+module M3e.DrawerContainer exposing
+    ( view, end, endMode, endDivider, start, startMode
+    , startDivider, onChange, child, startSlot, endSlot, children
+    )
 
-{-| 
-@docs view, end, endMode, endDivider, start, startMode, startDivider, onChange, child, startSlot, endSlot, children
+{-|
+A container for one or two sliding drawers.
+
+**Events:**
+- `change`: Dispatched when the state of the start or end drawers change.
+
+**Slots:**
+- `start`: Renders the start drawer.
+- `end`: Renders the end drawer.
+
+@docs view, end, endMode, endDivider, start, startMode
+@docs startDivider, onChange, child, startSlot, endSlot, children
 -}
 
 
@@ -32,13 +45,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.DrawerContainer.drawerContainer
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.DrawerContainer.drawerContainer
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Tooltip exposing (disabled, for, hideDelay, position, showDelay, tooltip, touchGestures)
+module M3e.Cem.Html.Tooltip exposing
+    ( tooltip, disabled, for, hideDelay, position, showDelay
+    , touchGestures
+    )
 
-{-| 
-@docs tooltip, disabled, for, hideDelay, position, showDelay, touchGestures
+{-|
+Bottom layer for `<m3e-tooltip>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs tooltip, disabled, for, hideDelay, position, showDelay
+@docs touchGestures
 -}
 
 

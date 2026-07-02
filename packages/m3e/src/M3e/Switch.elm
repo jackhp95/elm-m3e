@@ -1,7 +1,19 @@
-module M3e.Switch exposing (checked, disabled, icons, name, onBeforeinput, onChange, onClick, onInput, value, view)
+module M3e.Switch exposing
+    ( view, checked, disabled, icons, name, value
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs view, checked, disabled, icons, name, value, onBeforeinput, onInput, onChange, onClick
+{-|
+An on/off control that can be toggled by clicking.
+
+**Events:**
+- `beforeinput`: Dispatched before the checked state changes.
+- `input`: Dispatched when the checked state changes.
+- `change`: Dispatched when the checked state changes.
+- `click`: Dispatched when the element is clicked.
+
+@docs view, checked, disabled, icons, name, value
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 
@@ -33,22 +45,22 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Switch.switch (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append
-                    [ M3e.Cem.Attr.forget
-                        (M3e.Cem.Attr.attribute
-                            (Html.Attributes.attribute "aria-label")
-                            req_.ariaLabel
-                        )
-                    ]
-                    (List.map M3e.Cem.Attr.forget attributes)
-                )
-            )
-            (List.append [] (List.map M3e.Content.toNode content_))
+             (\erased ch ->
+                  M3e.Cem.Switch.switch (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append
+                       [ M3e.Cem.Attr.forget
+                           (M3e.Cem.Attr.attribute
+                              (Html.Attributes.attribute "aria-label")
+                              req_.ariaLabel
+                           )
+                       ]
+                       (List.map M3e.Cem.Attr.forget attributes)
+                  )
+             )
+             (List.append [] (List.map M3e.Content.toNode content_))
         )
 
 

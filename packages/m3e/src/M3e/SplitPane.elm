@@ -1,7 +1,24 @@
-module M3e.SplitPane exposing (disabled, end, label, max, min, name, onBeforeinput, onChange, onInput, orientation, overshootLimit, start, step, value, view, wrapDetents)
+module M3e.SplitPane exposing
+    ( view, label, max, min, orientation, overshootLimit
+    , step, value, wrapDetents, name, disabled, onChange, onBeforeinput
+    , onInput, start, end
+    )
 
-{-| 
-@docs view, label, max, min, orientation, overshootLimit, step, value, wrapDetents, name, disabled, onChange, onBeforeinput, onInput, start, end
+{-|
+A dual-view layout that separates content with a movable drag handle.
+
+**Events:**
+- `change`: Dispatched when the user finishes adjusting the drag handle.
+- `beforeinput`: Dispatched continuously before the user adjusts the drag handle.
+- `input`: Dispatched continuously while the user adjusts the drag handle.
+
+**Slots:**
+- `start`: Renders content at the logical start side of the pane.
+- `end`: Renders content at the logical end side of the pane.
+
+@docs view, label, max, min, orientation, overshootLimit
+@docs step, value, wrapDetents, name, disabled, onChange
+@docs onBeforeinput, onInput, start, end
 -}
 
 
@@ -37,13 +54,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SplitPane.splitPane
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.SplitPane.splitPane
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

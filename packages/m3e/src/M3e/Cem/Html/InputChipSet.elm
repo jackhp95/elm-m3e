@@ -1,6 +1,10 @@
-module M3e.Cem.Html.InputChipSet exposing (disabled, inputChipSet, name, onChange, required, vertical)
+module M3e.Cem.Html.InputChipSet exposing
+    ( inputChipSet, disabled, name, required, vertical, onChange
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-input-chip-set>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs inputChipSet, disabled, name, required, vertical, onChange
 -}
 

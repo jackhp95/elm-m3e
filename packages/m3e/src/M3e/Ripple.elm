@@ -1,6 +1,10 @@
-module M3e.Ripple exposing (centered, disabled, for, radius, unbounded, view)
+module M3e.Ripple exposing
+    ( view, centered, disabled, for, radius, unbounded
+    )
 
-{-| 
+{-|
+Connects user input to screen reactions using ripples.
+
 @docs view, centered, disabled, for, radius, unbounded
 -}
 
@@ -26,11 +30,11 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Ripple.ripple (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.Ripple.ripple (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

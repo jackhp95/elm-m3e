@@ -1,7 +1,13 @@
-module M3e.Cem.YearView exposing (activeDate, date, maxDate, minDate, onActiveChange, onChange, today, yearView)
+module M3e.Cem.YearView exposing
+    ( yearView, today, date, activeDate, minDate, maxDate
+    , onChange, onActiveChange
+    )
 
-{-| 
-@docs yearView, today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+{-|
+Middle layer for `<m3e-year-view>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.YearView` module for everyday use.
+
+@docs yearView, today, date, activeDate, minDate, maxDate
+@docs onChange, onActiveChange
 -}
 
 

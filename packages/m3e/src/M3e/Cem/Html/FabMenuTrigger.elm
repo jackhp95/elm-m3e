@@ -1,6 +1,8 @@
-module M3e.Cem.Html.FabMenuTrigger exposing (fabMenuTrigger, for)
+module M3e.Cem.Html.FabMenuTrigger exposing ( fabMenuTrigger, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-fab-menu-trigger>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs fabMenuTrigger, for
 -}
 

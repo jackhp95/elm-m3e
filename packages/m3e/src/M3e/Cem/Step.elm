@@ -1,7 +1,13 @@
-module M3e.Cem.Step exposing (completed, disabled, editable, for, invalid, onBeforeinput, onChange, onClick, onInput, optional, selected, step)
+module M3e.Cem.Step exposing
+    ( step, completed, disabled, editable, for, optional
+    , selected, invalid, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs step, completed, disabled, editable, for, optional, selected, invalid, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-step>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Step` module for everyday use.
+
+@docs step, completed, disabled, editable, for, optional
+@docs selected, invalid, onBeforeinput, onInput, onChange, onClick
 -}
 
 
@@ -101,8 +107,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Step.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -113,8 +119,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Step.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -126,8 +132,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Step.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 

@@ -1,6 +1,8 @@
-module M3e.DialogTrigger exposing (for, view)
+module M3e.DialogTrigger exposing ( view, for )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to open a dialog.
+
 @docs view, for
 -}
 
@@ -22,13 +24,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.DialogTrigger.dialogTrigger
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.DialogTrigger.dialogTrigger
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

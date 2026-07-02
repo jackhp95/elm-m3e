@@ -1,7 +1,13 @@
-module M3e.Cem.BreadcrumbItem exposing (breadcrumbItem, current, disabled, download, href, itemLabel, onClick, rel, target)
+module M3e.Cem.BreadcrumbItem exposing
+    ( breadcrumbItem, itemLabel, disabled, current, href, target
+    , download, rel, onClick
+    )
 
-{-| 
-@docs breadcrumbItem, itemLabel, disabled, current, href, target, download, rel, onClick
+{-|
+Middle layer for `<m3e-breadcrumb-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.BreadcrumbItem` module for everyday use.
+
+@docs breadcrumbItem, itemLabel, disabled, current, href, target
+@docs download, rel, onClick
 -}
 
 

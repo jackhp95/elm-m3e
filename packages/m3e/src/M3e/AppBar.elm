@@ -1,7 +1,21 @@
-module M3e.AppBar exposing (centered, for, leading, size, subtitle, title, trailing, view)
+module M3e.AppBar exposing
+    ( view, centered, for, size, leading, title
+    , subtitle, trailing
+    )
 
-{-| 
-@docs view, centered, for, size, leading, title, subtitle, trailing
+{-|
+A bar, placed a the top of a screen, used to help users navigate through an application.
+
+**Slots:**
+- `leading`: Renders content positioned at the start of the bar.
+- `subtitle`: Renders the subtitle of the bar.
+- `title`: Renders the title of the bar.
+- `trailing`: Renders one or more action buttons aligned to the end of the bar.
+- `leading-icon`: Deprecated: use the `leading` slot.
+- `trailing-icon`: Deprecated: use the `trailing` slot.
+
+@docs view, centered, for, size, leading, title
+@docs subtitle, trailing
 -}
 
 
@@ -29,11 +43,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.AppBar.appBar (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.AppBar.appBar (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.FilterChipSet exposing (disabled, filterChipSet, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, vertical)
+module M3e.Cem.FilterChipSet exposing
+    ( filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical
+    , onChange, onBeforeinput, onInput
+    )
 
-{-| 
-@docs filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical, onChange, onBeforeinput, onInput
+{-|
+Middle layer for `<m3e-filter-chip-set>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FilterChipSet` module for everyday use.
+
+@docs filterChipSet, disabled, hideSelectionIndicator, multi, name, vertical
+@docs onChange, onBeforeinput, onInput
 -}
 
 

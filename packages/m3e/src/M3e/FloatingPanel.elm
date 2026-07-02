@@ -1,7 +1,17 @@
-module M3e.FloatingPanel exposing (anchorOffset, child, children, fitAnchorWidth, onBeforetoggle, onToggle, scrollStrategy, view)
+module M3e.FloatingPanel exposing
+    ( view, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+    , child, children
+    )
 
-{-| 
-@docs view, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, child, children
+{-|
+A lightweight, generic floating surface used to present content above the page.
+
+**Events:**
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+@docs view, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+@docs child, children
 -}
 
 
@@ -27,13 +37,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FloatingPanel.floatingPanel
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.FloatingPanel.floatingPanel
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

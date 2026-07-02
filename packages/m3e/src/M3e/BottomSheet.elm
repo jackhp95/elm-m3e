@@ -1,7 +1,25 @@
-module M3e.BottomSheet exposing (child, children, detent, handle, handleLabel, header, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open, overshootLimit, view)
+module M3e.BottomSheet exposing
+    ( view, detent, handle, handleLabel, hideable, hideFriction
+    , modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened
+    , onClosed, child, header, children
+    )
 
-{-| 
-@docs view, detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed, child, header, children
+{-|
+A sheet used to show secondary content anchored to the bottom of the screen.
+
+**Events:**
+- `opening`: Dispatched when the sheet begins to open.
+- `closing`: Dispatched when the sheet begins to close.
+- `cancel`: Dispatched when the sheet is cancelled.
+- `opened`: Dispatched when the sheet has opened.
+- `closed`: Dispatched when the sheet has closed.
+
+**Slots:**
+- `header`: Renders the header of the sheet.
+
+@docs view, detent, handle, handleLabel, hideable, hideFriction
+@docs modal, open, overshootLimit, onOpening, onClosing, onCancel
+@docs onOpened, onClosed, child, header, children
 -}
 
 
@@ -37,13 +55,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.BottomSheet.bottomSheet
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.BottomSheet.bottomSheet
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

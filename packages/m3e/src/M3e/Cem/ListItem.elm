@@ -1,6 +1,8 @@
-module M3e.Cem.ListItem exposing (listItem)
+module M3e.Cem.ListItem exposing ( listItem )
 
-{-| 
+{-|
+Middle layer for `<m3e-list-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ListItem` module for everyday use.
+
 @docs listItem
 -}
 

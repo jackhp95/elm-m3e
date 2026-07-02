@@ -1,7 +1,15 @@
-module M3e.Cem.Card exposing (actionable, card, disabled, disabledInteractive, download, href, inline, name, onClick, orientation, rel, target, type_, value, variant)
+module M3e.Cem.Card exposing
+    ( card, actionable, inline, orientation, variant, href
+    , target, rel, download, name, value, type_, disabledInteractive
+    , disabled, onClick
+    )
 
-{-| 
-@docs card, actionable, inline, orientation, variant, href, target, rel, download, name, value, type_, disabledInteractive, disabled, onClick
+{-|
+Middle layer for `<m3e-card>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Card` module for everyday use.
+
+@docs card, actionable, inline, orientation, variant, href
+@docs target, rel, download, name, value, type_
+@docs disabledInteractive, disabled, onClick
 -}
 
 

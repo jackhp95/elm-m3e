@@ -1,6 +1,8 @@
-module M3e.Cem.NavRailToggle exposing (for, navRailToggle)
+module M3e.Cem.NavRailToggle exposing ( navRailToggle, for )
 
-{-| 
+{-|
+Middle layer for `<m3e-nav-rail-toggle>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.NavRailToggle` module for everyday use.
+
 @docs navRailToggle, for
 -}
 

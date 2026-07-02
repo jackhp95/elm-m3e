@@ -1,7 +1,22 @@
-module M3e.Datepicker exposing (clearLabel, clearable, confirmLabel, date, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, onBeforetoggle, onChange, onToggle, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, startView, variant, view)
+module M3e.Datepicker exposing
+    ( view, variant, clearable, date, maxDate, minDate
+    , range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
+    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel
+    , label, onChange, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs view, variant, clearable, date, maxDate, minDate, range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+{-|
+Presents a date picker on a temporary surface.
+
+**Events:**
+- `change`: Dispatched when the selected date changes.
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+@docs view, variant, clearable, date, maxDate, minDate
+@docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
+@docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
+@docs confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
 -}
 
 
@@ -44,13 +59,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Datepicker.datepicker
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.Datepicker.datepicker
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

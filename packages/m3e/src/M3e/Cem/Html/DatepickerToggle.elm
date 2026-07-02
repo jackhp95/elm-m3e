@@ -1,6 +1,8 @@
-module M3e.Cem.Html.DatepickerToggle exposing (datepickerToggle, for)
+module M3e.Cem.Html.DatepickerToggle exposing ( datepickerToggle, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-datepicker-toggle>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs datepickerToggle, for
 -}
 

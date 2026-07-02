@@ -1,7 +1,26 @@
-module M3e.ExpansionPanel exposing (actions, child, children, disabled, header, hideToggle, onClosed, onClosing, onOpened, onOpening, open, toggleDirection, toggleIcon, togglePosition, view)
+module M3e.ExpansionPanel exposing
+    ( view, disabled, hideToggle, open, toggleDirection, togglePosition
+    , onOpening, onOpened, onClosing, onClosed, child, actions, header
+    , toggleIcon, children
+    )
 
-{-| 
-@docs view, disabled, hideToggle, open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed, child, actions, header, toggleIcon, children
+{-|
+An expandable details-summary view.
+
+**Events:**
+- `opening`: Dispatched when the expansion panel begins to open.
+- `opened`: Dispatched when the expansion panel has opened.
+- `closing`: Dispatched when the expansion panel begins to close.
+- `closed`: Dispatched when the expansion panel has closed.
+
+**Slots:**
+- `actions`: Renders the actions bar of the panel.
+- `header`: Renders the header content.
+- `toggle-icon`: Renders the expansion toggle icon.
+
+@docs view, disabled, hideToggle, open, toggleDirection, togglePosition
+@docs onOpening, onOpened, onClosing, onClosed, child, actions
+@docs header, toggleIcon, children
 -}
 
 
@@ -35,13 +54,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ExpansionPanel.expansionPanel
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ExpansionPanel.expansionPanel
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

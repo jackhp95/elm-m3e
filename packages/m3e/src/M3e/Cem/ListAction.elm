@@ -1,7 +1,13 @@
-module M3e.Cem.ListAction exposing (disabled, download, href, listAction, onClick, rel, target)
+module M3e.Cem.ListAction exposing
+    ( listAction, disabled, download, href, rel, target
+    , onClick
+    )
 
-{-| 
-@docs listAction, disabled, download, href, rel, target, onClick
+{-|
+Middle layer for `<m3e-list-action>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ListAction` module for everyday use.
+
+@docs listAction, disabled, download, href, rel, target
+@docs onClick
 -}
 
 

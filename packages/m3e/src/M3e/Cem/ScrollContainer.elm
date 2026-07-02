@@ -1,6 +1,8 @@
-module M3e.Cem.ScrollContainer exposing (dividers, scrollContainer, thin)
+module M3e.Cem.ScrollContainer exposing ( scrollContainer, dividers, thin )
 
-{-| 
+{-|
+Middle layer for `<m3e-scroll-container>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ScrollContainer` module for everyday use.
+
 @docs scrollContainer, dividers, thin
 -}
 

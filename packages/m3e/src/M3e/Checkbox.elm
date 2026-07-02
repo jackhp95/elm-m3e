@@ -1,7 +1,20 @@
-module M3e.Checkbox exposing (checked, disabled, indeterminate, name, onBeforeinput, onChange, onClick, onInput, onInvalid, required, value, view)
+module M3e.Checkbox exposing
+    ( view, checked, disabled, indeterminate, name, required
+    , value, onBeforeinput, onInput, onChange, onInvalid, onClick
+    )
 
-{-| 
-@docs view, checked, disabled, indeterminate, name, required, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+{-|
+A checkbox that allows a user to select one or more options from a limited number of choices.
+
+**Events:**
+- `beforeinput`: Dispatched before the checked state changes.
+- `input`: Dispatched when the checked state changes.
+- `change`: Dispatched when the checked state changes.
+- `invalid`: Dispatched when a form is submitted and the element fails constraint validation.
+- `click`: Dispatched when the element is clicked.
+
+@docs view, checked, disabled, indeterminate, name, required
+@docs value, onBeforeinput, onInput, onChange, onInvalid, onClick
 -}
 
 
@@ -35,24 +48,24 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Checkbox.checkbox
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append
-                    [ M3e.Cem.Attr.forget
-                        (M3e.Cem.Attr.attribute
-                            (Html.Attributes.attribute "aria-label")
-                            req_.ariaLabel
-                        )
-                    ]
-                    (List.map M3e.Cem.Attr.forget attributes)
-                )
-            )
-            (List.append [] (List.map M3e.Content.toNode content_))
+             (\erased ch ->
+                  M3e.Cem.Checkbox.checkbox
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append
+                       [ M3e.Cem.Attr.forget
+                           (M3e.Cem.Attr.attribute
+                              (Html.Attributes.attribute "aria-label")
+                              req_.ariaLabel
+                           )
+                       ]
+                       (List.map M3e.Cem.Attr.forget attributes)
+                  )
+             )
+             (List.append [] (List.map M3e.Content.toNode content_))
         )
 
 

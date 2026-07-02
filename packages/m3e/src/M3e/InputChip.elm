@@ -1,7 +1,26 @@
-module M3e.InputChip exposing (avatar, disabled, disabledInteractive, icon, onClick, onRemove, removable, removeIcon, removeLabel, value, variant, view)
+module M3e.InputChip exposing
+    ( view, disabled, disabledInteractive, removable, removeLabel, value
+    , variant, onRemove, onClick, avatar, icon, removeIcon
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, removable, removeLabel, value, variant, onRemove, onClick, avatar, icon, removeIcon
+{-|
+A chip which represents a discrete piece of information entered by a user.
+
+**Component Info:**
+- **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
+
+**Events:**
+- `remove`: Dispatched when the remove button is clicked or DELETE or BACKSPACE key is pressed.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `avatar`: Renders an avatar before the chip's label.
+- `icon`: Renders an icon before the chip's label.
+- `remove-icon`: Renders the icon for the button used to remove the chip.
+- `trailing-icon`: Renders an icon after the chip's label.
+
+@docs view, disabled, disabledInteractive, removable, removeLabel, value
+@docs variant, onRemove, onClick, avatar, icon, removeIcon
 -}
 
 
@@ -34,19 +53,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.InputChip.inputChip
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.InputChip.inputChip
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

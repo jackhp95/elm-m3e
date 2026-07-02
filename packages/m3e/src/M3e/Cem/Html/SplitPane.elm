@@ -1,7 +1,15 @@
-module M3e.Cem.Html.SplitPane exposing (disabled, label, max, min, name, onBeforeinput, onChange, onInput, orientation, overshootLimit, splitPane, step, value, wrapDetents)
+module M3e.Cem.Html.SplitPane exposing
+    ( splitPane, label, max, min, orientation, overshootLimit
+    , step, value, wrapDetents, name, disabled, onChange, onBeforeinput
+    , onInput
+    )
 
-{-| 
-@docs splitPane, label, max, min, orientation, overshootLimit, step, value, wrapDetents, name, disabled, onChange, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-split-pane>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs splitPane, label, max, min, orientation, overshootLimit
+@docs step, value, wrapDetents, name, disabled, onChange
+@docs onBeforeinput, onInput
 -}
 
 

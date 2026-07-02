@@ -1,7 +1,13 @@
-module M3e.Cem.Html.MonthView exposing (activeDate, date, maxDate, minDate, monthView, onActiveChange, onChange, rangeEnd, rangeStart, today)
+module M3e.Cem.Html.MonthView exposing
+    ( monthView, rangeStart, rangeEnd, today, date, activeDate
+    , minDate, maxDate, onChange, onActiveChange
+    )
 
-{-| 
-@docs monthView, rangeStart, rangeEnd, today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+{-|
+Bottom layer for `<m3e-month-view>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs monthView, rangeStart, rangeEnd, today, date, activeDate
+@docs minDate, maxDate, onChange, onActiveChange
 -}
 
 

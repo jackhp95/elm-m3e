@@ -1,6 +1,10 @@
-module M3e.Cem.Html.LinearProgressIndicator exposing (bufferValue, linearProgressIndicator, max, mode, value, variant)
+module M3e.Cem.Html.LinearProgressIndicator exposing
+    ( linearProgressIndicator, bufferValue, max, mode, value, variant
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-linear-progress-indicator>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs linearProgressIndicator, bufferValue, max, mode, value, variant
 -}
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.SelectionList exposing (disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, selectionList, variant)
+module M3e.Cem.Html.SelectionList exposing
+    ( selectionList, hideSelectionIndicator, multi, variant, name, disabled
+    , onChange, onBeforeinput, onInput
+    )
 
-{-| 
-@docs selectionList, hideSelectionIndicator, multi, variant, name, disabled, onChange, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-selection-list>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs selectionList, hideSelectionIndicator, multi, variant, name, disabled
+@docs onChange, onBeforeinput, onInput
 -}
 
 

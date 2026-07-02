@@ -1,7 +1,13 @@
-module M3e.Cem.DrawerContainer exposing (drawerContainer, end, endDivider, endMode, onChange, start, startDivider, startMode)
+module M3e.Cem.DrawerContainer exposing
+    ( drawerContainer, end, endMode, endDivider, start, startMode
+    , startDivider, onChange
+    )
 
-{-| 
-@docs drawerContainer, end, endMode, endDivider, start, startMode, startDivider, onChange
+{-|
+Middle layer for `<m3e-drawer-container>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.DrawerContainer` module for everyday use.
+
+@docs drawerContainer, end, endMode, endDivider, start, startMode
+@docs startDivider, onChange
 -}
 
 

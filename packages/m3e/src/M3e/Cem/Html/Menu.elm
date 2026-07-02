@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Menu exposing (menu, onBeforetoggle, onToggle, positionX, positionY, submenu, variant)
+module M3e.Cem.Html.Menu exposing
+    ( menu, positionX, positionY, variant, submenu, onBeforetoggle
+    , onToggle
+    )
 
-{-| 
-@docs menu, positionX, positionY, variant, submenu, onBeforetoggle, onToggle
+{-|
+Bottom layer for `<m3e-menu>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs menu, positionX, positionY, variant, submenu, onBeforetoggle
+@docs onToggle
 -}
 
 

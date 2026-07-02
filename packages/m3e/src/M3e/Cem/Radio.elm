@@ -1,7 +1,13 @@
-module M3e.Cem.Radio exposing (checked, disabled, name, onBeforeinput, onChange, onClick, onInput, radio, required, value)
+module M3e.Cem.Radio exposing
+    ( radio, checked, disabled, name, required, value
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs radio, checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-radio>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Radio` module for everyday use.
+
+@docs radio, checked, disabled, name, required, value
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 
@@ -79,8 +85,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Radio.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 
@@ -91,8 +97,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Radio.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 
@@ -104,8 +110,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Radio.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 

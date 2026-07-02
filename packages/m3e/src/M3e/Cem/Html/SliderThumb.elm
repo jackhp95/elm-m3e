@@ -1,7 +1,13 @@
-module M3e.Cem.Html.SliderThumb exposing (disabled, name, onBeforeinput, onChange, onClick, onInput, onValueChange, sliderThumb, value)
+module M3e.Cem.Html.SliderThumb exposing
+    ( sliderThumb, disabled, name, value, onValueChange, onBeforeinput
+    , onInput, onChange, onClick
+    )
 
-{-| 
-@docs sliderThumb, disabled, name, value, onValueChange, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-slider-thumb>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs sliderThumb, disabled, name, value, onValueChange, onBeforeinput
+@docs onInput, onChange, onClick
 -}
 
 

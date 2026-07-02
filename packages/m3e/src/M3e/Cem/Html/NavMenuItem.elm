@@ -1,7 +1,13 @@
-module M3e.Cem.Html.NavMenuItem exposing (disabled, navMenuItem, onClick, onClosed, onClosing, onOpened, onOpening, open, selected)
+module M3e.Cem.Html.NavMenuItem exposing
+    ( navMenuItem, disabled, open, selected, onOpening, onOpened
+    , onClosing, onClosed, onClick
+    )
 
-{-| 
-@docs navMenuItem, disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+{-|
+Bottom layer for `<m3e-nav-menu-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs navMenuItem, disabled, open, selected, onOpening, onOpened
+@docs onClosing, onClosed, onClick
 -}
 
 

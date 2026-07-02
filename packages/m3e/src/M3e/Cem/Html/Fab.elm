@@ -1,7 +1,15 @@
-module M3e.Cem.Html.Fab exposing (disabled, disabledInteractive, download, extended, fab, href, lowered, name, onClick, rel, size, target, type_, value, variant)
+module M3e.Cem.Html.Fab exposing
+    ( fab, disabled, disabledInteractive, download, extended, href
+    , lowered, name, rel, size, target, type_, value
+    , variant, onClick
+    )
 
-{-| 
-@docs fab, disabled, disabledInteractive, download, extended, href, lowered, name, rel, size, target, type_, value, variant, onClick
+{-|
+Bottom layer for `<m3e-fab>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs fab, disabled, disabledInteractive, download, extended, href
+@docs lowered, name, rel, size, target, type_
+@docs value, variant, onClick
 -}
 
 

@@ -1,6 +1,11 @@
-module M3e.MenuItemElementBase exposing (disabled, onClick, view)
+module M3e.MenuItemElementBase exposing ( view, disabled, onClick )
 
-{-| 
+{-|
+A base implementation for an item of a menu. This class must be inherited.
+
+**Events:**
+- `click`: No description
+
 @docs view, disabled, onClick
 -}
 
@@ -23,13 +28,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.MenuItemElementBase.menuItemElementBase
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.MenuItemElementBase.menuItemElementBase
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

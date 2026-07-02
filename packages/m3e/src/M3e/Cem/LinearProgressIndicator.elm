@@ -1,6 +1,10 @@
-module M3e.Cem.LinearProgressIndicator exposing (bufferValue, linearProgressIndicator, max, mode, value, variant)
+module M3e.Cem.LinearProgressIndicator exposing
+    ( linearProgressIndicator, bufferValue, max, mode, value, variant
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-linear-progress-indicator>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.LinearProgressIndicator` module for everyday use.
+
 @docs linearProgressIndicator, bufferValue, max, mode, value, variant
 -}
 

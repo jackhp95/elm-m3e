@@ -1,6 +1,8 @@
-module M3e.Cem.MenuItemCheckbox exposing (checked, disabled, menuItemCheckbox, onClick)
+module M3e.Cem.MenuItemCheckbox exposing ( menuItemCheckbox, disabled, checked, onClick )
 
-{-| 
+{-|
+Middle layer for `<m3e-menu-item-checkbox>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MenuItemCheckbox` module for everyday use.
+
 @docs menuItemCheckbox, disabled, checked, onClick
 -}
 

@@ -1,7 +1,16 @@
-module M3e.Cem.Html.IconButton exposing (disabled, disabledInteractive, download, href, iconButton, name, onBeforeinput, onChange, onClick, onInput, rel, selected, shape, size, target, toggle, type_, value, variant, width)
+module M3e.Cem.Html.IconButton exposing
+    ( iconButton, disabled, disabledInteractive, download, href, name
+    , rel, selected, shape, size, target, toggle, type_
+    , value, variant, width, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs iconButton, disabled, disabledInteractive, download, href, name, rel, selected, shape, size, target, toggle, type_, value, variant, width, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-icon-button>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs iconButton, disabled, disabledInteractive, download, href, name
+@docs rel, selected, shape, size, target, toggle
+@docs type_, value, variant, width, onBeforeinput, onInput
+@docs onChange, onClick
 -}
 
 

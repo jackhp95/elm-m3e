@@ -1,7 +1,13 @@
-module M3e.Cem.Html.MultiYearView exposing (activeDate, date, maxDate, minDate, multiYearView, onActiveChange, onChange, today)
+module M3e.Cem.Html.MultiYearView exposing
+    ( multiYearView, today, date, activeDate, minDate, maxDate
+    , onChange, onActiveChange
+    )
 
-{-| 
-@docs multiYearView, today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+{-|
+Bottom layer for `<m3e-multi-year-view>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs multiYearView, today, date, activeDate, minDate, maxDate
+@docs onChange, onActiveChange
 -}
 
 

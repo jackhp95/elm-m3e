@@ -1,7 +1,13 @@
-module M3e.Cem.SearchView exposing (clearLabel, closeLabel, contained, hideSearchIcon, mode, onBeforetoggle, onClear, onQuery, onToggle, open, searchView)
+module M3e.Cem.SearchView exposing
+    ( searchView, contained, mode, open, clearLabel, closeLabel
+    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs searchView, contained, mode, open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle
+{-|
+Middle layer for `<m3e-search-view>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SearchView` module for everyday use.
+
+@docs searchView, contained, mode, open, clearLabel, closeLabel
+@docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle
 -}
 
 

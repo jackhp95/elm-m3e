@@ -1,7 +1,15 @@
-module M3e.Cem.Html.Calendar exposing (calendar, date, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, onChange, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, startView)
+module M3e.Cem.Html.Calendar exposing
+    ( calendar, date, maxDate, minDate, rangeEnd, rangeStart
+    , startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel
+    , nextMultiYearLabel, onChange
+    )
 
-{-| 
-@docs calendar, date, maxDate, minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
+{-|
+Bottom layer for `<m3e-calendar>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs calendar, date, maxDate, minDate, rangeEnd, rangeStart
+@docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+@docs previousMultiYearLabel, nextMultiYearLabel, onChange
 -}
 
 

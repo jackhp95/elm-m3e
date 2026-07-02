@@ -1,6 +1,10 @@
-module M3e.Cem.Html.TextHighlight exposing (caseSensitive, disabled, mode, onHighlight, term, textHighlight)
+module M3e.Cem.Html.TextHighlight exposing
+    ( textHighlight, caseSensitive, disabled, mode, term, onHighlight
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-text-highlight>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs textHighlight, caseSensitive, disabled, mode, term, onHighlight
 -}
 

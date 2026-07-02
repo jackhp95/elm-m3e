@@ -1,7 +1,30 @@
-module M3e.ListOption exposing (child, children, disabled, leading, onBeforeinput, onChange, onClick, onInput, overline, selected, supportingText, trailing, value, view)
+module M3e.ListOption exposing
+    ( view, disabled, selected, value, onBeforeinput, onInput
+    , onChange, onClick, child, leading, overline, supportingText, trailing
+    , children
+    )
 
-{-| 
-@docs view, disabled, selected, value, onBeforeinput, onInput, onChange, onClick, child, leading, overline, supportingText, trailing, children
+{-|
+A selectable option in a list.
+
+**Component Info:**
+- **Extends:** `M3eListItemElement` from `/src/list/ListItemElement`
+
+**Events:**
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
+- `change`: Dispatched when the selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `leading`: Renders the leading content of the list item.
+- `overline`: Renders the overline of the list item.
+- `supporting-text`: Renders the supporting text of the list item.
+- `trailing`: Renders the trailing content of the list item.
+
+@docs view, disabled, selected, value, onBeforeinput, onInput
+@docs onChange, onClick, child, leading, overline, supportingText
+@docs trailing, children
 -}
 
 
@@ -34,13 +57,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ListOption.listOption
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ListOption.listOption
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

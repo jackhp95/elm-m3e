@@ -1,6 +1,8 @@
-module M3e.Cem.Html.LoadingIndicator exposing (loadingIndicator, variant)
+module M3e.Cem.Html.LoadingIndicator exposing ( loadingIndicator, variant )
 
-{-| 
+{-|
+Bottom layer for `<m3e-loading-indicator>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs loadingIndicator, variant
 -}
 

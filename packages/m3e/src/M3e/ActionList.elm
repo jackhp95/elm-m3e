@@ -1,6 +1,11 @@
-module M3e.ActionList exposing (child, children, variant, view)
+module M3e.ActionList exposing ( view, variant, child, children )
 
-{-| 
+{-|
+A list of actions.
+
+**Component Info:**
+- **Extends:** `M3eListElement` from `/src/list/ListElement`
+
 @docs view, variant, child, children
 -}
 
@@ -23,13 +28,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ActionList.actionList
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ActionList.actionList
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

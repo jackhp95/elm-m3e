@@ -1,7 +1,21 @@
-module M3e.FormField exposing (error, floatLabel, hideRequiredMarker, hideSubscript, hint, label, prefix, prefixText, suffix, suffixText, variant, view)
+module M3e.FormField exposing
+    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, prefix
+    , prefixText, label, suffix, suffixText, hint, error
+    )
 
-{-| 
-@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, prefix, prefixText, label, suffix, suffixText, hint, error
+{-|
+A container for form controls that applies Material Design styling and behavior.
+
+**Slots:**
+- `prefix`: Renders content before the fields's control.
+- `prefix-text`: Renders text before the fields's control.
+- `suffix`: Renders content after the fields's control.
+- `suffix-text`: Renders text after the fields's control.
+- `hint`: Renders hint text in the fields's subscript, when the control is valid.
+- `error`: Renders error text in the fields's subscript, when the control is invalid.
+
+@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, prefix
+@docs prefixText, label, suffix, suffixText, hint, error
 -}
 
 
@@ -38,19 +52,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FormField.formField
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.FormField.formField
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

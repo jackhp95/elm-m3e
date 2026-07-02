@@ -1,6 +1,8 @@
-module M3e.Cem.DialogTrigger exposing (dialogTrigger, for)
+module M3e.Cem.DialogTrigger exposing ( dialogTrigger, for )
 
-{-| 
+{-|
+Middle layer for `<m3e-dialog-trigger>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.DialogTrigger` module for everyday use.
+
 @docs dialogTrigger, for
 -}
 

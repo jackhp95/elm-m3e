@@ -1,7 +1,32 @@
-module M3e.ExpandableListItem exposing (child, children, disabled, items, leading, onClosed, onClosing, onOpened, onOpening, open, overline, supportingText, toggleIcon, view)
+module M3e.ExpandableListItem exposing
+    ( view, disabled, open, onOpening, onOpened, onClosing
+    , onClosed, child, leading, overline, supportingText, toggleIcon, items
+    , children
+    )
 
-{-| 
-@docs view, disabled, open, onOpening, onOpened, onClosing, onClosed, child, leading, overline, supportingText, toggleIcon, items, children
+{-|
+An item in a list that can be expanded to show more items.
+
+**Component Info:**
+- **Extends:** `M3eListItemElement` from `/src/list/ListItemElement`
+
+**Events:**
+- `opening`: Dispatched when the item begins to open.
+- `opened`: Dispatched when the item has opened.
+- `closing`: Dispatched when the item begins to close.
+- `closed`: Dispatched when the item has closed.
+
+**Slots:**
+- `leading`: Renders the leading content of the list item.
+- `overline`: Renders the overline of the list item.
+- `supporting-text`: Renders the supporting text of the list item.
+- `toggle-icon`: Renders a custom icon for the expand/collapse toggle.
+- `items`: Container for child list items displayed when expanded.
+- `trailing`: This component does not expose the base trailing slot.
+
+@docs view, disabled, open, onOpening, onOpened, onClosing
+@docs onClosed, child, leading, overline, supportingText, toggleIcon
+@docs items, children
 -}
 
 
@@ -34,13 +59,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ExpandableListItem.expandableListItem
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ExpandableListItem.expandableListItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

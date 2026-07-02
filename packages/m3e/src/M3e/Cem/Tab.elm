@@ -1,7 +1,13 @@
-module M3e.Cem.Tab exposing (disabled, for, onBeforeinput, onChange, onClick, onInput, selected, tab)
+module M3e.Cem.Tab exposing
+    ( tab, disabled, for, selected, onBeforeinput, onInput
+    , onChange, onClick
+    )
 
-{-| 
-@docs tab, disabled, for, selected, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-tab>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Tab` module for everyday use.
+
+@docs tab, disabled, for, selected, onBeforeinput, onInput
+@docs onChange, onClick
 -}
 
 
@@ -65,8 +71,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Tab.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -77,8 +83,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Tab.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -90,8 +96,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Tab.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 

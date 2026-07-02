@@ -1,6 +1,8 @@
-module M3e.Cem.Optgroup exposing (optgroup)
+module M3e.Cem.Optgroup exposing ( optgroup )
 
-{-| 
+{-|
+Middle layer for `<m3e-optgroup>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Optgroup` module for everyday use.
+
 @docs optgroup
 -}
 

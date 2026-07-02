@@ -1,7 +1,15 @@
-module M3e.Cem.Autocomplete exposing (autoActivate, autocomplete, caseSensitive, filter, for, hideLoading, hideNoData, hideSelectionIndicator, loading, loadingLabel, noDataLabel, onChange, onQuery, onToggle, panelClass, required)
+module M3e.Cem.Autocomplete exposing
+    ( autocomplete, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+    , hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
+    , onChange, onQuery, onToggle
+    )
 
-{-| 
-@docs autocomplete, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for, onChange, onQuery, onToggle
+{-|
+Middle layer for `<m3e-autocomplete>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Autocomplete` module for everyday use.
+
+@docs autocomplete, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
+@docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
+@docs for, onChange, onQuery, onToggle
 -}
 
 

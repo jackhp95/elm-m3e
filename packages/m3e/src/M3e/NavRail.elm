@@ -1,7 +1,18 @@
-module M3e.NavRail exposing (child, children, mode, onBeforeinput, onChange, onInput, view)
+module M3e.NavRail exposing
+    ( view, mode, onBeforeinput, onInput, onChange, child
+    , children
+    )
 
-{-| 
-@docs view, mode, onBeforeinput, onInput, onChange, child, children
+{-|
+A vertical bar, typically used on larger devices, that allows a user to switch between views.
+
+**Events:**
+- `beforeinput`: Dispatched before the selected state of an item changes.
+- `input`: Dispatched when the selected state of an item changes.
+- `change`: Dispatched when the selected state of an item changes.
+
+@docs view, mode, onBeforeinput, onInput, onChange, child
+@docs children
 -}
 
 
@@ -26,11 +37,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.NavRail.navRail (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.NavRail.navRail
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

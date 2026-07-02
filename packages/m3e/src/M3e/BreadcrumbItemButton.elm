@@ -1,7 +1,16 @@
-module M3e.BreadcrumbItemButton exposing (child, children, current, disabled, download, href, icon, onClick, rel, target, view)
+module M3e.BreadcrumbItemButton exposing
+    ( view, current, href, target, rel, download
+    , disabled, onClick, icon, child, children
+    )
 
-{-| 
-@docs view, current, href, target, rel, download, disabled, onClick, icon, child, children
+{-|
+Create a m3e-breadcrumb-item-button element
+
+**Events:**
+- `click`: No description
+
+@docs view, current, href, target, rel, download
+@docs disabled, onClick, icon, child, children
 -}
 
 
@@ -33,13 +42,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.BreadcrumbItemButton.breadcrumbItemButton
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.BreadcrumbItemButton.breadcrumbItemButton
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

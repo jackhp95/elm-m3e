@@ -1,7 +1,26 @@
-module M3e.FilterChip exposing (disabled, disabledInteractive, icon, onBeforeinput, onChange, onClick, onInput, selected, trailingIcon, value, variant, view)
+module M3e.FilterChip exposing
+    ( view, disabled, disabledInteractive, selected, value, variant
+    , onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, selected, value, variant, onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
+{-|
+A chip users interact with to select/deselect options.
+
+**Component Info:**
+- **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
+
+**Events:**
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
+- `change`: Dispatched when the selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the chip's label.
+- `trailing-icon`: Renders an icon after the chip's label.
+
+@docs view, disabled, disabledInteractive, selected, value, variant
+@docs onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
 -}
 
 
@@ -34,19 +53,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FilterChip.filterChip
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.FilterChip.filterChip
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

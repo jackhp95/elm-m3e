@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Switch exposing (checked, disabled, icons, name, onBeforeinput, onChange, onClick, onInput, switch, value)
+module M3e.Cem.Html.Switch exposing
+    ( switch, checked, disabled, icons, name, value
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs switch, checked, disabled, icons, name, value, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-switch>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs switch, checked, disabled, icons, name, value
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 

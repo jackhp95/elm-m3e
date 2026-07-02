@@ -1,7 +1,25 @@
-module M3e.Tabs exposing (child, children, disablePagination, headerPosition, nextIcon, nextPageLabel, onBeforeinput, onChange, onInput, panel, prevIcon, previousPageLabel, stretch, variant, view)
+module M3e.Tabs exposing
+    ( view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+    , variant, onChange, onBeforeinput, onInput, child, panel, nextIcon
+    , prevIcon, children
+    )
 
-{-| 
-@docs view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput, child, panel, nextIcon, prevIcon, children
+{-|
+Organizes content into separate views where only one view can be visible at a time.
+
+**Events:**
+- `change`: Dispatched when the selected tab changes.
+- `beforeinput`: Dispatched before the selected state of a tab changes.
+- `input`: Dispatched when the selected state of a tab changes.
+
+**Slots:**
+- `panel`: Renders the panels of the tabs.
+- `next-icon`: Renders the icon to present for the next button used to paginate.
+- `prev-icon`: Renders the icon to present for the previous button used to paginate.
+
+@docs view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+@docs variant, onChange, onBeforeinput, onInput, child, panel
+@docs nextIcon, prevIcon, children
 -}
 
 
@@ -35,11 +53,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Tabs.tabs (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Tabs.tabs (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

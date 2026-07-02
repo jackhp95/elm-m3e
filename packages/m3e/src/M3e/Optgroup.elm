@@ -1,6 +1,11 @@
-module M3e.Optgroup exposing (child, children, label, view)
+module M3e.Optgroup exposing ( view, child, label, children )
 
-{-| 
+{-|
+Groups options under a subheading.
+
+**Slots:**
+- `label`: Renders the label of the group.
+
 @docs view, child, label, children
 -}
 
@@ -23,13 +28,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Optgroup.optgroup
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Optgroup.optgroup
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

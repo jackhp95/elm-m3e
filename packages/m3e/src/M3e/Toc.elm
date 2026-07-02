@@ -1,7 +1,17 @@
-module M3e.Toc exposing (child, children, for, maxDepth, overline, title, view)
+module M3e.Toc exposing
+    ( view, for, maxDepth, child, overline, title
+    , children
+    )
 
-{-| 
-@docs view, for, maxDepth, child, overline, title, children
+{-|
+A table of contents that provides in-page scroll navigation.
+
+**Slots:**
+- `overline`: Renders the overline of the table of contents.
+- `title`: Renders the title of the table of contents.
+
+@docs view, for, maxDepth, child, overline, title
+@docs children
 -}
 
 
@@ -27,11 +37,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Toc.toc (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Toc.toc (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

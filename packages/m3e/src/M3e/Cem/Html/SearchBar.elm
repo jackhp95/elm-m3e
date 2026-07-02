@@ -1,6 +1,8 @@
-module M3e.Cem.Html.SearchBar exposing (clearLabel, clearable, onClear, searchBar)
+module M3e.Cem.Html.SearchBar exposing ( searchBar, clearable, clearLabel, onClear )
 
-{-| 
+{-|
+Bottom layer for `<m3e-search-bar>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs searchBar, clearable, clearLabel, onClear
 -}
 

@@ -1,6 +1,8 @@
-module M3e.Cem.Html.AppBar exposing (appBar, centered, for, size)
+module M3e.Cem.Html.AppBar exposing ( appBar, centered, for, size )
 
-{-| 
+{-|
+Bottom layer for `<m3e-app-bar>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs appBar, centered, for, size
 -}
 

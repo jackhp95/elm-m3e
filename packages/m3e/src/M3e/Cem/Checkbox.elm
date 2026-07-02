@@ -1,7 +1,13 @@
-module M3e.Cem.Checkbox exposing (checkbox, checked, disabled, indeterminate, name, onBeforeinput, onChange, onClick, onInput, onInvalid, required, value)
+module M3e.Cem.Checkbox exposing
+    ( checkbox, checked, disabled, indeterminate, name, required
+    , value, onBeforeinput, onInput, onChange, onInvalid, onClick
+    )
 
-{-| 
-@docs checkbox, checked, disabled, indeterminate, name, required, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+{-|
+Middle layer for `<m3e-checkbox>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Checkbox` module for everyday use.
+
+@docs checkbox, checked, disabled, indeterminate, name, required
+@docs value, onBeforeinput, onInput, onChange, onInvalid, onClick
 -}
 
 
@@ -88,8 +94,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Checkbox.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 
@@ -100,8 +106,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Checkbox.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 
@@ -113,8 +119,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Checkbox.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 

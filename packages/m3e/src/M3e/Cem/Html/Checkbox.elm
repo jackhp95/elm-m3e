@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Checkbox exposing (checkbox, checked, disabled, indeterminate, name, onBeforeinput, onChange, onClick, onInput, onInvalid, required, value)
+module M3e.Cem.Html.Checkbox exposing
+    ( checkbox, checked, disabled, indeterminate, name, required
+    , value, onBeforeinput, onInput, onChange, onInvalid, onClick
+    )
 
-{-| 
-@docs checkbox, checked, disabled, indeterminate, name, required, value, onBeforeinput, onInput, onChange, onInvalid, onClick
+{-|
+Bottom layer for `<m3e-checkbox>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs checkbox, checked, disabled, indeterminate, name, required
+@docs value, onBeforeinput, onInput, onChange, onInvalid, onClick
 -}
 
 

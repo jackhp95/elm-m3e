@@ -1,6 +1,8 @@
-module M3e.Cem.LoadingIndicator exposing (loadingIndicator, variant)
+module M3e.Cem.LoadingIndicator exposing ( loadingIndicator, variant )
 
-{-| 
+{-|
+Middle layer for `<m3e-loading-indicator>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.LoadingIndicator` module for everyday use.
+
 @docs loadingIndicator, variant
 -}
 

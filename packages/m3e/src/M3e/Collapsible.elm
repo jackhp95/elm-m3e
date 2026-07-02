@@ -1,7 +1,19 @@
-module M3e.Collapsible exposing (child, children, noAnimate, onClosed, onClosing, onOpened, onOpening, open, orientation, view)
+module M3e.Collapsible exposing
+    ( view, open, orientation, noAnimate, onOpening, onOpened
+    , onClosing, onClosed, child, children
+    )
 
-{-| 
-@docs view, open, orientation, noAnimate, onOpening, onOpened, onClosing, onClosed, child, children
+{-|
+A container used to expand and collapse content.
+
+**Events:**
+- `opening`: Dispatched when the collapsible begins to open.
+- `opened`: Dispatched when the collapsible has opened.
+- `closing`: Dispatched when the collapsible begins to close.
+- `closed`: Dispatched when the collapsible has closed.
+
+@docs view, open, orientation, noAnimate, onOpening, onOpened
+@docs onClosing, onClosed, child, children
 -}
 
 
@@ -29,13 +41,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Collapsible.collapsible
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Collapsible.collapsible
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

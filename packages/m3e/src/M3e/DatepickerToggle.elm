@@ -1,6 +1,8 @@
-module M3e.DatepickerToggle exposing (for, view)
+module M3e.DatepickerToggle exposing ( view, for )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to toggle a datepicker.
+
 @docs view, for
 -}
 
@@ -22,13 +24,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.DatepickerToggle.datepickerToggle
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.DatepickerToggle.datepickerToggle
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

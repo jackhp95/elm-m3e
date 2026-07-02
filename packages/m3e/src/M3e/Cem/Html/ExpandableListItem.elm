@@ -1,7 +1,13 @@
-module M3e.Cem.Html.ExpandableListItem exposing (disabled, expandableListItem, onClosed, onClosing, onOpened, onOpening, open)
+module M3e.Cem.Html.ExpandableListItem exposing
+    ( expandableListItem, disabled, open, onOpening, onOpened, onClosing
+    , onClosed
+    )
 
-{-| 
-@docs expandableListItem, disabled, open, onOpening, onOpened, onClosing, onClosed
+{-|
+Bottom layer for `<m3e-expandable-list-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs expandableListItem, disabled, open, onOpening, onOpened, onClosing
+@docs onClosed
 -}
 
 

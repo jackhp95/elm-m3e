@@ -1,6 +1,8 @@
-module M3e.MenuTrigger exposing (child, children, for, view)
+module M3e.MenuTrigger exposing ( view, for, child, children )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to open a menu.
+
 @docs view, for, child, children
 -}
 
@@ -23,13 +25,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.MenuTrigger.menuTrigger
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.MenuTrigger.menuTrigger
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

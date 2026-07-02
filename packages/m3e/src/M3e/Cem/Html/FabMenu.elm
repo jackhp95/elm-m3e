@@ -1,6 +1,8 @@
-module M3e.Cem.Html.FabMenu exposing (fabMenu, onBeforetoggle, onToggle, variant)
+module M3e.Cem.Html.FabMenu exposing ( fabMenu, variant, onBeforetoggle, onToggle )
 
-{-| 
+{-|
+Bottom layer for `<m3e-fab-menu>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs fabMenu, variant, onBeforetoggle, onToggle
 -}
 

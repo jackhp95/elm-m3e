@@ -1,6 +1,8 @@
-module M3e.Cem.MenuItemElementBase exposing (disabled, menuItemElementBase, onClick)
+module M3e.Cem.MenuItemElementBase exposing ( menuItemElementBase, disabled, onClick )
 
-{-| 
+{-|
+Middle layer for `<MenuItemElementBase>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MenuItemElementBase` module for everyday use.
+
 @docs menuItemElementBase, disabled, onClick
 -}
 

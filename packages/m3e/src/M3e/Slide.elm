@@ -1,6 +1,8 @@
-module M3e.Slide exposing (child, children, selectedIndex, view)
+module M3e.Slide exposing ( view, selectedIndex, child, children )
 
-{-| 
+{-|
+A carousel-like container used to horizontally cycle through slotted items.
+
 @docs view, selectedIndex, child, children
 -}
 
@@ -23,11 +25,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Slide.slide (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Slide.slide (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

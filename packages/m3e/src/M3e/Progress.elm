@@ -1,7 +1,13 @@
-module M3e.Progress exposing (bufferValue, circular, indeterminate, linear, max, mode, value, variant)
+module M3e.Progress exposing
+    ( bufferValue, max, mode, value, variant, indeterminate
+    , linear, circular
+    )
 
-{-| 
-@docs bufferValue, max, mode, value, variant, indeterminate, linear, circular
+{-|
+The `Progress` family: the shared attribute setters plus one constructor per variant in the group, each building its variant's element with that variant's typed content.
+
+@docs bufferValue, max, mode, value, variant, indeterminate
+@docs linear, circular
 -}
 
 
@@ -73,13 +79,13 @@ linear :
 linear attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.LinearProgressIndicator.linearProgressIndicator
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.LinearProgressIndicator.linearProgressIndicator
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -96,11 +102,11 @@ circular :
 circular attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.CircularProgressIndicator.circularProgressIndicator
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.CircularProgressIndicator.circularProgressIndicator
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )

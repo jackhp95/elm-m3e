@@ -1,7 +1,13 @@
-module M3e.Cem.Html.RadioGroup exposing (ariaInvalid, disabled, name, onBeforeinput, onChange, onInput, radioGroup, required)
+module M3e.Cem.Html.RadioGroup exposing
+    ( radioGroup, ariaInvalid, disabled, name, required, onBeforeinput
+    , onInput, onChange
+    )
 
-{-| 
-@docs radioGroup, ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
+{-|
+Bottom layer for `<m3e-radio-group>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs radioGroup, ariaInvalid, disabled, name, required, onBeforeinput
+@docs onInput, onChange
 -}
 
 

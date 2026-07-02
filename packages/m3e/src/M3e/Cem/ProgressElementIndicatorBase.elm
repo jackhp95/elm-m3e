@@ -1,6 +1,8 @@
-module M3e.Cem.ProgressElementIndicatorBase exposing (max, progressElementIndicatorBase, value, variant)
+module M3e.Cem.ProgressElementIndicatorBase exposing ( progressElementIndicatorBase, value, max, variant )
 
-{-| 
+{-|
+Middle layer for `<ProgressElementIndicatorBase>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ProgressElementIndicatorBase` module for everyday use.
+
 @docs progressElementIndicatorBase, value, max, variant
 -}
 

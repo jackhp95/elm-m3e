@@ -1,6 +1,10 @@
-module M3e.Cem.Html.Heading exposing (emphasized, heading, level, size, variant)
+module M3e.Cem.Html.Heading exposing
+    ( heading, emphasized, level, size, variant
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-heading>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs heading, emphasized, level, size, variant
 -}
 

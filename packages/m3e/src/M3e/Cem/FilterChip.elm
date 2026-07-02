@@ -1,7 +1,13 @@
-module M3e.Cem.FilterChip exposing (disabled, disabledInteractive, filterChip, onBeforeinput, onChange, onClick, onInput, selected, value, variant)
+module M3e.Cem.FilterChip exposing
+    ( filterChip, disabled, disabledInteractive, selected, value, variant
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs filterChip, disabled, disabledInteractive, selected, value, variant, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-filter-chip>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FilterChip` module for everyday use.
+
+@docs filterChip, disabled, disabledInteractive, selected, value, variant
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 
@@ -93,8 +99,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.FilterChip.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -105,8 +111,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.FilterChip.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -118,8 +124,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.FilterChip.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 

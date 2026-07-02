@@ -1,6 +1,10 @@
-module M3e.Cem.Html.SlideGroup exposing (disabled, nextPageLabel, previousPageLabel, slideGroup, threshold, vertical)
+module M3e.Cem.Html.SlideGroup exposing
+    ( slideGroup, disabled, nextPageLabel, previousPageLabel, threshold, vertical
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-slide-group>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs slideGroup, disabled, nextPageLabel, previousPageLabel, threshold, vertical
 -}
 

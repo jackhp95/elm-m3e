@@ -1,7 +1,17 @@
-module M3e.Cem.Html.Datepicker exposing (clearLabel, clearable, confirmLabel, date, datepicker, dismissLabel, label, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, onBeforetoggle, onChange, onToggle, previousMonthLabel, previousMultiYearLabel, previousYearLabel, range, rangeEnd, rangeStart, startAt, startView, variant)
+module M3e.Cem.Html.Datepicker exposing
+    ( datepicker, variant, clearable, date, maxDate, minDate
+    , range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
+    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel
+    , label, onChange, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs datepicker, variant, clearable, date, maxDate, minDate, range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+{-|
+Bottom layer for `<m3e-datepicker>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs datepicker, variant, clearable, date, maxDate, minDate
+@docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
+@docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
+@docs confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
 -}
 
 

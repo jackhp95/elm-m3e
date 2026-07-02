@@ -1,7 +1,26 @@
-module M3e.ListItemButton exposing (child, children, disabled, download, href, leading, onClick, overline, rel, supportingText, target, trailing, view)
+module M3e.ListItemButton exposing
+    ( view, href, target, rel, download, disabled
+    , onClick, child, leading, overline, supportingText, trailing, children
+    )
 
-{-| 
-@docs view, href, target, rel, download, disabled, onClick, child, leading, overline, supportingText, trailing, children
+{-|
+Create a m3e-list-item-button element
+
+**Component Info:**
+- **Extends:** `M3eListItemElement` from `/src/list/ListItemElement`
+
+**Events:**
+- `click`: No description
+
+**Slots:**
+- `leading`: Renders the leading content of the list item.
+- `overline`: Renders the overline of the list item.
+- `supporting-text`: Renders the supporting text of the list item.
+- `trailing`: Renders the trailing content of the list item.
+
+@docs view, href, target, rel, download, disabled
+@docs onClick, child, leading, overline, supportingText, trailing
+@docs children
 -}
 
 
@@ -33,13 +52,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ListItemButton.listItemButton
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ListItemButton.listItemButton
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

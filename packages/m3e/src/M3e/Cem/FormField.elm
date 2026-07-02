@@ -1,6 +1,10 @@
-module M3e.Cem.FormField exposing (floatLabel, formField, hideRequiredMarker, hideSubscript, variant)
+module M3e.Cem.FormField exposing
+    ( formField, floatLabel, hideRequiredMarker, hideSubscript, variant
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-form-field>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FormField` module for everyday use.
+
 @docs formField, floatLabel, hideRequiredMarker, hideSubscript, variant
 -}
 

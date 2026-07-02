@@ -1,6 +1,8 @@
-module M3e.Cem.Html.MenuItemCheckbox exposing (checked, disabled, menuItemCheckbox, onClick)
+module M3e.Cem.Html.MenuItemCheckbox exposing ( menuItemCheckbox, disabled, checked, onClick )
 
-{-| 
+{-|
+Bottom layer for `<m3e-menu-item-checkbox>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs menuItemCheckbox, disabled, checked, onClick
 -}
 

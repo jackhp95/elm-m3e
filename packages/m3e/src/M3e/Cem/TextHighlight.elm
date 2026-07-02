@@ -1,6 +1,10 @@
-module M3e.Cem.TextHighlight exposing (caseSensitive, disabled, mode, onHighlight, term, textHighlight)
+module M3e.Cem.TextHighlight exposing
+    ( textHighlight, caseSensitive, disabled, mode, term, onHighlight
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-text-highlight>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.TextHighlight` module for everyday use.
+
 @docs textHighlight, caseSensitive, disabled, mode, term, onHighlight
 -}
 

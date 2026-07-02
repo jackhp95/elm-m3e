@@ -1,7 +1,19 @@
-module M3e.ExpansionHeader exposing (child, children, disabled, hideToggle, onClick, toggleDirection, toggleIcon, togglePosition, view)
+module M3e.ExpansionHeader exposing
+    ( view, hideToggle, toggleDirection, togglePosition, disabled, onClick
+    , child, toggleIcon, children
+    )
 
-{-| 
-@docs view, hideToggle, toggleDirection, togglePosition, disabled, onClick, child, toggleIcon, children
+{-|
+A button used to toggle the expanded state of an expansion panel.
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `toggle-icon`: Renders the icon of the expansion toggle.
+
+@docs view, hideToggle, toggleDirection, togglePosition, disabled, onClick
+@docs child, toggleIcon, children
 -}
 
 
@@ -29,13 +41,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ExpansionHeader.expansionHeader
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ExpansionHeader.expansionHeader
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

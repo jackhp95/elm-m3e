@@ -1,7 +1,22 @@
-module M3e.InputChipSet exposing (child, children, disabled, input, name, onChange, required, vertical, view)
+module M3e.InputChipSet exposing
+    ( view, disabled, name, required, vertical, onChange
+    , child, input, children
+    )
 
-{-| 
-@docs view, disabled, name, required, vertical, onChange, child, input, children
+{-|
+A container that transforms user input into a cohesive set of interactive chips, supporting entry, editing, and removal of discrete values.
+
+**Component Info:**
+- **Extends:** `M3eChipSetElement` from `/src/chips/ChipSetElement`
+
+**Events:**
+- `change`: Dispatched when a chip is added to, or removed from, the set.
+
+**Slots:**
+- `input`: Renders the input element used to add new chips to the set.
+
+@docs view, disabled, name, required, vertical, onChange
+@docs child, input, children
 -}
 
 
@@ -29,13 +44,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.InputChipSet.inputChipSet
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.InputChipSet.inputChipSet
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.ButtonSegment exposing (buttonSegment, checked, disabled, onBeforeinput, onChange, onClick, onInput, value)
+module M3e.Cem.Html.ButtonSegment exposing
+    ( buttonSegment, checked, disabled, value, onBeforeinput, onInput
+    , onChange, onClick
+    )
 
-{-| 
-@docs buttonSegment, checked, disabled, value, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-button-segment>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs buttonSegment, checked, disabled, value, onBeforeinput, onInput
+@docs onChange, onClick
 -}
 
 

@@ -1,6 +1,19 @@
-module M3e.List exposing (child, children, variant, view)
+module M3e.List exposing ( view, variant, child, children )
 
-{-| 
+{-|
+A list of items.
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Action list of navigable links" -->
+```elm
+M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ListAction.view [ M3e.ListAction.href "/account" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "manage_accounts" ] []), M3e.ListAction.trailing (M3e.Icon.view [ M3e.Icon.name "open_in_new" ] []), M3e.ListAction.child (Kit.text "Account") ], M3e.ListAction.view [ M3e.ListAction.href "/billing" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "payments" ] []), M3e.ListAction.child (Kit.text "Billing") ], M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "lock" ] []), M3e.ListAction.child (Kit.text "Admin tools") ] ])
+```
+
 @docs view, variant, child, children
 -}
 
@@ -23,11 +36,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.List.list (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.List.list (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

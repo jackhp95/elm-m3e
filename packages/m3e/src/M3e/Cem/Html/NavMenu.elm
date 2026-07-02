@@ -1,6 +1,8 @@
-module M3e.Cem.Html.NavMenu exposing (navMenu)
+module M3e.Cem.Html.NavMenu exposing ( navMenu )
 
-{-| 
+{-|
+Bottom layer for `<m3e-nav-menu>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs navMenu
 -}
 

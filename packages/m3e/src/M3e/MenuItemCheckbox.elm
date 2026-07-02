@@ -1,7 +1,23 @@
-module M3e.MenuItemCheckbox exposing (checked, child, children, disabled, icon, onClick, trailingIcon, view)
+module M3e.MenuItemCheckbox exposing
+    ( view, disabled, checked, onClick, child, icon
+    , trailingIcon, children
+    )
 
-{-| 
-@docs view, disabled, checked, onClick, child, icon, trailingIcon, children
+{-|
+An item of a menu which supports a checkable state.
+
+**Component Info:**
+- **Extends:** `MenuItemElementBase` from `/src/menu/MenuItemElementBase`
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the items's label.
+- `trailing-icon`: Renders an icon after the item's label.
+
+@docs view, disabled, checked, onClick, child, icon
+@docs trailingIcon, children
 -}
 
 
@@ -28,13 +44,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.MenuItemCheckbox.menuItemCheckbox
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.MenuItemCheckbox.menuItemCheckbox
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

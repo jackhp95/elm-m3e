@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Slider exposing (disabled, discrete, labelled, max, min, onBeforeinput, onChange, onInput, size, slider, step)
+module M3e.Cem.Html.Slider exposing
+    ( slider, disabled, discrete, labelled, max, min
+    , step, size, onBeforeinput, onInput, onChange
+    )
 
-{-| 
-@docs slider, disabled, discrete, labelled, max, min, step, size, onBeforeinput, onInput, onChange
+{-|
+Bottom layer for `<m3e-slider>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs slider, disabled, discrete, labelled, max, min
+@docs step, size, onBeforeinput, onInput, onChange
 -}
 
 

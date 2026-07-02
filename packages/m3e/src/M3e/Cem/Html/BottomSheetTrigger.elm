@@ -1,6 +1,8 @@
-module M3e.Cem.Html.BottomSheetTrigger exposing (bottomSheetTrigger, detent, for, secondary)
+module M3e.Cem.Html.BottomSheetTrigger exposing ( bottomSheetTrigger, detent, secondary, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-bottom-sheet-trigger>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs bottomSheetTrigger, detent, secondary, for
 -}
 

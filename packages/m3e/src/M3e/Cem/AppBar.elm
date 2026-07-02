@@ -1,6 +1,8 @@
-module M3e.Cem.AppBar exposing (appBar, centered, for, size)
+module M3e.Cem.AppBar exposing ( appBar, centered, for, size )
 
-{-| 
+{-|
+Middle layer for `<m3e-app-bar>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.AppBar` module for everyday use.
+
 @docs appBar, centered, for, size
 -}
 

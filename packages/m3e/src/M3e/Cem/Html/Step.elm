@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Step exposing (completed, disabled, editable, for, invalid, onBeforeinput, onChange, onClick, onInput, optional, selected, step)
+module M3e.Cem.Html.Step exposing
+    ( step, completed, disabled, editable, for, optional
+    , selected, invalid, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs step, completed, disabled, editable, for, optional, selected, invalid, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-step>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs step, completed, disabled, editable, for, optional
+@docs selected, invalid, onBeforeinput, onInput, onChange, onClick
 -}
 
 

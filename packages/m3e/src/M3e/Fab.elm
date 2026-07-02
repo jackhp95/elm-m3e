@@ -1,7 +1,34 @@
-module M3e.Fab exposing (child, children, closeIcon, disabled, disabledInteractive, download, extended, href, label, lowered, name, onClick, rel, size, target, type_, value, variant, view)
+module M3e.Fab exposing
+    ( view, disabled, disabledInteractive, download, extended, href
+    , lowered, name, rel, size, target, type_, value
+    , variant, onClick, child, label, closeIcon, children
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, download, extended, href, lowered, name, rel, size, target, type_, value, variant, onClick, child, label, closeIcon, children
+{-|
+A floating action button (FAB) used to present important actions.
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `label`: Renders the label of an extended button.
+- `close-icon`: Renders the close icon when used to open a FAB menu.
+
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Small FAB with icon" -->
+```elm
+M3e.Fab.view { ariaLabel = "Navigation menu" } [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]
+```
+
+@docs view, disabled, disabledInteractive, download, extended, href
+@docs lowered, name, rel, size, target, type_
+@docs value, variant, onClick, child, label, closeIcon
+@docs children
 -}
 
 
@@ -41,22 +68,22 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Fab.fab (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append
-                    [ M3e.Cem.Attr.forget
-                        (M3e.Cem.Attr.attribute
-                            (Html.Attributes.attribute "aria-label")
-                            req_.ariaLabel
-                        )
-                    ]
-                    (List.map M3e.Cem.Attr.forget attributes)
-                )
-            )
-            (List.append [] (List.map M3e.Content.toNode content_))
+             (\erased ch ->
+                  M3e.Cem.Fab.fab (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append
+                       [ M3e.Cem.Attr.forget
+                           (M3e.Cem.Attr.attribute
+                              (Html.Attributes.attribute "aria-label")
+                              req_.ariaLabel
+                           )
+                       ]
+                       (List.map M3e.Cem.Attr.forget attributes)
+                  )
+             )
+             (List.append [] (List.map M3e.Content.toNode content_))
         )
 
 

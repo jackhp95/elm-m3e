@@ -1,7 +1,13 @@
-module M3e.Cem.NavMenuItem exposing (disabled, navMenuItem, onClick, onClosed, onClosing, onOpened, onOpening, open, selected)
+module M3e.Cem.NavMenuItem exposing
+    ( navMenuItem, disabled, open, selected, onOpening, onOpened
+    , onClosing, onClosed, onClick
+    )
 
-{-| 
-@docs navMenuItem, disabled, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+{-|
+Middle layer for `<m3e-nav-menu-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.NavMenuItem` module for everyday use.
+
+@docs navMenuItem, disabled, open, selected, onOpening, onOpened
+@docs onClosing, onClosed, onClick
 -}
 
 

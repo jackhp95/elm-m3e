@@ -1,6 +1,8 @@
-module M3e.Cem.NavMenuItemGroup exposing (navMenuItemGroup)
+module M3e.Cem.NavMenuItemGroup exposing ( navMenuItemGroup )
 
-{-| 
+{-|
+Middle layer for `<m3e-nav-menu-item-group>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.NavMenuItemGroup` module for everyday use.
+
 @docs navMenuItemGroup
 -}
 

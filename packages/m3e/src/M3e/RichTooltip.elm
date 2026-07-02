@@ -1,7 +1,24 @@
-module M3e.RichTooltip exposing (actions, disabled, for, hideDelay, onBeforetoggle, onToggle, position, showDelay, subhead, touchGestures, view)
+module M3e.RichTooltip exposing
+    ( view, disabled, for, hideDelay, position, showDelay
+    , touchGestures, onBeforetoggle, onToggle, subhead, actions
+    )
 
-{-| 
-@docs view, disabled, for, hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle, subhead, actions
+{-|
+Provides contextual details for a control, such as explaining the value or purpose of a feature.
+
+**Component Info:**
+- **Extends:** `TooltipElementBase` from `/src/tooltip/TooltipElementBase`
+
+**Events:**
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+**Slots:**
+- `subhead`: Optional subhead text displayed above the supporting content.
+- `actions`: Optional action elements displayed at the bottom of the tooltip.
+
+@docs view, disabled, for, hideDelay, position, showDelay
+@docs touchGestures, onBeforetoggle, onToggle, subhead, actions
 -}
 
 
@@ -33,19 +50,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.RichTooltip.richTooltip
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.RichTooltip.richTooltip
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

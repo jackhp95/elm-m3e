@@ -1,7 +1,15 @@
-module M3e.Cem.Html.BottomSheet exposing (bottomSheet, detent, handle, handleLabel, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open, overshootLimit)
+module M3e.Cem.Html.BottomSheet exposing
+    ( bottomSheet, detent, handle, handleLabel, hideable, hideFriction
+    , modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened
+    , onClosed
+    )
 
-{-| 
-@docs bottomSheet, detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
+{-|
+Bottom layer for `<m3e-bottom-sheet>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs bottomSheet, detent, handle, handleLabel, hideable, hideFriction
+@docs modal, open, overshootLimit, onOpening, onClosing, onCancel
+@docs onOpened, onClosed
 -}
 
 

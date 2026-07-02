@@ -1,7 +1,20 @@
-module M3e.MonthView exposing (activeDate, date, maxDate, minDate, onActiveChange, onChange, rangeEnd, rangeStart, today, view)
+module M3e.MonthView exposing
+    ( view, rangeStart, rangeEnd, today, date, activeDate
+    , minDate, maxDate, onChange, onActiveChange
+    )
 
-{-| 
-@docs view, rangeStart, rangeEnd, today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+{-|
+An internal component used to display a single month in a calendar.
+
+**Component Info:**
+- **Extends:** `CalendarViewElementBase` from `/src/calendar/CalendarViewElementBase`
+
+**Events:**
+- `change`: No description
+- `active-change`: No description
+
+@docs view, rangeStart, rangeEnd, today, date, activeDate
+@docs minDate, maxDate, onChange, onActiveChange
 -}
 
 
@@ -30,13 +43,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.MonthView.monthView
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.MonthView.monthView
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

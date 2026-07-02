@@ -1,6 +1,8 @@
-module M3e.Cem.Tree exposing (cascade, multi, onChange, tree)
+module M3e.Cem.Tree exposing ( tree, multi, cascade, onChange )
 
-{-| 
+{-|
+Middle layer for `<m3e-tree>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Tree` module for everyday use.
+
 @docs tree, multi, cascade, onChange
 -}
 

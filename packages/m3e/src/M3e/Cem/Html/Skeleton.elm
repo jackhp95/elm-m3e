@@ -1,6 +1,8 @@
-module M3e.Cem.Html.Skeleton exposing (animation, loaded, shape, skeleton)
+module M3e.Cem.Html.Skeleton exposing ( skeleton, animation, shape, loaded )
 
-{-| 
+{-|
+Bottom layer for `<m3e-skeleton>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs skeleton, animation, shape, loaded
 -}
 

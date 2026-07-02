@@ -1,7 +1,13 @@
-module M3e.Cem.RadioGroup exposing (ariaInvalid, disabled, name, onBeforeinput, onChange, onInput, radioGroup, required)
+module M3e.Cem.RadioGroup exposing
+    ( radioGroup, ariaInvalid, disabled, name, required, onBeforeinput
+    , onInput, onChange
+    )
 
-{-| 
-@docs radioGroup, ariaInvalid, disabled, name, required, onBeforeinput, onInput, onChange
+{-|
+Middle layer for `<m3e-radio-group>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.RadioGroup` module for everyday use.
+
+@docs radioGroup, ariaInvalid, disabled, name, required, onBeforeinput
+@docs onInput, onChange
 -}
 
 

@@ -1,7 +1,52 @@
-module M3e.Value exposing (Supported, Value, above, aboveAfter, aboveBefore, aboveBelow, after, always, arch, arrow, auto, before, below, belowAfter, belowBefore, boom, both, buffer, bun, burst, button, circle, circular, compact, connected, contained, contains, content, dark, date, default, determinate, diamond, display, docked, elevated, end, endsWith, expanded, expressive, extraLarge, extraSmall, fan, fidelity, filled, flat, flower, fruitSalad, fullscreen, gem, ghostIsh, headline, heart, hexagon, hide, high, horizontal, indeterminate, label, large, light, loading, location, low, medium, modal, monochrome, month, multiYear, narrow, neutral, never, noData, none, off, on, outlined, oval, over, page, pentagon, pill, pixelCircle, pixelTriangle, primary, primaryContainer, puffy, puffyDiamond, pulse, push, query, rainbow, reposition, reset, rounded, secondary, secondaryContainer, segmented, selected, semicircle, sharp, side, slanted, small, softBoom, softBurst, square, standard, startsWith, step, submit, sunny, surface, tertiary, tertiaryContainer, text, time, title, toString, tonal, tonalSpot, triangle, true, uncontained, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, vertical, verySunny, vibrant, wave, wavy, wide, year)
+module M3e.Value exposing
+    ( Value, Supported, toString, rounded, square, standard
+    , vibrant, auto, dark, light, content, expressive, fidelity
+    , fruitSalad, monochrome, neutral, rainbow, tonalSpot, high, medium
+    , after, before, primary, secondary, both, none, selected
+    , above, below, end, horizontal, vertical, elevated, filled
+    , outlined, tonal, extraLarge, extraSmall, large, small, pulse
+    , wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie
+    , value8LeafClover, value9SidedCookie, arch, arrow, boom, bun, burst
+    , circle, diamond, fan, flower, gem, ghostIsh, heart
+    , hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle, puffy
+    , puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny, triangle
+    , verySunny, docked, fullscreen, buffer, determinate, indeterminate, query
+    , flat, wavy, compact, expanded, contained, uncontained, segmented
+    , low, sharp, display, headline, label, title, tertiary
+    , button, reset, submit, primaryContainer, secondaryContainer, surface, tertiaryContainer
+    , over, push, side, modal, month, multiYear, year
+    , off, on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected
+    , default, narrow, wide, text, date, location, page
+    , step, time, true, contains, endsWith, startsWith, always
+    , never, loading, noData, hide, reposition, aboveBelow
+    )
 
-{-| 
-@docs Value, Supported, toString, rounded, square, standard, vibrant, auto, dark, light, content, expressive, fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot, high, medium, after, before, primary, secondary, both, none, selected, above, below, end, horizontal, vertical, elevated, filled, outlined, tonal, extraLarge, extraSmall, large, small, pulse, wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow, boom, bun, burst, circle, diamond, fan, flower, gem, ghostIsh, heart, hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny, triangle, verySunny, docked, fullscreen, buffer, determinate, indeterminate, query, flat, wavy, compact, expanded, contained, uncontained, segmented, low, sharp, display, headline, label, title, tertiary, button, reset, submit, primaryContainer, secondaryContainer, surface, tertiaryContainer, over, push, side, modal, month, multiYear, year, off, on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected, default, narrow, wide, text, date, location, page, step, time, true, contains, endsWith, startsWith, always, never, loading, noData, hide, reposition, aboveBelow
+{-|
+Token values for the typed enum attributes. A `Value tags` is a phantom-tagged string; each exposed token (e.g. `filled`, `outlined`) is admitted only where its tag is accepted, so a component can only be given values it actually supports. These are passed to the generated attribute setters.
+
+@docs Value, Supported, toString, rounded, square, standard
+@docs vibrant, auto, dark, light, content, expressive
+@docs fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
+@docs high, medium, after, before, primary, secondary
+@docs both, none, selected, above, below, end
+@docs horizontal, vertical, elevated, filled, outlined, tonal
+@docs extraLarge, extraSmall, large, small, pulse, wave
+@docs circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie
+@docs value8LeafClover, value9SidedCookie, arch, arrow, boom, bun
+@docs burst, circle, diamond, fan, flower, gem
+@docs ghostIsh, heart, hexagon, oval, pentagon, pill
+@docs pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted
+@docs softBoom, softBurst, sunny, triangle, verySunny, docked
+@docs fullscreen, buffer, determinate, indeterminate, query, flat
+@docs wavy, compact, expanded, contained, uncontained, segmented
+@docs low, sharp, display, headline, label, title
+@docs tertiary, button, reset, submit, primaryContainer, secondaryContainer
+@docs surface, tertiaryContainer, over, push, side, modal
+@docs month, multiYear, year, off, on, aboveAfter
+@docs aboveBefore, belowAfter, belowBefore, connected, default, narrow
+@docs wide, text, date, location, page, step
+@docs time, true, contains, endsWith, startsWith, always
+@docs never, loading, noData, hide, reposition, aboveBelow
 -}
 
 

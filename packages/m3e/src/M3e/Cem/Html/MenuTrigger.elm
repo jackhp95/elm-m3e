@@ -1,6 +1,8 @@
-module M3e.Cem.Html.MenuTrigger exposing (for, menuTrigger)
+module M3e.Cem.Html.MenuTrigger exposing ( menuTrigger, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-menu-trigger>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs menuTrigger, for
 -}
 

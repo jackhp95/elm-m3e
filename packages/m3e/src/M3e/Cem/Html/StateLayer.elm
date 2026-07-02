@@ -1,6 +1,8 @@
-module M3e.Cem.Html.StateLayer exposing (disableHover, disabled, for, stateLayer)
+module M3e.Cem.Html.StateLayer exposing ( stateLayer, disabled, disableHover, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-state-layer>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs stateLayer, disabled, disableHover, for
 -}
 

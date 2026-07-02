@@ -1,7 +1,16 @@
-module M3e.Cem.Html.Button exposing (button, disabled, disabledInteractive, download, href, name, onBeforeinput, onChange, onClick, onInput, rel, selected, shape, size, target, toggle, type_, value, variant)
+module M3e.Cem.Html.Button exposing
+    ( button, disabled, disabledInteractive, download, href, name
+    , rel, selected, shape, size, target, toggle, type_
+    , value, variant, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs button, disabled, disabledInteractive, download, href, name, rel, selected, shape, size, target, toggle, type_, value, variant, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-button>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs button, disabled, disabledInteractive, download, href, name
+@docs rel, selected, shape, size, target, toggle
+@docs type_, value, variant, onBeforeinput, onInput, onChange
+@docs onClick
 -}
 
 

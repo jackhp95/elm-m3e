@@ -1,7 +1,21 @@
-module M3e.SearchBar exposing (clearIcon, clearLabel, clearable, leading, onClear, trailing, view)
+module M3e.SearchBar exposing
+    ( view, clearable, clearLabel, onClear, leading, trailing
+    , clearIcon
+    )
 
-{-| 
-@docs view, clearable, clearLabel, onClear, leading, trailing, clearIcon
+{-|
+A bar that provides a prominent entry point for search.
+
+**Events:**
+- `clear`: Dispatched when the search term is cleared.
+
+**Slots:**
+- `leading`: Renders content before the input of the bar.
+- `input`: Renders the input of the bar.
+- `trailing`: Renders content after the input of the bar.
+
+@docs view, clearable, clearLabel, onClear, leading, trailing
+@docs clearIcon
 -}
 
 
@@ -29,19 +43,20 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SearchBar.searchBar
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input) ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.SearchBar.searchBar
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

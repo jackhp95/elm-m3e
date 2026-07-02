@@ -1,7 +1,25 @@
-module M3e.SuggestionChip exposing (disabled, disabledInteractive, download, href, icon, name, onClick, rel, target, type_, value, variant, view)
+module M3e.SuggestionChip exposing
+    ( view, disabled, disabledInteractive, download, href, name
+    , rel, target, type_, value, variant, onClick, icon
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, download, href, name, rel, target, type_, value, variant, onClick, icon
+{-|
+A chip used to help narrow a user's intent by presenting dynamically generated suggestions, such as
+suggested responses or search filters.
+
+**Component Info:**
+- **Extends:** `M3eChipElement` from `/src/chips/ChipElement`
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the chip's label.
+- `trailing-icon`: Renders an icon after the chip's label.
+
+@docs view, disabled, disabledInteractive, download, href, name
+@docs rel, target, type_, value, variant, onClick
+@docs icon
 -}
 
 
@@ -34,19 +52,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SuggestionChip.suggestionChip
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.SuggestionChip.suggestionChip
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

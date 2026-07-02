@@ -1,6 +1,12 @@
-module M3e.SplitButton exposing (size, variant, view)
+module M3e.SplitButton exposing ( view, variant, size )
 
-{-| 
+{-|
+A button used to show an action with a menu of related actions.
+
+**Slots:**
+- `leading-button`: The leading button used to perform the primary action.
+- `trailing-button`: The trailing icon button used to open a menu of related actions.
+
 @docs view, variant, size
 -}
 
@@ -28,23 +34,26 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SplitButton.splitButton
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode
-                    (M3e.Element.withSlot "leading-button" req_.leadingButton)
-                , M3e.Element.toNode
-                    (M3e.Element.withSlot "trailing-button" req_.trailingButton)
-                ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.SplitButton.splitButton
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode
+                      (M3e.Element.withSlot "leading-button" req_.leadingButton)
+                  , M3e.Element.toNode
+                      (M3e.Element.withSlot
+                         "trailing-button"
+                         req_.trailingButton
+                      )
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

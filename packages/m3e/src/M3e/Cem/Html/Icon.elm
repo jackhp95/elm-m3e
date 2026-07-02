@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Icon exposing (filled, grade, icon, name, opticalSize, variant, weight)
+module M3e.Cem.Html.Icon exposing
+    ( icon, filled, grade, opticalSize, name, variant
+    , weight
+    )
 
-{-| 
-@docs icon, filled, grade, opticalSize, name, variant, weight
+{-|
+Bottom layer for `<m3e-icon>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs icon, filled, grade, opticalSize, name, variant
+@docs weight
 -}
 
 

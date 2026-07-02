@@ -1,6 +1,8 @@
-module M3e.NavMenu exposing (child, children, view)
+module M3e.NavMenu exposing ( view, child, children )
 
-{-| 
+{-|
+A hierarchical menu, typically used on larger devices, that allows a user to switch between views.
+
 @docs view, child, children
 -}
 
@@ -21,11 +23,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.NavMenu.navMenu (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.NavMenu.navMenu
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

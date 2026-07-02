@@ -1,7 +1,15 @@
-module M3e.Cem.BottomSheet exposing (bottomSheet, detent, handle, handleLabel, hideFriction, hideable, modal, onCancel, onClosed, onClosing, onOpened, onOpening, open, overshootLimit)
+module M3e.Cem.BottomSheet exposing
+    ( bottomSheet, detent, handle, handleLabel, hideable, hideFriction
+    , modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened
+    , onClosed
+    )
 
-{-| 
-@docs bottomSheet, detent, handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
+{-|
+Middle layer for `<m3e-bottom-sheet>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.BottomSheet` module for everyday use.
+
+@docs bottomSheet, detent, handle, handleLabel, hideable, hideFriction
+@docs modal, open, overshootLimit, onOpening, onClosing, onCancel
+@docs onOpened, onClosed
 -}
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.DrawerContainer exposing (drawerContainer, end, endDivider, endMode, onChange, start, startDivider, startMode)
+module M3e.Cem.Html.DrawerContainer exposing
+    ( drawerContainer, end, endMode, endDivider, start, startMode
+    , startDivider, onChange
+    )
 
-{-| 
-@docs drawerContainer, end, endMode, endDivider, start, startMode, startDivider, onChange
+{-|
+Bottom layer for `<m3e-drawer-container>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs drawerContainer, end, endMode, endDivider, start, startMode
+@docs startDivider, onChange
 -}
 
 

@@ -1,6 +1,8 @@
-module M3e.Accordion exposing (child, children, multi, view)
+module M3e.Accordion exposing ( view, multi, child, children )
 
-{-| 
+{-|
+Combines multiple expansion panels in to an accordion.
+
 @docs view, multi, child, children
 -}
 
@@ -23,13 +25,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Accordion.accordion
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Accordion.accordion
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

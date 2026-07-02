@@ -1,7 +1,13 @@
-module M3e.Cem.Tooltip exposing (disabled, for, hideDelay, position, showDelay, tooltip, touchGestures)
+module M3e.Cem.Tooltip exposing
+    ( tooltip, disabled, for, hideDelay, position, showDelay
+    , touchGestures
+    )
 
-{-| 
-@docs tooltip, disabled, for, hideDelay, position, showDelay, touchGestures
+{-|
+Middle layer for `<m3e-tooltip>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Tooltip` module for everyday use.
+
+@docs tooltip, disabled, for, hideDelay, position, showDelay
+@docs touchGestures
 -}
 
 

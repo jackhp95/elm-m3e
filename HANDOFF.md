@@ -52,11 +52,14 @@ against the code.
 
 ## Regenerate + verify (the loop)
 
-Regenerate via `bin/elm-cem.js` (NOT bare `elm-codegen run` — see FRICTIONS F10):
+Regenerate via `bin/elm-cem.js` (NOT bare `elm-codegen run` — see FRICTIONS F10).
+First regenerate the usage examples config: `cd m3e-docs && node scripts/examples-to-elm.mjs`
+(writes compile-verified `config/examples.generated.json`). Then:
 ```
 node elm-cem/bin/elm-cem.js \
   --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
-  --config-from=config/slots.json --output=packages/m3e/src
+  --config-from=config/slots.json --config-from=config/examples.generated.json \
+  --output=packages/m3e/src
 cd packages/m3e && npx elm make src/M3e.elm --output=/dev/null    # expect: 379 modules
 ```
 For a change, edit `elm-cem/codegen/Generate.elm`, regenerate, `elm make`, and drop a

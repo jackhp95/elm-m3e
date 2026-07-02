@@ -1,7 +1,13 @@
-module M3e.Cem.Html.SuggestionChip exposing (disabled, disabledInteractive, download, href, name, onClick, rel, suggestionChip, target, type_, value, variant)
+module M3e.Cem.Html.SuggestionChip exposing
+    ( suggestionChip, disabled, disabledInteractive, download, href, name
+    , rel, target, type_, value, variant, onClick
+    )
 
-{-| 
-@docs suggestionChip, disabled, disabledInteractive, download, href, name, rel, target, type_, value, variant, onClick
+{-|
+Bottom layer for `<m3e-suggestion-chip>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs suggestionChip, disabled, disabledInteractive, download, href, name
+@docs rel, target, type_, value, variant, onClick
 -}
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.BreadcrumbItem exposing (breadcrumbItem, current, disabled, download, href, itemLabel, onClick, rel, target)
+module M3e.Cem.Html.BreadcrumbItem exposing
+    ( breadcrumbItem, itemLabel, disabled, current, href, target
+    , download, rel, onClick
+    )
 
-{-| 
-@docs breadcrumbItem, itemLabel, disabled, current, href, target, download, rel, onClick
+{-|
+Bottom layer for `<m3e-breadcrumb-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs breadcrumbItem, itemLabel, disabled, current, href, target
+@docs download, rel, onClick
 -}
 
 

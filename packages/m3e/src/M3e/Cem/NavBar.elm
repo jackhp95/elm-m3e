@@ -1,6 +1,10 @@
-module M3e.Cem.NavBar exposing (mode, navBar, onBeforeinput, onChange, onInput)
+module M3e.Cem.NavBar exposing
+    ( navBar, mode, onChange, onBeforeinput, onInput
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-nav-bar>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.NavBar` module for everyday use.
+
 @docs navBar, mode, onChange, onBeforeinput, onInput
 -}
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Dialog exposing (alert, closeLabel, dialog, disableClose, dismissible, noFocusTrap, onCancel, onClosed, onClosing, onOpened, onOpening, open)
+module M3e.Cem.Dialog exposing
+    ( dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap
+    , open, onOpening, onOpened, onClosing, onClosed, onCancel
+    )
 
-{-| 
-@docs dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
+{-|
+Middle layer for `<m3e-dialog>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Dialog` module for everyday use.
+
+@docs dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap
+@docs open, onOpening, onOpened, onClosing, onClosed, onCancel
 -}
 
 

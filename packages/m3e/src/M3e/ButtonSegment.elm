@@ -1,7 +1,22 @@
-module M3e.ButtonSegment exposing (checked, child, children, disabled, icon, onBeforeinput, onChange, onClick, onInput, value, view)
+module M3e.ButtonSegment exposing
+    ( view, checked, disabled, value, onBeforeinput, onInput
+    , onChange, onClick, child, icon, children
+    )
 
-{-| 
-@docs view, checked, disabled, value, onBeforeinput, onInput, onChange, onClick, child, icon, children
+{-|
+A option that can be selected within a segmented button.
+
+**Events:**
+- `beforeinput`: Dispatched before the checked state changes.
+- `input`: Dispatched when the checked state changes.
+- `change`: Dispatched when the checked state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the option's label.
+
+@docs view, checked, disabled, value, onBeforeinput, onInput
+@docs onChange, onClick, child, icon, children
 -}
 
 
@@ -31,13 +46,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ButtonSegment.buttonSegment
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ButtonSegment.buttonSegment
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

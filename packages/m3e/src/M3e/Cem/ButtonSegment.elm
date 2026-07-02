@@ -1,7 +1,13 @@
-module M3e.Cem.ButtonSegment exposing (buttonSegment, checked, disabled, onBeforeinput, onChange, onClick, onInput, value)
+module M3e.Cem.ButtonSegment exposing
+    ( buttonSegment, checked, disabled, value, onBeforeinput, onInput
+    , onChange, onClick
+    )
 
-{-| 
-@docs buttonSegment, checked, disabled, value, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-button-segment>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ButtonSegment` module for everyday use.
+
+@docs buttonSegment, checked, disabled, value, onBeforeinput, onInput
+@docs onChange, onClick
 -}
 
 
@@ -67,8 +73,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.ButtonSegment.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 
@@ -79,8 +85,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.ButtonSegment.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 
@@ -92,8 +98,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.ButtonSegment.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "checked" ] Json.Decode.bool)
         )
 
 

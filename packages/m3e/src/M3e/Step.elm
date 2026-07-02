@@ -1,7 +1,29 @@
-module M3e.Step exposing (completed, disabled, doneIcon, editIcon, editable, error, errorIcon, for, hint, icon, invalid, onBeforeinput, onChange, onClick, onInput, optional, selected, view)
+module M3e.Step exposing
+    ( view, completed, disabled, editable, for, optional
+    , selected, invalid, onBeforeinput, onInput, onChange, onClick, icon
+    , doneIcon, editIcon, errorIcon, hint, error
+    )
 
-{-| 
-@docs view, completed, disabled, editable, for, optional, selected, invalid, onBeforeinput, onInput, onChange, onClick, icon, doneIcon, editIcon, errorIcon, hint, error
+{-|
+A step in a wizard-like workflow.
+
+**Events:**
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
+- `change`: Dispatched when the selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders the icon of the step.
+- `done-icon`: Renders the icon of a completed step.
+- `edit-icon`: Renders the icon of a completed editable step.
+- `error-icon`: Renders icon of an invalid step.
+- `hint`: Renders the hint text of the step.
+- `error`: Renders the error message for an invalid step.
+
+@docs view, completed, disabled, editable, for, optional
+@docs selected, invalid, onBeforeinput, onInput, onChange, onClick
+@docs icon, doneIcon, editIcon, errorIcon, hint, error
 -}
 
 
@@ -40,17 +62,17 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Step.step (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.Step.step (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

@@ -1,7 +1,16 @@
-module M3e.Theme exposing (child, children, color, contrast, density, motion, onChange, scheme, strongFocus, variant, view)
+module M3e.Theme exposing
+    ( view, color, contrast, density, scheme, strongFocus
+    , variant, motion, onChange, child, children
+    )
 
-{-| 
-@docs view, color, contrast, density, scheme, strongFocus, variant, motion, onChange, child, children
+{-|
+A non-visual element responsible for application-level theming.
+
+**Events:**
+- `change`: Dispatched when the theme changes.
+
+@docs view, color, contrast, density, scheme, strongFocus
+@docs variant, motion, onChange, child, children
 -}
 
 
@@ -30,11 +39,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Theme.theme (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Theme.theme (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

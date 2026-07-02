@@ -1,7 +1,13 @@
-module M3e.Cem.SegmentedButton exposing (disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, segmentedButton)
+module M3e.Cem.SegmentedButton exposing
+    ( segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange
+    , onBeforeinput, onInput
+    )
 
-{-| 
-@docs segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+{-|
+Middle layer for `<m3e-segmented-button>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SegmentedButton` module for everyday use.
+
+@docs segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange
+@docs onBeforeinput, onInput
 -}
 
 

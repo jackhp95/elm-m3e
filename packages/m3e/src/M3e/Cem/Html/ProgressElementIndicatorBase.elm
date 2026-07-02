@@ -1,6 +1,8 @@
-module M3e.Cem.Html.ProgressElementIndicatorBase exposing (max, progressElementIndicatorBase, value, variant)
+module M3e.Cem.Html.ProgressElementIndicatorBase exposing ( progressElementIndicatorBase, value, max, variant )
 
-{-| 
+{-|
+Bottom layer for `<ProgressElementIndicatorBase>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs progressElementIndicatorBase, value, max, variant
 -}
 

@@ -1,6 +1,30 @@
-module M3e.Breadcrumb exposing (child, children, separator, view, wrap)
+module M3e.Breadcrumb exposing
+    ( view, wrap, child, separator, children
+    )
 
-{-| 
+{-|
+Displays a hierarchical navigation path and identifies the user's
+current location within an application.
+
+**Slots:**
+- `separator`: Renders a custom separator between breadcrumb items.
+
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Breadcrumb trail" -->
+```elm
+M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/" ] [ M3e.BreadcrumbItem.child (Kit.text "Home") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/work" ] [ M3e.BreadcrumbItem.child (Kit.text "Work") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/work/tags" ] [ M3e.BreadcrumbItem.child (Kit.text "Tags") ] ])
+```
+
+<!-- elm-cem:example title="Breadcrumb trail with current page" -->
+```elm
+M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/photos" ] [ M3e.BreadcrumbItem.child (Kit.text "Photos") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/collections" ] [ M3e.BreadcrumbItem.child (Kit.text "Collections") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.current M3e.Value.page ] [ M3e.BreadcrumbItem.child (Kit.text "Title") ] ])
+```
+
 @docs view, wrap, child, separator, children
 -}
 
@@ -25,13 +49,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Breadcrumb.breadcrumb
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Breadcrumb.breadcrumb
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

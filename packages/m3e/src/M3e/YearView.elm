@@ -1,7 +1,20 @@
-module M3e.YearView exposing (activeDate, date, maxDate, minDate, onActiveChange, onChange, today, view)
+module M3e.YearView exposing
+    ( view, today, date, activeDate, minDate, maxDate
+    , onChange, onActiveChange
+    )
 
-{-| 
-@docs view, today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+{-|
+An internal component used to display a single year in a calendar.
+
+**Component Info:**
+- **Extends:** `CalendarViewElementBase` from `/src/calendar/CalendarViewElementBase`
+
+**Events:**
+- `change`: No description
+- `active-change`: No description
+
+@docs view, today, date, activeDate, minDate, maxDate
+@docs onChange, onActiveChange
 -}
 
 
@@ -28,13 +41,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.YearView.yearView
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.YearView.yearView
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

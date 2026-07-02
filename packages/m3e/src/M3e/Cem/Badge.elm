@@ -1,6 +1,8 @@
-module M3e.Cem.Badge exposing (badge, for, position, size)
+module M3e.Cem.Badge exposing ( badge, size, position, for )
 
-{-| 
+{-|
+Middle layer for `<m3e-badge>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Badge` module for everyday use.
+
 @docs badge, size, position, for
 -}
 

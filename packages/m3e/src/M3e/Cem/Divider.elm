@@ -1,6 +1,10 @@
-module M3e.Cem.Divider exposing (divider, inset, insetEnd, insetStart, vertical)
+module M3e.Cem.Divider exposing
+    ( divider, inset, insetStart, insetEnd, vertical
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-divider>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Divider` module for everyday use.
+
 @docs divider, inset, insetStart, insetEnd, vertical
 -}
 

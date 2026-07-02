@@ -1,7 +1,20 @@
-module M3e.MenuItem exposing (child, children, disabled, download, href, icon, onClick, rel, target, trailingIcon, view)
+module M3e.MenuItem exposing
+    ( view, disabled, download, href, rel, target
+    , onClick, child, icon, trailingIcon, children
+    )
 
-{-| 
-@docs view, disabled, download, href, rel, target, onClick, child, icon, trailingIcon, children
+{-|
+An item of a floating action button (FAB) menu.
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the items's label.
+- `trailing-icon`: Renders an icon after the item's label.
+
+@docs view, disabled, download, href, rel, target
+@docs onClick, child, icon, trailingIcon, children
 -}
 
 
@@ -31,13 +44,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.MenuItem.menuItem
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.MenuItem.menuItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

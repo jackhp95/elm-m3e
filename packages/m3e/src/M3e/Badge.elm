@@ -1,6 +1,10 @@
-module M3e.Badge exposing (child, children, for, position, size, view)
+module M3e.Badge exposing
+    ( view, size, position, for, child, children
+    )
 
-{-| 
+{-|
+A visual indicator used to label content.
+
 @docs view, size, position, for, child, children
 -}
 
@@ -25,11 +29,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Badge.badge (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Badge.badge (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

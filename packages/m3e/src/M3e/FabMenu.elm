@@ -1,6 +1,14 @@
-module M3e.FabMenu exposing (child, children, onBeforetoggle, onToggle, variant, view)
+module M3e.FabMenu exposing
+    ( view, variant, onBeforetoggle, onToggle, child, children
+    )
 
-{-| 
+{-|
+A menu, opened from a floating action button (FAB), used to display multiple related actions.
+
+**Events:**
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
 @docs view, variant, onBeforetoggle, onToggle, child, children
 -}
 
@@ -25,11 +33,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FabMenu.fabMenu (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.FabMenu.fabMenu
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

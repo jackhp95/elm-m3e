@@ -1,7 +1,13 @@
-module M3e.Cem.Html.ExpansionPanel exposing (disabled, expansionPanel, hideToggle, onClosed, onClosing, onOpened, onOpening, open, toggleDirection, togglePosition)
+module M3e.Cem.Html.ExpansionPanel exposing
+    ( expansionPanel, disabled, hideToggle, open, toggleDirection, togglePosition
+    , onOpening, onOpened, onClosing, onClosed
+    )
 
-{-| 
-@docs expansionPanel, disabled, hideToggle, open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed
+{-|
+Bottom layer for `<m3e-expansion-panel>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs expansionPanel, disabled, hideToggle, open, toggleDirection, togglePosition
+@docs onOpening, onOpened, onClosing, onClosed
 -}
 
 

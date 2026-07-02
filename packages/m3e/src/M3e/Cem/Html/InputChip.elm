@@ -1,7 +1,13 @@
-module M3e.Cem.Html.InputChip exposing (disabled, disabledInteractive, inputChip, onClick, onRemove, removable, removeLabel, value, variant)
+module M3e.Cem.Html.InputChip exposing
+    ( inputChip, disabled, disabledInteractive, removable, removeLabel, value
+    , variant, onRemove, onClick
+    )
 
-{-| 
-@docs inputChip, disabled, disabledInteractive, removable, removeLabel, value, variant, onRemove, onClick
+{-|
+Bottom layer for `<m3e-input-chip>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs inputChip, disabled, disabledInteractive, removable, removeLabel, value
+@docs variant, onRemove, onClick
 -}
 
 

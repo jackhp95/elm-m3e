@@ -1,6 +1,10 @@
-module M3e.Cem.Html.NavRail exposing (mode, navRail, onBeforeinput, onChange, onInput)
+module M3e.Cem.Html.NavRail exposing
+    ( navRail, mode, onBeforeinput, onInput, onChange
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-nav-rail>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs navRail, mode, onBeforeinput, onInput, onChange
 -}
 

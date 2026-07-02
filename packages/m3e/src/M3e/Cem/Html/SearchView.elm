@@ -1,7 +1,13 @@
-module M3e.Cem.Html.SearchView exposing (clearLabel, closeLabel, contained, hideSearchIcon, mode, onBeforetoggle, onClear, onQuery, onToggle, open, searchView)
+module M3e.Cem.Html.SearchView exposing
+    ( searchView, contained, mode, open, clearLabel, closeLabel
+    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs searchView, contained, mode, open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle
+{-|
+Bottom layer for `<m3e-search-view>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs searchView, contained, mode, open, clearLabel, closeLabel
+@docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle
 -}
 
 

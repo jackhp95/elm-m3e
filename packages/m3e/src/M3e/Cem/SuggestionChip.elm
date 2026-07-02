@@ -1,7 +1,13 @@
-module M3e.Cem.SuggestionChip exposing (disabled, disabledInteractive, download, href, name, onClick, rel, suggestionChip, target, type_, value, variant)
+module M3e.Cem.SuggestionChip exposing
+    ( suggestionChip, disabled, disabledInteractive, download, href, name
+    , rel, target, type_, value, variant, onClick
+    )
 
-{-| 
-@docs suggestionChip, disabled, disabledInteractive, download, href, name, rel, target, type_, value, variant, onClick
+{-|
+Middle layer for `<m3e-suggestion-chip>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SuggestionChip` module for everyday use.
+
+@docs suggestionChip, disabled, disabledInteractive, download, href, name
+@docs rel, target, type_, value, variant, onClick
 -}
 
 

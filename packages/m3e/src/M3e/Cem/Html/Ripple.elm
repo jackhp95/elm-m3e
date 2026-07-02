@@ -1,6 +1,10 @@
-module M3e.Cem.Html.Ripple exposing (centered, disabled, for, radius, ripple, unbounded)
+module M3e.Cem.Html.Ripple exposing
+    ( ripple, centered, disabled, for, radius, unbounded
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-ripple>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs ripple, centered, disabled, for, radius, unbounded
 -}
 

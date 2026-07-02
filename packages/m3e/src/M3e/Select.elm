@@ -1,7 +1,36 @@
-module M3e.Select exposing (arrow, child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, onToggle, panelClass, required, value, view)
+module M3e.Select exposing
+    ( view, disabled, hideSelectionIndicator, multi, name, panelClass
+    , required, onChange, onToggle, onBeforeinput, onInput, child, arrow
+    , value, children
+    )
 
-{-| 
-@docs view, disabled, hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle, onBeforeinput, onInput, child, arrow, value, children
+{-|
+A form control that allows users to select a value from a set of predefined options.
+
+**Events:**
+- `change`: Dispatched when the selected state changes.
+- `toggle`: No description
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
+
+**Slots:**
+- `arrow`: Renders the dropdown arrow.
+- `value`: Renders the selected value(s).
+
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Multi-select languages with custom arrow" -->
+```elm
+M3e.Select.view [ M3e.Select.multi True, M3e.Select.name "languages" ] ([ M3e.Select.arrow (M3e.Icon.view [ M3e.Icon.name "expand_more" ] []) ] ++ M3e.Select.children [ M3e.Option.view { content = Kit.text "JavaScript" } [ M3e.Option.value "javascript" ] [], M3e.Option.view { content = Kit.text "TypeScript" } [ M3e.Option.value "typescript" ] [], M3e.Option.view { content = Kit.text "Python" } [ M3e.Option.value "python" ] [], M3e.Option.view { content = Kit.text "Rust" } [ M3e.Option.value "rust" ] [] ])
+```
+
+@docs view, disabled, hideSelectionIndicator, multi, name, panelClass
+@docs required, onChange, onToggle, onBeforeinput, onInput, child
+@docs arrow, value, children
 -}
 
 
@@ -35,11 +64,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Select.select (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Select.select (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,6 +1,26 @@
-module M3e.Heading exposing (emphasized, level, size, variant, view)
+module M3e.Heading exposing
+    ( view, emphasized, level, size, variant
+    )
 
-{-| 
+{-|
+A heading to a page or section.
+
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Page header hierarchy with semantic levels" -->
+```elm
+Native.header [] [ M3e.Heading.view { content = Kit.text "Quarterly report" } [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.large, M3e.Heading.level "1" ] [], M3e.Heading.view { content = Kit.text "Revenue overview" } [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.medium, M3e.Heading.level "2" ] [], Native.p [] [ Kit.text "A summary of performance across all regions for the quarter." ], M3e.Heading.view { content = Kit.text "Updated 2 hours ago" } [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.small ] [] ]
+```
+
+<!-- elm-cem:example title="Emphasized display heading for a hero section" -->
+```elm
+Native.section [] [ M3e.Heading.view { content = Kit.text "Build faster." } [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True, M3e.Heading.level "1" ] [], M3e.Heading.view { content = Kit.text "Ship expressive interfaces with Material 3." } [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small, M3e.Heading.level "2" ] [] ]
+```
+
 @docs view, emphasized, level, size, variant
 -}
 
@@ -27,17 +47,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Heading.heading (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.Heading.heading
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

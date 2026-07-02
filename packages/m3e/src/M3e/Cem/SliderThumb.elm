@@ -1,7 +1,13 @@
-module M3e.Cem.SliderThumb exposing (disabled, name, onBeforeinput, onChange, onClick, onInput, onValueChange, sliderThumb, value)
+module M3e.Cem.SliderThumb exposing
+    ( sliderThumb, disabled, name, value, onValueChange, onBeforeinput
+    , onInput, onChange, onClick
+    )
 
-{-| 
-@docs sliderThumb, disabled, name, value, onValueChange, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-slider-thumb>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SliderThumb` module for everyday use.
+
+@docs sliderThumb, disabled, name, value, onValueChange, onBeforeinput
+@docs onInput, onChange, onClick
 -}
 
 

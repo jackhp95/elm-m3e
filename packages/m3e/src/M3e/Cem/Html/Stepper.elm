@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Stepper exposing (headerPosition, labelPosition, linear, onBeforeinput, onChange, onInput, orientation, stepper)
+module M3e.Cem.Html.Stepper exposing
+    ( stepper, headerPosition, labelPosition, linear, orientation, onChange
+    , onBeforeinput, onInput
+    )
 
-{-| 
-@docs stepper, headerPosition, labelPosition, linear, orientation, onChange, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-stepper>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs stepper, headerPosition, labelPosition, linear, orientation, onChange
+@docs onBeforeinput, onInput
 -}
 
 

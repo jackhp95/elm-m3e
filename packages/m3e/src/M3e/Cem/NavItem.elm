@@ -1,7 +1,14 @@
-module M3e.Cem.NavItem exposing (disabled, disabledInteractive, download, href, navItem, onBeforeinput, onChange, onClick, onInput, orientation, rel, selected, target)
+module M3e.Cem.NavItem exposing
+    ( navItem, disabled, disabledInteractive, download, href, orientation
+    , rel, selected, target, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs navItem, disabled, disabledInteractive, download, href, orientation, rel, selected, target, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-nav-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.NavItem` module for everyday use.
+
+@docs navItem, disabled, disabledInteractive, download, href, orientation
+@docs rel, selected, target, onBeforeinput, onInput, onChange
+@docs onClick
 -}
 
 
@@ -112,8 +119,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.NavItem.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -124,8 +131,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.NavItem.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -137,8 +144,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.NavItem.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 

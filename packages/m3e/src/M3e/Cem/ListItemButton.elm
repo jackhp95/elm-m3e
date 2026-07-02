@@ -1,7 +1,13 @@
-module M3e.Cem.ListItemButton exposing (disabled, download, href, listItemButton, onClick, rel, target)
+module M3e.Cem.ListItemButton exposing
+    ( listItemButton, href, target, rel, download, disabled
+    , onClick
+    )
 
-{-| 
-@docs listItemButton, href, target, rel, download, disabled, onClick
+{-|
+Middle layer for `<m3e-list-item-button>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ListItemButton` module for everyday use.
+
+@docs listItemButton, href, target, rel, download, disabled
+@docs onClick
 -}
 
 

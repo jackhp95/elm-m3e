@@ -1,6 +1,8 @@
-module M3e.ChipSet exposing (child, children, vertical, view)
+module M3e.ChipSet exposing ( view, vertical, child, children )
 
-{-| 
+{-|
+A container used to organize chips into a cohesive unit.
+
 @docs view, vertical, child, children
 -}
 
@@ -23,11 +25,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ChipSet.chipSet (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ChipSet.chipSet
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

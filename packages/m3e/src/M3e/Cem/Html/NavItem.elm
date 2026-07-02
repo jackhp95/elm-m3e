@@ -1,7 +1,14 @@
-module M3e.Cem.Html.NavItem exposing (disabled, disabledInteractive, download, href, navItem, onBeforeinput, onChange, onClick, onInput, orientation, rel, selected, target)
+module M3e.Cem.Html.NavItem exposing
+    ( navItem, disabled, disabledInteractive, download, href, orientation
+    , rel, selected, target, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs navItem, disabled, disabledInteractive, download, href, orientation, rel, selected, target, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-nav-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs navItem, disabled, disabledInteractive, download, href, orientation
+@docs rel, selected, target, onBeforeinput, onInput, onChange
+@docs onClick
 -}
 
 

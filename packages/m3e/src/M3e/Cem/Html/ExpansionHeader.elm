@@ -1,6 +1,10 @@
-module M3e.Cem.Html.ExpansionHeader exposing (disabled, expansionHeader, hideToggle, onClick, toggleDirection, togglePosition)
+module M3e.Cem.Html.ExpansionHeader exposing
+    ( expansionHeader, hideToggle, toggleDirection, togglePosition, disabled, onClick
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-expansion-header>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs expansionHeader, hideToggle, toggleDirection, togglePosition, disabled, onClick
 -}
 

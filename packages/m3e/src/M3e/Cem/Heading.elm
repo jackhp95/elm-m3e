@@ -1,6 +1,10 @@
-module M3e.Cem.Heading exposing (emphasized, heading, level, size, variant)
+module M3e.Cem.Heading exposing
+    ( heading, emphasized, level, size, variant
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-heading>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Heading` module for everyday use.
+
 @docs heading, emphasized, level, size, variant
 -}
 

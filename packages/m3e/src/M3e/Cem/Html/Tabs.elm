@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Tabs exposing (disablePagination, headerPosition, nextPageLabel, onBeforeinput, onChange, onInput, previousPageLabel, stretch, tabs, variant)
+module M3e.Cem.Html.Tabs exposing
+    ( tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+    , variant, onChange, onBeforeinput, onInput
+    )
 
-{-| 
-@docs tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-tabs>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs tabs, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
+@docs variant, onChange, onBeforeinput, onInput
 -}
 
 

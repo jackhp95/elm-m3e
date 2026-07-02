@@ -1,7 +1,46 @@
-module M3e.Button exposing (child, children, disabled, disabledInteractive, download, href, icon, name, onBeforeinput, onChange, onClick, onInput, rel, selected, selectedIcon, selectedSlot, shape, size, target, toggle, trailingIcon, type_, value, variant, view)
+module M3e.Button exposing
+    ( view, disabled, disabledInteractive, download, href, name
+    , rel, selected, shape, size, target, toggle, type_
+    , value, variant, onBeforeinput, onInput, onChange, onClick, child
+    , icon, selectedSlot, selectedIcon, trailingIcon, children
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, download, href, name, rel, selected, shape, size, target, toggle, type_, value, variant, onBeforeinput, onInput, onChange, onClick, child, icon, selectedSlot, selectedIcon, trailingIcon, children
+{-|
+A button users interact with to perform an action.
+
+**Events:**
+- `beforeinput`: Dispatched before a toggle button's selected state changes.
+- `input`: Dispatched when a toggle button's selected state changes.
+- `change`: Dispatched when a toggle button's selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the button's label.
+- `selected`: Renders the label of the button, when selected.
+- `selected-icon`: Renders an icon before the button's label, when selected.
+- `trailing-icon`: Renders an icon after the button's label.
+
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Variants
+
+<!-- elm-cem:example title="Five button variants in an action row" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), M3e.Button.child (Kit.text "New") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Tonal") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Outlined") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Text") ]
+    ]
+```
+
+@docs view, disabled, disabledInteractive, download, href, name
+@docs rel, selected, shape, size, target, toggle
+@docs type_, value, variant, onBeforeinput, onInput, onChange
+@docs onClick, child, icon, selectedSlot, selectedIcon, trailingIcon
+@docs children
 -}
 
 
@@ -45,11 +84,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Button.button (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Button.button (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,6 +1,8 @@
-module M3e.Cem.Html.PseudoCheckbox exposing (checked, disabled, indeterminate, pseudoCheckbox)
+module M3e.Cem.Html.PseudoCheckbox exposing ( pseudoCheckbox, checked, disabled, indeterminate )
 
-{-| 
+{-|
+Bottom layer for `<m3e-pseudo-checkbox>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs pseudoCheckbox, checked, disabled, indeterminate
 -}
 

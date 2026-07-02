@@ -1,7 +1,13 @@
-module M3e.Cem.Html.RichTooltip exposing (disabled, for, hideDelay, onBeforetoggle, onToggle, position, richTooltip, showDelay, touchGestures)
+module M3e.Cem.Html.RichTooltip exposing
+    ( richTooltip, disabled, for, hideDelay, position, showDelay
+    , touchGestures, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs richTooltip, disabled, for, hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
+{-|
+Bottom layer for `<m3e-rich-tooltip>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs richTooltip, disabled, for, hideDelay, position, showDelay
+@docs touchGestures, onBeforetoggle, onToggle
 -}
 
 

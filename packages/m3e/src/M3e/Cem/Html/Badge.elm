@@ -1,6 +1,8 @@
-module M3e.Cem.Html.Badge exposing (badge, for, position, size)
+module M3e.Cem.Html.Badge exposing ( badge, size, position, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-badge>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs badge, size, position, for
 -}
 

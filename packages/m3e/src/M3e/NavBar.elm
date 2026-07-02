@@ -1,7 +1,34 @@
-module M3e.NavBar exposing (child, children, mode, onBeforeinput, onChange, onInput, view)
+module M3e.NavBar exposing
+    ( view, mode, onChange, onBeforeinput, onInput, child
+    , children
+    )
 
-{-| 
-@docs view, mode, onChange, onBeforeinput, onInput, child, children
+{-|
+A horizontal bar, typically used on smaller devices, that allows a user to switch between 3-5 views.
+
+**Events:**
+- `change`: Dispatched when the selected state of an item changes.
+- `beforeinput`: Dispatched before the selected state of an item changes.
+- `input`: Dispatched when the selected state of an item changes.
+
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Bottom navigation bar with selected destination" -->
+```elm
+Native.nav [] [ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.compact ] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name "home", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text "Home") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "search" ] []), M3e.NavItem.child (Kit.text "Explore") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "favorite" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text "Saved") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.NavItem.child (Kit.text "Profile") ] ]) ]
+```
+
+<!-- elm-cem:example title="Expanded nav bar linking to app sections" -->
+```elm
+Native.nav [] [ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.expanded ] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.href "/inbox", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "inbox" ] []), M3e.NavItem.child (Kit.text "Inbox") ], M3e.NavItem.view [ M3e.NavItem.href "/sent" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "send" ] []), M3e.NavItem.child (Kit.text "Sent") ], M3e.NavItem.view [ M3e.NavItem.href "/drafts" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "drafts" ] []), M3e.NavItem.child (Kit.text "Drafts") ], M3e.NavItem.view [ M3e.NavItem.href "/archive", M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "archive" ] []), M3e.NavItem.child (Kit.text "Archive") ] ]) ]
+```
+
+@docs view, mode, onChange, onBeforeinput, onInput, child
+@docs children
 -}
 
 
@@ -26,11 +53,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.NavBar.navBar (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.NavBar.navBar (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

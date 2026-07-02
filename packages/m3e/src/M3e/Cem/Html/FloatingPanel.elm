@@ -1,6 +1,10 @@
-module M3e.Cem.Html.FloatingPanel exposing (anchorOffset, fitAnchorWidth, floatingPanel, onBeforetoggle, onToggle, scrollStrategy)
+module M3e.Cem.Html.FloatingPanel exposing
+    ( floatingPanel, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-floating-panel>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs floatingPanel, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
 -}
 

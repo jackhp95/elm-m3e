@@ -1,7 +1,19 @@
-module M3e.Radio exposing (checked, disabled, name, onBeforeinput, onChange, onClick, onInput, required, value, view)
+module M3e.Radio exposing
+    ( view, checked, disabled, name, required, value
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs view, checked, disabled, name, required, value, onBeforeinput, onInput, onChange, onClick
+{-|
+A radio button that allows a user to select one option from a set of options.
+
+**Events:**
+- `beforeinput`: Dispatched before the checked state changes.
+- `input`: Dispatched when the checked state changes.
+- `change`: Dispatched when the checked state changes.
+- `click`: Dispatched when the element is clicked.
+
+@docs view, checked, disabled, name, required, value
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 
@@ -33,22 +45,22 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Radio.radio (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append
-                    [ M3e.Cem.Attr.forget
-                        (M3e.Cem.Attr.attribute
-                            (Html.Attributes.attribute "aria-label")
-                            req_.ariaLabel
-                        )
-                    ]
-                    (List.map M3e.Cem.Attr.forget attributes)
-                )
-            )
-            (List.append [] (List.map M3e.Content.toNode content_))
+             (\erased ch ->
+                  M3e.Cem.Radio.radio (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append
+                       [ M3e.Cem.Attr.forget
+                           (M3e.Cem.Attr.attribute
+                              (Html.Attributes.attribute "aria-label")
+                              req_.ariaLabel
+                           )
+                       ]
+                       (List.map M3e.Cem.Attr.forget attributes)
+                  )
+             )
+             (List.append [] (List.map M3e.Content.toNode content_))
         )
 
 

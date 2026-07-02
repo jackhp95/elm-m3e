@@ -1,6 +1,10 @@
-module M3e.ScrollContainer exposing (child, children, dividers, thin, view)
+module M3e.ScrollContainer exposing
+    ( view, dividers, thin, child, children
+    )
 
-{-| 
+{-|
+A vertically oriented content container which presents dividers above and below content when scrolled.
+
 @docs view, dividers, thin, child, children
 -}
 
@@ -24,13 +28,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ScrollContainer.scrollContainer
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ScrollContainer.scrollContainer
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

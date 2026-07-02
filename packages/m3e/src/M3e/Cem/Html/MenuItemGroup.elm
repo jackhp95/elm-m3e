@@ -1,6 +1,8 @@
-module M3e.Cem.Html.MenuItemGroup exposing (menuItemGroup)
+module M3e.Cem.Html.MenuItemGroup exposing ( menuItemGroup )
 
-{-| 
+{-|
+Bottom layer for `<m3e-menu-item-group>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs menuItemGroup
 -}
 

@@ -1,6 +1,8 @@
-module M3e.Cem.Html.SplitButton exposing (size, splitButton, variant)
+module M3e.Cem.Html.SplitButton exposing ( splitButton, variant, size )
 
-{-| 
+{-|
+Bottom layer for `<m3e-split-button>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs splitButton, variant, size
 -}
 

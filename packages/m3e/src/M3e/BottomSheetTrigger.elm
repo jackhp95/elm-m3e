@@ -1,6 +1,10 @@
-module M3e.BottomSheetTrigger exposing (child, children, detent, for, secondary, view)
+module M3e.BottomSheetTrigger exposing
+    ( view, detent, secondary, for, child, children
+    )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to trigger a bottom sheet.
+
 @docs view, detent, secondary, for, child, children
 -}
 
@@ -25,13 +29,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.BottomSheetTrigger.bottomSheetTrigger
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.BottomSheetTrigger.bottomSheetTrigger
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

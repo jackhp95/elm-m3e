@@ -1,7 +1,21 @@
-module M3e.SelectionList exposing (child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, variant, view)
+module M3e.SelectionList exposing
+    ( view, hideSelectionIndicator, multi, variant, name, disabled
+    , onChange, onBeforeinput, onInput, child, children
+    )
 
-{-| 
-@docs view, hideSelectionIndicator, multi, variant, name, disabled, onChange, onBeforeinput, onInput, child, children
+{-|
+A list of selectable options.
+
+**Component Info:**
+- **Extends:** `M3eListElement` from `/src/list/ListElement`
+
+**Events:**
+- `change`: Dispatched when the selected state of an option changes.
+- `beforeinput`: Dispatched before the selected state of an option changes.
+- `input`: Dispatched when the selected state of an option changes.
+
+@docs view, hideSelectionIndicator, multi, variant, name, disabled
+@docs onChange, onBeforeinput, onInput, child, children
 -}
 
 
@@ -30,13 +44,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SelectionList.selectionList
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.SelectionList.selectionList
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

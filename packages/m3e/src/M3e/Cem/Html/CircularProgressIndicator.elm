@@ -1,6 +1,10 @@
-module M3e.Cem.Html.CircularProgressIndicator exposing (circularProgressIndicator, indeterminate, max, value, variant)
+module M3e.Cem.Html.CircularProgressIndicator exposing
+    ( circularProgressIndicator, indeterminate, max, value, variant
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-circular-progress-indicator>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs circularProgressIndicator, indeterminate, max, value, variant
 -}
 

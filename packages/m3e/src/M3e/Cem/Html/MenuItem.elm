@@ -1,7 +1,13 @@
-module M3e.Cem.Html.MenuItem exposing (disabled, download, href, menuItem, onClick, rel, target)
+module M3e.Cem.Html.MenuItem exposing
+    ( menuItem, disabled, download, href, rel, target
+    , onClick
+    )
 
-{-| 
-@docs menuItem, disabled, download, href, rel, target, onClick
+{-|
+Bottom layer for `<m3e-menu-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs menuItem, disabled, download, href, rel, target
+@docs onClick
 -}
 
 

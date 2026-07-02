@@ -1,7 +1,15 @@
-module M3e.Cem.SplitPane exposing (disabled, label, max, min, name, onBeforeinput, onChange, onInput, orientation, overshootLimit, splitPane, step, value, wrapDetents)
+module M3e.Cem.SplitPane exposing
+    ( splitPane, label, max, min, orientation, overshootLimit
+    , step, value, wrapDetents, name, disabled, onChange, onBeforeinput
+    , onInput
+    )
 
-{-| 
-@docs splitPane, label, max, min, orientation, overshootLimit, step, value, wrapDetents, name, disabled, onChange, onBeforeinput, onInput
+{-|
+Middle layer for `<m3e-split-pane>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SplitPane` module for everyday use.
+
+@docs splitPane, label, max, min, orientation, overshootLimit
+@docs step, value, wrapDetents, name, disabled, onChange
+@docs onBeforeinput, onInput
 -}
 
 

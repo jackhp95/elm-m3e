@@ -1,6 +1,10 @@
-module M3e.Cem.CircularProgressIndicator exposing (circularProgressIndicator, indeterminate, max, value, variant)
+module M3e.Cem.CircularProgressIndicator exposing
+    ( circularProgressIndicator, indeterminate, max, value, variant
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-circular-progress-indicator>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.CircularProgressIndicator` module for everyday use.
+
 @docs circularProgressIndicator, indeterminate, max, value, variant
 -}
 

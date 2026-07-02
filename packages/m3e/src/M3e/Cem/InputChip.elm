@@ -1,7 +1,13 @@
-module M3e.Cem.InputChip exposing (disabled, disabledInteractive, inputChip, onClick, onRemove, removable, removeLabel, value, variant)
+module M3e.Cem.InputChip exposing
+    ( inputChip, disabled, disabledInteractive, removable, removeLabel, value
+    , variant, onRemove, onClick
+    )
 
-{-| 
-@docs inputChip, disabled, disabledInteractive, removable, removeLabel, value, variant, onRemove, onClick
+{-|
+Middle layer for `<m3e-input-chip>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.InputChip` module for everyday use.
+
+@docs inputChip, disabled, disabledInteractive, removable, removeLabel, value
+@docs variant, onRemove, onClick
 -}
 
 

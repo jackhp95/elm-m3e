@@ -1,6 +1,8 @@
-module M3e.Cem.FabMenu exposing (fabMenu, onBeforetoggle, onToggle, variant)
+module M3e.Cem.FabMenu exposing ( fabMenu, variant, onBeforetoggle, onToggle )
 
-{-| 
+{-|
+Middle layer for `<m3e-fab-menu>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FabMenu` module for everyday use.
+
 @docs fabMenu, variant, onBeforetoggle, onToggle
 -}
 

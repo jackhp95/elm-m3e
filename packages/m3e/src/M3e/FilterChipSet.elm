@@ -1,7 +1,22 @@
-module M3e.FilterChipSet exposing (child, children, disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, vertical, view)
+module M3e.FilterChipSet exposing
+    ( view, disabled, hideSelectionIndicator, multi, name, vertical
+    , onChange, onBeforeinput, onInput, child, children
+    )
 
-{-| 
-@docs view, disabled, hideSelectionIndicator, multi, name, vertical, onChange, onBeforeinput, onInput, child, children
+{-|
+A container that organizes filter chips into a cohesive group, enabling selection and
+deselection of values used to refine content or trigger contextual behavior.
+
+**Component Info:**
+- **Extends:** `M3eChipSetElement` from `/src/chips/ChipSetElement`
+
+**Events:**
+- `change`: Dispatched when the selected state of a chip changes.
+- `beforeinput`: Dispatched before the selected state of a chip changes.
+- `input`: Dispatched when the selected state of a chip changes.
+
+@docs view, disabled, hideSelectionIndicator, multi, name, vertical
+@docs onChange, onBeforeinput, onInput, child, children
 -}
 
 
@@ -30,13 +45,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FilterChipSet.filterChipSet
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.FilterChipSet.filterChipSet
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

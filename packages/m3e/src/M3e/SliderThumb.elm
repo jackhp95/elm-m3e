@@ -1,7 +1,20 @@
-module M3e.SliderThumb exposing (disabled, name, onBeforeinput, onChange, onClick, onInput, onValueChange, value, view)
+module M3e.SliderThumb exposing
+    ( view, disabled, name, value, onValueChange, onBeforeinput
+    , onInput, onChange, onClick
+    )
 
-{-| 
-@docs view, disabled, name, value, onValueChange, onBeforeinput, onInput, onChange, onClick
+{-|
+A thumb used to select a value in a slider.
+
+**Events:**
+- `value-change`: No description
+- `beforeinput`: Dispatched before the value changes.
+- `input`: Dispatched when the value changes.
+- `change`: Dispatched when the value changes.
+- `click`: Dispatched when the element is clicked.
+
+@docs view, disabled, name, value, onValueChange, onBeforeinput
+@docs onInput, onChange, onClick
 -}
 
 
@@ -29,13 +42,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.SliderThumb.sliderThumb
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.SliderThumb.sliderThumb
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

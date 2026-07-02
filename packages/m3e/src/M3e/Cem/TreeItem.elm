@@ -1,7 +1,13 @@
-module M3e.Cem.TreeItem exposing (disabled, indeterminate, onClick, onClosed, onClosing, onOpened, onOpening, open, selected, treeItem)
+module M3e.Cem.TreeItem exposing
+    ( treeItem, disabled, indeterminate, open, selected, onOpening
+    , onOpened, onClosing, onClosed, onClick
+    )
 
-{-| 
-@docs treeItem, disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+{-|
+Middle layer for `<m3e-tree-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.TreeItem` module for everyday use.
+
+@docs treeItem, disabled, indeterminate, open, selected, onOpening
+@docs onOpened, onClosing, onClosed, onClick
 -}
 
 

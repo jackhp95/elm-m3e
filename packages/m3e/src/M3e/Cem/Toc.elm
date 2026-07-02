@@ -1,6 +1,8 @@
-module M3e.Cem.Toc exposing (for, maxDepth, toc)
+module M3e.Cem.Toc exposing ( toc, for, maxDepth )
 
-{-| 
+{-|
+Middle layer for `<m3e-toc>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Toc` module for everyday use.
+
 @docs toc, for, maxDepth
 -}
 

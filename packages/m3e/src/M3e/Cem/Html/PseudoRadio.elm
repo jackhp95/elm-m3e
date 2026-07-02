@@ -1,6 +1,8 @@
-module M3e.Cem.Html.PseudoRadio exposing (checked, disabled, pseudoRadio)
+module M3e.Cem.Html.PseudoRadio exposing ( pseudoRadio, checked, disabled )
 
-{-| 
+{-|
+Bottom layer for `<m3e-pseudo-radio>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs pseudoRadio, checked, disabled
 -}
 

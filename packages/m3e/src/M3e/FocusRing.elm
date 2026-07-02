@@ -1,6 +1,8 @@
-module M3e.FocusRing exposing (disabled, for, inward, view)
+module M3e.FocusRing exposing ( view, disabled, inward, for )
 
-{-| 
+{-|
+A focus ring used to depict a strong focus indicator.
+
 @docs view, disabled, inward, for
 -}
 
@@ -24,13 +26,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.FocusRing.focusRing
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.FocusRing.focusRing
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

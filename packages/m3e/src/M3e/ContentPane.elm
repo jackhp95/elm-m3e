@@ -1,6 +1,19 @@
-module M3e.ContentPane exposing (child, children, view)
+module M3e.ContentPane exposing ( view, child, children )
 
-{-| 
+{-|
+A shaped surface for vertically scrollable content.
+
+<!-- elm-cem:docmeta category=Containment -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Scrollable article surface" -->
+```elm
+M3e.ContentPane.view [] (M3e.ContentPane.children [ Native.header [] [ Native.node Html.h2 [] [ Kit.text "Release notes" ] ], Native.p [] [ Kit.text "This version introduces a redesigned navigation drawer and refined motion." ], M3e.Divider.view [] [], Native.p [] [ Kit.text "Performance improvements reduce initial load time across all surfaces." ], Native.p [] [ Kit.text "Several accessibility fixes were applied to form controls." ] ])
+```
+
 @docs view, child, children
 -}
 
@@ -21,13 +34,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ContentPane.contentPane
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ContentPane.contentPane
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

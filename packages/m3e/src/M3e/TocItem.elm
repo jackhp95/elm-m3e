@@ -1,6 +1,11 @@
-module M3e.TocItem exposing (disabled, onClick, selected, view)
+module M3e.TocItem exposing ( view, disabled, selected, onClick )
 
-{-| 
+{-|
+An item in a table of contents.
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
 @docs view, disabled, selected, onClick
 -}
 
@@ -26,17 +31,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.TocItem.tocItem (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.TocItem.tocItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

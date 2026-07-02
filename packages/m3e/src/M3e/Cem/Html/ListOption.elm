@@ -1,7 +1,13 @@
-module M3e.Cem.Html.ListOption exposing (disabled, listOption, onBeforeinput, onChange, onClick, onInput, selected, value)
+module M3e.Cem.Html.ListOption exposing
+    ( listOption, disabled, selected, value, onBeforeinput, onInput
+    , onChange, onClick
+    )
 
-{-| 
-@docs listOption, disabled, selected, value, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-list-option>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs listOption, disabled, selected, value, onBeforeinput, onInput
+@docs onChange, onClick
 -}
 
 

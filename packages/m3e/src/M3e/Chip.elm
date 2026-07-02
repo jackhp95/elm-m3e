@@ -1,6 +1,14 @@
-module M3e.Chip exposing (icon, trailingIcon, value, variant, view)
+module M3e.Chip exposing
+    ( view, value, variant, icon, trailingIcon
+    )
 
-{-| 
+{-|
+A non-interactive chip used to convey small pieces of information.
+
+**Slots:**
+- `icon`: Renders an icon before the chip's label.
+- `trailing-icon`: Renders an icon after the chip's label.
+
 @docs view, value, variant, icon, trailingIcon
 -}
 
@@ -27,17 +35,17 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Chip.chip (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.Chip.chip (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

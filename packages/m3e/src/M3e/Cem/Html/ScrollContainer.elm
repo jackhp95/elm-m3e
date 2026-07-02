@@ -1,6 +1,8 @@
-module M3e.Cem.Html.ScrollContainer exposing (dividers, scrollContainer, thin)
+module M3e.Cem.Html.ScrollContainer exposing ( scrollContainer, dividers, thin )
 
-{-| 
+{-|
+Bottom layer for `<m3e-scroll-container>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs scrollContainer, dividers, thin
 -}
 

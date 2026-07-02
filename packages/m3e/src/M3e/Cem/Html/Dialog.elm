@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Dialog exposing (alert, closeLabel, dialog, disableClose, dismissible, noFocusTrap, onCancel, onClosed, onClosing, onOpened, onOpening, open)
+module M3e.Cem.Html.Dialog exposing
+    ( dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap
+    , open, onOpening, onOpened, onClosing, onClosed, onCancel
+    )
 
-{-| 
-@docs dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing, onClosed, onCancel
+{-|
+Bottom layer for `<m3e-dialog>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs dialog, alert, closeLabel, disableClose, dismissible, noFocusTrap
+@docs open, onOpening, onOpened, onClosing, onClosed, onCancel
 -}
 
 

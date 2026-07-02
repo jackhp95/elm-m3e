@@ -1,6 +1,8 @@
-module M3e.Cem.BottomSheetAction exposing (bottomSheetAction)
+module M3e.Cem.BottomSheetAction exposing ( bottomSheetAction )
 
-{-| 
+{-|
+Middle layer for `<m3e-bottom-sheet-action>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.BottomSheetAction` module for everyday use.
+
 @docs bottomSheetAction
 -}
 

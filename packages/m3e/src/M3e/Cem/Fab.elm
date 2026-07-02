@@ -1,7 +1,15 @@
-module M3e.Cem.Fab exposing (disabled, disabledInteractive, download, extended, fab, href, lowered, name, onClick, rel, size, target, type_, value, variant)
+module M3e.Cem.Fab exposing
+    ( fab, disabled, disabledInteractive, download, extended, href
+    , lowered, name, rel, size, target, type_, value
+    , variant, onClick
+    )
 
-{-| 
-@docs fab, disabled, disabledInteractive, download, extended, href, lowered, name, rel, size, target, type_, value, variant, onClick
+{-|
+Middle layer for `<m3e-fab>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Fab` module for everyday use.
+
+@docs fab, disabled, disabledInteractive, download, extended, href
+@docs lowered, name, rel, size, target, type_
+@docs value, variant, onClick
 -}
 
 

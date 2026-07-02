@@ -1,6 +1,8 @@
-module M3e.Cem.Html.ActionList exposing (actionList, variant)
+module M3e.Cem.Html.ActionList exposing ( actionList, variant )
 
-{-| 
+{-|
+Bottom layer for `<m3e-action-list>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs actionList, variant
 -}
 

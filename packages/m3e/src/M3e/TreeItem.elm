@@ -1,7 +1,29 @@
-module M3e.TreeItem exposing (child, children, disabled, icon, indeterminate, onClick, onClosed, onClosing, onOpened, onOpening, open, openToggleIcon, selected, selectedIcon, toggleIcon, view)
+module M3e.TreeItem exposing
+    ( view, disabled, indeterminate, open, selected, onOpening
+    , onOpened, onClosing, onClosed, onClick, child, icon, selectedIcon
+    , toggleIcon, openToggleIcon, children
+    )
 
-{-| 
-@docs view, disabled, indeterminate, open, selected, onOpening, onOpened, onClosing, onClosed, onClick, child, icon, selectedIcon, toggleIcon, openToggleIcon, children
+{-|
+An expandable item in a tree.
+
+**Events:**
+- `opening`: Dispatched when the item begins to open.
+- `opened`: Dispatched when the item has opened.
+- `closing`: Dispatched when the item begins to close.
+- `closed`: Dispatched when the item has closed.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `label`: Renders the label of the item.
+- `icon`: Renders the icon of the item.
+- `selected-icon`: Renders the icon of the item when selected.
+- `toggle-icon`: Renders the toggle icon.
+- `open-toggle-icon`: Renders the toggle icon when selected.
+
+@docs view, disabled, indeterminate, open, selected, onOpening
+@docs onOpened, onClosing, onClosed, onClick, child, icon
+@docs selectedIcon, toggleIcon, openToggleIcon, children
 -}
 
 
@@ -41,19 +63,20 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.TreeItem.treeItem
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode (M3e.Element.withSlot "label" req_.label) ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.TreeItem.treeItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "label" req_.label)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

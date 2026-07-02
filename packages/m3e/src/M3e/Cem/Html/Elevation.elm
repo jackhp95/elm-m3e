@@ -1,6 +1,8 @@
-module M3e.Cem.Html.Elevation exposing (disabled, elevation, for, level)
+module M3e.Cem.Html.Elevation exposing ( elevation, disabled, for, level )
 
-{-| 
+{-|
+Bottom layer for `<m3e-elevation>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs elevation, disabled, for, level
 -}
 

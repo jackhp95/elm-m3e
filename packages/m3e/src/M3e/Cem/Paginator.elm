@@ -1,7 +1,15 @@
-module M3e.Cem.Paginator exposing (disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, onPage, pageIndex, pageSize, pageSizeVariant, pageSizes, paginator, previousPageLabel, showFirstLastButtons)
+module M3e.Cem.Paginator exposing
+    ( paginator, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+    , length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant, previousPageLabel
+    , showFirstLastButtons, onPage
+    )
 
-{-| 
-@docs paginator, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage
+{-|
+Middle layer for `<m3e-paginator>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Paginator` module for everyday use.
+
+@docs paginator, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
+@docs length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
+@docs previousPageLabel, showFirstLastButtons, onPage
 -}
 
 

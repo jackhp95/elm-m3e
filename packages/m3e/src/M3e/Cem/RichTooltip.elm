@@ -1,7 +1,13 @@
-module M3e.Cem.RichTooltip exposing (disabled, for, hideDelay, onBeforetoggle, onToggle, position, richTooltip, showDelay, touchGestures)
+module M3e.Cem.RichTooltip exposing
+    ( richTooltip, disabled, for, hideDelay, position, showDelay
+    , touchGestures, onBeforetoggle, onToggle
+    )
 
-{-| 
-@docs richTooltip, disabled, for, hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
+{-|
+Middle layer for `<m3e-rich-tooltip>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.RichTooltip` module for everyday use.
+
+@docs richTooltip, disabled, for, hideDelay, position, showDelay
+@docs touchGestures, onBeforetoggle, onToggle
 -}
 
 

@@ -1,6 +1,10 @@
-module M3e.Cem.TextareaAutosize exposing (disabled, for, maxRows, minRows, textareaAutosize)
+module M3e.Cem.TextareaAutosize exposing
+    ( textareaAutosize, disabled, for, maxRows, minRows
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-textarea-autosize>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.TextareaAutosize` module for everyday use.
+
 @docs textareaAutosize, disabled, for, maxRows, minRows
 -}
 

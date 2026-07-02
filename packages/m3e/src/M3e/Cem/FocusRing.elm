@@ -1,6 +1,8 @@
-module M3e.Cem.FocusRing exposing (disabled, focusRing, for, inward)
+module M3e.Cem.FocusRing exposing ( focusRing, disabled, inward, for )
 
-{-| 
+{-|
+Middle layer for `<m3e-focus-ring>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FocusRing` module for everyday use.
+
 @docs focusRing, disabled, inward, for
 -}
 

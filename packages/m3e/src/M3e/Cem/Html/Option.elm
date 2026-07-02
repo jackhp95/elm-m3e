@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Option exposing (disableHighlight, disabled, highlightMode, option, selected, term, value)
+module M3e.Cem.Html.Option exposing
+    ( option, disabled, disableHighlight, highlightMode, selected, term
+    , value
+    )
 
-{-| 
-@docs option, disabled, disableHighlight, highlightMode, selected, term, value
+{-|
+Bottom layer for `<m3e-option>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs option, disabled, disableHighlight, highlightMode, selected, term
+@docs value
 -}
 
 

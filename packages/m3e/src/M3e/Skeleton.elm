@@ -1,6 +1,31 @@
-module M3e.Skeleton exposing (animation, child, children, loaded, shape, view)
+module M3e.Skeleton exposing
+    ( view, animation, shape, loaded, child, children
+    )
 
-{-| 
+{-|
+A visual placeholder that mimics the layout of content while it's still loading.
+
+<!-- elm-cem:docmeta category=Communication -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Card loading placeholder with wave animation" -->
+```elm
+M3e.Skeleton.view [ M3e.Skeleton.animation M3e.Value.wave, M3e.Skeleton.shape M3e.Value.rounded ] [ M3e.Skeleton.child (Native.div [] [ Native.p [] [ Kit.text "Loading content..." ] ]) ]
+```
+
+<!-- elm-cem:example title="Circular avatar and text placeholders" -->
+```elm
+Native.div [] [ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [] ]
+```
+
+<!-- elm-cem:example title="Loaded skeleton revealing content" -->
+```elm
+M3e.Skeleton.view [ M3e.Skeleton.loaded True, M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.p [] [ Kit.text "Content has finished loading." ]) ]
+```
+
 @docs view, animation, shape, loaded, child, children
 -}
 
@@ -25,13 +50,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Skeleton.skeleton
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Skeleton.skeleton
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

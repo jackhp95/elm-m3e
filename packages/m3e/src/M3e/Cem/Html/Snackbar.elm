@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Snackbar exposing (action, closeLabel, dismissible, duration, onBeforetoggle, onToggle, snackbar)
+module M3e.Cem.Html.Snackbar exposing
+    ( snackbar, action, closeLabel, dismissible, duration, onBeforetoggle
+    , onToggle
+    )
 
-{-| 
-@docs snackbar, action, closeLabel, dismissible, duration, onBeforetoggle, onToggle
+{-|
+Bottom layer for `<m3e-snackbar>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs snackbar, action, closeLabel, dismissible, duration, onBeforetoggle
+@docs onToggle
 -}
 
 

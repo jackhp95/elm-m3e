@@ -1,7 +1,13 @@
-module M3e.Cem.Html.OptionPanel exposing (anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle, optionPanel, scrollStrategy, state)
+module M3e.Cem.Html.OptionPanel exposing
+    ( optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle
+    , onToggle
+    )
 
-{-| 
-@docs optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+{-|
+Bottom layer for `<m3e-option-panel>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle
+@docs onToggle
 -}
 
 

@@ -1,7 +1,13 @@
-module M3e.Cem.OptionPanel exposing (anchorOffset, fitAnchorWidth, onBeforetoggle, onToggle, optionPanel, scrollStrategy, state)
+module M3e.Cem.OptionPanel exposing
+    ( optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle
+    , onToggle
+    )
 
-{-| 
-@docs optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+{-|
+Middle layer for `<m3e-option-panel>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.OptionPanel` module for everyday use.
+
+@docs optionPanel, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle
+@docs onToggle
 -}
 
 

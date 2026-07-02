@@ -1,6 +1,8 @@
-module M3e.Cem.ActionList exposing (actionList, variant)
+module M3e.Cem.ActionList exposing ( actionList, variant )
 
-{-| 
+{-|
+Middle layer for `<m3e-action-list>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ActionList` module for everyday use.
+
 @docs actionList, variant
 -}
 

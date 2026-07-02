@@ -1,6 +1,10 @@
-module M3e.Cem.Toolbar exposing (elevated, shape, toolbar, variant, vertical)
+module M3e.Cem.Toolbar exposing
+    ( toolbar, elevated, shape, variant, vertical
+    )
 
-{-| 
+{-|
+Middle layer for `<m3e-toolbar>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Toolbar` module for everyday use.
+
 @docs toolbar, elevated, shape, variant, vertical
 -}
 

@@ -1,7 +1,13 @@
-module M3e.Cem.MonthView exposing (activeDate, date, maxDate, minDate, monthView, onActiveChange, onChange, rangeEnd, rangeStart, today)
+module M3e.Cem.MonthView exposing
+    ( monthView, rangeStart, rangeEnd, today, date, activeDate
+    , minDate, maxDate, onChange, onActiveChange
+    )
 
-{-| 
-@docs monthView, rangeStart, rangeEnd, today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+{-|
+Middle layer for `<m3e-month-view>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MonthView` module for everyday use.
+
+@docs monthView, rangeStart, rangeEnd, today, date, activeDate
+@docs minDate, maxDate, onChange, onActiveChange
 -}
 
 

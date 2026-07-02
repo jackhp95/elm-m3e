@@ -1,7 +1,24 @@
-module M3e.Option exposing (disableHighlight, disabled, highlightMode, selected, term, value, view)
+module M3e.Option exposing
+    ( view, disabled, disableHighlight, highlightMode, selected, term
+    , value
+    )
 
-{-| 
-@docs view, disabled, disableHighlight, highlightMode, selected, term, value
+{-|
+An option that can be selected.
+
+<!-- elm-cem:docmeta category=Selection -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Option panel with search-term highlighting" -->
+```elm
+M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.content, M3e.OptionPanel.scrollStrategy M3e.Value.reposition ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text "React" } [ M3e.Option.value "react", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [], M3e.Option.view { content = Kit.text "Redux" } [ M3e.Option.value "redux", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [], M3e.Option.view { content = Kit.text "Remix" } [ M3e.Option.value "remix", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [] ])
+```
+
+@docs view, disabled, disableHighlight, highlightMode, selected, term
+@docs value
 -}
 
 
@@ -29,17 +46,17 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Option.option (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.Option.option (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

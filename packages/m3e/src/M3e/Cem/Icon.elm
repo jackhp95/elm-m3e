@@ -1,7 +1,13 @@
-module M3e.Cem.Icon exposing (filled, grade, icon, name, opticalSize, variant, weight)
+module M3e.Cem.Icon exposing
+    ( icon, filled, grade, opticalSize, name, variant
+    , weight
+    )
 
-{-| 
-@docs icon, filled, grade, opticalSize, name, variant, weight
+{-|
+Middle layer for `<m3e-icon>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Icon` module for everyday use.
+
+@docs icon, filled, grade, opticalSize, name, variant
+@docs weight
 -}
 
 

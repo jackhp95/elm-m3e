@@ -1,6 +1,8 @@
-module M3e.Cem.Html.TextOverflow exposing (textOverflow)
+module M3e.Cem.Html.TextOverflow exposing ( textOverflow )
 
-{-| 
+{-|
+Bottom layer for `<m3e-text-overflow>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs textOverflow
 -}
 

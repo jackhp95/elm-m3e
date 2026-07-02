@@ -1,7 +1,42 @@
-module M3e.Card exposing (actionable, actions, child, children, content, disabled, disabledInteractive, download, footer, header, href, inline, name, onClick, orientation, rel, target, type_, value, variant, view)
+module M3e.Card exposing
+    ( view, actionable, inline, orientation, variant, href
+    , target, rel, download, name, value, type_, disabledInteractive
+    , disabled, onClick, child, header, content, actions, footer
+    , children
+    )
 
-{-| 
-@docs view, actionable, inline, orientation, variant, href, target, rel, download, name, value, type_, disabledInteractive, disabled, onClick, child, header, content, actions, footer, children
+{-|
+A content container for text, images (or other media), and actions in the context of a single subject.
+
+**Events:**
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `header`: Renders the header of the card.
+- `content`: Renders the content of the card with padding.
+- `actions`: Renders the actions of the card.
+- `footer`: Renders the footer of the card.
+
+<!-- elm-cem:docmeta category=Containment -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Outlined card with header and content slots" -->
+```elm
+M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Heading.view { content = Kit.text "People" } [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] []), M3e.Card.content (Native.div [] [ M3e.ChipSet.view [] (M3e.ChipSet.children [ M3e.Chip.view { content = Kit.text "Person Name" } [] [], M3e.Chip.view { content = Kit.text "Relative" } [] [] ]) ]) ]
+```
+
+<!-- elm-cem:example title="Actionable filled card linking to a detail page" -->
+```elm
+Kit.link "/entities/1" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "family_history" ] [], Native.span [] [ Kit.text "Relative" ], M3e.Icon.view [ M3e.Icon.name "chevron_right" ] [] ]) ] ]
+```
+
+@docs view, actionable, inline, orientation, variant, href
+@docs target, rel, download, name, value, type_
+@docs disabledInteractive, disabled, onClick, child, header, content
+@docs actions, footer, children
 -}
 
 
@@ -41,11 +76,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Card.card (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Card.card (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,7 +1,49 @@
-module M3e.IconButton exposing (disabled, disabledInteractive, download, href, name, onBeforeinput, onChange, onClick, onInput, rel, selected, selectedSlot, shape, size, target, toggle, type_, value, variant, view, width)
+module M3e.IconButton exposing
+    ( view, disabled, disabledInteractive, download, href, name
+    , rel, selected, shape, size, target, toggle, type_
+    , value, variant, width, onBeforeinput, onInput, onChange, onClick
+    , selectedSlot
+    )
 
-{-| 
-@docs view, disabled, disabledInteractive, download, href, name, rel, selected, shape, size, target, toggle, type_, value, variant, width, onBeforeinput, onInput, onChange, onClick, selectedSlot
+{-|
+An icon button users interact with to perform a supplementary action.
+
+**Events:**
+- `beforeinput`: Dispatched before a toggle button's selected state changes.
+- `input`: Dispatched when a toggle button's selected state changes.
+- `change`: Dispatched when a toggle button's selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `selected`: Renders an icon, when selected.
+
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Icon button wrapping an icon" -->
+```elm
+M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [], ariaLabel = "Toggle theme" } [] []
+```
+
+<!-- elm-cem:example title="Link icon buttons in a toolbar" -->
+```elm
+Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "rss_feed" ] [], ariaLabel = "RSS Feed" } [ M3e.IconButton.href "/rss.xml" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "data_object" ] [], ariaLabel = "JSON Feed" } [ M3e.IconButton.href "/feed.json" ] [] ]
+```
+
+<!-- elm-cem:example title="Icon buttons grouped in a media control bar" -->
+```elm
+[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [], ariaLabel = "Previous" } [] []
+    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [], ariaLabel = "Play/Pause" } [] []
+    ]
+```
+
+@docs view, disabled, disabledInteractive, download, href, name
+@docs rel, selected, shape, size, target, toggle
+@docs type_, value, variant, width, onBeforeinput, onInput
+@docs onChange, onClick, selectedSlot
 -}
 
 
@@ -45,27 +87,27 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.IconButton.iconButton
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append
-                    [ M3e.Cem.Attr.forget
-                        (M3e.Cem.Attr.attribute
-                            (Html.Attributes.attribute "aria-label")
-                            req_.ariaLabel
-                        )
-                    ]
-                    (List.map M3e.Cem.Attr.forget attributes)
-                )
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.IconButton.iconButton
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append
+                       [ M3e.Cem.Attr.forget
+                           (M3e.Cem.Attr.attribute
+                              (Html.Attributes.attribute "aria-label")
+                              req_.ariaLabel
+                           )
+                       ]
+                       (List.map M3e.Cem.Attr.forget attributes)
+                  )
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

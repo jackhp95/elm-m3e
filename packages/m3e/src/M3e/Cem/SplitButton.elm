@@ -1,6 +1,8 @@
-module M3e.Cem.SplitButton exposing (size, splitButton, variant)
+module M3e.Cem.SplitButton exposing ( splitButton, variant, size )
 
-{-| 
+{-|
+Middle layer for `<m3e-split-button>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.SplitButton` module for everyday use.
+
 @docs splitButton, variant, size
 -}
 

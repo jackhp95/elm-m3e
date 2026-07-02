@@ -1,7 +1,19 @@
-module M3e.ListItem exposing (child, children, leading, overline, supportingText, trailing, view)
+module M3e.ListItem exposing
+    ( view, child, leading, overline, supportingText, trailing
+    , children
+    )
 
-{-| 
-@docs view, child, leading, overline, supportingText, trailing, children
+{-|
+An item in a list.
+
+**Slots:**
+- `leading`: Renders the leading content of the list item.
+- `overline`: Renders the overline of the list item.
+- `supporting-text`: Renders the supporting text of the list item.
+- `trailing`: Renders the trailing content of the list item.
+
+@docs view, child, leading, overline, supportingText, trailing
+@docs children
 -}
 
 
@@ -26,13 +38,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ListItem.listItem
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.ListItem.listItem
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

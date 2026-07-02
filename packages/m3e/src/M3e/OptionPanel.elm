@@ -1,7 +1,17 @@
-module M3e.OptionPanel exposing (anchorOffset, child, children, fitAnchorWidth, loading, noData, onBeforetoggle, onToggle, scrollStrategy, state, view)
+module M3e.OptionPanel exposing
+    ( view, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle
+    , onToggle, child, noData, loading, children
+    )
 
-{-| 
-@docs view, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, child, noData, loading, children
+{-|
+Presents a list of options on a temporary surface.
+
+**Events:**
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+@docs view, state, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle
+@docs onToggle, child, noData, loading, children
 -}
 
 
@@ -31,13 +41,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.OptionPanel.optionPanel
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.OptionPanel.optionPanel
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

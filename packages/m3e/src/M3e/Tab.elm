@@ -1,7 +1,22 @@
-module M3e.Tab exposing (child, children, disabled, for, icon, onBeforeinput, onChange, onClick, onInput, selected, view)
+module M3e.Tab exposing
+    ( view, disabled, for, selected, onBeforeinput, onInput
+    , onChange, onClick, child, icon, children
+    )
 
-{-| 
-@docs view, disabled, for, selected, onBeforeinput, onInput, onChange, onClick, child, icon, children
+{-|
+An interactive element that, when activated, presents an associated tab panel.
+
+**Events:**
+- `beforeinput`: Dispatched before the selected state changes.
+- `input`: Dispatched when the selected state changes.
+- `change`: Dispatched when the selected state changes.
+- `click`: Dispatched when the element is clicked.
+
+**Slots:**
+- `icon`: Renders an icon before the tab's label.
+
+@docs view, disabled, for, selected, onBeforeinput, onInput
+@docs onChange, onClick, child, icon, children
 -}
 
 
@@ -31,11 +46,11 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Tab.tab (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Tab.tab (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

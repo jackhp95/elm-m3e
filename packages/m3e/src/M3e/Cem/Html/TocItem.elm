@@ -1,6 +1,8 @@
-module M3e.Cem.Html.TocItem exposing (disabled, onClick, selected, tocItem)
+module M3e.Cem.Html.TocItem exposing ( tocItem, disabled, selected, onClick )
 
-{-| 
+{-|
+Bottom layer for `<m3e-toc-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs tocItem, disabled, selected, onClick
 -}
 

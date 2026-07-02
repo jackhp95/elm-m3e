@@ -1,7 +1,16 @@
-module M3e.Tooltip exposing (disabled, for, hideDelay, position, showDelay, touchGestures, view)
+module M3e.Tooltip exposing
+    ( view, disabled, for, hideDelay, position, showDelay
+    , touchGestures
+    )
 
-{-| 
-@docs view, disabled, for, hideDelay, position, showDelay, touchGestures
+{-|
+Adds additional context to a button or other UI element.
+
+**Component Info:**
+- **Extends:** `TooltipElementBase` from `/src/tooltip/TooltipElementBase`
+
+@docs view, disabled, for, hideDelay, position, showDelay
+@docs touchGestures
 -}
 
 
@@ -29,17 +38,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Tooltip.tooltip (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.Tooltip.tooltip
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

@@ -1,6 +1,10 @@
-module M3e.TooltipElementBase exposing (disabled, for, hideDelay, showDelay, touchGestures, view)
+module M3e.TooltipElementBase exposing
+    ( view, disabled, showDelay, hideDelay, touchGestures, for
+    )
 
-{-| 
+{-|
+Provides a base implementation for a tooltip. This class must be inherited.
+
 @docs view, disabled, showDelay, hideDelay, touchGestures, for
 -}
 
@@ -26,13 +30,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.TooltipElementBase.tooltipElementBase
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.TooltipElementBase.tooltipElementBase
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

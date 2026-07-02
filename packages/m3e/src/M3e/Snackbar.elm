@@ -1,7 +1,20 @@
-module M3e.Snackbar exposing (action, closeIcon, closeLabel, dismissible, duration, onBeforetoggle, onToggle, view)
+module M3e.Snackbar exposing
+    ( view, action, closeLabel, dismissible, duration, onBeforetoggle
+    , onToggle, closeIcon
+    )
 
-{-| 
-@docs view, action, closeLabel, dismissible, duration, onBeforetoggle, onToggle, closeIcon
+{-|
+Presents short updates about application processes at the bottom of the screen.
+
+**Events:**
+- `beforetoggle`: Dispatched before the toggle state changes.
+- `toggle`: Dispatched after the toggle state has changed.
+
+**Slots:**
+- `close-icon`: Renders the icon of the button used to close the snackbar.
+
+@docs view, action, closeLabel, dismissible, duration, onBeforetoggle
+@docs onToggle, closeIcon
 -}
 
 
@@ -29,19 +42,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Snackbar.snackbar
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.Snackbar.snackbar
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

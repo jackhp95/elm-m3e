@@ -1,7 +1,19 @@
-module M3e.Slider exposing (child, children, disabled, discrete, labelled, max, min, onBeforeinput, onChange, onInput, size, step, view)
+module M3e.Slider exposing
+    ( view, disabled, discrete, labelled, max, min
+    , step, size, onBeforeinput, onInput, onChange, child, children
+    )
 
-{-| 
-@docs view, disabled, discrete, labelled, max, min, step, size, onBeforeinput, onInput, onChange, child, children
+{-|
+Allows for the selection of numeric values from a range.
+
+**Events:**
+- `beforeinput`: Dispatched before the value of a thumb changes.
+- `input`: Dispatched when the value of a thumb changes.
+- `change`: Dispatched when the value of a thumb changes.
+
+@docs view, disabled, discrete, labelled, max, min
+@docs step, size, onBeforeinput, onInput, onChange, child
+@docs children
 -}
 
 
@@ -34,22 +46,22 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Slider.slider (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.append
-                []
-                (List.append
-                    [ M3e.Cem.Attr.forget
-                        (M3e.Cem.Attr.attribute
-                            (Html.Attributes.attribute "aria-label")
-                            req_.ariaLabel
-                        )
-                    ]
-                    (List.map M3e.Cem.Attr.forget attributes)
-                )
-            )
-            (List.append [] (List.map M3e.Content.toNode content_))
+             (\erased ch ->
+                  M3e.Cem.Slider.slider (List.map M3e.Cem.Attr.forget erased) ch
+             )
+             (List.append
+                  []
+                  (List.append
+                       [ M3e.Cem.Attr.forget
+                           (M3e.Cem.Attr.attribute
+                              (Html.Attributes.attribute "aria-label")
+                              req_.ariaLabel
+                           )
+                       ]
+                       (List.map M3e.Cem.Attr.forget attributes)
+                  )
+             )
+             (List.append [] (List.map M3e.Content.toNode content_))
         )
 
 

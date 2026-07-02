@@ -1,6 +1,8 @@
-module M3e.Cem.Html.DialogTrigger exposing (dialogTrigger, for)
+module M3e.Cem.Html.DialogTrigger exposing ( dialogTrigger, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-dialog-trigger>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs dialogTrigger, for
 -}
 

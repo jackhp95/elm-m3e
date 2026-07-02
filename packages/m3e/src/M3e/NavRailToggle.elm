@@ -1,6 +1,8 @@
-module M3e.NavRailToggle exposing (for, view)
+module M3e.NavRailToggle exposing ( view, for )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to toggle the expanded state of a navigation rail.
+
 @docs view, for
 -}
 
@@ -22,13 +24,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.NavRailToggle.navRailToggle
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.NavRailToggle.navRailToggle
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

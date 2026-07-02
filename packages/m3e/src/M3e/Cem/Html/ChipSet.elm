@@ -1,6 +1,8 @@
-module M3e.Cem.Html.ChipSet exposing (chipSet, vertical)
+module M3e.Cem.Html.ChipSet exposing ( chipSet, vertical )
 
-{-| 
+{-|
+Bottom layer for `<m3e-chip-set>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs chipSet, vertical
 -}
 

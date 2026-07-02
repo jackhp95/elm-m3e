@@ -1,7 +1,16 @@
-module M3e.Cem.Button exposing (button, disabled, disabledInteractive, download, href, name, onBeforeinput, onChange, onClick, onInput, rel, selected, shape, size, target, toggle, type_, value, variant)
+module M3e.Cem.Button exposing
+    ( button, disabled, disabledInteractive, download, href, name
+    , rel, selected, shape, size, target, toggle, type_
+    , value, variant, onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs button, disabled, disabledInteractive, download, href, name, rel, selected, shape, size, target, toggle, type_, value, variant, onBeforeinput, onInput, onChange, onClick
+{-|
+Middle layer for `<m3e-button>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Button` module for everyday use.
+
+@docs button, disabled, disabledInteractive, download, href, name
+@docs rel, selected, shape, size, target, toggle
+@docs type_, value, variant, onBeforeinput, onInput, onChange
+@docs onClick
 -}
 
 
@@ -173,8 +182,8 @@ onBeforeinput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Button.onBeforeinput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -185,8 +194,8 @@ onInput f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Button.onInput
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 
@@ -198,8 +207,8 @@ onChange f_ =
     M3e.Cem.Attr.attribute
         M3e.Cem.Html.Button.onChange
         (Json.Decode.map
-            f_
-            (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
+             f_
+             (Json.Decode.at [ "target", "selected" ] Json.Decode.bool)
         )
 
 

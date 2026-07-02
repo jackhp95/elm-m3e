@@ -1,7 +1,13 @@
-module M3e.Cem.Html.SegmentedButton exposing (disabled, hideSelectionIndicator, multi, name, onBeforeinput, onChange, onInput, segmentedButton)
+module M3e.Cem.Html.SegmentedButton exposing
+    ( segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange
+    , onBeforeinput, onInput
+    )
 
-{-| 
-@docs segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+{-|
+Bottom layer for `<m3e-segmented-button>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs segmentedButton, disabled, hideSelectionIndicator, multi, name, onChange
+@docs onBeforeinput, onInput
 -}
 
 

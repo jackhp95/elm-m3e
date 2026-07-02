@@ -1,6 +1,8 @@
-module M3e.DialogAction exposing (child, children, returnValue, view)
+module M3e.DialogAction exposing ( view, returnValue, child, children )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to close a parenting dialog.
+
 @docs view, returnValue, child, children
 -}
 
@@ -23,13 +25,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.DialogAction.dialogAction
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.DialogAction.dialogAction
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

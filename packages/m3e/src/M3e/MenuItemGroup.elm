@@ -1,6 +1,8 @@
-module M3e.MenuItemGroup exposing (child, children, view)
+module M3e.MenuItemGroup exposing ( view, child, children )
 
-{-| 
+{-|
+Groups related items (such a radios) in a menu.
+
 @docs view, child, children
 -}
 
@@ -21,13 +23,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.MenuItemGroup.menuItemGroup
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.MenuItemGroup.menuItemGroup
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

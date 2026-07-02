@@ -1,6 +1,8 @@
-module M3e.Cem.Slide exposing (selectedIndex, slide)
+module M3e.Cem.Slide exposing ( slide, selectedIndex )
 
-{-| 
+{-|
+Middle layer for `<m3e-slide>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Slide` module for everyday use.
+
 @docs slide, selectedIndex
 -}
 

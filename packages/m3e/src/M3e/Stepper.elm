@@ -1,7 +1,22 @@
-module M3e.Stepper exposing (headerPosition, labelPosition, linear, onBeforeinput, onChange, onInput, orientation, panel, step, view)
+module M3e.Stepper exposing
+    ( view, headerPosition, labelPosition, linear, orientation, onChange
+    , onBeforeinput, onInput, step, panel
+    )
 
-{-| 
-@docs view, headerPosition, labelPosition, linear, orientation, onChange, onBeforeinput, onInput, step, panel
+{-|
+Provides a wizard-like workflow by dividing content into logical steps.
+
+**Events:**
+- `change`: Dispatched when the selected step changes.
+- `beforeinput`: Dispatched before the selected state of a step changes.
+- `input`: Dispatched when the selected state of a step changes.
+
+**Slots:**
+- `step`: Renders a step.
+- `panel`: Renders a panel.
+
+@docs view, headerPosition, labelPosition, linear, orientation, onChange
+@docs onBeforeinput, onInput, step, panel
 -}
 
 
@@ -31,11 +46,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Stepper.stepper (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Stepper.stepper
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

@@ -1,6 +1,10 @@
-module M3e.Cem.Html.Divider exposing (divider, inset, insetEnd, insetStart, vertical)
+module M3e.Cem.Html.Divider exposing
+    ( divider, inset, insetStart, insetEnd, vertical
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-divider>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs divider, inset, insetStart, insetEnd, vertical
 -}
 

@@ -1,7 +1,13 @@
-module M3e.Cem.Html.FilterChip exposing (disabled, disabledInteractive, filterChip, onBeforeinput, onChange, onClick, onInput, selected, value, variant)
+module M3e.Cem.Html.FilterChip exposing
+    ( filterChip, disabled, disabledInteractive, selected, value, variant
+    , onBeforeinput, onInput, onChange, onClick
+    )
 
-{-| 
-@docs filterChip, disabled, disabledInteractive, selected, value, variant, onBeforeinput, onInput, onChange, onClick
+{-|
+Bottom layer for `<m3e-filter-chip>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs filterChip, disabled, disabledInteractive, selected, value, variant
+@docs onBeforeinput, onInput, onChange, onClick
 -}
 
 

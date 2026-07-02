@@ -1,7 +1,13 @@
-module M3e.Cem.Option exposing (disableHighlight, disabled, highlightMode, option, selected, term, value)
+module M3e.Cem.Option exposing
+    ( option, disabled, disableHighlight, highlightMode, selected, term
+    , value
+    )
 
-{-| 
-@docs option, disabled, disableHighlight, highlightMode, selected, term, value
+{-|
+Middle layer for `<m3e-option>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Option` module for everyday use.
+
+@docs option, disabled, disableHighlight, highlightMode, selected, term
+@docs value
 -}
 
 

@@ -1,6 +1,8 @@
-module M3e.Cem.Html.FocusRing exposing (disabled, focusRing, for, inward)
+module M3e.Cem.Html.FocusRing exposing ( focusRing, disabled, inward, for )
 
-{-| 
+{-|
+Bottom layer for `<m3e-focus-ring>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs focusRing, disabled, inward, for
 -}
 

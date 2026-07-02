@@ -1,6 +1,8 @@
-module M3e.Cem.StateLayer exposing (disableHover, disabled, for, stateLayer)
+module M3e.Cem.StateLayer exposing ( stateLayer, disabled, disableHover, for )
 
-{-| 
+{-|
+Middle layer for `<m3e-state-layer>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.StateLayer` module for everyday use.
+
 @docs stateLayer, disabled, disableHover, for
 -}
 

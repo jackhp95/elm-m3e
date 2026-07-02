@@ -1,7 +1,15 @@
-module M3e.Cem.Calendar exposing (calendar, date, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, onChange, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, startView)
+module M3e.Cem.Calendar exposing
+    ( calendar, date, maxDate, minDate, rangeEnd, rangeStart
+    , startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel
+    , nextMultiYearLabel, onChange
+    )
 
-{-| 
-@docs calendar, date, maxDate, minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
+{-|
+Middle layer for `<m3e-calendar>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Calendar` module for everyday use.
+
+@docs calendar, date, maxDate, minDate, rangeEnd, rangeStart
+@docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+@docs previousMultiYearLabel, nextMultiYearLabel, onChange
 -}
 
 

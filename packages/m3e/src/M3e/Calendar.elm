@@ -1,7 +1,37 @@
-module M3e.Calendar exposing (date, header, maxDate, minDate, nextMonthLabel, nextMultiYearLabel, nextYearLabel, onChange, previousMonthLabel, previousMultiYearLabel, previousYearLabel, rangeEnd, rangeStart, startAt, startView, view)
+module M3e.Calendar exposing
+    ( view, date, maxDate, minDate, rangeEnd, rangeStart
+    , startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel
+    , nextMultiYearLabel, onChange, header
+    )
 
-{-| 
-@docs view, date, maxDate, minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, header
+{-|
+A calendar used to select a date.
+
+**Events:**
+- `change`: Dispatched when the selected date changes.
+
+**Slots:**
+- `header`: Renders the header of the calendar.
+
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Date picker calendar with a custom header" -->
+```elm
+M3e.Calendar.view [ M3e.Calendar.date "2025-12-13", M3e.Calendar.minDate "2025-01-01", M3e.Calendar.maxDate "2026-12-31" ] [ M3e.Calendar.header (Native.span [] [ Kit.text "Select a delivery date" ]) ]
+```
+
+<!-- elm-cem:example title="Range calendar starting in the multi-year view" -->
+```elm
+M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt "2026-06-01", M3e.Calendar.rangeStart "2026-06-10", M3e.Calendar.rangeEnd "2026-06-17", M3e.Calendar.nextMonthLabel "Next month", M3e.Calendar.previousMonthLabel "Previous month" ] [ M3e.Calendar.header (Native.span [] [ Kit.text "Choose your stay" ]) ]
+```
+
+@docs view, date, maxDate, minDate, rangeEnd, rangeStart
+@docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+@docs previousMultiYearLabel, nextMultiYearLabel, onChange, header
 -}
 
 
@@ -36,13 +66,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Calendar.calendar
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Calendar.calendar
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 

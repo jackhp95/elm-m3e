@@ -1,6 +1,8 @@
-module M3e.Cem.DialogAction exposing (dialogAction, returnValue)
+module M3e.Cem.DialogAction exposing ( dialogAction, returnValue )
 
-{-| 
+{-|
+Middle layer for `<m3e-dialog-action>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.DialogAction` module for everyday use.
+
 @docs dialogAction, returnValue
 -}
 

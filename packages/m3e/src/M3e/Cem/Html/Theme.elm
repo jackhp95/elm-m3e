@@ -1,7 +1,13 @@
-module M3e.Cem.Html.Theme exposing (color, contrast, density, motion, onChange, scheme, strongFocus, theme, variant)
+module M3e.Cem.Html.Theme exposing
+    ( theme, color, contrast, density, scheme, strongFocus
+    , variant, motion, onChange
+    )
 
-{-| 
-@docs theme, color, contrast, density, scheme, strongFocus, variant, motion, onChange
+{-|
+Bottom layer for `<m3e-theme>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs theme, color, contrast, density, scheme, strongFocus
+@docs variant, motion, onChange
 -}
 
 

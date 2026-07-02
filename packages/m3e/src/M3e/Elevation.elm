@@ -1,6 +1,8 @@
-module M3e.Elevation exposing (disabled, for, level, view)
+module M3e.Elevation exposing ( view, disabled, for, level )
 
-{-| 
+{-|
+Visually depicts elevation using a shadow.
+
 @docs view, disabled, for, level
 -}
 
@@ -24,13 +26,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Elevation.elevation
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.Elevation.elevation
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

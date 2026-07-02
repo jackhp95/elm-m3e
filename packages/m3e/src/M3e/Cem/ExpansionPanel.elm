@@ -1,7 +1,13 @@
-module M3e.Cem.ExpansionPanel exposing (disabled, expansionPanel, hideToggle, onClosed, onClosing, onOpened, onOpening, open, toggleDirection, togglePosition)
+module M3e.Cem.ExpansionPanel exposing
+    ( expansionPanel, disabled, hideToggle, open, toggleDirection, togglePosition
+    , onOpening, onOpened, onClosing, onClosed
+    )
 
-{-| 
-@docs expansionPanel, disabled, hideToggle, open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed
+{-|
+Middle layer for `<m3e-expansion-panel>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.ExpansionPanel` module for everyday use.
+
+@docs expansionPanel, disabled, hideToggle, open, toggleDirection, togglePosition
+@docs onOpening, onOpened, onClosing, onClosed
 -}
 
 

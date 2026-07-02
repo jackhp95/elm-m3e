@@ -1,7 +1,15 @@
-module M3e.Cem.Html.Card exposing (actionable, card, disabled, disabledInteractive, download, href, inline, name, onClick, orientation, rel, target, type_, value, variant)
+module M3e.Cem.Html.Card exposing
+    ( card, actionable, inline, orientation, variant, href
+    , target, rel, download, name, value, type_, disabledInteractive
+    , disabled, onClick
+    )
 
-{-| 
-@docs card, actionable, inline, orientation, variant, href, target, rel, download, name, value, type_, disabledInteractive, disabled, onClick
+{-|
+Bottom layer for `<m3e-card>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
+@docs card, actionable, inline, orientation, variant, href
+@docs target, rel, download, name, value, type_
+@docs disabledInteractive, disabled, onClick
 -}
 
 

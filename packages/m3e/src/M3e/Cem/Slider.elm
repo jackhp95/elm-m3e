@@ -1,7 +1,13 @@
-module M3e.Cem.Slider exposing (disabled, discrete, labelled, max, min, onBeforeinput, onChange, onInput, size, slider, step)
+module M3e.Cem.Slider exposing
+    ( slider, disabled, discrete, labelled, max, min
+    , step, size, onBeforeinput, onInput, onChange
+    )
 
-{-| 
-@docs slider, disabled, discrete, labelled, max, min, step, size, onBeforeinput, onInput, onChange
+{-|
+Middle layer for `<m3e-slider>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.Slider` module for everyday use.
+
+@docs slider, disabled, discrete, labelled, max, min
+@docs step, size, onBeforeinput, onInput, onChange
 -}
 
 

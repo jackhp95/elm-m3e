@@ -1,6 +1,10 @@
-module M3e.Cem.Html.Toolbar exposing (elevated, shape, toolbar, variant, vertical)
+module M3e.Cem.Html.Toolbar exposing
+    ( toolbar, elevated, shape, variant, vertical
+    )
 
-{-| 
+{-|
+Bottom layer for `<m3e-toolbar>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+
 @docs toolbar, elevated, shape, variant, vertical
 -}
 

@@ -1,6 +1,8 @@
-module M3e.RichTooltipAction exposing (disableRestoreFocus, view)
+module M3e.RichTooltipAction exposing ( view, disableRestoreFocus )
 
-{-| 
+{-|
+An element, nested within a clickable element, used to dismiss a parenting rich tooltip.
+
 @docs view, disableRestoreFocus
 -}
 
@@ -24,19 +26,19 @@ view :
 view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.RichTooltipAction.richTooltipAction
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.append
-                []
-                (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-            )
-            (List.append
-                [ M3e.Element.toNode req_.content ]
-                (List.map M3e.Content.toNode content_)
-            )
+             (\erased ch ->
+                  M3e.Cem.RichTooltipAction.richTooltipAction
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.append
+                  []
+                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+             )
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 

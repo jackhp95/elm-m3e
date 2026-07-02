@@ -1,6 +1,8 @@
-module M3e.ThemeIcon exposing (color, scheme, variant, view)
+module M3e.ThemeIcon exposing ( view, color, scheme, variant )
 
-{-| 
+{-|
+An icon that visually presents a preview of a theme.
+
 @docs view, color, scheme, variant
 -}
 
@@ -24,13 +26,13 @@ view :
 view attributes children =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.ThemeIcon.themeIcon
-                    (List.map M3e.Cem.Attr.forget erased)
-                    ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Element.toNode children)
+             (\erased ch ->
+                  M3e.Cem.ThemeIcon.themeIcon
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Element.toNode children)
         )
 
 

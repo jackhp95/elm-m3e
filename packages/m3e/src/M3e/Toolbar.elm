@@ -1,7 +1,29 @@
-module M3e.Toolbar exposing (child, children, elevated, shape, variant, vertical, view)
+module M3e.Toolbar exposing
+    ( view, elevated, shape, variant, vertical, child
+    , children
+    )
 
-{-| 
-@docs view, elevated, shape, variant, vertical, child, children
+{-|
+Presents frequently used actions relevant to the current page.
+
+<!-- elm-cem:docmeta category=Containment -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Vibrant rounded media controls toolbar" -->
+```elm
+M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "skip_previous" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "skip_next" ] []) ] ])
+```
+
+<!-- elm-cem:example title="Elevated vertical editing toolbar" -->
+```elm
+M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_italic" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_underlined" ] []) ] ])
+```
+
+@docs view, elevated, shape, variant, vertical, child
+@docs children
 -}
 
 
@@ -26,11 +48,13 @@ view :
 view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
-            (\erased ch ->
-                M3e.Cem.Toolbar.toolbar (List.map M3e.Cem.Attr.forget erased) ch
-            )
-            (List.map M3e.Cem.Attr.forget attributes)
-            (List.map M3e.Content.toNode content_)
+             (\erased ch ->
+                  M3e.Cem.Toolbar.toolbar
+                      (List.map M3e.Cem.Attr.forget erased)
+                      ch
+             )
+             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Content.toNode content_)
         )
 
 
