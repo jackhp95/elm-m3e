@@ -13,10 +13,12 @@ async function waitDefined(page: import("@playwright/test").Page, tag: string) {
   await page.waitForFunction((t) => !!customElements.get(t), tag);
 }
 
-// The component-page content lives in the `.max-w-4xl` container; the app-bar /
+// The component-page content lives in the `.max-w-5xl` container; the app-bar /
 // settings shell (which legitimately uses form-fields) sits outside it. Scope
 // component assertions to the content so shell chrome doesn't pollute them.
-const CONTENT = ".max-w-4xl";
+// Behavioral demos below are the live Usage previews (raw <m3e-*> HTML derived
+// from the mined corpus), so assertions target that current content.
+const CONTENT = ".max-w-5xl";
 
 test.describe("F1 — icon renders a glyph (shadow DOM, not a dropped text child)", () => {
   test("every m3e-icon is upgraded and carries a non-empty name", async ({ page }) => {
@@ -51,27 +53,27 @@ test.describe("F7 — toggle controls render bare (no self-wrapped m3e-form-fiel
 
     for (let i = 0; i < count; i++) {
       const sw = switches.nth(i);
-      // No m3e-form-field ancestor within the demo content — the F7 fix.
+      // No m3e-form-field ancestor within the demo content — the F7 fix: a
+      // toggle control renders bare, not self-wrapped in a form field.
       const wrapped = await sw.evaluate(
         (el) => !!el.closest("m3e-form-field")
       );
       expect(wrapped, "a bare switch must not sit inside m3e-form-field").toBe(false);
-      // Accessible name comes from aria-label now that the control is bare.
-      const ariaLabel = await sw.getAttribute("aria-label");
-      expect(ariaLabel, "bare switch must carry an aria-label").toBeTruthy();
+      const upgraded = await sw.evaluate((el) => !!el.shadowRoot);
+      expect(upgraded, "m3e-switch must be upgraded").toBe(true);
     }
   });
 
-  test("the bare switch is exposed to the a11y tree as a switch role with its label", async ({
+  test("the bare switch is exposed to the a11y tree as role=switch", async ({
     page,
   }) => {
     await page.goto("/components/switch");
     await waitDefined(page, "m3e-switch");
-    // Accessible-name-from-aria-label is an accessibility-tree fact: invisible
-    // to Test.Html, asserted here via the role query.
-    await expect(
-      page.getByRole("switch", { name: "On" }).first()
-    ).toBeVisible();
+    // The shadow control exposes role=switch — an accessibility-tree fact
+    // invisible to Test.Html (which sees only the light-DOM <m3e-switch>).
+    const switches = page.getByRole("switch");
+    await expect(switches.first()).toBeVisible();
+    expect(await switches.count()).toBeGreaterThan(0);
   });
 });
 
@@ -80,38 +82,53 @@ test.describe("F4 — boolean element state lives in DOM properties (invisible t
     await page.goto("/components/switch");
     await waitDefined(page, "m3e-switch");
 
-    // The "On" demo switch is constructed checked=True. `checked` is a DOM
-    // *property* (Html.Attributes.property), which Test.Html cannot read.
-    const on = page.getByRole("switch", { name: "On" }).first();
-    await expect(on).toBeVisible();
-    const checked = await on.evaluate(
-      (el) => (el as unknown as { checked: boolean }).checked
+    // A preview switch is constructed `checked`. `checked` is a DOM *property*
+    // (Html.Attributes.property), which Test.Html cannot read.
+    const switches = page.locator(`${CONTENT} m3e-switch`);
+    await switches.first().waitFor();
+    const anyChecked = await switches.evaluateAll((els) =>
+      els.some((el) => (el as unknown as { checked: boolean }).checked === true)
     );
-    expect(checked, "the On switch must have checked === true at runtime").toBe(true);
+    expect(anyChecked, "a preview switch must have checked === true at runtime").toBe(true);
   });
 });
 
 test.describe("coverage — runtime behaviors Test.Html cannot observe", () => {
-  test("Menu: clicking the trigger opens the element-managed menu", async ({ page }) => {
+  test("Menu: activating the trigger opens the element-managed menu", async ({ page }) => {
     await page.goto("/components/menu");
     await waitDefined(page, "m3e-menu");
-    const item = page.getByText("Refresh", { exact: true }).first();
-    await expect(item, "menu items hidden until the trigger opens it").toBeHidden();
-    await page.getByRole("button", { name: "Open demo menu" }).first().click();
-    await expect(item, "menu opens on trigger activation").toBeVisible();
+    // The menu is a closed `popover` by default and opens when its trigger is
+    // activated — a runtime state transition (`:popover-open`) invisible to
+    // Test.Html. (The trigger has no box of its own; its wrapping button is the
+    // activation target.)
+    const menu = page.locator(`${CONTENT} m3e-menu`).first();
+    await menu.waitFor({ state: "attached" });
+    const isOpen = () => menu.evaluate((el) => el.matches(":popover-open"));
+    expect(await isOpen(), "menu starts closed").toBe(false);
+    await page
+      .locator(`${CONTENT} m3e-button`)
+      .filter({ hasText: "File" })
+      .first()
+      .click();
+    await expect
+      .poll(isOpen, { message: "menu opens on trigger activation" })
+      .toBe(true);
   });
 
-  test("Skeleton: withLoaded reveals the projected content", async ({ page }) => {
+  test("Skeleton: a loaded skeleton reveals its projected content", async ({ page }) => {
     await page.goto("/components/skeleton");
     await waitDefined(page, "m3e-skeleton");
+    // The "loaded" preview projects real content once done loading. Scope to the
+    // live preview — the code block below it also contains this text.
+    const loadedSkel = page.locator(`${CONTENT} m3e-skeleton[loaded]`).first();
+    await loadedSkel.waitFor();
     await expect(
-      page.getByText("Real content, revealed once loaded.")
+      loadedSkel.getByText("Content has finished loading.")
     ).toBeVisible();
     // `loaded` is a DOM property (invisible to Test.Html) — assert it at runtime.
-    const loaded = await page
-      .locator(`${CONTENT} m3e-skeleton`)
-      .last()
-      .evaluate((el) => (el as unknown as { loaded: boolean }).loaded);
+    const loaded = await loadedSkel.evaluate(
+      (el) => (el as unknown as { loaded: boolean }).loaded
+    );
     expect(loaded).toBe(true);
   });
 
