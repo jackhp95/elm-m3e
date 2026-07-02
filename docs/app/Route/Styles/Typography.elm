@@ -1,7 +1,6 @@
 module Route.Styles.Typography exposing (ActionData, Data, Model, Msg, route)
 
-import BackendTask exposing (BackendTask)
-import FatalError exposing (FatalError)
+import BackendTask
 import Head
 import Head.Seo as Seo
 import Kit
@@ -15,7 +14,6 @@ import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -115,8 +113,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Typography · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
                     , Layout.div "max-w-2xl"
@@ -136,5 +134,6 @@ view _ _ =
                         ]
                     ]
                 ]
-            ]
+            )
+        ]
     }

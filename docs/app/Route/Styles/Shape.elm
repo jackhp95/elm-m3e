@@ -6,7 +6,7 @@ named shape via `Shape.name` Value tokens), in the content-pane + card pattern. 
 the old `Cem.M3e.Shape`/`Shape.attributes` passthrough with the token-driven API.
 -}
 
-import BackendTask exposing (BackendTask)
+import BackendTask
 import Head
 import Html.Attributes as Attr
 import Kit
@@ -82,8 +82,8 @@ view _ _ =
     in
     { title = "Shape · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Heading.view { content = Kit.text "Shape" }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
@@ -95,7 +95,8 @@ view _ _ =
                         )
                     ]
                 ]
-            ]
+            )
+        ]
     }
 
 

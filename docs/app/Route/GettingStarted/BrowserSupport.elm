@@ -1,7 +1,6 @@
 module Route.GettingStarted.BrowserSupport exposing (ActionData, Data, Model, Msg, route)
 
-import BackendTask exposing (BackendTask)
-import FatalError exposing (FatalError)
+import BackendTask
 import Head
 import Head.Seo as Seo
 import Kit
@@ -96,8 +95,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Browser Support · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
                     , Kit.paragraph Value.large
@@ -130,5 +129,6 @@ view _ _ =
                         ]
                     ]
                 ]
-            ]
+            )
+        ]
     }

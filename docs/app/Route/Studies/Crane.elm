@@ -8,7 +8,7 @@ Vocab API (opus, Settings-style; the 9B/14B ornith couldn't converge on the orig
 `Card`s. Local state drives the toggles; custom layout is only a Tailwind grid.
 -}
 
-import BackendTask exposing (BackendTask)
+import BackendTask
 import Effect exposing (Effect)
 import Head
 import Html.Attributes as Attr
@@ -27,7 +27,7 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Seam
 import Shared
-import UrlPath
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
@@ -80,7 +80,7 @@ update _ _ msg model =
             ( { model | tripType = t }, Effect.none )
 
 
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
     Sub.none
 
@@ -118,8 +118,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Crane · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Heading.view { content = Kit.text "Crane" }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
@@ -142,7 +142,8 @@ view _ _ model =
                     [ Seam.asAttribute (Attr.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
                     (List.map destinationCard (destinations model.category))
                 ]
-            ]
+            )
+        ]
     }
 
 

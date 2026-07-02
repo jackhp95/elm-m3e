@@ -39,7 +39,7 @@ import M3e.NavMenuItem as NavMenuItem
 import M3e.Node as Node
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Theme as Theme
-import M3e.Value as Value exposing (Supported)
+import M3e.Value as Value exposing (Supported, Value)
 import Native
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
@@ -304,7 +304,7 @@ toHtml =
     Element.toNode >> Node.toHtml
 
 
-schemeToken : Scheme -> Value.Value { a | auto : Supported, dark : Supported, light : Supported }
+schemeToken : Scheme -> Value { a | auto : Supported, dark : Supported, light : Supported }
 schemeToken scheme =
     case scheme of
         Auto ->
@@ -317,7 +317,7 @@ schemeToken scheme =
             Value.dark
 
 
-contrastToken : Contrast -> Value.Value { a | high : Supported, medium : Supported, standard : Supported }
+contrastToken : Contrast -> Value { a | high : Supported, medium : Supported, standard : Supported }
 contrastToken contrast =
     case contrast of
         Standard ->
@@ -355,6 +355,7 @@ view _ page model toMsg pageView =
                 (List.map Theme.child children)
                 |> toHtml
 
+        absolutePath : String
         absolutePath =
             UrlPath.toAbsolute page.path
     in
@@ -379,7 +380,7 @@ view _ page model toMsg pageView =
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ EscapeHatch.fromHtml (Html.map toMsg (appShellBar model))
-                    , EscapeHatch.fromHtml (drawerShell toMsg model page (List.map Node.toHtml pageView.body))
+                    , EscapeHatch.fromHtml (drawerShell model page (List.map Node.toHtml pageView.body))
                     ]
                 ]
             ]
@@ -419,7 +420,7 @@ appShellBar model =
             ]
             [ AppBar.title (Kit.text "elm-m3e")
             , AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
-            , AppBar.leading (EscapeHatch.asElement (menuButton model))
+            , AppBar.leading (EscapeHatch.asElement menuButton)
             , AppBar.trailing (EscapeHatch.asElement (schemeQuickToggle model))
             , AppBar.trailing (EscapeHatch.asElement (settingsTriggerElement model))
             , AppBar.trailing (EscapeHatch.asElement githubLink)
@@ -431,8 +432,8 @@ appShellBar model =
 {-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
 viewports (the side drawer is always visible there).
 -}
-menuButton : Model -> Element { html : Supported } Msg
-menuButton _ =
+menuButton : Element { html : Supported } Msg
+menuButton =
     Native.span
         [ Seam.asAttribute (class "md:hidden") ]
         [ IconButton.view
@@ -657,9 +658,10 @@ navSections =
 panel is the hierarchical nav-menu and whose default content is the page body.
 The nav is `NavItem` links inside `NavMenuItem` groups inside a `NavMenu`.
 -}
-drawerShell : (Msg -> msg) -> Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
-drawerShell _ model page body =
+drawerShell : Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
+drawerShell model page body =
     let
+        currentPath : String
         currentPath =
             normalizePath (UrlPath.toAbsolute page.path)
     in
@@ -690,6 +692,7 @@ candidate to component-ify once the NavMenu model is settled.
 navMenu : String -> Element { s | navMenu : Supported } msg
 navMenu currentPath =
     let
+        groups : List ( String, String, List ( String, String ) )
         groups =
             List.map (\s -> ( s.icon, s.title, s.items )) navSections
                 ++ List.map

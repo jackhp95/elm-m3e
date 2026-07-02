@@ -26,7 +26,6 @@ import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
 import Native
 import Pages.Url
@@ -96,13 +95,14 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "elm-m3e · type-safe Material 3 Expressive for Elm"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ hero
                 , highlights
                 , statusGrid
                 ]
-            ]
+            )
+        ]
     }
 
 

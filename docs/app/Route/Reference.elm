@@ -12,7 +12,7 @@ import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (a, code, text)
+import Html exposing (Html, a, code, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import Kit
@@ -22,7 +22,6 @@ import M3e.ContentPane as ContentPane
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
 import Native
 import Pages.Url
@@ -126,8 +125,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     { title = "elm-m3e · component reference"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ pageHeading
                 , Layout.div "mt-2 max-w-2xl"
                     [ Kit.paragraph Value.large
@@ -141,7 +140,8 @@ view app _ =
                 , Layout.div "mt-12 space-y-12"
                     (List.map componentBlock app.data)
                 ]
-            ]
+            )
+        ]
     }
 
 
@@ -182,6 +182,7 @@ componentBlock c =
 memberRow : Member -> Element { s | card : Supported } msg
 memberRow m =
     let
+        sig : String
         sig =
             if m.kind == "type" then
                 "type " ++ m.name
@@ -197,7 +198,7 @@ memberRow m =
         [ Card.content
             (Native.node (Html.node "div")
                 []
-                [ EscapeHatch.fromHtml (pre_ sig)
+                [ EscapeHatch.fromHtml (preBlock sig)
                 , if m.doc == "" then
                     Kit.text ""
 
@@ -208,8 +209,8 @@ memberRow m =
         ]
 
 
-pre_ : String -> Html.Html msg
-pre_ s =
+preBlock : String -> Html msg
+preBlock s =
     Html.pre [ class "overflow-x-auto" ]
         [ code [] [ text s ] ]
 

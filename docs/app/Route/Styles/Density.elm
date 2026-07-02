@@ -1,7 +1,6 @@
 module Route.Styles.Density exposing (ActionData, Data, Model, Msg, route)
 
-import BackendTask exposing (BackendTask)
-import FatalError exposing (FatalError)
+import BackendTask
 import Head
 import Head.Seo as Seo
 import Html
@@ -13,7 +12,6 @@ import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
 import Native
 import Pages.Url
@@ -99,8 +97,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Density · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
                     , Layout.div "max-w-2xl"
@@ -122,5 +120,6 @@ view _ _ =
                         )
                     ]
                 ]
-            ]
+            )
+        ]
     }

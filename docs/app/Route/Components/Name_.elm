@@ -158,13 +158,14 @@ head _ =
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app sharedModel =
     let
+        component : Component
         component =
             app.data.component
     in
     { title = component.name ++ " · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 ([ Heading.view { content = Kit.text component.name }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
@@ -179,7 +180,8 @@ view app sharedModel =
                             [ Card.content (List_.view [] (List_.children (List.map memberRow component.members))) ]
                        ]
                 )
-            ]
+            )
+        ]
     }
 
 

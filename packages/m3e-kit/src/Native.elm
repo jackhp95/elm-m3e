@@ -1,11 +1,11 @@
-module Native exposing (node, div, section, nav, header, footer, span, p, a, strong, em, small, ul, ol, li, img, br, hr)
+module Native exposing (a, br, div, em, footer, header, hr, img, li, nav, node, ol, p, section, small, span, strong, ul)
 
 {-| Native-HTML IR producers (prose/inline/block). Each carries the `html` kind, so
 it drops into any `any` slot directly, and into a specific slot via `EscapeHatch`.
 This is the "teams get normal HTML inside our composition" seam (docs §8).
 -}
 
-import Html
+import Html exposing (Html)
 import M3e.Cem.Attr as Attr exposing (Attr)
 import M3e.Element as Element exposing (Element)
 import M3e.Node as Node
@@ -13,7 +13,7 @@ import M3e.Value exposing (Supported)
 
 
 node :
-    (List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg)
+    (List (Html.Attribute msg) -> List (Html msg) -> Html msg)
     -> List (Attr c msg)
     -> List (Element s msg)
     -> Element { k | html : Supported } msg

@@ -17,21 +17,21 @@ type alias Model =
 
 
 init : ErrorPage -> ( Model, Effect Msg )
-init errorPage =
+init _ =
     ( { count = 0 }
     , Effect.none
     )
 
 
 update : ErrorPage -> Msg -> Model -> ( Model, Effect Msg )
-update errorPage msg model =
+update _ msg model =
     case msg of
         Increment ->
             ( { model | count = model.count + 1 }, Effect.none )
 
 
-head : ErrorPage -> List Head.Tag
-head errorPage =
+head : List Head.Tag
+head =
     []
 
 
@@ -51,7 +51,7 @@ internalError =
 
 
 view : ErrorPage -> Model -> View Msg
-view error model =
+view error _ =
     { body =
         [ Node.raw
             (Html.div []
@@ -72,7 +72,7 @@ view error model =
             NotFound ->
                 "Page Not Found"
 
-            InternalError string ->
+            InternalError _ ->
                 "Unexpected Error"
     }
 

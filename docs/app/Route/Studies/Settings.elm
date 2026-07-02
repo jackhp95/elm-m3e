@@ -7,7 +7,7 @@ supporting text, and a trailing interactive `Switch`; appearance uses a
 `SegmentedButton`. Custom layout is avoided — the components carry the structure.
 -}
 
-import BackendTask exposing (BackendTask)
+import BackendTask
 import Effect exposing (Effect)
 import EscapeHatch
 import Head
@@ -27,7 +27,7 @@ import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
-import UrlPath
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
@@ -112,7 +112,7 @@ update _ _ msg model =
             ( { model | theme = t }, Effect.none )
 
 
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
     Sub.none
 
@@ -126,8 +126,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Settings · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Heading.view { content = Kit.text "Settings" }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
@@ -163,7 +163,8 @@ view _ _ model =
                         )
                     )
                 ]
-            ]
+            )
+        ]
     }
 
 

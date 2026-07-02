@@ -7,7 +7,7 @@ pair a category + amount with a `Progress.linear` bar showing budget usage. Stat
 dashboard (no local state); custom layout is only a Tailwind grid.
 -}
 
-import BackendTask exposing (BackendTask)
+import BackendTask
 import Effect exposing (Effect)
 import EscapeHatch
 import Head
@@ -27,7 +27,7 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Seam
 import Shared
-import UrlPath
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
@@ -72,7 +72,7 @@ update _ _ _ model =
     ( model, Effect.none )
 
 
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
     Sub.none
 
@@ -103,8 +103,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ _ =
     { title = "Rally · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Heading.view { content = Kit.text "Rally" }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
@@ -114,7 +114,8 @@ view _ _ _ =
                 , card "Budgets"
                     (List_.view [] (List_.children (List.map budgetRow budgets)))
                 ]
-            ]
+            )
+        ]
     }
 
 
