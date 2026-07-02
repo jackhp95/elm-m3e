@@ -23,8 +23,7 @@ import { fileURLToPath } from "url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, "../..");
-const SRC_M3E = path.resolve(REPO, "src/M3e");
-const SRC_CEM = path.resolve(REPO, "vendor/elm-m3e/Cem");
+const SRC_M3E = path.resolve(REPO, "packages/m3e/src/M3e");
 const OUT = path.resolve(here, "../data/reference.json");
 const ELM_BIN = path.resolve(REPO, "docs/node_modules/.bin/elm");
 
@@ -33,17 +32,26 @@ const SCRATCH = "/tmp/m3e-docs-gen";
 // Modules that exist in src/M3e but are NOT part of the *component* reference:
 // the IR primitives + escape-hatch (documented in the architecture guide, not
 // the per-component catalogue).
-const NOT_EXPOSED = new Set(["M3e.Internal", "M3e.Node", "M3e.Label", "M3e.Element"]);
+const NOT_EXPOSED = new Set([
+  "M3e.Internal",
+  "M3e.Node",
+  "M3e.Label",
+  "M3e.Element",
+  // Token-enum + IR infra, not per-component reference material (the Styles
+  // pages cover tokens); their generated form omits per-value doc comments.
+  "M3e.Value",
+  "M3e.Content",
+  "M3e.Attr",
+]);
 
 // 1. Build a fresh scratch package project (idempotent).
 function setupScratch() {
   fs.rmSync(SCRATCH, { recursive: true, force: true });
   fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
   fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
-  // The atoms live under `Cem.M3e.*`; symlinking `vendor/elm-m3e/Cem` puts
-  // `Cem/M3e/*.elm` on the source path so the library's imports resolve. They
-  // stay in source-dirs but out of `exposed-modules` (escape-hatch, not API).
-  fs.symlinkSync(SRC_CEM, path.join(SCRATCH, "src/Cem"));
+  // The middle/bottom layers live under `M3e.Cem.*` / `M3e.Cem.Html.*`, i.e.
+  // inside the `M3e` symlink already — they stay in source-dirs but out of
+  // `exposed-modules` (escape-hatch, not the component API).
 
   const exposed = fs
     .readdirSync(SRC_M3E)
@@ -148,8 +156,27 @@ function moduleEntry(mod) {
 }
 
 // ----- run -----
+// `elm make --docs` is strict and all-or-nothing: one exposed module with an
+// incomplete generated `@docs` block fails the whole build. When that happens we
+// keep the last-good `data/reference.json` (committed) rather than crash the dev
+// server — regenerating cleanly is a generator-side @docs-completeness fix. If no
+// prior reference exists, the failure is genuinely fatal.
 setupScratch();
-const modules = buildDocsJson();
+let modules;
+try {
+  modules = buildDocsJson();
+} catch (e) {
+  process.stderr.write((e.message || String(e)) + "\n");
+  if (fs.existsSync(OUT)) {
+    console.warn(
+      `⚠ reference regeneration failed — keeping existing ${path.relative(REPO, OUT)}. ` +
+        `Fix the generator's @docs output to refresh it.`
+    );
+    process.exit(0);
+  }
+  throw e;
+}
+
 const components = modules
   .filter((m) => /^M3e\./.test(m.name))
   .map(moduleEntry)
