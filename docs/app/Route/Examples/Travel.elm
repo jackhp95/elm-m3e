@@ -1,4 +1,4 @@
-module Route.Studies.Crane exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples.Travel exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Crane** study — an expressive Material 3 travel browser, re-authored on the new
 Vocab API (opus, Settings-style; the 9B/14B ornith couldn't converge on the original

@@ -184,7 +184,7 @@ statusGrid =
             [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text "The honest current state of the standalone library." ] ]
         , Layout.div "grid gap-4 sm:grid-cols-2"
             [ statusCard "Complete (53)" "Every M3e.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
-            , statusCard "Documented" "Getting Started, Styles, and per-component pages (API tables) are generated; rich per-component demos and Studies are in progress."
+            , statusCard "Documented" "Getting Started, Styles, and per-component pages (API tables) are generated; rich per-component demos and Examples are in progress."
             , statusCard "Removed (1)" "M3e.Table — m3e ships no table element, so it does not belong in a library that wraps m3e."
             , statusCard "Generator fixed" "elm-cem now resolves TS string-literal aliases to real per-component Elm enums and emits shared attributes per-component — benefiting every binding library."
             ]

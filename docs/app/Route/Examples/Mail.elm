@@ -1,4 +1,4 @@
-module Route.Studies.Reply exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples.Mail exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Reply** study — a Material 3 email inbox, re-authored on the new Vocab API (opus,
 Settings-style). Real components in the content-pane + card pattern: a compose `Button`

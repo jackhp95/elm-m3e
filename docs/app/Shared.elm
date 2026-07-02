@@ -349,8 +349,8 @@ view _ page model toMsg pageView =
     in
     { title = pageView.title
     , body =
-        if String.startsWith "/studies/" absolutePath then
-            -- Individual study routes take the full viewport; they include their
+        if String.startsWith "/examples/" absolutePath then
+            -- Individual example routes take the full viewport; they include their
             -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
             [ themed
                 [ Surface.view Surface.surface
@@ -628,15 +628,15 @@ navSections =
             , ( "/styles/shape", "Shape" )
             ]
       }
-    , { title = "Studies"
+    , { title = "Examples"
       , icon = "auto_awesome"
       , items =
-            [ ( "/studies", "Overview" )
-            , ( "/studies/reply", "Reply" )
-            , ( "/studies/shrine", "Shrine" )
-            , ( "/studies/rally", "Rally" )
-            , ( "/studies/crane", "Crane" )
-            , ( "/studies/settings", "Settings" )
+            [ ( "/examples", "Overview" )
+            , ( "/examples/dashboard", "Dashboard" )
+            , ( "/examples/shop", "Shop" )
+            , ( "/examples/mail", "Mail" )
+            , ( "/examples/travel", "Travel" )
+            , ( "/examples/settings", "Settings" )
             ]
       }
     ]

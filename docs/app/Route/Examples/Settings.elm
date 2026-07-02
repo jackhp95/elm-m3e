@@ -1,4 +1,4 @@
-module Route.Studies.Settings exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples.Settings exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Settings** study — a Material 3 settings surface, re-authored on the new Vocab
 API. It composes real m3e components in the reference's content-pane + card pattern:

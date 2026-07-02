@@ -1,8 +1,8 @@
-module Route.Studies exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples exposing (ActionData, Data, Model, Msg, route)
 
-{-| Landing page for the Studies area — composed, real-world demos showing
-many `Ui.*` components working together. The five studies are interactive
-routes that the sidebar already links to; this page is the gallery.
+{-| Landing page for the Examples area — composed, real-world app screens showing
+many `M3e.*` components working together. The five examples are responsive routes
+that the sidebar links to; this page is the gallery.
 -}
 
 import BackendTask
@@ -56,36 +56,36 @@ head _ =
         { canonicalUrlOverride = Nothing
         , siteName = "elm-m3e"
         , image = { url = [ "favicon.ico" ] |> UrlPath.join |> Pages.Url.fromPath, alt = "elm-m3e", dimensions = Nothing, mimeType = Nothing }
-        , description = "Composed, real-world demos built with elm-m3e."
+        , description = "Composed, real-world app screens built with elm-m3e."
         , locale = Nothing
-        , title = "Studies · elm-m3e"
+        , title = "Examples · elm-m3e"
         }
         |> Seo.website
 
 
-studies : List ( String, String, String )
-studies =
-    [ ( "reply", "Reply", "A Material 3 email / inbox client — nav family, app bar with search, message list, split-pane reading view, compose bottom sheet, and snackbar." )
-    , ( "shrine", "Shrine", "A boutique storefront — filter chips, segmented view toggles, price slider, product cards with shape-clipped media, cart bottom sheet, and item dialog." )
-    , ( "rally", "Rally", "A finance dashboard — tabs, account cards, transaction list, paginator, and live budget meters via progress indicators." )
-    , ( "crane", "Crane", "A travel destination browser — scrolling row of hero shots, date picker, segmented party-size, image gallery, and segmented amenity filters." )
-    , ( "settings", "Settings", "A Material 3 system settings surface — list/sublist navigation, switches, sliders, and a profile card." )
+examples : List ( String, String, String )
+examples =
+    [ ( "dashboard", "Dashboard", "An analytics dashboard — adaptive navigation, KPI stat cards with trend deltas, budget meters via progress indicators, and a recent-activity data table." )
+    , ( "shop", "Shop", "An e-commerce storefront — filter chips, a responsive product-card grid with shape-clipped media, a cart badge in the app bar, and quick actions." )
+    , ( "mail", "Mail", "An email client — adaptive navigation, a message list beside a reading pane that stacks on mobile, labels as chips, and a compose FAB." )
+    , ( "travel", "Travel", "A trip-planning app — a search hero, horizontally scrolling destination rails, category tabs, and richly-composed destination cards." )
+    , ( "settings", "Settings", "A system settings surface — sectioned preference groups built from list items, switches, radios, sliders, and dividers." )
     ]
 
 
 pageHeading : Element { s | heading : Supported } msg
 pageHeading =
-    Heading.view { content = Kit.text "Studies" }
+    Heading.view { content = Kit.text "Examples" }
         [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
         []
 
 
-studyCard : ( String, String, String ) -> Element { s | card : Supported } msg
-studyCard ( slug, title, body ) =
+exampleCard : ( String, String, String ) -> Element { s | card : Supported } msg
+exampleCard ( slug, title, body ) =
     let
-        studyHref : String
-        studyHref =
-            "/studies/" ++ slug
+        exampleHref : String
+        exampleHref =
+            "/examples/" ++ slug
     in
     Card.view
         [ Card.variant Value.elevated ]
@@ -94,7 +94,7 @@ studyCard ( slug, title, body ) =
         , Card.actions
             (Button.view
                 [ Button.variant Value.filled
-                , Button.href studyHref
+                , Button.href exampleHref
                 , Button.target "_blank"
                 , Button.rel "noreferrer noopener"
                 ]
@@ -110,7 +110,7 @@ pane items =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    { title = "Studies · elm-m3e"
+    { title = "Examples · elm-m3e"
     , body =
         [ Element.toNode
             (pane
@@ -119,11 +119,11 @@ view _ _ =
                     , Layout.div "max-w-2xl"
                         [ Kit.paragraph Value.large
                             [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
+                            [ Kit.text "Examples are composed, real-world app screens that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, responsive route, not a screenshot." ]
                         ]
                     ]
                 , Layout.section "grid gap-4 sm:grid-cols-2"
-                    (List.map studyCard studies)
+                    (List.map exampleCard examples)
                 ]
             )
         ]

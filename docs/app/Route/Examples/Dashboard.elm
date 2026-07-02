@@ -1,4 +1,4 @@
-module Route.Studies.Rally exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples.Dashboard exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Rally** study — a Material 3 personal-finance dashboard, re-authored on the new
 Vocab API (opus, Settings-style). Real components in the content-pane + card pattern:

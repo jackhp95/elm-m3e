@@ -1,4 +1,4 @@
-module Route.Studies.Shrine exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples.Shop exposing (ActionData, Data, Model, Msg, route)
 
 {-| **Shrine** study — a Material 3 e-commerce boutique, re-authored on the new Vocab
 API (opus, Settings-style). Real components in the content-pane + card pattern: a
