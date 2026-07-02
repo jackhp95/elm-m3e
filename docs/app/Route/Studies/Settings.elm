@@ -12,6 +12,7 @@ import Effect exposing (Effect)
 import EscapeHatch
 import Head
 import Kit
+import M3e.Aria as Aria
 import M3e.ButtonSegment as ButtonSegment
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
@@ -201,8 +202,8 @@ switchRow icon label on toggle =
         , ListItem.child (Kit.text label)
         , ListItem.trailing
             (EscapeHatch.asElement
-                (Switch.view { ariaLabel = label }
-                    [ Switch.checked on, Switch.onClick (PagesMsg.fromMsg toggle) ]
+                (Switch.view
+                    [ Aria.label label, Switch.checked on, Switch.onClick (PagesMsg.fromMsg toggle) ]
                     []
                 )
             )

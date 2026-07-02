@@ -19,6 +19,26 @@ A dialog that provides important prompts in a user flow.
 - `actions`: Renders the actions of the dialog.
 - `close-icon`: Renders the icon of the button used to close the dialog.
 
+<!-- elm-cem:docmeta category=Containment -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Confirmation dialog with header and actions" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.DialogTrigger.view [ M3e.DialogTrigger.for "confirm" ] [ M3e.DialogTrigger.child (Kit.text "Delete project") ]) ]
+    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] [ M3e.Dialog.header (Native.span [] [ Kit.text "Delete project?" ]), M3e.Dialog.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue "cancel" ] [ M3e.DialogAction.child (Kit.text "Cancel") ]) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []), M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue "delete" ] [ M3e.DialogAction.child (Kit.text "Delete") ]) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text "This action permanently removes the project and all of its files. This cannot be undone." ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Alert dialog with close icon" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (M3e.DialogTrigger.view [ M3e.DialogTrigger.for "info" ] [ M3e.DialogTrigger.child (Kit.text "Session timeout") ]) ]
+    , M3e.Dialog.view [ M3e.Dialog.alert True, M3e.Dialog.dismissible True ] [ M3e.Dialog.closeIcon (M3e.Icon.view [ M3e.Icon.name "close" ] []), M3e.Dialog.header (Native.span [] [ Kit.text "Your session has expired" ]), M3e.Dialog.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue "ok" ] [ M3e.DialogAction.child (Kit.text "Sign in") ]) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text "For your security, you have been signed out due to inactivity. Please sign in again to continue." ]) ]
+    ]
+```
+
 @docs view, alert, closeLabel, disableClose, dismissible, noFocusTrap
 @docs open, onOpening, onOpened, onClosing, onClosed, onCancel
 @docs child, header, actions, closeIcon, children

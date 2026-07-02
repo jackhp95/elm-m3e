@@ -13,12 +13,27 @@ A checkbox that allows a user to select one or more options from a limited numbe
 - `invalid`: Dispatched when a form is submitted and the element fails constraint validation.
 - `click`: Dispatched when the element is clicked.
 
+<!-- elm-cem:docmeta category=Selection -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Notification preferences with required terms" -->
+```elm
+Native.section [] [ Native.p [] [ Kit.text "Email notifications" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name "news", M3e.Checkbox.value "newsletter" ] [], Kit.text "Product newsletter" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.name "offers", M3e.Checkbox.value "offers" ] [], Kit.text "Special offers" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.indeterminate True, M3e.Checkbox.name "digest", M3e.Checkbox.value "digest" ] [], Kit.text "Weekly digest" ], M3e.Divider.view [] [], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.required True, M3e.Checkbox.name "terms", M3e.Checkbox.value "accepted" ] [], Kit.text "I accept the terms of service" ] ]
+```
+
+<!-- elm-cem:example title="Single checkbox with external label" -->
+```elm
+Native.div [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name "remember", M3e.Checkbox.value "yes" ] [], Native.node Html.label [] [ Kit.text "Remember me on this device" ] ]
+```
+
 @docs view, checked, disabled, indeterminate, name, required
 @docs value, onBeforeinput, onInput, onChange, onInvalid, onClick
 -}
 
 
-import Html.Attributes
 import M3e.Cem.Attr
 import M3e.Cem.Checkbox
 import M3e.Content
@@ -29,8 +44,7 @@ import M3e.Value
 
 {-| Build the `<m3e-checkbox>` element (lazy IR). -}
 view :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , indeterminate : M3e.Value.Supported
     , name : M3e.Value.Supported
@@ -45,7 +59,7 @@ view :
     } msg)
     -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | checkbox : M3e.Value.Supported } msg
-view req_ attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -53,15 +67,7 @@ view req_ attributes content_ =
                       (List.map M3e.Cem.Attr.forget erased)
                       ch
              )
-             (List.append
-                  [ M3e.Cem.Attr.forget
-                      (M3e.Cem.Attr.attribute
-                         (Html.Attributes.attribute "aria-label")
-                         req_.ariaLabel
-                      )
-                  ]
-                  (List.map M3e.Cem.Attr.forget attributes)
-             )
+             (List.map M3e.Cem.Attr.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 

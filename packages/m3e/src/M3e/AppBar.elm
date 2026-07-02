@@ -1,6 +1,6 @@
 module M3e.AppBar exposing
     ( view, centered, for, size, leading, title
-    , subtitle, trailing, child, children
+    , subtitle, trailing, child, leadingIcon, trailingIcon, children
     )
 
 {-|
@@ -15,7 +15,7 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 - `trailing-icon`: Deprecated: use the `trailing` slot.
 
 @docs view, centered, for, size, leading, title
-@docs subtitle, trailing, child, children
+@docs subtitle, trailing, child, leadingIcon, trailingIcon, children
 -}
 
 
@@ -39,6 +39,8 @@ view :
     , subtitle : M3e.Value.Supported
     , trailing : M3e.Value.Supported
     , default : M3e.Value.Supported
+    , leadingIcon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 view attributes content_ =
@@ -113,6 +115,22 @@ child :
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
+
+
+{-| Place content in the `leading-icon` slot. -}
+leadingIcon :
+    M3e.Element.Element any msg
+    -> M3e.Content.Content { r | leadingIcon : M3e.Value.Supported } msg
+leadingIcon el =
+    M3e.Content.slot "leading-icon" el
+
+
+{-| Place content in the `trailing-icon` slot. -}
+trailingIcon :
+    M3e.Element.Element any msg
+    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+trailingIcon el =
+    M3e.Content.slot "trailing-icon" el
 
 
 {-| Place many elements in the default slot. -}

@@ -408,8 +408,7 @@ tab =
 
 
 switch :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , icons : M3e.Value.Supported
     , name : M3e.Value.Supported
@@ -554,8 +553,7 @@ snackbar =
 
 
 slider :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , discrete : M3e.Value.Supported
     , labelled : M3e.Value.Supported
     , max : M3e.Value.Supported
@@ -724,8 +722,7 @@ radioGroup =
 
 
 radio :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
     , required : M3e.Value.Supported
@@ -1192,8 +1189,7 @@ fabMenu =
 
 
 fab :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , download : M3e.Value.Supported
     , extended : M3e.Value.Supported
@@ -1356,7 +1352,7 @@ datepickerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | datepickerToggle : M3e.Value.Supported } msg
 datepickerToggle =
     M3e.DatepickerToggle.view
@@ -1544,8 +1540,7 @@ chip =
 
 
 checkbox :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , indeterminate : M3e.Value.Supported
     , name : M3e.Value.Supported
@@ -1739,7 +1734,7 @@ buttonGroup =
 
 
 iconButton :
-    { content : M3e.Element.Element any msg, ariaLabel : String }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , download : M3e.Value.Supported
@@ -1942,18 +1937,14 @@ autocomplete =
 
 
 formField :
-    { content :
-        M3e.Element.Element { select : M3e.Value.Supported
-        , inputChipSet : M3e.Value.Supported
-        } msg
-    }
-    -> List (M3e.Cem.Attr.Attr { floatLabel : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { floatLabel : M3e.Value.Supported
     , hideRequiredMarker : M3e.Value.Supported
     , hideSubscript : M3e.Value.Supported
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { prefix : M3e.Value.Supported
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , prefix : M3e.Value.Supported
     , prefixText : M3e.Value.Supported
     , label : M3e.Value.Supported
     , suffix : M3e.Value.Supported
@@ -2045,6 +2036,8 @@ appBar :
     , subtitle : M3e.Value.Supported
     , trailing : M3e.Value.Supported
     , default : M3e.Value.Supported
+    , leadingIcon : M3e.Value.Supported
+    , trailingIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 appBar =

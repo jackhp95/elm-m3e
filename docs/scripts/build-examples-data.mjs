@@ -33,6 +33,7 @@ const DEFAULT_CATEGORY = "Layout & style";
 const SLUG_ALIASES = {
   Chips: "chip", // <m3e-chip>
   Search: "searchbar", // <m3e-search-bar>
+  ProgressIndicator: "progress", // linear/circular fold into M3e.Progress
 };
 
 function readJson(p) {

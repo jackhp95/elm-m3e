@@ -25,6 +25,7 @@ import Html.Events
 import Json.Decode as Decode
 import Kit
 import M3e.AppBar as AppBar
+import M3e.Aria as Aria
 import M3e.ButtonSegment as ButtonSegment
 import M3e.Card as Card
 import M3e.DrawerContainer as DrawerContainer
@@ -434,8 +435,8 @@ menuButton _ =
     Native.span
         [ Seam.asAttribute (class "md:hidden") ]
         [ IconButton.view
-            { content = Icon.view [ Icon.name "menu" ] [], ariaLabel = "Toggle navigation" }
-            [ IconButton.onClick MenuClicked ]
+            { content = Icon.view [ Icon.name "menu" ] [] }
+            [ Aria.label "Toggle navigation", IconButton.onClick MenuClicked ]
             []
         ]
 
@@ -443,8 +444,9 @@ menuButton _ =
 githubLink : Element { iconButton : Supported } Msg
 githubLink =
     IconButton.view
-        { content = Icon.view [ Icon.name "code" ] [], ariaLabel = "GitHub repository" }
-        [ IconButton.href "https://github.com/jackhp95/elm-m3e"
+        { content = Icon.view [ Icon.name "code" ] [] }
+        [ Aria.label "GitHub repository"
+        , IconButton.href "https://github.com/jackhp95/elm-m3e"
         , IconButton.target "_blank"
         , IconButton.rel "noreferrer noopener"
         ]
@@ -466,8 +468,8 @@ schemeQuickToggle model =
                     ( Light, "light_mode", "Switch to light mode" )
     in
     IconButton.view
-        { content = Icon.view [ Icon.name iconName ] [], ariaLabel = iconLabel }
-        [ IconButton.onClick (SetScheme next) ]
+        { content = Icon.view [ Icon.name iconName ] [] }
+        [ Aria.label iconLabel, IconButton.onClick (SetScheme next) ]
         []
 
 
@@ -483,8 +485,8 @@ settingsTriggerElement model =
     Native.div
         [ Seam.asAttribute (class "relative") ]
         [ IconButton.view
-            { content = Icon.view [ Icon.name "tune" ] [], ariaLabel = "Theme settings" }
-            [ IconButton.onClick ToggleSettings ]
+            { content = Icon.view [ Icon.name "tune" ] [] }
+            [ Aria.label "Theme settings", IconButton.onClick ToggleSettings ]
             []
         , if model.settingsOpen then
             EscapeHatch.fromHtml (settingsPanel model)

@@ -17,7 +17,6 @@ A radio button that allows a user to select one option from a set of options.
 -}
 
 
-import Html.Attributes
 import M3e.Cem.Attr
 import M3e.Cem.Radio
 import M3e.Content
@@ -28,8 +27,7 @@ import M3e.Value
 
 {-| Build the `<m3e-radio>` element (lazy IR). -}
 view :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
     , required : M3e.Value.Supported
@@ -42,21 +40,13 @@ view :
     } msg)
     -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | radio : M3e.Value.Supported } msg
-view req_ attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Radio.radio (List.map M3e.Cem.Attr.forget erased) ch
              )
-             (List.append
-                  [ M3e.Cem.Attr.forget
-                      (M3e.Cem.Attr.attribute
-                         (Html.Attributes.attribute "aria-label")
-                         req_.ariaLabel
-                      )
-                  ]
-                  (List.map M3e.Cem.Attr.forget attributes)
-             )
+             (List.map M3e.Cem.Attr.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 

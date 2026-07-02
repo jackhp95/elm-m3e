@@ -112,6 +112,20 @@
         ],
         "multi": true,
         "required": false
+      },
+      "leading-icon": {
+        "kinds": [
+          "any"
+        ],
+        "multi": false,
+        "required": false
+      },
+      "trailing-icon": {
+        "kinds": [
+          "any"
+        ],
+        "multi": false,
+        "required": false
       }
     }
   },
@@ -173,11 +187,10 @@
     "slots": {
       "default": {
         "kinds": [
-          "select",
-          "inputChipSet"
+          "any"
         ],
-        "multi": false,
-        "required": true
+        "multi": true,
+        "required": false
       },
       "prefix": {
         "kinds": [
@@ -188,14 +201,14 @@
       },
       "prefix-text": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "label": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -209,21 +222,21 @@
       },
       "suffix-text": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "hint": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "error": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -429,9 +442,6 @@
         "multi": false,
         "required": false
       }
-    },
-    "required": {
-      "ariaLabel": "ariaLabel"
     }
   },
   "ButtonGroup": {
@@ -872,9 +882,6 @@
         "multi": false,
         "required": false
       }
-    },
-    "required": {
-      "ariaLabel": "ariaLabel"
     }
   },
   "MenuItem": {
@@ -1439,7 +1446,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "radio"
+          "any"
         ],
         "multi": true,
         "required": true
@@ -1631,14 +1638,11 @@
     "slots": {
       "default": {
         "kinds": [
-          "sliderThumb"
+          "any"
         ],
         "multi": true,
         "required": true
       }
-    },
-    "required": {
-      "ariaLabel": "ariaLabel"
     }
   },
   "Snackbar": {
@@ -2004,21 +2008,9 @@
       }
     }
   },
-  "Checkbox": {
-    "required": {
-      "ariaLabel": "ariaLabel"
-    }
-  },
-  "Switch": {
-    "required": {
-      "ariaLabel": "ariaLabel"
-    }
-  },
-  "Radio": {
-    "required": {
-      "ariaLabel": "ariaLabel"
-    }
-  },
+  "Checkbox": {},
+  "Switch": {},
+  "Radio": {},
   "Progress": {
     "group": {
       "linear": "m3e-linear-progress-indicator",
@@ -2037,6 +2029,17 @@
     }
   },
   "DialogTrigger": {
+    "slots": {
+      "default": {
+        "kinds": [
+          "any"
+        ],
+        "multi": true,
+        "required": false
+      }
+    }
+  },
+  "DatepickerToggle": {
     "slots": {
       "default": {
         "kinds": [

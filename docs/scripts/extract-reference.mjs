@@ -37,6 +37,8 @@ const NOT_EXPOSED = new Set([
   "M3e.Node",
   "M3e.Label",
   "M3e.Element",
+  // Universal accessibility helper (settable on any component), not a component.
+  "M3e.Aria",
   // Token-enum + IR infra, not per-component reference material (the Styles
   // pages cover tokens); their generated form omits per-value doc comments.
   "M3e.Value",

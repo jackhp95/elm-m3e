@@ -25,18 +25,18 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Icon button wrapping an icon" -->
 ```elm
-M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [], ariaLabel = "Toggle theme" } [] []
+M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [] } [ M3e.Aria.label "Toggle theme" ] []
 ```
 
 <!-- elm-cem:example title="Link icon buttons in a toolbar" -->
 ```elm
-Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "rss_feed" ] [], ariaLabel = "RSS Feed" } [ M3e.IconButton.href "/rss.xml" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "data_object" ] [], ariaLabel = "JSON Feed" } [ M3e.IconButton.href "/feed.json" ] [] ]
+Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "rss_feed" ] [] } [ M3e.IconButton.href "/rss.xml", M3e.Aria.label "RSS Feed" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "data_object" ] [] } [ M3e.IconButton.href "/feed.json", M3e.Aria.label "JSON Feed" ] [] ]
 ```
 
 <!-- elm-cem:example title="Icon buttons grouped in a media control bar" -->
 ```elm
-[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [], ariaLabel = "Previous" } [] []
-    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [], ariaLabel = "Play/Pause" } [] []
+[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [] } [ M3e.Aria.label "Previous" ] []
+    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [] } [ M3e.Aria.label "Play/Pause" ] []
     ]
 ```
 
@@ -47,7 +47,6 @@ Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "r
 -}
 
 
-import Html.Attributes
 import M3e.Cem.Attr
 import M3e.Cem.IconButton
 import M3e.Content
@@ -58,7 +57,7 @@ import M3e.Value
 
 {-| Build the `<m3e-icon-button>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element any msg, ariaLabel : String }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , download : M3e.Value.Supported
@@ -90,15 +89,7 @@ view req_ attributes content_ =
                       (List.map M3e.Cem.Attr.forget erased)
                       ch
              )
-             (List.append
-                  [ M3e.Cem.Attr.forget
-                      (M3e.Cem.Attr.attribute
-                         (Html.Attributes.attribute "aria-label")
-                         req_.ariaLabel
-                      )
-                  ]
-                  (List.map M3e.Cem.Attr.forget attributes)
-             )
+             (List.map M3e.Cem.Attr.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)

@@ -3,6 +3,19 @@ module M3e.Avatar exposing ( view, child, children )
 {-|
 An image, icon or textual initials representing a user or other identity.
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Avatar with image and icon fallback" -->
+```elm
+[ M3e.Avatar.view [] [ M3e.Avatar.child (Native.img []) ]
+    , M3e.Avatar.view [] [ M3e.Avatar.child (M3e.Icon.view [ M3e.Icon.name "person" ] []) ]
+    ]
+```
+
 @docs view, child, children
 -}
 

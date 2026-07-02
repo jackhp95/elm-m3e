@@ -1,6 +1,7 @@
 module M3e.FormField exposing
-    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, prefix
-    , prefixText, label, suffix, suffixText, hint, error
+    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
+    , prefix, prefixText, label, suffix, suffixText, hint, error
+    , children
     )
 
 {-|
@@ -14,8 +15,30 @@ A container for form controls that applies Material Design styling and behavior.
 - `hint`: Renders hint text in the fields's subscript, when the control is valid.
 - `error`: Renders error text in the fields's subscript, when the control is invalid.
 
-@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, prefix
-@docs prefixText, label, suffix, suffixText, hint, error
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Outlined field with prefix, hint and required marker" -->
+```elm
+M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name "public" ] []), M3e.FormField.prefixText (Native.span [] [ Kit.text "https://" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Include the full domain without a path." ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text "Website" ], Native.node Html.input [] [] ])
+```
+
+<!-- elm-cem:example title="Filled field with always-floating label and error" -->
+```elm
+M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.FormField.floatLabel M3e.Value.always ] ([ M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text "USD" ]), M3e.FormField.error (Native.span [] [ Kit.text "Enter an amount greater than zero." ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text "Amount" ], Native.node Html.input [] [] ])
+```
+
+<!-- elm-cem:example title="Search field with leading and trailing icons" -->
+```elm
+M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.FormField.hideRequiredMarker True ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name "search" ] []), M3e.FormField.suffix (M3e.Icon.view [ M3e.Icon.name "close" ] []) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text "Search docs" ], Native.node Html.input [] [] ])
+```
+
+@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
+@docs prefix, prefixText, label, suffix, suffixText, hint
+@docs error, children
 -}
 
 
@@ -29,18 +52,14 @@ import M3e.Value
 
 {-| Build the `<m3e-form-field>` element (lazy IR). -}
 view :
-    { content :
-        M3e.Element.Element { select : M3e.Value.Supported
-        , inputChipSet : M3e.Value.Supported
-        } msg
-    }
-    -> List (M3e.Cem.Attr.Attr { floatLabel : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { floatLabel : M3e.Value.Supported
     , hideRequiredMarker : M3e.Value.Supported
     , hideSubscript : M3e.Value.Supported
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { prefix : M3e.Value.Supported
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , prefix : M3e.Value.Supported
     , prefixText : M3e.Value.Supported
     , label : M3e.Value.Supported
     , suffix : M3e.Value.Supported
@@ -49,7 +68,7 @@ view :
     , error : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | formField : M3e.Value.Supported } msg
-view req_ attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -58,10 +77,7 @@ view req_ attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.append
-                  [ M3e.Element.toNode req_.content ]
-                  (List.map M3e.Content.toNode content_)
-             )
+             (List.map M3e.Content.toNode content_)
         )
 
 
@@ -102,6 +118,14 @@ variant =
     M3e.Cem.FormField.variant
 
 
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
+child el =
+    M3e.Content.slot "" el
+
+
 {-| Place content in the `prefix` slot. -}
 prefix :
     M3e.Element.Element any msg
@@ -112,7 +136,7 @@ prefix el =
 
 {-| Place content in the `prefix-text` slot. -}
 prefixText :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
 prefixText el =
     M3e.Content.slot "prefix-text" el
@@ -120,7 +144,7 @@ prefixText el =
 
 {-| Place content in the `label` slot. -}
 label :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
 label el =
     M3e.Content.slot "label" el
@@ -136,7 +160,7 @@ suffix el =
 
 {-| Place content in the `suffix-text` slot. -}
 suffixText :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
 suffixText el =
     M3e.Content.slot "suffix-text" el
@@ -144,7 +168,7 @@ suffixText el =
 
 {-| Place content in the `hint` slot. -}
 hint :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
 hint el =
     M3e.Content.slot "hint" el
@@ -152,7 +176,15 @@ hint el =
 
 {-| Place content in the `error` slot. -}
 error :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
 error el =
     M3e.Content.slot "error" el
+
+
+{-| Place many elements in the default slot. -}
+children :
+    List (M3e.Element.Element any msg)
+    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
+children els =
+    List.map (M3e.Content.slot "") els

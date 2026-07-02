@@ -22,7 +22,7 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Small FAB with icon" -->
 ```elm
-M3e.Fab.view { ariaLabel = "Navigation menu" } [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]
+M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label "Navigation menu" ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]
 ```
 
 @docs view, disabled, disabledInteractive, download, extended, href
@@ -32,7 +32,6 @@ M3e.Fab.view { ariaLabel = "Navigation menu" } [ M3e.Fab.size M3e.Value.small ] 
 -}
 
 
-import Html.Attributes
 import M3e.Cem.Attr
 import M3e.Cem.Fab
 import M3e.Content
@@ -43,8 +42,7 @@ import M3e.Value
 
 {-| Build the `<m3e-fab>` element (lazy IR). -}
 view :
-    { ariaLabel : String }
-    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , download : M3e.Value.Supported
     , extended : M3e.Value.Supported
@@ -65,21 +63,13 @@ view :
     , closeIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
-view req_ attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Fab.fab (List.map M3e.Cem.Attr.forget erased) ch
              )
-             (List.append
-                  [ M3e.Cem.Attr.forget
-                      (M3e.Cem.Attr.attribute
-                         (Html.Attributes.attribute "aria-label")
-                         req_.ariaLabel
-                      )
-                  ]
-                  (List.map M3e.Cem.Attr.forget attributes)
-             )
+             (List.map M3e.Cem.Attr.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 

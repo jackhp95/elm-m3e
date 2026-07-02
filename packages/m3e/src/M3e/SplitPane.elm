@@ -16,6 +16,22 @@ A dual-view layout that separates content with a movable drag handle.
 - `start`: Renders content at the logical start side of the pane.
 - `end`: Renders content at the logical end side of the pane.
 
+<!-- elm-cem:docmeta category=Containment -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Horizontal split pane with min and max constraints" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.horizontal, M3e.SplitPane.value 35, M3e.SplitPane.min 20, M3e.SplitPane.max 60, M3e.SplitPane.label "Resize sidebar" ] [ M3e.SplitPane.start (Native.nav [] [ Native.ul [] [ Native.li [] [ Kit.text "Inbox" ], Native.li [] [ Kit.text "Drafts" ], Native.li [] [ Kit.text "Sent" ] ] ]), M3e.SplitPane.end (Native.node Html.main_ [] [ Native.p [] [ Kit.text "Select a message to read." ] ]) ]
+```
+
+<!-- elm-cem:example title="Vertical split pane with snapping detents" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.vertical, M3e.SplitPane.wrapDetents True, M3e.SplitPane.step 5 ] [ M3e.SplitPane.start (Native.section [] [ Native.p [] [ Kit.text "Editor" ] ]), M3e.SplitPane.end (Native.section [] [ Native.p [] [ Kit.text "Preview output" ] ]) ]
+```
+
 @docs view, label, max, min, orientation, overshootLimit
 @docs step, value, wrapDetents, name, disabled, onChange
 @docs onBeforeinput, onInput, start, end, child, children

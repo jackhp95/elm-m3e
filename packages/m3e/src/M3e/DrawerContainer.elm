@@ -13,6 +13,24 @@ A container for one or two sliding drawers.
 - `start`: Renders the start drawer.
 - `end`: Renders the end drawer.
 
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="App shell with navigation drawer toggle" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Button.toggle True ] ([ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ] ++ M3e.Button.children [ M3e.DrawerToggle.view [ M3e.DrawerToggle.for "nav" ] [], Kit.text "Menu" ])
+    , M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link "/home" [ Kit.text "Home" ], Kit.link "/reports" [ Kit.text "Reports" ], Kit.link "/settings" [ Kit.text "Settings" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.node Html.h1 [] [ Kit.text "Dashboard" ], Native.p [] [ Kit.text "Welcome back. Select an item from the navigation drawer." ] ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Dual drawers with side navigation and detail panel" -->
+```elm
+M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.side, M3e.DrawerContainer.startDivider True, M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link "/inbox" [ Kit.text "Inbox" ], Kit.link "/sent" [ Kit.text "Sent" ], Kit.link "/archive" [ Kit.text "Archive" ] ]), M3e.DrawerContainer.endSlot (Native.node Html.aside [] [ Native.node Html.h2 [] [ Kit.text "Filters" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text "Unread only" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.header [] [ Native.node Html.h1 [] [ Kit.text "Inbox" ] ], Native.p [] [ Kit.text "Your messages appear here." ] ]) ]
+```
+
 @docs view, end, endMode, endDivider, start, startMode
 @docs startDivider, onChange, child, startSlot, endSlot, children
 -}

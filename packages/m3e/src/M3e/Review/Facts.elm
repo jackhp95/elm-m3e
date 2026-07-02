@@ -92,7 +92,7 @@ facts =
     , { component = "dialogTrigger", module_ = "M3e.DialogTrigger", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "dialog", module_ = "M3e.Dialog", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "dialogAction", module_ = "M3e.DialogAction", enums = [], requiredSlots = [], multiSlots = [] }
-    , { component = "datepickerToggle", module_ = "M3e.DatepickerToggle", enums = [], requiredSlots = [], multiSlots = [] }
+    , { component = "datepickerToggle", module_ = "M3e.DatepickerToggle", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "datepicker", module_ = "M3e.Datepicker", enums = [ ( "variant", [ "auto", "docked", "modal" ] ), ( "startView", [ "month", "multiYear", "year" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "contentPane", module_ = "M3e.ContentPane", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "suggestionChip", module_ = "M3e.SuggestionChip", enums = [ ( "type", [ "button", "reset", "submit" ] ), ( "variant", [ "elevated", "outlined" ] ) ], requiredSlots = [ "default" ], multiSlots = [] }
@@ -125,7 +125,7 @@ facts =
     , { component = "badge", module_ = "M3e.Badge", enums = [ ( "size", [ "large", "medium", "small" ] ), ( "position", [ "above", "aboveAfter", "aboveBefore", "after", "before", "below", "belowAfter", "belowBefore" ] ) ], requiredSlots = [], multiSlots = [] }
     , { component = "avatar", module_ = "M3e.Avatar", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "autocomplete", module_ = "M3e.Autocomplete", enums = [ ( "filter", [ "contains", "endsWith", "none", "startsWith" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
-    , { component = "formField", module_ = "M3e.FormField", enums = [ ( "floatLabel", [ "always", "auto" ] ), ( "hideSubscript", [ "always", "auto", "never" ] ), ( "variant", [ "filled", "outlined" ] ) ], requiredSlots = [ "default" ], multiSlots = [] }
+    , { component = "formField", module_ = "M3e.FormField", enums = [ ( "floatLabel", [ "always", "auto" ] ), ( "hideSubscript", [ "always", "auto", "never" ] ), ( "variant", [ "filled", "outlined" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "optionPanel", module_ = "M3e.OptionPanel", enums = [ ( "state", [ "content", "loading", "noData" ] ), ( "scrollStrategy", [ "hide", "reposition" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "floatingPanel", module_ = "M3e.FloatingPanel", enums = [ ( "scrollStrategy", [ "hide", "reposition" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "optgroup", module_ = "M3e.Optgroup", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
