@@ -1,9 +1,17 @@
+> 🗄️ **ARCHIVED 2026-07-02 — historical only; do not treat as current.**
+> Moved out of the repo root because it self-declared STALE and referenced an
+> `M3e.Attr` module that does not exist (the attribute core is `M3e.Cem.Attr`).
+> The single authoritative root status doc is `HANDOFF.md`; live work is tracked
+> in GitHub issues. The original stale banner is preserved below.
+>
+> ---
+>
 > ⚠️ **STALE — predates the component-agnostic/Vocab redesign and the adoption.** The
 > "ALL GENERATOR MECHANISMS DONE / 125/125" framing below describes an *earlier* finish
 > line. Since then: the library was adopted into `packages/m3e/` (double-list), then the
 > **Vocab redesign** started (not finished) with a **known `M3e.Attr` bug**, and the docs
-> migration hasn't run. **For the current state + next steps, read `HANDOFF.md`** and
-> `docs/COMPONENT_AGNOSTIC_API.md` §9b. Kept below for historical context only.
+> migration hasn't run. **For the current state + next steps, read `HANDOFF.md`**. Kept
+> below for historical context only.
 
 # Remaining work — elm-cem retarget
 
