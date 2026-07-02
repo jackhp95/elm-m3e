@@ -38,3 +38,20 @@ test("/components/button shows a live Usage section with code", async ({
 
   expect(errors, `console errors:\n${errors.join("\n")}`).toEqual([]);
 });
+
+test("the API-layer toggle switches Usage code between M3e Elm and raw HTML", async ({
+  page,
+}) => {
+  await page.goto("/components/button");
+  await page.waitForLoadState("networkidle");
+
+  // Default layer = M3e: Elm code visible, raw tag not shown as code.
+  await expect(page.getByText("M3e.Button.view").first()).toBeVisible();
+
+  // Open the theme settings popover and pick the HTML layer.
+  await page.locator('[aria-label="Theme settings"]').click();
+  await page.getByText("HTML", { exact: true }).click();
+
+  // Now the code block shows the raw <m3e-button ...> HTML instead.
+  await expect(page.getByText("<m3e-button").first()).toBeVisible();
+});

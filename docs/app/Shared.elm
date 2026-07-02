@@ -1,4 +1,4 @@
-module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
+module Shared exposing (ApiLayer(..), Data, Model, Msg(..), SharedMsg(..), template)
 
 {-| The M3 application shell that frames every docs route.
 
@@ -81,6 +81,16 @@ type Contrast
     | High
 
 
+{-| Which API layer the per-component Usage code blocks are shown in. Today only
+the M3e (top) Elm and the raw HTML are emitted, so the toggle offers those two;
+the middle (`M3e.Cem`) and bottom (`M3e.Cem.Html`) layers are added once the
+converter emits them (no fake/empty options — the toggle only offers what ships).
+-}
+type ApiLayer
+    = LayerM3e
+    | LayerRaw
+
+
 type alias Model =
     { showMenu : Bool
     , viewportWidth : Int
@@ -90,6 +100,7 @@ type alias Model =
     , density : Float
     , dir : Direction
     , settingsOpen : Bool
+    , apiLayer : ApiLayer
     }
 
 
@@ -129,6 +140,7 @@ type Msg
     | SetContrast Contrast
     | SetDensity Float
     | SetDirection Direction
+    | SetApiLayer ApiLayer
 
 
 type SharedMsg
@@ -157,6 +169,7 @@ init flags _ =
       , density = 0
       , dir = Ltr
       , settingsOpen = False
+      , apiLayer = LayerM3e
       }
     , Effect.none
     )
@@ -258,6 +271,9 @@ update msg model =
 
         SetDirection dir ->
             ( { model | dir = dir }, Effect.none )
+
+        SetApiLayer apiLayer ->
+            ( { model | apiLayer = apiLayer }, Effect.none )
 
 
 {-| Watch viewport width to re-open the side drawer when the user crosses from
@@ -497,6 +513,7 @@ settingsBody model =
         , seedColorInput model
         , densitySegmented model
         , directionSegmented model
+        , apiLayerSegmented model
         ]
 
 
@@ -525,6 +542,17 @@ schemeSegmented model =
         [ ( "Light", model.scheme == Light, SetScheme Light )
         , ( "System", model.scheme == Auto, SetScheme Auto )
         , ( "Dark", model.scheme == Dark, SetScheme Dark )
+        ]
+
+
+{-| Selects which API layer the per-component Usage code blocks display. Two
+options today (M3e Elm / raw HTML); Cem + Html layers join once emitted.
+-}
+apiLayerSegmented : Model -> Html Msg
+apiLayerSegmented model =
+    segmented
+        [ ( "M3e", model.apiLayer == LayerM3e, SetApiLayer LayerM3e )
+        , ( "HTML", model.apiLayer == LayerRaw, SetApiLayer LayerRaw )
         ]
 
 

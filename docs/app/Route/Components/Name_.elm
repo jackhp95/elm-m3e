@@ -148,7 +148,7 @@ head _ =
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
-view app _ =
+view app sharedModel =
     let
         component =
             app.data.component
@@ -162,7 +162,7 @@ view app _ =
                     []
                  , EscapeHatch.fromHtml (p [ Attr.class "max-w-2xl text-body-lg text-on-surface-variant" ] [ text component.overview ])
                  ]
-                    ++ usageBlocks app.data.usage
+                    ++ usageBlocks sharedModel.apiLayer app.data.usage
                     ++ [ Heading.view { content = Kit.text "API" }
                             [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
                             []
@@ -177,8 +177,8 @@ view app _ =
 {-| Render the Usage section: a "Usage" heading, then per-section sub-headings,
 each followed by its examples (live preview + code). Empty ⇒ nothing.
 -}
-usageBlocks : List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
-usageBlocks examples =
+usageBlocks : Shared.ApiLayer -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+usageBlocks layer examples =
     case examples of
         [] ->
             []
@@ -187,14 +187,14 @@ usageBlocks examples =
             Heading.view { content = Kit.text "Usage" }
                 [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
                 []
-                :: List.concatMap sectionBlock (groupBySection examples)
+                :: List.concatMap (sectionBlock layer) (groupBySection examples)
 
 
 {-| One section: an optional sub-heading (skipped for the ungrouped "" section)
-followed by each example's live preview paired with its Elm code.
+followed by each example's live preview paired with its code.
 -}
-sectionBlock : ( String, List UsageExample ) -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
-sectionBlock ( section, examples ) =
+sectionBlock : Shared.ApiLayer -> ( String, List UsageExample ) -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+sectionBlock layer ( section, examples ) =
     let
         heading : List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
         heading =
@@ -207,14 +207,28 @@ sectionBlock ( section, examples ) =
                     []
                 ]
     in
-    heading ++ List.concatMap exampleBlock examples
+    heading ++ List.concatMap (exampleBlock layer) examples
 
 
-exampleBlock : UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
-exampleBlock ex =
+{-| A live preview paired with its code in the selected API layer. Today the
+converter emits the M3e (top) Elm and the raw HTML; the toggle switches between
+them (Cem/Html layers join once emitted).
+-}
+exampleBlock : Shared.ApiLayer -> UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+exampleBlock layer ex =
+    let
+        code : Element { s | html : Supported, heading : Supported, card : Supported } msg
+        code =
+            case layer of
+                Shared.LayerRaw ->
+                    Doc.code_ Doc.NoLang ex.html
+
+                Shared.LayerM3e ->
+                    Doc.code_ Doc.Elm ex.top
+    in
     [ EscapeHatch.fromHtml (p [ Attr.class "text-body-md text-on-surface-variant" ] [ text ex.title ])
     , Doc.showcase (Doc.rawPreview ex.html)
-    , Doc.code_ Doc.Elm ex.top
+    , code
     ]
 
 
