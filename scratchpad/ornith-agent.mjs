@@ -46,6 +46,7 @@ const TOOLS = [
   { type: "function", function: { name: "patch", description: "Surgical find-and-replace of an exact substring within one declaration of the file being migrated.", parameters: { type: "object", properties: { name: { type: "string", description: "declaration name" }, old: { type: "string" }, new: { type: "string" } }, required: ["name", "old", "new"] } } },
   { type: "function", function: { name: "set_decl", description: "Replace (or add) an entire top-level declaration in the file being migrated. Provide the full new declaration source including its type annotation.", parameters: { type: "object", properties: { name: { type: "string" }, content: { type: "string" } }, required: ["name", "content"] } } },
   { type: "function", function: { name: "add_import", description: "Add an import statement to the file being migrated, e.g. 'import Kit'.", parameters: { type: "object", properties: { statement: { type: "string" } }, required: ["statement"] } } },
+  { type: "function", function: { name: "remove_import", description: "Remove the import of a module (e.g. a renamed or deleted OLD module like 'Cem.M3e.Shape' or 'M3e.DatePicker'). Imports are NOT patchable — to rename an import, remove_import the old module then add_import the new one.", parameters: { type: "object", properties: { module: { type: "string", description: "module name, e.g. Cem.M3e.Shape" } }, required: ["module"] } } },
   { type: "function", function: { name: "compile", description: "Compile the file being migrated; returns the top errors, or 'NO ERRORS'.", parameters: { type: "object", properties: {}, required: [] } } },
 ];
 
@@ -57,6 +58,7 @@ function runTool(name, a) {
     case "patch": return sh(`${ELMQ} patch --old ${q(a.old)} --new ${q(a.new)} ${q(rel)} ${q(a.name)}`);
     case "set_decl": return sh(`${ELMQ} set decl ${q(rel)} ${q(a.name)} --content ${q(a.content)}`);
     case "add_import": return sh(`${ELMQ} add import ${q(rel)} ${q(a.statement)}`);
+    case "remove_import": return sh(`${ELMQ} rm import ${q(rel)} ${q(a.module)}`);
     case "compile": return compileJson().text;
     default: return "ERROR: unknown tool " + name;
   }
@@ -70,7 +72,7 @@ NEW API essentials (the built Vocab API):
 - HARD CONSTRAINT: do not change any EXPOSED function's type signature (callers must keep compiling). If a faithful migration would require changing an exposed signature or a Model/custom type, STOP — that is a cross-module change for a human, not this single-file run.
 - Node-level code (returns Node, old Node.element/Node.rawAttr) -> rebuild with the kit's Native.* (Element-level), never Node.raw(Html.*) (opaque HTML is banned).
 - Userland kit modules (add_import as needed): Kit (text, link), Native (div, section, nav, span, p, a, ul, li, ... — native HTML as Element), EscapeHatch (fromHtml, asElement, asAttribute), Seam (asAttribute for a class on a Native element).
-- Mappings: Node.raw h -> EscapeHatch.fromHtml h ; Node.rawAttr a / class -> Seam.asAttribute a ; Element.html -> EscapeHatch.fromHtml ; X.view {rec} opts -> X.view {req} [attrs] [content] ; a glyph label -> Kit.text ; renames: NavigationDrawer->DrawerContainer, RadioButton->Radio, NavigationBar->NavBar, NavigationRail->NavRail, DatePicker->Datepicker.
+- Mappings: Node.raw h -> EscapeHatch.fromHtml h ; Node.rawAttr a / class -> Seam.asAttribute a ; Element.html -> EscapeHatch.fromHtml ; X.view {rec} opts -> X.view {req} [attrs] [content] ; a glyph label -> Kit.text ; renames (do each as remove_import OLD then add_import NEW — NEVER patch an import line): NavigationDrawer->DrawerContainer, RadioButton->Radio, NavigationBar->NavBar, NavigationRail->NavRail, DatePicker->Datepicker. Old \`Cem.M3e.*\` modules are gone — remove_import them and use the M3e.Value tokens / the matching M3e.* component instead.
 Start by calling compile, then IMMEDIATELY fix the first error with add_import (renamed/missing module) or patch/set_decl. Do NOT call get/list/search unless an error names something you genuinely must inspect — exploration wastes the context window and stalls the migration.`;
 
 const NUM_CTX = Number(process.env.ORNITH_NUM_CTX || 32768);
@@ -85,10 +87,24 @@ function windowed(messages, keep = 12) {
 }
 
 async function chat(messages) {
-  const res = await fetch(`${OLLAMA}/api/chat`, { method: "POST", body: JSON.stringify({ model: MODEL, messages: windowed(messages), tools: TOOLS, stream: false, options: { num_ctx: NUM_CTX, temperature: 0.1 } }) });
-  const j = await res.json();
-  if (!j.message) throw new Error("ollama: " + (j.error || "no message"));
-  return j.message;
+  // Retry transient fetch failures (a flaky LAN link to a remote ollama box drops
+  // mid-run otherwise — see the qwen3:14b run that died at round 7 on "fetch failed").
+  let lastErr;
+  for (let attempt = 1; attempt <= 4; attempt++) {
+    try {
+      const res = await fetch(`${OLLAMA}/api/chat`, { method: "POST", body: JSON.stringify({ model: MODEL, messages: windowed(messages), tools: TOOLS, stream: false, options: { num_ctx: NUM_CTX, temperature: 0.1 } }) });
+      const j = await res.json();
+      if (j.error && /context/i.test(String(j.error.message || j.error))) throw new Error("ollama: " + JSON.stringify(j.error)); // don't retry a real context error
+      if (!j.message) throw new Error("ollama: " + (j.error?.message || j.error || "no message"));
+      return j.message;
+    } catch (e) {
+      lastErr = e;
+      if (/context/i.test(String(e.message))) throw e;
+      console.log(`  (chat attempt ${attempt} failed: ${String(e.message).slice(0, 60)} — retrying)`);
+      await new Promise((r) => setTimeout(r, 1500 * attempt));
+    }
+  }
+  throw lastErr;
 }
 
 // --- signature lock -----------------------------------------------------------
