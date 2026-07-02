@@ -1,13 +1,29 @@
 module Route.Components.Name_ exposing (ActionData, Data, Model, Msg, route)
 
-{-| STUB (migration): the per-component showcase view is preserved in git history and
-will be restored by the ornith pass. Data pipeline reduced to a stub so the app compiles.
+{-| The per-component **API reference** page (`/components/:slug`), re-authored on the
+new Vocab API (opus). Data-driven: one pre-rendered page per component in
+`data/reference.json`, each showing the component name, overview, and its API members
+(types + functions with signatures + docs) in the content-pane + card pattern using
+real `M3e.*` components. (The original also embedded per-component _live demos_, which
+imported all 55 component modules; those are deferred — this restores the reference.)
 -}
 
 import BackendTask exposing (BackendTask)
+import BackendTask.File
+import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
-import M3e.Node as Node
+import Html exposing (code, p, text)
+import Html.Attributes as Attr
+import Json.Decode as Decode
+import Kit
+import M3e.Card as Card
+import M3e.ContentPane as ContentPane
+import M3e.Element as Element exposing (Element)
+import M3e.Heading as Heading
+import M3e.List as List_
+import M3e.ListItem as ListItem
+import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
@@ -26,12 +42,44 @@ type alias RouteParams =
     { name : String }
 
 
+type alias Member =
+    { name : String, kind : String, signature : String, doc : String }
+
+
+type alias Component =
+    { name : String, slug : String, overview : String, members : List Member }
+
+
 type alias Data =
-    {}
+    Component
 
 
 type alias ActionData =
     {}
+
+
+memberDecoder : Decode.Decoder Member
+memberDecoder =
+    Decode.map4 Member
+        (Decode.field "name" Decode.string)
+        (Decode.field "kind" Decode.string)
+        (Decode.field "signature" Decode.string)
+        (Decode.field "doc" Decode.string)
+
+
+componentDecoder : Decode.Decoder Component
+componentDecoder =
+    Decode.map4 Component
+        (Decode.field "name" Decode.string)
+        (Decode.field "slug" Decode.string)
+        (Decode.field "overview" Decode.string)
+        (Decode.field "members" (Decode.list memberDecoder))
+
+
+allComponents : BackendTask FatalError (List Component)
+allComponents =
+    BackendTask.File.jsonFile (Decode.list componentDecoder) "data/reference.json"
+        |> BackendTask.allowFatal
 
 
 route : StatelessRoute RouteParams Data ActionData
@@ -42,12 +90,21 @@ route =
 
 pages : BackendTask FatalError (List RouteParams)
 pages =
-    BackendTask.succeed []
+    allComponents |> BackendTask.map (List.map (\c -> { name = c.slug }))
 
 
 data : RouteParams -> BackendTask FatalError Data
-data _ =
-    BackendTask.succeed {}
+data routeParams =
+    allComponents
+        |> BackendTask.andThen
+            (\components ->
+                case List.filter (\c -> c.slug == routeParams.name) components of
+                    c :: _ ->
+                        BackendTask.succeed c
+
+                    [] ->
+                        BackendTask.fail (FatalError.fromString ("Unknown component: " ++ routeParams.name))
+            )
 
 
 head : App Data ActionData RouteParams -> List Head.Tag
@@ -56,8 +113,57 @@ head _ =
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
-view _ _ =
-    { title = "Component reference · elm-m3e"
+view app _ =
+    let
+        component =
+            app.data
+    in
+    { title = component.name ++ " · elm-m3e"
     , body =
-        [ Node.text "The per-component showcase is being migrated to the new Vocab API; original view in git history." ]
+        List.map Element.toNode
+            [ pane
+                [ Heading.view { content = Kit.text component.name }
+                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+                    []
+                , EscapeHatch.fromHtml (p [ Attr.class "max-w-2xl text-body-lg text-on-surface-variant" ] [ text component.overview ])
+                , Heading.view { content = Kit.text "API" }
+                    [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+                    []
+                , Card.view [ Card.variant Value.outlined ]
+                    [ Card.content (List_.view [] (List_.children (List.map memberRow component.members))) ]
+                ]
+            ]
     }
+
+
+pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
+pane items =
+    ContentPane.view [] (List.map ContentPane.child items)
+
+
+{-| One API member: kind overline, name + signature, and its doc.
+-}
+memberRow : Member -> Element { s | listItem : Supported } msg
+memberRow m =
+    ListItem.view []
+        (ListItem.overline (Kit.text m.kind)
+            :: ListItem.child
+                (EscapeHatch.fromHtml
+                    (code [ Attr.class "text-body-md" ]
+                        [ text
+                            (if m.signature == "" then
+                                m.name
+
+                             else
+                                m.name ++ " : " ++ m.signature
+                            )
+                        ]
+                    )
+                )
+            :: (if m.doc == "" then
+                    []
+
+                else
+                    [ ListItem.supportingText (Kit.text m.doc) ]
+               )
+        )
