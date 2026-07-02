@@ -1,4 +1,4 @@
-module Shared exposing (ApiLayer(..), Data, Model, Msg(..), SharedMsg(..), template)
+module Shared exposing (ApiLayer(..), Contrast, Data, Direction, Model, Msg, Scheme, template)
 
 {-| The M3 application shell that frames every docs route.
 
@@ -133,10 +133,8 @@ type alias Data =
 
 
 type Msg
-    = SharedMsg SharedMsg
-    | MenuClicked
+    = MenuClicked
     | CloseMenu
-    | MenuChanged Bool
     | ViewportResized Int
     | ToggleSettings
     | SetScheme Scheme
@@ -145,10 +143,6 @@ type Msg
     | SetDensity Float
     | SetDirection Direction
     | SetApiLayer ApiLayer
-
-
-type SharedMsg
-    = NoOp
 
 
 init :
@@ -241,17 +235,11 @@ schemeFromString s =
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        SharedMsg _ ->
-            ( model, Effect.none )
-
         MenuClicked ->
             ( { model | showMenu = not model.showMenu }, Effect.none )
 
         CloseMenu ->
             ( { model | showMenu = False }, Effect.none )
-
-        MenuChanged open ->
-            ( { model | showMenu = open }, Effect.none )
 
         ViewportResized w ->
             ( { model | viewportWidth = w }, Effect.none )

@@ -106,9 +106,9 @@ ignoreGenerated rule =
 unused : List Rule
 unused =
     [ NoUnused.Variables.rule |> ignoreGenerated
-    , NoUnused.CustomTypeConstructors.rule [] |> ignoreGenerated |> ignorePublicApi
+    , NoUnused.CustomTypeConstructors.rule [] |> ignoreGenerated |> ignorePublicApi |> ignoreElmPagesUserModules
     , NoUnused.CustomTypeConstructorArgs.rule |> ignoreGenerated
-    , NoUnused.Exports.rule |> ignoreGenerated |> ignorePublicApi |> ignoreLayoutVocabulary |> ignoreKitVocabulary
+    , NoUnused.Exports.rule |> ignoreGenerated |> ignorePublicApi |> ignoreLayoutVocabulary |> ignoreKitVocabulary |> ignoreElmPagesUserModules
     , NoUnused.Modules.rule |> ignoreGenerated |> ignorePublicApi
     , NoUnused.Parameters.rule |> ignoreGenerated
     , NoUnused.Patterns.rule |> ignoreGenerated
@@ -137,6 +137,44 @@ forms cover root- vs `docs/`-relative runs.
 ignoreKitVocabulary : Rule -> Rule
 ignoreKitVocabulary =
     Rule.ignoreErrorsForDirectories [ "packages/m3e-kit/src/", "../packages/m3e-kit/src/" ]
+
+
+{-| `app/Effect.elm` and `app/View.elm` are the elm-pages "user-owned" framework
+modules. The framework wires them through generated code in `.elm-pages/` (which
+every rule already ignores), so `elm-review` — which only sees the app source —
+reads their framework-contract surface as unused:
+
+  - `Effect`'s `Submit`/`SubmitFetcher`/`SetField`/`FetchRouteData` constructors and
+    the `Effect(..)` export back `perform`'s helper record, which generated `Main`
+    builds and calls; they are the standard elm-pages form/fetcher effect scaffold,
+    live-by-contract even when no current page submits a form.
+  - `testPerform` is the required companion to `perform` for the `Test.PagesProgram`
+    harness.
+  - `View`'s `freeze`/`freezableToHtml`/`htmlToFreezable` are the frozen-view
+    build-time-render + client-adoption seam, transformed by a codemod (see the
+    module docs) — deliberate infra, not dead code.
+
+Exempt both files from the unused-export/constructor rules (config-level intent,
+not a suppression-baseline debt). Two path forms cover root- vs docs/-relative runs.
+
+-}
+ignoreElmPagesUserModules : Rule -> Rule
+ignoreElmPagesUserModules =
+    Rule.ignoreErrorsForFiles
+        [ "app/Effect.elm", "docs/app/Effect.elm", "app/View.elm", "docs/app/View.elm" ]
+
+
+{-| `NoMissingTypeExpose` is a package-API rule: "an exposed function's signature
+mentions a private type, so a consumer could not name it." elm-pages `Route`
+modules are application code — nothing imports them except generated glue, and the
+exposed `route` value's signature necessarily mentions the module-private
+`RouteParams` (plus page-local data types like `Component`/`UsageExample`).
+Exposing those would be meaningless ceremony, so relax the rule for `app/Route/`.
+Two path forms cover root- vs docs/-relative runs.
+-}
+ignoreRouteModules : Rule -> Rule
+ignoreRouteModules =
+    Rule.ignoreErrorsForDirectories [ "app/Route/", "docs/app/Route/" ]
 
 
 {-| A published library's whole point is exports/modules/constructors that are
@@ -181,7 +219,7 @@ common =
     , NoImportingEverything.rule [ "M3e" ] |> ignoreVendor
     , NoMissingTypeAnnotation.rule |> ignoreVendor
     , NoMissingTypeAnnotationInLetIn.rule |> ignoreVendor
-    , NoMissingTypeExpose.rule |> ignoreVendor |> ignorePublicApi
+    , NoMissingTypeExpose.rule |> ignoreVendor |> ignorePublicApi |> ignoreRouteModules
     , NoConfusingPrefixOperator.rule
     , NoPrematureLetComputation.rule
     ]

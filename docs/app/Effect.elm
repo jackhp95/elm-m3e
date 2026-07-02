@@ -1,15 +1,14 @@
-module Effect exposing (Effect(..), batch, fromCmd, map, none, perform, testPerform)
+module Effect exposing (Effect(..), FormData, batch, fromCmd, map, none, perform, testPerform)
 
 {-|
 
-@docs Effect, batch, fromCmd, map, none, perform, testPerform
+@docs Effect, FormData, batch, fromCmd, map, none, perform, testPerform
 
 -}
 
 import Browser.Navigation
 import Form
 import Http
-import Json.Decode as Decode
 import Pages.Fetcher
 import Test.PagesProgram.SimulatedEffect as SimulatedEffect exposing (SimulatedEffect)
 import Url exposing (Url)
@@ -20,7 +19,6 @@ type Effect msg
     = None
     | Cmd (Cmd msg)
     | Batch (List (Effect msg))
-    | GetStargazers (Result Http.Error Int -> msg)
     | SetField { formId : String, name : String, value : String }
     | FetchRouteData
         { data : Maybe FormData
@@ -63,9 +61,6 @@ map fn effect =
 
         Batch list ->
             Batch (List.map (map fn) list)
-
-        GetStargazers toMsg ->
-            GetStargazers (toMsg >> fn)
 
         FetchRouteData fetchInfo ->
             FetchRouteData
@@ -123,13 +118,6 @@ perform ({ fromPageMsg } as helpers) effect =
         Batch list ->
             Cmd.batch (List.map (perform helpers) list)
 
-        GetStargazers toMsg ->
-            Http.get
-                { url =
-                    "https://api.github.com/repos/dillonkearns/elm-pages"
-                , expect = Http.expectJson (toMsg >> fromPageMsg) (Decode.field "stargazers_count" Decode.int)
-                }
-
         FetchRouteData fetchInfo ->
             helpers.fetchRouteData
                 fetchInfo
@@ -155,12 +143,6 @@ testPerform effect =
 
         Batch list ->
             SimulatedEffect.batch (List.map testPerform list)
-
-        GetStargazers toMsg ->
-            -- In tests, provide a mock value for the stargazers count.
-            -- Alternatively, return SimulatedEffect.none and use
-            -- PagesProgram.simulateMsg to provide the result manually.
-            SimulatedEffect.dispatchMsg (toMsg (Ok 0))
 
         SetField info ->
             SimulatedEffect.setField info

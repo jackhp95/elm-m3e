@@ -1,38 +1,27 @@
-module ErrorPage exposing (ErrorPage(..), Model, Msg, head, init, internalError, notFound, statusCode, update, view)
+module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound, statusCode, update, view)
 
 import Effect exposing (Effect)
-import Head
 import Html
 import M3e.Node as Node
 import View exposing (View)
 
 
-type Msg
-    = Increment
+type alias Msg =
+    ()
 
 
 type alias Model =
-    { count : Int
-    }
+    {}
 
 
 init : ErrorPage -> ( Model, Effect Msg )
 init _ =
-    ( { count = 0 }
-    , Effect.none
-    )
+    ( {}, Effect.none )
 
 
 update : ErrorPage -> Msg -> Model -> ( Model, Effect Msg )
-update _ msg model =
-    case msg of
-        Increment ->
-            ( { model | count = model.count + 1 }, Effect.none )
-
-
-head : List Head.Tag
-head =
-    []
+update _ _ model =
+    ( model, Effect.none )
 
 
 type ErrorPage
