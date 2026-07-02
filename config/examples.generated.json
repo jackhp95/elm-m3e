@@ -14,6 +14,21 @@
       "category": "Text inputs"
     }
   },
+  "Badge": {
+    "examples": [
+      {
+        "title": "Notification count badge on a button",
+        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"notifications\" ] []), M3e.Button.child (Kit.text \"Alerts\") ]\n    , M3e.Badge.view [ M3e.Badge.for \"notifications\" ] [ M3e.Badge.child (Kit.text \"10\") ]\n    ]"
+      },
+      {
+        "title": "Small dot badge and large count badge on icons",
+        "code": "[ M3e.Icon.view [ M3e.Icon.name \"mail\" ] []\n    , M3e.Badge.view [ M3e.Badge.for \"mail-icon\", M3e.Badge.size M3e.Value.small, M3e.Badge.position M3e.Value.aboveAfter ] []\n    , M3e.Icon.view [ M3e.Icon.name \"shopping_cart\" ] []\n    , M3e.Badge.view [ M3e.Badge.for \"cart-icon\", M3e.Badge.size M3e.Value.large, M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text \"99+\") ]\n    ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Communication"
+    }
+  },
   "Breadcrumb": {
     "examples": [
       {
@@ -201,6 +216,17 @@
       "category": "Navigation"
     }
   },
+  "NavRail": {
+    "examples": [
+      {
+        "title": "Expanded navigation rail with link destinations",
+        "code": "M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.expanded ] (M3e.NavRail.children [ M3e.NavItem.view [ M3e.NavItem.href \"/overview\", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Overview\") ], M3e.NavItem.view [ M3e.NavItem.href \"/components\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"widgets\" ] []), M3e.NavItem.child (Kit.text \"Components\") ], M3e.NavItem.view [ M3e.NavItem.href \"/guides\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"menu_book\" ] []), M3e.NavItem.child (Kit.text \"Guides\") ] ])"
+      }
+    ],
+    "docMeta": {
+      "category": "Navigation"
+    }
+  },
   "Option": {
     "examples": [
       {
@@ -210,6 +236,17 @@
     ],
     "docMeta": {
       "category": "Selection"
+    }
+  },
+  "Search": {
+    "examples": [
+      {
+        "title": "Search bar with leading icon and input",
+        "code": "M3e.SearchBar.view { input = Native.node Html.input [] [] } [] [ M3e.SearchBar.leading (M3e.Icon.view [ M3e.Icon.name \"search\" ] []) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Text inputs"
     }
   },
   "SegmentedButton": {
@@ -296,6 +333,32 @@
     ],
     "docMeta": {
       "category": "Containment"
+    }
+  },
+  "Tooltip": {
+    "examples": [
+      {
+        "title": "Simple tooltip on an icon button",
+        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"refresh\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Refresh data\" } [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] []\n    ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Communication"
+    }
+  },
+  "Tree": {
+    "examples": [
+      {
+        "title": "Documentation navigation tree",
+        "code": "M3e.Tree.view [] (M3e.Tree.children [ M3e.TreeItem.view { label = Kit.text \"Getting Started\" } [ M3e.TreeItem.open True ] ([ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"folder\" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text \"Overview\" } [] [], M3e.TreeItem.view { label = Kit.text \"Installation\" } [] [] ]), M3e.TreeItem.view { label = Kit.text \"Components\" } [] ([ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"folder\" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text \"Button\" } [] [], M3e.TreeItem.view { label = Kit.text \"Card\" } [] [] ]) ])"
+      },
+      {
+        "title": "Multi-select tree with cascading checkboxes",
+        "code": "M3e.Tree.view [ M3e.Tree.multi True, M3e.Tree.cascade True ] (M3e.Tree.children [ M3e.TreeItem.view { label = Kit.text \"Fruits\" } [ M3e.TreeItem.open True ] (M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text \"Apples\" } [ M3e.TreeItem.selected True ] [], M3e.TreeItem.view { label = Kit.text \"Oranges\" } [] [], M3e.TreeItem.view { label = Kit.text \"Bananas\" } [ M3e.TreeItem.disabled True ] [] ]), M3e.TreeItem.view { label = Kit.text \"Vegetables\" } [ M3e.TreeItem.indeterminate True ] (M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text \"Carrots\" } [ M3e.TreeItem.selected True ] [], M3e.TreeItem.view { label = Kit.text \"Broccoli\" } [] [] ]) ])"
+      }
+    ],
+    "docMeta": {
+      "category": "Layout & style"
     }
   }
 }
