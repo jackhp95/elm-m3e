@@ -22,6 +22,13 @@ Adds additional context to a button or other UI element.
     ]
 ```
 
+<!-- elm-cem:example title="Tooltip with touch gestures disabled" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []) ]
+    , M3e.Tooltip.view { content = Kit.text "Delete item" } [ M3e.Tooltip.for "deleteBtn", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] []
+    ]
+```
+
 @docs view, disabled, for, hideDelay, position, showDelay
 @docs touchGestures
 -}

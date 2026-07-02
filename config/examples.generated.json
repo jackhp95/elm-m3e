@@ -160,6 +160,21 @@
       "category": "Layout & style"
     }
   },
+  "Icon": {
+    "examples": [
+      {
+        "title": "Icon variants, fill and weight showcase",
+        "code": "Native.nav [] [ M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name \"settings\", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight \"600\" ] [], M3e.Icon.view [ M3e.Icon.name \"star\", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]"
+      },
+      {
+        "title": "Light-weight low-grade status icons",
+        "code": "Native.span [] [ M3e.Icon.view [ M3e.Icon.name \"check_circle\", M3e.Icon.filled True, M3e.Icon.weight \"300\", M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name \"error\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight \"500\" ] [], M3e.Icon.view [ M3e.Icon.name \"schedule\", M3e.Icon.opticalSize 20 ] [] ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Layout & style"
+    }
+  },
   "IconButton": {
     "examples": [
       {
@@ -238,6 +253,25 @@
       "category": "Selection"
     }
   },
+  "Paginator": {
+    "examples": [
+      {
+        "title": "Table paginator with first/last navigation",
+        "code": "Native.footer [] [ M3e.Paginator.view [ M3e.Paginator.length 300, M3e.Paginator.pageSize \"25\", M3e.Paginator.pageIndex 0, M3e.Paginator.pageSizes \"10,25,50,100\", M3e.Paginator.showFirstLastButtons True ] [] ]"
+      },
+      {
+        "title": "Compact paginator with hidden page-size selector",
+        "code": "M3e.Paginator.view [ M3e.Paginator.length 48, M3e.Paginator.pageSize \"10\", M3e.Paginator.hidePageSize True, M3e.Paginator.nextPageLabel \"Next results\", M3e.Paginator.previousPageLabel \"Previous results\" ] []"
+      },
+      {
+        "title": "Paginator with custom navigation icons",
+        "code": "M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize \"50\", M3e.Paginator.pageSizeVariant M3e.Value.filled, M3e.Paginator.showFirstLastButtons True ] [ M3e.Paginator.firstPageIcon (M3e.Icon.view [ M3e.Icon.name \"first_page\" ] []), M3e.Paginator.previousPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.Paginator.nextPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.Paginator.lastPageIcon (M3e.Icon.view [ M3e.Icon.name \"last_page\" ] []) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Navigation"
+    }
+  },
   "Search": {
     "examples": [
       {
@@ -309,8 +343,23 @@
       "category": "Communication"
     }
   },
+  "Snackbar": {
+    "examples": [
+      {
+        "title": "Dismissible snackbar with action",
+        "code": "M3e.Snackbar.view { content = Kit.text \"Message archived\" } [ M3e.Snackbar.action \"Undo\", M3e.Snackbar.dismissible True, M3e.Snackbar.duration 5000, M3e.Snackbar.closeLabel \"Dismiss\" ] [ M3e.Snackbar.closeIcon (M3e.Icon.view [ M3e.Icon.name \"close\" ] []) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Communication"
+    }
+  },
   "TextareaAutosize": {
     "examples": [
+      {
+        "title": "Auto-resizing comment textarea",
+        "code": "[ Native.node Html.label [] [ Kit.text \"Add a comment\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"comment\", M3e.TextareaAutosize.minRows 2, M3e.TextareaAutosize.maxRows 8 ] []\n    ]"
+      },
       {
         "title": "Disabled auto-sizing on a fixed message box",
         "code": "[ Native.node Html.label [] [ Kit.text \"Message\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"msg\", M3e.TextareaAutosize.disabled True ] []\n    ]"
@@ -340,6 +389,10 @@
       {
         "title": "Simple tooltip on an icon button",
         "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"refresh\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Refresh data\" } [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] []\n    ]"
+      },
+      {
+        "title": "Tooltip with touch gestures disabled",
+        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Delete item\" } [ M3e.Tooltip.for \"deleteBtn\", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] []\n    ]"
       }
     ],
     "docMeta": {

@@ -193,6 +193,25 @@
       }
     ]
   },
+  "icon": {
+    "category": "Layout & style",
+    "examples": [
+      {
+        "title": "Icon variants, fill and weight showcase",
+        "html": "<nav>\n  <m3e-icon name=\"home\" variant=\"outlined\"></m3e-icon>\n  <m3e-icon name=\"favorite\" variant=\"rounded\" filled></m3e-icon>\n  <m3e-icon name=\"settings\" variant=\"sharp\" weight=\"600\"></m3e-icon>\n  <m3e-icon name=\"star\" filled grade=\"high\" optical-size=\"40\"></m3e-icon>\n</nav>",
+        "top": "Native.nav [] [ M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name \"settings\", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight \"600\" ] [], M3e.Icon.view [ M3e.Icon.name \"star\", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]",
+        "mid": "Html.nav [] [ M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"home\", M3e.Cem.Icon.variant M3e.Value.outlined ] [], M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"favorite\", M3e.Cem.Icon.variant M3e.Value.rounded, M3e.Cem.Icon.filled True ] [], M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"settings\", M3e.Cem.Icon.variant M3e.Value.sharp, M3e.Cem.Icon.weight \"600\" ] [], M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"star\", M3e.Cem.Icon.filled True, M3e.Cem.Icon.grade M3e.Value.high, M3e.Cem.Icon.opticalSize 40 ] [] ]",
+        "bottom": "Html.nav [] [ M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"home\", M3e.Cem.Html.Icon.variant \"outlined\" ] [], M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"favorite\", M3e.Cem.Html.Icon.variant \"rounded\", M3e.Cem.Html.Icon.filled True ] [], M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"settings\", M3e.Cem.Html.Icon.variant \"sharp\", M3e.Cem.Html.Icon.weight \"600\" ] [], M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"star\", M3e.Cem.Html.Icon.filled True, M3e.Cem.Html.Icon.grade \"high\", M3e.Cem.Html.Icon.opticalSize 40 ] [] ]"
+      },
+      {
+        "title": "Light-weight low-grade status icons",
+        "html": "<span>\n  <m3e-icon name=\"check_circle\" filled weight=\"300\" grade=\"low\"></m3e-icon>\n  <m3e-icon name=\"error\" variant=\"rounded\" weight=\"500\"></m3e-icon>\n  <m3e-icon name=\"schedule\" optical-size=\"20\"></m3e-icon>\n</span>",
+        "top": "Native.span [] [ M3e.Icon.view [ M3e.Icon.name \"check_circle\", M3e.Icon.filled True, M3e.Icon.weight \"300\", M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name \"error\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight \"500\" ] [], M3e.Icon.view [ M3e.Icon.name \"schedule\", M3e.Icon.opticalSize 20 ] [] ]",
+        "mid": "Html.span [] [ M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"check_circle\", M3e.Cem.Icon.filled True, M3e.Cem.Icon.weight \"300\", M3e.Cem.Icon.grade M3e.Value.low ] [], M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"error\", M3e.Cem.Icon.variant M3e.Value.rounded, M3e.Cem.Icon.weight \"500\" ] [], M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"schedule\", M3e.Cem.Icon.opticalSize 20 ] [] ]",
+        "bottom": "Html.span [] [ M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"check_circle\", M3e.Cem.Html.Icon.filled True, M3e.Cem.Html.Icon.weight \"300\", M3e.Cem.Html.Icon.grade \"low\" ] [], M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"error\", M3e.Cem.Html.Icon.variant \"rounded\", M3e.Cem.Html.Icon.weight \"500\" ] [], M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"schedule\", M3e.Cem.Html.Icon.opticalSize 20 ] [] ]"
+      }
+    ]
+  },
   "iconbutton": {
     "category": "Actions",
     "examples": [
@@ -286,6 +305,32 @@
       }
     ]
   },
+  "paginator": {
+    "category": "Navigation",
+    "examples": [
+      {
+        "title": "Table paginator with first/last navigation",
+        "html": "<footer>\n  <m3e-paginator length=\"300\" page-size=\"25\" page-index=\"0\" page-sizes=\"10,25,50,100\" show-first-last-buttons></m3e-paginator>\n</footer>",
+        "top": "Native.footer [] [ M3e.Paginator.view [ M3e.Paginator.length 300, M3e.Paginator.pageSize \"25\", M3e.Paginator.pageIndex 0, M3e.Paginator.pageSizes \"10,25,50,100\", M3e.Paginator.showFirstLastButtons True ] [] ]",
+        "mid": "Html.footer [] [ M3e.Cem.Paginator.paginator [ M3e.Cem.Paginator.length 300, M3e.Cem.Paginator.pageSize \"25\", M3e.Cem.Paginator.pageIndex 0, M3e.Cem.Paginator.pageSizes \"10,25,50,100\", M3e.Cem.Paginator.showFirstLastButtons True ] [] ]",
+        "bottom": "Html.footer [] [ M3e.Cem.Html.Paginator.paginator [ M3e.Cem.Html.Paginator.length 300, M3e.Cem.Html.Paginator.pageSize \"25\", M3e.Cem.Html.Paginator.pageIndex 0, M3e.Cem.Html.Paginator.pageSizes \"10,25,50,100\", M3e.Cem.Html.Paginator.showFirstLastButtons True ] [] ]"
+      },
+      {
+        "title": "Compact paginator with hidden page-size selector",
+        "html": "<m3e-paginator length=\"48\" page-size=\"10\" hide-page-size next-page-label=\"Next results\" previous-page-label=\"Previous results\"></m3e-paginator>",
+        "top": "M3e.Paginator.view [ M3e.Paginator.length 48, M3e.Paginator.pageSize \"10\", M3e.Paginator.hidePageSize True, M3e.Paginator.nextPageLabel \"Next results\", M3e.Paginator.previousPageLabel \"Previous results\" ] []",
+        "mid": "M3e.Cem.Paginator.paginator [ M3e.Cem.Paginator.length 48, M3e.Cem.Paginator.pageSize \"10\", M3e.Cem.Paginator.hidePageSize True, M3e.Cem.Paginator.nextPageLabel \"Next results\", M3e.Cem.Paginator.previousPageLabel \"Previous results\" ] []",
+        "bottom": "M3e.Cem.Html.Paginator.paginator [ M3e.Cem.Html.Paginator.length 48, M3e.Cem.Html.Paginator.pageSize \"10\", M3e.Cem.Html.Paginator.hidePageSize True, M3e.Cem.Html.Paginator.nextPageLabel \"Next results\", M3e.Cem.Html.Paginator.previousPageLabel \"Previous results\" ] []"
+      },
+      {
+        "title": "Paginator with custom navigation icons",
+        "html": "<m3e-paginator length=\"500\" page-size=\"50\" page-size-variant=\"filled\" show-first-last-buttons>\n  <m3e-icon slot=\"first-page-icon\" name=\"first_page\"></m3e-icon>\n  <m3e-icon slot=\"previous-page-icon\" name=\"chevron_left\"></m3e-icon>\n  <m3e-icon slot=\"next-page-icon\" name=\"chevron_right\"></m3e-icon>\n  <m3e-icon slot=\"last-page-icon\" name=\"last_page\"></m3e-icon>\n</m3e-paginator>",
+        "top": "M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize \"50\", M3e.Paginator.pageSizeVariant M3e.Value.filled, M3e.Paginator.showFirstLastButtons True ] [ M3e.Paginator.firstPageIcon (M3e.Icon.view [ M3e.Icon.name \"first_page\" ] []), M3e.Paginator.previousPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.Paginator.nextPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.Paginator.lastPageIcon (M3e.Icon.view [ M3e.Icon.name \"last_page\" ] []) ]",
+        "mid": "M3e.Cem.Paginator.paginator [ M3e.Cem.Paginator.length 500, M3e.Cem.Paginator.pageSize \"50\", M3e.Cem.Paginator.pageSizeVariant M3e.Value.filled, M3e.Cem.Paginator.showFirstLastButtons True ] [ M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"first-page-icon\", M3e.Cem.Icon.name \"first_page\" ] [], M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"previous-page-icon\", M3e.Cem.Icon.name \"chevron_left\" ] [], M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"next-page-icon\", M3e.Cem.Icon.name \"chevron_right\" ] [], M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"last-page-icon\", M3e.Cem.Icon.name \"last_page\" ] [] ]",
+        "bottom": "M3e.Cem.Html.Paginator.paginator [ M3e.Cem.Html.Paginator.length 500, M3e.Cem.Html.Paginator.pageSize \"50\", M3e.Cem.Html.Paginator.pageSizeVariant \"filled\", M3e.Cem.Html.Paginator.showFirstLastButtons True ] [ M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"first-page-icon\", M3e.Cem.Html.Icon.name \"first_page\" ] [], M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"previous-page-icon\", M3e.Cem.Html.Icon.name \"chevron_left\" ] [], M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"next-page-icon\", M3e.Cem.Html.Icon.name \"chevron_right\" ] [], M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"last-page-icon\", M3e.Cem.Html.Icon.name \"last_page\" ] [] ]"
+      }
+    ]
+  },
   "searchbar": {
     "category": "Text inputs",
     "examples": [
@@ -374,9 +419,28 @@
       }
     ]
   },
+  "snackbar": {
+    "category": "Communication",
+    "examples": [
+      {
+        "title": "Dismissible snackbar with action",
+        "html": "<m3e-snackbar action=\"Undo\" dismissible duration=\"5000\" close-label=\"Dismiss\">\n  Message archived\n  <m3e-icon slot=\"close-icon\" name=\"close\"></m3e-icon>\n</m3e-snackbar>",
+        "top": "M3e.Snackbar.view { content = Kit.text \"Message archived\" } [ M3e.Snackbar.action \"Undo\", M3e.Snackbar.dismissible True, M3e.Snackbar.duration 5000, M3e.Snackbar.closeLabel \"Dismiss\" ] [ M3e.Snackbar.closeIcon (M3e.Icon.view [ M3e.Icon.name \"close\" ] []) ]",
+        "mid": "M3e.Cem.Snackbar.snackbar [ M3e.Cem.Snackbar.action \"Undo\", M3e.Cem.Snackbar.dismissible True, M3e.Cem.Snackbar.duration 5000, M3e.Cem.Snackbar.closeLabel \"Dismiss\" ] [ Html.text \"Message archived\", M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"close-icon\", M3e.Cem.Icon.name \"close\" ] [] ]",
+        "bottom": "M3e.Cem.Html.Snackbar.snackbar [ M3e.Cem.Html.Snackbar.action \"Undo\", M3e.Cem.Html.Snackbar.dismissible True, M3e.Cem.Html.Snackbar.duration 5000, M3e.Cem.Html.Snackbar.closeLabel \"Dismiss\" ] [ Html.text \"Message archived\", M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"close-icon\", M3e.Cem.Html.Icon.name \"close\" ] [] ]"
+      }
+    ]
+  },
   "textareaautosize": {
     "category": "Text inputs",
     "examples": [
+      {
+        "title": "Auto-resizing comment textarea",
+        "html": "<label for=\"comment\">Add a comment</label>\n<textarea id=\"comment\" placeholder=\"Share your thoughts...\"></textarea>\n<m3e-textarea-autosize for=\"comment\" min-rows=\"2\" max-rows=\"8\"></m3e-textarea-autosize>",
+        "top": "[ Native.node Html.label [] [ Kit.text \"Add a comment\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"comment\", M3e.TextareaAutosize.minRows 2, M3e.TextareaAutosize.maxRows 8 ] []\n    ]",
+        "mid": "[ Html.label [] [ Html.text \"Add a comment\" ]\n    , Html.node \"textarea\" [] []\n    , M3e.Cem.TextareaAutosize.textareaAutosize [ M3e.Cem.TextareaAutosize.for \"comment\", M3e.Cem.TextareaAutosize.minRows 2, M3e.Cem.TextareaAutosize.maxRows 8 ] []\n    ]",
+        "bottom": "[ Html.label [] [ Html.text \"Add a comment\" ]\n    , Html.node \"textarea\" [] []\n    , M3e.Cem.Html.TextareaAutosize.textareaAutosize [ M3e.Cem.Html.TextareaAutosize.for \"comment\", M3e.Cem.Html.TextareaAutosize.minRows 2, M3e.Cem.Html.TextareaAutosize.maxRows 8 ] []\n    ]"
+      },
       {
         "title": "Disabled auto-sizing on a fixed message box",
         "html": "<label for=\"msg\">Message</label>\n<textarea id=\"msg\"></textarea>\n<m3e-textarea-autosize for=\"msg\" disabled></m3e-textarea-autosize>",
@@ -414,6 +478,13 @@
         "top": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"refresh\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Refresh data\" } [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] []\n    ]",
         "mid": "[ M3e.Cem.Button.button [ M3e.Cem.Button.variant M3e.Value.tonal ] [ M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"icon\", M3e.Cem.Icon.name \"refresh\" ] [] ]\n    , M3e.Cem.Tooltip.tooltip [ M3e.Cem.Tooltip.for \"refreshBtn\", M3e.Cem.Tooltip.position M3e.Value.above ] [ Html.text \"Refresh data\" ]\n    ]",
         "bottom": "[ M3e.Cem.Html.Button.button [ M3e.Cem.Html.Button.variant \"tonal\" ] [ M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"icon\", M3e.Cem.Html.Icon.name \"refresh\" ] [] ]\n    , M3e.Cem.Html.Tooltip.tooltip [ M3e.Cem.Html.Tooltip.for \"refreshBtn\", M3e.Cem.Html.Tooltip.position \"above\" ] [ Html.text \"Refresh data\" ]\n    ]"
+      },
+      {
+        "title": "Tooltip with touch gestures disabled",
+        "html": "<m3e-button id=\"deleteBtn\" variant=\"text\">\n  <m3e-icon slot=\"icon\" name=\"delete\"></m3e-icon>\n</m3e-button>\n<m3e-tooltip for=\"deleteBtn\" position=\"after\" touch-gestures=\"off\" hide-delay=\"400\">Delete item</m3e-tooltip>",
+        "top": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Delete item\" } [ M3e.Tooltip.for \"deleteBtn\", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] []\n    ]",
+        "mid": "[ M3e.Cem.Button.button [ M3e.Cem.Button.variant M3e.Value.text ] [ M3e.Cem.Icon.icon [ M3e.Cem.Attr.slot \"icon\", M3e.Cem.Icon.name \"delete\" ] [] ]\n    , M3e.Cem.Tooltip.tooltip [ M3e.Cem.Tooltip.for \"deleteBtn\", M3e.Cem.Tooltip.position M3e.Value.after, M3e.Cem.Tooltip.touchGestures M3e.Value.off, M3e.Cem.Tooltip.hideDelay 400 ] [ Html.text \"Delete item\" ]\n    ]",
+        "bottom": "[ M3e.Cem.Html.Button.button [ M3e.Cem.Html.Button.variant \"text\" ] [ M3e.Cem.Html.Icon.icon [ Html.Attributes.attribute \"slot\" \"icon\", M3e.Cem.Html.Icon.name \"delete\" ] [] ]\n    , M3e.Cem.Html.Tooltip.tooltip [ M3e.Cem.Html.Tooltip.for \"deleteBtn\", M3e.Cem.Html.Tooltip.position \"after\", M3e.Cem.Html.Tooltip.touchGestures \"off\", M3e.Cem.Html.Tooltip.hideDelay 400 ] [ Html.text \"Delete item\" ]\n    ]"
       }
     ]
   },

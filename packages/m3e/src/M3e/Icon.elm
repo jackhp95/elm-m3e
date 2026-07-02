@@ -6,6 +6,22 @@ module M3e.Icon exposing
 {-|
 A small symbol used to easily identify an action or category.
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Icon variants, fill and weight showcase" -->
+```elm
+Native.nav [] [ M3e.Icon.view [ M3e.Icon.name "home", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name "settings", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight "600" ] [], M3e.Icon.view [ M3e.Icon.name "star", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]
+```
+
+<!-- elm-cem:example title="Light-weight low-grade status icons" -->
+```elm
+Native.span [] [ M3e.Icon.view [ M3e.Icon.name "check_circle", M3e.Icon.filled True, M3e.Icon.weight "300", M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name "error", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight "500" ] [], M3e.Icon.view [ M3e.Icon.name "schedule", M3e.Icon.opticalSize 20 ] [] ]
+```
+
 @docs view, filled, grade, opticalSize, name, variant
 @docs weight
 -}
@@ -13,6 +29,7 @@ A small symbol used to easily identify an action or category.
 
 import M3e.Cem.Attr
 import M3e.Cem.Icon
+import M3e.Content
 import M3e.Element
 import M3e.Node
 import M3e.Value
@@ -28,16 +45,16 @@ view :
     , weight : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | icon : M3e.Value.Supported } msg
-view attributes children =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Icon.icon (List.map M3e.Cem.Attr.forget erased) ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Element.toNode children)
+             (List.map M3e.Content.toNode content_)
         )
 
 
