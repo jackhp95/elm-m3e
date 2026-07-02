@@ -10,6 +10,8 @@ imported all 55 component modules; those are deferred — this restores the refe
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
+import Dict exposing (Dict)
+import Doc
 import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
@@ -50,8 +52,15 @@ type alias Component =
     { name : String, slug : String, overview : String, members : List Member }
 
 
+{-| A verified Usage example: its live-preview HTML and the derived Elm code.
+`section` groups examples under a sub-heading ("" = ungrouped).
+-}
+type alias UsageExample =
+    { title : String, section : String, html : String, top : String }
+
+
 type alias Data =
-    Component
+    { component : Component, usage : List UsageExample }
 
 
 type alias ActionData =
@@ -76,9 +85,28 @@ componentDecoder =
         (Decode.field "members" (Decode.list memberDecoder))
 
 
+usageExampleDecoder : Decode.Decoder UsageExample
+usageExampleDecoder =
+    Decode.map4 UsageExample
+        (Decode.field "title" Decode.string)
+        (Decode.oneOf [ Decode.field "section" Decode.string, Decode.succeed "" ])
+        (Decode.field "html" Decode.string)
+        (Decode.field "top" Decode.string)
+
+
 allComponents : BackendTask FatalError (List Component)
 allComponents =
     BackendTask.File.jsonFile (Decode.list componentDecoder) "data/reference.json"
+        |> BackendTask.allowFatal
+
+
+{-| All Usage examples keyed by component slug. Missing file / entry ⇒ no Usage.
+-}
+allUsage : BackendTask FatalError (Dict String (List UsageExample))
+allUsage =
+    BackendTask.File.jsonFile
+        (Decode.dict (Decode.field "examples" (Decode.list usageExampleDecoder)))
+        "data/examples.json"
         |> BackendTask.allowFatal
 
 
@@ -95,6 +123,13 @@ pages =
 
 data : RouteParams -> BackendTask FatalError Data
 data routeParams =
+    BackendTask.map2 Data
+        (componentFor routeParams)
+        (allUsage |> BackendTask.map (Dict.get routeParams.name >> Maybe.withDefault []))
+
+
+componentFor : RouteParams -> BackendTask FatalError Component
+componentFor routeParams =
     allComponents
         |> BackendTask.andThen
             (\components ->
@@ -116,24 +151,93 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view app _ =
     let
         component =
-            app.data
+            app.data.component
     in
     { title = component.name ++ " · elm-m3e"
     , body =
         List.map Element.toNode
             [ pane
-                [ Heading.view { content = Kit.text component.name }
+                ([ Heading.view { content = Kit.text component.name }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
-                , EscapeHatch.fromHtml (p [ Attr.class "max-w-2xl text-body-lg text-on-surface-variant" ] [ text component.overview ])
-                , Heading.view { content = Kit.text "API" }
-                    [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
-                    []
-                , Card.view [ Card.variant Value.outlined ]
-                    [ Card.content (List_.view [] (List_.children (List.map memberRow component.members))) ]
-                ]
+                 , EscapeHatch.fromHtml (p [ Attr.class "max-w-2xl text-body-lg text-on-surface-variant" ] [ text component.overview ])
+                 ]
+                    ++ usageBlocks app.data.usage
+                    ++ [ Heading.view { content = Kit.text "API" }
+                            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+                            []
+                       , Card.view [ Card.variant Value.outlined ]
+                            [ Card.content (List_.view [] (List_.children (List.map memberRow component.members))) ]
+                       ]
+                )
             ]
     }
+
+
+{-| Render the Usage section: a "Usage" heading, then per-section sub-headings,
+each followed by its examples (live preview + code). Empty ⇒ nothing.
+-}
+usageBlocks : List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+usageBlocks examples =
+    case examples of
+        [] ->
+            []
+
+        _ ->
+            Heading.view { content = Kit.text "Usage" }
+                [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+                []
+                :: List.concatMap sectionBlock (groupBySection examples)
+
+
+{-| One section: an optional sub-heading (skipped for the ungrouped "" section)
+followed by each example's live preview paired with its Elm code.
+-}
+sectionBlock : ( String, List UsageExample ) -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+sectionBlock ( section, examples ) =
+    let
+        heading : List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+        heading =
+            if section == "" then
+                []
+
+            else
+                [ Heading.view { content = Kit.text section }
+                    [ Heading.variant Value.title, Heading.size Value.large, Heading.level "3" ]
+                    []
+                ]
+    in
+    heading ++ List.concatMap exampleBlock examples
+
+
+exampleBlock : UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+exampleBlock ex =
+    [ EscapeHatch.fromHtml (p [ Attr.class "text-body-md text-on-surface-variant" ] [ text ex.title ])
+    , Doc.showcase (Doc.rawPreview ex.html)
+    , Doc.code_ Doc.Elm ex.top
+    ]
+
+
+{-| Group examples by `.section`, preserving first-seen order of both sections
+and examples within each section.
+-}
+groupBySection : List UsageExample -> List ( String, List UsageExample )
+groupBySection examples =
+    let
+        sections : List String
+        sections =
+            List.foldl
+                (\ex acc ->
+                    if List.member ex.section acc then
+                        acc
+
+                    else
+                        acc ++ [ ex.section ]
+                )
+                []
+                examples
+    in
+    List.map (\sec -> ( sec, List.filter (\ex -> ex.section == sec) examples )) sections
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg

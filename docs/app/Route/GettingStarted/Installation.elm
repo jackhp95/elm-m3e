@@ -1,11 +1,12 @@
 module Route.GettingStarted.Installation exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import Doc exposing (Lang(..), code_)
 import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (code, div, p, pre, text)
+import Html exposing (p, text)
 import Html.Attributes exposing (class)
 import Kit
 import Layout
@@ -18,7 +19,6 @@ import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Shared
-import SyntaxHighlight
 import UrlPath
 import View exposing (View)
 
@@ -60,57 +60,6 @@ head _ =
         , title = "Installation · elm-m3e"
         }
         |> Seo.website
-
-
-type Lang
-    = Elm
-    | Json
-    | Shell
-    | NoLang
-
-
-code_ : Lang -> String -> Element { s | html : Supported } msg
-code_ lang s =
-    let
-        trimmed : String
-        trimmed =
-            String.trim s
-
-        wrapperClass : String
-        wrapperClass =
-            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-sm leading-relaxed text-on-surface"
-
-        parsed : Result () SyntaxHighlight.HCode
-        parsed =
-            -- elm-syntax-highlight doesn't ship a shell parser, so fall back to noLang
-            -- (still wraps everything in .elmsh spans so the surface styling stays consistent).
-            case lang of
-                Elm ->
-                    SyntaxHighlight.elm trimmed |> Result.mapError (always ())
-
-                Json ->
-                    SyntaxHighlight.json trimmed |> Result.mapError (always ())
-
-                Shell ->
-                    SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
-
-                NoLang ->
-                    SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
-    in
-    case parsed of
-        Ok highlighted ->
-            -- SyntaxHighlight.toBlockHtml emits <pre class="elmsh">, so the
-            -- outer wrapper is a <div> to keep the markup valid.
-            EscapeHatch.fromHtml
-                (div [ class wrapperClass ]
-                    [ SyntaxHighlight.toBlockHtml Nothing highlighted ]
-                )
-
-        Err _ ->
-            EscapeHatch.fromHtml
-                (pre [ class wrapperClass ]
-                    [ code [] [ text trimmed ] ]
-                )
 
 
 pageHeading : Element { s | heading : Supported } msg

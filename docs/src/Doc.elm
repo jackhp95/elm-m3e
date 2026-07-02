@@ -9,7 +9,7 @@ routes so per-component Usage pages can reuse them.
 
 import EscapeHatch
 import Html exposing (code, div, node, pre, text)
-import Html.Attributes as Attr exposing (attribute, class)
+import Html.Attributes exposing (attribute, class)
 import M3e.Card as Card
 import M3e.Element exposing (Element)
 import M3e.Value as Value exposing (Supported)
