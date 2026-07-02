@@ -657,8 +657,17 @@ navMenu currentPath =
     let
         groups =
             List.map (\s -> ( s.icon, s.title, s.items )) navSections
-                ++ [ ( "grid_view", "Components", List.map (\( slug, label ) -> ( "/components/" ++ slug, label )) componentList )
-                   , ( "menu_book", "Reference", [ ( "/reference", "Full API reference" ) ] )
+                ++ List.map
+                    (\( category, glyph ) ->
+                        ( glyph
+                        , category
+                        , componentList
+                            |> List.filter (\( _, _, c ) -> c == category)
+                            |> List.map (\( slug, label, _ ) -> ( "/components/" ++ slug, label ))
+                        )
+                    )
+                    componentCategories
+                ++ [ ( "menu_book", "Reference", [ ( "/reference", "Full API reference" ) ] )
                    ]
     in
     NavMenu.view []
@@ -691,61 +700,77 @@ navLeaf currentPath ( path, label ) =
         []
 
 
-{-| (slug, label) for every documented component, kept in sync with
-`data/reference.json` (drives the dynamic `/components/:name` route).
+{-| The component-nav categories, in display order, each paired with its Material
+Symbol glyph. Mirrors the editorial taxonomy in `config/categories.json`.
 -}
-componentList : List ( String, String )
+componentCategories : List ( String, String )
+componentCategories =
+    [ ( "Actions", "touch_app" )
+    , ( "Communication", "notifications" )
+    , ( "Containment", "widgets" )
+    , ( "Navigation", "explore" )
+    , ( "Selection", "checklist" )
+    , ( "Text inputs", "edit" )
+    , ( "Layout & style", "palette" )
+    ]
+
+
+{-| (slug, label, category) for every documented component, kept in sync with
+`data/reference.json` (drives the dynamic `/components/:name` route) and grouped
+in the drawer by `category` (see `componentCategories`).
+-}
+componentList : List ( String, String, String )
 componentList =
-    [ ( "appbar", "App Bar" )
-    , ( "avatar", "Avatar" )
-    , ( "badge", "Badge" )
-    , ( "bottomsheet", "Bottom Sheet" )
-    , ( "breadcrumb", "Breadcrumb" )
-    , ( "button", "Button" )
-    , ( "buttongroup", "Button Group" )
-    , ( "calendar", "Calendar" )
-    , ( "card", "Card" )
-    , ( "checkbox", "Checkbox" )
-    , ( "chip", "Chips" )
-    , ( "datepicker", "Date Picker" )
-    , ( "dialog", "Dialog" )
-    , ( "disclosure", "Disclosure" )
-    , ( "divider", "Divider" )
-    , ( "extendedfab", "Extended FAB" )
-    , ( "fab", "FAB" )
-    , ( "fabmenu", "FAB Menu" )
-    , ( "heading", "Heading" )
-    , ( "icon", "Icon" )
-    , ( "iconbutton", "Icon Button" )
-    , ( "list", "List" )
-    , ( "loadingindicator", "Loading Indicator" )
-    , ( "menu", "Menu" )
-    , ( "navigationbar", "Navigation Bar" )
-    , ( "navigationdrawer", "Navigation Drawer" )
-    , ( "navigationrail", "Navigation Rail" )
-    , ( "paginator", "Paginator" )
-    , ( "progress", "Progress" )
-    , ( "radiobutton", "Radio Button" )
-    , ( "scrollcontainer", "Scroll Container" )
-    , ( "search", "Search" )
-    , ( "segmentedbutton", "Segmented Button" )
-    , ( "select", "Select" )
-    , ( "shape", "Shape" )
-    , ( "sidesheet", "Side Sheet" )
-    , ( "skeleton", "Skeleton" )
-    , ( "slide", "Slide Group" )
-    , ( "slider", "Slider" )
-    , ( "snackbar", "Snackbar" )
-    , ( "splitbutton", "Split Button" )
-    , ( "splitpane", "Split Pane" )
-    , ( "stepper", "Stepper" )
-    , ( "switch", "Switch" )
-    , ( "tabs", "Tabs" )
-    , ( "textfield", "Text Field" )
-    , ( "texthighlight", "Text Highlight" )
-    , ( "theme", "Theme" )
-    , ( "timepicker", "Time Picker" )
-    , ( "toc", "TOC" )
-    , ( "toolbar", "Toolbar" )
-    , ( "tooltip", "Tooltip" )
+    [ ( "appbar", "App Bar", "Navigation" )
+    , ( "avatar", "Avatar", "Layout & style" )
+    , ( "badge", "Badge", "Communication" )
+    , ( "bottomsheet", "Bottom Sheet", "Containment" )
+    , ( "breadcrumb", "Breadcrumb", "Navigation" )
+    , ( "button", "Button", "Actions" )
+    , ( "buttongroup", "Button Group", "Actions" )
+    , ( "calendar", "Calendar", "Text inputs" )
+    , ( "card", "Card", "Containment" )
+    , ( "checkbox", "Checkbox", "Selection" )
+    , ( "chip", "Chips", "Selection" )
+    , ( "datepicker", "Date Picker", "Text inputs" )
+    , ( "dialog", "Dialog", "Containment" )
+    , ( "disclosure", "Disclosure", "Containment" )
+    , ( "divider", "Divider", "Containment" )
+    , ( "extendedfab", "Extended FAB", "Actions" )
+    , ( "fab", "FAB", "Actions" )
+    , ( "fabmenu", "FAB Menu", "Actions" )
+    , ( "heading", "Heading", "Layout & style" )
+    , ( "icon", "Icon", "Layout & style" )
+    , ( "iconbutton", "Icon Button", "Actions" )
+    , ( "list", "List", "Layout & style" )
+    , ( "loadingindicator", "Loading Indicator", "Communication" )
+    , ( "menu", "Menu", "Navigation" )
+    , ( "navigationbar", "Navigation Bar", "Navigation" )
+    , ( "navigationdrawer", "Navigation Drawer", "Navigation" )
+    , ( "navigationrail", "Navigation Rail", "Navigation" )
+    , ( "paginator", "Paginator", "Navigation" )
+    , ( "progress", "Progress", "Communication" )
+    , ( "radiobutton", "Radio Button", "Selection" )
+    , ( "scrollcontainer", "Scroll Container", "Containment" )
+    , ( "search", "Search", "Text inputs" )
+    , ( "segmentedbutton", "Segmented Button", "Actions" )
+    , ( "select", "Select", "Text inputs" )
+    , ( "shape", "Shape", "Layout & style" )
+    , ( "sidesheet", "Side Sheet", "Containment" )
+    , ( "skeleton", "Skeleton", "Communication" )
+    , ( "slide", "Slide Group", "Navigation" )
+    , ( "slider", "Slider", "Selection" )
+    , ( "snackbar", "Snackbar", "Communication" )
+    , ( "splitbutton", "Split Button", "Actions" )
+    , ( "splitpane", "Split Pane", "Containment" )
+    , ( "stepper", "Stepper", "Navigation" )
+    , ( "switch", "Switch", "Selection" )
+    , ( "tabs", "Tabs", "Navigation" )
+    , ( "textfield", "Text Field", "Text inputs" )
+    , ( "texthighlight", "Text Highlight", "Layout & style" )
+    , ( "theme", "Theme", "Layout & style" )
+    , ( "timepicker", "Time Picker", "Text inputs" )
+    , ( "toc", "TOC", "Navigation" )
+    , ( "toolbar", "Toolbar", "Containment" )
+    , ( "tooltip", "Tooltip", "Communication" )
     ]
