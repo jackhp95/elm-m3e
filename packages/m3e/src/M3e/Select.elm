@@ -23,6 +23,14 @@ A form control that allows users to select a value from a set of predefined opti
 
 ### Examples
 
+<!-- elm-cem:example title="Single select of fruit options" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Favorite fruit" ]
+    , Native.br
+    , M3e.Select.view [ M3e.Select.name "fruit", M3e.Select.required True ] (M3e.Select.children [ M3e.Option.view { content = Kit.text "Apples" } [ M3e.Option.value "apple" ] [], M3e.Option.view { content = Kit.text "Oranges" } [ M3e.Option.value "orange" ] [], M3e.Option.view { content = Kit.text "Bananas" } [ M3e.Option.value "banana" ] [], M3e.Option.view { content = Kit.text "Grapes" } [ M3e.Option.value "grape" ] [] ])
+    ]
+```
+
 <!-- elm-cem:example title="Multi-select languages with custom arrow" -->
 ```elm
 M3e.Select.view [ M3e.Select.multi True, M3e.Select.name "languages" ] ([ M3e.Select.arrow (M3e.Icon.view [ M3e.Icon.name "expand_more" ] []) ] ++ M3e.Select.children [ M3e.Option.view { content = Kit.text "JavaScript" } [ M3e.Option.value "javascript" ] [], M3e.Option.view { content = Kit.text "TypeScript" } [ M3e.Option.value "typescript" ] [], M3e.Option.view { content = Kit.text "Python" } [ M3e.Option.value "python" ] [], M3e.Option.view { content = Kit.text "Rust" } [ M3e.Option.value "rust" ] [] ])

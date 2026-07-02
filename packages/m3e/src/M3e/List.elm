@@ -9,9 +9,19 @@ A list of items.
 
 ### Examples
 
+<!-- elm-cem:example title="Contact list with leading icons and trailing chevrons" -->
+```elm
+M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text "Engineering" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "ada@example.com" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.ListItem.child (Kit.text "Ada Lovelace") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text "Design" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "grace@example.com" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.ListItem.child (Kit.text "Grace Hopper") ] ])
+```
+
 <!-- elm-cem:example title="Action list of navigable links" -->
 ```elm
 M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ListAction.view [ M3e.ListAction.href "/account" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "manage_accounts" ] []), M3e.ListAction.trailing (M3e.Icon.view [ M3e.Icon.name "open_in_new" ] []), M3e.ListAction.child (Kit.text "Account") ], M3e.ListAction.view [ M3e.ListAction.href "/billing" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "payments" ] []), M3e.ListAction.child (Kit.text "Billing") ], M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "lock" ] []), M3e.ListAction.child (Kit.text "Admin tools") ] ])
+```
+
+<!-- elm-cem:example title="Multi-select selection list with expandable group" -->
+```elm
+M3e.SelectionList.view [ M3e.SelectionList.multi True, M3e.SelectionList.name "topics" ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.value "news", M3e.ListOption.selected True ] [ M3e.ListOption.leading (M3e.Icon.view [ M3e.Icon.name "feed" ] []), M3e.ListOption.child (Kit.text "Product news") ], M3e.ListOption.view [ M3e.ListOption.value "offers" ] [ M3e.ListOption.leading (M3e.Icon.view [ M3e.Icon.name "local_offer" ] []), M3e.ListOption.child (Kit.text "Special offers") ], M3e.ExpandableListItem.view [ M3e.ExpandableListItem.open True ] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "folder" ] []), M3e.ExpandableListItem.items (M3e.ListOption.view [ M3e.ListOption.value "beta" ] [ M3e.ListOption.child (Kit.text "Beta features") ]), M3e.ExpandableListItem.items (M3e.ListOption.view [ M3e.ListOption.value "api" ] [ M3e.ListOption.child (Kit.text "API updates") ]), M3e.ExpandableListItem.child (Kit.text "Advanced") ] ])
 ```
 
 @docs view, variant, child, children
@@ -56,12 +66,7 @@ variant =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element { listItem : M3e.Value.Supported
-    , listAction : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , listOption : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -69,12 +74,7 @@ child el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element { listItem : M3e.Value.Supported
-    , listAction : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , listOption : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg)
+    List (M3e.Element.Element any msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

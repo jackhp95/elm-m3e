@@ -3,53 +3,23 @@ AppBar :: Medium app bar with leading and trailing actions :: unmapped attr aria
 Avatar :: Avatar with image and icon fallback :: compile: The `img` function expects 1 argument, but it got 2 instead.
 BottomSheet :: Modal share sheet with action list :: compile: I cannot find a `M3e.BottomSheet.detents` variable:
 BottomSheet :: Non-modal filter sheet opening to a detent :: missing required ariaLabel on m3e-checkbox
-Button :: Toggle button and link button with icons :: compile: The 1st argument to `selectedSlot` is not what I expect:
 ButtonGroup :: Multi-select formatting toolbar :: unmapped attr aria-label on m3e-button
 Checkbox :: Notification preferences with required terms :: missing required ariaLabel on m3e-checkbox
 Checkbox :: Single checkbox with external label :: missing required ariaLabel on m3e-checkbox
-Datepicker :: Booking range picker with constraints :: compile: I cannot find a `M3e.Datepicker.child` variable:
-Datepicker :: Modal single-date picker :: compile: I cannot find a `M3e.Datepicker.child` variable:
-Dialog :: Alert dialog with close icon :: compile: I cannot find a `M3e.DialogTrigger.child` variable:
-Dialog :: Confirmation dialog with header and actions :: compile: I cannot find a `M3e.DialogTrigger.child` variable:
-DrawerContainer :: App shell with navigation drawer toggle :: compile: I cannot find a `Html.main` variable:
+Datepicker :: Booking range picker with constraints :: compile: I cannot find a `M3e.DatepickerToggle.child` variable:
+Datepicker :: Modal single-date picker :: compile: I cannot find a `M3e.DatepickerToggle.child` variable:
 DrawerContainer :: Dual drawers with side navigation and detail panel :: missing required ariaLabel on m3e-checkbox
-ExpansionPanel :: FAQ accordion with single-open behavior :: compile: The 1st argument to `header` is not what I expect:
-ExpansionPanel :: Multi-open accordion with horizontal toggle :: compile: The 1st argument to `header` is not what I expect:
-ExpansionPanel :: Settings panel with custom header and actions :: compile: The 1st argument to `actions` is not what I expect:
-FabMenu :: Primary FAB revealing a secondary action menu :: compile: The 1st argument to `children` is not what I expect:
-FabMenu :: Tertiary FAB menu with link and disabled items :: compile: The 1st argument to `children` is not what I expect:
 FormField :: Filled field with always-floating label and error :: multiple children for single-value content slot on m3e-form-field
 FormField :: Outlined field with prefix, hint and required marker :: multiple children for single-value content slot on m3e-form-field
 FormField :: Search field with leading and trailing icons :: multiple children for single-value content slot on m3e-form-field
-List :: Contact list with leading icons and trailing chevrons :: compile: The 1st argument to `supportingText` is not what I expect:
-List :: Multi-select selection list with expandable group :: compile: The 1st argument to `children` is not what I expect:
-LoadingIndicator :: Contained loading indicator inside a refresh button :: compile: The 1st argument to `icon` is not what I expect:
-Menu :: Basic action menu triggered from a button :: compile: The 1st argument to `child` is not what I expect:
-Menu :: Nested submenu for sharing options :: compile: The 1st argument to `child` is not what I expect:
-Menu :: View menu with checkbox and radio selection groups :: compile: The `hr` value is not a function, but it was given 2 arguments.
-NavMenu :: Nested navigation menu with icons, badges, and links :: compile: The 1st argument to `badge` is not what I expect:
-NavRail :: Collapsible navigation rail with toggle :: compile: The 1st argument to `children` is not what I expect:
-Option :: Autocomplete option panel with grouped results :: compile: The 1st argument to `label` is not what I expect:
-Option :: Empty option panel loading state :: compile: The 1st argument to `children` is not what I expect:
 ProgressIndicator :: Buffered linear progress :: compile: I cannot find a `M3e.LinearProgressIndicator.view` variable:
 ProgressIndicator :: Determinate linear and circular progress :: compile: I cannot find a `M3e.LinearProgressIndicator.view` variable:
 ProgressIndicator :: Indeterminate loading states :: compile: I cannot find a `M3e.LinearProgressIndicator.view` variable:
 RadioGroup :: Disabled radio group with one disabled option :: missing required ariaLabel on m3e-radio
 RadioGroup :: Single-choice shipping options :: missing required ariaLabel on m3e-radio
-Select :: Single select of fruit options :: compile: The `br` value is not a function, but it was given 2 arguments.
-SlideGroup :: Horizontal scrollable button row :: compile: The 1st argument to `children` is not what I expect:
-SlideGroup :: Vertical slide group of cards :: compile: The 1st argument to `children` is not what I expect:
 Slider :: Discrete labelled volume slider :: missing required ariaLabel on m3e-slider
 Slider :: Range slider with two thumbs :: missing required ariaLabel on m3e-slider
-SplitButton :: Filled split button with primary action and menu toggle :: compile: The 1st argument to `view` is not what I expect:
-SplitButton :: Tonal split button :: compile: The 1st argument to `view` is not what I expect:
 SplitPane :: Horizontal split pane with min and max constraints :: compile: I cannot find a `M3e.SplitPane.minAttr` variable:
 SplitPane :: Vertical split pane with snapping detents :: compile: I cannot find a `M3e.SplitPane.detents` variable:
-Stepper :: Horizontal stepper with completed and optional steps :: compile: I cannot find a `M3e.Stepper.children` variable:
-Stepper :: Linear vertical stepper with navigation controls :: compile: I cannot find a `M3e.Stepper.children` variable:
 Switch :: Disabled switch :: missing required ariaLabel on m3e-switch
 Switch :: Labelled switch with icons in both states :: missing required ariaLabel on m3e-switch
-Tabs :: Tabs with icons and panels :: compile: The 1st argument to `children` is not what I expect:
-Theme :: Theme with drawer, nav menu, and app bar shell :: compile: The 1st argument to `title` is not what I expect:
-Toc :: Table of contents with overline slot :: compile: The 1st argument to `overline` is not what I expect:
-Tooltip :: Rich tooltip with subhead and actions :: compile: The 1st argument to `child` is not what I expect:

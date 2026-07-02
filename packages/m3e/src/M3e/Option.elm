@@ -12,9 +12,19 @@ An option that can be selected.
 
 ### Examples
 
+<!-- elm-cem:example title="Autocomplete option panel with grouped results" -->
+```elm
+M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text "Apple" } [ M3e.Option.value "apple" ] [], M3e.Option.view { content = Kit.text "Banana" } [ M3e.Option.value "banana" ] [], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Native.span [] [ Kit.text "Citrus" ]) ] ++ M3e.Optgroup.children [ M3e.Option.view { content = Kit.text "Lemon" } [ M3e.Option.value "lemon" ] [], M3e.Option.view { content = Kit.text "Orange" } [ M3e.Option.value "orange", M3e.Option.selected True ] [], M3e.Option.view { content = Kit.text "Grapefruit" } [ M3e.Option.value "grapefruit", M3e.Option.disabled True ] [] ]) ])
+```
+
 <!-- elm-cem:example title="Option panel with search-term highlighting" -->
 ```elm
 M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.content, M3e.OptionPanel.scrollStrategy M3e.Value.reposition ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text "React" } [ M3e.Option.value "react", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [], M3e.Option.view { content = Kit.text "Redux" } [ M3e.Option.value "redux", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [], M3e.Option.view { content = Kit.text "Remix" } [ M3e.Option.value "remix", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [] ])
+```
+
+<!-- elm-cem:example title="Empty option panel loading state" -->
+```elm
+M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.anchorOffset 4 ] (M3e.OptionPanel.children [ M3e.LoadingIndicator.view [] [], Native.span [] [ Kit.text "Searching..." ] ])
 ```
 
 @docs view, disabled, disableHighlight, highlightMode, selected, term
@@ -32,7 +42,7 @@ import M3e.Value
 
 {-| Build the `<m3e-option>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHighlight : M3e.Value.Supported
     , highlightMode : M3e.Value.Supported

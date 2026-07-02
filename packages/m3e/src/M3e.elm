@@ -443,7 +443,7 @@ stepperPrevious =
 
 
 step :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { completed : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , editable : M3e.Value.Supported
@@ -489,7 +489,8 @@ stepper :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { step : M3e.Value.Supported
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , step : M3e.Value.Supported
     , panel : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | stepper : M3e.Value.Supported } msg
@@ -515,6 +516,7 @@ splitPane :
     } msg)
     -> List (M3e.Content.Content { start : M3e.Value.Supported
     , end : M3e.Value.Supported
+    , default : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | splitPane : M3e.Value.Supported } msg
 splitPane =
@@ -522,15 +524,14 @@ splitPane =
 
 
 splitButton :
-    { leadingButton : M3e.Element.Element { button : M3e.Value.Supported } msg
-    , trailingButton :
-        M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    { leadingButton : M3e.Element.Element any msg
+    , trailingButton : M3e.Element.Element any msg
     }
     -> List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
 splitButton =
     M3e.SplitButton.view
@@ -846,11 +847,7 @@ navMenu =
 
 
 navMenuItem :
-    { label :
-        M3e.Element.Element { text : M3e.Value.Supported
-        , link : M3e.Value.Supported
-        } msg
-    }
+    { label : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , open : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -1315,7 +1312,7 @@ dialogTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | dialogTrigger : M3e.Value.Supported } msg
 dialogTrigger =
     M3e.DialogTrigger.view
@@ -1391,7 +1388,7 @@ datepicker :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | datepicker : M3e.Value.Supported } msg
 datepicker =
     M3e.Datepicker.view
@@ -1669,7 +1666,7 @@ monthView =
 
 
 tooltip :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
@@ -1685,7 +1682,7 @@ tooltip =
 
 
 richTooltip :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
@@ -1719,7 +1716,7 @@ tooltipElementBase =
 
 
 richTooltipAction :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
@@ -1742,9 +1739,7 @@ buttonGroup =
 
 
 iconButton :
-    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
-    , ariaLabel : String
-    }
+    { content : M3e.Element.Element any msg, ariaLabel : String }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , download : M3e.Value.Supported
@@ -2014,7 +2009,7 @@ optgroup =
 
 
 option :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHighlight : M3e.Value.Supported
     , highlightMode : M3e.Value.Supported
@@ -2049,6 +2044,7 @@ appBar :
     , title : M3e.Value.Supported
     , subtitle : M3e.Value.Supported
     , trailing : M3e.Value.Supported
+    , default : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 appBar =

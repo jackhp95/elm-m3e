@@ -18,6 +18,27 @@ An expandable details-summary view.
 - `header`: Renders the header content.
 - `toggle-icon`: Renders the expansion toggle icon.
 
+<!-- elm-cem:docmeta category=Containment -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="FAQ accordion with single-open behavior" -->
+```elm
+M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "How do I reset my password?" ]), M3e.ExpansionPanel.toggleIcon (M3e.Icon.view [ M3e.Icon.name "expand_more" ] []), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Open Settings, choose Security, then select Reset password. A link will be sent to your email." ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Can I change my plan later?" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Yes. Plans can be upgraded or downgraded at any time from the Billing page." ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Where can I download invoices?" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "All invoices are available under Billing, in the Invoice history section." ]) ] ])
+```
+
+<!-- elm-cem:example title="Settings panel with custom header and actions" -->
+```elm
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "notifications" ] [], Native.span [] [ Kit.text "Notification preferences" ] ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Cancel") ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Save") ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Choose how and when we contact you about account activity and product updates." ]) ]
+```
+
+<!-- elm-cem:example title="Multi-open accordion with horizontal toggle" -->
+```elm
+M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Shipping" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Standard delivery arrives in 3 to 5 business days." ]) ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Returns" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Items can be returned within 30 days of receipt." ]) ] ])
+```
+
 @docs view, disabled, hideToggle, open, toggleDirection, togglePosition
 @docs onOpening, onOpened, onClosing, onClosed, child, actions
 @docs header, toggleIcon, children
@@ -137,7 +158,7 @@ child el =
 
 {-| Place content in the `actions` slot. -}
 actions :
-    M3e.Element.Element { button : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
 actions el =
     M3e.Content.slot "actions" el
@@ -145,7 +166,7 @@ actions el =
 
 {-| Place content in the `header` slot. -}
 header :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
 header el =
     M3e.Content.slot "header" el
@@ -153,7 +174,7 @@ header el =
 
 {-| Place content in the `toggle-icon` slot. -}
 toggleIcon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
 toggleIcon el =
     M3e.Content.slot "toggle-icon" el

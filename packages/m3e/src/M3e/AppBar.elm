@@ -1,6 +1,6 @@
 module M3e.AppBar exposing
     ( view, centered, for, size, leading, title
-    , subtitle, trailing
+    , subtitle, trailing, child, children
     )
 
 {-|
@@ -15,7 +15,7 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 - `trailing-icon`: Deprecated: use the `trailing` slot.
 
 @docs view, centered, for, size, leading, title
-@docs subtitle, trailing
+@docs subtitle, trailing, child, children
 -}
 
 
@@ -38,6 +38,7 @@ view :
     , title : M3e.Value.Supported
     , subtitle : M3e.Value.Supported
     , trailing : M3e.Value.Supported
+    , default : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 view attributes content_ =
@@ -76,7 +77,7 @@ size =
 
 {-| Place content in the `leading` slot. -}
 leading :
-    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
     M3e.Content.slot "leading" el
@@ -84,7 +85,7 @@ leading el =
 
 {-| Place content in the `title` slot. -}
 title :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
 title el =
     M3e.Content.slot "title" el
@@ -92,7 +93,7 @@ title el =
 
 {-| Place content in the `subtitle` slot. -}
 subtitle :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
 subtitle el =
     M3e.Content.slot "subtitle" el
@@ -100,7 +101,23 @@ subtitle el =
 
 {-| Place content in the `trailing` slot. -}
 trailing :
-    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
 trailing el =
     M3e.Content.slot "trailing" el
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
+child el =
+    M3e.Content.slot "" el
+
+
+{-| Place many elements in the default slot. -}
+children :
+    List (M3e.Element.Element any msg)
+    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
+children els =
+    List.map (M3e.Content.slot "") els

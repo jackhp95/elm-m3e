@@ -36,6 +36,13 @@ A button users interact with to perform an action.
     ]
 ```
 
+<!-- elm-cem:example title="Toggle button and link button with icons" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "favorite_border" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text "Saved" ]), M3e.Button.child (Kit.text "Save") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href "/download", M3e.Button.download "", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.Button.child (Kit.text "Download") ]
+    ]
+```
+
 @docs view, disabled, disabledInteractive, download, href, name
 @docs rel, selected, shape, size, target, toggle
 @docs type_, value, variant, onBeforeinput, onInput, onChange
@@ -233,7 +240,7 @@ onClick =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -241,7 +248,7 @@ child el =
 
 {-| Place content in the `icon` slot. -}
 icon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
     M3e.Content.slot "icon" el
@@ -249,7 +256,7 @@ icon el =
 
 {-| Place content in the `selected` slot. -}
 selectedSlot :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
 selectedSlot el =
     M3e.Content.slot "selected" el
@@ -257,7 +264,7 @@ selectedSlot el =
 
 {-| Place content in the `selected-icon` slot. -}
 selectedIcon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
 selectedIcon el =
     M3e.Content.slot "selected-icon" el
@@ -265,7 +272,7 @@ selectedIcon el =
 
 {-| Place content in the `trailing-icon` slot. -}
 trailingIcon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
 trailingIcon el =
     M3e.Content.slot "trailing-icon" el
@@ -273,7 +280,7 @@ trailingIcon el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
+    List (M3e.Element.Element any msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

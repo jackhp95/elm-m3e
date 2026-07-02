@@ -1,6 +1,6 @@
 module M3e.Stepper exposing
     ( view, headerPosition, labelPosition, linear, orientation, onChange
-    , onBeforeinput, onInput, step, panel
+    , onBeforeinput, onInput, child, step, panel, children
     )
 
 {-|
@@ -15,8 +15,24 @@ Provides a wizard-like workflow by dividing content into logical steps.
 - `step`: Renders a step.
 - `panel`: Renders a panel.
 
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Horizontal stepper with completed and optional steps" -->
+```elm
+M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.horizontal, M3e.Stepper.headerPosition M3e.Value.above, M3e.Stepper.labelPosition M3e.Value.end ] (M3e.Stepper.children [ M3e.Step.view { content = Kit.text "Account" } [ M3e.Step.for "acct", M3e.Step.completed True, M3e.Step.editable True ] [ M3e.Step.icon (M3e.Icon.view [ M3e.Icon.name "person" ] []) ], M3e.Step.view { content = Kit.text "Profile" } [ M3e.Step.for "profile", M3e.Step.selected True ] [ M3e.Step.hint (Native.span [] [ Kit.text "Tell us about yourself" ]) ], M3e.Step.view { content = Kit.text "Review" } [ M3e.Step.for "review", M3e.Step.optional True ] [], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Account details saved." ]) ], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Enter your profile information." ]) ], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Review and submit." ]) ] ])
+```
+
+<!-- elm-cem:example title="Linear vertical stepper with navigation controls" -->
+```elm
+M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.vertical, M3e.Stepper.linear True ] (M3e.Stepper.children [ M3e.Step.view { content = Kit.text "Choose a plan" } [ M3e.Step.for "s1", M3e.Step.selected True ] [], M3e.Step.view { content = Kit.text "Payment" } [ M3e.Step.for "s2" ] [], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Pick the plan that fits you." ]) ], M3e.StepPanel.view [] (M3e.StepPanel.children [ Native.p [] [ Kit.text "Confirm and reset if needed." ], M3e.Button.view [] [ M3e.Button.child (M3e.StepperPrevious.view [] [ M3e.StepperPrevious.child (Kit.text "Back") ]) ], M3e.Button.view [] [ M3e.Button.child (M3e.StepperReset.view [] [ M3e.StepperReset.child (Kit.text "Start over") ]) ] ]) ])
+```
+
 @docs view, headerPosition, labelPosition, linear, orientation, onChange
-@docs onBeforeinput, onInput, step, panel
+@docs onBeforeinput, onInput, child, step, panel, children
 -}
 
 
@@ -39,7 +55,8 @@ view :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { step : M3e.Value.Supported
+    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , step : M3e.Value.Supported
     , panel : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | stepper : M3e.Value.Supported } msg
@@ -108,9 +125,17 @@ onInput =
     M3e.Cem.Stepper.onInput
 
 
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
+child el =
+    M3e.Content.slot "" el
+
+
 {-| Place content in the `step` slot. -}
 step :
-    M3e.Element.Element { step : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | step : M3e.Value.Supported } msg
 step el =
     M3e.Content.slot "step" el
@@ -118,7 +143,15 @@ step el =
 
 {-| Place content in the `panel` slot. -}
 panel :
-    M3e.Element.Element { stepPanel : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
 panel el =
     M3e.Content.slot "panel" el
+
+
+{-| Place many elements in the default slot. -}
+children :
+    List (M3e.Element.Element any msg)
+    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
+children els =
+    List.map (M3e.Content.slot "") els

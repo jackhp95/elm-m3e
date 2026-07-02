@@ -145,7 +145,7 @@ child el =
 
 {-| Place content in the `header` slot. -}
 header :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
 header el =
     M3e.Content.slot "header" el
@@ -161,7 +161,7 @@ actions el =
 
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
 closeIcon el =
     M3e.Content.slot "close-icon" el

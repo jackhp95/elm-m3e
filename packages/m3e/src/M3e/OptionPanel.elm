@@ -101,10 +101,7 @@ onToggle =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element { option : M3e.Value.Supported
-    , optgroup : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -120,10 +117,7 @@ noData el =
 
 {-| Place content in the `loading` slot. -}
 loading :
-    M3e.Element.Element { circularProgressIndicator : M3e.Value.Supported
-    , loadingIndicator : M3e.Value.Supported
-    , text : M3e.Value.Supported
-    } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
 loading el =
     M3e.Content.slot "loading" el
@@ -131,10 +125,7 @@ loading el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element { option : M3e.Value.Supported
-    , optgroup : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg)
+    List (M3e.Element.Element any msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

@@ -9,6 +9,17 @@ A non-visual element responsible for application-level theming.
 **Events:**
 - `change`: Dispatched when the theme changes.
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Theme with drawer, nav menu, and app bar shell" -->
+```elm
+M3e.Theme.view [ M3e.Theme.color "#8B6F47", M3e.Theme.scheme M3e.Value.auto, M3e.Theme.contrast M3e.Value.standard, M3e.Theme.motion M3e.Value.expressive, M3e.Theme.strongFocus True ] [ M3e.Theme.child (M3e.DrawerContainer.view [ M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ M3e.NavMenu.view [] [ M3e.NavMenu.child (Kit.link "/photos" [ M3e.NavMenuItem.view { label = Native.span [] [ Kit.text "Photos" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "photo_library" ] []) ] ]) ] ]), M3e.DrawerContainer.child (M3e.AppBar.view [] [ M3e.AppBar.leading (M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [], ariaLabel = "Back" } [] []), M3e.AppBar.title (Native.span [] [ Kit.text "Title" ]) ]) ]) ]
+```
+
 @docs view, color, contrast, density, scheme, strongFocus
 @docs variant, motion, onChange, child, children
 -}

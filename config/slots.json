@@ -80,28 +80,35 @@
     "slots": {
       "leading": {
         "kinds": [
-          "iconButton"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "title": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "subtitle": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "iconButton"
+          "any"
+        ],
+        "multi": true,
+        "required": false
+      },
+      "default": {
+        "kinds": [
+          "any"
         ],
         "multi": true,
         "required": false
@@ -112,7 +119,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": true
@@ -123,14 +130,14 @@
     "slots": {
       "default": {
         "kinds": [
-          "option"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "label": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -141,9 +148,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "option",
-          "optgroup",
-          "divider"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -157,9 +162,7 @@
       },
       "loading": {
         "kinds": [
-          "circularProgressIndicator",
-          "loadingIndicator",
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -279,7 +282,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -308,7 +311,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -375,35 +378,35 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "selected": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "selected-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -414,14 +417,14 @@
     "slots": {
       "default": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": true
       },
       "selected": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -447,7 +450,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": true
@@ -458,14 +461,14 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": true
       },
       "subhead": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -483,7 +486,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": true
@@ -738,7 +741,7 @@
       },
       "header": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -752,7 +755,7 @@
       },
       "close-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -788,7 +791,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "expansionPanel"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -824,21 +827,21 @@
       },
       "actions": {
         "kinds": [
-          "button"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "header": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "toggle-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -878,22 +881,21 @@
     "slots": {
       "default": {
         "kinds": [
-          "text",
-          "menuTrigger"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -903,7 +905,9 @@
   "FabMenu": {
     "slots": {
       "default": {
-        "kinds": [],
+        "kinds": [
+          "any"
+        ],
         "multi": true,
         "required": false
       }
@@ -924,37 +928,35 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "icon",
-          "avatar"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "icon",
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -965,11 +967,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "listItem",
-          "listAction",
-          "expandableListItem",
-          "listOption",
-          "divider"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1021,37 +1019,35 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "icon",
-          "avatar"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "icon",
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1062,36 +1058,35 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "icon",
-          "avatar"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "toggle-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1109,9 +1104,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "listAction",
-          "expandableListItem",
-          "divider"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1122,37 +1115,35 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "icon",
-          "avatar"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "icon",
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1163,8 +1154,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "listOption",
-          "divider"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1186,11 +1176,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "menuItem",
-          "menuItemCheckbox",
-          "menuItemRadio",
-          "menuItemGroup",
-          "divider"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1201,21 +1187,21 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1226,9 +1212,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "menuItem",
-          "menuItemCheckbox",
-          "menuItemRadio"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1239,21 +1223,21 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1275,21 +1259,21 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "selected-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1300,43 +1284,42 @@
     "slots": {
       "default": {
         "kinds": [
-          "navMenuItem"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "label": {
         "kinds": [
-          "text",
-          "link"
+          "any"
         ],
         "multi": false,
         "required": true
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "badge": {
         "kinds": [
-          "badge"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "selected-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "toggle-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1347,9 +1330,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "navMenuItem",
-          "navMenuItemGroup",
-          "divider"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1379,9 +1360,7 @@
     "slots": {
       "default": {
         "kinds": [
-          "navItem",
-          "iconButton",
-          "fab"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1627,21 +1606,21 @@
     "slots": {
       "default": {
         "kinds": [
-          "slide"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "next-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "prev-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1684,17 +1663,24 @@
     "slots": {
       "leading-button": {
         "kinds": [
-          "button"
+          "any"
         ],
         "multi": false,
         "required": true
       },
       "trailing-button": {
         "kinds": [
-          "iconButton"
+          "any"
         ],
         "multi": false,
         "required": true
+      },
+      "default": {
+        "kinds": [
+          "any"
+        ],
+        "multi": true,
+        "required": false
       }
     }
   },
@@ -1713,21 +1699,35 @@
         ],
         "multi": false,
         "required": false
+      },
+      "default": {
+        "kinds": [
+          "any"
+        ],
+        "multi": true,
+        "required": false
       }
     }
   },
   "Stepper": {
     "slots": {
+      "default": {
+        "kinds": [
+          "any"
+        ],
+        "multi": true,
+        "required": false
+      },
       "step": {
         "kinds": [
-          "step"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "panel": {
         "kinds": [
-          "stepPanel"
+          "any"
         ],
         "multi": true,
         "required": false
@@ -1756,49 +1756,49 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": true
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "done-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "edit-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "error-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "hint": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "error": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1831,14 +1831,14 @@
     "slots": {
       "default": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1860,28 +1860,28 @@
     "slots": {
       "default": {
         "kinds": [
-          "tab"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "panel": {
         "kinds": [
-          "tabPanel"
+          "any"
         ],
         "multi": true,
         "required": false
       },
       "next-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "prev-icon": {
         "kinds": [
-          "icon"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -1921,14 +1921,14 @@
       },
       "overline": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
       },
       "title": {
         "kinds": [
-          "text"
+          "any"
         ],
         "multi": false,
         "required": false
@@ -2023,6 +2023,28 @@
     "group": {
       "linear": "m3e-linear-progress-indicator",
       "circular": "m3e-circular-progress-indicator"
+    }
+  },
+  "Datepicker": {
+    "slots": {
+      "default": {
+        "kinds": [
+          "any"
+        ],
+        "multi": true,
+        "required": false
+      }
+    }
+  },
+  "DialogTrigger": {
+    "slots": {
+      "default": {
+        "kinds": [
+          "any"
+        ],
+        "multi": true,
+        "required": false
+      }
     }
   }
 }

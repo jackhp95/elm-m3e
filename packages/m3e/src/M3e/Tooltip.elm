@@ -22,6 +22,13 @@ Adds additional context to a button or other UI element.
     ]
 ```
 
+<!-- elm-cem:example title="Rich tooltip with subhead and actions" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "info" ] []), M3e.Button.child (Kit.text "Details") ]
+    , M3e.RichTooltip.view { content = Kit.text "Now you can adjust uploaded image quality and upgrade your available storage space." } [ M3e.RichTooltip.for "infoBtn", M3e.RichTooltip.position M3e.Value.belowAfter, M3e.RichTooltip.showDelay 100 ] [ M3e.RichTooltip.subhead (Native.span [] [ Kit.text "New settings available" ]), M3e.RichTooltip.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.RichTooltipAction.view { content = Kit.text "Learn more" } [] []) ] ]) ]
+    ]
+```
+
 <!-- elm-cem:example title="Tooltip with touch gestures disabled" -->
 ```elm
 [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []) ]
@@ -44,7 +51,7 @@ import M3e.Value
 
 {-| Build the `<m3e-tooltip>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported

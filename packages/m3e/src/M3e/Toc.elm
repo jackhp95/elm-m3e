@@ -10,6 +10,17 @@ A table of contents that provides in-page scroll navigation.
 - `overline`: Renders the overline of the table of contents.
 - `title`: Renders the title of the table of contents.
 
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Table of contents with overline slot" -->
+```elm
+M3e.Toc.view [ M3e.Toc.for "post-content", M3e.Toc.maxDepth 3 ] [ M3e.Toc.overline (Native.span [] [ Kit.text "Contents" ]) ]
+```
+
 @docs view, for, maxDepth, child, overline, title
 @docs children
 -}
@@ -67,7 +78,7 @@ child el =
 
 {-| Place content in the `overline` slot. -}
 overline :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
 overline el =
     M3e.Content.slot "overline" el
@@ -75,7 +86,7 @@ overline el =
 
 {-| Place content in the `title` slot. -}
 title :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
 title el =
     M3e.Content.slot "title" el

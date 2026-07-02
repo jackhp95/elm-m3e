@@ -32,7 +32,7 @@ import M3e.Value
 
 {-| Build the `<m3e-rich-tooltip>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
@@ -131,7 +131,7 @@ onToggle =
 
 {-| Place content in the `subhead` slot. -}
 subhead :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | subhead : M3e.Value.Supported } msg
 subhead el =
     M3e.Content.slot "subhead" el

@@ -37,9 +37,9 @@ facts =
     , { component = "stepperPrevious", module_ = "M3e.StepperPrevious", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "step", module_ = "M3e.Step", enums = [], requiredSlots = [ "default" ], multiSlots = [] }
     , { component = "stepPanel", module_ = "M3e.StepPanel", enums = [], requiredSlots = [], multiSlots = [] }
-    , { component = "stepper", module_ = "M3e.Stepper", enums = [ ( "headerPosition", [ "above", "below" ] ), ( "labelPosition", [ "below", "end" ] ), ( "orientation", [ "auto", "horizontal", "vertical" ] ) ], requiredSlots = [], multiSlots = [ "step", "panel" ] }
-    , { component = "splitPane", module_ = "M3e.SplitPane", enums = [ ( "orientation", [ "auto", "horizontal", "vertical" ] ) ], requiredSlots = [], multiSlots = [] }
-    , { component = "splitButton", module_ = "M3e.SplitButton", enums = [ ( "variant", [ "elevated", "filled", "outlined", "tonal" ] ), ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ) ], requiredSlots = [ "leading-button", "trailing-button" ], multiSlots = [] }
+    , { component = "stepper", module_ = "M3e.Stepper", enums = [ ( "headerPosition", [ "above", "below" ] ), ( "labelPosition", [ "below", "end" ] ), ( "orientation", [ "auto", "horizontal", "vertical" ] ) ], requiredSlots = [], multiSlots = [ "default", "step", "panel" ] }
+    , { component = "splitPane", module_ = "M3e.SplitPane", enums = [ ( "orientation", [ "auto", "horizontal", "vertical" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
+    , { component = "splitButton", module_ = "M3e.SplitButton", enums = [ ( "variant", [ "elevated", "filled", "outlined", "tonal" ] ), ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ) ], requiredSlots = [ "leading-button", "trailing-button" ], multiSlots = [ "default" ] }
     , { component = "snackbar", module_ = "M3e.Snackbar", enums = [], requiredSlots = [ "default" ], multiSlots = [] }
     , { component = "slider", module_ = "M3e.Slider", enums = [ ( "size", [ "extraLarge", "extraSmall", "large", "medium", "small" ] ) ], requiredSlots = [ "default" ], multiSlots = [ "default" ] }
     , { component = "sliderThumb", module_ = "M3e.SliderThumb", enums = [], requiredSlots = [], multiSlots = [] }
@@ -89,11 +89,11 @@ facts =
     , { component = "drawerToggle", module_ = "M3e.DrawerToggle", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "drawerContainer", module_ = "M3e.DrawerContainer", enums = [ ( "endMode", [ "auto", "over", "push", "side" ] ), ( "startMode", [ "auto", "over", "push", "side" ] ) ], requiredSlots = [], multiSlots = [] }
     , { component = "divider", module_ = "M3e.Divider", enums = [], requiredSlots = [], multiSlots = [] }
-    , { component = "dialogTrigger", module_ = "M3e.DialogTrigger", enums = [], requiredSlots = [], multiSlots = [] }
+    , { component = "dialogTrigger", module_ = "M3e.DialogTrigger", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "dialog", module_ = "M3e.Dialog", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "dialogAction", module_ = "M3e.DialogAction", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "datepickerToggle", module_ = "M3e.DatepickerToggle", enums = [], requiredSlots = [], multiSlots = [] }
-    , { component = "datepicker", module_ = "M3e.Datepicker", enums = [ ( "variant", [ "auto", "docked", "modal" ] ), ( "startView", [ "month", "multiYear", "year" ] ) ], requiredSlots = [], multiSlots = [] }
+    , { component = "datepicker", module_ = "M3e.Datepicker", enums = [ ( "variant", [ "auto", "docked", "modal" ] ), ( "startView", [ "month", "multiYear", "year" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "contentPane", module_ = "M3e.ContentPane", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "suggestionChip", module_ = "M3e.SuggestionChip", enums = [ ( "type", [ "button", "reset", "submit" ] ), ( "variant", [ "elevated", "outlined" ] ) ], requiredSlots = [ "default" ], multiSlots = [] }
     , { component = "inputChipSet", module_ = "M3e.InputChipSet", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
@@ -131,7 +131,7 @@ facts =
     , { component = "optgroup", module_ = "M3e.Optgroup", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "option", module_ = "M3e.Option", enums = [ ( "highlightMode", [ "contains", "endsWith", "startsWith" ] ) ], requiredSlots = [ "default" ], multiSlots = [] }
     , { component = "focusTrap", module_ = "M3e.FocusTrap", enums = [], requiredSlots = [], multiSlots = [ "default" ] }
-    , { component = "appBar", module_ = "M3e.AppBar", enums = [ ( "size", [ "large", "medium", "small" ] ) ], requiredSlots = [], multiSlots = [ "trailing" ] }
+    , { component = "appBar", module_ = "M3e.AppBar", enums = [ ( "size", [ "large", "medium", "small" ] ) ], requiredSlots = [], multiSlots = [ "trailing", "default" ] }
     , { component = "textOverflow", module_ = "M3e.TextOverflow", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "textHighlight", module_ = "M3e.TextHighlight", enums = [ ( "mode", [ "contains", "endsWith", "startsWith" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }
     , { component = "stateLayer", module_ = "M3e.StateLayer", enums = [], requiredSlots = [], multiSlots = [] }

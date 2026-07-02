@@ -9,6 +9,26 @@ A menu, opened from a floating action button (FAB), used to display multiple rel
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.
 
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Primary FAB revealing a secondary action menu" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large ] ([ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []) ] ++ M3e.Button.children [ M3e.FabMenuTrigger.view [ M3e.FabMenuTrigger.for "compose-menu" ] [], Kit.text "Compose" ])
+    , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.secondary ] (M3e.FabMenu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "mail" ] []), M3e.MenuItem.child (Kit.text "New email") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "event" ] []), M3e.MenuItem.child (Kit.text "New event") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "group" ] []), M3e.MenuItem.child (Kit.text "New group") ] ])
+    ]
+```
+
+<!-- elm-cem:example title="Tertiary FAB menu with link and disabled items" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), M3e.Button.child (M3e.FabMenuTrigger.view [ M3e.FabMenuTrigger.for "share-menu" ] []) ]
+    , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.tertiary ] (M3e.FabMenu.children [ M3e.MenuItem.view [ M3e.MenuItem.href "https://example.com/link", M3e.MenuItem.target "_blank" ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.MenuItem.child (Kit.text "Copy link") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.MenuItem.child (Kit.text "Export PDF") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "print" ] []), M3e.MenuItem.child (Kit.text "Print") ] ])
+    ]
+```
+
 @docs view, variant, onBeforetoggle, onToggle, child, children
 -}
 
@@ -69,7 +89,7 @@ onToggle =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element {} msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -77,7 +97,7 @@ child el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element {} msg)
+    List (M3e.Element.Element any msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

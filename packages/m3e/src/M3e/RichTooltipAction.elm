@@ -17,7 +17,7 @@ import M3e.Value
 
 {-| Build the `<m3e-rich-tooltip-action>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)

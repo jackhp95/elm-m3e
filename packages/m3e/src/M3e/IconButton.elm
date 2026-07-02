@@ -58,9 +58,7 @@ import M3e.Value
 
 {-| Build the `<m3e-icon-button>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
-    , ariaLabel : String
-    }
+    { content : M3e.Element.Element any msg, ariaLabel : String }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , download : M3e.Value.Supported
@@ -259,7 +257,7 @@ onClick =
 
 {-| Place content in the `selected` slot. -}
 selectedSlot :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
 selectedSlot el =
     M3e.Content.slot "selected" el

@@ -113,9 +113,7 @@ onInput =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element { listOption : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
+    M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -123,9 +121,7 @@ child el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element { listOption : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg)
+    List (M3e.Element.Element any msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

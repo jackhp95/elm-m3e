@@ -14,6 +14,11 @@ Shows indeterminate progress for a short wait time.
 Native.section [] [ Native.header [] [ Native.node Html.h2 [] [ Kit.text "Your dashboard" ] ], Native.div [] [ M3e.LoadingIndicator.view [] [], Native.p [] [ Kit.text "Loading your latest activity..." ] ] ]
 ```
 
+<!-- elm-cem:example title="Contained loading indicator inside a refresh button" -->
+```elm
+Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []), M3e.Button.child (Kit.text "Refreshing") ] ]
+```
+
 @docs view, variant
 -}
 
