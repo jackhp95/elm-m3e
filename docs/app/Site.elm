@@ -8,7 +8,12 @@ import SiteConfig exposing (SiteConfig)
 
 config : SiteConfig
 config =
-    { canonicalUrl = "https://elm-pages.com"
+    { -- The site's own canonical origin (feeds canonical <link> tags + sitemap).
+      -- Was the elm-pages template placeholder ("https://elm-pages.com"), which
+      -- emitted canonical URLs pointing at a different site. Set to the Netlify
+      -- default derived from the repo slug; update to the real deployed origin
+      -- if a custom domain is configured.
+      canonicalUrl = "https://elm-m3e.netlify.app"
     , head = head
     }
 
