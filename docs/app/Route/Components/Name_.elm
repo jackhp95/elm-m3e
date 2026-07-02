@@ -52,11 +52,18 @@ type alias Component =
     { name : String, slug : String, overview : String, members : List Member }
 
 
-{-| A verified Usage example: its live-preview HTML and the derived Elm code.
-`section` groups examples under a sub-heading ("" = ungrouped).
+{-| A verified Usage example: its live-preview HTML and the derived Elm in each
+API layer (top/middle/bottom). `section` groups examples under a sub-heading
+("" = ungrouped).
 -}
 type alias UsageExample =
-    { title : String, section : String, html : String, top : String }
+    { title : String
+    , section : String
+    , html : String
+    , top : String
+    , mid : String
+    , bottom : String
+    }
 
 
 type alias Data =
@@ -87,11 +94,13 @@ componentDecoder =
 
 usageExampleDecoder : Decode.Decoder UsageExample
 usageExampleDecoder =
-    Decode.map4 UsageExample
+    Decode.map6 UsageExample
         (Decode.field "title" Decode.string)
         (Decode.oneOf [ Decode.field "section" Decode.string, Decode.succeed "" ])
         (Decode.field "html" Decode.string)
         (Decode.field "top" Decode.string)
+        (Decode.field "mid" Decode.string)
+        (Decode.field "bottom" Decode.string)
 
 
 allComponents : BackendTask FatalError (List Component)
@@ -210,9 +219,9 @@ sectionBlock layer ( section, examples ) =
     heading ++ List.concatMap (exampleBlock layer) examples
 
 
-{-| A live preview paired with its code in the selected API layer. Today the
-converter emits the M3e (top) Elm and the raw HTML; the toggle switches between
-them (Cem/Html layers join once emitted).
+{-| A live preview paired with its code in the selected API layer: strict top
+(`M3e.*`), loose middle (`M3e.Cem.*`), bottom (`M3e.Cem.Html.*`), or raw HTML.
+Every example carries all four, so the toggle is never partial.
 -}
 exampleBlock : Shared.ApiLayer -> UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
 exampleBlock layer ex =
@@ -220,11 +229,17 @@ exampleBlock layer ex =
         code : Element { s | html : Supported, heading : Supported, card : Supported } msg
         code =
             case layer of
+                Shared.LayerTop ->
+                    Doc.code_ Doc.Elm ex.top
+
+                Shared.LayerMiddle ->
+                    Doc.code_ Doc.Elm ex.mid
+
+                Shared.LayerBottom ->
+                    Doc.code_ Doc.Elm ex.bottom
+
                 Shared.LayerRaw ->
                     Doc.code_ Doc.NoLang ex.html
-
-                Shared.LayerM3e ->
-                    Doc.code_ Doc.Elm ex.top
     in
     [ EscapeHatch.fromHtml (p [ Attr.class "text-body-md text-on-surface-variant" ] [ text ex.title ])
     , Doc.showcase (Doc.rawPreview ex.html)

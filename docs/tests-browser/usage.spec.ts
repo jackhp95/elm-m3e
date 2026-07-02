@@ -39,19 +39,32 @@ test("/components/button shows a live Usage section with code", async ({
   expect(errors, `console errors:\n${errors.join("\n")}`).toEqual([]);
 });
 
-test("the API-layer toggle switches Usage code between M3e Elm and raw HTML", async ({
+test("the API-layer toggle switches Usage code across all four layers", async ({
   page,
 }) => {
   await page.goto("/components/button");
   await page.waitForLoadState("networkidle");
 
-  // Default layer = M3e: Elm code visible, raw tag not shown as code.
+  // Default layer = Top: strict M3e.* Elm.
   await expect(page.getByText("M3e.Button.view").first()).toBeVisible();
 
-  // Open the theme settings popover and pick the HTML layer.
   await page.locator('[aria-label="Theme settings"]').click();
-  await page.getByText("HTML", { exact: true }).click();
 
-  // Now the code block shows the raw <m3e-button ...> HTML instead.
+  // Middle -> M3e.Cem.Button.button
+  await page.getByText("Middle", { exact: true }).click();
+  await expect(page.getByText("M3e.Cem.Button.button").first()).toBeVisible();
+
+  // Bottom -> M3e.Cem.Html.Button.button
+  await page.getByText("Bottom", { exact: true }).click();
+  await expect(
+    page.getByText("M3e.Cem.Html.Button.button").first(),
+  ).toBeVisible();
+
+  // HTML -> raw <m3e-button ...> markup
+  await page.getByText("HTML", { exact: true }).click();
   await expect(page.getByText("<m3e-button").first()).toBeVisible();
+
+  // Back to Top.
+  await page.getByText("Top", { exact: true }).click();
+  await expect(page.getByText("M3e.Button.view").first()).toBeVisible();
 });

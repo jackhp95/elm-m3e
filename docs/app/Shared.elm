@@ -81,13 +81,15 @@ type Contrast
     | High
 
 
-{-| Which API layer the per-component Usage code blocks are shown in. Today only
-the M3e (top) Elm and the raw HTML are emitted, so the toggle offers those two;
-the middle (`M3e.Cem`) and bottom (`M3e.Cem.Html`) layers are added once the
-converter emits them (no fake/empty options — the toggle only offers what ships).
+{-| Which API layer the per-component Usage code blocks are shown in: the strict
+top (`M3e.*`), the loose middle (`M3e.Cem.*`), the bottom (`M3e.Cem.Html.*`), or
+the raw `<m3e-*>` HTML. Every shipped example carries all four (they are verified
+supersets of each other), so the toggle is never partial.
 -}
 type ApiLayer
-    = LayerM3e
+    = LayerTop
+    | LayerMiddle
+    | LayerBottom
     | LayerRaw
 
 
@@ -169,7 +171,7 @@ init flags _ =
       , density = 0
       , dir = Ltr
       , settingsOpen = False
-      , apiLayer = LayerM3e
+      , apiLayer = LayerTop
       }
     , Effect.none
     )
@@ -545,13 +547,15 @@ schemeSegmented model =
         ]
 
 
-{-| Selects which API layer the per-component Usage code blocks display. Two
-options today (M3e Elm / raw HTML); Cem + Html layers join once emitted.
+{-| Selects which API layer the per-component Usage code blocks display:
+Top (`M3e.*`) / Middle (`M3e.Cem.*`) / Bottom (`M3e.Cem.Html.*`) / raw HTML.
 -}
 apiLayerSegmented : Model -> Html Msg
 apiLayerSegmented model =
     segmented
-        [ ( "M3e", model.apiLayer == LayerM3e, SetApiLayer LayerM3e )
+        [ ( "Top", model.apiLayer == LayerTop, SetApiLayer LayerTop )
+        , ( "Middle", model.apiLayer == LayerMiddle, SetApiLayer LayerMiddle )
+        , ( "Bottom", model.apiLayer == LayerBottom, SetApiLayer LayerBottom )
         , ( "HTML", model.apiLayer == LayerRaw, SetApiLayer LayerRaw )
         ]
 

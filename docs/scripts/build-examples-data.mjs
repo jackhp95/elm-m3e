@@ -63,6 +63,8 @@ function main() {
         ...(ex.section ? { section: ex.section } : {}),
         html: ex.html,
         top: ex.top,
+        mid: ex.mid,
+        bottom: ex.bottom,
       })),
     };
   }
