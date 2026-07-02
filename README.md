@@ -64,9 +64,10 @@ styled with Tailwind v4 + the
 
 ```bash
 cd docs
-npm install
-npm run build      # -> docs/dist  (also rebuilds public/style.css + public/m3e.js)
-npm start          # local dev server
+pnpm install
+pnpm run build     # -> docs/dist  (CSS is Vite/Tailwind-bundled & content-hashed;
+                   #                custom elements are bundled from index.ts)
+pnpm start         # local dev server
 ```
 
 Deploy (Netlify): **Base directory** = `docs`; build/publish come from
