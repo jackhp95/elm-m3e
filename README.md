@@ -3,9 +3,18 @@
 A **Make-Impossible-States-Impossible** Elm surface over matraic's
 [`@m3e/web`](https://github.com/matraic/m3e) Material 3 Expressive web components.
 The invariant is the **Material 3 spec + accessibility**, not the DOM: slots are
-typed to the kinds M3 allows, accessible names are required by construction, and the
-whole library is **generated** — you learn two or three components and you know them
-all, because they came from the same machine.
+typed to the kinds M3 allows, accessible-name attributes (`M3e.Aria.label`,
+`labelledby`, `describedby`) are first-class, and the whole library is
+**generated** — you learn two or three components and you know them all, because
+they came from the same machine.
+
+> **Accessible names — enforcement status.** The type system guarantees valid
+> *slotting*, but it does **not** yet force an accessible name onto components
+> that need one; the Aria attributes are optional. A codegen-aware advisory
+> elm-review rule (`RequireAriaLabel`, driven by per-component facts of which
+> components require a name) is **planned, not yet implemented**. Until it lands,
+> treat accessible names as an author responsibility, not a compile- or
+> lint-time guarantee.
 
 > **Status: prerelease, not yet published.** Breaking changes are embraced; the
 > priority is correctness and uniformity over back-compat.
