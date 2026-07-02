@@ -1,13 +1,13 @@
 [build]
   functions = "functions/"
   publish = "dist/"
-  command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && npm install && npm run build"
+  command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && corepack enable && pnpm install --frozen-lockfile && pnpm run build"
 
 [build.environment]
   NODE_VERSION = "22"
 
 [dev]
-  command = "npm start"
+  command = "pnpm start"
   targetPort = 1234
   autoLaunch = true
   framework = "#custom"
