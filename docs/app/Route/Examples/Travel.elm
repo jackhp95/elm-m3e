@@ -1,45 +1,81 @@
-module Route.Examples.Travel exposing (ActionData, Data, Model, Msg, route)
+module Route.Examples.Travel exposing (ActionData, Category, Data, Dest, Model, Msg, route)
 
-{-| **Crane** study — an expressive Material 3 travel browser, re-authored on the new
-Vocab API (opus, Settings-style; the 9B/14B ornith couldn't converge on the original
-937-line version). Real components in the reference's content-pane + card pattern: a
-"find a trip" `Card` with a `SegmentedButton` trip-type toggle and a search `Button`; a
-`SegmentedButton` category switch (Fly / Sleep / Eat) driving a grid of destination
-`Card`s. Local state drives the toggles; custom layout is only a Tailwind grid.
+{-| **Travel** — a trip-planning browser in the spirit of Google Trips / Airbnb /
+Material Crane. A self-contained, full-viewport app screen with its own nav chrome:
+
+  - Adaptive navigation: an `M3e.NavRail` on desktop (`hidden md:flex`) and an
+    `M3e.NavBar` bottom bar on mobile (`md:hidden`), plus a top `M3e.AppBar`.
+  - A search HERO built from `M3e.SearchBar`, sitting in a `Surface` panel.
+  - Category `M3e.Tabs` (Flights / Stays / Experiences) driving the content.
+  - Horizontally-scrolling destination RAILS (`flex gap-4 overflow-x-auto`) of
+    `M3e.Card` items with shape-clipped media, a name, an `M3e.AssistChip` rating,
+    and a price.
+
+Local state drives the active nav destination and the active category tab. All
+color / typography / shape come from the kit (`Kit`, `Surface`, `Shape`); Tailwind
+is used only for layout (flex / grid / gap / padding / responsive visibility).
+
 -}
 
 import BackendTask
 import Effect exposing (Effect)
 import Head
-import Html.Attributes as Attr
+import Html
 import Kit
-import M3e.Button as Button
-import M3e.ButtonSegment as ButtonSegment
+import Kit.Shape as Shape
+import Kit.Surface as Surface exposing (Surface)
+import Layout
+import M3e.Action as Action
+import M3e.AppBar as AppBar
+import M3e.AssistChip as AssistChip
 import M3e.Card as Card
-import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
-import M3e.Heading as Heading
 import M3e.Icon as Icon
-import M3e.SegmentedButton as SegmentedButton
+import M3e.NavBar as NavBar
+import M3e.NavItem as NavItem
+import M3e.NavRail as NavRail
+import M3e.SearchBar as SearchBar
+import M3e.Tab as Tab
+import M3e.Tabs as Tabs
 import M3e.Value as Value exposing (Supported)
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+
+-- MODEL
+
+
 type alias Model =
-    { category : String
-    , tripType : String
+    { destination : Dest
+    , category : Category
     }
 
 
+{-| Top-level app destinations, mirrored across the rail and the bottom bar.
+-}
+type Dest
+    = Explore
+    | Trips
+    | Saved
+    | Profile
+
+
+{-| The category tab that selects which sort of trip we are browsing.
+-}
+type Category
+    = Flights
+    | Stays
+    | Experiences
+
+
 type Msg
-    = SetCategory String
-    | SetTripType String
+    = SetDest Dest
+    | SetCategory Category
 
 
 type alias RouteParams =
@@ -67,17 +103,17 @@ route =
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init _ _ =
-    ( { category = "fly", tripType = "round" }, Effect.none )
+    ( { destination = Explore, category = Stays }, Effect.none )
 
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ msg model =
     case msg of
+        SetDest d ->
+            ( { model | destination = d }, Effect.none )
+
         SetCategory c ->
             ( { model | category = c }, Effect.none )
-
-        SetTripType t ->
-            ( { model | tripType = t }, Effect.none )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
@@ -90,105 +126,270 @@ head _ =
     []
 
 
-{-| (place, blurb) per category.
+
+-- DATA
+
+
+{-| A destination card: (name, region, gradient tint, rating, price).
+The tint is a `Surface` role so the placeholder media reads as color without
+touching Tailwind for background.
 -}
-destinations : String -> List ( String, String )
-destinations category =
+type alias Place =
+    { name : String
+    , region : String
+    , tint : Surface
+    , rating : String
+    , price : String
+    }
+
+
+{-| Popular destinations vary by the active category, so the rails feel alive
+when the tabs change.
+-}
+popular : Category -> List Place
+popular category =
     case category of
-        "sleep" ->
-            [ ( "Kyoto", "Ryokan stays beneath the temples" )
-            , ( "Reykjavík", "Glass cabins under the aurora" )
-            , ( "Santorini", "Cliffside caldera suites" )
+        Flights ->
+            [ Place "Tokyo" "Japan" Surface.primaryContainer "4.9" "$780"
+            , Place "Reykjavík" "Iceland" Surface.secondaryContainer "4.8" "$610"
+            , Place "Cape Town" "South Africa" Surface.tertiaryContainer "4.7" "$920"
+            , Place "Lima" "Peru" Surface.primaryContainer "4.6" "$540"
             ]
 
-        "eat" ->
-            [ ( "Oaxaca", "Mole, mezcal, and market stalls" )
-            , ( "Bologna", "The pasta capital of Emilia" )
-            , ( "Osaka", "Street food along Dōtonbori" )
+        Stays ->
+            [ Place "Kyoto" "Japan" Surface.secondaryContainer "4.9" "$240/nt"
+            , Place "Santorini" "Greece" Surface.tertiaryContainer "4.8" "$310/nt"
+            , Place "Marrakesh" "Morocco" Surface.primaryContainer "4.7" "$180/nt"
+            , Place "Queenstown" "New Zealand" Surface.secondaryContainer "4.8" "$220/nt"
             ]
 
-        _ ->
-            [ ( "Lisbon", "Tram rides and pastéis de nata" )
-            , ( "Marrakesh", "Souks, riads, and desert light" )
-            , ( "Queenstown", "Alpine lakes and adventure" )
+        Experiences ->
+            [ Place "Aurora Hunt" "Tromsø" Surface.tertiaryContainer "4.9" "$95"
+            , Place "Souk Food Tour" "Fez" Surface.primaryContainer "4.8" "$45"
+            , Place "Caldera Sail" "Oia" Surface.secondaryContainer "4.7" "$120"
+            , Place "Temple at Dawn" "Bagan" Surface.tertiaryContainer "4.9" "$60"
             ]
+
+
+{-| A second, static "Nearby getaways" rail for variety.
+-}
+nearby : List Place
+nearby =
+    [ Place "Lisbon" "Portugal" Surface.secondaryContainer "4.7" "$150/nt"
+    , Place "Oaxaca" "Mexico" Surface.primaryContainer "4.8" "$130/nt"
+    , Place "Bologna" "Italy" Surface.tertiaryContainer "4.6" "$170/nt"
+    , Place "Porto" "Portugal" Surface.secondaryContainer "4.7" "$140/nt"
+    ]
+
+
+categories : List ( Category, String )
+categories =
+    [ ( Flights, "Flights" )
+    , ( Stays, "Stays" )
+    , ( Experiences, "Experiences" )
+    ]
+
+
+destinations : List ( Dest, String, String )
+destinations =
+    [ ( Explore, "explore", "Explore" )
+    , ( Trips, "luggage", "Trips" )
+    , ( Saved, "favorite", "Saved" )
+    , ( Profile, "person", "Profile" )
+    ]
+
+
+
+-- VIEW
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
-    { title = "Crane · elm-m3e"
+    { title = "Travel · elm-m3e"
     , body =
-        [ Element.toNode
-            (pane
-                [ Heading.view { content = Kit.text "Crane" }
-                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
-                    []
-                , card "Find a trip"
-                    (Native.div [ Seam.asAttribute (Attr.class "flex flex-col gap-4") ]
-                        [ segmented
-                            [ ( "round", "Round trip" ), ( "oneway", "One way" ) ]
-                            model.tripType
-                            SetTripType
-                        , Button.view
-                            [ Button.variant Value.filled ]
-                            [ Button.child (Kit.text "Search flights") ]
-                        ]
-                    )
-                , segmented
-                    [ ( "fly", "Fly" ), ( "sleep", "Sleep" ), ( "eat", "Eat" ) ]
-                    model.category
-                    SetCategory
-                , Native.div
-                    [ Seam.asAttribute (Attr.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3") ]
-                    (List.map destinationCard (destinations model.category))
-                ]
-            )
-        ]
+        [ Element.toNode (shell model) ]
     }
 
 
-pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
-pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
-
-
-{-| A titled outlined card wrapping arbitrary content.
+{-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
+that only appears on small screens.
 -}
-card : String -> Element { s | html : Supported } msg -> Element { r | card : Supported } msg
-card title content =
-    Card.view [ Card.variant Value.outlined ]
-        [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
-        , Card.content content
+shell : Model -> Element { s | html : Supported } (PagesMsg Msg)
+shell model =
+    Layout.div "flex h-screen w-full flex-col"
+        [ appBar
+        , Layout.div "flex min-h-0 flex-1"
+            [ navRail model.destination
+            , Layout.section "min-w-0 flex-1 overflow-y-auto"
+                [ content model ]
+            ]
+        , navBar model.destination
         ]
 
 
-{-| A destination card: a place heading + a one-line blurb.
--}
-destinationCard : ( String, String ) -> Element { s | card : Supported } msg
-destinationCard ( place, blurb ) =
-    Card.view [ Card.variant Value.elevated ]
-        [ Card.header
-            (Native.div [ Seam.asAttribute (Attr.class "flex items-center gap-2") ]
-                [ Icon.view [ Icon.name "place" ] [], Kit.text place ]
-            )
-        , Card.content (Kit.text blurb)
+appBar : Element { s | html : Supported } (PagesMsg Msg)
+appBar =
+    AppBar.view []
+        [ AppBar.leadingIcon (Icon.view [ Icon.name "public" ] [])
+        , AppBar.title (Kit.text "Wander")
+        , AppBar.trailingIcon (Icon.view [ Icon.name "notifications" ] [])
         ]
 
 
-{-| A segmented control bound to a String choice.
+
+-- NAVIGATION
+
+
+{-| The desktop navigation rail, hidden below the `md` breakpoint.
 -}
-segmented : List ( String, String ) -> String -> (String -> Msg) -> Element { s | segmentedButton : Supported } (PagesMsg Msg)
-segmented options current set =
-    SegmentedButton.view []
-        (List.map
-            (\( v, l ) ->
-                SegmentedButton.child
-                    (ButtonSegment.view
-                        [ ButtonSegment.checked (v == current)
-                        , ButtonSegment.onClick (PagesMsg.fromMsg (set v))
+navRail : Dest -> Element { s | html : Supported } (PagesMsg Msg)
+navRail current =
+    Layout.div "hidden md:flex"
+        [ NavRail.view []
+            (NavRail.children (List.map (railItem current) destinations))
+        ]
+
+
+railItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : Supported } (PagesMsg Msg)
+railItem current ( dest, iconName, label ) =
+    NavItem.view
+        [ NavItem.selected (dest == current)
+        , NavItem.onClick (PagesMsg.fromMsg (SetDest dest))
+        ]
+        [ NavItem.icon (Icon.view [ Icon.name iconName ] [])
+        , NavItem.child (Kit.text label)
+        ]
+
+
+{-| The mobile bottom navigation bar, hidden at and above the `md` breakpoint.
+-}
+navBar : Dest -> Element { s | html : Supported } (PagesMsg Msg)
+navBar current =
+    Layout.div "md:hidden"
+        [ NavBar.view []
+            (NavBar.children (List.map (barItem current) destinations))
+        ]
+
+
+barItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : Supported } (PagesMsg Msg)
+barItem current ( dest, iconName, label ) =
+    NavItem.view
+        [ NavItem.selected (dest == current)
+        , NavItem.onClick (PagesMsg.fromMsg (SetDest dest))
+        ]
+        [ NavItem.icon (Icon.view [ Icon.name iconName ] [])
+        , NavItem.child (Kit.text label)
+        ]
+
+
+
+-- CONTENT
+
+
+content : Model -> Element { s | html : Supported } (PagesMsg Msg)
+content model =
+    Layout.div "flex flex-col gap-8 p-4 md:p-8"
+        [ hero
+        , categoryTabs model.category
+        , rail "Popular destinations" (popular model.category)
+        , rail "Nearby getaways" nearby
+        ]
+
+
+{-| A search hero: a headline over a `SearchBar`, wrapped in a tinted, extra-large
+`Surface` panel.
+-}
+hero : Element { s | html : Supported } (PagesMsg Msg)
+hero =
+    Surface.view Surface.surfaceContainer
+        [ Shape.corner Shape.extraLarge, Layout.class "flex flex-col gap-4 p-6 md:p-8" ]
+        [ Kit.headline Value.small [] [ Kit.text "Where to next?" ]
+        , Kit.body Value.medium
+            [ Kit.onSurfaceVariant ]
+            [ Kit.text "Search destinations, dates, and guests." ]
+        , searchBar
+        ]
+
+
+searchBar : Element { s | html : Supported } (PagesMsg Msg)
+searchBar =
+    SearchBar.view
+        { input = Native.node Html.input [] [] }
+        []
+        [ SearchBar.leading (Icon.view [ Icon.name "search" ] [])
+        , SearchBar.trailing (Icon.view [ Icon.name "tune" ] [])
+        ]
+
+
+{-| Category tabs (Flights / Stays / Experiences) that reselect the rails' data.
+-}
+categoryTabs : Category -> Element { s | html : Supported } (PagesMsg Msg)
+categoryTabs current =
+    Tabs.view []
+        (Tabs.children (List.map (categoryTab current) categories))
+
+
+categoryTab : Category -> ( Category, String ) -> Element { s | tab : Supported } (PagesMsg Msg)
+categoryTab current ( category, label ) =
+    Tab.view
+        [ Tab.selected (category == current)
+        , Tab.onClick (PagesMsg.fromMsg (SetCategory category))
+        ]
+        [ Tab.child (Kit.text label) ]
+
+
+
+-- RAILS
+
+
+{-| A titled, horizontally-scrolling strip of destination cards.
+-}
+rail : String -> List Place -> Element { s | html : Supported } (PagesMsg Msg)
+rail heading places =
+    Layout.section "flex flex-col gap-4"
+        [ Kit.title Value.large [] [ Kit.text heading ]
+        , Layout.div "flex gap-4 overflow-x-auto pb-2"
+            (List.map placeCard places)
+        ]
+
+
+{-| One destination card: shape-clipped tinted media, name + region, a rating
+`AssistChip` with a star, and a price. Fixed width so cards line up in the rail.
+-}
+placeCard : Place -> Element { s | html : Supported } (PagesMsg Msg)
+placeCard place =
+    Layout.div "w-56 shrink-0"
+        [ Card.view [ Card.variant Value.elevated ]
+            [ Card.header (media place)
+            , Card.content
+                (Layout.div "flex flex-col gap-2"
+                    [ Kit.title Value.medium [] [ Kit.text place.name ]
+                    , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text place.region ]
+                    , Layout.div "flex items-center justify-between"
+                        [ ratingChip place.rating
+                        , Kit.label Value.large [ Kit.primary ] [ Kit.text place.price ]
                         ]
-                        [ ButtonSegment.child (Kit.text l) ]
-                    )
-            )
-            options
-        )
+                    ]
+                )
+            ]
+        ]
+
+
+{-| Placeholder media: a shape-clipped, tinted `Surface` block standing in for a
+destination photo.
+-}
+media : Place -> Element { s | html : Supported } msg
+media place =
+    Surface.view place.tint
+        [ Shape.corner Shape.large, Layout.class "flex h-28 w-full items-end p-3" ]
+        [ Icon.view [ Icon.name "image" ] [] ]
+
+
+ratingChip : String -> Element { s | html : Supported } (PagesMsg Msg)
+ratingChip rating =
+    AssistChip.view
+        { content = Kit.text rating
+        , action = Action.onClick (PagesMsg.fromMsg (SetDest Saved))
+        }
+        []
+        [ AssistChip.icon (Icon.view [ Icon.name "star", Icon.filled True ] []) ]
