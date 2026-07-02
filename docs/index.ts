@@ -4,6 +4,7 @@
 // side-effect imports: registering the <m3e-*> elements and pulling in the CSS.
 import "@m3e/web/all";
 import "../js/avt-snackbar.js";
+import "../js/raw-html.js";
 import "./style.css";
 
 type ElmPagesInit = {
