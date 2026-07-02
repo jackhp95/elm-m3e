@@ -50,18 +50,15 @@ view req_ attributes content_ =
                   M3e.Cem.Slider.slider (List.map M3e.Cem.Attr.forget erased) ch
              )
              (List.append
-                  []
-                  (List.append
-                       [ M3e.Cem.Attr.forget
-                           (M3e.Cem.Attr.attribute
-                              (Html.Attributes.attribute "aria-label")
-                              req_.ariaLabel
-                           )
-                       ]
-                       (List.map M3e.Cem.Attr.forget attributes)
-                  )
+                  [ M3e.Cem.Attr.forget
+                      (M3e.Cem.Attr.attribute
+                         (Html.Attributes.attribute "aria-label")
+                         req_.ariaLabel
+                      )
+                  ]
+                  (List.map M3e.Cem.Attr.forget attributes)
              )
-             (List.append [] (List.map M3e.Content.toNode content_))
+             (List.map M3e.Content.toNode content_)
         )
 
 

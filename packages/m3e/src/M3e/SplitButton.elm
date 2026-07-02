@@ -39,10 +39,7 @@ view req_ attributes content_ =
                       (List.map M3e.Cem.Attr.forget erased)
                       ch
              )
-             (List.append
-                  []
-                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-             )
+             (List.map M3e.Cem.Attr.forget attributes)
              (List.append
                   [ M3e.Element.toNode
                       (M3e.Element.withSlot "leading-button" req_.leadingButton)

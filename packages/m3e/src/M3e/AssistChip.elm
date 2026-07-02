@@ -59,7 +59,7 @@ view req_ attributes content_ =
              (List.append
                   (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
                   )
-                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
+                  (List.map M3e.Cem.Attr.forget attributes)
              )
              (List.append
                   [ M3e.Element.toNode req_.content ]

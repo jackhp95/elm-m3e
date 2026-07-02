@@ -5,6 +5,28 @@ module M3e.Badge exposing
 {-|
 A visual indicator used to label content.
 
+<!-- elm-cem:docmeta category=Communication -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Notification count badge on a button" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "notifications" ] []), M3e.Button.child (Kit.text "Alerts") ]
+    , M3e.Badge.view [ M3e.Badge.for "notifications" ] [ M3e.Badge.child (Kit.text "10") ]
+    ]
+```
+
+<!-- elm-cem:example title="Small dot badge and large count badge on icons" -->
+```elm
+[ M3e.Icon.view [ M3e.Icon.name "mail" ] []
+    , M3e.Badge.view [ M3e.Badge.for "mail-icon", M3e.Badge.size M3e.Value.small, M3e.Badge.position M3e.Value.aboveAfter ] []
+    , M3e.Icon.view [ M3e.Icon.name "shopping_cart" ] []
+    , M3e.Badge.view [ M3e.Badge.for "cart-icon", M3e.Badge.size M3e.Value.large, M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text "99+") ]
+    ]
+```
+
 @docs view, size, position, for, child, children
 -}
 

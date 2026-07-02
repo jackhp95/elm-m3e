@@ -9,6 +9,19 @@ Adds additional context to a button or other UI element.
 **Component Info:**
 - **Extends:** `TooltipElementBase` from `/src/tooltip/TooltipElementBase`
 
+<!-- elm-cem:docmeta category=Communication -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Simple tooltip on an icon button" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "refresh" ] []) ]
+    , M3e.Tooltip.view { content = Kit.text "Refresh data" } [ M3e.Tooltip.for "refreshBtn", M3e.Tooltip.position M3e.Value.above ] []
+    ]
+```
+
 @docs view, disabled, for, hideDelay, position, showDelay
 @docs touchGestures
 -}
@@ -43,10 +56,7 @@ view req_ attributes content_ =
                       (List.map M3e.Cem.Attr.forget erased)
                       ch
              )
-             (List.append
-                  []
-                  (List.append [] (List.map M3e.Cem.Attr.forget attributes))
-             )
+             (List.map M3e.Cem.Attr.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)

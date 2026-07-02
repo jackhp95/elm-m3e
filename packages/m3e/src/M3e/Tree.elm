@@ -8,6 +8,22 @@ Presents hierarchical data in a tree structure.
 **Events:**
 - `change`: Dispatched when the selected state changes.
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Documentation navigation tree" -->
+```elm
+M3e.Tree.view [] (M3e.Tree.children [ M3e.TreeItem.view { label = Kit.text "Getting Started" } [ M3e.TreeItem.open True ] ([ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "folder" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text "Overview" } [] [], M3e.TreeItem.view { label = Kit.text "Installation" } [] [] ]), M3e.TreeItem.view { label = Kit.text "Components" } [] ([ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "folder" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text "Button" } [] [], M3e.TreeItem.view { label = Kit.text "Card" } [] [] ]) ])
+```
+
+<!-- elm-cem:example title="Multi-select tree with cascading checkboxes" -->
+```elm
+M3e.Tree.view [ M3e.Tree.multi True, M3e.Tree.cascade True ] (M3e.Tree.children [ M3e.TreeItem.view { label = Kit.text "Fruits" } [ M3e.TreeItem.open True ] (M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text "Apples" } [ M3e.TreeItem.selected True ] [], M3e.TreeItem.view { label = Kit.text "Oranges" } [] [], M3e.TreeItem.view { label = Kit.text "Bananas" } [ M3e.TreeItem.disabled True ] [] ]), M3e.TreeItem.view { label = Kit.text "Vegetables" } [ M3e.TreeItem.indeterminate True ] (M3e.TreeItem.children [ M3e.TreeItem.view { label = Kit.text "Carrots" } [ M3e.TreeItem.selected True ] [], M3e.TreeItem.view { label = Kit.text "Broccoli" } [] [] ]) ])
+```
+
 @docs view, multi, cascade, onChange, child, children
 -}
 
