@@ -100,6 +100,26 @@ Ornith is released to run the batch after **3 consecutive ornith-lane files** wi
 After the gate, opus shifts from every-file to **sampling** but keeps emitting the
 same reports.
 
+## Empirical result — ornith on the studies (2026-07-01)
+
+Ran the real harness on `Studies/Crane.elm` (937 lines, 21 components) twice, opus-reviewed:
+
+1. **Run 1 crashed** — the file + exploratory tool output overflowed `num_ctx=8192` by
+   round 14 and the harness threw. **Fixed** (`num_ctx 32768` + a sliding conversation
+   window + graceful recovery + a patch-first prompt).
+2. **Run 2 ran the full 40 rounds, then reverted** — no compile. The tally: **27 explore
+   calls (search/get/list) vs 12 edits**, tool-mechanics mistakes (`patch` on an import
+   line; imports need `add_import`), and it never reached a compiling state.
+
+**Conclusion:** the 9B ornith model **cannot do the large, structural studies** — too
+many components, fuzzy §4 mappings, and it explores/mis-tools rather than converging.
+These are **opus-lane** (confirmed: the `Settings` study was re-authored cleanly by opus
+in ~230 lines). Ornith's real envelope is the **small, mechanical** files (the content
+routes, already migrated). Options if we want the studies via ornith: try a stronger
+local model (`gemma3:12b` / `qwen3:8b` are installed; set `ORNITH_MODEL`), or feed it the
+per-file **exposing** facts up front so it stops searching. Default recommendation:
+**opus re-authors the remaining 4 studies** (Crane/Rally/Reply/Shrine), Settings-style.
+
 ## Open / next
 
 - Wire the two harness guards (signature-lock, whole-project compile).
