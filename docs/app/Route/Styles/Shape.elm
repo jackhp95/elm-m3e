@@ -1,14 +1,25 @@
 module Route.Styles.Shape exposing (ActionData, Data, Model, Msg, route)
 
-{-| STUB (migration): uses M3e.Shape/CemShape whose new API differs; original view is in
-git history, pending a design call + the ornith pass. Route wiring preserved.
+{-| **Shape** — the M3 Expressive named-shape scale, re-authored on the new Vocab API
+(opus). Renders a grid of real `M3e.Shape` surfaces (each clipping a filled tile to a
+named shape via `Shape.name` Value tokens), in the content-pane + card pattern. Replaces
+the old `Cem.M3e.Shape`/`Shape.attributes` passthrough with the token-driven API.
 -}
 
 import BackendTask exposing (BackendTask)
 import Head
-import M3e.Node as Node
+import Html.Attributes as Attr
+import Kit
+import M3e.Card as Card
+import M3e.ContentPane as ContentPane
+import M3e.Element as Element exposing (Element)
+import M3e.Heading as Heading
+import M3e.Shape as Shape
+import M3e.Value as Value exposing (Supported)
+import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
+import Seam
 import Shared
 import View exposing (View)
 
@@ -46,7 +57,51 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
+    let
+        tile =
+            Native.div [ Seam.asAttribute (Attr.class "h-20 w-20 bg-primary-container") ] []
+
+        shapeCol ( token, label ) =
+            Native.div
+                [ Seam.asAttribute (Attr.class "flex flex-col items-center gap-2 text-label-md text-on-surface-variant") ]
+                [ Shape.view [ Shape.name token ] [ Shape.child tile ]
+                , Kit.text label
+                ]
+
+        shapes =
+            [ ( Value.circle, "Circle" )
+            , ( Value.flower, "Flower" )
+            , ( Value.heart, "Heart" )
+            , ( Value.pill, "Pill" )
+            , ( Value.diamond, "Diamond" )
+            , ( Value.gem, "Gem" )
+            , ( Value.sunny, "Sunny" )
+            , ( Value.burst, "Burst" )
+            , ( Value.hexagon, "Hexagon" )
+            , ( Value.triangle, "Triangle" )
+            , ( Value.oval, "Oval" )
+            , ( Value.arch, "Arch" )
+            ]
+    in
     { title = "Shape · elm-m3e"
     , body =
-        [ Node.text "The Shape page is being migrated to the new Vocab API; original view in git history." ]
+        List.map Element.toNode
+            [ pane
+                [ Heading.view { content = Kit.text "Shape" }
+                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+                    []
+                , Card.view [ Card.variant Value.outlined ]
+                    [ Card.content
+                        (Native.div
+                            [ Seam.asAttribute (Attr.class "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6") ]
+                            (List.map shapeCol shapes)
+                        )
+                    ]
+                ]
+            ]
     }
+
+
+pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
+pane items =
+    ContentPane.view [] (List.map ContentPane.child items)
