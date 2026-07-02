@@ -24,6 +24,7 @@ import Html.Attributes as Attr exposing (attribute, class)
 import Html.Events
 import Json.Decode as Decode
 import Kit
+import Kit.Surface as Surface
 import M3e.AppBar as AppBar
 import M3e.Aria as Aria
 import M3e.ButtonSegment as ButtonSegment
@@ -363,8 +364,8 @@ view _ page model toMsg pageView =
             -- Individual study routes take the full viewport; they include their
             -- own m3e nav chrome, so skip the docs shell to avoid double-nav.
             [ themed
-                [ Native.div
-                    [ Seam.asAttribute (class "min-h-screen bg-surface text-on-surface")
+                [ Surface.view Surface.surface
+                    [ Seam.asAttribute (class "min-h-screen")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     (List.map Element.fromNode pageView.body)
@@ -373,8 +374,8 @@ view _ page model toMsg pageView =
 
         else
             [ themed
-                [ Native.div
-                    [ Seam.asAttribute (class "grid h-screen grid-rows-[auto_1fr] bg-surface text-on-surface")
+                [ Surface.view Surface.surface
+                    [ Seam.asAttribute (class "grid h-screen grid-rows-[auto_1fr]")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ EscapeHatch.fromHtml (Html.map toMsg (appShellBar model))

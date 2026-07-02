@@ -108,7 +108,7 @@ unused =
     [ NoUnused.Variables.rule |> ignoreGenerated
     , NoUnused.CustomTypeConstructors.rule [] |> ignoreGenerated |> ignorePublicApi
     , NoUnused.CustomTypeConstructorArgs.rule |> ignoreGenerated
-    , NoUnused.Exports.rule |> ignoreGenerated |> ignorePublicApi |> ignoreLayoutVocabulary
+    , NoUnused.Exports.rule |> ignoreGenerated |> ignorePublicApi |> ignoreLayoutVocabulary |> ignoreKitVocabulary
     , NoUnused.Modules.rule |> ignoreGenerated |> ignorePublicApi
     , NoUnused.Parameters.rule |> ignoreGenerated
     , NoUnused.Patterns.rule |> ignoreGenerated
@@ -125,6 +125,18 @@ a suppression-baseline debt). Two path forms cover root- vs `docs/`-relative run
 ignoreLayoutVocabulary : Rule -> Rule
 ignoreLayoutVocabulary =
     Rule.ignoreErrorsForFiles [ "src/Layout.elm", "docs/src/Layout.elm" ]
+
+
+{-| `packages/m3e-kit/src/` is the docs app's userland design-system kit — the
+sanctioned home for the visual seam (`Kit`, `Kit.Surface`, `Kit.Shape`). Like
+`Layout.elm`, it deliberately exposes a complete, symmetric vocabulary (every M3
+type-scale role, color role, and corner token), so not every export is used by
+the current pages — that is intentional API surface, not dead code. Two path
+forms cover root- vs `docs/`-relative runs.
+-}
+ignoreKitVocabulary : Rule -> Rule
+ignoreKitVocabulary =
+    Rule.ignoreErrorsForDirectories [ "packages/m3e-kit/src/", "../packages/m3e-kit/src/" ]
 
 
 {-| A published library's whole point is exports/modules/constructors that are

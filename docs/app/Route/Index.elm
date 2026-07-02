@@ -10,13 +10,14 @@ sidebar nav, so this page is just the hero + highlights content.
 -}
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (code, div, p, text)
-import Html.Attributes exposing (class)
+import Html
+import Html.Attributes
 import Kit
+import Kit.Shape as Shape
+import Kit.Surface as Surface
 import Layout
 import M3e.Avatar as Avatar
 import M3e.Button as Button
@@ -108,33 +109,29 @@ view _ _ =
 hero : Element { s | html : Supported } msg
 hero =
     Layout.section "space-y-5"
-        [ EscapeHatch.fromHtml
-            (p [ class "text-label-lg uppercase tracking-wide text-primary" ]
-                [ text "elm-m3e · m3e-builder" ]
-            )
+        [ Kit.overline [ Kit.primary ] [ Kit.text "elm-m3e · m3e-builder" ]
         , Heading.view { content = Kit.text "Type-safe Material 3 Expressive for Elm" }
             [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
             []
-        , EscapeHatch.fromHtml
-            (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                [ text "A Make-Impossible-States-Impossible builder layer over matraic's "
-                , code [] [ text "@m3e/web" ]
-                , text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
+        , Layout.div "max-w-2xl"
+            [ Kit.paragraph Value.large
+                [ Kit.onSurfaceVariant ]
+                [ Kit.text "A Make-Impossible-States-Impossible builder layer over matraic's "
+                , Native.node (Html.node "code") [] [ Kit.text "@m3e/web" ]
+                , Kit.text " web components. Typed-to-child slots, builders with required collaborators, one module per documented m3e component — invalid compositions don't compile, and there are no silent no-ops."
                 ]
-            )
+            ]
         , Layout.div "flex flex-wrap items-center gap-3 pt-2"
             [ Button.view [ Button.variant Value.filled, Button.href "/getting-started/installation" ] [ Button.child (Kit.text "Get started") ]
             , Button.view [ Button.variant Value.outlined, Button.href "/reference" ] [ Button.child (Kit.text "Browse the API reference") ]
             ]
         , Layout.div "flex items-center gap-3 pt-4"
             [ Avatar.view [ Seam.asAttribute (Html.Attributes.attribute "aria-label" "Sample avatar") ] [ Avatar.child (Native.img [ Seam.asAttribute (Html.Attributes.src "/avatar-sample.svg") ]) ]
-            , EscapeHatch.fromHtml
-                (div [ class "flex gap-3" ]
-                    [ div [ class "block w-10 h-10 bg-primary rounded-md-corner-large" ] []
-                    , div [ class "block w-10 h-10 bg-tertiary-container rounded-md-corner-extra-large" ] []
-                    , div [ class "block w-10 h-10 bg-secondary-container rounded-full" ] []
-                    ]
-                )
+            , Layout.div "flex gap-3"
+                [ Surface.view Surface.primary [ Layout.class "block w-10 h-10", Shape.corner Shape.large ] []
+                , Surface.view Surface.tertiaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []
+                , Surface.view Surface.secondaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.full ] []
+                ]
             ]
         ]
 
@@ -171,9 +168,9 @@ highlightCard iconName title body =
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
         , Card.content
             (Layout.div "flex gap-3"
-                [ Layout.span "shrink-0 text-primary"
-                    [ Icon.view [ Icon.name iconName ] [] ]
-                , EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ])
+                [ Layout.span "shrink-0"
+                    [ Kit.colored [ Kit.primary ] [ Icon.view [ Icon.name iconName ] [] ] ]
+                , Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ]
                 ]
             )
         ]
@@ -183,10 +180,8 @@ statusGrid : Element { s | html : Supported } msg
 statusGrid =
     Layout.section "space-y-6"
         [ sectionHeading "Status & roadmap"
-        , EscapeHatch.fromHtml
-            (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                [ text "The honest current state of the standalone library." ]
-            )
+        , Layout.div "max-w-2xl"
+            [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text "The honest current state of the standalone library." ] ]
         , Layout.div "grid gap-4 sm:grid-cols-2"
             [ statusCard "Complete (53)" "Every M3e.* module compiles against the bindings — buttons, cards, dialogs, the nav family, chips, fabs, form controls, sliders, date/time pickers, tooltips, and more."
             , statusCard "Documented" "Getting Started, Styles, and per-component pages (API tables) are generated; rich per-component demos and Studies are in progress."
@@ -201,5 +196,5 @@ statusCard title body =
     Card.view
         [ Card.variant Value.outlined ]
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
-        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ]))
+        , Card.content (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ])
         ]

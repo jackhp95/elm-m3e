@@ -6,8 +6,6 @@ import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (p, text)
-import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.ContentPane as ContentPane
@@ -89,17 +87,15 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "elm-m3e is not yet on the Elm package registry. Today you vendor the M3e.* source into your project; a registry release is planned." ]
                     ]
                 , Layout.section "space-y-3"
                     [ stepHeading "1. Add the Elm source"
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "Copy the M3e.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "Copy the M3e.* (and supporting Cem.M3e.*) modules into your project and add them to elm.json source-directories:" ]
                     , code_ Json """
 {
   "source-directories": [ "src", "vendor/elm-m3e" ]
@@ -108,10 +104,9 @@ view _ _ =
                     ]
                 , Layout.section "space-y-3"
                     [ stepHeading "2. Register the web components"
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "Install @m3e/web and register the custom elements once, before your Elm app boots:" ]
                     , code_ Shell """
 npm i @m3e/web
 
@@ -121,10 +116,9 @@ import "@m3e/web/all";
                     ]
                 , Layout.section "space-y-3"
                     [ stepHeading "3. Import the token + utility bridge"
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …):" ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "The tailwind-m3e-web bridge maps the M3 tokens to Tailwind v4 utilities (bg-surface, text-body-lg, rounded-md-corner-large, …):" ]
                     , code_ NoLang """
 /* style.css */
 @import "tailwindcss";
@@ -134,10 +128,9 @@ import "@m3e/web/all";
                     ]
                 , Layout.section "space-y-3"
                     [ stepHeading "4. Wrap your app in a theme"
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "A single M3e.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "A single M3e.Theme owns the dynamic color, scheme, contrast, density, and motion for its subtree — usually the whole app:" ]
                     , code_ Elm """
 import M3e.Theme as Theme
 

@@ -2,6 +2,7 @@ module Layout exposing
     ( row, col, stack, center, container
     , rowWith, colWith, stackWith, gridWith, sectionWith, centerWith, containerWith
     , div, section, span, nav, ul, li
+    , class
     )
 
 {-| Named layout presets and exact-class escapes for the docs application.
@@ -37,9 +38,15 @@ than inlined.
 
 @docs div, section, span, nav, ul, li
 
+
+## Layout attribute
+
+@docs class
+
 -}
 
 import Html.Attributes as Attr
+import M3e.Cem.Attr
 import M3e.Element exposing (Element)
 import M3e.Value exposing (Supported)
 import Native
@@ -254,3 +261,16 @@ Use for list items whose layout is driven by Tailwind utilities.
 li : String -> List (Element s msg) -> Element { k | html : Supported } msg
 li cls children =
     Native.li [ Seam.asAttribute (Attr.class cls) ] children
+
+
+{-| A layout class string as a composable attribute.
+
+Use this to put layout utilities (flex/grid/gap/padding/margin) on an element
+built by another seam producer — e.g. layout classes on a `Kit.Surface.view` —
+without reaching for `Seam` in feature code. Layout-only, same discipline as the
+tag helpers above.
+
+-}
+class : String -> M3e.Cem.Attr.Attr c msg
+class cls =
+    Seam.asAttribute (Attr.class cls)

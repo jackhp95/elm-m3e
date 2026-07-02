@@ -1,13 +1,12 @@
 module Route.Styles.Color exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (code, p, text)
-import Html.Attributes exposing (class)
 import Kit
+import Kit.Shape as Shape
+import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
@@ -62,30 +61,38 @@ head _ =
         |> Seo.website
 
 
-{-| (label, bg utility, on-color utility) for each M3 color role pair.
+{-| (label, `bg-*` utility to exhibit, surface role) for each M3 color role pair.
+
+The `bg-*` string is the swatch's exhibit — it is shown verbatim as the caption —
+while `Surface` paints the swatch, so the demo dogfoods `Kit.Surface`.
+
 -}
-roles : List ( String, String, String )
+roles : List ( String, String, Surface )
 roles =
-    [ ( "Primary", "bg-primary", "text-on-primary" )
-    , ( "On Primary Container", "bg-primary-container", "text-on-primary-container" )
-    , ( "Secondary", "bg-secondary", "text-on-secondary" )
-    , ( "Secondary Container", "bg-secondary-container", "text-on-secondary-container" )
-    , ( "Tertiary", "bg-tertiary", "text-on-tertiary" )
-    , ( "Tertiary Container", "bg-tertiary-container", "text-on-tertiary-container" )
-    , ( "Error", "bg-error", "text-on-error" )
-    , ( "Error Container", "bg-error-container", "text-on-error-container" )
-    , ( "Surface", "bg-surface", "text-on-surface" )
-    , ( "Surface Container", "bg-surface-container", "text-on-surface" )
-    , ( "Surface Container High", "bg-surface-container-high", "text-on-surface" )
-    , ( "Inverse Surface", "bg-inverse-surface", "text-inverse-on-surface" )
+    [ ( "Primary", "bg-primary", Surface.primary )
+    , ( "On Primary Container", "bg-primary-container", Surface.primaryContainer )
+    , ( "Secondary", "bg-secondary", Surface.secondary )
+    , ( "Secondary Container", "bg-secondary-container", Surface.secondaryContainer )
+    , ( "Tertiary", "bg-tertiary", Surface.tertiary )
+    , ( "Tertiary Container", "bg-tertiary-container", Surface.tertiaryContainer )
+    , ( "Error", "bg-error", Surface.error )
+    , ( "Error Container", "bg-error-container", Surface.errorContainer )
+    , ( "Surface", "bg-surface", Surface.surface )
+    , ( "Surface Container", "bg-surface-container", Surface.surfaceContainer )
+    , ( "Surface Container High", "bg-surface-container-high", Surface.surfaceContainerHigh )
+    , ( "Inverse Surface", "bg-inverse-surface", Surface.inverseSurface )
     ]
 
 
-swatch : ( String, String, String ) -> Element { s | html : Supported } msg
-swatch ( label, bg, on ) =
-    Layout.div ("flex flex-col justify-between rounded-md-corner-medium border border-outline-variant p-4 min-h-24 " ++ bg ++ " " ++ on)
-        [ Layout.span "text-label-lg font-medium" [ Kit.text label ]
-        , EscapeHatch.fromHtml (code [ class "text-body-sm opacity-80" ] [ text bg ])
+swatch : ( String, String, Surface ) -> Element { s | html : Supported } msg
+swatch ( label, bg, role ) =
+    Surface.view role
+        [ Layout.class "flex flex-col justify-between p-4 min-h-24"
+        , Shape.corner Shape.medium
+        , Surface.outlined
+        ]
+        [ Kit.label Value.large [] [ Kit.text label ]
+        , Kit.code Value.small [] [ Kit.text bg ]
         ]
 
 
@@ -123,10 +130,11 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "Material 3 derives a full set of semantic color roles from a single source color via the dynamic-color engine in <m3e-theme>. Every role is a --md-sys-color-* token; the swatches below are live — change the source color, scheme, or contrast in the app bar settings and they re-derive." ]
+                        ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Color roles"
@@ -137,17 +145,19 @@ view _ _ =
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Dynamic color"
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "<m3e-theme> wraps Material's material-color-utilities to derive a full scheme from a seed at runtime. Swap the source color in the app bar to see every role above re-derive instantly." ]
+                        ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Forced colors"
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "When the OS reports forced-colors (Windows High Contrast), components map their semantic roles onto the system palette automatically. No app changes required." ]
+                        ]
                     , forcedColorsCard
                     ]
                 ]
@@ -161,7 +171,5 @@ forcedColorsCard =
         [ Card.variant Value.outlined ]
         [ Card.header (Heading.view { content = Kit.text "Test it" } [ Heading.variant Value.title ] [])
         , Card.content
-            (EscapeHatch.fromHtml
-                (text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
-            )
+            (Kit.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
         ]
