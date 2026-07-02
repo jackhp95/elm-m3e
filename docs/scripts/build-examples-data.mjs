@@ -27,6 +27,14 @@ const OUT = path.resolve(here, "../data/examples.json");
 
 const DEFAULT_CATEGORY = "Layout & style";
 
+// A few corpus family-names (matraic groupings) don't equal any single Elm
+// module's slug. Map them to the representative reference slug their examples
+// actually use (verified by the <m3e-*> tags in the example HTML).
+const SLUG_ALIASES = {
+  Chips: "chip", // <m3e-chip>
+  Search: "searchbar", // <m3e-search-bar>
+};
+
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
@@ -48,7 +56,7 @@ function main() {
   const unmatched = [];
 
   for (const module of Object.keys(rich).sort()) {
-    const slug = module.toLowerCase();
+    const slug = SLUG_ALIASES[module] || module.toLowerCase();
     const category = categories[module] || DEFAULT_CATEGORY;
 
     if (knownSlugs && !knownSlugs.has(slug)) {

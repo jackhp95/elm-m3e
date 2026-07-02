@@ -119,7 +119,7 @@
       }
     ]
   },
-  "chips": {
+  "chip": {
     "category": "Selection",
     "examples": [
       {
@@ -286,7 +286,7 @@
       }
     ]
   },
-  "search": {
+  "searchbar": {
     "category": "Text inputs",
     "examples": [
       {
