@@ -31,7 +31,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: tests/elm-stuff
-          key: ${{ runner.os }}-elm-tests-${{ hashFiles('elm.json') }}
+          key: ${{ runner.os }}-elm-tests-${{ hashFiles('tests/elm.json') }}
 
       - name: Cache review elm-stuff
         uses: actions/cache@v4
@@ -42,11 +42,22 @@ jobs:
       - name: Install root deps (elm, elm-format, elm-test)
         run: npm ci
 
-      - name: elm-format --validate (src + tests + review)
-        run: node_modules/.bin/elm-format --validate src/ tests/ review/src/
+      # Validate formatting of the HAND-WRITTEN IR core only. The per-component
+      # modules under packages/m3e/src/M3e/ are a generated artifact (ADR-8) and
+      # are not elm-format-formatted, so they are deliberately excluded here.
+      - name: elm-format --validate (hand-written IR core)
+        run: node_modules/.bin/elm-format --validate packages/m3e/src/M3e/Node.elm packages/m3e/src/M3e/Element.elm packages/m3e/src/M3e/Content.elm
+
+      # The real correctness proof: a green `elm make` over the package. Validate
+      # the package in place (bare `elm make`) and build the root entrypoint.
+      - name: Validate package (elm make)
+        run: cd packages/m3e && ../../node_modules/.bin/elm make src/M3e.elm --output=/dev/null
+
+      - name: Build root entrypoint (elm make)
+        run: node_modules/.bin/elm make packages/m3e/src/M3e.elm --output=/dev/null
 
       - name: elm-test
-        run: node_modules/.bin/elm-test
+        run: node_modules/.bin/elm-test --compiler node_modules/.bin/elm
 
       - name: elm-review
         # Run from docs/ so elm-review picks up docs/elm.json, which covers
@@ -79,7 +90,7 @@ jobs:
           # /tmp/m3e-docs-gen each run; caching its elm-stuff between runs
           # keeps `elm make --docs` fast.
           path: /tmp/m3e-docs-gen/elm-stuff
-          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/Ui/**/*.elm', 'vendor/elm-m3e/M3e/**/*.elm') }}
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
 
       - name: Install docs deps
         run: cd docs && pnpm install --frozen-lockfile
@@ -111,7 +122,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/m3e-docs-gen/elm-stuff
-          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/Ui/**/*.elm', 'vendor/elm-m3e/M3e/**/*.elm') }}
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
 
       - name: Install docs deps
         run: cd docs && pnpm install --frozen-lockfile
