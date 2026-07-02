@@ -17,26 +17,21 @@ import CognitiveComplexity
 import Docs.ReviewAtDocs
 import Docs.ReviewLinksAndSections
 import Docs.UpToDateReadmeLinks
-import NoActionlessButton
 import NoConfusingPrefixOperator
 import NoDebug.Log
 import NoDebug.TodoOrToString
 import NoExposingEverything
 import NoFunctionOutsideOfModules
 import NoImportingEverything
-import NoMissingFacadeEntry
 import NoMissingTypeAnnotation
 import NoMissingTypeAnnotationInLetIn
 import NoMissingTypeExpose
 import NoModuleOnExposedNames
 import NoPrematureLetComputation
 import NoProprietaryDsClasses
-import NoRawAttributeInUi
-import NoRawLayoutOutsideLayoutModule
 import NoRedundantlyQualifiedType
 import NoSimpleLetBody
 import NoUnnecessaryTrailingUnderscore
-import NoUntypedSlot
 import NoUnused.CustomTypeConstructorArgs
 import NoUnused.CustomTypeConstructors
 import NoUnused.Exports
@@ -44,7 +39,6 @@ import NoUnused.Modules
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
-import PreferBadgeCount
 import Review.Rule as Rule exposing (Rule)
 import Simplify
 
@@ -202,15 +196,21 @@ correctness =
 -- MATERIAL DISCIPLINE (custom MISI rules) ------------------------------------
 
 
+{-| Ui-era material-discipline rules that the Vocab API made obsolete were retired
+(ADR 0012): `NoUntypedSlot` (phantom-typed slots enforce it at compile time),
+`NoRawAttributeInUi` + `NoRawLayoutOutsideLayoutModule` (both generalized into the
+configurable `NoSeamOutsideAllowedModules`), `PreferBadgeCount` (`M3e.Badge` has no
+`count`/`label`), and `NoMissingFacadeEntry` (the facade epic #52 is closed).
+
+`NoProprietaryDsClasses` survives unchanged — it still inspects `Attr.class` string
+literals for proprietary `ds-`/`t-` tokens. The Vocab-API rules (`NoActionlessButton`,
+the facts-driven `ValidEnumValue`/`SingularSlot`/`RequireSlot`, and the Seam gate) live
+in `CodegenReviewConfig`, ready to enable here once an `elm-review` run confirms the
+docs pass clean.
+-}
 materialDiscipline : List Rule
 materialDiscipline =
-    [ PreferBadgeCount.rule
-    , NoActionlessButton.rule
-    , NoRawAttributeInUi.rule |> ignoreTests
-    , NoProprietaryDsClasses.rule
-    , NoUntypedSlot.rule |> ignoreTests
-    , NoRawLayoutOutsideLayoutModule.rule |> ignoreGenerated
-    , NoMissingFacadeEntry.rule
+    [ NoProprietaryDsClasses.rule
     ]
 
 

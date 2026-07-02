@@ -60,3 +60,28 @@ regenerate while the rule logic stays hand-tested. The old-era `materialDiscipli
 rules are ported/generalized onto this footing (notably
 `NoRawLayoutOutsideLayoutModule` → the configurable Seam gate). This is also what
 gives the ornith migrator its actionable, per-component feedback loop.
+
+## Rule roster (implemented)
+
+All rules live in `review/src/`, each covered by a `Review.Test` suite in
+`review/tests/` (24 tests, `elm-test-rs` green). The Vocab-API set is wired in
+`review/src/CodegenReviewConfig.elm`, kept separate from the repo's `ReviewConfig`
+until an `elm-review` run confirms the docs pass clean (the docs use `Seam`
+intentionally, so the Seam gate can't run against them here).
+
+| Rule | Kind | What it flags |
+| --- | --- | --- |
+| `ValidEnumValue` | facts-driven | a loose barrel enum setter given an `M3e.Value` token the target component rejects — the backstop the loose top layer deliberately doesn't type-enforce. Handles both `M3e.button [ variant … ]` and `Button.view [ … ]`. |
+| `SingularSlot` | facts-driven, advisory (ADR 11) | a singular content slot filled 2+ times. Reads only the content list, so repeated attrs aren't mistaken for slots. |
+| `RequireSlot` | facts-driven, advisory (ADR 11) | a required-*multi* slot (not type-enforced, unlike required-singular in the record) absent from the content list. |
+| `NoActionlessButton` | hand-written | a button whose attrs wire no `onClick`/`href`/`toggle` and no explicit `disabled`/`disabledInteractive` — well-typed but inert. Ported from the Ui-era `Ui.Button.new` form. |
+| `NoSeamOutsideAllowedModules` | hand-written, configurable | any `Seam.*`/`EscapeHatch.*` reference outside a configured allow-list of adapter modules. Generalizes `NoRawLayoutOutsideLayoutModule`. |
+| `NoProprietaryDsClasses` | hand-written (kept as-is) | `ds-`/`t-` proprietary class tokens in `Attr.class` literals. Still valid under the new API. |
+
+### Retired as obsolete under the Vocab API
+
+- `NoUntypedSlot` — phantom-typed slot rows enforce this at compile time now.
+- `NoRawAttributeInUi` — subsumed by the Seam gate (raw attrs now pass through `Seam.asAttribute`).
+- `NoRawLayoutOutsideLayoutModule` — generalized into `NoSeamOutsideAllowedModules`; the `Layout` module it steered toward is gone.
+- `PreferBadgeCount` — `M3e.Badge` has no `count`/`label`; the concept no longer exists.
+- `NoMissingFacadeEntry` — the facade epic (#52) is closed; there is no facade.
