@@ -1,31 +1,41 @@
 module Route.Examples.Dashboard exposing (ActionData, Data, Model, Msg, route)
 
-{-| **Rally** study — a Material 3 personal-finance dashboard, re-authored on the new
-Vocab API (opus, Settings-style). Real components in the content-pane + card pattern:
-a grid of account-summary `Card`s, and a budget `Card` whose `List`/`ListItem` rows each
-pair a category + amount with a `Progress.linear` bar showing budget usage. Static
-dashboard (no local state); custom layout is only a Tailwind grid.
+{-| **Aperture Analytics** — a full-viewport Material 3 analytics dashboard screen,
+authored on the Vocab API and the userland `Kit`. It carries its own nav chrome:
+an `AppBar` header, a `NavRail` on desktop and a bottom `NavBar` on mobile (same
+five destinations), a KPI stat-card row, an Accounts card grid, a Budgets card
+whose rows pair a category with a `Progress.linear` meter, a Recent-activity data
+table built from `ListItem` rows separated by `Divider`, and a `Fab` primary
+action.
+
+Everything visual (color, type scale, surface, shape) goes through `Kit` /
+`Kit.Surface` / `Kit.Shape`; Tailwind is used only for layout and responsive
+visibility. Static screen (no local state).
+
 -}
 
 import BackendTask
 import Effect exposing (Effect)
-import EscapeHatch
 import Head
-import Html.Attributes as Attr
-import Kit
+import Kit exposing (TextColor)
+import Kit.Shape as Shape
+import Kit.Surface as Surface
+import Layout
+import M3e.AppBar as AppBar
 import M3e.Card as Card
-import M3e.ContentPane as ContentPane
+import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
-import M3e.Heading as Heading
+import M3e.Fab as Fab
 import M3e.Icon as Icon
-import M3e.List as List_
+import M3e.IconButton as IconButton
 import M3e.ListItem as ListItem
+import M3e.NavBar as NavBar
+import M3e.NavItem as NavItem
+import M3e.NavRail as NavRail
 import M3e.Progress as Progress
 import M3e.Value as Value exposing (Supported)
-import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -82,81 +92,343 @@ head _ =
     []
 
 
-accounts : List ( String, String, String )
+
+-- DATA ------------------------------------------------------------------------
+
+
+type alias Destination =
+    { icon : String, name : String, selected : Bool }
+
+
+destinations : List Destination
+destinations =
+    [ { icon = "dashboard", name = "Overview", selected = True }
+    , { icon = "insights", name = "Reports", selected = False }
+    , { icon = "receipt_long", name = "Transactions", selected = False }
+    , { icon = "savings", name = "Budgets", selected = False }
+    , { icon = "settings", name = "Settings", selected = False }
+    ]
+
+
+{-| Direction of a trend delta, which drives the icon + color role.
+-}
+type Trend
+    = Up
+    | Down
+
+
+type alias Kpi =
+    { label : String, value : String, delta : String, trend : Trend }
+
+
+kpis : List Kpi
+kpis =
+    [ { label = "Total Revenue", value = "$48,290", delta = "+12.4%", trend = Up }
+    , { label = "Active Users", value = "9,381", delta = "+3.1%", trend = Up }
+    , { label = "Conversion", value = "4.7%", delta = "-0.6%", trend = Down }
+    , { label = "Avg. Session", value = "5m 12s", delta = "+8.9%", trend = Up }
+    ]
+
+
+type alias Account =
+    { icon : String, name : String, balance : String }
+
+
+accounts : List Account
 accounts =
-    [ ( "account_balance", "Checking", "$2,340.18" )
-    , ( "savings", "Savings", "$12,890.55" )
-    , ( "credit_card", "Credit", "-$1,204.32" )
+    [ { icon = "account_balance", name = "Operating", balance = "$21,904.18" }
+    , { icon = "savings", name = "Reserve", balance = "$62,890.55" }
+    , { icon = "payments", name = "Payouts", balance = "$8,120.00" }
+    , { icon = "credit_card", name = "Card", balance = "-$1,204.32" }
     ]
 
 
-budgets : List ( String, String, Float )
+type alias Budget =
+    { category : String, amount : String, used : Float, max : Float }
+
+
+budgets : List Budget
 budgets =
-    [ ( "Dining", "$320 / $400", 0.8 )
-    , ( "Groceries", "$210 / $500", 0.42 )
-    , ( "Transport", "$95 / $150", 0.63 )
-    , ( "Shopping", "$480 / $450", 1.0 )
+    [ { category = "Marketing", amount = "$3,200 / $4,000", used = 3200, max = 4000 }
+    , { category = "Infrastructure", amount = "$1,050 / $2,500", used = 1050, max = 2500 }
+    , { category = "Payroll", amount = "$18,400 / $20,000", used = 18400, max = 20000 }
+    , { category = "Travel", amount = "$980 / $900", used = 980, max = 900 }
     ]
+
+
+type alias Activity =
+    { date : String, description : String, amount : String, incoming : Bool }
+
+
+activity : List Activity
+activity =
+    [ { date = "Jul 02", description = "Stripe payout", amount = "+$4,120.00", incoming = True }
+    , { date = "Jul 01", description = "AWS invoice", amount = "-$842.19", incoming = False }
+    , { date = "Jun 30", description = "New subscription — Acme Co.", amount = "+$299.00", incoming = True }
+    , { date = "Jun 29", description = "Figma seats", amount = "-$180.00", incoming = False }
+    , { date = "Jun 28", description = "Refund — order #10482", amount = "-$59.00", incoming = False }
+    ]
+
+
+
+-- VIEW ------------------------------------------------------------------------
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ _ =
-    { title = "Rally · elm-m3e"
+    { title = "Aperture Analytics · elm-m3e"
     , body =
         [ Element.toNode
-            (pane
-                [ Heading.view { content = Kit.text "Rally" }
-                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
-                    []
-                , Native.div
-                    [ Seam.asAttribute (Attr.class "grid grid-cols-1 gap-4 sm:grid-cols-3") ]
-                    (List.map accountCard accounts)
-                , card "Budgets"
-                    (List_.view [] (List_.children (List.map budgetRow budgets)))
+            (Surface.view Surface.surface
+                [ Layout.class "flex flex-col min-h-screen w-full" ]
+                [ appBar
+                , Layout.div "flex flex-1"
+                    [ desktopRail
+                    , mainContent
+                    ]
+                , mobileBar
+                , fab
                 ]
             )
         ]
     }
 
 
-pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
-pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+
+-- CHROME ----------------------------------------------------------------------
 
 
-card : String -> Element { s | html : Supported } msg -> Element { r | card : Supported } msg
-card title content =
-    Card.view [ Card.variant Value.outlined ]
-        [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
-        , Card.content content
-        ]
-
-
-{-| An account summary: icon + name + balance.
--}
-accountCard : ( String, String, String ) -> Element { s | card : Supported } msg
-accountCard ( icon, name, balance ) =
-    Card.view [ Card.variant Value.elevated ]
-        [ Card.header
-            (Native.div [ Seam.asAttribute (Attr.class "flex items-center gap-2") ]
-                [ Icon.view [ Icon.name icon ] [], Kit.text name ]
+appBar : Element { s | appBar : Supported } msg
+appBar =
+    AppBar.view [ AppBar.size Value.small ]
+        [ AppBar.leadingIcon (Icon.view [ Icon.name "analytics" ] [])
+        , AppBar.title (Kit.title Value.large [] [ Kit.text "Aperture Analytics" ])
+        , AppBar.trailing
+            (Layout.div "flex items-center gap-1"
+                [ iconAction "search"
+                , iconAction "notifications"
+                , iconAction "account_circle"
+                ]
             )
-        , Card.content
-            (Kit.headline Value.small [] [ Kit.text balance ])
         ]
 
 
-{-| A budget row: category, amount, and a linear progress bar of usage.
+iconAction : String -> Element { s | iconButton : Supported } msg
+iconAction name =
+    IconButton.view { content = Icon.view [ Icon.name name ] [] }
+        [ IconButton.variant Value.standard ]
+        []
+
+
+{-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
 -}
-budgetRow : ( String, String, Float ) -> Element { s | listItem : Supported } msg
-budgetRow ( category, amount, used ) =
+desktopRail : Element { s | html : Supported } msg
+desktopRail =
+    Layout.div "hidden md:flex sticky top-0 self-start"
+        [ NavRail.view []
+            (NavRail.children (List.map railItem destinations))
+        ]
+
+
+railItem : Destination -> Element { s | navItem : Supported } msg
+railItem d =
+    NavItem.view
+        [ NavItem.href "#", NavItem.selected d.selected ]
+        [ NavItem.icon (Icon.view [ Icon.name d.icon ] [])
+        , NavItem.child (Kit.text d.name)
+        ]
+
+
+{-| The mobile bottom bar. Hidden on desktop via `md:hidden`.
+-}
+mobileBar : Element { s | html : Supported } msg
+mobileBar =
+    Layout.div "md:hidden sticky bottom-0 z-10"
+        [ NavBar.view []
+            (NavBar.children (List.map barItem destinations))
+        ]
+
+
+barItem : Destination -> Element { s | navItem : Supported } msg
+barItem d =
+    NavItem.view
+        [ NavItem.href "#", NavItem.selected d.selected ]
+        [ NavItem.icon (Icon.view [ Icon.name d.icon ] [])
+        , NavItem.child (Kit.text d.name)
+        ]
+
+
+fab : Element { s | html : Supported } msg
+fab =
+    Layout.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
+        [ Fab.view [ Fab.variant Value.primary, Fab.extended True ]
+            [ Fab.child (Icon.view [ Icon.name "add" ] [])
+            , Fab.label (Kit.text "New report")
+            ]
+        ]
+
+
+
+-- MAIN CONTENT ----------------------------------------------------------------
+
+
+mainContent : Element { s | html : Supported } msg
+mainContent =
+    Layout.section "flex-1 min-w-0 flex flex-col gap-6 p-4 md:p-6 pb-28 md:pb-6"
+        [ pageHeader
+        , kpiRow
+        , Layout.div "grid grid-cols-1 gap-6 lg:grid-cols-3"
+            [ Layout.div "lg:col-span-2 flex flex-col gap-6"
+                [ accountsSection
+                , activitySection
+                ]
+            , budgetsSection
+            ]
+        ]
+
+
+pageHeader : Element { s | html : Supported } msg
+pageHeader =
+    Layout.div "flex flex-col gap-1"
+        [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text "Overview" ]
+        , Kit.display Value.small [] [ Kit.text "Good morning, Jack" ]
+        , Kit.body Value.medium [ Kit.onSurfaceVariant ] [ Kit.text "Here is how your business is doing today." ]
+        ]
+
+
+
+-- KPI ROW ---------------------------------------------------------------------
+
+
+kpiRow : Element { s | html : Supported } msg
+kpiRow =
+    Layout.div "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+        (List.map kpiCard kpis)
+
+
+kpiCard : Kpi -> Element { s | card : Supported } msg
+kpiCard k =
+    Card.view [ Card.variant Value.filled ]
+        [ Card.content
+            (Layout.div "flex flex-col gap-2 p-4"
+                [ Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text k.label ]
+                , Kit.display Value.small [] [ Kit.text k.value ]
+                , trendDelta k.trend k.delta
+                ]
+            )
+        ]
+
+
+trendDelta : Trend -> String -> Element { s | html : Supported } msg
+trendDelta trend delta =
+    let
+        ( iconName, role ) =
+            case trend of
+                Up ->
+                    ( "trending_up", Kit.primary )
+
+                Down ->
+                    ( "trending_down", Kit.error )
+    in
+    Layout.div "flex items-center gap-1"
+        [ Kit.colored [ role ] [ Icon.view [ Icon.name iconName ] [] ]
+        , Kit.label Value.large [ role ] [ Kit.text delta ]
+        ]
+
+
+
+-- ACCOUNTS --------------------------------------------------------------------
+
+
+accountsSection : Element { s | card : Supported } msg
+accountsSection =
+    sectionCard "Accounts"
+        (Layout.div "grid grid-cols-1 gap-3 sm:grid-cols-2"
+            (List.map accountRow accounts)
+        )
+
+
+accountRow : Account -> Element { s | html : Supported } msg
+accountRow a =
+    Surface.view Surface.surfaceContainerHigh
+        [ Shape.corner Shape.large, Layout.class "flex items-center gap-3 p-3" ]
+        [ Surface.view Surface.secondaryContainer
+            [ Shape.corner Shape.full, Layout.class "flex items-center justify-center p-2" ]
+            [ Icon.view [ Icon.name a.icon ] [] ]
+        , Layout.div "flex flex-col min-w-0"
+            [ Kit.body Value.medium [] [ Kit.text a.name ]
+            , Kit.title Value.medium [] [ Kit.text a.balance ]
+            ]
+        ]
+
+
+
+-- BUDGETS ---------------------------------------------------------------------
+
+
+budgetsSection : Element { s | card : Supported } msg
+budgetsSection =
+    sectionCard "Budgets"
+        (Layout.div "flex flex-col gap-5"
+            (List.map budgetRow budgets)
+        )
+
+
+budgetRow : Budget -> Element { s | html : Supported } msg
+budgetRow b =
+    Layout.div "flex flex-col gap-2"
+        [ Layout.div "flex items-center justify-between gap-2"
+            [ Kit.body Value.medium [] [ Kit.text b.category ]
+            , Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text b.amount ]
+            ]
+        , Progress.linear
+            [ Progress.value b.used, Progress.max b.max ]
+            []
+        ]
+
+
+
+-- RECENT ACTIVITY -------------------------------------------------------------
+
+
+activitySection : Element { s | card : Supported } msg
+activitySection =
+    sectionCard "Recent activity"
+        (Layout.div "flex flex-col"
+            (List.intersperse (Divider.view [] [])
+                (List.map activityRow activity)
+            )
+        )
+
+
+activityRow : Activity -> Element { s | listItem : Supported } msg
+activityRow a =
+    let
+        role : TextColor
+        role =
+            if a.incoming then
+                Kit.primary
+
+            else
+                Kit.onSurface
+    in
     ListItem.view []
-        [ ListItem.child (Kit.text category)
-        , ListItem.supportingText (Kit.text amount)
+        [ ListItem.leading
+            (Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text a.date ])
+        , ListItem.child (Kit.text a.description)
         , ListItem.trailing
-            (EscapeHatch.asElement
-                (Native.div [ Seam.asAttribute (Attr.class "w-32") ]
-                    [ Progress.linear [ Progress.value used, Progress.max 1 ] [] ]
-                )
-            )
+            (Kit.title Value.medium [ role ] [ Kit.text a.amount ])
+        ]
+
+
+
+-- SHARED SECTION CARD ---------------------------------------------------------
+
+
+sectionCard : String -> Element any msg -> Element { r | card : Supported } msg
+sectionCard heading content =
+    Card.view [ Card.variant Value.outlined ]
+        [ Card.header
+            (Kit.title Value.large [] [ Kit.text heading ])
+        , Card.content content
         ]
