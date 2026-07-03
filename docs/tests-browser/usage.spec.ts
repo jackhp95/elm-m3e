@@ -17,7 +17,15 @@ test("/components/button shows a live Usage section with code", async ({
   page.on("pageerror", (e) => errors.push(String(e)));
 
   await page.goto("/components/button");
-  await page.waitForLoadState("networkidle");
+  // Not `waitForLoadState("networkidle")`: the elm-pages dev server holds a
+  // long-lived `/stream` SSE connection open, so network idle never fires.
+  // Wait deterministically for the live preview to populate and upgrade.
+  await page.waitForFunction(() => {
+    const hosts = [...document.querySelectorAll("raw-html")];
+    return hosts
+      .flatMap((h) => [...h.querySelectorAll("m3e-button")])
+      .some((el) => (el as HTMLElement & { shadowRoot: unknown }).shadowRoot);
+  });
 
   // (1) Usage heading present.
   await expect(page.getByText("Usage", { exact: true }).first()).toBeVisible();
@@ -43,7 +51,8 @@ test("the API-layer toggle switches Usage code across all four layers", async ({
   page,
 }) => {
   await page.goto("/components/button");
-  await page.waitForLoadState("networkidle");
+  // Not `waitForLoadState("networkidle")` (the dev server's `/stream` SSE never
+  // idles). The `toBeVisible` assertions below already auto-wait.
 
   // Default layer = Top: strict M3e.* Elm.
   await expect(page.getByText("M3e.Button.view").first()).toBeVisible();

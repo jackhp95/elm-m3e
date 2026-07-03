@@ -50,7 +50,21 @@ test.describe("every component demo upgrades and mounts cleanly", () => {
       page.on("pageerror", (e) => errors.push(String(e)));
 
       await page.goto(`/components/${slug}`);
-      await page.waitForLoadState("networkidle");
+      // Wait for the demo to actually mount its live components. NOT
+      // `waitForLoadState("networkidle")`: the elm-pages dev server holds a
+      // long-lived `/stream` SSE connection open for live-reload, so the page
+      // never reaches network idle and the wait would hang until timeout.
+      // Instead wait deterministically for at least one m3e element to upgrade
+      // (the same condition assertion (3) below verifies).
+      await page.waitForFunction((sel) => {
+        const root = document.querySelector(sel) ?? document.body;
+        return [...root.querySelectorAll("*")].some((el) => {
+          const t = el.tagName.toLowerCase();
+          if (!t.startsWith("m3e-")) return false;
+          const Def = customElements.get(t);
+          return Def ? el instanceof Def : false;
+        });
+      }, CONTENT);
 
       // (2) every m3e-* tag in the demo content is a registered custom element.
       const unregistered = await page.evaluate((sel) => {
