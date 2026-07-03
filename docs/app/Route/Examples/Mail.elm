@@ -27,13 +27,12 @@ import Html
 import Html.Attributes as Attr
 import Html.Events
 import Kit
-import Kit.Shape as Shape
+import Kit.Avatar as Avatar
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
 import M3e.AppBar as AppBar
 import M3e.AssistChip as AssistChip
-import M3e.Avatar as Avatar
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Fab as Fab
@@ -359,7 +358,7 @@ messageRow selected index message =
         , Seam.asAttribute (Html.Events.onClick (SelectMessage index))
         ]
         [ ListItem.view []
-            [ ListItem.leading (avatar message.initials)
+            [ ListItem.leading (Avatar.initials message.initials)
             , ListItem.child (Kit.text message.sender)
             , ListItem.supportingText
                 (Layout.span "block"
@@ -371,22 +370,6 @@ messageRow selected index message =
             , ListItem.trailing
                 (Kit.label Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.time ])
             ]
-        ]
-
-
-{-| A circular avatar: initials centered on a `secondaryContainer` disc, shaped
-`full` via the shape seam.
--}
-avatar : String -> Element { s | avatar : Supported } msg
-avatar initials =
-    Avatar.view []
-        [ Avatar.child
-            (Surface.view Surface.secondaryContainer
-                [ Shape.corner Shape.full
-                , Layout.class "flex h-10 w-10 items-center justify-center"
-                ]
-                [ Kit.label Value.medium [] [ Kit.text initials ] ]
-            )
         ]
 
 
@@ -402,7 +385,7 @@ readingPane message =
     Layout.colWith "flex flex-col gap-6 p-6"
         [ Kit.headline Value.small [ Kit.onSurface ] [ Kit.text message.subject ]
         , Layout.rowWith "flex items-center gap-3"
-            [ avatar message.initials
+            [ Avatar.initials message.initials
             , Layout.colWith "flex flex-col"
                 [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text message.sender ]
                 , Kit.label Value.small [ Kit.onSurfaceVariant ] [ Kit.text ("to me · " ++ message.time) ]
