@@ -5,6 +5,9 @@ module M3e.ScrollContainer exposing
 {-|
 A vertically oriented content container which presents dividers above and below content when scrolled.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, dividers, thin, child, children
 -}
 

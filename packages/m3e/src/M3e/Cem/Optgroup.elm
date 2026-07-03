@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| Groups options under a subheading.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `label`: Renders the label of the group.
 -}

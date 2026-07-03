@@ -1,13 +1,13 @@
 module M3e.Cem.MultiYearView exposing
-    ( multiYearView, today, date, activeDate, minDate, maxDate
-    , onChange, onActiveChange
+    ( multiYearView, active, today, date, activeDate, minDate
+    , maxDate, onChange, onActiveChange
     )
 
 {-|
 Middle layer for `<m3e-multi-year-view>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MultiYearView` module for everyday use.
 
-@docs multiYearView, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange
+@docs multiYearView, active, today, date, activeDate, minDate
+@docs maxDate, onChange, onActiveChange
 -}
 
 
@@ -28,7 +28,8 @@ import M3e.Value
 - `active-change`: No description
 -}
 multiYearView :
-    List (M3e.Cem.Attr.Attr { today : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { active : M3e.Value.Supported
+    , today : M3e.Value.Supported
     , date : M3e.Value.Supported
     , activeDate : M3e.Value.Supported
     , minDate : M3e.Value.Supported
@@ -43,6 +44,12 @@ multiYearView attributes children =
     M3e.Cem.Html.MultiYearView.multiYearView
         (List.map M3e.Cem.Attr.toAttribute attributes)
         children
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
+active =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.MultiYearView.active
 
 
 {-| Today's date. (default: `new Date()`) -}

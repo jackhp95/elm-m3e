@@ -3,6 +3,9 @@ module M3e.Avatar exposing ( view, child, children )
 {-|
 An image, icon or textual initials representing a user or other identity.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Layout & style -->
 
 ## Examples

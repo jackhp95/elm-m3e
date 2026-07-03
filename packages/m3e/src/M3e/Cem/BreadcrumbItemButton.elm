@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| Create a m3e-breadcrumb-item-button element
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: No description
 -}

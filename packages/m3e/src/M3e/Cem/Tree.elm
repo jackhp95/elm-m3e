@@ -16,6 +16,9 @@ import M3e.Value
 
 {-| Presents hierarchical data in a tree structure.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected state changes.
 -}

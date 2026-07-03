@@ -13,7 +13,11 @@ import M3e.Cem.Html.BottomSheetTrigger
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to trigger a bottom sheet. -}
+{-| An element, nested within a clickable element, used to trigger a bottom sheet.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 bottomSheetTrigger :
     List (M3e.Cem.Attr.Attr { detent : M3e.Value.Supported
     , secondary : M3e.Value.Supported

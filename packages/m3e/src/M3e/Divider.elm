@@ -5,6 +5,9 @@ module M3e.Divider exposing
 {-|
 A thin line that separates content in lists or other containers.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Containment -->
 
 ## Examples

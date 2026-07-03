@@ -13,7 +13,11 @@ import M3e.Cem.Html.List
 import M3e.Value
 
 
-{-| A list of items. -}
+{-| A list of items.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 list :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported

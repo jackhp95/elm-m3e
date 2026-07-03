@@ -3,6 +3,9 @@ module M3e.LoadingIndicator exposing ( view, variant )
 {-|
 Shows indeterminate progress for a short wait time.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Communication -->
 
 ## Examples

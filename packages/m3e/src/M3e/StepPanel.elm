@@ -3,6 +3,9 @@ module M3e.StepPanel exposing ( view, child, actions, children )
 {-|
 A panel presented for a step in a wizard-like workflow.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `actions-`: Renders the actions bar of the panel.
 

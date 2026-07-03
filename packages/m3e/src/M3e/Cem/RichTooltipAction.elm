@@ -13,7 +13,11 @@ import M3e.Cem.Html.RichTooltipAction
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to dismiss a parenting rich tooltip. -}
+{-| An element, nested within a clickable element, used to dismiss a parenting rich tooltip.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 richTooltipAction :
     List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
     , slot : M3e.Value.Supported

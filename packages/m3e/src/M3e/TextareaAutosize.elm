@@ -5,6 +5,9 @@ module M3e.TextareaAutosize exposing
 {-|
 A non-visual element used to automatically resize a `textarea` to fit its content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Text inputs -->
 
 ## Examples

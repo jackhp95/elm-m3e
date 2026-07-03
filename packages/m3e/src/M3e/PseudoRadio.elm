@@ -3,6 +3,9 @@ module M3e.PseudoRadio exposing ( view, checked, disabled )
 {-|
 An element which looks like a radio button.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, checked, disabled
 -}
 

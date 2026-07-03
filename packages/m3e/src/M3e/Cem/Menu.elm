@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| Presents a list of choices on a temporary surface.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.

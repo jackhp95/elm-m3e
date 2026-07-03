@@ -3,6 +3,9 @@ module M3e.ThemeIcon exposing ( view, color, scheme, variant )
 {-|
 An icon that visually presents a preview of a theme.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, color, scheme, variant
 -}
 

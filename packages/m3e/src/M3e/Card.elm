@@ -8,6 +8,9 @@ module M3e.Card exposing
 {-|
 A content container for text, images (or other media), and actions in the context of a single subject.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: Dispatched when the element is clicked.
 

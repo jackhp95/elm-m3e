@@ -22,6 +22,9 @@ import M3e.Value
 
 {-| Provides navigation for paged information, typically used with a table.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `page`: Dispatched when a user selects a different page size or navigates to another page.
 
@@ -113,9 +116,12 @@ pageIndex =
 
 {-| The number of items to display in a page. (default: `50`) -}
 pageSize :
-    String -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
-pageSize =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Paginator.pageSize
+    M3e.Value.Value { all : M3e.Value.Supported }
+    -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
+pageSize v_ =
+    M3e.Cem.Attr.attribute
+        M3e.Cem.Html.Paginator.pageSize
+        (M3e.Value.toString v_)
 
 
 {-| A comma separated list of available page sizes. (default: `"5,10,25,50,100"`) -}

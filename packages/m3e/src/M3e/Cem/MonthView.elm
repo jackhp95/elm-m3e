@@ -1,13 +1,13 @@
 module M3e.Cem.MonthView exposing
-    ( monthView, rangeStart, rangeEnd, today, date, activeDate
-    , minDate, maxDate, onChange, onActiveChange
+    ( monthView, rangeStart, rangeEnd, active, today, date
+    , activeDate, minDate, maxDate, onChange, onActiveChange
     )
 
 {-|
 Middle layer for `<m3e-month-view>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MonthView` module for everyday use.
 
-@docs monthView, rangeStart, rangeEnd, today, date, activeDate
-@docs minDate, maxDate, onChange, onActiveChange
+@docs monthView, rangeStart, rangeEnd, active, today, date
+@docs activeDate, minDate, maxDate, onChange, onActiveChange
 -}
 
 
@@ -30,6 +30,7 @@ import M3e.Value
 monthView :
     List (M3e.Cem.Attr.Attr { rangeStart : M3e.Value.Supported
     , rangeEnd : M3e.Value.Supported
+    , active : M3e.Value.Supported
     , today : M3e.Value.Supported
     , date : M3e.Value.Supported
     , activeDate : M3e.Value.Supported
@@ -59,6 +60,12 @@ rangeEnd :
     String -> M3e.Cem.Attr.Attr { c | rangeEnd : M3e.Value.Supported } msg
 rangeEnd =
     M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.rangeEnd
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
+active =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.active
 
 
 {-| Today's date. (default: `new Date()`) -}

@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A container for a set of radio buttons.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the checked state of a radio button changes.
 - `input`: Dispatched when the checked state of a radio button changes.

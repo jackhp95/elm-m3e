@@ -13,7 +13,11 @@ import M3e.Cem.Html.StateLayer
 import M3e.Value
 
 
-{-| Provides focus and hover state layer treatment for an interactive element. -}
+{-| Provides focus and hover state layer treatment for an interactive element.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 stateLayer :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHover : M3e.Value.Supported

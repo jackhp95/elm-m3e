@@ -15,7 +15,11 @@ import M3e.Cem.Html.TextareaAutosize
 import M3e.Value
 
 
-{-| A non-visual element used to automatically resize a `textarea` to fit its content. -}
+{-| A non-visual element used to automatically resize a `textarea` to fit its content.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 textareaAutosize :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported

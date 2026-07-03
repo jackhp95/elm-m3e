@@ -13,7 +13,11 @@ import M3e.Cem.Html.FocusRing
 import M3e.Value
 
 
-{-| A focus ring used to depict a strong focus indicator. -}
+{-| A focus ring used to depict a strong focus indicator.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 focusRing :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , inward : M3e.Value.Supported

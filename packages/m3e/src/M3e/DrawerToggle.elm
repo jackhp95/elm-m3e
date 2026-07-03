@@ -3,6 +3,9 @@ module M3e.DrawerToggle exposing ( view, for )
 {-|
 An element, nested within a clickable element, used to toggle the opened state of a drawer.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, for
 -}
 

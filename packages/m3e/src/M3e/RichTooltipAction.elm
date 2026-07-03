@@ -3,6 +3,9 @@ module M3e.RichTooltipAction exposing ( view, disableRestoreFocus )
 {-|
 An element, nested within a clickable element, used to dismiss a parenting rich tooltip.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, disableRestoreFocus
 -}
 

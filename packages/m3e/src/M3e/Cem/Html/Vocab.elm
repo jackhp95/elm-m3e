@@ -1,69 +1,68 @@
 module M3e.Cem.Html.Vocab exposing
-    ( action, actionable, activeDate, alert, anchorOffset, animation
-    , ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered, checked
-    , clearLabel, clearable, closeLabel, color, completed, confirmLabel, contained
-    , contrast, current, date, density, detent, disableClose, disableHighlight
-    , disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel
-    , dismissible, dividers, download, duration, editable, elevated, emphasized
-    , end, endDivider, endMode, extended, filled, filter, firstPageLabel
-    , fitAnchorWidth, floatLabel, for, grade, handle, handleLabel, headerPosition
-    , hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon
-    , hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href, icons
-    , indeterminate, inline, inset, insetEnd, insetStart, invalid, inward
-    , itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length
-    , level, linear, loaded, loading, loadingLabel, lowered, max
-    , maxDate, maxDepth, maxRows, min, minDate, minRows, modal
-    , mode, motion, multi, name, nextMonthLabel, nextMultiYearLabel, nextPageLabel
-    , nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
-    , orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
-    , position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel
-    , radius, range, rangeEnd, rangeStart, rel, removable, removeLabel
-    , required, returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex
-    , shape, showDelay, showFirstLastButtons, size, start, startAt, startDivider
-    , startMode, startView, state, step, stretch, strongFocus, submenu
-    , target, term, thin, threshold, today, toggle, toggleDirection
-    , togglePosition, touchGestures, type_, unbounded, value, variant, vertical
-    , weight, width, wrap, wrapDetents, onChange, onOpening, onOpened
-    , onClosing, onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle
-    , onValueChange, onQuery, onClear, onPage, onCancel, onRemove, onInvalid
-    , onActiveChange, onHighlight
+    ( action, actionable, active, activeDate, alert, anchorOffset
+    , animation, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered
+    , checked, clearLabel, clearable, closeLabel, color, completed, confirmLabel
+    , contained, contrast, current, date, density, detent, disableClose
+    , disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete
+    , dismissLabel, dismissible, dividers, download, duration, editable, elevated
+    , emphasized, end, endDivider, endMode, extended, filled, filter
+    , firstPageLabel, fitAnchorWidth, floatLabel, for, grade, handle, handleLabel
+    , headerPosition, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker
+    , hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href
+    , icons, indeterminate, inline, inset, insetEnd, insetStart, invalid
+    , inward, itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel
+    , length, level, linear, loaded, loading, loadingLabel, lowered
+    , max, maxDate, maxDepth, maxRows, min, minDate, minRows
+    , modal, mode, motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel
+    , nextYearLabel, noAnimate, noDataLabel, noFocusTrap, opticalSize, optional, orientation
+    , overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position
+    , positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
+    , range, rangeEnd, rangeStart, rel, removable, removeLabel, returnValue
+    , scheme, scrollStrategy, secondary, selected, selectedIndex, shape, showDelay
+    , showFirstLastButtons, size, start, startAt, startDivider, startMode, startView
+    , state, step, stretch, strongFocus, submenu, target, term
+    , thin, threshold, today, toggle, toggleDirection, togglePosition, touchGestures
+    , type_, unbounded, variant, vertical, weight, width, wrap
+    , wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed, onClick
+    , onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
+    , onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
     )
 
 {-|
 Shared bottom vocabulary: every attribute (merged to one spec per name) and every event as raw, untyped `elm/html` setters. This is the single component-agnostic source the phantom middle vocab wraps — the rawest escape in the gradient.
 
-@docs action, actionable, activeDate, alert, anchorOffset, animation
-@docs ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive, centered
-@docs checked, clearLabel, clearable, closeLabel, color, completed
-@docs confirmLabel, contained, contrast, current, date, density
-@docs detent, disableClose, disableHighlight, disableHover, disablePagination, disableRestoreFocus
-@docs disabled, disabledInteractive, discrete, dismissLabel, dismissible, dividers
-@docs download, duration, editable, elevated, emphasized, end
-@docs endDivider, endMode, extended, filled, filter, firstPageLabel
-@docs fitAnchorWidth, floatLabel, for, grade, handle, handleLabel
-@docs headerPosition, hideDelay, hideFriction, hideLoading, hideNoData, hidePageSize
-@docs hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle, hideable
-@docs highlightMode, href, icons, indeterminate, inline, inset
-@docs insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel
-@docs label, labelPosition, labelled, lastPageLabel, length, level
-@docs linear, loaded, loading, loadingLabel, lowered, max
-@docs maxDate, maxDepth, maxRows, min, minDate, minRows
-@docs modal, mode, motion, multi, name, nextMonthLabel
+@docs action, actionable, active, activeDate, alert, anchorOffset
+@docs animation, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive
+@docs centered, checked, clearLabel, clearable, closeLabel, color
+@docs completed, confirmLabel, contained, contrast, current, date
+@docs density, detent, disableClose, disableHighlight, disableHover, disablePagination
+@docs disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible
+@docs dividers, download, duration, editable, elevated, emphasized
+@docs end, endDivider, endMode, extended, filled, filter
+@docs firstPageLabel, fitAnchorWidth, floatLabel, for, grade, handle
+@docs handleLabel, headerPosition, hideDelay, hideFriction, hideLoading, hideNoData
+@docs hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle
+@docs hideable, highlightMode, href, icons, indeterminate, inline
+@docs inset, insetEnd, insetStart, invalid, inward, itemLabel
+@docs itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length
+@docs level, linear, loaded, loading, loadingLabel, lowered
+@docs max, maxDate, maxDepth, maxRows, min, minDate
+@docs minRows, modal, mode, motion, multi, nextMonthLabel
 @docs nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap
-@docs open, opticalSize, optional, orientation, overshootLimit, pageIndex
-@docs pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX
-@docs positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
-@docs range, rangeEnd, rangeStart, rel, removable, removeLabel
-@docs required, returnValue, scheme, scrollStrategy, secondary, selected
-@docs selectedIndex, shape, showDelay, showFirstLastButtons, size, start
-@docs startAt, startDivider, startMode, startView, state, step
-@docs stretch, strongFocus, submenu, target, term, thin
-@docs threshold, today, toggle, toggleDirection, togglePosition, touchGestures
-@docs type_, unbounded, value, variant, vertical, weight
-@docs width, wrap, wrapDetents, onChange, onOpening, onOpened
-@docs onClosing, onClosed, onClick, onBeforeinput, onInput, onBeforetoggle
-@docs onToggle, onValueChange, onQuery, onClear, onPage, onCancel
-@docs onRemove, onInvalid, onActiveChange, onHighlight
+@docs opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize
+@docs pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
+@docs previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range
+@docs rangeEnd, rangeStart, rel, removable, removeLabel, returnValue
+@docs scheme, scrollStrategy, secondary, selected, selectedIndex, shape
+@docs showDelay, showFirstLastButtons, size, start, startAt, startDivider
+@docs startMode, startView, state, step, stretch, strongFocus
+@docs submenu, target, term, thin, threshold, today
+@docs toggle, toggleDirection, togglePosition, touchGestures, type_, unbounded
+@docs variant, vertical, weight, width, wrap, wrapDetents
+@docs onChange, onOpening, onOpened, onClosing, onClosed, onClick
+@docs onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
+@docs onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
+@docs onHighlight
 -}
 
 
@@ -84,6 +83,12 @@ action =
 actionable : Bool -> Html.Attribute msg
 actionable val_ =
     Html.Attributes.property "actionable" (Json.Encode.bool val_)
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> Html.Attribute msg
+active val_ =
+    Html.Attributes.property "active" (Json.Encode.bool val_)
 
 
 {-| The active date. (default: `new Date()`) -}
@@ -678,12 +683,6 @@ multi val_ =
     Html.Attributes.property "multi" (Json.Encode.bool val_)
 
 
-{-| The name that identifies the element when submitting the associated form. -}
-name : String -> Html.Attribute msg
-name =
-    Html.Attributes.attribute "name"
-
-
 {-| The accessible label given to the button used to move to the next month. (default: `"Next month"`) -}
 nextMonthLabel : String -> Html.Attribute msg
 nextMonthLabel =
@@ -724,12 +723,6 @@ noDataLabel =
 noFocusTrap : Bool -> Html.Attribute msg
 noFocusTrap val_ =
     Html.Attributes.property "noFocusTrap" (Json.Encode.bool val_)
-
-
-{-| Whether the item is expanded. (default: `false`) -}
-open : Bool -> Html.Attribute msg
-open val_ =
-    Html.Attributes.property "open" (Json.Encode.bool val_)
 
 
 {-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`) -}
@@ -868,12 +861,6 @@ removable val_ =
 removeLabel : String -> Html.Attribute msg
 removeLabel =
     Html.Attributes.attribute "remove-label"
-
-
-{-| Whether the element is required. (default: `false`) -}
-required : Bool -> Html.Attribute msg
-required val_ =
-    Html.Attributes.property "required" (Json.Encode.bool val_)
 
 
 {-| The value to return from the dialog. (default: `""`) -}
@@ -1060,12 +1047,6 @@ type_ =
 unbounded : Bool -> Html.Attribute msg
 unbounded val_ =
     Html.Attributes.property "unbounded" (Json.Encode.bool val_)
-
-
-{-| A string representing the value of the switch. (default: `"on"`) -}
-value : String -> Html.Attribute msg
-value =
-    Html.Attributes.attribute "value"
 
 
 {-| The appearance variant of the toolbar. (default: `"standard"`) -}

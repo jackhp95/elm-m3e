@@ -13,7 +13,11 @@ import M3e.Cem.Html.ChipSet
 import M3e.Value
 
 
-{-| A container used to organize chips into a cohesive unit. -}
+{-| A container used to organize chips into a cohesive unit.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 chipSet :
     List (M3e.Cem.Attr.Attr { vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported

@@ -15,7 +15,11 @@ import M3e.Cem.Html.Heading
 import M3e.Value
 
 
-{-| A heading to a page or section. -}
+{-| A heading to a page or section.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 heading :
     List (M3e.Cem.Attr.Attr { emphasized : M3e.Value.Supported
     , level : M3e.Value.Supported

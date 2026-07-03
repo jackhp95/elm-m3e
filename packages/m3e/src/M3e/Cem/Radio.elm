@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A radio button that allows a user to select one option from a set of options.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the checked state changes.
 - `input`: Dispatched when the checked state changes.

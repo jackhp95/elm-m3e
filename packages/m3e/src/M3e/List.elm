@@ -3,6 +3,9 @@ module M3e.List exposing ( view, variant, child, children )
 {-|
 A list of items.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Layout & style -->
 
 ## Examples

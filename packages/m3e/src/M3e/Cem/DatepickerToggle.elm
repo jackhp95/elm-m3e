@@ -13,7 +13,11 @@ import M3e.Cem.Html.DatepickerToggle
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to toggle a datepicker. -}
+{-| An element, nested within a clickable element, used to toggle a datepicker.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 datepickerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported

@@ -13,7 +13,11 @@ import M3e.Cem.Html.DialogAction
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to close a parenting dialog. -}
+{-| An element, nested within a clickable element, used to close a parenting dialog.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 dialogAction :
     List (M3e.Cem.Attr.Attr { returnValue : M3e.Value.Supported
     , slot : M3e.Value.Supported

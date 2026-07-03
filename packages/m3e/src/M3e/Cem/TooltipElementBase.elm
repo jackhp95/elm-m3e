@@ -15,7 +15,11 @@ import M3e.Cem.Html.TooltipElementBase
 import M3e.Value
 
 
-{-| Provides a base implementation for a tooltip. This class must be inherited. -}
+{-| Provides a base implementation for a tooltip. This class must be inherited.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 tooltipElementBase :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , showDelay : M3e.Value.Supported

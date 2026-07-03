@@ -5,6 +5,9 @@ module M3e.Badge exposing
 {-|
 A visual indicator used to label content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Communication -->
 
 ## Examples

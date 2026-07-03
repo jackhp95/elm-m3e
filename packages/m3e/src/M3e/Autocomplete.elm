@@ -7,6 +7,9 @@ module M3e.Autocomplete exposing
 {-|
 Enhances a text input with suggested options.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the committed value changes due to selecting an option or clearing the input.
 - `query`: Dispatched when the input is focused or when the user modifies its value.

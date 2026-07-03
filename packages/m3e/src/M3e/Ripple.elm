@@ -5,6 +5,9 @@ module M3e.Ripple exposing
 {-|
 Connects user input to screen reactions using ripples.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, centered, disabled, for, radius, unbounded
 -}
 

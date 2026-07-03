@@ -13,7 +13,11 @@ import M3e.Cem.Html.FabMenuTrigger
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to open a floating action button (FAB) menu. -}
+{-| An element, nested within a clickable element, used to open a floating action button (FAB) menu.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 fabMenuTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported

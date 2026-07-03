@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| An on/off control that can be toggled by clicking.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the checked state changes.
 - `input`: Dispatched when the checked state changes.

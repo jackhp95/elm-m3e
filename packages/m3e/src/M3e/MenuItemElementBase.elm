@@ -3,6 +3,9 @@ module M3e.MenuItemElementBase exposing ( view, disabled, onClick )
 {-|
 A base implementation for an item of a menu. This class must be inherited.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: No description
 

@@ -13,7 +13,11 @@ import M3e.Cem.Html.Avatar
 import M3e.Value
 
 
-{-| An image, icon or textual initials representing a user or other identity. -}
+{-| An image, icon or textual initials representing a user or other identity.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 avatar :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)

@@ -6,6 +6,9 @@ module M3e.Collapsible exposing
 {-|
 A container used to expand and collapse content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `opening`: Dispatched when the collapsible begins to open.
 - `opened`: Dispatched when the collapsible has opened.

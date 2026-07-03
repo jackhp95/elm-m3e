@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| A bar, placed a the top of a screen, used to help users navigate through an application.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `leading`: Renders content positioned at the start of the bar.
 - `subtitle`: Renders the subtitle of the bar.

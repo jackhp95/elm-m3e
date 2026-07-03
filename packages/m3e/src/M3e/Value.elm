@@ -11,14 +11,14 @@ module M3e.Value exposing
     , hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle, puffy
     , puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny, triangle
     , verySunny, docked, fullscreen, buffer, determinate, indeterminate, query
-    , flat, wavy, compact, expanded, contained, uncontained, segmented
-    , low, sharp, display, headline, label, title, tertiary
-    , button, reset, submit, primaryContainer, secondaryContainer, surface, tertiaryContainer
-    , over, push, side, modal, month, multiYear, year
-    , off, on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected
-    , default, narrow, wide, text, date, location, page
-    , step, time, true, contains, endsWith, startsWith, always
-    , never, loading, noData, hide, reposition, aboveBelow
+    , flat, wavy, all, compact, expanded, contained, uncontained
+    , segmented, low, sharp, display, headline, label, title
+    , tertiary, button, reset, submit, primaryContainer, secondaryContainer, surface
+    , tertiaryContainer, over, push, side, modal, month, multiYear
+    , year, off, on, aboveAfter, aboveBefore, belowAfter, belowBefore
+    , connected, default, narrow, wide, text, date, location
+    , page, step, time, true, contains, endsWith, startsWith
+    , always, never, loading, noData, hide, reposition, aboveBelow
     )
 
 {-|
@@ -38,15 +38,16 @@ Token values for the typed enum attributes. A `Value tags` is a phantom-tagged s
 @docs pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted
 @docs softBoom, softBurst, sunny, triangle, verySunny, docked
 @docs fullscreen, buffer, determinate, indeterminate, query, flat
-@docs wavy, compact, expanded, contained, uncontained, segmented
-@docs low, sharp, display, headline, label, title
-@docs tertiary, button, reset, submit, primaryContainer, secondaryContainer
-@docs surface, tertiaryContainer, over, push, side, modal
-@docs month, multiYear, year, off, on, aboveAfter
-@docs aboveBefore, belowAfter, belowBefore, connected, default, narrow
-@docs wide, text, date, location, page, step
-@docs time, true, contains, endsWith, startsWith, always
-@docs never, loading, noData, hide, reposition, aboveBelow
+@docs wavy, all, compact, expanded, contained, uncontained
+@docs segmented, low, sharp, display, headline, label
+@docs title, tertiary, button, reset, submit, primaryContainer
+@docs secondaryContainer, surface, tertiaryContainer, over, push, side
+@docs modal, month, multiYear, year, off, on
+@docs aboveAfter, aboveBefore, belowAfter, belowBefore, connected, default
+@docs narrow, wide, text, date, location, page
+@docs step, time, true, contains, endsWith, startsWith
+@docs always, never, loading, noData, hide, reposition
+@docs aboveBelow
 -}
 
 
@@ -556,6 +557,12 @@ flat =
 wavy : Value { a | wavy : Supported }
 wavy =
     M3e.Value.Core.token "wavy"
+
+
+{-| The `all` token. -}
+all : Value { a | all : Supported }
+all =
+    M3e.Value.Core.token "all"
 
 
 {-| The `compact` token. -}

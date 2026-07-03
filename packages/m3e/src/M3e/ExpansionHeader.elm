@@ -6,6 +6,9 @@ module M3e.ExpansionHeader exposing
 {-|
 A button used to toggle the expanded state of an expansion panel.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: Dispatched when the element is clicked.
 

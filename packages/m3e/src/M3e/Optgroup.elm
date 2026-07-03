@@ -3,6 +3,9 @@ module M3e.Optgroup exposing ( view, child, label, children )
 {-|
 Groups options under a subheading.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `label`: Renders the label of the group.
 

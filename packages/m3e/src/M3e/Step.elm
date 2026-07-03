@@ -7,6 +7,9 @@ module M3e.Step exposing
 {-|
 A step in a wizard-like workflow.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the selected state changes.
 - `input`: Dispatched when the selected state changes.

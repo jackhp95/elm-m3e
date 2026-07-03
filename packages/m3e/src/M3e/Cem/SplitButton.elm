@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| A button used to show an action with a menu of related actions.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `leading-button`: The leading button used to perform the primary action.
 - `trailing-button`: The trailing icon button used to open a menu of related actions.

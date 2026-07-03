@@ -13,7 +13,11 @@ import M3e.Cem.Html.MenuItemGroup
 import M3e.Value
 
 
-{-| Groups related items (such a radios) in a menu. -}
+{-| Groups related items (such a radios) in a menu.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 menuItemGroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)

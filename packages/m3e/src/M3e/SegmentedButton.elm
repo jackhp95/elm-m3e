@@ -6,6 +6,9 @@ module M3e.SegmentedButton exposing
 {-|
 A button that allows a user to select from a limited set of options.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the checked state of a segment changes.
 - `beforeinput`: Dispatched before the checked state of a segment changes.

@@ -7,6 +7,9 @@ module M3e.SearchView exposing
 {-|
 A surface that presents suggestions and results for a search.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `query`: Dispatched when the view is opened or when the user modifies the search term.
 - `clear`: Dispatched when the search term is cleared.

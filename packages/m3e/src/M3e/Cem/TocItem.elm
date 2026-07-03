@@ -16,6 +16,9 @@ import M3e.Value
 
 {-| An item in a table of contents.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: Dispatched when the element is clicked.
 -}

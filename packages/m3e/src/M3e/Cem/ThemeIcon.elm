@@ -13,7 +13,11 @@ import M3e.Cem.Html.ThemeIcon
 import M3e.Value
 
 
-{-| An icon that visually presents a preview of a theme. -}
+{-| An icon that visually presents a preview of a theme.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 themeIcon :
     List (M3e.Cem.Attr.Attr { color : M3e.Value.Supported
     , scheme : M3e.Value.Supported

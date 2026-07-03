@@ -13,7 +13,11 @@ import M3e.Cem.Html.TabPanel
 import M3e.Value
 
 
-{-| A panel presented for a tab. -}
+{-| A panel presented for a tab.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 tabPanel :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)
