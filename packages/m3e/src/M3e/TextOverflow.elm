@@ -3,6 +3,9 @@ module M3e.TextOverflow exposing ( view, child, children )
 {-|
 An inline container which presents an ellipsis when content overflows.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, child, children
 -}
 

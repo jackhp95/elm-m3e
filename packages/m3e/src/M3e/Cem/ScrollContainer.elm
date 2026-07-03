@@ -13,7 +13,11 @@ import M3e.Cem.Html.ScrollContainer
 import M3e.Value
 
 
-{-| A vertically oriented content container which presents dividers above and below content when scrolled. -}
+{-| A vertically oriented content container which presents dividers above and below content when scrolled.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 scrollContainer :
     List (M3e.Cem.Attr.Attr { dividers : M3e.Value.Supported
     , thin : M3e.Value.Supported

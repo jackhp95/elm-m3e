@@ -6,6 +6,9 @@ module M3e.NavRail exposing
 {-|
 A vertical bar, typically used on larger devices, that allows a user to switch between views.
 
+**Component Info:**
+- **Extends:** `M3eNavBarElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the selected state of an item changes.
 - `input`: Dispatched when the selected state of an item changes.

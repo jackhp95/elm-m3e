@@ -13,7 +13,11 @@ import M3e.Cem.Html.PseudoRadio
 import M3e.Value
 
 
-{-| An element which looks like a radio button. -}
+{-| An element which looks like a radio button.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 pseudoRadio :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported

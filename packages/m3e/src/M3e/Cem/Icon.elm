@@ -17,7 +17,11 @@ import M3e.Cem.Html.Icon
 import M3e.Value
 
 
-{-| A small symbol used to easily identify an action or category. -}
+{-| A small symbol used to easily identify an action or category.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 icon :
     List (M3e.Cem.Attr.Attr { filled : M3e.Value.Supported
     , grade : M3e.Value.Supported

@@ -3,6 +3,9 @@ module M3e.ContentPane exposing ( view, child, children )
 {-|
 A shaped surface for vertically scrollable content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Containment -->
 
 ## Examples

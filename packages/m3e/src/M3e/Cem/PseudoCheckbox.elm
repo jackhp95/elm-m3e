@@ -13,7 +13,11 @@ import M3e.Cem.Html.PseudoCheckbox
 import M3e.Value
 
 
-{-| An element which looks like a checkbox. -}
+{-| An element which looks like a checkbox.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 pseudoCheckbox :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported

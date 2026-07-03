@@ -6,6 +6,9 @@ module M3e.Icon exposing
 {-|
 A small symbol used to easily identify an action or category.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Layout & style -->
 
 ## Examples

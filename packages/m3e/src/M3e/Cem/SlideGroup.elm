@@ -17,6 +17,9 @@ import M3e.Value
 
 {-| Presents pagination controls used to scroll overflowing content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `next-icon`: Renders the icon to present for the next button.
 - `prev-icon`: Renders the icon to present for the previous button.

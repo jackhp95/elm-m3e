@@ -6,10 +6,29 @@ module M3e.Slider exposing
 {-|
 Allows for the selection of numeric values from a range.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the value of a thumb changes.
 - `input`: Dispatched when the value of a thumb changes.
 - `change`: Dispatched when the value of a thumb changes.
+
+<!-- elm-cem:docmeta category=Selection -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Discrete labelled volume slider" -->
+```elm
+M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.discrete True, M3e.Slider.min 0, M3e.Slider.max 100, M3e.Slider.step 10, M3e.Slider.size M3e.Value.medium ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 40 ] []) ]
+```
+
+<!-- elm-cem:example title="Range slider with two thumbs" -->
+```elm
+M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.min 0, M3e.Slider.max 1000, M3e.Slider.step 50 ] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.name "min-price", M3e.SliderThumb.value 200 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.name "max-price", M3e.SliderThumb.value 800 ] [] ])
+```
 
 @docs view, disabled, discrete, labelled, max, min
 @docs step, size, onBeforeinput, onInput, onChange, child

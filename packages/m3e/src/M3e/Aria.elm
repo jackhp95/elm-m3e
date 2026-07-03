@@ -5,7 +5,7 @@ so these setters are independent of the phantom slot/capability rows: each
 carries a fully-open capability row and therefore type-checks inside any
 component's attribute list (`M3e.<Component>.view [ M3e.Aria.label "…" ] …`).
 
-Per-component *requirements* (e.g. "a checkbox must be labelled") are enforced by
+Per-component _requirements_ (e.g. "a checkbox must be labelled") are enforced by
 elm-review rules, not by the type system.
 
 @docs label, labelledby, describedby

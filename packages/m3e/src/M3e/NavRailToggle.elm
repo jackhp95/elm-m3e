@@ -3,6 +3,9 @@ module M3e.NavRailToggle exposing ( view, for )
 {-|
 An element, nested within a clickable element, used to toggle the expanded state of a navigation rail.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, for
 -}
 

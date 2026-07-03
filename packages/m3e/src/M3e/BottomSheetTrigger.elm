@@ -5,6 +5,9 @@ module M3e.BottomSheetTrigger exposing
 {-|
 An element, nested within a clickable element, used to trigger a bottom sheet.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, detent, secondary, for, child, children
 -}
 

@@ -3,6 +3,9 @@ module M3e.MenuItemGroup exposing ( view, child, children )
 {-|
 Groups related items (such a radios) in a menu.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, child, children
 -}
 

@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A non-visual element responsible for application-level theming.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the theme changes.
 -}

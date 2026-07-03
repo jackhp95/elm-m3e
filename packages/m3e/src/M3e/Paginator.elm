@@ -7,6 +7,9 @@ module M3e.Paginator exposing
 {-|
 Provides navigation for paged information, typically used with a table.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `page`: Dispatched when a user selects a different page size or navigates to another page.
 
@@ -146,7 +149,8 @@ pageIndex =
 
 {-| The number of items to display in a page. (default: `50`) -}
 pageSize :
-    String -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
+    M3e.Value.Value { all : M3e.Value.Supported }
+    -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
 pageSize =
     M3e.Cem.Paginator.pageSize
 

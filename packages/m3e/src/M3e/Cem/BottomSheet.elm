@@ -22,6 +22,9 @@ import M3e.Value
 
 {-| A sheet used to show secondary content anchored to the bottom of the screen.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `opening`: Dispatched when the sheet begins to open.
 - `closing`: Dispatched when the sheet begins to close.

@@ -13,7 +13,11 @@ import M3e.Cem.Html.ContentPane
 import M3e.Value
 
 
-{-| A shaped surface for vertically scrollable content. -}
+{-| A shaped surface for vertically scrollable content.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 contentPane :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)

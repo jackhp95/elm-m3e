@@ -6,6 +6,9 @@ module M3e.TextHighlight exposing
 {-|
 Highlights text which matches a given search term.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `highlight`: Dispatched when content is highlighted.
 

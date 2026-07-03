@@ -8,6 +8,9 @@ module M3e.Datepicker exposing
 {-|
 Presents a date picker on a temporary surface.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected date changes.
 - `beforetoggle`: Dispatched before the toggle state changes.

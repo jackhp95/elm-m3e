@@ -6,6 +6,9 @@ module M3e.Toolbar exposing
 {-|
 Presents frequently used actions relevant to the current page.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Containment -->
 
 ## Examples

@@ -5,6 +5,9 @@ module M3e.FabMenu exposing
 {-|
 A menu, opened from a floating action button (FAB), used to display multiple related actions.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.

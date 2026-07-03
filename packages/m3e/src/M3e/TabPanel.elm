@@ -3,6 +3,9 @@ module M3e.TabPanel exposing ( view, child, children )
 {-|
 A panel presented for a tab.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, child, children
 -}
 

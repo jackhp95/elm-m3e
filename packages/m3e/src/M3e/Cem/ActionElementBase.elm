@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| A base implementation for an element, nested within a clickable element, used to
 perform an action. This class must be inherited.
+
+**Component Info:**
+- **Extends:** `LitElement`
 -}
 actionElementBase :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)

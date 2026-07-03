@@ -3,6 +3,9 @@ module M3e.FabMenuTrigger exposing ( view, for )
 {-|
 An element, nested within a clickable element, used to open a floating action button (FAB) menu.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, for
 -}
 

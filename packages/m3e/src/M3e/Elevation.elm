@@ -3,6 +3,9 @@ module M3e.Elevation exposing ( view, disabled, for, level )
 {-|
 Visually depicts elevation using a shadow.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, disabled, for, level
 -}
 

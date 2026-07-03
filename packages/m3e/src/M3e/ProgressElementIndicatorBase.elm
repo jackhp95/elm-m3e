@@ -3,6 +3,9 @@ module M3e.ProgressElementIndicatorBase exposing ( view, value, max, variant )
 {-|
 A base implementation for an element used to convey progress. This class must be inherited.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, value, max, variant
 -}
 

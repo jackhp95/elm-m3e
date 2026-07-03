@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A thumb used to select a value in a slider.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `value-change`: No description
 - `beforeinput`: Dispatched before the value changes.

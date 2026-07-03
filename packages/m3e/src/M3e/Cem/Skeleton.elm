@@ -13,7 +13,11 @@ import M3e.Cem.Html.Skeleton
 import M3e.Value
 
 
-{-| A visual placeholder that mimics the layout of content while it's still loading. -}
+{-| A visual placeholder that mimics the layout of content while it's still loading.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 skeleton :
     List (M3e.Cem.Attr.Attr { animation : M3e.Value.Supported
     , shape : M3e.Value.Supported

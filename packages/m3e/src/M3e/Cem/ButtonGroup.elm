@@ -13,7 +13,11 @@ import M3e.Cem.Html.ButtonGroup
 import M3e.Value
 
 
-{-| Organizes buttons and adds interactions between them. -}
+{-| Organizes buttons and adds interactions between them.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 buttonGroup :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , size : M3e.Value.Supported

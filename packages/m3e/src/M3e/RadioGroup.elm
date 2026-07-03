@@ -6,10 +6,32 @@ module M3e.RadioGroup exposing
 {-|
 A container for a set of radio buttons.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the checked state of a radio button changes.
 - `input`: Dispatched when the checked state of a radio button changes.
 - `change`: Dispatched when the checked state of a radio button changes.
+
+<!-- elm-cem:docmeta category=Selection -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Single-choice shipping options" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Shipping method" ]
+    , Native.br
+    , M3e.RadioGroup.view [ M3e.RadioGroup.name "shipping", M3e.RadioGroup.required True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "standard", M3e.Radio.checked True ] [], Kit.text "Standard (5-7 days)" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "express" ] [], Kit.text "Express (2 days)" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "overnight" ] [], Kit.text "Overnight" ] ])
+    ]
+```
+
+<!-- elm-cem:example title="Disabled radio group with one disabled option" -->
+```elm
+M3e.RadioGroup.view [ M3e.RadioGroup.name "plan", M3e.RadioGroup.disabled True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "free", M3e.Radio.checked True ] [], Kit.text "Free" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "pro" ] [], Kit.text "Pro" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "team", M3e.Radio.disabled True ] [], Kit.text "Team" ] ])
+```
 
 @docs view, ariaInvalid, disabled, name, required, onBeforeinput
 @docs onInput, onChange, child, children

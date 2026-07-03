@@ -3,6 +3,9 @@ module M3e.ChipSet exposing ( view, vertical, child, children )
 {-|
 A container used to organize chips into a cohesive unit.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, vertical, child, children
 -}
 

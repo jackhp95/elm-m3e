@@ -17,12 +17,12 @@ import BackendTask
 import Effect exposing (Effect)
 import Head
 import Kit
+import Kit.Avatar as Avatar
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e.AppBar as AppBar
 import M3e.Aria as Aria
-import M3e.Avatar as Avatar
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Icon as Icon
@@ -321,8 +321,7 @@ accountCard =
             [ Shape.corner Shape.large, Layout.class "overflow-hidden flex flex-col" ]
             (dividize
                 [ ListItem.view []
-                    [ ListItem.leading
-                        (Avatar.view [ Layout.class "flex" ] [ Avatar.child (Kit.text "JD") ])
+                    [ ListItem.leading (Avatar.initials "JD")
                     , ListItem.child (Kit.text "Jane Doe")
                     , ListItem.supportingText (Kit.text "jane@example.com")
                     , ListItem.trailing (Icon.view [ Icon.name "chevron_right" ] [])

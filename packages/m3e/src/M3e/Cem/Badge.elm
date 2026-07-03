@@ -13,7 +13,11 @@ import M3e.Cem.Html.Badge
 import M3e.Value
 
 
-{-| A visual indicator used to label content. -}
+{-| A visual indicator used to label content.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 badge :
     List (M3e.Cem.Attr.Attr { size : M3e.Value.Supported
     , position : M3e.Value.Supported

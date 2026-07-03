@@ -3,6 +3,9 @@ module M3e.Accordion exposing ( view, multi, child, children )
 {-|
 Combines multiple expansion panels in to an accordion.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, multi, child, children
 -}
 

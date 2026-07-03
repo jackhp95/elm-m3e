@@ -13,7 +13,11 @@ import M3e.Cem.Html.ProgressElementIndicatorBase
 import M3e.Value
 
 
-{-| A base implementation for an element used to convey progress. This class must be inherited. -}
+{-| A base implementation for an element used to convey progress. This class must be inherited.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 progressElementIndicatorBase :
     List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
     , max : M3e.Value.Supported

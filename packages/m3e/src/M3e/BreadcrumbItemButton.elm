@@ -6,6 +6,9 @@ module M3e.BreadcrumbItemButton exposing
 {-|
 Create a m3e-breadcrumb-item-button element
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: No description
 

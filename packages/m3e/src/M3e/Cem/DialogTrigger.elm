@@ -13,7 +13,11 @@ import M3e.Cem.Html.DialogTrigger
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to open a dialog. -}
+{-| An element, nested within a clickable element, used to open a dialog.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 dialogTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported

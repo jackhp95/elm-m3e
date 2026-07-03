@@ -5,6 +5,9 @@ module M3e.Skeleton exposing
 {-|
 A visual placeholder that mimics the layout of content while it's still loading.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Communication -->
 
 ## Examples

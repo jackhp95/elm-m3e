@@ -6,6 +6,9 @@ module M3e.Breadcrumb exposing
 Displays a hierarchical navigation path and identifies the user's
 current location within an application.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `separator`: Renders a custom separator between breadcrumb items.
 

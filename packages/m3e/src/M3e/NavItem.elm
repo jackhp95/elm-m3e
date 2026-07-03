@@ -7,6 +7,9 @@ module M3e.NavItem exposing
 {-|
 An item, placed in a navigation bar or rail, used to navigate to destinations in an application.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the selected state changes.
 - `input`: Dispatched when the selected state changes.

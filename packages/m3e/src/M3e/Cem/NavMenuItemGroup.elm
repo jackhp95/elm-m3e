@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| A top-level semantic grouping of items in a navigation menu.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `label`: Renders the label of the group.
 -}

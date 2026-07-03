@@ -13,7 +13,11 @@ import M3e.Cem.Html.FocusTrap
 import M3e.Value
 
 
-{-| A non-visual element used to trap focus within nested content. -}
+{-| A non-visual element used to trap focus within nested content.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 focusTrap :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , slot : M3e.Value.Supported

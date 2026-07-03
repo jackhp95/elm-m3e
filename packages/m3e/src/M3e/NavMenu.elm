@@ -3,6 +3,9 @@ module M3e.NavMenu exposing ( view, child, children )
 {-|
 A hierarchical menu, typically used on larger devices, that allows a user to switch between views.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Navigation -->
 
 ## Examples

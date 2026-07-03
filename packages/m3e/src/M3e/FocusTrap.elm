@@ -3,6 +3,9 @@ module M3e.FocusTrap exposing ( view, disabled, child, children )
 {-|
 A non-visual element used to trap focus within nested content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, disabled, child, children
 -}
 

@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| A non-interactive chip used to convey small pieces of information.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `icon`: Renders an icon before the chip's label.
 - `trailing-icon`: Renders an icon after the chip's label.

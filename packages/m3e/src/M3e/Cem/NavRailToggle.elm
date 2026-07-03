@@ -13,7 +13,11 @@ import M3e.Cem.Html.NavRailToggle
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to toggle the expanded state of a navigation rail. -}
+{-| An element, nested within a clickable element, used to toggle the expanded state of a navigation rail.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 navRailToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported

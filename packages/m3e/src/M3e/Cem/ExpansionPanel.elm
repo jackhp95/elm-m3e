@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| An expandable details-summary view.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `opening`: Dispatched when the expansion panel begins to open.
 - `opened`: Dispatched when the expansion panel has opened.

@@ -6,6 +6,9 @@ module M3e.Tab exposing
 {-|
 An interactive element that, when activated, presents an associated tab panel.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the selected state changes.
 - `input`: Dispatched when the selected state changes.

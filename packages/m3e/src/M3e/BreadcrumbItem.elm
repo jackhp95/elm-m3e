@@ -6,6 +6,9 @@ module M3e.BreadcrumbItem exposing
 {-|
 An item in a breadcrumb.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: Dispatched when the element is clicked.
 

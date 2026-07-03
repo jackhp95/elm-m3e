@@ -7,6 +7,9 @@ module M3e.FormField exposing
 {-|
 A container for form controls that applies Material Design styling and behavior.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `prefix`: Renders content before the fields's control.
 - `prefix-text`: Renders text before the fields's control.

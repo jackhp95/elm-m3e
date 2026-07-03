@@ -6,6 +6,9 @@ module M3e.SearchBar exposing
 {-|
 A bar that provides a prominent entry point for search.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `clear`: Dispatched when the search term is cleared.
 

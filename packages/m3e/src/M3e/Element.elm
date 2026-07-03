@@ -26,7 +26,22 @@ type Element supported msg
     = El (Node msg)
 
 
-{-| Map the message type of an element (crosses a msg boundary; renders eagerly).
+{-| Map the message type of an element.
+
+This crosses a msg boundary and so renders **eagerly**: the underlying IR stores
+partially-applied, msg-monomorphic bottom-layer functions, so a structural remap
+is not possible — `map` collapses the element to `Html` (via `Html.map`) and
+wraps it back up as an opaque node. Consequences:
+
+  - Typed rearrangement (re-slotting) of a mapped element's _interior_ no longer
+    applies; it is a rendered blob from here on.
+  - Placing a mapped element into a named slot still works — `withSlot` adds the
+    `slot=` attribute, and the node promotes to a `<span slot="…">` wrapper
+    rather than dropping it (see `Node.addAttr`).
+
+Prefer mapping at your own `msg` boundary (e.g. `Html.map` at the call site, or
+threading the final `msg` in) over mapping partially-built elements.
+
 -}
 map : (a -> b) -> Element supported a -> Element supported b
 map f (El n) =

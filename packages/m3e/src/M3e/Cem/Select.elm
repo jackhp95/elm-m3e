@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A form control that allows users to select a value from a set of predefined options.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected state changes.
 - `toggle`: No description

@@ -4,6 +4,9 @@ module M3e.ActionElementBase exposing ( view )
 A base implementation for an element, nested within a clickable element, used to
 perform an action. This class must be inherited.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view
 -}
 

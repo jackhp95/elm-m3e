@@ -38,8 +38,9 @@ fromComponent component attrs children =
     Element { component = component, attrs = attrs, children = children }
 
 
-{-| Prepend an attribute to a node. A `Text` leaf can't carry one, so it is
-promoted to a `<span>` that holds the attribute (see the inline note).
+{-| Prepend an attribute to a node. `Text` and `Raw` leaves can't carry one, so
+each is promoted to a `<span>` that holds the attribute (see the inline notes) —
+the attribute is never silently dropped.
 -}
 addAttr : Attr () msg -> Node msg -> Node msg
 addAttr a node =
@@ -59,16 +60,15 @@ addAttr a node =
                 }
 
         Raw h ->
-            -- A raw Html leaf can't carry an attribute either. Dropping it would
-            -- silently discard slot= (and any other stamped attribute) — the exact
-            -- footgun this MISI layer exists to prevent — for escape-hatched content
-            -- (EscapeHatch/Seam.fromHtml) and for anything run through Element.map /
-            -- Node.map (which re-wraps as Raw). Promote to a <span> holding the
-            -- attribute, mirroring the Text branch, so `slot="name"` survives.
+            -- A Raw node holds opaque Html and can't take an attribute directly, so
+            -- dropping it would silently misplace slotted content (e.g. a mapped
+            -- element given a `slot=` would land in the default slot). Promote it to
+            -- a <span> that carries the attribute and wraps the raw Html — mirroring
+            -- the Text case.
             Element
-                { component = \attrs kids -> Html.span (List.map Attr.toAttribute attrs) kids
+                { component = \attrs _ -> Html.span (List.map Attr.toAttribute attrs) [ h ]
                 , attrs = [ a ]
-                , children = [ Raw h ]
+                , children = []
                 }
 
 

@@ -16,6 +16,9 @@ import M3e.Value
 {-| Displays a hierarchical navigation path and identifies the user's
 current location within an application.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `separator`: Renders a custom separator between breadcrumb items.
 -}

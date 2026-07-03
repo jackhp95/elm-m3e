@@ -13,7 +13,11 @@ import M3e.Cem.Html.NavMenu
 import M3e.Value
 
 
-{-| A hierarchical menu, typically used on larger devices, that allows a user to switch between views. -}
+{-| A hierarchical menu, typically used on larger devices, that allows a user to switch between views.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 navMenu :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)

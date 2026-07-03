@@ -7,6 +7,9 @@ module M3e.Dialog exposing
 {-|
 A dialog that provides important prompts in a user flow.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `opening`: Dispatched when the dialog begins to open.
 - `opened`: Dispatched when the dialog has opened.

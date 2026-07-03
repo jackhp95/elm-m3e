@@ -17,7 +17,11 @@ import M3e.Cem.Html.Option
 import M3e.Value
 
 
-{-| An option that can be selected. -}
+{-| An option that can be selected.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 option :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHighlight : M3e.Value.Supported

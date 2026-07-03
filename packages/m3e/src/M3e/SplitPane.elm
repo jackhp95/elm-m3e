@@ -7,6 +7,9 @@ module M3e.SplitPane exposing
 {-|
 A dual-view layout that separates content with a movable drag handle.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the user finishes adjusting the drag handle.
 - `beforeinput`: Dispatched continuously before the user adjusts the drag handle.

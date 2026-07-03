@@ -22,6 +22,9 @@ import M3e.Value
 
 {-| A calendar used to select a date.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected date changes.
 

@@ -7,6 +7,9 @@ module M3e.Fab exposing
 {-|
 A floating action button (FAB) used to present important actions.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: Dispatched when the element is clicked.
 

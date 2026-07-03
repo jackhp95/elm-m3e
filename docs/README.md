@@ -8,10 +8,23 @@ reference, studies, and design-token guides.
 ```sh
 pnpm install
 pnpm run build:assets   # generate reference + examples data JSON
+pnpm run gen            # generate .elm-pages/ codegen (see note below)
 pnpm start              # build:assets + elm-pages dev, serves on http://localhost:1234
 ```
 
 `elm-pages dev` proxies through Vite, which watches your `.elm` source.
+
+> **First-run prerequisite — run `gen` before `elm-review` or the dev server.**
+> A fresh checkout/worktree has no `.elm-pages/` (it is gitignored). `elm-review`
+> and compiling any route depend on that codegen output, so a fresh tree must run
+> `pnpm run build:assets && pnpm run gen` (or `elm-pages gen` directly) **first** —
+> otherwise you get cryptic type errors instead of an obvious "missing codegen"
+> message. Note that `elm-pages gen` prints nothing on success, so the `gen`
+> script echoes a one-line confirmation.
+>
+> Re-run `pnpm run gen` after changing any route's `Model`/`Msg`: those changes
+> staleness-invalidate `.elm-pages/`, and a forgotten re-gen surfaces later as a
+> confusing type error far from the edit.
 
 ## Verification gate — run before claiming a route compiles
 
@@ -44,6 +57,7 @@ dev server rebuilds.
 | `build:reference` | Extracts API reference JSON from `elm make --docs`.      |
 | `build:examples`  | Builds the examples data JSON from the example sources.  |
 | `build:assets`    | Runs `build:reference` then `build:examples`.            |
+| `gen`             | `elm-pages gen` (regenerate `.elm-pages/`) + success line.|
 | `start`           | `build:assets` + `elm-pages dev`.                        |
 | `build`           | `build:assets` + `elm-pages build` (production output).  |
 | `check`           | Authoritative compile gate — typechecks every route.     |
