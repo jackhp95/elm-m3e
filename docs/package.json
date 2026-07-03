@@ -8,6 +8,7 @@
     "gen": "elm-pages gen && echo 'elm-pages gen: OK (.elm-pages regenerated)'",
     "start": "npm run build:assets && elm-pages dev",
     "build": "npm run build:assets && elm-pages build",
+    "check": "npm run build:assets && elm-pages build",
     "serve:dist": "node scripts/serve-dist.mjs dist",
     "test:browser": "playwright test"
   },
