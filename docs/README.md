@@ -7,38 +7,29 @@ reference, studies, and design-token guides.
 
 ```sh
 pnpm install
-pnpm run build:assets   # one-shot CSS + custom-element bundle + reference JSON
-npx elm-pages dev       # serves on http://localhost:1234
+pnpm run build:assets   # generate reference + examples data JSON
+pnpm start              # build:assets + elm-pages dev, serves on http://localhost:1234
 ```
 
-`elm-pages dev` proxies through Vite which watches your `.elm` source.
+`elm-pages dev` proxies through Vite, which watches your `.elm` source.
 
-## Tailwind caveat — rerun `build:css` after any class change
+## Styling — no manual CSS rebuild
 
-`pnpm run build:assets` invokes Tailwind v4 (`tailwindcss -i ./style.css -o
-./public/style.css --minify`) **once**. There is no `--watch` flag wired into
-the dev script.
-
-That means: any time you add a class string in an `.elm` file (for example a
-new `sm:px-6` or `lg:hidden`), Tailwind has not seen it yet, and the
-already-shipped `public/style.css` will not contain a rule for it. The page
-will render with the *old* stylesheet until you re-run:
-
-```sh
-pnpm run build:css      # or `pnpm run build:assets` to also rebuild m3e + reference
-```
-
-The fastest dev loop is two terminals: one running `elm-pages dev`, the
-other running `pnpm run build:css` whenever you change classes (or wire
-`tailwindcss --watch` locally if you're iterating heavily).
+CSS is bundled by **Vite via the Tailwind v4 plugin** (`@tailwindcss/vite` in
+`elm-pages.config.mjs`); `./style.css` is imported as a side effect from
+`index.ts` (which also registers the `@m3e/web` custom elements). There is no
+`build:css` script and no separately-emitted `public/style.css` or `m3e.js`
+artifact — Vite content-hashes the bundle at build time and picks up new class
+strings on its own during `elm-pages dev`. Just edit `.elm`/`style.css` and the
+dev server rebuilds.
 
 ## Scripts
 
-| script           | does                                                          |
-| ---------------- | ------------------------------------------------------------- |
-| `build:css`      | Tailwind v4 compile — re-run after editing classes in `.elm`. |
-| `build:m3e`      | esbuild bundle of the @m3e/web custom elements.               |
-| `build:reference`| Extracts API reference JSON from `elm make --docs`.           |
-| `build:assets`   | Runs the three above, in order.                               |
-| `start`          | `build:assets` + `elm-pages dev`.                             |
-| `build`          | `build:assets` + `elm-pages build` (production output).       |
+| script            | does                                                     |
+| ----------------- | -------------------------------------------------------- |
+| `build:reference` | Extracts API reference JSON from `elm make --docs`.      |
+| `build:examples`  | Builds the examples data JSON from the example sources.  |
+| `build:assets`    | Runs `build:reference` then `build:examples`.            |
+| `start`           | `build:assets` + `elm-pages dev`.                        |
+| `build`           | `build:assets` + `elm-pages build` (production output).  |
+| `test:browser`    | Playwright runtime contract harness.                     |
