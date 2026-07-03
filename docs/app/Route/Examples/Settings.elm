@@ -202,7 +202,7 @@ screen model =
 appBar : Element { s | appBar : Supported } msg
 appBar =
     AppBar.view [ AppBar.size Value.medium ]
-        [ AppBar.leadingIcon (Icon.view [ Icon.name "menu" ] [])
+        [ AppBar.leading (Icon.view [ Icon.name "menu" ] [])
         , AppBar.title (Kit.text "Settings")
         ]
 
@@ -372,26 +372,27 @@ themeRow theme label iconName current =
         ]
 
 
-{-| A density row whose control is a `Slider`. The slider spans the row width, so
-it sits in the supporting-text slot below the label; its thumb carries the value.
+{-| A density row whose control is a full-width `Slider`. A `Slider` is not list
+supporting-text, so this row is a plain layout (leading icon + label above the
+slider) rather than a `ListItem` with the control crammed into a text slot.
 -}
 densityRow : Row msg
 densityRow =
-    ListItem.view []
-        [ ListItem.leading (Icon.view [ Icon.name "density_medium" ] [])
-        , ListItem.child (Kit.text "Display density")
-        , ListItem.supportingText
-            (Slider.view
-                [ Slider.min 0
-                , Slider.max 3
-                , Slider.step 1
-                , Slider.discrete True
-                , Slider.labelled True
-                , Aria.label "Display density"
-                , Layout.class "w-full"
-                ]
-                [ Slider.child (SliderThumb.view [ SliderThumb.value 2 ] []) ]
-            )
+    Layout.colWith "flex flex-col gap-3 px-4 py-3"
+        [ Layout.rowWith "flex items-center gap-4"
+            [ Icon.view [ Icon.name "density_medium" ] []
+            , Kit.text "Display density"
+            ]
+        , Slider.view
+            [ Slider.min 0
+            , Slider.max 3
+            , Slider.step 1
+            , Slider.discrete True
+            , Slider.labelled True
+            , Aria.label "Display density"
+            , Layout.class "w-full"
+            ]
+            [ Slider.child (SliderThumb.view [ SliderThumb.value 2 ] []) ]
         ]
 
 

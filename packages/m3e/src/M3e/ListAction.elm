@@ -114,6 +114,7 @@ child :
     , drawerToggle : M3e.Value.Supported
     , datepickerToggle : M3e.Value.Supported
     , navRailToggle : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
@@ -124,6 +125,8 @@ child el =
 leading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
@@ -132,7 +135,9 @@ leading el =
 
 {-| Place content in the `overline` slot. -}
 overline :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
 overline el =
     M3e.Content.slot "overline" el
@@ -140,7 +145,9 @@ overline el =
 
 {-| Place content in the `supporting-text` slot. -}
 supportingText :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
 supportingText el =
     M3e.Content.slot "supporting-text" el
@@ -149,7 +156,12 @@ supportingText el =
 {-| Place content in the `trailing` slot. -}
 trailing :
     M3e.Element.Element { icon : M3e.Value.Supported
+    , avatar : M3e.Value.Supported
     , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    , switch : M3e.Value.Supported
+    , radio : M3e.Value.Supported
+    , checkbox : M3e.Value.Supported
     } msg
     -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
 trailing el =
@@ -171,6 +183,7 @@ children :
     , drawerToggle : M3e.Value.Supported
     , datepickerToggle : M3e.Value.Supported
     , navRailToggle : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =

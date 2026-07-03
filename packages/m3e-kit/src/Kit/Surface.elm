@@ -1,5 +1,5 @@
 module Kit.Surface exposing
-    ( Surface, view, outlined
+    ( Surface, view, asAttribute, outlined
     , surface, surfaceContainer, surfaceContainerHigh, inverseSurface
     , primary, primaryContainer, secondary, secondaryContainer
     , tertiary, tertiaryContainer, error, errorContainer
@@ -12,7 +12,7 @@ code paints an M3 surface by naming the role (`Kit.Surface.primary`) instead of
 writing `bg-primary text-on-primary` through the seam. This is the sanctioned
 home for those classes (see `Kit`).
 
-@docs Surface, view, outlined
+@docs Surface, view, asAttribute, outlined
 @docs surface, surfaceContainer, surfaceContainerHigh, inverseSurface
 @docs primary, primaryContainer, secondary, secondaryContainer
 @docs tertiary, tertiaryContainer, error, errorContainer
@@ -41,6 +41,16 @@ view (Surface roles) attrs kids =
     Native.div
         (Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on)) :: attrs)
         kids
+
+
+{-| Paint the surface role's background + on-color onto an existing element via
+its attribute list, instead of wrapping it in a `<div>`. Use this when the target
+already exists and must keep its own kind (e.g. painting a selected `ListItem`
+without demoting it to an `html` wrapper the parent list would ignore).
+-}
+asAttribute : Surface -> Attr c msg
+asAttribute (Surface roles) =
+    Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on))
 
 
 {-| The `outline-variant` border, as an attribute to compose onto a surface.

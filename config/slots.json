@@ -68,28 +68,35 @@
     "slots": {
       "leading": {
         "kinds": [
-          "iconButton"
+          "icon",
+          "iconButton",
+          "button"
         ],
         "multi": false,
         "required": false
       },
       "title": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "subtitle": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "iconButton"
+          "iconButton",
+          "button",
+          "searchBar",
+          "html"
         ],
         "multi": true,
         "required": false
@@ -877,7 +884,8 @@
     "slots": {
       "unnamed": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -885,21 +893,25 @@
       "leading": {
         "kinds": [
           "icon",
-          "avatar"
+          "avatar",
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -907,7 +919,12 @@
       "trailing": {
         "kinds": [
           "icon",
-          "text"
+          "avatar",
+          "text",
+          "html",
+          "switch",
+          "radio",
+          "checkbox"
         ],
         "multi": false,
         "required": false
@@ -933,7 +950,8 @@
     "slots": {
       "unnamed": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -941,21 +959,25 @@
       "leading": {
         "kinds": [
           "icon",
-          "avatar"
+          "avatar",
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -963,7 +985,12 @@
       "trailing": {
         "kinds": [
           "icon",
-          "text"
+          "avatar",
+          "text",
+          "html",
+          "switch",
+          "radio",
+          "checkbox"
         ],
         "multi": false,
         "required": false
@@ -986,7 +1013,8 @@
           "richTooltipAction",
           "drawerToggle",
           "datepickerToggle",
-          "navRailToggle"
+          "navRailToggle",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -994,21 +1022,25 @@
       "leading": {
         "kinds": [
           "icon",
-          "avatar"
+          "avatar",
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -1016,7 +1048,12 @@
       "trailing": {
         "kinds": [
           "icon",
-          "text"
+          "avatar",
+          "text",
+          "html",
+          "switch",
+          "radio",
+          "checkbox"
         ],
         "multi": false,
         "required": false
@@ -1027,7 +1064,8 @@
     "slots": {
       "unnamed": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -1035,21 +1073,25 @@
       "leading": {
         "kinds": [
           "icon",
-          "avatar"
+          "avatar",
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -1085,7 +1127,8 @@
     "slots": {
       "unnamed": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -1093,21 +1136,25 @@
       "leading": {
         "kinds": [
           "icon",
-          "avatar"
+          "avatar",
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "text"
+          "text",
+          "html"
         ],
         "multi": false,
         "required": false
@@ -1115,7 +1162,12 @@
       "trailing": {
         "kinds": [
           "icon",
-          "text"
+          "avatar",
+          "text",
+          "html",
+          "switch",
+          "radio",
+          "checkbox"
         ],
         "multi": false,
         "required": false

@@ -21,6 +21,7 @@ import Kit exposing (TextColor)
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
+import M3e.Action as Action
 import M3e.AppBar as AppBar
 import M3e.Card as Card
 import M3e.Divider as Divider
@@ -201,7 +202,7 @@ view _ _ _ =
 appBar : Element { s | appBar : Supported } msg
 appBar =
     AppBar.view [ AppBar.size Value.small ]
-        [ AppBar.leadingIcon (Icon.view [ Icon.name "analytics" ] [])
+        [ AppBar.leading (Icon.view [ Icon.name "analytics" ] [])
         , AppBar.title (Kit.title Value.large [] [ Kit.text "Aperture Analytics" ])
         , AppBar.trailing
             (Layout.div "flex items-center gap-1"
@@ -215,7 +216,7 @@ appBar =
 
 iconAction : String -> Element { s | iconButton : Supported } msg
 iconAction name =
-    IconButton.view { content = Icon.view [ Icon.name name ] [] }
+    IconButton.view { content = Icon.view [ Icon.name name ] [], action = Action.none }
         [ IconButton.variant Value.standard ]
         []
 
@@ -261,10 +262,12 @@ barItem d =
 fab : Element { s | html : Supported } msg
 fab =
     Layout.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
-        [ Fab.view [ Fab.variant Value.primary, Fab.extended True ]
-            [ Fab.child (Icon.view [ Icon.name "add" ] [])
-            , Fab.label (Kit.text "New report")
-            ]
+        [ Fab.view
+            { content = Icon.view [ Icon.name "add" ] []
+            , action = Action.none
+            }
+            [ Fab.variant Value.primary, Fab.extended True ]
+            [ Fab.label (Kit.text "New report") ]
         ]
 
 

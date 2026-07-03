@@ -32,6 +32,7 @@ import M3e.AssistChip as AssistChip
 import M3e.Card as Card
 import M3e.Element as Element exposing (Element)
 import M3e.Icon as Icon
+import M3e.IconButton as IconButton
 import M3e.NavBar as NavBar
 import M3e.NavItem as NavItem
 import M3e.NavRail as NavRail
@@ -231,9 +232,14 @@ shell model =
 appBar : Element { s | appBar : Supported } (PagesMsg Msg)
 appBar =
     AppBar.view []
-        [ AppBar.leadingIcon (Icon.view [ Icon.name "public" ] [])
+        [ AppBar.leading (Icon.view [ Icon.name "public" ] [])
         , AppBar.title (Kit.text "Wander")
-        , AppBar.trailingIcon (Icon.view [ Icon.name "notifications" ] [])
+        , AppBar.trailing
+            (IconButton.view
+                { content = Icon.view [ Icon.name "notifications" ] [], action = Action.none }
+                [ IconButton.variant Value.standard ]
+                []
+            )
         ]
 
 

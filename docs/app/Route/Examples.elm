@@ -10,6 +10,7 @@ import Head
 import Head.Seo as Seo
 import Kit
 import Layout
+import M3e.Action as Action
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
@@ -93,12 +94,17 @@ exampleCard ( slug, title, body ) =
         , Card.content (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ])
         , Card.actions
             (Button.view
-                [ Button.variant Value.filled
-                , Button.href exampleHref
-                , Button.target "_blank"
-                , Button.rel "noreferrer noopener"
-                ]
-                [ Button.child (Kit.text ("Open " ++ title)) ]
+                { content = Kit.text ("Open " ++ title)
+                , action =
+                    Action.linkWith
+                        { href = exampleHref
+                        , target = Just "_blank"
+                        , rel = Just "noreferrer noopener"
+                        , download = Nothing
+                        }
+                }
+                [ Button.variant Value.filled ]
+                []
             )
         ]
 

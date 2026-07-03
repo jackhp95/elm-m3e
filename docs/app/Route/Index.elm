@@ -19,6 +19,7 @@ import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
+import M3e.Action as Action
 import M3e.Avatar as Avatar
 import M3e.Button as Button
 import M3e.Card as Card
@@ -122,8 +123,8 @@ hero =
                 ]
             ]
         , Layout.div "flex flex-wrap items-center gap-3 pt-2"
-            [ Button.view [ Button.variant Value.filled, Button.href "/getting-started/installation" ] [ Button.child (Kit.text "Get started") ]
-            , Button.view [ Button.variant Value.outlined, Button.href "/reference" ] [ Button.child (Kit.text "Browse the API reference") ]
+            [ Button.view { content = Kit.text "Get started", action = Action.link "/getting-started/installation" } [ Button.variant Value.filled ] []
+            , Button.view { content = Kit.text "Browse the API reference", action = Action.link "/reference" } [ Button.variant Value.outlined ] []
             ]
         , Layout.div "flex items-center gap-3 pt-4"
             [ Avatar.view [ Seam.asAttribute (Html.Attributes.attribute "aria-label" "Sample avatar") ] [ Avatar.child (Native.img [ Seam.asAttribute (Html.Attributes.src "/avatar-sample.svg") ]) ]

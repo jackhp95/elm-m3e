@@ -97,7 +97,10 @@ size =
 
 {-| Place content in the `leading` slot. -}
 leading :
-    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
     M3e.Content.slot "leading" el
@@ -105,7 +108,9 @@ leading el =
 
 {-| Place content in the `title` slot. -}
 title :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
 title el =
     M3e.Content.slot "title" el
@@ -113,7 +118,9 @@ title el =
 
 {-| Place content in the `subtitle` slot. -}
 subtitle :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
 subtitle el =
     M3e.Content.slot "subtitle" el
@@ -121,7 +128,11 @@ subtitle el =
 
 {-| Place content in the `trailing` slot. -}
 trailing :
-    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    , searchBar : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
 trailing el =
     M3e.Content.slot "trailing" el

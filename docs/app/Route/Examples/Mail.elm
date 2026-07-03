@@ -272,7 +272,7 @@ barItem index d =
 topBar : Element { s | appBar : Supported } Msg
 topBar =
     AppBar.view [ AppBar.size Value.medium ]
-        [ AppBar.leadingIcon (Icon.view [ Icon.name "menu" ] [])
+        [ AppBar.leading (Icon.view [ Icon.name "menu" ] [])
         , AppBar.title (Kit.text "Mail")
         , AppBar.trailing searchBar
         ]
@@ -341,7 +341,7 @@ divider =
     Divider.view [ Divider.inset True ] []
 
 
-messageRow : Int -> Int -> Message -> Element { s | html : Supported } Msg
+messageRow : Int -> Int -> Message -> Element { s | listItem : Supported } Msg
 messageRow selected index message =
     let
         rowSurface : Surface
@@ -352,24 +352,23 @@ messageRow selected index message =
             else
                 Surface.surface
     in
-    Surface.view rowSurface
-        [ Layout.class "cursor-pointer"
+    ListItem.view
+        [ Surface.asAttribute rowSurface
+        , Layout.class "cursor-pointer"
         , Seam.asAttribute (Attr.attribute "role" "button")
         , Seam.asAttribute (Html.Events.onClick (SelectMessage index))
         ]
-        [ ListItem.view []
-            [ ListItem.leading (Avatar.initials message.initials)
-            , ListItem.child (Kit.text message.sender)
-            , ListItem.supportingText
-                (Layout.span "block"
-                    [ Kit.body Value.medium [ Kit.onSurface ] [ Kit.text message.subject ]
-                    , Layout.span "block"
-                        [ Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.snippet ] ]
-                    ]
-                )
-            , ListItem.trailing
-                (Kit.label Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.time ])
-            ]
+        [ ListItem.leading (Avatar.initials message.initials)
+        , ListItem.child (Kit.text message.sender)
+        , ListItem.supportingText
+            (Layout.span "block"
+                [ Kit.body Value.medium [ Kit.onSurface ] [ Kit.text message.subject ]
+                , Layout.span "block"
+                    [ Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.snippet ] ]
+                ]
+            )
+        , ListItem.trailing
+            (Kit.label Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.time ])
         ]
 
 
@@ -418,9 +417,11 @@ composeFab : Element { s | html : Supported } msg
 composeFab =
     Layout.div "absolute bottom-20 right-6 md:bottom-6"
         [ Fab.view
+            { content = Icon.view [ Icon.name "edit" ] []
+            , action = Action.none
+            }
             [ Fab.variant Value.primaryContainer
             , Fab.extended True
-            , Fab.name "edit"
             ]
             [ Fab.label (Kit.text "Compose") ]
         ]

@@ -25,6 +25,7 @@ import Html.Events
 import Json.Decode as Decode
 import Kit
 import Kit.Surface as Surface
+import M3e.Action as Action
 import M3e.AppBar as AppBar
 import M3e.Aria as Aria
 import M3e.ButtonSegment as ButtonSegment
@@ -425,8 +426,10 @@ menuButton =
     Native.span
         [ Seam.asAttribute (class "md:hidden") ]
         [ IconButton.view
-            { content = Icon.view [ Icon.name "menu" ] [] }
-            [ Aria.label "Toggle navigation", IconButton.onClick MenuClicked ]
+            { content = Icon.view [ Icon.name "menu" ] []
+            , action = Action.onClick MenuClicked
+            }
+            [ Aria.label "Toggle navigation" ]
             []
         ]
 
@@ -434,12 +437,16 @@ menuButton =
 githubLink : Element { iconButton : Supported } Msg
 githubLink =
     IconButton.view
-        { content = Icon.view [ Icon.name "code" ] [] }
-        [ Aria.label "GitHub repository"
-        , IconButton.href "https://github.com/jackhp95/elm-m3e"
-        , IconButton.target "_blank"
-        , IconButton.rel "noreferrer noopener"
-        ]
+        { content = Icon.view [ Icon.name "code" ] []
+        , action =
+            Action.linkWith
+                { href = "https://github.com/jackhp95/elm-m3e"
+                , target = Just "_blank"
+                , rel = Just "noreferrer noopener"
+                , download = Nothing
+                }
+        }
+        [ Aria.label "GitHub repository" ]
         []
 
 
@@ -458,8 +465,10 @@ schemeQuickToggle model =
                     ( Light, "light_mode", "Switch to light mode" )
     in
     IconButton.view
-        { content = Icon.view [ Icon.name iconName ] [] }
-        [ Aria.label iconLabel, IconButton.onClick (SetScheme next) ]
+        { content = Icon.view [ Icon.name iconName ] []
+        , action = Action.onClick (SetScheme next)
+        }
+        [ Aria.label iconLabel ]
         []
 
 
@@ -475,8 +484,10 @@ settingsTriggerElement model =
     Native.div
         [ Seam.asAttribute (class "relative") ]
         [ IconButton.view
-            { content = Icon.view [ Icon.name "tune" ] [] }
-            [ Aria.label "Theme settings", IconButton.onClick ToggleSettings ]
+            { content = Icon.view [ Icon.name "tune" ] []
+            , action = Action.onClick ToggleSettings
+            }
+            [ Aria.label "Theme settings" ]
             []
         , if model.settingsOpen then
             EscapeHatch.fromHtml (settingsPanel model)

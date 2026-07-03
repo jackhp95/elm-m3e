@@ -25,6 +25,7 @@ import Kit.Badge
 import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
+import M3e.Action as Action
 import M3e.AppBar as AppBar
 import M3e.Badge as Badge
 import M3e.Card as Card
@@ -213,7 +214,7 @@ cartAction count =
     Kit.Badge.on
         { anchor =
             IconButton.view
-                { content = Icon.view [ Icon.name "shopping_bag" ] [] }
+                { content = Icon.view [ Icon.name "shopping_bag" ] [], action = Action.none }
                 [ IconButton.variant Value.standard ]
                 []
         , badge =
@@ -348,10 +349,10 @@ productCard product =
             (Layout.div "flex w-full items-center justify-between px-1"
                 [ Kit.title Value.large [ Kit.primary ] [ Kit.text product.price ]
                 , IconButton.view
-                    { content = Icon.view [ Icon.name "add_shopping_cart" ] [] }
-                    [ IconButton.variant Value.tonal
-                    , IconButton.onClick (PagesMsg.fromMsg AddToCart)
-                    ]
+                    { content = Icon.view [ Icon.name "add_shopping_cart" ] []
+                    , action = Action.onClick (PagesMsg.fromMsg AddToCart)
+                    }
+                    [ IconButton.variant Value.tonal ]
                     []
                 ]
             )
@@ -373,10 +374,12 @@ checkoutFab : Element { s | html : Supported } msg
 checkoutFab =
     Layout.div "pointer-events-none sticky bottom-4 flex justify-end pr-2 md:bottom-6"
         [ Layout.span "pointer-events-auto"
-            [ Fab.view [ Fab.variant Value.primary, Fab.extended True ]
-                [ Fab.child (Icon.view [ Icon.name "shopping_cart_checkout" ] [])
-                , Fab.label (Kit.text "Checkout")
-                ]
+            [ Fab.view
+                { content = Icon.view [ Icon.name "shopping_cart_checkout" ] []
+                , action = Action.none
+                }
+                [ Fab.variant Value.primary, Fab.extended True ]
+                [ Fab.label (Kit.text "Checkout") ]
             ]
         ]
 
@@ -386,6 +389,6 @@ checkoutFab =
 iconAction : String -> Element { s | iconButton : Supported } msg
 iconAction icon =
     IconButton.view
-        { content = Icon.view [ Icon.name icon ] [] }
+        { content = Icon.view [ Icon.name icon ] [], action = Action.none }
         [ IconButton.variant Value.standard ]
         []

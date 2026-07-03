@@ -7,6 +7,7 @@ import Html
 import Html.Attributes exposing (class, style)
 import Kit
 import Layout
+import M3e.Action as Action
 import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
@@ -75,7 +76,7 @@ demoBar scaleValue =
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Button.view [ Button.variant Value.filled ] [ Button.child (Kit.text "Action") ]
+                        Button.view { content = Kit.text "Action", action = Action.none } [ Button.variant Value.filled ] []
                     )
             )
         ]
