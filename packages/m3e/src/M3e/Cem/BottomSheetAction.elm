@@ -13,7 +13,11 @@ import M3e.Cem.Html.BottomSheetAction
 import M3e.Value
 
 
-{-| An element, nested within a clickable element, used to close a parenting bottom sheet. -}
+{-| An element, nested within a clickable element, used to close a parenting bottom sheet.
+
+**Component Info:**
+- **Extends:** `ActionElementBase`
+-}
 bottomSheetAction :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)

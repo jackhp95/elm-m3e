@@ -3,6 +3,9 @@ module M3e.MenuTrigger exposing ( view, for, child, children )
 {-|
 An element, nested within a clickable element, used to open a menu.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, for, child, children
 -}
 

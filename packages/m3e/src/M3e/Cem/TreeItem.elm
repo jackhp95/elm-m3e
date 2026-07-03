@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| An expandable item in a tree.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `opening`: Dispatched when the item begins to open.
 - `opened`: Dispatched when the item has opened.

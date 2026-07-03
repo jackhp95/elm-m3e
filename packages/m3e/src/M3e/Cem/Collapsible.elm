@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A container used to expand and collapse content.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `opening`: Dispatched when the collapsible begins to open.
 - `opened`: Dispatched when the collapsible has opened.

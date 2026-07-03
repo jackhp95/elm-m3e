@@ -5,6 +5,9 @@ module M3e.Heading exposing
 {-|
 A heading to a page or section.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Layout & style -->
 
 ## Examples

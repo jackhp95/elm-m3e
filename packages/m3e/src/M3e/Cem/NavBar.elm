@@ -18,6 +18,9 @@ import M3e.Value
 
 {-| A horizontal bar, typically used on smaller devices, that allows a user to switch between 3-5 views.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected state of an item changes.
 - `beforeinput`: Dispatched before the selected state of an item changes.

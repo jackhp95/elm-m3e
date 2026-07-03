@@ -3,6 +3,9 @@ module M3e.Slide exposing ( view, selectedIndex, child, children )
 {-|
 A carousel-like container used to horizontally cycle through slotted items.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, selectedIndex, child, children
 -}
 

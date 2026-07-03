@@ -13,7 +13,11 @@ import M3e.Cem.Html.Accordion
 import M3e.Value
 
 
-{-| Combines multiple expansion panels in to an accordion. -}
+{-| Combines multiple expansion panels in to an accordion.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 accordion :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , slot : M3e.Value.Supported

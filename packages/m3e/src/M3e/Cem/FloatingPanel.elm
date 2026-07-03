@@ -18,6 +18,9 @@ import M3e.Value
 
 {-| A lightweight, generic floating surface used to present content above the page.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.

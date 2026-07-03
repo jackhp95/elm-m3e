@@ -13,7 +13,11 @@ import M3e.Cem.Html.TextOverflow
 import M3e.Value
 
 
-{-| An inline container which presents an ellipsis when content overflows. -}
+{-| An inline container which presents an ellipsis when content overflows.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 textOverflow :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (Html.Html msg)

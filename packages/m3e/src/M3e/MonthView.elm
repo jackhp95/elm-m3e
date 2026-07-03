@@ -1,6 +1,6 @@
 module M3e.MonthView exposing
-    ( view, rangeStart, rangeEnd, today, date, activeDate
-    , minDate, maxDate, onChange, onActiveChange
+    ( view, rangeStart, rangeEnd, active, today, date
+    , activeDate, minDate, maxDate, onChange, onActiveChange
     )
 
 {-|
@@ -13,8 +13,8 @@ An internal component used to display a single month in a calendar.
 - `change`: No description
 - `active-change`: No description
 
-@docs view, rangeStart, rangeEnd, today, date, activeDate
-@docs minDate, maxDate, onChange, onActiveChange
+@docs view, rangeStart, rangeEnd, active, today, date
+@docs activeDate, minDate, maxDate, onChange, onActiveChange
 -}
 
 
@@ -29,6 +29,7 @@ import M3e.Value
 view :
     List (M3e.Cem.Attr.Attr { rangeStart : M3e.Value.Supported
     , rangeEnd : M3e.Value.Supported
+    , active : M3e.Value.Supported
     , today : M3e.Value.Supported
     , date : M3e.Value.Supported
     , activeDate : M3e.Value.Supported
@@ -65,6 +66,12 @@ rangeEnd :
     String -> M3e.Cem.Attr.Attr { c | rangeEnd : M3e.Value.Supported } msg
 rangeEnd =
     M3e.Cem.MonthView.rangeEnd
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
+active =
+    M3e.Cem.MonthView.active
 
 
 {-| Today's date. (default: `new Date()`) -}

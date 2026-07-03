@@ -1,13 +1,13 @@
 module M3e.Cem.Html.MonthView exposing
-    ( monthView, rangeStart, rangeEnd, today, date, activeDate
-    , minDate, maxDate, onChange, onActiveChange
+    ( monthView, rangeStart, rangeEnd, active, today, date
+    , activeDate, minDate, maxDate, onChange, onActiveChange
     )
 
 {-|
 Bottom layer for `<m3e-month-view>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
 
-@docs monthView, rangeStart, rangeEnd, today, date, activeDate
-@docs minDate, maxDate, onChange, onActiveChange
+@docs monthView, rangeStart, rangeEnd, active, today, date
+@docs activeDate, minDate, maxDate, onChange, onActiveChange
 -}
 
 
@@ -15,6 +15,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| The raw `<m3e-month-view>` element — a partial application of `Html.node`. -}
@@ -33,6 +34,12 @@ rangeStart =
 rangeEnd : String -> Html.Attribute msg
 rangeEnd =
     Html.Attributes.attribute "range-end"
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> Html.Attribute msg
+active val_ =
+    Html.Attributes.property "active" (Json.Encode.bool val_)
 
 
 {-| Today's date. (default: `new Date()`) -}

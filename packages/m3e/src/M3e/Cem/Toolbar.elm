@@ -15,7 +15,11 @@ import M3e.Cem.Html.Toolbar
 import M3e.Value
 
 
-{-| Presents frequently used actions relevant to the current page. -}
+{-| Presents frequently used actions relevant to the current page.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 toolbar :
     List (M3e.Cem.Attr.Attr { elevated : M3e.Value.Supported
     , shape : M3e.Value.Supported

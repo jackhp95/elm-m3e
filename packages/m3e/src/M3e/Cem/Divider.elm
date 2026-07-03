@@ -15,7 +15,11 @@ import M3e.Cem.Html.Divider
 import M3e.Value
 
 
-{-| A thin line that separates content in lists or other containers. -}
+{-| A thin line that separates content in lists or other containers.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 divider :
     List (M3e.Cem.Attr.Attr { inset : M3e.Value.Supported
     , insetStart : M3e.Value.Supported

@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| A checkbox that allows a user to select one or more options from a limited number of choices.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the checked state changes.
 - `input`: Dispatched when the checked state changes.

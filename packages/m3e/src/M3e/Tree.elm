@@ -5,6 +5,9 @@ module M3e.Tree exposing
 {-|
 Presents hierarchical data in a tree structure.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected state changes.
 

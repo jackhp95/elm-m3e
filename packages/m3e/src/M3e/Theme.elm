@@ -6,6 +6,9 @@ module M3e.Theme exposing
 {-|
 A non-visual element responsible for application-level theming.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the theme changes.
 

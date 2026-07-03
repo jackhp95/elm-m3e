@@ -3,6 +3,9 @@ module M3e.StateLayer exposing ( view, disabled, disableHover, for )
 {-|
 Provides focus and hover state layer treatment for an interactive element.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, disabled, disableHover, for
 -}
 

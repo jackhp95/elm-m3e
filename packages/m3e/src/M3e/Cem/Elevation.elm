@@ -13,7 +13,11 @@ import M3e.Cem.Html.Elevation
 import M3e.Value
 
 
-{-| Visually depicts elevation using a shadow. -}
+{-| Visually depicts elevation using a shadow.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 elevation :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported

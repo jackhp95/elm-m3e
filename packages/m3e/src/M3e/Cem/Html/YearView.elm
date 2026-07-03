@@ -1,13 +1,13 @@
 module M3e.Cem.Html.YearView exposing
-    ( yearView, today, date, activeDate, minDate, maxDate
-    , onChange, onActiveChange
+    ( yearView, active, today, date, activeDate, minDate
+    , maxDate, onChange, onActiveChange
     )
 
 {-|
 Bottom layer for `<m3e-year-view>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
 
-@docs yearView, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange
+@docs yearView, active, today, date, activeDate, minDate
+@docs maxDate, onChange, onActiveChange
 -}
 
 
@@ -15,12 +15,19 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
+import Json.Encode
 
 
 {-| The raw `<m3e-year-view>` element — a partial application of `Html.node`. -}
 yearView : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
 yearView =
     Html.node "m3e-year-view"
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> Html.Attribute msg
+active val_ =
+    Html.Attributes.property "active" (Json.Encode.bool val_)
 
 
 {-| Today's date. (default: `new Date()`) -}

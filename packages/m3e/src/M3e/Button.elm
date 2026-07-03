@@ -8,6 +8,9 @@ module M3e.Button exposing
 {-|
 A button users interact with to perform an action.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before a toggle button's selected state changes.
 - `input`: Dispatched when a toggle button's selected state changes.

@@ -5,6 +5,9 @@ module M3e.TooltipElementBase exposing
 {-|
 Provides a base implementation for a tooltip. This class must be inherited.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, disabled, showDelay, hideDelay, touchGestures, for
 -}
 

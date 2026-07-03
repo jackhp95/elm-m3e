@@ -3,6 +3,9 @@ module M3e.DialogAction exposing ( view, returnValue, child, children )
 {-|
 An element, nested within a clickable element, used to close a parenting dialog.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, returnValue, child, children
 -}
 

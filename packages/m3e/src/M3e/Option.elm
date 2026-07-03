@@ -6,6 +6,9 @@ module M3e.Option exposing
 {-|
 An option that can be selected.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Selection -->
 
 ## Examples

@@ -6,6 +6,9 @@ module M3e.DrawerContainer exposing
 {-|
 A container for one or two sliding drawers.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the state of the start or end drawers change.
 

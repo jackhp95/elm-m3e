@@ -1,6 +1,6 @@
 module M3e.MultiYearView exposing
-    ( view, today, date, activeDate, minDate, maxDate
-    , onChange, onActiveChange
+    ( view, active, today, date, activeDate, minDate
+    , maxDate, onChange, onActiveChange
     )
 
 {-|
@@ -13,8 +13,8 @@ An internal component used to display a year selector in a calendar.
 - `change`: No description
 - `active-change`: No description
 
-@docs view, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange
+@docs view, active, today, date, activeDate, minDate
+@docs maxDate, onChange, onActiveChange
 -}
 
 
@@ -27,7 +27,8 @@ import M3e.Value
 
 {-| Build the `<m3e-multi-year-view>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { today : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { active : M3e.Value.Supported
+    , today : M3e.Value.Supported
     , date : M3e.Value.Supported
     , activeDate : M3e.Value.Supported
     , minDate : M3e.Value.Supported
@@ -49,6 +50,12 @@ view attributes children =
              (List.map M3e.Cem.Attr.forget attributes)
              (List.map M3e.Element.toNode children)
         )
+
+
+{-| Whether the view is active. (default: `false`) -}
+active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
+active =
+    M3e.Cem.MultiYearView.active
 
 
 {-| Today's date. (default: `new Date()`) -}

@@ -3,6 +3,9 @@ module M3e.Shape exposing ( view, name, child, children )
 {-|
 A shape used to add emphasis and decorative flair.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Layout & style -->
 
 ## Examples

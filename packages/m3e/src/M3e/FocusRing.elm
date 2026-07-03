@@ -3,6 +3,9 @@ module M3e.FocusRing exposing ( view, disabled, inward, for )
 {-|
 A focus ring used to depict a strong focus indicator.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, disabled, inward, for
 -}
 

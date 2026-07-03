@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| Allows for the selection of numeric values from a range.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the value of a thumb changes.
 - `input`: Dispatched when the value of a thumb changes.

@@ -6,6 +6,9 @@ module M3e.OptionPanel exposing
 {-|
 Presents a list of options on a temporary surface.
 
+**Component Info:**
+- **Extends:** `M3eFloatingPanelElement`
+
 **Events:**
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.

@@ -13,7 +13,11 @@ import M3e.Cem.Html.LoadingIndicator
 import M3e.Value
 
 
-{-| Shows indeterminate progress for a short wait time. -}
+{-| Shows indeterminate progress for a short wait time.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 loadingIndicator :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported

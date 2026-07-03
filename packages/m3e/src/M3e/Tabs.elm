@@ -7,6 +7,9 @@ module M3e.Tabs exposing
 {-|
 Organizes content into separate views where only one view can be visible at a time.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected tab changes.
 - `beforeinput`: Dispatched before the selected state of a tab changes.

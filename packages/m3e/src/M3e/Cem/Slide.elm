@@ -13,7 +13,11 @@ import M3e.Cem.Html.Slide
 import M3e.Value
 
 
-{-| A carousel-like container used to horizontally cycle through slotted items. -}
+{-| A carousel-like container used to horizontally cycle through slotted items.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 slide :
     List (M3e.Cem.Attr.Attr { selectedIndex : M3e.Value.Supported
     , slot : M3e.Value.Supported

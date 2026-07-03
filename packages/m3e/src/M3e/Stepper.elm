@@ -6,6 +6,9 @@ module M3e.Stepper exposing
 {-|
 Provides a wizard-like workflow by dividing content into logical steps.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `change`: Dispatched when the selected step changes.
 - `beforeinput`: Dispatched before the selected state of a step changes.

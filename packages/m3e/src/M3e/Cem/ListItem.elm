@@ -15,6 +15,9 @@ import M3e.Value
 
 {-| An item in a list.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `leading`: Renders the leading content of the list item.
 - `overline`: Renders the overline of the list item.

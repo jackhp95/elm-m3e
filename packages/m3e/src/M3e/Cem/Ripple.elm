@@ -15,7 +15,11 @@ import M3e.Cem.Html.Ripple
 import M3e.Value
 
 
-{-| Connects user input to screen reactions using ripples. -}
+{-| Connects user input to screen reactions using ripples.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 ripple :
     List (M3e.Cem.Attr.Attr { centered : M3e.Value.Supported
     , disabled : M3e.Value.Supported

@@ -3,6 +3,9 @@ module M3e.BottomSheetAction exposing ( view, child, children )
 {-|
 An element, nested within a clickable element, used to close a parenting bottom sheet.
 
+**Component Info:**
+- **Extends:** `ActionElementBase`
+
 @docs view, child, children
 -}
 

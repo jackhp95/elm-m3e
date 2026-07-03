@@ -53,7 +53,7 @@ facts =
     , { component = "radioGroup", module_ = "M3e.RadioGroup", enums = [], requiredSlots = [ "default" ], multiSlots = [ "default" ] }
     , { component = "radio", module_ = "M3e.Radio", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "progressElementIndicatorBase", module_ = "M3e.ProgressElementIndicatorBase", enums = [ ( "variant", [ "flat", "wavy" ] ) ], requiredSlots = [], multiSlots = [] }
-    , { component = "paginator", module_ = "M3e.Paginator", enums = [ ( "pageSizeVariant", [ "filled", "outlined" ] ) ], requiredSlots = [], multiSlots = [] }
+    , { component = "paginator", module_ = "M3e.Paginator", enums = [ ( "pageSize", [ "all" ] ), ( "pageSizeVariant", [ "filled", "outlined" ] ) ], requiredSlots = [], multiSlots = [] }
     , { component = "select", module_ = "M3e.Select", enums = [], requiredSlots = [ "default" ], multiSlots = [ "default" ] }
     , { component = "navRailToggle", module_ = "M3e.NavRailToggle", enums = [], requiredSlots = [], multiSlots = [] }
     , { component = "navRail", module_ = "M3e.NavRail", enums = [ ( "mode", [ "auto", "compact", "expanded" ] ) ], requiredSlots = [], multiSlots = [ "default" ] }

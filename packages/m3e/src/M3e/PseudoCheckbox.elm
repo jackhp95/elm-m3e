@@ -3,6 +3,9 @@ module M3e.PseudoCheckbox exposing ( view, checked, disabled, indeterminate )
 {-|
 An element which looks like a checkbox.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 @docs view, checked, disabled, indeterminate
 -}
 

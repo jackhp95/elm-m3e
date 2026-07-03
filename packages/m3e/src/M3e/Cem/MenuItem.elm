@@ -20,6 +20,9 @@ import M3e.Value
 
 {-| An item of a floating action button (FAB) menu.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `click`: Dispatched when the element is clicked.
 

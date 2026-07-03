@@ -6,6 +6,9 @@ module M3e.ButtonSegment exposing
 {-|
 A option that can be selected within a segmented button.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforeinput`: Dispatched before the checked state changes.
 - `input`: Dispatched when the checked state changes.

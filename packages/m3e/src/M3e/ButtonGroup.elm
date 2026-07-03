@@ -5,6 +5,9 @@ module M3e.ButtonGroup exposing
 {-|
 Organizes buttons and adds interactions between them.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 <!-- elm-cem:docmeta category=Actions -->
 
 ## Examples

@@ -6,6 +6,9 @@ module M3e.Toc exposing
 {-|
 A table of contents that provides in-page scroll navigation.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `overline`: Renders the overline of the table of contents.
 - `title`: Renders the title of the table of contents.

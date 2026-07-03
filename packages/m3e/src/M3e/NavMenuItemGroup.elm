@@ -3,6 +3,9 @@ module M3e.NavMenuItemGroup exposing ( view, label, child, children )
 {-|
 A top-level semantic grouping of items in a navigation menu.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Slots:**
 - `label`: Renders the label of the group.
 

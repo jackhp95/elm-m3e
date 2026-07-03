@@ -6,6 +6,9 @@ module M3e.Snackbar exposing
 {-|
 Presents short updates about application processes at the bottom of the screen.
 
+**Component Info:**
+- **Extends:** `LitElement`
+
 **Events:**
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.

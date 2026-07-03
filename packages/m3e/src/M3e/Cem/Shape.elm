@@ -13,7 +13,11 @@ import M3e.Cem.Html.Shape
 import M3e.Value
 
 
-{-| A shape used to add emphasis and decorative flair. -}
+{-| A shape used to add emphasis and decorative flair.
+
+**Component Info:**
+- **Extends:** `LitElement`
+-}
 shape :
     List (M3e.Cem.Attr.Attr { name : M3e.Value.Supported
     , slot : M3e.Value.Supported
