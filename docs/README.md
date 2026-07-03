@@ -13,6 +13,20 @@ pnpm start              # build:assets + elm-pages dev, serves on http://localho
 
 `elm-pages dev` proxies through Vite, which watches your `.elm` source.
 
+## Verification gate — run before claiming a route compiles
+
+```sh
+pnpm run check   # build:assets + elm-pages build — the authoritative compile
+```
+
+**`elm-review` clean does NOT mean the app compiles.** elm-review does not
+reliably re-typecheck changed route bodies against the generated,
+Lamdera-wired `.elm-pages/Main.elm`, so route type errors pass review (see
+[`adr/0012-codegen-aware-elm-review.md`](adr/0012-codegen-aware-elm-review.md)
+and [`frictions/_integration.md` §1](frictions/_integration.md)). The
+authoritative gate is a real compile: `pnpm run check`, `pnpm run build`, or
+loading the route in `pnpm start`.
+
 ## Styling — no manual CSS rebuild
 
 CSS is bundled by **Vite via the Tailwind v4 plugin** (`@tailwindcss/vite` in
@@ -32,4 +46,5 @@ dev server rebuilds.
 | `build:assets`    | Runs `build:reference` then `build:examples`.            |
 | `start`           | `build:assets` + `elm-pages dev`.                        |
 | `build`           | `build:assets` + `elm-pages build` (production output).  |
+| `check`           | Authoritative compile gate — typechecks every route.     |
 | `test:browser`    | Playwright runtime contract harness.                     |

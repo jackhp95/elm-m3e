@@ -61,6 +61,38 @@ rules are ported/generalized onto this footing (notably
 `NoRawLayoutOutsideLayoutModule` → the configurable Seam gate). This is also what
 gives the ornith migrator its actionable, per-component feedback loop.
 
+## Caveat: elm-review clean is NOT "the app compiles"
+
+**A green `elm-review` does not mean the app compiles.** elm-review runs its own
+compile of the modules it lints, but it does not reliably re-typecheck a changed
+route *body* against the generated `.elm-pages/Main.elm` router (this project is
+Lamdera-based; `.elm-pages/Main.elm` imports `Lamdera.Wire3`). Route type errors
+therefore pass review: shop, mail, and travel each shipped with a real Elm type
+error while `elm-review` reported "I found no errors!" — the errors only surfaced
+under the elm-pages dev server / a real build (see
+[`frictions/_integration.md` §1](../frictions/_integration.md)). Reproduced again
+for #128: an `("#" ++ 5)` planted in a route body passes `elm-pages gen` +
+`elm-review` cleanly (exit 0) yet fails `elm-pages build` with a TYPE MISMATCH.
+
+Hypothesis for the miss: `elm-pages gen` is codegen only and does not typecheck
+route bodies; elm-review compiles the source modules it lints but does so against
+its own view of the project (`docs/elm.json`), not against the Lamdera-wired
+`.elm-pages/Main.elm` that actually instantiates each `route`, so a mismatch that
+only manifests when the router applies the route stays invisible. This is a
+guidance/tooling gap, not an elm-review bug to fix.
+
+**The authoritative gate is a real compile**, not review:
+
+- `pnpm run check` (= `build:assets && elm-pages build`) — the lightest command
+  that actually typechecks every route. `elm-pages` has no typecheck-only mode;
+  `gen` alone does not typecheck, so this is as light as it gets. CI's `docs` job
+  already runs the equivalent `pnpm run build`, so route type errors DO fail CI —
+  the gap this closes is the **local / agent dev loop**.
+- `pnpm start` / the elm-pages dev server — loading the route also compiles it.
+
+Run one of these before claiming a route compiles. elm-review remains valuable for
+what it *is* good at (the rules below); it is just not the compiler here.
+
 ## Rule roster (implemented)
 
 All rules live in `review/src/`, each covered by a `Review.Test` suite in
