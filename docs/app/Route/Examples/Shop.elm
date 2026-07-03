@@ -21,6 +21,7 @@ import BackendTask
 import Effect exposing (Effect)
 import Head
 import Kit
+import Kit.Badge
 import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
@@ -209,14 +210,15 @@ appBar model =
 -}
 cartAction : Int -> Element { s | html : Supported } (PagesMsg Msg)
 cartAction count =
-    Layout.span "relative inline-flex"
-        [ IconButton.view
-            { content = Icon.view [ Icon.name "shopping_bag" ] [] }
-            [ IconButton.variant Value.standard ]
-            []
-        , Layout.span "pointer-events-none absolute right-0 top-0"
-            [ Badge.view [] [ Badge.child (Kit.text (String.fromInt count)) ] ]
-        ]
+    Kit.Badge.on
+        { anchor =
+            IconButton.view
+                { content = Icon.view [ Icon.name "shopping_bag" ] [] }
+                [ IconButton.variant Value.standard ]
+                []
+        , badge =
+            Badge.view [] [ Badge.child (Kit.text (String.fromInt count)) ]
+        }
 
 
 {-| Left navigation rail — desktop only.
