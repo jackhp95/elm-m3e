@@ -5,6 +5,7 @@
     "build:reference": "node scripts/extract-reference.mjs",
     "build:examples": "node scripts/build-examples-data.mjs",
     "build:assets": "npm run build:reference && npm run build:examples",
+    "gen": "elm-pages gen && echo 'elm-pages gen: OK (.elm-pages regenerated)'",
     "start": "npm run build:assets && elm-pages dev",
     "build": "npm run build:assets && elm-pages build",
     "serve:dist": "node scripts/serve-dist.mjs dist",
