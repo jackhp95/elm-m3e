@@ -53,8 +53,23 @@ against the code.
 ## Regenerate + verify (the loop)
 
 Regenerate via `bin/elm-cem.js` (NOT bare `elm-codegen run` — see FRICTIONS F10).
-First regenerate the usage examples config: `cd m3e-docs && node scripts/examples-to-elm.mjs`
-(writes compile-verified `config/examples.generated.json`). Then:
+First (re)generate the usage-examples config. The HTML→Elm converter was recovered
+into elm-m3e at `docs/scripts/examples-gen/` (it was deleted from the standalone
+`m3e-docs` repo, where its paths didn't resolve). It reads the mined corpus from the
+nested `m3e-docs/data/examples.json`, compile-verifies each example against the real
+library, and writes `config/examples.generated.json`:
+```
+cd docs && npm run build:examples-config   # (was: m3e-docs/scripts/examples-to-elm.mjs)
+```
+> **Caveat (pending emitter migration):** `examples-gen/lib/to-elm.mjs` still emits the
+> pre-`M3e.Action` API, so the oracle now flags `action` as required and every clickable
+> (button / icon-button / fab / chip) SKIPS the compile-verify gate — a fresh run yields
+> ~49/106 examples, down from the committed 106. Until the emitter is updated to the
+> `{ content, action }` shape, KEEP the committed `config/examples.generated.json`; do not
+> overwrite it with a regressed run. Unit gate: `cd docs && npm run test:examples-gen`
+> (the 10 red `to-elm` cases are this same drift).
+
+Then:
 ```
 node elm-cem/bin/elm-cem.js \
   --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \

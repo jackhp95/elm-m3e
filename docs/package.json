@@ -4,6 +4,8 @@
   "scripts": {
     "build:reference": "node scripts/extract-reference.mjs",
     "build:examples": "node scripts/build-examples-data.mjs",
+    "build:examples-config": "node scripts/examples-gen/examples-to-elm.mjs",
+    "test:examples-gen": "node --test scripts/examples-gen/lib/*.test.mjs",
     "build:assets": "npm run build:reference && npm run build:examples",
     "gen": "elm-pages gen && echo 'elm-pages gen: OK (.elm-pages regenerated)'",
     "start": "npm run build:assets && elm-pages dev",
@@ -27,6 +29,7 @@
   "dependencies": {
     "@m3e/web": "^2.5.13",
     "@netlify/functions": "^5.2.0",
+    "linkedom": "^0.18.0",
     "tslib": "^2.8.1"
   },
   "pnpm": {
