@@ -15,10 +15,9 @@ import Doc
 import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
-import Html exposing (code, p, text)
-import Html.Attributes as Attr
 import Json.Decode as Decode
 import Kit
+import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
@@ -169,7 +168,8 @@ view app sharedModel =
                 ([ Heading.view { content = Kit.text component.name }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
-                 , EscapeHatch.fromHtml (p [ Attr.class "max-w-2xl text-body-lg text-on-surface-variant" ] [ text component.overview ])
+                 , Layout.div "max-w-2xl"
+                    [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text component.overview ] ]
                  ]
                     ++ usageBlocks sharedModel.apiLayer app.data.usage
                     ++ [ Heading.view { content = Kit.text "API" }
@@ -241,7 +241,7 @@ exampleBlock layer ex =
                 Shared.LayerRaw ->
                     Doc.code_ Doc.NoLang ex.html
     in
-    [ EscapeHatch.fromHtml (p [ Attr.class "text-body-md text-on-surface-variant" ] [ text ex.title ])
+    [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
     , Doc.showcase (Doc.rawPreview ex.html)
     , code
     ]
@@ -281,9 +281,10 @@ memberRow m =
     ListItem.view []
         (ListItem.overline (Kit.text m.kind)
             :: ListItem.child
-                (EscapeHatch.fromHtml
-                    (code [ Attr.class "text-body-md" ]
-                        [ text
+                (EscapeHatch.asElement
+                    (Kit.code Value.medium
+                        []
+                        [ Kit.text
                             (if m.signature == "" then
                                 m.name
 

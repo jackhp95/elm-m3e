@@ -1,21 +1,17 @@
 module Route.Styles.Typography exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (p, text)
-import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
+import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
-import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -64,31 +60,35 @@ head _ =
         |> Seo.website
 
 
-scale : List ( String, String )
+{-| The 15 M3 type-scale roles, each as a live exhibit built from the matching
+`Kit` typography primitive plus the Tailwind class it maps to (shown as the caption).
+The demo dogfoods the primitives: the exhibit _is_ `Kit.display`/`headline`/… .
+-}
+scale : List ( Element { s | html : Supported } msg, String )
 scale =
-    [ ( "text-display-lg", "Display Large" )
-    , ( "text-display-md", "Display Medium" )
-    , ( "text-display-sm", "Display Small" )
-    , ( "text-headline-lg", "Headline Large" )
-    , ( "text-headline-md", "Headline Medium" )
-    , ( "text-headline-sm", "Headline Small" )
-    , ( "text-title-lg", "Title Large" )
-    , ( "text-title-md", "Title Medium" )
-    , ( "text-title-sm", "Title Small" )
-    , ( "text-body-lg", "Body Large" )
-    , ( "text-body-md", "Body Medium" )
-    , ( "text-body-sm", "Body Small" )
-    , ( "text-label-lg", "Label Large" )
-    , ( "text-label-md", "Label Medium" )
-    , ( "text-label-sm", "Label Small" )
+    [ ( Kit.display Value.large [ Kit.onSurface ] [ Kit.text "Display Large" ], "text-display-lg" )
+    , ( Kit.display Value.medium [ Kit.onSurface ] [ Kit.text "Display Medium" ], "text-display-md" )
+    , ( Kit.display Value.small [ Kit.onSurface ] [ Kit.text "Display Small" ], "text-display-sm" )
+    , ( Kit.headline Value.large [ Kit.onSurface ] [ Kit.text "Headline Large" ], "text-headline-lg" )
+    , ( Kit.headline Value.medium [ Kit.onSurface ] [ Kit.text "Headline Medium" ], "text-headline-md" )
+    , ( Kit.headline Value.small [ Kit.onSurface ] [ Kit.text "Headline Small" ], "text-headline-sm" )
+    , ( Kit.title Value.large [ Kit.onSurface ] [ Kit.text "Title Large" ], "text-title-lg" )
+    , ( Kit.title Value.medium [ Kit.onSurface ] [ Kit.text "Title Medium" ], "text-title-md" )
+    , ( Kit.title Value.small [ Kit.onSurface ] [ Kit.text "Title Small" ], "text-title-sm" )
+    , ( Kit.body Value.large [ Kit.onSurface ] [ Kit.text "Body Large" ], "text-body-lg" )
+    , ( Kit.body Value.medium [ Kit.onSurface ] [ Kit.text "Body Medium" ], "text-body-md" )
+    , ( Kit.body Value.small [ Kit.onSurface ] [ Kit.text "Body Small" ], "text-body-sm" )
+    , ( Kit.label Value.large [ Kit.onSurface ] [ Kit.text "Label Large" ], "text-label-lg" )
+    , ( Kit.label Value.medium [ Kit.onSurface ] [ Kit.text "Label Medium" ], "text-label-md" )
+    , ( Kit.label Value.small [ Kit.onSurface ] [ Kit.text "Label Small" ], "text-label-sm" )
     ]
 
 
-row : ( String, String ) -> Element { s | html : Supported } msg
-row ( cls, label ) =
-    Layout.div "flex flex-wrap items-baseline justify-between gap-2 border-b border-outline-variant py-3 last:border-0"
-        [ Layout.span (cls ++ " text-on-surface") [ Kit.text label ]
-        , Native.node (Html.node "code") [ Seam.asAttribute (class "text-body-md text-on-surface-variant") ] [ Kit.text cls ]
+row : ( Element { s | html : Supported } msg, String ) -> Element { s | html : Supported } msg
+row ( exhibit, cls ) =
+    Layout.div "flex flex-wrap items-baseline justify-between gap-2 py-3"
+        [ exhibit
+        , Kit.code Value.medium [ Kit.onSurfaceVariant ] [ Kit.text cls ]
         ]
 
 
@@ -119,18 +119,19 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "The M3 type scale has 15 standard roles (display, headline, title, body, label — each large/medium/small), each encoding font-size, line-height, weight, and tracking via --md-sys-typescale-* tokens. The bridge maps every role to a Tailwind utility." ]
+                        ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "The scale, live"
                     , Card.view
                         [ Card.variant Value.outlined ]
                         [ Card.content
-                            (Layout.div "px-2"
-                                (List.map row scale)
+                            (Layout.div "flex flex-col px-2"
+                                (List.intersperse (Divider.view [] []) (List.map row scale))
                             )
                         ]
                     ]

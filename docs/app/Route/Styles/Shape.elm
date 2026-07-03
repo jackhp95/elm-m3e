@@ -58,13 +58,10 @@ head _ =
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     let
-        tile =
-            Native.div [ Seam.asAttribute (Attr.class "h-20 w-20 bg-primary-container") ] []
-
         shapeCol ( token, label ) =
             Native.div
-                [ Seam.asAttribute (Attr.class "flex flex-col items-center gap-2 text-label-md text-on-surface-variant") ]
-                [ Shape.view [ Shape.name token ] [ Shape.child tile ]
+                [ Seam.asAttribute (Attr.class "flex flex-col items-center gap-2") ]
+                [ Shape.view [ Shape.name token ] []
                 , Kit.text label
                 ]
 

@@ -1,11 +1,10 @@
 module Route.Styles.Density exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (p, text)
+import Html
 import Html.Attributes exposing (class, style)
 import Kit
 import Layout
@@ -68,10 +67,9 @@ head _ =
 demoBar : Int -> Element { s | html : Supported } msg
 demoBar scaleValue =
     Layout.div "space-y-2"
-        [ EscapeHatch.fromHtml
-            (p [ class "text-label-lg text-on-surface-variant" ]
-                [ text ("density scale " ++ String.fromInt scaleValue) ]
-            )
+        [ Kit.label Value.large
+            [ Kit.onSurfaceVariant ]
+            [ Kit.text ("density scale " ++ String.fromInt scaleValue) ]
         , Native.node (Html.node "div")
             [ Seam.asAttribute (style "--md-sys-density-scale" (String.fromInt scaleValue))
             , Seam.asAttribute (class "flex flex-wrap gap-2")
@@ -105,10 +103,11 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
+                        ]
                     ]
                 , Card.view
                     [ Card.variant Value.outlined ]

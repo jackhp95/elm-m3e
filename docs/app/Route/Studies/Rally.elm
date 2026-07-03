@@ -141,7 +141,7 @@ accountCard ( icon, name, balance ) =
                 [ Icon.view [ Icon.name icon ] [], Kit.text name ]
             )
         , Card.content
-            (Native.div [ Seam.asAttribute (Attr.class "text-headline-sm") ] [ Kit.text balance ])
+            (Kit.headline Value.small [] [ Kit.text balance ])
         ]
 
 

@@ -58,8 +58,18 @@ addAttr a node =
                 , children = [ Text s ]
                 }
 
-        Raw _ ->
-            node
+        Raw h ->
+            -- A raw Html leaf can't carry an attribute either. Dropping it would
+            -- silently discard slot= (and any other stamped attribute) — the exact
+            -- footgun this MISI layer exists to prevent — for escape-hatched content
+            -- (EscapeHatch/Seam.fromHtml) and for anything run through Element.map /
+            -- Node.map (which re-wraps as Raw). Promote to a <span> holding the
+            -- attribute, mirroring the Text branch, so `slot="name"` survives.
+            Element
+                { component = \attrs kids -> Html.span (List.map Attr.toAttribute attrs) kids
+                , attrs = [ a ]
+                , children = [ Raw h ]
+                }
 
 
 {-| A text leaf node.

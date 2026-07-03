@@ -1,20 +1,18 @@
 module Route.GettingStarted.BrowserSupport exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (li, p, text, ul)
-import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
+import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -64,12 +62,15 @@ head _ =
 
 supportRow : String -> String -> Element { s | html : Supported } msg
 supportRow browser note =
-    Layout.li "flex items-baseline justify-between gap-4 border-b border-outline-variant py-2.5 last:border-0"
-        [ Layout.span "text-title-sm text-on-surface"
-            [ Kit.text browser ]
-        , Layout.span "text-body-lg text-on-surface-variant"
-            [ Kit.text note ]
+    Layout.div "flex items-baseline justify-between gap-4 py-2.5"
+        [ Kit.title Value.small [ Kit.onSurface ] [ Kit.text browser ]
+        , Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text note ]
         ]
+
+
+featureItem : String -> Element { s | html : Supported } msg
+featureItem note =
+    Native.li [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text note ] ]
 
 
 pageHeading : Element { s | heading : Supported } msg
@@ -99,35 +100,34 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "elm-m3e renders @m3e/web custom elements, so it runs anywhere standard Web Components and ES modules run — the modern-browser baseline." ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Supported browsers"
                     , Card.view
                         [ Card.variant Value.outlined ]
                         [ Card.content
-                            (Layout.ul "px-2"
-                                [ supportRow "Chrome / Edge" "Latest 2 versions"
-                                , supportRow "Firefox" "Latest 2 versions"
-                                , supportRow "Safari" "Latest 2 versions"
-                                , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
-                                ]
+                            (Layout.div "flex flex-col px-2"
+                                (List.intersperse (Divider.view [] [])
+                                    [ supportRow "Chrome / Edge" "Latest 2 versions"
+                                    , supportRow "Firefox" "Latest 2 versions"
+                                    , supportRow "Safari" "Latest 2 versions"
+                                    , supportRow "Mobile Safari / Chrome Android" "Latest 2 versions"
+                                    ]
+                                )
                             )
                         ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Platform features used"
-                    , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
-                            [ li [] [ text "Custom Elements v1 and Shadow DOM for the @m3e/web components." ]
-                            , li [] [ text "ES modules for component registration (no-bundler import-map usage is also supported upstream)." ]
-                            , li [] [ text "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode." ]
-                            , li [] [ text "Variable fonts for the self-hosted Material Symbols icon axes." ]
-                            ]
-                        )
+                    , Layout.ul "list-disc space-y-1.5 pl-5"
+                        [ featureItem "Custom Elements v1 and Shadow DOM for the @m3e/web components."
+                        , featureItem "ES modules for component registration (no-bundler import-map usage is also supported upstream)."
+                        , featureItem "CSS custom properties and the light-dark() function for the M3 token cascade and dark mode."
+                        , featureItem "Variable fonts for the self-hosted Material Symbols icon axes."
+                        ]
                     ]
                 ]
             ]

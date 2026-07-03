@@ -1,12 +1,10 @@
 module Route.GettingStarted.Overview exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (a, code, div, li, p, text, ul)
-import Html.Attributes exposing (class, href)
+import Html
 import Kit
 import Layout
 import M3e.Card as Card
@@ -14,8 +12,8 @@ import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Icon as Icon
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -95,9 +93,9 @@ highlightCard ( iconName, title, body ) =
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
         , Card.content
             (Layout.div "flex gap-3"
-                [ Layout.span "shrink-0 text-primary"
-                    [ Icon.view [ Icon.name iconName ] [] ]
-                , EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ])
+                [ Layout.span "shrink-0"
+                    [ Kit.colored [ Kit.primary ] [ Icon.view [ Icon.name iconName ] [] ] ]
+                , Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ]
                 ]
             )
         ]
@@ -116,13 +114,12 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "elm-m3e (the m3e-builder project) is a type-safe Elm binding layer over "
-                            , code [] [ text "@m3e/web" ]
-                            , text ", matraic's Material 3 Expressive web component library."
-                            ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "elm-m3e (the m3e-builder project) is a type-safe Elm binding layer over "
+                        , Native.node (Html.node "code") [] [ Kit.text "@m3e/web" ]
+                        , Kit.text ", matraic's Material 3 Expressive web component library."
+                        ]
                     ]
                 , Layout.section "space-y-4"
                     [ sectionHeading "What you get"
@@ -131,34 +128,29 @@ view _ _ =
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "The MISI philosophy"
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "Every M3e.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
-                        )
-                    , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
-                            [ li [] [ text "Typed slots — an icon slot only accepts a M3e.Icon, never arbitrary Html." ]
-                            , li [] [ text "Builders with required collaborators — you can't render an avatar without content." ]
-                            , li [] [ text "53 modules mirroring the @m3e/web catalogue 1:1." ]
-                            ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "Every M3e.* module is a small builder that Makes Impossible States Impossible: typed-to-child slots, required collaborators at the call site, and one module per documented m3e component. Invalid compositions don't compile, and there are no silent no-ops." ]
+                    , Layout.ul "list-disc space-y-1.5 pl-5"
+                        [ Native.li [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text "Typed slots — an icon slot only accepts a M3e.Icon, never arbitrary Html." ] ]
+                        , Native.li [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text "Builders with required collaborators — you can't render an avatar without content." ] ]
+                        , Native.li [] [ Kit.body Value.large [ Kit.onSurfaceVariant ] [ Kit.text "53 modules mirroring the @m3e/web catalogue 1:1." ] ]
+                        ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Relationship to @m3e/web"
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "@m3e/web ships the custom elements, the dynamic-color "
-                            , code [] [ text "<m3e-theme>" ]
-                            , text " engine, and the M3 design tokens. elm-m3e wraps each element in a typed Elm builder and the tokens flow through Tailwind utilities (the tailwind-m3e-web bridge)."
-                            ]
-                        )
-                    , EscapeHatch.fromHtml
-                        (p [ class "text-body-lg text-on-surface-variant" ]
-                            [ text "Next: "
-                            , a [ href "/getting-started/installation", class "text-primary hover:underline" ] [ text "Installation" ]
-                            , text "."
-                            ]
-                        )
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "@m3e/web ships the custom elements, the dynamic-color "
+                        , Native.node (Html.node "code") [] [ Kit.text "<m3e-theme>" ]
+                        , Kit.text " engine, and the M3 design tokens. elm-m3e wraps each element in a typed Elm builder and the tokens flow through Tailwind utilities (the tailwind-m3e-web bridge)."
+                        ]
+                    , Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "Next: "
+                        , Kit.textLink "/getting-started/installation" [ Kit.primary ] [ Kit.text "Installation" ]
+                        , Kit.text "."
+                        ]
                     ]
                 ]
             ]

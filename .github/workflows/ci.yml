@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -29,7 +31,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: tests/elm-stuff
-          key: ${{ runner.os }}-elm-tests-${{ hashFiles('elm.json') }}
+          key: ${{ runner.os }}-elm-tests-${{ hashFiles('tests/elm.json') }}
 
       - name: Cache review elm-stuff
         uses: actions/cache@v4
@@ -40,11 +42,22 @@ jobs:
       - name: Install root deps (elm, elm-format, elm-test)
         run: npm ci
 
-      - name: elm-format --validate (src + tests + review)
-        run: node_modules/.bin/elm-format --validate src/ tests/ review/src/
+      # Validate formatting of the HAND-WRITTEN IR core only. The per-component
+      # modules under packages/m3e/src/M3e/ are a generated artifact (ADR-8) and
+      # are not elm-format-formatted, so they are deliberately excluded here.
+      - name: elm-format --validate (hand-written IR core)
+        run: node_modules/.bin/elm-format --validate packages/m3e/src/M3e/Node.elm packages/m3e/src/M3e/Element.elm packages/m3e/src/M3e/Content.elm
+
+      # The real correctness proof: a green `elm make` over the package. Validate
+      # the package in place (bare `elm make`) and build the root entrypoint.
+      - name: Validate package (elm make)
+        run: cd packages/m3e && ../../node_modules/.bin/elm make src/M3e.elm --output=/dev/null
+
+      - name: Build root entrypoint (elm make)
+        run: node_modules/.bin/elm make packages/m3e/src/M3e.elm --output=/dev/null
 
       - name: elm-test
-        run: node_modules/.bin/elm-test
+        run: node_modules/.bin/elm-test --compiler node_modules/.bin/elm
 
       - name: elm-review
         # Run from docs/ so elm-review picks up docs/elm.json, which covers
@@ -54,7 +67,7 @@ jobs:
         # without it elm-review can't see that Api/Effect/View/Shared are used by
         # the router and reports false NoUnused errors. `gen` is the lightweight
         # codegen step (no full build).
-        run: cd docs && npm ci && npx elm-pages gen && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm
+        run: cd docs && pnpm install --frozen-lockfile && pnpm exec elm-pages gen && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm
 
   docs:
     name: Docs — reference pipeline + production build
@@ -62,11 +75,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: docs/package-lock.json
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
 
       - name: Cache scratch docs-gen elm-stuff
         uses: actions/cache@v4
@@ -75,19 +90,19 @@ jobs:
           # /tmp/m3e-docs-gen each run; caching its elm-stuff between runs
           # keeps `elm make --docs` fast.
           path: /tmp/m3e-docs-gen/elm-stuff
-          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/Ui/**/*.elm', 'vendor/elm-m3e/M3e/**/*.elm') }}
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
 
       - name: Install docs deps
-        run: cd docs && npm ci
+        run: cd docs && pnpm install --frozen-lockfile
 
       # `elm make --docs` (the reference pipeline) is run by build:reference,
       # which fails hard if any exposed value lacks a doc comment — locks in
       # the F8 discipline.
       - name: build:reference (elm make --docs pipeline)
-        run: cd docs && npm run build:reference
+        run: cd docs && pnpm run build:reference
 
       - name: Full production build (elm-pages + Netlify adapter)
-        run: cd docs && npm run build
+        run: cd docs && pnpm run build
 
   harness:
     name: Docs — Playwright runtime contract harness
@@ -95,26 +110,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: docs/package-lock.json
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
 
       - name: Cache scratch docs-gen elm-stuff
         uses: actions/cache@v4
         with:
           path: /tmp/m3e-docs-gen/elm-stuff
-          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/Ui/**/*.elm', 'vendor/elm-m3e/M3e/**/*.elm') }}
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
 
       - name: Install docs deps
-        run: cd docs && npm ci
+        run: cd docs && pnpm install --frozen-lockfile
 
       - name: Install Playwright Chromium
-        run: cd docs && npx playwright install --with-deps chromium
+        run: cd docs && pnpm exec playwright install --with-deps chromium
 
       # The harness's webServer boots `npm start` on :1239 itself, then asserts
       # the runtime contract (shadow DOM / DOM properties / a11y / interaction)
       # that Test.Html structurally cannot — see tests/README.md.
       - name: Run contract harness
-        run: cd docs && npm run test:browser
+        run: cd docs && pnpm run test:browser

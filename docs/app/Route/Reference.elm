@@ -12,7 +12,7 @@ import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (a, code, p, text)
+import Html exposing (a, code, text)
 import Html.Attributes exposing (class, href, id)
 import Json.Decode as Decode
 import Kit
@@ -129,13 +129,14 @@ view app _ =
         List.map Element.toNode
             [ pane
                 [ pageHeading
-                , EscapeHatch.fromHtml
-                    (p [ class "mt-2 max-w-2xl text-body-lg text-on-surface-variant" ]
-                        [ text "Every "
-                        , code [] [ text "Ui.*" ]
-                        , text " module, its overview, and every exposed value — extracted from the library source at build time."
+                , Layout.div "mt-2 max-w-2xl"
+                    [ Kit.paragraph Value.large
+                        [ Kit.onSurfaceVariant ]
+                        [ Kit.text "Every "
+                        , Native.node (Html.node "code") [] [ Kit.text "Ui.*" ]
+                        , Kit.text " module, its overview, and every exposed value — extracted from the library source at build time."
                         ]
-                    )
+                    ]
                 , indexGrid app.data
                 , Layout.div "mt-12 space-y-12"
                     (List.map componentBlock app.data)
@@ -166,11 +167,13 @@ componentBlock c =
     Native.node (Html.node "section")
         [ Seam.asAttribute (id c.slug), Seam.asAttribute (class "scroll-mt-6 space-y-4") ]
         [ Divider.view [] []
-        , EscapeHatch.fromHtml
-            (Html.h2 [ class "text-headline-sm" ]
-                [ code [ class "text-primary" ] [ text ("Ui." ++ c.name) ] ]
-            )
-        , prose "max-w-2xl text-body-lg text-on-surface-variant" c.overview
+        , Native.node (Html.node "h2")
+            []
+            [ Kit.headline Value.small
+                []
+                [ Native.node (Html.node "code") [ Kit.tint [ Kit.primary ] ] [ Kit.text ("Ui." ++ c.name) ] ]
+            ]
+        , prose "max-w-2xl" Value.large c.overview
         , Layout.div "space-y-3"
             (List.map memberRow c.members)
         ]
@@ -199,7 +202,7 @@ memberRow m =
                     Kit.text ""
 
                   else
-                    prose "mt-2 text-body-md text-on-surface-variant" m.doc
+                    prose "mt-2" Value.medium m.doc
                 ]
             )
         ]
@@ -211,13 +214,19 @@ pre_ s =
         [ code [] [ text s ] ]
 
 
-{-| Render \\n\\n-separated text as paragraphs.
+{-| Render \\n\\n-separated text as body paragraphs at the given type-scale size.
+`layoutCls` carries only layout (e.g. `max-w-2xl`); typography/color come from the
+`Kit` primitives.
 -}
-prose : String -> String -> Element { s | html : Supported } msg
-prose cls s =
-    Layout.div cls
+prose : String -> Kit.Size -> String -> Element { s | html : Supported } msg
+prose layoutCls size s =
+    Layout.div layoutCls
         (s
             |> String.split "\n\n"
             |> List.filter (\para -> String.trim para /= "")
-            |> List.map (\para -> EscapeHatch.fromHtml (p [ class "mt-2 first:mt-0 whitespace-pre-line" ] [ text para ]))
+            |> List.map
+                (\para ->
+                    Native.p [ Layout.class "mt-2 first:mt-0 whitespace-pre-line" ]
+                        [ Kit.body size [ Kit.onSurfaceVariant ] [ Kit.text para ] ]
+                )
         )

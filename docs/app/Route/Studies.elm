@@ -6,12 +6,9 @@ routes that the sidebar already links to; this page is the gallery.
 -}
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (p, text)
-import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.Button as Button
@@ -94,7 +91,7 @@ studyCard ( slug, title, body ) =
     Card.view
         [ Card.variant Value.elevated ]
         [ Card.header (Heading.view { content = Kit.text title } [ Heading.variant Value.title ] [])
-        , Card.content (EscapeHatch.fromHtml (p [ class "text-body-lg text-on-surface-variant" ] [ text body ]))
+        , Card.content (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ])
         , Card.actions
             (Button.view
                 [ Button.variant Value.filled
@@ -120,10 +117,11 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "Studies are composed, real-world demos that show many elm-m3e components working together — the way the library is meant to be used. Each one is a real, interactive route, not a screenshot." ]
+                        ]
                     ]
                 , Layout.section "grid gap-4 sm:grid-cols-2"
                     (List.map studyCard studies)

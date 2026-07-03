@@ -1,12 +1,9 @@
 module Route.Styles.Motion exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (code, li, p, text, ul)
-import Html.Attributes exposing (class)
 import Kit
 import Layout
 import M3e.ContentPane as ContentPane
@@ -14,6 +11,7 @@ import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
 import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
+import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -88,28 +86,49 @@ view _ _ =
             [ pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
-                    , EscapeHatch.fromHtml
-                        (p [ class "max-w-2xl text-body-lg text-on-surface-variant" ]
-                            [ text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
-                        )
+                    , Layout.div "max-w-2xl"
+                        [ Kit.paragraph Value.large
+                            [ Kit.onSurfaceVariant ]
+                            [ Kit.text "Material 3 motion is encoded as easing and duration tokens. The standard set drives functional transitions; the expressive set adds spring-like emphasis. <m3e-theme> exposes a motion attribute, surfaced in Ui.Theme as Theme.withMotion." ]
+                        ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Schemes"
-                    , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
-                            [ li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionStandard" ], text " — functional, restrained transitions." ]
-                            , li [] [ code [ class "text-on-surface" ] [ text "Theme.MotionExpressive" ], text " — emphasized, spring-driven motion for M3 Expressive surfaces." ]
+                    , Layout.ul "list-disc space-y-1.5 pl-5"
+                        [ Native.li []
+                            [ Kit.body Value.large
+                                [ Kit.onSurfaceVariant ]
+                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Theme.MotionStandard" ]
+                                , Kit.text " — functional, restrained transitions."
+                                ]
                             ]
-                        )
+                        , Native.li []
+                            [ Kit.body Value.large
+                                [ Kit.onSurfaceVariant ]
+                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "Theme.MotionExpressive" ]
+                                , Kit.text " — emphasized, spring-driven motion for M3 Expressive surfaces."
+                                ]
+                            ]
+                        ]
                     ]
                 , Layout.section "space-y-3"
                     [ sectionHeading "Token families"
-                    , EscapeHatch.fromHtml
-                        (ul [ class "list-disc space-y-1.5 pl-5 text-body-lg text-on-surface-variant" ]
-                            [ li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-easing-*" ], text " — standard, emphasized, and their accel/decel variants." ]
-                            , li [] [ code [ class "text-on-surface" ] [ text "--md-sys-motion-duration-*" ], text " — short / medium / long / extra-long steps." ]
+                    , Layout.ul "list-disc space-y-1.5 pl-5"
+                        [ Native.li []
+                            [ Kit.body Value.large
+                                [ Kit.onSurfaceVariant ]
+                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "--md-sys-motion-easing-*" ]
+                                , Kit.text " — standard, emphasized, and their accel/decel variants."
+                                ]
                             ]
-                        )
+                        , Native.li []
+                            [ Kit.body Value.large
+                                [ Kit.onSurfaceVariant ]
+                                [ Kit.code Value.large [ Kit.onSurface ] [ Kit.text "--md-sys-motion-duration-*" ]
+                                , Kit.text " — short / medium / long / extra-long steps."
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
