@@ -7,7 +7,7 @@ header, price content, and an "Add" `Button` in the actions slot. Interactive lo
 state (the selected category); custom layout is only a Tailwind grid.
 -}
 
-import BackendTask exposing (BackendTask)
+import BackendTask
 import Effect exposing (Effect)
 import Head
 import Html.Attributes as Attr
@@ -25,7 +25,7 @@ import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Seam
 import Shared
-import UrlPath
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
@@ -70,7 +70,7 @@ update _ _ (SetCategory c) model =
     ( { model | category = c }, Effect.none )
 
 
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
 subscriptions _ _ _ _ =
     Sub.none
 
@@ -100,6 +100,7 @@ products =
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view _ _ model =
     let
+        shown : List Product
         shown =
             if model.category == "all" then
                 products
@@ -109,8 +110,8 @@ view _ _ model =
     in
     { title = "Shrine · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Heading.view { content = Kit.text "Shrine" }
                     [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
                     []
@@ -121,7 +122,8 @@ view _ _ model =
                     [ Seam.asAttribute (Attr.class "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4") ]
                     (List.map productCard shown)
                 ]
-            ]
+            )
+        ]
     }
 
 

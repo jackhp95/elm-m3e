@@ -1,9 +1,7 @@
 module Route.GettingStarted.Installation exposing (ActionData, Data, Model, Msg, route)
 
-import BackendTask exposing (BackendTask)
+import BackendTask
 import Doc exposing (Lang(..), code_)
-import EscapeHatch
-import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Kit
@@ -11,7 +9,6 @@ import Layout
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -83,8 +80,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Installation · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
                     , Kit.paragraph Value.large
@@ -141,5 +138,6 @@ Theme.new
 """
                     ]
                 ]
-            ]
+            )
+        ]
     }

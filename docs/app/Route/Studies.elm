@@ -5,8 +5,7 @@ many `Ui.*` components working together. The five studies are interactive
 routes that the sidebar already links to; this page is the gallery.
 -}
 
-import BackendTask exposing (BackendTask)
-import FatalError exposing (FatalError)
+import BackendTask
 import Head
 import Head.Seo as Seo
 import Kit
@@ -16,7 +15,6 @@ import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.Heading as Heading
-import M3e.Node as Node exposing (Node)
 import M3e.Value as Value exposing (Supported)
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -85,6 +83,7 @@ pageHeading =
 studyCard : ( String, String, String ) -> Element { s | card : Supported } msg
 studyCard ( slug, title, body ) =
     let
+        studyHref : String
         studyHref =
             "/studies/" ++ slug
     in
@@ -113,8 +112,8 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     { title = "Studies · elm-m3e"
     , body =
-        List.map Element.toNode
-            [ pane
+        [ Element.toNode
+            (pane
                 [ Layout.section "space-y-3"
                     [ pageHeading
                     , Layout.div "max-w-2xl"
@@ -126,5 +125,6 @@ view _ _ =
                 , Layout.section "grid gap-4 sm:grid-cols-2"
                     (List.map studyCard studies)
                 ]
-            ]
+            )
+        ]
     }
