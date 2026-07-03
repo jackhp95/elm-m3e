@@ -22,6 +22,7 @@ import Effect exposing (Effect)
 import Head
 import Html
 import Kit
+import Kit.Media as Media
 import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
@@ -375,13 +376,14 @@ placeCard place =
         ]
 
 
-{-| Placeholder media: a shape-clipped, tinted `Surface` block standing in for a
+{-| Placeholder media: a shape-clipped, tinted card-media block standing in for a
 destination photo.
 -}
 media : Place -> Element { s | html : Supported } msg
 media place =
-    Surface.view place.tint
-        [ Shape.corner Shape.large, Layout.class "flex h-28 w-full items-end p-3" ]
+    Media.view place.tint
+        Shape.large
+        [ Layout.class "flex h-28 w-full items-end p-3" ]
         [ Icon.view [ Icon.name "image" ] [] ]
 
 
