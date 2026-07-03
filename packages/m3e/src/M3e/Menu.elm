@@ -21,21 +21,21 @@ Presents a list of choices on a temporary surface.
 
 <!-- elm-cem:example title="Basic action menu triggered from a button" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "arrow_drop_down" ] []), M3e.Button.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for "file-menu" ] [ M3e.MenuTrigger.child (Kit.text "File") ]) ]
+[ M3e.Button.view { content = Kit.text "File", action = M3e.Action.opensMenu "file-menu" } [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "arrow_drop_down" ] []) ]
     , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "note_add" ] []), M3e.MenuItem.child (Kit.text "New document") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "folder_open" ] []), M3e.MenuItem.child (Kit.text "Open") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "save" ] []), M3e.MenuItem.child (Kit.text "Save") ] ])
     ]
 ```
 
 <!-- elm-cem:example title="View menu with checkbox and radio selection groups" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for "view-menu" ] [ M3e.MenuTrigger.child (Kit.text "View") ]) ]
-    , M3e.Menu.view [ M3e.Menu.variant M3e.Value.vibrant ] (M3e.Menu.children [ M3e.MenuItemCheckbox.view [ M3e.MenuItemCheckbox.checked True ] [ M3e.MenuItemCheckbox.child (Kit.text "Show sidebar") ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.child (Kit.text "Show status bar") ], Native.hr, M3e.MenuItemGroup.view [] (M3e.MenuItemGroup.children [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ M3e.MenuItemRadio.child (Kit.text "Comfortable") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text "Cozy") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text "Compact") ] ]) ])
+[ M3e.Button.view { content = Kit.text "View", action = M3e.Action.opensMenu "view-menu" } [ M3e.Button.variant M3e.Value.text ] []
+    , M3e.Menu.view [ M3e.Menu.variant M3e.Value.vibrant ] (M3e.Menu.children [ M3e.MenuItemCheckbox.view [ M3e.MenuItemCheckbox.checked True ] [ M3e.MenuItemCheckbox.child (Kit.text "Show sidebar") ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.child (Kit.text "Show status bar") ], M3e.Divider.view [] [], M3e.MenuItemGroup.view [] (M3e.MenuItemGroup.children [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ M3e.MenuItemRadio.child (Kit.text "Comfortable") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text "Cozy") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text "Compact") ] ]) ])
     ]
 ```
 
 <!-- elm-cem:example title="Nested submenu for sharing options" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for "share-menu" ] [ M3e.MenuTrigger.child (Kit.text "Share") ]) ]
+[ M3e.Button.view { content = Kit.text "Share", action = M3e.Action.opensMenu "share-menu" } [ M3e.Button.variant M3e.Value.filled ] []
     , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.MenuItem.child (Kit.text "Copy link") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "group" ] []), M3e.MenuItem.trailingIcon (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.MenuItem.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for "people-menu" ] [ M3e.MenuTrigger.child (Kit.text "Share with people") ]) ] ])
     , M3e.Menu.view [ M3e.Menu.submenu True, M3e.Menu.positionX M3e.Value.after ] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text "Alex Chen") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text "Jordan Lee") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text "Sam Rivera") ] ])
     ]
@@ -126,7 +126,12 @@ onToggle =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element any msg
+    M3e.Element.Element { menuItem : M3e.Value.Supported
+    , menuItemCheckbox : M3e.Value.Supported
+    , menuItemRadio : M3e.Value.Supported
+    , menuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -134,7 +139,12 @@ child el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element any msg)
+    List (M3e.Element.Element { menuItem : M3e.Value.Supported
+    , menuItemCheckbox : M3e.Value.Supported
+    , menuItemRadio : M3e.Value.Supported
+    , menuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

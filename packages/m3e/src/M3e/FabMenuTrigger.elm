@@ -1,4 +1,4 @@
-module M3e.FabMenuTrigger exposing ( view, for )
+module M3e.FabMenuTrigger exposing ( view, for, child, children )
 
 {-|
 An element, nested within a clickable element, used to open a floating action button (FAB) menu.
@@ -6,12 +6,13 @@ An element, nested within a clickable element, used to open a floating action bu
 **Component Info:**
 - **Extends:** `ActionElementBase`
 
-@docs view, for
+@docs view, for, child, children
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.FabMenuTrigger
+import M3e.Content
 import M3e.Element
 import M3e.Node
 import M3e.Value
@@ -22,9 +23,9 @@ view :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | fabMenuTrigger : M3e.Value.Supported } msg
-view attributes children =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -33,7 +34,7 @@ view attributes children =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Element.toNode children)
+             (List.map M3e.Content.toNode content_)
         )
 
 
@@ -41,3 +42,19 @@ view attributes children =
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
     M3e.Cem.FabMenuTrigger.for
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
+child el =
+    M3e.Content.slot "" el
+
+
+{-| Place many elements in the default slot. -}
+children :
+    List (M3e.Element.Element any msg)
+    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
+children els =
+    List.map (M3e.Content.slot "") els

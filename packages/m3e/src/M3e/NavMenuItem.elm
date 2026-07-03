@@ -40,7 +40,11 @@ import M3e.Value
 
 {-| Build the `<m3e-nav-menu-item>` element (lazy IR). -}
 view :
-    { label : M3e.Element.Element any msg }
+    { label :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        } msg
+    }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , open : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -125,7 +129,7 @@ onClick =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element any msg
+    M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -133,7 +137,7 @@ child el =
 
 {-| Place content in the `icon` slot. -}
 icon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
     M3e.Content.slot "icon" el
@@ -141,7 +145,9 @@ icon el =
 
 {-| Place content in the `badge` slot. -}
 badge :
-    M3e.Element.Element any msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , badge : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | badge : M3e.Value.Supported } msg
 badge el =
     M3e.Content.slot "badge" el
@@ -149,7 +155,7 @@ badge el =
 
 {-| Place content in the `selected-icon` slot. -}
 selectedIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
 selectedIcon el =
     M3e.Content.slot "selected-icon" el
@@ -157,7 +163,7 @@ selectedIcon el =
 
 {-| Place content in the `toggle-icon` slot. -}
 toggleIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
 toggleIcon el =
     M3e.Content.slot "toggle-icon" el
@@ -165,7 +171,7 @@ toggleIcon el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element any msg)
+    List (M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

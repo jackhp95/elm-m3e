@@ -1,8 +1,7 @@
 module M3e.Button exposing
-    ( view, disabled, disabledInteractive, download, href, name
-    , rel, selected, shape, size, target, toggle, type_
-    , value, variant, onBeforeinput, onInput, onChange, onClick, child
-    , icon, selectedSlot, selectedIcon, trailingIcon, children
+    ( view, disabled, disabledInteractive, name, selected, shape
+    , size, toggle, type_, value, variant, onBeforeinput, onInput
+    , onChange, icon, selectedSlot, selectedIcon, trailingIcon
     )
 
 {-|
@@ -31,29 +30,28 @@ A button users interact with to perform an action.
 
 <!-- elm-cem:example title="Five button variants in an action row" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), M3e.Button.child (Kit.text "New") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Tonal") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Outlined") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Text") ]
+[ M3e.Button.view { content = Kit.text "New", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+    , M3e.Button.view { content = Kit.text "Tonal", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] []
+    , M3e.Button.view { content = Kit.text "Elevated", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.elevated ] []
+    , M3e.Button.view { content = Kit.text "Outlined", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] []
+    , M3e.Button.view { content = Kit.text "Text", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] []
     ]
 ```
 
 <!-- elm-cem:example title="Toggle button and link button with icons" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "favorite_border" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text "Saved" ]), M3e.Button.child (Kit.text "Save") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href "/download", M3e.Button.download "", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.Button.child (Kit.text "Download") ]
+[ M3e.Button.view { content = Kit.text "Save", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "favorite_border" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Kit.text "Saved") ]
+    , M3e.Button.view { content = Kit.text "Download", action = M3e.Action.linkWith { href = "/download", target = Nothing, rel = Nothing, download = Just "" } } [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []) ]
     ]
 ```
 
-@docs view, disabled, disabledInteractive, download, href, name
-@docs rel, selected, shape, size, target, toggle
-@docs type_, value, variant, onBeforeinput, onInput, onChange
-@docs onClick, child, icon, selectedSlot, selectedIcon, trailingIcon
-@docs children
+@docs view, disabled, disabledInteractive, name, selected, shape
+@docs size, toggle, type_, value, variant, onBeforeinput
+@docs onInput, onChange, icon, selectedSlot, selectedIcon, trailingIcon
 -}
 
 
+import M3e.Action
 import M3e.Cem.Attr
 import M3e.Cem.Button
 import M3e.Content
@@ -64,16 +62,33 @@ import M3e.Value
 
 {-| Build the `<m3e-button>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , icon : M3e.Value.Supported
+        } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , shape : M3e.Value.Supported
     , size : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , toggle : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
@@ -81,24 +96,32 @@ view :
     , onBeforeinput : M3e.Value.Supported
     , onInput : M3e.Value.Supported
     , onChange : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , selectedIcon : M3e.Value.Supported
     , trailingIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Button.button (List.map M3e.Cem.Attr.forget erased) ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  )
+                  (List.map M3e.Cem.Attr.forget attributes)
+             )
+             (List.append
+                  [ M3e.Action.wrapContent
+                      req_.action
+                      (M3e.Element.toNode req_.content)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -116,29 +139,10 @@ disabledInteractive =
     M3e.Cem.Button.disabledInteractive
 
 
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
-download :
-    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
-    M3e.Cem.Button.download
-
-
-{-| The URL to which the link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
-    M3e.Cem.Button.href
-
-
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
     M3e.Cem.Button.name
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
-    M3e.Cem.Button.rel
 
 
 {-| Whether the toggle button is selected. (default: `false`) -}
@@ -168,12 +172,6 @@ size :
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size =
     M3e.Cem.Button.size
-
-
-{-| The target of the link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
-    M3e.Cem.Button.target
 
 
 {-| Whether the button will toggle between selected and unselected states. (default: `false`) -}
@@ -235,23 +233,11 @@ onChange =
     M3e.Cem.Button.onChange
 
 
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.Button.onClick
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
 {-| Place content in the `icon` slot. -}
 icon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , loadingIndicator : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
     M3e.Content.slot "icon" el
@@ -259,7 +245,9 @@ icon el =
 
 {-| Place content in the `selected` slot. -}
 selectedSlot :
-    M3e.Element.Element any msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
 selectedSlot el =
     M3e.Content.slot "selected" el
@@ -267,7 +255,7 @@ selectedSlot el =
 
 {-| Place content in the `selected-icon` slot. -}
 selectedIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
 selectedIcon el =
     M3e.Content.slot "selected-icon" el
@@ -275,15 +263,7 @@ selectedIcon el =
 
 {-| Place content in the `trailing-icon` slot. -}
 trailingIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
 trailingIcon el =
     M3e.Content.slot "trailing-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

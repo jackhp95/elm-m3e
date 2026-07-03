@@ -28,15 +28,15 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 
 <!-- elm-cem:example title="Modal share sheet with action list" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "share-sheet" ] [ M3e.BottomSheetTrigger.child (Kit.text "Share") ]) ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (Native.span [] [ Kit.text "Share to" ]), M3e.BottomSheet.child (M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Copy link") ]) ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "mail" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Email") ]) ] ])) ]
+[ M3e.Button.view { content = Kit.text "Share", action = M3e.Action.opensBottomSheet "share-sheet" } [ M3e.Button.variant M3e.Value.tonal ] []
+    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (Kit.text "Share to"), M3e.BottomSheet.child (M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Copy link") ]) ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "mail" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Email") ]) ] ])) ]
     ]
 ```
 
 <!-- elm-cem:example title="Non-modal filter sheet opening to a detent" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "filters-sheet", M3e.BottomSheetTrigger.detent 1 ] [ M3e.BottomSheetTrigger.child (Kit.text "Filters") ]) ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.handle True ] ([ M3e.BottomSheet.header (Native.span [] [ Kit.text "Filters" ]) ] ++ M3e.BottomSheet.children [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text "In stock only" ], Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "On sale" ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Apply") ]) ] ])
+[ M3e.Button.view { content = Kit.text "Filters", action = M3e.Action.opensBottomSheetWith { for = "filters-sheet", detent = Just 1, secondary = Nothing } } [ M3e.Button.variant M3e.Value.outlined ] []
+    , M3e.BottomSheet.view [ M3e.BottomSheet.handle True ] ([ M3e.BottomSheet.header (Kit.text "Filters") ] ++ M3e.BottomSheet.children [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text "In stock only" ], Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "On sale" ], M3e.Button.view { content = Kit.text "Apply", action = M3e.Action.bottomSheetAction } [ M3e.Button.variant M3e.Value.filled ] [] ])
     ]
 ```
 

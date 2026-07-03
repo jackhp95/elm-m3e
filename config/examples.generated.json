@@ -3,11 +3,11 @@
     "examples": [
       {
         "title": "Medium app bar with leading and trailing actions",
-        "code": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Back\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"arrow_back\" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text \"Top 10 hiking trails\" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text \"Discover popular trails\" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label \"Bookmark\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"bookmark\", M3e.Icon.filled True ] []) ]) ]"
+        "code": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"arrow_back\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Back\" ] []), M3e.AppBar.title (Kit.text \"Top 10 hiking trails\"), M3e.AppBar.subtitle (Kit.text \"Discover popular trails\"), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"bookmark\", M3e.Icon.filled True ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label \"Bookmark\" ] []) ]"
       },
       {
         "title": "Centered large app bar with trailing menu",
-        "code": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Open navigation\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text \"Inbox\" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text \"24 unread messages\" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Search\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"search\" ] []) ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"More options\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"more_vert\" ] []) ]) ]"
+        "code": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"menu\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Open navigation\" ] []), M3e.AppBar.title (Kit.text \"Inbox\"), M3e.AppBar.subtitle (Kit.text \"24 unread messages\"), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"search\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Search\" ] []), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"more_vert\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"More options\" ] []) ]"
       }
     ],
     "docMeta": {
@@ -22,7 +22,7 @@
       },
       {
         "title": "Starts-with country search with no-data message",
-        "code": "[ Native.node Html.label [] [ Kit.text \"Country\" ]\n    , Native.node Html.input [] []\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"country\", M3e.Autocomplete.noDataLabel \"No matching countries\" ] ([ M3e.Autocomplete.noData (Native.span [] [ Kit.text \"Try a different spelling\" ]) ] ++ M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text \"Australia\" } [] [], M3e.Option.view { content = Kit.text \"Brazil\" } [] [], M3e.Option.view { content = Kit.text \"Canada\" } [] [], M3e.Option.view { content = Kit.text \"Denmark\" } [] [] ])\n    ]"
+        "code": "[ Native.node Html.label [] [ Kit.text \"Country\" ]\n    , Native.node Html.input [] []\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"country\", M3e.Autocomplete.noDataLabel \"No matching countries\" ] ([ M3e.Autocomplete.noData (Kit.text \"Try a different spelling\") ] ++ M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text \"Australia\" } [] [], M3e.Option.view { content = Kit.text \"Brazil\" } [] [], M3e.Option.view { content = Kit.text \"Canada\" } [] [], M3e.Option.view { content = Kit.text \"Denmark\" } [] [] ])\n    ]"
       }
     ],
     "docMeta": {
@@ -44,7 +44,7 @@
     "examples": [
       {
         "title": "Notification count badge on a button",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"notifications\" ] []), M3e.Button.child (Kit.text \"Alerts\") ]\n    , M3e.Badge.view [ M3e.Badge.for \"notifications\" ] [ M3e.Badge.child (Kit.text \"10\") ]\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Alerts\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"notifications\" ] []) ]\n    , M3e.Badge.view [ M3e.Badge.for \"notifications\" ] [ M3e.Badge.child (Kit.text \"10\") ]\n    ]"
       },
       {
         "title": "Small dot badge and large count badge on icons",
@@ -59,11 +59,11 @@
     "examples": [
       {
         "title": "Modal share sheet with action list",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for \"share-sheet\" ] [ M3e.BottomSheetTrigger.child (Kit.text \"Share\") ]) ]\n    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (Native.span [] [ Kit.text \"Share to\" ]), M3e.BottomSheet.child (M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text \"Copy link\") ]) ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"mail\" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text \"Email\") ]) ] ])) ]\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Share\", action = M3e.Action.opensBottomSheet \"share-sheet\" } [ M3e.Button.variant M3e.Value.tonal ] []\n    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (Kit.text \"Share to\"), M3e.BottomSheet.child (M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text \"Copy link\") ]) ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"mail\" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text \"Email\") ]) ] ])) ]\n    ]"
       },
       {
         "title": "Non-modal filter sheet opening to a detent",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for \"filters-sheet\", M3e.BottomSheetTrigger.detent 1 ] [ M3e.BottomSheetTrigger.child (Kit.text \"Filters\") ]) ]\n    , M3e.BottomSheet.view [ M3e.BottomSheet.handle True ] ([ M3e.BottomSheet.header (Native.span [] [ Kit.text \"Filters\" ]) ] ++ M3e.BottomSheet.children [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text \"In stock only\" ], Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text \"On sale\" ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text \"Apply\") ]) ] ])\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Filters\", action = M3e.Action.opensBottomSheetWith { for = \"filters-sheet\", detent = Just 1, secondary = Nothing } } [ M3e.Button.variant M3e.Value.outlined ] []\n    , M3e.BottomSheet.view [ M3e.BottomSheet.handle True ] ([ M3e.BottomSheet.header (Kit.text \"Filters\") ] ++ M3e.BottomSheet.children [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text \"In stock only\" ], Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text \"On sale\" ], M3e.Button.view { content = Kit.text \"Apply\", action = M3e.Action.bottomSheetAction } [ M3e.Button.variant M3e.Value.filled ] [] ])\n    ]"
       }
     ],
     "docMeta": {
@@ -89,12 +89,12 @@
     "examples": [
       {
         "title": "Five button variants in an action row",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"add\" ] []), M3e.Button.child (Kit.text \"New\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text \"Tonal\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text \"Elevated\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Outlined\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text \"Text\") ]\n    ]",
+        "code": "[ M3e.Button.view { content = Kit.text \"New\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"add\" ] []) ]\n    , M3e.Button.view { content = Kit.text \"Tonal\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] []\n    , M3e.Button.view { content = Kit.text \"Elevated\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.elevated ] []\n    , M3e.Button.view { content = Kit.text \"Outlined\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] []\n    , M3e.Button.view { content = Kit.text \"Text\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] []\n    ]",
         "section": "Variants"
       },
       {
         "title": "Toggle button and link button with icons",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"favorite_border\" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text \"Saved\" ]), M3e.Button.child (Kit.text \"Save\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href \"/download\", M3e.Button.download \"\", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []), M3e.Button.child (Kit.text \"Download\") ]\n    ]",
+        "code": "[ M3e.Button.view { content = Kit.text \"Save\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"favorite_border\" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Kit.text \"Saved\") ]\n    , M3e.Button.view { content = Kit.text \"Download\", action = M3e.Action.linkWith { href = \"/download\", target = Nothing, rel = Nothing, download = Just \"\" } } [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []) ]\n    ]",
         "section": "Variants"
       }
     ],
@@ -106,11 +106,11 @@
     "examples": [
       {
         "title": "Connected toggle group for view selection",
-        "code": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"view_list\" ] []), M3e.Button.child (Kit.text \"List\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"grid_view\" ] []), M3e.Button.child (Kit.text \"Grid\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"map\" ] []), M3e.Button.child (Kit.text \"Map\") ] ])"
+        "code": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view { content = Kit.text \"List\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"view_list\" ] []) ], M3e.Button.view { content = Kit.text \"Grid\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"grid_view\" ] []) ], M3e.Button.view { content = Kit.text \"Map\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"map\" ] []) ] ])"
       },
       {
         "title": "Multi-select formatting toolbar",
-        "code": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected, M3e.ButtonGroup.multi True, M3e.ButtonGroup.size M3e.Value.medium ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Bold\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Italic\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Underline\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] []) ] ])"
+        "code": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected, M3e.ButtonGroup.multi True, M3e.ButtonGroup.size M3e.Value.medium ] (M3e.ButtonGroup.children [ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Bold\" ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Italic\" ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Underline\" ] [] ])"
       }
     ],
     "docMeta": {
@@ -121,11 +121,11 @@
     "examples": [
       {
         "title": "Date picker calendar with a custom header",
-        "code": "M3e.Calendar.view [ M3e.Calendar.date \"2025-12-13\", M3e.Calendar.minDate \"2025-01-01\", M3e.Calendar.maxDate \"2026-12-31\" ] [ M3e.Calendar.header (Native.span [] [ Kit.text \"Select a delivery date\" ]) ]"
+        "code": "M3e.Calendar.view [ M3e.Calendar.date \"2025-12-13\", M3e.Calendar.minDate \"2025-01-01\", M3e.Calendar.maxDate \"2026-12-31\" ] [ M3e.Calendar.header (Kit.text \"Select a delivery date\") ]"
       },
       {
         "title": "Range calendar starting in the multi-year view",
-        "code": "M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt \"2026-06-01\", M3e.Calendar.rangeStart \"2026-06-10\", M3e.Calendar.rangeEnd \"2026-06-17\", M3e.Calendar.nextMonthLabel \"Next month\", M3e.Calendar.previousMonthLabel \"Previous month\" ] [ M3e.Calendar.header (Native.span [] [ Kit.text \"Choose your stay\" ]) ]"
+        "code": "M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt \"2026-06-01\", M3e.Calendar.rangeStart \"2026-06-10\", M3e.Calendar.rangeEnd \"2026-06-17\", M3e.Calendar.nextMonthLabel \"Next month\", M3e.Calendar.previousMonthLabel \"Previous month\" ] [ M3e.Calendar.header (Kit.text \"Choose your stay\") ]"
       }
     ],
     "docMeta": {
@@ -140,7 +140,7 @@
       },
       {
         "title": "Actionable filled card linking to a detail page",
-        "code": "Kit.link \"/entities/1\" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"family_history\" ] [], Native.span [] [ Kit.text \"Relative\" ], M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] [] ]) ] ]"
+        "code": "Kit.link \"/entities/1\" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"family_history\" ] [], Kit.text \"Relative\", M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] [] ]) ] ]"
       }
     ],
     "docMeta": {
@@ -188,11 +188,11 @@
     "examples": [
       {
         "title": "Booking range picker with constraints",
-        "code": "Native.node Html.form [] [ Native.node Html.label [] [ Kit.text \"Choose your stay\" ], M3e.Datepicker.view [ M3e.Datepicker.range True, M3e.Datepicker.variant M3e.Value.docked, M3e.Datepicker.clearable True, M3e.Datepicker.label \"Select dates\", M3e.Datepicker.startView M3e.Value.month ] [ M3e.Datepicker.child (M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for \"stay\" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name \"calendar_month\" ] []) ]) ] ]"
+        "code": "Native.node Html.form [] [ Native.node Html.label [] [ Kit.text \"Choose your stay\", M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for \"stay\" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name \"calendar_month\" ] []) ] ], M3e.Datepicker.view [ M3e.Datepicker.range True, M3e.Datepicker.variant M3e.Value.docked, M3e.Datepicker.clearable True, M3e.Datepicker.label \"Select dates\", M3e.Datepicker.startView M3e.Value.month ] [] ]"
       },
       {
         "title": "Modal single-date picker",
-        "code": "Native.div [] [ Native.node Html.label [] [ Kit.text \"Due date\" ], M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.modal, M3e.Datepicker.clearable True, M3e.Datepicker.label \"Select date\" ] [ M3e.Datepicker.child (M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for \"due\" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name \"event\" ] []) ]) ] ]"
+        "code": "Native.div [] [ Native.node Html.label [] [ Kit.text \"Due date\", M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for \"due\" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name \"event\" ] []) ] ], M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.modal, M3e.Datepicker.clearable True, M3e.Datepicker.label \"Select date\" ] [] ]"
       }
     ],
     "docMeta": {
@@ -203,11 +203,11 @@
     "examples": [
       {
         "title": "Confirmation dialog with header and actions",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.DialogTrigger.view [ M3e.DialogTrigger.for \"confirm\" ] [ M3e.DialogTrigger.child (Kit.text \"Delete project\") ]) ]\n    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] [ M3e.Dialog.header (Native.span [] [ Kit.text \"Delete project?\" ]), M3e.Dialog.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue \"cancel\" ] [ M3e.DialogAction.child (Kit.text \"Cancel\") ]) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []), M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue \"delete\" ] [ M3e.DialogAction.child (Kit.text \"Delete\") ]) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text \"This action permanently removes the project and all of its files. This cannot be undone.\" ]) ]\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Delete project\", action = M3e.Action.opensDialog \"confirm\" } [ M3e.Button.variant M3e.Value.filled ] []\n    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] [ M3e.Dialog.header (Kit.text \"Delete project?\"), M3e.Dialog.actions (Native.div [] [ M3e.Button.view { content = Kit.text \"Cancel\", action = M3e.Action.dialogAction { returnValue = \"cancel\" } } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = Kit.text \"Delete\", action = M3e.Action.dialogAction { returnValue = \"delete\" } } [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text \"This action permanently removes the project and all of its files. This cannot be undone.\" ]) ]\n    ]"
       },
       {
         "title": "Alert dialog with close icon",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (M3e.DialogTrigger.view [ M3e.DialogTrigger.for \"info\" ] [ M3e.DialogTrigger.child (Kit.text \"Session timeout\") ]) ]\n    , M3e.Dialog.view [ M3e.Dialog.alert True, M3e.Dialog.dismissible True ] [ M3e.Dialog.closeIcon (M3e.Icon.view [ M3e.Icon.name \"close\" ] []), M3e.Dialog.header (Native.span [] [ Kit.text \"Your session has expired\" ]), M3e.Dialog.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue \"ok\" ] [ M3e.DialogAction.child (Kit.text \"Sign in\") ]) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text \"For your security, you have been signed out due to inactivity. Please sign in again to continue.\" ]) ]\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Session timeout\", action = M3e.Action.opensDialog \"info\" } [ M3e.Button.variant M3e.Value.tonal ] []\n    , M3e.Dialog.view [ M3e.Dialog.alert True, M3e.Dialog.dismissible True ] [ M3e.Dialog.closeIcon (M3e.Icon.view [ M3e.Icon.name \"close\" ] []), M3e.Dialog.header (Kit.text \"Your session has expired\"), M3e.Dialog.actions (Native.div [] [ M3e.Button.view { content = Kit.text \"Sign in\", action = M3e.Action.dialogAction { returnValue = \"ok\" } } [ M3e.Button.variant M3e.Value.filled ] [] ]), M3e.Dialog.child (Native.p [] [ Kit.text \"For your security, you have been signed out due to inactivity. Please sign in again to continue.\" ]) ]\n    ]"
       }
     ],
     "docMeta": {
@@ -218,11 +218,11 @@
     "examples": [
       {
         "title": "Dividers separating a settings list",
-        "code": "Native.ul [] [ Native.li [] [ Native.span [] [ Kit.text \"Profile\" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text \"Privacy\" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text \"Notifications\" ] ] ]"
+        "code": "Native.ul [] [ Native.li [] [ Kit.text \"Profile\" ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Kit.text \"Privacy\" ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Kit.text \"Notifications\" ] ]"
       },
       {
         "title": "Vertical divider between toolbar actions",
-        "code": "Native.nav [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []), M3e.Button.child (Kit.text \"Bold\") ], M3e.Divider.view [ M3e.Divider.vertical True ] [], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.Button.child (Kit.text \"Link\") ] ]"
+        "code": "Native.nav [] [ M3e.Button.view { content = Kit.text \"Bold\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Divider.view [ M3e.Divider.vertical True ] [], M3e.Button.view { content = Kit.text \"Link\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []) ] ]"
       }
     ],
     "docMeta": {
@@ -233,7 +233,7 @@
     "examples": [
       {
         "title": "App shell with navigation drawer toggle",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Button.toggle True ] ([ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ] ++ M3e.Button.children [ M3e.DrawerToggle.view [ M3e.DrawerToggle.for \"nav\" ] [], Kit.text \"Menu\" ])\n    , M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link \"/home\" [ Kit.text \"Home\" ], Kit.link \"/reports\" [ Kit.text \"Reports\" ], Kit.link \"/settings\" [ Kit.text \"Settings\" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.node Html.h1 [] [ Kit.text \"Dashboard\" ], Native.p [] [ Kit.text \"Welcome back. Select an item from the navigation drawer.\" ] ]) ]\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Menu\", action = M3e.Action.togglesDrawer \"nav\" } [ M3e.Button.variant M3e.Value.text, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]\n    , M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link \"/home\" [ Kit.text \"Home\" ], Kit.link \"/reports\" [ Kit.text \"Reports\" ], Kit.link \"/settings\" [ Kit.text \"Settings\" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.node Html.h1 [] [ Kit.text \"Dashboard\" ], Native.p [] [ Kit.text \"Welcome back. Select an item from the navigation drawer.\" ] ]) ]\n    ]"
       },
       {
         "title": "Dual drawers with side navigation and detail panel",
@@ -248,15 +248,15 @@
     "examples": [
       {
         "title": "FAQ accordion with single-open behavior",
-        "code": "M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"How do I reset my password?\" ]), M3e.ExpansionPanel.toggleIcon (M3e.Icon.view [ M3e.Icon.name \"expand_more\" ] []), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Open Settings, choose Security, then select Reset password. A link will be sent to your email.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Can I change my plan later?\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Yes. Plans can be upgraded or downgraded at any time from the Billing page.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Where can I download invoices?\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"All invoices are available under Billing, in the Invoice history section.\" ]) ] ])"
+        "code": "M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Kit.text \"How do I reset my password?\"), M3e.ExpansionPanel.toggleIcon (M3e.Icon.view [ M3e.Icon.name \"expand_more\" ] []), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Open Settings, choose Security, then select Reset password. A link will be sent to your email.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Kit.text \"Can I change my plan later?\"), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Yes. Plans can be upgraded or downgraded at any time from the Billing page.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Kit.text \"Where can I download invoices?\"), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"All invoices are available under Billing, in the Invoice history section.\" ]) ] ])"
       },
       {
         "title": "Settings panel with custom header and actions",
-        "code": "M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"notifications\" ] [], Native.span [] [ Kit.text \"Notification preferences\" ] ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text \"Cancel\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text \"Save\") ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Choose how and when we contact you about account activity and product updates.\" ]) ]"
+        "code": "M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"notifications\" ] [], Native.span [] [ Kit.text \"Notification preferences\" ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Choose how and when we contact you about account activity and product updates.\" ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view { content = Kit.text \"Cancel\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = Kit.text \"Save\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.filled ] [] ]) ]"
       },
       {
         "title": "Multi-open accordion with horizontal toggle",
-        "code": "M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Shipping\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Standard delivery arrives in 3 to 5 business days.\" ]) ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Returns\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Items can be returned within 30 days of receipt.\" ]) ] ])"
+        "code": "M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Kit.text \"Shipping\"), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Standard delivery arrives in 3 to 5 business days.\" ]) ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Kit.text \"Returns\"), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Items can be returned within 30 days of receipt.\" ]) ] ])"
       }
     ],
     "docMeta": {
@@ -267,7 +267,7 @@
     "examples": [
       {
         "title": "Small FAB with icon",
-        "code": "M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label \"Navigation menu\" ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]"
+        "code": "M3e.Fab.view { content = M3e.Icon.view [ M3e.Icon.name \"menu\" ] [], action = M3e.Action.none } [ M3e.Fab.size M3e.Value.small, M3e.Aria.label \"Navigation menu\" ] []"
       }
     ],
     "docMeta": {
@@ -278,11 +278,11 @@
     "examples": [
       {
         "title": "Primary FAB revealing a secondary action menu",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large ] ([ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"edit\" ] []) ] ++ M3e.Button.children [ M3e.FabMenuTrigger.view [ M3e.FabMenuTrigger.for \"compose-menu\" ] [], Kit.text \"Compose\" ])\n    , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.secondary ] (M3e.FabMenu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"mail\" ] []), M3e.MenuItem.child (Kit.text \"New email\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"event\" ] []), M3e.MenuItem.child (Kit.text \"New event\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"group\" ] []), M3e.MenuItem.child (Kit.text \"New group\") ] ])\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Compose\", action = M3e.Action.opensFabMenu \"compose-menu\" } [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"edit\" ] []) ]\n    , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.secondary ] (M3e.FabMenu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"mail\" ] []), M3e.MenuItem.child (Kit.text \"New email\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"event\" ] []), M3e.MenuItem.child (Kit.text \"New event\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"group\" ] []), M3e.MenuItem.child (Kit.text \"New group\") ] ])\n    ]"
       },
       {
         "title": "Tertiary FAB menu with link and disabled items",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"share\" ] []), M3e.Button.child (M3e.FabMenuTrigger.view [ M3e.FabMenuTrigger.for \"share-menu\" ] []) ]\n    , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.tertiary ] (M3e.FabMenu.children [ M3e.MenuItem.view [ M3e.MenuItem.href \"https://example.com/link\", M3e.MenuItem.target \"_blank\" ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.MenuItem.child (Kit.text \"Copy link\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []), M3e.MenuItem.child (Kit.text \"Export PDF\") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"print\" ] []), M3e.MenuItem.child (Kit.text \"Print\") ] ])\n    ]"
+        "code": "[ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"share\" ] [], action = M3e.Action.opensFabMenu \"share-menu\" } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large ] []\n    , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.tertiary ] (M3e.FabMenu.children [ M3e.MenuItem.view [ M3e.MenuItem.href \"https://example.com/link\", M3e.MenuItem.target \"_blank\" ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.MenuItem.child (Kit.text \"Copy link\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []), M3e.MenuItem.child (Kit.text \"Export PDF\") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"print\" ] []), M3e.MenuItem.child (Kit.text \"Print\") ] ])\n    ]"
       }
     ],
     "docMeta": {
@@ -293,11 +293,11 @@
     "examples": [
       {
         "title": "Outlined field with prefix, hint and required marker",
-        "code": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name \"public\" ] []), M3e.FormField.prefixText (Native.span [] [ Kit.text \"https://\" ]), M3e.FormField.hint (Native.span [] [ Kit.text \"Include the full domain without a path.\" ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Website\" ], Native.node Html.input [] [] ])"
+        "code": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name \"public\" ] []), M3e.FormField.prefixText (Kit.text \"https://\"), M3e.FormField.hint (Kit.text \"Include the full domain without a path.\") ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Website\" ], Native.node Html.input [] [] ])"
       },
       {
         "title": "Filled field with always-floating label and error",
-        "code": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.FormField.floatLabel M3e.Value.always ] ([ M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text \"USD\" ]), M3e.FormField.error (Native.span [] [ Kit.text \"Enter an amount greater than zero.\" ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Amount\" ], Native.node Html.input [] [] ])"
+        "code": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.FormField.floatLabel M3e.Value.always ] ([ M3e.FormField.prefixText (Kit.text \"$\"), M3e.FormField.suffixText (Kit.text \"USD\"), M3e.FormField.error (Kit.text \"Enter an amount greater than zero.\") ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Amount\" ], Native.node Html.input [] [] ])"
       },
       {
         "title": "Search field with leading and trailing icons",
@@ -342,15 +342,15 @@
     "examples": [
       {
         "title": "Icon button wrapping an icon",
-        "code": "M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"dark_mode\" ] [] } [ M3e.Aria.label \"Toggle theme\" ] []"
+        "code": "M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"dark_mode\" ] [], action = M3e.Action.none } [ M3e.Aria.label \"Toggle theme\" ] []"
       },
       {
         "title": "Link icon buttons in a toolbar",
-        "code": "Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"rss_feed\" ] [] } [ M3e.IconButton.href \"/rss.xml\", M3e.Aria.label \"RSS Feed\" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"data_object\" ] [] } [ M3e.IconButton.href \"/feed.json\", M3e.Aria.label \"JSON Feed\" ] [] ]"
+        "code": "Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"rss_feed\" ] [], action = M3e.Action.link \"/rss.xml\" } [ M3e.Aria.label \"RSS Feed\" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"data_object\" ] [], action = M3e.Action.link \"/feed.json\" } [ M3e.Aria.label \"JSON Feed\" ] [] ]"
       },
       {
         "title": "Icon buttons grouped in a media control bar",
-        "code": "[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] [] } [ M3e.Aria.label \"Previous\" ] []\n    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] [] } [ M3e.Aria.label \"Play/Pause\" ] []\n    ]"
+        "code": "[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] [], action = M3e.Action.none } [ M3e.Aria.label \"Previous\" ] []\n    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] [], action = M3e.Action.none } [ M3e.Aria.label \"Play/Pause\" ] []\n    ]"
       }
     ],
     "docMeta": {
@@ -361,7 +361,7 @@
     "examples": [
       {
         "title": "Contact list with leading icons and trailing chevrons",
-        "code": "M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text \"Engineering\" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text \"ada@example.com\" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Ada Lovelace\") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text \"Design\" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text \"grace@example.com\" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Grace Hopper\") ] ])"
+        "code": "M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Kit.text \"Engineering\"), M3e.ListItem.supportingText (Kit.text \"ada@example.com\"), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Ada Lovelace\") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Kit.text \"Design\"), M3e.ListItem.supportingText (Kit.text \"grace@example.com\"), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Grace Hopper\") ] ])"
       },
       {
         "title": "Action list of navigable links",
@@ -384,7 +384,7 @@
       },
       {
         "title": "Contained loading indicator inside a refresh button",
-        "code": "Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []), M3e.Button.child (Kit.text \"Refreshing\") ] ]"
+        "code": "Native.div [] [ M3e.Button.view { content = Kit.text \"Refreshing\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []) ] ]"
       }
     ],
     "docMeta": {
@@ -395,15 +395,15 @@
     "examples": [
       {
         "title": "Basic action menu triggered from a button",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name \"arrow_drop_down\" ] []), M3e.Button.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for \"file-menu\" ] [ M3e.MenuTrigger.child (Kit.text \"File\") ]) ]\n    , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"note_add\" ] []), M3e.MenuItem.child (Kit.text \"New document\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"folder_open\" ] []), M3e.MenuItem.child (Kit.text \"Open\") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"save\" ] []), M3e.MenuItem.child (Kit.text \"Save\") ] ])\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"File\", action = M3e.Action.opensMenu \"file-menu\" } [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name \"arrow_drop_down\" ] []) ]\n    , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"note_add\" ] []), M3e.MenuItem.child (Kit.text \"New document\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"folder_open\" ] []), M3e.MenuItem.child (Kit.text \"Open\") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"save\" ] []), M3e.MenuItem.child (Kit.text \"Save\") ] ])\n    ]"
       },
       {
         "title": "View menu with checkbox and radio selection groups",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for \"view-menu\" ] [ M3e.MenuTrigger.child (Kit.text \"View\") ]) ]\n    , M3e.Menu.view [ M3e.Menu.variant M3e.Value.vibrant ] (M3e.Menu.children [ M3e.MenuItemCheckbox.view [ M3e.MenuItemCheckbox.checked True ] [ M3e.MenuItemCheckbox.child (Kit.text \"Show sidebar\") ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.child (Kit.text \"Show status bar\") ], Native.hr, M3e.MenuItemGroup.view [] (M3e.MenuItemGroup.children [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ M3e.MenuItemRadio.child (Kit.text \"Comfortable\") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text \"Cozy\") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text \"Compact\") ] ]) ])\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"View\", action = M3e.Action.opensMenu \"view-menu\" } [ M3e.Button.variant M3e.Value.text ] []\n    , M3e.Menu.view [ M3e.Menu.variant M3e.Value.vibrant ] (M3e.Menu.children [ M3e.MenuItemCheckbox.view [ M3e.MenuItemCheckbox.checked True ] [ M3e.MenuItemCheckbox.child (Kit.text \"Show sidebar\") ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.child (Kit.text \"Show status bar\") ], M3e.Divider.view [] [], M3e.MenuItemGroup.view [] (M3e.MenuItemGroup.children [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ M3e.MenuItemRadio.child (Kit.text \"Comfortable\") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text \"Cozy\") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text \"Compact\") ] ]) ])\n    ]"
       },
       {
         "title": "Nested submenu for sharing options",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for \"share-menu\" ] [ M3e.MenuTrigger.child (Kit.text \"Share\") ]) ]\n    , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.MenuItem.child (Kit.text \"Copy link\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"group\" ] []), M3e.MenuItem.trailingIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.MenuItem.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for \"people-menu\" ] [ M3e.MenuTrigger.child (Kit.text \"Share with people\") ]) ] ])\n    , M3e.Menu.view [ M3e.Menu.submenu True, M3e.Menu.positionX M3e.Value.after ] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text \"Alex Chen\") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text \"Jordan Lee\") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text \"Sam Rivera\") ] ])\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Share\", action = M3e.Action.opensMenu \"share-menu\" } [ M3e.Button.variant M3e.Value.filled ] []\n    , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.MenuItem.child (Kit.text \"Copy link\") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"group\" ] []), M3e.MenuItem.trailingIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.MenuItem.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for \"people-menu\" ] [ M3e.MenuTrigger.child (Kit.text \"Share with people\") ]) ] ])\n    , M3e.Menu.view [ M3e.Menu.submenu True, M3e.Menu.positionX M3e.Value.after ] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text \"Alex Chen\") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text \"Jordan Lee\") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text \"Sam Rivera\") ] ])\n    ]"
       }
     ],
     "docMeta": {
@@ -429,7 +429,7 @@
     "examples": [
       {
         "title": "Nested navigation menu with icons, badges, and links",
-        "code": "M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view { label = Kit.link \"/\" [ Kit.text \"Home\" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []) ], M3e.Divider.view [] [], M3e.NavMenuItem.view { label = Native.span [] [ Kit.text \"Work\" ] } [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"edit_note\" ] []), M3e.NavMenuItem.child (M3e.NavMenuItem.view { label = Native.span [] [ Kit.text \"Articles\" ] } [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"article\" ] []), M3e.NavMenuItem.badge (Native.span [] [ Kit.text \"12\" ]) ]) ] ])"
+        "code": "M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view { label = Kit.link \"/\" [ Kit.text \"Home\" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []) ], M3e.Divider.view [] [], M3e.NavMenuItem.view { label = Kit.text \"Work\" } [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"edit_note\" ] []), M3e.NavMenuItem.child (M3e.NavMenuItem.view { label = Kit.text \"Articles\" } [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"article\" ] []), M3e.NavMenuItem.badge (Kit.text \"12\") ]) ] ])"
       }
     ],
     "docMeta": {
@@ -440,7 +440,7 @@
     "examples": [
       {
         "title": "Collapsible navigation rail with toggle",
-        "code": "M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.auto ] (M3e.NavRail.children [ M3e.Button.view [ M3e.Button.toggle True ] ([ M3e.Button.selectedSlot (M3e.Icon.view [ M3e.Icon.name \"menu_open\" ] []) ] ++ M3e.Button.children [ M3e.Icon.view [ M3e.Icon.name \"menu\" ] [], M3e.NavRailToggle.view [ M3e.NavRailToggle.for \"main-rail\" ] [] ]), M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"dashboard\" ] []), M3e.NavItem.child (Kit.text \"Dashboard\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"folder\" ] []), M3e.NavItem.child (Kit.text \"Projects\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"insights\" ] []), M3e.NavItem.child (Kit.text \"Reports\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"settings\" ] []), M3e.NavItem.child (Kit.text \"Settings\") ] ])"
+        "code": "M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.auto ] (M3e.NavRail.children [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"menu\" ] [], action = M3e.Action.togglesNavRail \"main-rail\" } [ M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name \"menu_open\" ] []) ], M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"dashboard\" ] []), M3e.NavItem.child (Kit.text \"Dashboard\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"folder\" ] []), M3e.NavItem.child (Kit.text \"Projects\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"insights\" ] []), M3e.NavItem.child (Kit.text \"Reports\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"settings\" ] []), M3e.NavItem.child (Kit.text \"Settings\") ] ])"
       },
       {
         "title": "Expanded navigation rail with link destinations",
@@ -455,7 +455,7 @@
     "examples": [
       {
         "title": "Autocomplete option panel with grouped results",
-        "code": "M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text \"Apple\" } [ M3e.Option.value \"apple\" ] [], M3e.Option.view { content = Kit.text \"Banana\" } [ M3e.Option.value \"banana\" ] [], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Native.span [] [ Kit.text \"Citrus\" ]) ] ++ M3e.Optgroup.children [ M3e.Option.view { content = Kit.text \"Lemon\" } [ M3e.Option.value \"lemon\" ] [], M3e.Option.view { content = Kit.text \"Orange\" } [ M3e.Option.value \"orange\", M3e.Option.selected True ] [], M3e.Option.view { content = Kit.text \"Grapefruit\" } [ M3e.Option.value \"grapefruit\", M3e.Option.disabled True ] [] ]) ])"
+        "code": "M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text \"Apple\" } [ M3e.Option.value \"apple\" ] [], M3e.Option.view { content = Kit.text \"Banana\" } [ M3e.Option.value \"banana\" ] [], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Kit.text \"Citrus\") ] ++ M3e.Optgroup.children [ M3e.Option.view { content = Kit.text \"Lemon\" } [ M3e.Option.value \"lemon\" ] [], M3e.Option.view { content = Kit.text \"Orange\" } [ M3e.Option.value \"orange\", M3e.Option.selected True ] [], M3e.Option.view { content = Kit.text \"Grapefruit\" } [ M3e.Option.value \"grapefruit\", M3e.Option.disabled True ] [] ]) ])"
       },
       {
         "title": "Option panel with search-term highlighting",
@@ -463,7 +463,7 @@
       },
       {
         "title": "Empty option panel loading state",
-        "code": "M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.anchorOffset 4 ] (M3e.OptionPanel.children [ M3e.LoadingIndicator.view [] [], Native.span [] [ Kit.text \"Searching...\" ] ])"
+        "code": "M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.anchorOffset 4 ] ([ M3e.OptionPanel.loading (M3e.LoadingIndicator.view [] []), M3e.OptionPanel.loading (Kit.text \"Searching...\") ])"
       }
     ],
     "docMeta": {
@@ -474,15 +474,15 @@
     "examples": [
       {
         "title": "Table paginator with first/last navigation",
-        "code": "Native.footer [] [ M3e.Paginator.view [ M3e.Paginator.length 300, M3e.Paginator.pageSize \"25\", M3e.Paginator.pageIndex 0, M3e.Paginator.pageSizes \"10,25,50,100\", M3e.Paginator.showFirstLastButtons True ] [] ]"
+        "code": "Native.footer [] [ M3e.Paginator.view [ M3e.Paginator.length 300, M3e.Paginator.pageSize (M3e.Value.number 25), M3e.Paginator.pageIndex 0, M3e.Paginator.pageSizes \"10,25,50,100\", M3e.Paginator.showFirstLastButtons True ] [] ]"
       },
       {
         "title": "Compact paginator with hidden page-size selector",
-        "code": "M3e.Paginator.view [ M3e.Paginator.length 48, M3e.Paginator.pageSize \"10\", M3e.Paginator.hidePageSize True, M3e.Paginator.nextPageLabel \"Next results\", M3e.Paginator.previousPageLabel \"Previous results\" ] []"
+        "code": "M3e.Paginator.view [ M3e.Paginator.length 48, M3e.Paginator.pageSize (M3e.Value.number 10), M3e.Paginator.hidePageSize True, M3e.Paginator.nextPageLabel \"Next results\", M3e.Paginator.previousPageLabel \"Previous results\" ] []"
       },
       {
         "title": "Paginator with custom navigation icons",
-        "code": "M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize \"50\", M3e.Paginator.pageSizeVariant M3e.Value.filled, M3e.Paginator.showFirstLastButtons True ] [ M3e.Paginator.firstPageIcon (M3e.Icon.view [ M3e.Icon.name \"first_page\" ] []), M3e.Paginator.previousPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.Paginator.nextPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.Paginator.lastPageIcon (M3e.Icon.view [ M3e.Icon.name \"last_page\" ] []) ]"
+        "code": "M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize (M3e.Value.number 50), M3e.Paginator.pageSizeVariant M3e.Value.filled, M3e.Paginator.showFirstLastButtons True ] [ M3e.Paginator.firstPageIcon (M3e.Icon.view [ M3e.Icon.name \"first_page\" ] []), M3e.Paginator.previousPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.Paginator.nextPageIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.Paginator.lastPageIcon (M3e.Icon.view [ M3e.Icon.name \"last_page\" ] []) ]"
       }
     ],
     "docMeta": {
@@ -602,7 +602,7 @@
     "examples": [
       {
         "title": "Horizontal scrollable button row",
-        "code": "M3e.SlideGroup.view [ M3e.SlideGroup.threshold 48, M3e.SlideGroup.previousPageLabel \"Scroll left\", M3e.SlideGroup.nextPageLabel \"Scroll right\" ] ([ M3e.SlideGroup.prevIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.SlideGroup.nextIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []) ] ++ M3e.SlideGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text \"All\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Photos\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Videos\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Documents\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Music\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Archives\") ] ])"
+        "code": "M3e.SlideGroup.view [ M3e.SlideGroup.threshold 48, M3e.SlideGroup.previousPageLabel \"Scroll left\", M3e.SlideGroup.nextPageLabel \"Scroll right\" ] ([ M3e.SlideGroup.prevIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.SlideGroup.nextIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []) ] ++ M3e.SlideGroup.children [ M3e.Button.view { content = Kit.text \"All\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] [], M3e.Button.view { content = Kit.text \"Photos\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text \"Videos\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text \"Documents\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text \"Music\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text \"Archives\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [] ])"
       },
       {
         "title": "Vertical slide group of cards",
@@ -643,11 +643,11 @@
     "examples": [
       {
         "title": "Filled split button with primary action and menu toggle",
-        "code": "M3e.SplitButton.view { leadingButton = M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"edit\" ] []), M3e.Button.child (Kit.text \"Edit\") ], trailingButton = M3e.Button.view [] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"keyboard_arrow_down\" ] []) ] } [ M3e.SplitButton.variant M3e.Value.filled, M3e.SplitButton.size M3e.Value.medium ] []"
+        "code": "M3e.SplitButton.view { leadingButton = M3e.Button.view { content = Kit.text \"Edit\", action = M3e.Action.none } [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"edit\" ] []) ], trailingButton = M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"keyboard_arrow_down\" ] [], action = M3e.Action.none } [] [] } [ M3e.SplitButton.variant M3e.Value.filled, M3e.SplitButton.size M3e.Value.medium ] []"
       },
       {
         "title": "Tonal split button",
-        "code": "M3e.SplitButton.view { leadingButton = M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"save\" ] []), M3e.Button.child (Kit.text \"Save\") ], trailingButton = M3e.Button.view [] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"arrow_drop_down\" ] []) ] } [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.size M3e.Value.large ] []"
+        "code": "M3e.SplitButton.view { leadingButton = M3e.Button.view { content = Kit.text \"Save\", action = M3e.Action.none } [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"save\" ] []) ], trailingButton = M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"arrow_drop_down\" ] [], action = M3e.Action.none } [] [] } [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.size M3e.Value.large ] []"
       }
     ],
     "docMeta": {
@@ -673,11 +673,11 @@
     "examples": [
       {
         "title": "Horizontal stepper with completed and optional steps",
-        "code": "M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.horizontal, M3e.Stepper.headerPosition M3e.Value.above, M3e.Stepper.labelPosition M3e.Value.end ] (M3e.Stepper.children [ M3e.Step.view { content = Kit.text \"Account\" } [ M3e.Step.for \"acct\", M3e.Step.completed True, M3e.Step.editable True ] [ M3e.Step.icon (M3e.Icon.view [ M3e.Icon.name \"person\" ] []) ], M3e.Step.view { content = Kit.text \"Profile\" } [ M3e.Step.for \"profile\", M3e.Step.selected True ] [ M3e.Step.hint (Native.span [] [ Kit.text \"Tell us about yourself\" ]) ], M3e.Step.view { content = Kit.text \"Review\" } [ M3e.Step.for \"review\", M3e.Step.optional True ] [], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Account details saved.\" ]) ], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Enter your profile information.\" ]) ], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Review and submit.\" ]) ] ])"
+        "code": "M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.horizontal, M3e.Stepper.headerPosition M3e.Value.above, M3e.Stepper.labelPosition M3e.Value.end ] [ M3e.Stepper.step (M3e.Step.view { content = Kit.text \"Account\" } [ M3e.Step.for \"acct\", M3e.Step.completed True, M3e.Step.editable True ] [ M3e.Step.icon (M3e.Icon.view [ M3e.Icon.name \"person\" ] []) ]), M3e.Stepper.step (M3e.Step.view { content = Kit.text \"Profile\" } [ M3e.Step.for \"profile\", M3e.Step.selected True ] [ M3e.Step.hint (Kit.text \"Tell us about yourself\") ]), M3e.Stepper.step (M3e.Step.view { content = Kit.text \"Review\" } [ M3e.Step.for \"review\", M3e.Step.optional True ] []), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Account details saved.\" ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Enter your profile information.\" ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Review and submit.\" ]) ]) ]"
       },
       {
         "title": "Linear vertical stepper with navigation controls",
-        "code": "M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.vertical, M3e.Stepper.linear True ] (M3e.Stepper.children [ M3e.Step.view { content = Kit.text \"Choose a plan\" } [ M3e.Step.for \"s1\", M3e.Step.selected True ] [], M3e.Step.view { content = Kit.text \"Payment\" } [ M3e.Step.for \"s2\" ] [], M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Pick the plan that fits you.\" ]) ], M3e.StepPanel.view [] (M3e.StepPanel.children [ Native.p [] [ Kit.text \"Confirm and reset if needed.\" ], M3e.Button.view [] [ M3e.Button.child (M3e.StepperPrevious.view [] [ M3e.StepperPrevious.child (Kit.text \"Back\") ]) ], M3e.Button.view [] [ M3e.Button.child (M3e.StepperReset.view [] [ M3e.StepperReset.child (Kit.text \"Start over\") ]) ] ]) ])"
+        "code": "M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.vertical, M3e.Stepper.linear True ] [ M3e.Stepper.step (M3e.Step.view { content = Kit.text \"Choose a plan\" } [ M3e.Step.for \"s1\", M3e.Step.selected True ] []), M3e.Stepper.step (M3e.Step.view { content = Kit.text \"Payment\" } [ M3e.Step.for \"s2\" ] []), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text \"Pick the plan that fits you.\" ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [] (M3e.StepPanel.children [ Native.p [] [ Kit.text \"Confirm and reset if needed.\" ], M3e.Button.view { content = Kit.text \"Back\", action = M3e.Action.stepperPrevious } [] [], M3e.Button.view { content = Kit.text \"Start over\", action = M3e.Action.stepperReset } [] [] ])) ]"
       }
     ],
     "docMeta": {
@@ -703,7 +703,7 @@
     "examples": [
       {
         "title": "Tabs with icons and panels",
-        "code": "M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"tab-photos\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo_library\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"tab-facts\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"psychology\" ] []), M3e.Tab.child (Kit.text \"Facts\") ], M3e.TabPanel.view [] [ M3e.TabPanel.child (Native.p [] [ Kit.text \"Photo grid goes here.\" ]) ], M3e.TabPanel.view [] [ M3e.TabPanel.child (Native.p [] [ Kit.text \"Facts go here.\" ]) ] ])"
+        "code": "M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"tab-photos\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo_library\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"tab-facts\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"psychology\" ] []), M3e.Tab.child (Kit.text \"Facts\") ] ] ++ [ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Native.p [] [ Kit.text \"Photo grid goes here.\" ]) ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Native.p [] [ Kit.text \"Facts go here.\" ]) ]) ])"
       }
     ],
     "docMeta": {
@@ -729,7 +729,7 @@
     "examples": [
       {
         "title": "Theme with drawer, nav menu, and app bar shell",
-        "code": "M3e.Theme.view [ M3e.Theme.color \"#8B6F47\", M3e.Theme.scheme M3e.Value.auto, M3e.Theme.contrast M3e.Value.standard, M3e.Theme.motion M3e.Value.expressive, M3e.Theme.strongFocus True ] [ M3e.Theme.child (M3e.DrawerContainer.view [ M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ M3e.NavMenu.view [] [ M3e.NavMenu.child (Kit.link \"/photos\" [ M3e.NavMenuItem.view { label = Native.span [] [ Kit.text \"Photos\" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"photo_library\" ] []) ] ]) ] ]), M3e.DrawerContainer.child (M3e.AppBar.view [] [ M3e.AppBar.leading (M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"arrow_back\" ] [] } [ M3e.Aria.label \"Back\" ] []), M3e.AppBar.title (Native.span [] [ Kit.text \"Title\" ]) ]) ]) ]"
+        "code": "M3e.Theme.view [ M3e.Theme.color \"#8B6F47\", M3e.Theme.scheme M3e.Value.auto, M3e.Theme.contrast M3e.Value.standard, M3e.Theme.motion M3e.Value.expressive, M3e.Theme.strongFocus True ] [ M3e.Theme.child (M3e.DrawerContainer.view [ M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ M3e.NavMenu.view [] [ M3e.NavMenu.child (M3e.NavMenuItem.view { label = Kit.link \"/photos\" [ Kit.text \"Photos\" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"photo_library\" ] []) ]) ] ]), M3e.DrawerContainer.child (M3e.AppBar.view [] [ M3e.AppBar.leading (M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name \"arrow_back\" ] [], action = M3e.Action.none } [ M3e.Aria.label \"Back\" ] []), M3e.AppBar.title (Kit.text \"Title\") ]) ]) ]"
       }
     ],
     "docMeta": {
@@ -740,7 +740,7 @@
     "examples": [
       {
         "title": "Table of contents with overline slot",
-        "code": "M3e.Toc.view [ M3e.Toc.for \"post-content\", M3e.Toc.maxDepth 3 ] [ M3e.Toc.overline (Native.span [] [ Kit.text \"Contents\" ]) ]"
+        "code": "M3e.Toc.view [ M3e.Toc.for \"post-content\", M3e.Toc.maxDepth 3 ] [ M3e.Toc.overline (Kit.text \"Contents\") ]"
       }
     ],
     "docMeta": {
@@ -751,11 +751,11 @@
     "examples": [
       {
         "title": "Vibrant rounded media controls toolbar",
-        "code": "M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"skip_next\" ] []) ] ])"
+        "code": "M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.filled ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"skip_next\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [] ])"
       },
       {
         "title": "Elevated vertical editing toolbar",
-        "code": "M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] []) ] ])"
+        "code": "M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [] ])"
       }
     ],
     "docMeta": {
@@ -766,15 +766,15 @@
     "examples": [
       {
         "title": "Simple tooltip on an icon button",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"refresh\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Refresh data\" } [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] []\n    ]"
+        "code": "[ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"refresh\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] []\n    , M3e.Tooltip.view { content = Kit.text \"Refresh data\" } [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] []\n    ]"
       },
       {
         "title": "Rich tooltip with subhead and actions",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"info\" ] []), M3e.Button.child (Kit.text \"Details\") ]\n    , M3e.RichTooltip.view { content = Kit.text \"Now you can adjust uploaded image quality and upgrade your available storage space.\" } [ M3e.RichTooltip.for \"infoBtn\", M3e.RichTooltip.position M3e.Value.belowAfter, M3e.RichTooltip.showDelay 100 ] [ M3e.RichTooltip.subhead (Native.span [] [ Kit.text \"New settings available\" ]), M3e.RichTooltip.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.RichTooltipAction.view { content = Kit.text \"Learn more\" } [] []) ] ]) ]\n    ]"
+        "code": "[ M3e.Button.view { content = Kit.text \"Details\", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"info\" ] []) ]\n    , M3e.RichTooltip.view { content = Kit.text \"Now you can adjust uploaded image quality and upgrade your available storage space.\" } [ M3e.RichTooltip.for \"infoBtn\", M3e.RichTooltip.position M3e.Value.belowAfter, M3e.RichTooltip.showDelay 100 ] [ M3e.RichTooltip.subhead (Kit.text \"New settings available\"), M3e.RichTooltip.actions (Native.div [] [ M3e.Button.view { content = Kit.text \"Learn more\", action = M3e.Action.richTooltipAction } [ M3e.Button.variant M3e.Value.text ] [] ]) ]\n    ]"
       },
       {
         "title": "Tooltip with touch gestures disabled",
-        "code": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []) ]\n    , M3e.Tooltip.view { content = Kit.text \"Delete item\" } [ M3e.Tooltip.for \"deleteBtn\", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] []\n    ]"
+        "code": "[ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name \"delete\" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] []\n    , M3e.Tooltip.view { content = Kit.text \"Delete item\" } [ M3e.Tooltip.for \"deleteBtn\", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] []\n    ]"
       }
     ],
     "docMeta": {

@@ -2,7 +2,7 @@ module M3e.Datepicker exposing
     ( view, variant, clearable, date, maxDate, minDate
     , range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
     , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel
-    , label, onChange, onBeforetoggle, onToggle, child, children
+    , label, onChange, onBeforetoggle, onToggle
     )
 
 {-|
@@ -24,19 +24,18 @@ Presents a date picker on a temporary surface.
 
 <!-- elm-cem:example title="Booking range picker with constraints" -->
 ```elm
-Native.node Html.form [] [ Native.node Html.label [] [ Kit.text "Choose your stay" ], M3e.Datepicker.view [ M3e.Datepicker.range True, M3e.Datepicker.variant M3e.Value.docked, M3e.Datepicker.clearable True, M3e.Datepicker.label "Select dates", M3e.Datepicker.startView M3e.Value.month ] [ M3e.Datepicker.child (M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "stay" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []) ]) ] ]
+Native.node Html.form [] [ Native.node Html.label [] [ Kit.text "Choose your stay", M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "stay" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []) ] ], M3e.Datepicker.view [ M3e.Datepicker.range True, M3e.Datepicker.variant M3e.Value.docked, M3e.Datepicker.clearable True, M3e.Datepicker.label "Select dates", M3e.Datepicker.startView M3e.Value.month ] [] ]
 ```
 
 <!-- elm-cem:example title="Modal single-date picker" -->
 ```elm
-Native.div [] [ Native.node Html.label [] [ Kit.text "Due date" ], M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.modal, M3e.Datepicker.clearable True, M3e.Datepicker.label "Select date" ] [ M3e.Datepicker.child (M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "due" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name "event" ] []) ]) ] ]
+Native.div [] [ Native.node Html.label [] [ Kit.text "Due date", M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "due" ] [ M3e.DatepickerToggle.child (M3e.Icon.view [ M3e.Icon.name "event" ] []) ] ], M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.modal, M3e.Datepicker.clearable True, M3e.Datepicker.label "Select date" ] [] ]
 ```
 
 @docs view, variant, clearable, date, maxDate, minDate
 @docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
 @docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel
 @docs confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
-@docs child, children
 -}
 
 
@@ -75,7 +74,7 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | datepicker : M3e.Value.Supported } msg
 view attributes content_ =
     M3e.Element.fromNode
@@ -255,19 +254,3 @@ onBeforetoggle =
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle =
     M3e.Cem.Datepicker.onToggle
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

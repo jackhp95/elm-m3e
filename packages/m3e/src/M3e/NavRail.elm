@@ -22,7 +22,7 @@ A vertical bar, typically used on larger devices, that allows a user to switch b
 
 <!-- elm-cem:example title="Collapsible navigation rail with toggle" -->
 ```elm
-M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.auto ] (M3e.NavRail.children [ M3e.Button.view [ M3e.Button.toggle True ] ([ M3e.Button.selectedSlot (M3e.Icon.view [ M3e.Icon.name "menu_open" ] []) ] ++ M3e.Button.children [ M3e.Icon.view [ M3e.Icon.name "menu" ] [], M3e.NavRailToggle.view [ M3e.NavRailToggle.for "main-rail" ] [] ]), M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.NavItem.child (Kit.text "Dashboard") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "folder" ] []), M3e.NavItem.child (Kit.text "Projects") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "insights" ] []), M3e.NavItem.child (Kit.text "Reports") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "settings" ] []), M3e.NavItem.child (Kit.text "Settings") ] ])
+M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.auto ] (M3e.NavRail.children [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "menu" ] [], action = M3e.Action.togglesNavRail "main-rail" } [ M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "menu_open" ] []) ], M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.NavItem.child (Kit.text "Dashboard") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "folder" ] []), M3e.NavItem.child (Kit.text "Projects") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "insights" ] []), M3e.NavItem.child (Kit.text "Reports") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "settings" ] []), M3e.NavItem.child (Kit.text "Settings") ] ])
 ```
 
 <!-- elm-cem:example title="Expanded navigation rail with link destinations" -->
@@ -98,7 +98,10 @@ onChange =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element any msg
+    M3e.Element.Element { navItem : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , fab : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -106,7 +109,10 @@ child el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element any msg)
+    List (M3e.Element.Element { navItem : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , fab : M3e.Value.Supported
+    } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

@@ -17,12 +17,12 @@ Presents frequently used actions relevant to the current page.
 
 <!-- elm-cem:example title="Vibrant rounded media controls toolbar" -->
 ```elm
-M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "skip_previous" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "skip_next" ] []) ] ])
+M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.filled ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "skip_next" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [] ])
 ```
 
 <!-- elm-cem:example title="Elevated vertical editing toolbar" -->
 ```elm
-M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_italic" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_underlined" ] []) ] ])
+M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "format_bold" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "format_italic" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "format_underlined" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [] ])
 ```
 
 @docs view, elevated, shape, variant, vertical, child

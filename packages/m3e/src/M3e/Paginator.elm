@@ -27,17 +27,17 @@ Provides navigation for paged information, typically used with a table.
 
 <!-- elm-cem:example title="Table paginator with first/last navigation" -->
 ```elm
-Native.footer [] [ M3e.Paginator.view [ M3e.Paginator.length 300, M3e.Paginator.pageSize "25", M3e.Paginator.pageIndex 0, M3e.Paginator.pageSizes "10,25,50,100", M3e.Paginator.showFirstLastButtons True ] [] ]
+Native.footer [] [ M3e.Paginator.view [ M3e.Paginator.length 300, M3e.Paginator.pageSize (M3e.Value.number 25), M3e.Paginator.pageIndex 0, M3e.Paginator.pageSizes "10,25,50,100", M3e.Paginator.showFirstLastButtons True ] [] ]
 ```
 
 <!-- elm-cem:example title="Compact paginator with hidden page-size selector" -->
 ```elm
-M3e.Paginator.view [ M3e.Paginator.length 48, M3e.Paginator.pageSize "10", M3e.Paginator.hidePageSize True, M3e.Paginator.nextPageLabel "Next results", M3e.Paginator.previousPageLabel "Previous results" ] []
+M3e.Paginator.view [ M3e.Paginator.length 48, M3e.Paginator.pageSize (M3e.Value.number 10), M3e.Paginator.hidePageSize True, M3e.Paginator.nextPageLabel "Next results", M3e.Paginator.previousPageLabel "Previous results" ] []
 ```
 
 <!-- elm-cem:example title="Paginator with custom navigation icons" -->
 ```elm
-M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize "50", M3e.Paginator.pageSizeVariant M3e.Value.filled, M3e.Paginator.showFirstLastButtons True ] [ M3e.Paginator.firstPageIcon (M3e.Icon.view [ M3e.Icon.name "first_page" ] []), M3e.Paginator.previousPageIcon (M3e.Icon.view [ M3e.Icon.name "chevron_left" ] []), M3e.Paginator.nextPageIcon (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.Paginator.lastPageIcon (M3e.Icon.view [ M3e.Icon.name "last_page" ] []) ]
+M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize (M3e.Value.number 50), M3e.Paginator.pageSizeVariant M3e.Value.filled, M3e.Paginator.showFirstLastButtons True ] [ M3e.Paginator.firstPageIcon (M3e.Icon.view [ M3e.Icon.name "first_page" ] []), M3e.Paginator.previousPageIcon (M3e.Icon.view [ M3e.Icon.name "chevron_left" ] []), M3e.Paginator.nextPageIcon (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.Paginator.lastPageIcon (M3e.Icon.view [ M3e.Icon.name "last_page" ] []) ]
 ```
 
 @docs view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
@@ -149,7 +149,7 @@ pageIndex =
 
 {-| The number of items to display in a page. (default: `50`) -}
 pageSize :
-    M3e.Value.Value { all : M3e.Value.Supported }
+    M3e.Value.Value { number : M3e.Value.Supported, all : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
 pageSize =
     M3e.Cem.Paginator.pageSize

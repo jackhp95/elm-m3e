@@ -36,6 +36,18 @@ view :
     , action :
         M3e.Action.Action { click : M3e.Value.Supported
         , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
         } msg
     }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -62,7 +74,10 @@ view req_ attributes content_ =
                   (List.map M3e.Cem.Attr.forget attributes)
              )
              (List.append
-                  [ M3e.Element.toNode req_.content ]
+                  [ M3e.Action.wrapContent
+                      req_.action
+                      (M3e.Element.toNode req_.content)
+                  ]
                   (List.map M3e.Content.toNode content_)
              )
         )

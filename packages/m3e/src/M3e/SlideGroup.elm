@@ -21,7 +21,7 @@ Presents pagination controls used to scroll overflowing content.
 
 <!-- elm-cem:example title="Horizontal scrollable button row" -->
 ```elm
-M3e.SlideGroup.view [ M3e.SlideGroup.threshold 48, M3e.SlideGroup.previousPageLabel "Scroll left", M3e.SlideGroup.nextPageLabel "Scroll right" ] ([ M3e.SlideGroup.prevIcon (M3e.Icon.view [ M3e.Icon.name "chevron_left" ] []), M3e.SlideGroup.nextIcon (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []) ] ++ M3e.SlideGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "All") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Photos") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Videos") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Documents") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Music") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Archives") ] ])
+M3e.SlideGroup.view [ M3e.SlideGroup.threshold 48, M3e.SlideGroup.previousPageLabel "Scroll left", M3e.SlideGroup.nextPageLabel "Scroll right" ] ([ M3e.SlideGroup.prevIcon (M3e.Icon.view [ M3e.Icon.name "chevron_left" ] []), M3e.SlideGroup.nextIcon (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []) ] ++ M3e.SlideGroup.children [ M3e.Button.view { content = Kit.text "All", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] [], M3e.Button.view { content = Kit.text "Photos", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text "Videos", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text "Documents", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text "Music", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [], M3e.Button.view { content = Kit.text "Archives", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [] ])
 ```
 
 <!-- elm-cem:example title="Vertical slide group of cards" -->
@@ -113,7 +113,7 @@ child el =
 
 {-| Place content in the `next-icon` slot. -}
 nextIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
 nextIcon el =
     M3e.Content.slot "next-icon" el
@@ -121,7 +121,7 @@ nextIcon el =
 
 {-| Place content in the `prev-icon` slot. -}
 prevIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
 prevIcon el =
     M3e.Content.slot "prev-icon" el

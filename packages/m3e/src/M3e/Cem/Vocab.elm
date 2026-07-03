@@ -916,7 +916,7 @@ pageIndex =
 
 {-| The number of items to display in a page. (default: `50`) -}
 pageSize :
-    M3e.Value.Value { all : M3e.Value.Supported }
+    M3e.Value.Value { number : M3e.Value.Supported, all : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
 pageSize v_ =
     M3e.Cem.Attr.attribute M3e.Cem.Html.Vocab.pageSize (M3e.Value.toString v_)

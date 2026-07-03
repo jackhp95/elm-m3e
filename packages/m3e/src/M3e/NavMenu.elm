@@ -14,7 +14,7 @@ A hierarchical menu, typically used on larger devices, that allows a user to swi
 
 <!-- elm-cem:example title="Nested navigation menu with icons, badges, and links" -->
 ```elm
-M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view { label = Kit.link "/" [ Kit.text "Home" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []) ], M3e.Divider.view [] [], M3e.NavMenuItem.view { label = Native.span [] [ Kit.text "Work" ] } [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "edit_note" ] []), M3e.NavMenuItem.child (M3e.NavMenuItem.view { label = Native.span [] [ Kit.text "Articles" ] } [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "article" ] []), M3e.NavMenuItem.badge (Native.span [] [ Kit.text "12" ]) ]) ] ])
+M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view { label = Kit.link "/" [ Kit.text "Home" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []) ], M3e.Divider.view [] [], M3e.NavMenuItem.view { label = Kit.text "Work" } [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "edit_note" ] []), M3e.NavMenuItem.child (M3e.NavMenuItem.view { label = Kit.text "Articles" } [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "article" ] []), M3e.NavMenuItem.badge (Kit.text "12") ]) ] ])
 ```
 
 @docs view, child, children
@@ -49,7 +49,10 @@ view attributes content_ =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element any msg
+    M3e.Element.Element { navMenuItem : M3e.Value.Supported
+    , navMenuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -57,7 +60,10 @@ child el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element any msg)
+    List (M3e.Element.Element { navMenuItem : M3e.Value.Supported
+    , navMenuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

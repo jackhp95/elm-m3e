@@ -37,7 +37,7 @@ Enhances a text input with suggested options.
 ```elm
 [ Native.node Html.label [] [ Kit.text "Country" ]
     , Native.node Html.input [] []
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "country", M3e.Autocomplete.noDataLabel "No matching countries" ] ([ M3e.Autocomplete.noData (Native.span [] [ Kit.text "Try a different spelling" ]) ] ++ M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text "Australia" } [] [], M3e.Option.view { content = Kit.text "Brazil" } [] [], M3e.Option.view { content = Kit.text "Canada" } [] [], M3e.Option.view { content = Kit.text "Denmark" } [] [] ])
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "country", M3e.Autocomplete.noDataLabel "No matching countries" ] ([ M3e.Autocomplete.noData (Kit.text "Try a different spelling") ] ++ M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text "Australia" } [] [], M3e.Option.view { content = Kit.text "Brazil" } [] [], M3e.Option.view { content = Kit.text "Canada" } [] [], M3e.Option.view { content = Kit.text "Denmark" } [] [] ])
     ]
 ```
 

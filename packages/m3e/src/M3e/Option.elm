@@ -17,7 +17,7 @@ An option that can be selected.
 
 <!-- elm-cem:example title="Autocomplete option panel with grouped results" -->
 ```elm
-M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text "Apple" } [ M3e.Option.value "apple" ] [], M3e.Option.view { content = Kit.text "Banana" } [ M3e.Option.value "banana" ] [], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Native.span [] [ Kit.text "Citrus" ]) ] ++ M3e.Optgroup.children [ M3e.Option.view { content = Kit.text "Lemon" } [ M3e.Option.value "lemon" ] [], M3e.Option.view { content = Kit.text "Orange" } [ M3e.Option.value "orange", M3e.Option.selected True ] [], M3e.Option.view { content = Kit.text "Grapefruit" } [ M3e.Option.value "grapefruit", M3e.Option.disabled True ] [] ]) ])
+M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view { content = Kit.text "Apple" } [ M3e.Option.value "apple" ] [], M3e.Option.view { content = Kit.text "Banana" } [ M3e.Option.value "banana" ] [], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Kit.text "Citrus") ] ++ M3e.Optgroup.children [ M3e.Option.view { content = Kit.text "Lemon" } [ M3e.Option.value "lemon" ] [], M3e.Option.view { content = Kit.text "Orange" } [ M3e.Option.value "orange", M3e.Option.selected True ] [], M3e.Option.view { content = Kit.text "Grapefruit" } [ M3e.Option.value "grapefruit", M3e.Option.disabled True ] [] ]) ])
 ```
 
 <!-- elm-cem:example title="Option panel with search-term highlighting" -->
@@ -27,7 +27,7 @@ M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.content, M3e.OptionPanel.
 
 <!-- elm-cem:example title="Empty option panel loading state" -->
 ```elm
-M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.anchorOffset 4 ] (M3e.OptionPanel.children [ M3e.LoadingIndicator.view [] [], Native.span [] [ Kit.text "Searching..." ] ])
+M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.anchorOffset 4 ] ([ M3e.OptionPanel.loading (M3e.LoadingIndicator.view [] []), M3e.OptionPanel.loading (Kit.text "Searching...") ])
 ```
 
 @docs view, disabled, disableHighlight, highlightMode, selected, term
@@ -45,7 +45,7 @@ import M3e.Value
 
 {-| Build the `<m3e-option>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHighlight : M3e.Value.Supported
     , highlightMode : M3e.Value.Supported

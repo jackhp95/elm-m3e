@@ -1,8 +1,7 @@
 module M3e.IconButton exposing
-    ( view, disabled, disabledInteractive, download, href, name
-    , rel, selected, shape, size, target, toggle, type_
-    , value, variant, width, onBeforeinput, onInput, onChange, onClick
-    , selectedSlot
+    ( view, disabled, disabledInteractive, name, selected, shape
+    , size, toggle, type_, value, variant, width, onBeforeinput
+    , onInput, onChange, selectedSlot
     )
 
 {-|
@@ -28,28 +27,28 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Icon button wrapping an icon" -->
 ```elm
-M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [] } [ M3e.Aria.label "Toggle theme" ] []
+M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [], action = M3e.Action.none } [ M3e.Aria.label "Toggle theme" ] []
 ```
 
 <!-- elm-cem:example title="Link icon buttons in a toolbar" -->
 ```elm
-Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "rss_feed" ] [] } [ M3e.IconButton.href "/rss.xml", M3e.Aria.label "RSS Feed" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "data_object" ] [] } [ M3e.IconButton.href "/feed.json", M3e.Aria.label "JSON Feed" ] [] ]
+Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "rss_feed" ] [], action = M3e.Action.link "/rss.xml" } [ M3e.Aria.label "RSS Feed" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "data_object" ] [], action = M3e.Action.link "/feed.json" } [ M3e.Aria.label "JSON Feed" ] [] ]
 ```
 
 <!-- elm-cem:example title="Icon buttons grouped in a media control bar" -->
 ```elm
-[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [] } [ M3e.Aria.label "Previous" ] []
-    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [] } [ M3e.Aria.label "Play/Pause" ] []
+[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [], action = M3e.Action.none } [ M3e.Aria.label "Previous" ] []
+    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [], action = M3e.Action.none } [ M3e.Aria.label "Play/Pause" ] []
     ]
 ```
 
-@docs view, disabled, disabledInteractive, download, href, name
-@docs rel, selected, shape, size, target, toggle
-@docs type_, value, variant, width, onBeforeinput, onInput
-@docs onChange, onClick, selectedSlot
+@docs view, disabled, disabledInteractive, name, selected, shape
+@docs size, toggle, type_, value, variant, width
+@docs onBeforeinput, onInput, onChange, selectedSlot
 -}
 
 
+import M3e.Action
 import M3e.Cem.Attr
 import M3e.Cem.IconButton
 import M3e.Content
@@ -60,17 +59,30 @@ import M3e.Value
 
 {-| Build the `<m3e-icon-button>` element (lazy IR). -}
 view :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , shape : M3e.Value.Supported
     , size : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , toggle : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
@@ -79,7 +91,6 @@ view :
     , onBeforeinput : M3e.Value.Supported
     , onInput : M3e.Value.Supported
     , onChange : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { selected : M3e.Value.Supported } msg)
@@ -92,9 +103,16 @@ view req_ attributes content_ =
                       (List.map M3e.Cem.Attr.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
              (List.append
-                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  )
+                  (List.map M3e.Cem.Attr.forget attributes)
+             )
+             (List.append
+                  [ M3e.Action.wrapContent
+                      req_.action
+                      (M3e.Element.toNode req_.content)
+                  ]
                   (List.map M3e.Content.toNode content_)
              )
         )
@@ -114,29 +132,10 @@ disabledInteractive =
     M3e.Cem.IconButton.disabledInteractive
 
 
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
-download :
-    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
-    M3e.Cem.IconButton.download
-
-
-{-| The URL to which the link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
-    M3e.Cem.IconButton.href
-
-
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
     M3e.Cem.IconButton.name
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
-    M3e.Cem.IconButton.rel
 
 
 {-| Whether the toggle button is selected. (default: `false`) -}
@@ -166,12 +165,6 @@ size :
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size =
     M3e.Cem.IconButton.size
-
-
-{-| The target of the link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
-    M3e.Cem.IconButton.target
 
 
 {-| Whether the button will toggle between selected and unselected states. (default: `false`) -}
@@ -243,15 +236,9 @@ onChange =
     M3e.Cem.IconButton.onChange
 
 
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.IconButton.onClick
-
-
 {-| Place content in the `selected` slot. -}
 selectedSlot :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
 selectedSlot el =
     M3e.Content.slot "selected" el

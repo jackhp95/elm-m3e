@@ -1,53 +1,54 @@
 module M3e.Value exposing
-    ( Value, Supported, toString, rounded, square, standard
-    , vibrant, auto, dark, light, content, expressive, fidelity
-    , fruitSalad, monochrome, neutral, rainbow, tonalSpot, high, medium
-    , after, before, primary, secondary, both, none, selected
-    , above, below, end, horizontal, vertical, elevated, filled
-    , outlined, tonal, extraLarge, extraSmall, large, small, pulse
-    , wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie
-    , value8LeafClover, value9SidedCookie, arch, arrow, boom, bun, burst
-    , circle, diamond, fan, flower, gem, ghostIsh, heart
-    , hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle, puffy
-    , puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny, triangle
-    , verySunny, docked, fullscreen, buffer, determinate, indeterminate, query
-    , flat, wavy, all, compact, expanded, contained, uncontained
-    , segmented, low, sharp, display, headline, label, title
-    , tertiary, button, reset, submit, primaryContainer, secondaryContainer, surface
-    , tertiaryContainer, over, push, side, modal, month, multiYear
-    , year, off, on, aboveAfter, aboveBefore, belowAfter, belowBefore
-    , connected, default, narrow, wide, text, date, location
-    , page, step, time, true, contains, endsWith, startsWith
-    , always, never, loading, noData, hide, reposition, aboveBelow
+    ( Value, Supported, toString, number, rounded, square
+    , standard, vibrant, auto, dark, light, content, expressive
+    , fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot, high
+    , medium, after, before, primary, secondary, both, none
+    , selected, above, below, end, horizontal, vertical, elevated
+    , filled, outlined, tonal, extraLarge, extraSmall, large, small
+    , pulse, wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie
+    , value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow, boom, bun
+    , burst, circle, diamond, fan, flower, gem, ghostIsh
+    , heart, hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle
+    , puffy, puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny
+    , triangle, verySunny, docked, fullscreen, buffer, determinate, indeterminate
+    , query, flat, wavy, all, compact, expanded, contained
+    , uncontained, segmented, low, sharp, display, headline, label
+    , title, tertiary, button, reset, submit, primaryContainer, secondaryContainer
+    , surface, tertiaryContainer, over, push, side, modal, month
+    , multiYear, year, off, on, aboveAfter, aboveBefore, belowAfter
+    , belowBefore, connected, default, narrow, wide, text, date
+    , location, page, step, time, true, contains, endsWith
+    , startsWith, always, never, loading, noData, hide, reposition
+    , aboveBelow
     )
 
 {-|
 Token values for the typed enum attributes. A `Value tags` is a phantom-tagged string; each exposed token (e.g. `filled`, `outlined`) is admitted only where its tag is accepted, so a component can only be given values it actually supports. These are passed to the generated attribute setters.
 
-@docs Value, Supported, toString, rounded, square, standard
-@docs vibrant, auto, dark, light, content, expressive
-@docs fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
-@docs high, medium, after, before, primary, secondary
-@docs both, none, selected, above, below, end
-@docs horizontal, vertical, elevated, filled, outlined, tonal
-@docs extraLarge, extraSmall, large, small, pulse, wave
-@docs circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie
-@docs value8LeafClover, value9SidedCookie, arch, arrow, boom, bun
-@docs burst, circle, diamond, fan, flower, gem
-@docs ghostIsh, heart, hexagon, oval, pentagon, pill
-@docs pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted
-@docs softBoom, softBurst, sunny, triangle, verySunny, docked
-@docs fullscreen, buffer, determinate, indeterminate, query, flat
-@docs wavy, all, compact, expanded, contained, uncontained
-@docs segmented, low, sharp, display, headline, label
-@docs title, tertiary, button, reset, submit, primaryContainer
-@docs secondaryContainer, surface, tertiaryContainer, over, push, side
-@docs modal, month, multiYear, year, off, on
-@docs aboveAfter, aboveBefore, belowAfter, belowBefore, connected, default
-@docs narrow, wide, text, date, location, page
-@docs step, time, true, contains, endsWith, startsWith
-@docs always, never, loading, noData, hide, reposition
-@docs aboveBelow
+@docs Value, Supported, toString, number, rounded, square
+@docs standard, vibrant, auto, dark, light, content
+@docs expressive, fidelity, fruitSalad, monochrome, neutral, rainbow
+@docs tonalSpot, high, medium, after, before, primary
+@docs secondary, both, none, selected, above, below
+@docs end, horizontal, vertical, elevated, filled, outlined
+@docs tonal, extraLarge, extraSmall, large, small, pulse
+@docs wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie
+@docs value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow, boom
+@docs bun, burst, circle, diamond, fan, flower
+@docs gem, ghostIsh, heart, hexagon, oval, pentagon
+@docs pill, pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle
+@docs slanted, softBoom, softBurst, sunny, triangle, verySunny
+@docs docked, fullscreen, buffer, determinate, indeterminate, query
+@docs flat, wavy, all, compact, expanded, contained
+@docs uncontained, segmented, low, sharp, display, headline
+@docs label, title, tertiary, button, reset, submit
+@docs primaryContainer, secondaryContainer, surface, tertiaryContainer, over, push
+@docs side, modal, month, multiYear, year, off
+@docs on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected
+@docs default, narrow, wide, text, date, location
+@docs page, step, time, true, contains, endsWith
+@docs startsWith, always, never, loading, noData, hide
+@docs reposition, aboveBelow
 -}
 
 
@@ -65,6 +66,12 @@ type alias Supported =
 toString : Value tags -> String
 toString =
     M3e.Value.Core.toString
+
+
+{-| A numeric value, for attributes that accept a number alongside literal tokens (e.g. a page size of `50` or `all`). -}
+number : Float -> Value { a | number : Supported }
+number n_ =
+    M3e.Value.Core.token (String.fromFloat n_)
 
 
 {-| The `rounded` token. -}

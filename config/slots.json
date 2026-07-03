@@ -1,10 +1,8 @@
 {
   "Collapsible": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -12,10 +10,8 @@
   },
   "ScrollContainer": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -23,10 +19,8 @@
   },
   "Slide": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -34,10 +28,8 @@
   },
   "TextHighlight": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -45,7 +37,7 @@
   },
   "TextOverflow": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -56,10 +48,8 @@
   },
   "FocusTrap": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -67,10 +57,8 @@
   },
   "FloatingPanel": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -80,50 +68,39 @@
     "slots": {
       "leading": {
         "kinds": [
-          "any"
+          "iconButton"
         ],
         "multi": false,
         "required": false
       },
       "title": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "subtitle": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "any"
-        ],
-        "multi": true,
-        "required": false
-      },
-      "default": {
-        "kinds": [
-          "any"
+          "iconButton"
         ],
         "multi": true,
         "required": false
       },
       "leading-icon": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "trailing-icon": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -131,9 +108,9 @@
   },
   "Option": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": true
@@ -142,16 +119,16 @@
   },
   "Optgroup": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "option"
         ],
         "multi": true,
         "required": false
       },
       "label": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
@@ -160,84 +137,70 @@
   },
   "OptionPanel": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "option",
+          "optgroup",
+          "divider"
         ],
         "multi": true,
         "required": false
       },
       "no-data": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "loading": {
         "kinds": [
-          "any"
+          "circularProgressIndicator",
+          "loadingIndicator",
+          "text"
         ],
-        "multi": false,
+        "multi": true,
         "required": false
       }
     }
   },
   "FormField": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       },
       "prefix": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "prefix-text": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "label": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "suffix": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "suffix-text": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "hint": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "error": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -245,7 +208,7 @@
   },
   "Autocomplete": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "option",
           "optgroup"
@@ -254,16 +217,12 @@
         "required": false
       },
       "loading": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "no-data": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -271,10 +230,8 @@
   },
   "Avatar": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -282,7 +239,7 @@
   },
   "Badge": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -293,9 +250,9 @@
   },
   "BottomSheetAction": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
@@ -304,17 +261,13 @@
   },
   "BottomSheet": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       },
       "header": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -322,9 +275,9 @@
   },
   "BottomSheetTrigger": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
@@ -333,7 +286,7 @@
   },
   "Breadcrumb": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "breadcrumbItem"
         ],
@@ -341,9 +294,7 @@
         "required": true
       },
       "separator": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -358,7 +309,7 @@
         "multi": false,
         "required": false
       },
-      "default": {
+      "unnamed": {
         "kinds": [
           "text",
           "icon"
@@ -370,7 +321,7 @@
   },
   "BreadcrumbItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text",
           "icon"
@@ -388,38 +339,44 @@
     }
   },
   "Button": {
+    "required": {
+      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+    },
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text",
+          "icon"
         ],
         "multi": false,
-        "required": false
+        "required": true
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon",
+          "loadingIndicator"
         ],
         "multi": false,
         "required": false
       },
       "selected": {
         "kinds": [
-          "any"
+          "text",
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "selected-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -427,17 +384,20 @@
     }
   },
   "IconButton": {
+    "required": {
+      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+    },
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": true
       },
       "selected": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -446,7 +406,7 @@
   },
   "ButtonGroup": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "button",
           "iconButton"
@@ -458,9 +418,9 @@
   },
   "RichTooltipAction": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": true
@@ -469,24 +429,22 @@
   },
   "RichTooltip": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": true
       },
       "subhead": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "actions": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -494,9 +452,9 @@
   },
   "Tooltip": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": true
@@ -506,9 +464,7 @@
   "Calendar": {
     "slots": {
       "header": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -516,38 +472,28 @@
   },
   "Card": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "header": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "content": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "actions": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "footer": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -555,7 +501,7 @@
   },
   "Chip": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -579,8 +525,11 @@
     }
   },
   "AssistChip": {
+    "required": {
+      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+    },
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -594,14 +543,11 @@
         "multi": false,
         "required": false
       }
-    },
-    "required": {
-      "action": "action:click,link"
     }
   },
   "ChipSet": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "assistChip",
           "chip",
@@ -616,7 +562,7 @@
   },
   "FilterChip": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -641,7 +587,7 @@
   },
   "FilterChipSet": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "filterChip"
         ],
@@ -652,7 +598,7 @@
   },
   "InputChip": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -684,7 +630,7 @@
   },
   "InputChipSet": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "inputChip"
         ],
@@ -692,17 +638,18 @@
         "required": false
       },
       "input": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
     }
   },
   "SuggestionChip": {
+    "required": {
+      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+    },
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -720,10 +667,8 @@
   },
   "ContentPane": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -731,10 +676,8 @@
   },
   "DialogAction": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -742,30 +685,26 @@
   },
   "Dialog": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       },
       "header": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "actions": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "close-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -774,24 +713,18 @@
   },
   "DrawerContainer": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "start": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "end": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -799,9 +732,9 @@
   },
   "Accordion": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "expansionPanel"
         ],
         "multi": true,
         "required": false
@@ -810,7 +743,7 @@
   },
   "ExpansionHeader": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -828,30 +761,24 @@
   },
   "ExpansionPanel": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "actions": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       },
       "header": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "toggle-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -859,14 +786,16 @@
     }
   },
   "Fab": {
+    "required": {
+      "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+    },
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "icon",
-          "fabMenuTrigger"
+          "icon"
         ],
-        "multi": true,
-        "required": false
+        "multi": false,
+        "required": true
       },
       "label": {
         "kinds": [
@@ -886,23 +815,35 @@
   },
   "MenuItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text",
+          "dialogTrigger",
+          "dialogAction",
+          "menuTrigger",
+          "fabMenuTrigger",
+          "bottomSheetTrigger",
+          "bottomSheetAction",
+          "stepperPrevious",
+          "stepperReset",
+          "richTooltipAction",
+          "drawerToggle",
+          "datepickerToggle",
+          "navRailToggle"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -911,9 +852,10 @@
   },
   "FabMenu": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "fabMenuItem",
+          "menuItem"
         ],
         "multi": true,
         "required": false
@@ -922,7 +864,7 @@
   },
   "Heading": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -933,37 +875,39 @@
   },
   "ListItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "any"
+          "icon",
+          "avatar"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "any"
+          "icon",
+          "text"
         ],
         "multi": false,
         "required": false
@@ -972,9 +916,13 @@
   },
   "List": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "listItem",
+          "listAction",
+          "expandableListItem",
+          "listOption",
+          "divider"
         ],
         "multi": true,
         "required": false
@@ -983,7 +931,7 @@
   },
   "ListItemButton": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -1024,37 +972,51 @@
   },
   "ListAction": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text",
+          "dialogTrigger",
+          "dialogAction",
+          "menuTrigger",
+          "fabMenuTrigger",
+          "bottomSheetTrigger",
+          "bottomSheetAction",
+          "stepperPrevious",
+          "stepperReset",
+          "richTooltipAction",
+          "drawerToggle",
+          "datepickerToggle",
+          "navRailToggle"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "any"
+          "icon",
+          "avatar"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "any"
+          "icon",
+          "text"
         ],
         "multi": false,
         "required": false
@@ -1063,45 +1025,44 @@
   },
   "ExpandableListItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "any"
+          "icon",
+          "avatar"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "toggle-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "items": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1109,9 +1070,11 @@
   },
   "ActionList": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "listAction",
+          "expandableListItem",
+          "divider"
         ],
         "multi": true,
         "required": false
@@ -1120,37 +1083,39 @@
   },
   "ListOption": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "leading": {
         "kinds": [
-          "any"
+          "icon",
+          "avatar"
         ],
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "supporting-text": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "trailing": {
         "kinds": [
-          "any"
+          "icon",
+          "text"
         ],
         "multi": false,
         "required": false
@@ -1159,9 +1124,11 @@
   },
   "SelectionList": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "listOption",
+          "expandableListItem",
+          "divider"
         ],
         "multi": true,
         "required": false
@@ -1170,10 +1137,8 @@
   },
   "MenuTrigger": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1181,9 +1146,13 @@
   },
   "Menu": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "menuItem",
+          "menuItemCheckbox",
+          "menuItemRadio",
+          "menuItemGroup",
+          "divider"
         ],
         "multi": true,
         "required": false
@@ -1192,23 +1161,23 @@
   },
   "MenuItemCheckbox": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1217,9 +1186,11 @@
   },
   "MenuItemGroup": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "menuItem",
+          "menuItemCheckbox",
+          "menuItemRadio"
         ],
         "multi": true,
         "required": false
@@ -1228,23 +1199,23 @@
   },
   "MenuItemRadio": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "trailing-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1253,7 +1224,7 @@
   },
   "NavBar": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "navItem"
         ],
@@ -1264,23 +1235,23 @@
   },
   "NavItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "selected-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1289,44 +1260,46 @@
   },
   "NavMenuItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "navMenuItem"
         ],
         "multi": true,
         "required": false
       },
       "label": {
         "kinds": [
-          "any"
+          "text",
+          "link"
         ],
         "multi": false,
         "required": true
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "badge": {
         "kinds": [
-          "any"
+          "text",
+          "badge"
         ],
         "multi": false,
         "required": false
       },
       "selected-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "toggle-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1335,9 +1308,11 @@
   },
   "NavMenu": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "navMenuItem",
+          "navMenuItemGroup",
+          "divider"
         ],
         "multi": true,
         "required": false
@@ -1354,7 +1329,7 @@
         "multi": false,
         "required": false
       },
-      "default": {
+      "unnamed": {
         "kinds": [
           "navMenuItem"
         ],
@@ -1365,9 +1340,11 @@
   },
   "NavRail": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "navItem",
+          "iconButton",
+          "fab"
         ],
         "multi": true,
         "required": false
@@ -1376,7 +1353,7 @@
   },
   "Select": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "option"
         ],
@@ -1391,9 +1368,7 @@
         "required": false
       },
       "value": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1433,10 +1408,8 @@
   },
   "CircularProgressIndicator": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1444,10 +1417,8 @@
   },
   "RadioGroup": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": true
       }
@@ -1464,9 +1435,7 @@
         "required": false
       },
       "input": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": true
       },
@@ -1489,17 +1458,13 @@
   },
   "SearchView": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       },
       "input": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": true
       },
@@ -1560,7 +1525,7 @@
   },
   "ButtonSegment": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -1578,7 +1543,7 @@
   },
   "SegmentedButton": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "buttonSegment"
         ],
@@ -1589,10 +1554,8 @@
   },
   "Shape": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1600,10 +1563,8 @@
   },
   "Skeleton": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -1611,23 +1572,21 @@
   },
   "SlideGroup": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       },
       "next-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "prev-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1636,10 +1595,8 @@
   },
   "Slider": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": true
       }
@@ -1647,7 +1604,7 @@
   },
   "Snackbar": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -1667,71 +1624,46 @@
     "slots": {
       "leading-button": {
         "kinds": [
-          "any"
+          "button"
         ],
         "multi": false,
         "required": true
       },
       "trailing-button": {
         "kinds": [
-          "any"
+          "iconButton"
         ],
         "multi": false,
         "required": true
-      },
-      "default": {
-        "kinds": [
-          "any"
-        ],
-        "multi": true,
-        "required": false
       }
     }
   },
   "SplitPane": {
     "slots": {
       "start": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "end": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
-        "required": false
-      },
-      "default": {
-        "kinds": [
-          "any"
-        ],
-        "multi": true,
         "required": false
       }
     }
   },
   "Stepper": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
-        "multi": true,
-        "required": false
-      },
       "step": {
         "kinds": [
-          "any"
+          "step"
         ],
         "multi": true,
         "required": false
       },
       "panel": {
         "kinds": [
-          "any"
+          "stepPanel"
         ],
         "multi": true,
         "required": false
@@ -1740,17 +1672,13 @@
   },
   "StepPanel": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "actions": {
-        "kinds": [
-          "any"
-        ],
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1758,51 +1686,51 @@
   },
   "Step": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": true
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "done-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "edit-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "error-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "hint": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "error": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
@@ -1811,10 +1739,8 @@
   },
   "StepperPrevious": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1822,10 +1748,8 @@
   },
   "StepperReset": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1833,16 +1757,16 @@
   },
   "Tab": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1851,10 +1775,8 @@
   },
   "TabPanel": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       }
@@ -1862,30 +1784,30 @@
   },
   "Tabs": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
-          "any"
+          "tab"
         ],
         "multi": true,
         "required": false
       },
       "panel": {
         "kinds": [
-          "any"
+          "tabPanel"
         ],
         "multi": true,
         "required": false
       },
       "next-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
       },
       "prev-icon": {
         "kinds": [
-          "any"
+          "icon"
         ],
         "multi": false,
         "required": false
@@ -1894,10 +1816,8 @@
   },
   "Theme": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -1905,7 +1825,7 @@
   },
   "TocItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "text"
         ],
@@ -1916,23 +1836,21 @@
   },
   "Toc": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": false,
         "required": false
       },
       "overline": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
       },
       "title": {
         "kinds": [
-          "any"
+          "text"
         ],
         "multi": false,
         "required": false
@@ -1941,10 +1859,8 @@
   },
   "Toolbar": {
     "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
+      "unnamed": {
+        "kinds": "arbitrary",
         "multi": true,
         "required": false
       }
@@ -1952,7 +1868,7 @@
   },
   "TreeItem": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "treeItem"
         ],
@@ -1999,7 +1915,7 @@
   },
   "Tree": {
     "slots": {
-      "default": {
+      "unnamed": {
         "kinds": [
           "treeItem"
         ],
@@ -2008,44 +1924,30 @@
       }
     }
   },
-  "Checkbox": {},
-  "Switch": {},
-  "Radio": {},
+  "Checkbox": {
+    "slots": {}
+  },
+  "Switch": {
+    "slots": {}
+  },
+  "Radio": {
+    "slots": {}
+  },
   "Progress": {
     "group": {
       "linear": "m3e-linear-progress-indicator",
       "circular": "m3e-circular-progress-indicator"
-    }
+    },
+    "slots": {}
   },
   "Datepicker": {
-    "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
-        "multi": true,
-        "required": false
-      }
-    }
+    "slots": {}
   },
-  "DialogTrigger": {
-    "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
-        "multi": true,
-        "required": false
-      }
-    }
-  },
-  "DatepickerToggle": {
-    "slots": {
-      "default": {
-        "kinds": [
-          "any"
-        ],
-        "multi": true,
+  "_baseSlots": {
+    "ActionElementBase": {
+      "unnamed": {
+        "kinds": "arbitrary",
+        "multi": false,
         "required": false
       }
     }

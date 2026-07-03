@@ -30,15 +30,15 @@ A dialog that provides important prompts in a user flow.
 
 <!-- elm-cem:example title="Confirmation dialog with header and actions" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.DialogTrigger.view [ M3e.DialogTrigger.for "confirm" ] [ M3e.DialogTrigger.child (Kit.text "Delete project") ]) ]
-    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] [ M3e.Dialog.header (Native.span [] [ Kit.text "Delete project?" ]), M3e.Dialog.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue "cancel" ] [ M3e.DialogAction.child (Kit.text "Cancel") ]) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []), M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue "delete" ] [ M3e.DialogAction.child (Kit.text "Delete") ]) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text "This action permanently removes the project and all of its files. This cannot be undone." ]) ]
+[ M3e.Button.view { content = Kit.text "Delete project", action = M3e.Action.opensDialog "confirm" } [ M3e.Button.variant M3e.Value.filled ] []
+    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] [ M3e.Dialog.header (Kit.text "Delete project?"), M3e.Dialog.actions (Native.div [] [ M3e.Button.view { content = Kit.text "Cancel", action = M3e.Action.dialogAction { returnValue = "cancel" } } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = Kit.text "Delete", action = M3e.Action.dialogAction { returnValue = "delete" } } [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text "This action permanently removes the project and all of its files. This cannot be undone." ]) ]
     ]
 ```
 
 <!-- elm-cem:example title="Alert dialog with close icon" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (M3e.DialogTrigger.view [ M3e.DialogTrigger.for "info" ] [ M3e.DialogTrigger.child (Kit.text "Session timeout") ]) ]
-    , M3e.Dialog.view [ M3e.Dialog.alert True, M3e.Dialog.dismissible True ] [ M3e.Dialog.closeIcon (M3e.Icon.view [ M3e.Icon.name "close" ] []), M3e.Dialog.header (Native.span [] [ Kit.text "Your session has expired" ]), M3e.Dialog.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (M3e.DialogAction.view [ M3e.DialogAction.returnValue "ok" ] [ M3e.DialogAction.child (Kit.text "Sign in") ]) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text "For your security, you have been signed out due to inactivity. Please sign in again to continue." ]) ]
+[ M3e.Button.view { content = Kit.text "Session timeout", action = M3e.Action.opensDialog "info" } [ M3e.Button.variant M3e.Value.tonal ] []
+    , M3e.Dialog.view [ M3e.Dialog.alert True, M3e.Dialog.dismissible True ] [ M3e.Dialog.closeIcon (M3e.Icon.view [ M3e.Icon.name "close" ] []), M3e.Dialog.header (Kit.text "Your session has expired"), M3e.Dialog.actions (Native.div [] [ M3e.Button.view { content = Kit.text "Sign in", action = M3e.Action.dialogAction { returnValue = "ok" } } [ M3e.Button.variant M3e.Value.filled ] [] ]), M3e.Dialog.child (Native.p [] [ Kit.text "For your security, you have been signed out due to inactivity. Please sign in again to continue." ]) ]
     ]
 ```
 
@@ -168,7 +168,7 @@ child el =
 
 {-| Place content in the `header` slot. -}
 header :
-    M3e.Element.Element any msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
 header el =
     M3e.Content.slot "header" el
@@ -184,7 +184,7 @@ actions el =
 
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
 closeIcon el =
     M3e.Content.slot "close-icon" el

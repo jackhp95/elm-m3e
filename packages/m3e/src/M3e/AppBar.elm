@@ -1,6 +1,6 @@
 module M3e.AppBar exposing
     ( view, centered, for, size, leading, title
-    , subtitle, trailing, child, leadingIcon, trailingIcon, children
+    , subtitle, trailing, leadingIcon, trailingIcon
     )
 
 {-|
@@ -25,16 +25,16 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 
 <!-- elm-cem:example title="Medium app bar with leading and trailing actions" -->
 ```elm
-M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Back" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label "Bookmark" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] []) ]) ]
+M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Back" ] []), M3e.AppBar.title (Kit.text "Top 10 hiking trails"), M3e.AppBar.subtitle (Kit.text "Discover popular trails"), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label "Bookmark" ] []) ]
 ```
 
 <!-- elm-cem:example title="Centered large app bar with trailing menu" -->
 ```elm
-M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Open navigation" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Inbox" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "24 unread messages" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Search" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "More options" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "more_vert" ] []) ]) ]
+M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "menu" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Open navigation" ] []), M3e.AppBar.title (Kit.text "Inbox"), M3e.AppBar.subtitle (Kit.text "24 unread messages"), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "search" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Search" ] []), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "more_vert" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "More options" ] []) ]
 ```
 
 @docs view, centered, for, size, leading, title
-@docs subtitle, trailing, child, leadingIcon, trailingIcon, children
+@docs subtitle, trailing, leadingIcon, trailingIcon
 -}
 
 
@@ -57,7 +57,6 @@ view :
     , title : M3e.Value.Supported
     , subtitle : M3e.Value.Supported
     , trailing : M3e.Value.Supported
-    , default : M3e.Value.Supported
     , leadingIcon : M3e.Value.Supported
     , trailingIcon : M3e.Value.Supported
     } msg)
@@ -98,7 +97,7 @@ size =
 
 {-| Place content in the `leading` slot. -}
 leading :
-    M3e.Element.Element any msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
     M3e.Content.slot "leading" el
@@ -106,7 +105,7 @@ leading el =
 
 {-| Place content in the `title` slot. -}
 title :
-    M3e.Element.Element any msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
 title el =
     M3e.Content.slot "title" el
@@ -114,7 +113,7 @@ title el =
 
 {-| Place content in the `subtitle` slot. -}
 subtitle :
-    M3e.Element.Element any msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
 subtitle el =
     M3e.Content.slot "subtitle" el
@@ -122,18 +121,10 @@ subtitle el =
 
 {-| Place content in the `trailing` slot. -}
 trailing :
-    M3e.Element.Element any msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
 trailing el =
     M3e.Content.slot "trailing" el
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
 
 
 {-| Place content in the `leading-icon` slot. -}
@@ -150,11 +141,3 @@ trailingIcon :
     -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
 trailingIcon el =
     M3e.Content.slot "trailing-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

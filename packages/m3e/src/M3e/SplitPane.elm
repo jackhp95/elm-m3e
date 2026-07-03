@@ -1,7 +1,7 @@
 module M3e.SplitPane exposing
     ( view, label, max, min, orientation, overshootLimit
     , step, value, wrapDetents, name, disabled, onChange, onBeforeinput
-    , onInput, start, end, child, children
+    , onInput, start, end
     )
 
 {-|
@@ -37,7 +37,7 @@ M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.vertical, M3e.SplitPane
 
 @docs view, label, max, min, orientation, overshootLimit
 @docs step, value, wrapDetents, name, disabled, onChange
-@docs onBeforeinput, onInput, start, end, child, children
+@docs onBeforeinput, onInput, start, end
 -}
 
 
@@ -68,7 +68,6 @@ view :
     } msg)
     -> List (M3e.Content.Content { start : M3e.Value.Supported
     , end : M3e.Value.Supported
-    , default : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | splitPane : M3e.Value.Supported } msg
 view attributes content_ =
@@ -184,19 +183,3 @@ end :
     -> M3e.Content.Content { r | end : M3e.Value.Supported } msg
 end el =
     M3e.Content.slot "end" el
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

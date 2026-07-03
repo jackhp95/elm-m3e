@@ -96,7 +96,20 @@ onClick =
 
 {-| Place content in the `(default)` slot. -}
 child :
-    M3e.Element.Element any msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
+    } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
@@ -104,7 +117,7 @@ child el =
 
 {-| Place content in the `icon` slot. -}
 icon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
     M3e.Content.slot "icon" el
@@ -112,7 +125,7 @@ icon el =
 
 {-| Place content in the `trailing-icon` slot. -}
 trailingIcon :
-    M3e.Element.Element any msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
 trailingIcon el =
     M3e.Content.slot "trailing-icon" el
@@ -120,7 +133,20 @@ trailingIcon el =
 
 {-| Place many elements in the default slot. -}
 children :
-    List (M3e.Element.Element any msg)
+    List (M3e.Element.Element { text : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
+    } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
     List.map (M3e.Content.slot "") els

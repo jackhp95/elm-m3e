@@ -24,7 +24,7 @@ A container for one or two sliding drawers.
 
 <!-- elm-cem:example title="App shell with navigation drawer toggle" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Button.toggle True ] ([ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ] ++ M3e.Button.children [ M3e.DrawerToggle.view [ M3e.DrawerToggle.for "nav" ] [], Kit.text "Menu" ])
+[ M3e.Button.view { content = Kit.text "Menu", action = M3e.Action.togglesDrawer "nav" } [ M3e.Button.variant M3e.Value.text, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]
     , M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link "/home" [ Kit.text "Home" ], Kit.link "/reports" [ Kit.text "Reports" ], Kit.link "/settings" [ Kit.text "Settings" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.node Html.h1 [] [ Kit.text "Dashboard" ], Native.p [] [ Kit.text "Welcome back. Select an item from the navigation drawer." ] ]) ]
     ]
 ```

@@ -441,7 +441,7 @@ stepperPrevious =
 
 
 step :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { completed : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , editable : M3e.Value.Supported
@@ -487,8 +487,7 @@ stepper :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , step : M3e.Value.Supported
+    -> List (M3e.Content.Content { step : M3e.Value.Supported
     , panel : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | stepper : M3e.Value.Supported } msg
@@ -514,7 +513,6 @@ splitPane :
     } msg)
     -> List (M3e.Content.Content { start : M3e.Value.Supported
     , end : M3e.Value.Supported
-    , default : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | splitPane : M3e.Value.Supported } msg
 splitPane =
@@ -522,14 +520,15 @@ splitPane =
 
 
 splitButton :
-    { leadingButton : M3e.Element.Element any msg
-    , trailingButton : M3e.Element.Element any msg
+    { leadingButton : M3e.Element.Element { button : M3e.Value.Supported } msg
+    , trailingButton :
+        M3e.Element.Element { iconButton : M3e.Value.Supported } msg
     }
     -> List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
 splitButton =
     M3e.SplitButton.view
@@ -805,7 +804,7 @@ navRailToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navRailToggle : M3e.Value.Supported } msg
 navRailToggle =
     M3e.NavRailToggle.view
@@ -843,7 +842,11 @@ navMenu =
 
 
 navMenuItem :
-    { label : M3e.Element.Element any msg }
+    { label :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        } msg
+    }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , open : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -1169,7 +1172,7 @@ fabMenuTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | fabMenuTrigger : M3e.Value.Supported } msg
 fabMenuTrigger =
     M3e.FabMenuTrigger.view
@@ -1188,24 +1191,36 @@ fabMenu =
 
 
 fab :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
     , extended : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , lowered : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
     , size : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
     , variant : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
+    -> List (M3e.Content.Content { label : M3e.Value.Supported
     , closeIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
@@ -1265,7 +1280,7 @@ drawerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | drawerToggle : M3e.Value.Supported } msg
 drawerToggle =
     M3e.DrawerToggle.view
@@ -1383,7 +1398,7 @@ datepicker :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | datepicker : M3e.Value.Supported } msg
 datepicker =
     M3e.Datepicker.view
@@ -1398,18 +1413,30 @@ contentPane =
 
 
 suggestionChip :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
     , variant : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
@@ -1508,6 +1535,18 @@ assistChip :
     , action :
         M3e.Action.Action { click : M3e.Value.Supported
         , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
         } msg
     }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -1663,7 +1702,7 @@ monthView =
 
 
 tooltip :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
@@ -1679,7 +1718,7 @@ tooltip =
 
 
 richTooltip :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
@@ -1713,7 +1752,7 @@ tooltipElementBase =
 
 
 richTooltipAction :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
@@ -1736,17 +1775,30 @@ buttonGroup =
 
 
 iconButton :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , shape : M3e.Value.Supported
     , size : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , toggle : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
@@ -1755,7 +1807,6 @@ iconButton :
     , onBeforeinput : M3e.Value.Supported
     , onInput : M3e.Value.Supported
     , onChange : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { selected : M3e.Value.Supported } msg)
@@ -1765,16 +1816,33 @@ iconButton =
 
 
 button :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , icon : M3e.Value.Supported
+        } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , shape : M3e.Value.Supported
     , size : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , toggle : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
@@ -1782,11 +1850,9 @@ button :
     , onBeforeinput : M3e.Value.Supported
     , onInput : M3e.Value.Supported
     , onChange : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , selectedIcon : M3e.Value.Supported
     , trailingIcon : M3e.Value.Supported
@@ -2002,7 +2068,7 @@ optgroup =
 
 
 option :
-    { content : M3e.Element.Element any msg }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHighlight : M3e.Value.Supported
     , highlightMode : M3e.Value.Supported
@@ -2037,7 +2103,6 @@ appBar :
     , title : M3e.Value.Supported
     , subtitle : M3e.Value.Supported
     , trailing : M3e.Value.Supported
-    , default : M3e.Value.Supported
     , leadingIcon : M3e.Value.Supported
     , trailingIcon : M3e.Value.Supported
     } msg)
@@ -3020,7 +3085,7 @@ pageIndex =
 
 {-| The number of items to display in a page. (default: `50`) -}
 pageSize :
-    M3e.Value.Value { all : M3e.Value.Supported }
+    M3e.Value.Value { number : M3e.Value.Supported, all : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
 pageSize =
     M3e.Cem.Vocab.pageSize
