@@ -67,24 +67,42 @@ _Avoid_: fallback chain, escape hatches (plural)
 
 **API shape**: the *calling convention* of a constructor. The bottom and middle
 [[Layer]]s each expose a single fixed shape; only the **top** layer varies, across
-three. So there are **five addressable API surfaces** in all (bottom + middle +
-three top shapes) — not a 3×3 grid — and a [[Codegen-aware rule]] should be able
-to translate a call between any two of the five.
+three **co-equal** shapes, one per namespace segment. So there are **five
+addressable API surfaces** in all (bottom + middle + three top shapes) — not a 3×3
+grid — and a [[Codegen-aware rule]] should be able to translate a call between any
+two of the five. The three top shapes form one monotonic safety progression: each
+step converts an advisory check into a compile-time guarantee. See
+[ADR 0013](docs/adr/0013-top-shape-matrix-and-translation.md).
 _Avoid_: signature, form, style
 
-**Double-list shape** (top):
-`view [ attrs ] [ content ]` — one attribute list, one content list. No required
-or arity protection; needs a rule to flag missing required attrs/content. The
-currently-shipped top shape.
+**Double-list shape** (top, `M3e.*`):
+`view [ attrs ] [ content ]` — one attribute list, one content list. No
+required-presence or duplicate-singular protection; a [[Codegen-aware rule]] flags
+missing required attrs/slots and repeated singular slots. The base top namespace;
+also what `Card`/`ListItem` ship today.
 
-**Required-record shape** (top):
-`view { required } [ opts ]` — a required record guarantees mandatory arguments
-are present, but attributes and content are jumbled together. Needs a rule to
-enforce arity and to sort attributes before content.
+**Record + double-list shape** (top, `M3e.Record.*`):
+`view { required } [ attrs ] [ content ]` — required attrs/slots hoisted into a
+record (present exactly once, so mandatory arguments are compiler-enforced); the
+rest stays in the same two lists. Attributes and content are **not** jumbled
+(still two lists), so no sort rule is needed; only duplicate-singular stays
+advisory. The blessed home of the shipped `{ content, action }` hybrid.
 
-**Phantom-builder shape** (top):
-A required-typed phantom builder — the compiler alone catches every arity,
-presence, and validity error, so it needs no elm-review support.
+**Phantom-record shape** (top, `M3e.Build.*`):
+A single fully-typed constructor over a complete record — required fields plain,
+optional-singular as `Maybe`, multi as `List`. A record field is present exactly
+once, so duplicate-singular is *unwritable*, and every other check is typed too:
+the compiler alone catches presence, cardinality, and validity, so it needs no
+elm-review support. Returns the same `Element` IR (no per-component build step —
+the one eager point stays the root `toHtml`).
+
+**Shape variant vs. safety depth**:
+Namespace depth means two different things on two axes. On the **layer** axis it
+tracks the [[Escape gradient]] (`M3e` → `M3e.Cem` → `M3e.Cem.Html`; deeper = less
+safe, more raw). On the **top-shape** axis the extra segment (`M3e.Record`,
+`M3e.Build`) names a *shape variant only* — deeper is not less safe; the three top
+shapes are co-equal peers a [[Codegen-aware rule]] translates between.
+_Avoid_: conflating the two axes
 
 ### Mechanisms
 
