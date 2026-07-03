@@ -10,13 +10,16 @@
 //
 // How: the library can't be a real package today (it vendors its `Cem.M3e.*`
 // atoms instead of depending on them), so this script sets up a scratch package
-// project at /tmp/m3e-docs-gen with symlinks to `src/M3e` (the library) and
+// project in a unique per-run temp dir (`mkdtempSync`, so concurrent builds in
+// separate worktrees never share/corrupt one another) with symlinks to
+// `src/M3e` (the library) and
 // `vendor/elm-m3e/Cem` (the atoms, kept in source-dirs but NOT exposed), runs
 // `elm make --docs` there, then maps the produced `docs.json` to the existing
 // `reference.json` schema consumed by Route.Reference and Route.Components.Name_.
 // `M3e.Internal` is the unexposed escape-hatch and is excluded from the docs.
 
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { execSync } from "child_process";
 import { fileURLToPath } from "url";
@@ -27,7 +30,9 @@ const SRC_M3E = path.resolve(REPO, "packages/m3e/src/M3e");
 const OUT = path.resolve(here, "../data/reference.json");
 const ELM_BIN = path.resolve(REPO, "docs/node_modules/.bin/elm");
 
-const SCRATCH = "/tmp/m3e-docs-gen";
+// Unique per-run scratch dir so concurrent builds (e.g. in parallel git
+// worktrees) never share and corrupt one another's package project.
+const SCRATCH = fs.mkdtempSync(path.join(os.tmpdir(), "m3e-docs-gen-"));
 
 // Modules that exist in src/M3e but are NOT part of the *component* reference:
 // the IR primitives + escape-hatch (documented in the architecture guide, not
@@ -46,9 +51,8 @@ const NOT_EXPOSED = new Set([
   "M3e.Attr",
 ]);
 
-// 1. Build a fresh scratch package project (idempotent).
+// 1. Build a fresh scratch package project inside the unique temp dir.
 function setupScratch() {
-  fs.rmSync(SCRATCH, { recursive: true, force: true });
   fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
   fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
   // The middle/bottom layers live under `M3e.Cem.*` / `M3e.Cem.Html.*`, i.e.
@@ -158,6 +162,12 @@ function moduleEntry(mod) {
 }
 
 // ----- run -----
+// Always remove the unique scratch dir on exit (success or failure) so `/tmp`
+// doesn't accumulate stale package projects.
+process.on("exit", () => {
+  fs.rmSync(SCRATCH, { recursive: true, force: true });
+});
+
 // `elm make --docs` is strict and all-or-nothing: one exposed module with an
 // incomplete generated `@docs` block fails the whole build. When that happens we
 // keep the last-good `data/reference.json` (committed) rather than crash the dev
