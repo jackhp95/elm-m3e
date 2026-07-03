@@ -28,6 +28,7 @@ import M3e.AppBar as AppBar
 import M3e.Badge as Badge
 import M3e.Card as Card
 import M3e.Cem.Attr exposing (Attr)
+import M3e.Content exposing (Content)
 import M3e.Element as Element exposing (Element)
 import M3e.Fab as Fab
 import M3e.FilterChip as FilterChip
@@ -224,7 +225,7 @@ navRail : Model -> Element { s | navRail : Supported } (PagesMsg Msg)
 navRail model =
     NavRail.view
         [ Layout.class "hidden shrink-0 md:flex" ]
-        (List.map (railItem model.category) destinations)
+        (NavRail.children (List.map (railItem model.category) destinations))
 
 
 {-| Bottom navigation bar — mobile only.
@@ -233,7 +234,7 @@ navBar : Model -> Element { s | navBar : Supported } (PagesMsg Msg)
 navBar model =
     NavBar.view
         [ Layout.class "shrink-0 md:hidden" ]
-        (List.map (barItem model.category) destinations)
+        (NavBar.children (List.map (barItem model.category) destinations))
 
 
 type alias Destination =
@@ -309,7 +310,7 @@ filterBar current =
         ]
 
 
-categoryChip : String -> String -> Element { s | filterChip : Supported } (PagesMsg Msg)
+categoryChip : String -> String -> Content { r | default : Supported } (PagesMsg Msg)
 categoryChip current cat =
     FilterChipSet.child
         (FilterChip.view

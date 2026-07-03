@@ -270,7 +270,7 @@ barItem index d =
 -- TOP BAR ---------------------------------------------------------------------
 
 
-topBar : Element { s | html : Supported } Msg
+topBar : Element { s | appBar : Supported } Msg
 topBar =
     AppBar.view [ AppBar.size Value.medium ]
         [ AppBar.leadingIcon (Icon.view [ Icon.name "menu" ] [])
@@ -327,7 +327,7 @@ emptyMessage =
 snippet (supporting text) and timestamp, separated by dividers. The selected row
 is painted with a `surfaceContainer` background.
 -}
-messageList : Model -> Element { s | html : Supported } Msg
+messageList : Model -> Element { s | list : Supported } Msg
 messageList model =
     List_.view []
         (List_.children
@@ -362,9 +362,9 @@ messageRow selected index message =
             [ ListItem.leading (avatar message.initials)
             , ListItem.child (Kit.text message.sender)
             , ListItem.supportingText
-                (Native.span "block"
+                (Layout.span "block"
                     [ Kit.body Value.medium [ Kit.onSurface ] [ Kit.text message.subject ]
-                    , Native.span "block"
+                    , Layout.span "block"
                         [ Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.snippet ] ]
                     ]
                 )

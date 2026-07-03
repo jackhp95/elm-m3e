@@ -227,7 +227,7 @@ shell model =
         ]
 
 
-appBar : Element { s | html : Supported } (PagesMsg Msg)
+appBar : Element { s | appBar : Supported } (PagesMsg Msg)
 appBar =
     AppBar.view []
         [ AppBar.leadingIcon (Icon.view [ Icon.name "public" ] [])
@@ -311,7 +311,7 @@ hero =
         ]
 
 
-searchBar : Element { s | html : Supported } (PagesMsg Msg)
+searchBar : Element { s | html : Supported, searchBar : Supported } (PagesMsg Msg)
 searchBar =
     SearchBar.view
         { input = Native.node Html.input [] [] }
@@ -323,7 +323,7 @@ searchBar =
 
 {-| Category tabs (Flights / Stays / Experiences) that reselect the rails' data.
 -}
-categoryTabs : Category -> Element { s | html : Supported } (PagesMsg Msg)
+categoryTabs : Category -> Element { s | tabs : Supported } (PagesMsg Msg)
 categoryTabs current =
     Tabs.view []
         (Tabs.children (List.map (categoryTab current) categories))
@@ -385,7 +385,7 @@ media place =
         [ Icon.view [ Icon.name "image" ] [] ]
 
 
-ratingChip : String -> Element { s | html : Supported } (PagesMsg Msg)
+ratingChip : String -> Element { s | assistChip : Supported } (PagesMsg Msg)
 ratingChip rating =
     AssistChip.view
         { content = Kit.text rating
