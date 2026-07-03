@@ -35,16 +35,35 @@ docs/                  The elm-pages docs site + the design docs (read order bel
 
 ## The API — a double list per component
 
-Every component is its lowercase name taking up to three arguments: an optional
-**required record**, an **attributes list**, and a **content list**:
+Every component ships two equivalent surfaces: a **per-component** module whose
+entry point is `view` (`M3e.TreeItem.view`, `M3e.Icon.view`) and a **barrel**
+`M3e` module whose entry point is the component's lowercase name (`M3e.treeItem`,
+`M3e.icon`). Either takes up to three arguments — an optional **required record**,
+an **attributes list**, and a **content list** — and returns an `Element` that
+collapses to `Html` exactly once, at the application root, via `M3e.Node.toHtml`:
 
 ```elm
-M3e.TreeItem.treeItem
-    { label = Kit.text "Getting Started" }                  -- required-singular slots (record)
-    [ TreeItem.disabled True ]                              -- attributes (phantom capability row)
-    [ TreeItem.icon (Icon.icon [ Icon.name "folder" ] [])  -- content (phantom slot row)
-    , TreeItem.child (TreeItem.treeItem { label = Kit.text "Child" } [] [])
-    ]
+import Html exposing (Html)
+import Kit
+import M3e.Element
+import M3e.Icon
+import M3e.Node
+import M3e.TreeItem
+
+
+tree : Html msg
+tree =
+    M3e.TreeItem.view
+        { label = Kit.text "Getting Started" }              -- required-singular slots (record)
+        [ M3e.TreeItem.disabled True ]                      -- attributes (phantom capability row)
+        [ M3e.TreeItem.icon                                 -- content (phantom slot row)
+            (M3e.Icon.view [ M3e.Icon.name "folder" ] [])
+        , M3e.TreeItem.child
+            (M3e.TreeItem.view { label = Kit.text "Child" } [] [])
+        ]
+        -- one conversion at the application root turns the typed IR into Html:
+        |> M3e.Element.toNode
+        |> M3e.Node.toHtml
 ```
 
 - **Type-level (the MISI that matters):** kind + capability validity via extensible
