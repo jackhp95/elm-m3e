@@ -72,6 +72,10 @@ jobs:
   docs:
     name: Docs — reference pipeline + production build
     runs-on: ubuntu-latest
+    env:
+      # Pin the reference-pipeline scratch dir so the elm-stuff cache path below
+      # matches (extract-reference.mjs otherwise derives a per-worktree path).
+      M3E_DOCS_GEN_DIR: /tmp/m3e-docs-gen
     steps:
       - uses: actions/checkout@v4
 
@@ -107,6 +111,9 @@ jobs:
   harness:
     name: Docs — Playwright runtime contract harness
     runs-on: ubuntu-latest
+    env:
+      # Same pin as the docs job: keep the scratch dir at the cached path.
+      M3E_DOCS_GEN_DIR: /tmp/m3e-docs-gen
     steps:
       - uses: actions/checkout@v4
 

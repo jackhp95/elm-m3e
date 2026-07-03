@@ -10,9 +10,10 @@
 //
 // How: the library can't be a real package today (it vendors its `Cem.M3e.*`
 // atoms instead of depending on them), so this script sets up a scratch package
-// project in a unique per-run temp dir (`mkdtempSync`, so concurrent builds in
-// separate worktrees never share/corrupt one another) with symlinks to
-// `src/M3e` (the library) and
+// project in a per-worktree temp dir (a path derived from this checkout's
+// location, so concurrent builds in separate worktrees never share/corrupt one
+// another, while the dir stays stable across runs so its `elm-stuff` — and CI's
+// cache of it — is reused) with symlinks to `src/M3e` (the library) and
 // `vendor/elm-m3e/Cem` (the atoms, kept in source-dirs but NOT exposed), runs
 // `elm make --docs` there, then maps the produced `docs.json` to the existing
 // `reference.json` schema consumed by Route.Reference and Route.Components.Name_.
@@ -20,6 +21,7 @@
 
 import fs from "fs";
 import os from "os";
+import crypto from "crypto";
 import path from "path";
 import { execSync } from "child_process";
 import { fileURLToPath } from "url";
@@ -30,9 +32,17 @@ const SRC_M3E = path.resolve(REPO, "packages/m3e/src/M3e");
 const OUT = path.resolve(here, "../data/reference.json");
 const ELM_BIN = path.resolve(REPO, "docs/node_modules/.bin/elm");
 
-// Unique per-run scratch dir so concurrent builds (e.g. in parallel git
-// worktrees) never share and corrupt one another's package project.
-const SCRATCH = fs.mkdtempSync(path.join(os.tmpdir(), "m3e-docs-gen-"));
+// Scratch dir for the elm package project. Stable per worktree (keyed by this
+// checkout's path) so (a) concurrent builds in *separate* worktrees never share
+// and corrupt one another, and (b) the dir persists across runs so `elm-stuff`
+// is reused and CI can cache it. Overridable via M3E_DOCS_GEN_DIR (CI pins it to
+// a fixed path so its cache `path:` matches).
+const SCRATCH =
+  process.env.M3E_DOCS_GEN_DIR ||
+  path.join(
+    os.tmpdir(),
+    "m3e-docs-gen-" + crypto.createHash("sha1").update(REPO).digest("hex").slice(0, 12)
+  );
 
 // Modules that exist in src/M3e but are NOT part of the *component* reference:
 // the IR primitives + escape-hatch (documented in the architecture guide, not
@@ -53,6 +63,9 @@ const NOT_EXPOSED = new Set([
 
 // 1. Build a fresh scratch package project inside the unique temp dir.
 function setupScratch() {
+  // Refresh only the src tree (idempotent across runs — the dir persists); keep
+  // elm-stuff + elm.json so `elm make` recompiles incrementally.
+  fs.rmSync(path.join(SCRATCH, "src"), { recursive: true, force: true });
   fs.mkdirSync(path.join(SCRATCH, "src"), { recursive: true });
   fs.symlinkSync(SRC_M3E, path.join(SCRATCH, "src/M3e"));
   // The middle/bottom layers live under `M3e.Cem.*` / `M3e.Cem.Html.*`, i.e.
@@ -162,11 +175,10 @@ function moduleEntry(mod) {
 }
 
 // ----- run -----
-// Always remove the unique scratch dir on exit (success or failure) so `/tmp`
-// doesn't accumulate stale package projects.
-process.on("exit", () => {
-  fs.rmSync(SCRATCH, { recursive: true, force: true });
-});
+// The scratch dir is intentionally NOT removed on exit: it is stable per
+// worktree, so keeping it lets `elm make` reuse its `elm-stuff` (and lets CI
+// cache it) instead of recompiling the standard library every run. Bounded to
+// one dir per checkout, not one per run.
 
 // `elm make --docs` is strict and all-or-nothing: one exposed module with an
 // incomplete generated `@docs` block fails the whole build. When that happens we
