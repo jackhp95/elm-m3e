@@ -30,11 +30,24 @@ export default defineConfig({
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
   ],
   webServer: {
-    command: "npm start -- --port 1239",
+    // In CI: build the site once and serve the pre-rendered production output
+    // statically. `elm-pages dev` cold-compiles all 125 routes on first request
+    // (too slow for the boot timeout on a 2-core runner) and holds a `/stream`
+    // SSE connection open (breaking `networkidle`); the static build serves
+    // instantly, is deterministic, and is the artifact we actually ship — the
+    // right target for a runtime-contract harness. Its stdout is piped so a
+    // boot failure is visible in the CI log instead of a bare timeout.
+    // Locally: reuse a dev server already on :1239 for fast iteration, else
+    // start `elm-pages dev`.
+    command: process.env.CI
+      ? "npm run build && PORT=1239 npm run serve:dist"
+      : "npm start -- --port 1239",
     url: baseURL,
-    // Locally, reuse a dev server already on :1239 (instant). In CI, always
-    // start fresh and allow for a cold elm compile.
     reuseExistingServer: !process.env.CI,
-    timeout: 300_000,
+    stdout: "pipe",
+    stderr: "pipe",
+    // Cold `elm-pages build` on a slow runner can take a few minutes; give it
+    // generous headroom (serving itself is instant once built).
+    timeout: 480_000,
   },
 });
