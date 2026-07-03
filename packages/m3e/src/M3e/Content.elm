@@ -12,6 +12,8 @@ invariant lives. To keep that the _only_ way to mint slot-tagged content, the
 fabricated row and smuggle it into a `view`. Build content through the generated
 setters, not by calling `slot` with an arbitrary name.
 
+@docs Content, slot, toNode
+
 -}
 
 import M3e.Cem.Attr as Attr
@@ -19,6 +21,11 @@ import M3e.Element as Element exposing (Element)
 import M3e.Node as Node exposing (Node)
 
 
+{-| An `Element` assigned to a named slot. The phantom `slots` row records WHICH
+slot it was placed in, so the generated `view` type-checks that only content
+valid for a component's slots is passed. The constructor is opaque; mint a
+`Content` through the generated per-slot setters or [`slot`](#slot).
+-}
 type Content slots msg
     = Content (Node msg)
 
@@ -41,6 +48,10 @@ slot name el =
         )
 
 
+{-| Unwrap slot-tagged content back to its underlying `Node`, discarding the
+phantom slot row. Used by the generated `view` to lower a `Content` list into
+the DOM children it renders.
+-}
 toNode : Content slots msg -> Node msg
 toNode (Content n) =
     n

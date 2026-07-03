@@ -236,6 +236,7 @@ import M3e.Value
 import M3e.YearView
 
 
+{-| Convenience binding for the `M3e.Tree` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Tree`. Import that module directly for the strict, component-scoped types. -}
 tree :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , cascade : M3e.Value.Supported
@@ -248,6 +249,7 @@ tree =
     M3e.Tree.view
 
 
+{-| Convenience binding for the `M3e.TreeItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TreeItem`. Import that module directly for the strict, component-scoped types. -}
 treeItem :
     { label :
         M3e.Element.Element { text : M3e.Value.Supported
@@ -276,6 +278,7 @@ treeItem =
     M3e.TreeItem.view
 
 
+{-| Convenience binding for the `M3e.Toolbar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Toolbar`. Import that module directly for the strict, component-scoped types. -}
 toolbar :
     List (M3e.Cem.Attr.Attr { elevated : M3e.Value.Supported
     , shape : M3e.Value.Supported
@@ -289,6 +292,7 @@ toolbar =
     M3e.Toolbar.view
 
 
+{-| Convenience binding for the `M3e.Toc` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Toc`. Import that module directly for the strict, component-scoped types. -}
 toc :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , maxDepth : M3e.Value.Supported
@@ -303,6 +307,7 @@ toc =
     M3e.Toc.view
 
 
+{-| Convenience binding for the `M3e.TocItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TocItem`. Import that module directly for the strict, component-scoped types. -}
 tocItem :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -316,6 +321,7 @@ tocItem =
     M3e.TocItem.view
 
 
+{-| Convenience binding for the `M3e.ThemeIcon` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ThemeIcon`. Import that module directly for the strict, component-scoped types. -}
 themeIcon :
     List (M3e.Cem.Attr.Attr { color : M3e.Value.Supported
     , scheme : M3e.Value.Supported
@@ -328,6 +334,7 @@ themeIcon =
     M3e.ThemeIcon.view
 
 
+{-| Convenience binding for the `M3e.Theme` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Theme`. Import that module directly for the strict, component-scoped types. -}
 theme :
     List (M3e.Cem.Attr.Attr { color : M3e.Value.Supported
     , contrast : M3e.Value.Supported
@@ -345,6 +352,7 @@ theme =
     M3e.Theme.view
 
 
+{-| Convenience binding for the `M3e.TextareaAutosize` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TextareaAutosize`. Import that module directly for the strict, component-scoped types. -}
 textareaAutosize :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
@@ -358,6 +366,7 @@ textareaAutosize =
     M3e.TextareaAutosize.view
 
 
+{-| Convenience binding for the `M3e.Tabs` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Tabs`. Import that module directly for the strict, component-scoped types. -}
 tabs :
     List (M3e.Cem.Attr.Attr { disablePagination : M3e.Value.Supported
     , headerPosition : M3e.Value.Supported
@@ -380,6 +389,7 @@ tabs =
     M3e.Tabs.view
 
 
+{-| Convenience binding for the `M3e.TabPanel` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TabPanel`. Import that module directly for the strict, component-scoped types. -}
 tabPanel :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -388,6 +398,7 @@ tabPanel =
     M3e.TabPanel.view
 
 
+{-| Convenience binding for the `M3e.Tab` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Tab`. Import that module directly for the strict, component-scoped types. -}
 tab :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
@@ -406,6 +417,7 @@ tab =
     M3e.Tab.view
 
 
+{-| Convenience binding for the `M3e.Switch` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Switch`. Import that module directly for the strict, component-scoped types. -}
 switch :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -424,6 +436,7 @@ switch =
     M3e.Switch.view
 
 
+{-| Convenience binding for the `M3e.StepperReset` element: the same `[attributes] [content]` constructor re-exposed from `M3e.StepperReset`. Import that module directly for the strict, component-scoped types. -}
 stepperReset :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -432,6 +445,7 @@ stepperReset =
     M3e.StepperReset.view
 
 
+{-| Convenience binding for the `M3e.StepperPrevious` element: the same `[attributes] [content]` constructor re-exposed from `M3e.StepperPrevious`. Import that module directly for the strict, component-scoped types. -}
 stepperPrevious :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -440,6 +454,7 @@ stepperPrevious =
     M3e.StepperPrevious.view
 
 
+{-| Convenience binding for the `M3e.Step` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Step`. Import that module directly for the strict, component-scoped types. -}
 step :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { completed : M3e.Value.Supported
@@ -467,6 +482,7 @@ step =
     M3e.Step.view
 
 
+{-| Convenience binding for the `M3e.StepPanel` element: the same `[attributes] [content]` constructor re-exposed from `M3e.StepPanel`. Import that module directly for the strict, component-scoped types. -}
 stepPanel :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
@@ -477,6 +493,7 @@ stepPanel =
     M3e.StepPanel.view
 
 
+{-| Convenience binding for the `M3e.Stepper` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Stepper`. Import that module directly for the strict, component-scoped types. -}
 stepper :
     List (M3e.Cem.Attr.Attr { headerPosition : M3e.Value.Supported
     , labelPosition : M3e.Value.Supported
@@ -495,6 +512,7 @@ stepper =
     M3e.Stepper.view
 
 
+{-| Convenience binding for the `M3e.SplitPane` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SplitPane`. Import that module directly for the strict, component-scoped types. -}
 splitPane :
     List (M3e.Cem.Attr.Attr { label : M3e.Value.Supported
     , max : M3e.Value.Supported
@@ -519,6 +537,7 @@ splitPane =
     M3e.SplitPane.view
 
 
+{-| Convenience binding for the `M3e.SplitButton` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SplitButton`. Import that module directly for the strict, component-scoped types. -}
 splitButton :
     { leadingButton : M3e.Element.Element { button : M3e.Value.Supported } msg
     , trailingButton :
@@ -534,6 +553,7 @@ splitButton =
     M3e.SplitButton.view
 
 
+{-| Convenience binding for the `M3e.Snackbar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Snackbar`. Import that module directly for the strict, component-scoped types. -}
 snackbar :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { action : M3e.Value.Supported
@@ -550,6 +570,7 @@ snackbar =
     M3e.Snackbar.view
 
 
+{-| Convenience binding for the `M3e.Slider` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Slider`. Import that module directly for the strict, component-scoped types. -}
 slider :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , discrete : M3e.Value.Supported
@@ -569,6 +590,7 @@ slider =
     M3e.Slider.view
 
 
+{-| Convenience binding for the `M3e.SliderThumb` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SliderThumb`. Import that module directly for the strict, component-scoped types. -}
 sliderThumb :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
@@ -586,6 +608,7 @@ sliderThumb =
     M3e.SliderThumb.view
 
 
+{-| Convenience binding for the `M3e.SlideGroup` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SlideGroup`. Import that module directly for the strict, component-scoped types. -}
 slideGroup :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , nextPageLabel : M3e.Value.Supported
@@ -603,6 +626,7 @@ slideGroup =
     M3e.SlideGroup.view
 
 
+{-| Convenience binding for the `M3e.Skeleton` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Skeleton`. Import that module directly for the strict, component-scoped types. -}
 skeleton :
     List (M3e.Cem.Attr.Attr { animation : M3e.Value.Supported
     , shape : M3e.Value.Supported
@@ -615,6 +639,7 @@ skeleton =
     M3e.Skeleton.view
 
 
+{-| Convenience binding for the `M3e.Shape` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Shape`. Import that module directly for the strict, component-scoped types. -}
 shape :
     List (M3e.Cem.Attr.Attr { name : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -625,6 +650,7 @@ shape =
     M3e.Shape.view
 
 
+{-| Convenience binding for the `M3e.SegmentedButton` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SegmentedButton`. Import that module directly for the strict, component-scoped types. -}
 segmentedButton :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , hideSelectionIndicator : M3e.Value.Supported
@@ -641,6 +667,7 @@ segmentedButton =
     M3e.SegmentedButton.view
 
 
+{-| Convenience binding for the `M3e.ButtonSegment` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ButtonSegment`. Import that module directly for the strict, component-scoped types. -}
 buttonSegment :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -659,6 +686,7 @@ buttonSegment =
     M3e.ButtonSegment.view
 
 
+{-| Convenience binding for the `M3e.SearchView` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SearchView`. Import that module directly for the strict, component-scoped types. -}
 searchView :
     { input : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { contained : M3e.Value.Supported
@@ -687,6 +715,7 @@ searchView =
     M3e.SearchView.view
 
 
+{-| Convenience binding for the `M3e.SearchBar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SearchBar`. Import that module directly for the strict, component-scoped types. -}
 searchBar :
     { input : M3e.Element.Element any msg }
     -> List (M3e.Cem.Attr.Attr { clearable : M3e.Value.Supported
@@ -703,6 +732,7 @@ searchBar =
     M3e.SearchBar.view
 
 
+{-| Convenience binding for the `M3e.RadioGroup` element: the same `[attributes] [content]` constructor re-exposed from `M3e.RadioGroup`. Import that module directly for the strict, component-scoped types. -}
 radioGroup :
     List (M3e.Cem.Attr.Attr { ariaInvalid : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -719,6 +749,7 @@ radioGroup =
     M3e.RadioGroup.view
 
 
+{-| Convenience binding for the `M3e.Radio` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Radio`. Import that module directly for the strict, component-scoped types. -}
 radio :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -737,6 +768,7 @@ radio =
     M3e.Radio.view
 
 
+{-| Convenience binding for the `M3e.ProgressElementIndicatorBase` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ProgressElementIndicatorBase`. Import that module directly for the strict, component-scoped types. -}
 progressElementIndicatorBase :
     List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
     , max : M3e.Value.Supported
@@ -751,6 +783,7 @@ progressElementIndicatorBase =
     M3e.ProgressElementIndicatorBase.view
 
 
+{-| Convenience binding for the `M3e.Paginator` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Paginator`. Import that module directly for the strict, component-scoped types. -}
 paginator :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , firstPageLabel : M3e.Value.Supported
@@ -778,6 +811,7 @@ paginator =
     M3e.Paginator.view
 
 
+{-| Convenience binding for the `M3e.Select` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Select`. Import that module directly for the strict, component-scoped types. -}
 select :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , hideSelectionIndicator : M3e.Value.Supported
@@ -800,6 +834,7 @@ select =
     M3e.Select.view
 
 
+{-| Convenience binding for the `M3e.NavRailToggle` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavRailToggle`. Import that module directly for the strict, component-scoped types. -}
 navRailToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -810,6 +845,7 @@ navRailToggle =
     M3e.NavRailToggle.view
 
 
+{-| Convenience binding for the `M3e.NavRail` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavRail`. Import that module directly for the strict, component-scoped types. -}
 navRail :
     List (M3e.Cem.Attr.Attr { mode : M3e.Value.Supported
     , onBeforeinput : M3e.Value.Supported
@@ -823,6 +859,7 @@ navRail =
     M3e.NavRail.view
 
 
+{-| Convenience binding for the `M3e.NavMenuItemGroup` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavMenuItemGroup`. Import that module directly for the strict, component-scoped types. -}
 navMenuItemGroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { label : M3e.Value.Supported
@@ -833,6 +870,7 @@ navMenuItemGroup =
     M3e.NavMenuItemGroup.view
 
 
+{-| Convenience binding for the `M3e.NavMenu` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavMenu`. Import that module directly for the strict, component-scoped types. -}
 navMenu :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -841,6 +879,7 @@ navMenu =
     M3e.NavMenu.view
 
 
+{-| Convenience binding for the `M3e.NavMenuItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavMenuItem`. Import that module directly for the strict, component-scoped types. -}
 navMenuItem :
     { label :
         M3e.Element.Element { text : M3e.Value.Supported
@@ -868,6 +907,7 @@ navMenuItem =
     M3e.NavMenuItem.view
 
 
+{-| Convenience binding for the `M3e.NavBar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavBar`. Import that module directly for the strict, component-scoped types. -}
 navBar :
     List (M3e.Cem.Attr.Attr { mode : M3e.Value.Supported
     , onChange : M3e.Value.Supported
@@ -881,6 +921,7 @@ navBar =
     M3e.NavBar.view
 
 
+{-| Convenience binding for the `M3e.NavItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.NavItem`. Import that module directly for the strict, component-scoped types. -}
 navItem :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
@@ -905,6 +946,7 @@ navItem =
     M3e.NavItem.view
 
 
+{-| Convenience binding for the `M3e.MenuItemRadio` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MenuItemRadio`. Import that module directly for the strict, component-scoped types. -}
 menuItemRadio :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , checked : M3e.Value.Supported
@@ -920,6 +962,7 @@ menuItemRadio =
     M3e.MenuItemRadio.view
 
 
+{-| Convenience binding for the `M3e.MenuItemGroup` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MenuItemGroup`. Import that module directly for the strict, component-scoped types. -}
 menuItemGroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -928,6 +971,7 @@ menuItemGroup =
     M3e.MenuItemGroup.view
 
 
+{-| Convenience binding for the `M3e.MenuItemCheckbox` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MenuItemCheckbox`. Import that module directly for the strict, component-scoped types. -}
 menuItemCheckbox :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , checked : M3e.Value.Supported
@@ -943,6 +987,7 @@ menuItemCheckbox =
     M3e.MenuItemCheckbox.view
 
 
+{-| Convenience binding for the `M3e.Menu` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Menu`. Import that module directly for the strict, component-scoped types. -}
 menu :
     List (M3e.Cem.Attr.Attr { positionX : M3e.Value.Supported
     , positionY : M3e.Value.Supported
@@ -958,6 +1003,7 @@ menu =
     M3e.Menu.view
 
 
+{-| Convenience binding for the `M3e.MenuItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MenuItem`. Import that module directly for the strict, component-scoped types. -}
 menuItem :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , download : M3e.Value.Supported
@@ -976,6 +1022,7 @@ menuItem =
     M3e.MenuItem.view
 
 
+{-| Convenience binding for the `M3e.MenuTrigger` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MenuTrigger`. Import that module directly for the strict, component-scoped types. -}
 menuTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -986,6 +1033,7 @@ menuTrigger =
     M3e.MenuTrigger.view
 
 
+{-| Convenience binding for the `M3e.MenuItemElementBase` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MenuItemElementBase`. Import that module directly for the strict, component-scoped types. -}
 menuItemElementBase :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , onClick : M3e.Value.Supported
@@ -997,6 +1045,7 @@ menuItemElementBase =
     M3e.MenuItemElementBase.view
 
 
+{-| Convenience binding for the `M3e.LoadingIndicator` element: the same `[attributes] [content]` constructor re-exposed from `M3e.LoadingIndicator`. Import that module directly for the strict, component-scoped types. -}
 loadingIndicator :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1007,6 +1056,7 @@ loadingIndicator =
     M3e.LoadingIndicator.view
 
 
+{-| Convenience binding for the `M3e.SelectionList` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SelectionList`. Import that module directly for the strict, component-scoped types. -}
 selectionList :
     List (M3e.Cem.Attr.Attr { hideSelectionIndicator : M3e.Value.Supported
     , multi : M3e.Value.Supported
@@ -1024,6 +1074,7 @@ selectionList =
     M3e.SelectionList.view
 
 
+{-| Convenience binding for the `M3e.ListOption` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ListOption`. Import that module directly for the strict, component-scoped types. -}
 listOption :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -1045,6 +1096,7 @@ listOption =
     M3e.ListOption.view
 
 
+{-| Convenience binding for the `M3e.ActionList` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ActionList`. Import that module directly for the strict, component-scoped types. -}
 actionList :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1055,6 +1107,7 @@ actionList =
     M3e.ActionList.view
 
 
+{-| Convenience binding for the `M3e.ExpandableListItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ExpandableListItem`. Import that module directly for the strict, component-scoped types. -}
 expandableListItem :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , open : M3e.Value.Supported
@@ -1076,6 +1129,7 @@ expandableListItem =
     M3e.ExpandableListItem.view
 
 
+{-| Convenience binding for the `M3e.ListAction` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ListAction`. Import that module directly for the strict, component-scoped types. -}
 listAction :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , download : M3e.Value.Supported
@@ -1096,6 +1150,7 @@ listAction =
     M3e.ListAction.view
 
 
+{-| Convenience binding for the `M3e.ListItemButton` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ListItemButton`. Import that module directly for the strict, component-scoped types. -}
 listItemButton :
     List (M3e.Cem.Attr.Attr { href : M3e.Value.Supported
     , target : M3e.Value.Supported
@@ -1116,6 +1171,7 @@ listItemButton =
     M3e.ListItemButton.view
 
 
+{-| Convenience binding for the `M3e.List` element: the same `[attributes] [content]` constructor re-exposed from `M3e.List`. Import that module directly for the strict, component-scoped types. -}
 list :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1126,6 +1182,7 @@ list =
     M3e.List.view
 
 
+{-| Convenience binding for the `M3e.ListItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ListItem`. Import that module directly for the strict, component-scoped types. -}
 listItem :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
@@ -1139,6 +1196,7 @@ listItem =
     M3e.ListItem.view
 
 
+{-| Convenience binding for the `M3e.Icon` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Icon`. Import that module directly for the strict, component-scoped types. -}
 icon :
     List (M3e.Cem.Attr.Attr { filled : M3e.Value.Supported
     , grade : M3e.Value.Supported
@@ -1154,6 +1212,7 @@ icon =
     M3e.Icon.view
 
 
+{-| Convenience binding for the `M3e.Heading` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Heading`. Import that module directly for the strict, component-scoped types. -}
 heading :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { emphasized : M3e.Value.Supported
@@ -1168,6 +1227,7 @@ heading =
     M3e.Heading.view
 
 
+{-| Convenience binding for the `M3e.FabMenuTrigger` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FabMenuTrigger`. Import that module directly for the strict, component-scoped types. -}
 fabMenuTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1178,6 +1238,7 @@ fabMenuTrigger =
     M3e.FabMenuTrigger.view
 
 
+{-| Convenience binding for the `M3e.FabMenu` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FabMenu`. Import that module directly for the strict, component-scoped types. -}
 fabMenu :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , onBeforetoggle : M3e.Value.Supported
@@ -1190,6 +1251,7 @@ fabMenu =
     M3e.FabMenu.view
 
 
+{-| Convenience binding for the `M3e.Fab` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Fab`. Import that module directly for the strict, component-scoped types. -}
 fab :
     { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
     , action :
@@ -1228,6 +1290,7 @@ fab =
     M3e.Fab.view
 
 
+{-| Convenience binding for the `M3e.Accordion` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Accordion`. Import that module directly for the strict, component-scoped types. -}
 accordion :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1238,6 +1301,7 @@ accordion =
     M3e.Accordion.view
 
 
+{-| Convenience binding for the `M3e.ExpansionPanel` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ExpansionPanel`. Import that module directly for the strict, component-scoped types. -}
 expansionPanel :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , hideToggle : M3e.Value.Supported
@@ -1260,6 +1324,7 @@ expansionPanel =
     M3e.ExpansionPanel.view
 
 
+{-| Convenience binding for the `M3e.ExpansionHeader` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ExpansionHeader`. Import that module directly for the strict, component-scoped types. -}
 expansionHeader :
     List (M3e.Cem.Attr.Attr { hideToggle : M3e.Value.Supported
     , toggleDirection : M3e.Value.Supported
@@ -1276,6 +1341,7 @@ expansionHeader =
     M3e.ExpansionHeader.view
 
 
+{-| Convenience binding for the `M3e.DrawerToggle` element: the same `[attributes] [content]` constructor re-exposed from `M3e.DrawerToggle`. Import that module directly for the strict, component-scoped types. -}
 drawerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1286,6 +1352,7 @@ drawerToggle =
     M3e.DrawerToggle.view
 
 
+{-| Convenience binding for the `M3e.DrawerContainer` element: the same `[attributes] [content]` constructor re-exposed from `M3e.DrawerContainer`. Import that module directly for the strict, component-scoped types. -}
 drawerContainer :
     List (M3e.Cem.Attr.Attr { end : M3e.Value.Supported
     , endMode : M3e.Value.Supported
@@ -1305,6 +1372,7 @@ drawerContainer =
     M3e.DrawerContainer.view
 
 
+{-| Convenience binding for the `M3e.Divider` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Divider`. Import that module directly for the strict, component-scoped types. -}
 divider :
     List (M3e.Cem.Attr.Attr { inset : M3e.Value.Supported
     , insetStart : M3e.Value.Supported
@@ -1318,6 +1386,7 @@ divider =
     M3e.Divider.view
 
 
+{-| Convenience binding for the `M3e.DialogTrigger` element: the same `[attributes] [content]` constructor re-exposed from `M3e.DialogTrigger`. Import that module directly for the strict, component-scoped types. -}
 dialogTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1328,6 +1397,7 @@ dialogTrigger =
     M3e.DialogTrigger.view
 
 
+{-| Convenience binding for the `M3e.Dialog` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Dialog`. Import that module directly for the strict, component-scoped types. -}
 dialog :
     List (M3e.Cem.Attr.Attr { alert : M3e.Value.Supported
     , closeLabel : M3e.Value.Supported
@@ -1352,6 +1422,7 @@ dialog =
     M3e.Dialog.view
 
 
+{-| Convenience binding for the `M3e.DialogAction` element: the same `[attributes] [content]` constructor re-exposed from `M3e.DialogAction`. Import that module directly for the strict, component-scoped types. -}
 dialogAction :
     List (M3e.Cem.Attr.Attr { returnValue : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1362,6 +1433,7 @@ dialogAction =
     M3e.DialogAction.view
 
 
+{-| Convenience binding for the `M3e.DatepickerToggle` element: the same `[attributes] [content]` constructor re-exposed from `M3e.DatepickerToggle`. Import that module directly for the strict, component-scoped types. -}
 datepickerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1372,6 +1444,7 @@ datepickerToggle =
     M3e.DatepickerToggle.view
 
 
+{-| Convenience binding for the `M3e.Datepicker` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Datepicker`. Import that module directly for the strict, component-scoped types. -}
 datepicker :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , clearable : M3e.Value.Supported
@@ -1404,6 +1477,7 @@ datepicker =
     M3e.Datepicker.view
 
 
+{-| Convenience binding for the `M3e.ContentPane` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ContentPane`. Import that module directly for the strict, component-scoped types. -}
 contentPane :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -1412,6 +1486,7 @@ contentPane =
     M3e.ContentPane.view
 
 
+{-| Convenience binding for the `M3e.SuggestionChip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.SuggestionChip`. Import that module directly for the strict, component-scoped types. -}
 suggestionChip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg
     , action :
@@ -1445,6 +1520,7 @@ suggestionChip =
     M3e.SuggestionChip.view
 
 
+{-| Convenience binding for the `M3e.InputChipSet` element: the same `[attributes] [content]` constructor re-exposed from `M3e.InputChipSet`. Import that module directly for the strict, component-scoped types. -}
 inputChipSet :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
@@ -1461,6 +1537,7 @@ inputChipSet =
     M3e.InputChipSet.view
 
 
+{-| Convenience binding for the `M3e.InputChip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.InputChip`. Import that module directly for the strict, component-scoped types. -}
 inputChip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -1482,6 +1559,7 @@ inputChip =
     M3e.InputChip.view
 
 
+{-| Convenience binding for the `M3e.FilterChipSet` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FilterChipSet`. Import that module directly for the strict, component-scoped types. -}
 filterChipSet :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , hideSelectionIndicator : M3e.Value.Supported
@@ -1499,6 +1577,7 @@ filterChipSet =
     M3e.FilterChipSet.view
 
 
+{-| Convenience binding for the `M3e.FilterChip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FilterChip`. Import that module directly for the strict, component-scoped types. -}
 filterChip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -1520,6 +1599,7 @@ filterChip =
     M3e.FilterChip.view
 
 
+{-| Convenience binding for the `M3e.ChipSet` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ChipSet`. Import that module directly for the strict, component-scoped types. -}
 chipSet :
     List (M3e.Cem.Attr.Attr { vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1530,6 +1610,7 @@ chipSet =
     M3e.ChipSet.view
 
 
+{-| Convenience binding for the `M3e.AssistChip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.AssistChip`. Import that module directly for the strict, component-scoped types. -}
 assistChip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg
     , action :
@@ -1563,6 +1644,7 @@ assistChip =
     M3e.AssistChip.view
 
 
+{-| Convenience binding for the `M3e.Chip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Chip`. Import that module directly for the strict, component-scoped types. -}
 chip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
@@ -1577,6 +1659,7 @@ chip =
     M3e.Chip.view
 
 
+{-| Convenience binding for the `M3e.Checkbox` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Checkbox`. Import that module directly for the strict, component-scoped types. -}
 checkbox :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -1597,6 +1680,7 @@ checkbox =
     M3e.Checkbox.view
 
 
+{-| Convenience binding for the `M3e.Card` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Card`. Import that module directly for the strict, component-scoped types. -}
 card :
     List (M3e.Cem.Attr.Attr { actionable : M3e.Value.Supported
     , inline : M3e.Value.Supported
@@ -1625,6 +1709,7 @@ card =
     M3e.Card.view
 
 
+{-| Convenience binding for the `M3e.Calendar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Calendar`. Import that module directly for the strict, component-scoped types. -}
 calendar :
     List (M3e.Cem.Attr.Attr { date : M3e.Value.Supported
     , maxDate : M3e.Value.Supported
@@ -1648,6 +1733,7 @@ calendar =
     M3e.Calendar.view
 
 
+{-| Convenience binding for the `M3e.YearView` element: the same `[attributes] [content]` constructor re-exposed from `M3e.YearView`. Import that module directly for the strict, component-scoped types. -}
 yearView :
     List (M3e.Cem.Attr.Attr { active : M3e.Value.Supported
     , today : M3e.Value.Supported
@@ -1665,6 +1751,7 @@ yearView =
     M3e.YearView.view
 
 
+{-| Convenience binding for the `M3e.MultiYearView` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MultiYearView`. Import that module directly for the strict, component-scoped types. -}
 multiYearView :
     List (M3e.Cem.Attr.Attr { active : M3e.Value.Supported
     , today : M3e.Value.Supported
@@ -1682,6 +1769,7 @@ multiYearView =
     M3e.MultiYearView.view
 
 
+{-| Convenience binding for the `M3e.MonthView` element: the same `[attributes] [content]` constructor re-exposed from `M3e.MonthView`. Import that module directly for the strict, component-scoped types. -}
 monthView :
     List (M3e.Cem.Attr.Attr { rangeStart : M3e.Value.Supported
     , rangeEnd : M3e.Value.Supported
@@ -1701,6 +1789,7 @@ monthView =
     M3e.MonthView.view
 
 
+{-| Convenience binding for the `M3e.Tooltip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Tooltip`. Import that module directly for the strict, component-scoped types. -}
 tooltip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -1717,6 +1806,7 @@ tooltip =
     M3e.Tooltip.view
 
 
+{-| Convenience binding for the `M3e.RichTooltip` element: the same `[attributes] [content]` constructor re-exposed from `M3e.RichTooltip`. Import that module directly for the strict, component-scoped types. -}
 richTooltip :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -1737,6 +1827,7 @@ richTooltip =
     M3e.RichTooltip.view
 
 
+{-| Convenience binding for the `M3e.TooltipElementBase` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TooltipElementBase`. Import that module directly for the strict, component-scoped types. -}
 tooltipElementBase :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , showDelay : M3e.Value.Supported
@@ -1751,6 +1842,7 @@ tooltipElementBase =
     M3e.TooltipElementBase.view
 
 
+{-| Convenience binding for the `M3e.RichTooltipAction` element: the same `[attributes] [content]` constructor re-exposed from `M3e.RichTooltipAction`. Import that module directly for the strict, component-scoped types. -}
 richTooltipAction :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
@@ -1762,6 +1854,7 @@ richTooltipAction =
     M3e.RichTooltipAction.view
 
 
+{-| Convenience binding for the `M3e.ButtonGroup` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ButtonGroup`. Import that module directly for the strict, component-scoped types. -}
 buttonGroup :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , size : M3e.Value.Supported
@@ -1774,6 +1867,7 @@ buttonGroup =
     M3e.ButtonGroup.view
 
 
+{-| Convenience binding for the `M3e.IconButton` element: the same `[attributes] [content]` constructor re-exposed from `M3e.IconButton`. Import that module directly for the strict, component-scoped types. -}
 iconButton :
     { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
     , action :
@@ -1815,6 +1909,7 @@ iconButton =
     M3e.IconButton.view
 
 
+{-| Convenience binding for the `M3e.Button` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Button`. Import that module directly for the strict, component-scoped types. -}
 button :
     { content :
         M3e.Element.Element { text : M3e.Value.Supported
@@ -1862,6 +1957,7 @@ button =
     M3e.Button.view
 
 
+{-| Convenience binding for the `M3e.Breadcrumb` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Breadcrumb`. Import that module directly for the strict, component-scoped types. -}
 breadcrumb :
     List (M3e.Cem.Attr.Attr { wrap : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -1874,6 +1970,7 @@ breadcrumb =
     M3e.Breadcrumb.view
 
 
+{-| Convenience binding for the `M3e.BreadcrumbItem` element: the same `[attributes] [content]` constructor re-exposed from `M3e.BreadcrumbItem`. Import that module directly for the strict, component-scoped types. -}
 breadcrumbItem :
     List (M3e.Cem.Attr.Attr { itemLabel : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -1893,6 +1990,7 @@ breadcrumbItem =
     M3e.BreadcrumbItem.view
 
 
+{-| Convenience binding for the `M3e.BreadcrumbItemButton` element: the same `[attributes] [content]` constructor re-exposed from `M3e.BreadcrumbItemButton`. Import that module directly for the strict, component-scoped types. -}
 breadcrumbItemButton :
     List (M3e.Cem.Attr.Attr { current : M3e.Value.Supported
     , href : M3e.Value.Supported
@@ -1913,6 +2011,7 @@ breadcrumbItemButton =
     M3e.BreadcrumbItemButton.view
 
 
+{-| Convenience binding for the `M3e.BottomSheetTrigger` element: the same `[attributes] [content]` constructor re-exposed from `M3e.BottomSheetTrigger`. Import that module directly for the strict, component-scoped types. -}
 bottomSheetTrigger :
     List (M3e.Cem.Attr.Attr { detent : M3e.Value.Supported
     , secondary : M3e.Value.Supported
@@ -1925,6 +2024,7 @@ bottomSheetTrigger =
     M3e.BottomSheetTrigger.view
 
 
+{-| Convenience binding for the `M3e.BottomSheet` element: the same `[attributes] [content]` constructor re-exposed from `M3e.BottomSheet`. Import that module directly for the strict, component-scoped types. -}
 bottomSheet :
     List (M3e.Cem.Attr.Attr { detent : M3e.Value.Supported
     , handle : M3e.Value.Supported
@@ -1949,6 +2049,7 @@ bottomSheet =
     M3e.BottomSheet.view
 
 
+{-| Convenience binding for the `M3e.BottomSheetAction` element: the same `[attributes] [content]` constructor re-exposed from `M3e.BottomSheetAction`. Import that module directly for the strict, component-scoped types. -}
 bottomSheetAction :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -1957,6 +2058,7 @@ bottomSheetAction =
     M3e.BottomSheetAction.view
 
 
+{-| Convenience binding for the `M3e.Badge` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Badge`. Import that module directly for the strict, component-scoped types. -}
 badge :
     List (M3e.Cem.Attr.Attr { size : M3e.Value.Supported
     , position : M3e.Value.Supported
@@ -1969,6 +2071,7 @@ badge =
     M3e.Badge.view
 
 
+{-| Convenience binding for the `M3e.Avatar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Avatar`. Import that module directly for the strict, component-scoped types. -}
 avatar :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -1977,6 +2080,7 @@ avatar =
     M3e.Avatar.view
 
 
+{-| Convenience binding for the `M3e.Autocomplete` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Autocomplete`. Import that module directly for the strict, component-scoped types. -}
 autocomplete :
     List (M3e.Cem.Attr.Attr { autoActivate : M3e.Value.Supported
     , caseSensitive : M3e.Value.Supported
@@ -2004,6 +2108,7 @@ autocomplete =
     M3e.Autocomplete.view
 
 
+{-| Convenience binding for the `M3e.FormField` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FormField`. Import that module directly for the strict, component-scoped types. -}
 formField :
     List (M3e.Cem.Attr.Attr { floatLabel : M3e.Value.Supported
     , hideRequiredMarker : M3e.Value.Supported
@@ -2025,6 +2130,7 @@ formField =
     M3e.FormField.view
 
 
+{-| Convenience binding for the `M3e.OptionPanel` element: the same `[attributes] [content]` constructor re-exposed from `M3e.OptionPanel`. Import that module directly for the strict, component-scoped types. -}
 optionPanel :
     List (M3e.Cem.Attr.Attr { state : M3e.Value.Supported
     , scrollStrategy : M3e.Value.Supported
@@ -2043,6 +2149,7 @@ optionPanel =
     M3e.OptionPanel.view
 
 
+{-| Convenience binding for the `M3e.FloatingPanel` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FloatingPanel`. Import that module directly for the strict, component-scoped types. -}
 floatingPanel :
     List (M3e.Cem.Attr.Attr { scrollStrategy : M3e.Value.Supported
     , fitAnchorWidth : M3e.Value.Supported
@@ -2057,6 +2164,7 @@ floatingPanel =
     M3e.FloatingPanel.view
 
 
+{-| Convenience binding for the `M3e.Optgroup` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Optgroup`. Import that module directly for the strict, component-scoped types. -}
 optgroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
@@ -2067,6 +2175,7 @@ optgroup =
     M3e.Optgroup.view
 
 
+{-| Convenience binding for the `M3e.Option` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Option`. Import that module directly for the strict, component-scoped types. -}
 option :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -2083,6 +2192,7 @@ option =
     M3e.Option.view
 
 
+{-| Convenience binding for the `M3e.FocusTrap` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FocusTrap`. Import that module directly for the strict, component-scoped types. -}
 focusTrap :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -2093,6 +2203,7 @@ focusTrap =
     M3e.FocusTrap.view
 
 
+{-| Convenience binding for the `M3e.AppBar` element: the same `[attributes] [content]` constructor re-exposed from `M3e.AppBar`. Import that module directly for the strict, component-scoped types. -}
 appBar :
     List (M3e.Cem.Attr.Attr { centered : M3e.Value.Supported
     , for : M3e.Value.Supported
@@ -2111,6 +2222,7 @@ appBar =
     M3e.AppBar.view
 
 
+{-| Convenience binding for the `M3e.TextOverflow` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TextOverflow`. Import that module directly for the strict, component-scoped types. -}
 textOverflow :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -2119,6 +2231,7 @@ textOverflow =
     M3e.TextOverflow.view
 
 
+{-| Convenience binding for the `M3e.TextHighlight` element: the same `[attributes] [content]` constructor re-exposed from `M3e.TextHighlight`. Import that module directly for the strict, component-scoped types. -}
 textHighlight :
     List (M3e.Cem.Attr.Attr { caseSensitive : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -2133,6 +2246,7 @@ textHighlight =
     M3e.TextHighlight.view
 
 
+{-| Convenience binding for the `M3e.StateLayer` element: the same `[attributes] [content]` constructor re-exposed from `M3e.StateLayer`. Import that module directly for the strict, component-scoped types. -}
 stateLayer :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHover : M3e.Value.Supported
@@ -2145,6 +2259,7 @@ stateLayer =
     M3e.StateLayer.view
 
 
+{-| Convenience binding for the `M3e.Slide` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Slide`. Import that module directly for the strict, component-scoped types. -}
 slide :
     List (M3e.Cem.Attr.Attr { selectedIndex : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -2155,6 +2270,7 @@ slide =
     M3e.Slide.view
 
 
+{-| Convenience binding for the `M3e.ScrollContainer` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ScrollContainer`. Import that module directly for the strict, component-scoped types. -}
 scrollContainer :
     List (M3e.Cem.Attr.Attr { dividers : M3e.Value.Supported
     , thin : M3e.Value.Supported
@@ -2166,6 +2282,7 @@ scrollContainer =
     M3e.ScrollContainer.view
 
 
+{-| Convenience binding for the `M3e.Ripple` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Ripple`. Import that module directly for the strict, component-scoped types. -}
 ripple :
     List (M3e.Cem.Attr.Attr { centered : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -2180,6 +2297,7 @@ ripple =
     M3e.Ripple.view
 
 
+{-| Convenience binding for the `M3e.PseudoRadio` element: the same `[attributes] [content]` constructor re-exposed from `M3e.PseudoRadio`. Import that module directly for the strict, component-scoped types. -}
 pseudoRadio :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -2191,6 +2309,7 @@ pseudoRadio =
     M3e.PseudoRadio.view
 
 
+{-| Convenience binding for the `M3e.PseudoCheckbox` element: the same `[attributes] [content]` constructor re-exposed from `M3e.PseudoCheckbox`. Import that module directly for the strict, component-scoped types. -}
 pseudoCheckbox :
     List (M3e.Cem.Attr.Attr { checked : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -2203,6 +2322,7 @@ pseudoCheckbox =
     M3e.PseudoCheckbox.view
 
 
+{-| Convenience binding for the `M3e.FocusRing` element: the same `[attributes] [content]` constructor re-exposed from `M3e.FocusRing`. Import that module directly for the strict, component-scoped types. -}
 focusRing :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , inward : M3e.Value.Supported
@@ -2215,6 +2335,7 @@ focusRing =
     M3e.FocusRing.view
 
 
+{-| Convenience binding for the `M3e.Elevation` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Elevation`. Import that module directly for the strict, component-scoped types. -}
 elevation :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
@@ -2227,6 +2348,7 @@ elevation =
     M3e.Elevation.view
 
 
+{-| Convenience binding for the `M3e.Collapsible` element: the same `[attributes] [content]` constructor re-exposed from `M3e.Collapsible`. Import that module directly for the strict, component-scoped types. -}
 collapsible :
     List (M3e.Cem.Attr.Attr { open : M3e.Value.Supported
     , orientation : M3e.Value.Supported
@@ -2243,6 +2365,7 @@ collapsible =
     M3e.Collapsible.view
 
 
+{-| Convenience binding for the `M3e.ActionElementBase` element: the same `[attributes] [content]` constructor re-exposed from `M3e.ActionElementBase`. Import that module directly for the strict, component-scoped types. -}
 actionElementBase :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
     -> List (M3e.Element.Element child msg)

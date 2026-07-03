@@ -55,14 +55,17 @@ Token values for the typed enum attributes. A `Value tags` is a phantom-tagged s
 import M3e.Value.Core
 
 
+{-| A phantom-tagged token value, re-exported from `M3e.Value.Core`. Its `tags` row records which enum axes admit it, so a component only accepts values it actually supports. -}
 type alias Value tags =
     M3e.Value.Core.Value tags
 
 
+{-| The marker recorded in a `Value` tag row for each axis a token is admitted on, re-exported from `M3e.Value.Core`. -}
 type alias Supported =
     M3e.Value.Core.Supported
 
 
+{-| Render a `Value` back to its underlying string, re-exported from `M3e.Value.Core`. Used by the generated enum attribute setters. -}
 toString : Value tags -> String
 toString =
     M3e.Value.Core.toString
