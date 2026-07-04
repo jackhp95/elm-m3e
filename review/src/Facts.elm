@@ -15,7 +15,7 @@ module Facts exposing
 import Dict exposing (Dict)
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
-import M3e.Review.Facts as MRF exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Shape(..))
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 
 

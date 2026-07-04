@@ -15,7 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = [ ( "variant", "variant" ), ( "shapeAttr", "shape" ) ]
       , slotRewrites = [ ( "unnamed", "child" ), ( "icon", "icon" ) ]
-      , shapes = [ Shape3 ]
+      , shapes = [ Shape3, Shape4 ]
       , requiredAttrs = []
       }
     ]
@@ -73,12 +73,12 @@ v = M3e.Button.view [ M3e.Button.shape rounded ] []
                             ]
             ]
         , describe "slot case"
-            [ test "rewrites M3e.Cem.Attr.slot to per-component setter" <|
+            [ test "rewrites M3e.Content.slot to per-component setter" <|
                 \() ->
                     """module A exposing (v)
 import M3e.Button
-import M3e.Cem.Attr
-v = M3e.Button.view [] [ M3e.Cem.Attr.slot "icon" someIcon ]
+import M3e.Content
+v = M3e.Button.view [] [ M3e.Content.slot "icon" someIcon ]
 """
                         |> Review.Test.run (rule buttonFacts)
                         |> Review.Test.expectErrors
@@ -87,16 +87,66 @@ v = M3e.Button.view [] [ M3e.Cem.Attr.slot "icon" someIcon ]
                                 , details =
                                     [ "The typed setter enforces the slot's kinds at compile time."
                                     ]
-                                , under = "M3e.Cem.Attr.slot \"icon\" someIcon"
+                                , under = "M3e.Content.slot \"icon\" someIcon"
                                 }
                                 |> Review.Test.whenFixed
                                     """module A exposing (v)
 import M3e.Button
-import M3e.Cem.Attr
-v = M3e.Button.view [] [ M3e.Button.icon someIcon ]
+import M3e.Content
+v = M3e.Button.view [] [ M3e.Button.icon (someIcon) ]
+"""
+                            ]
+            , test "wraps multi-arg application body in parens" <|
+                \() ->
+                    """module A exposing (v)
+import M3e.Button
+import M3e.Content
+import M3e.Icon
+v = M3e.Button.view [] [ M3e.Content.slot "icon" (M3e.Icon.view [] []) ]
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "`.slot \"icon\"` can be replaced with the typed setter `M3e.Button.icon`"
+                                , details =
+                                    [ "The typed setter enforces the slot's kinds at compile time."
+                                    ]
+                                , under = "M3e.Content.slot \"icon\" (M3e.Icon.view [] [])"
+                                }
+                                |> Review.Test.whenFixed
+                                    """module A exposing (v)
+import M3e.Button
+import M3e.Content
+import M3e.Icon
+v = M3e.Button.view [] [ M3e.Button.icon ((M3e.Icon.view [] [])) ]
 """
                             ]
             ]
+        , test "rewrites barrel attr in Shape4 call" <|
+            \() ->
+                """module A exposing (v)
+import M3e
+import M3e.Button
+import M3e.Record.Button
+v = M3e.Record.Button.view {} [ M3e.variant filled ] []
+"""
+                    |> Review.Test.run (rule buttonFacts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "`variant` can be replaced with the per-component setter `M3e.Button.variant` for tighter type safety"
+                            , details =
+                                [ "The barrel-level setter accepts every component's tokens; the per-component form only accepts button's."
+                                ]
+                            , under = "M3e.variant"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (v)
+import M3e
+import M3e.Button
+import M3e.Record.Button
+v = M3e.Record.Button.view {} [ M3e.Button.variant filled ] []
+"""
+                        ]
         , test "no-op when already using per-component setter" <|
             \() ->
                 """module A exposing (v)

@@ -15,6 +15,7 @@ See `review/README.md` for the rationale behind each rule and every relaxation.
 -}
 
 import CognitiveComplexity
+import CodegenReviewConfig
 import Docs.ReviewAtDocs
 import Docs.ReviewLinksAndSections
 import Docs.UpToDateReadmeLinks
@@ -57,6 +58,7 @@ config =
         , correctness
         , materialDiscipline
         , codegenAware
+        , CodegenReviewConfig.config
         , codeStyle
         , complexity
         , toHtmlGate

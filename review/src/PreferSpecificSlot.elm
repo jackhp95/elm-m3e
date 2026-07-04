@@ -21,7 +21,7 @@ import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Elm.Syntax.Range exposing (Range)
 import Facts
-import M3e.Review.Facts as MRF exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Shape(..))
 import Review.Fix as Fix
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
@@ -188,7 +188,7 @@ slotErrorFor context fact element =
     case Node.value element of
         Expression.Application (setterNode :: setterArgs) ->
             case ( Node.value setterNode, Lookup.moduleNameFor context.lookup setterNode ) of
-                ( Expression.FunctionOrValue _ "slot", Just [ "M3e", "Cem", "Attr" ] ) ->
+                ( Expression.FunctionOrValue _ "slot", Just [ "M3e", "Content" ] ) ->
                     case setterArgs of
                         firstArg :: bodyNode :: _ ->
                             case Node.value firstArg of
@@ -206,7 +206,7 @@ slotErrorFor context fact element =
                                                         context.extractSourceCode (Node.range bodyNode)
 
                                                     replacement =
-                                                        compModule ++ "." ++ perCompSetter ++ " " ++ bodySource
+                                                        compModule ++ "." ++ perCompSetter ++ " (" ++ bodySource ++ ")"
                                                 in
                                                 Rule.errorWithFix
                                                     { message =
