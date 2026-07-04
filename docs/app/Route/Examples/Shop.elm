@@ -26,6 +26,7 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
+import M3e.Aria as Aria
 import M3e.AppBar as AppBar
 import M3e.Badge as Badge
 import M3e.Card as Card
@@ -215,7 +216,7 @@ cartAction count =
         { anchor =
             IconButton.view
                 { content = Icon.view [ Icon.name "shopping_bag" ] [], action = Action.none }
-                [ IconButton.variant Value.standard ]
+                [ IconButton.variant Value.standard, Aria.label "Cart" ]
                 []
         , badge =
             Badge.view [] [ Badge.child (Kit.text (String.fromInt count)) ]
@@ -352,7 +353,7 @@ productCard product =
                     { content = Icon.view [ Icon.name "add_shopping_cart" ] []
                     , action = Action.onClick (PagesMsg.fromMsg AddToCart)
                     }
-                    [ IconButton.variant Value.tonal ]
+                    [ IconButton.variant Value.tonal, Aria.label "Add to cart" ]
                     []
                 ]
             )
@@ -378,7 +379,7 @@ checkoutFab =
                 { content = Icon.view [ Icon.name "shopping_cart_checkout" ] []
                 , action = Action.none
                 }
-                [ Fab.variant Value.primary, Fab.extended True ]
+                [ Fab.variant Value.primary, Fab.extended True, Aria.label "Checkout" ]
                 [ Fab.label (Kit.text "Checkout") ]
             ]
         ]
@@ -390,5 +391,5 @@ iconAction : String -> Element { s | iconButton : Supported } msg
 iconAction icon =
     IconButton.view
         { content = Icon.view [ Icon.name icon ] [], action = Action.none }
-        [ IconButton.variant Value.standard ]
+        [ IconButton.variant Value.standard, Aria.label icon ]
         []

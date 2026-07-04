@@ -22,6 +22,7 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e.Action as Action
+import M3e.Aria as Aria
 import M3e.AppBar as AppBar
 import M3e.Card as Card
 import M3e.Divider as Divider
@@ -217,7 +218,7 @@ appBar =
 iconAction : String -> Element { s | iconButton : Supported } msg
 iconAction name =
     IconButton.view { content = Icon.view [ Icon.name name ] [], action = Action.none }
-        [ IconButton.variant Value.standard ]
+        [ IconButton.variant Value.standard, Aria.label name ]
         []
 
 
@@ -266,7 +267,7 @@ fab =
             { content = Icon.view [ Icon.name "add" ] []
             , action = Action.none
             }
-            [ Fab.variant Value.primary, Fab.extended True ]
+            [ Fab.variant Value.primary, Fab.extended True, Aria.label "Add" ]
             [ Fab.label (Kit.text "New report") ]
         ]
 

@@ -27,6 +27,7 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
+import M3e.Aria as Aria
 import M3e.AppBar as AppBar
 import M3e.Card as Card
 import M3e.Element as Element exposing (Element)
@@ -237,7 +238,7 @@ appBar =
         , AppBar.trailing
             (IconButton.view
                 { content = Icon.view [ Icon.name "notifications" ] [], action = Action.none }
-                [ IconButton.variant Value.standard ]
+                [ IconButton.variant Value.standard, Aria.label "Notifications" ]
                 []
             )
         ]

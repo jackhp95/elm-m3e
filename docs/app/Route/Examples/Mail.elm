@@ -31,6 +31,7 @@ import Kit.Avatar as Avatar
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
+import M3e.Aria as Aria
 import M3e.AppBar as AppBar
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
@@ -422,6 +423,7 @@ composeFab =
             }
             [ Fab.variant Value.primaryContainer
             , Fab.extended True
+            , Aria.label "Compose"
             ]
             [ Fab.label (Kit.text "Compose") ]
         ]
