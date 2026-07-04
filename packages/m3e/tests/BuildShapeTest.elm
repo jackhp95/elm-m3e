@@ -15,9 +15,12 @@ Components used:
 -}
 
 import Html
+import M3e.Action
+import M3e.Build.Button as Button
 import M3e.Build.Divider as Divider
 import M3e.Build.Option as Option
 import M3e.Build.Select as Select
+import M3e.Value
 import Kit
 
 
@@ -81,6 +84,20 @@ selectWithMultipleOptions =
                 |> Option.build
             )
         |> Select.build
+
+
+{-| Non-empty AttrCaps AND non-empty SlotCaps in one component.
+
+Button has both optional attrs (variant, size, ...) and optional-singular
+slots (icon, trailingIcon, selectedSlot). Proves `build` accepts an arbitrary
+polymorphic SlotCaps row — the guarantee restored by the buildInputType fix
+(previously emitted as concrete `{}`, blocking every component whose SlotCaps
+had any Available fields).
+-}
+buttonHappy =
+    Button.button { content = Kit.text "Click me", action = M3e.Action.none }
+        |> Button.variant M3e.Value.filled
+        |> Button.build
 
 
 main : Html.Html msg
