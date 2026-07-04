@@ -6,6 +6,10 @@ Ship: first — coordinated with facts and rules per the
 [shipping coordination doc](2026-07-03-epic-138-shipping-coordination.md).
 Governing ADR: [0013 (amended)](../../adr/0013-top-shape-matrix-and-translation.md).
 
+## 0. Post-implementation correction (2026-07-04)
+
+The spec text below repeatedly names "four required-bearing components (Button, IconButton, Fab, Chip today)". The actual `hasRecord` gate matches **21** components in the current `config/slots.json` — the four named plus 17 more: Option, RichTooltipAction, RichTooltip, Tooltip, AssistChip, FilterChip, InputChip, SuggestionChip, Heading, NavMenuItem, SearchBar, SearchView, Snackbar, SplitButton, Step, TocItem, TreeItem. Every "four" reads as "21". The emission rule is the same either way; only the documented count was off. The DoD in §11 verifies against the real emitted set, not a hard-coded list.
+
 ## 1. Purpose
 
 Replace the implicit `hasRecord` fork at `Generate.elm:1973` with an explicit

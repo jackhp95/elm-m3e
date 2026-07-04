@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Post-execution correction (2026-07-04):** the plan text says "four required-bearing components (Button, IconButton, Fab, Chip)"; actual `hasRecord` gate matches **21** components in `config/slots.json`. The 17 additional: Option, RichTooltipAction, RichTooltip, Tooltip, AssistChip, FilterChip, InputChip, SuggestionChip, Heading, NavMenuItem, SearchBar, SearchView, Snackbar, SplitButton, Step, TocItem, TreeItem. Every "four" below should read "21"; the emission rule (`hasRecord` gate) was implemented correctly regardless. Task 10 DoD Step 3's expected file list is the full 21, not just the four named.
+
 **Goal:** Refactor `elm-cem/codegen/Generate.elm` to emit shape ③
 (`M3e.<Comp>`) uniformly and shape ④ (`M3e.Record.<Comp>`) where the
 required record is non-empty, driven by an explicit `shapesFor` selector.
