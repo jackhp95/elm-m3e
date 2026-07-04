@@ -10,23 +10,32 @@ whole set is verified against `elm-test`.
 -}
 
 import M3e.Review.Facts
+import MissingRequiredAttribute
+import MissingRequiredSingularSlot
 import NoActionlessButton
 import NoSeamOutsideAllowedModules
+import PreferSpecificSlot
 import RequireSlot
 import Review.Rule exposing (Rule)
+import SingularAttribute
 import SingularSlot
 import ValidEnumValue
 
 
-{-| The Vocab-API rule set. The three facts-driven rules are parameterised by the
-generated `M3e.Review.Facts`; the Seam gate takes the list of modules allowed to hold
-escape hatches — tune it per project (an app's `Native`/`Layout`-style adapter layer).
+{-| The Vocab-API rule set. The facts-driven rules are parameterised by the
+generated `M3e.Review.Facts` (per-component valid enums, required/multi slots,
+attr/slot rewrites, required attrs); the Seam gate takes the list of modules
+allowed to hold escape hatches — tune it per project.
 -}
 config : List Rule
 config =
     [ ValidEnumValue.rule M3e.Review.Facts.facts
     , RequireSlot.rule M3e.Review.Facts.facts
     , SingularSlot.rule M3e.Review.Facts.facts
+    , MissingRequiredAttribute.rule M3e.Review.Facts.facts
+    , MissingRequiredSingularSlot.rule M3e.Review.Facts.facts
+    , SingularAttribute.rule M3e.Review.Facts.facts
+    , PreferSpecificSlot.rule M3e.Review.Facts.facts
     , NoActionlessButton.rule
     , NoSeamOutsideAllowedModules.rule [ "Native", "Layout", "Kit", "Seam", "EscapeHatch" ]
     ]
