@@ -1,13 +1,18 @@
-module M3e.Build.SliderThumb exposing ( Builder, AttrCaps, SlotCaps, sliderThumb )
+module M3e.Build.SliderThumb exposing
+    ( Builder, AttrCaps, SlotCaps, sliderThumb, disabled, name
+    , value, onValueChange, onBeforeinput, onInput, onChange, onClick
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-slider-thumb>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SliderThumb as SliderThumb`.
 
-@docs Builder, AttrCaps, SlotCaps, sliderThumb
+@docs Builder, AttrCaps, SlotCaps, sliderThumb, disabled, name
+@docs value, onValueChange, onBeforeinput, onInput, onChange, onClick
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 
 
 {-| Opaque builder for `<m3e-slider-thumb>`; see `.build` for the terminal. -}
@@ -17,7 +22,15 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available
+    , name : M3e.Build.Internal.Available
+    , value : M3e.Build.Internal.Available
+    , onValueChange : M3e.Build.Internal.Available
+    , onBeforeinput : M3e.Build.Internal.Available
+    , onInput : M3e.Build.Internal.Available
+    , onChange : M3e.Build.Internal.Available
+    , onClick : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -52,3 +65,75 @@ sliderThumb =
         , onClick = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name :
+    String
+    -> Builder { a | name : M3e.Build.Internal.Available } s msg
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg
+name v_ (Builder f_) =
+    Builder { f_ | name = Just v_ }
+
+
+{-| The value of the thumb. (default: `null`) -}
+value :
+    Float
+    -> Builder { a | value : M3e.Build.Internal.Available } s msg
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg
+value v_ (Builder f_) =
+    Builder { f_ | value = Just v_ }
+
+
+{-| onValueChange event handler. -}
+onValueChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onValueChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onValueChange : M3e.Build.Internal.Used } s msg
+onValueChange v_ (Builder f_) =
+    Builder { f_ | onValueChange = Just v_ }
+
+
+{-| Dispatched before the value changes. -}
+onBeforeinput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg
+onBeforeinput v_ (Builder f_) =
+    Builder { f_ | onBeforeinput = Just v_ }
+
+
+{-| Dispatched when the value changes. -}
+onInput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onInput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
+onInput v_ (Builder f_) =
+    Builder { f_ | onInput = Just v_ }
+
+
+{-| Dispatched when the value changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
+onChange v_ (Builder f_) =
+    Builder { f_ | onChange = Just v_ }
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
+onClick v_ (Builder f_) =
+    Builder { f_ | onClick = Just v_ }

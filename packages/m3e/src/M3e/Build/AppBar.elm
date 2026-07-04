@@ -1,12 +1,17 @@
-module M3e.Build.AppBar exposing ( Builder, AttrCaps, SlotCaps, appBar )
+module M3e.Build.AppBar exposing
+    ( Builder, AttrCaps, SlotCaps, appBar, centered, for
+    , size, leading, title, subtitle, leadingIcon, trailingIcon
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-app-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.AppBar as AppBar`.
 
-@docs Builder, AttrCaps, SlotCaps, appBar
+@docs Builder, AttrCaps, SlotCaps, appBar, centered, for
+@docs size, leading, title, subtitle, leadingIcon, trailingIcon
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,12 +23,20 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { centered : M3e.Build.Internal.Available
+    , for : M3e.Build.Internal.Available
+    , size : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { leading : M3e.Build.Internal.Available
+    , title : M3e.Build.Internal.Available
+    , subtitle : M3e.Build.Internal.Available
+    , leadingIcon : M3e.Build.Internal.Available
+    , trailingIcon : M3e.Build.Internal.Available
+    }
 
 
 type alias Fields msg =
@@ -74,3 +87,85 @@ appBar =
         , trailing = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether the title and subtitle are centered. (default: `false`) -}
+centered :
+    Bool
+    -> Builder { a | centered : M3e.Build.Internal.Available } s msg
+    -> Builder { a | centered : M3e.Build.Internal.Used } s msg
+centered v_ (Builder f_) =
+    Builder { f_ | centered = Just v_ }
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg
+for v_ (Builder f_) =
+    Builder { f_ | for = Just v_ }
+
+
+{-| The size of the bar. (default: `"small"`) -}
+size :
+    M3e.Value.Value { large : M3e.Value.Supported
+    , medium : M3e.Value.Supported
+    , small : M3e.Value.Supported
+    }
+    -> Builder { a | size : M3e.Build.Internal.Available } s msg
+    -> Builder { a | size : M3e.Build.Internal.Used } s msg
+size v_ (Builder f_) =
+    Builder { f_ | size = Just v_ }
+
+
+{-| Set the `leading` slot. Consumes the `leading` slot capability. -}
+leading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    } msg
+    -> Builder a { s | leading : M3e.Build.Internal.Available } msg
+    -> Builder a { s | leading : M3e.Build.Internal.Used } msg
+leading v_ (Builder f_) =
+    Builder { f_ | leading = Just v_ }
+
+
+{-| Set the `title` slot. Consumes the `title` slot capability. -}
+title :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | title : M3e.Build.Internal.Available } msg
+    -> Builder a { s | title : M3e.Build.Internal.Used } msg
+title v_ (Builder f_) =
+    Builder { f_ | title = Just v_ }
+
+
+{-| Set the `subtitle` slot. Consumes the `subtitle` slot capability. -}
+subtitle :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | subtitle : M3e.Build.Internal.Available } msg
+    -> Builder a { s | subtitle : M3e.Build.Internal.Used } msg
+subtitle v_ (Builder f_) =
+    Builder { f_ | subtitle = Just v_ }
+
+
+{-| Set the `leading-icon` slot. Consumes the `leadingIcon` slot capability. -}
+leadingIcon :
+    M3e.Element.Element {} msg
+    -> Builder a { s | leadingIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | leadingIcon : M3e.Build.Internal.Used } msg
+leadingIcon v_ (Builder f_) =
+    Builder { f_ | leadingIcon = Just v_ }
+
+
+{-| Set the `trailing-icon` slot. Consumes the `trailingIcon` slot capability. -}
+trailingIcon :
+    M3e.Element.Element {} msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
+trailingIcon v_ (Builder f_) =
+    Builder { f_ | trailingIcon = Just v_ }

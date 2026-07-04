@@ -1,12 +1,15 @@
-module M3e.Build.SplitButton exposing ( Builder, AttrCaps, SlotCaps, splitButton )
+module M3e.Build.SplitButton exposing
+    ( Builder, AttrCaps, SlotCaps, splitButton, variant, size
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-split-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SplitButton as SplitButton`.
 
-@docs Builder, AttrCaps, SlotCaps, splitButton
+@docs Builder, AttrCaps, SlotCaps, splitButton, variant, size
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,7 +21,9 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { variant : M3e.Build.Internal.Available
+    , size : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -62,3 +67,30 @@ splitButton req_ =
         , size = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| The appearance variant of the button. (default: `"filled"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , filled : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    , tonal : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }
+
+
+{-| The size of the button. (default: `"small"`) -}
+size :
+    M3e.Value.Value { extraLarge : M3e.Value.Supported
+    , extraSmall : M3e.Value.Supported
+    , large : M3e.Value.Supported
+    , medium : M3e.Value.Supported
+    , small : M3e.Value.Supported
+    }
+    -> Builder { a | size : M3e.Build.Internal.Available } s msg
+    -> Builder { a | size : M3e.Build.Internal.Used } s msg
+size v_ (Builder f_) =
+    Builder { f_ | size = Just v_ }

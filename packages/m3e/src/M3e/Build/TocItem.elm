@@ -1,13 +1,18 @@
-module M3e.Build.TocItem exposing ( Builder, AttrCaps, SlotCaps, tocItem )
+module M3e.Build.TocItem exposing
+    ( Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
+    , onClick
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-toc-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TocItem as TocItem`.
 
-@docs Builder, AttrCaps, SlotCaps, tocItem
+@docs Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
+@docs onClick
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,7 +24,10 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available
+    , selected : M3e.Build.Internal.Available
+    , onClick : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -48,3 +56,30 @@ tocItem req_ =
         , onClick = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected :
+    Bool
+    -> Builder { a | selected : M3e.Build.Internal.Available } s msg
+    -> Builder { a | selected : M3e.Build.Internal.Used } s msg
+selected v_ (Builder f_) =
+    Builder { f_ | selected = Just v_ }
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
+onClick v_ (Builder f_) =
+    Builder { f_ | onClick = Just v_ }

@@ -1,13 +1,20 @@
-module M3e.Build.SearchView exposing ( Builder, AttrCaps, SlotCaps, searchView )
+module M3e.Build.SearchView exposing
+    ( Builder, AttrCaps, SlotCaps, searchView, contained, mode
+    , open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle
+    , onToggle, searchIcon, closeIcon, clearIcon
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-search-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SearchView as SearchView`.
 
-@docs Builder, AttrCaps, SlotCaps, searchView
+@docs Builder, AttrCaps, SlotCaps, searchView, contained, mode
+@docs open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear
+@docs onBeforetoggle, onToggle, searchIcon, closeIcon, clearIcon
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,12 +26,25 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { contained : M3e.Build.Internal.Available
+    , mode : M3e.Build.Internal.Available
+    , open : M3e.Build.Internal.Available
+    , clearLabel : M3e.Build.Internal.Available
+    , closeLabel : M3e.Build.Internal.Available
+    , hideSearchIcon : M3e.Build.Internal.Available
+    , onQuery : M3e.Build.Internal.Available
+    , onClear : M3e.Build.Internal.Available
+    , onBeforetoggle : M3e.Build.Internal.Available
+    , onToggle : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { searchIcon : M3e.Build.Internal.Available
+    , closeIcon : M3e.Build.Internal.Available
+    , clearIcon : M3e.Build.Internal.Available
+    }
 
 
 type alias Fields msg =
@@ -94,3 +114,123 @@ searchView req_ =
         , closedTrailing = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether the view features a persistent, filled search container. (default: `false`) -}
+contained :
+    Bool
+    -> Builder { a | contained : M3e.Build.Internal.Available } s msg
+    -> Builder { a | contained : M3e.Build.Internal.Used } s msg
+contained v_ (Builder f_) =
+    Builder { f_ | contained = Just v_ }
+
+
+{-| The behavior mode of the view. (default: `"docked"`) -}
+mode :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , docked : M3e.Value.Supported
+    , fullscreen : M3e.Value.Supported
+    }
+    -> Builder { a | mode : M3e.Build.Internal.Available } s msg
+    -> Builder { a | mode : M3e.Build.Internal.Used } s msg
+mode v_ (Builder f_) =
+    Builder { f_ | mode = Just v_ }
+
+
+{-| Whether the view is expanded to show results. (default: `false`) -}
+open :
+    Bool
+    -> Builder { a | open : M3e.Build.Internal.Available } s msg
+    -> Builder { a | open : M3e.Build.Internal.Used } s msg
+open v_ (Builder f_) =
+    Builder { f_ | open = Just v_ }
+
+
+{-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
+clearLabel :
+    String
+    -> Builder { a | clearLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | clearLabel : M3e.Build.Internal.Used } s msg
+clearLabel v_ (Builder f_) =
+    Builder { f_ | clearLabel = Just v_ }
+
+
+{-| The accessible label given to the button used to collapse the view. (default: `"Close"`) -}
+closeLabel :
+    String
+    -> Builder { a | closeLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | closeLabel : M3e.Build.Internal.Used } s msg
+closeLabel v_ (Builder f_) =
+    Builder { f_ | closeLabel = Just v_ }
+
+
+{-| Whether to hide the search icon. (default: `false`) -}
+hideSearchIcon :
+    Bool
+    -> Builder { a | hideSearchIcon : M3e.Build.Internal.Available } s msg
+    -> Builder { a | hideSearchIcon : M3e.Build.Internal.Used } s msg
+hideSearchIcon v_ (Builder f_) =
+    Builder { f_ | hideSearchIcon = Just v_ }
+
+
+{-| Dispatched when the view is opened or when the user modifies the search term. -}
+onQuery :
+    Json.Decode.Decoder msg
+    -> Builder { a | onQuery : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onQuery : M3e.Build.Internal.Used } s msg
+onQuery v_ (Builder f_) =
+    Builder { f_ | onQuery = Just v_ }
+
+
+{-| Dispatched when the search term is cleared. -}
+onClear :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClear : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onClear : M3e.Build.Internal.Used } s msg
+onClear v_ (Builder f_) =
+    Builder { f_ | onClear = Just v_ }
+
+
+{-| Dispatched before the toggle state changes. -}
+onBeforetoggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg
+onBeforetoggle v_ (Builder f_) =
+    Builder { f_ | onBeforetoggle = Just v_ }
+
+
+{-| Dispatched after the toggle state has changed. -}
+onToggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg
+onToggle v_ (Builder f_) =
+    Builder { f_ | onToggle = Just v_ }
+
+
+{-| Set the `search-icon` slot. Consumes the `searchIcon` slot capability. -}
+searchIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | searchIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | searchIcon : M3e.Build.Internal.Used } msg
+searchIcon v_ (Builder f_) =
+    Builder { f_ | searchIcon = Just v_ }
+
+
+{-| Set the `close-icon` slot. Consumes the `closeIcon` slot capability. -}
+closeIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg
+closeIcon v_ (Builder f_) =
+    Builder { f_ | closeIcon = Just v_ }
+
+
+{-| Set the `clear-icon` slot. Consumes the `clearIcon` slot capability. -}
+clearIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | clearIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg
+clearIcon v_ (Builder f_) =
+    Builder { f_ | clearIcon = Just v_ }

@@ -1,12 +1,17 @@
-module M3e.Build.BottomSheetTrigger exposing ( Builder, AttrCaps, SlotCaps, bottomSheetTrigger )
+module M3e.Build.BottomSheetTrigger exposing
+    ( Builder, AttrCaps, SlotCaps, bottomSheetTrigger, detent, secondary
+    , for, default
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-bottom-sheet-trigger>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BottomSheetTrigger as BottomSheetTrigger`.
 
-@docs Builder, AttrCaps, SlotCaps, bottomSheetTrigger
+@docs Builder, AttrCaps, SlotCaps, bottomSheetTrigger, detent, secondary
+@docs for, default
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,12 +23,15 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { detent : M3e.Build.Internal.Available
+    , secondary : M3e.Build.Internal.Available
+    , for : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.Available }
 
 
 type alias Fields msg =
@@ -45,3 +53,39 @@ bottomSheetTrigger =
         , default = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| The zero‑based index of the detent the sheet should open to. -}
+detent :
+    Float
+    -> Builder { a | detent : M3e.Build.Internal.Available } s msg
+    -> Builder { a | detent : M3e.Build.Internal.Used } s msg
+detent v_ (Builder f_) =
+    Builder { f_ | detent = Just v_ }
+
+
+{-| Marks this trigger as a secondary trigger for accessibility. Secondary triggers do not receive ARIA ownership. (default: `false`) -}
+secondary :
+    Bool
+    -> Builder { a | secondary : M3e.Build.Internal.Available } s msg
+    -> Builder { a | secondary : M3e.Build.Internal.Used } s msg
+secondary v_ (Builder f_) =
+    Builder { f_ | secondary = Just v_ }
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg
+for v_ (Builder f_) =
+    Builder { f_ | for = Just v_ }
+
+
+{-| Set the `unnamed` slot. Consumes the `default` slot capability. -}
+default :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | default : M3e.Build.Internal.Available } msg
+    -> Builder a { s | default : M3e.Build.Internal.Used } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = Just v_ }

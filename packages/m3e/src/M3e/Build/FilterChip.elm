@@ -1,13 +1,20 @@
-module M3e.Build.FilterChip exposing ( Builder, AttrCaps, SlotCaps, filterChip )
+module M3e.Build.FilterChip exposing
+    ( Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
+    , selected, value, variant, onBeforeinput, onInput, onChange, onClick
+    , icon, trailingIcon
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-filter-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FilterChip as FilterChip`.
 
-@docs Builder, AttrCaps, SlotCaps, filterChip
+@docs Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
+@docs selected, value, variant, onBeforeinput, onInput, onChange
+@docs onClick, icon, trailingIcon
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,12 +26,23 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available
+    , disabledInteractive : M3e.Build.Internal.Available
+    , selected : M3e.Build.Internal.Available
+    , value : M3e.Build.Internal.Available
+    , variant : M3e.Build.Internal.Available
+    , onBeforeinput : M3e.Build.Internal.Available
+    , onInput : M3e.Build.Internal.Available
+    , onChange : M3e.Build.Internal.Available
+    , onClick : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { icon : M3e.Build.Internal.Available
+    , trailingIcon : M3e.Build.Internal.Available
+    }
 
 
 type alias Fields msg =
@@ -68,3 +86,104 @@ filterChip req_ =
         , trailingIcon = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }
+
+
+{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive :
+    Bool
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Used } s msg
+disabledInteractive v_ (Builder f_) =
+    Builder { f_ | disabledInteractive = Just v_ }
+
+
+{-| A value indicating whether the element is selected. (default: `false`) -}
+selected :
+    Bool
+    -> Builder { a | selected : M3e.Build.Internal.Available } s msg
+    -> Builder { a | selected : M3e.Build.Internal.Used } s msg
+selected v_ (Builder f_) =
+    Builder { f_ | selected = Just v_ }
+
+
+{-| A string representing the value of the chip. -}
+value :
+    String
+    -> Builder { a | value : M3e.Build.Internal.Available } s msg
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg
+value v_ (Builder f_) =
+    Builder { f_ | value = Just v_ }
+
+
+{-| The appearance variant of the chip. (default: `"outlined"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }
+
+
+{-| Dispatched before the selected state changes. -}
+onBeforeinput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg
+onBeforeinput v_ (Builder f_) =
+    Builder { f_ | onBeforeinput = Just v_ }
+
+
+{-| Dispatched when the selected state changes. -}
+onInput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onInput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
+onInput v_ (Builder f_) =
+    Builder { f_ | onInput = Just v_ }
+
+
+{-| Dispatched when the selected state changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
+onChange v_ (Builder f_) =
+    Builder { f_ | onChange = Just v_ }
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
+onClick v_ (Builder f_) =
+    Builder { f_ | onClick = Just v_ }
+
+
+{-| Set the `icon` slot. Consumes the `icon` slot capability. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg
+icon v_ (Builder f_) =
+    Builder { f_ | icon = Just v_ }
+
+
+{-| Set the `trailing-icon` slot. Consumes the `trailingIcon` slot capability. -}
+trailingIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
+trailingIcon v_ (Builder f_) =
+    Builder { f_ | trailingIcon = Just v_ }

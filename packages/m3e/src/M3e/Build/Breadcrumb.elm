@@ -1,12 +1,15 @@
-module M3e.Build.Breadcrumb exposing ( Builder, AttrCaps, SlotCaps, breadcrumb )
+module M3e.Build.Breadcrumb exposing
+    ( Builder, AttrCaps, SlotCaps, breadcrumb, wrap, separator
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Breadcrumb as Breadcrumb`.
 
-@docs Builder, AttrCaps, SlotCaps, breadcrumb
+@docs Builder, AttrCaps, SlotCaps, breadcrumb, wrap, separator
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,12 +21,12 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { wrap : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { separator : M3e.Build.Internal.Available }
 
 
 type alias Fields msg =
@@ -44,3 +47,21 @@ breadcrumb =
         , default = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether items wrap to a new line. (default: `false`) -}
+wrap :
+    Bool
+    -> Builder { a | wrap : M3e.Build.Internal.Available } s msg
+    -> Builder { a | wrap : M3e.Build.Internal.Used } s msg
+wrap v_ (Builder f_) =
+    Builder { f_ | wrap = Just v_ }
+
+
+{-| Set the `separator` slot. Consumes the `separator` slot capability. -}
+separator :
+    M3e.Element.Element {} msg
+    -> Builder a { s | separator : M3e.Build.Internal.Available } msg
+    -> Builder a { s | separator : M3e.Build.Internal.Used } msg
+separator v_ (Builder f_) =
+    Builder { f_ | separator = Just v_ }

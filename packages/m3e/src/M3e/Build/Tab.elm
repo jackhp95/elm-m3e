@@ -1,13 +1,19 @@
-module M3e.Build.Tab exposing ( Builder, AttrCaps, SlotCaps, tab )
+module M3e.Build.Tab exposing
+    ( Builder, AttrCaps, SlotCaps, tab, disabled, for
+    , selected, onBeforeinput, onInput, onChange, onClick, default, icon
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-tab>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tab as Tab`.
 
-@docs Builder, AttrCaps, SlotCaps, tab
+@docs Builder, AttrCaps, SlotCaps, tab, disabled, for
+@docs selected, onBeforeinput, onInput, onChange, onClick, default
+@docs icon
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,12 +25,21 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available
+    , for : M3e.Build.Internal.Available
+    , selected : M3e.Build.Internal.Available
+    , onBeforeinput : M3e.Build.Internal.Available
+    , onInput : M3e.Build.Internal.Available
+    , onChange : M3e.Build.Internal.Available
+    , onClick : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.Available
+    , icon : M3e.Build.Internal.Available
+    }
 
 
 type alias Fields msg =
@@ -56,3 +71,84 @@ tab =
         , icon = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg
+for v_ (Builder f_) =
+    Builder { f_ | for = Just v_ }
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected :
+    Bool
+    -> Builder { a | selected : M3e.Build.Internal.Available } s msg
+    -> Builder { a | selected : M3e.Build.Internal.Used } s msg
+selected v_ (Builder f_) =
+    Builder { f_ | selected = Just v_ }
+
+
+{-| Dispatched before the selected state changes. -}
+onBeforeinput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg
+onBeforeinput v_ (Builder f_) =
+    Builder { f_ | onBeforeinput = Just v_ }
+
+
+{-| Dispatched when the selected state changes. -}
+onInput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onInput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
+onInput v_ (Builder f_) =
+    Builder { f_ | onInput = Just v_ }
+
+
+{-| Dispatched when the selected state changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
+onChange v_ (Builder f_) =
+    Builder { f_ | onChange = Just v_ }
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
+onClick v_ (Builder f_) =
+    Builder { f_ | onClick = Just v_ }
+
+
+{-| Set the `unnamed` slot. Consumes the `default` slot capability. -}
+default :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | default : M3e.Build.Internal.Available } msg
+    -> Builder a { s | default : M3e.Build.Internal.Used } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = Just v_ }
+
+
+{-| Set the `icon` slot. Consumes the `icon` slot capability. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg
+icon v_ (Builder f_) =
+    Builder { f_ | icon = Just v_ }

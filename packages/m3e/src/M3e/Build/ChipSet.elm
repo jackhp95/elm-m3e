@@ -1,12 +1,15 @@
-module M3e.Build.ChipSet exposing ( Builder, AttrCaps, SlotCaps, chipSet )
+module M3e.Build.ChipSet exposing
+    ( Builder, AttrCaps, SlotCaps, chipSet, vertical
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-chip-set>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ChipSet as ChipSet`.
 
-@docs Builder, AttrCaps, SlotCaps, chipSet
+@docs Builder, AttrCaps, SlotCaps, chipSet, vertical
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,7 +21,7 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { vertical : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -43,3 +46,12 @@ type alias Fields msg =
 chipSet : Builder AttrCaps SlotCaps msg
 chipSet =
     Builder { vertical = Nothing, default = [], phantomMsg_ = Nothing }
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical :
+    Bool
+    -> Builder { a | vertical : M3e.Build.Internal.Available } s msg
+    -> Builder { a | vertical : M3e.Build.Internal.Used } s msg
+vertical v_ (Builder f_) =
+    Builder { f_ | vertical = Just v_ }

@@ -1,12 +1,15 @@
-module M3e.Build.LoadingIndicator exposing ( Builder, AttrCaps, SlotCaps, loadingIndicator )
+module M3e.Build.LoadingIndicator exposing
+    ( Builder, AttrCaps, SlotCaps, loadingIndicator, variant
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-loading-indicator>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.LoadingIndicator as LoadingIndicator`.
 
-@docs Builder, AttrCaps, SlotCaps, loadingIndicator
+@docs Builder, AttrCaps, SlotCaps, loadingIndicator, variant
 -}
 
 
+import M3e.Build.Internal
 import M3e.Value
 
 
@@ -17,7 +20,7 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { variant : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -38,3 +41,14 @@ type alias Fields msg =
 loadingIndicator : Builder AttrCaps SlotCaps msg
 loadingIndicator =
     Builder { variant = Nothing, phantomMsg_ = Nothing }
+
+
+{-| The appearance variant of the indicator. (default: `"uncontained"`) -}
+variant :
+    M3e.Value.Value { contained : M3e.Value.Supported
+    , uncontained : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }

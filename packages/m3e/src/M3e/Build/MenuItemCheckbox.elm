@@ -1,13 +1,18 @@
-module M3e.Build.MenuItemCheckbox exposing ( Builder, AttrCaps, SlotCaps, menuItemCheckbox )
+module M3e.Build.MenuItemCheckbox exposing
+    ( Builder, AttrCaps, SlotCaps, menuItemCheckbox, disabled, checked
+    , onClick, default, icon, trailingIcon
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-menu-item-checkbox>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItemCheckbox as MenuItemCheckbox`.
 
-@docs Builder, AttrCaps, SlotCaps, menuItemCheckbox
+@docs Builder, AttrCaps, SlotCaps, menuItemCheckbox, disabled, checked
+@docs onClick, default, icon, trailingIcon
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,12 +24,18 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available
+    , checked : M3e.Build.Internal.Available
+    , onClick : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.Available
+    , icon : M3e.Build.Internal.Available
+    , trailingIcon : M3e.Build.Internal.Available
+    }
 
 
 type alias Fields msg =
@@ -51,3 +62,57 @@ menuItemCheckbox =
         , trailingIcon = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }
+
+
+{-| Whether the element is checked. (default: `false`) -}
+checked :
+    Bool
+    -> Builder { a | checked : M3e.Build.Internal.Available } s msg
+    -> Builder { a | checked : M3e.Build.Internal.Used } s msg
+checked v_ (Builder f_) =
+    Builder { f_ | checked = Just v_ }
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
+onClick v_ (Builder f_) =
+    Builder { f_ | onClick = Just v_ }
+
+
+{-| Set the `unnamed` slot. Consumes the `default` slot capability. -}
+default :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | default : M3e.Build.Internal.Available } msg
+    -> Builder a { s | default : M3e.Build.Internal.Used } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = Just v_ }
+
+
+{-| Set the `icon` slot. Consumes the `icon` slot capability. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg
+icon v_ (Builder f_) =
+    Builder { f_ | icon = Just v_ }
+
+
+{-| Set the `trailing-icon` slot. Consumes the `trailingIcon` slot capability. -}
+trailingIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
+trailingIcon v_ (Builder f_) =
+    Builder { f_ | trailingIcon = Just v_ }

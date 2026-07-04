@@ -1,13 +1,18 @@
-module M3e.Build.Stepper exposing ( Builder, AttrCaps, SlotCaps, stepper )
+module M3e.Build.Stepper exposing
+    ( Builder, AttrCaps, SlotCaps, stepper, headerPosition, labelPosition
+    , linear, orientation, onChange, onBeforeinput, onInput
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Stepper as Stepper`.
 
-@docs Builder, AttrCaps, SlotCaps, stepper
+@docs Builder, AttrCaps, SlotCaps, stepper, headerPosition, labelPosition
+@docs linear, orientation, onChange, onBeforeinput, onInput
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,7 +24,14 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { headerPosition : M3e.Build.Internal.Available
+    , labelPosition : M3e.Build.Internal.Available
+    , linear : M3e.Build.Internal.Available
+    , orientation : M3e.Build.Internal.Available
+    , onChange : M3e.Build.Internal.Available
+    , onBeforeinput : M3e.Build.Internal.Available
+    , onInput : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -66,3 +78,69 @@ stepper =
         , panel = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| The position of the step header, when oriented horizontally. (default: `"above"`) -}
+headerPosition :
+    M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
+    -> Builder { a | headerPosition : M3e.Build.Internal.Available } s msg
+    -> Builder { a | headerPosition : M3e.Build.Internal.Used } s msg
+headerPosition v_ (Builder f_) =
+    Builder { f_ | headerPosition = Just v_ }
+
+
+{-| The position of the step labels, when oriented horizontally. (default: `"end"`) -}
+labelPosition :
+    M3e.Value.Value { below : M3e.Value.Supported, end : M3e.Value.Supported }
+    -> Builder { a | labelPosition : M3e.Build.Internal.Available } s msg
+    -> Builder { a | labelPosition : M3e.Build.Internal.Used } s msg
+labelPosition v_ (Builder f_) =
+    Builder { f_ | labelPosition = Just v_ }
+
+
+{-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
+linear :
+    Bool
+    -> Builder { a | linear : M3e.Build.Internal.Available } s msg
+    -> Builder { a | linear : M3e.Build.Internal.Used } s msg
+linear v_ (Builder f_) =
+    Builder { f_ | linear = Just v_ }
+
+
+{-| The orientation of the stepper. (default: `"horizontal"`) -}
+orientation :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , horizontal : M3e.Value.Supported
+    , vertical : M3e.Value.Supported
+    }
+    -> Builder { a | orientation : M3e.Build.Internal.Available } s msg
+    -> Builder { a | orientation : M3e.Build.Internal.Used } s msg
+orientation v_ (Builder f_) =
+    Builder { f_ | orientation = Just v_ }
+
+
+{-| Dispatched when the selected step changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
+onChange v_ (Builder f_) =
+    Builder { f_ | onChange = Just v_ }
+
+
+{-| Dispatched before the selected state of a step changes. -}
+onBeforeinput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg
+onBeforeinput v_ (Builder f_) =
+    Builder { f_ | onBeforeinput = Just v_ }
+
+
+{-| Dispatched when the selected state of a step changes. -}
+onInput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onInput : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
+onInput v_ (Builder f_) =
+    Builder { f_ | onInput = Just v_ }

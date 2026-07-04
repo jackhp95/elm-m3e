@@ -1,12 +1,15 @@
-module M3e.Build.FocusTrap exposing ( Builder, AttrCaps, SlotCaps, focusTrap )
+module M3e.Build.FocusTrap exposing
+    ( Builder, AttrCaps, SlotCaps, focusTrap, disabled
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-focus-trap>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FocusTrap as FocusTrap`.
 
-@docs Builder, AttrCaps, SlotCaps, focusTrap
+@docs Builder, AttrCaps, SlotCaps, focusTrap, disabled
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 
 
@@ -17,7 +20,7 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -36,3 +39,12 @@ type alias Fields msg =
 focusTrap : Builder AttrCaps SlotCaps msg
 focusTrap =
     Builder { disabled = Nothing, default = [], phantomMsg_ = Nothing }
+
+
+{-| Disables the focus trap. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }

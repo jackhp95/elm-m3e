@@ -1,12 +1,17 @@
-module M3e.Build.Toolbar exposing ( Builder, AttrCaps, SlotCaps, toolbar )
+module M3e.Build.Toolbar exposing
+    ( Builder, AttrCaps, SlotCaps, toolbar, elevated, shape
+    , variant, vertical
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-toolbar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Toolbar as Toolbar`.
 
-@docs Builder, AttrCaps, SlotCaps, toolbar
+@docs Builder, AttrCaps, SlotCaps, toolbar, elevated, shape
+@docs variant, vertical
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,7 +23,11 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { elevated : M3e.Build.Internal.Available
+    , shape : M3e.Build.Internal.Available
+    , variant : M3e.Build.Internal.Available
+    , vertical : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -53,3 +62,43 @@ toolbar =
         , default = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether the toolbar is elevated. (default: `false`) -}
+elevated :
+    Bool
+    -> Builder { a | elevated : M3e.Build.Internal.Available } s msg
+    -> Builder { a | elevated : M3e.Build.Internal.Used } s msg
+elevated v_ (Builder f_) =
+    Builder { f_ | elevated = Just v_ }
+
+
+{-| The shape of the toolbar. (default: `"square"`) -}
+shape :
+    M3e.Value.Value { rounded : M3e.Value.Supported
+    , square : M3e.Value.Supported
+    }
+    -> Builder { a | shape : M3e.Build.Internal.Available } s msg
+    -> Builder { a | shape : M3e.Build.Internal.Used } s msg
+shape v_ (Builder f_) =
+    Builder { f_ | shape = Just v_ }
+
+
+{-| The appearance variant of the toolbar. (default: `"standard"`) -}
+variant :
+    M3e.Value.Value { standard : M3e.Value.Supported
+    , vibrant : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }
+
+
+{-| Whether the element is oriented vertically. (default: `false`) -}
+vertical :
+    Bool
+    -> Builder { a | vertical : M3e.Build.Internal.Available } s msg
+    -> Builder { a | vertical : M3e.Build.Internal.Used } s msg
+vertical v_ (Builder f_) =
+    Builder { f_ | vertical = Just v_ }

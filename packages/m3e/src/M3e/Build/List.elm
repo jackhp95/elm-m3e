@@ -1,12 +1,15 @@
-module M3e.Build.List exposing ( Builder, AttrCaps, SlotCaps, list )
+module M3e.Build.List exposing
+    ( Builder, AttrCaps, SlotCaps, list, variant
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-list>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.List as List`.
 
-@docs Builder, AttrCaps, SlotCaps, list
+@docs Builder, AttrCaps, SlotCaps, list, variant
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -18,7 +21,7 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { variant : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -46,3 +49,14 @@ type alias Fields msg =
 list : Builder AttrCaps SlotCaps msg
 list =
     Builder { variant = Nothing, default = [], phantomMsg_ = Nothing }
+
+
+{-| The appearance variant of the list. (default: `"standard"`) -}
+variant :
+    M3e.Value.Value { segmented : M3e.Value.Supported
+    , standard : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }

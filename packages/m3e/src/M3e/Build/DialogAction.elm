@@ -1,12 +1,15 @@
-module M3e.Build.DialogAction exposing ( Builder, AttrCaps, SlotCaps, dialogAction )
+module M3e.Build.DialogAction exposing
+    ( Builder, AttrCaps, SlotCaps, dialogAction, returnValue, default
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-dialog-action>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.DialogAction as DialogAction`.
 
-@docs Builder, AttrCaps, SlotCaps, dialogAction
+@docs Builder, AttrCaps, SlotCaps, dialogAction, returnValue, default
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 
 
@@ -17,12 +20,12 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { returnValue : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.Available }
 
 
 type alias Fields msg =
@@ -36,3 +39,21 @@ type alias Fields msg =
 dialogAction : Builder AttrCaps SlotCaps msg
 dialogAction =
     Builder { returnValue = Nothing, default = Nothing, phantomMsg_ = Nothing }
+
+
+{-| The value to return from the dialog. (default: `""`) -}
+returnValue :
+    String
+    -> Builder { a | returnValue : M3e.Build.Internal.Available } s msg
+    -> Builder { a | returnValue : M3e.Build.Internal.Used } s msg
+returnValue v_ (Builder f_) =
+    Builder { f_ | returnValue = Just v_ }
+
+
+{-| Set the `unnamed` slot. Consumes the `default` slot capability. -}
+default :
+    M3e.Element.Element {} msg
+    -> Builder a { s | default : M3e.Build.Internal.Available } msg
+    -> Builder a { s | default : M3e.Build.Internal.Used } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = Just v_ }

@@ -1,13 +1,18 @@
-module M3e.Build.SuggestionChip exposing ( Builder, AttrCaps, SlotCaps, suggestionChip )
+module M3e.Build.SuggestionChip exposing
+    ( Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
+    , name, type_, value, variant, icon
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-suggestion-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SuggestionChip as SuggestionChip`.
 
-@docs Builder, AttrCaps, SlotCaps, suggestionChip
+@docs Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
+@docs name, type_, value, variant, icon
 -}
 
 
 import M3e.Action
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,12 +24,18 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { disabled : M3e.Build.Internal.Available
+    , disabledInteractive : M3e.Build.Internal.Available
+    , name : M3e.Build.Internal.Available
+    , type_ : M3e.Build.Internal.Available
+    , value : M3e.Build.Internal.Available
+    , variant : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { icon : M3e.Build.Internal.Available }
 
 
 type alias Fields msg =
@@ -97,3 +108,71 @@ suggestionChip req_ =
         , icon = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
+disabled v_ (Builder f_) =
+    Builder { f_ | disabled = Just v_ }
+
+
+{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive :
+    Bool
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Available } s msg
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Used } s msg
+disabledInteractive v_ (Builder f_) =
+    Builder { f_ | disabledInteractive = Just v_ }
+
+
+{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
+name :
+    String
+    -> Builder { a | name : M3e.Build.Internal.Available } s msg
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg
+name v_ (Builder f_) =
+    Builder { f_ | name = Just v_ }
+
+
+{-| The type of the element. (default: `"button"`) -}
+type_ :
+    M3e.Value.Value { button : M3e.Value.Supported
+    , reset : M3e.Value.Supported
+    , submit : M3e.Value.Supported
+    }
+    -> Builder { a | type_ : M3e.Build.Internal.Available } s msg
+    -> Builder { a | type_ : M3e.Build.Internal.Used } s msg
+type_ v_ (Builder f_) =
+    Builder { f_ | type_ = Just v_ }
+
+
+{-| A string representing the value of the chip. -}
+value :
+    String
+    -> Builder { a | value : M3e.Build.Internal.Available } s msg
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg
+value v_ (Builder f_) =
+    Builder { f_ | value = Just v_ }
+
+
+{-| The appearance variant of the chip. (default: `"outlined"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }
+
+
+{-| Set the `icon` slot. Consumes the `icon` slot capability. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg
+icon v_ (Builder f_) =
+    Builder { f_ | icon = Just v_ }

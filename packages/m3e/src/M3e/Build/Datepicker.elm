@@ -1,13 +1,23 @@
-module M3e.Build.Datepicker exposing ( Builder, AttrCaps, SlotCaps, datepicker )
+module M3e.Build.Datepicker exposing
+    ( Builder, AttrCaps, SlotCaps, datepicker, variant, clearable
+    , date, maxDate, minDate, range, rangeEnd, rangeStart, startAt
+    , startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
+    , clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-datepicker>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Datepicker as Datepicker`.
 
-@docs Builder, AttrCaps, SlotCaps, datepicker
+@docs Builder, AttrCaps, SlotCaps, datepicker, variant, clearable
+@docs date, maxDate, minDate, range, rangeEnd, rangeStart
+@docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
+@docs previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label
+@docs onChange, onBeforetoggle, onToggle
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Value
 
 
@@ -18,7 +28,30 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { variant : M3e.Build.Internal.Available
+    , clearable : M3e.Build.Internal.Available
+    , date : M3e.Build.Internal.Available
+    , maxDate : M3e.Build.Internal.Available
+    , minDate : M3e.Build.Internal.Available
+    , range : M3e.Build.Internal.Available
+    , rangeEnd : M3e.Build.Internal.Available
+    , rangeStart : M3e.Build.Internal.Available
+    , startAt : M3e.Build.Internal.Available
+    , startView : M3e.Build.Internal.Available
+    , previousMonthLabel : M3e.Build.Internal.Available
+    , nextMonthLabel : M3e.Build.Internal.Available
+    , previousYearLabel : M3e.Build.Internal.Available
+    , nextYearLabel : M3e.Build.Internal.Available
+    , previousMultiYearLabel : M3e.Build.Internal.Available
+    , nextMultiYearLabel : M3e.Build.Internal.Available
+    , clearLabel : M3e.Build.Internal.Available
+    , confirmLabel : M3e.Build.Internal.Available
+    , dismissLabel : M3e.Build.Internal.Available
+    , label : M3e.Build.Internal.Available
+    , onChange : M3e.Build.Internal.Available
+    , onBeforetoggle : M3e.Build.Internal.Available
+    , onToggle : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -91,3 +124,218 @@ datepicker =
         , onToggle = Nothing
         , phantomMsg_ = Nothing
         }
+
+
+{-| The appearance variant of the picker. (default: `"docked"`) -}
+variant :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , docked : M3e.Value.Supported
+    , modal : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }
+
+
+{-| Whether the user can clear the selected date and close the picker. (default: `false`) -}
+clearable :
+    Bool
+    -> Builder { a | clearable : M3e.Build.Internal.Available } s msg
+    -> Builder { a | clearable : M3e.Build.Internal.Used } s msg
+clearable v_ (Builder f_) =
+    Builder { f_ | clearable = Just v_ }
+
+
+{-| The selected date. (default: `null`) -}
+date :
+    String
+    -> Builder { a | date : M3e.Build.Internal.Available } s msg
+    -> Builder { a | date : M3e.Build.Internal.Used } s msg
+date v_ (Builder f_) =
+    Builder { f_ | date = Just v_ }
+
+
+{-| The maximum date that can be selected. (default: `null`) -}
+maxDate :
+    String
+    -> Builder { a | maxDate : M3e.Build.Internal.Available } s msg
+    -> Builder { a | maxDate : M3e.Build.Internal.Used } s msg
+maxDate v_ (Builder f_) =
+    Builder { f_ | maxDate = Just v_ }
+
+
+{-| The minimum date that can be selected. (default: `null`) -}
+minDate :
+    String
+    -> Builder { a | minDate : M3e.Build.Internal.Available } s msg
+    -> Builder { a | minDate : M3e.Build.Internal.Used } s msg
+minDate v_ (Builder f_) =
+    Builder { f_ | minDate = Just v_ }
+
+
+{-| Whether a range of dates can be selected. (default: `false`) -}
+range :
+    Bool
+    -> Builder { a | range : M3e.Build.Internal.Available } s msg
+    -> Builder { a | range : M3e.Build.Internal.Used } s msg
+range v_ (Builder f_) =
+    Builder { f_ | range = Just v_ }
+
+
+{-| End of a date range. (default: `null`) -}
+rangeEnd :
+    String
+    -> Builder { a | rangeEnd : M3e.Build.Internal.Available } s msg
+    -> Builder { a | rangeEnd : M3e.Build.Internal.Used } s msg
+rangeEnd v_ (Builder f_) =
+    Builder { f_ | rangeEnd = Just v_ }
+
+
+{-| Start of a date range. (default: `null`) -}
+rangeStart :
+    String
+    -> Builder { a | rangeStart : M3e.Build.Internal.Available } s msg
+    -> Builder { a | rangeStart : M3e.Build.Internal.Used } s msg
+rangeStart v_ (Builder f_) =
+    Builder { f_ | rangeStart = Just v_ }
+
+
+{-| A date specifying the period (month or year) to start the calendar in. (default: `null`) -}
+startAt :
+    String
+    -> Builder { a | startAt : M3e.Build.Internal.Available } s msg
+    -> Builder { a | startAt : M3e.Build.Internal.Used } s msg
+startAt v_ (Builder f_) =
+    Builder { f_ | startAt = Just v_ }
+
+
+{-| The initial view used to select a date. (default: `"month"`) -}
+startView :
+    M3e.Value.Value { month : M3e.Value.Supported
+    , multiYear : M3e.Value.Supported
+    , year : M3e.Value.Supported
+    }
+    -> Builder { a | startView : M3e.Build.Internal.Available } s msg
+    -> Builder { a | startView : M3e.Build.Internal.Used } s msg
+startView v_ (Builder f_) =
+    Builder { f_ | startView = Just v_ }
+
+
+{-| The accessible label given to the button used to move to the previous month. (default: `"Previous month"`) -}
+previousMonthLabel :
+    String
+    -> Builder { a | previousMonthLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | previousMonthLabel : M3e.Build.Internal.Used } s msg
+previousMonthLabel v_ (Builder f_) =
+    Builder { f_ | previousMonthLabel = Just v_ }
+
+
+{-| The accessible label given to the button used to move to the next month. (default: `"Next month"`) -}
+nextMonthLabel :
+    String
+    -> Builder { a | nextMonthLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | nextMonthLabel : M3e.Build.Internal.Used } s msg
+nextMonthLabel v_ (Builder f_) =
+    Builder { f_ | nextMonthLabel = Just v_ }
+
+
+{-| The accessible label given to the button used to move to the previous year. (default: `"Previous year"`) -}
+previousYearLabel :
+    String
+    -> Builder { a | previousYearLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | previousYearLabel : M3e.Build.Internal.Used } s msg
+previousYearLabel v_ (Builder f_) =
+    Builder { f_ | previousYearLabel = Just v_ }
+
+
+{-| The accessible label given to the button used to move to the next year. (default: `"Next year"`) -}
+nextYearLabel :
+    String
+    -> Builder { a | nextYearLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | nextYearLabel : M3e.Build.Internal.Used } s msg
+nextYearLabel v_ (Builder f_) =
+    Builder { f_ | nextYearLabel = Just v_ }
+
+
+{-| The accessible label given to the button used to move to the previous 24 years. (default: `"Previous 24 years"`) -}
+previousMultiYearLabel :
+    String
+    -> Builder { a
+        | previousMultiYearLabel : M3e.Build.Internal.Available
+    } s msg
+    -> Builder { a | previousMultiYearLabel : M3e.Build.Internal.Used } s msg
+previousMultiYearLabel v_ (Builder f_) =
+    Builder { f_ | previousMultiYearLabel = Just v_ }
+
+
+{-| The accessible label given to the button used to move to the next 24 years. (default: `"Next 24 years"`) -}
+nextMultiYearLabel :
+    String
+    -> Builder { a | nextMultiYearLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | nextMultiYearLabel : M3e.Build.Internal.Used } s msg
+nextMultiYearLabel v_ (Builder f_) =
+    Builder { f_ | nextMultiYearLabel = Just v_ }
+
+
+{-| The label given to the button used clear the selected date and close the picker. (default: `"Clear"`) -}
+clearLabel :
+    String
+    -> Builder { a | clearLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | clearLabel : M3e.Build.Internal.Used } s msg
+clearLabel v_ (Builder f_) =
+    Builder { f_ | clearLabel = Just v_ }
+
+
+{-| The label given to the button used apply the selected date and close the picker. (default: `"OK"`) -}
+confirmLabel :
+    String
+    -> Builder { a | confirmLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | confirmLabel : M3e.Build.Internal.Used } s msg
+confirmLabel v_ (Builder f_) =
+    Builder { f_ | confirmLabel = Just v_ }
+
+
+{-| The label given to the button used discard the selected date and close the picker. (default: `"Cancel"`) -}
+dismissLabel :
+    String
+    -> Builder { a | dismissLabel : M3e.Build.Internal.Available } s msg
+    -> Builder { a | dismissLabel : M3e.Build.Internal.Used } s msg
+dismissLabel v_ (Builder f_) =
+    Builder { f_ | dismissLabel = Just v_ }
+
+
+{-| The label given to the the picker. (default: `"Select date"`) -}
+label :
+    String
+    -> Builder { a | label : M3e.Build.Internal.Available } s msg
+    -> Builder { a | label : M3e.Build.Internal.Used } s msg
+label v_ (Builder f_) =
+    Builder { f_ | label = Just v_ }
+
+
+{-| Dispatched when the selected date changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
+onChange v_ (Builder f_) =
+    Builder { f_ | onChange = Just v_ }
+
+
+{-| Dispatched before the toggle state changes. -}
+onBeforetoggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg
+onBeforetoggle v_ (Builder f_) =
+    Builder { f_ | onBeforetoggle = Just v_ }
+
+
+{-| Dispatched after the toggle state has changed. -}
+onToggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg
+onToggle v_ (Builder f_) =
+    Builder { f_ | onToggle = Just v_ }

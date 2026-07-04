@@ -1,13 +1,18 @@
-module M3e.Build.FabMenu exposing ( Builder, AttrCaps, SlotCaps, fabMenu )
+module M3e.Build.FabMenu exposing
+    ( Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
+    , onToggle
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenu as FabMenu`.
 
-@docs Builder, AttrCaps, SlotCaps, fabMenu
+@docs Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
+@docs onToggle
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,7 +24,10 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { variant : M3e.Build.Internal.Available
+    , onBeforetoggle : M3e.Build.Internal.Available
+    , onToggle : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -53,3 +61,33 @@ fabMenu =
         , default = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| The appearance variant of the menu. (default: `"primary"`) -}
+variant :
+    M3e.Value.Value { primary : M3e.Value.Supported
+    , secondary : M3e.Value.Supported
+    , tertiary : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg
+variant v_ (Builder f_) =
+    Builder { f_ | variant = Just v_ }
+
+
+{-| Dispatched before the toggle state changes. -}
+onBeforetoggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg
+onBeforetoggle v_ (Builder f_) =
+    Builder { f_ | onBeforetoggle = Just v_ }
+
+
+{-| Dispatched after the toggle state has changed. -}
+onToggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg
+onToggle v_ (Builder f_) =
+    Builder { f_ | onToggle = Just v_ }

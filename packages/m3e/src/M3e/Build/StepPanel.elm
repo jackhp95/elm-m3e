@@ -1,12 +1,15 @@
-module M3e.Build.StepPanel exposing ( Builder, AttrCaps, SlotCaps, stepPanel )
+module M3e.Build.StepPanel exposing
+    ( Builder, AttrCaps, SlotCaps, stepPanel, default, actions
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-step-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepPanel as StepPanel`.
 
-@docs Builder, AttrCaps, SlotCaps, stepPanel
+@docs Builder, AttrCaps, SlotCaps, stepPanel, default, actions
 -}
 
 
+import M3e.Build.Internal
 import M3e.Element
 
 
@@ -22,7 +25,9 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.Available
+    , actions : M3e.Build.Internal.Available
+    }
 
 
 type alias Fields msg =
@@ -36,3 +41,21 @@ type alias Fields msg =
 stepPanel : Builder AttrCaps SlotCaps msg
 stepPanel =
     Builder { default = Nothing, actions = Nothing, phantomMsg_ = Nothing }
+
+
+{-| Set the `unnamed` slot. Consumes the `default` slot capability. -}
+default :
+    M3e.Element.Element {} msg
+    -> Builder a { s | default : M3e.Build.Internal.Available } msg
+    -> Builder a { s | default : M3e.Build.Internal.Used } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = Just v_ }
+
+
+{-| Set the `actions` slot. Consumes the `actions` slot capability. -}
+actions :
+    M3e.Element.Element {} msg
+    -> Builder a { s | actions : M3e.Build.Internal.Available } msg
+    -> Builder a { s | actions : M3e.Build.Internal.Used } msg
+actions v_ (Builder f_) =
+    Builder { f_ | actions = Just v_ }

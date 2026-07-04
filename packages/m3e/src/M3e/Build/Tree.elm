@@ -1,13 +1,18 @@
-module M3e.Build.Tree exposing ( Builder, AttrCaps, SlotCaps, tree )
+module M3e.Build.Tree exposing
+    ( Builder, AttrCaps, SlotCaps, tree, multi, cascade
+    , onChange
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-tree>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tree as Tree`.
 
-@docs Builder, AttrCaps, SlotCaps, tree
+@docs Builder, AttrCaps, SlotCaps, tree, multi, cascade
+@docs onChange
 -}
 
 
 import Json.Decode
+import M3e.Build.Internal
 import M3e.Element
 import M3e.Value
 
@@ -19,7 +24,10 @@ type Builder attrCaps slotCaps msg
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    {}
+    { multi : M3e.Build.Internal.Available
+    , cascade : M3e.Build.Internal.Available
+    , onChange : M3e.Build.Internal.Available
+    }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -47,3 +55,30 @@ tree =
         , default = []
         , phantomMsg_ = Nothing
         }
+
+
+{-| Whether multiple items can be selected. (default: `false`) -}
+multi :
+    Bool
+    -> Builder { a | multi : M3e.Build.Internal.Available } s msg
+    -> Builder { a | multi : M3e.Build.Internal.Used } s msg
+multi v_ (Builder f_) =
+    Builder { f_ | multi = Just v_ }
+
+
+{-| Whether multiple item selection cascades to child items. (default: `false`) -}
+cascade :
+    Bool
+    -> Builder { a | cascade : M3e.Build.Internal.Available } s msg
+    -> Builder { a | cascade : M3e.Build.Internal.Used } s msg
+cascade v_ (Builder f_) =
+    Builder { f_ | cascade = Just v_ }
+
+
+{-| Dispatched when the selected state changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
+onChange v_ (Builder f_) =
+    Builder { f_ | onChange = Just v_ }
