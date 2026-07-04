@@ -190,13 +190,3 @@ error validTokens token range =
             ]
         }
         range
-
-
-decapitalize : String -> String
-decapitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toLower c) rest
-
-        Nothing ->
-            s
