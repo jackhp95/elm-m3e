@@ -23,11 +23,20 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
-    { checked : Maybe Bool, disabled : Maybe Bool, indeterminate : Maybe Bool }
+type alias Fields msg =
+    { checked : Maybe Bool
+    , disabled : Maybe Bool
+    , indeterminate : Maybe Bool
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-pseudo-checkbox>`. -}
 pseudoCheckbox : Builder AttrCaps SlotCaps msg
 pseudoCheckbox =
-    Builder { checked = Nothing, disabled = Nothing, indeterminate = Nothing }
+    Builder
+        { checked = Nothing
+        , disabled = Nothing
+        , indeterminate = Nothing
+        , phantomMsg_ = Nothing
+        }

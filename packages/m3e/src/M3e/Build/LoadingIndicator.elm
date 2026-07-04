@@ -25,15 +25,16 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { variant :
         Maybe (M3e.Value.Value { contained : M3e.Value.Supported
         , uncontained : M3e.Value.Supported
         })
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-loading-indicator>`. -}
 loadingIndicator : Builder AttrCaps SlotCaps msg
 loadingIndicator =
-    Builder { variant = Nothing }
+    Builder { variant = Nothing, phantomMsg_ = Nothing }

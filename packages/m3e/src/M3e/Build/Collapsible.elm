@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { open : Maybe Bool
     , orientation :
         Maybe (M3e.Value.Value { horizontal : M3e.Value.Supported
@@ -38,7 +38,8 @@ type alias Fields msg any_ =
     , onOpened : Maybe (Json.Decode.Decoder msg)
     , onClosing : Maybe (Json.Decode.Decoder msg)
     , onClosed : Maybe (Json.Decode.Decoder msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -54,4 +55,5 @@ collapsible =
         , onClosing = Nothing
         , onClosed = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

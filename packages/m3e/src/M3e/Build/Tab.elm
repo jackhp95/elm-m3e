@@ -37,6 +37,7 @@ type alias Fields msg =
     , onClick : Maybe (Json.Decode.Decoder msg)
     , default : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
     , icon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -53,4 +54,5 @@ tab =
         , onClick = Nothing
         , default = Nothing
         , icon = Nothing
+        , phantomMsg_ = Nothing
         }

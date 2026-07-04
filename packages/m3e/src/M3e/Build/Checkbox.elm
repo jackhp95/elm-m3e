@@ -37,6 +37,7 @@ type alias Fields msg =
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onInvalid : Maybe (Json.Decode.Decoder msg)
     , onClick : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -55,4 +56,5 @@ checkbox =
         , onChange = Nothing
         , onInvalid = Nothing
         , onClick = Nothing
+        , phantomMsg_ = Nothing
         }

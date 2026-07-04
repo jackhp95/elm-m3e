@@ -46,6 +46,7 @@ type alias Fields msg =
     , errorIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , hint : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
     , error : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -73,4 +74,5 @@ step req_ =
         , errorIcon = Nothing
         , hint = Nothing
         , error = Nothing
+        , phantomMsg_ = Nothing
         }

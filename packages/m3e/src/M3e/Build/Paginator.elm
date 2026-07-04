@@ -56,6 +56,7 @@ type alias Fields msg =
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , lastPageIcon :
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -81,4 +82,5 @@ paginator =
         , previousPageIcon = Nothing
         , nextPageIcon = Nothing
         , lastPageIcon = Nothing
+        , phantomMsg_ = Nothing
         }

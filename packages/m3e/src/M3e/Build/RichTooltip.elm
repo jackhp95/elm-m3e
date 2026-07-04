@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg
     , disabled : Maybe Bool
     , for : Maybe String
@@ -51,7 +51,8 @@ type alias Fields msg any_ =
     , onBeforetoggle : Maybe (Json.Decode.Decoder msg)
     , onToggle : Maybe (Json.Decode.Decoder msg)
     , subhead : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    , actions : Maybe (M3e.Element.Element any_ msg)
+    , actions : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -72,4 +73,5 @@ richTooltip req_ =
         , onToggle = Nothing
         , subhead = Nothing
         , actions = Nothing
+        , phantomMsg_ = Nothing
         }

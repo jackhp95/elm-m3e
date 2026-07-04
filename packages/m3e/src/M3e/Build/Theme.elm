@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { color : Maybe String
     , contrast :
         Maybe (M3e.Value.Value { high : M3e.Value.Supported
@@ -57,7 +57,8 @@ type alias Fields msg any_ =
         , standard : M3e.Value.Supported
         })
     , onChange : Maybe (Json.Decode.Decoder msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -74,4 +75,5 @@ theme =
         , motion = Nothing
         , onChange = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

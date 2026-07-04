@@ -41,6 +41,7 @@ type alias Fields msg =
         , iconButton : M3e.Value.Supported
         , fab : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -53,4 +54,5 @@ navRail =
         , onInput = Nothing
         , onChange = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

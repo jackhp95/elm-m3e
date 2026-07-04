@@ -23,11 +23,12 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { inset : Maybe Bool
     , insetStart : Maybe Bool
     , insetEnd : Maybe Bool
     , vertical : Maybe Bool
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -39,4 +40,5 @@ divider =
         , insetStart = Nothing
         , insetEnd = Nothing
         , vertical = Nothing
+        , phantomMsg_ = Nothing
         }

@@ -34,6 +34,7 @@ type alias Fields msg =
     , onInput : Maybe (Json.Decode.Decoder msg)
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onClick : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -49,4 +50,5 @@ sliderThumb =
         , onInput = Nothing
         , onChange = Nothing
         , onClick = Nothing
+        , phantomMsg_ = Nothing
         }

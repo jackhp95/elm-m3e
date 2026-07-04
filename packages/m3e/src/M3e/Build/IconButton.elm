@@ -84,6 +84,7 @@ type alias Fields msg =
     , onChange : Maybe (Json.Decode.Decoder msg)
     , selectedSlot :
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -127,4 +128,5 @@ iconButton req_ =
         , onInput = Nothing
         , onChange = Nothing
         , selectedSlot = Nothing
+        , phantomMsg_ = Nothing
         }

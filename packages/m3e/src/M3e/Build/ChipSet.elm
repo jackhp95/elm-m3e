@@ -35,10 +35,11 @@ type alias Fields msg =
         , inputChip : M3e.Value.Supported
         , suggestionChip : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-chip-set>`. -}
 chipSet : Builder AttrCaps SlotCaps msg
 chipSet =
-    Builder { vertical = Nothing, default = [] }
+    Builder { vertical = Nothing, default = [], phantomMsg_ = Nothing }

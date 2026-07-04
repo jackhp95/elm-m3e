@@ -27,8 +27,8 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { input : M3e.Element.Element any_ msg
+type alias Fields msg =
+    { input : M3e.Element.Element {} msg
     , contained : Maybe Bool
     , mode :
         Maybe (M3e.Value.Value { auto : M3e.Value.Supported
@@ -47,7 +47,7 @@ type alias Fields msg any_ =
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , closeIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , clearIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
     , openLeading :
         List (M3e.Element.Element { icon : M3e.Value.Supported
         , iconButton : M3e.Value.Supported
@@ -64,12 +64,13 @@ type alias Fields msg any_ =
         List (M3e.Element.Element { icon : M3e.Value.Supported
         , iconButton : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-search-view>` with the required fields. -}
 searchView :
-    { input : M3e.Element.Element any msg } -> Builder AttrCaps SlotCaps msg
+    { input : M3e.Element.Element {} msg } -> Builder AttrCaps SlotCaps msg
 searchView req_ =
     Builder
         { input = req_.input
@@ -91,4 +92,5 @@ searchView req_ =
         , openTrailing = []
         , closedLeading = []
         , closedTrailing = []
+        , phantomMsg_ = Nothing
         }

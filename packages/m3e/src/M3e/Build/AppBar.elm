@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { centered : Maybe Bool
     , for : Maybe String
     , size :
@@ -47,14 +47,15 @@ type alias Fields msg any_ =
         Maybe (M3e.Element.Element { text : M3e.Value.Supported
         , html : M3e.Value.Supported
         } msg)
-    , leadingIcon : Maybe (M3e.Element.Element any_ msg)
-    , trailingIcon : Maybe (M3e.Element.Element any_ msg)
+    , leadingIcon : Maybe (M3e.Element.Element {} msg)
+    , trailingIcon : Maybe (M3e.Element.Element {} msg)
     , trailing :
         List (M3e.Element.Element { iconButton : M3e.Value.Supported
         , button : M3e.Value.Supported
         , searchBar : M3e.Value.Supported
         , html : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -71,4 +72,5 @@ appBar =
         , leadingIcon = Nothing
         , trailingIcon = Nothing
         , trailing = []
+        , phantomMsg_ = Nothing
         }

@@ -36,10 +36,11 @@ type alias Fields msg =
         , expandableListItem : M3e.Value.Supported
         , divider : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-action-list>`. -}
 actionList : Builder AttrCaps SlotCaps msg
 actionList =
-    Builder { variant = Nothing, default = [] }
+    Builder { variant = Nothing, default = [], phantomMsg_ = Nothing }

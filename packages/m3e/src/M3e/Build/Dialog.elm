@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { alert : Maybe Bool
     , closeLabel : Maybe String
     , disableClose : Maybe Bool
@@ -40,9 +40,10 @@ type alias Fields msg any_ =
     , onClosed : Maybe (Json.Decode.Decoder msg)
     , onCancel : Maybe (Json.Decode.Decoder msg)
     , header : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    , actions : Maybe (M3e.Element.Element any_ msg)
+    , actions : Maybe (M3e.Element.Element {} msg)
     , closeIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -65,4 +66,5 @@ dialog =
         , actions = Nothing
         , closeIcon = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

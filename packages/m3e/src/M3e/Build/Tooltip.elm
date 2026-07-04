@@ -43,6 +43,7 @@ type alias Fields msg =
         , off : M3e.Value.Supported
         , on : M3e.Value.Supported
         })
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -59,4 +60,5 @@ tooltip req_ =
         , position = Nothing
         , showDelay = Nothing
         , touchGestures = Nothing
+        , phantomMsg_ = Nothing
         }

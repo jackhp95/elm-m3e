@@ -47,6 +47,7 @@ type alias Fields msg =
     , prevIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , default : List (M3e.Element.Element { tab : M3e.Value.Supported } msg)
     , panel : List (M3e.Element.Element { tabPanel : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -67,4 +68,5 @@ tabs =
         , prevIcon = Nothing
         , default = []
         , panel = []
+        , phantomMsg_ = Nothing
         }

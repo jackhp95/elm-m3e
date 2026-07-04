@@ -44,6 +44,7 @@ type alias Fields msg =
         })
     , for : Maybe String
     , default : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -51,4 +52,9 @@ type alias Fields msg =
 badge : Builder AttrCaps SlotCaps msg
 badge =
     Builder
-        { size = Nothing, position = Nothing, for = Nothing, default = Nothing }
+        { size = Nothing
+        , position = Nothing
+        , for = Nothing
+        , default = Nothing
+        , phantomMsg_ = Nothing
+        }

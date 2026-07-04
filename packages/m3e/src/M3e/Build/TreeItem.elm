@@ -50,6 +50,7 @@ type alias Fields msg =
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , default :
         List (M3e.Element.Element { treeItem : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -78,4 +79,5 @@ treeItem req_ =
         , toggleIcon = Nothing
         , openToggleIcon = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

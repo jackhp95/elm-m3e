@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { state :
         Maybe (M3e.Value.Value { content : M3e.Value.Supported
         , loading : M3e.Value.Supported
@@ -41,7 +41,7 @@ type alias Fields msg any_ =
     , anchorOffset : Maybe Float
     , onBeforetoggle : Maybe (Json.Decode.Decoder msg)
     , onToggle : Maybe (Json.Decode.Decoder msg)
-    , noData : Maybe (M3e.Element.Element any_ msg)
+    , noData : Maybe (M3e.Element.Element {} msg)
     , default :
         List (M3e.Element.Element { option : M3e.Value.Supported
         , optgroup : M3e.Value.Supported
@@ -53,6 +53,7 @@ type alias Fields msg any_ =
         , loadingIndicator : M3e.Value.Supported
         , text : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -69,4 +70,5 @@ optionPanel =
         , noData = Nothing
         , default = []
         , loading = []
+        , phantomMsg_ = Nothing
         }

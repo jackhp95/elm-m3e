@@ -59,6 +59,7 @@ type alias Fields msg =
         , outlined : M3e.Value.Supported
         })
     , icon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -94,4 +95,5 @@ assistChip req_ =
         , value = Nothing
         , variant = Nothing
         , icon = Nothing
+        , phantomMsg_ = Nothing
         }

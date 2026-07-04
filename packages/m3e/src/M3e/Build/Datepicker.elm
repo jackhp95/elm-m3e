@@ -58,6 +58,7 @@ type alias Fields msg =
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onBeforetoggle : Maybe (Json.Decode.Decoder msg)
     , onToggle : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -88,4 +89,5 @@ datepicker =
         , onChange = Nothing
         , onBeforetoggle = Nothing
         , onToggle = Nothing
+        , phantomMsg_ = Nothing
         }

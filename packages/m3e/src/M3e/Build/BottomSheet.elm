@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { detent : Maybe Float
     , handle : Maybe Bool
     , handleLabel : Maybe String
@@ -40,8 +40,9 @@ type alias Fields msg any_ =
     , onCancel : Maybe (Json.Decode.Decoder msg)
     , onOpened : Maybe (Json.Decode.Decoder msg)
     , onClosed : Maybe (Json.Decode.Decoder msg)
-    , header : Maybe (M3e.Element.Element any_ msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , header : Maybe (M3e.Element.Element {} msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -64,4 +65,5 @@ bottomSheet =
         , onClosed = Nothing
         , header = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

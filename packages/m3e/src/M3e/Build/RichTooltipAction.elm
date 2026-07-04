@@ -29,6 +29,7 @@ type alias SlotCaps =
 type alias Fields msg =
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg
     , disableRestoreFocus : Maybe Bool
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -37,4 +38,8 @@ richTooltipAction :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> Builder AttrCaps SlotCaps msg
 richTooltipAction req_ =
-    Builder { content = req_.content, disableRestoreFocus = Nothing }
+    Builder
+        { content = req_.content
+        , disableRestoreFocus = Nothing
+        , phantomMsg_ = Nothing
+        }

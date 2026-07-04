@@ -27,10 +27,12 @@ type alias SlotCaps =
 
 
 type alias Fields msg =
-    { default : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg) }
+    { default : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-text-overflow>`. -}
 textOverflow : Builder AttrCaps SlotCaps msg
 textOverflow =
-    Builder { default = Nothing }
+    Builder { default = Nothing, phantomMsg_ = Nothing }

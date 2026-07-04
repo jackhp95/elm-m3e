@@ -23,12 +23,13 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { centered : Maybe Bool
     , disabled : Maybe Bool
     , for : Maybe String
     , radius : Maybe Float
     , unbounded : Maybe Bool
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -41,4 +42,5 @@ ripple =
         , for = Nothing
         , radius = Nothing
         , unbounded = Nothing
+        , phantomMsg_ = Nothing
         }

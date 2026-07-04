@@ -38,6 +38,7 @@ type alias Fields msg =
     , selected : Maybe Bool
     , term : Maybe String
     , value : Maybe String
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -54,4 +55,5 @@ option req_ =
         , selected = Nothing
         , term = Nothing
         , value = Nothing
+        , phantomMsg_ = Nothing
         }

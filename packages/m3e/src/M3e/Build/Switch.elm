@@ -40,6 +40,7 @@ type alias Fields msg =
     , onInput : Maybe (Json.Decode.Decoder msg)
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onClick : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -56,4 +57,5 @@ switch =
         , onInput = Nothing
         , onChange = Nothing
         , onClick = Nothing
+        , phantomMsg_ = Nothing
         }

@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { dividers :
         Maybe (M3e.Value.Value { above : M3e.Value.Supported
         , aboveBelow : M3e.Value.Supported
@@ -34,11 +34,17 @@ type alias Fields msg any_ =
         , none : M3e.Value.Supported
         })
     , thin : Maybe Bool
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-scroll-container>`. -}
 scrollContainer : Builder AttrCaps SlotCaps msg
 scrollContainer =
-    Builder { dividers = Nothing, thin = Nothing, default = [] }
+    Builder
+        { dividers = Nothing
+        , thin = Nothing
+        , default = []
+        , phantomMsg_ = Nothing
+        }

@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { label : Maybe String
     , max : Maybe Float
     , min : Maybe Float
@@ -45,8 +45,9 @@ type alias Fields msg any_ =
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onBeforeinput : Maybe (Json.Decode.Decoder msg)
     , onInput : Maybe (Json.Decode.Decoder msg)
-    , start : Maybe (M3e.Element.Element any_ msg)
-    , end : Maybe (M3e.Element.Element any_ msg)
+    , start : Maybe (M3e.Element.Element {} msg)
+    , end : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -69,4 +70,5 @@ splitPane =
         , onInput = Nothing
         , start = Nothing
         , end = Nothing
+        , phantomMsg_ = Nothing
         }

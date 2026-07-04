@@ -23,11 +23,11 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
-    {}
+type alias Fields msg =
+    { phantomMsg_ : Maybe msg }
 
 
 {-| Seed a `Builder` for `<ActionElementBase>`. -}
 actionElementBase : Builder AttrCaps SlotCaps msg
 actionElementBase =
-    Builder {}
+    Builder { phantomMsg_ = Nothing }

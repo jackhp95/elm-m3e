@@ -32,6 +32,7 @@ type alias Fields msg =
     , disabled : Maybe Bool
     , selected : Maybe Bool
     , onClick : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -45,4 +46,5 @@ tocItem req_ =
         , disabled = Nothing
         , selected = Nothing
         , onClick = Nothing
+        , phantomMsg_ = Nothing
         }

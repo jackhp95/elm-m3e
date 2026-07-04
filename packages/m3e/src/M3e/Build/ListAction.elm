@@ -73,6 +73,7 @@ type alias Fields msg =
         , radio : M3e.Value.Supported
         , checkbox : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -91,4 +92,5 @@ listAction =
         , overline = Nothing
         , supportingText = Nothing
         , trailing = Nothing
+        , phantomMsg_ = Nothing
         }

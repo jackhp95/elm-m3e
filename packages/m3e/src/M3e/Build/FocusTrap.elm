@@ -25,11 +25,14 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { disabled : Maybe Bool, default : List (M3e.Element.Element any_ msg) }
+type alias Fields msg =
+    { disabled : Maybe Bool
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-focus-trap>`. -}
 focusTrap : Builder AttrCaps SlotCaps msg
 focusTrap =
-    Builder { disabled = Nothing, default = [] }
+    Builder { disabled = Nothing, default = [], phantomMsg_ = Nothing }

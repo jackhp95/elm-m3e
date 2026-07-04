@@ -33,6 +33,7 @@ type alias Fields msg =
     , onChange : Maybe (Json.Decode.Decoder msg)
     , default :
         List (M3e.Element.Element { treeItem : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -40,4 +41,9 @@ type alias Fields msg =
 tree : Builder AttrCaps SlotCaps msg
 tree =
     Builder
-        { multi = Nothing, cascade = Nothing, onChange = Nothing, default = [] }
+        { multi = Nothing
+        , cascade = Nothing
+        , onChange = Nothing
+        , default = []
+        , phantomMsg_ = Nothing
+        }

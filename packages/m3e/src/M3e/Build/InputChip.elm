@@ -44,6 +44,7 @@ type alias Fields msg =
     , icon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , removeIcon :
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -65,4 +66,5 @@ inputChip req_ =
         , avatar = Nothing
         , icon = Nothing
         , removeIcon = Nothing
+        , phantomMsg_ = Nothing
         }

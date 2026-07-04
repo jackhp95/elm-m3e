@@ -41,6 +41,7 @@ type alias Fields msg =
         , label : M3e.Value.Supported
         , title : M3e.Value.Supported
         })
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -55,4 +56,5 @@ heading req_ =
         , level = Nothing
         , size = Nothing
         , variant = Nothing
+        , phantomMsg_ = Nothing
         }

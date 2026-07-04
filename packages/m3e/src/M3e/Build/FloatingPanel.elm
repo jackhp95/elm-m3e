@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { scrollStrategy :
         Maybe (M3e.Value.Value { hide : M3e.Value.Supported
         , reposition : M3e.Value.Supported
@@ -36,7 +36,8 @@ type alias Fields msg any_ =
     , anchorOffset : Maybe Float
     , onBeforetoggle : Maybe (Json.Decode.Decoder msg)
     , onToggle : Maybe (Json.Decode.Decoder msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -50,4 +51,5 @@ floatingPanel =
         , onBeforetoggle = Nothing
         , onToggle = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

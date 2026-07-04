@@ -25,7 +25,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { filled : Maybe Bool
     , grade :
         Maybe (M3e.Value.Value { high : M3e.Value.Supported
@@ -40,6 +40,7 @@ type alias Fields =
         , sharp : M3e.Value.Supported
         })
     , weight : Maybe String
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -53,4 +54,5 @@ icon =
         , name = Nothing
         , variant = Nothing
         , weight = Nothing
+        , phantomMsg_ = Nothing
         }

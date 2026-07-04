@@ -26,15 +26,21 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { wrap : Maybe Bool
-    , separator : Maybe (M3e.Element.Element any_ msg)
+    , separator : Maybe (M3e.Element.Element {} msg)
     , default :
         List (M3e.Element.Element { breadcrumbItem : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-breadcrumb>`. -}
 breadcrumb : Builder AttrCaps SlotCaps msg
 breadcrumb =
-    Builder { wrap = Nothing, separator = Nothing, default = [] }
+    Builder
+        { wrap = Nothing
+        , separator = Nothing
+        , default = []
+        , phantomMsg_ = Nothing
+        }

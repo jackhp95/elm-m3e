@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { disabled : Maybe Bool
     , nextPageLabel : Maybe String
     , previousPageLabel : Maybe String
@@ -34,7 +34,8 @@ type alias Fields msg any_ =
     , vertical : Maybe Bool
     , nextIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , prevIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -50,4 +51,5 @@ slideGroup =
         , nextIcon = Nothing
         , prevIcon = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

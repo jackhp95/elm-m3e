@@ -38,6 +38,7 @@ type alias Fields msg =
     , onInput : Maybe (Json.Decode.Decoder msg)
     , default :
         List (M3e.Element.Element { filterChip : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -54,4 +55,5 @@ filterChipSet =
         , onBeforeinput = Nothing
         , onInput = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

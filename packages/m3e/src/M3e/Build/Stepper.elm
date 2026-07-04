@@ -47,6 +47,7 @@ type alias Fields msg =
     , onInput : Maybe (Json.Decode.Decoder msg)
     , step : List (M3e.Element.Element { step : M3e.Value.Supported } msg)
     , panel : List (M3e.Element.Element { stepPanel : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -63,4 +64,5 @@ stepper =
         , onInput = Nothing
         , step = []
         , panel = []
+        , phantomMsg_ = Nothing
         }

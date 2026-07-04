@@ -32,10 +32,11 @@ type alias Fields msg =
         , menuItemCheckbox : M3e.Value.Supported
         , menuItemRadio : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-menu-item-group>`. -}
 menuItemGroup : Builder AttrCaps SlotCaps msg
 menuItemGroup =
-    Builder { default = [] }
+    Builder { default = [], phantomMsg_ = Nothing }

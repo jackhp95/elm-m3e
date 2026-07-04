@@ -26,12 +26,13 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { for : Maybe String
     , maxDepth : Maybe Float
-    , default : Maybe (M3e.Element.Element any_ msg)
+    , default : Maybe (M3e.Element.Element {} msg)
     , overline : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
     , title : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -44,4 +45,5 @@ toc =
         , default = Nothing
         , overline = Nothing
         , title = Nothing
+        , phantomMsg_ = Nothing
         }

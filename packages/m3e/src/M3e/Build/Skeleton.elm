@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { animation :
         Maybe (M3e.Value.Value { none : M3e.Value.Supported
         , pulse : M3e.Value.Supported
@@ -39,7 +39,8 @@ type alias Fields msg any_ =
         , square : M3e.Value.Supported
         })
     , loaded : Maybe Bool
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -47,4 +48,9 @@ type alias Fields msg any_ =
 skeleton : Builder AttrCaps SlotCaps msg
 skeleton =
     Builder
-        { animation = Nothing, shape = Nothing, loaded = Nothing, default = [] }
+        { animation = Nothing
+        , shape = Nothing
+        , loaded = Nothing
+        , default = []
+        , phantomMsg_ = Nothing
+        }

@@ -25,13 +25,14 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { default : Maybe (M3e.Element.Element any_ msg)
-    , actions : Maybe (M3e.Element.Element any_ msg)
+type alias Fields msg =
+    { default : Maybe (M3e.Element.Element {} msg)
+    , actions : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-step-panel>`. -}
 stepPanel : Builder AttrCaps SlotCaps msg
 stepPanel =
-    Builder { default = Nothing, actions = Nothing }
+    Builder { default = Nothing, actions = Nothing, phantomMsg_ = Nothing }

@@ -25,7 +25,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { color : Maybe String
     , scheme :
         Maybe (M3e.Value.Value { auto : M3e.Value.Supported
@@ -43,10 +43,16 @@ type alias Fields =
         , tonalSpot : M3e.Value.Supported
         , vibrant : M3e.Value.Supported
         })
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-theme-icon>`. -}
 themeIcon : Builder AttrCaps SlotCaps msg
 themeIcon =
-    Builder { color = Nothing, scheme = Nothing, variant = Nothing }
+    Builder
+        { color = Nothing
+        , scheme = Nothing
+        , variant = Nothing
+        , phantomMsg_ = Nothing
+        }

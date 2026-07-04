@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { ariaInvalid : Maybe String
     , disabled : Maybe Bool
     , name : Maybe String
@@ -34,7 +34,8 @@ type alias Fields msg any_ =
     , onBeforeinput : Maybe (Json.Decode.Decoder msg)
     , onInput : Maybe (Json.Decode.Decoder msg)
     , onChange : Maybe (Json.Decode.Decoder msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -50,4 +51,5 @@ radioGroup =
         , onInput = Nothing
         , onChange = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

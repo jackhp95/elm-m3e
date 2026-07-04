@@ -93,6 +93,7 @@ type alias Fields msg =
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     , trailingIcon :
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -141,4 +142,5 @@ button req_ =
         , selectedSlot = Nothing
         , selectedIcon = Nothing
         , trailingIcon = Nothing
+        , phantomMsg_ = Nothing
         }

@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { end : Maybe Bool
     , endMode :
         Maybe (M3e.Value.Value { auto : M3e.Value.Supported
@@ -45,9 +45,10 @@ type alias Fields msg any_ =
         })
     , startDivider : Maybe Bool
     , onChange : Maybe (Json.Decode.Decoder msg)
-    , default : Maybe (M3e.Element.Element any_ msg)
-    , startSlot : Maybe (M3e.Element.Element any_ msg)
-    , endSlot : Maybe (M3e.Element.Element any_ msg)
+    , default : Maybe (M3e.Element.Element {} msg)
+    , startSlot : Maybe (M3e.Element.Element {} msg)
+    , endSlot : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -65,4 +66,5 @@ drawerContainer =
         , default = Nothing
         , startSlot = Nothing
         , endSlot = Nothing
+        , phantomMsg_ = Nothing
         }

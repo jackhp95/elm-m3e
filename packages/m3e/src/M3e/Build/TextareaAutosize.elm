@@ -23,11 +23,12 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { disabled : Maybe Bool
     , for : Maybe String
     , maxRows : Maybe Float
     , minRows : Maybe Float
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -39,4 +40,5 @@ textareaAutosize =
         , for = Nothing
         , maxRows = Nothing
         , minRows = Nothing
+        , phantomMsg_ = Nothing
         }

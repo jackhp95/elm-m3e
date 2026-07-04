@@ -25,11 +25,11 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { default : Maybe (M3e.Element.Element any_ msg) }
+type alias Fields msg =
+    { default : Maybe (M3e.Element.Element {} msg), phantomMsg_ : Maybe msg }
 
 
 {-| Seed a `Builder` for `<m3e-stepper-previous>`. -}
 stepperPrevious : Builder AttrCaps SlotCaps msg
 stepperPrevious =
-    Builder { default = Nothing }
+    Builder { default = Nothing, phantomMsg_ = Nothing }

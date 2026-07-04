@@ -23,11 +23,11 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
-    { checked : Maybe Bool, disabled : Maybe Bool }
+type alias Fields msg =
+    { checked : Maybe Bool, disabled : Maybe Bool, phantomMsg_ : Maybe msg }
 
 
 {-| Seed a `Builder` for `<m3e-pseudo-radio>`. -}
 pseudoRadio : Builder AttrCaps SlotCaps msg
 pseudoRadio =
-    Builder { checked = Nothing, disabled = Nothing }
+    Builder { checked = Nothing, disabled = Nothing, phantomMsg_ = Nothing }

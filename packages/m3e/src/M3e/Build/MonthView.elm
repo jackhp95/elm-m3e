@@ -36,6 +36,7 @@ type alias Fields msg =
     , maxDate : Maybe String
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onActiveChange : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -53,4 +54,5 @@ monthView =
         , maxDate = Nothing
         , onChange = Nothing
         , onActiveChange = Nothing
+        , phantomMsg_ = Nothing
         }

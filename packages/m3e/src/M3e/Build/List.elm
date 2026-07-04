@@ -38,10 +38,11 @@ type alias Fields msg =
         , listOption : M3e.Value.Supported
         , divider : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-list>`. -}
 list : Builder AttrCaps SlotCaps msg
 list =
-    Builder { variant = Nothing, default = [] }
+    Builder { variant = Nothing, default = [], phantomMsg_ = Nothing }

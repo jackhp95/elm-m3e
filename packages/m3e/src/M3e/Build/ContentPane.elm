@@ -25,11 +25,11 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { default : List (M3e.Element.Element any_ msg) }
+type alias Fields msg =
+    { default : List (M3e.Element.Element {} msg), phantomMsg_ : Maybe msg }
 
 
 {-| Seed a `Builder` for `<m3e-content-pane>`. -}
 contentPane : Builder AttrCaps SlotCaps msg
 contentPane =
-    Builder { default = [] }
+    Builder { default = [], phantomMsg_ = Nothing }

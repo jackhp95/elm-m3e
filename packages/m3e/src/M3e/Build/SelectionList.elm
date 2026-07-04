@@ -44,6 +44,7 @@ type alias Fields msg =
         , expandableListItem : M3e.Value.Supported
         , divider : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -60,4 +61,5 @@ selectionList =
         , onBeforeinput = Nothing
         , onInput = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

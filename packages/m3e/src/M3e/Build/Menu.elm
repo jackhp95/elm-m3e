@@ -50,6 +50,7 @@ type alias Fields msg =
         , menuItemGroup : M3e.Value.Supported
         , divider : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -64,4 +65,5 @@ menu =
         , onBeforetoggle = Nothing
         , onToggle = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

@@ -43,10 +43,17 @@ type alias Fields msg =
         List (M3e.Element.Element { button : M3e.Value.Supported
         , iconButton : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-button-group>`. -}
 buttonGroup : Builder AttrCaps SlotCaps msg
 buttonGroup =
-    Builder { multi = Nothing, size = Nothing, variant = Nothing, default = [] }
+    Builder
+        { multi = Nothing
+        , size = Nothing
+        , variant = Nothing
+        , default = []
+        , phantomMsg_ = Nothing
+        }

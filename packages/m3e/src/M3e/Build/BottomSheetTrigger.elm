@@ -31,6 +31,7 @@ type alias Fields msg =
     , secondary : Maybe Bool
     , for : Maybe String
     , default : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -42,4 +43,5 @@ bottomSheetTrigger =
         , secondary = Nothing
         , for = Nothing
         , default = Nothing
+        , phantomMsg_ = Nothing
         }

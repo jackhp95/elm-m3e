@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { elevated : Maybe Bool
     , shape :
         Maybe (M3e.Value.Value { rounded : M3e.Value.Supported
@@ -37,7 +37,8 @@ type alias Fields msg any_ =
         , vibrant : M3e.Value.Supported
         })
     , vertical : Maybe Bool
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -50,4 +51,5 @@ toolbar =
         , variant = Nothing
         , vertical = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

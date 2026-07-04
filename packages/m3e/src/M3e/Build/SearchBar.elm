@@ -27,8 +27,8 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { input : M3e.Element.Element any_ msg
+type alias Fields msg =
+    { input : M3e.Element.Element {} msg
     , clearable : Maybe Bool
     , clearLabel : Maybe String
     , onClear : Maybe (Json.Decode.Decoder msg)
@@ -41,12 +41,13 @@ type alias Fields msg any_ =
         List (M3e.Element.Element { icon : M3e.Value.Supported
         , iconButton : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-search-bar>` with the required fields. -}
 searchBar :
-    { input : M3e.Element.Element any msg } -> Builder AttrCaps SlotCaps msg
+    { input : M3e.Element.Element {} msg } -> Builder AttrCaps SlotCaps msg
 searchBar req_ =
     Builder
         { input = req_.input
@@ -56,4 +57,5 @@ searchBar req_ =
         , clearIcon = Nothing
         , leading = []
         , trailing = []
+        , phantomMsg_ = Nothing
         }

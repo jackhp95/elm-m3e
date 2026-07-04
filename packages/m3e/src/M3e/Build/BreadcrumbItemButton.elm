@@ -47,6 +47,7 @@ type alias Fields msg =
         Maybe (M3e.Element.Element { text : M3e.Value.Supported
         , icon : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -63,4 +64,5 @@ breadcrumbItemButton =
         , onClick = Nothing
         , icon = Nothing
         , default = Nothing
+        , phantomMsg_ = Nothing
         }

@@ -23,11 +23,20 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
-    { disabled : Maybe Bool, inward : Maybe Bool, for : Maybe String }
+type alias Fields msg =
+    { disabled : Maybe Bool
+    , inward : Maybe Bool
+    , for : Maybe String
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-focus-ring>`. -}
 focusRing : Builder AttrCaps SlotCaps msg
 focusRing =
-    Builder { disabled = Nothing, inward = Nothing, for = Nothing }
+    Builder
+        { disabled = Nothing
+        , inward = Nothing
+        , for = Nothing
+        , phantomMsg_ = Nothing
+        }

@@ -37,6 +37,7 @@ type alias Fields msg =
     , onInput : Maybe (Json.Decode.Decoder msg)
     , default :
         List (M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -52,4 +53,5 @@ segmentedButton =
         , onBeforeinput = Nothing
         , onInput = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

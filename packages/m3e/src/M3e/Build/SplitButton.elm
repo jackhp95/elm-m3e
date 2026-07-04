@@ -43,6 +43,7 @@ type alias Fields msg =
         , medium : M3e.Value.Supported
         , small : M3e.Value.Supported
         })
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -59,4 +60,5 @@ splitButton req_ =
         , trailingButton = req_.trailingButton
         , variant = Nothing
         , size = Nothing
+        , phantomMsg_ = Nothing
         }

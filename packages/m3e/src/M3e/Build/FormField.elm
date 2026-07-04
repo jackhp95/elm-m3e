@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { floatLabel :
         Maybe (M3e.Value.Value { always : M3e.Value.Supported
         , auto : M3e.Value.Supported
@@ -41,14 +41,15 @@ type alias Fields msg any_ =
         Maybe (M3e.Value.Value { filled : M3e.Value.Supported
         , outlined : M3e.Value.Supported
         })
-    , prefix : Maybe (M3e.Element.Element any_ msg)
-    , prefixText : Maybe (M3e.Element.Element any_ msg)
-    , label : Maybe (M3e.Element.Element any_ msg)
-    , suffix : Maybe (M3e.Element.Element any_ msg)
-    , suffixText : Maybe (M3e.Element.Element any_ msg)
-    , hint : Maybe (M3e.Element.Element any_ msg)
-    , error : Maybe (M3e.Element.Element any_ msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , prefix : Maybe (M3e.Element.Element {} msg)
+    , prefixText : Maybe (M3e.Element.Element {} msg)
+    , label : Maybe (M3e.Element.Element {} msg)
+    , suffix : Maybe (M3e.Element.Element {} msg)
+    , suffixText : Maybe (M3e.Element.Element {} msg)
+    , hint : Maybe (M3e.Element.Element {} msg)
+    , error : Maybe (M3e.Element.Element {} msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -68,4 +69,5 @@ formField =
         , hint = Nothing
         , error = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

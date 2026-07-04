@@ -25,13 +25,14 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { selectedIndex : Maybe Float
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-slide>`. -}
 slide : Builder AttrCaps SlotCaps msg
 slide =
-    Builder { selectedIndex = Nothing, default = [] }
+    Builder { selectedIndex = Nothing, default = [], phantomMsg_ = Nothing }

@@ -26,10 +26,13 @@ type alias SlotCaps =
 
 
 type alias Fields msg =
-    { disabled : Maybe Bool, onClick : Maybe (Json.Decode.Decoder msg) }
+    { disabled : Maybe Bool
+    , onClick : Maybe (Json.Decode.Decoder msg)
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<MenuItemElementBase>`. -}
 menuItemElementBase : Builder AttrCaps SlotCaps msg
 menuItemElementBase =
-    Builder { disabled = Nothing, onClick = Nothing }
+    Builder { disabled = Nothing, onClick = Nothing, phantomMsg_ = Nothing }

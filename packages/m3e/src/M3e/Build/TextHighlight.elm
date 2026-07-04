@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { caseSensitive : Maybe Bool
     , disabled : Maybe Bool
     , mode :
@@ -37,7 +37,8 @@ type alias Fields msg any_ =
         })
     , term : Maybe String
     , onHighlight : Maybe (Json.Decode.Decoder msg)
-    , default : List (M3e.Element.Element any_ msg)
+    , default : List (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -51,4 +52,5 @@ textHighlight =
         , term = Nothing
         , onHighlight = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

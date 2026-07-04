@@ -23,11 +23,20 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
-    { disabled : Maybe Bool, for : Maybe String, level : Maybe String }
+type alias Fields msg =
+    { disabled : Maybe Bool
+    , for : Maybe String
+    , level : Maybe String
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-elevation>`. -}
 elevation : Builder AttrCaps SlotCaps msg
 elevation =
-    Builder { disabled = Nothing, for = Nothing, level = Nothing }
+    Builder
+        { disabled = Nothing
+        , for = Nothing
+        , level = Nothing
+        , phantomMsg_ = Nothing
+        }

@@ -29,10 +29,11 @@ type alias SlotCaps =
 type alias Fields msg =
     { label : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
     , default : List (M3e.Element.Element { option : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-optgroup>`. -}
 optgroup : Builder AttrCaps SlotCaps msg
 optgroup =
-    Builder { label = Nothing, default = [] }
+    Builder { label = Nothing, default = [], phantomMsg_ = Nothing }

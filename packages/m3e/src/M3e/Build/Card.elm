@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { actionable : Maybe Bool
     , inline : Maybe Bool
     , orientation :
@@ -53,11 +53,12 @@ type alias Fields msg any_ =
     , disabledInteractive : Maybe Bool
     , disabled : Maybe Bool
     , onClick : Maybe (Json.Decode.Decoder msg)
-    , default : Maybe (M3e.Element.Element any_ msg)
-    , header : Maybe (M3e.Element.Element any_ msg)
-    , content : Maybe (M3e.Element.Element any_ msg)
-    , actions : Maybe (M3e.Element.Element any_ msg)
-    , footer : Maybe (M3e.Element.Element any_ msg)
+    , default : Maybe (M3e.Element.Element {} msg)
+    , header : Maybe (M3e.Element.Element {} msg)
+    , content : Maybe (M3e.Element.Element {} msg)
+    , actions : Maybe (M3e.Element.Element {} msg)
+    , footer : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -84,4 +85,5 @@ card =
         , content = Nothing
         , actions = Nothing
         , footer = Nothing
+        , phantomMsg_ = Nothing
         }

@@ -25,11 +25,14 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
-    { for : Maybe String, default : Maybe (M3e.Element.Element any_ msg) }
+type alias Fields msg =
+    { for : Maybe String
+    , default : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-dialog-trigger>`. -}
 dialogTrigger : Builder AttrCaps SlotCaps msg
 dialogTrigger =
-    Builder { for = Nothing, default = Nothing }
+    Builder { for = Nothing, default = Nothing, phantomMsg_ = Nothing }

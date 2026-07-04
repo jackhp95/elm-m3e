@@ -25,17 +25,23 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { value : Maybe Float
     , max : Maybe Float
     , variant :
         Maybe (M3e.Value.Value { flat : M3e.Value.Supported
         , wavy : M3e.Value.Supported
         })
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<ProgressElementIndicatorBase>`. -}
 progressElementIndicatorBase : Builder AttrCaps SlotCaps msg
 progressElementIndicatorBase =
-    Builder { value = Nothing, max = Nothing, variant = Nothing }
+    Builder
+        { value = Nothing
+        , max = Nothing
+        , variant = Nothing
+        , phantomMsg_ = Nothing
+        }

@@ -27,15 +27,16 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { disabled : Maybe Bool
     , name : Maybe String
     , required : Maybe Bool
     , vertical : Maybe Bool
     , onChange : Maybe (Json.Decode.Decoder msg)
-    , input : Maybe (M3e.Element.Element any_ msg)
+    , input : Maybe (M3e.Element.Element {} msg)
     , default :
         List (M3e.Element.Element { inputChip : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -50,4 +51,5 @@ inputChipSet =
         , onChange = Nothing
         , input = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

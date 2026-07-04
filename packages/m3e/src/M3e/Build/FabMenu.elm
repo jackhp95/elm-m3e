@@ -39,6 +39,7 @@ type alias Fields msg =
         List (M3e.Element.Element { fabMenuItem : M3e.Value.Supported
         , menuItem : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -50,4 +51,5 @@ fabMenu =
         , onBeforetoggle = Nothing
         , onToggle = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

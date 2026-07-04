@@ -25,7 +25,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
+type alias Fields msg =
     { disabled : Maybe Bool
     , showDelay : Maybe Float
     , hideDelay : Maybe Float
@@ -35,6 +35,7 @@ type alias Fields =
         , on : M3e.Value.Supported
         })
     , for : Maybe String
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -47,4 +48,5 @@ tooltipElementBase =
         , hideDelay = Nothing
         , touchGestures = Nothing
         , for = Nothing
+        , phantomMsg_ = Nothing
         }

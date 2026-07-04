@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { autoActivate : Maybe Bool
     , caseSensitive : Maybe Bool
     , filter :
@@ -48,12 +48,13 @@ type alias Fields msg any_ =
     , onChange : Maybe (Json.Decode.Decoder msg)
     , onQuery : Maybe (Json.Decode.Decoder msg)
     , onToggle : Maybe (Json.Decode.Decoder msg)
-    , loadingSlot : Maybe (M3e.Element.Element any_ msg)
-    , noData : Maybe (M3e.Element.Element any_ msg)
+    , loadingSlot : Maybe (M3e.Element.Element {} msg)
+    , noData : Maybe (M3e.Element.Element {} msg)
     , default :
         List (M3e.Element.Element { option : M3e.Value.Supported
         , optgroup : M3e.Value.Supported
         } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -79,4 +80,5 @@ autocomplete =
         , loadingSlot = Nothing
         , noData = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

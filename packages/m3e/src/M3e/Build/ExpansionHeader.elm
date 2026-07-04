@@ -42,6 +42,7 @@ type alias Fields msg =
     , default : Maybe (M3e.Element.Element { text : M3e.Value.Supported } msg)
     , toggleIcon :
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -56,4 +57,5 @@ expansionHeader =
         , onClick = Nothing
         , default = Nothing
         , toggleIcon = Nothing
+        , phantomMsg_ = Nothing
         }

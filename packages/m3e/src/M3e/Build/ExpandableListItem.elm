@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { disabled : Maybe Bool
     , open : Maybe Bool
     , onOpening : Maybe (Json.Decode.Decoder msg)
@@ -54,7 +54,8 @@ type alias Fields msg any_ =
         } msg)
     , toggleIcon :
         Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    , items : Maybe (M3e.Element.Element any_ msg)
+    , items : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -74,4 +75,5 @@ expandableListItem =
         , supportingText = Nothing
         , toggleIcon = Nothing
         , items = Nothing
+        , phantomMsg_ = Nothing
         }

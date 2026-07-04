@@ -37,6 +37,7 @@ type alias Fields msg =
     , onBeforeinput : Maybe (Json.Decode.Decoder msg)
     , onInput : Maybe (Json.Decode.Decoder msg)
     , default : List (M3e.Element.Element { navItem : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -49,4 +50,5 @@ navBar =
         , onBeforeinput = Nothing
         , onInput = Nothing
         , default = []
+        , phantomMsg_ = Nothing
         }

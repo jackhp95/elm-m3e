@@ -36,6 +36,7 @@ type alias Fields msg =
     , onBeforetoggle : Maybe (Json.Decode.Decoder msg)
     , onToggle : Maybe (Json.Decode.Decoder msg)
     , closeIcon : Maybe (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -53,4 +54,5 @@ snackbar req_ =
         , onBeforetoggle = Nothing
         , onToggle = Nothing
         , closeIcon = Nothing
+        , phantomMsg_ = Nothing
         }

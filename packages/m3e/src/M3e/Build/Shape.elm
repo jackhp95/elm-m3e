@@ -26,7 +26,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { name :
         Maybe (M3e.Value.Value { value12SidedCookie : M3e.Value.Supported
         , value4LeafClover : M3e.Value.Supported
@@ -64,11 +64,12 @@ type alias Fields msg any_ =
         , triangle : M3e.Value.Supported
         , verySunny : M3e.Value.Supported
         })
-    , default : Maybe (M3e.Element.Element any_ msg)
+    , default : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-shape>`. -}
 shape : Builder AttrCaps SlotCaps msg
 shape =
-    Builder { name = Nothing, default = Nothing }
+    Builder { name = Nothing, default = Nothing, phantomMsg_ = Nothing }

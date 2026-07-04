@@ -33,10 +33,11 @@ type alias Fields msg =
         } msg)
     , default :
         List (M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
 {-| Seed a `Builder` for `<m3e-nav-menu-item-group>`. -}
 navMenuItemGroup : Builder AttrCaps SlotCaps msg
 navMenuItemGroup =
-    Builder { label = Nothing, default = [] }
+    Builder { label = Nothing, default = [], phantomMsg_ = Nothing }

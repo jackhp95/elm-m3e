@@ -27,7 +27,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg any_ =
+type alias Fields msg =
     { date : Maybe String
     , maxDate : Maybe String
     , minDate : Maybe String
@@ -46,7 +46,8 @@ type alias Fields msg any_ =
     , previousMultiYearLabel : Maybe String
     , nextMultiYearLabel : Maybe String
     , onChange : Maybe (Json.Decode.Decoder msg)
-    , header : Maybe (M3e.Element.Element any_ msg)
+    , header : Maybe (M3e.Element.Element {} msg)
+    , phantomMsg_ : Maybe msg
     }
 
 
@@ -69,4 +70,5 @@ calendar =
         , nextMultiYearLabel = Nothing
         , onChange = Nothing
         , header = Nothing
+        , phantomMsg_ = Nothing
         }

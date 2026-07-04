@@ -23,11 +23,20 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields =
-    { disabled : Maybe Bool, disableHover : Maybe Bool, for : Maybe String }
+type alias Fields msg =
+    { disabled : Maybe Bool
+    , disableHover : Maybe Bool
+    , for : Maybe String
+    , phantomMsg_ : Maybe msg
+    }
 
 
 {-| Seed a `Builder` for `<m3e-state-layer>`. -}
 stateLayer : Builder AttrCaps SlotCaps msg
 stateLayer =
-    Builder { disabled = Nothing, disableHover = Nothing, for = Nothing }
+    Builder
+        { disabled = Nothing
+        , disableHover = Nothing
+        , for = Nothing
+        , phantomMsg_ = Nothing
+        }
