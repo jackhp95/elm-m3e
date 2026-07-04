@@ -16,30 +16,28 @@ import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
 import M3e.Review.Facts exposing (Fact, Shape(..))
-import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
+import Review.ModuleNameLookupTable exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
 rule : List Fact -> Rule
-rule facts =
-    Rule.newModuleRuleSchemaUsingContextCreator "SingularAttribute" (initContext facts)
+rule _ =
+    Rule.newModuleRuleSchemaUsingContextCreator "SingularAttribute" initContext
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
 
 type alias Context =
     { lookup : ModuleNameLookupTable
-    , factsIndex : Dict String Fact
     , scope : Dict String (Node Expression)
     }
 
 
-initContext : List Fact -> Rule.ContextCreator () Context
-initContext facts =
+initContext : Rule.ContextCreator () Context
+initContext =
     Rule.initContextCreator
         (\lookup () ->
             { lookup = lookup
-            , factsIndex = Facts.buildIndex facts
             , scope = Dict.empty
             }
         )
