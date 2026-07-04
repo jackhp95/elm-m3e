@@ -1,7 +1,7 @@
 module M3e.Build.Slider exposing
     ( Builder, AttrCaps, SlotCaps, slider, disabled, discrete
     , labelled, max, min, step, size, onBeforeinput, onInput
-    , onChange
+    , onChange, default
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-slider>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, slider, disabled, discrete
 @docs labelled, max, min, step, size, onBeforeinput
-@docs onInput, onChange
+@docs onInput, onChange, default
 -}
 
 
@@ -41,7 +41,7 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.NotFilled }
 
 
 type alias Fields msg =
@@ -178,3 +178,12 @@ onChange :
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
 onChange v_ (Builder f_) =
     Builder { f_ | onChange = Just v_ }
+
+
+{-| Add an element to the required `unnamed` slot. Must be called at least once before `build`. -}
+default :
+    M3e.Element.Element {} msg
+    -> Builder a { s | default : filled } msg
+    -> Builder a { s | default : M3e.Build.Internal.Filled } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

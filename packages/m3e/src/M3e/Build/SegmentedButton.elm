@@ -1,13 +1,13 @@
 module M3e.Build.SegmentedButton exposing
     ( Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-    , multi, name, onChange, onBeforeinput, onInput
+    , multi, name, onChange, onBeforeinput, onInput, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-segmented-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SegmentedButton as SegmentedButton`.
 
 @docs Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-@docs multi, name, onChange, onBeforeinput, onInput
+@docs multi, name, onChange, onBeforeinput, onInput, default
 -}
 
 
@@ -36,7 +36,7 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { default : M3e.Build.Internal.NotFilled }
 
 
 type alias Fields msg =
@@ -132,3 +132,12 @@ onInput :
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
 onInput v_ (Builder f_) =
     Builder { f_ | onInput = Just v_ }
+
+
+{-| Add an element to the required `unnamed` slot. Must be called at least once before `build`. -}
+default :
+    M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg
+    -> Builder a { s | default : filled } msg
+    -> Builder a { s | default : M3e.Build.Internal.Filled } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

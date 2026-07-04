@@ -1,11 +1,13 @@
 module M3e.Build.Breadcrumb exposing
     ( Builder, AttrCaps, SlotCaps, breadcrumb, wrap, separator
+    , default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Breadcrumb as Breadcrumb`.
 
 @docs Builder, AttrCaps, SlotCaps, breadcrumb, wrap, separator
+@docs default
 -}
 
 
@@ -26,7 +28,9 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    { separator : M3e.Build.Internal.Available }
+    { separator : M3e.Build.Internal.Available
+    , default : M3e.Build.Internal.NotFilled
+    }
 
 
 type alias Fields msg =
@@ -65,3 +69,12 @@ separator :
     -> Builder a { s | separator : M3e.Build.Internal.Used } msg
 separator v_ (Builder f_) =
     Builder { f_ | separator = Just v_ }
+
+
+{-| Add an element to the required `unnamed` slot. Must be called at least once before `build`. -}
+default :
+    M3e.Element.Element { breadcrumbItem : M3e.Value.Supported } msg
+    -> Builder a { s | default : filled } msg
+    -> Builder a { s | default : M3e.Build.Internal.Filled } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

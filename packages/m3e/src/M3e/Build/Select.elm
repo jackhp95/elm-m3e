@@ -1,7 +1,7 @@
 module M3e.Build.Select exposing
     ( Builder, AttrCaps, SlotCaps, select, disabled, hideSelectionIndicator
     , multi, name, panelClass, required, onChange, onToggle, onBeforeinput
-    , onInput, arrow, value
+    , onInput, arrow, value, default
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-select>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, select, disabled, hideSelectionIndicator
 @docs multi, name, panelClass, required, onChange, onToggle
-@docs onBeforeinput, onInput, arrow, value
+@docs onBeforeinput, onInput, arrow, value, default
 -}
 
 
@@ -43,6 +43,7 @@ type alias AttrCaps =
 type alias SlotCaps =
     { arrow : M3e.Build.Internal.Available
     , value : M3e.Build.Internal.Available
+    , default : M3e.Build.Internal.NotFilled
     }
 
 
@@ -193,3 +194,12 @@ value :
     -> Builder a { s | value : M3e.Build.Internal.Used } msg
 value v_ (Builder f_) =
     Builder { f_ | value = Just v_ }
+
+
+{-| Add an element to the required `unnamed` slot. Must be called at least once before `build`. -}
+default :
+    M3e.Element.Element { option : M3e.Value.Supported } msg
+    -> Builder a { s | default : filled } msg
+    -> Builder a { s | default : M3e.Build.Internal.Filled } msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }
