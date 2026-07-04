@@ -107,6 +107,11 @@ Handles:
   - `[a] ++ dynamic` → elements from literal side, `unresolved = True`.
   - `List.append a b` → equivalent to `++`.
   - `List.concat [[a], [b]]` → flattened elements.
+  - `List.map f items` → 1 known (the setter/mapper head), `unresolved = True`.
+  - `List.concatMap f items` → same as `List.map`.
+  - `elem :: rest` → head element plus resolved tail.
+  - `case x of { Branch -> [...] }` → union of all branch elements, `unresolved = True`.
+  - `if cond then a else b` → union of both branch elements, `unresolved = True`.
   - Bare variable references resolved via the supplied `scope`.
 
 Callers supply a `scope` dict mapping variable names to their bound
@@ -142,6 +147,31 @@ tracedListWith lookup scope seen node =
 
         Expression.ParenthesizedExpression inner ->
             tracedListWith lookup scope seen inner
+
+        Expression.OperatorApplication "::" _ head tail ->
+            -- cons: `elem :: rest` — the head is one known element; tail may resolve further.
+            let
+                tailTraced =
+                    tracedListWith lookup scope seen tail
+            in
+            { known = head :: tailTraced.known
+            , unresolved = tailTraced.unresolved
+            }
+
+        Expression.CaseExpression { cases } ->
+            let
+                branchTraces =
+                    List.map (\( _, branchExpr ) -> tracedListWith lookup scope seen branchExpr) cases
+            in
+            { known = List.concatMap .known branchTraces
+            , unresolved = True
+            }
+
+        Expression.IfBlock _ thenExpr elseExpr ->
+            -- if-then-else: union both branches with unresolved = True
+            concatTraced
+                { known = (tracedListWith lookup scope seen thenExpr).known, unresolved = True }
+                { known = (tracedListWith lookup scope seen elseExpr).known, unresolved = False }
 
         Expression.FunctionOrValue _ name ->
             if Dict.member name seen then
@@ -185,6 +215,63 @@ resolveApp lookup scope seen fnNode args =
 
                 _ ->
                     { known = [], unresolved = True }
+
+        ( Expression.FunctionOrValue [ "List" ] "map", [ mapperNode, _ ] ) ->
+            resolveListMapMapper mapperNode
+
+        ( Expression.FunctionOrValue [ "List" ] "concatMap", [ mapperNode, _ ] ) ->
+            -- concatMap f list — same analysis as map: mapper head is the setter,
+            -- unresolved because we can't know at analysis time which items are produced.
+            resolveListMapMapper mapperNode
+
+        _ ->
+            { known = [], unresolved = True }
+
+
+{-| Inspect the mapper argument of `List.map mapper items`.
+
+Returns the "setter node" representing what each list element looks like, with
+`unresolved = True` since we can't know how many items the list produces at
+static analysis time.
+
+Handles three mapper shapes:
+  - `ContentPane.child` — bare function reference → the fnNode itself as known.
+  - `\x -> M3e.child x` — lambda with single-Application body → the head of the
+    Application is the setter.
+  - `(navItem current)` — partial application → the outer Application node itself
+    is the setter (we record it as one known element with `unresolved`).
+  - Anything else → empty known, `unresolved = True`.
+
+-}
+resolveListMapMapper : Node Expression -> TracedList
+resolveListMapMapper mapperNode =
+    case Node.value mapperNode of
+        Expression.FunctionOrValue _ _ ->
+            -- Bare function reference: `List.map ContentPane.child items`
+            { known = [ mapperNode ], unresolved = True }
+
+        Expression.LambdaExpression lambda ->
+            -- Lambda: inspect the body
+            case Node.value lambda.expression of
+                Expression.Application (setterNode :: _) ->
+                    -- `\x -> M3e.child x` or `\x -> M3e.child SomeValue x`
+                    { known = [ setterNode ], unresolved = True }
+
+                Expression.FunctionOrValue _ _ ->
+                    -- `\x -> x` — identity, the setter is the lambda arg itself (opaque)
+                    { known = [], unresolved = True }
+
+                _ ->
+                    { known = [], unresolved = True }
+
+        Expression.Application (headFn :: _) ->
+            -- Partial application: `List.map (navItem current) items`
+            -- The head function is the setter (partially applied).
+            { known = [ headFn ], unresolved = True }
+
+        Expression.ParenthesizedExpression inner ->
+            -- `List.map (ContentPane.child) items` — parenthesised bare ref
+            resolveListMapMapper inner
 
         _ ->
             { known = [], unresolved = True }

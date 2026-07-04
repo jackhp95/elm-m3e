@@ -4,6 +4,7 @@ import Dict
 import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
+import Expect
 import Facts
 import M3e.Review.Facts exposing (Shape(..))
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
@@ -214,6 +215,157 @@ v =
                                 , under = "M3e.button"
                                 }
                             ]
+            ]
+        , describe "tracedList (Ambitious)"
+            [ test "List.map with bare function reference — dominant docs-app pattern" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] (List.map M3e.child items)
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "List.map with single-setter lambda counts as one known" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] (List.map (\\x -> M3e.child x) items)
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "List.map with partial application counts as one known (head fn)" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] (List.map (navItem current) items)
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "case scrutinee with all-literal branches — union" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v =
+    M3e.button []
+        (case flag of
+            True -> [ M3e.child a ]
+            False -> [ M3e.child b ]
+        )
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:2 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "case with mixed literal and empty branches — union" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v =
+    M3e.button []
+        (case flag of
+            True -> [ M3e.child a, M3e.child b ]
+            False -> []
+        )
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:2 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "List.concatMap with bare function reference" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] (List.concatMap M3e.children items)
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "cons operator: elem :: literal list" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] (M3e.child a :: [ M3e.child b, M3e.child c ])
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:3 unresolved:False"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "cons operator: elem :: dynamic tail" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] (M3e.child a :: rest)
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "if-then-else producing a list — union both branches" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v =
+    M3e.button []
+        (if flag then
+            [ M3e.child a ]
+         else
+            []
+        )
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "cross-module: value imported from another module — deferred" <|
+                \_ ->
+                    -- Multi-module tracing requires project-scope rule context
+                    -- (Rule.withModuleContext + project context). This requires
+                    -- re-architecting from module-scope to project-scope, which
+                    -- is a significant lift. Deferred to a follow-up.
+                    Expect.pass
             ]
         , describe "callSite"
             [ test "recognises M3e.Button.view as button/Shape3" <|
