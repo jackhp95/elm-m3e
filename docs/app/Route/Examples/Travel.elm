@@ -28,15 +28,15 @@ import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
 import M3e.AppBar as AppBar
-import M3e.AssistChip as AssistChip
 import M3e.Card as Card
 import M3e.Element as Element exposing (Element)
 import M3e.Icon as Icon
-import M3e.IconButton as IconButton
 import M3e.NavBar as NavBar
 import M3e.NavItem as NavItem
 import M3e.NavRail as NavRail
-import M3e.SearchBar as SearchBar
+import M3e.Record.AssistChip as AssistChip
+import M3e.Record.IconButton as IconButton
+import M3e.Record.SearchBar as SearchBar
 import M3e.Tab as Tab
 import M3e.Tabs as Tabs
 import M3e.Value as Value exposing (Supported)

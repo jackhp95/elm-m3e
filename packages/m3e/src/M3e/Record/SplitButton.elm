@@ -1,6 +1,4 @@
-module M3e.SplitButton exposing
-    ( view, variant, size, leadingButton, trailingButton
-    )
+module M3e.Record.SplitButton exposing ( view, variant, size )
 
 {-|
 A button used to show an action with a menu of related actions.
@@ -28,7 +26,7 @@ M3e.SplitButton.view { leadingButton = M3e.Button.view { content = Kit.text "Edi
 M3e.SplitButton.view { leadingButton = M3e.Button.view { content = Kit.text "Save", action = M3e.Action.none } [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "save" ] []) ], trailingButton = M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "arrow_drop_down" ] [], action = M3e.Action.none } [] [] } [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.size M3e.Value.large ] []
 ```
 
-@docs view, variant, size, leadingButton, trailingButton
+@docs view, variant, size
 -}
 
 
@@ -42,15 +40,17 @@ import M3e.Value
 
 {-| Build the `<m3e-split-button>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
+    { leadingButton : M3e.Element.Element { button : M3e.Value.Supported } msg
+    , trailingButton :
+        M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leadingButton : M3e.Value.Supported
-    , trailingButton : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -59,7 +59,17 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode
+                      (M3e.Element.withSlot "leading-button" req_.leadingButton)
+                  , M3e.Element.toNode
+                      (M3e.Element.withSlot
+                         "trailing-button"
+                         req_.trailingButton
+                      )
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -86,19 +96,3 @@ size :
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size =
     M3e.Cem.SplitButton.size
-
-
-{-| Place content in the `leading-button` slot. -}
-leadingButton :
-    M3e.Element.Element { button : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
-leadingButton el =
-    M3e.Content.slot "leading-button" el
-
-
-{-| Place content in the `trailing-button` slot. -}
-trailingButton :
-    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
-trailingButton el =
-    M3e.Content.slot "trailing-button" el

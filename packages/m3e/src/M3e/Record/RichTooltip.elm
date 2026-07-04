@@ -1,6 +1,6 @@
-module M3e.RichTooltip exposing
+module M3e.Record.RichTooltip exposing
     ( view, disabled, for, hideDelay, position, showDelay
-    , touchGestures, onBeforetoggle, onToggle, child, subhead, actions, children
+    , touchGestures, onBeforetoggle, onToggle, subhead, actions
     )
 
 {-|
@@ -18,8 +18,7 @@ Provides contextual details for a control, such as explaining the value or purpo
 - `actions`: Optional action elements displayed at the bottom of the tooltip.
 
 @docs view, disabled, for, hideDelay, position, showDelay
-@docs touchGestures, onBeforetoggle, onToggle, child, subhead, actions
-@docs children
+@docs touchGestures, onBeforetoggle, onToggle, subhead, actions
 -}
 
 
@@ -33,7 +32,8 @@ import M3e.Value
 
 {-| Build the `<m3e-rich-tooltip>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
     , position : M3e.Value.Supported
@@ -43,12 +43,11 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , subhead : M3e.Value.Supported
+    -> List (M3e.Content.Content { subhead : M3e.Value.Supported
     , actions : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | richTooltip : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -57,7 +56,10 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -127,14 +129,6 @@ onToggle =
     M3e.Cem.RichTooltip.onToggle
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
 {-| Place content in the `subhead` slot. -}
 subhead :
     M3e.Element.Element { text : M3e.Value.Supported } msg
@@ -149,11 +143,3 @@ actions :
     -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
 actions el =
     M3e.Content.slot "actions" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

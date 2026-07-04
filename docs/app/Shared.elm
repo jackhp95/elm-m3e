@@ -32,12 +32,12 @@ import M3e.ButtonSegment as ButtonSegment
 import M3e.Card as Card
 import M3e.DrawerContainer as DrawerContainer
 import M3e.Element as Element exposing (Element)
-import M3e.Heading as Heading
 import M3e.Icon as Icon
-import M3e.IconButton as IconButton
 import M3e.NavMenu as NavMenu
-import M3e.NavMenuItem as NavMenuItem
 import M3e.Node as Node
+import M3e.Record.Heading as Heading
+import M3e.Record.IconButton as IconButton
+import M3e.Record.NavMenuItem as NavMenuItem
 import M3e.SegmentedButton as SegmentedButton
 import M3e.Theme as Theme
 import M3e.Value as Value exposing (Supported, Value)

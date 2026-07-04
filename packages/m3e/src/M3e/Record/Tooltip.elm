@@ -1,6 +1,6 @@
-module M3e.Tooltip exposing
+module M3e.Record.Tooltip exposing
     ( view, disabled, for, hideDelay, position, showDelay
-    , touchGestures, child, children
+    , touchGestures
     )
 
 {-|
@@ -37,7 +37,7 @@ Adds additional context to a button or other UI element.
 ```
 
 @docs view, disabled, for, hideDelay, position, showDelay
-@docs touchGestures, child, children
+@docs touchGestures
 -}
 
 
@@ -51,7 +51,8 @@ import M3e.Value
 
 {-| Build the `<m3e-tooltip>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , for : M3e.Value.Supported
     , hideDelay : M3e.Value.Supported
     , position : M3e.Value.Supported
@@ -59,9 +60,9 @@ view :
     , touchGestures : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | tooltip : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -70,7 +71,10 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -121,19 +125,3 @@ touchGestures :
     -> M3e.Cem.Attr.Attr { c | touchGestures : M3e.Value.Supported } msg
 touchGestures =
     M3e.Cem.Tooltip.touchGestures
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

@@ -1,6 +1,6 @@
-module M3e.SearchBar exposing
-    ( view, clearable, clearLabel, onClear, leading, input
-    , trailing, clearIcon
+module M3e.Record.SearchBar exposing
+    ( view, clearable, clearLabel, onClear, leading, trailing
+    , clearIcon
     )
 
 {-|
@@ -17,8 +17,8 @@ A bar that provides a prominent entry point for search.
 - `input`: Renders the input of the bar.
 - `trailing`: Renders content after the input of the bar.
 
-@docs view, clearable, clearLabel, onClear, leading, input
-@docs trailing, clearIcon
+@docs view, clearable, clearLabel, onClear, leading, trailing
+@docs clearIcon
 -}
 
 
@@ -32,18 +32,18 @@ import M3e.Value
 
 {-| Build the `<m3e-search-bar>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { clearable : M3e.Value.Supported
+    { input : M3e.Element.Element any msg }
+    -> List (M3e.Cem.Attr.Attr { clearable : M3e.Value.Supported
     , clearLabel : M3e.Value.Supported
     , onClear : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { leading : M3e.Value.Supported
-    , input : M3e.Value.Supported
     , trailing : M3e.Value.Supported
     , clearIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | searchBar : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -52,7 +52,11 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -84,14 +88,6 @@ leading :
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
     M3e.Content.slot "leading" el
-
-
-{-| Place content in the `input` slot. -}
-input :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
-input el =
-    M3e.Content.slot "input" el
 
 
 {-| Place content in the `trailing` slot. -}

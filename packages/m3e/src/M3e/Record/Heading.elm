@@ -1,6 +1,5 @@
-module M3e.Heading exposing
-    ( view, emphasized, level, size, variant, child
-    , children
+module M3e.Record.Heading exposing
+    ( view, emphasized, level, size, variant
     )
 
 {-|
@@ -25,8 +24,7 @@ Native.header [] [ M3e.Heading.view { content = Kit.text "Quarterly report" } [ 
 Native.section [] [ M3e.Heading.view { content = Kit.text "Build faster." } [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True, M3e.Heading.level "1" ] [], M3e.Heading.view { content = Kit.text "Ship expressive interfaces with Material 3." } [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small, M3e.Heading.level "2" ] [] ]
 ```
 
-@docs view, emphasized, level, size, variant, child
-@docs children
+@docs view, emphasized, level, size, variant
 -}
 
 
@@ -40,15 +38,16 @@ import M3e.Value
 
 {-| Build the `<m3e-heading>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { emphasized : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { emphasized : M3e.Value.Supported
     , level : M3e.Value.Supported
     , size : M3e.Value.Supported
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | heading : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -57,7 +56,10 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -95,19 +97,3 @@ variant :
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant =
     M3e.Cem.Heading.variant
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

@@ -1,8 +1,7 @@
-module M3e.SearchView exposing
+module M3e.Record.SearchView exposing
     ( view, contained, mode, open, clearLabel, closeLabel
-    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child, input
-    , openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon
-    , children
+    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child, openLeading
+    , openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon, children
     )
 
 {-|
@@ -26,8 +25,8 @@ A surface that presents suggestions and results for a search.
 
 @docs view, contained, mode, open, clearLabel, closeLabel
 @docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child
-@docs input, openLeading, openTrailing, closedLeading, closedTrailing, searchIcon
-@docs closeIcon, clearIcon, children
+@docs openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon
+@docs clearIcon, children
 -}
 
 
@@ -41,7 +40,8 @@ import M3e.Value
 
 {-| Build the `<m3e-search-view>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { contained : M3e.Value.Supported
+    { input : M3e.Element.Element any msg }
+    -> List (M3e.Cem.Attr.Attr { contained : M3e.Value.Supported
     , mode : M3e.Value.Supported
     , open : M3e.Value.Supported
     , clearLabel : M3e.Value.Supported
@@ -54,7 +54,6 @@ view :
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , input : M3e.Value.Supported
     , openLeading : M3e.Value.Supported
     , openTrailing : M3e.Value.Supported
     , closedLeading : M3e.Value.Supported
@@ -64,7 +63,7 @@ view :
     , clearIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | searchView : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -73,7 +72,11 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -153,14 +156,6 @@ child :
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
-
-
-{-| Place content in the `input` slot. -}
-input :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
-input el =
-    M3e.Content.slot "input" el
 
 
 {-| Place content in the `open-leading` slot. -}

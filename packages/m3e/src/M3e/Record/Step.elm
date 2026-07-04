@@ -1,7 +1,7 @@
-module M3e.Step exposing
+module M3e.Record.Step exposing
     ( view, completed, disabled, editable, for, optional
-    , selected, invalid, onBeforeinput, onInput, onChange, onClick, child
-    , icon, doneIcon, editIcon, errorIcon, hint, error, children
+    , selected, invalid, onBeforeinput, onInput, onChange, onClick, icon
+    , doneIcon, editIcon, errorIcon, hint, error
     )
 
 {-|
@@ -26,8 +26,7 @@ A step in a wizard-like workflow.
 
 @docs view, completed, disabled, editable, for, optional
 @docs selected, invalid, onBeforeinput, onInput, onChange, onClick
-@docs child, icon, doneIcon, editIcon, errorIcon, hint
-@docs error, children
+@docs icon, doneIcon, editIcon, errorIcon, hint, error
 -}
 
 
@@ -41,7 +40,8 @@ import M3e.Value
 
 {-| Build the `<m3e-step>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { completed : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { completed : M3e.Value.Supported
     , disabled : M3e.Value.Supported
     , editable : M3e.Value.Supported
     , for : M3e.Value.Supported
@@ -54,8 +54,7 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
+    -> List (M3e.Content.Content { icon : M3e.Value.Supported
     , doneIcon : M3e.Value.Supported
     , editIcon : M3e.Value.Supported
     , errorIcon : M3e.Value.Supported
@@ -63,14 +62,17 @@ view :
     , error : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Step.step (List.map M3e.Cem.Attr.forget erased) ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -146,14 +148,6 @@ onClick =
     M3e.Cem.Step.onClick
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
 {-| Place content in the `icon` slot. -}
 icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
@@ -200,11 +194,3 @@ error :
     -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
 error el =
     M3e.Content.slot "error" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

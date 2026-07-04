@@ -21,12 +21,12 @@ import Kit.Surface as Surface
 import Layout
 import M3e.Action as Action
 import M3e.Avatar as Avatar
-import M3e.Button as Button
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
-import M3e.Heading as Heading
 import M3e.Icon as Icon
+import M3e.Record.Button as Button
+import M3e.Record.Heading as Heading
 import M3e.Value as Value exposing (Supported)
 import Native
 import Pages.Url

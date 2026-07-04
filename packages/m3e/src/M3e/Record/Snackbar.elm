@@ -1,6 +1,6 @@
-module M3e.Snackbar exposing
+module M3e.Record.Snackbar exposing
     ( view, action, closeLabel, dismissible, duration, onBeforetoggle
-    , onToggle, child, closeIcon, children
+    , onToggle, closeIcon
     )
 
 {-|
@@ -28,7 +28,7 @@ M3e.Snackbar.view { content = Kit.text "Message archived" } [ M3e.Snackbar.actio
 ```
 
 @docs view, action, closeLabel, dismissible, duration, onBeforetoggle
-@docs onToggle, child, closeIcon, children
+@docs onToggle, closeIcon
 -}
 
 
@@ -42,7 +42,8 @@ import M3e.Value
 
 {-| Build the `<m3e-snackbar>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { action : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { action : M3e.Value.Supported
     , closeLabel : M3e.Value.Supported
     , dismissible : M3e.Value.Supported
     , duration : M3e.Value.Supported
@@ -50,11 +51,9 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Content.Content { closeIcon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -63,7 +62,10 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -106,25 +108,9 @@ onToggle =
     M3e.Cem.Snackbar.onToggle
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
 closeIcon el =
     M3e.Content.slot "close-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

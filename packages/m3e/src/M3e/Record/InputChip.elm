@@ -1,7 +1,6 @@
-module M3e.InputChip exposing
+module M3e.Record.InputChip exposing
     ( view, disabled, disabledInteractive, removable, removeLabel, value
-    , variant, onRemove, onClick, child, avatar, icon, removeIcon
-    , children
+    , variant, onRemove, onClick, avatar, icon, removeIcon
     )
 
 {-|
@@ -21,8 +20,7 @@ A chip which represents a discrete piece of information entered by a user.
 - `trailing-icon`: Renders an icon after the chip's label.
 
 @docs view, disabled, disabledInteractive, removable, removeLabel, value
-@docs variant, onRemove, onClick, child, avatar, icon
-@docs removeIcon, children
+@docs variant, onRemove, onClick, avatar, icon, removeIcon
 -}
 
 
@@ -36,7 +34,8 @@ import M3e.Value
 
 {-| Build the `<m3e-input-chip>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
     , removable : M3e.Value.Supported
     , removeLabel : M3e.Value.Supported
@@ -46,13 +45,12 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , avatar : M3e.Value.Supported
+    -> List (M3e.Content.Content { avatar : M3e.Value.Supported
     , icon : M3e.Value.Supported
     , removeIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -61,7 +59,10 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -121,14 +122,6 @@ onClick =
     M3e.Cem.InputChip.onClick
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
 {-| Place content in the `avatar` slot. -}
 avatar :
     M3e.Element.Element { avatar : M3e.Value.Supported } msg
@@ -151,11 +144,3 @@ removeIcon :
     -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
 removeIcon el =
     M3e.Content.slot "remove-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

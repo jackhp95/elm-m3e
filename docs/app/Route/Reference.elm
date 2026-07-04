@@ -21,7 +21,7 @@ import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
-import M3e.Heading as Heading
+import M3e.Record.Heading as Heading
 import M3e.Value as Value exposing (Supported)
 import Native
 import Pages.Url

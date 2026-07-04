@@ -1,7 +1,7 @@
-module M3e.NavMenuItem exposing
+module M3e.Record.NavMenuItem exposing
     ( view, disabled, open, selected, onOpening, onOpened
-    , onClosing, onClosed, onClick, child, label, icon, badge
-    , selectedIcon, toggleIcon, children
+    , onClosing, onClosed, onClick, child, icon, badge, selectedIcon
+    , toggleIcon, children
     )
 
 {-|
@@ -25,8 +25,8 @@ An expandable item, selectable item within a navigation menu.
 - `toggle-icon`: Renders the toggle icon.
 
 @docs view, disabled, open, selected, onOpening, onOpened
-@docs onClosing, onClosed, onClick, child, label, icon
-@docs badge, selectedIcon, toggleIcon, children
+@docs onClosing, onClosed, onClick, child, icon, badge
+@docs selectedIcon, toggleIcon, children
 -}
 
 
@@ -40,7 +40,12 @@ import M3e.Value
 
 {-| Build the `<m3e-nav-menu-item>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { label :
+        M3e.Element.Element { text : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , open : M3e.Value.Supported
     , selected : M3e.Value.Supported
     , onOpening : M3e.Value.Supported
@@ -51,14 +56,13 @@ view :
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
     , icon : M3e.Value.Supported
     , badge : M3e.Value.Supported
     , selectedIcon : M3e.Value.Supported
     , toggleIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | navMenuItem : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -67,7 +71,11 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode (M3e.Element.withSlot "label" req_.label)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -125,16 +133,6 @@ child :
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
-
-
-{-| Place content in the `label` slot. -}
-label :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , link : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
-label el =
-    M3e.Content.slot "label" el
 
 
 {-| Place content in the `icon` slot. -}

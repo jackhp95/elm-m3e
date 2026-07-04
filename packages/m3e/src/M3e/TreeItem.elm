@@ -1,7 +1,7 @@
 module M3e.TreeItem exposing
     ( view, disabled, indeterminate, open, selected, onOpening
-    , onOpened, onClosing, onClosed, onClick, child, icon, selectedIcon
-    , toggleIcon, openToggleIcon, children
+    , onOpened, onClosing, onClosed, onClick, child, label, icon
+    , selectedIcon, toggleIcon, openToggleIcon, children
     )
 
 {-|
@@ -25,8 +25,8 @@ An expandable item in a tree.
 - `open-toggle-icon`: Renders the toggle icon when selected.
 
 @docs view, disabled, indeterminate, open, selected, onOpening
-@docs onOpened, onClosing, onClosed, onClick, child, icon
-@docs selectedIcon, toggleIcon, openToggleIcon, children
+@docs onOpened, onClosing, onClosed, onClick, child, label
+@docs icon, selectedIcon, toggleIcon, openToggleIcon, children
 -}
 
 
@@ -40,12 +40,7 @@ import M3e.Value
 
 {-| Build the `<m3e-tree-item>` element (lazy IR). -}
 view :
-    { label :
-        M3e.Element.Element { text : M3e.Value.Supported
-        , link : M3e.Value.Supported
-        } msg
-    }
-    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , indeterminate : M3e.Value.Supported
     , open : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -57,13 +52,14 @@ view :
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported
+    , label : M3e.Value.Supported
     , icon : M3e.Value.Supported
     , selectedIcon : M3e.Value.Supported
     , toggleIcon : M3e.Value.Supported
     , openToggleIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | treeItem : M3e.Value.Supported } msg
-view req_ attributes content_ =
+view attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -72,11 +68,7 @@ view req_ attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.append
-                  [ M3e.Element.toNode (M3e.Element.withSlot "label" req_.label)
-                  ]
-                  (List.map M3e.Content.toNode content_)
-             )
+             (List.map M3e.Content.toNode content_)
         )
 
 
@@ -141,6 +133,16 @@ child :
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
     M3e.Content.slot "" el
+
+
+{-| Place content in the `label` slot. -}
+label :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , link : M3e.Value.Supported
+    } msg
+    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+label el =
+    M3e.Content.slot "label" el
 
 
 {-| Place content in the `icon` slot. -}

@@ -32,17 +32,17 @@ import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
 import M3e.AppBar as AppBar
-import M3e.AssistChip as AssistChip
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
-import M3e.Fab as Fab
 import M3e.Icon as Icon
 import M3e.List as List_
 import M3e.ListItem as ListItem
 import M3e.NavBar as NavBar
 import M3e.NavItem as NavItem
 import M3e.NavRail as NavRail
-import M3e.SearchBar as SearchBar
+import M3e.Record.AssistChip as AssistChip
+import M3e.Record.Fab as Fab
+import M3e.Record.SearchBar as SearchBar
 import M3e.Value as Value exposing (Supported)
 import Native
 import PagesMsg exposing (PagesMsg)

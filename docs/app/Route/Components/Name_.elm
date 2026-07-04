@@ -21,9 +21,9 @@ import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
-import M3e.Heading as Heading
 import M3e.List as List_
 import M3e.ListItem as ListItem
+import M3e.Record.Heading as Heading
 import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)

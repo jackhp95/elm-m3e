@@ -1,6 +1,6 @@
-module M3e.Option exposing
+module M3e.Record.Option exposing
     ( view, disabled, disableHighlight, highlightMode, selected, term
-    , value, child, children
+    , value
     )
 
 {-|
@@ -31,7 +31,7 @@ M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.
 ```
 
 @docs view, disabled, disableHighlight, highlightMode, selected, term
-@docs value, child, children
+@docs value
 -}
 
 
@@ -45,7 +45,8 @@ import M3e.Value
 
 {-| Build the `<m3e-option>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disableHighlight : M3e.Value.Supported
     , highlightMode : M3e.Value.Supported
     , selected : M3e.Value.Supported
@@ -53,16 +54,19 @@ view :
     , value : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | option : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Option.option (List.map M3e.Cem.Attr.forget erased) ch
              )
              (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  [ M3e.Element.toNode req_.content ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -106,19 +110,3 @@ term =
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
     M3e.Cem.Option.value
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els

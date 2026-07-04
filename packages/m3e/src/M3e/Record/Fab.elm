@@ -1,7 +1,6 @@
-module M3e.Fab exposing
+module M3e.Record.Fab exposing
     ( view, disabled, disabledInteractive, extended, lowered, name
-    , size, type_, value, variant, onClick, href, target
-    , rel, download, child, label, closeIcon, children
+    , size, type_, value, variant, label, closeIcon
     )
 
 {-|
@@ -29,12 +28,11 @@ M3e.Fab.view { content = M3e.Icon.view [ M3e.Icon.name "menu" ] [], action = M3e
 ```
 
 @docs view, disabled, disabledInteractive, extended, lowered, name
-@docs size, type_, value, variant, onClick, href
-@docs target, rel, download, child, label, closeIcon
-@docs children
+@docs size, type_, value, variant, label, closeIcon
 -}
 
 
+import M3e.Action
 import M3e.Cem.Attr
 import M3e.Cem.Fab
 import M3e.Content
@@ -45,35 +43,57 @@ import M3e.Value
 
 {-| Build the `<m3e-fab>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
+    , action :
+        M3e.Action.Action { click : M3e.Value.Supported
+        , link : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        } msg
+    }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
-    , download : M3e.Value.Supported
     , extended : M3e.Value.Supported
-    , href : M3e.Value.Supported
     , lowered : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , rel : M3e.Value.Supported
     , size : M3e.Value.Supported
-    , target : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
     , variant : M3e.Value.Supported
-    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
+    -> List (M3e.Content.Content { label : M3e.Value.Supported
     , closeIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
-view attributes content_ =
+view req_ attributes content_ =
     M3e.Element.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Fab.fab (List.map M3e.Cem.Attr.forget erased) ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.append
+                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  )
+                  (List.map M3e.Cem.Attr.forget attributes)
+             )
+             (List.append
+                  [ M3e.Action.wrapContent
+                      req_.action
+                      (M3e.Element.toNode req_.content)
+                  ]
+                  (List.map M3e.Content.toNode content_)
+             )
         )
 
 
@@ -152,45 +172,6 @@ variant =
     M3e.Cem.Fab.variant
 
 
-{-| Listen for `click` events. -}
-onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
-onClick =
-    M3e.Cem.Fab.onClick
-
-
-{-| The URL to which the link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
-    M3e.Cem.Fab.href
-
-
-{-| The target of the link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
-    M3e.Cem.Fab.target
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
-    M3e.Cem.Fab.rel
-
-
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
-download :
-    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
-    M3e.Cem.Fab.download
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.slot "" el
-
-
 {-| Place content in the `label` slot. -}
 label :
     M3e.Element.Element { text : M3e.Value.Supported } msg
@@ -205,11 +186,3 @@ closeIcon :
     -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
 closeIcon el =
     M3e.Content.slot "close-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.slot "") els
