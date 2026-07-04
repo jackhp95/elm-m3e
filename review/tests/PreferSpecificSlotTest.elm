@@ -100,6 +100,7 @@ v = M3e.Button.view [] [ M3e.Button.icon someIcon ]
         , test "no-op when already using per-component setter" <|
             \() ->
                 """module A exposing (v)
+import M3e
 import M3e.Button
 v = M3e.Button.view [ M3e.Button.variant filled ] []
 """
