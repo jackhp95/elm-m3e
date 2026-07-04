@@ -168,10 +168,16 @@ tracedListWith lookup scope seen node =
             }
 
         Expression.IfBlock _ thenExpr elseExpr ->
-            -- if-then-else: union both branches with unresolved = True
-            concatTraced
-                { known = (tracedListWith lookup scope seen thenExpr).known, unresolved = True }
-                { known = (tracedListWith lookup scope seen elseExpr).known, unresolved = False }
+            let
+                thenTraced =
+                    tracedListWith lookup scope seen thenExpr
+
+                elseTraced =
+                    tracedListWith lookup scope seen elseExpr
+            in
+            { known = thenTraced.known ++ elseTraced.known
+            , unresolved = True
+            }
 
         Expression.FunctionOrValue _ name ->
             if Dict.member name seen then
