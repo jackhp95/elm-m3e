@@ -34,7 +34,7 @@ M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.Ex
 
 <!-- elm-cem:example title="Settings panel with custom header and actions" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "notifications" ] [], Native.span [] [ Kit.text "Notification preferences" ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Choose how and when we contact you about account activity and product updates." ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view { content = Kit.text "Cancel", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] [], M3e.Button.view { content = Kit.text "Save", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.filled ] [] ]) ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "notifications" ] [], Native.span [] [ Kit.text "Notification preferences" ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text "Choose how and when we contact you about account activity and product updates." ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Cancel") ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Save") ] ]) ]
 ```
 
 <!-- elm-cem:example title="Multi-open accordion with horizontal toggle" -->

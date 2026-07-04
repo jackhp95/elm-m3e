@@ -25,12 +25,12 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 
 <!-- elm-cem:example title="Medium app bar with leading and trailing actions" -->
 ```elm
-M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Back" ] []), M3e.AppBar.title (Kit.text "Top 10 hiking trails"), M3e.AppBar.subtitle (Kit.text "Discover popular trails"), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label "Bookmark" ] []) ]
+M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Back" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Kit.text "Top 10 hiking trails"), M3e.AppBar.subtitle (Kit.text "Discover popular trails"), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label "Bookmark" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] []) ]) ]
 ```
 
 <!-- elm-cem:example title="Centered large app bar with trailing menu" -->
 ```elm
-M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "menu" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Open navigation" ] []), M3e.AppBar.title (Kit.text "Inbox"), M3e.AppBar.subtitle (Kit.text "24 unread messages"), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "search" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Search" ] []), M3e.AppBar.trailingIcon (M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "more_vert" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "More options" ] []) ]
+M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Open navigation" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]), M3e.AppBar.title (Kit.text "Inbox"), M3e.AppBar.subtitle (Kit.text "24 unread messages"), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "Search" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label "More options" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "more_vert" ] []) ]) ]
 ```
 
 @docs view, centered, for, size, leading, title

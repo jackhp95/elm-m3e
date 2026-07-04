@@ -28,7 +28,7 @@ A content container for text, images (or other media), and actions in the contex
 
 <!-- elm-cem:example title="Outlined card with header and content slots" -->
 ```elm
-M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Heading.view { content = Kit.text "People" } [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] []), M3e.Card.content (Native.div [] [ M3e.ChipSet.view [] (M3e.ChipSet.children [ M3e.Chip.view { content = Kit.text "Person Name" } [] [], M3e.Chip.view { content = Kit.text "Relative" } [] [] ]) ]) ]
+M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "People") ]), M3e.Card.content (Native.div [] [ M3e.ChipSet.view [] (M3e.ChipSet.children [ M3e.Chip.view [] [ M3e.Chip.child (Kit.text "Person Name") ], M3e.Chip.view [] [ M3e.Chip.child (Kit.text "Relative") ] ]) ]) ]
 ```
 
 <!-- elm-cem:example title="Actionable filled card linking to a detail page" -->

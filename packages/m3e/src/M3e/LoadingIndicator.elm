@@ -19,7 +19,7 @@ Native.section [] [ Native.header [] [ Native.node Html.h2 [] [ Kit.text "Your d
 
 <!-- elm-cem:example title="Contained loading indicator inside a refresh button" -->
 ```elm
-Native.div [] [ M3e.Button.view { content = Kit.text "Refreshing", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []) ] ]
+Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.child (Kit.text "Refreshing"), M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []) ] ]
 ```
 
 @docs view, variant

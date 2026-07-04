@@ -18,12 +18,12 @@ A button used to show an action with a menu of related actions.
 
 <!-- elm-cem:example title="Filled split button with primary action and menu toggle" -->
 ```elm
-M3e.SplitButton.view { leadingButton = M3e.Button.view { content = Kit.text "Edit", action = M3e.Action.none } [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []) ], trailingButton = M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], action = M3e.Action.none } [] [] } [ M3e.SplitButton.variant M3e.Value.filled, M3e.SplitButton.size M3e.Value.medium ] []
+M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.filled, M3e.SplitButton.size M3e.Value.medium ] [ M3e.SplitButton.child (Kit.text "Edit") ]
 ```
 
 <!-- elm-cem:example title="Tonal split button" -->
 ```elm
-M3e.SplitButton.view { leadingButton = M3e.Button.view { content = Kit.text "Save", action = M3e.Action.none } [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "save" ] []) ], trailingButton = M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "arrow_drop_down" ] [], action = M3e.Action.none } [] [] } [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.size M3e.Value.large ] []
+M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.size M3e.Value.large ] [ M3e.SplitButton.child (Kit.text "Save") ]
 ```
 
 @docs view, variant, size

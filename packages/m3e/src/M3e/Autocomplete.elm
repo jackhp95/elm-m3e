@@ -29,7 +29,7 @@ Enhances a text input with suggested options.
 ```elm
 [ Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]
     , Native.node Html.input [] []
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit", M3e.Autocomplete.autoActivate True, M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text "Apples" } [] [], M3e.Option.view { content = Kit.text "Oranges" } [] [], M3e.Option.view { content = Kit.text "Bananas" } [] [], M3e.Option.view { content = Kit.text "Grapes" } [] [] ])
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit", M3e.Autocomplete.autoActivate True, M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
     ]
 ```
 
@@ -37,7 +37,7 @@ Enhances a text input with suggested options.
 ```elm
 [ Native.node Html.label [] [ Kit.text "Country" ]
     , Native.node Html.input [] []
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "country", M3e.Autocomplete.noDataLabel "No matching countries" ] ([ M3e.Autocomplete.noData (Kit.text "Try a different spelling") ] ++ M3e.Autocomplete.children [ M3e.Option.view { content = Kit.text "Australia" } [] [], M3e.Option.view { content = Kit.text "Brazil" } [] [], M3e.Option.view { content = Kit.text "Canada" } [] [], M3e.Option.view { content = Kit.text "Denmark" } [] [] ])
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "country", M3e.Autocomplete.noDataLabel "No matching countries" ] ([ M3e.Autocomplete.noData (Kit.text "Try a different spelling") ] ++ M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Australia") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Brazil") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Canada") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Denmark") ] ])
     ]
 ```
 

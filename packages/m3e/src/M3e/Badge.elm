@@ -16,7 +16,7 @@ A visual indicator used to label content.
 
 <!-- elm-cem:example title="Notification count badge on a button" -->
 ```elm
-[ M3e.Button.view { content = Kit.text "Alerts", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "notifications" ] []) ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Alerts"), M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "notifications" ] []) ]
     , M3e.Badge.view [ M3e.Badge.for "notifications" ] [ M3e.Badge.child (Kit.text "10") ]
     ]
 ```

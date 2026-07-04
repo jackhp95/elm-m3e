@@ -20,14 +20,14 @@ A menu, opened from a floating action button (FAB), used to display multiple rel
 
 <!-- elm-cem:example title="Primary FAB revealing a secondary action menu" -->
 ```elm
-[ M3e.Button.view { content = Kit.text "Compose", action = M3e.Action.opensFabMenu "compose-menu" } [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []) ]
+[ M3e.Record.Button.view { content = Kit.text "Compose", action = M3e.Action.opensFabMenu "compose-menu" } [ M3e.Record.Button.variant M3e.Value.filled, M3e.Record.Button.size M3e.Value.large ] [ M3e.Record.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []) ]
     , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.secondary ] (M3e.FabMenu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "mail" ] []), M3e.MenuItem.child (Kit.text "New email") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "event" ] []), M3e.MenuItem.child (Kit.text "New event") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "group" ] []), M3e.MenuItem.child (Kit.text "New group") ] ])
     ]
 ```
 
 <!-- elm-cem:example title="Tertiary FAB menu with link and disabled items" -->
 ```elm
-[ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "share" ] [], action = M3e.Action.opensFabMenu "share-menu" } [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large ] []
+[ M3e.Record.Button.view { content = M3e.Icon.view [ M3e.Icon.name "share" ] [], action = M3e.Action.opensFabMenu "share-menu" } [ M3e.Record.Button.variant M3e.Value.tonal, M3e.Record.Button.size M3e.Value.large ] []
     , M3e.FabMenu.view [ M3e.FabMenu.variant M3e.Value.tertiary ] (M3e.FabMenu.children [ M3e.MenuItem.view [ M3e.MenuItem.href "https://example.com/link", M3e.MenuItem.target "_blank" ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.MenuItem.child (Kit.text "Copy link") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.MenuItem.child (Kit.text "Export PDF") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "print" ] []), M3e.MenuItem.child (Kit.text "Print") ] ])
     ]
 ```

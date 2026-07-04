@@ -28,18 +28,18 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Icon button wrapping an icon" -->
 ```elm
-M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [], action = M3e.Action.none } [ M3e.Aria.label "Toggle theme" ] []
+M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "dark_mode" ] []) ]
 ```
 
 <!-- elm-cem:example title="Link icon buttons in a toolbar" -->
 ```elm
-Native.div [] [ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "rss_feed" ] [], action = M3e.Action.link "/rss.xml" } [ M3e.Aria.label "RSS Feed" ] [], M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "data_object" ] [], action = M3e.Action.link "/feed.json" } [ M3e.Aria.label "JSON Feed" ] [] ]
+Native.div [] [ M3e.IconButton.view [ M3e.IconButton.href "/rss.xml", M3e.Aria.label "RSS Feed" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "rss_feed" ] []) ], M3e.IconButton.view [ M3e.IconButton.href "/feed.json", M3e.Aria.label "JSON Feed" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "data_object" ] []) ] ]
 ```
 
 <!-- elm-cem:example title="Icon buttons grouped in a media control bar" -->
 ```elm
-[ M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "skip_previous" ] [], action = M3e.Action.none } [ M3e.Aria.label "Previous" ] []
-    , M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "play_arrow" ] [], action = M3e.Action.none } [ M3e.Aria.label "Play/Pause" ] []
+[ M3e.IconButton.view [ M3e.Aria.label "Previous" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "skip_previous" ] []) ]
+    , M3e.IconButton.view [ M3e.Aria.label "Play/Pause" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []) ]
     ]
 ```
 

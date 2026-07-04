@@ -25,7 +25,7 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Small FAB with icon" -->
 ```elm
-M3e.Fab.view { content = M3e.Icon.view [ M3e.Icon.name "menu" ] [], action = M3e.Action.none } [ M3e.Fab.size M3e.Value.small, M3e.Aria.label "Navigation menu" ] []
+M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label "Navigation menu" ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]
 ```
 
 @docs view, disabled, disabledInteractive, extended, lowered, name

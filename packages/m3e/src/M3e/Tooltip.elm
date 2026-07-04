@@ -17,22 +17,22 @@ Adds additional context to a button or other UI element.
 
 <!-- elm-cem:example title="Simple tooltip on an icon button" -->
 ```elm
-[ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "refresh" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.tonal ] []
-    , M3e.Tooltip.view { content = Kit.text "Refresh data" } [ M3e.Tooltip.for "refreshBtn", M3e.Tooltip.position M3e.Value.above ] []
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "refresh" ] []) ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "refreshBtn", M3e.Tooltip.position M3e.Value.above ] [ M3e.Tooltip.child (Kit.text "Refresh data") ]
     ]
 ```
 
 <!-- elm-cem:example title="Rich tooltip with subhead and actions" -->
 ```elm
-[ M3e.Button.view { content = Kit.text "Details", action = M3e.Action.none } [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "info" ] []) ]
-    , M3e.RichTooltip.view { content = Kit.text "Now you can adjust uploaded image quality and upgrade your available storage space." } [ M3e.RichTooltip.for "infoBtn", M3e.RichTooltip.position M3e.Value.belowAfter, M3e.RichTooltip.showDelay 100 ] [ M3e.RichTooltip.subhead (Kit.text "New settings available"), M3e.RichTooltip.actions (Native.div [] [ M3e.Button.view { content = Kit.text "Learn more", action = M3e.Action.richTooltipAction } [ M3e.Button.variant M3e.Value.text ] [] ]) ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Details"), M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "info" ] []) ]
+    , M3e.RichTooltip.view [ M3e.RichTooltip.for "infoBtn", M3e.RichTooltip.position M3e.Value.belowAfter, M3e.RichTooltip.showDelay 100 ] [ M3e.RichTooltip.child (Kit.text "Now you can adjust uploaded image quality and upgrade your available storage space."), M3e.RichTooltip.subhead (Kit.text "New settings available"), M3e.RichTooltip.actions (Native.div [] [ M3e.Button.view { content = Kit.text "Learn more", action = M3e.Action.richTooltipAction } [ M3e.Button.variant M3e.Value.text ] [] ]) ]
     ]
 ```
 
 <!-- elm-cem:example title="Tooltip with touch gestures disabled" -->
 ```elm
-[ M3e.Button.view { content = M3e.Icon.view [ M3e.Icon.name "delete" ] [], action = M3e.Action.none } [ M3e.Button.variant M3e.Value.text ] []
-    , M3e.Tooltip.view { content = Kit.text "Delete item" } [ M3e.Tooltip.for "deleteBtn", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] []
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "delete" ] []) ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "deleteBtn", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] [ M3e.Tooltip.child (Kit.text "Delete item") ]
     ]
 ```
 
