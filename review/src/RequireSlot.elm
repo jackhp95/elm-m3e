@@ -21,7 +21,7 @@ import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
 import M3e.Review.Facts exposing (Fact)
-import Review.ModuleNameLookupTable exposing (ModuleNameLookupTable)
+import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
@@ -70,7 +70,7 @@ slotSetter fact slot =
                 "child"
 
             else
-                camelize slot
+                Facts.camelize slot
 
 
 type alias Context =
@@ -130,7 +130,7 @@ expressionVisitor node context =
                 Just site ->
                     case Dict.get site.noun context.index of
                         Just required ->
-                            ( checkCall context required (Node.range fnNode) args, context )
+                            ( checkCall context site.noun required (Node.range fnNode) args, context )
 
                         Nothing ->
                             ( [], context )
@@ -148,8 +148,8 @@ We only flag when we have enough args (>=2 for Shape3, >=3 for Shape4).
 When `unresolved = True` we still check the known setters but stay silent if
 there are zero known (we can't distinguish "truly empty" from "all-dynamic").
 -}
-checkCall : Context -> List String -> { start : { row : Int, column : Int }, end : { row : Int, column : Int } } -> List (Node Expression) -> List (Error {})
-checkCall context required range args =
+checkCall : Context -> String -> List String -> { start : { row : Int, column : Int }, end : { row : Int, column : Int } } -> List (Node Expression) -> List (Error {})
+checkCall context componentNoun required range args =
     if List.length args >= 2 then
         case List.reverse args of
             last :: _ ->
@@ -164,7 +164,7 @@ checkCall context required range args =
                 else
                     let
                         present =
-                            List.filterMap elementSetter traced.known
+                            List.filterMap (elementSetter context componentNoun) traced.known
                     in
                     required
                         |> List.filter (\name -> not (List.member name present))
@@ -177,19 +177,39 @@ checkCall context required range args =
         []
 
 
-elementSetter : Node Expression -> Maybe String
-elementSetter elementNode =
+{-| Extract the setter name from a content-list element, verifying it resolves
+to the top-layer `M3e` or `M3e.<Comp>` module so bare names from unrelated
+modules don't silence the rule.
+-}
+elementSetter : Context -> String -> Node Expression -> Maybe String
+elementSetter context componentNoun elementNode =
+    let
+        isTopLayer setterNode name =
+            case Lookup.moduleNameFor context.lookup setterNode of
+                Just [ "M3e" ] ->
+                    Just name
+
+                Just [ "M3e", comp ] ->
+                    if comp == Facts.capitalize componentNoun then
+                        Just name
+
+                    else
+                        Nothing
+
+                _ ->
+                    Nothing
+    in
     case Node.value elementNode of
         Expression.Application (setterNode :: _) ->
             case Node.value setterNode of
                 Expression.FunctionOrValue _ name ->
-                    Just name
+                    isTopLayer setterNode name
 
                 _ ->
                     Nothing
 
         Expression.FunctionOrValue _ name ->
-            Just name
+            isTopLayer elementNode name
 
         _ ->
             Nothing
@@ -207,21 +227,3 @@ error name range =
         range
 
 
-camelize : String -> String
-camelize s =
-    case String.split "-" s of
-        [] ->
-            s
-
-        first :: rest ->
-            first ++ String.concat (List.map capitalize rest)
-
-
-capitalize : String -> String
-capitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s

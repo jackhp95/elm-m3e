@@ -88,10 +88,10 @@ checkCall context fact fnNode args =
                 |> List.filter (\( k, _ ) -> k == slotName)
                 |> List.head
                 |> Maybe.map Tuple.second
-                |> Maybe.withDefault (camelize slotName)
+                |> Maybe.withDefault (Facts.camelize slotName)
 
         slotFilled setter =
-            List.any (elementIsCall setter) contentTrace.known
+            List.any (elementIsCall context fact.component setter) contentTrace.known
     in
     requiredSingular
         |> List.filterMap
@@ -117,11 +117,11 @@ checkCall context fact fnNode args =
                                     ++ "` but the content list doesn't fill it"
                             , details =
                                 [ "Add `M3e."
-                                    ++ capitalize fact.component
+                                    ++ Facts.capitalize fact.component
                                     ++ "."
                                     ++ setter
                                     ++ " <value>` to the content list, or use `M3e.Record."
-                                    ++ capitalize fact.component
+                                    ++ Facts.capitalize fact.component
                                     ++ ".view` which enforces this at the type level."
                                 ]
                             }
@@ -130,13 +130,16 @@ checkCall context fact fnNode args =
             )
 
 
-elementIsCall : String -> Node Expression -> Bool
-elementIsCall setter element =
+{-| Check whether a content-list element calls the named setter, verifying it
+resolves to the top-layer `M3e` or `M3e.<Comp>` module.
+-}
+elementIsCall : Context -> String -> String -> Node Expression -> Bool
+elementIsCall context componentNoun setter element =
     case Node.value element of
         Expression.Application (setterNode :: _) ->
             case Node.value setterNode of
                 Expression.FunctionOrValue _ name ->
-                    name == setter
+                    (name == setter) && isTopLayerModule context setterNode componentNoun
 
                 _ ->
                     False
@@ -145,21 +148,16 @@ elementIsCall setter element =
             False
 
 
-camelize : String -> String
-camelize s =
-    case String.split "-" s of
-        [] ->
-            s
+isTopLayerModule : Context -> Node Expression -> String -> Bool
+isTopLayerModule context node componentNoun =
+    case Lookup.moduleNameFor context.lookup node of
+        Just [ "M3e" ] ->
+            True
 
-        first :: rest ->
-            first ++ String.concat (List.map capitalize rest)
+        Just [ "M3e", comp ] ->
+            comp == Facts.capitalize componentNoun
+
+        _ ->
+            False
 
 
-capitalize : String -> String
-capitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s

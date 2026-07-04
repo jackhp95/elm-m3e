@@ -2,6 +2,7 @@ module Facts exposing
     ( CallSite, callSite
     , buildIndex, find
     , TracedList, tracedList
+    , camelize, capitalize
     )
 
 {-| Shared helpers for codegen-aware rules that consume `M3e.Review.Facts`.
@@ -9,6 +10,7 @@ module Facts exposing
 @docs CallSite, callSite
 @docs buildIndex, find
 @docs TracedList, tracedList
+@docs camelize, capitalize
 
 -}
 
@@ -203,13 +205,13 @@ resolveApp :
     -> List (Node Expression)
     -> TracedList
 resolveApp lookup scope seen fnNode args =
-    case ( Node.value fnNode, args ) of
-        ( Expression.FunctionOrValue [ "List" ] "append", [ a, b ] ) ->
+    case ( Node.value fnNode, Lookup.moduleNameFor lookup fnNode, args ) of
+        ( Expression.FunctionOrValue _ "append", Just [ "List" ], [ a, b ] ) ->
             concatTraced
                 (tracedListWith lookup scope seen a)
                 (tracedListWith lookup scope seen b)
 
-        ( Expression.FunctionOrValue [ "List" ] "concat", [ inner ] ) ->
+        ( Expression.FunctionOrValue _ "concat", Just [ "List" ], [ inner ] ) ->
             case Node.value inner of
                 Expression.ListExpr parts ->
                     List.foldl
@@ -222,10 +224,10 @@ resolveApp lookup scope seen fnNode args =
                 _ ->
                     { known = [], unresolved = True }
 
-        ( Expression.FunctionOrValue [ "List" ] "map", [ mapperNode, _ ] ) ->
+        ( Expression.FunctionOrValue _ "map", Just [ "List" ], [ mapperNode, _ ] ) ->
             resolveListMapMapper mapperNode
 
-        ( Expression.FunctionOrValue [ "List" ] "concatMap", [ mapperNode, _ ] ) ->
+        ( Expression.FunctionOrValue _ "concatMap", Just [ "List" ], [ mapperNode, _ ] ) ->
             -- concatMap f list — same analysis as map: mapper head is the setter,
             -- unresolved because we can't know at analysis time which items are produced.
             resolveListMapMapper mapperNode
@@ -288,6 +290,30 @@ concatTraced a b =
     { known = a.known ++ b.known
     , unresolved = a.unresolved || b.unresolved
     }
+
+
+{-| Convert a hyphenated string to camelCase (e.g. `"aria-label"` → `"ariaLabel"`).
+-}
+camelize : String -> String
+camelize s =
+    case String.split "-" s of
+        [] ->
+            s
+
+        first :: rest ->
+            first ++ String.concat (List.map capitalize rest)
+
+
+{-| Uppercase the first character of a string.
+-}
+capitalize : String -> String
+capitalize s =
+    case String.uncons s of
+        Just ( c, rest ) ->
+            String.cons (Char.toUpper c) rest
+
+        Nothing ->
+            s
 
 
 decapitalize : String -> String

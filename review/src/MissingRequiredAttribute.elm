@@ -152,7 +152,7 @@ satisfiedInRecord recordArg attrName =
                 Expression.RecordExpr fields ->
                     let
                         fieldName =
-                            camelize attrName
+                            Facts.camelize attrName
                     in
                     List.any
                         (\field ->
@@ -187,7 +187,7 @@ attrElementSatisfies context componentNoun attrName element =
                         False
 
                 perComponentSatisfier =
-                    isCallTo context [ "M3e", capitalize componentNoun ] (camelize attrName) setterNode
+                    isCallTo context [ "M3e", Facts.capitalize componentNoun ] (Facts.camelize attrName) setterNode
 
                 rawAttributeSatisfier =
                     case ( isCallTo context [ "M3e", "Cem", "Attr" ] "attribute" setterNode, setterArgs ) of
@@ -225,24 +225,6 @@ satisfierHint attrName componentNoun =
         "M3e.Aria." ++ String.dropLeft 5 attrName ++ " \"...\""
 
     else
-        "M3e." ++ capitalize componentNoun ++ "." ++ camelize attrName ++ " \"...\""
+        "M3e." ++ Facts.capitalize componentNoun ++ "." ++ Facts.camelize attrName ++ " \"...\""
 
 
-camelize : String -> String
-camelize s =
-    case String.split "-" s of
-        [] ->
-            s
-
-        first :: rest ->
-            first ++ String.concat (List.map capitalize rest)
-
-
-capitalize : String -> String
-capitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s

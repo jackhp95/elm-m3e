@@ -180,10 +180,10 @@ attrErrorFor context fact element =
                             (\( _, perCompName ) ->
                                 let
                                     compModule =
-                                        "M3e." ++ capitalize fact.component
+                                        "M3e." ++ Facts.capitalize fact.component
 
                                     compModuleParts =
-                                        [ "M3e", capitalize fact.component ]
+                                        [ "M3e", Facts.capitalize fact.component ]
 
                                     replacement =
                                         compModule ++ "." ++ perCompName
@@ -246,10 +246,10 @@ slotErrorFor context fact element =
                                             (\( _, perCompSetter ) ->
                                                 let
                                                     compModule =
-                                                        "M3e." ++ capitalize fact.component
+                                                        "M3e." ++ Facts.capitalize fact.component
 
                                                     compModuleParts =
-                                                        [ "M3e", capitalize fact.component ]
+                                                        [ "M3e", Facts.capitalize fact.component ]
 
                                                     bodySource =
                                                         context.extractSourceCode (Node.range bodyNode)
@@ -303,11 +303,3 @@ importFixIfMissing context compModule compModuleParts =
         ]
 
 
-capitalize : String -> String
-capitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s

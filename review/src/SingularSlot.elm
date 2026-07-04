@@ -19,7 +19,7 @@ import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
 import M3e.Review.Facts exposing (Fact)
-import Review.ModuleNameLookupTable exposing (ModuleNameLookupTable)
+import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
@@ -60,7 +60,7 @@ slotSetter fact slot =
                 "child"
 
             else
-                camelize slot
+                Facts.camelize slot
 
 
 type alias Context =
@@ -127,7 +127,7 @@ expressionVisitor node context =
                                             traced =
                                                 Facts.tracedList context.lookup context.scope last
                                         in
-                                        ( checkArg multi traced.known, context )
+                                        ( checkArg context site.noun multi traced.known, context )
 
                                     [] ->
                                         ( [], context )
@@ -147,11 +147,11 @@ expressionVisitor node context =
 
 {-| Flag any singular setter that appears more than once in the content list.
 -}
-checkArg : List String -> List (Node Expression) -> List (Error {})
-checkArg multi elements =
+checkArg : Context -> String -> List String -> List (Node Expression) -> List (Error {})
+checkArg context componentNoun multi elements =
     let
         setters =
-            List.filterMap elementSetter elements
+            List.filterMap (elementSetter context componentNoun) elements
 
         repeated =
             setters
@@ -164,19 +164,39 @@ checkArg multi elements =
         |> List.map (\( name, range ) -> error name range)
 
 
-elementSetter : Node Expression -> Maybe ( String, { start : { row : Int, column : Int }, end : { row : Int, column : Int } } )
-elementSetter elementNode =
+{-| Extract setter name and range from a content-list element, verifying it
+resolves to the top-layer `M3e` or `M3e.<Comp>` module.
+-}
+elementSetter : Context -> String -> Node Expression -> Maybe ( String, { start : { row : Int, column : Int }, end : { row : Int, column : Int } } )
+elementSetter context componentNoun elementNode =
     case Node.value elementNode of
         Expression.Application (setterNode :: _) ->
             case Node.value setterNode of
                 Expression.FunctionOrValue _ name ->
-                    Just ( name, Node.range elementNode )
+                    if isTopLayerModule context setterNode componentNoun then
+                        Just ( name, Node.range elementNode )
+
+                    else
+                        Nothing
 
                 _ ->
                     Nothing
 
         _ ->
             Nothing
+
+
+isTopLayerModule : Context -> Node Expression -> String -> Bool
+isTopLayerModule context node componentNoun =
+    case Lookup.moduleNameFor context.lookup node of
+        Just [ "M3e" ] ->
+            True
+
+        Just [ "M3e", comp ] ->
+            comp == Facts.capitalize componentNoun
+
+        _ ->
+            False
 
 
 countBy : String -> List ( String, a ) -> Int
@@ -209,21 +229,3 @@ error name range =
         range
 
 
-camelize : String -> String
-camelize s =
-    case String.split "-" s of
-        [] ->
-            s
-
-        first :: rest ->
-            first ++ String.concat (List.map capitalize rest)
-
-
-capitalize : String -> String
-capitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s
