@@ -119,18 +119,21 @@ checkCall context site fact fnNode args =
 
     else
         let
-            ( recordArg, attrsList ) =
+            ( recordArg, attrsList, contentList ) =
                 case site.shape of
                     Shape3 ->
-                        ( Nothing, List.head args )
+                        ( Nothing, List.head args, args |> List.drop 1 |> List.head )
 
                     Shape4 ->
                         case args of
+                            record :: attrs :: content :: _ ->
+                                ( Just record, Just attrs, Just content )
+
                             record :: attrs :: _ ->
-                                ( Just record, Just attrs )
+                                ( Just record, Just attrs, Nothing )
 
                             _ ->
-                                ( Nothing, Nothing )
+                                ( Nothing, Nothing, Nothing )
 
             attrsTrace =
                 case attrsList of
@@ -139,9 +142,17 @@ checkCall context site fact fnNode args =
 
                     Nothing ->
                         { known = [], unresolved = True }
+
+            contentTrace =
+                case contentList of
+                    Just contentNode ->
+                        Facts.tracedList context.lookup context.scope contentNode
+
+                    Nothing ->
+                        { known = [], unresolved = False }
         in
         fact.requiredAttrs
-            |> List.filterMap (checkOneAttr context site fact recordArg attrsTrace fnNode)
+            |> List.filterMap (checkOneAttr context site fact recordArg attrsTrace contentTrace fnNode)
 
 
 checkOneAttr :
@@ -150,11 +161,16 @@ checkOneAttr :
     -> Fact
     -> Maybe (Node Expression)
     -> Facts.TracedList
+    -> Facts.TracedList
     -> Node Expression
     -> String
     -> Maybe (Error {})
-checkOneAttr context site fact recordArg attrsTrace fnNode attrName =
-    if satisfiedInRecord recordArg attrName || satisfiedInAttrs context attrsTrace fact.component attrName then
+checkOneAttr context site fact recordArg attrsTrace contentTrace fnNode attrName =
+    if
+        satisfiedInRecord recordArg attrName
+            || satisfiedInAttrs context attrsTrace fact.component attrName
+            || satisfiedByLabelSlot context fact contentTrace attrName
+    then
         Nothing
 
     else if attrsTrace.unresolved then
@@ -181,6 +197,44 @@ checkOneAttr context site fact recordArg attrsTrace fnNode attrName =
                 }
                 (Node.range fnNode)
             )
+
+
+{-| True when `aria-label` is required but the component's label slot is filled
+in the content list. A filled label slot provides the accessible name, making
+aria-label redundant.
+
+Detects `("label", setterName)` in `fact.slotRewrites` and then looks for a
+call to `M3e.<Comp>.setterName` in the content list.
+
+-}
+satisfiedByLabelSlot : Context -> Fact -> Facts.TracedList -> String -> Bool
+satisfiedByLabelSlot context fact contentTrace attrName =
+    if attrName /= "aria-label" then
+        False
+
+    else
+        case List.filter (\( slotName, _ ) -> slotName == "label") fact.slotRewrites of
+            ( _, labelSetterName ) :: _ ->
+                let
+                    compModule =
+                        [ "M3e", Facts.capitalize fact.component ]
+
+                    isLabelCall element =
+                        case Node.value element of
+                            Expression.Application (setterNode :: _) ->
+                                isCallTo context compModule labelSetterName setterNode
+
+                            Expression.FunctionOrValue _ _ ->
+                                -- Bare function reference (partial application, e.g. List.map M3e.Fab.label items)
+                                isCallTo context compModule labelSetterName element
+
+                            _ ->
+                                False
+                in
+                List.any isLabelCall contentTrace.known
+
+            [] ->
+                False
 
 
 satisfiedInRecord : Maybe (Node Expression) -> String -> Bool
