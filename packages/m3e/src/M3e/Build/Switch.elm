@@ -1,6 +1,7 @@
 module M3e.Build.Switch exposing
     ( Builder, AttrCaps, SlotCaps, switch, checked, disabled
     , icons, name, value, onBeforeinput, onInput, onChange, onClick
+    , build
     )
 
 {-|
@@ -8,12 +9,17 @@ The ⑤ Build shape for `<m3e-switch>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, switch, checked, disabled
 @docs icons, name, value, onBeforeinput, onInput, onChange
-@docs onClick
+@docs onClick, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Switch
+import M3e.Cem.Switch
+import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -158,3 +164,114 @@ onClick :
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
 onClick v_ (Builder f_) =
     Builder { f_ | onClick = Just v_ }
+
+
+{-| Build the `<m3e-switch>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | switch : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Switch.switch
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Switch.checked v_) ]
+                         )
+                         f_.checked
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Switch.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Switch.icons v_) ]
+                         )
+                         f_.icons
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Switch.name v_) ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Switch.value v_) ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Switch.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Switch.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Switch.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Switch.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

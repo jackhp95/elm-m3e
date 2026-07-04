@@ -1,17 +1,21 @@
 module M3e.Build.TooltipElementBase exposing
     ( Builder, AttrCaps, SlotCaps, tooltipElementBase, disabled, showDelay
-    , hideDelay, touchGestures, for
+    , hideDelay, touchGestures, for, build
     )
 
 {-|
 The ⑤ Build shape for `<TooltipElementBase>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TooltipElementBase as TooltipElementBase`.
 
 @docs Builder, AttrCaps, SlotCaps, tooltipElementBase, disabled, showDelay
-@docs hideDelay, touchGestures, for
+@docs hideDelay, touchGestures, for, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.TooltipElementBase
+import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -108,3 +112,74 @@ for :
     -> Builder { a | for : M3e.Build.Internal.Used } s msg
 for v_ (Builder f_) =
     Builder { f_ | for = Just v_ }
+
+
+{-| Build the `<TooltipElementBase>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind
+        | tooltipElementBase : M3e.Value.Supported
+    } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.TooltipElementBase.tooltipElementBase
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TooltipElementBase.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TooltipElementBase.showDelay v_)
+                            ]
+                         )
+                         f_.showDelay
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TooltipElementBase.hideDelay v_)
+                            ]
+                         )
+                         f_.hideDelay
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TooltipElementBase.touchGestures v_)
+                            ]
+                         )
+                         f_.touchGestures
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TooltipElementBase.for v_)
+                            ]
+                         )
+                         f_.for
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

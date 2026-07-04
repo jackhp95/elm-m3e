@@ -1,7 +1,7 @@
 module M3e.Build.Slider exposing
     ( Builder, AttrCaps, SlotCaps, slider, disabled, discrete
     , labelled, max, min, step, size, onBeforeinput, onInput
-    , onChange, default
+    , onChange, default, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-slider>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, slider, disabled, discrete
 @docs labelled, max, min, step, size, onBeforeinput
-@docs onInput, onChange, default
+@docs onInput, onChange, default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Slider
+import M3e.Cem.Slider
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -187,3 +191,117 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Filled } msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-slider>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg
+    -> M3e.Element.Element { kind | slider : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Slider.slider
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Slider.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Slider.discrete v_) ]
+                         )
+                         f_.discrete
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Slider.labelled v_) ]
+                         )
+                         f_.labelled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Slider.max v_) ]
+                         )
+                         f_.max
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Slider.min v_) ]
+                         )
+                         f_.min
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Slider.step v_) ]
+                         )
+                         f_.step
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Slider.size v_) ]
+                         )
+                         f_.size
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Slider.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Slider.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Slider.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

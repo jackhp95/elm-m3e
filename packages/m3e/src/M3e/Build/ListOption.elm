@@ -1,7 +1,7 @@
 module M3e.Build.ListOption exposing
     ( Builder, AttrCaps, SlotCaps, listOption, disabled, selected
     , value, onBeforeinput, onInput, onChange, onClick, default, leading
-    , overline, supportingText, trailing
+    , overline, supportingText, trailing, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-list-option>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, listOption, disabled, selected
 @docs value, onBeforeinput, onInput, onChange, onClick, default
-@docs leading, overline, supportingText, trailing
+@docs leading, overline, supportingText, trailing, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.ListOption
+import M3e.Cem.ListOption
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -228,3 +232,148 @@ trailing :
     -> Builder a { s | trailing : M3e.Build.Internal.Used } msg
 trailing v_ (Builder f_) =
     Builder { f_ | trailing = Just v_ }
+
+
+{-| Build the `<m3e-list-option>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | listOption : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ListOption.listOption
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ListOption.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ListOption.selected v_)
+                            ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.ListOption.value v_)
+                            ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ListOption.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ListOption.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ListOption.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ListOption.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "leading" v_)
+                            ]
+                         )
+                         f_.leading
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "overline" v_)
+                            ]
+                         )
+                         f_.overline
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "supporting-text" v_)
+                            ]
+                         )
+                         f_.supportingText
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing" v_)
+                            ]
+                         )
+                         f_.trailing
+                      )
+                  ]
+             )
+        )

@@ -1,16 +1,21 @@
 module M3e.Build.SplitButton exposing
     ( Builder, AttrCaps, SlotCaps, splitButton, variant, size
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-split-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SplitButton as SplitButton`.
 
 @docs Builder, AttrCaps, SlotCaps, splitButton, variant, size
+@docs build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.SplitButton
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -94,3 +99,55 @@ size :
     -> Builder { a | size : M3e.Build.Internal.Used } s msg
 size v_ (Builder f_) =
     Builder { f_ | size = Just v_ }
+
+
+{-| Build the `<m3e-split-button>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | splitButton : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SplitButton.splitButton
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SplitButton.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitButton.size v_)
+                            ]
+                         )
+                         f_.size
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode
+                          (M3e.Element.withSlot
+                               "leading-button"
+                               f_.leadingButton
+                          )
+                    ]
+                  , [ M3e.Element.toNode
+                          (M3e.Element.withSlot
+                               "trailing-button"
+                               f_.trailingButton
+                          )
+                    ]
+                  ]
+             )
+        )

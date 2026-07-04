@@ -1,7 +1,7 @@
 module M3e.Build.Checkbox exposing
     ( Builder, AttrCaps, SlotCaps, checkbox, checked, disabled
     , indeterminate, name, required, value, onBeforeinput, onInput, onChange
-    , onInvalid, onClick
+    , onInvalid, onClick, build
     )
 
 {-|
@@ -9,12 +9,18 @@ The ⑤ Build shape for `<m3e-checkbox>` — phantom-typed pipeline API. Import 
 
 @docs Builder, AttrCaps, SlotCaps, checkbox, checked, disabled
 @docs indeterminate, name, required, value, onBeforeinput, onInput
-@docs onChange, onInvalid, onClick
+@docs onChange, onInvalid, onClick, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Checkbox
+import M3e.Cem.Html.Checkbox
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-checkbox>`; see `.build` for the terminal. -}
@@ -175,3 +181,140 @@ onClick :
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
 onClick v_ (Builder f_) =
     Builder { f_ | onClick = Just v_ }
+
+
+{-| Build the `<m3e-checkbox>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | checkbox : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Checkbox.checkbox
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Checkbox.checked v_)
+                            ]
+                         )
+                         f_.checked
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Checkbox.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Checkbox.indeterminate v_)
+                            ]
+                         )
+                         f_.indeterminate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Checkbox.name v_) ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Checkbox.required v_)
+                            ]
+                         )
+                         f_.required
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Checkbox.value v_) ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Checkbox.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Checkbox.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Checkbox.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Checkbox.onInvalid
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInvalid
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Checkbox.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

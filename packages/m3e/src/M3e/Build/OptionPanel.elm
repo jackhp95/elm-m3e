@@ -1,6 +1,7 @@
 module M3e.Build.OptionPanel exposing
     ( Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
     , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, default, loading
+    , build
     )
 
 {-|
@@ -8,13 +9,17 @@ The ⑤ Build shape for `<m3e-option-panel>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
 @docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, default
-@docs loading
+@docs loading, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.OptionPanel
+import M3e.Cem.OptionPanel
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -176,3 +181,105 @@ loading :
     -> Builder a s msg
 loading v_ (Builder f_) =
     Builder { f_ | loading = List.append f_.loading [ v_ ] }
+
+
+{-| Build the `<m3e-option-panel>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | optionPanel : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.OptionPanel.optionPanel
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.OptionPanel.state v_)
+                            ]
+                         )
+                         f_.state
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.OptionPanel.scrollStrategy v_)
+                            ]
+                         )
+                         f_.scrollStrategy
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.OptionPanel.fitAnchorWidth v_)
+                            ]
+                         )
+                         f_.fitAnchorWidth
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.OptionPanel.anchorOffset v_)
+                            ]
+                         )
+                         f_.anchorOffset
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.OptionPanel.onBeforetoggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforetoggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.OptionPanel.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "no-data" v_)
+                            ]
+                         )
+                         f_.noData
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode (M3e.Element.withSlot "loading" el_)
+                      )
+                      f_.loading
+                  ]
+             )
+        )

@@ -1,18 +1,21 @@
 module M3e.Build.BottomSheetTrigger exposing
     ( Builder, AttrCaps, SlotCaps, bottomSheetTrigger, detent, secondary
-    , for, default
+    , for, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-bottom-sheet-trigger>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BottomSheetTrigger as BottomSheetTrigger`.
 
 @docs Builder, AttrCaps, SlotCaps, bottomSheetTrigger, detent, secondary
-@docs for, default
+@docs for, default, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.BottomSheetTrigger
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -89,3 +92,59 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Used } msg
 default v_ (Builder f_) =
     Builder { f_ | default = Just v_ }
+
+
+{-| Build the `<m3e-bottom-sheet-trigger>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind
+        | bottomSheetTrigger : M3e.Value.Supported
+    } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.BottomSheetTrigger.bottomSheetTrigger
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheetTrigger.detent v_)
+                            ]
+                         )
+                         f_.detent
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheetTrigger.secondary v_)
+                            ]
+                         )
+                         f_.secondary
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheetTrigger.for v_)
+                            ]
+                         )
+                         f_.for
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  ]
+             )
+        )

@@ -1,7 +1,7 @@
 module M3e.Build.NavItem exposing
     ( Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
     , download, href, orientation, rel, selected, target, onBeforeinput
-    , onInput, onChange, onClick, default, icon, selectedIcon
+    , onInput, onChange, onClick, default, icon, selectedIcon, build
     )
 
 {-|
@@ -10,13 +10,17 @@ The ⑤ Build shape for `<m3e-nav-item>` — phantom-typed pipeline API. Import 
 @docs Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
 @docs download, href, orientation, rel, selected, target
 @docs onBeforeinput, onInput, onChange, onClick, default, icon
-@docs selectedIcon
+@docs selectedIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.NavItem
+import M3e.Cem.NavItem
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -232,3 +236,170 @@ selectedIcon :
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Used } msg
 selectedIcon v_ (Builder f_) =
     Builder { f_ | selectedIcon = Just v_ }
+
+
+{-| Build the `<m3e-nav-item>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | navItem : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.NavItem.navItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.NavItem.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.NavItem.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.NavItem.download v_)
+                            ]
+                         )
+                         f_.download
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.NavItem.href v_) ]
+                         )
+                         f_.href
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.NavItem.orientation v_)
+                            ]
+                         )
+                         f_.orientation
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.NavItem.rel v_) ]
+                         )
+                         f_.rel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.NavItem.selected v_)
+                            ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.NavItem.target v_) ]
+                         )
+                         f_.target
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.NavItem.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.NavItem.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.NavItem.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.NavItem.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "selected-icon" v_)
+                            ]
+                         )
+                         f_.selectedIcon
+                      )
+                  ]
+             )
+        )

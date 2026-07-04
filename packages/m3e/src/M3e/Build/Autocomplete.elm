@@ -2,7 +2,7 @@ module M3e.Build.Autocomplete exposing
     ( Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
     , filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel
     , panelClass, required, for, onChange, onQuery, onToggle, loadingSlot
-    , noData, default
+    , noData, default, build
     )
 
 {-|
@@ -11,13 +11,17 @@ The ⑤ Build shape for `<m3e-autocomplete>` — phantom-typed pipeline API. Imp
 @docs Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
 @docs filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel
 @docs noDataLabel, panelClass, required, for, onChange, onQuery
-@docs onToggle, loadingSlot, noData, default
+@docs onToggle, loadingSlot, noData, default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Autocomplete
+import M3e.Cem.Html.Autocomplete
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -278,3 +282,203 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-autocomplete>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | autocomplete : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Autocomplete.autocomplete
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.autoActivate v_)
+                            ]
+                         )
+                         f_.autoActivate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.caseSensitive v_)
+                            ]
+                         )
+                         f_.caseSensitive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.filter v_)
+                            ]
+                         )
+                         f_.filter
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.hideSelectionIndicator v_)
+                            ]
+                         )
+                         f_.hideSelectionIndicator
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.hideLoading v_)
+                            ]
+                         )
+                         f_.hideLoading
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.hideNoData v_)
+                            ]
+                         )
+                         f_.hideNoData
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.loading v_)
+                            ]
+                         )
+                         f_.loading
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.loadingLabel v_)
+                            ]
+                         )
+                         f_.loadingLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.noDataLabel v_)
+                            ]
+                         )
+                         f_.noDataLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.panelClass v_)
+                            ]
+                         )
+                         f_.panelClass
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Autocomplete.required v_)
+                            ]
+                         )
+                         f_.required
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.for v_)
+                            ]
+                         )
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Autocomplete.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Autocomplete.onQuery
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onQuery
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Autocomplete.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "loading" v_)
+                            ]
+                         )
+                         f_.loadingSlot
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "no-data" v_)
+                            ]
+                         )
+                         f_.noData
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

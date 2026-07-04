@@ -1,16 +1,22 @@
 module M3e.Build.DialogTrigger exposing
     ( Builder, AttrCaps, SlotCaps, dialogTrigger, for, default
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-dialog-trigger>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.DialogTrigger as DialogTrigger`.
 
 @docs Builder, AttrCaps, SlotCaps, dialogTrigger, for, default
+@docs build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.DialogTrigger
 import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-dialog-trigger>`; see `.build` for the terminal. -}
@@ -57,3 +63,36 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Used } msg
 default v_ (Builder f_) =
     Builder { f_ | default = Just v_ }
+
+
+{-| Build the `<m3e-dialog-trigger>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | dialogTrigger : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.DialogTrigger.dialogTrigger
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.DialogTrigger.for v_)
+                            ]
+                         )
+                         f_.for
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  ]
+             )
+        )

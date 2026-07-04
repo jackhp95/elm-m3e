@@ -1,18 +1,21 @@
 module M3e.Build.Skeleton exposing
     ( Builder, AttrCaps, SlotCaps, skeleton, animation, shape
-    , loaded, default
+    , loaded, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-skeleton>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Skeleton as Skeleton`.
 
 @docs Builder, AttrCaps, SlotCaps, skeleton, animation, shape
-@docs loaded, default
+@docs loaded, default, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Skeleton
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -102,3 +105,50 @@ loaded v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-skeleton>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | skeleton : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Skeleton.skeleton
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Skeleton.animation v_)
+                            ]
+                         )
+                         f_.animation
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Skeleton.shape v_) ]
+                         )
+                         f_.shape
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Skeleton.loaded v_) ]
+                         )
+                         f_.loaded
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

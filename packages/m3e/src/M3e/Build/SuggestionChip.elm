@@ -1,19 +1,22 @@
 module M3e.Build.SuggestionChip exposing
     ( Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
-    , name, type_, value, variant, icon
+    , name, type_, value, variant, icon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-suggestion-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SuggestionChip as SuggestionChip`.
 
 @docs Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
-@docs name, type_, value, variant, icon
+@docs name, type_, value, variant, icon, build
 -}
 
 
 import M3e.Action
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.SuggestionChip
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -176,3 +179,99 @@ icon :
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg
 icon v_ (Builder f_) =
     Builder { f_ | icon = Just v_ }
+
+
+{-| Build the `<m3e-suggestion-chip>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | suggestionChip : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SuggestionChip.suggestionChip
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs f_.action)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SuggestionChip.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SuggestionChip.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SuggestionChip.name v_)
+                            ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SuggestionChip.type_ v_)
+                            ]
+                         )
+                         f_.type_
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SuggestionChip.value v_)
+                            ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SuggestionChip.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Action.wrapContent
+                          f_.action
+                          (M3e.Element.toNode f_.content)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  ]
+             )
+        )

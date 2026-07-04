@@ -1,7 +1,7 @@
 module M3e.Build.Dialog exposing
     ( Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
     , disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing
-    , onClosed, onCancel, header, actions, closeIcon, default
+    , onClosed, onCancel, header, actions, closeIcon, default, build
     )
 
 {-|
@@ -10,13 +10,17 @@ The ⑤ Build shape for `<m3e-dialog>` — phantom-typed pipeline API. Import qu
 @docs Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
 @docs disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
 @docs onClosing, onClosed, onCancel, header, actions, closeIcon
-@docs default
+@docs default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Dialog
+import M3e.Cem.Html.Dialog
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -222,3 +226,175 @@ closeIcon v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-dialog>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | dialog : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Dialog.dialog
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Dialog.alert v_) ]
+                         )
+                         f_.alert
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Dialog.closeLabel v_)
+                            ]
+                         )
+                         f_.closeLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Dialog.disableClose v_)
+                            ]
+                         )
+                         f_.disableClose
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Dialog.dismissible v_)
+                            ]
+                         )
+                         f_.dismissible
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Dialog.noFocusTrap v_)
+                            ]
+                         )
+                         f_.noFocusTrap
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Dialog.open v_) ]
+                         )
+                         f_.open
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Dialog.onOpening
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpening
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Dialog.onOpened
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpened
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Dialog.onClosing
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosing
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Dialog.onClosed
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosed
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Dialog.onCancel
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onCancel
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "header" v_)
+                            ]
+                         )
+                         f_.header
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "actions" v_)
+                            ]
+                         )
+                         f_.actions
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "close-icon" v_)
+                            ]
+                         )
+                         f_.closeIcon
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

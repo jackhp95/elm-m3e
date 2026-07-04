@@ -1,6 +1,6 @@
 module M3e.Build.SegmentedButton exposing
     ( Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-    , multi, name, onChange, onBeforeinput, onInput, default
+    , multi, name, onChange, onBeforeinput, onInput, default, build
     )
 
 {-|
@@ -8,12 +8,17 @@ The ⑤ Build shape for `<m3e-segmented-button>` — phantom-typed pipeline API.
 
 @docs Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
 @docs multi, name, onChange, onBeforeinput, onInput, default
+@docs build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.SegmentedButton
+import M3e.Cem.SegmentedButton
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -141,3 +146,105 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Filled } msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-segmented-button>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg
+    -> M3e.Element.Element { kind | segmentedButton : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SegmentedButton.segmentedButton
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SegmentedButton.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SegmentedButton.hideSelectionIndicator
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.hideSelectionIndicator
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SegmentedButton.multi v_)
+                            ]
+                         )
+                         f_.multi
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SegmentedButton.name v_)
+                            ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SegmentedButton.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SegmentedButton.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SegmentedButton.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

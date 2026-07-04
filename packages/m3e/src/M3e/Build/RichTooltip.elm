@@ -1,7 +1,7 @@
 module M3e.Build.RichTooltip exposing
     ( Builder, AttrCaps, SlotCaps, richTooltip, disabled, for
     , hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle, subhead
-    , actions
+    , actions, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-rich-tooltip>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, richTooltip, disabled, for
 @docs hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
-@docs subhead, actions
+@docs subhead, actions, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.RichTooltip
+import M3e.Cem.RichTooltip
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -193,3 +197,129 @@ actions :
     -> Builder a { s | actions : M3e.Build.Internal.Used } msg
 actions v_ (Builder f_) =
     Builder { f_ | actions = Just v_ }
+
+
+{-| Build the `<m3e-rich-tooltip>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | richTooltip : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.RichTooltip.richTooltip
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RichTooltip.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.RichTooltip.for v_) ]
+                         )
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RichTooltip.hideDelay v_)
+                            ]
+                         )
+                         f_.hideDelay
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RichTooltip.position v_)
+                            ]
+                         )
+                         f_.position
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RichTooltip.showDelay v_)
+                            ]
+                         )
+                         f_.showDelay
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RichTooltip.touchGestures v_)
+                            ]
+                         )
+                         f_.touchGestures
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.RichTooltip.onBeforetoggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforetoggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.RichTooltip.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode f_.content ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "subhead" v_)
+                            ]
+                         )
+                         f_.subhead
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "actions" v_)
+                            ]
+                         )
+                         f_.actions
+                      )
+                  ]
+             )
+        )

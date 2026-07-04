@@ -3,6 +3,7 @@ module M3e.Build.Datepicker exposing
     , date, maxDate, minDate, range, rangeEnd, rangeStart, startAt
     , startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
     , clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+    , build
     )
 
 {-|
@@ -12,12 +13,17 @@ The ⑤ Build shape for `<m3e-datepicker>` — phantom-typed pipeline API. Impor
 @docs date, maxDate, minDate, range, rangeEnd, rangeStart
 @docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
 @docs previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label
-@docs onChange, onBeforetoggle, onToggle
+@docs onChange, onBeforetoggle, onToggle, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Datepicker
+import M3e.Cem.Html.Datepicker
+import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -339,3 +345,257 @@ onToggle :
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg
 onToggle v_ (Builder f_) =
     Builder { f_ | onToggle = Just v_ }
+
+
+{-| Build the `<m3e-datepicker>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | datepicker : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Datepicker.datepicker
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.clearable v_)
+                            ]
+                         )
+                         f_.clearable
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Datepicker.date v_) ]
+                         )
+                         f_.date
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.maxDate v_)
+                            ]
+                         )
+                         f_.maxDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.minDate v_)
+                            ]
+                         )
+                         f_.minDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Datepicker.range v_)
+                            ]
+                         )
+                         f_.range
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.rangeEnd v_)
+                            ]
+                         )
+                         f_.rangeEnd
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.rangeStart v_)
+                            ]
+                         )
+                         f_.rangeStart
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.startAt v_)
+                            ]
+                         )
+                         f_.startAt
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.startView v_)
+                            ]
+                         )
+                         f_.startView
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.previousMonthLabel v_)
+                            ]
+                         )
+                         f_.previousMonthLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.nextMonthLabel v_)
+                            ]
+                         )
+                         f_.nextMonthLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.previousYearLabel v_)
+                            ]
+                         )
+                         f_.previousYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.nextYearLabel v_)
+                            ]
+                         )
+                         f_.nextYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.previousMultiYearLabel v_)
+                            ]
+                         )
+                         f_.previousMultiYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.nextMultiYearLabel v_)
+                            ]
+                         )
+                         f_.nextMultiYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.clearLabel v_)
+                            ]
+                         )
+                         f_.clearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.confirmLabel v_)
+                            ]
+                         )
+                         f_.confirmLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Datepicker.dismissLabel v_)
+                            ]
+                         )
+                         f_.dismissLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Datepicker.label v_)
+                            ]
+                         )
+                         f_.label
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Datepicker.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Datepicker.onBeforetoggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforetoggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Datepicker.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

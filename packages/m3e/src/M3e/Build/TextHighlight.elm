@@ -1,19 +1,23 @@
 module M3e.Build.TextHighlight exposing
     ( Builder, AttrCaps, SlotCaps, textHighlight, caseSensitive, disabled
-    , mode, term, onHighlight, default
+    , mode, term, onHighlight, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-text-highlight>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TextHighlight as TextHighlight`.
 
 @docs Builder, AttrCaps, SlotCaps, textHighlight, caseSensitive, disabled
-@docs mode, term, onHighlight, default
+@docs mode, term, onHighlight, default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.TextHighlight
+import M3e.Cem.TextHighlight
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -118,3 +122,77 @@ onHighlight v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-text-highlight>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | textHighlight : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.TextHighlight.textHighlight
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextHighlight.caseSensitive v_)
+                            ]
+                         )
+                         f_.caseSensitive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextHighlight.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextHighlight.mode v_)
+                            ]
+                         )
+                         f_.mode
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextHighlight.term v_)
+                            ]
+                         )
+                         f_.term
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.TextHighlight.onHighlight
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onHighlight
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

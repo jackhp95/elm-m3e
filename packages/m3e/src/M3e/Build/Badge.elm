@@ -1,18 +1,21 @@
 module M3e.Build.Badge exposing
     ( Builder, AttrCaps, SlotCaps, badge, size, position
-    , for, default
+    , for, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-badge>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Badge as Badge`.
 
 @docs Builder, AttrCaps, SlotCaps, badge, size, position
-@docs for, default
+@docs for, default, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Badge
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -113,3 +116,46 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Used } msg
 default v_ (Builder f_) =
     Builder { f_ | default = Just v_ }
+
+
+{-| Build the `<m3e-badge>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | badge : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Badge.badge (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Badge.size v_) ]
+                         )
+                         f_.size
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Badge.position v_) ]
+                         )
+                         f_.position
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Badge.for v_) ])
+                         f_.for
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  ]
+             )
+        )

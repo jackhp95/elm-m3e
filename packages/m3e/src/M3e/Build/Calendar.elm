@@ -1,7 +1,7 @@
 module M3e.Build.Calendar exposing
     ( Builder, AttrCaps, SlotCaps, calendar, date, maxDate
     , minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
-    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, header
+    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, header, build
     )
 
 {-|
@@ -10,13 +10,17 @@ The ⑤ Build shape for `<m3e-calendar>` — phantom-typed pipeline API. Import 
 @docs Builder, AttrCaps, SlotCaps, calendar, date, maxDate
 @docs minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
 @docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
-@docs header
+@docs header, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Calendar
+import M3e.Cem.Html.Calendar
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -234,3 +238,171 @@ header :
     -> Builder a { s | header : M3e.Build.Internal.Used } msg
 header v_ (Builder f_) =
     Builder { f_ | header = Just v_ }
+
+
+{-| Build the `<m3e-calendar>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | calendar : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Calendar.calendar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Calendar.date v_) ]
+                         )
+                         f_.date
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Calendar.maxDate v_)
+                            ]
+                         )
+                         f_.maxDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Calendar.minDate v_)
+                            ]
+                         )
+                         f_.minDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Calendar.rangeEnd v_)
+                            ]
+                         )
+                         f_.rangeEnd
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.rangeStart v_)
+                            ]
+                         )
+                         f_.rangeStart
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Calendar.startAt v_)
+                            ]
+                         )
+                         f_.startAt
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.startView v_)
+                            ]
+                         )
+                         f_.startView
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.previousMonthLabel v_)
+                            ]
+                         )
+                         f_.previousMonthLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.nextMonthLabel v_)
+                            ]
+                         )
+                         f_.nextMonthLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.previousYearLabel v_)
+                            ]
+                         )
+                         f_.previousYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.nextYearLabel v_)
+                            ]
+                         )
+                         f_.nextYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.previousMultiYearLabel v_)
+                            ]
+                         )
+                         f_.previousMultiYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Calendar.nextMultiYearLabel v_)
+                            ]
+                         )
+                         f_.nextMultiYearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Calendar.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "header" v_)
+                            ]
+                         )
+                         f_.header
+                      )
+                  ]
+             )
+        )

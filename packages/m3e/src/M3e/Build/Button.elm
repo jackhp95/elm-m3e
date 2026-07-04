@@ -2,7 +2,7 @@ module M3e.Build.Button exposing
     ( Builder, AttrCaps, SlotCaps, button, disabled, disabledInteractive
     , name, selected, shape, size, toggle, type_, value
     , variant, onBeforeinput, onInput, onChange, icon, selectedSlot, selectedIcon
-    , trailingIcon
+    , trailingIcon, build
     )
 
 {-|
@@ -11,14 +11,18 @@ The ⑤ Build shape for `<m3e-button>` — phantom-typed pipeline API. Import qu
 @docs Builder, AttrCaps, SlotCaps, button, disabled, disabledInteractive
 @docs name, selected, shape, size, toggle, type_
 @docs value, variant, onBeforeinput, onInput, onChange, icon
-@docs selectedSlot, selectedIcon, trailingIcon
+@docs selectedSlot, selectedIcon, trailingIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Action
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Button
+import M3e.Cem.Html.Button
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -342,3 +346,190 @@ trailingIcon :
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
 trailingIcon v_ (Builder f_) =
     Builder { f_ | trailingIcon = Just v_ }
+
+
+{-| Build the `<m3e-button>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | button : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Button.button
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs f_.action)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Button.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.name v_) ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.selected v_) ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.shape v_) ]
+                         )
+                         f_.shape
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.size v_) ]
+                         )
+                         f_.size
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.toggle v_) ]
+                         )
+                         f_.toggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.type_ v_) ]
+                         )
+                         f_.type_
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.value v_) ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Button.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Button.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Button.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Button.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Action.wrapContent
+                          f_.action
+                          (M3e.Element.toNode f_.content)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "selected" v_)
+                            ]
+                         )
+                         f_.selectedSlot
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "selected-icon" v_)
+                            ]
+                         )
+                         f_.selectedIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing-icon" v_)
+                            ]
+                         )
+                         f_.trailingIcon
+                      )
+                  ]
+             )
+        )

@@ -1,6 +1,6 @@
 module M3e.Build.SliderThumb exposing
     ( Builder, AttrCaps, SlotCaps, sliderThumb, disabled, name
-    , value, onValueChange, onBeforeinput, onInput, onChange, onClick
+    , value, onValueChange, onBeforeinput, onInput, onChange, onClick, build
     )
 
 {-|
@@ -8,11 +8,18 @@ The ⑤ Build shape for `<m3e-slider-thumb>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, sliderThumb, disabled, name
 @docs value, onValueChange, onBeforeinput, onInput, onChange, onClick
+@docs build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.SliderThumb
+import M3e.Cem.SliderThumb
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-slider-thumb>`; see `.build` for the terminal. -}
@@ -137,3 +144,115 @@ onClick :
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg
 onClick v_ (Builder f_) =
     Builder { f_ | onClick = Just v_ }
+
+
+{-| Build the `<m3e-slider-thumb>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | sliderThumb : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SliderThumb.sliderThumb
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SliderThumb.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SliderThumb.name v_)
+                            ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SliderThumb.value v_)
+                            ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SliderThumb.onValueChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onValueChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SliderThumb.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SliderThumb.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SliderThumb.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SliderThumb.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

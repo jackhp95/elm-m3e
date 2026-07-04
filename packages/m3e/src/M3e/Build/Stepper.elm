@@ -1,6 +1,7 @@
 module M3e.Build.Stepper exposing
     ( Builder, AttrCaps, SlotCaps, stepper, headerPosition, labelPosition
     , linear, orientation, onChange, onBeforeinput, onInput, step, panel
+    , build
     )
 
 {-|
@@ -8,13 +9,17 @@ The ⑤ Build shape for `<m3e-stepper>` — phantom-typed pipeline API. Import q
 
 @docs Builder, AttrCaps, SlotCaps, stepper, headerPosition, labelPosition
 @docs linear, orientation, onChange, onBeforeinput, onInput, step
-@docs panel
+@docs panel, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Stepper
+import M3e.Cem.Stepper
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -163,3 +168,111 @@ panel :
     -> Builder a s msg
 panel v_ (Builder f_) =
     Builder { f_ | panel = List.append f_.panel [ v_ ] }
+
+
+{-| Build the `<m3e-stepper>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | stepper : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Stepper.stepper
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Stepper.headerPosition v_)
+                            ]
+                         )
+                         f_.headerPosition
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Stepper.labelPosition v_)
+                            ]
+                         )
+                         f_.labelPosition
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Stepper.linear v_) ]
+                         )
+                         f_.linear
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Stepper.orientation v_)
+                            ]
+                         )
+                         f_.orientation
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Stepper.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Stepper.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Stepper.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map
+                      (\el_ ->
+                         M3e.Element.toNode (M3e.Element.withSlot "step" el_)
+                      )
+                      f_.step
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode (M3e.Element.withSlot "panel" el_)
+                      )
+                      f_.panel
+                  ]
+             )
+        )

@@ -1,19 +1,23 @@
 module M3e.Build.InputChipSet exposing
     ( Builder, AttrCaps, SlotCaps, inputChipSet, disabled, name
-    , required, vertical, onChange, input, default
+    , required, vertical, onChange, input, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-input-chip-set>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.InputChipSet as InputChipSet`.
 
 @docs Builder, AttrCaps, SlotCaps, inputChipSet, disabled, name
-@docs required, vertical, onChange, input, default
+@docs required, vertical, onChange, input, default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.InputChipSet
+import M3e.Cem.InputChipSet
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -126,3 +130,87 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-input-chip-set>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | inputChipSet : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.InputChipSet.inputChipSet
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChipSet.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.InputChipSet.name v_)
+                            ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChipSet.required v_)
+                            ]
+                         )
+                         f_.required
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChipSet.vertical v_)
+                            ]
+                         )
+                         f_.vertical
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.InputChipSet.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "input" v_)
+                            ]
+                         )
+                         f_.input
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

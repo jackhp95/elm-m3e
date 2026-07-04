@@ -1,15 +1,18 @@
 module M3e.Build.MenuItemGroup exposing
-    ( Builder, AttrCaps, SlotCaps, menuItemGroup, default
+    ( Builder, AttrCaps, SlotCaps, menuItemGroup, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu-item-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItemGroup as MenuItemGroup`.
 
-@docs Builder, AttrCaps, SlotCaps, menuItemGroup, default
+@docs Builder, AttrCaps, SlotCaps, menuItemGroup, default, build
 -}
 
 
+import M3e.Cem.Attr
+import M3e.Cem.MenuItemGroup
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -54,3 +57,22 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-menu-item-group>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | menuItemGroup : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.MenuItemGroup.menuItemGroup
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat [])
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

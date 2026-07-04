@@ -1,6 +1,6 @@
 module M3e.Build.RadioGroup exposing
     ( Builder, AttrCaps, SlotCaps, radioGroup, ariaInvalid, disabled
-    , name, required, onBeforeinput, onInput, onChange, default
+    , name, required, onBeforeinput, onInput, onChange, default, build
     )
 
 {-|
@@ -8,12 +8,18 @@ The ⑤ Build shape for `<m3e-radio-group>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, radioGroup, ariaInvalid, disabled
 @docs name, required, onBeforeinput, onInput, onChange, default
+@docs build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.RadioGroup
+import M3e.Cem.RadioGroup
 import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-radio-group>`; see `.build` for the terminal. -}
@@ -137,3 +143,101 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Filled } msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-radio-group>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg
+    -> M3e.Element.Element { kind | radioGroup : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.RadioGroup.radioGroup
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RadioGroup.ariaInvalid v_)
+                            ]
+                         )
+                         f_.ariaInvalid
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RadioGroup.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.RadioGroup.name v_) ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RadioGroup.required v_)
+                            ]
+                         )
+                         f_.required
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.RadioGroup.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.RadioGroup.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.RadioGroup.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

@@ -2,7 +2,7 @@ module M3e.Build.SearchView exposing
     ( Builder, AttrCaps, SlotCaps, searchView, contained, mode
     , open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle
     , onToggle, searchIcon, closeIcon, clearIcon, default, openLeading, openTrailing
-    , closedLeading, closedTrailing
+    , closedLeading, closedTrailing, build
     )
 
 {-|
@@ -11,13 +11,17 @@ The ⑤ Build shape for `<m3e-search-view>` — phantom-typed pipeline API. Impo
 @docs Builder, AttrCaps, SlotCaps, searchView, contained, mode
 @docs open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear
 @docs onBeforetoggle, onToggle, searchIcon, closeIcon, clearIcon, default
-@docs openLeading, openTrailing, closedLeading, closedTrailing
+@docs openLeading, openTrailing, closedLeading, closedTrailing, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.SearchView
+import M3e.Cem.SearchView
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -286,3 +290,189 @@ closedTrailing :
     -> Builder a s msg
 closedTrailing v_ (Builder f_) =
     Builder { f_ | closedTrailing = List.append f_.closedTrailing [ v_ ] }
+
+
+{-| Build the `<m3e-search-view>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | searchView : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SearchView.searchView
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SearchView.contained v_)
+                            ]
+                         )
+                         f_.contained
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SearchView.mode v_) ]
+                         )
+                         f_.mode
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SearchView.open v_) ]
+                         )
+                         f_.open
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SearchView.clearLabel v_)
+                            ]
+                         )
+                         f_.clearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SearchView.closeLabel v_)
+                            ]
+                         )
+                         f_.closeLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SearchView.hideSearchIcon v_)
+                            ]
+                         )
+                         f_.hideSearchIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SearchView.onQuery
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onQuery
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SearchView.onClear
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClear
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SearchView.onBeforetoggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforetoggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SearchView.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode (M3e.Element.withSlot "input" f_.input)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "search-icon" v_)
+                            ]
+                         )
+                         f_.searchIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "close-icon" v_)
+                            ]
+                         )
+                         f_.closeIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "clear-icon" v_)
+                            ]
+                         )
+                         f_.clearIcon
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode
+                             (M3e.Element.withSlot "open-leading" el_)
+                      )
+                      f_.openLeading
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode
+                             (M3e.Element.withSlot "open-trailing" el_)
+                      )
+                      f_.openTrailing
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode
+                             (M3e.Element.withSlot "closed-leading" el_)
+                      )
+                      f_.closedLeading
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode
+                             (M3e.Element.withSlot "closed-trailing" el_)
+                      )
+                      f_.closedTrailing
+                  ]
+             )
+        )

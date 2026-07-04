@@ -1,17 +1,22 @@
 module M3e.Build.Elevation exposing
     ( Builder, AttrCaps, SlotCaps, elevation, disabled, for
-    , level
+    , level, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-elevation>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Elevation as Elevation`.
 
 @docs Builder, AttrCaps, SlotCaps, elevation, disabled, for
-@docs level
+@docs level, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Elevation
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-elevation>`; see `.build` for the terminal. -}
@@ -76,3 +81,48 @@ level :
     -> Builder { a | level : M3e.Build.Internal.Used } s msg
 level v_ (Builder f_) =
     Builder { f_ | level = Just v_ }
+
+
+{-| Build the `<m3e-elevation>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | elevation : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Elevation.elevation
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Elevation.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Elevation.for v_) ]
+                         )
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Elevation.level v_) ]
+                         )
+                         f_.level
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

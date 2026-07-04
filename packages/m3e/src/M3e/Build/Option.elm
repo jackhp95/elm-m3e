@@ -1,18 +1,21 @@
 module M3e.Build.Option exposing
     ( Builder, AttrCaps, SlotCaps, option, disabled, disableHighlight
-    , highlightMode, selected, term, value
+    , highlightMode, selected, term, value, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-option>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Option as Option`.
 
 @docs Builder, AttrCaps, SlotCaps, option, disabled, disableHighlight
-@docs highlightMode, selected, term, value
+@docs highlightMode, selected, term, value, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Option
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -125,3 +128,74 @@ value :
     -> Builder { a | value : M3e.Build.Internal.Used } s msg
 value v_ (Builder f_) =
     Builder { f_ | value = Just v_ }
+
+
+{-| Build the `<m3e-option>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | option : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Option.option
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Option.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Option.disableHighlight v_)
+                            ]
+                         )
+                         f_.disableHighlight
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Option.highlightMode v_)
+                            ]
+                         )
+                         f_.highlightMode
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Option.selected v_) ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Option.term v_) ]
+                         )
+                         f_.term
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Option.value v_) ]
+                         )
+                         f_.value
+                      )
+                  ]
+             )
+             (List.concat [ [ M3e.Element.toNode f_.content ] ])
+        )

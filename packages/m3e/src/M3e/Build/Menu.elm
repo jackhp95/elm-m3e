@@ -1,19 +1,23 @@
 module M3e.Build.Menu exposing
     ( Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-    , variant, submenu, onBeforetoggle, onToggle, default
+    , variant, submenu, onBeforetoggle, onToggle, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Menu as Menu`.
 
 @docs Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-@docs variant, submenu, onBeforetoggle, onToggle, default
+@docs variant, submenu, onBeforetoggle, onToggle, default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Menu
+import M3e.Cem.Menu
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -150,3 +154,80 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-menu>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | menu : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Menu.menu (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Menu.positionX v_) ]
+                         )
+                         f_.positionX
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Menu.positionY v_) ]
+                         )
+                         f_.positionY
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Menu.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Menu.submenu v_) ]
+                         )
+                         f_.submenu
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Menu.onBeforetoggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforetoggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Menu.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

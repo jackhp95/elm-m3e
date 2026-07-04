@@ -1,16 +1,21 @@
 module M3e.Build.Optgroup exposing
     ( Builder, AttrCaps, SlotCaps, optgroup, label, default
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-optgroup>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Optgroup as Optgroup`.
 
 @docs Builder, AttrCaps, SlotCaps, optgroup, label, default
+@docs build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Optgroup
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -58,3 +63,33 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-optgroup>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | optgroup : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Optgroup.optgroup
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat [])
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "label" v_)
+                            ]
+                         )
+                         f_.label
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

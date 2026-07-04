@@ -1,7 +1,7 @@
 module M3e.Build.FormField exposing
     ( Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
     , hideSubscript, variant, prefix, prefixText, label, suffix, suffixText
-    , hint, error, default
+    , hint, error, default, build
     )
 
 {-|
@@ -9,12 +9,15 @@ The ⑤ Build shape for `<m3e-form-field>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
 @docs hideSubscript, variant, prefix, prefixText, label, suffix
-@docs suffixText, hint, error, default
+@docs suffixText, hint, error, default, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.FormField
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -199,3 +202,134 @@ error v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-form-field>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | formField : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.FormField.formField
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FormField.floatLabel v_)
+                            ]
+                         )
+                         f_.floatLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FormField.hideRequiredMarker v_)
+                            ]
+                         )
+                         f_.hideRequiredMarker
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FormField.hideSubscript v_)
+                            ]
+                         )
+                         f_.hideSubscript
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.FormField.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "prefix" v_)
+                            ]
+                         )
+                         f_.prefix
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "prefix-text" v_)
+                            ]
+                         )
+                         f_.prefixText
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "label" v_)
+                            ]
+                         )
+                         f_.label
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "suffix" v_)
+                            ]
+                         )
+                         f_.suffix
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "suffix-text" v_)
+                            ]
+                         )
+                         f_.suffixText
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "hint" v_)
+                            ]
+                         )
+                         f_.hint
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "error" v_)
+                            ]
+                         )
+                         f_.error
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

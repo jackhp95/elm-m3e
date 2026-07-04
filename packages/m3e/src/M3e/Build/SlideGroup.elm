@@ -1,6 +1,6 @@
 module M3e.Build.SlideGroup exposing
     ( Builder, AttrCaps, SlotCaps, slideGroup, disabled, nextPageLabel
-    , previousPageLabel, threshold, vertical, nextIcon, prevIcon, default
+    , previousPageLabel, threshold, vertical, nextIcon, prevIcon, default, build
     )
 
 {-|
@@ -8,11 +8,15 @@ The ⑤ Build shape for `<m3e-slide-group>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, slideGroup, disabled, nextPageLabel
 @docs previousPageLabel, threshold, vertical, nextIcon, prevIcon, default
+@docs build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.SlideGroup
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -134,3 +138,95 @@ prevIcon v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-slide-group>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | slideGroup : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SlideGroup.slideGroup
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SlideGroup.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SlideGroup.nextPageLabel v_)
+                            ]
+                         )
+                         f_.nextPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SlideGroup.previousPageLabel v_)
+                            ]
+                         )
+                         f_.previousPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SlideGroup.threshold v_)
+                            ]
+                         )
+                         f_.threshold
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SlideGroup.vertical v_)
+                            ]
+                         )
+                         f_.vertical
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "next-icon" v_)
+                            ]
+                         )
+                         f_.nextIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "prev-icon" v_)
+                            ]
+                         )
+                         f_.prevIcon
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

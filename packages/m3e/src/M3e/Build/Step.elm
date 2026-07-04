@@ -2,7 +2,7 @@ module M3e.Build.Step exposing
     ( Builder, AttrCaps, SlotCaps, step, completed, disabled
     , editable, for, optional, selected, invalid, onBeforeinput, onInput
     , onChange, onClick, icon, doneIcon, editIcon, errorIcon, hint
-    , error
+    , error, build
     )
 
 {-|
@@ -11,13 +11,17 @@ The ⑤ Build shape for `<m3e-step>` — phantom-typed pipeline API. Import qual
 @docs Builder, AttrCaps, SlotCaps, step, completed, disabled
 @docs editable, for, optional, selected, invalid, onBeforeinput
 @docs onInput, onChange, onClick, icon, doneIcon, editIcon
-@docs errorIcon, hint, error
+@docs errorIcon, hint, error, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Step
+import M3e.Cem.Step
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -255,3 +259,189 @@ error :
     -> Builder a { s | error : M3e.Build.Internal.Used } msg
 error v_ (Builder f_) =
     Builder { f_ | error = Just v_ }
+
+
+{-| Build the `<m3e-step>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | step : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Step.step (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Step.completed v_) ]
+                         )
+                         f_.completed
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Step.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Step.editable v_) ]
+                         )
+                         f_.editable
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Step.for v_) ])
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Step.optional v_) ]
+                         )
+                         f_.optional
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Step.selected v_) ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Step.invalid v_) ]
+                         )
+                         f_.invalid
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Step.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Step.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Step.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Step.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode f_.content ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "done-icon" v_)
+                            ]
+                         )
+                         f_.doneIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "edit-icon" v_)
+                            ]
+                         )
+                         f_.editIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "error-icon" v_)
+                            ]
+                         )
+                         f_.errorIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "hint" v_)
+                            ]
+                         )
+                         f_.hint
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "error" v_)
+                            ]
+                         )
+                         f_.error
+                      )
+                  ]
+             )
+        )

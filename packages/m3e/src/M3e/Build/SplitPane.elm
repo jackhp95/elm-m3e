@@ -1,7 +1,7 @@
 module M3e.Build.SplitPane exposing
     ( Builder, AttrCaps, SlotCaps, splitPane, label, max
     , min, orientation, overshootLimit, step, value, wrapDetents, name
-    , disabled, onChange, onBeforeinput, onInput, start, end
+    , disabled, onChange, onBeforeinput, onInput, start, end, build
     )
 
 {-|
@@ -10,13 +10,17 @@ The ⑤ Build shape for `<m3e-split-pane>` — phantom-typed pipeline API. Impor
 @docs Builder, AttrCaps, SlotCaps, splitPane, label, max
 @docs min, orientation, overshootLimit, step, value, wrapDetents
 @docs name, disabled, onChange, onBeforeinput, onInput, start
-@docs end
+@docs end, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.SplitPane
+import M3e.Cem.SplitPane
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -231,3 +235,170 @@ end :
     -> Builder a { s | end : M3e.Build.Internal.Used } msg
 end v_ (Builder f_) =
     Builder { f_ | end = Just v_ }
+
+
+{-| Build the `<m3e-split-pane>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | splitPane : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SplitPane.splitPane
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitPane.label v_) ]
+                         )
+                         f_.label
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitPane.max v_) ]
+                         )
+                         f_.max
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitPane.min v_) ]
+                         )
+                         f_.min
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SplitPane.orientation v_)
+                            ]
+                         )
+                         f_.orientation
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SplitPane.overshootLimit v_)
+                            ]
+                         )
+                         f_.overshootLimit
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitPane.step v_) ]
+                         )
+                         f_.step
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitPane.value v_) ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SplitPane.wrapDetents v_)
+                            ]
+                         )
+                         f_.wrapDetents
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.SplitPane.name v_) ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SplitPane.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SplitPane.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SplitPane.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SplitPane.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "start" v_)
+                            ]
+                         )
+                         f_.start
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode (M3e.Element.withSlot "end" v_)
+                            ]
+                         )
+                         f_.end
+                      )
+                  ]
+             )
+        )

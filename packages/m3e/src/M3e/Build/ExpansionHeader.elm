@@ -1,19 +1,23 @@
 module M3e.Build.ExpansionHeader exposing
     ( Builder, AttrCaps, SlotCaps, expansionHeader, hideToggle, toggleDirection
-    , togglePosition, disabled, onClick, default, toggleIcon
+    , togglePosition, disabled, onClick, default, toggleIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-expansion-header>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ExpansionHeader as ExpansionHeader`.
 
 @docs Builder, AttrCaps, SlotCaps, expansionHeader, hideToggle, toggleDirection
-@docs togglePosition, disabled, onClick, default, toggleIcon
+@docs togglePosition, disabled, onClick, default, toggleIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ExpansionHeader
+import M3e.Cem.Html.ExpansionHeader
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -138,3 +142,90 @@ toggleIcon :
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg
 toggleIcon v_ (Builder f_) =
     Builder { f_ | toggleIcon = Just v_ }
+
+
+{-| Build the `<m3e-expansion-header>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | expansionHeader : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ExpansionHeader.expansionHeader
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionHeader.hideToggle v_)
+                            ]
+                         )
+                         f_.hideToggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionHeader.toggleDirection v_)
+                            ]
+                         )
+                         f_.toggleDirection
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionHeader.togglePosition v_)
+                            ]
+                         )
+                         f_.togglePosition
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionHeader.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpansionHeader.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "toggle-icon" v_)
+                            ]
+                         )
+                         f_.toggleIcon
+                      )
+                  ]
+             )
+        )

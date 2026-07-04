@@ -1,6 +1,7 @@
 module M3e.Build.AppBar exposing
     ( Builder, AttrCaps, SlotCaps, appBar, centered, for
     , size, leading, title, subtitle, leadingIcon, trailingIcon, trailing
+    , build
     )
 
 {-|
@@ -8,12 +9,15 @@ The ⑤ Build shape for `<m3e-app-bar>` — phantom-typed pipeline API. Import q
 
 @docs Builder, AttrCaps, SlotCaps, appBar, centered, for
 @docs size, leading, title, subtitle, leadingIcon, trailingIcon
-@docs trailing
+@docs trailing, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.AppBar
+import M3e.Cem.Attr
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -183,3 +187,103 @@ trailing :
     -> Builder a s msg
 trailing v_ (Builder f_) =
     Builder { f_ | trailing = List.append f_.trailing [ v_ ] }
+
+
+{-| Build the `<m3e-app-bar>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | appBar : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.AppBar.appBar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.AppBar.centered v_) ]
+                         )
+                         f_.centered
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.AppBar.for v_) ]
+                         )
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.AppBar.size v_) ]
+                         )
+                         f_.size
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "leading" v_)
+                            ]
+                         )
+                         f_.leading
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "title" v_)
+                            ]
+                         )
+                         f_.title
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "subtitle" v_)
+                            ]
+                         )
+                         f_.subtitle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "leading-icon" v_)
+                            ]
+                         )
+                         f_.leadingIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing-icon" v_)
+                            ]
+                         )
+                         f_.trailingIcon
+                      )
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode
+                             (M3e.Element.withSlot "trailing" el_)
+                      )
+                      f_.trailing
+                  ]
+             )
+        )

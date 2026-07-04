@@ -1,16 +1,19 @@
 module M3e.Build.RichTooltipAction exposing
-    ( Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus
+    ( Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-rich-tooltip-action>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.RichTooltipAction as RichTooltipAction`.
 
-@docs Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus
+@docs Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.RichTooltipAction
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -55,3 +58,36 @@ disableRestoreFocus :
     -> Builder { a | disableRestoreFocus : M3e.Build.Internal.Used } s msg
 disableRestoreFocus v_ (Builder f_) =
     Builder { f_ | disableRestoreFocus = Just v_ }
+
+
+{-| Build the `<m3e-rich-tooltip-action>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind
+        | richTooltipAction : M3e.Value.Supported
+    } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.RichTooltipAction.richTooltipAction
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.RichTooltipAction.disableRestoreFocus
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.disableRestoreFocus
+                      )
+                  ]
+             )
+             (List.concat [ [ M3e.Element.toNode f_.content ] ])
+        )

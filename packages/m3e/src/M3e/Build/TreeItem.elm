@@ -1,7 +1,7 @@
 module M3e.Build.TreeItem exposing
     ( Builder, AttrCaps, SlotCaps, treeItem, disabled, indeterminate
     , open, selected, onOpening, onOpened, onClosing, onClosed, onClick
-    , icon, selectedIcon, toggleIcon, openToggleIcon, default
+    , icon, selectedIcon, toggleIcon, openToggleIcon, default, build
     )
 
 {-|
@@ -10,12 +10,17 @@ The ⑤ Build shape for `<m3e-tree-item>` — phantom-typed pipeline API. Import
 @docs Builder, AttrCaps, SlotCaps, treeItem, disabled, indeterminate
 @docs open, selected, onOpening, onOpened, onClosing, onClosed
 @docs onClick, icon, selectedIcon, toggleIcon, openToggleIcon, default
+@docs build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.TreeItem
+import M3e.Cem.TreeItem
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -227,3 +232,168 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-tree-item>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | treeItem : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.TreeItem.treeItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.TreeItem.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TreeItem.indeterminate v_)
+                            ]
+                         )
+                         f_.indeterminate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.TreeItem.open v_) ]
+                         )
+                         f_.open
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.TreeItem.selected v_)
+                            ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.TreeItem.onOpening
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpening
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.TreeItem.onOpened
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpened
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.TreeItem.onClosing
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosing
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.TreeItem.onClosed
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosed
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.TreeItem.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode (M3e.Element.withSlot "label" f_.label)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "selected-icon" v_)
+                            ]
+                         )
+                         f_.selectedIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "toggle-icon" v_)
+                            ]
+                         )
+                         f_.toggleIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "open-toggle-icon" v_)
+                            ]
+                         )
+                         f_.openToggleIcon
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

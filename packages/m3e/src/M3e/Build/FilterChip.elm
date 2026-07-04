@@ -1,7 +1,7 @@
 module M3e.Build.FilterChip exposing
     ( Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
     , selected, value, variant, onBeforeinput, onInput, onChange, onClick
-    , icon, trailingIcon
+    , icon, trailingIcon, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-filter-chip>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
 @docs selected, value, variant, onBeforeinput, onInput, onChange
-@docs onClick, icon, trailingIcon
+@docs onClick, icon, trailingIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.FilterChip
+import M3e.Cem.Html.FilterChip
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -187,3 +191,146 @@ trailingIcon :
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
 trailingIcon v_ (Builder f_) =
     Builder { f_ | trailingIcon = Just v_ }
+
+
+{-| Build the `<m3e-filter-chip>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | filterChip : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.FilterChip.filterChip
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FilterChip.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FilterChip.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FilterChip.selected v_)
+                            ]
+                         )
+                         f_.selected
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.FilterChip.value v_)
+                            ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.FilterChip.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.FilterChip.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.FilterChip.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.FilterChip.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.FilterChip.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode f_.content ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing-icon" v_)
+                            ]
+                         )
+                         f_.trailingIcon
+                      )
+                  ]
+             )
+        )

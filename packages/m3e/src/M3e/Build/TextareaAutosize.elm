@@ -1,17 +1,22 @@
 module M3e.Build.TextareaAutosize exposing
     ( Builder, AttrCaps, SlotCaps, textareaAutosize, disabled, for
-    , maxRows, minRows
+    , maxRows, minRows, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-textarea-autosize>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TextareaAutosize as TextareaAutosize`.
 
 @docs Builder, AttrCaps, SlotCaps, textareaAutosize, disabled, for
-@docs maxRows, minRows
+@docs maxRows, minRows, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.TextareaAutosize
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-textarea-autosize>`; see `.build` for the terminal. -}
@@ -88,3 +93,62 @@ minRows :
     -> Builder { a | minRows : M3e.Build.Internal.Used } s msg
 minRows v_ (Builder f_) =
     Builder { f_ | minRows = Just v_ }
+
+
+{-| Build the `<m3e-textarea-autosize>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | textareaAutosize : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.TextareaAutosize.textareaAutosize
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextareaAutosize.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextareaAutosize.for v_)
+                            ]
+                         )
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextareaAutosize.maxRows v_)
+                            ]
+                         )
+                         f_.maxRows
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.TextareaAutosize.minRows v_)
+                            ]
+                         )
+                         f_.minRows
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

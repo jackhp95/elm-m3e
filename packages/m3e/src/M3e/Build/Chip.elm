@@ -1,18 +1,21 @@
 module M3e.Build.Chip exposing
     ( Builder, AttrCaps, SlotCaps, chip, value, variant
-    , icon, trailingIcon
+    , icon, trailingIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Chip as Chip`.
 
 @docs Builder, AttrCaps, SlotCaps, chip, value, variant
-@docs icon, trailingIcon
+@docs icon, trailingIcon, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Chip
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -100,3 +103,58 @@ trailingIcon :
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
 trailingIcon v_ (Builder f_) =
     Builder { f_ | trailingIcon = Just v_ }
+
+
+{-| Build the `<m3e-chip>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | chip : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Chip.chip (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Chip.value v_) ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Chip.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode f_.content ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing-icon" v_)
+                            ]
+                         )
+                         f_.trailingIcon
+                      )
+                  ]
+             )
+        )

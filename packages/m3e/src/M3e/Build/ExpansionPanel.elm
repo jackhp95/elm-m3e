@@ -1,7 +1,7 @@
 module M3e.Build.ExpansionPanel exposing
     ( Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
     , open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed
-    , default, header, toggleIcon, actions
+    , default, header, toggleIcon, actions, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-expansion-panel>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
 @docs open, toggleDirection, togglePosition, onOpening, onOpened, onClosing
-@docs onClosed, default, header, toggleIcon, actions
+@docs onClosed, default, header, toggleIcon, actions, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ExpansionPanel
+import M3e.Cem.Html.ExpansionPanel
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -208,3 +212,154 @@ toggleIcon v_ (Builder f_) =
 actions : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 actions v_ (Builder f_) =
     Builder { f_ | actions = List.append f_.actions [ v_ ] }
+
+
+{-| Build the `<m3e-expansion-panel>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | expansionPanel : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ExpansionPanel.expansionPanel
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionPanel.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionPanel.hideToggle v_)
+                            ]
+                         )
+                         f_.hideToggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionPanel.open v_)
+                            ]
+                         )
+                         f_.open
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionPanel.toggleDirection v_)
+                            ]
+                         )
+                         f_.toggleDirection
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpansionPanel.togglePosition v_)
+                            ]
+                         )
+                         f_.togglePosition
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpansionPanel.onOpening
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpening
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpansionPanel.onOpened
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpened
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpansionPanel.onClosing
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosing
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpansionPanel.onClosed
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosed
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "header" v_)
+                            ]
+                         )
+                         f_.header
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "toggle-icon" v_)
+                            ]
+                         )
+                         f_.toggleIcon
+                      )
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode (M3e.Element.withSlot "actions" el_)
+                      )
+                      f_.actions
+                  ]
+             )
+        )

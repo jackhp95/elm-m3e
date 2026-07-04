@@ -1,17 +1,21 @@
 module M3e.Build.Icon exposing
     ( Builder, AttrCaps, SlotCaps, icon, filled, grade
-    , opticalSize, name, variant, weight
+    , opticalSize, name, variant, weight, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-icon>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Icon as Icon`.
 
 @docs Builder, AttrCaps, SlotCaps, icon, filled, grade
-@docs opticalSize, name, variant, weight
+@docs opticalSize, name, variant, weight, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Icon
+import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -127,3 +131,66 @@ weight :
     -> Builder { a | weight : M3e.Build.Internal.Used } s msg
 weight v_ (Builder f_) =
     Builder { f_ | weight = Just v_ }
+
+
+{-| Build the `<m3e-icon>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | icon : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Icon.icon (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Icon.filled v_) ]
+                         )
+                         f_.filled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Icon.grade v_) ]
+                         )
+                         f_.grade
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Icon.opticalSize v_)
+                            ]
+                         )
+                         f_.opticalSize
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Icon.name v_) ])
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Icon.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Icon.weight v_) ]
+                         )
+                         f_.weight
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

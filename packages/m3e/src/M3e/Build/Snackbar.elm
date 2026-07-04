@@ -1,19 +1,23 @@
 module M3e.Build.Snackbar exposing
     ( Builder, AttrCaps, SlotCaps, snackbar, action, closeLabel
-    , dismissible, duration, onBeforetoggle, onToggle, closeIcon
+    , dismissible, duration, onBeforetoggle, onToggle, closeIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-snackbar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Snackbar as Snackbar`.
 
 @docs Builder, AttrCaps, SlotCaps, snackbar, action, closeLabel
-@docs dismissible, duration, onBeforetoggle, onToggle, closeIcon
+@docs dismissible, duration, onBeforetoggle, onToggle, closeIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Snackbar
+import M3e.Cem.Snackbar
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -130,3 +134,98 @@ closeIcon :
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg
 closeIcon v_ (Builder f_) =
     Builder { f_ | closeIcon = Just v_ }
+
+
+{-| Build the `<m3e-snackbar>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | snackbar : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Snackbar.snackbar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Snackbar.action v_) ]
+                         )
+                         f_.action
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Snackbar.closeLabel v_)
+                            ]
+                         )
+                         f_.closeLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Snackbar.dismissible v_)
+                            ]
+                         )
+                         f_.dismissible
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Snackbar.duration v_)
+                            ]
+                         )
+                         f_.duration
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Snackbar.onBeforetoggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforetoggle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Snackbar.onToggle
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onToggle
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode f_.content ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "close-icon" v_)
+                            ]
+                         )
+                         f_.closeIcon
+                      )
+                  ]
+             )
+        )

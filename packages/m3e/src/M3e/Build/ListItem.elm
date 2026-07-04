@@ -1,18 +1,21 @@
 module M3e.Build.ListItem exposing
     ( Builder, AttrCaps, SlotCaps, listItem, default, leading
-    , overline, supportingText, trailing
+    , overline, supportingText, trailing, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListItem as ListItem`.
 
 @docs Builder, AttrCaps, SlotCaps, listItem, default, leading
-@docs overline, supportingText, trailing
+@docs overline, supportingText, trailing, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ListItem
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -141,3 +144,65 @@ trailing :
     -> Builder a { s | trailing : M3e.Build.Internal.Used } msg
 trailing v_ (Builder f_) =
     Builder { f_ | trailing = Just v_ }
+
+
+{-| Build the `<m3e-list-item>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | listItem : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ListItem.listItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat [])
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "leading" v_)
+                            ]
+                         )
+                         f_.leading
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "overline" v_)
+                            ]
+                         )
+                         f_.overline
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "supporting-text" v_)
+                            ]
+                         )
+                         f_.supportingText
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing" v_)
+                            ]
+                         )
+                         f_.trailing
+                      )
+                  ]
+             )
+        )

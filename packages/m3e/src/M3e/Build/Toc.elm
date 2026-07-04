@@ -1,18 +1,21 @@
 module M3e.Build.Toc exposing
     ( Builder, AttrCaps, SlotCaps, toc, for, maxDepth
-    , default, overline, title
+    , default, overline, title, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-toc>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Toc as Toc`.
 
 @docs Builder, AttrCaps, SlotCaps, toc, for, maxDepth
-@docs default, overline, title
+@docs default, overline, title, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Toc
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -102,3 +105,59 @@ title :
     -> Builder a { s | title : M3e.Build.Internal.Used } msg
 title v_ (Builder f_) =
     Builder { f_ | title = Just v_ }
+
+
+{-| Build the `<m3e-toc>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | toc : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Toc.toc (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Toc.for v_) ])
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Toc.maxDepth v_) ]
+                         )
+                         f_.maxDepth
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "overline" v_)
+                            ]
+                         )
+                         f_.overline
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "title" v_)
+                            ]
+                         )
+                         f_.title
+                      )
+                  ]
+             )
+        )

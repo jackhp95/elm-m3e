@@ -1,7 +1,7 @@
 module M3e.Build.BreadcrumbItem exposing
     ( Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
     , current, href, target, download, rel, onClick, default
-    , icon
+    , icon, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-breadcrumb-item>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
 @docs current, href, target, download, rel, onClick
-@docs default, icon
+@docs default, icon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.BreadcrumbItem
+import M3e.Cem.Html.BreadcrumbItem
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -183,3 +187,120 @@ icon :
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg
 icon v_ (Builder f_) =
     Builder { f_ | icon = Just v_ }
+
+
+{-| Build the `<m3e-breadcrumb-item>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | breadcrumbItem : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.BreadcrumbItem.breadcrumbItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.itemLabel v_)
+                            ]
+                         )
+                         f_.itemLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.current v_)
+                            ]
+                         )
+                         f_.current
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.href v_)
+                            ]
+                         )
+                         f_.href
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.target v_)
+                            ]
+                         )
+                         f_.target
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.download v_)
+                            ]
+                         )
+                         f_.download
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BreadcrumbItem.rel v_)
+                            ]
+                         )
+                         f_.rel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.BreadcrumbItem.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  ]
+             )
+        )

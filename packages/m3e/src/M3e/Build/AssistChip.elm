@@ -1,19 +1,22 @@
 module M3e.Build.AssistChip exposing
     ( Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
-    , name, type_, value, variant, icon
+    , name, type_, value, variant, icon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-assist-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.AssistChip as AssistChip`.
 
 @docs Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
-@docs name, type_, value, variant, icon
+@docs name, type_, value, variant, icon, build
 -}
 
 
 import M3e.Action
 import M3e.Build.Internal
+import M3e.Cem.AssistChip
+import M3e.Cem.Attr
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -176,3 +179,95 @@ icon :
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg
 icon v_ (Builder f_) =
     Builder { f_ | icon = Just v_ }
+
+
+{-| Build the `<m3e-assist-chip>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | assistChip : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.AssistChip.assistChip
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs f_.action)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.AssistChip.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.AssistChip.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.AssistChip.name v_) ]
+                         )
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.AssistChip.type_ v_)
+                            ]
+                         )
+                         f_.type_
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.AssistChip.value v_)
+                            ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.AssistChip.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Action.wrapContent
+                          f_.action
+                          (M3e.Element.toNode f_.content)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  ]
+             )
+        )

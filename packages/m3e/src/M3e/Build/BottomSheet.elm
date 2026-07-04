@@ -1,7 +1,7 @@
 module M3e.Build.BottomSheet exposing
     ( Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
     , handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening
-    , onClosing, onCancel, onOpened, onClosed, header, default
+    , onClosing, onCancel, onOpened, onClosed, header, default, build
     )
 
 {-|
@@ -10,13 +10,18 @@ The ⑤ Build shape for `<m3e-bottom-sheet>` — phantom-typed pipeline API. Imp
 @docs Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
 @docs handleLabel, hideable, hideFriction, modal, open, overshootLimit
 @docs onOpening, onClosing, onCancel, onOpened, onClosed, header
-@docs default
+@docs default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.BottomSheet
+import M3e.Cem.Html.BottomSheet
 import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-bottom-sheet>`; see `.build` for the terminal. -}
@@ -222,3 +227,178 @@ header v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-bottom-sheet>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | bottomSheet : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.BottomSheet.bottomSheet
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheet.detent v_)
+                            ]
+                         )
+                         f_.detent
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheet.handle v_)
+                            ]
+                         )
+                         f_.handle
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheet.handleLabel v_)
+                            ]
+                         )
+                         f_.handleLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheet.hideable v_)
+                            ]
+                         )
+                         f_.hideable
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheet.hideFriction v_)
+                            ]
+                         )
+                         f_.hideFriction
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.BottomSheet.modal v_)
+                            ]
+                         )
+                         f_.modal
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.BottomSheet.open v_)
+                            ]
+                         )
+                         f_.open
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.BottomSheet.overshootLimit v_)
+                            ]
+                         )
+                         f_.overshootLimit
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.BottomSheet.onOpening
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpening
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.BottomSheet.onClosing
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosing
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.BottomSheet.onCancel
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onCancel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.BottomSheet.onOpened
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpened
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.BottomSheet.onClosed
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosed
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "header" v_)
+                            ]
+                         )
+                         f_.header
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  ]
+             )
+        )

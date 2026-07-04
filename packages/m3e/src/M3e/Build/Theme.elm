@@ -1,6 +1,7 @@
 module M3e.Build.Theme exposing
     ( Builder, AttrCaps, SlotCaps, theme, color, contrast
     , density, scheme, strongFocus, variant, motion, onChange, default
+    , build
     )
 
 {-|
@@ -8,13 +9,17 @@ The ⑤ Build shape for `<m3e-theme>` — phantom-typed pipeline API. Import qua
 
 @docs Builder, AttrCaps, SlotCaps, theme, color, contrast
 @docs density, scheme, strongFocus, variant, motion, onChange
-@docs default
+@docs default, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Theme
+import M3e.Cem.Theme
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -186,3 +191,92 @@ onChange v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-theme>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | theme : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Theme.theme (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.color v_) ]
+                         )
+                         f_.color
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.contrast v_) ]
+                         )
+                         f_.contrast
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.density v_) ]
+                         )
+                         f_.density
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.scheme v_) ]
+                         )
+                         f_.scheme
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.strongFocus v_)
+                            ]
+                         )
+                         f_.strongFocus
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Theme.motion v_) ]
+                         )
+                         f_.motion
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Theme.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

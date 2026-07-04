@@ -1,18 +1,21 @@
 module M3e.Build.Heading exposing
     ( Builder, AttrCaps, SlotCaps, heading, emphasized, level
-    , size, variant
+    , size, variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-heading>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Heading as Heading`.
 
 @docs Builder, AttrCaps, SlotCaps, heading, emphasized, level
-@docs size, variant
+@docs size, variant, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Heading
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -110,3 +113,56 @@ variant :
     -> Builder { a | variant : M3e.Build.Internal.Used } s msg
 variant v_ (Builder f_) =
     Builder { f_ | variant = Just v_ }
+
+
+{-| Build the `<m3e-heading>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | heading : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Heading.heading
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Heading.emphasized v_)
+                            ]
+                         )
+                         f_.emphasized
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Heading.level v_) ]
+                         )
+                         f_.level
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Heading.size v_) ]
+                         )
+                         f_.size
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Heading.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat [ [ M3e.Element.toNode f_.content ] ])
+        )

@@ -1,7 +1,7 @@
 module M3e.Build.DrawerContainer exposing
     ( Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
     , endDivider, start, startMode, startDivider, onChange, default, startSlot
-    , endSlot
+    , endSlot, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-drawer-container>` — phantom-typed pipeline API.
 
 @docs Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
 @docs endDivider, start, startMode, startDivider, onChange, default
-@docs startSlot, endSlot
+@docs startSlot, endSlot, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.DrawerContainer
+import M3e.Cem.Html.DrawerContainer
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -183,3 +187,119 @@ endSlot :
     -> Builder a { s | endSlot : M3e.Build.Internal.Used } msg
 endSlot v_ (Builder f_) =
     Builder { f_ | endSlot = Just v_ }
+
+
+{-| Build the `<m3e-drawer-container>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | drawerContainer : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.DrawerContainer.drawerContainer
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.DrawerContainer.end v_)
+                            ]
+                         )
+                         f_.end
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.DrawerContainer.endMode v_)
+                            ]
+                         )
+                         f_.endMode
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.DrawerContainer.endDivider v_)
+                            ]
+                         )
+                         f_.endDivider
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.DrawerContainer.start v_)
+                            ]
+                         )
+                         f_.start
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.DrawerContainer.startMode v_)
+                            ]
+                         )
+                         f_.startMode
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.DrawerContainer.startDivider v_)
+                            ]
+                         )
+                         f_.startDivider
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.DrawerContainer.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "start" v_)
+                            ]
+                         )
+                         f_.startSlot
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode (M3e.Element.withSlot "end" v_)
+                            ]
+                         )
+                         f_.endSlot
+                      )
+                  ]
+             )
+        )

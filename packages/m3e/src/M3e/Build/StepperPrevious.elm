@@ -1,16 +1,20 @@
 module M3e.Build.StepperPrevious exposing
-    ( Builder, AttrCaps, SlotCaps, stepperPrevious, default
+    ( Builder, AttrCaps, SlotCaps, stepperPrevious, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper-previous>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepperPrevious as StepperPrevious`.
 
-@docs Builder, AttrCaps, SlotCaps, stepperPrevious, default
+@docs Builder, AttrCaps, SlotCaps, stepperPrevious, default, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.StepperPrevious
 import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-stepper-previous>`; see `.build` for the terminal. -}
@@ -45,3 +49,25 @@ default :
     -> Builder a { s | default : M3e.Build.Internal.Used } msg
 default v_ (Builder f_) =
     Builder { f_ | default = Just v_ }
+
+
+{-| Build the `<m3e-stepper-previous>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | stepperPrevious : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.StepperPrevious.stepperPrevious
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat [])
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  ]
+             )
+        )

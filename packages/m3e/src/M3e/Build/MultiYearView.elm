@@ -1,6 +1,6 @@
 module M3e.Build.MultiYearView exposing
     ( Builder, AttrCaps, SlotCaps, multiYearView, active, today
-    , date, activeDate, minDate, maxDate, onChange, onActiveChange
+    , date, activeDate, minDate, maxDate, onChange, onActiveChange, build
     )
 
 {-|
@@ -8,11 +8,18 @@ The ⑤ Build shape for `<m3e-multi-year-view>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, multiYearView, active, today
 @docs date, activeDate, minDate, maxDate, onChange, onActiveChange
+@docs build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.MultiYearView
+import M3e.Cem.MultiYearView
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-multi-year-view>`; see `.build` for the terminal. -}
@@ -137,3 +144,108 @@ onActiveChange :
     -> Builder { a | onActiveChange : M3e.Build.Internal.Used } s msg
 onActiveChange v_ (Builder f_) =
     Builder { f_ | onActiveChange = Just v_ }
+
+
+{-| Build the `<m3e-multi-year-view>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | multiYearView : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.MultiYearView.multiYearView
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MultiYearView.active v_)
+                            ]
+                         )
+                         f_.active
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MultiYearView.today v_)
+                            ]
+                         )
+                         f_.today
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MultiYearView.date v_)
+                            ]
+                         )
+                         f_.date
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MultiYearView.activeDate v_)
+                            ]
+                         )
+                         f_.activeDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MultiYearView.minDate v_)
+                            ]
+                         )
+                         f_.minDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MultiYearView.maxDate v_)
+                            ]
+                         )
+                         f_.maxDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.MultiYearView.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.MultiYearView.onActiveChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onActiveChange
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

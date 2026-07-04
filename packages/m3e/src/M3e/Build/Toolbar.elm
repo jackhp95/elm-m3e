@@ -1,18 +1,21 @@
 module M3e.Build.Toolbar exposing
     ( Builder, AttrCaps, SlotCaps, toolbar, elevated, shape
-    , variant, vertical, default
+    , variant, vertical, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-toolbar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Toolbar as Toolbar`.
 
 @docs Builder, AttrCaps, SlotCaps, toolbar, elevated, shape
-@docs variant, vertical, default
+@docs variant, vertical, default, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Toolbar
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -108,3 +111,58 @@ vertical v_ (Builder f_) =
 default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-toolbar>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | toolbar : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Toolbar.toolbar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Toolbar.elevated v_)
+                            ]
+                         )
+                         f_.elevated
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Toolbar.shape v_) ]
+                         )
+                         f_.shape
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Toolbar.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Toolbar.vertical v_)
+                            ]
+                         )
+                         f_.vertical
+                      )
+                  ]
+             )
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

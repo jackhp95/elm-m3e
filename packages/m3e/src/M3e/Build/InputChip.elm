@@ -1,7 +1,7 @@
 module M3e.Build.InputChip exposing
     ( Builder, AttrCaps, SlotCaps, inputChip, disabled, disabledInteractive
     , removable, removeLabel, value, variant, onRemove, onClick, avatar
-    , icon, removeIcon
+    , icon, removeIcon, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-input-chip>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, inputChip, disabled, disabledInteractive
 @docs removable, removeLabel, value, variant, onRemove, onClick
-@docs avatar, icon, removeIcon
+@docs avatar, icon, removeIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.InputChip
+import M3e.Cem.InputChip
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -187,3 +191,138 @@ removeIcon :
     -> Builder a { s | removeIcon : M3e.Build.Internal.Used } msg
 removeIcon v_ (Builder f_) =
     Builder { f_ | removeIcon = Just v_ }
+
+
+{-| Build the `<m3e-input-chip>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | inputChip : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.InputChip.inputChip
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChip.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChip.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChip.removable v_)
+                            ]
+                         )
+                         f_.removable
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.InputChip.removeLabel v_)
+                            ]
+                         )
+                         f_.removeLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.InputChip.value v_) ]
+                         )
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.InputChip.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.InputChip.onRemove
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onRemove
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.InputChip.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode f_.content ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "avatar" v_)
+                            ]
+                         )
+                         f_.avatar
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "remove-icon" v_)
+                            ]
+                         )
+                         f_.removeIcon
+                      )
+                  ]
+             )
+        )

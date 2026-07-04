@@ -2,7 +2,7 @@ module M3e.Build.Paginator exposing
     ( Builder, AttrCaps, SlotCaps, paginator, disabled, firstPageLabel
     , hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize
     , pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon
-    , nextPageIcon, lastPageIcon
+    , nextPageIcon, lastPageIcon, build
     )
 
 {-|
@@ -11,13 +11,17 @@ The ⑤ Build shape for `<m3e-paginator>` — phantom-typed pipeline API. Import
 @docs Builder, AttrCaps, SlotCaps, paginator, disabled, firstPageLabel
 @docs hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex
 @docs pageSize, pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage
-@docs firstPageIcon, previousPageIcon, nextPageIcon, lastPageIcon
+@docs firstPageIcon, previousPageIcon, nextPageIcon, lastPageIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Paginator
+import M3e.Cem.Paginator
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -275,3 +279,206 @@ lastPageIcon :
     -> Builder a { s | lastPageIcon : M3e.Build.Internal.Used } msg
 lastPageIcon v_ (Builder f_) =
     Builder { f_ | lastPageIcon = Just v_ }
+
+
+{-| Build the `<m3e-paginator>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | paginator : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Paginator.paginator
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.firstPageLabel v_)
+                            ]
+                         )
+                         f_.firstPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.hidePageSize v_)
+                            ]
+                         )
+                         f_.hidePageSize
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.itemsPerPageLabel v_)
+                            ]
+                         )
+                         f_.itemsPerPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.lastPageLabel v_)
+                            ]
+                         )
+                         f_.lastPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Paginator.length v_)
+                            ]
+                         )
+                         f_.length
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.nextPageLabel v_)
+                            ]
+                         )
+                         f_.nextPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.pageIndex v_)
+                            ]
+                         )
+                         f_.pageIndex
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.pageSize v_)
+                            ]
+                         )
+                         f_.pageSize
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.pageSizes v_)
+                            ]
+                         )
+                         f_.pageSizes
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.pageSizeVariant v_)
+                            ]
+                         )
+                         f_.pageSizeVariant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.previousPageLabel v_)
+                            ]
+                         )
+                         f_.previousPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Paginator.showFirstLastButtons v_)
+                            ]
+                         )
+                         f_.showFirstLastButtons
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Paginator.onPage
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onPage
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "first-page-icon" v_)
+                            ]
+                         )
+                         f_.firstPageIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "previous-page-icon" v_)
+                            ]
+                         )
+                         f_.previousPageIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "next-page-icon" v_)
+                            ]
+                         )
+                         f_.nextPageIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "last-page-icon" v_)
+                            ]
+                         )
+                         f_.lastPageIcon
+                      )
+                  ]
+             )
+        )

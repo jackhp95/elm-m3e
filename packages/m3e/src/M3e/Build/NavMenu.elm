@@ -1,15 +1,18 @@
 module M3e.Build.NavMenu exposing
-    ( Builder, AttrCaps, SlotCaps, navMenu, default
+    ( Builder, AttrCaps, SlotCaps, navMenu, default, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavMenu as NavMenu`.
 
-@docs Builder, AttrCaps, SlotCaps, navMenu, default
+@docs Builder, AttrCaps, SlotCaps, navMenu, default, build
 -}
 
 
+import M3e.Cem.Attr
+import M3e.Cem.NavMenu
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -54,3 +57,22 @@ default :
     -> Builder a s msg
 default v_ (Builder f_) =
     Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Build the `<m3e-nav-menu>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | navMenu : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.NavMenu.navMenu
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat [])
+             (List.concat
+                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
+             )
+        )

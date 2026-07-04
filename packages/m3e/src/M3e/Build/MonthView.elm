@@ -1,7 +1,7 @@
 module M3e.Build.MonthView exposing
     ( Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
     , active, today, date, activeDate, minDate, maxDate, onChange
-    , onActiveChange
+    , onActiveChange, build
     )
 
 {-|
@@ -9,12 +9,18 @@ The ⑤ Build shape for `<m3e-month-view>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
 @docs active, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange
+@docs onChange, onActiveChange, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.MonthView
+import M3e.Cem.MonthView
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-month-view>`; see `.build` for the terminal. -}
@@ -163,3 +169,121 @@ onActiveChange :
     -> Builder { a | onActiveChange : M3e.Build.Internal.Used } s msg
 onActiveChange v_ (Builder f_) =
     Builder { f_ | onActiveChange = Just v_ }
+
+
+{-| Build the `<m3e-month-view>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | monthView : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.MonthView.monthView
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MonthView.rangeStart v_)
+                            ]
+                         )
+                         f_.rangeStart
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MonthView.rangeEnd v_)
+                            ]
+                         )
+                         f_.rangeEnd
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MonthView.active v_)
+                            ]
+                         )
+                         f_.active
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MonthView.today v_) ]
+                         )
+                         f_.today
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MonthView.date v_) ]
+                         )
+                         f_.date
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.MonthView.activeDate v_)
+                            ]
+                         )
+                         f_.activeDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MonthView.minDate v_)
+                            ]
+                         )
+                         f_.minDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MonthView.maxDate v_)
+                            ]
+                         )
+                         f_.maxDate
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.MonthView.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.MonthView.onActiveChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onActiveChange
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

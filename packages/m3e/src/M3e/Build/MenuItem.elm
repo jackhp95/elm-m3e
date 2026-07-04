@@ -1,6 +1,7 @@
 module M3e.Build.MenuItem exposing
     ( Builder, AttrCaps, SlotCaps, menuItem, disabled, download
     , href, rel, target, onClick, default, icon, trailingIcon
+    , build
     )
 
 {-|
@@ -8,13 +9,17 @@ The ⑤ Build shape for `<m3e-menu-item>` — phantom-typed pipeline API. Import
 
 @docs Builder, AttrCaps, SlotCaps, menuItem, disabled, download
 @docs href, rel, target, onClick, default, icon
-@docs trailingIcon
+@docs trailingIcon, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.MenuItem
+import M3e.Cem.MenuItem
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -180,3 +185,102 @@ trailingIcon :
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
 trailingIcon v_ (Builder f_) =
     Builder { f_ | trailingIcon = Just v_ }
+
+
+{-| Build the `<m3e-menu-item>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | menuItem : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.MenuItem.menuItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MenuItem.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MenuItem.download v_)
+                            ]
+                         )
+                         f_.download
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MenuItem.href v_) ]
+                         )
+                         f_.href
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MenuItem.rel v_) ]
+                         )
+                         f_.rel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.MenuItem.target v_) ]
+                         )
+                         f_.target
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.MenuItem.onClick
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClick
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "icon" v_)
+                            ]
+                         )
+                         f_.icon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "trailing-icon" v_)
+                            ]
+                         )
+                         f_.trailingIcon
+                      )
+                  ]
+             )
+        )

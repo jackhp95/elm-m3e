@@ -1,7 +1,7 @@
 module M3e.Build.ExpandableListItem exposing
     ( Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
     , onOpening, onOpened, onClosing, onClosed, default, leading, overline
-    , supportingText, toggleIcon, items
+    , supportingText, toggleIcon, items, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-expandable-list-item>` — phantom-typed pipeline 
 
 @docs Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
 @docs onOpening, onOpened, onClosing, onClosed, default, leading
-@docs overline, supportingText, toggleIcon, items
+@docs overline, supportingText, toggleIcon, items, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ExpandableListItem
+import M3e.Cem.Html.ExpandableListItem
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -214,3 +218,151 @@ items :
     -> Builder a { s | items : M3e.Build.Internal.Used } msg
 items v_ (Builder f_) =
     Builder { f_ | items = Just v_ }
+
+
+{-| Build the `<m3e-expandable-list-item>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind
+        | expandableListItem : M3e.Value.Supported
+    } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ExpandableListItem.expandableListItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpandableListItem.disabled v_)
+                            ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.ExpandableListItem.open v_)
+                            ]
+                         )
+                         f_.open
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpandableListItem.onOpening
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpening
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpandableListItem.onOpened
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onOpened
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpandableListItem.onClosing
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosing
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.ExpandableListItem.onClosed
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClosed
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "leading" v_)
+                            ]
+                         )
+                         f_.leading
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "overline" v_)
+                            ]
+                         )
+                         f_.overline
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "supporting-text" v_)
+                            ]
+                         )
+                         f_.supportingText
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "toggle-icon" v_)
+                            ]
+                         )
+                         f_.toggleIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "items" v_)
+                            ]
+                         )
+                         f_.items
+                      )
+                  ]
+             )
+        )

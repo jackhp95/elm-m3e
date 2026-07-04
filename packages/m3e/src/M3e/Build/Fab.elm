@@ -1,7 +1,7 @@
 module M3e.Build.Fab exposing
     ( Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
     , extended, lowered, name, size, type_, value, variant
-    , label, closeIcon
+    , label, closeIcon, build
     )
 
 {-|
@@ -9,13 +9,16 @@ The ⑤ Build shape for `<m3e-fab>` — phantom-typed pipeline API. Import quali
 
 @docs Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
 @docs extended, lowered, name, size, type_, value
-@docs variant, label, closeIcon
+@docs variant, label, closeIcon, build
 -}
 
 
 import M3e.Action
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Fab
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -244,3 +247,113 @@ closeIcon :
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg
 closeIcon v_ (Builder f_) =
     Builder { f_ | closeIcon = Just v_ }
+
+
+{-| Build the `<m3e-fab>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | fab : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Fab.fab (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs f_.action)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Fab.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Fab.disabledInteractive v_)
+                            ]
+                         )
+                         f_.disabledInteractive
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Fab.extended v_) ]
+                         )
+                         f_.extended
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Fab.lowered v_) ]
+                         )
+                         f_.lowered
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Fab.name v_) ])
+                         f_.name
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Fab.size v_) ])
+                         f_.size
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Fab.type_ v_) ])
+                         f_.type_
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Fab.value v_) ])
+                         f_.value
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Fab.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Action.wrapContent
+                          f_.action
+                          (M3e.Element.toNode f_.content)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "label" v_)
+                            ]
+                         )
+                         f_.label
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "close-icon" v_)
+                            ]
+                         )
+                         f_.closeIcon
+                      )
+                  ]
+             )
+        )

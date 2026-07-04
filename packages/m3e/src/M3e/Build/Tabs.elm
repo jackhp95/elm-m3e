@@ -1,7 +1,7 @@
 module M3e.Build.Tabs exposing
     ( Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
     , nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
-    , nextIcon, prevIcon, default, panel
+    , nextIcon, prevIcon, default, panel, build
     )
 
 {-|
@@ -9,13 +9,17 @@ The ⑤ Build shape for `<m3e-tabs>` — phantom-typed pipeline API. Import qual
 
 @docs Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
 @docs nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput
-@docs onInput, nextIcon, prevIcon, default, panel
+@docs onInput, nextIcon, prevIcon, default, panel, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Tabs
+import M3e.Cem.Tabs
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -209,3 +213,143 @@ panel :
     -> Builder a s msg
 panel v_ (Builder f_) =
     Builder { f_ | panel = List.append f_.panel [ v_ ] }
+
+
+{-| Build the `<m3e-tabs>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | tabs : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Tabs.tabs (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Tabs.disablePagination v_)
+                            ]
+                         )
+                         f_.disablePagination
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Tabs.headerPosition v_)
+                            ]
+                         )
+                         f_.headerPosition
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Tabs.nextPageLabel v_)
+                            ]
+                         )
+                         f_.nextPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Tabs.previousPageLabel v_)
+                            ]
+                         )
+                         f_.previousPageLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Tabs.stretch v_) ]
+                         )
+                         f_.stretch
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Tabs.variant v_) ]
+                         )
+                         f_.variant
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Tabs.onChange
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onChange
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Tabs.onBeforeinput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onBeforeinput
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.Tabs.onInput
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onInput
+                      )
+                  ]
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "next-icon" v_)
+                            ]
+                         )
+                         f_.nextIcon
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "prev-icon" v_)
+                            ]
+                         )
+                         f_.prevIcon
+                      )
+                  , List.map (\el_ -> M3e.Element.toNode el_) f_.default
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode (M3e.Element.withSlot "panel" el_)
+                      )
+                      f_.panel
+                  ]
+             )
+        )

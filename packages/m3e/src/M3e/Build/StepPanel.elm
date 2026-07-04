@@ -1,16 +1,22 @@
 module M3e.Build.StepPanel exposing
     ( Builder, AttrCaps, SlotCaps, stepPanel, default, actions
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-step-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepPanel as StepPanel`.
 
 @docs Builder, AttrCaps, SlotCaps, stepPanel, default, actions
+@docs build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.StepPanel
 import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-step-panel>`; see `.build` for the terminal. -}
@@ -59,3 +65,35 @@ actions :
     -> Builder a { s | actions : M3e.Build.Internal.Used } msg
 actions v_ (Builder f_) =
     Builder { f_ | actions = Just v_ }
+
+
+{-| Build the `<m3e-step-panel>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | stepPanel : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.StepPanel.stepPanel
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat [])
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map (\v_ -> [ M3e.Element.toNode v_ ]) f_.default)
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "actions" v_)
+                            ]
+                         )
+                         f_.actions
+                      )
+                  ]
+             )
+        )

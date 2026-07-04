@@ -1,17 +1,21 @@
 module M3e.Build.ThemeIcon exposing
     ( Builder, AttrCaps, SlotCaps, themeIcon, color, scheme
-    , variant
+    , variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-theme-icon>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ThemeIcon as ThemeIcon`.
 
 @docs Builder, AttrCaps, SlotCaps, themeIcon, color, scheme
-@docs variant
+@docs variant, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ThemeIcon
+import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -103,3 +107,48 @@ variant :
     -> Builder { a | variant : M3e.Build.Internal.Used } s msg
 variant v_ (Builder f_) =
     Builder { f_ | variant = Just v_ }
+
+
+{-| Build the `<m3e-theme-icon>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | themeIcon : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ThemeIcon.themeIcon
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.ThemeIcon.color v_) ]
+                         )
+                         f_.color
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.ThemeIcon.scheme v_)
+                            ]
+                         )
+                         f_.scheme
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.ThemeIcon.variant v_)
+                            ]
+                         )
+                         f_.variant
+                      )
+                  ]
+             )
+             (List.concat [])
+        )

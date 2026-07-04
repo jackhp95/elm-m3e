@@ -1,19 +1,23 @@
 module M3e.Build.SearchBar exposing
     ( Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-    , onClear, clearIcon, leading, trailing
+    , onClear, clearIcon, leading, trailing, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-search-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SearchBar as SearchBar`.
 
 @docs Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-@docs onClear, clearIcon, leading, trailing
+@docs onClear, clearIcon, leading, trailing, build
 -}
 
 
 import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.SearchBar
+import M3e.Cem.SearchBar
 import M3e.Element
+import M3e.Node
 import M3e.Value
 
 
@@ -125,3 +129,80 @@ trailing :
     -> Builder a s msg
 trailing v_ (Builder f_) =
     Builder { f_ | trailing = List.append f_.trailing [ v_ ] }
+
+
+{-| Build the `<m3e-search-bar>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | searchBar : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.SearchBar.searchBar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SearchBar.clearable v_)
+                            ]
+                         )
+                         f_.clearable
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.SearchBar.clearLabel v_)
+                            ]
+                         )
+                         f_.clearLabel
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget
+                                (M3e.Cem.Attr.attribute
+                                   M3e.Cem.Html.SearchBar.onClear
+                                   v_
+                                )
+                            ]
+                         )
+                         f_.onClear
+                      )
+                  ]
+             )
+             (List.concat
+                  [ [ M3e.Element.toNode (M3e.Element.withSlot "input" f_.input)
+                    ]
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Element.toNode
+                                (M3e.Element.withSlot "clear-icon" v_)
+                            ]
+                         )
+                         f_.clearIcon
+                      )
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode (M3e.Element.withSlot "leading" el_)
+                      )
+                      f_.leading
+                  , List.map
+                      (\el_ ->
+                         M3e.Element.toNode
+                             (M3e.Element.withSlot "trailing" el_)
+                      )
+                      f_.trailing
+                  ]
+             )
+        )

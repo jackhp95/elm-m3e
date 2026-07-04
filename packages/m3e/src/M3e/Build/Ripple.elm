@@ -1,17 +1,22 @@
 module M3e.Build.Ripple exposing
     ( Builder, AttrCaps, SlotCaps, ripple, centered, disabled
-    , for, radius, unbounded
+    , for, radius, unbounded, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-ripple>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Ripple as Ripple`.
 
 @docs Builder, AttrCaps, SlotCaps, ripple, centered, disabled
-@docs for, radius, unbounded
+@docs for, radius, unbounded, build
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Ripple
+import M3e.Element
+import M3e.Node
+import M3e.Value
 
 
 {-| Opaque builder for `<m3e-ripple>`; see `.build` for the terminal. -}
@@ -104,3 +109,62 @@ unbounded :
     -> Builder { a | unbounded : M3e.Build.Internal.Used } s msg
 unbounded v_ (Builder f_) =
     Builder { f_ | unbounded = Just v_ }
+
+
+{-| Build the `<m3e-ripple>` element from a `Builder`. -}
+build :
+    Builder a {} msg
+    -> M3e.Element.Element { kind | ripple : M3e.Value.Supported } msg
+build (Builder f_) =
+    M3e.Element.fromNode
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Ripple.ripple
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.concat
+                  [ Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.centered v_) ]
+                         )
+                         f_.centered
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.disabled v_) ]
+                         )
+                         f_.disabled
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.for v_) ]
+                         )
+                         f_.for
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.radius v_) ]
+                         )
+                         f_.radius
+                      )
+                  , Maybe.withDefault
+                      []
+                      (Maybe.map
+                         (\v_ ->
+                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.unbounded v_)
+                            ]
+                         )
+                         f_.unbounded
+                      )
+                  ]
+             )
+             (List.concat [])
+        )
