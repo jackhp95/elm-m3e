@@ -1,16 +1,16 @@
-module M3e.Build.Ripple exposing ( Builder, AttrCaps, SlotCaps )
+module M3e.Build.Ripple exposing ( Builder, AttrCaps, SlotCaps, ripple )
 
 {-|
 The ⑤ Build shape for `<m3e-ripple>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Ripple as Ripple`.
 
-@docs Builder, AttrCaps, SlotCaps
+@docs Builder, AttrCaps, SlotCaps, ripple
 -}
 
 
 
 {-| Opaque builder for `<m3e-ripple>`; see `.build` for the terminal. -}
 type Builder attrCaps slotCaps msg
-    = Builder Fields
+    = Builder (Fields msg)
 
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
@@ -24,4 +24,21 @@ type alias SlotCaps =
 
 
 type alias Fields =
-    {}
+    { centered : Maybe Bool
+    , disabled : Maybe Bool
+    , for : Maybe String
+    , radius : Maybe Float
+    , unbounded : Maybe Bool
+    }
+
+
+{-| Seed a `Builder` for `<m3e-ripple>`. -}
+ripple : Builder AttrCaps SlotCaps msg
+ripple =
+    Builder
+        { centered = Nothing
+        , disabled = Nothing
+        , for = Nothing
+        , radius = Nothing
+        , unbounded = Nothing
+        }
