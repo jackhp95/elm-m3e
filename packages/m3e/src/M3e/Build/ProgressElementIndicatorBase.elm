@@ -88,7 +88,7 @@ variant v_ (Builder f_) =
 
 {-| Build the `<ProgressElementIndicatorBase>` element from a `Builder`. -}
 build :
-    Builder a {} msg
+    Builder a s msg
     -> M3e.Element.Element { kind
         | progressElementIndicatorBase : M3e.Value.Supported
     } msg

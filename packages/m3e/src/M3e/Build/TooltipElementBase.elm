@@ -116,7 +116,7 @@ for v_ (Builder f_) =
 
 {-| Build the `<TooltipElementBase>` element from a `Builder`. -}
 build :
-    Builder a {} msg
+    Builder a s msg
     -> M3e.Element.Element { kind
         | tooltipElementBase : M3e.Value.Supported
     } msg

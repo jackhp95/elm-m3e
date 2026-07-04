@@ -146,7 +146,7 @@ toggleIcon v_ (Builder f_) =
 
 {-| Build the `<m3e-expansion-header>` element from a `Builder`. -}
 build :
-    Builder a {} msg
+    Builder a s msg
     -> M3e.Element.Element { kind | expansionHeader : M3e.Value.Supported } msg
 build (Builder f_) =
     M3e.Element.fromNode
