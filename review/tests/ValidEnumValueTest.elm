@@ -23,6 +23,21 @@ facts =
     ]
 
 
+shape4Facts : List Facts.Fact
+shape4Facts =
+    [ { component = "button"
+      , module_ = "M3e.Record.Button"
+      , enums = [ ( "variant", [ "filled", "outlined" ] ) ]
+      , requiredSlots = []
+      , multiSlots = []
+      , attrRewrites = []
+      , slotRewrites = []
+      , shapes = [ Shape3, Shape4 ]
+      , requiredAttrs = []
+      }
+    ]
+
+
 message : String
 message =
     "`circular` is not a valid value for this component"
@@ -97,4 +112,37 @@ v =
                             , under = "Value.circular"
                             }
                         ]
+        , test "flags an invalid enum token at a Shape4 call site" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e.Record.Button
+import M3e.Value as Value
+
+v =
+    M3e.Record.Button.view {} [ M3e.Record.Button.variant Value.circular ] []
+"""
+                    |> Review.Test.run (rule shape4Facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = message
+                            , details =
+                                [ "This component's enum only accepts: filled, outlined."
+                                , "The loose top-layer vocabulary lets any token type-check; use one this component actually supports, or the component-module's strict setter (which rejects the wrong token at compile time)."
+                                ]
+                            , under = "Value.circular"
+                            }
+                        ]
+        , test "accepts a valid enum token at a Shape4 call site" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e.Record.Button
+import M3e.Value as Value
+
+v =
+    M3e.Record.Button.view {} [ M3e.Record.Button.variant Value.filled ] []
+"""
+                    |> Review.Test.run (rule shape4Facts)
+                    |> Review.Test.expectNoErrors
         ]

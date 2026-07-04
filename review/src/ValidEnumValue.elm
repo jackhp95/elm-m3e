@@ -14,8 +14,10 @@ into the rule — so it stays correct as `@m3e/web` changes without editing rule
 -}
 
 import Dict exposing (Dict)
+import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
+import Facts
 import M3e.Review.Facts exposing (Fact)
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
@@ -25,6 +27,7 @@ import Review.Rule as Rule exposing (Error, Rule)
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "ValidEnumValue" (initContext (buildIndex facts))
+        |> Rule.withDeclarationEnterVisitor declarationEnterVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -42,22 +45,61 @@ buildIndex facts =
 
 
 type alias Context =
-    { lookup : ModuleNameLookupTable, index : Index }
+    { lookup : ModuleNameLookupTable
+    , index : Index
+    , scope : Dict String (Node Expression)
+    }
 
 
 initContext : Index -> Rule.ContextCreator () Context
 initContext index =
-    Rule.initContextCreator (\lookup () -> { lookup = lookup, index = index })
+    Rule.initContextCreator (\lookup () -> { lookup = lookup, index = index, scope = Dict.empty })
         |> Rule.withModuleNameLookupTable
+
+
+declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
+declarationEnterVisitor node context =
+    case Node.value node of
+        Declaration.FunctionDeclaration { declaration } ->
+            case Node.value (Node.value declaration).expression of
+                Expression.LetExpression { declarations } ->
+                    let
+                        scope =
+                            List.foldl
+                                (\dec acc ->
+                                    case Node.value dec of
+                                        Expression.LetFunction fn ->
+                                            let
+                                                fnDecl =
+                                                    Node.value fn.declaration
+
+                                                name =
+                                                    Node.value fnDecl.name
+                                            in
+                                            Dict.insert name fnDecl.expression acc
+
+                                        _ ->
+                                            acc
+                                )
+                                context.scope
+                                declarations
+                    in
+                    ( [], { context | scope = scope } )
+
+                _ ->
+                    ( [], context )
+
+        _ ->
+            ( [], context )
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
 expressionVisitor node context =
     case Node.value node of
         Expression.Application (fnNode :: args) ->
-            case constructorNoun context fnNode of
-                Just noun ->
-                    case Dict.get noun context.index of
+            case Facts.callSite context.lookup fnNode of
+                Just site ->
+                    case Dict.get site.noun context.index of
                         Just enums ->
                             ( List.concatMap (checkArg context enums) args, context )
 
@@ -71,40 +113,17 @@ expressionVisitor node context =
             ( [], context )
 
 
-{-| If `fnNode` is a component constructor, return the component noun. Handles both the
-barrel (`M3e.button` → module `["M3e"]`, name `"button"`) and the component module
-(`M3e.Button.view` → module `["M3e","Button"]`, name `"view"`). -}
-constructorNoun : Context -> Node Expression -> Maybe String
-constructorNoun context fnNode =
-    case Node.value fnNode of
-        Expression.FunctionOrValue _ name ->
-            case Lookup.moduleNameFor context.lookup fnNode of
-                Just [ "M3e" ] ->
-                    Just name
-
-                Just [ "M3e", comp ] ->
-                    if name == "view" then
-                        Just (decapitalize comp)
-
-                    else
-                        Nothing
-
-                _ ->
-                    Nothing
-
-        _ ->
-            Nothing
-
-
-{-| Within a constructor argument that is an attribute list, check each enum setter. -}
+{-| Within a constructor argument that could be an attribute list, check each enum setter.
+Uses `Facts.tracedList` to resolve dynamic expressions. We only flag elements we can
+statically resolve to known setters — dynamic parts are silently ignored.
+-}
 checkArg : Context -> Dict String (List String) -> Node Expression -> List (Error {})
 checkArg context enums argNode =
-    case Node.value argNode of
-        Expression.ListExpr elements ->
-            List.filterMap (checkSetter context enums) elements
-
-        _ ->
-            []
+    let
+        traced =
+            Facts.tracedList context.lookup context.scope argNode
+    in
+    List.filterMap (checkSetter context enums) traced.known
 
 
 {-| An `<enumSetter> <valueToken>` application whose token isn't valid for this

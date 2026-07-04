@@ -14,10 +14,12 @@ is treated as singular. Advisory: report-only.
 -}
 
 import Dict exposing (Dict)
+import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
+import Facts
 import M3e.Review.Facts exposing (Fact)
-import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
+import Review.ModuleNameLookupTable exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
@@ -26,6 +28,7 @@ import Review.Rule as Rule exposing (Error, Rule)
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "SingularSlot" (initContext (buildIndex facts))
+        |> Rule.withDeclarationEnterVisitor declarationEnterVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -39,46 +42,98 @@ type alias Index =
 buildIndex : List Fact -> Index
 buildIndex facts =
     facts
-        |> List.map (\f -> ( f.component, List.map slotSetter f.multiSlots ))
+        |> List.map (\f -> ( f.component, List.map (slotSetter f) f.multiSlots ))
         |> Dict.fromList
 
 
-{-| The content-setter name for a slot: the default slot's setter is `child`/`children`;
-a named slot's setter is its camelCased name (e.g. `trailing-icon` -> `trailingIcon`).
+{-| The content-setter name for a slot. Checks slotRewrites first (e.g. "unnamed" -> "child"),
+then falls back to camelCase conversion.
 -}
-slotSetter : String -> String
-slotSetter slot =
-    if slot == "default" then
-        "child"
+slotSetter : Fact -> String -> String
+slotSetter fact slot =
+    case List.filter (\( from, _ ) -> from == slot) fact.slotRewrites of
+        ( _, to ) :: _ ->
+            to
 
-    else
-        camelize slot
+        [] ->
+            if slot == "default" || slot == "unnamed" then
+                "child"
+
+            else
+                camelize slot
 
 
 type alias Context =
-    { lookup : ModuleNameLookupTable, index : Index }
+    { lookup : ModuleNameLookupTable
+    , index : Index
+    , scope : Dict String (Node Expression)
+    }
 
 
 initContext : Index -> Rule.ContextCreator () Context
 initContext index =
-    Rule.initContextCreator (\lookup () -> { lookup = lookup, index = index })
+    Rule.initContextCreator (\lookup () -> { lookup = lookup, index = index, scope = Dict.empty })
         |> Rule.withModuleNameLookupTable
+
+
+declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
+declarationEnterVisitor node context =
+    case Node.value node of
+        Declaration.FunctionDeclaration { declaration } ->
+            case Node.value (Node.value declaration).expression of
+                Expression.LetExpression { declarations } ->
+                    let
+                        scope =
+                            List.foldl
+                                (\dec acc ->
+                                    case Node.value dec of
+                                        Expression.LetFunction fn ->
+                                            let
+                                                fnDecl =
+                                                    Node.value fn.declaration
+
+                                                name =
+                                                    Node.value fnDecl.name
+                                            in
+                                            Dict.insert name fnDecl.expression acc
+
+                                        _ ->
+                                            acc
+                                )
+                                context.scope
+                                declarations
+                    in
+                    ( [], { context | scope = scope } )
+
+                _ ->
+                    ( [], context )
+
+        _ ->
+            ( [], context )
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
 expressionVisitor node context =
     case Node.value node of
         Expression.Application (fnNode :: args) ->
-            case constructorNoun context fnNode of
-                Just noun ->
-                    case Dict.get noun context.index of
+            case Facts.callSite context.lookup fnNode of
+                Just site ->
+                    case Dict.get site.noun context.index of
                         Just multi ->
-                            case contentElements args of
-                                Just elements ->
-                                    ( checkArg multi elements, context )
+                            if List.length args >= 2 then
+                                case List.reverse args of
+                                    last :: _ ->
+                                        let
+                                            traced =
+                                                Facts.tracedList context.lookup context.scope last
+                                        in
+                                        ( checkArg multi traced.known, context )
 
-                                Nothing ->
-                                    ( [], context )
+                                    [] ->
+                                        ( [], context )
+
+                            else
+                                ( [], context )
 
                         Nothing ->
                             ( [], context )
@@ -88,31 +143,6 @@ expressionVisitor node context =
 
         _ ->
             ( [], context )
-
-
-{-| The content is the _last_ argument of a fully-applied constructor (`view [attrs]
-[content]`). We only analyze it when it's a **list literal**: a void component
-(`img [attrs]`, one arg) has no content, and dynamically-built content (`List.map …`)
-can't be seen into — in both cases we stay silent rather than mistake attrs (or nothing)
-for repeated slots.
--}
-contentElements : List (Node Expression) -> Maybe (List (Node Expression))
-contentElements args =
-    if List.length args >= 2 then
-        case List.reverse args of
-            last :: _ ->
-                case Node.value last of
-                    Expression.ListExpr elements ->
-                        Just elements
-
-                    _ ->
-                        Nothing
-
-            [] ->
-                Nothing
-
-    else
-        Nothing
 
 
 {-| Flag any singular setter that appears more than once in the content list.
@@ -167,28 +197,6 @@ dedupeByName =
         []
 
 
-constructorNoun : Context -> Node Expression -> Maybe String
-constructorNoun context fnNode =
-    case Node.value fnNode of
-        Expression.FunctionOrValue _ name ->
-            case Lookup.moduleNameFor context.lookup fnNode of
-                Just [ "M3e" ] ->
-                    Just name
-
-                Just [ "M3e", comp ] ->
-                    if name == "view" then
-                        Just (decapitalize comp)
-
-                    else
-                        Nothing
-
-                _ ->
-                    Nothing
-
-        _ ->
-            Nothing
-
-
 error : String -> { start : { row : Int, column : Int }, end : { row : Int, column : Int } } -> Error {}
 error name range =
     Rule.error
@@ -216,16 +224,6 @@ capitalize s =
     case String.uncons s of
         Just ( c, rest ) ->
             String.cons (Char.toUpper c) rest
-
-        Nothing ->
-            s
-
-
-decapitalize : String -> String
-decapitalize s =
-    case String.uncons s of
-        Just ( c, rest ) ->
-            String.cons (Char.toLower c) rest
 
         Nothing ->
             s

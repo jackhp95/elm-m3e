@@ -22,6 +22,21 @@ facts =
     ]
 
 
+shape4Facts : List Facts.Fact
+shape4Facts =
+    [ { component = "listItem"
+      , module_ = "M3e.Record.ListItem"
+      , enums = []
+      , requiredSlots = []
+      , multiSlots = [ "default" ]
+      , attrRewrites = []
+      , slotRewrites = []
+      , shapes = [ Shape3, Shape4 ]
+      , requiredAttrs = []
+      }
+    ]
+
+
 all : Test
 all =
     describe "SingularSlot"
@@ -66,5 +81,38 @@ v =
     listItem [ klass "a", klass "b" ] [ child x ]
 """
                     |> Review.Test.run (rule facts)
+                    |> Review.Test.expectNoErrors
+        , test "flags a singular slot filled twice at Shape4 call site" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e.Record.ListItem
+import M3e exposing (trailing)
+
+v =
+    M3e.Record.ListItem.view {} [] [ trailing a, trailing b ]
+"""
+                    |> Review.Test.run (rule shape4Facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Singular slot `trailing` is filled more than once"
+                            , details =
+                                [ "This slot renders a single element, but it's set multiple times here — the extra will silently win or be dropped."
+                                , "Keep one, or (if this component genuinely repeats the slot) it should be in the multi set — check the component's slot config."
+                                ]
+                            , under = "trailing a"
+                            }
+                        ]
+        , test "allows a multi slot filled many times at Shape4 call site" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e.Record.ListItem
+import M3e exposing (child)
+
+v =
+    M3e.Record.ListItem.view {} [] [ child a, child b, child c ]
+"""
+                    |> Review.Test.run (rule shape4Facts)
                     |> Review.Test.expectNoErrors
         ]
