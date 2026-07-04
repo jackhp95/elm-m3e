@@ -1,6 +1,6 @@
 module M3e.Build.FilterChipSet exposing
     ( Builder, AttrCaps, SlotCaps, filterChipSet, disabled, hideSelectionIndicator
-    , multi, name, vertical, onChange, onBeforeinput, onInput
+    , multi, name, vertical, onChange, onBeforeinput, onInput, default
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-filter-chip-set>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, filterChipSet, disabled, hideSelectionIndicator
 @docs multi, name, vertical, onChange, onBeforeinput, onInput
+@docs default
 -}
 
 
@@ -144,3 +145,12 @@ onInput :
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
 onInput v_ (Builder f_) =
     Builder { f_ | onInput = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { filterChip : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

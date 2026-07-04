@@ -1,6 +1,6 @@
 module M3e.Build.SelectionList exposing
     ( Builder, AttrCaps, SlotCaps, selectionList, hideSelectionIndicator, multi
-    , variant, name, disabled, onChange, onBeforeinput, onInput
+    , variant, name, disabled, onChange, onBeforeinput, onInput, default
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-selection-list>` — phantom-typed pipeline API. I
 
 @docs Builder, AttrCaps, SlotCaps, selectionList, hideSelectionIndicator, multi
 @docs variant, name, disabled, onChange, onBeforeinput, onInput
+@docs default
 -}
 
 
@@ -152,3 +153,15 @@ onInput :
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
 onInput v_ (Builder f_) =
     Builder { f_ | onInput = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { listOption : M3e.Value.Supported
+    , expandableListItem : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

@@ -1,7 +1,7 @@
 module M3e.Build.ExpansionPanel exposing
     ( Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
     , open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed
-    , default, header, toggleIcon
+    , default, header, toggleIcon, actions
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-expansion-panel>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
 @docs open, toggleDirection, togglePosition, onOpening, onOpened, onClosing
-@docs onClosed, default, header, toggleIcon
+@docs onClosed, default, header, toggleIcon, actions
 -}
 
 
@@ -202,3 +202,9 @@ toggleIcon :
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg
 toggleIcon v_ (Builder f_) =
     Builder { f_ | toggleIcon = Just v_ }
+
+
+{-| Add an element to the `actions` (multi) slot. -}
+actions : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+actions v_ (Builder f_) =
+    Builder { f_ | actions = List.append f_.actions [ v_ ] }

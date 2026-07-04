@@ -1,7 +1,8 @@
 module M3e.Build.SearchView exposing
     ( Builder, AttrCaps, SlotCaps, searchView, contained, mode
     , open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle
-    , onToggle, searchIcon, closeIcon, clearIcon
+    , onToggle, searchIcon, closeIcon, clearIcon, default, openLeading, openTrailing
+    , closedLeading, closedTrailing
     )
 
 {-|
@@ -9,7 +10,8 @@ The ⑤ Build shape for `<m3e-search-view>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, searchView, contained, mode
 @docs open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear
-@docs onBeforetoggle, onToggle, searchIcon, closeIcon, clearIcon
+@docs onBeforetoggle, onToggle, searchIcon, closeIcon, clearIcon, default
+@docs openLeading, openTrailing, closedLeading, closedTrailing
 -}
 
 
@@ -234,3 +236,53 @@ clearIcon :
     -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg
 clearIcon v_ (Builder f_) =
     Builder { f_ | clearIcon = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Add an element to the `open-leading` (multi) slot. -}
+openLeading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+openLeading v_ (Builder f_) =
+    Builder { f_ | openLeading = List.append f_.openLeading [ v_ ] }
+
+
+{-| Add an element to the `open-trailing` (multi) slot. -}
+openTrailing :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+openTrailing v_ (Builder f_) =
+    Builder { f_ | openTrailing = List.append f_.openTrailing [ v_ ] }
+
+
+{-| Add an element to the `closed-leading` (multi) slot. -}
+closedLeading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+closedLeading v_ (Builder f_) =
+    Builder { f_ | closedLeading = List.append f_.closedLeading [ v_ ] }
+
+
+{-| Add an element to the `closed-trailing` (multi) slot. -}
+closedTrailing :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+closedTrailing v_ (Builder f_) =
+    Builder { f_ | closedTrailing = List.append f_.closedTrailing [ v_ ] }

@@ -1,11 +1,11 @@
 module M3e.Build.ChipSet exposing
-    ( Builder, AttrCaps, SlotCaps, chipSet, vertical
+    ( Builder, AttrCaps, SlotCaps, chipSet, vertical, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-chip-set>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ChipSet as ChipSet`.
 
-@docs Builder, AttrCaps, SlotCaps, chipSet, vertical
+@docs Builder, AttrCaps, SlotCaps, chipSet, vertical, default
 -}
 
 
@@ -55,3 +55,17 @@ vertical :
     -> Builder { a | vertical : M3e.Build.Internal.Used } s msg
 vertical v_ (Builder f_) =
     Builder { f_ | vertical = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { assistChip : M3e.Value.Supported
+    , chip : M3e.Value.Supported
+    , filterChip : M3e.Value.Supported
+    , inputChip : M3e.Value.Supported
+    , suggestionChip : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

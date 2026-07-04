@@ -1,7 +1,7 @@
 module M3e.Build.TreeItem exposing
     ( Builder, AttrCaps, SlotCaps, treeItem, disabled, indeterminate
     , open, selected, onOpening, onOpened, onClosing, onClosed, onClick
-    , icon, selectedIcon, toggleIcon, openToggleIcon
+    , icon, selectedIcon, toggleIcon, openToggleIcon, default
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-tree-item>` — phantom-typed pipeline API. Import
 
 @docs Builder, AttrCaps, SlotCaps, treeItem, disabled, indeterminate
 @docs open, selected, onOpening, onOpened, onClosing, onClosed
-@docs onClick, icon, selectedIcon, toggleIcon, openToggleIcon
+@docs onClick, icon, selectedIcon, toggleIcon, openToggleIcon, default
 -}
 
 
@@ -218,3 +218,12 @@ openToggleIcon :
     -> Builder a { s | openToggleIcon : M3e.Build.Internal.Used } msg
 openToggleIcon v_ (Builder f_) =
     Builder { f_ | openToggleIcon = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { treeItem : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

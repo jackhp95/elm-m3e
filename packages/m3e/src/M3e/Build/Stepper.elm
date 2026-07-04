@@ -1,13 +1,14 @@
 module M3e.Build.Stepper exposing
     ( Builder, AttrCaps, SlotCaps, stepper, headerPosition, labelPosition
-    , linear, orientation, onChange, onBeforeinput, onInput
+    , linear, orientation, onChange, onBeforeinput, onInput, step, panel
     )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Stepper as Stepper`.
 
 @docs Builder, AttrCaps, SlotCaps, stepper, headerPosition, labelPosition
-@docs linear, orientation, onChange, onBeforeinput, onInput
+@docs linear, orientation, onChange, onBeforeinput, onInput, step
+@docs panel
 -}
 
 
@@ -144,3 +145,21 @@ onInput :
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg
 onInput v_ (Builder f_) =
     Builder { f_ | onInput = Just v_ }
+
+
+{-| Add an element to the `step` (multi) slot. -}
+step :
+    M3e.Element.Element { step : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+step v_ (Builder f_) =
+    Builder { f_ | step = List.append f_.step [ v_ ] }
+
+
+{-| Add an element to the `panel` (multi) slot. -}
+panel :
+    M3e.Element.Element { stepPanel : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+panel v_ (Builder f_) =
+    Builder { f_ | panel = List.append f_.panel [ v_ ] }

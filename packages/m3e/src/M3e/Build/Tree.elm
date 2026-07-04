@@ -1,13 +1,13 @@
 module M3e.Build.Tree exposing
     ( Builder, AttrCaps, SlotCaps, tree, multi, cascade
-    , onChange
+    , onChange, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-tree>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tree as Tree`.
 
 @docs Builder, AttrCaps, SlotCaps, tree, multi, cascade
-@docs onChange
+@docs onChange, default
 -}
 
 
@@ -82,3 +82,12 @@ onChange :
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
 onChange v_ (Builder f_) =
     Builder { f_ | onChange = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { treeItem : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

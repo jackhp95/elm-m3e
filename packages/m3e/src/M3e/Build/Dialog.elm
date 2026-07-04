@@ -1,7 +1,7 @@
 module M3e.Build.Dialog exposing
     ( Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
     , disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing
-    , onClosed, onCancel, header, actions, closeIcon
+    , onClosed, onCancel, header, actions, closeIcon, default
     )
 
 {-|
@@ -10,6 +10,7 @@ The ⑤ Build shape for `<m3e-dialog>` — phantom-typed pipeline API. Import qu
 @docs Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
 @docs disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
 @docs onClosing, onClosed, onCancel, header, actions, closeIcon
+@docs default
 -}
 
 
@@ -215,3 +216,9 @@ closeIcon :
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg
 closeIcon v_ (Builder f_) =
     Builder { f_ | closeIcon = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

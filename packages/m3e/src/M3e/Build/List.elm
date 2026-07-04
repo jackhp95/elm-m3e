@@ -1,11 +1,11 @@
 module M3e.Build.List exposing
-    ( Builder, AttrCaps, SlotCaps, list, variant
+    ( Builder, AttrCaps, SlotCaps, list, variant, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.List as List`.
 
-@docs Builder, AttrCaps, SlotCaps, list, variant
+@docs Builder, AttrCaps, SlotCaps, list, variant, default
 -}
 
 
@@ -60,3 +60,17 @@ variant :
     -> Builder { a | variant : M3e.Build.Internal.Used } s msg
 variant v_ (Builder f_) =
     Builder { f_ | variant = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { listItem : M3e.Value.Supported
+    , listAction : M3e.Value.Supported
+    , expandableListItem : M3e.Value.Supported
+    , listOption : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

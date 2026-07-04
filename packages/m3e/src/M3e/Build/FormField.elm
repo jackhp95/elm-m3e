@@ -1,7 +1,7 @@
 module M3e.Build.FormField exposing
     ( Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
     , hideSubscript, variant, prefix, prefixText, label, suffix, suffixText
-    , hint, error
+    , hint, error, default
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-form-field>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
 @docs hideSubscript, variant, prefix, prefixText, label, suffix
-@docs suffixText, hint, error
+@docs suffixText, hint, error, default
 -}
 
 
@@ -193,3 +193,9 @@ error :
     -> Builder a { s | error : M3e.Build.Internal.Used } msg
 error v_ (Builder f_) =
     Builder { f_ | error = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

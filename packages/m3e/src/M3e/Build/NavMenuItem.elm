@@ -1,7 +1,7 @@
 module M3e.Build.NavMenuItem exposing
     ( Builder, AttrCaps, SlotCaps, navMenuItem, disabled, open
     , selected, onOpening, onOpened, onClosing, onClosed, onClick, icon
-    , badge, selectedIcon, toggleIcon
+    , badge, selectedIcon, toggleIcon, default
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-nav-menu-item>` — phantom-typed pipeline API. Im
 
 @docs Builder, AttrCaps, SlotCaps, navMenuItem, disabled, open
 @docs selected, onOpening, onOpened, onClosing, onClosed, onClick
-@docs icon, badge, selectedIcon, toggleIcon
+@docs icon, badge, selectedIcon, toggleIcon, default
 -}
 
 
@@ -210,3 +210,12 @@ toggleIcon :
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg
 toggleIcon v_ (Builder f_) =
     Builder { f_ | toggleIcon = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

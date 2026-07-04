@@ -1,11 +1,11 @@
 module M3e.Build.FocusTrap exposing
-    ( Builder, AttrCaps, SlotCaps, focusTrap, disabled
+    ( Builder, AttrCaps, SlotCaps, focusTrap, disabled, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-focus-trap>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FocusTrap as FocusTrap`.
 
-@docs Builder, AttrCaps, SlotCaps, focusTrap, disabled
+@docs Builder, AttrCaps, SlotCaps, focusTrap, disabled, default
 -}
 
 
@@ -48,3 +48,9 @@ disabled :
     -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
 disabled v_ (Builder f_) =
     Builder { f_ | disabled = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

@@ -1,11 +1,11 @@
 module M3e.Build.Slide exposing
-    ( Builder, AttrCaps, SlotCaps, slide, selectedIndex
+    ( Builder, AttrCaps, SlotCaps, slide, selectedIndex, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-slide>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Slide as Slide`.
 
-@docs Builder, AttrCaps, SlotCaps, slide, selectedIndex
+@docs Builder, AttrCaps, SlotCaps, slide, selectedIndex, default
 -}
 
 
@@ -48,3 +48,9 @@ selectedIndex :
     -> Builder { a | selectedIndex : M3e.Build.Internal.Used } s msg
 selectedIndex v_ (Builder f_) =
     Builder { f_ | selectedIndex = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

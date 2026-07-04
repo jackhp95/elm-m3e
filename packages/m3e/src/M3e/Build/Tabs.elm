@@ -1,7 +1,7 @@
 module M3e.Build.Tabs exposing
     ( Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
     , nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
-    , nextIcon, prevIcon
+    , nextIcon, prevIcon, default, panel
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-tabs>` — phantom-typed pipeline API. Import qual
 
 @docs Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
 @docs nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput
-@docs onInput, nextIcon, prevIcon
+@docs onInput, nextIcon, prevIcon, default, panel
 -}
 
 
@@ -191,3 +191,21 @@ prevIcon :
     -> Builder a { s | prevIcon : M3e.Build.Internal.Used } msg
 prevIcon v_ (Builder f_) =
     Builder { f_ | prevIcon = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { tab : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Add an element to the `panel` (multi) slot. -}
+panel :
+    M3e.Element.Element { tabPanel : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+panel v_ (Builder f_) =
+    Builder { f_ | panel = List.append f_.panel [ v_ ] }

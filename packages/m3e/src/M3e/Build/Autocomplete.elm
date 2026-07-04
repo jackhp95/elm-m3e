@@ -2,7 +2,7 @@ module M3e.Build.Autocomplete exposing
     ( Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
     , filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel
     , panelClass, required, for, onChange, onQuery, onToggle, loadingSlot
-    , noData
+    , noData, default
     )
 
 {-|
@@ -11,7 +11,7 @@ The ⑤ Build shape for `<m3e-autocomplete>` — phantom-typed pipeline API. Imp
 @docs Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
 @docs filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel
 @docs noDataLabel, panelClass, required, for, onChange, onQuery
-@docs onToggle, loadingSlot, noData
+@docs onToggle, loadingSlot, noData, default
 -}
 
 
@@ -267,3 +267,14 @@ noData :
     -> Builder a { s | noData : M3e.Build.Internal.Used } msg
 noData v_ (Builder f_) =
     Builder { f_ | noData = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { option : M3e.Value.Supported
+    , optgroup : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

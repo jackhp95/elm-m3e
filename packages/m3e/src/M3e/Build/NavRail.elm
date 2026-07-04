@@ -1,13 +1,13 @@
 module M3e.Build.NavRail exposing
     ( Builder, AttrCaps, SlotCaps, navRail, mode, onBeforeinput
-    , onInput, onChange
+    , onInput, onChange, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-rail>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavRail as NavRail`.
 
 @docs Builder, AttrCaps, SlotCaps, navRail, mode, onBeforeinput
-@docs onInput, onChange
+@docs onInput, onChange, default
 -}
 
 
@@ -104,3 +104,15 @@ onChange :
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
 onChange v_ (Builder f_) =
     Builder { f_ | onChange = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { navItem : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , fab : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

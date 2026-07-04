@@ -1,6 +1,6 @@
 module M3e.Build.AppBar exposing
     ( Builder, AttrCaps, SlotCaps, appBar, centered, for
-    , size, leading, title, subtitle, leadingIcon, trailingIcon
+    , size, leading, title, subtitle, leadingIcon, trailingIcon, trailing
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-app-bar>` — phantom-typed pipeline API. Import q
 
 @docs Builder, AttrCaps, SlotCaps, appBar, centered, for
 @docs size, leading, title, subtitle, leadingIcon, trailingIcon
+@docs trailing
 -}
 
 
@@ -169,3 +170,16 @@ trailingIcon :
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg
 trailingIcon v_ (Builder f_) =
     Builder { f_ | trailingIcon = Just v_ }
+
+
+{-| Add an element to the `trailing` (multi) slot. -}
+trailing :
+    M3e.Element.Element { iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    , searchBar : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+trailing v_ (Builder f_) =
+    Builder { f_ | trailing = List.append f_.trailing [ v_ ] }

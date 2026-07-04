@@ -1,9 +1,11 @@
-module M3e.Build.ContentPane exposing ( Builder, AttrCaps, SlotCaps, contentPane )
+module M3e.Build.ContentPane exposing
+    ( Builder, AttrCaps, SlotCaps, contentPane, default
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-content-pane>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ContentPane as ContentPane`.
 
-@docs Builder, AttrCaps, SlotCaps, contentPane
+@docs Builder, AttrCaps, SlotCaps, contentPane, default
 -}
 
 
@@ -33,3 +35,9 @@ type alias Fields msg =
 contentPane : Builder AttrCaps SlotCaps msg
 contentPane =
     Builder { default = [], phantomMsg_ = Nothing }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

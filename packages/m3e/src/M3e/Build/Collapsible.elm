@@ -1,13 +1,13 @@
 module M3e.Build.Collapsible exposing
     ( Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-    , noAnimate, onOpening, onOpened, onClosing, onClosed
+    , noAnimate, onOpening, onOpened, onClosing, onClosed, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-collapsible>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Collapsible as Collapsible`.
 
 @docs Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-@docs noAnimate, onOpening, onOpened, onClosing, onClosed
+@docs noAnimate, onOpening, onOpened, onClosing, onClosed, default
 -}
 
 
@@ -134,3 +134,9 @@ onClosed :
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg
 onClosed v_ (Builder f_) =
     Builder { f_ | onClosed = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

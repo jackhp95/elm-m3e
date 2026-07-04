@@ -1,11 +1,11 @@
 module M3e.Build.Optgroup exposing
-    ( Builder, AttrCaps, SlotCaps, optgroup, label
+    ( Builder, AttrCaps, SlotCaps, optgroup, label, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-optgroup>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Optgroup as Optgroup`.
 
-@docs Builder, AttrCaps, SlotCaps, optgroup, label
+@docs Builder, AttrCaps, SlotCaps, optgroup, label, default
 -}
 
 
@@ -49,3 +49,12 @@ label :
     -> Builder a { s | label : M3e.Build.Internal.Used } msg
 label v_ (Builder f_) =
     Builder { f_ | label = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { option : M3e.Value.Supported } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

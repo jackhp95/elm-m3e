@@ -1,13 +1,13 @@
 module M3e.Build.SearchBar exposing
     ( Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-    , onClear, clearIcon
+    , onClear, clearIcon, leading, trailing
     )
 
 {-|
 The ⑤ Build shape for `<m3e-search-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SearchBar as SearchBar`.
 
 @docs Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-@docs onClear, clearIcon
+@docs onClear, clearIcon, leading, trailing
 -}
 
 
@@ -103,3 +103,25 @@ clearIcon :
     -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg
 clearIcon v_ (Builder f_) =
     Builder { f_ | clearIcon = Just v_ }
+
+
+{-| Add an element to the `leading` (multi) slot. -}
+leading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+leading v_ (Builder f_) =
+    Builder { f_ | leading = List.append f_.leading [ v_ ] }
+
+
+{-| Add an element to the `trailing` (multi) slot. -}
+trailing :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+trailing v_ (Builder f_) =
+    Builder { f_ | trailing = List.append f_.trailing [ v_ ] }

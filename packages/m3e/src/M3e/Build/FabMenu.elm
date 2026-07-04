@@ -1,13 +1,13 @@
 module M3e.Build.FabMenu exposing
     ( Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
-    , onToggle
+    , onToggle, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenu as FabMenu`.
 
 @docs Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
-@docs onToggle
+@docs onToggle, default
 -}
 
 
@@ -91,3 +91,14 @@ onToggle :
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg
 onToggle v_ (Builder f_) =
     Builder { f_ | onToggle = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { fabMenuItem : M3e.Value.Supported
+    , menuItem : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

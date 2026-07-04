@@ -1,13 +1,13 @@
 module M3e.Build.Menu exposing
     ( Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-    , variant, submenu, onBeforetoggle, onToggle
+    , variant, submenu, onBeforetoggle, onToggle, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Menu as Menu`.
 
 @docs Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-@docs variant, submenu, onBeforetoggle, onToggle
+@docs variant, submenu, onBeforetoggle, onToggle, default
 -}
 
 
@@ -136,3 +136,17 @@ onToggle :
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg
 onToggle v_ (Builder f_) =
     Builder { f_ | onToggle = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { menuItem : M3e.Value.Supported
+    , menuItemCheckbox : M3e.Value.Supported
+    , menuItemRadio : M3e.Value.Supported
+    , menuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

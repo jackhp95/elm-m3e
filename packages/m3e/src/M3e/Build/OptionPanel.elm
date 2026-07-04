@@ -1,13 +1,14 @@
 module M3e.Build.OptionPanel exposing
     ( Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
-    , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData
+    , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, default, loading
     )
 
 {-|
 The ⑤ Build shape for `<m3e-option-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.OptionPanel as OptionPanel`.
 
 @docs Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
-@docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData
+@docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, default
+@docs loading
 -}
 
 
@@ -151,3 +152,27 @@ noData :
     -> Builder a { s | noData : M3e.Build.Internal.Used } msg
 noData v_ (Builder f_) =
     Builder { f_ | noData = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default :
+    M3e.Element.Element { option : M3e.Value.Supported
+    , optgroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }
+
+
+{-| Add an element to the `loading` (multi) slot. -}
+loading :
+    M3e.Element.Element { circularProgressIndicator : M3e.Value.Supported
+    , loadingIndicator : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    } msg
+    -> Builder a s msg
+    -> Builder a s msg
+loading v_ (Builder f_) =
+    Builder { f_ | loading = List.append f_.loading [ v_ ] }

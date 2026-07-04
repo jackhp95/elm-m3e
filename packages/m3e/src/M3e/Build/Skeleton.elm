@@ -1,13 +1,13 @@
 module M3e.Build.Skeleton exposing
     ( Builder, AttrCaps, SlotCaps, skeleton, animation, shape
-    , loaded
+    , loaded, default
     )
 
 {-|
 The ⑤ Build shape for `<m3e-skeleton>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Skeleton as Skeleton`.
 
 @docs Builder, AttrCaps, SlotCaps, skeleton, animation, shape
-@docs loaded
+@docs loaded, default
 -}
 
 
@@ -96,3 +96,9 @@ loaded :
     -> Builder { a | loaded : M3e.Build.Internal.Used } s msg
 loaded v_ (Builder f_) =
     Builder { f_ | loaded = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

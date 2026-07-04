@@ -1,7 +1,7 @@
 module M3e.Build.BottomSheet exposing
     ( Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
     , handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening
-    , onClosing, onCancel, onOpened, onClosed, header
+    , onClosing, onCancel, onOpened, onClosed, header, default
     )
 
 {-|
@@ -10,6 +10,7 @@ The ⑤ Build shape for `<m3e-bottom-sheet>` — phantom-typed pipeline API. Imp
 @docs Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
 @docs handleLabel, hideable, hideFriction, modal, open, overshootLimit
 @docs onOpening, onClosing, onCancel, onOpened, onClosed, header
+@docs default
 -}
 
 
@@ -215,3 +216,9 @@ header :
     -> Builder a { s | header : M3e.Build.Internal.Used } msg
 header v_ (Builder f_) =
     Builder { f_ | header = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }

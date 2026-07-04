@@ -1,6 +1,6 @@
 module M3e.Build.Theme exposing
     ( Builder, AttrCaps, SlotCaps, theme, color, contrast
-    , density, scheme, strongFocus, variant, motion, onChange
+    , density, scheme, strongFocus, variant, motion, onChange, default
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-theme>` — phantom-typed pipeline API. Import qua
 
 @docs Builder, AttrCaps, SlotCaps, theme, color, contrast
 @docs density, scheme, strongFocus, variant, motion, onChange
+@docs default
 -}
 
 
@@ -179,3 +180,9 @@ onChange :
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg
 onChange v_ (Builder f_) =
     Builder { f_ | onChange = Just v_ }
+
+
+{-| Add an element to the `unnamed` (multi) slot. -}
+default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
+default v_ (Builder f_) =
+    Builder { f_ | default = List.append f_.default [ v_ ] }
