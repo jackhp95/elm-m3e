@@ -1,5 +1,7 @@
 module FactsTest exposing (all)
 
+import Dict
+import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
@@ -15,22 +17,22 @@ import Test exposing (Test, describe, test)
 -}
 probeRule : Rule
 probeRule =
-    Rule.newModuleRuleSchemaUsingContextCreator "FactsProbe" initContext
+    Rule.newModuleRuleSchemaUsingContextCreator "FactsProbe" initBasicContext
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
 
-type alias Context =
+type alias BasicContext =
     { lookup : ModuleNameLookupTable }
 
 
-initContext : Rule.ContextCreator () Context
-initContext =
+initBasicContext : Rule.ContextCreator () BasicContext
+initBasicContext =
     Rule.initContextCreator (\lookup () -> { lookup = lookup })
         |> Rule.withModuleNameLookupTable
 
 
-expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
+expressionVisitor : Node Expression -> BasicContext -> ( List (Error {}), BasicContext )
 expressionVisitor node context =
     case Node.value node of
         Expression.Application (fnNode :: _) ->
@@ -53,6 +55,105 @@ expressionVisitor node context =
             ( [], context )
 
 
+{-| Probe rule that inspects the second argument of `M3e.button` via
+`Facts.tracedList` and reports `known:N unresolved:B`. Used to verify
+`tracedList` classifications.
+-}
+probeContentRule : Rule
+probeContentRule =
+    Rule.newModuleRuleSchemaUsingContextCreator "TracedListProbe" initContext
+        |> Rule.withDeclarationEnterVisitor declarationEnterVisitor
+        |> Rule.withExpressionEnterVisitor tracedListVisitor
+        |> Rule.fromModuleRuleSchema
+
+
+type alias Context =
+    { lookup : ModuleNameLookupTable
+    , scope : Dict.Dict String (Node Expression)
+    }
+
+
+initContext : Rule.ContextCreator () Context
+initContext =
+    Rule.initContextCreator (\lookup () -> { lookup = lookup, scope = Dict.empty })
+        |> Rule.withModuleNameLookupTable
+
+
+declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
+declarationEnterVisitor node context =
+    case Node.value node of
+        Declaration.FunctionDeclaration { declaration } ->
+            case Node.value (Node.value declaration).expression of
+                Expression.LetExpression { declarations } ->
+                    let
+                        scope =
+                            List.foldl
+                                (\dec acc ->
+                                    case Node.value dec of
+                                        Expression.LetFunction fn ->
+                                            let
+                                                fnDecl =
+                                                    Node.value fn.declaration
+
+                                                name =
+                                                    Node.value fnDecl.name
+                                            in
+                                            Dict.insert name fnDecl.expression acc
+
+                                        _ ->
+                                            acc
+                                )
+                                context.scope
+                                declarations
+                    in
+                    ( [], { context | scope = scope } )
+
+                _ ->
+                    ( [], context )
+
+        _ ->
+            ( [], context )
+
+
+tracedListVisitor : Node Expression -> Context -> ( List (Error {}), Context )
+tracedListVisitor node context =
+    case Node.value node of
+        Expression.Application (fnNode :: args) ->
+            case ( Facts.callSite context.lookup fnNode, List.reverse args ) of
+                ( Just site, last :: _ ) ->
+                    if site.noun /= "button" then
+                        ( [], context )
+
+                    else
+                        let
+                            traced =
+                                Facts.tracedList context.lookup context.scope last
+                        in
+                        ( [ Rule.error
+                                { message =
+                                    "known:"
+                                        ++ String.fromInt (List.length traced.known)
+                                        ++ " unresolved:"
+                                        ++ (if traced.unresolved then
+                                                "True"
+
+                                            else
+                                                "False"
+                                           )
+                                , details = [ "probe" ]
+                                }
+                                (Node.range fnNode)
+                          ]
+                        , context
+                        )
+
+                _ ->
+                    ( [], context )
+
+        _ ->
+            ( [], context )
+
+
 shapeLabel : Shape -> String
 shapeLabel s =
     case s of
@@ -66,7 +167,55 @@ shapeLabel s =
 all : Test
 all =
     describe "Facts"
-        [ describe "callSite"
+        [ describe "tracedList (Medium)"
+            [ test "two-literal concat" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] ([ M3e.child a ] ++ [ M3e.child b ])
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:2 unresolved:False"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "partial concat — literal left, dynamic right" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] ([ M3e.child a ] ++ tail)
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:1 unresolved:True"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            , test "bare variable resolves to its let binding" <|
+                \_ ->
+                    """module A exposing (v)
+import M3e
+v =
+    let
+        content = [ M3e.child a, M3e.child b ]
+    in
+    M3e.button [] content
+"""
+                        |> Review.Test.run probeContentRule
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "known:2 unresolved:False"
+                                , details = [ "probe" ]
+                                , under = "M3e.button"
+                                }
+                            ]
+            ]
+        , describe "callSite"
             [ test "recognises M3e.Button.view as button/Shape3" <|
                 \_ ->
                     """module A exposing (v)

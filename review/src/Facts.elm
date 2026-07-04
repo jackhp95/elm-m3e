@@ -30,10 +30,11 @@ type alias CallSite =
 {-| Resolve a function-reference AST node to a top-layer call site, if any.
 
 Handles four forms:
-- `M3e.Button.view` → `{ noun = "button", shape = Shape3 }`
-- `M3e.Record.Button.view` → `{ noun = "button", shape = Shape4 }`
-- `M3e.button` (barrel) → `{ noun = "button", shape = Shape3 }`
-- `M3e.Record.button` (Shape4 barrel) → `{ noun = "button", shape = Shape4 }`
+
+  - `M3e.Button.view` → `{ noun = "button", shape = Shape3 }`
+  - `M3e.Record.Button.view` → `{ noun = "button", shape = Shape4 }`
+  - `M3e.button` (barrel) → `{ noun = "button", shape = Shape3 }`
+  - `M3e.Record.button` (Shape4 barrel) → `{ noun = "button", shape = Shape4 }`
 
 Returns `Nothing` for non-top-layer references (`M3e.Cem.*`, `Html.*`, etc.).
 
@@ -99,21 +100,101 @@ type alias TracedList =
 
 {-| Progressive list-content resolver.
 
-Basic level (this task):
-- `[a, b, c]` → all elements, `unresolved = False`.
-- Anything else → `unresolved = True`, no known elements.
+Handles:
 
-Medium and Ambitious levels are added in later tasks.
+  - `[a, b, c]` → all elements, `unresolved = False`.
+  - `[a] ++ [b]` → elements from both sides, `unresolved = False`.
+  - `[a] ++ dynamic` → elements from literal side, `unresolved = True`.
+  - `List.append a b` → equivalent to `++`.
+  - `List.concat [[a], [b]]` → flattened elements.
+  - Bare variable references resolved via the supplied `scope`.
+
+Callers supply a `scope` dict mapping variable names to their bound
+expressions (e.g. let bindings collected by a declaration visitor).
 
 -}
-tracedList : ModuleNameLookupTable -> Node Expression -> TracedList
-tracedList _ node =
+tracedList : ModuleNameLookupTable -> Dict String (Node Expression) -> Node Expression -> TracedList
+tracedList lookup scope node =
+    tracedListWith lookup scope Dict.empty node
+
+
+{-| Internal — `seen` accumulates variable names already being followed so a
+cyclic reference (`x = y; y = x`) doesn't infinite-loop.
+-}
+tracedListWith :
+    ModuleNameLookupTable
+    -> Dict String (Node Expression)
+    -> Dict String Bool
+    -> Node Expression
+    -> TracedList
+tracedListWith lookup scope seen node =
     case Node.value node of
         Expression.ListExpr elements ->
             { known = elements, unresolved = False }
 
+        Expression.OperatorApplication "++" _ left right ->
+            concatTraced
+                (tracedListWith lookup scope seen left)
+                (tracedListWith lookup scope seen right)
+
+        Expression.Application (fnNode :: args) ->
+            resolveApp lookup scope seen fnNode args
+
+        Expression.ParenthesizedExpression inner ->
+            tracedListWith lookup scope seen inner
+
+        Expression.FunctionOrValue _ name ->
+            if Dict.member name seen then
+                { known = [], unresolved = True }
+
+            else
+                case Dict.get name scope of
+                    Just referred ->
+                        tracedListWith lookup scope (Dict.insert name True seen) referred
+
+                    Nothing ->
+                        { known = [], unresolved = True }
+
         _ ->
             { known = [], unresolved = True }
+
+
+resolveApp :
+    ModuleNameLookupTable
+    -> Dict String (Node Expression)
+    -> Dict String Bool
+    -> Node Expression
+    -> List (Node Expression)
+    -> TracedList
+resolveApp lookup scope seen fnNode args =
+    case ( Node.value fnNode, args ) of
+        ( Expression.FunctionOrValue [ "List" ] "append", [ a, b ] ) ->
+            concatTraced
+                (tracedListWith lookup scope seen a)
+                (tracedListWith lookup scope seen b)
+
+        ( Expression.FunctionOrValue [ "List" ] "concat", [ inner ] ) ->
+            case Node.value inner of
+                Expression.ListExpr parts ->
+                    List.foldl
+                        (\part acc ->
+                            concatTraced acc (tracedListWith lookup scope seen part)
+                        )
+                        { known = [], unresolved = False }
+                        parts
+
+                _ ->
+                    { known = [], unresolved = True }
+
+        _ ->
+            { known = [], unresolved = True }
+
+
+concatTraced : TracedList -> TracedList -> TracedList
+concatTraced a b =
+    { known = a.known ++ b.known
+    , unresolved = a.unresolved || b.unresolved
+    }
 
 
 decapitalize : String -> String
