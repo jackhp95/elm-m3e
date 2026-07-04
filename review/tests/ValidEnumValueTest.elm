@@ -1,5 +1,6 @@
 module ValidEnumValueTest exposing (all)
 
+import M3e.Review.Facts as Facts exposing (Shape(..))
 import Review.Test
 import Test exposing (Test, describe, test)
 import ValidEnumValue exposing (rule)
@@ -7,13 +8,17 @@ import ValidEnumValue exposing (rule)
 
 {-| A tiny hand-written facts table: a Button whose `variant` accepts only filled/outlined.
 -}
-facts : List { component : String, module_ : String, enums : List ( String, List String ), requiredSlots : List String, multiSlots : List String }
+facts : List Facts.Fact
 facts =
     [ { component = "button"
       , module_ = "M3e.Button"
       , enums = [ ( "variant", [ "filled", "outlined" ] ) ]
       , requiredSlots = []
       , multiSlots = []
+      , attrRewrites = []
+      , slotRewrites = []
+      , shapes = [ Shape3 ]
+      , requiredAttrs = []
       }
     ]
 

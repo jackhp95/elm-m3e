@@ -1,5 +1,6 @@
 module RequireSlotTest exposing (all)
 
+import M3e.Review.Facts as Facts exposing (Shape(..))
 import RequireSlot exposing (rule)
 import Review.Test
 import Test exposing (Test, describe, test)
@@ -8,13 +9,17 @@ import Test exposing (Test, describe, test)
 {-| A component whose default slot is BOTH required and repeatable (required-multi): the
 type system can't enforce it, so the rule must.
 -}
-facts : List { component : String, module_ : String, enums : List ( String, List String ), requiredSlots : List String, multiSlots : List String }
+facts : List Facts.Fact
 facts =
     [ { component = "grid"
       , module_ = "M3e.Grid"
       , enums = []
       , requiredSlots = [ "default" ]
       , multiSlots = [ "default" ]
+      , attrRewrites = []
+      , slotRewrites = []
+      , shapes = [ Shape3 ]
+      , requiredAttrs = []
       }
     ]
 
