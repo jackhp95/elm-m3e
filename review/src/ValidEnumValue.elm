@@ -23,7 +23,8 @@ import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
-{-| Build the rule from the generated facts (pass `M3e.Review.Facts.facts`). -}
+{-| Build the rule from the generated facts (pass `M3e.Review.Facts.facts`).
+-}
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "ValidEnumValue" (initContext (buildIndex facts))
@@ -32,7 +33,8 @@ rule facts =
         |> Rule.fromModuleRuleSchema
 
 
-{-| component noun (e.g. "button") -> attr setter name (e.g. "variant") -> valid tokens. -}
+{-| component noun (e.g. "button") -> attr setter name (e.g. "variant") -> valid tokens.
+-}
 type alias Index =
     Dict String (Dict String (List String))
 
@@ -81,13 +83,13 @@ declarationEnterVisitor node context =
                                         _ ->
                                             acc
                                 )
-                                context.scope
+                                Dict.empty
                                 declarations
                     in
                     ( [], { context | scope = scope } )
 
                 _ ->
-                    ( [], context )
+                    ( [], { context | scope = Dict.empty } )
 
         _ ->
             ( [], context )
@@ -127,7 +129,8 @@ checkArg context enums argNode =
 
 
 {-| An `<enumSetter> <valueToken>` application whose token isn't valid for this
-component is the error. -}
+component is the error.
+-}
 checkSetter : Context -> Dict String (List String) -> Node Expression -> Maybe (Error {})
 checkSetter context enums elementNode =
     case Node.value elementNode of
@@ -162,7 +165,8 @@ setterNameString n =
     Maybe.withDefault "" (setterName n)
 
 
-{-| The token name a `Value.<token>` (or exposed `<token>`) reference names. -}
+{-| The token name a `Value.<token>` (or exposed `<token>`) reference names.
+-}
 valueToken : Context -> Node Expression -> Maybe String
 valueToken context tokenNode =
     case Node.value tokenNode of

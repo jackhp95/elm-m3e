@@ -178,4 +178,35 @@ v = M3e.Button.view [ M3e.Button.variant filled ] []
 """
                     |> Review.Test.run (rule buttonFacts)
                     |> Review.Test.expectNoErrors
+        , test "flags barrel attr in let-bound attrs list" <|
+            \() ->
+                """module A exposing (v)
+import M3e
+import M3e.Button
+v =
+    let
+        attrs = [ M3e.variant filled ]
+    in
+    M3e.Button.view attrs []
+"""
+                    |> Review.Test.run (rule buttonFacts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "`variant` can be replaced with the per-component setter `M3e.Button.variant` for tighter type safety"
+                            , details =
+                                [ "The barrel-level setter accepts every component's tokens; the per-component form only accepts button's."
+                                ]
+                            , under = "M3e.variant"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (v)
+import M3e
+import M3e.Button
+v =
+    let
+        attrs = [ M3e.Button.variant filled ]
+    in
+    M3e.Button.view attrs []
+"""
+                        ]
         ]

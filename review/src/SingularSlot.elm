@@ -100,13 +100,13 @@ declarationEnterVisitor node context =
                                         _ ->
                                             acc
                                 )
-                                context.scope
+                                Dict.empty
                                 declarations
                     in
                     ( [], { context | scope = scope } )
 
                 _ ->
-                    ( [], context )
+                    ( [], { context | scope = Dict.empty } )
 
         _ ->
             ( [], context )
@@ -227,5 +227,3 @@ error name range =
             ]
         }
         range
-
-

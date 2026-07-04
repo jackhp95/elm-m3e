@@ -7,9 +7,10 @@ that a satisfier is present in the call's attribute list (or, for Shape4, in
 the required record's fields).
 
 Satisfier conventions:
-- `aria-*` attrs → `M3e.Aria.<lowerCamel(name)>` (e.g. `aria-label` → `M3e.Aria.label`).
-- Other attrs → `M3e.<Comp>.<camelCase(name)>` (per-component setter).
-- Universal escape → `M3e.Cem.Attr.attribute "<name>" ...`.
+
+  - `aria-*` attrs → `M3e.Aria.<lowerCamel(name)>` (e.g. `aria-label` → `M3e.Aria.label`).
+  - Other attrs → `M3e.<Comp>.<camelCase(name)>` (per-component setter).
+  - Universal escape → `M3e.Cem.Attr.attribute "<name>" ...`.
 
 Silent when `tracedList.unresolved = True` and no static satisfier is found.
 Advisory posture.
@@ -19,6 +20,7 @@ Advisory posture.
 -}
 
 import Dict exposing (Dict)
+import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
@@ -30,6 +32,7 @@ import Review.Rule as Rule exposing (Error, Rule)
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "MissingRequiredAttribute" (initContext facts)
+        |> Rule.withDeclarationEnterVisitor declarationEnterVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -51,6 +54,42 @@ initContext facts =
             }
         )
         |> Rule.withModuleNameLookupTable
+
+
+declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
+declarationEnterVisitor node context =
+    case Node.value node of
+        Declaration.FunctionDeclaration { declaration } ->
+            case Node.value (Node.value declaration).expression of
+                Expression.LetExpression { declarations } ->
+                    let
+                        scope =
+                            List.foldl
+                                (\dec acc ->
+                                    case Node.value dec of
+                                        Expression.LetFunction fn ->
+                                            let
+                                                fnDecl =
+                                                    Node.value fn.declaration
+
+                                                name =
+                                                    Node.value fnDecl.name
+                                            in
+                                            Dict.insert name fnDecl.expression acc
+
+                                        _ ->
+                                            acc
+                                )
+                                Dict.empty
+                                declarations
+                    in
+                    ( [], { context | scope = scope } )
+
+                _ ->
+                    ( [], { context | scope = Dict.empty } )
+
+        _ ->
+            ( [], context )
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
@@ -226,5 +265,3 @@ satisfierHint attrName componentNoun =
 
     else
         "M3e." ++ Facts.capitalize componentNoun ++ "." ++ Facts.camelize attrName ++ " \"...\""
-
-

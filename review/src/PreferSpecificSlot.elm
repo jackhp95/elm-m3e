@@ -18,6 +18,7 @@ definition line if there are no imports).
 -}
 
 import Dict exposing (Dict)
+import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Import exposing (Import)
 import Elm.Syntax.Module as Module
@@ -38,6 +39,7 @@ rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "PreferSpecificSlot" (initContext facts)
         |> Rule.withModuleDefinitionVisitor moduleDefinitionVisitor
         |> Rule.withImportVisitor importVisitor
+        |> Rule.withDeclarationEnterVisitor declarationEnterVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -95,6 +97,42 @@ importVisitor node context =
         , insertionRow = endRow
       }
     )
+
+
+declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
+declarationEnterVisitor node context =
+    case Node.value node of
+        Declaration.FunctionDeclaration { declaration } ->
+            case Node.value (Node.value declaration).expression of
+                Expression.LetExpression { declarations } ->
+                    let
+                        scope =
+                            List.foldl
+                                (\dec acc ->
+                                    case Node.value dec of
+                                        Expression.LetFunction fn ->
+                                            let
+                                                fnDecl =
+                                                    Node.value fn.declaration
+
+                                                name =
+                                                    Node.value fnDecl.name
+                                            in
+                                            Dict.insert name fnDecl.expression acc
+
+                                        _ ->
+                                            acc
+                                )
+                                Dict.empty
+                                declarations
+                    in
+                    ( [], { context | scope = scope } )
+
+                _ ->
+                    ( [], { context | scope = Dict.empty } )
+
+        _ ->
+            ( [], context )
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
@@ -301,5 +339,3 @@ importFixIfMissing context compModule compModuleParts =
             { row = context.insertionRow + 1, column = 1 }
             ("import " ++ compModule ++ "\n")
         ]
-
-
