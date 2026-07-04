@@ -147,6 +147,28 @@ import M3e.Record.Button
 v = M3e.Record.Button.view {} [ M3e.Button.variant filled ] []
 """
                         ]
+        , test "inserts missing import M3e.Button when only M3e is imported" <|
+            \() ->
+                """module A exposing (v)
+import M3e
+v = M3e.Button.view [ M3e.variant filled ] []
+"""
+                    |> Review.Test.run (rule buttonFacts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "`variant` can be replaced with the per-component setter `M3e.Button.variant` for tighter type safety"
+                            , details =
+                                [ "The barrel-level setter accepts every component's tokens; the per-component form only accepts button's."
+                                ]
+                            , under = "M3e.variant"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (v)
+import M3e
+import M3e.Button
+v = M3e.Button.view [ M3e.Button.variant filled ] []
+"""
+                        ]
         , test "no-op when already using per-component setter" <|
             \() ->
                 """module A exposing (v)

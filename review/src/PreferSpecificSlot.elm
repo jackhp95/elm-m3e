@@ -9,8 +9,9 @@ Two cases:
   - Slot case: `M3e.Cem.Attr.slot "<slotName>" body` in the content list →
     rewrite to `M3e.<Comp>.<setterName> body` using `slotRewrites`.
 
-Import insertion is deferred: the autofix assumes `M3e.<Comp>` is already
-imported in the file (the test fixtures all import it explicitly).
+Autofix atomically inserts `import M3e.<Comp>` when the module is not yet
+imported, placing it after the last existing import (or after the module
+definition line if there are no imports).
 
 @docs rule
 
@@ -18,6 +19,8 @@ imported in the file (the test fixtures all import it explicitly).
 
 import Dict exposing (Dict)
 import Elm.Syntax.Expression as Expression exposing (Expression)
+import Elm.Syntax.Import exposing (Import)
+import Elm.Syntax.Module as Module
 import Elm.Syntax.Node as Node exposing (Node)
 import Elm.Syntax.Range exposing (Range)
 import Facts
@@ -25,6 +28,7 @@ import M3e.Review.Facts exposing (Fact, Shape(..))
 import Review.Fix as Fix
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
+import Set exposing (Set)
 
 
 {-| Build from the generated facts (`M3e.Review.Facts.facts`).
@@ -32,6 +36,8 @@ import Review.Rule as Rule exposing (Error, Rule)
 rule : List Fact -> Rule
 rule facts =
     Rule.newModuleRuleSchemaUsingContextCreator "PreferSpecificSlot" (initContext facts)
+        |> Rule.withModuleDefinitionVisitor moduleDefinitionVisitor
+        |> Rule.withImportVisitor importVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -41,6 +47,8 @@ type alias Context =
     , factsIndex : Dict String Fact
     , scope : Dict String (Node Expression)
     , extractSourceCode : Range -> String
+    , importedModules : Set (List String)
+    , insertionRow : Int
     }
 
 
@@ -52,10 +60,41 @@ initContext facts =
             , factsIndex = Facts.buildIndex facts
             , scope = Dict.empty
             , extractSourceCode = extractSourceCode
+            , importedModules = Set.empty
+            , insertionRow = 1
             }
         )
         |> Rule.withModuleNameLookupTable
         |> Rule.withSourceCodeExtractor
+
+
+moduleDefinitionVisitor : Node Module.Module -> Context -> ( List (Error {}), Context )
+moduleDefinitionVisitor node context =
+    let
+        endRow =
+            (Node.range node).end.row
+    in
+    ( [], { context | insertionRow = endRow } )
+
+
+importVisitor : Node Import -> Context -> ( List (Error {}), Context )
+importVisitor node context =
+    let
+        imp =
+            Node.value node
+
+        moduleName =
+            Node.value imp.moduleName
+
+        endRow =
+            (Node.range node).end.row
+    in
+    ( []
+    , { context
+        | importedModules = Set.insert moduleName context.importedModules
+        , insertionRow = endRow
+      }
+    )
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
@@ -143,8 +182,15 @@ attrErrorFor context fact element =
                                     compModule =
                                         "M3e." ++ capitalize fact.component
 
+                                    compModuleParts =
+                                        [ "M3e", capitalize fact.component ]
+
                                     replacement =
                                         compModule ++ "." ++ perCompName
+
+                                    fixes =
+                                        Fix.replaceRangeBy (Node.range setterNode) replacement
+                                            :: importFixIfMissing context compModule compModuleParts
                                 in
                                 Rule.errorWithFix
                                     { message =
@@ -160,7 +206,7 @@ attrErrorFor context fact element =
                                         ]
                                     }
                                     (Node.range setterNode)
-                                    [ Fix.replaceRangeBy (Node.range setterNode) replacement ]
+                                    fixes
                             )
 
                 _ ->
@@ -202,11 +248,18 @@ slotErrorFor context fact element =
                                                     compModule =
                                                         "M3e." ++ capitalize fact.component
 
+                                                    compModuleParts =
+                                                        [ "M3e", capitalize fact.component ]
+
                                                     bodySource =
                                                         context.extractSourceCode (Node.range bodyNode)
 
                                                     replacement =
                                                         compModule ++ "." ++ perCompSetter ++ " (" ++ bodySource ++ ")"
+
+                                                    fixes =
+                                                        Fix.replaceRangeBy (Node.range element) replacement
+                                                            :: importFixIfMissing context compModule compModuleParts
                                                 in
                                                 Rule.errorWithFix
                                                     { message =
@@ -222,7 +275,7 @@ slotErrorFor context fact element =
                                                         ]
                                                     }
                                                     (Node.range element)
-                                                    [ Fix.replaceRangeBy (Node.range element) replacement ]
+                                                    fixes
                                             )
 
                                 _ ->
@@ -236,6 +289,18 @@ slotErrorFor context fact element =
 
         _ ->
             Nothing
+
+
+importFixIfMissing : Context -> String -> List String -> List Fix.Fix
+importFixIfMissing context compModule compModuleParts =
+    if Set.member compModuleParts context.importedModules then
+        []
+
+    else
+        [ Fix.insertAt
+            { row = context.insertionRow + 1, column = 1 }
+            ("import " ++ compModule ++ "\n")
+        ]
 
 
 capitalize : String -> String
