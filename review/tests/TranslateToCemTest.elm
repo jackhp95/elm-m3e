@@ -171,4 +171,97 @@ view =
     M3e.Cem.Button.button [] [ M3e.Button.mysterySlot y ]
 """
                         ]
+        , test "Standard → Cem: an enum token the target rejects escapes via Seam.asAttribute (EnumTokenLossy) (#145)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Button
+import M3e.Value
+
+view =
+    M3e.Button.view [ M3e.Button.variant M3e.Value.bogus ] []
+"""
+                    |> Review.Test.run (TranslateToCem.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToCem"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view [ M3e.Button.variant M3e.Value.bogus ] []"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Button
+import M3e.Value
+import Html.Attributes
+import M3e.Cem.Button
+import Seam
+
+view =
+    M3e.Cem.Button.button [ Seam.asAttribute (Html.Attributes.attribute "variant" "bogus") ] []
+"""
+                        ]
+        , test "Standard → Cem: a valid enum token stays a typed setter (no EnumTokenLossy)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Button
+import M3e.Value
+
+view =
+    M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] []
+"""
+                    |> Review.Test.run (TranslateToCem.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToCem"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] []"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Button
+import M3e.Value
+import M3e.Cem.Button
+
+view =
+    M3e.Cem.Button.button [ M3e.Cem.Button.variant M3e.Value.filled ] []
+"""
+                        ]
+        , test "Standard → Cem: a bare (non-qualified) variant value is NOT flagged lossy — passes through as a typed setter" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Button
+
+view =
+    M3e.Button.view [ M3e.Button.variant dynamicVariant ] []
+"""
+                    |> Review.Test.run (TranslateToCem.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToCem"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view [ M3e.Button.variant dynamicVariant ] []"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Button
+import M3e.Cem.Button
+
+view =
+    M3e.Cem.Button.button [ M3e.Cem.Button.variant dynamicVariant ] []
+"""
+                        ]
         ]
