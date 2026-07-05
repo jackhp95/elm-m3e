@@ -136,19 +136,19 @@ parseCall : Dict String (Node Expression) -> Surface -> Fact -> Node Expression 
 parseCall scope surface fact node =
     case ( surface, Node.value node ) of
         ( Standard, Expression.Application (_ :: [ attrList, contentList ]) ) ->
-            parseStandard scope fact (Node.range node) (extractLiteralList attrList) (extractLiteralList contentList)
+            parseStandard scope fact (Node.range node) (splitListArg attrList) (splitListArg contentList)
 
         ( Record, Expression.Application (_ :: [ recordArg, attrList, contentList ]) ) ->
-            parseRecord fact (Node.range node) recordArg (extractLiteralList attrList) (extractLiteralList contentList)
+            parseRecord fact (Node.range node) recordArg (splitListArg attrList) (splitListArg contentList)
 
         ( Build, Expression.OperatorApplication "|>" _ _ _ ) ->
             parseBuild fact (Node.range node) node
 
         ( Html, Expression.Application (_ :: [ attrList, contentList ]) ) ->
-            parseHtmlOrCem Html fact (Node.range node) (extractLiteralList attrList) (extractLiteralList contentList)
+            parseHtmlOrCem Html fact (Node.range node) (splitListArg attrList) (splitListArg contentList)
 
         ( Cem, Expression.Application (_ :: [ attrList, contentList ]) ) ->
-            parseHtmlOrCem Cem fact (Node.range node) (extractLiteralList attrList) (extractLiteralList contentList)
+            parseHtmlOrCem Cem fact (Node.range node) (splitListArg attrList) (splitListArg contentList)
 
         _ ->
             -- Unrecognised call structure at this surface — whole-node Seam
@@ -156,16 +156,59 @@ parseCall scope surface fact node =
             emptyCanonical fact surface (Node.range node)
 
 
-{-| Extract literal list arg contents. Non-literal lists (variables, ++, map)
-fall through to a single DynamicAttrTail/Content behind the escape route.
+{-| Split an attrs/content list argument into its literal item nodes plus any
+variable-bound dynamic tail. Recognises three shapes (#152):
+
+  - `[ a, b ]` → literals `[a, b]`, no dynamic tail
+  - `[ a, b ] ++ extra` → literals `[a, b]`, dynamic tail `extra`
+  - `extra ++ [ a, b ]` → literals `[a, b]`, dynamic tail `extra`
+  - a bare variable / anything else `extra` → no literals, dynamic tail `extra`
+
+The dynamic tail is carried as `DynamicAttrTail`/`DynamicContentTail` by the
+callers so the emitter can re-emit `([ literals ] ++ extra)` instead of
+silently dropping the variable part.
 -}
-extractLiteralList : Node Expression -> List (Node Expression)
-extractLiteralList listNode =
+splitListArg : Node Expression -> ( List (Node Expression), Maybe (Node Expression) )
+splitListArg listNode =
     case Node.value listNode of
+        Expression.ParenthesizedExpression inner ->
+            splitListArg inner
+
         Expression.ListExpr items ->
-            items
+            ( items, Nothing )
+
+        Expression.OperatorApplication "++" _ left right ->
+            case ( Node.value left, Node.value right ) of
+                ( Expression.ListExpr items, _ ) ->
+                    ( items, Just right )
+
+                ( _, Expression.ListExpr items ) ->
+                    ( items, Just left )
+
+                _ ->
+                    ( [], Just listNode )
 
         _ ->
+            ( [], Just listNode )
+
+
+dynAttrTail : Maybe (Node Expression) -> List AttrItem
+dynAttrTail m =
+    case m of
+        Just raw ->
+            [ DynamicAttrTail { raw = raw } ]
+
+        Nothing ->
+            []
+
+
+dynContentTail : Maybe (Node Expression) -> List SlotItem
+dynContentTail m =
+    case m of
+        Just raw ->
+            [ DynamicContentTail { raw = raw } ]
+
+        Nothing ->
             []
 
 
@@ -187,8 +230,8 @@ attrs (per fact.actionMap) are lifted out of the attrs list. The unnamed slot's
 first child element (if fact.requiredSlots contains "unnamed") is lifted to
 `requiredContent`.
 -}
-parseStandard : Dict String (Node Expression) -> Fact -> Range.Range -> List (Node Expression) -> List (Node Expression) -> Canonical
-parseStandard scope fact range attrItems contentItems =
+parseStandard : Dict String (Node Expression) -> Fact -> Range.Range -> ( List (Node Expression), Maybe (Node Expression) ) -> ( List (Node Expression), Maybe (Node Expression) ) -> Canonical
+parseStandard scope fact range ( attrItems, attrDyn ) ( contentItems, contentDyn ) =
     let
         actionAttrNames =
             List.map Tuple.first fact.actionMap
@@ -202,7 +245,7 @@ parseStandard scope fact range attrItems contentItems =
                 |> List.head
 
         attrs =
-            List.map (classifyStandardAttr fact) plainAttrs
+            List.map (classifyStandardAttr fact) plainAttrs ++ dynAttrTail attrDyn
 
         -- Required-singular-slot lifting: if fact.requiredSlots contains
         -- "unnamed" and one content-list item calls the unnamed slot's
@@ -230,7 +273,7 @@ parseStandard scope fact range attrItems contentItems =
                 ( Nothing, contentItems )
 
         content =
-            List.map (classifyStandardSlot fact) remainingContent
+            List.map (classifyStandardSlot fact) remainingContent ++ dynContentTail contentDyn
     in
     { component = fact.component
     , sourceSurface = Standard
@@ -395,8 +438,8 @@ Reads the first-arg record via `Expression.RecordExpr`. `content` becomes
 `requiredContent`; `action` becomes `requiredAction = RecordStyle {raw}`. Any
 other record fields land in `otherRequired` keyed by their setter name.
 -}
-parseRecord : Fact -> Range.Range -> Node Expression -> List (Node Expression) -> List (Node Expression) -> Canonical
-parseRecord fact range recordArg attrItems contentItems =
+parseRecord : Fact -> Range.Range -> Node Expression -> ( List (Node Expression), Maybe (Node Expression) ) -> ( List (Node Expression), Maybe (Node Expression) ) -> Canonical
+parseRecord fact range recordArg ( attrItems, attrDyn ) ( contentItems, contentDyn ) =
     let
         recordFields =
             extractRecordFields recordArg
@@ -414,10 +457,10 @@ parseRecord fact range recordArg attrItems contentItems =
                 |> Dict.remove "action"
 
         attrs =
-            List.map (classifyStandardAttr fact) attrItems
+            List.map (classifyStandardAttr fact) attrItems ++ dynAttrTail attrDyn
 
         content =
-            List.map (classifyStandardSlot fact) contentItems
+            List.map (classifyStandardSlot fact) contentItems ++ dynContentTail contentDyn
     in
     { component = fact.component
     , sourceSurface = Record
@@ -613,8 +656,8 @@ Html attrs carry string-literal enum values whereas Cem carries typed tokens.
 Children are `Html` in both cases, with `slot="name"` raw attributes marking
 named slots.
 -}
-parseHtmlOrCem : Surface -> Fact -> Range.Range -> List (Node Expression) -> List (Node Expression) -> Canonical
-parseHtmlOrCem surface fact range attrItems contentItems =
+parseHtmlOrCem : Surface -> Fact -> Range.Range -> ( List (Node Expression), Maybe (Node Expression) ) -> ( List (Node Expression), Maybe (Node Expression) ) -> Canonical
+parseHtmlOrCem surface fact range ( attrItems, attrDyn ) ( contentItems, contentDyn ) =
     let
         actionAttrNames =
             List.map Tuple.first fact.actionMap
@@ -628,10 +671,10 @@ parseHtmlOrCem surface fact range attrItems contentItems =
                 |> List.head
 
         attrs =
-            List.map (classifyStandardAttr fact) plainAttrs
+            List.map (classifyStandardAttr fact) plainAttrs ++ dynAttrTail attrDyn
 
         content =
-            List.map (classifyHtmlChild fact) contentItems
+            List.map (classifyHtmlChild fact) contentItems ++ dynContentTail contentDyn
     in
     { component = fact.component
     , sourceSurface = surface

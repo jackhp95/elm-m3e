@@ -37,13 +37,20 @@ wholeSeamEscape fact source c =
         htmlCtor =
             fact.component
 
-        attrsText =
-            (renderAction fact source c.requiredAction
-                ++ List.map (renderAsHtmlAttr fact source) c.attrs
-            )
-                |> String.join ", "
+        ( litAttrs, dynAttrs ) =
+            List.partition (not << isDynamicAttr) c.attrs
 
-        contentText =
+        attrsLiterals =
+            renderAction fact source c.requiredAction
+                ++ List.map (renderAsHtmlAttr fact source) litAttrs
+
+        attrsText =
+            listArg attrsLiterals (List.map (renderAsHtmlAttr fact source) dynAttrs)
+
+        ( litSlots, dynSlots ) =
+            List.partition (not << isDynamicSlot) c.content
+
+        contentLiterals =
             (case c.requiredContent of
                 Just r ->
                     [ source (Node.range r) ]
@@ -51,10 +58,47 @@ wholeSeamEscape fact source c =
                 Nothing ->
                     []
             )
-                ++ List.map (renderAsHtmlChild fact source) c.content
-                |> String.join ", "
+                ++ List.map (renderAsHtmlChild fact source) litSlots
+
+        contentText =
+            listArg contentLiterals (List.map (renderAsHtmlChild fact source) dynSlots)
     in
-    "Seam.fromHtml (" ++ htmlModule ++ "." ++ htmlCtor ++ " [ " ++ attrsText ++ " ] [ " ++ contentText ++ " ])"
+    "Seam.fromHtml (" ++ htmlModule ++ "." ++ htmlCtor ++ " " ++ attrsText ++ " " ++ contentText ++ ")"
+
+
+{-| Compose a list-argument literal, appending any dynamic tails with `++`. -}
+listArg : List String -> List String -> String
+listArg literals dynamics =
+    let
+        base =
+            "[ " ++ String.join ", " literals ++ " ]"
+    in
+    case dynamics of
+        [] ->
+            base
+
+        _ ->
+            "(" ++ base ++ " ++ " ++ String.join " ++ " dynamics ++ ")"
+
+
+isDynamicAttr : AttrItem -> Bool
+isDynamicAttr item =
+    case item of
+        DynamicAttrTail _ ->
+            True
+
+        _ ->
+            False
+
+
+isDynamicSlot : SlotItem -> Bool
+isDynamicSlot item =
+    case item of
+        DynamicContentTail _ ->
+            True
+
+        _ ->
+            False
 
 
 pascalOfComponent : String -> String

@@ -134,4 +134,42 @@ view =
     [  ]
 """
                         ]
+        , test "Standard → Record preserves a dynamic attr tail alongside a lifted action (#152)" <|
+            \() ->
+                """module A exposing (Msg, view)
+
+import M3e.Button
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Button.view (extra ++ [ M3e.Button.onClick DoThing ]) [ M3e.Button.child c ]
+"""
+                    |> Review.Test.run (TranslateToRecord.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToRecord"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view (extra ++ [ M3e.Button.onClick DoThing ]) [ M3e.Button.child c ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (Msg, view)
+
+import M3e.Button
+import M3e.Action
+import M3e.Record.Button
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Record.Button.view { content = c, action = M3e.Action.onClick DoThing }
+    ([  ] ++ extra)
+    [  ]
+"""
+                        ]
         ]
