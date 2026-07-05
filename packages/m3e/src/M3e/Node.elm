@@ -1,6 +1,6 @@
 module M3e.Node exposing
     ( Node(..)
-    , fromComponent, addAttr, text, raw, toHtml, map
+    , fromComponent, addAttr, addChild, text, raw, toHtml, map
     )
 
 {-| The lazy intermediate representation every `Element` is built from: a `Node`
@@ -10,7 +10,7 @@ Keeping construction lazy lets the typed layers above rearrange and re-slot
 content before anything is rendered; [`toHtml`](#toHtml) collapses it to `Html`.
 
 @docs Node
-@docs fromComponent, addAttr, text, raw, toHtml, map
+@docs fromComponent, addAttr, addChild, text, raw, toHtml, map
 
 -}
 
@@ -70,6 +70,23 @@ addAttr a node =
                 , attrs = [ a ]
                 , children = []
                 }
+
+
+{-| Append a child Node to an Element node's children list. If the target Node
+is a `Text` or `Raw` leaf, no-op (leaves can't hold children). Used by generated
+⑤ Build slot setters.
+-}
+addChild : Node msg -> Node msg -> Node msg
+addChild child parent =
+    case parent of
+        Element rec ->
+            Element { rec | children = rec.children ++ [ child ] }
+
+        Text _ ->
+            parent
+
+        Raw _ ->
+            parent
 
 
 {-| A text leaf node.
