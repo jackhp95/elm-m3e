@@ -62,7 +62,7 @@ searchBar req_ =
 clearable :
     Bool
     -> Builder { a | clearable : M3e.Build.Internal.Available } s msg kind
-    -> Builder { clearable : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | clearable : M3e.Build.Internal.Used } s msg kind
 clearable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -75,7 +75,7 @@ clearable v_ b_ =
 clearLabel :
     String
     -> Builder { a | clearLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { clearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | clearLabel : M3e.Build.Internal.Used } s msg kind
 clearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -88,7 +88,7 @@ clearLabel v_ b_ =
 onClear :
     Json.Decode.Decoder msg
     -> Builder { a | onClear : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClear : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClear : M3e.Build.Internal.Used } s msg kind
 onClear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

@@ -93,7 +93,7 @@ fab req_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -108,7 +108,7 @@ disabledInteractive :
     -> Builder { a
         | disabledInteractive : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { disabledInteractive : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Used } s msg kind
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -121,7 +121,7 @@ disabledInteractive v_ b_ =
 extended :
     Bool
     -> Builder { a | extended : M3e.Build.Internal.Available } s msg kind
-    -> Builder { extended : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | extended : M3e.Build.Internal.Used } s msg kind
 extended v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -134,7 +134,7 @@ extended v_ b_ =
 lowered :
     Bool
     -> Builder { a | lowered : M3e.Build.Internal.Available } s msg kind
-    -> Builder { lowered : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | lowered : M3e.Build.Internal.Used } s msg kind
 lowered v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -147,7 +147,7 @@ lowered v_ b_ =
 name :
     String
     -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
-    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg kind
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -163,7 +163,7 @@ size :
     , small : M3e.Value.Supported
     }
     -> Builder { a | size : M3e.Build.Internal.Available } s msg kind
-    -> Builder { size : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | size : M3e.Build.Internal.Used } s msg kind
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -179,7 +179,7 @@ type_ :
     , submit : M3e.Value.Supported
     }
     -> Builder { a | type_ : M3e.Build.Internal.Available } s msg kind
-    -> Builder { type_ : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | type_ : M3e.Build.Internal.Used } s msg kind
 type_ v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -192,7 +192,7 @@ type_ v_ b_ =
 value :
     String
     -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -212,7 +212,7 @@ variant :
     , tertiaryContainer : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

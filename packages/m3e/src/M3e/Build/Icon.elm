@@ -59,7 +59,7 @@ icon =
 filled :
     Bool
     -> Builder { a | filled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { filled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | filled : M3e.Build.Internal.Used } s msg kind
 filled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -75,7 +75,7 @@ grade :
     , medium : M3e.Value.Supported
     }
     -> Builder { a | grade : M3e.Build.Internal.Available } s msg kind
-    -> Builder { grade : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | grade : M3e.Build.Internal.Used } s msg kind
 grade v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -88,7 +88,7 @@ grade v_ b_ =
 opticalSize :
     Float
     -> Builder { a | opticalSize : M3e.Build.Internal.Available } s msg kind
-    -> Builder { opticalSize : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | opticalSize : M3e.Build.Internal.Used } s msg kind
 opticalSize v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -101,7 +101,7 @@ opticalSize v_ b_ =
 name :
     String
     -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
-    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg kind
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -117,7 +117,7 @@ variant :
     , sharp : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -130,7 +130,7 @@ variant v_ b_ =
 weight :
     String
     -> Builder { a | weight : M3e.Build.Internal.Available } s msg kind
-    -> Builder { weight : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | weight : M3e.Build.Internal.Used } s msg kind
 weight v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

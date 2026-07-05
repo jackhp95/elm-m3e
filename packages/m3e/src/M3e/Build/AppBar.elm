@@ -63,7 +63,7 @@ appBar =
 centered :
     Bool
     -> Builder { a | centered : M3e.Build.Internal.Available } s msg kind
-    -> Builder { centered : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | centered : M3e.Build.Internal.Used } s msg kind
 centered v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -76,7 +76,7 @@ centered v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -92,7 +92,7 @@ size :
     , small : M3e.Value.Supported
     }
     -> Builder { a | size : M3e.Build.Internal.Available } s msg kind
-    -> Builder { size : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | size : M3e.Build.Internal.Used } s msg kind
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

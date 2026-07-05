@@ -60,7 +60,7 @@ be controlled manually using the `show` and `hide` methods. (default: `false`)
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -75,7 +75,7 @@ be controlled manually using the `show` and `hide` methods. (default: `false`)
 disableHover :
     Bool
     -> Builder { a | disableHover : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disableHover : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disableHover : M3e.Build.Internal.Used } s msg kind
 disableHover v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -88,7 +88,7 @@ disableHover v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

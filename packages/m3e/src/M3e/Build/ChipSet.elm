@@ -53,7 +53,7 @@ chipSet =
 vertical :
     Bool
     -> Builder { a | vertical : M3e.Build.Internal.Available } s msg kind
-    -> Builder { vertical : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | vertical : M3e.Build.Internal.Used } s msg kind
 vertical v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

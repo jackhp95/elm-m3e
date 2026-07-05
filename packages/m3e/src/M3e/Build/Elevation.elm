@@ -58,7 +58,7 @@ elevation =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -71,7 +71,7 @@ disabled v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -84,7 +84,7 @@ for v_ b_ =
 level :
     String
     -> Builder { a | level : M3e.Build.Internal.Available } s msg kind
-    -> Builder { level : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | level : M3e.Build.Internal.Used } s msg kind
 level v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

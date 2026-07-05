@@ -64,7 +64,7 @@ scrollStrategy :
     , reposition : M3e.Value.Supported
     }
     -> Builder { a | scrollStrategy : M3e.Build.Internal.Available } s msg kind
-    -> Builder { scrollStrategy : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | scrollStrategy : M3e.Build.Internal.Used } s msg kind
 scrollStrategy v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -77,7 +77,7 @@ scrollStrategy v_ b_ =
 fitAnchorWidth :
     Bool
     -> Builder { a | fitAnchorWidth : M3e.Build.Internal.Available } s msg kind
-    -> Builder { fitAnchorWidth : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | fitAnchorWidth : M3e.Build.Internal.Used } s msg kind
 fitAnchorWidth v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ fitAnchorWidth v_ b_ =
 anchorOffset :
     Float
     -> Builder { a | anchorOffset : M3e.Build.Internal.Available } s msg kind
-    -> Builder { anchorOffset : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | anchorOffset : M3e.Build.Internal.Used } s msg kind
 anchorOffset v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -103,7 +103,7 @@ anchorOffset v_ b_ =
 onBeforetoggle :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -121,7 +121,7 @@ onBeforetoggle v_ b_ =
 onToggle :
     Json.Decode.Decoder msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

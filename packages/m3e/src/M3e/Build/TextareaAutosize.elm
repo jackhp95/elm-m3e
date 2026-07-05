@@ -59,7 +59,7 @@ textareaAutosize =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -72,7 +72,7 @@ disabled v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -85,7 +85,7 @@ for v_ b_ =
 maxRows :
     Float
     -> Builder { a | maxRows : M3e.Build.Internal.Available } s msg kind
-    -> Builder { maxRows : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | maxRows : M3e.Build.Internal.Used } s msg kind
 maxRows v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -98,7 +98,7 @@ maxRows v_ b_ =
 minRows :
     Float
     -> Builder { a | minRows : M3e.Build.Internal.Available } s msg kind
-    -> Builder { minRows : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | minRows : M3e.Build.Internal.Used } s msg kind
 minRows v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

@@ -73,7 +73,7 @@ dialog =
 alert :
     Bool
     -> Builder { a | alert : M3e.Build.Internal.Available } s msg kind
-    -> Builder { alert : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | alert : M3e.Build.Internal.Used } s msg kind
 alert v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -86,7 +86,7 @@ alert v_ b_ =
 closeLabel :
     String
     -> Builder { a | closeLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { closeLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | closeLabel : M3e.Build.Internal.Used } s msg kind
 closeLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -99,7 +99,7 @@ closeLabel v_ b_ =
 disableClose :
     Bool
     -> Builder { a | disableClose : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disableClose : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disableClose : M3e.Build.Internal.Used } s msg kind
 disableClose v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -112,7 +112,7 @@ disableClose v_ b_ =
 dismissible :
     Bool
     -> Builder { a | dismissible : M3e.Build.Internal.Available } s msg kind
-    -> Builder { dismissible : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | dismissible : M3e.Build.Internal.Used } s msg kind
 dismissible v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -125,7 +125,7 @@ dismissible v_ b_ =
 noFocusTrap :
     Bool
     -> Builder { a | noFocusTrap : M3e.Build.Internal.Available } s msg kind
-    -> Builder { noFocusTrap : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | noFocusTrap : M3e.Build.Internal.Used } s msg kind
 noFocusTrap v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -138,7 +138,7 @@ noFocusTrap v_ b_ =
 open :
     String
     -> Builder { a | open : M3e.Build.Internal.Available } s msg kind
-    -> Builder { open : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | open : M3e.Build.Internal.Used } s msg kind
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -151,7 +151,7 @@ open v_ b_ =
 onOpening :
     Json.Decode.Decoder msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onOpening : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -166,7 +166,7 @@ onOpening v_ b_ =
 onOpened :
     Json.Decode.Decoder msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onOpened : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -181,7 +181,7 @@ onOpened v_ b_ =
 onClosing :
     Json.Decode.Decoder msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClosing : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -196,7 +196,7 @@ onClosing v_ b_ =
 onClosed :
     Json.Decode.Decoder msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClosed : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -211,7 +211,7 @@ onClosed v_ b_ =
 onCancel :
     Json.Decode.Decoder msg
     -> Builder { a | onCancel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onCancel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onCancel : M3e.Build.Internal.Used } s msg kind
 onCancel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

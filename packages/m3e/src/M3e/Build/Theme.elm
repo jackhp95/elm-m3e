@@ -64,7 +64,7 @@ theme =
 color :
     String
     -> Builder { a | color : M3e.Build.Internal.Available } s msg kind
-    -> Builder { color : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | color : M3e.Build.Internal.Used } s msg kind
 color v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -80,7 +80,7 @@ contrast :
     , standard : M3e.Value.Supported
     }
     -> Builder { a | contrast : M3e.Build.Internal.Available } s msg kind
-    -> Builder { contrast : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | contrast : M3e.Build.Internal.Used } s msg kind
 contrast v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -93,7 +93,7 @@ contrast v_ b_ =
 density :
     Float
     -> Builder { a | density : M3e.Build.Internal.Available } s msg kind
-    -> Builder { density : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | density : M3e.Build.Internal.Used } s msg kind
 density v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -109,7 +109,7 @@ scheme :
     , light : M3e.Value.Supported
     }
     -> Builder { a | scheme : M3e.Build.Internal.Available } s msg kind
-    -> Builder { scheme : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | scheme : M3e.Build.Internal.Used } s msg kind
 scheme v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -122,7 +122,7 @@ scheme v_ b_ =
 strongFocus :
     Bool
     -> Builder { a | strongFocus : M3e.Build.Internal.Available } s msg kind
-    -> Builder { strongFocus : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | strongFocus : M3e.Build.Internal.Used } s msg kind
 strongFocus v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -144,7 +144,7 @@ variant :
     , vibrant : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -159,7 +159,7 @@ motion :
     , standard : M3e.Value.Supported
     }
     -> Builder { a | motion : M3e.Build.Internal.Available } s msg kind
-    -> Builder { motion : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | motion : M3e.Build.Internal.Used } s msg kind
 motion v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -172,7 +172,7 @@ motion v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

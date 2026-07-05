@@ -89,7 +89,7 @@ variant :
     , modal : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -102,7 +102,7 @@ variant v_ b_ =
 clearable :
     Bool
     -> Builder { a | clearable : M3e.Build.Internal.Available } s msg kind
-    -> Builder { clearable : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | clearable : M3e.Build.Internal.Used } s msg kind
 clearable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -115,7 +115,7 @@ clearable v_ b_ =
 date :
     String
     -> Builder { a | date : M3e.Build.Internal.Available } s msg kind
-    -> Builder { date : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | date : M3e.Build.Internal.Used } s msg kind
 date v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -128,7 +128,7 @@ date v_ b_ =
 maxDate :
     String
     -> Builder { a | maxDate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { maxDate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | maxDate : M3e.Build.Internal.Used } s msg kind
 maxDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -141,7 +141,7 @@ maxDate v_ b_ =
 minDate :
     String
     -> Builder { a | minDate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { minDate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | minDate : M3e.Build.Internal.Used } s msg kind
 minDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -154,7 +154,7 @@ minDate v_ b_ =
 range :
     Bool
     -> Builder { a | range : M3e.Build.Internal.Available } s msg kind
-    -> Builder { range : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | range : M3e.Build.Internal.Used } s msg kind
 range v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -167,7 +167,7 @@ range v_ b_ =
 rangeEnd :
     String
     -> Builder { a | rangeEnd : M3e.Build.Internal.Available } s msg kind
-    -> Builder { rangeEnd : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | rangeEnd : M3e.Build.Internal.Used } s msg kind
 rangeEnd v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -180,7 +180,7 @@ rangeEnd v_ b_ =
 rangeStart :
     String
     -> Builder { a | rangeStart : M3e.Build.Internal.Available } s msg kind
-    -> Builder { rangeStart : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | rangeStart : M3e.Build.Internal.Used } s msg kind
 rangeStart v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -193,7 +193,7 @@ rangeStart v_ b_ =
 startAt :
     String
     -> Builder { a | startAt : M3e.Build.Internal.Available } s msg kind
-    -> Builder { startAt : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | startAt : M3e.Build.Internal.Used } s msg kind
 startAt v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -209,7 +209,7 @@ startView :
     , year : M3e.Value.Supported
     }
     -> Builder { a | startView : M3e.Build.Internal.Available } s msg kind
-    -> Builder { startView : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | startView : M3e.Build.Internal.Used } s msg kind
 startView v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -224,7 +224,7 @@ previousMonthLabel :
     -> Builder { a
         | previousMonthLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { previousMonthLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | previousMonthLabel : M3e.Build.Internal.Used } s msg kind
 previousMonthLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -237,7 +237,7 @@ previousMonthLabel v_ b_ =
 nextMonthLabel :
     String
     -> Builder { a | nextMonthLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { nextMonthLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nextMonthLabel : M3e.Build.Internal.Used } s msg kind
 nextMonthLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -252,7 +252,7 @@ previousYearLabel :
     -> Builder { a
         | previousYearLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { previousYearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | previousYearLabel : M3e.Build.Internal.Used } s msg kind
 previousYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -265,7 +265,7 @@ previousYearLabel v_ b_ =
 nextYearLabel :
     String
     -> Builder { a | nextYearLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { nextYearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nextYearLabel : M3e.Build.Internal.Used } s msg kind
 nextYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -280,7 +280,9 @@ previousMultiYearLabel :
     -> Builder { a
         | previousMultiYearLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { previousMultiYearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a
+        | previousMultiYearLabel : M3e.Build.Internal.Used
+    } s msg kind
 previousMultiYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -296,7 +298,7 @@ nextMultiYearLabel :
     -> Builder { a
         | nextMultiYearLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { nextMultiYearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nextMultiYearLabel : M3e.Build.Internal.Used } s msg kind
 nextMultiYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -309,7 +311,7 @@ nextMultiYearLabel v_ b_ =
 clearLabel :
     String
     -> Builder { a | clearLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { clearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | clearLabel : M3e.Build.Internal.Used } s msg kind
 clearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -322,7 +324,7 @@ clearLabel v_ b_ =
 confirmLabel :
     String
     -> Builder { a | confirmLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { confirmLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | confirmLabel : M3e.Build.Internal.Used } s msg kind
 confirmLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -335,7 +337,7 @@ confirmLabel v_ b_ =
 dismissLabel :
     String
     -> Builder { a | dismissLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { dismissLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | dismissLabel : M3e.Build.Internal.Used } s msg kind
 dismissLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -348,7 +350,7 @@ dismissLabel v_ b_ =
 label :
     String
     -> Builder { a | label : M3e.Build.Internal.Available } s msg kind
-    -> Builder { label : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | label : M3e.Build.Internal.Used } s msg kind
 label v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -361,7 +363,7 @@ label v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -376,7 +378,7 @@ onChange v_ b_ =
 onBeforetoggle :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -394,7 +396,7 @@ onBeforetoggle v_ b_ =
 onToggle :
     Json.Decode.Decoder msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

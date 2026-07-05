@@ -63,7 +63,7 @@ option req_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -78,7 +78,7 @@ disableHighlight :
     -> Builder { a
         | disableHighlight : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { disableHighlight : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disableHighlight : M3e.Build.Internal.Used } s msg kind
 disableHighlight v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -94,7 +94,7 @@ highlightMode :
     , startsWith : M3e.Value.Supported
     }
     -> Builder { a | highlightMode : M3e.Build.Internal.Available } s msg kind
-    -> Builder { highlightMode : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | highlightMode : M3e.Build.Internal.Used } s msg kind
 highlightMode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -107,7 +107,7 @@ highlightMode v_ b_ =
 selected :
     Bool
     -> Builder { a | selected : M3e.Build.Internal.Available } s msg kind
-    -> Builder { selected : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | selected : M3e.Build.Internal.Used } s msg kind
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -120,7 +120,7 @@ selected v_ b_ =
 term :
     String
     -> Builder { a | term : M3e.Build.Internal.Available } s msg kind
-    -> Builder { term : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | term : M3e.Build.Internal.Used } s msg kind
 term v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -133,7 +133,7 @@ term v_ b_ =
 value :
     String
     -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

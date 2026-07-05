@@ -53,7 +53,7 @@ fabMenuTrigger =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

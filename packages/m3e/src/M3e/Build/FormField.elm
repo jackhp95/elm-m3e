@@ -66,7 +66,7 @@ formField =
 floatLabel :
     M3e.Value.Value { always : M3e.Value.Supported, auto : M3e.Value.Supported }
     -> Builder { a | floatLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { floatLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | floatLabel : M3e.Build.Internal.Used } s msg kind
 floatLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -81,7 +81,7 @@ hideRequiredMarker :
     -> Builder { a
         | hideRequiredMarker : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { hideRequiredMarker : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideRequiredMarker : M3e.Build.Internal.Used } s msg kind
 hideRequiredMarker v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -97,7 +97,7 @@ hideSubscript :
     , never : M3e.Value.Supported
     }
     -> Builder { a | hideSubscript : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideSubscript : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideSubscript : M3e.Build.Internal.Used } s msg kind
 hideSubscript v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -112,7 +112,7 @@ variant :
     , outlined : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

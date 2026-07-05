@@ -61,7 +61,7 @@ animation :
     , wave : M3e.Value.Supported
     }
     -> Builder { a | animation : M3e.Build.Internal.Available } s msg kind
-    -> Builder { animation : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | animation : M3e.Build.Internal.Used } s msg kind
 animation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -78,7 +78,7 @@ shape :
     , square : M3e.Value.Supported
     }
     -> Builder { a | shape : M3e.Build.Internal.Available } s msg kind
-    -> Builder { shape : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | shape : M3e.Build.Internal.Used } s msg kind
 shape v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -91,7 +91,7 @@ shape v_ b_ =
 loaded :
     Bool
     -> Builder { a | loaded : M3e.Build.Internal.Available } s msg kind
-    -> Builder { loaded : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | loaded : M3e.Build.Internal.Used } s msg kind
 loaded v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

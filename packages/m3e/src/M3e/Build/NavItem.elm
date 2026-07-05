@@ -74,7 +74,7 @@ navItem =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -89,7 +89,7 @@ disabledInteractive :
     -> Builder { a
         | disabledInteractive : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { disabledInteractive : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Used } s msg kind
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -102,7 +102,7 @@ disabledInteractive v_ b_ =
 download :
     String
     -> Builder { a | download : M3e.Build.Internal.Available } s msg kind
-    -> Builder { download : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | download : M3e.Build.Internal.Used } s msg kind
 download v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -115,7 +115,7 @@ download v_ b_ =
 href :
     String
     -> Builder { a | href : M3e.Build.Internal.Available } s msg kind
-    -> Builder { href : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | href : M3e.Build.Internal.Used } s msg kind
 href v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -130,7 +130,7 @@ orientation :
     , vertical : M3e.Value.Supported
     }
     -> Builder { a | orientation : M3e.Build.Internal.Available } s msg kind
-    -> Builder { orientation : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | orientation : M3e.Build.Internal.Used } s msg kind
 orientation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -143,7 +143,7 @@ orientation v_ b_ =
 rel :
     String
     -> Builder { a | rel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { rel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | rel : M3e.Build.Internal.Used } s msg kind
 rel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -156,7 +156,7 @@ rel v_ b_ =
 selected :
     Bool
     -> Builder { a | selected : M3e.Build.Internal.Available } s msg kind
-    -> Builder { selected : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | selected : M3e.Build.Internal.Used } s msg kind
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -169,7 +169,7 @@ selected v_ b_ =
 target :
     String
     -> Builder { a | target : M3e.Build.Internal.Available } s msg kind
-    -> Builder { target : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | target : M3e.Build.Internal.Used } s msg kind
 target v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -182,7 +182,7 @@ target v_ b_ =
 onBeforeinput :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforeinput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -197,7 +197,7 @@ onBeforeinput v_ b_ =
 onInput :
     Json.Decode.Decoder msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onInput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -212,7 +212,7 @@ onInput v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -227,7 +227,7 @@ onChange v_ b_ =
 onClick :
     Json.Decode.Decoder msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClick : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

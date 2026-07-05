@@ -62,7 +62,7 @@ textHighlight =
 caseSensitive :
     Bool
     -> Builder { a | caseSensitive : M3e.Build.Internal.Available } s msg kind
-    -> Builder { caseSensitive : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | caseSensitive : M3e.Build.Internal.Used } s msg kind
 caseSensitive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -75,7 +75,7 @@ caseSensitive v_ b_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -91,7 +91,7 @@ mode :
     , startsWith : M3e.Value.Supported
     }
     -> Builder { a | mode : M3e.Build.Internal.Available } s msg kind
-    -> Builder { mode : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | mode : M3e.Build.Internal.Used } s msg kind
 mode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -104,7 +104,7 @@ mode v_ b_ =
 term :
     String
     -> Builder { a | term : M3e.Build.Internal.Available } s msg kind
-    -> Builder { term : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | term : M3e.Build.Internal.Used } s msg kind
 term v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -117,7 +117,7 @@ term v_ b_ =
 onHighlight :
     Json.Decode.Decoder msg
     -> Builder { a | onHighlight : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onHighlight : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onHighlight : M3e.Build.Internal.Used } s msg kind
 onHighlight v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

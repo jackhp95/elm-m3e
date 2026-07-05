@@ -62,7 +62,7 @@ slideGroup =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -75,7 +75,7 @@ disabled v_ b_ =
 nextPageLabel :
     String
     -> Builder { a | nextPageLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { nextPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nextPageLabel : M3e.Build.Internal.Used } s msg kind
 nextPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ previousPageLabel :
     -> Builder { a
         | previousPageLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { previousPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | previousPageLabel : M3e.Build.Internal.Used } s msg kind
 previousPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -103,7 +103,7 @@ previousPageLabel v_ b_ =
 threshold :
     Float
     -> Builder { a | threshold : M3e.Build.Internal.Available } s msg kind
-    -> Builder { threshold : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | threshold : M3e.Build.Internal.Used } s msg kind
 threshold v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -116,7 +116,7 @@ threshold v_ b_ =
 vertical :
     Bool
     -> Builder { a | vertical : M3e.Build.Internal.Available } s msg kind
-    -> Builder { vertical : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | vertical : M3e.Build.Internal.Used } s msg kind
 vertical v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

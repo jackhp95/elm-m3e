@@ -78,7 +78,7 @@ paginator =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -91,7 +91,7 @@ disabled v_ b_ =
 firstPageLabel :
     String
     -> Builder { a | firstPageLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { firstPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | firstPageLabel : M3e.Build.Internal.Used } s msg kind
 firstPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -104,7 +104,7 @@ firstPageLabel v_ b_ =
 hidePageSize :
     Bool
     -> Builder { a | hidePageSize : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hidePageSize : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hidePageSize : M3e.Build.Internal.Used } s msg kind
 hidePageSize v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -119,7 +119,7 @@ itemsPerPageLabel :
     -> Builder { a
         | itemsPerPageLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { itemsPerPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | itemsPerPageLabel : M3e.Build.Internal.Used } s msg kind
 itemsPerPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -132,7 +132,7 @@ itemsPerPageLabel v_ b_ =
 lastPageLabel :
     String
     -> Builder { a | lastPageLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { lastPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | lastPageLabel : M3e.Build.Internal.Used } s msg kind
 lastPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -145,7 +145,7 @@ lastPageLabel v_ b_ =
 length :
     Float
     -> Builder { a | length : M3e.Build.Internal.Available } s msg kind
-    -> Builder { length : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | length : M3e.Build.Internal.Used } s msg kind
 length v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -158,7 +158,7 @@ length v_ b_ =
 nextPageLabel :
     String
     -> Builder { a | nextPageLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { nextPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nextPageLabel : M3e.Build.Internal.Used } s msg kind
 nextPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -171,7 +171,7 @@ nextPageLabel v_ b_ =
 pageIndex :
     Float
     -> Builder { a | pageIndex : M3e.Build.Internal.Available } s msg kind
-    -> Builder { pageIndex : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | pageIndex : M3e.Build.Internal.Used } s msg kind
 pageIndex v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -184,7 +184,7 @@ pageIndex v_ b_ =
 pageSize :
     M3e.Value.Value { number : M3e.Value.Supported, all : M3e.Value.Supported }
     -> Builder { a | pageSize : M3e.Build.Internal.Available } s msg kind
-    -> Builder { pageSize : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | pageSize : M3e.Build.Internal.Used } s msg kind
 pageSize v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -197,7 +197,7 @@ pageSize v_ b_ =
 pageSizes :
     String
     -> Builder { a | pageSizes : M3e.Build.Internal.Available } s msg kind
-    -> Builder { pageSizes : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | pageSizes : M3e.Build.Internal.Used } s msg kind
 pageSizes v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -212,7 +212,7 @@ pageSizeVariant :
     , outlined : M3e.Value.Supported
     }
     -> Builder { a | pageSizeVariant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { pageSizeVariant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | pageSizeVariant : M3e.Build.Internal.Used } s msg kind
 pageSizeVariant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -227,7 +227,7 @@ previousPageLabel :
     -> Builder { a
         | previousPageLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { previousPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | previousPageLabel : M3e.Build.Internal.Used } s msg kind
 previousPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -242,7 +242,7 @@ showFirstLastButtons :
     -> Builder { a
         | showFirstLastButtons : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { showFirstLastButtons : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | showFirstLastButtons : M3e.Build.Internal.Used } s msg kind
 showFirstLastButtons v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -255,7 +255,7 @@ showFirstLastButtons v_ b_ =
 onPage :
     Json.Decode.Decoder msg
     -> Builder { a | onPage : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onPage : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onPage : M3e.Build.Internal.Used } s msg kind
 onPage v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

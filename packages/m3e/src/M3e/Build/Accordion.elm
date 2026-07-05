@@ -53,7 +53,7 @@ accordion =
 multi :
     Bool
     -> Builder { a | multi : M3e.Build.Internal.Available } s msg kind
-    -> Builder { multi : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | multi : M3e.Build.Internal.Used } s msg kind
 multi v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

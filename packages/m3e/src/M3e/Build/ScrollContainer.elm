@@ -61,7 +61,7 @@ dividers :
     , none : M3e.Value.Supported
     }
     -> Builder { a | dividers : M3e.Build.Internal.Available } s msg kind
-    -> Builder { dividers : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | dividers : M3e.Build.Internal.Used } s msg kind
 dividers v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -74,7 +74,7 @@ dividers v_ b_ =
 thin :
     Bool
     -> Builder { a | thin : M3e.Build.Internal.Available } s msg kind
-    -> Builder { thin : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | thin : M3e.Build.Internal.Used } s msg kind
 thin v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

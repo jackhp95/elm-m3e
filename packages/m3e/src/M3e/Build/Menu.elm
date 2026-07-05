@@ -63,7 +63,7 @@ positionX :
     , before : M3e.Value.Supported
     }
     -> Builder { a | positionX : M3e.Build.Internal.Available } s msg kind
-    -> Builder { positionX : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | positionX : M3e.Build.Internal.Used } s msg kind
 positionX v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -76,7 +76,7 @@ positionX v_ b_ =
 positionY :
     M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
     -> Builder { a | positionY : M3e.Build.Internal.Available } s msg kind
-    -> Builder { positionY : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | positionY : M3e.Build.Internal.Used } s msg kind
 positionY v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -91,7 +91,7 @@ variant :
     , vibrant : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -104,7 +104,7 @@ variant v_ b_ =
 submenu :
     Bool
     -> Builder { a | submenu : M3e.Build.Internal.Available } s msg kind
-    -> Builder { submenu : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | submenu : M3e.Build.Internal.Used } s msg kind
 submenu v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -117,7 +117,7 @@ submenu v_ b_ =
 onBeforetoggle :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -132,7 +132,7 @@ onBeforetoggle v_ b_ =
 onToggle :
     Json.Decode.Decoder msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

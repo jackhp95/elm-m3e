@@ -58,7 +58,7 @@ pseudoCheckbox =
 checked :
     Bool
     -> Builder { a | checked : M3e.Build.Internal.Available } s msg kind
-    -> Builder { checked : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | checked : M3e.Build.Internal.Used } s msg kind
 checked v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -71,7 +71,7 @@ checked v_ b_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -84,7 +84,7 @@ disabled v_ b_ =
 indeterminate :
     Bool
     -> Builder { a | indeterminate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { indeterminate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | indeterminate : M3e.Build.Internal.Used } s msg kind
 indeterminate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

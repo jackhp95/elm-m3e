@@ -61,7 +61,7 @@ heading req_ =
 emphasized :
     Bool
     -> Builder { a | emphasized : M3e.Build.Internal.Available } s msg kind
-    -> Builder { emphasized : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | emphasized : M3e.Build.Internal.Used } s msg kind
 emphasized v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -74,7 +74,7 @@ emphasized v_ b_ =
 level :
     String
     -> Builder { a | level : M3e.Build.Internal.Available } s msg kind
-    -> Builder { level : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | level : M3e.Build.Internal.Used } s msg kind
 level v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ size :
     , small : M3e.Value.Supported
     }
     -> Builder { a | size : M3e.Build.Internal.Available } s msg kind
-    -> Builder { size : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | size : M3e.Build.Internal.Used } s msg kind
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -107,7 +107,7 @@ variant :
     , title : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

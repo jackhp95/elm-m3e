@@ -53,7 +53,7 @@ dialogAction =
 returnValue :
     String
     -> Builder { a | returnValue : M3e.Build.Internal.Available } s msg kind
-    -> Builder { returnValue : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | returnValue : M3e.Build.Internal.Used } s msg kind
 returnValue v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

@@ -63,7 +63,7 @@ variant :
     , tertiary : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -76,7 +76,7 @@ variant v_ b_ =
 onBeforetoggle :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -92,7 +92,7 @@ onBeforetoggle v_ b_ =
 onToggle :
     Json.Decode.Decoder msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

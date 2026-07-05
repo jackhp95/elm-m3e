@@ -59,7 +59,7 @@ toolbar =
 elevated :
     Bool
     -> Builder { a | elevated : M3e.Build.Internal.Available } s msg kind
-    -> Builder { elevated : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | elevated : M3e.Build.Internal.Used } s msg kind
 elevated v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -74,7 +74,7 @@ shape :
     , square : M3e.Value.Supported
     }
     -> Builder { a | shape : M3e.Build.Internal.Available } s msg kind
-    -> Builder { shape : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | shape : M3e.Build.Internal.Used } s msg kind
 shape v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -89,7 +89,7 @@ variant :
     , vibrant : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -102,7 +102,7 @@ variant v_ b_ =
 vertical :
     Bool
     -> Builder { a | vertical : M3e.Build.Internal.Available } s msg kind
-    -> Builder { vertical : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | vertical : M3e.Build.Internal.Used } s msg kind
 vertical v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

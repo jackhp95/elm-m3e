@@ -86,7 +86,7 @@ name :
     , verySunny : M3e.Value.Supported
     }
     -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
-    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg kind
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

@@ -77,7 +77,7 @@ autocomplete =
 autoActivate :
     Bool
     -> Builder { a | autoActivate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { autoActivate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | autoActivate : M3e.Build.Internal.Used } s msg kind
 autoActivate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ autoActivate v_ b_ =
 caseSensitive :
     Bool
     -> Builder { a | caseSensitive : M3e.Build.Internal.Available } s msg kind
-    -> Builder { caseSensitive : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | caseSensitive : M3e.Build.Internal.Used } s msg kind
 caseSensitive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -107,7 +107,7 @@ filter :
     , startsWith : M3e.Value.Supported
     }
     -> Builder { a | filter : M3e.Build.Internal.Available } s msg kind
-    -> Builder { filter : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | filter : M3e.Build.Internal.Used } s msg kind
 filter v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -122,7 +122,9 @@ hideSelectionIndicator :
     -> Builder { a
         | hideSelectionIndicator : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { hideSelectionIndicator : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a
+        | hideSelectionIndicator : M3e.Build.Internal.Used
+    } s msg kind
 hideSelectionIndicator v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -137,7 +139,7 @@ hideSelectionIndicator v_ b_ =
 hideLoading :
     Bool
     -> Builder { a | hideLoading : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideLoading : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideLoading : M3e.Build.Internal.Used } s msg kind
 hideLoading v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -150,7 +152,7 @@ hideLoading v_ b_ =
 hideNoData :
     Bool
     -> Builder { a | hideNoData : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideNoData : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideNoData : M3e.Build.Internal.Used } s msg kind
 hideNoData v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -163,7 +165,7 @@ hideNoData v_ b_ =
 loading :
     Bool
     -> Builder { a | loading : M3e.Build.Internal.Available } s msg kind
-    -> Builder { loading : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | loading : M3e.Build.Internal.Used } s msg kind
 loading v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -176,7 +178,7 @@ loading v_ b_ =
 loadingLabel :
     String
     -> Builder { a | loadingLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { loadingLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | loadingLabel : M3e.Build.Internal.Used } s msg kind
 loadingLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -189,7 +191,7 @@ loadingLabel v_ b_ =
 noDataLabel :
     String
     -> Builder { a | noDataLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { noDataLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | noDataLabel : M3e.Build.Internal.Used } s msg kind
 noDataLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -202,7 +204,7 @@ noDataLabel v_ b_ =
 panelClass :
     String
     -> Builder { a | panelClass : M3e.Build.Internal.Available } s msg kind
-    -> Builder { panelClass : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | panelClass : M3e.Build.Internal.Used } s msg kind
 panelClass v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -215,7 +217,7 @@ panelClass v_ b_ =
 required :
     Bool
     -> Builder { a | required : M3e.Build.Internal.Available } s msg kind
-    -> Builder { required : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | required : M3e.Build.Internal.Used } s msg kind
 required v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -228,7 +230,7 @@ required v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -241,7 +243,7 @@ for v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -256,7 +258,7 @@ onChange v_ b_ =
 onQuery :
     Json.Decode.Decoder msg
     -> Builder { a | onQuery : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onQuery : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onQuery : M3e.Build.Internal.Used } s msg kind
 onQuery v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -271,7 +273,7 @@ onQuery v_ b_ =
 onToggle :
     Json.Decode.Decoder msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

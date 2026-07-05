@@ -77,7 +77,7 @@ card =
 actionable :
     Bool
     -> Builder { a | actionable : M3e.Build.Internal.Available } s msg kind
-    -> Builder { actionable : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | actionable : M3e.Build.Internal.Used } s msg kind
 actionable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ actionable v_ b_ =
 inline :
     Bool
     -> Builder { a | inline : M3e.Build.Internal.Available } s msg kind
-    -> Builder { inline : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | inline : M3e.Build.Internal.Used } s msg kind
 inline v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -105,7 +105,7 @@ orientation :
     , vertical : M3e.Value.Supported
     }
     -> Builder { a | orientation : M3e.Build.Internal.Available } s msg kind
-    -> Builder { orientation : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | orientation : M3e.Build.Internal.Used } s msg kind
 orientation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -121,7 +121,7 @@ variant :
     , outlined : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -134,7 +134,7 @@ variant v_ b_ =
 href :
     String
     -> Builder { a | href : M3e.Build.Internal.Available } s msg kind
-    -> Builder { href : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | href : M3e.Build.Internal.Used } s msg kind
 href v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -147,7 +147,7 @@ href v_ b_ =
 target :
     String
     -> Builder { a | target : M3e.Build.Internal.Available } s msg kind
-    -> Builder { target : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | target : M3e.Build.Internal.Used } s msg kind
 target v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -160,7 +160,7 @@ target v_ b_ =
 rel :
     String
     -> Builder { a | rel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { rel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | rel : M3e.Build.Internal.Used } s msg kind
 rel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -175,7 +175,7 @@ optionally specifying the new name of the file. (default: `null`)
 download :
     String
     -> Builder { a | download : M3e.Build.Internal.Available } s msg kind
-    -> Builder { download : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | download : M3e.Build.Internal.Used } s msg kind
 download v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -190,7 +190,7 @@ as part of form data, when the element is used to submit a form.
 name :
     String
     -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
-    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg kind
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -203,7 +203,7 @@ name v_ b_ =
 value :
     String
     -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -219,7 +219,7 @@ type_ :
     , submit : M3e.Value.Supported
     }
     -> Builder { a | type_ : M3e.Build.Internal.Available } s msg kind
-    -> Builder { type_ : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | type_ : M3e.Build.Internal.Used } s msg kind
 type_ v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -234,7 +234,7 @@ disabledInteractive :
     -> Builder { a
         | disabledInteractive : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { disabledInteractive : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Used } s msg kind
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -247,7 +247,7 @@ disabledInteractive v_ b_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -260,7 +260,7 @@ disabled v_ b_ =
 onClick :
     Json.Decode.Decoder msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClick : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

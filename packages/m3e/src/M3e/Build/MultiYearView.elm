@@ -66,7 +66,7 @@ multiYearView =
 active :
     Bool
     -> Builder { a | active : M3e.Build.Internal.Available } s msg kind
-    -> Builder { active : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | active : M3e.Build.Internal.Used } s msg kind
 active v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -79,7 +79,7 @@ active v_ b_ =
 today :
     String
     -> Builder { a | today : M3e.Build.Internal.Available } s msg kind
-    -> Builder { today : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | today : M3e.Build.Internal.Used } s msg kind
 today v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -92,7 +92,7 @@ today v_ b_ =
 date :
     String
     -> Builder { a | date : M3e.Build.Internal.Available } s msg kind
-    -> Builder { date : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | date : M3e.Build.Internal.Used } s msg kind
 date v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -105,7 +105,7 @@ date v_ b_ =
 activeDate :
     String
     -> Builder { a | activeDate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { activeDate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | activeDate : M3e.Build.Internal.Used } s msg kind
 activeDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -118,7 +118,7 @@ activeDate v_ b_ =
 minDate :
     String
     -> Builder { a | minDate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { minDate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | minDate : M3e.Build.Internal.Used } s msg kind
 minDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -131,7 +131,7 @@ minDate v_ b_ =
 maxDate :
     String
     -> Builder { a | maxDate : M3e.Build.Internal.Available } s msg kind
-    -> Builder { maxDate : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | maxDate : M3e.Build.Internal.Used } s msg kind
 maxDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -144,7 +144,7 @@ maxDate v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -160,7 +160,7 @@ onChange v_ b_ =
 onActiveChange :
     Json.Decode.Decoder msg
     -> Builder { a | onActiveChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onActiveChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onActiveChange : M3e.Build.Internal.Used } s msg kind
 onActiveChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

@@ -64,7 +64,7 @@ mode :
     , expanded : M3e.Value.Supported
     }
     -> Builder { a | mode : M3e.Build.Internal.Available } s msg kind
-    -> Builder { mode : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | mode : M3e.Build.Internal.Used } s msg kind
 mode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -77,7 +77,7 @@ mode v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -92,7 +92,7 @@ onChange v_ b_ =
 onBeforeinput :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforeinput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -107,7 +107,7 @@ onBeforeinput v_ b_ =
 onInput :
     Json.Decode.Decoder msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onInput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

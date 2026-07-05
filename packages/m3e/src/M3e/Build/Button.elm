@@ -106,7 +106,7 @@ button req_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -121,7 +121,7 @@ disabledInteractive :
     -> Builder { a
         | disabledInteractive : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { disabledInteractive : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabledInteractive : M3e.Build.Internal.Used } s msg kind
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -134,7 +134,7 @@ disabledInteractive v_ b_ =
 name :
     String
     -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
-    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | name : M3e.Build.Internal.Used } s msg kind
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -147,7 +147,7 @@ name v_ b_ =
 selected :
     Bool
     -> Builder { a | selected : M3e.Build.Internal.Available } s msg kind
-    -> Builder { selected : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | selected : M3e.Build.Internal.Used } s msg kind
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -162,7 +162,7 @@ shape :
     , square : M3e.Value.Supported
     }
     -> Builder { a | shape : M3e.Build.Internal.Available } s msg kind
-    -> Builder { shape : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | shape : M3e.Build.Internal.Used } s msg kind
 shape v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -180,7 +180,7 @@ size :
     , small : M3e.Value.Supported
     }
     -> Builder { a | size : M3e.Build.Internal.Available } s msg kind
-    -> Builder { size : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | size : M3e.Build.Internal.Used } s msg kind
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -193,7 +193,7 @@ size v_ b_ =
 toggle :
     Bool
     -> Builder { a | toggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { toggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | toggle : M3e.Build.Internal.Used } s msg kind
 toggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -209,7 +209,7 @@ type_ :
     , submit : M3e.Value.Supported
     }
     -> Builder { a | type_ : M3e.Build.Internal.Available } s msg kind
-    -> Builder { type_ : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | type_ : M3e.Build.Internal.Used } s msg kind
 type_ v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -222,7 +222,7 @@ type_ v_ b_ =
 value :
     String
     -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -240,7 +240,7 @@ variant :
     , tonal : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -253,7 +253,7 @@ variant v_ b_ =
 onBeforeinput :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforeinput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -268,7 +268,7 @@ onBeforeinput v_ b_ =
 onInput :
     Json.Decode.Decoder msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onInput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -283,7 +283,7 @@ onInput v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

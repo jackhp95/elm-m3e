@@ -67,7 +67,7 @@ drawerContainer =
 end :
     Bool
     -> Builder { a | end : M3e.Build.Internal.Available } s msg kind
-    -> Builder { end : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | end : M3e.Build.Internal.Used } s msg kind
 end v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -84,7 +84,7 @@ endMode :
     , side : M3e.Value.Supported
     }
     -> Builder { a | endMode : M3e.Build.Internal.Available } s msg kind
-    -> Builder { endMode : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | endMode : M3e.Build.Internal.Used } s msg kind
 endMode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -97,7 +97,7 @@ endMode v_ b_ =
 endDivider :
     Bool
     -> Builder { a | endDivider : M3e.Build.Internal.Available } s msg kind
-    -> Builder { endDivider : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | endDivider : M3e.Build.Internal.Used } s msg kind
 endDivider v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -110,7 +110,7 @@ endDivider v_ b_ =
 start :
     Bool
     -> Builder { a | start : M3e.Build.Internal.Available } s msg kind
-    -> Builder { start : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | start : M3e.Build.Internal.Used } s msg kind
 start v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -127,7 +127,7 @@ startMode :
     , side : M3e.Value.Supported
     }
     -> Builder { a | startMode : M3e.Build.Internal.Available } s msg kind
-    -> Builder { startMode : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | startMode : M3e.Build.Internal.Used } s msg kind
 startMode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -140,7 +140,7 @@ startMode v_ b_ =
 startDivider :
     Bool
     -> Builder { a | startDivider : M3e.Build.Internal.Available } s msg kind
-    -> Builder { startDivider : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | startDivider : M3e.Build.Internal.Used } s msg kind
 startDivider v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -153,7 +153,7 @@ startDivider v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

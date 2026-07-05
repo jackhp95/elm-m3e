@@ -59,7 +59,7 @@ menuItemElementBase =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -72,7 +72,7 @@ disabled v_ b_ =
 onClick :
     Json.Decode.Decoder msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClick : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

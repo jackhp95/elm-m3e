@@ -68,7 +68,7 @@ breadcrumbItem =
 itemLabel :
     String
     -> Builder { a | itemLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { itemLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | itemLabel : M3e.Build.Internal.Used } s msg kind
 itemLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -81,7 +81,7 @@ itemLabel v_ b_ =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -100,7 +100,7 @@ current :
     , true : M3e.Value.Supported
     }
     -> Builder { a | current : M3e.Build.Internal.Available } s msg kind
-    -> Builder { current : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | current : M3e.Build.Internal.Used } s msg kind
 current v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -113,7 +113,7 @@ current v_ b_ =
 href :
     String
     -> Builder { a | href : M3e.Build.Internal.Available } s msg kind
-    -> Builder { href : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | href : M3e.Build.Internal.Used } s msg kind
 href v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -126,7 +126,7 @@ href v_ b_ =
 target :
     String
     -> Builder { a | target : M3e.Build.Internal.Available } s msg kind
-    -> Builder { target : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | target : M3e.Build.Internal.Used } s msg kind
 target v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -139,7 +139,7 @@ target v_ b_ =
 download :
     String
     -> Builder { a | download : M3e.Build.Internal.Available } s msg kind
-    -> Builder { download : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | download : M3e.Build.Internal.Used } s msg kind
 download v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -152,7 +152,7 @@ download v_ b_ =
 rel :
     String
     -> Builder { a | rel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { rel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | rel : M3e.Build.Internal.Used } s msg kind
 rel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -165,7 +165,7 @@ rel v_ b_ =
 onClick :
     Json.Decode.Decoder msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClick : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

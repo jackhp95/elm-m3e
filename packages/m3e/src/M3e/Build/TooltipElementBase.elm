@@ -60,7 +60,7 @@ tooltipElementBase =
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -73,7 +73,7 @@ disabled v_ b_ =
 showDelay :
     Float
     -> Builder { a | showDelay : M3e.Build.Internal.Available } s msg kind
-    -> Builder { showDelay : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | showDelay : M3e.Build.Internal.Used } s msg kind
 showDelay v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -86,7 +86,7 @@ showDelay v_ b_ =
 hideDelay :
     Float
     -> Builder { a | hideDelay : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideDelay : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideDelay : M3e.Build.Internal.Used } s msg kind
 hideDelay v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -102,7 +102,7 @@ touchGestures :
     , on : M3e.Value.Supported
     }
     -> Builder { a | touchGestures : M3e.Build.Internal.Available } s msg kind
-    -> Builder { touchGestures : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | touchGestures : M3e.Build.Internal.Used } s msg kind
 touchGestures v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -115,7 +115,7 @@ touchGestures v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

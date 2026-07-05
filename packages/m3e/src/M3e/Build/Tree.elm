@@ -58,7 +58,7 @@ tree =
 multi :
     Bool
     -> Builder { a | multi : M3e.Build.Internal.Available } s msg kind
-    -> Builder { multi : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | multi : M3e.Build.Internal.Used } s msg kind
 multi v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -71,7 +71,7 @@ multi v_ b_ =
 cascade :
     Bool
     -> Builder { a | cascade : M3e.Build.Internal.Available } s msg kind
-    -> Builder { cascade : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | cascade : M3e.Build.Internal.Used } s msg kind
 cascade v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -84,7 +84,7 @@ cascade v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

@@ -58,7 +58,7 @@ progressElementIndicatorBase =
 value :
     Float
     -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -73,7 +73,7 @@ value v_ b_ =
 max :
     Float
     -> Builder { a | max : M3e.Build.Internal.Available } s msg kind
-    -> Builder { max : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | max : M3e.Build.Internal.Used } s msg kind
 max v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -86,7 +86,7 @@ max v_ b_ =
 variant :
     M3e.Value.Value { flat : M3e.Value.Supported, wavy : M3e.Value.Supported }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

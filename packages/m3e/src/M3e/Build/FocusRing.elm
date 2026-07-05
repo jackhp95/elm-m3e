@@ -60,7 +60,7 @@ Focus rings can be still controlled manually by using the `show` and `hide` meth
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -73,7 +73,7 @@ disabled v_ b_ =
 inward :
     Bool
     -> Builder { a | inward : M3e.Build.Internal.Available } s msg kind
-    -> Builder { inward : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | inward : M3e.Build.Internal.Used } s msg kind
 inward v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -86,7 +86,7 @@ inward v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

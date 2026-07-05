@@ -58,7 +58,7 @@ toc =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -71,7 +71,7 @@ for v_ b_ =
 maxDepth :
     Float
     -> Builder { a | maxDepth : M3e.Build.Internal.Available } s msg kind
-    -> Builder { maxDepth : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | maxDepth : M3e.Build.Internal.Used } s msg kind
 maxDepth v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

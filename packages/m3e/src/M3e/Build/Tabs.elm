@@ -70,7 +70,7 @@ disablePagination :
     -> Builder { a
         | disablePagination : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { disablePagination : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disablePagination : M3e.Build.Internal.Used } s msg kind
 disablePagination v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -85,7 +85,7 @@ headerPosition :
     , before : M3e.Value.Supported
     }
     -> Builder { a | headerPosition : M3e.Build.Internal.Available } s msg kind
-    -> Builder { headerPosition : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | headerPosition : M3e.Build.Internal.Used } s msg kind
 headerPosition v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -98,7 +98,7 @@ headerPosition v_ b_ =
 nextPageLabel :
     String
     -> Builder { a | nextPageLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { nextPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nextPageLabel : M3e.Build.Internal.Used } s msg kind
 nextPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -113,7 +113,7 @@ previousPageLabel :
     -> Builder { a
         | previousPageLabel : M3e.Build.Internal.Available
     } s msg kind
-    -> Builder { previousPageLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | previousPageLabel : M3e.Build.Internal.Used } s msg kind
 previousPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -126,7 +126,7 @@ previousPageLabel v_ b_ =
 stretch :
     Bool
     -> Builder { a | stretch : M3e.Build.Internal.Available } s msg kind
-    -> Builder { stretch : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | stretch : M3e.Build.Internal.Used } s msg kind
 stretch v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -141,7 +141,7 @@ variant :
     , secondary : M3e.Value.Supported
     }
     -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
-    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | variant : M3e.Build.Internal.Used } s msg kind
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -154,7 +154,7 @@ variant v_ b_ =
 onChange :
     Json.Decode.Decoder msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -169,7 +169,7 @@ onChange v_ b_ =
 onBeforeinput :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforeinput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -184,7 +184,7 @@ onBeforeinput v_ b_ =
 onInput :
     Json.Decode.Decoder msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onInput : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

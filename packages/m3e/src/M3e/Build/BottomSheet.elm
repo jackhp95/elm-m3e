@@ -72,7 +72,7 @@ bottomSheet =
 detent :
     Float
     -> Builder { a | detent : M3e.Build.Internal.Available } s msg kind
-    -> Builder { detent : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | detent : M3e.Build.Internal.Used } s msg kind
 detent v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -87,7 +87,7 @@ surface for dragging between detents. (default: `false`)
 handle :
     Bool
     -> Builder { a | handle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { handle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | handle : M3e.Build.Internal.Used } s msg kind
 handle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -100,7 +100,7 @@ handle v_ b_ =
 handleLabel :
     String
     -> Builder { a | handleLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { handleLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | handleLabel : M3e.Build.Internal.Used } s msg kind
 handleLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -113,7 +113,7 @@ handleLabel v_ b_ =
 hideable :
     Bool
     -> Builder { a | hideable : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideable : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideable : M3e.Build.Internal.Used } s msg kind
 hideable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -126,7 +126,7 @@ hideable v_ b_ =
 hideFriction :
     Float
     -> Builder { a | hideFriction : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideFriction : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideFriction : M3e.Build.Internal.Used } s msg kind
 hideFriction v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -139,7 +139,7 @@ hideFriction v_ b_ =
 modal :
     Bool
     -> Builder { a | modal : M3e.Build.Internal.Available } s msg kind
-    -> Builder { modal : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | modal : M3e.Build.Internal.Used } s msg kind
 modal v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -152,7 +152,7 @@ modal v_ b_ =
 open :
     Bool
     -> Builder { a | open : M3e.Build.Internal.Available } s msg kind
-    -> Builder { open : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | open : M3e.Build.Internal.Used } s msg kind
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -165,7 +165,7 @@ open v_ b_ =
 overshootLimit :
     Float
     -> Builder { a | overshootLimit : M3e.Build.Internal.Available } s msg kind
-    -> Builder { overshootLimit : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | overshootLimit : M3e.Build.Internal.Used } s msg kind
 overshootLimit v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -178,7 +178,7 @@ overshootLimit v_ b_ =
 onOpening :
     Json.Decode.Decoder msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onOpening : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -193,7 +193,7 @@ onOpening v_ b_ =
 onClosing :
     Json.Decode.Decoder msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClosing : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -208,7 +208,7 @@ onClosing v_ b_ =
 onCancel :
     Json.Decode.Decoder msg
     -> Builder { a | onCancel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onCancel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onCancel : M3e.Build.Internal.Used } s msg kind
 onCancel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -223,7 +223,7 @@ onCancel v_ b_ =
 onOpened :
     Json.Decode.Decoder msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onOpened : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -238,7 +238,7 @@ onOpened v_ b_ =
 onClosed :
     Json.Decode.Decoder msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClosed : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

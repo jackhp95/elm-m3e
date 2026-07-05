@@ -51,7 +51,7 @@ slide =
 selectedIndex :
     Float
     -> Builder { a | selectedIndex : M3e.Build.Internal.Available } s msg kind
-    -> Builder { selectedIndex : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | selectedIndex : M3e.Build.Internal.Used } s msg kind
 selectedIndex v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

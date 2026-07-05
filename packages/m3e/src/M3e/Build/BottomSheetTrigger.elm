@@ -58,7 +58,7 @@ bottomSheetTrigger =
 detent :
     Float
     -> Builder { a | detent : M3e.Build.Internal.Available } s msg kind
-    -> Builder { detent : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | detent : M3e.Build.Internal.Used } s msg kind
 detent v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -71,7 +71,7 @@ detent v_ b_ =
 secondary :
     Bool
     -> Builder { a | secondary : M3e.Build.Internal.Available } s msg kind
-    -> Builder { secondary : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | secondary : M3e.Build.Internal.Used } s msg kind
 secondary v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -84,7 +84,7 @@ secondary v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

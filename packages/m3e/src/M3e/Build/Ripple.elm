@@ -62,7 +62,7 @@ than originating from the location of the click event. (default: `false`)
 centered :
     Bool
     -> Builder { a | centered : M3e.Build.Internal.Available } s msg kind
-    -> Builder { centered : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | centered : M3e.Build.Internal.Used } s msg kind
 centered v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -77,7 +77,7 @@ Ripples can be still controlled manually by using the `show` and 'hide' methods.
 disabled :
     Bool
     -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
-    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ disabled v_ b_ =
 for :
     String
     -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
-    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -103,7 +103,7 @@ for v_ b_ =
 radius :
     Float
     -> Builder { a | radius : M3e.Build.Internal.Available } s msg kind
-    -> Builder { radius : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | radius : M3e.Build.Internal.Used } s msg kind
 radius v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -116,7 +116,7 @@ radius v_ b_ =
 unbounded :
     Bool
     -> Builder { a | unbounded : M3e.Build.Internal.Available } s msg kind
-    -> Builder { unbounded : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | unbounded : M3e.Build.Internal.Used } s msg kind
 unbounded v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

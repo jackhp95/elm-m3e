@@ -59,7 +59,7 @@ divider =
 inset :
     Bool
     -> Builder { a | inset : M3e.Build.Internal.Available } s msg kind
-    -> Builder { inset : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | inset : M3e.Build.Internal.Used } s msg kind
 inset v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -72,7 +72,7 @@ inset v_ b_ =
 insetStart :
     Bool
     -> Builder { a | insetStart : M3e.Build.Internal.Available } s msg kind
-    -> Builder { insetStart : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | insetStart : M3e.Build.Internal.Used } s msg kind
 insetStart v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -85,7 +85,7 @@ insetStart v_ b_ =
 insetEnd :
     Bool
     -> Builder { a | insetEnd : M3e.Build.Internal.Available } s msg kind
-    -> Builder { insetEnd : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | insetEnd : M3e.Build.Internal.Used } s msg kind
 insetEnd v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -98,7 +98,7 @@ insetEnd v_ b_ =
 vertical :
     Bool
     -> Builder { a | vertical : M3e.Build.Internal.Available } s msg kind
-    -> Builder { vertical : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | vertical : M3e.Build.Internal.Used } s msg kind
 vertical v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

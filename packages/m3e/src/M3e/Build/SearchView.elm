@@ -74,7 +74,7 @@ searchView req_ =
 contained :
     Bool
     -> Builder { a | contained : M3e.Build.Internal.Available } s msg kind
-    -> Builder { contained : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | contained : M3e.Build.Internal.Used } s msg kind
 contained v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -90,7 +90,7 @@ mode :
     , fullscreen : M3e.Value.Supported
     }
     -> Builder { a | mode : M3e.Build.Internal.Available } s msg kind
-    -> Builder { mode : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | mode : M3e.Build.Internal.Used } s msg kind
 mode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -103,7 +103,7 @@ mode v_ b_ =
 open :
     Bool
     -> Builder { a | open : M3e.Build.Internal.Available } s msg kind
-    -> Builder { open : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | open : M3e.Build.Internal.Used } s msg kind
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -116,7 +116,7 @@ open v_ b_ =
 clearLabel :
     String
     -> Builder { a | clearLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { clearLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | clearLabel : M3e.Build.Internal.Used } s msg kind
 clearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -129,7 +129,7 @@ clearLabel v_ b_ =
 closeLabel :
     String
     -> Builder { a | closeLabel : M3e.Build.Internal.Available } s msg kind
-    -> Builder { closeLabel : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | closeLabel : M3e.Build.Internal.Used } s msg kind
 closeLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -142,7 +142,7 @@ closeLabel v_ b_ =
 hideSearchIcon :
     Bool
     -> Builder { a | hideSearchIcon : M3e.Build.Internal.Available } s msg kind
-    -> Builder { hideSearchIcon : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | hideSearchIcon : M3e.Build.Internal.Used } s msg kind
 hideSearchIcon v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -155,7 +155,7 @@ hideSearchIcon v_ b_ =
 onQuery :
     Json.Decode.Decoder msg
     -> Builder { a | onQuery : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onQuery : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onQuery : M3e.Build.Internal.Used } s msg kind
 onQuery v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -170,7 +170,7 @@ onQuery v_ b_ =
 onClear :
     Json.Decode.Decoder msg
     -> Builder { a | onClear : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onClear : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onClear : M3e.Build.Internal.Used } s msg kind
 onClear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -185,7 +185,7 @@ onClear v_ b_ =
 onBeforetoggle :
     Json.Decode.Decoder msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
@@ -203,7 +203,7 @@ onBeforetoggle v_ b_ =
 onToggle :
     Json.Decode.Decoder msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
-    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
