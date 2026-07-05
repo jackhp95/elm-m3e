@@ -648,6 +648,13 @@ navSections =
             , ( "/getting-started/browser-support", "Browser Support" )
             ]
       }
+    , { title = "Concepts"
+      , icon = "school"
+      , items =
+            [ ( "/concepts/phantom-rows", "Phantom rows" )
+            , ( "/concepts/build", "The ⑤ Build pipeline" )
+            ]
+      }
     , { title = "Styles"
       , icon = "palette"
       , items =
