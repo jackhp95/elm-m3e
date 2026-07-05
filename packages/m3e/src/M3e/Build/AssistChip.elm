@@ -1,14 +1,20 @@
-module M3e.Build.AssistChip exposing ( Builder, AttrCaps, SlotCaps, assistChip )
+module M3e.Build.AssistChip exposing
+    ( Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
+    , name, type_, value, variant
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-assist-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.AssistChip as AssistChip`.
 
-@docs Builder, AttrCaps, SlotCaps, assistChip
+@docs Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
+@docs name, type_, value, variant
 -}
 
 
 import M3e.Action
 import M3e.Build.Internal
+import M3e.Cem.AssistChip
+import M3e.Cem.Attr
 import M3e.Element
 import M3e.Node
 import M3e.Value
@@ -59,4 +65,105 @@ assistChip :
     }
     -> Builder AttrCaps SlotCaps msg kind
 assistChip req_ =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.AssistChip.assistChip
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.append
+                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  )
+                  (List.map M3e.Cem.Attr.forget [])
+             )
+             [ M3e.Action.wrapContent
+                 req_.action
+                 (M3e.Element.toNode req_.content)
+             ]
+        )
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+disabled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.AssistChip.disabled v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
+disabledInteractive :
+    Bool
+    -> Builder { a
+        | disabledInteractive : M3e.Build.Internal.Available
+    } s msg kind
+    -> Builder { disabledInteractive : M3e.Build.Internal.Used } s msg kind
+disabledInteractive v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.AssistChip.disabledInteractive v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
+name :
+    String
+    -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
+    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+name v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.AssistChip.name v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The type of the element. (default: `"button"`) -}
+type_ :
+    M3e.Value.Value { button : M3e.Value.Supported
+    , reset : M3e.Value.Supported
+    , submit : M3e.Value.Supported
+    }
+    -> Builder { a | type_ : M3e.Build.Internal.Available } s msg kind
+    -> Builder { type_ : M3e.Build.Internal.Used } s msg kind
+type_ v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.AssistChip.type_ v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| A string representing the value of the chip. -}
+value :
+    String
+    -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
+    -> Builder { value : M3e.Build.Internal.Used } s msg kind
+value v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.AssistChip.value v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The appearance variant of the chip. (default: `"outlined"`) -}
+variant :
+    M3e.Value.Value { elevated : M3e.Value.Supported
+    , outlined : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
+    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+variant v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.AssistChip.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )

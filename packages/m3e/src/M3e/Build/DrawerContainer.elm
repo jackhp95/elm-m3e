@@ -1,13 +1,21 @@
-module M3e.Build.DrawerContainer exposing ( Builder, AttrCaps, SlotCaps, drawerContainer )
+module M3e.Build.DrawerContainer exposing
+    ( Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
+    , endDivider, start, startMode, startDivider, onChange
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-drawer-container>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.DrawerContainer as DrawerContainer`.
 
-@docs Builder, AttrCaps, SlotCaps, drawerContainer
+@docs Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
+@docs endDivider, start, startMode, startDivider, onChange
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.DrawerContainer
+import M3e.Cem.Html.DrawerContainer
 import M3e.Node
 import M3e.Value
 
@@ -42,4 +50,117 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-drawer-container>`. -}
 drawerContainer : Builder AttrCaps SlotCaps msg kind
 drawerContainer =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.DrawerContainer.drawerContainer
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| Whether the end drawer is open. (default: `false`) -}
+end :
+    Bool
+    -> Builder { a | end : M3e.Build.Internal.Available } s msg kind
+    -> Builder { end : M3e.Build.Internal.Used } s msg kind
+end v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.DrawerContainer.end v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The behavior mode of the end drawer. (default: `"side"`) -}
+endMode :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , over : M3e.Value.Supported
+    , push : M3e.Value.Supported
+    , side : M3e.Value.Supported
+    }
+    -> Builder { a | endMode : M3e.Build.Internal.Available } s msg kind
+    -> Builder { endMode : M3e.Build.Internal.Used } s msg kind
+endMode v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.DrawerContainer.endMode v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether to show a divider between the end drawer and content for `side` mode. (default: `false`) -}
+endDivider :
+    Bool
+    -> Builder { a | endDivider : M3e.Build.Internal.Available } s msg kind
+    -> Builder { endDivider : M3e.Build.Internal.Used } s msg kind
+endDivider v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.DrawerContainer.endDivider v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the start drawer is open. (default: `false`) -}
+start :
+    Bool
+    -> Builder { a | start : M3e.Build.Internal.Available } s msg kind
+    -> Builder { start : M3e.Build.Internal.Used } s msg kind
+start v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.DrawerContainer.start v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The behavior mode of the start drawer. (default: `"side"`) -}
+startMode :
+    M3e.Value.Value { auto : M3e.Value.Supported
+    , over : M3e.Value.Supported
+    , push : M3e.Value.Supported
+    , side : M3e.Value.Supported
+    }
+    -> Builder { a | startMode : M3e.Build.Internal.Available } s msg kind
+    -> Builder { startMode : M3e.Build.Internal.Used } s msg kind
+startMode v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.DrawerContainer.startMode v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether to show a divider between the start drawer and content for `side` mode. (default: `false`) -}
+startDivider :
+    Bool
+    -> Builder { a | startDivider : M3e.Build.Internal.Available } s msg kind
+    -> Builder { startDivider : M3e.Build.Internal.Used } s msg kind
+startDivider v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.DrawerContainer.startDivider v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched when the state of the start or end drawers change. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+onChange v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute
+                       M3e.Cem.Html.DrawerContainer.onChange
+                       v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )

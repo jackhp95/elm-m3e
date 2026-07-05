@@ -1,13 +1,21 @@
-module M3e.Build.Snackbar exposing ( Builder, AttrCaps, SlotCaps, snackbar )
+module M3e.Build.Snackbar exposing
+    ( Builder, AttrCaps, SlotCaps, snackbar, action, closeLabel
+    , dismissible, duration, onBeforetoggle, onToggle
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-snackbar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Snackbar as Snackbar`.
 
-@docs Builder, AttrCaps, SlotCaps, snackbar
+@docs Builder, AttrCaps, SlotCaps, snackbar, action, closeLabel
+@docs dismissible, duration, onBeforetoggle, onToggle
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.Snackbar
+import M3e.Cem.Snackbar
 import M3e.Element
 import M3e.Node
 import M3e.Value
@@ -41,4 +49,98 @@ snackbar :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> Builder AttrCaps SlotCaps msg kind
 snackbar req_ =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Snackbar.snackbar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.map M3e.Cem.Attr.forget [])
+             [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| The label of the snackbar's action. (default: `""`) -}
+action :
+    String
+    -> Builder { a | action : M3e.Build.Internal.Available } s msg kind
+    -> Builder { action : M3e.Build.Internal.Used } s msg kind
+action v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Snackbar.action v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`) -}
+closeLabel :
+    String
+    -> Builder { a | closeLabel : M3e.Build.Internal.Available } s msg kind
+    -> Builder { closeLabel : M3e.Build.Internal.Used } s msg kind
+closeLabel v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Snackbar.closeLabel v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether a button is presented that can be used to close the snackbar. (default: `false`) -}
+dismissible :
+    Bool
+    -> Builder { a | dismissible : M3e.Build.Internal.Available } s msg kind
+    -> Builder { dismissible : M3e.Build.Internal.Used } s msg kind
+dismissible v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Snackbar.dismissible v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`) -}
+duration :
+    Float
+    -> Builder { a | duration : M3e.Build.Internal.Available } s msg kind
+    -> Builder { duration : M3e.Build.Internal.Used } s msg kind
+duration v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Snackbar.duration v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched before the toggle state changes. -}
+onBeforetoggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+onBeforetoggle v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute
+                       M3e.Cem.Html.Snackbar.onBeforetoggle
+                       v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched after the toggle state has changed. -}
+onToggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+onToggle v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Snackbar.onToggle v_)
+             )
+             (M3e.Build.Internal.node_ b_)
+        )

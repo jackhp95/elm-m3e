@@ -1,13 +1,21 @@
-module M3e.Build.MultiYearView exposing ( Builder, AttrCaps, SlotCaps, multiYearView )
+module M3e.Build.MultiYearView exposing
+    ( Builder, AttrCaps, SlotCaps, multiYearView, active, today
+    , date, activeDate, minDate, maxDate, onChange, onActiveChange
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-multi-year-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MultiYearView as MultiYearView`.
 
-@docs Builder, AttrCaps, SlotCaps, multiYearView
+@docs Builder, AttrCaps, SlotCaps, multiYearView, active, today
+@docs date, activeDate, minDate, maxDate, onChange, onActiveChange
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.MultiYearView
+import M3e.Cem.MultiYearView
 import M3e.Node
 import M3e.Value
 
@@ -40,4 +48,125 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-multi-year-view>`. -}
 multiYearView : Builder AttrCaps SlotCaps msg kind
 multiYearView =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.MultiYearView.multiYearView
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| Whether the view is active. (default: `false`) -}
+active :
+    Bool
+    -> Builder { a | active : M3e.Build.Internal.Available } s msg kind
+    -> Builder { active : M3e.Build.Internal.Used } s msg kind
+active v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MultiYearView.active v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Today's date. (default: `new Date()`) -}
+today :
+    String
+    -> Builder { a | today : M3e.Build.Internal.Available } s msg kind
+    -> Builder { today : M3e.Build.Internal.Used } s msg kind
+today v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MultiYearView.today v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The selected date. (default: `null`) -}
+date :
+    String
+    -> Builder { a | date : M3e.Build.Internal.Available } s msg kind
+    -> Builder { date : M3e.Build.Internal.Used } s msg kind
+date v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MultiYearView.date v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The active date. (default: `new Date()`) -}
+activeDate :
+    String
+    -> Builder { a | activeDate : M3e.Build.Internal.Available } s msg kind
+    -> Builder { activeDate : M3e.Build.Internal.Used } s msg kind
+activeDate v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MultiYearView.activeDate v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The minimum date that can be selected. (default: `null`) -}
+minDate :
+    String
+    -> Builder { a | minDate : M3e.Build.Internal.Available } s msg kind
+    -> Builder { minDate : M3e.Build.Internal.Used } s msg kind
+minDate v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MultiYearView.minDate v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The maximum date that can be selected. (default: `null`) -}
+maxDate :
+    String
+    -> Builder { a | maxDate : M3e.Build.Internal.Available } s msg kind
+    -> Builder { maxDate : M3e.Build.Internal.Used } s msg kind
+maxDate v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MultiYearView.maxDate v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Listen for `change` events. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+onChange v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.MultiYearView.onChange v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Listen for `active-change` events. -}
+onActiveChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onActiveChange : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onActiveChange : M3e.Build.Internal.Used } s msg kind
+onActiveChange v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute
+                       M3e.Cem.Html.MultiYearView.onActiveChange
+                       v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )

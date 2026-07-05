@@ -1,13 +1,21 @@
-module M3e.Build.RadioGroup exposing ( Builder, AttrCaps, SlotCaps, radioGroup )
+module M3e.Build.RadioGroup exposing
+    ( Builder, AttrCaps, SlotCaps, radioGroup, ariaInvalid, disabled
+    , name, required, onBeforeinput, onInput, onChange
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-radio-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.RadioGroup as RadioGroup`.
 
-@docs Builder, AttrCaps, SlotCaps, radioGroup
+@docs Builder, AttrCaps, SlotCaps, radioGroup, ariaInvalid, disabled
+@docs name, required, onBeforeinput, onInput, onChange
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.RadioGroup
+import M3e.Cem.RadioGroup
 import M3e.Node
 import M3e.Value
 
@@ -39,4 +47,113 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-radio-group>`. -}
 radioGroup : Builder AttrCaps SlotCaps msg kind
 radioGroup =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.RadioGroup.radioGroup
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| Set the `aria-invalid` attribute. -}
+ariaInvalid :
+    String
+    -> Builder { a | ariaInvalid : M3e.Build.Internal.Available } s msg kind
+    -> Builder { ariaInvalid : M3e.Build.Internal.Used } s msg kind
+ariaInvalid v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.RadioGroup.ariaInvalid v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+disabled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.RadioGroup.disabled v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name :
+    String
+    -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
+    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+name v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.RadioGroup.name v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the element is required. (default: `false`) -}
+required :
+    Bool
+    -> Builder { a | required : M3e.Build.Internal.Available } s msg kind
+    -> Builder { required : M3e.Build.Internal.Used } s msg kind
+required v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.RadioGroup.required v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched before the checked state of a radio button changes. -}
+onBeforeinput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onBeforeinput : M3e.Build.Internal.Used } s msg kind
+onBeforeinput v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute
+                       M3e.Cem.Html.RadioGroup.onBeforeinput
+                       v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched when the checked state of a radio button changes. -}
+onInput :
+    Json.Decode.Decoder msg
+    -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onInput : M3e.Build.Internal.Used } s msg kind
+onInput v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.RadioGroup.onInput v_)
+             )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched when the checked state of a radio button changes. -}
+onChange :
+    Json.Decode.Decoder msg
+    -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onChange : M3e.Build.Internal.Used } s msg kind
+onChange v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.RadioGroup.onChange v_)
+             )
+             (M3e.Build.Internal.node_ b_)
+        )

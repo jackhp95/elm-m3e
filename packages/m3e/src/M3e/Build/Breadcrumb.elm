@@ -1,13 +1,17 @@
-module M3e.Build.Breadcrumb exposing ( Builder, AttrCaps, SlotCaps, breadcrumb )
+module M3e.Build.Breadcrumb exposing
+    ( Builder, AttrCaps, SlotCaps, breadcrumb, wrap
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Breadcrumb as Breadcrumb`.
 
-@docs Builder, AttrCaps, SlotCaps, breadcrumb
+@docs Builder, AttrCaps, SlotCaps, breadcrumb, wrap
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Breadcrumb
 import M3e.Node
 import M3e.Value
 
@@ -34,4 +38,26 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-breadcrumb>`. -}
 breadcrumb : Builder AttrCaps SlotCaps msg kind
 breadcrumb =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Breadcrumb.breadcrumb
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| Whether items wrap to a new line. (default: `false`) -}
+wrap :
+    Bool
+    -> Builder { a | wrap : M3e.Build.Internal.Available } s msg kind
+    -> Builder { wrap : M3e.Build.Internal.Used } s msg kind
+wrap v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Breadcrumb.wrap v_))
+             (M3e.Build.Internal.node_ b_)
+        )

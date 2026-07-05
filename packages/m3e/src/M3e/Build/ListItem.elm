@@ -8,6 +8,8 @@ The ⑤ Build shape for `<m3e-list-item>` — phantom-typed pipeline API. Import
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ListItem
 import M3e.Node
 import M3e.Value
 
@@ -37,4 +39,13 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-list-item>`. -}
 listItem : Builder AttrCaps SlotCaps msg kind
 listItem =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ListItem.listItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )

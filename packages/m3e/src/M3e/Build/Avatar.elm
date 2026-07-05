@@ -8,6 +8,8 @@ The ⑤ Build shape for `<m3e-avatar>` — phantom-typed pipeline API. Import qu
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Avatar
 import M3e.Node
 import M3e.Value
 
@@ -32,4 +34,13 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-avatar>`. -}
 avatar : Builder AttrCaps SlotCaps msg kind
 avatar =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Avatar.avatar
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )

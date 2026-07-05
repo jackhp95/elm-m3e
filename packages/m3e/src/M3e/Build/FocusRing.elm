@@ -1,13 +1,19 @@
-module M3e.Build.FocusRing exposing ( Builder, AttrCaps, SlotCaps, focusRing )
+module M3e.Build.FocusRing exposing
+    ( Builder, AttrCaps, SlotCaps, focusRing, disabled, inward
+    , for
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-focus-ring>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FocusRing as FocusRing`.
 
-@docs Builder, AttrCaps, SlotCaps, focusRing
+@docs Builder, AttrCaps, SlotCaps, focusRing, disabled, inward
+@docs for
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.FocusRing
 import M3e.Node
 import M3e.Value
 
@@ -35,4 +41,54 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-focus-ring>`. -}
 focusRing : Builder AttrCaps SlotCaps msg kind
 focusRing =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.FocusRing.focusRing
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| Whether the focus events will not trigger the focus ring.
+Focus rings can be still controlled manually by using the `show` and `hide` methods. (default: `false`)
+-}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+disabled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.FocusRing.disabled v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the focus ring animates inward instead of outward. (default: `false`) -}
+inward :
+    Bool
+    -> Builder { a | inward : M3e.Build.Internal.Available } s msg kind
+    -> Builder { inward : M3e.Build.Internal.Used } s msg kind
+inward v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.FocusRing.inward v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
+    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+for v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.FocusRing.for v_))
+             (M3e.Build.Internal.node_ b_)
+        )

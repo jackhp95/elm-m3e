@@ -1,13 +1,19 @@
-module M3e.Build.Icon exposing ( Builder, AttrCaps, SlotCaps, icon )
+module M3e.Build.Icon exposing
+    ( Builder, AttrCaps, SlotCaps, icon, filled, grade
+    , opticalSize, name, variant, weight
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-icon>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Icon as Icon`.
 
-@docs Builder, AttrCaps, SlotCaps, icon
+@docs Builder, AttrCaps, SlotCaps, icon, filled, grade
+@docs opticalSize, name, variant, weight
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Icon
 import M3e.Node
 import M3e.Value
 
@@ -38,4 +44,95 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-icon>`. -}
 icon : Builder AttrCaps SlotCaps msg kind
 icon =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.Icon.icon (List.map M3e.Cem.Attr.forget erased_) ch_
+             )
+             []
+             []
+        )
+
+
+{-| Whether the icon is filled. (default: `false`) -}
+filled :
+    Bool
+    -> Builder { a | filled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { filled : M3e.Build.Internal.Used } s msg kind
+filled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Icon.filled v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The grade of the icon. (default: `"medium"`) -}
+grade :
+    M3e.Value.Value { high : M3e.Value.Supported
+    , low : M3e.Value.Supported
+    , medium : M3e.Value.Supported
+    }
+    -> Builder { a | grade : M3e.Build.Internal.Available } s msg kind
+    -> Builder { grade : M3e.Build.Internal.Used } s msg kind
+grade v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Icon.grade v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`) -}
+opticalSize :
+    Float
+    -> Builder { a | opticalSize : M3e.Build.Internal.Available } s msg kind
+    -> Builder { opticalSize : M3e.Build.Internal.Used } s msg kind
+opticalSize v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Icon.opticalSize v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The name of the icon. (default: `""`) -}
+name :
+    String
+    -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
+    -> Builder { name : M3e.Build.Internal.Used } s msg kind
+name v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Icon.name v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The appearance variant of the icon. (default: `"outlined"`) -}
+variant :
+    M3e.Value.Value { outlined : M3e.Value.Supported
+    , rounded : M3e.Value.Supported
+    , sharp : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
+    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+variant v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Icon.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
+weight :
+    String
+    -> Builder { a | weight : M3e.Build.Internal.Available } s msg kind
+    -> Builder { weight : M3e.Build.Internal.Used } s msg kind
+weight v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.Icon.weight v_))
+             (M3e.Build.Internal.node_ b_)
+        )

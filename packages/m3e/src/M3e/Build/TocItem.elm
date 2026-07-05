@@ -1,13 +1,21 @@
-module M3e.Build.TocItem exposing ( Builder, AttrCaps, SlotCaps, tocItem )
+module M3e.Build.TocItem exposing
+    ( Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
+    , onClick
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-toc-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TocItem as TocItem`.
 
-@docs Builder, AttrCaps, SlotCaps, tocItem
+@docs Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
+@docs onClick
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.TocItem
+import M3e.Cem.TocItem
 import M3e.Element
 import M3e.Node
 import M3e.Value
@@ -38,4 +46,54 @@ tocItem :
     { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> Builder AttrCaps SlotCaps msg kind
 tocItem req_ =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.TocItem.tocItem
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             (List.map M3e.Cem.Attr.forget [])
+             [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| A value indicating whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+disabled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.TocItem.disabled v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the element is selected. (default: `false`) -}
+selected :
+    Bool
+    -> Builder { a | selected : M3e.Build.Internal.Available } s msg kind
+    -> Builder { selected : M3e.Build.Internal.Used } s msg kind
+selected v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.TocItem.selected v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onClick : M3e.Build.Internal.Used } s msg kind
+onClick v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.TocItem.onClick v_)
+             )
+             (M3e.Build.Internal.node_ b_)
+        )

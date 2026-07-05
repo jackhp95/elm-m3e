@@ -1,13 +1,19 @@
-module M3e.Build.MenuItemElementBase exposing ( Builder, AttrCaps, SlotCaps, menuItemElementBase )
+module M3e.Build.MenuItemElementBase exposing
+    ( Builder, AttrCaps, SlotCaps, menuItemElementBase, disabled, onClick
+    )
 
 {-|
 The ⑤ Build shape for `<MenuItemElementBase>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItemElementBase as MenuItemElementBase`.
 
-@docs Builder, AttrCaps, SlotCaps, menuItemElementBase
+@docs Builder, AttrCaps, SlotCaps, menuItemElementBase, disabled, onClick
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.Html.MenuItemElementBase
+import M3e.Cem.MenuItemElementBase
 import M3e.Node
 import M3e.Value
 
@@ -34,4 +40,44 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<MenuItemElementBase>`. -}
 menuItemElementBase : Builder AttrCaps SlotCaps msg kind
 menuItemElementBase =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.MenuItemElementBase.menuItemElementBase
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| Whether the element is disabled. (default: `false`) -}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { disabled : M3e.Build.Internal.Used } s msg kind
+disabled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.MenuItemElementBase.disabled v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Listen for `click` events. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onClick : M3e.Build.Internal.Used } s msg kind
+onClick v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute
+                       M3e.Cem.Html.MenuItemElementBase.onClick
+                       v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )

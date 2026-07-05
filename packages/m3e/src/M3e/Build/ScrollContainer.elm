@@ -1,13 +1,17 @@
-module M3e.Build.ScrollContainer exposing ( Builder, AttrCaps, SlotCaps, scrollContainer )
+module M3e.Build.ScrollContainer exposing
+    ( Builder, AttrCaps, SlotCaps, scrollContainer, dividers, thin
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-scroll-container>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ScrollContainer as ScrollContainer`.
 
-@docs Builder, AttrCaps, SlotCaps, scrollContainer
+@docs Builder, AttrCaps, SlotCaps, scrollContainer, dividers, thin
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.ScrollContainer
 import M3e.Node
 import M3e.Value
 
@@ -34,4 +38,43 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-scroll-container>`. -}
 scrollContainer : Builder AttrCaps SlotCaps msg kind
 scrollContainer =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.ScrollContainer.scrollContainer
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| The dividers used to separate scrollable content. (default: `"above-below"`) -}
+dividers :
+    M3e.Value.Value { above : M3e.Value.Supported
+    , aboveBelow : M3e.Value.Supported
+    , below : M3e.Value.Supported
+    , none : M3e.Value.Supported
+    }
+    -> Builder { a | dividers : M3e.Build.Internal.Available } s msg kind
+    -> Builder { dividers : M3e.Build.Internal.Used } s msg kind
+dividers v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.ScrollContainer.dividers v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether to present thin scrollbars. (default: `false`) -}
+thin :
+    Bool
+    -> Builder { a | thin : M3e.Build.Internal.Available } s msg kind
+    -> Builder { thin : M3e.Build.Internal.Used } s msg kind
+thin v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.ScrollContainer.thin v_))
+             (M3e.Build.Internal.node_ b_)
+        )

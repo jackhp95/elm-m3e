@@ -1,13 +1,17 @@
-module M3e.Build.FabMenuTrigger exposing ( Builder, AttrCaps, SlotCaps, fabMenuTrigger )
+module M3e.Build.FabMenuTrigger exposing
+    ( Builder, AttrCaps, SlotCaps, fabMenuTrigger, for
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu-trigger>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenuTrigger as FabMenuTrigger`.
 
-@docs Builder, AttrCaps, SlotCaps, fabMenuTrigger
+@docs Builder, AttrCaps, SlotCaps, fabMenuTrigger, for
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.FabMenuTrigger
 import M3e.Node
 import M3e.Value
 
@@ -32,4 +36,26 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-fab-menu-trigger>`. -}
 fabMenuTrigger : Builder AttrCaps SlotCaps msg kind
 fabMenuTrigger =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.FabMenuTrigger.fabMenuTrigger
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
+    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+for v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.FabMenuTrigger.for v_))
+             (M3e.Build.Internal.node_ b_)
+        )

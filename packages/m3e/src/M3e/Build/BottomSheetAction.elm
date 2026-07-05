@@ -8,6 +8,8 @@ The ⑤ Build shape for `<m3e-bottom-sheet-action>` — phantom-typed pipeline A
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.BottomSheetAction
 import M3e.Node
 import M3e.Value
 
@@ -32,4 +34,13 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-bottom-sheet-action>`. -}
 bottomSheetAction : Builder AttrCaps SlotCaps msg kind
 bottomSheetAction =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.BottomSheetAction.bottomSheetAction
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )

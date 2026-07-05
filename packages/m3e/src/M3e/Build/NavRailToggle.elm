@@ -1,13 +1,17 @@
-module M3e.Build.NavRailToggle exposing ( Builder, AttrCaps, SlotCaps, navRailToggle )
+module M3e.Build.NavRailToggle exposing
+    ( Builder, AttrCaps, SlotCaps, navRailToggle, for
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-rail-toggle>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavRailToggle as NavRailToggle`.
 
-@docs Builder, AttrCaps, SlotCaps, navRailToggle
+@docs Builder, AttrCaps, SlotCaps, navRailToggle, for
 -}
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.NavRailToggle
 import M3e.Node
 import M3e.Value
 
@@ -32,4 +36,26 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-nav-rail-toggle>`. -}
 navRailToggle : Builder AttrCaps SlotCaps msg kind
 navRailToggle =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.NavRailToggle.navRailToggle
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
+    -> Builder { for : M3e.Build.Internal.Used } s msg kind
+for v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.NavRailToggle.for v_))
+             (M3e.Build.Internal.node_ b_)
+        )

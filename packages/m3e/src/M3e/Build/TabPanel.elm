@@ -8,6 +8,8 @@ The ⑤ Build shape for `<m3e-tab-panel>` — phantom-typed pipeline API. Import
 
 
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.TabPanel
 import M3e.Node
 import M3e.Value
 
@@ -32,4 +34,13 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-tab-panel>`. -}
 tabPanel : Builder AttrCaps SlotCaps msg kind
 tabPanel =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.TabPanel.tabPanel
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )

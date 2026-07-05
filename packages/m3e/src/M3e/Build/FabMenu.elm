@@ -1,13 +1,21 @@
-module M3e.Build.FabMenu exposing ( Builder, AttrCaps, SlotCaps, fabMenu )
+module M3e.Build.FabMenu exposing
+    ( Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
+    , onToggle
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenu as FabMenu`.
 
-@docs Builder, AttrCaps, SlotCaps, fabMenu
+@docs Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
+@docs onToggle
 -}
 
 
+import Json.Decode
 import M3e.Build.Internal
+import M3e.Cem.Attr
+import M3e.Cem.FabMenu
+import M3e.Cem.Html.FabMenu
 import M3e.Node
 import M3e.Value
 
@@ -35,4 +43,60 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-fab-menu>`. -}
 fabMenu : Builder AttrCaps SlotCaps msg kind
 fabMenu =
-    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+             (\erased_ ch_ ->
+                  M3e.Cem.FabMenu.fabMenu
+                      (List.map M3e.Cem.Attr.forget erased_)
+                      ch_
+             )
+             []
+             []
+        )
+
+
+{-| The appearance variant of the menu. (default: `"primary"`) -}
+variant :
+    M3e.Value.Value { primary : M3e.Value.Supported
+    , secondary : M3e.Value.Supported
+    , tertiary : M3e.Value.Supported
+    }
+    -> Builder { a | variant : M3e.Build.Internal.Available } s msg kind
+    -> Builder { variant : M3e.Build.Internal.Used } s msg kind
+variant v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget (M3e.Cem.FabMenu.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched before the toggle state changes. -}
+onBeforetoggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onBeforetoggle : M3e.Build.Internal.Used } s msg kind
+onBeforetoggle v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.FabMenu.onBeforetoggle v_
+                  )
+             )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched after the toggle state has changed. -}
+onToggle :
+    Json.Decode.Decoder msg
+    -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
+    -> Builder { onToggle : M3e.Build.Internal.Used } s msg kind
+onToggle v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.forget
+                  (M3e.Cem.Attr.attribute M3e.Cem.Html.FabMenu.onToggle v_)
+             )
+             (M3e.Build.Internal.node_ b_)
+        )
