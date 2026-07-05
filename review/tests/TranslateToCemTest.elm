@@ -109,7 +109,7 @@ import M3e.Cem.Button
 import M3e.Element
 
 view =
-    M3e.Cem.Button.button [ M3e.Cem.Button.onClick m, M3e.Cem.Button.variant M3e.Value.filled ] [ (M3e.Element.toHtml (c)) ]
+    M3e.Cem.Button.button [ M3e.Cem.Button.onClick m, M3e.Cem.Button.variant M3e.Value.filled ] [ M3e.Element.toHtml c ]
 """
                         ]
         , test "Standard → Cem: an unrecognised attr escapes through Seam.asAttribute (EscapedAttr)" <|
@@ -233,6 +233,38 @@ import M3e.Cem.Button
 
 view =
     M3e.Cem.Button.button [ M3e.Cem.Button.variant M3e.Value.filled ] []
+"""
+                        ]
+        , test "Record → Cem: a compound `content` expression keeps its arg parens under M3e.Element.toHtml (#150)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Record.TocItem
+import M3e.Action
+
+view =
+    M3e.Record.TocItem.view { content = render item, action = M3e.Action.onClick DoThing } [] []
+"""
+                    |> Review.Test.run (TranslateToCem.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.TocItem call to TranslateToCem"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Record.TocItem.view { content = render item, action = M3e.Action.onClick DoThing } [] []"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Record.TocItem
+import M3e.Action
+import M3e.Cem.TocItem
+import M3e.Element
+
+view =
+    M3e.Cem.TocItem.tocItem [ M3e.Cem.TocItem.onClick DoThing ] [ M3e.Element.toHtml (render item) ]
 """
                         ]
         , test "Standard → Cem: a bare (non-qualified) variant value is NOT flagged lossy — passes through as a typed setter" <|

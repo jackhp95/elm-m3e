@@ -114,7 +114,7 @@ import M3e.Cem.Html.TocItem
 import M3e.Element
 
 view =
-    M3e.Cem.Html.TocItem.tocItem [] [ (M3e.Element.toHtml (c)) ]
+    M3e.Cem.Html.TocItem.tocItem [] [ M3e.Element.toHtml c ]
 """
                         ]
         ]

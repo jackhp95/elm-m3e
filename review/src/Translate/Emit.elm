@@ -415,7 +415,7 @@ emitCem fact source c =
         allContent =
             case c.requiredContent of
                 Just node ->
-                    elementToHtml (source (Node.range node)) :: List.map (cemContentItem source) litSlots
+                    elementToHtml source node :: List.map (cemContentItem source) litSlots
 
                 Nothing ->
                     List.map (cemContentItem source) litSlots
@@ -485,7 +485,7 @@ cemContentItem : (Range -> String) -> SlotItem -> String
 cemContentItem source item =
     case item of
         KnownSlot { body } ->
-            elementToHtml (source (Node.range body))
+            elementToHtml source body
 
         UnknownSlotName { body } ->
             source (Node.range body)
@@ -497,9 +497,59 @@ cemContentItem source item =
             source (Node.range raw)
 
 
-elementToHtml : String -> String
-elementToHtml expr =
-    "(M3e.Element.toHtml (" ++ expr ++ "))"
+{-| Lower an `Element` child into `Html` for an Html/Cem child list:
+`M3e.Element.toHtml <arg>`. The result already sits in a list-element position,
+so no outer parens are added; the argument is parenthesised only when it's a
+compound expression (application, operator, control-flow) — atoms like a bare
+variable are left bare, matching elm-format's normalisation (#150).
+-}
+elementToHtml : (Range -> String) -> Node Expression -> String
+elementToHtml source node =
+    "M3e.Element.toHtml " ++ argText source node
+
+
+{-| Render an expression as a function argument: parenthesise only when the
+expression would otherwise re-associate (elm-format leaves atoms unwrapped).
+-}
+argText : (Range -> String) -> Node Expression -> String
+argText source node =
+    let
+        raw =
+            source (Node.range node)
+    in
+    if needsArgParens node then
+        "(" ++ raw ++ ")"
+
+    else
+        raw
+
+
+needsArgParens : Node Expression -> Bool
+needsArgParens node =
+    case Node.value node of
+        Expression.Application _ ->
+            True
+
+        Expression.OperatorApplication _ _ _ _ ->
+            True
+
+        Expression.Negation _ ->
+            True
+
+        Expression.IfBlock _ _ _ ->
+            True
+
+        Expression.CaseExpression _ ->
+            True
+
+        Expression.LetExpression _ ->
+            True
+
+        Expression.LambdaExpression _ ->
+            True
+
+        _ ->
+            False
 
 
 cemModuleFor : Fact -> String
@@ -538,7 +588,7 @@ emitHtml fact source c =
         allContent =
             case c.requiredContent of
                 Just node ->
-                    elementToHtml (source (Node.range node)) :: List.map (htmlContentItem fact source) litSlots
+                    elementToHtml source node :: List.map (htmlContentItem fact source) litSlots
 
                 Nothing ->
                     List.map (htmlContentItem fact source) litSlots
@@ -594,10 +644,10 @@ htmlContentItem : Fact -> (Range -> String) -> SlotItem -> String
 htmlContentItem _ source item =
     case item of
         KnownSlot { body } ->
-            elementToHtml (source (Node.range body))
+            elementToHtml source body
 
         UnknownSlotName { body } ->
-            elementToHtml (source (Node.range body))
+            elementToHtml source body
 
         EscapedContent { raw } ->
             source (Node.range raw)
