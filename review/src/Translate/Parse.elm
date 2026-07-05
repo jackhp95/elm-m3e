@@ -104,7 +104,14 @@ classifyModule facts lookup head =
                             name == f.component
 
                         Build ->
-                            name == f.component || name == "build"
+                            -- A ⑤ Build call is only ever a `... |> <Comp>.build`
+                            -- pipeline (matched via the `|>` right operand). A bare
+                            -- seed application (`<Comp>.<comp> { ... }`) is a nested
+                            -- sub-expression of that pipeline, not an entry of its
+                            -- own — matching it on the component name would fire a
+                            -- spurious second error and wrap the seed in a Seam
+                            -- escape. Only the terminal `build` marks the entry.
+                            name == "build"
             in
             case ( surface, fact ) of
                 ( Just s, Just f ) ->

@@ -93,4 +93,72 @@ view =
     [  ]
 """
                         ]
+        , test "Record → Standard: required content becomes the child setter, attrs pass through" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Record.Button
+
+view =
+    M3e.Record.Button.view { content = c } [ M3e.Record.Button.variant M3e.Value.filled ] []
+"""
+                    |> Review.Test.run (TranslateToStandard.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToStandard"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Record.Button.view { content = c } [ M3e.Record.Button.variant M3e.Value.filled ] []"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Record.Button
+import M3e.Button
+
+view =
+    M3e.Button.view
+    [ M3e.Button.variant M3e.Value.filled ]
+    [ M3e.Button.child c ]
+"""
+                        ]
+        , test "Html → Standard: a child with an unknown slot name escapes via M3e.Content.slot (UnknownSlotName)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Cem.Html.Button
+import Html
+import Html.Attributes
+
+view =
+    M3e.Cem.Html.Button.button [] [ Html.div [ Html.Attributes.attribute "slot" "bogus" ] [] ]
+"""
+                    |> Review.Test.run (TranslateToStandard.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToStandard"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Cem.Html.Button.button [] [ Html.div [ Html.Attributes.attribute \"slot\" \"bogus\" ] [] ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Cem.Html.Button
+import Html
+import Html.Attributes
+import M3e.Button
+import M3e.Content
+import Seam
+
+view =
+    M3e.Button.view
+    [  ]
+    [ M3e.Content.slot "bogus" (Seam.fromHtml (Html.div [ Html.Attributes.attribute "slot" "bogus" ] [])) ]
+"""
+                        ]
         ]
