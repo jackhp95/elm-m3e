@@ -289,17 +289,6 @@ codegenAware =
     ]
 
 
-{-| Test modules are named `Ui.*Test` and legitimately reference raw slot/
-attribute strings inside `elm-test` selectors (e.g.
-`Selector.attribute (Attr.attribute "slot" "title")`), which the Material
-rules would otherwise flag. They are not part of the published surface.
--}
-ignoreTests : Rule -> Rule
-ignoreTests =
-    Rule.ignoreErrorsForDirectories [ "tests/" ]
-
-
-
 -- CODE STYLE -----------------------------------------------------------------
 
 
