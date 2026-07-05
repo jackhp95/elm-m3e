@@ -2,24 +2,24 @@ module M3e.Value exposing
     ( Value, Supported, toString, number, rounded, square
     , standard, vibrant, auto, dark, light, content, expressive
     , fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot, high
-    , medium, after, before, primary, secondary, both, none
-    , selected, above, below, end, horizontal, vertical, elevated
-    , filled, outlined, tonal, extraLarge, extraSmall, large, small
-    , pulse, wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie
-    , value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow, boom, bun
-    , burst, circle, diamond, fan, flower, gem, ghostIsh
-    , heart, hexagon, oval, pentagon, pill, pixelCircle, pixelTriangle
-    , puffy, puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny
-    , triangle, verySunny, docked, fullscreen, buffer, determinate, indeterminate
-    , query, flat, wavy, all, compact, expanded, contained
-    , uncontained, segmented, low, sharp, display, headline, label
-    , title, tertiary, button, reset, submit, primaryContainer, secondaryContainer
-    , surface, tertiaryContainer, over, push, side, modal, month
-    , multiYear, year, off, on, aboveAfter, aboveBefore, belowAfter
-    , belowBefore, connected, default, narrow, wide, text, date
-    , location, page, step, time, true, contains, endsWith
-    , startsWith, always, never, loading, noData, hide, reposition
-    , aboveBelow
+    , medium, true, false, after, before, primary, secondary
+    , both, none, selected, above, below, end, horizontal
+    , vertical, elevated, filled, outlined, tonal, extraLarge, extraSmall
+    , large, small, pulse, wave, circular, value12SidedCookie, value4LeafClover
+    , value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow
+    , boom, bun, burst, circle, diamond, fan, flower
+    , gem, ghostIsh, heart, hexagon, oval, pentagon, pill
+    , pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle, slanted, softBoom
+    , softBurst, sunny, triangle, verySunny, docked, fullscreen, buffer
+    , determinate, indeterminate, query, flat, wavy, all, compact
+    , expanded, contained, uncontained, segmented, low, sharp, display
+    , headline, label, title, tertiary, button, reset, submit
+    , primaryContainer, secondaryContainer, surface, tertiaryContainer, over, push, side
+    , modal, month, multiYear, year, off, on, aboveAfter
+    , aboveBefore, belowAfter, belowBefore, connected, default, narrow, wide
+    , text, date, location, page, step, time, contains
+    , endsWith, startsWith, always, never, loading, noData, hide
+    , reposition, aboveBelow
     )
 
 {-|
@@ -28,27 +28,27 @@ Token values for the typed enum attributes. A `Value tags` is a phantom-tagged s
 @docs Value, Supported, toString, number, rounded, square
 @docs standard, vibrant, auto, dark, light, content
 @docs expressive, fidelity, fruitSalad, monochrome, neutral, rainbow
-@docs tonalSpot, high, medium, after, before, primary
-@docs secondary, both, none, selected, above, below
-@docs end, horizontal, vertical, elevated, filled, outlined
-@docs tonal, extraLarge, extraSmall, large, small, pulse
-@docs wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie
-@docs value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow, boom
-@docs bun, burst, circle, diamond, fan, flower
-@docs gem, ghostIsh, heart, hexagon, oval, pentagon
-@docs pill, pixelCircle, pixelTriangle, puffy, puffyDiamond, semicircle
-@docs slanted, softBoom, softBurst, sunny, triangle, verySunny
-@docs docked, fullscreen, buffer, determinate, indeterminate, query
-@docs flat, wavy, all, compact, expanded, contained
-@docs uncontained, segmented, low, sharp, display, headline
-@docs label, title, tertiary, button, reset, submit
-@docs primaryContainer, secondaryContainer, surface, tertiaryContainer, over, push
-@docs side, modal, month, multiYear, year, off
-@docs on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected
-@docs default, narrow, wide, text, date, location
-@docs page, step, time, true, contains, endsWith
-@docs startsWith, always, never, loading, noData, hide
-@docs reposition, aboveBelow
+@docs tonalSpot, high, medium, true, false, after
+@docs before, primary, secondary, both, none, selected
+@docs above, below, end, horizontal, vertical, elevated
+@docs filled, outlined, tonal, extraLarge, extraSmall, large
+@docs small, pulse, wave, circular, value12SidedCookie, value4LeafClover
+@docs value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, arch
+@docs arrow, boom, bun, burst, circle, diamond
+@docs fan, flower, gem, ghostIsh, heart, hexagon
+@docs oval, pentagon, pill, pixelCircle, pixelTriangle, puffy
+@docs puffyDiamond, semicircle, slanted, softBoom, softBurst, sunny
+@docs triangle, verySunny, docked, fullscreen, buffer, determinate
+@docs indeterminate, query, flat, wavy, all, compact
+@docs expanded, contained, uncontained, segmented, low, sharp
+@docs display, headline, label, title, tertiary, button
+@docs reset, submit, primaryContainer, secondaryContainer, surface, tertiaryContainer
+@docs over, push, side, modal, month, multiYear
+@docs year, off, on, aboveAfter, aboveBefore, belowAfter
+@docs belowBefore, connected, default, narrow, wide, text
+@docs date, location, page, step, time, contains
+@docs endsWith, startsWith, always, never, loading, noData
+@docs hide, reposition, aboveBelow
 -}
 
 
@@ -177,6 +177,18 @@ high =
 medium : Value { a | medium : Supported }
 medium =
     M3e.Value.Core.token "medium"
+
+
+{-| The `true` token. -}
+true : Value { a | true : Supported }
+true =
+    M3e.Value.Core.token "true"
+
+
+{-| The `false` token. -}
+false : Value { a | false : Supported }
+false =
+    M3e.Value.Core.token "false"
 
 
 {-| The `after` token. -}
@@ -825,12 +837,6 @@ step =
 time : Value { a | time : Supported }
 time =
     M3e.Value.Core.token "time"
-
-
-{-| The `true` token. -}
-true : Value { a | true : Supported }
-true =
-    M3e.Value.Core.token "true"
 
 
 {-| The `contains` token. -}

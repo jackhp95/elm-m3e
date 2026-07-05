@@ -284,10 +284,15 @@ disableHover =
 
 {-| Whether scroll buttons are disabled. -}
 disablePagination :
-    String
+    M3e.Value.Value { true : M3e.Value.Supported
+    , false : M3e.Value.Supported
+    , auto : M3e.Value.Supported
+    }
     -> M3e.Cem.Attr.Attr { c | disablePagination : M3e.Value.Supported } msg
-disablePagination =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Vocab.disablePagination
+disablePagination v_ =
+    M3e.Cem.Attr.attribute
+        M3e.Cem.Html.Vocab.disablePagination
+        (M3e.Value.toString v_)
 
 
 {-| Whether to focus should not be restored to the trigger when activated. (default: `false`) -}

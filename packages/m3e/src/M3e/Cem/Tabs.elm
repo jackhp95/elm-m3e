@@ -55,10 +55,15 @@ tabs attributes children =
 
 {-| Whether scroll buttons are disabled. -}
 disablePagination :
-    String
+    M3e.Value.Value { true : M3e.Value.Supported
+    , false : M3e.Value.Supported
+    , auto : M3e.Value.Supported
+    }
     -> M3e.Cem.Attr.Attr { c | disablePagination : M3e.Value.Supported } msg
-disablePagination =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.disablePagination
+disablePagination v_ =
+    M3e.Cem.Attr.attribute
+        M3e.Cem.Html.Tabs.disablePagination
+        (M3e.Value.toString v_)
 
 
 {-| The position of the tab headers. (default: `"before"`) -}
