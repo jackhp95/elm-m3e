@@ -106,6 +106,7 @@ view =
 import M3e.Build.Button as Button
 import M3e.Action
 import M3e.Cem.Button
+import M3e.Element
 
 view =
     M3e.Cem.Button.button [ M3e.Cem.Button.onClick m, M3e.Cem.Button.variant M3e.Value.filled ] [ (M3e.Element.toHtml (c)) ]

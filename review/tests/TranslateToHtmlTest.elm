@@ -87,4 +87,34 @@ view =
     M3e.Cem.Html.Button.button [] ([] ++ moreKids)
 """
                         ]
+        , test "Standard → Html: lifted required content emits M3e.Element.toHtml and imports M3e.Element (#149)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.TocItem
+
+view =
+    M3e.TocItem.view [] [ M3e.TocItem.child c ]
+"""
+                    |> Review.Test.run (TranslateToHtml.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.TocItem call to TranslateToHtml"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.TocItem.view [] [ M3e.TocItem.child c ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.TocItem
+import M3e.Cem.Html.TocItem
+import M3e.Element
+
+view =
+    M3e.Cem.Html.TocItem.tocItem [] [ (M3e.Element.toHtml (c)) ]
+"""
+                        ]
         ]

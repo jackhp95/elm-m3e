@@ -202,6 +202,7 @@ candidateModules fact =
     , "Seam"
     , "M3e.Content"
     , "M3e.Action"
+    , "M3e.Element"
     , "Html.Attributes"
     , "Html.Events"
     , "Json.Decode"
