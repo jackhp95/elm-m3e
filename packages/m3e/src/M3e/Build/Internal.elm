@@ -1,5 +1,5 @@
 module M3e.Build.Internal exposing
-    ( Builder(..), Available, Used, NotFilled, Filled, wrap_
+    ( Builder, Available, Used, NotFilled, Filled, wrap_
     , node_
     )
 
@@ -24,7 +24,7 @@ modify the underlying Node; user code should not call them directly.
 import M3e.Node
 
 
-{-| Shared opaque Builder wrapping a lazy `M3e.Node.Node`. Per-component Build modules expose type aliases that pin `kindRow`; `wrap_` and `node_` are the generator-internal bridge between Builders and Nodes. -}
+{-| Shared opaque Builder wrapping a lazy `M3e.Node.Node`. Per-component Build modules expose type aliases that pin `kindRow`. The constructor is intentionally NOT exposed — use `wrap_`/`node_` (generator-internal) as the only bridge between Builders and Nodes so user code can't fabricate a Builder with a made-up phantom row. -}
 type Builder kindRow attrCaps slotCaps msg
     = Builder (M3e.Node.Node msg)
 

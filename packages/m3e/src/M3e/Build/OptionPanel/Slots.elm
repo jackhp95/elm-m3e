@@ -191,11 +191,11 @@ noData_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -478,7 +478,7 @@ noDataSnackbar =
 {-| Place a `Slider` in the `no-data` slot of `OptionPanel`. -}
 noDataSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.OptionPanel.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -545,7 +545,7 @@ noDataShape =
 {-| Place a `SegmentedButton` in the `no-data` slot of `OptionPanel`. -}
 noDataSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.OptionPanel.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -599,7 +599,7 @@ noDataSearchBar =
 {-| Place a `RadioGroup` in the `no-data` slot of `OptionPanel`. -}
 noDataRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.OptionPanel.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -653,7 +653,7 @@ noDataPaginator =
 {-| Place a `Select` in the `no-data` slot of `OptionPanel`. -}
 noDataSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.OptionPanel.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -1461,7 +1461,7 @@ noDataButton =
 {-| Place a `Breadcrumb` in the `no-data` slot of `OptionPanel`. -}
 noDataBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.OptionPanel.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -1830,7 +1830,7 @@ divider :
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
 divider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Optgroup` in the `unnamed` slot of `OptionPanel`. -}
@@ -1839,7 +1839,7 @@ optgroup :
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
 optgroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Option` in the `unnamed` slot of `OptionPanel`. -}
@@ -1848,7 +1848,7 @@ option :
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
     -> M3e.Build.OptionPanel.Builder pa ps msg pk
 option =
-    default_core
+    unnamed_core
 
 
 {-| Place a `LoadingIndicator` in the `loading` slot of `OptionPanel`. -}

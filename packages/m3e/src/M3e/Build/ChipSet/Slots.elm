@@ -19,11 +19,11 @@ import M3e.Build.SuggestionChip
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.ChipSet.Builder pa ps msg pk
     -> M3e.Build.ChipSet.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -37,7 +37,7 @@ suggestionChip :
     -> M3e.Build.ChipSet.Builder pa ps msg pk
     -> M3e.Build.ChipSet.Builder pa ps msg pk
 suggestionChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChip` in the `unnamed` slot of `ChipSet`. -}
@@ -46,7 +46,7 @@ inputChip :
     -> M3e.Build.ChipSet.Builder pa ps msg pk
     -> M3e.Build.ChipSet.Builder pa ps msg pk
 inputChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChip` in the `unnamed` slot of `ChipSet`. -}
@@ -55,7 +55,7 @@ filterChip :
     -> M3e.Build.ChipSet.Builder pa ps msg pk
     -> M3e.Build.ChipSet.Builder pa ps msg pk
 filterChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AssistChip` in the `unnamed` slot of `ChipSet`. -}
@@ -64,7 +64,7 @@ assistChip :
     -> M3e.Build.ChipSet.Builder pa ps msg pk
     -> M3e.Build.ChipSet.Builder pa ps msg pk
 assistChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Chip` in the `unnamed` slot of `ChipSet`. -}
@@ -73,4 +73,4 @@ chip :
     -> M3e.Build.ChipSet.Builder pa ps msg pk
     -> M3e.Build.ChipSet.Builder pa ps msg pk
 chip =
-    default_core
+    unnamed_core

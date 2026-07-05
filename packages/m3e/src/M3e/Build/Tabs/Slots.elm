@@ -47,11 +47,11 @@ prevIcon_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.Tabs.Builder pa ps msg pk
     -> M3e.Build.Tabs.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -103,7 +103,7 @@ tab :
     -> M3e.Build.Tabs.Builder pa ps msg pk
     -> M3e.Build.Tabs.Builder pa ps msg pk
 tab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TabPanel` in the `panel` slot of `Tabs`. -}

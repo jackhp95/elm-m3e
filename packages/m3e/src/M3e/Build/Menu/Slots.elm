@@ -19,11 +19,11 @@ import M3e.Build.MenuItemRadio
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.Menu.Builder pa ps msg pk
     -> M3e.Build.Menu.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -37,7 +37,7 @@ menuItemRadio :
     -> M3e.Build.Menu.Builder pa ps msg pk
     -> M3e.Build.Menu.Builder pa ps msg pk
 menuItemRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemGroup` in the `unnamed` slot of `Menu`. -}
@@ -46,7 +46,7 @@ menuItemGroup :
     -> M3e.Build.Menu.Builder pa ps msg pk
     -> M3e.Build.Menu.Builder pa ps msg pk
 menuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemCheckbox` in the `unnamed` slot of `Menu`. -}
@@ -55,7 +55,7 @@ menuItemCheckbox :
     -> M3e.Build.Menu.Builder pa ps msg pk
     -> M3e.Build.Menu.Builder pa ps msg pk
 menuItemCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItem` in the `unnamed` slot of `Menu`. -}
@@ -64,7 +64,7 @@ menuItem :
     -> M3e.Build.Menu.Builder pa ps msg pk
     -> M3e.Build.Menu.Builder pa ps msg pk
 menuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Divider` in the `unnamed` slot of `Menu`. -}
@@ -73,4 +73,4 @@ divider :
     -> M3e.Build.Menu.Builder pa ps msg pk
     -> M3e.Build.Menu.Builder pa ps msg pk
 divider =
-    default_core
+    unnamed_core

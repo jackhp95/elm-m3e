@@ -15,11 +15,11 @@ import M3e.Build.NavRail
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.NavRail.Builder pa ps msg pk
     -> M3e.Build.NavRail.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -33,7 +33,7 @@ navItem :
     -> M3e.Build.NavRail.Builder pa ps msg pk
     -> M3e.Build.NavRail.Builder pa ps msg pk
 navItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Fab` in the `unnamed` slot of `NavRail`. -}
@@ -42,7 +42,7 @@ fab :
     -> M3e.Build.NavRail.Builder pa ps msg pk
     -> M3e.Build.NavRail.Builder pa ps msg pk
 fab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `IconButton` in the `unnamed` slot of `NavRail`. -}
@@ -51,4 +51,4 @@ iconButton :
     -> M3e.Build.NavRail.Builder pa ps msg pk
     -> M3e.Build.NavRail.Builder pa ps msg pk
 iconButton =
-    default_core
+    unnamed_core

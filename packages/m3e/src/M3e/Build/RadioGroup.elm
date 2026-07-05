@@ -42,7 +42,7 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    { default : M3e.Build.Internal.NotFilled }
+    { unnamed : M3e.Build.Internal.NotFilled }
 
 
 {-| Seed a `Builder` for `<m3e-radio-group>`. -}
@@ -162,7 +162,7 @@ onChange v_ b_ =
 
 {-| Build the `<m3e-radio-group>` element from a `Builder`. -}
 build :
-    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    Builder a { s | unnamed : M3e.Build.Internal.Filled } msg kind
     -> M3e.Element.Element { radioGroup : M3e.Value.Supported } msg
 build b_ =
     M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

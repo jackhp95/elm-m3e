@@ -15,11 +15,11 @@ import M3e.Build.SelectionList
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.SelectionList.Builder pa ps msg pk
     -> M3e.Build.SelectionList.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -33,7 +33,7 @@ listOption :
     -> M3e.Build.SelectionList.Builder pa ps msg pk
     -> M3e.Build.SelectionList.Builder pa ps msg pk
 listOption =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpandableListItem` in the `unnamed` slot of `SelectionList`. -}
@@ -42,7 +42,7 @@ expandableListItem :
     -> M3e.Build.SelectionList.Builder pa ps msg pk
     -> M3e.Build.SelectionList.Builder pa ps msg pk
 expandableListItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Divider` in the `unnamed` slot of `SelectionList`. -}
@@ -51,4 +51,4 @@ divider :
     -> M3e.Build.SelectionList.Builder pa ps msg pk
     -> M3e.Build.SelectionList.Builder pa ps msg pk
 divider =
-    default_core
+    unnamed_core

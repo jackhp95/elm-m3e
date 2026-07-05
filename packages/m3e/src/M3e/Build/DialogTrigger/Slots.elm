@@ -173,15 +173,15 @@ import M3e.Build.YearView
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder ck ca cs msg
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -193,1606 +193,1606 @@ default_core child_ parent_ =
 tree :
     M3e.Build.Tree.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tree =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TreeItem` in the `unnamed` slot of `DialogTrigger`. -}
 treeItem :
     M3e.Build.TreeItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 treeItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Toolbar` in the `unnamed` slot of `DialogTrigger`. -}
 toolbar :
     M3e.Build.Toolbar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 toolbar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Toc` in the `unnamed` slot of `DialogTrigger`. -}
 toc :
     M3e.Build.Toc.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 toc =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TocItem` in the `unnamed` slot of `DialogTrigger`. -}
 tocItem :
     M3e.Build.TocItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tocItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ThemeIcon` in the `unnamed` slot of `DialogTrigger`. -}
 themeIcon :
     M3e.Build.ThemeIcon.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 themeIcon =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Theme` in the `unnamed` slot of `DialogTrigger`. -}
 theme :
     M3e.Build.Theme.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 theme =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextareaAutosize` in the `unnamed` slot of `DialogTrigger`. -}
 textareaAutosize :
     M3e.Build.TextareaAutosize.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 textareaAutosize =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tabs` in the `unnamed` slot of `DialogTrigger`. -}
 tabs :
     M3e.Build.Tabs.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tabs =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TabPanel` in the `unnamed` slot of `DialogTrigger`. -}
 tabPanel :
     M3e.Build.TabPanel.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tabPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tab` in the `unnamed` slot of `DialogTrigger`. -}
 tab :
     M3e.Build.Tab.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Switch` in the `unnamed` slot of `DialogTrigger`. -}
 switch :
     M3e.Build.Switch.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 switch =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperReset` in the `unnamed` slot of `DialogTrigger`. -}
 stepperReset :
     M3e.Build.StepperReset.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stepperReset =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperPrevious` in the `unnamed` slot of `DialogTrigger`. -}
 stepperPrevious :
     M3e.Build.StepperPrevious.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stepperPrevious =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Step` in the `unnamed` slot of `DialogTrigger`. -}
 step :
     M3e.Build.Step.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 step =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepPanel` in the `unnamed` slot of `DialogTrigger`. -}
 stepPanel :
     M3e.Build.StepPanel.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stepPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Stepper` in the `unnamed` slot of `DialogTrigger`. -}
 stepper :
     M3e.Build.Stepper.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stepper =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SplitPane` in the `unnamed` slot of `DialogTrigger`. -}
 splitPane :
     M3e.Build.SplitPane.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 splitPane =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SplitButton` in the `unnamed` slot of `DialogTrigger`. -}
 splitButton :
     M3e.Build.SplitButton.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 splitButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Snackbar` in the `unnamed` slot of `DialogTrigger`. -}
 snackbar :
     M3e.Build.Snackbar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 snackbar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Slider` in the `unnamed` slot of `DialogTrigger`. -}
 slider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 slider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SliderThumb` in the `unnamed` slot of `DialogTrigger`. -}
 sliderThumb :
     M3e.Build.SliderThumb.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 sliderThumb =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SlideGroup` in the `unnamed` slot of `DialogTrigger`. -}
 slideGroup :
     M3e.Build.SlideGroup.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 slideGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Skeleton` in the `unnamed` slot of `DialogTrigger`. -}
 skeleton :
     M3e.Build.Skeleton.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 skeleton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Shape` in the `unnamed` slot of `DialogTrigger`. -}
 shape :
     M3e.Build.Shape.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 shape =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SegmentedButton` in the `unnamed` slot of `DialogTrigger`. -}
 segmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 segmentedButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ButtonSegment` in the `unnamed` slot of `DialogTrigger`. -}
 buttonSegment :
     M3e.Build.ButtonSegment.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 buttonSegment =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SearchView` in the `unnamed` slot of `DialogTrigger`. -}
 searchView :
     M3e.Build.SearchView.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 searchView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SearchBar` in the `unnamed` slot of `DialogTrigger`. -}
 searchBar :
     M3e.Build.SearchBar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 searchBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RadioGroup` in the `unnamed` slot of `DialogTrigger`. -}
 radioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 radioGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Radio` in the `unnamed` slot of `DialogTrigger`. -}
 radio :
     M3e.Build.Radio.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 radio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ProgressElementIndicatorBase` in the `unnamed` slot of `DialogTrigger`. -}
 progressElementIndicatorBase :
     M3e.Build.ProgressElementIndicatorBase.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 progressElementIndicatorBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Paginator` in the `unnamed` slot of `DialogTrigger`. -}
 paginator :
     M3e.Build.Paginator.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 paginator =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Select` in the `unnamed` slot of `DialogTrigger`. -}
 select :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 select =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRailToggle` in the `unnamed` slot of `DialogTrigger`. -}
 navRailToggle :
     M3e.Build.NavRailToggle.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navRailToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRail` in the `unnamed` slot of `DialogTrigger`. -}
 navRail :
     M3e.Build.NavRail.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navRail =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenuItemGroup` in the `unnamed` slot of `DialogTrigger`. -}
 navMenuItemGroup :
     M3e.Build.NavMenuItemGroup.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navMenuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenu` in the `unnamed` slot of `DialogTrigger`. -}
 navMenu :
     M3e.Build.NavMenu.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navMenu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenuItem` in the `unnamed` slot of `DialogTrigger`. -}
 navMenuItem :
     M3e.Build.NavMenuItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navMenuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavBar` in the `unnamed` slot of `DialogTrigger`. -}
 navBar :
     M3e.Build.NavBar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavItem` in the `unnamed` slot of `DialogTrigger`. -}
 navItem :
     M3e.Build.NavItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemRadio` in the `unnamed` slot of `DialogTrigger`. -}
 menuItemRadio :
     M3e.Build.MenuItemRadio.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuItemRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemGroup` in the `unnamed` slot of `DialogTrigger`. -}
 menuItemGroup :
     M3e.Build.MenuItemGroup.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemCheckbox` in the `unnamed` slot of `DialogTrigger`. -}
 menuItemCheckbox :
     M3e.Build.MenuItemCheckbox.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuItemCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Menu` in the `unnamed` slot of `DialogTrigger`. -}
 menu :
     M3e.Build.Menu.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItem` in the `unnamed` slot of `DialogTrigger`. -}
 menuItem :
     M3e.Build.MenuItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuTrigger` in the `unnamed` slot of `DialogTrigger`. -}
 menuTrigger :
     M3e.Build.MenuTrigger.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemElementBase` in the `unnamed` slot of `DialogTrigger`. -}
 menuItemElementBase :
     M3e.Build.MenuItemElementBase.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuItemElementBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `LoadingIndicator` in the `unnamed` slot of `DialogTrigger`. -}
 loadingIndicator :
     M3e.Build.LoadingIndicator.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 loadingIndicator =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SelectionList` in the `unnamed` slot of `DialogTrigger`. -}
 selectionList :
     M3e.Build.SelectionList.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 selectionList =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListOption` in the `unnamed` slot of `DialogTrigger`. -}
 listOption :
     M3e.Build.ListOption.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 listOption =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ActionList` in the `unnamed` slot of `DialogTrigger`. -}
 actionList :
     M3e.Build.ActionList.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 actionList =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpandableListItem` in the `unnamed` slot of `DialogTrigger`. -}
 expandableListItem :
     M3e.Build.ExpandableListItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 expandableListItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListAction` in the `unnamed` slot of `DialogTrigger`. -}
 listAction :
     M3e.Build.ListAction.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 listAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListItemButton` in the `unnamed` slot of `DialogTrigger`. -}
 listItemButton :
     M3e.Build.ListItemButton.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 listItemButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `List` in the `unnamed` slot of `DialogTrigger`. -}
 list :
     M3e.Build.List.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 list =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListItem` in the `unnamed` slot of `DialogTrigger`. -}
 listItem :
     M3e.Build.ListItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 listItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Icon` in the `unnamed` slot of `DialogTrigger`. -}
 icon :
     M3e.Build.Icon.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 icon =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Heading` in the `unnamed` slot of `DialogTrigger`. -}
 heading :
     M3e.Build.Heading.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 heading =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenuTrigger` in the `unnamed` slot of `DialogTrigger`. -}
 fabMenuTrigger :
     M3e.Build.FabMenuTrigger.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 fabMenuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenu` in the `unnamed` slot of `DialogTrigger`. -}
 fabMenu :
     M3e.Build.FabMenu.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 fabMenu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Fab` in the `unnamed` slot of `DialogTrigger`. -}
 fab :
     M3e.Build.Fab.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 fab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Accordion` in the `unnamed` slot of `DialogTrigger`. -}
 accordion :
     M3e.Build.Accordion.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 accordion =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpansionPanel` in the `unnamed` slot of `DialogTrigger`. -}
 expansionPanel :
     M3e.Build.ExpansionPanel.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 expansionPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpansionHeader` in the `unnamed` slot of `DialogTrigger`. -}
 expansionHeader :
     M3e.Build.ExpansionHeader.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 expansionHeader =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerToggle` in the `unnamed` slot of `DialogTrigger`. -}
 drawerToggle :
     M3e.Build.DrawerToggle.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 drawerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerContainer` in the `unnamed` slot of `DialogTrigger`. -}
 drawerContainer :
     M3e.Build.DrawerContainer.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 drawerContainer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Divider` in the `unnamed` slot of `DialogTrigger`. -}
 divider :
     M3e.Build.Divider.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 divider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogTrigger` in the `unnamed` slot of `DialogTrigger`. -}
 dialogTrigger :
     M3e.Build.DialogTrigger.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 dialogTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Dialog` in the `unnamed` slot of `DialogTrigger`. -}
 dialog :
     M3e.Build.Dialog.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 dialog =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogAction` in the `unnamed` slot of `DialogTrigger`. -}
 dialogAction :
     M3e.Build.DialogAction.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 dialogAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DatepickerToggle` in the `unnamed` slot of `DialogTrigger`. -}
 datepickerToggle :
     M3e.Build.DatepickerToggle.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 datepickerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Datepicker` in the `unnamed` slot of `DialogTrigger`. -}
 datepicker :
     M3e.Build.Datepicker.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 datepicker =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ContentPane` in the `unnamed` slot of `DialogTrigger`. -}
 contentPane :
     M3e.Build.ContentPane.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 contentPane =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SuggestionChip` in the `unnamed` slot of `DialogTrigger`. -}
 suggestionChip :
     M3e.Build.SuggestionChip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 suggestionChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChipSet` in the `unnamed` slot of `DialogTrigger`. -}
 inputChipSet :
     M3e.Build.InputChipSet.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 inputChipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChip` in the `unnamed` slot of `DialogTrigger`. -}
 inputChip :
     M3e.Build.InputChip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 inputChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChipSet` in the `unnamed` slot of `DialogTrigger`. -}
 filterChipSet :
     M3e.Build.FilterChipSet.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 filterChipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChip` in the `unnamed` slot of `DialogTrigger`. -}
 filterChip :
     M3e.Build.FilterChip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 filterChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ChipSet` in the `unnamed` slot of `DialogTrigger`. -}
 chipSet :
     M3e.Build.ChipSet.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 chipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AssistChip` in the `unnamed` slot of `DialogTrigger`. -}
 assistChip :
     M3e.Build.AssistChip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 assistChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Chip` in the `unnamed` slot of `DialogTrigger`. -}
 chip :
     M3e.Build.Chip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 chip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Checkbox` in the `unnamed` slot of `DialogTrigger`. -}
 checkbox :
     M3e.Build.Checkbox.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 checkbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Card` in the `unnamed` slot of `DialogTrigger`. -}
 card :
     M3e.Build.Card.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 card =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Calendar` in the `unnamed` slot of `DialogTrigger`. -}
 calendar :
     M3e.Build.Calendar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 calendar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `YearView` in the `unnamed` slot of `DialogTrigger`. -}
 yearView :
     M3e.Build.YearView.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 yearView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MultiYearView` in the `unnamed` slot of `DialogTrigger`. -}
 multiYearView :
     M3e.Build.MultiYearView.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 multiYearView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MonthView` in the `unnamed` slot of `DialogTrigger`. -}
 monthView :
     M3e.Build.MonthView.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 monthView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tooltip` in the `unnamed` slot of `DialogTrigger`. -}
 tooltip :
     M3e.Build.Tooltip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tooltip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltip` in the `unnamed` slot of `DialogTrigger`. -}
 richTooltip :
     M3e.Build.RichTooltip.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 richTooltip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TooltipElementBase` in the `unnamed` slot of `DialogTrigger`. -}
 tooltipElementBase :
     M3e.Build.TooltipElementBase.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 tooltipElementBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltipAction` in the `unnamed` slot of `DialogTrigger`. -}
 richTooltipAction :
     M3e.Build.RichTooltipAction.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 richTooltipAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ButtonGroup` in the `unnamed` slot of `DialogTrigger`. -}
 buttonGroup :
     M3e.Build.ButtonGroup.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 buttonGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `IconButton` in the `unnamed` slot of `DialogTrigger`. -}
 iconButton :
     M3e.Build.IconButton.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 iconButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Button` in the `unnamed` slot of `DialogTrigger`. -}
 button :
     M3e.Build.Button.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 button =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Breadcrumb` in the `unnamed` slot of `DialogTrigger`. -}
 breadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 breadcrumb =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BreadcrumbItem` in the `unnamed` slot of `DialogTrigger`. -}
 breadcrumbItem :
     M3e.Build.BreadcrumbItem.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 breadcrumbItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BreadcrumbItemButton` in the `unnamed` slot of `DialogTrigger`. -}
 breadcrumbItemButton :
     M3e.Build.BreadcrumbItemButton.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 breadcrumbItemButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetTrigger` in the `unnamed` slot of `DialogTrigger`. -}
 bottomSheetTrigger :
     M3e.Build.BottomSheetTrigger.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 bottomSheetTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheet` in the `unnamed` slot of `DialogTrigger`. -}
 bottomSheet :
     M3e.Build.BottomSheet.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 bottomSheet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetAction` in the `unnamed` slot of `DialogTrigger`. -}
 bottomSheetAction :
     M3e.Build.BottomSheetAction.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 bottomSheetAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Badge` in the `unnamed` slot of `DialogTrigger`. -}
 badge :
     M3e.Build.Badge.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 badge =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Avatar` in the `unnamed` slot of `DialogTrigger`. -}
 avatar :
     M3e.Build.Avatar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 avatar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Autocomplete` in the `unnamed` slot of `DialogTrigger`. -}
 autocomplete :
     M3e.Build.Autocomplete.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 autocomplete =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FormField` in the `unnamed` slot of `DialogTrigger`. -}
 formField :
     M3e.Build.FormField.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 formField =
-    default_core
+    unnamed_core
 
 
 {-| Place a `OptionPanel` in the `unnamed` slot of `DialogTrigger`. -}
 optionPanel :
     M3e.Build.OptionPanel.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 optionPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FloatingPanel` in the `unnamed` slot of `DialogTrigger`. -}
 floatingPanel :
     M3e.Build.FloatingPanel.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 floatingPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Optgroup` in the `unnamed` slot of `DialogTrigger`. -}
 optgroup :
     M3e.Build.Optgroup.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 optgroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Option` in the `unnamed` slot of `DialogTrigger`. -}
 option :
     M3e.Build.Option.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 option =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FocusTrap` in the `unnamed` slot of `DialogTrigger`. -}
 focusTrap :
     M3e.Build.FocusTrap.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 focusTrap =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AppBar` in the `unnamed` slot of `DialogTrigger`. -}
 appBar :
     M3e.Build.AppBar.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 appBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextOverflow` in the `unnamed` slot of `DialogTrigger`. -}
 textOverflow :
     M3e.Build.TextOverflow.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 textOverflow =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextHighlight` in the `unnamed` slot of `DialogTrigger`. -}
 textHighlight :
     M3e.Build.TextHighlight.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 textHighlight =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StateLayer` in the `unnamed` slot of `DialogTrigger`. -}
 stateLayer :
     M3e.Build.StateLayer.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stateLayer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Slide` in the `unnamed` slot of `DialogTrigger`. -}
 slide :
     M3e.Build.Slide.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 slide =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ScrollContainer` in the `unnamed` slot of `DialogTrigger`. -}
 scrollContainer :
     M3e.Build.ScrollContainer.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 scrollContainer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Ripple` in the `unnamed` slot of `DialogTrigger`. -}
 ripple :
     M3e.Build.Ripple.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 ripple =
-    default_core
+    unnamed_core
 
 
 {-| Place a `PseudoRadio` in the `unnamed` slot of `DialogTrigger`. -}
 pseudoRadio :
     M3e.Build.PseudoRadio.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 pseudoRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `PseudoCheckbox` in the `unnamed` slot of `DialogTrigger`. -}
 pseudoCheckbox :
     M3e.Build.PseudoCheckbox.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 pseudoCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FocusRing` in the `unnamed` slot of `DialogTrigger`. -}
 focusRing :
     M3e.Build.FocusRing.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 focusRing =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Elevation` in the `unnamed` slot of `DialogTrigger`. -}
 elevation :
     M3e.Build.Elevation.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 elevation =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Collapsible` in the `unnamed` slot of `DialogTrigger`. -}
 collapsible :
     M3e.Build.Collapsible.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 collapsible =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ActionElementBase` in the `unnamed` slot of `DialogTrigger`. -}
 actionElementBase :
     M3e.Build.ActionElementBase.Builder ca cs msg ck
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.DialogTrigger.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 actionElementBase =
-    default_core
+    unnamed_core

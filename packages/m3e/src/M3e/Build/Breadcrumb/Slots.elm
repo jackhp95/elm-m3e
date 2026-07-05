@@ -189,13 +189,13 @@ separator_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
-    -> M3e.Build.Breadcrumb.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Breadcrumb.Builder pa { ps | unnamed : filled } msg pk
     -> M3e.Build.Breadcrumb.Builder pa { ps
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -466,7 +466,7 @@ separatorSnackbar =
 {-| Place a `Slider` in the `separator` slot of `Breadcrumb`. -}
 separatorSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Breadcrumb.Builder pa { ps
         | separator : M3e.Build.Internal.Available
@@ -533,7 +533,7 @@ separatorShape =
 {-| Place a `SegmentedButton` in the `separator` slot of `Breadcrumb`. -}
 separatorSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Breadcrumb.Builder pa { ps
         | separator : M3e.Build.Internal.Available
@@ -587,7 +587,7 @@ separatorSearchBar =
 {-| Place a `RadioGroup` in the `separator` slot of `Breadcrumb`. -}
 separatorRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Breadcrumb.Builder pa { ps
         | separator : M3e.Build.Internal.Available
@@ -641,7 +641,7 @@ separatorPaginator =
 {-| Place a `Select` in the `separator` slot of `Breadcrumb`. -}
 separatorSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Breadcrumb.Builder pa { ps
         | separator : M3e.Build.Internal.Available
@@ -1449,7 +1449,7 @@ separatorButton =
 {-| Place a `Breadcrumb` in the `separator` slot of `Breadcrumb`. -}
 separatorBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Breadcrumb.Builder pa { ps
         | separator : M3e.Build.Internal.Available
@@ -1815,9 +1815,9 @@ separatorActionElementBase =
 {-| Place a `BreadcrumbItem` in the `unnamed` slot of `Breadcrumb`. -}
 breadcrumbItem :
     M3e.Build.BreadcrumbItem.Builder ca cs msg ck
-    -> M3e.Build.Breadcrumb.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Breadcrumb.Builder pa { ps | unnamed : filled } msg pk
     -> M3e.Build.Breadcrumb.Builder pa { ps
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg pk
 breadcrumbItem =
-    default_core
+    unnamed_core

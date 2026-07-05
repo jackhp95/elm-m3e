@@ -524,7 +524,7 @@ itemsSnackbar =
 {-| Place a `Slider` in the `items` slot of `ExpandableListItem`. -}
 itemsSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ExpandableListItem.Builder pa { ps
         | items : M3e.Build.Internal.Available
@@ -591,7 +591,7 @@ itemsShape =
 {-| Place a `SegmentedButton` in the `items` slot of `ExpandableListItem`. -}
 itemsSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ExpandableListItem.Builder pa { ps
         | items : M3e.Build.Internal.Available
@@ -645,7 +645,7 @@ itemsSearchBar =
 {-| Place a `RadioGroup` in the `items` slot of `ExpandableListItem`. -}
 itemsRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ExpandableListItem.Builder pa { ps
         | items : M3e.Build.Internal.Available
@@ -699,7 +699,7 @@ itemsPaginator =
 {-| Place a `Select` in the `items` slot of `ExpandableListItem`. -}
 itemsSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ExpandableListItem.Builder pa { ps
         | items : M3e.Build.Internal.Available
@@ -1507,7 +1507,7 @@ itemsButton =
 {-| Place a `Breadcrumb` in the `items` slot of `ExpandableListItem`. -}
 itemsBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ExpandableListItem.Builder pa { ps
         | items : M3e.Build.Internal.Available

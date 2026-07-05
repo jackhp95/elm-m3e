@@ -85,11 +85,7 @@ iconButton req_ =
                       (List.map M3e.Cem.Attr.forget erased_)
                       ch_
              )
-             (List.append
-                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
-                  )
-                  (List.map M3e.Cem.Attr.forget [])
-             )
+             (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action))
              [ M3e.Action.wrapContent
                  req_.action
                  (M3e.Element.toNode req_.content)

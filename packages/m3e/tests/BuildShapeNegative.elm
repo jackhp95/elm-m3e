@@ -35,13 +35,13 @@ doubleVariant =
 
 {-| Missing required-multi: TYPE MISMATCH between NotFilled and Filled.
 
-Select.build requires `{ s | default : Filled }`. The seed starts with
-`default : NotFilled` and no slot call was made — the row does not
+Select.build requires `{ s | unnamed : Filled }`. The seed starts with
+`unnamed : NotFilled` and no slot call was made — the row does not
 satisfy the Filled constraint.
 -}
 missingRequiredMulti =
     Select.select
-        |> Select.build    -- FAILURE: default : NotFilled but .build wants Filled
+        |> Select.build    -- FAILURE: unnamed : NotFilled but .build wants Filled
 
 
 {-| Wrong-kind child in kinded slot: Radio into Select's option-only slot.

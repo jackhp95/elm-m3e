@@ -205,13 +205,13 @@ value_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
-    -> M3e.Build.Select.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Select.Builder pa { ps | unnamed : filled } msg pk
     -> M3e.Build.Select.Builder pa { ps
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -495,7 +495,7 @@ valueSnackbar =
 {-| Place a `Slider` in the `value` slot of `Select`. -}
 valueSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Select.Builder pa { ps
         | value : M3e.Build.Internal.Available
@@ -562,7 +562,7 @@ valueShape =
 {-| Place a `SegmentedButton` in the `value` slot of `Select`. -}
 valueSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Select.Builder pa { ps
         | value : M3e.Build.Internal.Available
@@ -616,7 +616,7 @@ valueSearchBar =
 {-| Place a `RadioGroup` in the `value` slot of `Select`. -}
 valueRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Select.Builder pa { ps
         | value : M3e.Build.Internal.Available
@@ -670,7 +670,7 @@ valuePaginator =
 {-| Place a `Select` in the `value` slot of `Select`. -}
 valueSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Select.Builder pa { ps
         | value : M3e.Build.Internal.Available
@@ -1478,7 +1478,7 @@ valueButton =
 {-| Place a `Breadcrumb` in the `value` slot of `Select`. -}
 valueBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Select.Builder pa { ps
         | value : M3e.Build.Internal.Available
@@ -1844,9 +1844,9 @@ valueActionElementBase =
 {-| Place a `Option` in the `unnamed` slot of `Select`. -}
 option :
     M3e.Build.Option.Builder ca cs msg ck
-    -> M3e.Build.Select.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Select.Builder pa { ps | unnamed : filled } msg pk
     -> M3e.Build.Select.Builder pa { ps
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg pk
 option =
-    default_core
+    unnamed_core

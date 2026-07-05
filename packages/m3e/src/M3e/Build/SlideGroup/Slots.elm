@@ -205,11 +205,11 @@ prevIcon_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -249,7 +249,7 @@ tree :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tree =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TreeItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -258,7 +258,7 @@ treeItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 treeItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Toolbar` in the `unnamed` slot of `SlideGroup`. -}
@@ -267,7 +267,7 @@ toolbar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 toolbar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Toc` in the `unnamed` slot of `SlideGroup`. -}
@@ -276,7 +276,7 @@ toc :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 toc =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TocItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -285,7 +285,7 @@ tocItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tocItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ThemeIcon` in the `unnamed` slot of `SlideGroup`. -}
@@ -294,7 +294,7 @@ themeIcon :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 themeIcon =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Theme` in the `unnamed` slot of `SlideGroup`. -}
@@ -303,7 +303,7 @@ theme :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 theme =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextareaAutosize` in the `unnamed` slot of `SlideGroup`. -}
@@ -312,7 +312,7 @@ textareaAutosize :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 textareaAutosize =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tabs` in the `unnamed` slot of `SlideGroup`. -}
@@ -321,7 +321,7 @@ tabs :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tabs =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TabPanel` in the `unnamed` slot of `SlideGroup`. -}
@@ -330,7 +330,7 @@ tabPanel :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tabPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tab` in the `unnamed` slot of `SlideGroup`. -}
@@ -339,7 +339,7 @@ tab :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Switch` in the `unnamed` slot of `SlideGroup`. -}
@@ -348,7 +348,7 @@ switch :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 switch =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperReset` in the `unnamed` slot of `SlideGroup`. -}
@@ -357,7 +357,7 @@ stepperReset :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 stepperReset =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperPrevious` in the `unnamed` slot of `SlideGroup`. -}
@@ -366,7 +366,7 @@ stepperPrevious :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 stepperPrevious =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Step` in the `unnamed` slot of `SlideGroup`. -}
@@ -375,7 +375,7 @@ step :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 step =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepPanel` in the `unnamed` slot of `SlideGroup`. -}
@@ -384,7 +384,7 @@ stepPanel :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 stepPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Stepper` in the `unnamed` slot of `SlideGroup`. -}
@@ -393,7 +393,7 @@ stepper :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 stepper =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SplitPane` in the `unnamed` slot of `SlideGroup`. -}
@@ -402,7 +402,7 @@ splitPane :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 splitPane =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SplitButton` in the `unnamed` slot of `SlideGroup`. -}
@@ -411,7 +411,7 @@ splitButton :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 splitButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Snackbar` in the `unnamed` slot of `SlideGroup`. -}
@@ -420,18 +420,18 @@ snackbar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 snackbar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Slider` in the `unnamed` slot of `SlideGroup`. -}
 slider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 slider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SliderThumb` in the `unnamed` slot of `SlideGroup`. -}
@@ -440,7 +440,7 @@ sliderThumb :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 sliderThumb =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SlideGroup` in the `unnamed` slot of `SlideGroup`. -}
@@ -449,7 +449,7 @@ slideGroup :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 slideGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Skeleton` in the `unnamed` slot of `SlideGroup`. -}
@@ -458,7 +458,7 @@ skeleton :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 skeleton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Shape` in the `unnamed` slot of `SlideGroup`. -}
@@ -467,18 +467,18 @@ shape :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 shape =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SegmentedButton` in the `unnamed` slot of `SlideGroup`. -}
 segmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 segmentedButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ButtonSegment` in the `unnamed` slot of `SlideGroup`. -}
@@ -487,7 +487,7 @@ buttonSegment :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 buttonSegment =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SearchView` in the `unnamed` slot of `SlideGroup`. -}
@@ -496,7 +496,7 @@ searchView :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 searchView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SearchBar` in the `unnamed` slot of `SlideGroup`. -}
@@ -505,18 +505,18 @@ searchBar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 searchBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RadioGroup` in the `unnamed` slot of `SlideGroup`. -}
 radioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 radioGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Radio` in the `unnamed` slot of `SlideGroup`. -}
@@ -525,7 +525,7 @@ radio :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 radio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ProgressElementIndicatorBase` in the `unnamed` slot of `SlideGroup`. -}
@@ -534,7 +534,7 @@ progressElementIndicatorBase :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 progressElementIndicatorBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Paginator` in the `unnamed` slot of `SlideGroup`. -}
@@ -543,18 +543,18 @@ paginator :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 paginator =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Select` in the `unnamed` slot of `SlideGroup`. -}
 select :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 select =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRailToggle` in the `unnamed` slot of `SlideGroup`. -}
@@ -563,7 +563,7 @@ navRailToggle :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navRailToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRail` in the `unnamed` slot of `SlideGroup`. -}
@@ -572,7 +572,7 @@ navRail :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navRail =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenuItemGroup` in the `unnamed` slot of `SlideGroup`. -}
@@ -581,7 +581,7 @@ navMenuItemGroup :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navMenuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenu` in the `unnamed` slot of `SlideGroup`. -}
@@ -590,7 +590,7 @@ navMenu :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navMenu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenuItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -599,7 +599,7 @@ navMenuItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navMenuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavBar` in the `unnamed` slot of `SlideGroup`. -}
@@ -608,7 +608,7 @@ navBar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -617,7 +617,7 @@ navItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 navItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemRadio` in the `unnamed` slot of `SlideGroup`. -}
@@ -626,7 +626,7 @@ menuItemRadio :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menuItemRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemGroup` in the `unnamed` slot of `SlideGroup`. -}
@@ -635,7 +635,7 @@ menuItemGroup :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemCheckbox` in the `unnamed` slot of `SlideGroup`. -}
@@ -644,7 +644,7 @@ menuItemCheckbox :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menuItemCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Menu` in the `unnamed` slot of `SlideGroup`. -}
@@ -653,7 +653,7 @@ menu :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -662,7 +662,7 @@ menuItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuTrigger` in the `unnamed` slot of `SlideGroup`. -}
@@ -671,7 +671,7 @@ menuTrigger :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemElementBase` in the `unnamed` slot of `SlideGroup`. -}
@@ -680,7 +680,7 @@ menuItemElementBase :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 menuItemElementBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `LoadingIndicator` in the `unnamed` slot of `SlideGroup`. -}
@@ -689,7 +689,7 @@ loadingIndicator :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 loadingIndicator =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SelectionList` in the `unnamed` slot of `SlideGroup`. -}
@@ -698,7 +698,7 @@ selectionList :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 selectionList =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListOption` in the `unnamed` slot of `SlideGroup`. -}
@@ -707,7 +707,7 @@ listOption :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 listOption =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ActionList` in the `unnamed` slot of `SlideGroup`. -}
@@ -716,7 +716,7 @@ actionList :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 actionList =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpandableListItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -725,7 +725,7 @@ expandableListItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 expandableListItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListAction` in the `unnamed` slot of `SlideGroup`. -}
@@ -734,7 +734,7 @@ listAction :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 listAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListItemButton` in the `unnamed` slot of `SlideGroup`. -}
@@ -743,7 +743,7 @@ listItemButton :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 listItemButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `List` in the `unnamed` slot of `SlideGroup`. -}
@@ -752,7 +752,7 @@ list :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 list =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -761,7 +761,7 @@ listItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 listItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Icon` in the `unnamed` slot of `SlideGroup`. -}
@@ -770,7 +770,7 @@ icon :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 icon =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Heading` in the `unnamed` slot of `SlideGroup`. -}
@@ -779,7 +779,7 @@ heading :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 heading =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenuTrigger` in the `unnamed` slot of `SlideGroup`. -}
@@ -788,7 +788,7 @@ fabMenuTrigger :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 fabMenuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenu` in the `unnamed` slot of `SlideGroup`. -}
@@ -797,7 +797,7 @@ fabMenu :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 fabMenu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Fab` in the `unnamed` slot of `SlideGroup`. -}
@@ -806,7 +806,7 @@ fab :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 fab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Accordion` in the `unnamed` slot of `SlideGroup`. -}
@@ -815,7 +815,7 @@ accordion :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 accordion =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpansionPanel` in the `unnamed` slot of `SlideGroup`. -}
@@ -824,7 +824,7 @@ expansionPanel :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 expansionPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpansionHeader` in the `unnamed` slot of `SlideGroup`. -}
@@ -833,7 +833,7 @@ expansionHeader :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 expansionHeader =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerToggle` in the `unnamed` slot of `SlideGroup`. -}
@@ -842,7 +842,7 @@ drawerToggle :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 drawerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerContainer` in the `unnamed` slot of `SlideGroup`. -}
@@ -851,7 +851,7 @@ drawerContainer :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 drawerContainer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Divider` in the `unnamed` slot of `SlideGroup`. -}
@@ -860,7 +860,7 @@ divider :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 divider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogTrigger` in the `unnamed` slot of `SlideGroup`. -}
@@ -869,7 +869,7 @@ dialogTrigger :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 dialogTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Dialog` in the `unnamed` slot of `SlideGroup`. -}
@@ -878,7 +878,7 @@ dialog :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 dialog =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogAction` in the `unnamed` slot of `SlideGroup`. -}
@@ -887,7 +887,7 @@ dialogAction :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 dialogAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DatepickerToggle` in the `unnamed` slot of `SlideGroup`. -}
@@ -896,7 +896,7 @@ datepickerToggle :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 datepickerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Datepicker` in the `unnamed` slot of `SlideGroup`. -}
@@ -905,7 +905,7 @@ datepicker :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 datepicker =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ContentPane` in the `unnamed` slot of `SlideGroup`. -}
@@ -914,7 +914,7 @@ contentPane :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 contentPane =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SuggestionChip` in the `unnamed` slot of `SlideGroup`. -}
@@ -923,7 +923,7 @@ suggestionChip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 suggestionChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChipSet` in the `unnamed` slot of `SlideGroup`. -}
@@ -932,7 +932,7 @@ inputChipSet :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 inputChipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChip` in the `unnamed` slot of `SlideGroup`. -}
@@ -941,7 +941,7 @@ inputChip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 inputChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChipSet` in the `unnamed` slot of `SlideGroup`. -}
@@ -950,7 +950,7 @@ filterChipSet :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 filterChipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChip` in the `unnamed` slot of `SlideGroup`. -}
@@ -959,7 +959,7 @@ filterChip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 filterChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ChipSet` in the `unnamed` slot of `SlideGroup`. -}
@@ -968,7 +968,7 @@ chipSet :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 chipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AssistChip` in the `unnamed` slot of `SlideGroup`. -}
@@ -977,7 +977,7 @@ assistChip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 assistChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Chip` in the `unnamed` slot of `SlideGroup`. -}
@@ -986,7 +986,7 @@ chip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 chip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Checkbox` in the `unnamed` slot of `SlideGroup`. -}
@@ -995,7 +995,7 @@ checkbox :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 checkbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Card` in the `unnamed` slot of `SlideGroup`. -}
@@ -1004,7 +1004,7 @@ card :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 card =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Calendar` in the `unnamed` slot of `SlideGroup`. -}
@@ -1013,7 +1013,7 @@ calendar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 calendar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `YearView` in the `unnamed` slot of `SlideGroup`. -}
@@ -1022,7 +1022,7 @@ yearView :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 yearView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MultiYearView` in the `unnamed` slot of `SlideGroup`. -}
@@ -1031,7 +1031,7 @@ multiYearView :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 multiYearView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MonthView` in the `unnamed` slot of `SlideGroup`. -}
@@ -1040,7 +1040,7 @@ monthView :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 monthView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tooltip` in the `unnamed` slot of `SlideGroup`. -}
@@ -1049,7 +1049,7 @@ tooltip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tooltip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltip` in the `unnamed` slot of `SlideGroup`. -}
@@ -1058,7 +1058,7 @@ richTooltip :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 richTooltip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TooltipElementBase` in the `unnamed` slot of `SlideGroup`. -}
@@ -1067,7 +1067,7 @@ tooltipElementBase :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 tooltipElementBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltipAction` in the `unnamed` slot of `SlideGroup`. -}
@@ -1076,7 +1076,7 @@ richTooltipAction :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 richTooltipAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ButtonGroup` in the `unnamed` slot of `SlideGroup`. -}
@@ -1085,7 +1085,7 @@ buttonGroup :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 buttonGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `IconButton` in the `unnamed` slot of `SlideGroup`. -}
@@ -1094,7 +1094,7 @@ iconButton :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 iconButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Button` in the `unnamed` slot of `SlideGroup`. -}
@@ -1103,18 +1103,18 @@ button :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 button =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Breadcrumb` in the `unnamed` slot of `SlideGroup`. -}
 breadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 breadcrumb =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BreadcrumbItem` in the `unnamed` slot of `SlideGroup`. -}
@@ -1123,7 +1123,7 @@ breadcrumbItem :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 breadcrumbItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BreadcrumbItemButton` in the `unnamed` slot of `SlideGroup`. -}
@@ -1132,7 +1132,7 @@ breadcrumbItemButton :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 breadcrumbItemButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetTrigger` in the `unnamed` slot of `SlideGroup`. -}
@@ -1141,7 +1141,7 @@ bottomSheetTrigger :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 bottomSheetTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheet` in the `unnamed` slot of `SlideGroup`. -}
@@ -1150,7 +1150,7 @@ bottomSheet :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 bottomSheet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetAction` in the `unnamed` slot of `SlideGroup`. -}
@@ -1159,7 +1159,7 @@ bottomSheetAction :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 bottomSheetAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Badge` in the `unnamed` slot of `SlideGroup`. -}
@@ -1168,7 +1168,7 @@ badge :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 badge =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Avatar` in the `unnamed` slot of `SlideGroup`. -}
@@ -1177,7 +1177,7 @@ avatar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 avatar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Autocomplete` in the `unnamed` slot of `SlideGroup`. -}
@@ -1186,7 +1186,7 @@ autocomplete :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 autocomplete =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FormField` in the `unnamed` slot of `SlideGroup`. -}
@@ -1195,7 +1195,7 @@ formField :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 formField =
-    default_core
+    unnamed_core
 
 
 {-| Place a `OptionPanel` in the `unnamed` slot of `SlideGroup`. -}
@@ -1204,7 +1204,7 @@ optionPanel :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 optionPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FloatingPanel` in the `unnamed` slot of `SlideGroup`. -}
@@ -1213,7 +1213,7 @@ floatingPanel :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 floatingPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Optgroup` in the `unnamed` slot of `SlideGroup`. -}
@@ -1222,7 +1222,7 @@ optgroup :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 optgroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Option` in the `unnamed` slot of `SlideGroup`. -}
@@ -1231,7 +1231,7 @@ option :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 option =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FocusTrap` in the `unnamed` slot of `SlideGroup`. -}
@@ -1240,7 +1240,7 @@ focusTrap :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 focusTrap =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AppBar` in the `unnamed` slot of `SlideGroup`. -}
@@ -1249,7 +1249,7 @@ appBar :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 appBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextOverflow` in the `unnamed` slot of `SlideGroup`. -}
@@ -1258,7 +1258,7 @@ textOverflow :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 textOverflow =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextHighlight` in the `unnamed` slot of `SlideGroup`. -}
@@ -1267,7 +1267,7 @@ textHighlight :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 textHighlight =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StateLayer` in the `unnamed` slot of `SlideGroup`. -}
@@ -1276,7 +1276,7 @@ stateLayer :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 stateLayer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Slide` in the `unnamed` slot of `SlideGroup`. -}
@@ -1285,7 +1285,7 @@ slide :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 slide =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ScrollContainer` in the `unnamed` slot of `SlideGroup`. -}
@@ -1294,7 +1294,7 @@ scrollContainer :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 scrollContainer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Ripple` in the `unnamed` slot of `SlideGroup`. -}
@@ -1303,7 +1303,7 @@ ripple :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 ripple =
-    default_core
+    unnamed_core
 
 
 {-| Place a `PseudoRadio` in the `unnamed` slot of `SlideGroup`. -}
@@ -1312,7 +1312,7 @@ pseudoRadio :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 pseudoRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `PseudoCheckbox` in the `unnamed` slot of `SlideGroup`. -}
@@ -1321,7 +1321,7 @@ pseudoCheckbox :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 pseudoCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FocusRing` in the `unnamed` slot of `SlideGroup`. -}
@@ -1330,7 +1330,7 @@ focusRing :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 focusRing =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Elevation` in the `unnamed` slot of `SlideGroup`. -}
@@ -1339,7 +1339,7 @@ elevation :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 elevation =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Collapsible` in the `unnamed` slot of `SlideGroup`. -}
@@ -1348,7 +1348,7 @@ collapsible :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 collapsible =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ActionElementBase` in the `unnamed` slot of `SlideGroup`. -}
@@ -1357,4 +1357,4 @@ actionElementBase :
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
     -> M3e.Build.SlideGroup.Builder pa ps msg pk
 actionElementBase =
-    default_core
+    unnamed_core

@@ -14,11 +14,11 @@ import M3e.Build.Internal
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.ButtonGroup.Builder pa ps msg pk
     -> M3e.Build.ButtonGroup.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -32,7 +32,7 @@ iconButton :
     -> M3e.Build.ButtonGroup.Builder pa ps msg pk
     -> M3e.Build.ButtonGroup.Builder pa ps msg pk
 iconButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Button` in the `unnamed` slot of `ButtonGroup`. -}
@@ -41,4 +41,4 @@ button :
     -> M3e.Build.ButtonGroup.Builder pa ps msg pk
     -> M3e.Build.ButtonGroup.Builder pa ps msg pk
 button =
-    default_core
+    unnamed_core

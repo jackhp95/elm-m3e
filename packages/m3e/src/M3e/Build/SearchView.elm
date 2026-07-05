@@ -65,7 +65,7 @@ searchView req_ =
                       (List.map M3e.Cem.Attr.forget erased_)
                       ch_
              )
-             (List.map M3e.Cem.Attr.forget [])
+             []
              [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input) ]
         )
 

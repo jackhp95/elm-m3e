@@ -49,7 +49,7 @@ type alias AttrCaps =
 type alias SlotCaps =
     { arrow : M3e.Build.Internal.Available
     , value : M3e.Build.Internal.Available
-    , default : M3e.Build.Internal.NotFilled
+    , unnamed : M3e.Build.Internal.NotFilled
     }
 
 
@@ -212,7 +212,7 @@ onInput v_ b_ =
 
 {-| Build the `<m3e-select>` element from a `Builder`. -}
 build :
-    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    Builder a { s | unnamed : M3e.Build.Internal.Filled } msg kind
     -> M3e.Element.Element { select : M3e.Value.Supported } msg
 build b_ =
     M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

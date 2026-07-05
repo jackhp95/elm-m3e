@@ -506,7 +506,7 @@ startSnackbar =
 {-| Place a `Slider` in the `start` slot of `SplitPane`. -}
 startSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | start : M3e.Build.Internal.Available
@@ -573,7 +573,7 @@ startShape =
 {-| Place a `SegmentedButton` in the `start` slot of `SplitPane`. -}
 startSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | start : M3e.Build.Internal.Available
@@ -627,7 +627,7 @@ startSearchBar =
 {-| Place a `RadioGroup` in the `start` slot of `SplitPane`. -}
 startRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | start : M3e.Build.Internal.Available
@@ -681,7 +681,7 @@ startPaginator =
 {-| Place a `Select` in the `start` slot of `SplitPane`. -}
 startSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | start : M3e.Build.Internal.Available
@@ -1489,7 +1489,7 @@ startButton =
 {-| Place a `Breadcrumb` in the `start` slot of `SplitPane`. -}
 startBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | start : M3e.Build.Internal.Available
@@ -2115,7 +2115,7 @@ endSnackbar =
 {-| Place a `Slider` in the `end` slot of `SplitPane`. -}
 endSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | end : M3e.Build.Internal.Available
@@ -2182,7 +2182,7 @@ endShape =
 {-| Place a `SegmentedButton` in the `end` slot of `SplitPane`. -}
 endSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | end : M3e.Build.Internal.Available
@@ -2236,7 +2236,7 @@ endSearchBar =
 {-| Place a `RadioGroup` in the `end` slot of `SplitPane`. -}
 endRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | end : M3e.Build.Internal.Available
@@ -2290,7 +2290,7 @@ endPaginator =
 {-| Place a `Select` in the `end` slot of `SplitPane`. -}
 endSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | end : M3e.Build.Internal.Available
@@ -3098,7 +3098,7 @@ endButton =
 {-| Place a `Breadcrumb` in the `end` slot of `SplitPane`. -}
 endBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.SplitPane.Builder pa { ps
         | end : M3e.Build.Internal.Available

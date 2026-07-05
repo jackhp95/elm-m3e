@@ -173,11 +173,11 @@ import M3e.Build.YearView
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -191,7 +191,7 @@ tree :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tree =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TreeItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -200,7 +200,7 @@ treeItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 treeItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Toolbar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -209,7 +209,7 @@ toolbar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 toolbar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Toc` in the `unnamed` slot of `ScrollContainer`. -}
@@ -218,7 +218,7 @@ toc :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 toc =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TocItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -227,7 +227,7 @@ tocItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tocItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ThemeIcon` in the `unnamed` slot of `ScrollContainer`. -}
@@ -236,7 +236,7 @@ themeIcon :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 themeIcon =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Theme` in the `unnamed` slot of `ScrollContainer`. -}
@@ -245,7 +245,7 @@ theme :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 theme =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextareaAutosize` in the `unnamed` slot of `ScrollContainer`. -}
@@ -254,7 +254,7 @@ textareaAutosize :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 textareaAutosize =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tabs` in the `unnamed` slot of `ScrollContainer`. -}
@@ -263,7 +263,7 @@ tabs :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tabs =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TabPanel` in the `unnamed` slot of `ScrollContainer`. -}
@@ -272,7 +272,7 @@ tabPanel :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tabPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tab` in the `unnamed` slot of `ScrollContainer`. -}
@@ -281,7 +281,7 @@ tab :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Switch` in the `unnamed` slot of `ScrollContainer`. -}
@@ -290,7 +290,7 @@ switch :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 switch =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperReset` in the `unnamed` slot of `ScrollContainer`. -}
@@ -299,7 +299,7 @@ stepperReset :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 stepperReset =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperPrevious` in the `unnamed` slot of `ScrollContainer`. -}
@@ -308,7 +308,7 @@ stepperPrevious :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 stepperPrevious =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Step` in the `unnamed` slot of `ScrollContainer`. -}
@@ -317,7 +317,7 @@ step :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 step =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepPanel` in the `unnamed` slot of `ScrollContainer`. -}
@@ -326,7 +326,7 @@ stepPanel :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 stepPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Stepper` in the `unnamed` slot of `ScrollContainer`. -}
@@ -335,7 +335,7 @@ stepper :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 stepper =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SplitPane` in the `unnamed` slot of `ScrollContainer`. -}
@@ -344,7 +344,7 @@ splitPane :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 splitPane =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SplitButton` in the `unnamed` slot of `ScrollContainer`. -}
@@ -353,7 +353,7 @@ splitButton :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 splitButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Snackbar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -362,18 +362,18 @@ snackbar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 snackbar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Slider` in the `unnamed` slot of `ScrollContainer`. -}
 slider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 slider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SliderThumb` in the `unnamed` slot of `ScrollContainer`. -}
@@ -382,7 +382,7 @@ sliderThumb :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 sliderThumb =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SlideGroup` in the `unnamed` slot of `ScrollContainer`. -}
@@ -391,7 +391,7 @@ slideGroup :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 slideGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Skeleton` in the `unnamed` slot of `ScrollContainer`. -}
@@ -400,7 +400,7 @@ skeleton :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 skeleton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Shape` in the `unnamed` slot of `ScrollContainer`. -}
@@ -409,18 +409,18 @@ shape :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 shape =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SegmentedButton` in the `unnamed` slot of `ScrollContainer`. -}
 segmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 segmentedButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ButtonSegment` in the `unnamed` slot of `ScrollContainer`. -}
@@ -429,7 +429,7 @@ buttonSegment :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 buttonSegment =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SearchView` in the `unnamed` slot of `ScrollContainer`. -}
@@ -438,7 +438,7 @@ searchView :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 searchView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SearchBar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -447,18 +447,18 @@ searchBar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 searchBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RadioGroup` in the `unnamed` slot of `ScrollContainer`. -}
 radioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 radioGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Radio` in the `unnamed` slot of `ScrollContainer`. -}
@@ -467,7 +467,7 @@ radio :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 radio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ProgressElementIndicatorBase` in the `unnamed` slot of `ScrollContainer`. -}
@@ -476,7 +476,7 @@ progressElementIndicatorBase :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 progressElementIndicatorBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Paginator` in the `unnamed` slot of `ScrollContainer`. -}
@@ -485,18 +485,18 @@ paginator :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 paginator =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Select` in the `unnamed` slot of `ScrollContainer`. -}
 select :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 select =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRailToggle` in the `unnamed` slot of `ScrollContainer`. -}
@@ -505,7 +505,7 @@ navRailToggle :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navRailToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRail` in the `unnamed` slot of `ScrollContainer`. -}
@@ -514,7 +514,7 @@ navRail :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navRail =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenuItemGroup` in the `unnamed` slot of `ScrollContainer`. -}
@@ -523,7 +523,7 @@ navMenuItemGroup :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navMenuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenu` in the `unnamed` slot of `ScrollContainer`. -}
@@ -532,7 +532,7 @@ navMenu :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navMenu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavMenuItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -541,7 +541,7 @@ navMenuItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navMenuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavBar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -550,7 +550,7 @@ navBar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -559,7 +559,7 @@ navItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 navItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemRadio` in the `unnamed` slot of `ScrollContainer`. -}
@@ -568,7 +568,7 @@ menuItemRadio :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menuItemRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemGroup` in the `unnamed` slot of `ScrollContainer`. -}
@@ -577,7 +577,7 @@ menuItemGroup :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menuItemGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemCheckbox` in the `unnamed` slot of `ScrollContainer`. -}
@@ -586,7 +586,7 @@ menuItemCheckbox :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menuItemCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Menu` in the `unnamed` slot of `ScrollContainer`. -}
@@ -595,7 +595,7 @@ menu :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -604,7 +604,7 @@ menuItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menuItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuTrigger` in the `unnamed` slot of `ScrollContainer`. -}
@@ -613,7 +613,7 @@ menuTrigger :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuItemElementBase` in the `unnamed` slot of `ScrollContainer`. -}
@@ -622,7 +622,7 @@ menuItemElementBase :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 menuItemElementBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `LoadingIndicator` in the `unnamed` slot of `ScrollContainer`. -}
@@ -631,7 +631,7 @@ loadingIndicator :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 loadingIndicator =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SelectionList` in the `unnamed` slot of `ScrollContainer`. -}
@@ -640,7 +640,7 @@ selectionList :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 selectionList =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListOption` in the `unnamed` slot of `ScrollContainer`. -}
@@ -649,7 +649,7 @@ listOption :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 listOption =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ActionList` in the `unnamed` slot of `ScrollContainer`. -}
@@ -658,7 +658,7 @@ actionList :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 actionList =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpandableListItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -667,7 +667,7 @@ expandableListItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 expandableListItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListAction` in the `unnamed` slot of `ScrollContainer`. -}
@@ -676,7 +676,7 @@ listAction :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 listAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListItemButton` in the `unnamed` slot of `ScrollContainer`. -}
@@ -685,7 +685,7 @@ listItemButton :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 listItemButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `List` in the `unnamed` slot of `ScrollContainer`. -}
@@ -694,7 +694,7 @@ list :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 list =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ListItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -703,7 +703,7 @@ listItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 listItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Icon` in the `unnamed` slot of `ScrollContainer`. -}
@@ -712,7 +712,7 @@ icon :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 icon =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Heading` in the `unnamed` slot of `ScrollContainer`. -}
@@ -721,7 +721,7 @@ heading :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 heading =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenuTrigger` in the `unnamed` slot of `ScrollContainer`. -}
@@ -730,7 +730,7 @@ fabMenuTrigger :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 fabMenuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenu` in the `unnamed` slot of `ScrollContainer`. -}
@@ -739,7 +739,7 @@ fabMenu :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 fabMenu =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Fab` in the `unnamed` slot of `ScrollContainer`. -}
@@ -748,7 +748,7 @@ fab :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 fab =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Accordion` in the `unnamed` slot of `ScrollContainer`. -}
@@ -757,7 +757,7 @@ accordion :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 accordion =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpansionPanel` in the `unnamed` slot of `ScrollContainer`. -}
@@ -766,7 +766,7 @@ expansionPanel :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 expansionPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ExpansionHeader` in the `unnamed` slot of `ScrollContainer`. -}
@@ -775,7 +775,7 @@ expansionHeader :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 expansionHeader =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerToggle` in the `unnamed` slot of `ScrollContainer`. -}
@@ -784,7 +784,7 @@ drawerToggle :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 drawerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerContainer` in the `unnamed` slot of `ScrollContainer`. -}
@@ -793,7 +793,7 @@ drawerContainer :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 drawerContainer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Divider` in the `unnamed` slot of `ScrollContainer`. -}
@@ -802,7 +802,7 @@ divider :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 divider =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogTrigger` in the `unnamed` slot of `ScrollContainer`. -}
@@ -811,7 +811,7 @@ dialogTrigger :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 dialogTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Dialog` in the `unnamed` slot of `ScrollContainer`. -}
@@ -820,7 +820,7 @@ dialog :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 dialog =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogAction` in the `unnamed` slot of `ScrollContainer`. -}
@@ -829,7 +829,7 @@ dialogAction :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 dialogAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DatepickerToggle` in the `unnamed` slot of `ScrollContainer`. -}
@@ -838,7 +838,7 @@ datepickerToggle :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 datepickerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Datepicker` in the `unnamed` slot of `ScrollContainer`. -}
@@ -847,7 +847,7 @@ datepicker :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 datepicker =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ContentPane` in the `unnamed` slot of `ScrollContainer`. -}
@@ -856,7 +856,7 @@ contentPane :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 contentPane =
-    default_core
+    unnamed_core
 
 
 {-| Place a `SuggestionChip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -865,7 +865,7 @@ suggestionChip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 suggestionChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChipSet` in the `unnamed` slot of `ScrollContainer`. -}
@@ -874,7 +874,7 @@ inputChipSet :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 inputChipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `InputChip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -883,7 +883,7 @@ inputChip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 inputChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChipSet` in the `unnamed` slot of `ScrollContainer`. -}
@@ -892,7 +892,7 @@ filterChipSet :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 filterChipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FilterChip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -901,7 +901,7 @@ filterChip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 filterChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ChipSet` in the `unnamed` slot of `ScrollContainer`. -}
@@ -910,7 +910,7 @@ chipSet :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 chipSet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AssistChip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -919,7 +919,7 @@ assistChip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 assistChip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Chip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -928,7 +928,7 @@ chip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 chip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Checkbox` in the `unnamed` slot of `ScrollContainer`. -}
@@ -937,7 +937,7 @@ checkbox :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 checkbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Card` in the `unnamed` slot of `ScrollContainer`. -}
@@ -946,7 +946,7 @@ card :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 card =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Calendar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -955,7 +955,7 @@ calendar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 calendar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `YearView` in the `unnamed` slot of `ScrollContainer`. -}
@@ -964,7 +964,7 @@ yearView :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 yearView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MultiYearView` in the `unnamed` slot of `ScrollContainer`. -}
@@ -973,7 +973,7 @@ multiYearView :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 multiYearView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MonthView` in the `unnamed` slot of `ScrollContainer`. -}
@@ -982,7 +982,7 @@ monthView :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 monthView =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Tooltip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -991,7 +991,7 @@ tooltip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tooltip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltip` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1000,7 +1000,7 @@ richTooltip :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 richTooltip =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TooltipElementBase` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1009,7 +1009,7 @@ tooltipElementBase :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 tooltipElementBase =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltipAction` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1018,7 +1018,7 @@ richTooltipAction :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 richTooltipAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ButtonGroup` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1027,7 +1027,7 @@ buttonGroup :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 buttonGroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `IconButton` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1036,7 +1036,7 @@ iconButton :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 iconButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Button` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1045,18 +1045,18 @@ button :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 button =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Breadcrumb` in the `unnamed` slot of `ScrollContainer`. -}
 breadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 breadcrumb =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BreadcrumbItem` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1065,7 +1065,7 @@ breadcrumbItem :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 breadcrumbItem =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BreadcrumbItemButton` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1074,7 +1074,7 @@ breadcrumbItemButton :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 breadcrumbItemButton =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetTrigger` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1083,7 +1083,7 @@ bottomSheetTrigger :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 bottomSheetTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheet` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1092,7 +1092,7 @@ bottomSheet :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 bottomSheet =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetAction` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1101,7 +1101,7 @@ bottomSheetAction :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 bottomSheetAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Badge` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1110,7 +1110,7 @@ badge :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 badge =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Avatar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1119,7 +1119,7 @@ avatar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 avatar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Autocomplete` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1128,7 +1128,7 @@ autocomplete :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 autocomplete =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FormField` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1137,7 +1137,7 @@ formField :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 formField =
-    default_core
+    unnamed_core
 
 
 {-| Place a `OptionPanel` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1146,7 +1146,7 @@ optionPanel :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 optionPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FloatingPanel` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1155,7 +1155,7 @@ floatingPanel :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 floatingPanel =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Optgroup` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1164,7 +1164,7 @@ optgroup :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 optgroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Option` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1173,7 +1173,7 @@ option :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 option =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FocusTrap` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1182,7 +1182,7 @@ focusTrap :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 focusTrap =
-    default_core
+    unnamed_core
 
 
 {-| Place a `AppBar` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1191,7 +1191,7 @@ appBar :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 appBar =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextOverflow` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1200,7 +1200,7 @@ textOverflow :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 textOverflow =
-    default_core
+    unnamed_core
 
 
 {-| Place a `TextHighlight` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1209,7 +1209,7 @@ textHighlight :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 textHighlight =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StateLayer` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1218,7 +1218,7 @@ stateLayer :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 stateLayer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Slide` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1227,7 +1227,7 @@ slide :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 slide =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ScrollContainer` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1236,7 +1236,7 @@ scrollContainer :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 scrollContainer =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Ripple` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1245,7 +1245,7 @@ ripple :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 ripple =
-    default_core
+    unnamed_core
 
 
 {-| Place a `PseudoRadio` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1254,7 +1254,7 @@ pseudoRadio :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 pseudoRadio =
-    default_core
+    unnamed_core
 
 
 {-| Place a `PseudoCheckbox` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1263,7 +1263,7 @@ pseudoCheckbox :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 pseudoCheckbox =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FocusRing` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1272,7 +1272,7 @@ focusRing :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 focusRing =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Elevation` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1281,7 +1281,7 @@ elevation :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 elevation =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Collapsible` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1290,7 +1290,7 @@ collapsible :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 collapsible =
-    default_core
+    unnamed_core
 
 
 {-| Place a `ActionElementBase` in the `unnamed` slot of `ScrollContainer`. -}
@@ -1299,4 +1299,4 @@ actionElementBase :
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
     -> M3e.Build.ScrollContainer.Builder pa ps msg pk
 actionElementBase =
-    default_core
+    unnamed_core

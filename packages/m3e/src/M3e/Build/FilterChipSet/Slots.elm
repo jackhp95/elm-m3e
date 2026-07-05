@@ -13,11 +13,11 @@ import M3e.Build.Internal
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.FilterChipSet.Builder pa ps msg pk
     -> M3e.Build.FilterChipSet.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -31,4 +31,4 @@ filterChip :
     -> M3e.Build.FilterChipSet.Builder pa ps msg pk
     -> M3e.Build.FilterChipSet.Builder pa ps msg pk
 filterChip =
-    default_core
+    unnamed_core

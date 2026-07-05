@@ -42,7 +42,7 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    { default : M3e.Build.Internal.Available
+    { unnamed : M3e.Build.Internal.Available
     , icon : M3e.Build.Internal.Available
     }
 

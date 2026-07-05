@@ -244,11 +244,11 @@ noData_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.Autocomplete.Builder pa ps msg pk
     -> M3e.Build.Autocomplete.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -519,7 +519,7 @@ loadingSnackbar =
 {-| Place a `Slider` in the `loading` slot of `Autocomplete`. -}
 loadingSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | loading : M3e.Build.Internal.Available
@@ -586,7 +586,7 @@ loadingShape =
 {-| Place a `SegmentedButton` in the `loading` slot of `Autocomplete`. -}
 loadingSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | loading : M3e.Build.Internal.Available
@@ -640,7 +640,7 @@ loadingSearchBar =
 {-| Place a `RadioGroup` in the `loading` slot of `Autocomplete`. -}
 loadingRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | loading : M3e.Build.Internal.Available
@@ -694,7 +694,7 @@ loadingPaginator =
 {-| Place a `Select` in the `loading` slot of `Autocomplete`. -}
 loadingSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | loading : M3e.Build.Internal.Available
@@ -1502,7 +1502,7 @@ loadingButton =
 {-| Place a `Breadcrumb` in the `loading` slot of `Autocomplete`. -}
 loadingBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | loading : M3e.Build.Internal.Available
@@ -2128,7 +2128,7 @@ noDataSnackbar =
 {-| Place a `Slider` in the `no-data` slot of `Autocomplete`. -}
 noDataSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -2195,7 +2195,7 @@ noDataShape =
 {-| Place a `SegmentedButton` in the `no-data` slot of `Autocomplete`. -}
 noDataSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -2249,7 +2249,7 @@ noDataSearchBar =
 {-| Place a `RadioGroup` in the `no-data` slot of `Autocomplete`. -}
 noDataRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -2303,7 +2303,7 @@ noDataPaginator =
 {-| Place a `Select` in the `no-data` slot of `Autocomplete`. -}
 noDataSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -3111,7 +3111,7 @@ noDataButton =
 {-| Place a `Breadcrumb` in the `no-data` slot of `Autocomplete`. -}
 noDataBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Autocomplete.Builder pa { ps
         | noData : M3e.Build.Internal.Available
@@ -3480,7 +3480,7 @@ optgroup :
     -> M3e.Build.Autocomplete.Builder pa ps msg pk
     -> M3e.Build.Autocomplete.Builder pa ps msg pk
 optgroup =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Option` in the `unnamed` slot of `Autocomplete`. -}
@@ -3489,4 +3489,4 @@ option :
     -> M3e.Build.Autocomplete.Builder pa ps msg pk
     -> M3e.Build.Autocomplete.Builder pa ps msg pk
 option =
-    default_core
+    unnamed_core

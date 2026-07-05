@@ -36,15 +36,15 @@ import M3e.Build.Switch
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder ck ca cs msg
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -88,156 +88,156 @@ trailing_core child_ parent_ =
 stepperReset :
     M3e.Build.StepperReset.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stepperReset =
-    default_core
+    unnamed_core
 
 
 {-| Place a `StepperPrevious` in the `unnamed` slot of `ListAction`. -}
 stepperPrevious :
     M3e.Build.StepperPrevious.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 stepperPrevious =
-    default_core
+    unnamed_core
 
 
 {-| Place a `NavRailToggle` in the `unnamed` slot of `ListAction`. -}
 navRailToggle :
     M3e.Build.NavRailToggle.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 navRailToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `MenuTrigger` in the `unnamed` slot of `ListAction`. -}
 menuTrigger :
     M3e.Build.MenuTrigger.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 menuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `FabMenuTrigger` in the `unnamed` slot of `ListAction`. -}
 fabMenuTrigger :
     M3e.Build.FabMenuTrigger.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 fabMenuTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DrawerToggle` in the `unnamed` slot of `ListAction`. -}
 drawerToggle :
     M3e.Build.DrawerToggle.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 drawerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogTrigger` in the `unnamed` slot of `ListAction`. -}
 dialogTrigger :
     M3e.Build.DialogTrigger.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 dialogTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DialogAction` in the `unnamed` slot of `ListAction`. -}
 dialogAction :
     M3e.Build.DialogAction.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 dialogAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `DatepickerToggle` in the `unnamed` slot of `ListAction`. -}
 datepickerToggle :
     M3e.Build.DatepickerToggle.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 datepickerToggle =
-    default_core
+    unnamed_core
 
 
 {-| Place a `RichTooltipAction` in the `unnamed` slot of `ListAction`. -}
 richTooltipAction :
     M3e.Build.RichTooltipAction.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 richTooltipAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetTrigger` in the `unnamed` slot of `ListAction`. -}
 bottomSheetTrigger :
     M3e.Build.BottomSheetTrigger.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 bottomSheetTrigger =
-    default_core
+    unnamed_core
 
 
 {-| Place a `BottomSheetAction` in the `unnamed` slot of `ListAction`. -}
 bottomSheetAction :
     M3e.Build.BottomSheetAction.Builder ca cs msg ck
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.ListAction.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 bottomSheetAction =
-    default_core
+    unnamed_core
 
 
 {-| Place a `Icon` in the `leading` slot of `ListAction`. -}

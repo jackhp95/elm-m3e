@@ -452,7 +452,7 @@ headerSnackbar =
 {-| Place a `Slider` in the `header` slot of `Calendar`. -}
 headerSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Calendar.Builder pa { ps
         | header : M3e.Build.Internal.Available
@@ -519,7 +519,7 @@ headerShape =
 {-| Place a `SegmentedButton` in the `header` slot of `Calendar`. -}
 headerSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Calendar.Builder pa { ps
         | header : M3e.Build.Internal.Available
@@ -573,7 +573,7 @@ headerSearchBar =
 {-| Place a `RadioGroup` in the `header` slot of `Calendar`. -}
 headerRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Calendar.Builder pa { ps
         | header : M3e.Build.Internal.Available
@@ -627,7 +627,7 @@ headerPaginator =
 {-| Place a `Select` in the `header` slot of `Calendar`. -}
 headerSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Calendar.Builder pa { ps
         | header : M3e.Build.Internal.Available
@@ -1435,7 +1435,7 @@ headerButton =
 {-| Place a `Breadcrumb` in the `header` slot of `Calendar`. -}
 headerBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.Calendar.Builder pa { ps
         | header : M3e.Build.Internal.Available

@@ -189,11 +189,11 @@ input_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.InputChipSet.Builder pa ps msg pk
     -> M3e.Build.InputChipSet.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -464,7 +464,7 @@ inputSnackbar =
 {-| Place a `Slider` in the `input` slot of `InputChipSet`. -}
 inputSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Available
@@ -531,7 +531,7 @@ inputShape =
 {-| Place a `SegmentedButton` in the `input` slot of `InputChipSet`. -}
 inputSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Available
@@ -585,7 +585,7 @@ inputSearchBar =
 {-| Place a `RadioGroup` in the `input` slot of `InputChipSet`. -}
 inputRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Available
@@ -639,7 +639,7 @@ inputPaginator =
 {-| Place a `Select` in the `input` slot of `InputChipSet`. -}
 inputSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Available
@@ -1447,7 +1447,7 @@ inputButton =
 {-| Place a `Breadcrumb` in the `input` slot of `InputChipSet`. -}
 inputBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Available
@@ -1816,4 +1816,4 @@ inputChip :
     -> M3e.Build.InputChipSet.Builder pa ps msg pk
     -> M3e.Build.InputChipSet.Builder pa ps msg pk
 inputChip =
-    default_core
+    unnamed_core

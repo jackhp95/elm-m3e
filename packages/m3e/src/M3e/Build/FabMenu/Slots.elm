@@ -13,11 +13,11 @@ import M3e.Build.MenuItem
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
     -> M3e.Build.FabMenu.Builder pa ps msg pk
     -> M3e.Build.FabMenu.Builder pa ps msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -31,4 +31,4 @@ menuItem :
     -> M3e.Build.FabMenu.Builder pa ps msg pk
     -> M3e.Build.FabMenu.Builder pa ps msg pk
 menuItem =
-    default_core
+    unnamed_core

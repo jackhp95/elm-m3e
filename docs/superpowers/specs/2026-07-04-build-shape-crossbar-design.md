@@ -108,7 +108,7 @@ Each `M3e.Build.<Comp>` module hides the shared Builder behind a component-speci
 
 ```elm
 -- module M3e.Build.Radio
-type alias Builder attrCaps slotCaps msg =
+type alias Builder attrCaps slotCaps msg kind =
     M3e.Build.Internal.Builder
         { kind | radio : M3e.Value.Supported }
         attrCaps
@@ -116,7 +116,9 @@ type alias Builder attrCaps slotCaps msg =
         msg
 ```
 
-Users write `Radio.Builder Radio.AttrCaps Radio.SlotCaps msg` — same familiar shape as today's per-module Builder. The kind-row detail is hidden.
+Users write `Radio.Builder Radio.AttrCaps Radio.SlotCaps msg kind` — the `kind` parameter is a fresh row variable, almost always filled by inference so callers rarely spell it out.
+
+**Why four type parameters, not three?** Elm requires every free type variable in a type alias body to appear in the parameter list. The body `{ kind | radio : Supported }` introduces `kind` as a row variable, so `kind` MUST be in the parameter list. A three-parameter form (`Builder attrCaps slotCaps msg`) is inexpressible in Elm without closing the row, which would forfeit kind-row polymorphism at slot boundaries.
 
 ### 4.4 The kind-row phantom
 
@@ -185,7 +187,7 @@ M3e/
 
 **Per-component module** (`M3e.Build.<Comp>.elm`) exposes:
 
-- `type alias Builder attrCaps slotCaps msg = ...`
+- `type alias Builder attrCaps slotCaps msg kind = ...` (4 params — see §4.3)
 - `type alias AttrCaps = { ... }`
 - `type alias SlotCaps = { ... }`
 - The seed function (e.g., `radioGroup : Builder AttrCaps SlotCaps msg` or `radioGroup : { required } -> Builder ...`).
@@ -364,7 +366,7 @@ The ⑤ shape continues to need **no elm-review rules**. Types cover everything.
 
 ### 8.1 Per-component (`M3e.Build.<Comp>.elm`)
 
-1. Emit type alias `Builder attrCaps slotCaps msg = Internal.Builder { kind | <comp> : Supported } attrCaps slotCaps msg`.
+1. Emit type alias `Builder attrCaps slotCaps msg kind = Internal.Builder { kind | <comp> : Supported } attrCaps slotCaps msg` (see §4.3 for the 4-param rationale).
 2. Emit `AttrCaps` (fields for optional attrs and events).
 3. Emit `SlotCaps` (fields for optional-singular and required-multi slots).
 4. Emit the seed function — takes required attrs as a record, returns `Builder AttrCaps SlotCaps msg` with a Node stub containing the bottom-layer render function.

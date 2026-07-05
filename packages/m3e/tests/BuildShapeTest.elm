@@ -58,7 +58,7 @@ buttonChained =
         |> Button.build
 
 
-{-| Kinded slot: Option into Select's default slot, no .build on Option. -}
+{-| Kinded slot: Option into Select's unnamed slot, no .build on Option. -}
 selectWithOption =
     Select.select
         |> SelectSlots.option (Option.option { content = Kit.text "Option A" })

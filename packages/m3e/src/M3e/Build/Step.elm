@@ -67,7 +67,7 @@ step req_ =
              (\erased_ ch_ ->
                   M3e.Cem.Step.step (List.map M3e.Cem.Attr.forget erased_) ch_
              )
-             (List.map M3e.Cem.Attr.forget [])
+             []
              [ M3e.Element.toNode req_.content ]
         )
 

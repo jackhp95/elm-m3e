@@ -13,13 +13,13 @@ import M3e.Build.SegmentedButton
 import M3e.Node
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder anyK anyA anyS msg
-    -> M3e.Build.SegmentedButton.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.SegmentedButton.Builder pa { ps | unnamed : filled } msg pk
     -> M3e.Build.SegmentedButton.Builder pa { ps
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -30,9 +30,9 @@ default_core child_ parent_ =
 {-| Place a `ButtonSegment` in the `unnamed` slot of `SegmentedButton`. -}
 buttonSegment :
     M3e.Build.ButtonSegment.Builder ca cs msg ck
-    -> M3e.Build.SegmentedButton.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.SegmentedButton.Builder pa { ps | unnamed : filled } msg pk
     -> M3e.Build.SegmentedButton.Builder pa { ps
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg pk
 buttonSegment =
-    default_core
+    unnamed_core

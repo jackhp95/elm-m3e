@@ -29,15 +29,15 @@ icon_core child_ parent_ =
         )
 
 
-default_core :
+unnamed_core :
     M3e.Build.Internal.Builder ck ca cs msg
     -> M3e.Build.BreadcrumbItemButton.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.BreadcrumbItemButton.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
-default_core child_ parent_ =
+unnamed_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -62,10 +62,10 @@ iconIcon =
 icon :
     M3e.Build.Icon.Builder ca cs msg ck
     -> M3e.Build.BreadcrumbItemButton.Builder pa { ps
-        | default : M3e.Build.Internal.Available
+        | unnamed : M3e.Build.Internal.Available
     } msg pk
     -> M3e.Build.BreadcrumbItemButton.Builder pa { ps
-        | default : M3e.Build.Internal.Used
+        | unnamed : M3e.Build.Internal.Used
     } msg pk
 icon =
-    default_core
+    unnamed_core

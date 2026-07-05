@@ -575,7 +575,7 @@ leadingIconSnackbar =
 {-| Place a `Slider` in the `leading-icon` slot of `AppBar`. -}
 leadingIconSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | leadingIcon : M3e.Build.Internal.Available
@@ -642,7 +642,7 @@ leadingIconShape =
 {-| Place a `SegmentedButton` in the `leading-icon` slot of `AppBar`. -}
 leadingIconSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | leadingIcon : M3e.Build.Internal.Available
@@ -696,7 +696,7 @@ leadingIconSearchBar =
 {-| Place a `RadioGroup` in the `leading-icon` slot of `AppBar`. -}
 leadingIconRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | leadingIcon : M3e.Build.Internal.Available
@@ -750,7 +750,7 @@ leadingIconPaginator =
 {-| Place a `Select` in the `leading-icon` slot of `AppBar`. -}
 leadingIconSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | leadingIcon : M3e.Build.Internal.Available
@@ -1558,7 +1558,7 @@ leadingIcon_button =
 {-| Place a `Breadcrumb` in the `leading-icon` slot of `AppBar`. -}
 leadingIconBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | leadingIcon : M3e.Build.Internal.Available
@@ -2184,7 +2184,7 @@ trailingIconSnackbar =
 {-| Place a `Slider` in the `trailing-icon` slot of `AppBar`. -}
 trailingIconSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Available
@@ -2251,7 +2251,7 @@ trailingIconShape =
 {-| Place a `SegmentedButton` in the `trailing-icon` slot of `AppBar`. -}
 trailingIconSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Available
@@ -2305,7 +2305,7 @@ trailingIconSearchBar =
 {-| Place a `RadioGroup` in the `trailing-icon` slot of `AppBar`. -}
 trailingIconRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Available
@@ -2359,7 +2359,7 @@ trailingIconPaginator =
 {-| Place a `Select` in the `trailing-icon` slot of `AppBar`. -}
 trailingIconSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Available
@@ -3167,7 +3167,7 @@ trailingIcon_button =
 {-| Place a `Breadcrumb` in the `trailing-icon` slot of `AppBar`. -}
 trailingIconBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Available

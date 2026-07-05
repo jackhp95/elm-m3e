@@ -452,7 +452,7 @@ actionsSnackbar =
 {-| Place a `Slider` in the `actions` slot of `RichTooltip`. -}
 actionsSlider :
     M3e.Build.Slider.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.RichTooltip.Builder pa { ps
         | actions : M3e.Build.Internal.Available
@@ -519,7 +519,7 @@ actionsShape =
 {-| Place a `SegmentedButton` in the `actions` slot of `RichTooltip`. -}
 actionsSegmentedButton :
     M3e.Build.SegmentedButton.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.RichTooltip.Builder pa { ps
         | actions : M3e.Build.Internal.Available
@@ -573,7 +573,7 @@ actionsSearchBar =
 {-| Place a `RadioGroup` in the `actions` slot of `RichTooltip`. -}
 actionsRadioGroup :
     M3e.Build.RadioGroup.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.RichTooltip.Builder pa { ps
         | actions : M3e.Build.Internal.Available
@@ -627,7 +627,7 @@ actionsPaginator =
 {-| Place a `Select` in the `actions` slot of `RichTooltip`. -}
 actionsSelect :
     M3e.Build.Select.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.RichTooltip.Builder pa { ps
         | actions : M3e.Build.Internal.Available
@@ -1435,7 +1435,7 @@ actionsButton =
 {-| Place a `Breadcrumb` in the `actions` slot of `RichTooltip`. -}
 actionsBreadcrumb :
     M3e.Build.Breadcrumb.Builder ca { cs
-        | default : M3e.Build.Internal.Filled
+        | unnamed : M3e.Build.Internal.Filled
     } msg ck
     -> M3e.Build.RichTooltip.Builder pa { ps
         | actions : M3e.Build.Internal.Available
