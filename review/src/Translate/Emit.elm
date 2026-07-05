@@ -216,13 +216,14 @@ requiredSlotSetter fact =
 
 
 {-| Destructure a `M3e.Action.<ctor> <value>` expression back to a
-target-surface attr-style setter using fact.actionMap in reverse.
+Standard-surface attr-style setter using `fact.actionMap` in reverse. Shares
+`decomposeToAttrStyle` (targeting the Standard module `fact.module_`) with the
+Cem/Html emitters, so a known action ctor becomes `M3e.<Comp>.<attr> <value>`
+and only an unmappable ctor falls back to the `Seam.asAttribute` escape.
 -}
 decomposeRecordAction : Fact -> (Range -> String) -> Node Expression -> String
 decomposeRecordAction fact source expr =
-    -- Fallback: emit the whole expression through Seam. Full destructuring is
-    -- a Task 12 refinement.
-    "Seam.asAttribute (Html.Events.on \"click\" (Json.Decode.succeed " ++ source (Node.range expr) ++ "))"
+    decomposeToAttrStyle fact.module_ fact source expr
 
 
 {-| Emit ④ Record: `M3e.Record.<Comp>.view { content = ..., action = ... } [ attrs ] [ content ]`.
