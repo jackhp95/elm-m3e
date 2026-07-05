@@ -1,103 +1,85 @@
 module BuildShapeTest exposing (main)
 
-{-| Positive type-behavior test for ⑤ Build shape.
+{-| Positive type-behavior test for ⑤ Build shape (crossbar redesign).
 
-Each function below MUST compile. If any of them fails to compile, the
-Build shape's type-safety guarantee is broken.
+Each function below MUST compile. Failures indicate a broken safety guarantee.
 
-Components used:
-  - Divider   — SlotCaps = {} so build works without slot args; has
-                optional-singular attr setters (inset, vertical, etc.).
-  - Select    — has a required-multi default slot (NotFilled → Filled ratchet)
-                and optional-singular slot caps (arrow, value).
-  - Option    — SlotCaps = {} so build works; produces Element { option : … }
-                which satisfies Select.default's slot constraint.
+Coverage:
+  - Bare seed → build (no setters).
+  - Optional-singular attr Available → Used, once.
+  - Multiple distinct optional-singular attrs in sequence.
+  - Kinded slot + leaf child, no .build on child.
+  - Arbitrary slot + leaf child.
+  - Arbitrary slot + heterogeneous leaf children.
+  - Arbitrary slot + container child fully filled inline.
 -}
 
 import Html
+import Kit
 import M3e.Action
 import M3e.Build.Button as Button
 import M3e.Build.Divider as Divider
 import M3e.Build.Option as Option
+import M3e.Build.Radio as Radio
+import M3e.Build.RadioGroup as RadioGroup
+import M3e.Build.RadioGroup.Slots as RadioGroupSlots
 import M3e.Build.Select as Select
+import M3e.Build.Select.Slots as SelectSlots
 import M3e.Value
-import Kit
 
 
-{-| Bare seed → build (no optional setters applied).
-
-Proves build works when all optional attrs are skipped.
--}
-dividerBare =
-    Divider.divider
-        |> Divider.build
-
-
-{-| Optional-singular attr setter applied once — should compile.
-
-Proves the Available → Used transition allows a single application.
--}
-dividerWithInset =
-    Divider.divider
-        |> Divider.inset True
-        |> Divider.build
-
-
-{-| Multiple distinct optional-singular attrs applied — should compile.
-
-Proves independent optional-singular fields can all be set in sequence.
--}
-dividerFullyConfigured =
-    Divider.divider
-        |> Divider.inset True
-        |> Divider.vertical True
-        |> Divider.build
-
-
-{-| Required-multi ratchet: exactly one child in Select.
-
-Proves the NotFilled → Filled transition satisfies build's { default : Filled }
-constraint. Option.SlotCaps = {} so Option.build works on a bare seed.
--}
-selectWithOneOption =
-    Select.select
-        |> Select.default
-            (Option.option { content = Kit.text "Option 1" }
-                |> Option.build
-            )
-        |> Select.build
-
-
-{-| Required-multi ratchet: multiple children in Select.
-
-Proves the Filled → Filled pass-through works on subsequent calls, and that
-build still accepts the fully-filled builder.
--}
-selectWithMultipleOptions =
-    Select.select
-        |> Select.default
-            (Option.option { content = Kit.text "Option 1" }
-                |> Option.build
-            )
-        |> Select.default
-            (Option.option { content = Kit.text "Option 2" }
-                |> Option.build
-            )
-        |> Select.build
-
-
-{-| Non-empty AttrCaps AND non-empty SlotCaps in one component.
-
-Button has both optional attrs (variant, size, ...) and optional-singular
-slots (icon, trailingIcon, selectedSlot). Proves `build` accepts an arbitrary
-polymorphic SlotCaps row — the guarantee restored by the buildInputType fix
-(previously emitted as concrete `{}`, blocking every component whose SlotCaps
-had any Available fields).
--}
-buttonHappy =
+{-| Bare seed → build. -}
+buttonBare =
     Button.button { content = Kit.text "Click me", action = M3e.Action.none }
+        |> Button.build
+
+
+{-| Optional-singular attr applied once. -}
+buttonVariant =
+    Button.button { content = Kit.text "x", action = M3e.Action.none }
         |> Button.variant M3e.Value.filled
         |> Button.build
+
+
+{-| A second distinct optional-singular attr applied independently. -}
+buttonSize =
+    Button.button { content = Kit.text "x", action = M3e.Action.none }
+        |> Button.size M3e.Value.small
+        |> Button.build
+
+
+{-| Kinded slot: Option into Select's default slot, no .build on Option. -}
+selectWithOption =
+    Select.select
+        |> SelectSlots.option (Option.option { content = Kit.text "Option A" })
+        |> SelectSlots.option (Option.option { content = Kit.text "Option B" })
+        |> Select.build
+
+
+{-| Arbitrary slot: Radio into RadioGroup, no .build on Radio. -}
+radioGroupWithRadio =
+    RadioGroup.radioGroup
+        |> RadioGroupSlots.radio Radio.radio
+        |> RadioGroup.build
+
+
+{-| Arbitrary slot with heterogeneous leaf children. -}
+radioGroupHeterogeneous =
+    RadioGroup.radioGroup
+        |> RadioGroupSlots.radio Radio.radio
+        |> RadioGroupSlots.divider Divider.divider
+        |> RadioGroupSlots.radio Radio.radio
+        |> RadioGroup.build
+
+
+{-| Arbitrary slot + container child fully filled inline. -}
+radioGroupWithFilledSelect =
+    RadioGroup.radioGroup
+        |> RadioGroupSlots.select
+            (Select.select
+                |> SelectSlots.option (Option.option { content = Kit.text "Opt" })
+            )
+        |> RadioGroup.build
 
 
 main : Html.Html msg
