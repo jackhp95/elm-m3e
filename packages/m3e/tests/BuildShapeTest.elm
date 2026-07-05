@@ -48,6 +48,16 @@ buttonSize =
         |> Button.build
 
 
+{-| Multiple distinct optional-singular attrs chained in ONE pipeline.
+Proves setter output rows are extensible ({ a | field : Used }, not closed { field : Used }).
+This case was blocked before the row-extensibility fix. -}
+buttonChained =
+    Button.button { content = Kit.text "x", action = M3e.Action.none }
+        |> Button.variant M3e.Value.filled
+        |> Button.size M3e.Value.medium
+        |> Button.build
+
+
 {-| Kinded slot: Option into Select's default slot, no .build on Option. -}
 selectWithOption =
     Select.select
