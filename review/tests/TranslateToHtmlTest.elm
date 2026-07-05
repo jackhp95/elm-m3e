@@ -55,7 +55,7 @@ import M3e.Button
 import M3e.Cem.Html.Button
 
 view =
-    M3e.Cem.Html.Button.button [  ] [  ]
+    M3e.Cem.Html.Button.button [] []
 """
                         ]
         , test "Standard → Html preserves a bare-variable dynamic content tail (#152)" <|
@@ -84,7 +84,7 @@ import M3e.Button
 import M3e.Cem.Html.Button
 
 view =
-    M3e.Cem.Html.Button.button [  ] ([  ] ++ moreKids)
+    M3e.Cem.Html.Button.button [] ([] ++ moreKids)
 """
                         ]
         ]

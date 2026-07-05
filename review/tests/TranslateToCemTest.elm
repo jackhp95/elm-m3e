@@ -46,7 +46,7 @@ import M3e.Button
 import M3e.Cem.Button
 
 view =
-    M3e.Cem.Button.button [  ] [  ]
+    M3e.Cem.Button.button [] []
 """
                         ]
         , test "Standard → Cem preserves a dynamic attr tail via `++` (#152)" <|
@@ -75,7 +75,7 @@ import M3e.Button
 import M3e.Cem.Button
 
 view =
-    M3e.Cem.Button.button ([ M3e.Cem.Button.variant M3e.Value.filled ] ++ extra) [  ]
+    M3e.Cem.Button.button ([ M3e.Cem.Button.variant M3e.Value.filled ] ++ extra) []
 """
                         ]
         , test "Build → Cem: seed record action reverse-maps to an attr-style setter" <|
@@ -138,7 +138,7 @@ import M3e.Cem.Button
 import Seam
 
 view =
-    M3e.Cem.Button.button [ Seam.asAttribute (M3e.Button.mystery x) ] [  ]
+    M3e.Cem.Button.button [ Seam.asAttribute (M3e.Button.mystery x) ] []
 """
                         ]
         , test "Standard → Cem: an unrecognised slot escapes as raw content (EscapedContent)" <|
@@ -167,7 +167,7 @@ import M3e.Button
 import M3e.Cem.Button
 
 view =
-    M3e.Cem.Button.button [  ] [ M3e.Button.mysterySlot y ]
+    M3e.Cem.Button.button [] [ M3e.Button.mysterySlot y ]
 """
                         ]
         ]

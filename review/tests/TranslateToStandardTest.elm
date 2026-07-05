@@ -57,9 +57,7 @@ import M3e.Cem.Button
 import M3e.Button
 
 view =
-    M3e.Button.view
-    [  ]
-    [  ]
+    M3e.Button.view [] []
 """
                         ]
         , test "Cem → Standard preserves a `list ++ variable` dynamic attr tail (#152)" <|
@@ -88,9 +86,7 @@ import M3e.Cem.Button
 import M3e.Button
 
 view =
-    M3e.Button.view
-    ([ M3e.Button.variant M3e.Value.filled ] ++ extra)
-    [  ]
+    M3e.Button.view ([ M3e.Button.variant M3e.Value.filled ] ++ extra) []
 """
                         ]
         , test "Record → Standard: required content becomes the child setter, attrs pass through" <|
@@ -119,9 +115,7 @@ import M3e.Record.Button
 import M3e.Button
 
 view =
-    M3e.Button.view
-    [ M3e.Button.variant M3e.Value.filled ]
-    [ M3e.Button.child c ]
+    M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child c ]
 """
                         ]
         , test "Html → Standard: a child with an unknown slot name escapes via M3e.Content.slot (UnknownSlotName)" <|
@@ -156,9 +150,7 @@ import M3e.Content
 import Seam
 
 view =
-    M3e.Button.view
-    [  ]
-    [ M3e.Content.slot "bogus" (Seam.fromHtml (Html.div [ Html.Attributes.attribute "slot" "bogus" ] [])) ]
+    M3e.Button.view [] [ M3e.Content.slot "bogus" (Seam.fromHtml (Html.div [ Html.Attributes.attribute "slot" "bogus" ] [])) ]
 """
                         ]
         ]

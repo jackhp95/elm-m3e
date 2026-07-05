@@ -96,7 +96,7 @@ import M3e.Cem.Html.Button
 import Seam
 
 view =
-    Seam.fromHtml (M3e.Cem.Html.Button.button [  ] [  ])
+    Seam.fromHtml (M3e.Cem.Html.Button.button [] [])
 """
                         ]
         ]

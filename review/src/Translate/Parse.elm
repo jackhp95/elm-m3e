@@ -1,6 +1,4 @@
-module Translate.Parse exposing
-    ( identifySurface, parseCall
-    )
+module Translate.Parse exposing (identifySurface, parseCall)
 
 {-| Per-surface parsers producing the canonical intermediate.
 
@@ -174,6 +172,7 @@ variable-bound dynamic tail. Recognises three shapes (#152):
 The dynamic tail is carried as `DynamicAttrTail`/`DynamicContentTail` by the
 callers so the emitter can re-emit `([ literals ] ++ extra)` instead of
 silently dropping the variable part.
+
 -}
 splitListArg : Node Expression -> ( List (Node Expression), Maybe (Node Expression) )
 splitListArg listNode =
@@ -302,6 +301,7 @@ variable bound to that call in an enclosing `let` (`label` where
 the common shape when reusable label/icon content is bound above the view call
 (#153). Falls back to leaving the item in place (→ Seam escape) for anything not
 resolvable (e.g. function-parameter-bound content).
+
 -}
 liftRequiredContent : Dict String (Node Expression) -> String -> List (Node Expression) -> ( Maybe (Node Expression), List (Node Expression) )
 liftRequiredContent scope setterName items =
@@ -444,6 +444,7 @@ classifyStandardSlot fact item =
 Reads the first-arg record via `Expression.RecordExpr`. `content` becomes
 `requiredContent`; `action` becomes `requiredAction = RecordStyle {raw}`. Any
 other record fields land in `otherRequired` keyed by their setter name.
+
 -}
 parseRecord : Fact -> Range.Range -> Node Expression -> ( List (Node Expression), Maybe (Node Expression) ) -> ( List (Node Expression), Maybe (Node Expression) ) -> Canonical
 parseRecord fact range recordArg ( attrItems, attrDyn ) ( contentItems, contentDyn ) =
@@ -504,6 +505,7 @@ extractRecordFields node =
 Walks the left-associative `|>` pipeline. Head is the seed application with a
 required record argument; each stage is either an attr-style setter, a slot
 setter, or the terminal `build`.
+
 -}
 parseBuild : Fact -> Range.Range -> Node Expression -> Canonical
 parseBuild fact range node =

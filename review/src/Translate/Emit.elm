@@ -1,5 +1,6 @@
 module Translate.Emit exposing
-    ( emitStandard, emitRecord, emitBuild, emitCem, emitHtml
+    ( emitStandard
+    , emitBuild, emitCem, emitHtml, emitRecord
     )
 
 {-| Per-surface emitters. Each takes a `Canonical` and produces the target-
@@ -30,7 +31,12 @@ listArg : List String -> List String -> String
 listArg literals dynamics =
     let
         base =
-            "[ " ++ String.join ", " literals ++ " ]"
+            case literals of
+                [] ->
+                    "[]"
+
+                _ ->
+                    "[ " ++ String.join ", " literals ++ " ]"
     in
     case dynamics of
         [] ->
@@ -40,7 +46,8 @@ listArg literals dynamics =
             "(" ++ base ++ " ++ " ++ String.join " ++ " dynamics ++ ")"
 
 
-{-| Partition attr items into (non-dynamic literals, dynamic-tail raw exprs). -}
+{-| Partition attr items into (non-dynamic literals, dynamic-tail raw exprs).
+-}
 splitDynAttrs : (Range -> String) -> List AttrItem -> ( List AttrItem, List String )
 splitDynAttrs source items =
     ( List.filter (not << isDynamicAttr) items
@@ -68,7 +75,8 @@ dynAttrText source item =
             Nothing
 
 
-{-| Partition slot items into (non-dynamic literals, dynamic-tail raw exprs). -}
+{-| Partition slot items into (non-dynamic literals, dynamic-tail raw exprs).
+-}
 splitDynSlots : (Range -> String) -> List SlotItem -> ( List SlotItem, List String )
 splitDynSlots source items =
     ( List.filter (not << isDynamicSlot) items
@@ -113,7 +121,7 @@ emitStandard fact source c =
         contentText =
             emitContentList fact source c
     in
-    fact.module_ ++ ".view\n    " ++ attrsText ++ "\n    " ++ contentText
+    fact.module_ ++ ".view " ++ attrsText ++ " " ++ contentText
 
 
 emitAttrsList : Fact -> (Range -> String) -> Canonical -> String
@@ -240,7 +248,7 @@ emitRecord fact source c =
         recordModule =
             recordModuleFor fact
     in
-    recordModule ++ ".view " ++ recordArg ++ "\n    " ++ attrsText ++ "\n    " ++ contentText
+    recordModule ++ ".view " ++ recordArg ++ " " ++ attrsText ++ " " ++ contentText
 
 
 emitRecordArg : Fact -> (Range -> String) -> Canonical -> String

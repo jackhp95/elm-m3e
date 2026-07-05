@@ -66,12 +66,18 @@ wholeSeamEscape fact source c =
     "Seam.fromHtml (" ++ htmlModule ++ "." ++ htmlCtor ++ " " ++ attrsText ++ " " ++ contentText ++ ")"
 
 
-{-| Compose a list-argument literal, appending any dynamic tails with `++`. -}
+{-| Compose a list-argument literal, appending any dynamic tails with `++`.
+-}
 listArg : List String -> List String -> String
 listArg literals dynamics =
     let
         base =
-            "[ " ++ String.join ", " literals ++ " ]"
+            case literals of
+                [] ->
+                    "[]"
+
+                _ ->
+                    "[ " ++ String.join ", " literals ++ " ]"
     in
     case dynamics of
         [] ->
