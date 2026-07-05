@@ -34,7 +34,7 @@ module M3e.Build.Autocomplete.Slots exposing
     , noDataBottomSheetAction, noDataBadge, noDataAvatar, noDataAutocomplete, noDataFormField, noDataOptionPanel, noDataFloatingPanel
     , noDataOptgroup, noDataOption, noDataFocusTrap, noDataAppBar, noDataTextOverflow, noDataTextHighlight, noDataStateLayer
     , noDataSlide, noDataScrollContainer, noDataRipple, noDataPseudoRadio, noDataPseudoCheckbox, noDataFocusRing, noDataElevation
-    , noDataCollapsible, noDataActionElementBase
+    , noDataCollapsible, noDataActionElementBase, optgroup, option
     )
 
 {-|
@@ -81,6 +81,7 @@ Slot setters for `M3e.Build.Autocomplete`. Each alias accepts a specific child c
 @docs noDataOptionPanel, noDataFloatingPanel, noDataOptgroup, noDataOption, noDataFocusTrap, noDataAppBar
 @docs noDataTextOverflow, noDataTextHighlight, noDataStateLayer, noDataSlide, noDataScrollContainer, noDataRipple
 @docs noDataPseudoRadio, noDataPseudoCheckbox, noDataFocusRing, noDataElevation, noDataCollapsible, noDataActionElementBase
+@docs optgroup, option
 -}
 
 
@@ -236,6 +237,18 @@ noData_core :
         | noData : M3e.Build.Internal.Used
     } msg pk
 noData_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.Autocomplete.Builder pa ps msg pk
+    -> M3e.Build.Autocomplete.Builder pa ps msg pk
+default_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -3459,3 +3472,21 @@ noDataActionElementBase :
     } msg pk
 noDataActionElementBase =
     noData_core
+
+
+{-| Place a `Optgroup` in the `unnamed` slot of `Autocomplete`. -}
+optgroup :
+    M3e.Build.Optgroup.Builder ca cs msg ck
+    -> M3e.Build.Autocomplete.Builder pa ps msg pk
+    -> M3e.Build.Autocomplete.Builder pa ps msg pk
+optgroup =
+    default_core
+
+
+{-| Place a `Option` in the `unnamed` slot of `Autocomplete`. -}
+option :
+    M3e.Build.Option.Builder ca cs msg ck
+    -> M3e.Build.Autocomplete.Builder pa ps msg pk
+    -> M3e.Build.Autocomplete.Builder pa ps msg pk
+option =
+    default_core

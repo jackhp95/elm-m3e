@@ -1,9 +1,11 @@
-module M3e.Build.NavMenuItem.Slots exposing ( iconIcon, badgeBadge, selectedIconIcon, toggleIconIcon )
+module M3e.Build.NavMenuItem.Slots exposing
+    ( iconIcon, badgeBadge, selectedIconIcon, toggleIconIcon, navMenuItem
+    )
 
 {-|
 Slot setters for `M3e.Build.NavMenuItem`. Each alias accepts a specific child component's Builder and inserts it into the parent's slot.
 
-@docs iconIcon, badgeBadge, selectedIconIcon, toggleIconIcon
+@docs iconIcon, badgeBadge, selectedIconIcon, toggleIconIcon, navMenuItem
 -}
 
 
@@ -78,6 +80,18 @@ toggleIcon_core child_ parent_ =
         )
 
 
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.NavMenuItem.Builder pa ps msg pk
+    -> M3e.Build.NavMenuItem.Builder pa ps msg pk
+default_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
 {-| Place a `Icon` in the `icon` slot of `NavMenuItem`. -}
 iconIcon :
     M3e.Build.Icon.Builder ca cs msg ck
@@ -128,3 +142,12 @@ toggleIconIcon :
     } msg pk
 toggleIconIcon =
     toggleIcon_core
+
+
+{-| Place a `NavMenuItem` in the `unnamed` slot of `NavMenuItem`. -}
+navMenuItem :
+    M3e.Build.NavMenuItem.Builder ca cs msg ck
+    -> M3e.Build.NavMenuItem.Builder pa ps msg pk
+    -> M3e.Build.NavMenuItem.Builder pa ps msg pk
+navMenuItem =
+    default_core

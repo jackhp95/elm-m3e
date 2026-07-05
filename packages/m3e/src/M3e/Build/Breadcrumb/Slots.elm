@@ -16,7 +16,7 @@ module M3e.Build.Breadcrumb.Slots exposing
     , separatorBreadcrumbItemButton, separatorBottomSheetTrigger, separatorBottomSheet, separatorBottomSheetAction, separatorBadge, separatorAvatar, separatorAutocomplete
     , separatorFormField, separatorOptionPanel, separatorFloatingPanel, separatorOptgroup, separatorOption, separatorFocusTrap, separatorAppBar
     , separatorTextOverflow, separatorTextHighlight, separatorStateLayer, separatorSlide, separatorScrollContainer, separatorRipple, separatorPseudoRadio
-    , separatorPseudoCheckbox, separatorFocusRing, separatorElevation, separatorCollapsible, separatorActionElementBase
+    , separatorPseudoCheckbox, separatorFocusRing, separatorElevation, separatorCollapsible, separatorActionElementBase, breadcrumbItem
     )
 
 {-|
@@ -42,7 +42,7 @@ Slot setters for `M3e.Build.Breadcrumb`. Each alias accepts a specific child com
 @docs separatorAvatar, separatorAutocomplete, separatorFormField, separatorOptionPanel, separatorFloatingPanel, separatorOptgroup
 @docs separatorOption, separatorFocusTrap, separatorAppBar, separatorTextOverflow, separatorTextHighlight, separatorStateLayer
 @docs separatorSlide, separatorScrollContainer, separatorRipple, separatorPseudoRadio, separatorPseudoCheckbox, separatorFocusRing
-@docs separatorElevation, separatorCollapsible, separatorActionElementBase
+@docs separatorElevation, separatorCollapsible, separatorActionElementBase, breadcrumbItem
 -}
 
 
@@ -182,6 +182,20 @@ separator_core :
         | separator : M3e.Build.Internal.Used
     } msg pk
 separator_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.Breadcrumb.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Breadcrumb.Builder pa { ps
+        | default : M3e.Build.Internal.Filled
+    } msg pk
+default_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -1796,3 +1810,14 @@ separatorActionElementBase :
     } msg pk
 separatorActionElementBase =
     separator_core
+
+
+{-| Place a `BreadcrumbItem` in the `unnamed` slot of `Breadcrumb`. -}
+breadcrumbItem :
+    M3e.Build.BreadcrumbItem.Builder ca cs msg ck
+    -> M3e.Build.Breadcrumb.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Breadcrumb.Builder pa { ps
+        | default : M3e.Build.Internal.Filled
+    } msg pk
+breadcrumbItem =
+    default_core

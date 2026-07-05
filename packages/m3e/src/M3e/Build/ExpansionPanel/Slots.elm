@@ -34,7 +34,24 @@ module M3e.Build.ExpansionPanel.Slots exposing
     , headerBottomSheetAction, headerBadge, headerAvatar, headerAutocomplete, headerFormField, headerOptionPanel, headerFloatingPanel
     , headerOptgroup, headerOption, headerFocusTrap, headerAppBar, headerTextOverflow, headerTextHighlight, headerStateLayer
     , headerSlide, headerScrollContainer, headerRipple, headerPseudoRadio, headerPseudoCheckbox, headerFocusRing, headerElevation
-    , headerCollapsible, headerActionElementBase, toggleIconIcon
+    , headerCollapsible, headerActionElementBase, toggleIconIcon, actionsTree, actionsTreeItem, actionsToolbar, actionsToc
+    , actionsTocItem, actionsThemeIcon, actionsTheme, actionsTextareaAutosize, actionsTabs, actionsTabPanel, actionsTab
+    , actionsSwitch, actionsStepperReset, actionsStepperPrevious, actionsStep, actionsStepPanel, actionsStepper, actionsSplitPane
+    , actionsSplitButton, actionsSnackbar, actionsSlider, actionsSliderThumb, actionsSlideGroup, actionsSkeleton, actionsShape
+    , actionsSegmentedButton, actionsButtonSegment, actionsSearchView, actionsSearchBar, actionsRadioGroup, actionsRadio, actionsProgressElementIndicatorBase
+    , actionsPaginator, actionsSelect, actionsNavRailToggle, actionsNavRail, actionsNavMenuItemGroup, actionsNavMenu, actionsNavMenuItem
+    , actionsNavBar, actionsNavItem, actionsMenuItemRadio, actionsMenuItemGroup, actionsMenuItemCheckbox, actionsMenu, actionsMenuItem
+    , actionsMenuTrigger, actionsMenuItemElementBase, actionsLoadingIndicator, actionsSelectionList, actionsListOption, actionsActionList, actionsExpandableListItem
+    , actionsListAction, actionsListItemButton, actionsList, actionsListItem, actionsIcon, actionsHeading, actionsFabMenuTrigger
+    , actionsFabMenu, actionsFab, actionsAccordion, actionsExpansionPanel, actionsExpansionHeader, actionsDrawerToggle, actionsDrawerContainer
+    , actionsDivider, actionsDialogTrigger, actionsDialog, actionsDialogAction, actionsDatepickerToggle, actionsDatepicker, actionsContentPane
+    , actionsSuggestionChip, actionsInputChipSet, actionsInputChip, actionsFilterChipSet, actionsFilterChip, actionsChipSet, actionsAssistChip
+    , actionsChip, actionsCheckbox, actionsCard, actionsCalendar, actionsYearView, actionsMultiYearView, actionsMonthView
+    , actionsTooltip, actionsRichTooltip, actionsTooltipElementBase, actionsRichTooltipAction, actionsButtonGroup, actionsIconButton, actionsButton
+    , actionsBreadcrumb, actionsBreadcrumbItem, actionsBreadcrumbItemButton, actionsBottomSheetTrigger, actionsBottomSheet, actionsBottomSheetAction, actionsBadge
+    , actionsAvatar, actionsAutocomplete, actionsFormField, actionsOptionPanel, actionsFloatingPanel, actionsOptgroup, actionsOption
+    , actionsFocusTrap, actionsAppBar, actionsTextOverflow, actionsTextHighlight, actionsStateLayer, actionsSlide, actionsScrollContainer
+    , actionsRipple, actionsPseudoRadio, actionsPseudoCheckbox, actionsFocusRing, actionsElevation, actionsCollapsible, actionsActionElementBase
     )
 
 {-|
@@ -81,7 +98,27 @@ Slot setters for `M3e.Build.ExpansionPanel`. Each alias accepts a specific child
 @docs headerOptionPanel, headerFloatingPanel, headerOptgroup, headerOption, headerFocusTrap, headerAppBar
 @docs headerTextOverflow, headerTextHighlight, headerStateLayer, headerSlide, headerScrollContainer, headerRipple
 @docs headerPseudoRadio, headerPseudoCheckbox, headerFocusRing, headerElevation, headerCollapsible, headerActionElementBase
-@docs toggleIconIcon
+@docs toggleIconIcon, actionsTree, actionsTreeItem, actionsToolbar, actionsToc, actionsTocItem
+@docs actionsThemeIcon, actionsTheme, actionsTextareaAutosize, actionsTabs, actionsTabPanel, actionsTab
+@docs actionsSwitch, actionsStepperReset, actionsStepperPrevious, actionsStep, actionsStepPanel, actionsStepper
+@docs actionsSplitPane, actionsSplitButton, actionsSnackbar, actionsSlider, actionsSliderThumb, actionsSlideGroup
+@docs actionsSkeleton, actionsShape, actionsSegmentedButton, actionsButtonSegment, actionsSearchView, actionsSearchBar
+@docs actionsRadioGroup, actionsRadio, actionsProgressElementIndicatorBase, actionsPaginator, actionsSelect, actionsNavRailToggle
+@docs actionsNavRail, actionsNavMenuItemGroup, actionsNavMenu, actionsNavMenuItem, actionsNavBar, actionsNavItem
+@docs actionsMenuItemRadio, actionsMenuItemGroup, actionsMenuItemCheckbox, actionsMenu, actionsMenuItem, actionsMenuTrigger
+@docs actionsMenuItemElementBase, actionsLoadingIndicator, actionsSelectionList, actionsListOption, actionsActionList, actionsExpandableListItem
+@docs actionsListAction, actionsListItemButton, actionsList, actionsListItem, actionsIcon, actionsHeading
+@docs actionsFabMenuTrigger, actionsFabMenu, actionsFab, actionsAccordion, actionsExpansionPanel, actionsExpansionHeader
+@docs actionsDrawerToggle, actionsDrawerContainer, actionsDivider, actionsDialogTrigger, actionsDialog, actionsDialogAction
+@docs actionsDatepickerToggle, actionsDatepicker, actionsContentPane, actionsSuggestionChip, actionsInputChipSet, actionsInputChip
+@docs actionsFilterChipSet, actionsFilterChip, actionsChipSet, actionsAssistChip, actionsChip, actionsCheckbox
+@docs actionsCard, actionsCalendar, actionsYearView, actionsMultiYearView, actionsMonthView, actionsTooltip
+@docs actionsRichTooltip, actionsTooltipElementBase, actionsRichTooltipAction, actionsButtonGroup, actionsIconButton, actionsButton
+@docs actionsBreadcrumb, actionsBreadcrumbItem, actionsBreadcrumbItemButton, actionsBottomSheetTrigger, actionsBottomSheet, actionsBottomSheetAction
+@docs actionsBadge, actionsAvatar, actionsAutocomplete, actionsFormField, actionsOptionPanel, actionsFloatingPanel
+@docs actionsOptgroup, actionsOption, actionsFocusTrap, actionsAppBar, actionsTextOverflow, actionsTextHighlight
+@docs actionsStateLayer, actionsSlide, actionsScrollContainer, actionsRipple, actionsPseudoRadio, actionsPseudoCheckbox
+@docs actionsFocusRing, actionsElevation, actionsCollapsible, actionsActionElementBase
 -}
 
 
@@ -253,6 +290,18 @@ toggleIcon_core :
         | toggleIcon : M3e.Build.Internal.Used
     } msg pk
 toggleIcon_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+actions_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actions_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -3489,3 +3538,1120 @@ toggleIconIcon :
     } msg pk
 toggleIconIcon =
     toggleIcon_core
+
+
+{-| Place a `Tree` in the `actions` slot of `ExpansionPanel`. -}
+actionsTree :
+    M3e.Build.Tree.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTree =
+    actions_core
+
+
+{-| Place a `TreeItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsTreeItem :
+    M3e.Build.TreeItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTreeItem =
+    actions_core
+
+
+{-| Place a `Toolbar` in the `actions` slot of `ExpansionPanel`. -}
+actionsToolbar :
+    M3e.Build.Toolbar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsToolbar =
+    actions_core
+
+
+{-| Place a `Toc` in the `actions` slot of `ExpansionPanel`. -}
+actionsToc :
+    M3e.Build.Toc.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsToc =
+    actions_core
+
+
+{-| Place a `TocItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsTocItem :
+    M3e.Build.TocItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTocItem =
+    actions_core
+
+
+{-| Place a `ThemeIcon` in the `actions` slot of `ExpansionPanel`. -}
+actionsThemeIcon :
+    M3e.Build.ThemeIcon.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsThemeIcon =
+    actions_core
+
+
+{-| Place a `Theme` in the `actions` slot of `ExpansionPanel`. -}
+actionsTheme :
+    M3e.Build.Theme.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTheme =
+    actions_core
+
+
+{-| Place a `TextareaAutosize` in the `actions` slot of `ExpansionPanel`. -}
+actionsTextareaAutosize :
+    M3e.Build.TextareaAutosize.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTextareaAutosize =
+    actions_core
+
+
+{-| Place a `Tabs` in the `actions` slot of `ExpansionPanel`. -}
+actionsTabs :
+    M3e.Build.Tabs.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTabs =
+    actions_core
+
+
+{-| Place a `TabPanel` in the `actions` slot of `ExpansionPanel`. -}
+actionsTabPanel :
+    M3e.Build.TabPanel.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTabPanel =
+    actions_core
+
+
+{-| Place a `Tab` in the `actions` slot of `ExpansionPanel`. -}
+actionsTab :
+    M3e.Build.Tab.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTab =
+    actions_core
+
+
+{-| Place a `Switch` in the `actions` slot of `ExpansionPanel`. -}
+actionsSwitch :
+    M3e.Build.Switch.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSwitch =
+    actions_core
+
+
+{-| Place a `StepperReset` in the `actions` slot of `ExpansionPanel`. -}
+actionsStepperReset :
+    M3e.Build.StepperReset.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsStepperReset =
+    actions_core
+
+
+{-| Place a `StepperPrevious` in the `actions` slot of `ExpansionPanel`. -}
+actionsStepperPrevious :
+    M3e.Build.StepperPrevious.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsStepperPrevious =
+    actions_core
+
+
+{-| Place a `Step` in the `actions` slot of `ExpansionPanel`. -}
+actionsStep :
+    M3e.Build.Step.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsStep =
+    actions_core
+
+
+{-| Place a `StepPanel` in the `actions` slot of `ExpansionPanel`. -}
+actionsStepPanel :
+    M3e.Build.StepPanel.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsStepPanel =
+    actions_core
+
+
+{-| Place a `Stepper` in the `actions` slot of `ExpansionPanel`. -}
+actionsStepper :
+    M3e.Build.Stepper.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsStepper =
+    actions_core
+
+
+{-| Place a `SplitPane` in the `actions` slot of `ExpansionPanel`. -}
+actionsSplitPane :
+    M3e.Build.SplitPane.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSplitPane =
+    actions_core
+
+
+{-| Place a `SplitButton` in the `actions` slot of `ExpansionPanel`. -}
+actionsSplitButton :
+    M3e.Build.SplitButton.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSplitButton =
+    actions_core
+
+
+{-| Place a `Snackbar` in the `actions` slot of `ExpansionPanel`. -}
+actionsSnackbar :
+    M3e.Build.Snackbar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSnackbar =
+    actions_core
+
+
+{-| Place a `Slider` in the `actions` slot of `ExpansionPanel`. -}
+actionsSlider :
+    M3e.Build.Slider.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSlider =
+    actions_core
+
+
+{-| Place a `SliderThumb` in the `actions` slot of `ExpansionPanel`. -}
+actionsSliderThumb :
+    M3e.Build.SliderThumb.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSliderThumb =
+    actions_core
+
+
+{-| Place a `SlideGroup` in the `actions` slot of `ExpansionPanel`. -}
+actionsSlideGroup :
+    M3e.Build.SlideGroup.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSlideGroup =
+    actions_core
+
+
+{-| Place a `Skeleton` in the `actions` slot of `ExpansionPanel`. -}
+actionsSkeleton :
+    M3e.Build.Skeleton.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSkeleton =
+    actions_core
+
+
+{-| Place a `Shape` in the `actions` slot of `ExpansionPanel`. -}
+actionsShape :
+    M3e.Build.Shape.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsShape =
+    actions_core
+
+
+{-| Place a `SegmentedButton` in the `actions` slot of `ExpansionPanel`. -}
+actionsSegmentedButton :
+    M3e.Build.SegmentedButton.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSegmentedButton =
+    actions_core
+
+
+{-| Place a `ButtonSegment` in the `actions` slot of `ExpansionPanel`. -}
+actionsButtonSegment :
+    M3e.Build.ButtonSegment.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsButtonSegment =
+    actions_core
+
+
+{-| Place a `SearchView` in the `actions` slot of `ExpansionPanel`. -}
+actionsSearchView :
+    M3e.Build.SearchView.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSearchView =
+    actions_core
+
+
+{-| Place a `SearchBar` in the `actions` slot of `ExpansionPanel`. -}
+actionsSearchBar :
+    M3e.Build.SearchBar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSearchBar =
+    actions_core
+
+
+{-| Place a `RadioGroup` in the `actions` slot of `ExpansionPanel`. -}
+actionsRadioGroup :
+    M3e.Build.RadioGroup.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsRadioGroup =
+    actions_core
+
+
+{-| Place a `Radio` in the `actions` slot of `ExpansionPanel`. -}
+actionsRadio :
+    M3e.Build.Radio.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsRadio =
+    actions_core
+
+
+{-| Place a `ProgressElementIndicatorBase` in the `actions` slot of `ExpansionPanel`. -}
+actionsProgressElementIndicatorBase :
+    M3e.Build.ProgressElementIndicatorBase.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsProgressElementIndicatorBase =
+    actions_core
+
+
+{-| Place a `Paginator` in the `actions` slot of `ExpansionPanel`. -}
+actionsPaginator :
+    M3e.Build.Paginator.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsPaginator =
+    actions_core
+
+
+{-| Place a `Select` in the `actions` slot of `ExpansionPanel`. -}
+actionsSelect :
+    M3e.Build.Select.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSelect =
+    actions_core
+
+
+{-| Place a `NavRailToggle` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavRailToggle :
+    M3e.Build.NavRailToggle.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavRailToggle =
+    actions_core
+
+
+{-| Place a `NavRail` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavRail :
+    M3e.Build.NavRail.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavRail =
+    actions_core
+
+
+{-| Place a `NavMenuItemGroup` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavMenuItemGroup :
+    M3e.Build.NavMenuItemGroup.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavMenuItemGroup =
+    actions_core
+
+
+{-| Place a `NavMenu` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavMenu :
+    M3e.Build.NavMenu.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavMenu =
+    actions_core
+
+
+{-| Place a `NavMenuItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavMenuItem :
+    M3e.Build.NavMenuItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavMenuItem =
+    actions_core
+
+
+{-| Place a `NavBar` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavBar :
+    M3e.Build.NavBar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavBar =
+    actions_core
+
+
+{-| Place a `NavItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsNavItem :
+    M3e.Build.NavItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsNavItem =
+    actions_core
+
+
+{-| Place a `MenuItemRadio` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenuItemRadio :
+    M3e.Build.MenuItemRadio.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenuItemRadio =
+    actions_core
+
+
+{-| Place a `MenuItemGroup` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenuItemGroup :
+    M3e.Build.MenuItemGroup.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenuItemGroup =
+    actions_core
+
+
+{-| Place a `MenuItemCheckbox` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenuItemCheckbox :
+    M3e.Build.MenuItemCheckbox.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenuItemCheckbox =
+    actions_core
+
+
+{-| Place a `Menu` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenu :
+    M3e.Build.Menu.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenu =
+    actions_core
+
+
+{-| Place a `MenuItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenuItem :
+    M3e.Build.MenuItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenuItem =
+    actions_core
+
+
+{-| Place a `MenuTrigger` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenuTrigger :
+    M3e.Build.MenuTrigger.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenuTrigger =
+    actions_core
+
+
+{-| Place a `MenuItemElementBase` in the `actions` slot of `ExpansionPanel`. -}
+actionsMenuItemElementBase :
+    M3e.Build.MenuItemElementBase.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMenuItemElementBase =
+    actions_core
+
+
+{-| Place a `LoadingIndicator` in the `actions` slot of `ExpansionPanel`. -}
+actionsLoadingIndicator :
+    M3e.Build.LoadingIndicator.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsLoadingIndicator =
+    actions_core
+
+
+{-| Place a `SelectionList` in the `actions` slot of `ExpansionPanel`. -}
+actionsSelectionList :
+    M3e.Build.SelectionList.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSelectionList =
+    actions_core
+
+
+{-| Place a `ListOption` in the `actions` slot of `ExpansionPanel`. -}
+actionsListOption :
+    M3e.Build.ListOption.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsListOption =
+    actions_core
+
+
+{-| Place a `ActionList` in the `actions` slot of `ExpansionPanel`. -}
+actionsActionList :
+    M3e.Build.ActionList.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsActionList =
+    actions_core
+
+
+{-| Place a `ExpandableListItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsExpandableListItem :
+    M3e.Build.ExpandableListItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsExpandableListItem =
+    actions_core
+
+
+{-| Place a `ListAction` in the `actions` slot of `ExpansionPanel`. -}
+actionsListAction :
+    M3e.Build.ListAction.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsListAction =
+    actions_core
+
+
+{-| Place a `ListItemButton` in the `actions` slot of `ExpansionPanel`. -}
+actionsListItemButton :
+    M3e.Build.ListItemButton.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsListItemButton =
+    actions_core
+
+
+{-| Place a `List` in the `actions` slot of `ExpansionPanel`. -}
+actionsList :
+    M3e.Build.List.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsList =
+    actions_core
+
+
+{-| Place a `ListItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsListItem :
+    M3e.Build.ListItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsListItem =
+    actions_core
+
+
+{-| Place a `Icon` in the `actions` slot of `ExpansionPanel`. -}
+actionsIcon :
+    M3e.Build.Icon.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsIcon =
+    actions_core
+
+
+{-| Place a `Heading` in the `actions` slot of `ExpansionPanel`. -}
+actionsHeading :
+    M3e.Build.Heading.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsHeading =
+    actions_core
+
+
+{-| Place a `FabMenuTrigger` in the `actions` slot of `ExpansionPanel`. -}
+actionsFabMenuTrigger :
+    M3e.Build.FabMenuTrigger.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFabMenuTrigger =
+    actions_core
+
+
+{-| Place a `FabMenu` in the `actions` slot of `ExpansionPanel`. -}
+actionsFabMenu :
+    M3e.Build.FabMenu.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFabMenu =
+    actions_core
+
+
+{-| Place a `Fab` in the `actions` slot of `ExpansionPanel`. -}
+actionsFab :
+    M3e.Build.Fab.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFab =
+    actions_core
+
+
+{-| Place a `Accordion` in the `actions` slot of `ExpansionPanel`. -}
+actionsAccordion :
+    M3e.Build.Accordion.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsAccordion =
+    actions_core
+
+
+{-| Place a `ExpansionPanel` in the `actions` slot of `ExpansionPanel`. -}
+actionsExpansionPanel :
+    M3e.Build.ExpansionPanel.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsExpansionPanel =
+    actions_core
+
+
+{-| Place a `ExpansionHeader` in the `actions` slot of `ExpansionPanel`. -}
+actionsExpansionHeader :
+    M3e.Build.ExpansionHeader.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsExpansionHeader =
+    actions_core
+
+
+{-| Place a `DrawerToggle` in the `actions` slot of `ExpansionPanel`. -}
+actionsDrawerToggle :
+    M3e.Build.DrawerToggle.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDrawerToggle =
+    actions_core
+
+
+{-| Place a `DrawerContainer` in the `actions` slot of `ExpansionPanel`. -}
+actionsDrawerContainer :
+    M3e.Build.DrawerContainer.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDrawerContainer =
+    actions_core
+
+
+{-| Place a `Divider` in the `actions` slot of `ExpansionPanel`. -}
+actionsDivider :
+    M3e.Build.Divider.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDivider =
+    actions_core
+
+
+{-| Place a `DialogTrigger` in the `actions` slot of `ExpansionPanel`. -}
+actionsDialogTrigger :
+    M3e.Build.DialogTrigger.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDialogTrigger =
+    actions_core
+
+
+{-| Place a `Dialog` in the `actions` slot of `ExpansionPanel`. -}
+actionsDialog :
+    M3e.Build.Dialog.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDialog =
+    actions_core
+
+
+{-| Place a `DialogAction` in the `actions` slot of `ExpansionPanel`. -}
+actionsDialogAction :
+    M3e.Build.DialogAction.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDialogAction =
+    actions_core
+
+
+{-| Place a `DatepickerToggle` in the `actions` slot of `ExpansionPanel`. -}
+actionsDatepickerToggle :
+    M3e.Build.DatepickerToggle.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDatepickerToggle =
+    actions_core
+
+
+{-| Place a `Datepicker` in the `actions` slot of `ExpansionPanel`. -}
+actionsDatepicker :
+    M3e.Build.Datepicker.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsDatepicker =
+    actions_core
+
+
+{-| Place a `ContentPane` in the `actions` slot of `ExpansionPanel`. -}
+actionsContentPane :
+    M3e.Build.ContentPane.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsContentPane =
+    actions_core
+
+
+{-| Place a `SuggestionChip` in the `actions` slot of `ExpansionPanel`. -}
+actionsSuggestionChip :
+    M3e.Build.SuggestionChip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSuggestionChip =
+    actions_core
+
+
+{-| Place a `InputChipSet` in the `actions` slot of `ExpansionPanel`. -}
+actionsInputChipSet :
+    M3e.Build.InputChipSet.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsInputChipSet =
+    actions_core
+
+
+{-| Place a `InputChip` in the `actions` slot of `ExpansionPanel`. -}
+actionsInputChip :
+    M3e.Build.InputChip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsInputChip =
+    actions_core
+
+
+{-| Place a `FilterChipSet` in the `actions` slot of `ExpansionPanel`. -}
+actionsFilterChipSet :
+    M3e.Build.FilterChipSet.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFilterChipSet =
+    actions_core
+
+
+{-| Place a `FilterChip` in the `actions` slot of `ExpansionPanel`. -}
+actionsFilterChip :
+    M3e.Build.FilterChip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFilterChip =
+    actions_core
+
+
+{-| Place a `ChipSet` in the `actions` slot of `ExpansionPanel`. -}
+actionsChipSet :
+    M3e.Build.ChipSet.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsChipSet =
+    actions_core
+
+
+{-| Place a `AssistChip` in the `actions` slot of `ExpansionPanel`. -}
+actionsAssistChip :
+    M3e.Build.AssistChip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsAssistChip =
+    actions_core
+
+
+{-| Place a `Chip` in the `actions` slot of `ExpansionPanel`. -}
+actionsChip :
+    M3e.Build.Chip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsChip =
+    actions_core
+
+
+{-| Place a `Checkbox` in the `actions` slot of `ExpansionPanel`. -}
+actionsCheckbox :
+    M3e.Build.Checkbox.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsCheckbox =
+    actions_core
+
+
+{-| Place a `Card` in the `actions` slot of `ExpansionPanel`. -}
+actionsCard :
+    M3e.Build.Card.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsCard =
+    actions_core
+
+
+{-| Place a `Calendar` in the `actions` slot of `ExpansionPanel`. -}
+actionsCalendar :
+    M3e.Build.Calendar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsCalendar =
+    actions_core
+
+
+{-| Place a `YearView` in the `actions` slot of `ExpansionPanel`. -}
+actionsYearView :
+    M3e.Build.YearView.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsYearView =
+    actions_core
+
+
+{-| Place a `MultiYearView` in the `actions` slot of `ExpansionPanel`. -}
+actionsMultiYearView :
+    M3e.Build.MultiYearView.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMultiYearView =
+    actions_core
+
+
+{-| Place a `MonthView` in the `actions` slot of `ExpansionPanel`. -}
+actionsMonthView :
+    M3e.Build.MonthView.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsMonthView =
+    actions_core
+
+
+{-| Place a `Tooltip` in the `actions` slot of `ExpansionPanel`. -}
+actionsTooltip :
+    M3e.Build.Tooltip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTooltip =
+    actions_core
+
+
+{-| Place a `RichTooltip` in the `actions` slot of `ExpansionPanel`. -}
+actionsRichTooltip :
+    M3e.Build.RichTooltip.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsRichTooltip =
+    actions_core
+
+
+{-| Place a `TooltipElementBase` in the `actions` slot of `ExpansionPanel`. -}
+actionsTooltipElementBase :
+    M3e.Build.TooltipElementBase.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTooltipElementBase =
+    actions_core
+
+
+{-| Place a `RichTooltipAction` in the `actions` slot of `ExpansionPanel`. -}
+actionsRichTooltipAction :
+    M3e.Build.RichTooltipAction.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsRichTooltipAction =
+    actions_core
+
+
+{-| Place a `ButtonGroup` in the `actions` slot of `ExpansionPanel`. -}
+actionsButtonGroup :
+    M3e.Build.ButtonGroup.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsButtonGroup =
+    actions_core
+
+
+{-| Place a `IconButton` in the `actions` slot of `ExpansionPanel`. -}
+actionsIconButton :
+    M3e.Build.IconButton.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsIconButton =
+    actions_core
+
+
+{-| Place a `Button` in the `actions` slot of `ExpansionPanel`. -}
+actionsButton :
+    M3e.Build.Button.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsButton =
+    actions_core
+
+
+{-| Place a `Breadcrumb` in the `actions` slot of `ExpansionPanel`. -}
+actionsBreadcrumb :
+    M3e.Build.Breadcrumb.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBreadcrumb =
+    actions_core
+
+
+{-| Place a `BreadcrumbItem` in the `actions` slot of `ExpansionPanel`. -}
+actionsBreadcrumbItem :
+    M3e.Build.BreadcrumbItem.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBreadcrumbItem =
+    actions_core
+
+
+{-| Place a `BreadcrumbItemButton` in the `actions` slot of `ExpansionPanel`. -}
+actionsBreadcrumbItemButton :
+    M3e.Build.BreadcrumbItemButton.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBreadcrumbItemButton =
+    actions_core
+
+
+{-| Place a `BottomSheetTrigger` in the `actions` slot of `ExpansionPanel`. -}
+actionsBottomSheetTrigger :
+    M3e.Build.BottomSheetTrigger.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBottomSheetTrigger =
+    actions_core
+
+
+{-| Place a `BottomSheet` in the `actions` slot of `ExpansionPanel`. -}
+actionsBottomSheet :
+    M3e.Build.BottomSheet.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBottomSheet =
+    actions_core
+
+
+{-| Place a `BottomSheetAction` in the `actions` slot of `ExpansionPanel`. -}
+actionsBottomSheetAction :
+    M3e.Build.BottomSheetAction.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBottomSheetAction =
+    actions_core
+
+
+{-| Place a `Badge` in the `actions` slot of `ExpansionPanel`. -}
+actionsBadge :
+    M3e.Build.Badge.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsBadge =
+    actions_core
+
+
+{-| Place a `Avatar` in the `actions` slot of `ExpansionPanel`. -}
+actionsAvatar :
+    M3e.Build.Avatar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsAvatar =
+    actions_core
+
+
+{-| Place a `Autocomplete` in the `actions` slot of `ExpansionPanel`. -}
+actionsAutocomplete :
+    M3e.Build.Autocomplete.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsAutocomplete =
+    actions_core
+
+
+{-| Place a `FormField` in the `actions` slot of `ExpansionPanel`. -}
+actionsFormField :
+    M3e.Build.FormField.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFormField =
+    actions_core
+
+
+{-| Place a `OptionPanel` in the `actions` slot of `ExpansionPanel`. -}
+actionsOptionPanel :
+    M3e.Build.OptionPanel.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsOptionPanel =
+    actions_core
+
+
+{-| Place a `FloatingPanel` in the `actions` slot of `ExpansionPanel`. -}
+actionsFloatingPanel :
+    M3e.Build.FloatingPanel.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFloatingPanel =
+    actions_core
+
+
+{-| Place a `Optgroup` in the `actions` slot of `ExpansionPanel`. -}
+actionsOptgroup :
+    M3e.Build.Optgroup.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsOptgroup =
+    actions_core
+
+
+{-| Place a `Option` in the `actions` slot of `ExpansionPanel`. -}
+actionsOption :
+    M3e.Build.Option.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsOption =
+    actions_core
+
+
+{-| Place a `FocusTrap` in the `actions` slot of `ExpansionPanel`. -}
+actionsFocusTrap :
+    M3e.Build.FocusTrap.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFocusTrap =
+    actions_core
+
+
+{-| Place a `AppBar` in the `actions` slot of `ExpansionPanel`. -}
+actionsAppBar :
+    M3e.Build.AppBar.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsAppBar =
+    actions_core
+
+
+{-| Place a `TextOverflow` in the `actions` slot of `ExpansionPanel`. -}
+actionsTextOverflow :
+    M3e.Build.TextOverflow.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTextOverflow =
+    actions_core
+
+
+{-| Place a `TextHighlight` in the `actions` slot of `ExpansionPanel`. -}
+actionsTextHighlight :
+    M3e.Build.TextHighlight.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsTextHighlight =
+    actions_core
+
+
+{-| Place a `StateLayer` in the `actions` slot of `ExpansionPanel`. -}
+actionsStateLayer :
+    M3e.Build.StateLayer.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsStateLayer =
+    actions_core
+
+
+{-| Place a `Slide` in the `actions` slot of `ExpansionPanel`. -}
+actionsSlide :
+    M3e.Build.Slide.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsSlide =
+    actions_core
+
+
+{-| Place a `ScrollContainer` in the `actions` slot of `ExpansionPanel`. -}
+actionsScrollContainer :
+    M3e.Build.ScrollContainer.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsScrollContainer =
+    actions_core
+
+
+{-| Place a `Ripple` in the `actions` slot of `ExpansionPanel`. -}
+actionsRipple :
+    M3e.Build.Ripple.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsRipple =
+    actions_core
+
+
+{-| Place a `PseudoRadio` in the `actions` slot of `ExpansionPanel`. -}
+actionsPseudoRadio :
+    M3e.Build.PseudoRadio.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsPseudoRadio =
+    actions_core
+
+
+{-| Place a `PseudoCheckbox` in the `actions` slot of `ExpansionPanel`. -}
+actionsPseudoCheckbox :
+    M3e.Build.PseudoCheckbox.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsPseudoCheckbox =
+    actions_core
+
+
+{-| Place a `FocusRing` in the `actions` slot of `ExpansionPanel`. -}
+actionsFocusRing :
+    M3e.Build.FocusRing.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsFocusRing =
+    actions_core
+
+
+{-| Place a `Elevation` in the `actions` slot of `ExpansionPanel`. -}
+actionsElevation :
+    M3e.Build.Elevation.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsElevation =
+    actions_core
+
+
+{-| Place a `Collapsible` in the `actions` slot of `ExpansionPanel`. -}
+actionsCollapsible :
+    M3e.Build.Collapsible.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsCollapsible =
+    actions_core
+
+
+{-| Place a `ActionElementBase` in the `actions` slot of `ExpansionPanel`. -}
+actionsActionElementBase :
+    M3e.Build.ActionElementBase.Builder ca cs msg ck
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+    -> M3e.Build.ExpansionPanel.Builder pa ps msg pk
+actionsActionElementBase =
+    actions_core

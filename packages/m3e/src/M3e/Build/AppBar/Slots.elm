@@ -1,5 +1,5 @@
 module M3e.Build.AppBar.Slots exposing
-    ( leadingIcon, leadingIconButton, leadingButton, leadingIconTree, leadingIconTreeItem, leadingIconToolbar
+    ( leadingIcon, leading_iconButton, leadingButton, leadingIconTree, leadingIconTreeItem, leadingIconToolbar
     , leadingIconToc, leadingIconTocItem, leadingIconThemeIcon, leadingIconTheme, leadingIconTextareaAutosize, leadingIconTabs, leadingIconTabPanel
     , leadingIconTab, leadingIconSwitch, leadingIconStepperReset, leadingIconStepperPrevious, leadingIconStep, leadingIconStepPanel, leadingIconStepper
     , leadingIconSplitPane, leadingIconSplitButton, leadingIconSnackbar, leadingIconSlider, leadingIconSliderThumb, leadingIconSlideGroup, leadingIconSkeleton
@@ -13,34 +13,35 @@ module M3e.Build.AppBar.Slots exposing
     , leadingIconContentPane, leadingIconSuggestionChip, leadingIconInputChipSet, leadingIconInputChip, leadingIconFilterChipSet, leadingIconFilterChip, leadingIconChipSet
     , leadingIconAssistChip, leadingIconChip, leadingIconCheckbox, leadingIconCard, leadingIconCalendar, leadingIconYearView, leadingIconMultiYearView
     , leadingIconMonthView, leadingIconTooltip, leadingIconRichTooltip, leadingIconTooltipElementBase, leadingIconRichTooltipAction, leadingIconButtonGroup, leadingIconIconButton
-    , leadingIconBreadcrumb, leadingIconBreadcrumbItem, leadingIconBreadcrumbItemButton, leadingIconBottomSheetTrigger, leadingIconBottomSheet, leadingIconBottomSheetAction, leadingIconBadge
-    , leadingIconAvatar, leadingIconAutocomplete, leadingIconFormField, leadingIconOptionPanel, leadingIconFloatingPanel, leadingIconOptgroup, leadingIconOption
-    , leadingIconFocusTrap, leadingIconAppBar, leadingIconTextOverflow, leadingIconTextHighlight, leadingIconStateLayer, leadingIconSlide, leadingIconScrollContainer
-    , leadingIconRipple, leadingIconPseudoRadio, leadingIconPseudoCheckbox, leadingIconFocusRing, leadingIconElevation, leadingIconCollapsible, leadingIconActionElementBase
-    , trailingIconTree, trailingIconTreeItem, trailingIconToolbar, trailingIconToc, trailingIconTocItem, trailingIconThemeIcon, trailingIconTheme
-    , trailingIconTextareaAutosize, trailingIconTabs, trailingIconTabPanel, trailingIconTab, trailingIconSwitch, trailingIconStepperReset, trailingIconStepperPrevious
-    , trailingIconStep, trailingIconStepPanel, trailingIconStepper, trailingIconSplitPane, trailingIconSplitButton, trailingIconSnackbar, trailingIconSlider
-    , trailingIconSliderThumb, trailingIconSlideGroup, trailingIconSkeleton, trailingIconShape, trailingIconSegmentedButton, trailingIconButtonSegment, trailingIconSearchView
-    , trailingIconSearchBar, trailingIconRadioGroup, trailingIconRadio, trailingIconProgressElementIndicatorBase, trailingIconPaginator, trailingIconSelect, trailingIconNavRailToggle
-    , trailingIconNavRail, trailingIconNavMenuItemGroup, trailingIconNavMenu, trailingIconNavMenuItem, trailingIconNavBar, trailingIconNavItem, trailingIconMenuItemRadio
-    , trailingIconMenuItemGroup, trailingIconMenuItemCheckbox, trailingIconMenu, trailingIconMenuItem, trailingIconMenuTrigger, trailingIconMenuItemElementBase, trailingIconLoadingIndicator
-    , trailingIconSelectionList, trailingIconListOption, trailingIconActionList, trailingIconExpandableListItem, trailingIconListAction, trailingIconListItemButton, trailingIconList
-    , trailingIconListItem, trailingIconIcon, trailingIconHeading, trailingIconFabMenuTrigger, trailingIconFabMenu, trailingIconFab, trailingIconAccordion
-    , trailingIconExpansionPanel, trailingIconExpansionHeader, trailingIconDrawerToggle, trailingIconDrawerContainer, trailingIconDivider, trailingIconDialogTrigger, trailingIconDialog
-    , trailingIconDialogAction, trailingIconDatepickerToggle, trailingIconDatepicker, trailingIconContentPane, trailingIconSuggestionChip, trailingIconInputChipSet, trailingIconInputChip
-    , trailingIconFilterChipSet, trailingIconFilterChip, trailingIconChipSet, trailingIconAssistChip, trailingIconChip, trailingIconCheckbox, trailingIconCard
-    , trailingIconCalendar, trailingIconYearView, trailingIconMultiYearView, trailingIconMonthView, trailingIconTooltip, trailingIconRichTooltip, trailingIconTooltipElementBase
-    , trailingIconRichTooltipAction, trailingIconButtonGroup, trailingIconIconButton, trailingIconButton, trailingIconBreadcrumb, trailingIconBreadcrumbItem, trailingIconBreadcrumbItemButton
-    , trailingIconBottomSheetTrigger, trailingIconBottomSheet, trailingIconBottomSheetAction, trailingIconBadge, trailingIconAvatar, trailingIconAutocomplete, trailingIconFormField
-    , trailingIconOptionPanel, trailingIconFloatingPanel, trailingIconOptgroup, trailingIconOption, trailingIconFocusTrap, trailingIconAppBar, trailingIconTextOverflow
-    , trailingIconTextHighlight, trailingIconStateLayer, trailingIconSlide, trailingIconScrollContainer, trailingIconRipple, trailingIconPseudoRadio, trailingIconPseudoCheckbox
-    , trailingIconFocusRing, trailingIconElevation, trailingIconCollapsible, trailingIconActionElementBase
+    , leadingIcon_button, leadingIconBreadcrumb, leadingIconBreadcrumbItem, leadingIconBreadcrumbItemButton, leadingIconBottomSheetTrigger, leadingIconBottomSheet, leadingIconBottomSheetAction
+    , leadingIconBadge, leadingIconAvatar, leadingIconAutocomplete, leadingIconFormField, leadingIconOptionPanel, leadingIconFloatingPanel, leadingIconOptgroup
+    , leadingIconOption, leadingIconFocusTrap, leadingIconAppBar, leadingIconTextOverflow, leadingIconTextHighlight, leadingIconStateLayer, leadingIconSlide
+    , leadingIconScrollContainer, leadingIconRipple, leadingIconPseudoRadio, leadingIconPseudoCheckbox, leadingIconFocusRing, leadingIconElevation, leadingIconCollapsible
+    , leadingIconActionElementBase, trailingIconTree, trailingIconTreeItem, trailingIconToolbar, trailingIconToc, trailingIconTocItem, trailingIconThemeIcon
+    , trailingIconTheme, trailingIconTextareaAutosize, trailingIconTabs, trailingIconTabPanel, trailingIconTab, trailingIconSwitch, trailingIconStepperReset
+    , trailingIconStepperPrevious, trailingIconStep, trailingIconStepPanel, trailingIconStepper, trailingIconSplitPane, trailingIconSplitButton, trailingIconSnackbar
+    , trailingIconSlider, trailingIconSliderThumb, trailingIconSlideGroup, trailingIconSkeleton, trailingIconShape, trailingIconSegmentedButton, trailingIconButtonSegment
+    , trailingIconSearchView, trailingIconSearchBar, trailingIconRadioGroup, trailingIconRadio, trailingIconProgressElementIndicatorBase, trailingIconPaginator, trailingIconSelect
+    , trailingIconNavRailToggle, trailingIconNavRail, trailingIconNavMenuItemGroup, trailingIconNavMenu, trailingIconNavMenuItem, trailingIconNavBar, trailingIconNavItem
+    , trailingIconMenuItemRadio, trailingIconMenuItemGroup, trailingIconMenuItemCheckbox, trailingIconMenu, trailingIconMenuItem, trailingIconMenuTrigger, trailingIconMenuItemElementBase
+    , trailingIconLoadingIndicator, trailingIconSelectionList, trailingIconListOption, trailingIconActionList, trailingIconExpandableListItem, trailingIconListAction, trailingIconListItemButton
+    , trailingIconList, trailingIconListItem, trailingIconIcon, trailingIconHeading, trailingIconFabMenuTrigger, trailingIconFabMenu, trailingIconFab
+    , trailingIconAccordion, trailingIconExpansionPanel, trailingIconExpansionHeader, trailingIconDrawerToggle, trailingIconDrawerContainer, trailingIconDivider, trailingIconDialogTrigger
+    , trailingIconDialog, trailingIconDialogAction, trailingIconDatepickerToggle, trailingIconDatepicker, trailingIconContentPane, trailingIconSuggestionChip, trailingIconInputChipSet
+    , trailingIconInputChip, trailingIconFilterChipSet, trailingIconFilterChip, trailingIconChipSet, trailingIconAssistChip, trailingIconChip, trailingIconCheckbox
+    , trailingIconCard, trailingIconCalendar, trailingIconYearView, trailingIconMultiYearView, trailingIconMonthView, trailingIconTooltip, trailingIconRichTooltip
+    , trailingIconTooltipElementBase, trailingIconRichTooltipAction, trailingIconButtonGroup, trailingIconIconButton, trailingIcon_button, trailingIconBreadcrumb, trailingIconBreadcrumbItem
+    , trailingIconBreadcrumbItemButton, trailingIconBottomSheetTrigger, trailingIconBottomSheet, trailingIconBottomSheetAction, trailingIconBadge, trailingIconAvatar, trailingIconAutocomplete
+    , trailingIconFormField, trailingIconOptionPanel, trailingIconFloatingPanel, trailingIconOptgroup, trailingIconOption, trailingIconFocusTrap, trailingIconAppBar
+    , trailingIconTextOverflow, trailingIconTextHighlight, trailingIconStateLayer, trailingIconSlide, trailingIconScrollContainer, trailingIconRipple, trailingIconPseudoRadio
+    , trailingIconPseudoCheckbox, trailingIconFocusRing, trailingIconElevation, trailingIconCollapsible, trailingIconActionElementBase, trailingSearchBar, trailing_iconButton
+    , trailingButton
     )
 
 {-|
 Slot setters for `M3e.Build.AppBar`. Each alias accepts a specific child component's Builder and inserts it into the parent's slot.
 
-@docs leadingIcon, leadingIconButton, leadingButton, leadingIconTree, leadingIconTreeItem, leadingIconToolbar
+@docs leadingIcon, leading_iconButton, leadingButton, leadingIconTree, leadingIconTreeItem, leadingIconToolbar
 @docs leadingIconToc, leadingIconTocItem, leadingIconThemeIcon, leadingIconTheme, leadingIconTextareaAutosize, leadingIconTabs
 @docs leadingIconTabPanel, leadingIconTab, leadingIconSwitch, leadingIconStepperReset, leadingIconStepperPrevious, leadingIconStep
 @docs leadingIconStepPanel, leadingIconStepper, leadingIconSplitPane, leadingIconSplitButton, leadingIconSnackbar, leadingIconSlider
@@ -56,32 +57,32 @@ Slot setters for `M3e.Build.AppBar`. Each alias accepts a specific child compone
 @docs leadingIconInputChipSet, leadingIconInputChip, leadingIconFilterChipSet, leadingIconFilterChip, leadingIconChipSet, leadingIconAssistChip
 @docs leadingIconChip, leadingIconCheckbox, leadingIconCard, leadingIconCalendar, leadingIconYearView, leadingIconMultiYearView
 @docs leadingIconMonthView, leadingIconTooltip, leadingIconRichTooltip, leadingIconTooltipElementBase, leadingIconRichTooltipAction, leadingIconButtonGroup
-@docs leadingIconIconButton, leadingIconBreadcrumb, leadingIconBreadcrumbItem, leadingIconBreadcrumbItemButton, leadingIconBottomSheetTrigger, leadingIconBottomSheet
-@docs leadingIconBottomSheetAction, leadingIconBadge, leadingIconAvatar, leadingIconAutocomplete, leadingIconFormField, leadingIconOptionPanel
-@docs leadingIconFloatingPanel, leadingIconOptgroup, leadingIconOption, leadingIconFocusTrap, leadingIconAppBar, leadingIconTextOverflow
-@docs leadingIconTextHighlight, leadingIconStateLayer, leadingIconSlide, leadingIconScrollContainer, leadingIconRipple, leadingIconPseudoRadio
-@docs leadingIconPseudoCheckbox, leadingIconFocusRing, leadingIconElevation, leadingIconCollapsible, leadingIconActionElementBase, trailingIconTree
-@docs trailingIconTreeItem, trailingIconToolbar, trailingIconToc, trailingIconTocItem, trailingIconThemeIcon, trailingIconTheme
-@docs trailingIconTextareaAutosize, trailingIconTabs, trailingIconTabPanel, trailingIconTab, trailingIconSwitch, trailingIconStepperReset
-@docs trailingIconStepperPrevious, trailingIconStep, trailingIconStepPanel, trailingIconStepper, trailingIconSplitPane, trailingIconSplitButton
-@docs trailingIconSnackbar, trailingIconSlider, trailingIconSliderThumb, trailingIconSlideGroup, trailingIconSkeleton, trailingIconShape
-@docs trailingIconSegmentedButton, trailingIconButtonSegment, trailingIconSearchView, trailingIconSearchBar, trailingIconRadioGroup, trailingIconRadio
-@docs trailingIconProgressElementIndicatorBase, trailingIconPaginator, trailingIconSelect, trailingIconNavRailToggle, trailingIconNavRail, trailingIconNavMenuItemGroup
-@docs trailingIconNavMenu, trailingIconNavMenuItem, trailingIconNavBar, trailingIconNavItem, trailingIconMenuItemRadio, trailingIconMenuItemGroup
-@docs trailingIconMenuItemCheckbox, trailingIconMenu, trailingIconMenuItem, trailingIconMenuTrigger, trailingIconMenuItemElementBase, trailingIconLoadingIndicator
-@docs trailingIconSelectionList, trailingIconListOption, trailingIconActionList, trailingIconExpandableListItem, trailingIconListAction, trailingIconListItemButton
-@docs trailingIconList, trailingIconListItem, trailingIconIcon, trailingIconHeading, trailingIconFabMenuTrigger, trailingIconFabMenu
-@docs trailingIconFab, trailingIconAccordion, trailingIconExpansionPanel, trailingIconExpansionHeader, trailingIconDrawerToggle, trailingIconDrawerContainer
-@docs trailingIconDivider, trailingIconDialogTrigger, trailingIconDialog, trailingIconDialogAction, trailingIconDatepickerToggle, trailingIconDatepicker
-@docs trailingIconContentPane, trailingIconSuggestionChip, trailingIconInputChipSet, trailingIconInputChip, trailingIconFilterChipSet, trailingIconFilterChip
-@docs trailingIconChipSet, trailingIconAssistChip, trailingIconChip, trailingIconCheckbox, trailingIconCard, trailingIconCalendar
-@docs trailingIconYearView, trailingIconMultiYearView, trailingIconMonthView, trailingIconTooltip, trailingIconRichTooltip, trailingIconTooltipElementBase
-@docs trailingIconRichTooltipAction, trailingIconButtonGroup, trailingIconIconButton, trailingIconButton, trailingIconBreadcrumb, trailingIconBreadcrumbItem
-@docs trailingIconBreadcrumbItemButton, trailingIconBottomSheetTrigger, trailingIconBottomSheet, trailingIconBottomSheetAction, trailingIconBadge, trailingIconAvatar
-@docs trailingIconAutocomplete, trailingIconFormField, trailingIconOptionPanel, trailingIconFloatingPanel, trailingIconOptgroup, trailingIconOption
-@docs trailingIconFocusTrap, trailingIconAppBar, trailingIconTextOverflow, trailingIconTextHighlight, trailingIconStateLayer, trailingIconSlide
-@docs trailingIconScrollContainer, trailingIconRipple, trailingIconPseudoRadio, trailingIconPseudoCheckbox, trailingIconFocusRing, trailingIconElevation
-@docs trailingIconCollapsible, trailingIconActionElementBase
+@docs leadingIconIconButton, leadingIcon_button, leadingIconBreadcrumb, leadingIconBreadcrumbItem, leadingIconBreadcrumbItemButton, leadingIconBottomSheetTrigger
+@docs leadingIconBottomSheet, leadingIconBottomSheetAction, leadingIconBadge, leadingIconAvatar, leadingIconAutocomplete, leadingIconFormField
+@docs leadingIconOptionPanel, leadingIconFloatingPanel, leadingIconOptgroup, leadingIconOption, leadingIconFocusTrap, leadingIconAppBar
+@docs leadingIconTextOverflow, leadingIconTextHighlight, leadingIconStateLayer, leadingIconSlide, leadingIconScrollContainer, leadingIconRipple
+@docs leadingIconPseudoRadio, leadingIconPseudoCheckbox, leadingIconFocusRing, leadingIconElevation, leadingIconCollapsible, leadingIconActionElementBase
+@docs trailingIconTree, trailingIconTreeItem, trailingIconToolbar, trailingIconToc, trailingIconTocItem, trailingIconThemeIcon
+@docs trailingIconTheme, trailingIconTextareaAutosize, trailingIconTabs, trailingIconTabPanel, trailingIconTab, trailingIconSwitch
+@docs trailingIconStepperReset, trailingIconStepperPrevious, trailingIconStep, trailingIconStepPanel, trailingIconStepper, trailingIconSplitPane
+@docs trailingIconSplitButton, trailingIconSnackbar, trailingIconSlider, trailingIconSliderThumb, trailingIconSlideGroup, trailingIconSkeleton
+@docs trailingIconShape, trailingIconSegmentedButton, trailingIconButtonSegment, trailingIconSearchView, trailingIconSearchBar, trailingIconRadioGroup
+@docs trailingIconRadio, trailingIconProgressElementIndicatorBase, trailingIconPaginator, trailingIconSelect, trailingIconNavRailToggle, trailingIconNavRail
+@docs trailingIconNavMenuItemGroup, trailingIconNavMenu, trailingIconNavMenuItem, trailingIconNavBar, trailingIconNavItem, trailingIconMenuItemRadio
+@docs trailingIconMenuItemGroup, trailingIconMenuItemCheckbox, trailingIconMenu, trailingIconMenuItem, trailingIconMenuTrigger, trailingIconMenuItemElementBase
+@docs trailingIconLoadingIndicator, trailingIconSelectionList, trailingIconListOption, trailingIconActionList, trailingIconExpandableListItem, trailingIconListAction
+@docs trailingIconListItemButton, trailingIconList, trailingIconListItem, trailingIconIcon, trailingIconHeading, trailingIconFabMenuTrigger
+@docs trailingIconFabMenu, trailingIconFab, trailingIconAccordion, trailingIconExpansionPanel, trailingIconExpansionHeader, trailingIconDrawerToggle
+@docs trailingIconDrawerContainer, trailingIconDivider, trailingIconDialogTrigger, trailingIconDialog, trailingIconDialogAction, trailingIconDatepickerToggle
+@docs trailingIconDatepicker, trailingIconContentPane, trailingIconSuggestionChip, trailingIconInputChipSet, trailingIconInputChip, trailingIconFilterChipSet
+@docs trailingIconFilterChip, trailingIconChipSet, trailingIconAssistChip, trailingIconChip, trailingIconCheckbox, trailingIconCard
+@docs trailingIconCalendar, trailingIconYearView, trailingIconMultiYearView, trailingIconMonthView, trailingIconTooltip, trailingIconRichTooltip
+@docs trailingIconTooltipElementBase, trailingIconRichTooltipAction, trailingIconButtonGroup, trailingIconIconButton, trailingIcon_button, trailingIconBreadcrumb
+@docs trailingIconBreadcrumbItem, trailingIconBreadcrumbItemButton, trailingIconBottomSheetTrigger, trailingIconBottomSheet, trailingIconBottomSheetAction, trailingIconBadge
+@docs trailingIconAvatar, trailingIconAutocomplete, trailingIconFormField, trailingIconOptionPanel, trailingIconFloatingPanel, trailingIconOptgroup
+@docs trailingIconOption, trailingIconFocusTrap, trailingIconAppBar, trailingIconTextOverflow, trailingIconTextHighlight, trailingIconStateLayer
+@docs trailingIconSlide, trailingIconScrollContainer, trailingIconRipple, trailingIconPseudoRadio, trailingIconPseudoCheckbox, trailingIconFocusRing
+@docs trailingIconElevation, trailingIconCollapsible, trailingIconActionElementBase, trailingSearchBar, trailing_iconButton, trailingButton
 -}
 
 
@@ -260,6 +261,18 @@ trailingIcon_core child_ parent_ =
         )
 
 
+trailing_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+trailing_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
 {-| Place a `Icon` in the `leading` slot of `AppBar`. -}
 leadingIcon :
     M3e.Build.Icon.Builder ca cs msg ck
@@ -274,7 +287,7 @@ leadingIcon =
 
 
 {-| Place a `IconButton` in the `leading` slot of `AppBar`. -}
-leadingIconButton :
+leading_iconButton :
     M3e.Build.IconButton.Builder ca cs msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | leading : M3e.Build.Internal.Available
@@ -282,7 +295,7 @@ leadingIconButton :
     -> M3e.Build.AppBar.Builder pa { ps
         | leading : M3e.Build.Internal.Used
     } msg pk
-leadingIconButton =
+leading_iconButton =
     leading_core
 
 
@@ -1526,6 +1539,19 @@ leadingIconIconButton :
         | leadingIcon : M3e.Build.Internal.Used
     } msg pk
 leadingIconIconButton =
+    leadingIcon_core
+
+
+{-| Place a `Button` in the `leading-icon` slot of `AppBar`. -}
+leadingIcon_button :
+    M3e.Build.Button.Builder ca cs msg ck
+    -> M3e.Build.AppBar.Builder pa { ps
+        | leadingIcon : M3e.Build.Internal.Available
+    } msg pk
+    -> M3e.Build.AppBar.Builder pa { ps
+        | leadingIcon : M3e.Build.Internal.Used
+    } msg pk
+leadingIcon_button =
     leadingIcon_core
 
 
@@ -3126,7 +3152,7 @@ trailingIconIconButton =
 
 
 {-| Place a `Button` in the `trailing-icon` slot of `AppBar`. -}
-trailingIconButton :
+trailingIcon_button :
     M3e.Build.Button.Builder ca cs msg ck
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Available
@@ -3134,7 +3160,7 @@ trailingIconButton :
     -> M3e.Build.AppBar.Builder pa { ps
         | trailingIcon : M3e.Build.Internal.Used
     } msg pk
-trailingIconButton =
+trailingIcon_button =
     trailingIcon_core
 
 
@@ -3502,3 +3528,30 @@ trailingIconActionElementBase :
     } msg pk
 trailingIconActionElementBase =
     trailingIcon_core
+
+
+{-| Place a `SearchBar` in the `trailing` slot of `AppBar`. -}
+trailingSearchBar :
+    M3e.Build.SearchBar.Builder ca cs msg ck
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+trailingSearchBar =
+    trailing_core
+
+
+{-| Place a `IconButton` in the `trailing` slot of `AppBar`. -}
+trailing_iconButton :
+    M3e.Build.IconButton.Builder ca cs msg ck
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+trailing_iconButton =
+    trailing_core
+
+
+{-| Place a `Button` in the `trailing` slot of `AppBar`. -}
+trailingButton :
+    M3e.Build.Button.Builder ca cs msg ck
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+    -> M3e.Build.AppBar.Builder pa ps msg pk
+trailingButton =
+    trailing_core

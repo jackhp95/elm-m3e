@@ -16,7 +16,7 @@ module M3e.Build.Select.Slots exposing
     , valueBreadcrumbItem, valueBreadcrumbItemButton, valueBottomSheetTrigger, valueBottomSheet, valueBottomSheetAction, valueBadge, valueAvatar
     , valueAutocomplete, valueFormField, valueOptionPanel, valueFloatingPanel, valueOptgroup, valueOption, valueFocusTrap
     , valueAppBar, valueTextOverflow, valueTextHighlight, valueStateLayer, valueSlide, valueScrollContainer, valueRipple
-    , valuePseudoRadio, valuePseudoCheckbox, valueFocusRing, valueElevation, valueCollapsible, valueActionElementBase
+    , valuePseudoRadio, valuePseudoCheckbox, valueFocusRing, valueElevation, valueCollapsible, valueActionElementBase, option
     )
 
 {-|
@@ -42,7 +42,7 @@ Slot setters for `M3e.Build.Select`. Each alias accepts a specific child compone
 @docs valueBadge, valueAvatar, valueAutocomplete, valueFormField, valueOptionPanel, valueFloatingPanel
 @docs valueOptgroup, valueOption, valueFocusTrap, valueAppBar, valueTextOverflow, valueTextHighlight
 @docs valueStateLayer, valueSlide, valueScrollContainer, valueRipple, valuePseudoRadio, valuePseudoCheckbox
-@docs valueFocusRing, valueElevation, valueCollapsible, valueActionElementBase
+@docs valueFocusRing, valueElevation, valueCollapsible, valueActionElementBase, option
 -}
 
 
@@ -198,6 +198,20 @@ value_core :
         | value : M3e.Build.Internal.Used
     } msg pk
 value_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.Select.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Select.Builder pa { ps
+        | default : M3e.Build.Internal.Filled
+    } msg pk
+default_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -1825,3 +1839,14 @@ valueActionElementBase :
     } msg pk
 valueActionElementBase =
     value_core
+
+
+{-| Place a `Option` in the `unnamed` slot of `Select`. -}
+option :
+    M3e.Build.Option.Builder ca cs msg ck
+    -> M3e.Build.Select.Builder pa { ps | default : filled } msg pk
+    -> M3e.Build.Select.Builder pa { ps
+        | default : M3e.Build.Internal.Filled
+    } msg pk
+option =
+    default_core

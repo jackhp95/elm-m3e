@@ -16,7 +16,25 @@ module M3e.Build.BottomSheet.Slots exposing
     , headerBreadcrumbItemButton, headerBottomSheetTrigger, headerBottomSheet, headerBottomSheetAction, headerBadge, headerAvatar, headerAutocomplete
     , headerFormField, headerOptionPanel, headerFloatingPanel, headerOptgroup, headerOption, headerFocusTrap, headerAppBar
     , headerTextOverflow, headerTextHighlight, headerStateLayer, headerSlide, headerScrollContainer, headerRipple, headerPseudoRadio
-    , headerPseudoCheckbox, headerFocusRing, headerElevation, headerCollapsible, headerActionElementBase
+    , headerPseudoCheckbox, headerFocusRing, headerElevation, headerCollapsible, headerActionElementBase, tree, treeItem
+    , toolbar, toc, tocItem, themeIcon, theme, textareaAutosize, tabs
+    , tabPanel, tab, switch, stepperReset, stepperPrevious, step, stepPanel
+    , stepper, splitPane, splitButton, snackbar, slider, sliderThumb, slideGroup
+    , skeleton, shape, segmentedButton, buttonSegment, searchView, searchBar, radioGroup
+    , radio, progressElementIndicatorBase, paginator, select, navRailToggle, navRail, navMenuItemGroup
+    , navMenu, navMenuItem, navBar, navItem, menuItemRadio, menuItemGroup, menuItemCheckbox
+    , menu, menuItem, menuTrigger, menuItemElementBase, loadingIndicator, selectionList, listOption
+    , actionList, expandableListItem, listAction, listItemButton, list, listItem, icon
+    , heading, fabMenuTrigger, fabMenu, fab, accordion, expansionPanel, expansionHeader
+    , drawerToggle, drawerContainer, divider, dialogTrigger, dialog, dialogAction, datepickerToggle
+    , datepicker, contentPane, suggestionChip, inputChipSet, inputChip, filterChipSet, filterChip
+    , chipSet, assistChip, chip, checkbox, card, calendar, yearView
+    , multiYearView, monthView, tooltip, richTooltip, tooltipElementBase, richTooltipAction, buttonGroup
+    , iconButton, button, breadcrumb, breadcrumbItem, breadcrumbItemButton, bottomSheetTrigger, bottomSheet
+    , bottomSheetAction, badge, avatar, autocomplete, formField, optionPanel, floatingPanel
+    , optgroup, option, focusTrap, appBar, textOverflow, textHighlight, stateLayer
+    , slide, scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing, elevation
+    , collapsible, actionElementBase
     )
 
 {-|
@@ -42,7 +60,27 @@ Slot setters for `M3e.Build.BottomSheet`. Each alias accepts a specific child co
 @docs headerAvatar, headerAutocomplete, headerFormField, headerOptionPanel, headerFloatingPanel, headerOptgroup
 @docs headerOption, headerFocusTrap, headerAppBar, headerTextOverflow, headerTextHighlight, headerStateLayer
 @docs headerSlide, headerScrollContainer, headerRipple, headerPseudoRadio, headerPseudoCheckbox, headerFocusRing
-@docs headerElevation, headerCollapsible, headerActionElementBase
+@docs headerElevation, headerCollapsible, headerActionElementBase, tree, treeItem, toolbar
+@docs toc, tocItem, themeIcon, theme, textareaAutosize, tabs
+@docs tabPanel, tab, switch, stepperReset, stepperPrevious, step
+@docs stepPanel, stepper, splitPane, splitButton, snackbar, slider
+@docs sliderThumb, slideGroup, skeleton, shape, segmentedButton, buttonSegment
+@docs searchView, searchBar, radioGroup, radio, progressElementIndicatorBase, paginator
+@docs select, navRailToggle, navRail, navMenuItemGroup, navMenu, navMenuItem
+@docs navBar, navItem, menuItemRadio, menuItemGroup, menuItemCheckbox, menu
+@docs menuItem, menuTrigger, menuItemElementBase, loadingIndicator, selectionList, listOption
+@docs actionList, expandableListItem, listAction, listItemButton, list, listItem
+@docs icon, heading, fabMenuTrigger, fabMenu, fab, accordion
+@docs expansionPanel, expansionHeader, drawerToggle, drawerContainer, divider, dialogTrigger
+@docs dialog, dialogAction, datepickerToggle, datepicker, contentPane, suggestionChip
+@docs inputChipSet, inputChip, filterChipSet, filterChip, chipSet, assistChip
+@docs chip, checkbox, card, calendar, yearView, multiYearView
+@docs monthView, tooltip, richTooltip, tooltipElementBase, richTooltipAction, buttonGroup
+@docs iconButton, button, breadcrumb, breadcrumbItem, breadcrumbItemButton, bottomSheetTrigger
+@docs bottomSheet, bottomSheetAction, badge, avatar, autocomplete, formField
+@docs optionPanel, floatingPanel, optgroup, option, focusTrap, appBar
+@docs textOverflow, textHighlight, stateLayer, slide, scrollContainer, ripple
+@docs pseudoRadio, pseudoCheckbox, focusRing, elevation, collapsible, actionElementBase
 -}
 
 
@@ -182,6 +220,18 @@ header_core :
         | header : M3e.Build.Internal.Used
     } msg pk
 header_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+default_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -1796,3 +1846,1120 @@ headerActionElementBase :
     } msg pk
 headerActionElementBase =
     header_core
+
+
+{-| Place a `Tree` in the `unnamed` slot of `BottomSheet`. -}
+tree :
+    M3e.Build.Tree.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tree =
+    default_core
+
+
+{-| Place a `TreeItem` in the `unnamed` slot of `BottomSheet`. -}
+treeItem :
+    M3e.Build.TreeItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+treeItem =
+    default_core
+
+
+{-| Place a `Toolbar` in the `unnamed` slot of `BottomSheet`. -}
+toolbar :
+    M3e.Build.Toolbar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+toolbar =
+    default_core
+
+
+{-| Place a `Toc` in the `unnamed` slot of `BottomSheet`. -}
+toc :
+    M3e.Build.Toc.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+toc =
+    default_core
+
+
+{-| Place a `TocItem` in the `unnamed` slot of `BottomSheet`. -}
+tocItem :
+    M3e.Build.TocItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tocItem =
+    default_core
+
+
+{-| Place a `ThemeIcon` in the `unnamed` slot of `BottomSheet`. -}
+themeIcon :
+    M3e.Build.ThemeIcon.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+themeIcon =
+    default_core
+
+
+{-| Place a `Theme` in the `unnamed` slot of `BottomSheet`. -}
+theme :
+    M3e.Build.Theme.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+theme =
+    default_core
+
+
+{-| Place a `TextareaAutosize` in the `unnamed` slot of `BottomSheet`. -}
+textareaAutosize :
+    M3e.Build.TextareaAutosize.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+textareaAutosize =
+    default_core
+
+
+{-| Place a `Tabs` in the `unnamed` slot of `BottomSheet`. -}
+tabs :
+    M3e.Build.Tabs.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tabs =
+    default_core
+
+
+{-| Place a `TabPanel` in the `unnamed` slot of `BottomSheet`. -}
+tabPanel :
+    M3e.Build.TabPanel.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tabPanel =
+    default_core
+
+
+{-| Place a `Tab` in the `unnamed` slot of `BottomSheet`. -}
+tab :
+    M3e.Build.Tab.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tab =
+    default_core
+
+
+{-| Place a `Switch` in the `unnamed` slot of `BottomSheet`. -}
+switch :
+    M3e.Build.Switch.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+switch =
+    default_core
+
+
+{-| Place a `StepperReset` in the `unnamed` slot of `BottomSheet`. -}
+stepperReset :
+    M3e.Build.StepperReset.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+stepperReset =
+    default_core
+
+
+{-| Place a `StepperPrevious` in the `unnamed` slot of `BottomSheet`. -}
+stepperPrevious :
+    M3e.Build.StepperPrevious.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+stepperPrevious =
+    default_core
+
+
+{-| Place a `Step` in the `unnamed` slot of `BottomSheet`. -}
+step :
+    M3e.Build.Step.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+step =
+    default_core
+
+
+{-| Place a `StepPanel` in the `unnamed` slot of `BottomSheet`. -}
+stepPanel :
+    M3e.Build.StepPanel.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+stepPanel =
+    default_core
+
+
+{-| Place a `Stepper` in the `unnamed` slot of `BottomSheet`. -}
+stepper :
+    M3e.Build.Stepper.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+stepper =
+    default_core
+
+
+{-| Place a `SplitPane` in the `unnamed` slot of `BottomSheet`. -}
+splitPane :
+    M3e.Build.SplitPane.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+splitPane =
+    default_core
+
+
+{-| Place a `SplitButton` in the `unnamed` slot of `BottomSheet`. -}
+splitButton :
+    M3e.Build.SplitButton.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+splitButton =
+    default_core
+
+
+{-| Place a `Snackbar` in the `unnamed` slot of `BottomSheet`. -}
+snackbar :
+    M3e.Build.Snackbar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+snackbar =
+    default_core
+
+
+{-| Place a `Slider` in the `unnamed` slot of `BottomSheet`. -}
+slider :
+    M3e.Build.Slider.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+slider =
+    default_core
+
+
+{-| Place a `SliderThumb` in the `unnamed` slot of `BottomSheet`. -}
+sliderThumb :
+    M3e.Build.SliderThumb.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+sliderThumb =
+    default_core
+
+
+{-| Place a `SlideGroup` in the `unnamed` slot of `BottomSheet`. -}
+slideGroup :
+    M3e.Build.SlideGroup.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+slideGroup =
+    default_core
+
+
+{-| Place a `Skeleton` in the `unnamed` slot of `BottomSheet`. -}
+skeleton :
+    M3e.Build.Skeleton.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+skeleton =
+    default_core
+
+
+{-| Place a `Shape` in the `unnamed` slot of `BottomSheet`. -}
+shape :
+    M3e.Build.Shape.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+shape =
+    default_core
+
+
+{-| Place a `SegmentedButton` in the `unnamed` slot of `BottomSheet`. -}
+segmentedButton :
+    M3e.Build.SegmentedButton.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+segmentedButton =
+    default_core
+
+
+{-| Place a `ButtonSegment` in the `unnamed` slot of `BottomSheet`. -}
+buttonSegment :
+    M3e.Build.ButtonSegment.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+buttonSegment =
+    default_core
+
+
+{-| Place a `SearchView` in the `unnamed` slot of `BottomSheet`. -}
+searchView :
+    M3e.Build.SearchView.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+searchView =
+    default_core
+
+
+{-| Place a `SearchBar` in the `unnamed` slot of `BottomSheet`. -}
+searchBar :
+    M3e.Build.SearchBar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+searchBar =
+    default_core
+
+
+{-| Place a `RadioGroup` in the `unnamed` slot of `BottomSheet`. -}
+radioGroup :
+    M3e.Build.RadioGroup.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+radioGroup =
+    default_core
+
+
+{-| Place a `Radio` in the `unnamed` slot of `BottomSheet`. -}
+radio :
+    M3e.Build.Radio.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+radio =
+    default_core
+
+
+{-| Place a `ProgressElementIndicatorBase` in the `unnamed` slot of `BottomSheet`. -}
+progressElementIndicatorBase :
+    M3e.Build.ProgressElementIndicatorBase.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+progressElementIndicatorBase =
+    default_core
+
+
+{-| Place a `Paginator` in the `unnamed` slot of `BottomSheet`. -}
+paginator :
+    M3e.Build.Paginator.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+paginator =
+    default_core
+
+
+{-| Place a `Select` in the `unnamed` slot of `BottomSheet`. -}
+select :
+    M3e.Build.Select.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+select =
+    default_core
+
+
+{-| Place a `NavRailToggle` in the `unnamed` slot of `BottomSheet`. -}
+navRailToggle :
+    M3e.Build.NavRailToggle.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navRailToggle =
+    default_core
+
+
+{-| Place a `NavRail` in the `unnamed` slot of `BottomSheet`. -}
+navRail :
+    M3e.Build.NavRail.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navRail =
+    default_core
+
+
+{-| Place a `NavMenuItemGroup` in the `unnamed` slot of `BottomSheet`. -}
+navMenuItemGroup :
+    M3e.Build.NavMenuItemGroup.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navMenuItemGroup =
+    default_core
+
+
+{-| Place a `NavMenu` in the `unnamed` slot of `BottomSheet`. -}
+navMenu :
+    M3e.Build.NavMenu.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navMenu =
+    default_core
+
+
+{-| Place a `NavMenuItem` in the `unnamed` slot of `BottomSheet`. -}
+navMenuItem :
+    M3e.Build.NavMenuItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navMenuItem =
+    default_core
+
+
+{-| Place a `NavBar` in the `unnamed` slot of `BottomSheet`. -}
+navBar :
+    M3e.Build.NavBar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navBar =
+    default_core
+
+
+{-| Place a `NavItem` in the `unnamed` slot of `BottomSheet`. -}
+navItem :
+    M3e.Build.NavItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+navItem =
+    default_core
+
+
+{-| Place a `MenuItemRadio` in the `unnamed` slot of `BottomSheet`. -}
+menuItemRadio :
+    M3e.Build.MenuItemRadio.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menuItemRadio =
+    default_core
+
+
+{-| Place a `MenuItemGroup` in the `unnamed` slot of `BottomSheet`. -}
+menuItemGroup :
+    M3e.Build.MenuItemGroup.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menuItemGroup =
+    default_core
+
+
+{-| Place a `MenuItemCheckbox` in the `unnamed` slot of `BottomSheet`. -}
+menuItemCheckbox :
+    M3e.Build.MenuItemCheckbox.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menuItemCheckbox =
+    default_core
+
+
+{-| Place a `Menu` in the `unnamed` slot of `BottomSheet`. -}
+menu :
+    M3e.Build.Menu.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menu =
+    default_core
+
+
+{-| Place a `MenuItem` in the `unnamed` slot of `BottomSheet`. -}
+menuItem :
+    M3e.Build.MenuItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menuItem =
+    default_core
+
+
+{-| Place a `MenuTrigger` in the `unnamed` slot of `BottomSheet`. -}
+menuTrigger :
+    M3e.Build.MenuTrigger.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menuTrigger =
+    default_core
+
+
+{-| Place a `MenuItemElementBase` in the `unnamed` slot of `BottomSheet`. -}
+menuItemElementBase :
+    M3e.Build.MenuItemElementBase.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+menuItemElementBase =
+    default_core
+
+
+{-| Place a `LoadingIndicator` in the `unnamed` slot of `BottomSheet`. -}
+loadingIndicator :
+    M3e.Build.LoadingIndicator.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+loadingIndicator =
+    default_core
+
+
+{-| Place a `SelectionList` in the `unnamed` slot of `BottomSheet`. -}
+selectionList :
+    M3e.Build.SelectionList.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+selectionList =
+    default_core
+
+
+{-| Place a `ListOption` in the `unnamed` slot of `BottomSheet`. -}
+listOption :
+    M3e.Build.ListOption.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+listOption =
+    default_core
+
+
+{-| Place a `ActionList` in the `unnamed` slot of `BottomSheet`. -}
+actionList :
+    M3e.Build.ActionList.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+actionList =
+    default_core
+
+
+{-| Place a `ExpandableListItem` in the `unnamed` slot of `BottomSheet`. -}
+expandableListItem :
+    M3e.Build.ExpandableListItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+expandableListItem =
+    default_core
+
+
+{-| Place a `ListAction` in the `unnamed` slot of `BottomSheet`. -}
+listAction :
+    M3e.Build.ListAction.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+listAction =
+    default_core
+
+
+{-| Place a `ListItemButton` in the `unnamed` slot of `BottomSheet`. -}
+listItemButton :
+    M3e.Build.ListItemButton.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+listItemButton =
+    default_core
+
+
+{-| Place a `List` in the `unnamed` slot of `BottomSheet`. -}
+list :
+    M3e.Build.List.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+list =
+    default_core
+
+
+{-| Place a `ListItem` in the `unnamed` slot of `BottomSheet`. -}
+listItem :
+    M3e.Build.ListItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+listItem =
+    default_core
+
+
+{-| Place a `Icon` in the `unnamed` slot of `BottomSheet`. -}
+icon :
+    M3e.Build.Icon.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+icon =
+    default_core
+
+
+{-| Place a `Heading` in the `unnamed` slot of `BottomSheet`. -}
+heading :
+    M3e.Build.Heading.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+heading =
+    default_core
+
+
+{-| Place a `FabMenuTrigger` in the `unnamed` slot of `BottomSheet`. -}
+fabMenuTrigger :
+    M3e.Build.FabMenuTrigger.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+fabMenuTrigger =
+    default_core
+
+
+{-| Place a `FabMenu` in the `unnamed` slot of `BottomSheet`. -}
+fabMenu :
+    M3e.Build.FabMenu.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+fabMenu =
+    default_core
+
+
+{-| Place a `Fab` in the `unnamed` slot of `BottomSheet`. -}
+fab :
+    M3e.Build.Fab.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+fab =
+    default_core
+
+
+{-| Place a `Accordion` in the `unnamed` slot of `BottomSheet`. -}
+accordion :
+    M3e.Build.Accordion.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+accordion =
+    default_core
+
+
+{-| Place a `ExpansionPanel` in the `unnamed` slot of `BottomSheet`. -}
+expansionPanel :
+    M3e.Build.ExpansionPanel.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+expansionPanel =
+    default_core
+
+
+{-| Place a `ExpansionHeader` in the `unnamed` slot of `BottomSheet`. -}
+expansionHeader :
+    M3e.Build.ExpansionHeader.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+expansionHeader =
+    default_core
+
+
+{-| Place a `DrawerToggle` in the `unnamed` slot of `BottomSheet`. -}
+drawerToggle :
+    M3e.Build.DrawerToggle.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+drawerToggle =
+    default_core
+
+
+{-| Place a `DrawerContainer` in the `unnamed` slot of `BottomSheet`. -}
+drawerContainer :
+    M3e.Build.DrawerContainer.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+drawerContainer =
+    default_core
+
+
+{-| Place a `Divider` in the `unnamed` slot of `BottomSheet`. -}
+divider :
+    M3e.Build.Divider.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+divider =
+    default_core
+
+
+{-| Place a `DialogTrigger` in the `unnamed` slot of `BottomSheet`. -}
+dialogTrigger :
+    M3e.Build.DialogTrigger.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+dialogTrigger =
+    default_core
+
+
+{-| Place a `Dialog` in the `unnamed` slot of `BottomSheet`. -}
+dialog :
+    M3e.Build.Dialog.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+dialog =
+    default_core
+
+
+{-| Place a `DialogAction` in the `unnamed` slot of `BottomSheet`. -}
+dialogAction :
+    M3e.Build.DialogAction.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+dialogAction =
+    default_core
+
+
+{-| Place a `DatepickerToggle` in the `unnamed` slot of `BottomSheet`. -}
+datepickerToggle :
+    M3e.Build.DatepickerToggle.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+datepickerToggle =
+    default_core
+
+
+{-| Place a `Datepicker` in the `unnamed` slot of `BottomSheet`. -}
+datepicker :
+    M3e.Build.Datepicker.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+datepicker =
+    default_core
+
+
+{-| Place a `ContentPane` in the `unnamed` slot of `BottomSheet`. -}
+contentPane :
+    M3e.Build.ContentPane.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+contentPane =
+    default_core
+
+
+{-| Place a `SuggestionChip` in the `unnamed` slot of `BottomSheet`. -}
+suggestionChip :
+    M3e.Build.SuggestionChip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+suggestionChip =
+    default_core
+
+
+{-| Place a `InputChipSet` in the `unnamed` slot of `BottomSheet`. -}
+inputChipSet :
+    M3e.Build.InputChipSet.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+inputChipSet =
+    default_core
+
+
+{-| Place a `InputChip` in the `unnamed` slot of `BottomSheet`. -}
+inputChip :
+    M3e.Build.InputChip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+inputChip =
+    default_core
+
+
+{-| Place a `FilterChipSet` in the `unnamed` slot of `BottomSheet`. -}
+filterChipSet :
+    M3e.Build.FilterChipSet.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+filterChipSet =
+    default_core
+
+
+{-| Place a `FilterChip` in the `unnamed` slot of `BottomSheet`. -}
+filterChip :
+    M3e.Build.FilterChip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+filterChip =
+    default_core
+
+
+{-| Place a `ChipSet` in the `unnamed` slot of `BottomSheet`. -}
+chipSet :
+    M3e.Build.ChipSet.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+chipSet =
+    default_core
+
+
+{-| Place a `AssistChip` in the `unnamed` slot of `BottomSheet`. -}
+assistChip :
+    M3e.Build.AssistChip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+assistChip =
+    default_core
+
+
+{-| Place a `Chip` in the `unnamed` slot of `BottomSheet`. -}
+chip :
+    M3e.Build.Chip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+chip =
+    default_core
+
+
+{-| Place a `Checkbox` in the `unnamed` slot of `BottomSheet`. -}
+checkbox :
+    M3e.Build.Checkbox.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+checkbox =
+    default_core
+
+
+{-| Place a `Card` in the `unnamed` slot of `BottomSheet`. -}
+card :
+    M3e.Build.Card.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+card =
+    default_core
+
+
+{-| Place a `Calendar` in the `unnamed` slot of `BottomSheet`. -}
+calendar :
+    M3e.Build.Calendar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+calendar =
+    default_core
+
+
+{-| Place a `YearView` in the `unnamed` slot of `BottomSheet`. -}
+yearView :
+    M3e.Build.YearView.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+yearView =
+    default_core
+
+
+{-| Place a `MultiYearView` in the `unnamed` slot of `BottomSheet`. -}
+multiYearView :
+    M3e.Build.MultiYearView.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+multiYearView =
+    default_core
+
+
+{-| Place a `MonthView` in the `unnamed` slot of `BottomSheet`. -}
+monthView :
+    M3e.Build.MonthView.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+monthView =
+    default_core
+
+
+{-| Place a `Tooltip` in the `unnamed` slot of `BottomSheet`. -}
+tooltip :
+    M3e.Build.Tooltip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tooltip =
+    default_core
+
+
+{-| Place a `RichTooltip` in the `unnamed` slot of `BottomSheet`. -}
+richTooltip :
+    M3e.Build.RichTooltip.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+richTooltip =
+    default_core
+
+
+{-| Place a `TooltipElementBase` in the `unnamed` slot of `BottomSheet`. -}
+tooltipElementBase :
+    M3e.Build.TooltipElementBase.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+tooltipElementBase =
+    default_core
+
+
+{-| Place a `RichTooltipAction` in the `unnamed` slot of `BottomSheet`. -}
+richTooltipAction :
+    M3e.Build.RichTooltipAction.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+richTooltipAction =
+    default_core
+
+
+{-| Place a `ButtonGroup` in the `unnamed` slot of `BottomSheet`. -}
+buttonGroup :
+    M3e.Build.ButtonGroup.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+buttonGroup =
+    default_core
+
+
+{-| Place a `IconButton` in the `unnamed` slot of `BottomSheet`. -}
+iconButton :
+    M3e.Build.IconButton.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+iconButton =
+    default_core
+
+
+{-| Place a `Button` in the `unnamed` slot of `BottomSheet`. -}
+button :
+    M3e.Build.Button.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+button =
+    default_core
+
+
+{-| Place a `Breadcrumb` in the `unnamed` slot of `BottomSheet`. -}
+breadcrumb :
+    M3e.Build.Breadcrumb.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+breadcrumb =
+    default_core
+
+
+{-| Place a `BreadcrumbItem` in the `unnamed` slot of `BottomSheet`. -}
+breadcrumbItem :
+    M3e.Build.BreadcrumbItem.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+breadcrumbItem =
+    default_core
+
+
+{-| Place a `BreadcrumbItemButton` in the `unnamed` slot of `BottomSheet`. -}
+breadcrumbItemButton :
+    M3e.Build.BreadcrumbItemButton.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+breadcrumbItemButton =
+    default_core
+
+
+{-| Place a `BottomSheetTrigger` in the `unnamed` slot of `BottomSheet`. -}
+bottomSheetTrigger :
+    M3e.Build.BottomSheetTrigger.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+bottomSheetTrigger =
+    default_core
+
+
+{-| Place a `BottomSheet` in the `unnamed` slot of `BottomSheet`. -}
+bottomSheet :
+    M3e.Build.BottomSheet.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+bottomSheet =
+    default_core
+
+
+{-| Place a `BottomSheetAction` in the `unnamed` slot of `BottomSheet`. -}
+bottomSheetAction :
+    M3e.Build.BottomSheetAction.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+bottomSheetAction =
+    default_core
+
+
+{-| Place a `Badge` in the `unnamed` slot of `BottomSheet`. -}
+badge :
+    M3e.Build.Badge.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+badge =
+    default_core
+
+
+{-| Place a `Avatar` in the `unnamed` slot of `BottomSheet`. -}
+avatar :
+    M3e.Build.Avatar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+avatar =
+    default_core
+
+
+{-| Place a `Autocomplete` in the `unnamed` slot of `BottomSheet`. -}
+autocomplete :
+    M3e.Build.Autocomplete.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+autocomplete =
+    default_core
+
+
+{-| Place a `FormField` in the `unnamed` slot of `BottomSheet`. -}
+formField :
+    M3e.Build.FormField.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+formField =
+    default_core
+
+
+{-| Place a `OptionPanel` in the `unnamed` slot of `BottomSheet`. -}
+optionPanel :
+    M3e.Build.OptionPanel.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+optionPanel =
+    default_core
+
+
+{-| Place a `FloatingPanel` in the `unnamed` slot of `BottomSheet`. -}
+floatingPanel :
+    M3e.Build.FloatingPanel.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+floatingPanel =
+    default_core
+
+
+{-| Place a `Optgroup` in the `unnamed` slot of `BottomSheet`. -}
+optgroup :
+    M3e.Build.Optgroup.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+optgroup =
+    default_core
+
+
+{-| Place a `Option` in the `unnamed` slot of `BottomSheet`. -}
+option :
+    M3e.Build.Option.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+option =
+    default_core
+
+
+{-| Place a `FocusTrap` in the `unnamed` slot of `BottomSheet`. -}
+focusTrap :
+    M3e.Build.FocusTrap.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+focusTrap =
+    default_core
+
+
+{-| Place a `AppBar` in the `unnamed` slot of `BottomSheet`. -}
+appBar :
+    M3e.Build.AppBar.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+appBar =
+    default_core
+
+
+{-| Place a `TextOverflow` in the `unnamed` slot of `BottomSheet`. -}
+textOverflow :
+    M3e.Build.TextOverflow.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+textOverflow =
+    default_core
+
+
+{-| Place a `TextHighlight` in the `unnamed` slot of `BottomSheet`. -}
+textHighlight :
+    M3e.Build.TextHighlight.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+textHighlight =
+    default_core
+
+
+{-| Place a `StateLayer` in the `unnamed` slot of `BottomSheet`. -}
+stateLayer :
+    M3e.Build.StateLayer.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+stateLayer =
+    default_core
+
+
+{-| Place a `Slide` in the `unnamed` slot of `BottomSheet`. -}
+slide :
+    M3e.Build.Slide.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+slide =
+    default_core
+
+
+{-| Place a `ScrollContainer` in the `unnamed` slot of `BottomSheet`. -}
+scrollContainer :
+    M3e.Build.ScrollContainer.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+scrollContainer =
+    default_core
+
+
+{-| Place a `Ripple` in the `unnamed` slot of `BottomSheet`. -}
+ripple :
+    M3e.Build.Ripple.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+ripple =
+    default_core
+
+
+{-| Place a `PseudoRadio` in the `unnamed` slot of `BottomSheet`. -}
+pseudoRadio :
+    M3e.Build.PseudoRadio.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+pseudoRadio =
+    default_core
+
+
+{-| Place a `PseudoCheckbox` in the `unnamed` slot of `BottomSheet`. -}
+pseudoCheckbox :
+    M3e.Build.PseudoCheckbox.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+pseudoCheckbox =
+    default_core
+
+
+{-| Place a `FocusRing` in the `unnamed` slot of `BottomSheet`. -}
+focusRing :
+    M3e.Build.FocusRing.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+focusRing =
+    default_core
+
+
+{-| Place a `Elevation` in the `unnamed` slot of `BottomSheet`. -}
+elevation :
+    M3e.Build.Elevation.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+elevation =
+    default_core
+
+
+{-| Place a `Collapsible` in the `unnamed` slot of `BottomSheet`. -}
+collapsible :
+    M3e.Build.Collapsible.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+collapsible =
+    default_core
+
+
+{-| Place a `ActionElementBase` in the `unnamed` slot of `BottomSheet`. -}
+actionElementBase :
+    M3e.Build.ActionElementBase.Builder ca cs msg ck
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+    -> M3e.Build.BottomSheet.Builder pa ps msg pk
+actionElementBase =
+    default_core

@@ -1,9 +1,11 @@
-module M3e.Build.TreeItem.Slots exposing ( iconIcon, selectedIconIcon, toggleIconIcon, openToggleIconIcon )
+module M3e.Build.TreeItem.Slots exposing
+    ( iconIcon, selectedIconIcon, toggleIconIcon, openToggleIconIcon, treeItem
+    )
 
 {-|
 Slot setters for `M3e.Build.TreeItem`. Each alias accepts a specific child component's Builder and inserts it into the parent's slot.
 
-@docs iconIcon, selectedIconIcon, toggleIconIcon, openToggleIconIcon
+@docs iconIcon, selectedIconIcon, toggleIconIcon, openToggleIconIcon, treeItem
 -}
 
 
@@ -77,6 +79,18 @@ openToggleIcon_core child_ parent_ =
         )
 
 
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.TreeItem.Builder pa ps msg pk
+    -> M3e.Build.TreeItem.Builder pa ps msg pk
+default_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
 {-| Place a `Icon` in the `icon` slot of `TreeItem`. -}
 iconIcon :
     M3e.Build.Icon.Builder ca cs msg ck
@@ -127,3 +141,12 @@ openToggleIconIcon :
     } msg pk
 openToggleIconIcon =
     openToggleIcon_core
+
+
+{-| Place a `TreeItem` in the `unnamed` slot of `TreeItem`. -}
+treeItem :
+    M3e.Build.TreeItem.Builder ca cs msg ck
+    -> M3e.Build.TreeItem.Builder pa ps msg pk
+    -> M3e.Build.TreeItem.Builder pa ps msg pk
+treeItem =
+    default_core

@@ -10,13 +10,13 @@ module M3e.Build.InputChipSet.Slots exposing
     , inputList, inputListItem, inputIcon, inputHeading, inputFabMenuTrigger, inputFabMenu, inputFab
     , inputAccordion, inputExpansionPanel, inputExpansionHeader, inputDrawerToggle, inputDrawerContainer, inputDivider, inputDialogTrigger
     , inputDialog, inputDialogAction, inputDatepickerToggle, inputDatepicker, inputContentPane, inputSuggestionChip, inputInputChipSet
-    , inputInputChip, inputFilterChipSet, inputFilterChip, inputChipSet, inputAssistChip, inputChip, inputCheckbox
+    , inputInputChip, inputFilterChipSet, inputFilterChip, inputChipSet, inputAssistChip, input_chip, inputCheckbox
     , inputCard, inputCalendar, inputYearView, inputMultiYearView, inputMonthView, inputTooltip, inputRichTooltip
     , inputTooltipElementBase, inputRichTooltipAction, inputButtonGroup, inputIconButton, inputButton, inputBreadcrumb, inputBreadcrumbItem
     , inputBreadcrumbItemButton, inputBottomSheetTrigger, inputBottomSheet, inputBottomSheetAction, inputBadge, inputAvatar, inputAutocomplete
     , inputFormField, inputOptionPanel, inputFloatingPanel, inputOptgroup, inputOption, inputFocusTrap, inputAppBar
     , inputTextOverflow, inputTextHighlight, inputStateLayer, inputSlide, inputScrollContainer, inputRipple, inputPseudoRadio
-    , inputPseudoCheckbox, inputFocusRing, inputElevation, inputCollapsible, inputActionElementBase
+    , inputPseudoCheckbox, inputFocusRing, inputElevation, inputCollapsible, inputActionElementBase, inputChip
     )
 
 {-|
@@ -35,14 +35,14 @@ Slot setters for `M3e.Build.InputChipSet`. Each alias accepts a specific child c
 @docs inputFabMenu, inputFab, inputAccordion, inputExpansionPanel, inputExpansionHeader, inputDrawerToggle
 @docs inputDrawerContainer, inputDivider, inputDialogTrigger, inputDialog, inputDialogAction, inputDatepickerToggle
 @docs inputDatepicker, inputContentPane, inputSuggestionChip, inputInputChipSet, inputInputChip, inputFilterChipSet
-@docs inputFilterChip, inputChipSet, inputAssistChip, inputChip, inputCheckbox, inputCard
+@docs inputFilterChip, inputChipSet, inputAssistChip, input_chip, inputCheckbox, inputCard
 @docs inputCalendar, inputYearView, inputMultiYearView, inputMonthView, inputTooltip, inputRichTooltip
 @docs inputTooltipElementBase, inputRichTooltipAction, inputButtonGroup, inputIconButton, inputButton, inputBreadcrumb
 @docs inputBreadcrumbItem, inputBreadcrumbItemButton, inputBottomSheetTrigger, inputBottomSheet, inputBottomSheetAction, inputBadge
 @docs inputAvatar, inputAutocomplete, inputFormField, inputOptionPanel, inputFloatingPanel, inputOptgroup
 @docs inputOption, inputFocusTrap, inputAppBar, inputTextOverflow, inputTextHighlight, inputStateLayer
 @docs inputSlide, inputScrollContainer, inputRipple, inputPseudoRadio, inputPseudoCheckbox, inputFocusRing
-@docs inputElevation, inputCollapsible, inputActionElementBase
+@docs inputElevation, inputCollapsible, inputActionElementBase, inputChip
 -}
 
 
@@ -182,6 +182,18 @@ input_core :
         | input : M3e.Build.Internal.Used
     } msg pk
 input_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.InputChipSet.Builder pa ps msg pk
+    -> M3e.Build.InputChipSet.Builder pa ps msg pk
+default_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -1251,7 +1263,7 @@ inputAssistChip =
 
 
 {-| Place a `Chip` in the `input` slot of `InputChipSet`. -}
-inputChip :
+input_chip :
     M3e.Build.Chip.Builder ca cs msg ck
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Available
@@ -1259,7 +1271,7 @@ inputChip :
     -> M3e.Build.InputChipSet.Builder pa { ps
         | input : M3e.Build.Internal.Used
     } msg pk
-inputChip =
+input_chip =
     input_core
 
 
@@ -1796,3 +1808,12 @@ inputActionElementBase :
     } msg pk
 inputActionElementBase =
     input_core
+
+
+{-| Place a `InputChip` in the `unnamed` slot of `InputChipSet`. -}
+inputChip :
+    M3e.Build.InputChip.Builder ca cs msg ck
+    -> M3e.Build.InputChipSet.Builder pa ps msg pk
+    -> M3e.Build.InputChipSet.Builder pa ps msg pk
+inputChip =
+    default_core

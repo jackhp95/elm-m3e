@@ -16,7 +16,25 @@ module M3e.Build.Dialog.Slots exposing
     , actionsBreadcrumbItemButton, actionsBottomSheetTrigger, actionsBottomSheet, actionsBottomSheetAction, actionsBadge, actionsAvatar, actionsAutocomplete
     , actionsFormField, actionsOptionPanel, actionsFloatingPanel, actionsOptgroup, actionsOption, actionsFocusTrap, actionsAppBar
     , actionsTextOverflow, actionsTextHighlight, actionsStateLayer, actionsSlide, actionsScrollContainer, actionsRipple, actionsPseudoRadio
-    , actionsPseudoCheckbox, actionsFocusRing, actionsElevation, actionsCollapsible, actionsActionElementBase, closeIconIcon
+    , actionsPseudoCheckbox, actionsFocusRing, actionsElevation, actionsCollapsible, actionsActionElementBase, closeIconIcon, tree
+    , treeItem, toolbar, toc, tocItem, themeIcon, theme, textareaAutosize
+    , tabs, tabPanel, tab, switch, stepperReset, stepperPrevious, step
+    , stepPanel, stepper, splitPane, splitButton, snackbar, slider, sliderThumb
+    , slideGroup, skeleton, shape, segmentedButton, buttonSegment, searchView, searchBar
+    , radioGroup, radio, progressElementIndicatorBase, paginator, select, navRailToggle, navRail
+    , navMenuItemGroup, navMenu, navMenuItem, navBar, navItem, menuItemRadio, menuItemGroup
+    , menuItemCheckbox, menu, menuItem, menuTrigger, menuItemElementBase, loadingIndicator, selectionList
+    , listOption, actionList, expandableListItem, listAction, listItemButton, list, listItem
+    , icon, heading, fabMenuTrigger, fabMenu, fab, accordion, expansionPanel
+    , expansionHeader, drawerToggle, drawerContainer, divider, dialogTrigger, dialog, dialogAction
+    , datepickerToggle, datepicker, contentPane, suggestionChip, inputChipSet, inputChip, filterChipSet
+    , filterChip, chipSet, assistChip, chip, checkbox, card, calendar
+    , yearView, multiYearView, monthView, tooltip, richTooltip, tooltipElementBase, richTooltipAction
+    , buttonGroup, iconButton, button, breadcrumb, breadcrumbItem, breadcrumbItemButton, bottomSheetTrigger
+    , bottomSheet, bottomSheetAction, badge, avatar, autocomplete, formField, optionPanel
+    , floatingPanel, optgroup, option, focusTrap, appBar, textOverflow, textHighlight
+    , stateLayer, slide, scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing
+    , elevation, collapsible, actionElementBase
     )
 
 {-|
@@ -42,7 +60,28 @@ Slot setters for `M3e.Build.Dialog`. Each alias accepts a specific child compone
 @docs actionsAvatar, actionsAutocomplete, actionsFormField, actionsOptionPanel, actionsFloatingPanel, actionsOptgroup
 @docs actionsOption, actionsFocusTrap, actionsAppBar, actionsTextOverflow, actionsTextHighlight, actionsStateLayer
 @docs actionsSlide, actionsScrollContainer, actionsRipple, actionsPseudoRadio, actionsPseudoCheckbox, actionsFocusRing
-@docs actionsElevation, actionsCollapsible, actionsActionElementBase, closeIconIcon
+@docs actionsElevation, actionsCollapsible, actionsActionElementBase, closeIconIcon, tree, treeItem
+@docs toolbar, toc, tocItem, themeIcon, theme, textareaAutosize
+@docs tabs, tabPanel, tab, switch, stepperReset, stepperPrevious
+@docs step, stepPanel, stepper, splitPane, splitButton, snackbar
+@docs slider, sliderThumb, slideGroup, skeleton, shape, segmentedButton
+@docs buttonSegment, searchView, searchBar, radioGroup, radio, progressElementIndicatorBase
+@docs paginator, select, navRailToggle, navRail, navMenuItemGroup, navMenu
+@docs navMenuItem, navBar, navItem, menuItemRadio, menuItemGroup, menuItemCheckbox
+@docs menu, menuItem, menuTrigger, menuItemElementBase, loadingIndicator, selectionList
+@docs listOption, actionList, expandableListItem, listAction, listItemButton, list
+@docs listItem, icon, heading, fabMenuTrigger, fabMenu, fab
+@docs accordion, expansionPanel, expansionHeader, drawerToggle, drawerContainer, divider
+@docs dialogTrigger, dialog, dialogAction, datepickerToggle, datepicker, contentPane
+@docs suggestionChip, inputChipSet, inputChip, filterChipSet, filterChip, chipSet
+@docs assistChip, chip, checkbox, card, calendar, yearView
+@docs multiYearView, monthView, tooltip, richTooltip, tooltipElementBase, richTooltipAction
+@docs buttonGroup, iconButton, button, breadcrumb, breadcrumbItem, breadcrumbItemButton
+@docs bottomSheetTrigger, bottomSheet, bottomSheetAction, badge, avatar, autocomplete
+@docs formField, optionPanel, floatingPanel, optgroup, option, focusTrap
+@docs appBar, textOverflow, textHighlight, stateLayer, slide, scrollContainer
+@docs ripple, pseudoRadio, pseudoCheckbox, focusRing, elevation, collapsible
+@docs actionElementBase
 -}
 
 
@@ -198,6 +237,18 @@ closeIcon_core :
         | closeIcon : M3e.Build.Internal.Used
     } msg pk
 closeIcon_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+default_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -1825,3 +1876,1120 @@ closeIconIcon :
     } msg pk
 closeIconIcon =
     closeIcon_core
+
+
+{-| Place a `Tree` in the `unnamed` slot of `Dialog`. -}
+tree :
+    M3e.Build.Tree.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tree =
+    default_core
+
+
+{-| Place a `TreeItem` in the `unnamed` slot of `Dialog`. -}
+treeItem :
+    M3e.Build.TreeItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+treeItem =
+    default_core
+
+
+{-| Place a `Toolbar` in the `unnamed` slot of `Dialog`. -}
+toolbar :
+    M3e.Build.Toolbar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+toolbar =
+    default_core
+
+
+{-| Place a `Toc` in the `unnamed` slot of `Dialog`. -}
+toc :
+    M3e.Build.Toc.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+toc =
+    default_core
+
+
+{-| Place a `TocItem` in the `unnamed` slot of `Dialog`. -}
+tocItem :
+    M3e.Build.TocItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tocItem =
+    default_core
+
+
+{-| Place a `ThemeIcon` in the `unnamed` slot of `Dialog`. -}
+themeIcon :
+    M3e.Build.ThemeIcon.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+themeIcon =
+    default_core
+
+
+{-| Place a `Theme` in the `unnamed` slot of `Dialog`. -}
+theme :
+    M3e.Build.Theme.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+theme =
+    default_core
+
+
+{-| Place a `TextareaAutosize` in the `unnamed` slot of `Dialog`. -}
+textareaAutosize :
+    M3e.Build.TextareaAutosize.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+textareaAutosize =
+    default_core
+
+
+{-| Place a `Tabs` in the `unnamed` slot of `Dialog`. -}
+tabs :
+    M3e.Build.Tabs.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tabs =
+    default_core
+
+
+{-| Place a `TabPanel` in the `unnamed` slot of `Dialog`. -}
+tabPanel :
+    M3e.Build.TabPanel.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tabPanel =
+    default_core
+
+
+{-| Place a `Tab` in the `unnamed` slot of `Dialog`. -}
+tab :
+    M3e.Build.Tab.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tab =
+    default_core
+
+
+{-| Place a `Switch` in the `unnamed` slot of `Dialog`. -}
+switch :
+    M3e.Build.Switch.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+switch =
+    default_core
+
+
+{-| Place a `StepperReset` in the `unnamed` slot of `Dialog`. -}
+stepperReset :
+    M3e.Build.StepperReset.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+stepperReset =
+    default_core
+
+
+{-| Place a `StepperPrevious` in the `unnamed` slot of `Dialog`. -}
+stepperPrevious :
+    M3e.Build.StepperPrevious.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+stepperPrevious =
+    default_core
+
+
+{-| Place a `Step` in the `unnamed` slot of `Dialog`. -}
+step :
+    M3e.Build.Step.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+step =
+    default_core
+
+
+{-| Place a `StepPanel` in the `unnamed` slot of `Dialog`. -}
+stepPanel :
+    M3e.Build.StepPanel.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+stepPanel =
+    default_core
+
+
+{-| Place a `Stepper` in the `unnamed` slot of `Dialog`. -}
+stepper :
+    M3e.Build.Stepper.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+stepper =
+    default_core
+
+
+{-| Place a `SplitPane` in the `unnamed` slot of `Dialog`. -}
+splitPane :
+    M3e.Build.SplitPane.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+splitPane =
+    default_core
+
+
+{-| Place a `SplitButton` in the `unnamed` slot of `Dialog`. -}
+splitButton :
+    M3e.Build.SplitButton.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+splitButton =
+    default_core
+
+
+{-| Place a `Snackbar` in the `unnamed` slot of `Dialog`. -}
+snackbar :
+    M3e.Build.Snackbar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+snackbar =
+    default_core
+
+
+{-| Place a `Slider` in the `unnamed` slot of `Dialog`. -}
+slider :
+    M3e.Build.Slider.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+slider =
+    default_core
+
+
+{-| Place a `SliderThumb` in the `unnamed` slot of `Dialog`. -}
+sliderThumb :
+    M3e.Build.SliderThumb.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+sliderThumb =
+    default_core
+
+
+{-| Place a `SlideGroup` in the `unnamed` slot of `Dialog`. -}
+slideGroup :
+    M3e.Build.SlideGroup.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+slideGroup =
+    default_core
+
+
+{-| Place a `Skeleton` in the `unnamed` slot of `Dialog`. -}
+skeleton :
+    M3e.Build.Skeleton.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+skeleton =
+    default_core
+
+
+{-| Place a `Shape` in the `unnamed` slot of `Dialog`. -}
+shape :
+    M3e.Build.Shape.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+shape =
+    default_core
+
+
+{-| Place a `SegmentedButton` in the `unnamed` slot of `Dialog`. -}
+segmentedButton :
+    M3e.Build.SegmentedButton.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+segmentedButton =
+    default_core
+
+
+{-| Place a `ButtonSegment` in the `unnamed` slot of `Dialog`. -}
+buttonSegment :
+    M3e.Build.ButtonSegment.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+buttonSegment =
+    default_core
+
+
+{-| Place a `SearchView` in the `unnamed` slot of `Dialog`. -}
+searchView :
+    M3e.Build.SearchView.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+searchView =
+    default_core
+
+
+{-| Place a `SearchBar` in the `unnamed` slot of `Dialog`. -}
+searchBar :
+    M3e.Build.SearchBar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+searchBar =
+    default_core
+
+
+{-| Place a `RadioGroup` in the `unnamed` slot of `Dialog`. -}
+radioGroup :
+    M3e.Build.RadioGroup.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+radioGroup =
+    default_core
+
+
+{-| Place a `Radio` in the `unnamed` slot of `Dialog`. -}
+radio :
+    M3e.Build.Radio.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+radio =
+    default_core
+
+
+{-| Place a `ProgressElementIndicatorBase` in the `unnamed` slot of `Dialog`. -}
+progressElementIndicatorBase :
+    M3e.Build.ProgressElementIndicatorBase.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+progressElementIndicatorBase =
+    default_core
+
+
+{-| Place a `Paginator` in the `unnamed` slot of `Dialog`. -}
+paginator :
+    M3e.Build.Paginator.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+paginator =
+    default_core
+
+
+{-| Place a `Select` in the `unnamed` slot of `Dialog`. -}
+select :
+    M3e.Build.Select.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+select =
+    default_core
+
+
+{-| Place a `NavRailToggle` in the `unnamed` slot of `Dialog`. -}
+navRailToggle :
+    M3e.Build.NavRailToggle.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navRailToggle =
+    default_core
+
+
+{-| Place a `NavRail` in the `unnamed` slot of `Dialog`. -}
+navRail :
+    M3e.Build.NavRail.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navRail =
+    default_core
+
+
+{-| Place a `NavMenuItemGroup` in the `unnamed` slot of `Dialog`. -}
+navMenuItemGroup :
+    M3e.Build.NavMenuItemGroup.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navMenuItemGroup =
+    default_core
+
+
+{-| Place a `NavMenu` in the `unnamed` slot of `Dialog`. -}
+navMenu :
+    M3e.Build.NavMenu.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navMenu =
+    default_core
+
+
+{-| Place a `NavMenuItem` in the `unnamed` slot of `Dialog`. -}
+navMenuItem :
+    M3e.Build.NavMenuItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navMenuItem =
+    default_core
+
+
+{-| Place a `NavBar` in the `unnamed` slot of `Dialog`. -}
+navBar :
+    M3e.Build.NavBar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navBar =
+    default_core
+
+
+{-| Place a `NavItem` in the `unnamed` slot of `Dialog`. -}
+navItem :
+    M3e.Build.NavItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+navItem =
+    default_core
+
+
+{-| Place a `MenuItemRadio` in the `unnamed` slot of `Dialog`. -}
+menuItemRadio :
+    M3e.Build.MenuItemRadio.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menuItemRadio =
+    default_core
+
+
+{-| Place a `MenuItemGroup` in the `unnamed` slot of `Dialog`. -}
+menuItemGroup :
+    M3e.Build.MenuItemGroup.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menuItemGroup =
+    default_core
+
+
+{-| Place a `MenuItemCheckbox` in the `unnamed` slot of `Dialog`. -}
+menuItemCheckbox :
+    M3e.Build.MenuItemCheckbox.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menuItemCheckbox =
+    default_core
+
+
+{-| Place a `Menu` in the `unnamed` slot of `Dialog`. -}
+menu :
+    M3e.Build.Menu.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menu =
+    default_core
+
+
+{-| Place a `MenuItem` in the `unnamed` slot of `Dialog`. -}
+menuItem :
+    M3e.Build.MenuItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menuItem =
+    default_core
+
+
+{-| Place a `MenuTrigger` in the `unnamed` slot of `Dialog`. -}
+menuTrigger :
+    M3e.Build.MenuTrigger.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menuTrigger =
+    default_core
+
+
+{-| Place a `MenuItemElementBase` in the `unnamed` slot of `Dialog`. -}
+menuItemElementBase :
+    M3e.Build.MenuItemElementBase.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+menuItemElementBase =
+    default_core
+
+
+{-| Place a `LoadingIndicator` in the `unnamed` slot of `Dialog`. -}
+loadingIndicator :
+    M3e.Build.LoadingIndicator.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+loadingIndicator =
+    default_core
+
+
+{-| Place a `SelectionList` in the `unnamed` slot of `Dialog`. -}
+selectionList :
+    M3e.Build.SelectionList.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+selectionList =
+    default_core
+
+
+{-| Place a `ListOption` in the `unnamed` slot of `Dialog`. -}
+listOption :
+    M3e.Build.ListOption.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+listOption =
+    default_core
+
+
+{-| Place a `ActionList` in the `unnamed` slot of `Dialog`. -}
+actionList :
+    M3e.Build.ActionList.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+actionList =
+    default_core
+
+
+{-| Place a `ExpandableListItem` in the `unnamed` slot of `Dialog`. -}
+expandableListItem :
+    M3e.Build.ExpandableListItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+expandableListItem =
+    default_core
+
+
+{-| Place a `ListAction` in the `unnamed` slot of `Dialog`. -}
+listAction :
+    M3e.Build.ListAction.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+listAction =
+    default_core
+
+
+{-| Place a `ListItemButton` in the `unnamed` slot of `Dialog`. -}
+listItemButton :
+    M3e.Build.ListItemButton.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+listItemButton =
+    default_core
+
+
+{-| Place a `List` in the `unnamed` slot of `Dialog`. -}
+list :
+    M3e.Build.List.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+list =
+    default_core
+
+
+{-| Place a `ListItem` in the `unnamed` slot of `Dialog`. -}
+listItem :
+    M3e.Build.ListItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+listItem =
+    default_core
+
+
+{-| Place a `Icon` in the `unnamed` slot of `Dialog`. -}
+icon :
+    M3e.Build.Icon.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+icon =
+    default_core
+
+
+{-| Place a `Heading` in the `unnamed` slot of `Dialog`. -}
+heading :
+    M3e.Build.Heading.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+heading =
+    default_core
+
+
+{-| Place a `FabMenuTrigger` in the `unnamed` slot of `Dialog`. -}
+fabMenuTrigger :
+    M3e.Build.FabMenuTrigger.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+fabMenuTrigger =
+    default_core
+
+
+{-| Place a `FabMenu` in the `unnamed` slot of `Dialog`. -}
+fabMenu :
+    M3e.Build.FabMenu.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+fabMenu =
+    default_core
+
+
+{-| Place a `Fab` in the `unnamed` slot of `Dialog`. -}
+fab :
+    M3e.Build.Fab.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+fab =
+    default_core
+
+
+{-| Place a `Accordion` in the `unnamed` slot of `Dialog`. -}
+accordion :
+    M3e.Build.Accordion.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+accordion =
+    default_core
+
+
+{-| Place a `ExpansionPanel` in the `unnamed` slot of `Dialog`. -}
+expansionPanel :
+    M3e.Build.ExpansionPanel.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+expansionPanel =
+    default_core
+
+
+{-| Place a `ExpansionHeader` in the `unnamed` slot of `Dialog`. -}
+expansionHeader :
+    M3e.Build.ExpansionHeader.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+expansionHeader =
+    default_core
+
+
+{-| Place a `DrawerToggle` in the `unnamed` slot of `Dialog`. -}
+drawerToggle :
+    M3e.Build.DrawerToggle.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+drawerToggle =
+    default_core
+
+
+{-| Place a `DrawerContainer` in the `unnamed` slot of `Dialog`. -}
+drawerContainer :
+    M3e.Build.DrawerContainer.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+drawerContainer =
+    default_core
+
+
+{-| Place a `Divider` in the `unnamed` slot of `Dialog`. -}
+divider :
+    M3e.Build.Divider.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+divider =
+    default_core
+
+
+{-| Place a `DialogTrigger` in the `unnamed` slot of `Dialog`. -}
+dialogTrigger :
+    M3e.Build.DialogTrigger.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+dialogTrigger =
+    default_core
+
+
+{-| Place a `Dialog` in the `unnamed` slot of `Dialog`. -}
+dialog :
+    M3e.Build.Dialog.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+dialog =
+    default_core
+
+
+{-| Place a `DialogAction` in the `unnamed` slot of `Dialog`. -}
+dialogAction :
+    M3e.Build.DialogAction.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+dialogAction =
+    default_core
+
+
+{-| Place a `DatepickerToggle` in the `unnamed` slot of `Dialog`. -}
+datepickerToggle :
+    M3e.Build.DatepickerToggle.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+datepickerToggle =
+    default_core
+
+
+{-| Place a `Datepicker` in the `unnamed` slot of `Dialog`. -}
+datepicker :
+    M3e.Build.Datepicker.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+datepicker =
+    default_core
+
+
+{-| Place a `ContentPane` in the `unnamed` slot of `Dialog`. -}
+contentPane :
+    M3e.Build.ContentPane.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+contentPane =
+    default_core
+
+
+{-| Place a `SuggestionChip` in the `unnamed` slot of `Dialog`. -}
+suggestionChip :
+    M3e.Build.SuggestionChip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+suggestionChip =
+    default_core
+
+
+{-| Place a `InputChipSet` in the `unnamed` slot of `Dialog`. -}
+inputChipSet :
+    M3e.Build.InputChipSet.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+inputChipSet =
+    default_core
+
+
+{-| Place a `InputChip` in the `unnamed` slot of `Dialog`. -}
+inputChip :
+    M3e.Build.InputChip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+inputChip =
+    default_core
+
+
+{-| Place a `FilterChipSet` in the `unnamed` slot of `Dialog`. -}
+filterChipSet :
+    M3e.Build.FilterChipSet.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+filterChipSet =
+    default_core
+
+
+{-| Place a `FilterChip` in the `unnamed` slot of `Dialog`. -}
+filterChip :
+    M3e.Build.FilterChip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+filterChip =
+    default_core
+
+
+{-| Place a `ChipSet` in the `unnamed` slot of `Dialog`. -}
+chipSet :
+    M3e.Build.ChipSet.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+chipSet =
+    default_core
+
+
+{-| Place a `AssistChip` in the `unnamed` slot of `Dialog`. -}
+assistChip :
+    M3e.Build.AssistChip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+assistChip =
+    default_core
+
+
+{-| Place a `Chip` in the `unnamed` slot of `Dialog`. -}
+chip :
+    M3e.Build.Chip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+chip =
+    default_core
+
+
+{-| Place a `Checkbox` in the `unnamed` slot of `Dialog`. -}
+checkbox :
+    M3e.Build.Checkbox.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+checkbox =
+    default_core
+
+
+{-| Place a `Card` in the `unnamed` slot of `Dialog`. -}
+card :
+    M3e.Build.Card.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+card =
+    default_core
+
+
+{-| Place a `Calendar` in the `unnamed` slot of `Dialog`. -}
+calendar :
+    M3e.Build.Calendar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+calendar =
+    default_core
+
+
+{-| Place a `YearView` in the `unnamed` slot of `Dialog`. -}
+yearView :
+    M3e.Build.YearView.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+yearView =
+    default_core
+
+
+{-| Place a `MultiYearView` in the `unnamed` slot of `Dialog`. -}
+multiYearView :
+    M3e.Build.MultiYearView.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+multiYearView =
+    default_core
+
+
+{-| Place a `MonthView` in the `unnamed` slot of `Dialog`. -}
+monthView :
+    M3e.Build.MonthView.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+monthView =
+    default_core
+
+
+{-| Place a `Tooltip` in the `unnamed` slot of `Dialog`. -}
+tooltip :
+    M3e.Build.Tooltip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tooltip =
+    default_core
+
+
+{-| Place a `RichTooltip` in the `unnamed` slot of `Dialog`. -}
+richTooltip :
+    M3e.Build.RichTooltip.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+richTooltip =
+    default_core
+
+
+{-| Place a `TooltipElementBase` in the `unnamed` slot of `Dialog`. -}
+tooltipElementBase :
+    M3e.Build.TooltipElementBase.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+tooltipElementBase =
+    default_core
+
+
+{-| Place a `RichTooltipAction` in the `unnamed` slot of `Dialog`. -}
+richTooltipAction :
+    M3e.Build.RichTooltipAction.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+richTooltipAction =
+    default_core
+
+
+{-| Place a `ButtonGroup` in the `unnamed` slot of `Dialog`. -}
+buttonGroup :
+    M3e.Build.ButtonGroup.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+buttonGroup =
+    default_core
+
+
+{-| Place a `IconButton` in the `unnamed` slot of `Dialog`. -}
+iconButton :
+    M3e.Build.IconButton.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+iconButton =
+    default_core
+
+
+{-| Place a `Button` in the `unnamed` slot of `Dialog`. -}
+button :
+    M3e.Build.Button.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+button =
+    default_core
+
+
+{-| Place a `Breadcrumb` in the `unnamed` slot of `Dialog`. -}
+breadcrumb :
+    M3e.Build.Breadcrumb.Builder ca { cs
+        | default : M3e.Build.Internal.Filled
+    } msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+breadcrumb =
+    default_core
+
+
+{-| Place a `BreadcrumbItem` in the `unnamed` slot of `Dialog`. -}
+breadcrumbItem :
+    M3e.Build.BreadcrumbItem.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+breadcrumbItem =
+    default_core
+
+
+{-| Place a `BreadcrumbItemButton` in the `unnamed` slot of `Dialog`. -}
+breadcrumbItemButton :
+    M3e.Build.BreadcrumbItemButton.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+breadcrumbItemButton =
+    default_core
+
+
+{-| Place a `BottomSheetTrigger` in the `unnamed` slot of `Dialog`. -}
+bottomSheetTrigger :
+    M3e.Build.BottomSheetTrigger.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+bottomSheetTrigger =
+    default_core
+
+
+{-| Place a `BottomSheet` in the `unnamed` slot of `Dialog`. -}
+bottomSheet :
+    M3e.Build.BottomSheet.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+bottomSheet =
+    default_core
+
+
+{-| Place a `BottomSheetAction` in the `unnamed` slot of `Dialog`. -}
+bottomSheetAction :
+    M3e.Build.BottomSheetAction.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+bottomSheetAction =
+    default_core
+
+
+{-| Place a `Badge` in the `unnamed` slot of `Dialog`. -}
+badge :
+    M3e.Build.Badge.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+badge =
+    default_core
+
+
+{-| Place a `Avatar` in the `unnamed` slot of `Dialog`. -}
+avatar :
+    M3e.Build.Avatar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+avatar =
+    default_core
+
+
+{-| Place a `Autocomplete` in the `unnamed` slot of `Dialog`. -}
+autocomplete :
+    M3e.Build.Autocomplete.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+autocomplete =
+    default_core
+
+
+{-| Place a `FormField` in the `unnamed` slot of `Dialog`. -}
+formField :
+    M3e.Build.FormField.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+formField =
+    default_core
+
+
+{-| Place a `OptionPanel` in the `unnamed` slot of `Dialog`. -}
+optionPanel :
+    M3e.Build.OptionPanel.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+optionPanel =
+    default_core
+
+
+{-| Place a `FloatingPanel` in the `unnamed` slot of `Dialog`. -}
+floatingPanel :
+    M3e.Build.FloatingPanel.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+floatingPanel =
+    default_core
+
+
+{-| Place a `Optgroup` in the `unnamed` slot of `Dialog`. -}
+optgroup :
+    M3e.Build.Optgroup.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+optgroup =
+    default_core
+
+
+{-| Place a `Option` in the `unnamed` slot of `Dialog`. -}
+option :
+    M3e.Build.Option.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+option =
+    default_core
+
+
+{-| Place a `FocusTrap` in the `unnamed` slot of `Dialog`. -}
+focusTrap :
+    M3e.Build.FocusTrap.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+focusTrap =
+    default_core
+
+
+{-| Place a `AppBar` in the `unnamed` slot of `Dialog`. -}
+appBar :
+    M3e.Build.AppBar.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+appBar =
+    default_core
+
+
+{-| Place a `TextOverflow` in the `unnamed` slot of `Dialog`. -}
+textOverflow :
+    M3e.Build.TextOverflow.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+textOverflow =
+    default_core
+
+
+{-| Place a `TextHighlight` in the `unnamed` slot of `Dialog`. -}
+textHighlight :
+    M3e.Build.TextHighlight.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+textHighlight =
+    default_core
+
+
+{-| Place a `StateLayer` in the `unnamed` slot of `Dialog`. -}
+stateLayer :
+    M3e.Build.StateLayer.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+stateLayer =
+    default_core
+
+
+{-| Place a `Slide` in the `unnamed` slot of `Dialog`. -}
+slide :
+    M3e.Build.Slide.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+slide =
+    default_core
+
+
+{-| Place a `ScrollContainer` in the `unnamed` slot of `Dialog`. -}
+scrollContainer :
+    M3e.Build.ScrollContainer.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+scrollContainer =
+    default_core
+
+
+{-| Place a `Ripple` in the `unnamed` slot of `Dialog`. -}
+ripple :
+    M3e.Build.Ripple.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+ripple =
+    default_core
+
+
+{-| Place a `PseudoRadio` in the `unnamed` slot of `Dialog`. -}
+pseudoRadio :
+    M3e.Build.PseudoRadio.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+pseudoRadio =
+    default_core
+
+
+{-| Place a `PseudoCheckbox` in the `unnamed` slot of `Dialog`. -}
+pseudoCheckbox :
+    M3e.Build.PseudoCheckbox.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+pseudoCheckbox =
+    default_core
+
+
+{-| Place a `FocusRing` in the `unnamed` slot of `Dialog`. -}
+focusRing :
+    M3e.Build.FocusRing.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+focusRing =
+    default_core
+
+
+{-| Place a `Elevation` in the `unnamed` slot of `Dialog`. -}
+elevation :
+    M3e.Build.Elevation.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+elevation =
+    default_core
+
+
+{-| Place a `Collapsible` in the `unnamed` slot of `Dialog`. -}
+collapsible :
+    M3e.Build.Collapsible.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+collapsible =
+    default_core
+
+
+{-| Place a `ActionElementBase` in the `unnamed` slot of `Dialog`. -}
+actionElementBase :
+    M3e.Build.ActionElementBase.Builder ca cs msg ck
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+    -> M3e.Build.Dialog.Builder pa ps msg pk
+actionElementBase =
+    default_core

@@ -16,7 +16,8 @@ module M3e.Build.OptionPanel.Slots exposing
     , noDataBreadcrumbItemButton, noDataBottomSheetTrigger, noDataBottomSheet, noDataBottomSheetAction, noDataBadge, noDataAvatar, noDataAutocomplete
     , noDataFormField, noDataOptionPanel, noDataFloatingPanel, noDataOptgroup, noDataOption, noDataFocusTrap, noDataAppBar
     , noDataTextOverflow, noDataTextHighlight, noDataStateLayer, noDataSlide, noDataScrollContainer, noDataRipple, noDataPseudoRadio
-    , noDataPseudoCheckbox, noDataFocusRing, noDataElevation, noDataCollapsible, noDataActionElementBase
+    , noDataPseudoCheckbox, noDataFocusRing, noDataElevation, noDataCollapsible, noDataActionElementBase, divider, optgroup
+    , option, loadingLoadingIndicator
     )
 
 {-|
@@ -42,7 +43,8 @@ Slot setters for `M3e.Build.OptionPanel`. Each alias accepts a specific child co
 @docs noDataAvatar, noDataAutocomplete, noDataFormField, noDataOptionPanel, noDataFloatingPanel, noDataOptgroup
 @docs noDataOption, noDataFocusTrap, noDataAppBar, noDataTextOverflow, noDataTextHighlight, noDataStateLayer
 @docs noDataSlide, noDataScrollContainer, noDataRipple, noDataPseudoRadio, noDataPseudoCheckbox, noDataFocusRing
-@docs noDataElevation, noDataCollapsible, noDataActionElementBase
+@docs noDataElevation, noDataCollapsible, noDataActionElementBase, divider, optgroup, option
+@docs loadingLoadingIndicator
 -}
 
 
@@ -182,6 +184,30 @@ noData_core :
         | noData : M3e.Build.Internal.Used
     } msg pk
 noData_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+default_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+default_core child_ parent_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Build.Internal.node_ child_)
+             (M3e.Build.Internal.node_ parent_)
+        )
+
+
+loading_core :
+    M3e.Build.Internal.Builder anyK anyA anyS msg
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+loading_core child_ parent_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Build.Internal.node_ child_)
@@ -1796,3 +1822,39 @@ noDataActionElementBase :
     } msg pk
 noDataActionElementBase =
     noData_core
+
+
+{-| Place a `Divider` in the `unnamed` slot of `OptionPanel`. -}
+divider :
+    M3e.Build.Divider.Builder ca cs msg ck
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+divider =
+    default_core
+
+
+{-| Place a `Optgroup` in the `unnamed` slot of `OptionPanel`. -}
+optgroup :
+    M3e.Build.Optgroup.Builder ca cs msg ck
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+optgroup =
+    default_core
+
+
+{-| Place a `Option` in the `unnamed` slot of `OptionPanel`. -}
+option :
+    M3e.Build.Option.Builder ca cs msg ck
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+option =
+    default_core
+
+
+{-| Place a `LoadingIndicator` in the `loading` slot of `OptionPanel`. -}
+loadingLoadingIndicator :
+    M3e.Build.LoadingIndicator.Builder ca cs msg ck
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+    -> M3e.Build.OptionPanel.Builder pa ps msg pk
+loadingLoadingIndicator =
+    loading_core
