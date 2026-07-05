@@ -12,7 +12,6 @@ import BackendTask exposing (BackendTask)
 import BackendTask.File
 import Dict exposing (Dict)
 import Doc
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Head
 import Json.Decode as Decode
@@ -166,27 +165,41 @@ view app sharedModel =
     , body =
         [ Element.toNode
             (pane
-                ([ Heading.view { content = Kit.text component.name }
-                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-                    []
-                 , Layout.div "max-w-2xl"
-                    [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text component.overview ] ]
-                 ]
-                    ++ usageBlocks sharedModel.apiLayer app.data.usage
-                    ++ [ Heading.view { content = Kit.text "API" }
-                            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
+                [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
+                  -- section — intro, Usage, API — so their spacing is uniform.
+                  Layout.div "space-y-10"
+                    (Layout.div "space-y-4"
+                        [ Heading.view { content = Kit.text component.name }
+                            [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
                             []
-                       , Card.view [ Card.variant Value.outlined ]
-                            [ Card.content (List_.view [] (List_.children (List.map memberRow component.members))) ]
-                       ]
-                )
+                        , Layout.div "max-w-2xl text-on-surface-variant"
+                            [ Doc.markdown component.overview ]
+                        ]
+                        :: usageBlocks sharedModel.apiLayer app.data.usage
+                        ++ [ apiSection component.members ]
+                    )
+                ]
             )
         ]
     }
 
 
-{-| Render the Usage section: a "Usage" heading, then per-section sub-headings,
-each followed by its examples (live preview + code). Empty ⇒ nothing.
+{-| The API-reference section: a heading over an outlined card listing every member.
+-}
+apiSection : List Member -> Element { s | html : Supported, heading : Supported, card : Supported } msg
+apiSection members =
+    Layout.div "space-y-4"
+        [ Heading.view { content = Kit.text "API" }
+            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
+            []
+        , Card.view [ Card.variant Value.outlined ]
+            [ Card.content (List_.view [] (List_.children (List.map memberRow members))) ]
+        ]
+
+
+{-| Render the Usage section as a single spacing-consistent block: a "Usage"
+heading over its per-section sub-headings and examples. Empty ⇒ nothing (so it
+drops cleanly out of the top-level `space-y-10` rhythm).
 -}
 usageBlocks : Shared.ApiLayer -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
 usageBlocks layer examples =
@@ -195,10 +208,13 @@ usageBlocks layer examples =
             []
 
         _ ->
-            Heading.view { content = Kit.text "Usage" }
-                [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
-                []
-                :: List.concatMap (sectionBlock layer) (groupBySection examples)
+            [ Layout.div "space-y-6"
+                (Heading.view { content = Kit.text "Usage" }
+                    [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
+                    []
+                    :: List.concatMap (sectionBlock layer) (groupBySection examples)
+                )
+            ]
 
 
 {-| One section: an optional sub-heading (skipped for the ungrouped "" section)
@@ -218,14 +234,15 @@ sectionBlock layer ( section, examples ) =
                     []
                 ]
     in
-    heading ++ List.concatMap (exampleBlock layer) examples
+    heading ++ List.map (exampleBlock layer) examples
 
 
 {-| A live preview paired with its code in the selected API layer: strict top
 (`M3e.*`), loose middle (`M3e.Cem.*`), bottom (`M3e.Cem.Html.*`), or raw HTML.
-Every example carries all four, so the toggle is never partial.
+Every example carries all four, so the toggle is never partial. Grouped as one
+`space-y-3` block so title/preview/code stay tight while sections stay apart.
 -}
-exampleBlock : Shared.ApiLayer -> UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+exampleBlock : Shared.ApiLayer -> UsageExample -> Element { s | html : Supported, heading : Supported, card : Supported } msg
 exampleBlock layer ex =
     let
         code : Element { s | html : Supported, heading : Supported, card : Supported } msg
@@ -243,10 +260,11 @@ exampleBlock layer ex =
                 Shared.LayerRaw ->
                     Doc.code_ Doc.NoLang ex.html
     in
-    [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
-    , Doc.showcase (Doc.rawPreview ex.html)
-    , code
-    ]
+    Layout.div "space-y-3"
+        [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
+        , Doc.showcase (Doc.rawPreview ex.html)
+        , code
+        ]
 
 
 {-| Group examples by `.section`, preserving first-seen order of both sections
@@ -276,30 +294,32 @@ pane items =
     ContentPane.view [] (List.map ContentPane.child items)
 
 
-{-| One API member: kind overline, name + signature, and its doc.
+{-| One API member: an optional kind overline (only for non-`value` kinds such
+as `type` — the ubiquitous "value" eyebrow was pure noise), the syntax-highlighted
+`name : signature`, and its Markdown-rendered doc.
 -}
 memberRow : Member -> Element { s | listItem : Supported } msg
 memberRow m =
     ListItem.view []
-        (ListItem.overline (Kit.text m.kind)
-            :: ListItem.child
-                (EscapeHatch.asElement
-                    (Kit.code Value.medium
-                        []
-                        [ Kit.text
-                            (if m.signature == "" then
-                                m.name
+        ((if m.kind == "" || m.kind == "value" then
+            []
 
-                             else
-                                m.name ++ " : " ++ m.signature
-                            )
-                        ]
+          else
+            [ ListItem.overline (Kit.text m.kind) ]
+         )
+            ++ ListItem.child
+                (Doc.elmSignature
+                    (if m.signature == "" then
+                        m.name
+
+                     else
+                        m.name ++ " : " ++ m.signature
                     )
                 )
             :: (if m.doc == "" then
                     []
 
                 else
-                    [ ListItem.supportingText (Kit.text m.doc) ]
+                    [ ListItem.supportingText (Doc.markdown m.doc) ]
                )
         )
