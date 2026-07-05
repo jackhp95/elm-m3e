@@ -15,7 +15,7 @@ import Dict exposing (Dict)
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
-import M3e.Review.Facts exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Surface(..))
 import Review.ModuleNameLookupTable exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
@@ -52,17 +52,20 @@ expressionVisitor node context =
                 Just site ->
                     let
                         attrsList =
-                            case site.shape of
-                                Shape3 ->
+                            case site.surface of
+                                Standard ->
                                     List.head args
 
-                                Shape4 ->
+                                Record ->
                                     case args of
                                         _ :: attrs :: _ ->
                                             Just attrs
 
                                         _ ->
                                             Nothing
+
+                                _ ->
+                                    Nothing
 
                         attrsTrace =
                             case attrsList of

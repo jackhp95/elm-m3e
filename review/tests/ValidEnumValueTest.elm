@@ -1,6 +1,6 @@
 module ValidEnumValueTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import Review.Test
 import Test exposing (Test, describe, test)
 import ValidEnumValue exposing (rule)
@@ -17,7 +17,7 @@ facts =
       , multiSlots = []
       , attrRewrites = []
       , slotRewrites = []
-      , shapes = [ Shape3 ]
+      , surfaces = [ Standard ]
       , requiredAttrs = []
       }
     ]
@@ -32,7 +32,7 @@ shape4Facts =
       , multiSlots = []
       , attrRewrites = []
       , slotRewrites = []
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       }
     ]
@@ -112,7 +112,7 @@ v =
                             , under = "Value.circular"
                             }
                         ]
-        , test "flags an invalid enum token at a Shape4 call site" <|
+        , test "flags an invalid enum token at a Record call site" <|
             \() ->
                 """module A exposing (v)
 
@@ -133,7 +133,7 @@ v =
                             , under = "Value.circular"
                             }
                         ]
-        , test "accepts a valid enum token at a Shape4 call site" <|
+        , test "accepts a valid enum token at a Record call site" <|
             \() ->
                 """module A exposing (v)
 

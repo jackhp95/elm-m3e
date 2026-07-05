@@ -1,6 +1,6 @@
 module RequireSlotTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import RequireSlot exposing (rule)
 import Review.Test
 import Test exposing (Test, describe, test)
@@ -18,7 +18,7 @@ facts =
       , multiSlots = [ "default" ]
       , attrRewrites = []
       , slotRewrites = []
-      , shapes = [ Shape3 ]
+      , surfaces = [ Standard ]
       , requiredAttrs = []
       }
     ]
@@ -33,7 +33,7 @@ shape4Facts =
       , multiSlots = [ "default" ]
       , attrRewrites = []
       , slotRewrites = []
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       }
     ]
@@ -85,7 +85,7 @@ v =
 """
                     |> Review.Test.run (rule facts)
                     |> Review.Test.expectNoErrors
-        , test "flags a required-multi slot omission at Shape4 call site" <|
+        , test "flags a required-multi slot omission at Record call site" <|
             \() ->
                 """module A exposing (v)
 
@@ -105,7 +105,7 @@ v =
                             , under = "M3e.Record.Grid.view"
                             }
                         ]
-        , test "accepts a filled required-multi slot at Shape4 call site" <|
+        , test "accepts a filled required-multi slot at Record call site" <|
             \() ->
                 """module A exposing (v)
 
@@ -117,7 +117,7 @@ v =
 """
                     |> Review.Test.run (rule shape4Facts)
                     |> Review.Test.expectNoErrors
-        , test "traces through List.map at a Shape4 call site and stays silent" <|
+        , test "traces through List.map at a Record call site and stays silent" <|
             \() ->
                 """module A exposing (v)
 

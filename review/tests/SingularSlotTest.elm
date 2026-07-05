@@ -1,6 +1,6 @@
 module SingularSlotTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import Review.Test
 import SingularSlot exposing (rule)
 import Test exposing (Test, describe, test)
@@ -16,7 +16,7 @@ facts =
       , multiSlots = [ "default" ]
       , attrRewrites = []
       , slotRewrites = []
-      , shapes = [ Shape3 ]
+      , surfaces = [ Standard ]
       , requiredAttrs = []
       }
     ]
@@ -31,7 +31,7 @@ shape4Facts =
       , multiSlots = [ "default" ]
       , attrRewrites = []
       , slotRewrites = []
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       }
     ]
@@ -82,7 +82,7 @@ v =
 """
                     |> Review.Test.run (rule facts)
                     |> Review.Test.expectNoErrors
-        , test "flags a singular slot filled twice at Shape4 call site" <|
+        , test "flags a singular slot filled twice at Record call site" <|
             \() ->
                 """module A exposing (v)
 
@@ -103,7 +103,7 @@ v =
                             , under = "trailing a"
                             }
                         ]
-        , test "allows a multi slot filled many times at Shape4 call site" <|
+        , test "allows a multi slot filled many times at Record call site" <|
             \() ->
                 """module A exposing (v)
 

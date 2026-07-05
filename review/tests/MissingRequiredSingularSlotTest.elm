@@ -1,6 +1,6 @@
 module MissingRequiredSingularSlotTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import MissingRequiredSingularSlot exposing (rule)
 import Review.Test
 import Test exposing (Test, describe, test)
@@ -15,7 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = []
       , slotRewrites = [ ( "unnamed", "child" ) ]
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       }
     ]
@@ -24,7 +24,7 @@ buttonFacts =
 all : Test
 all =
     describe "MissingRequiredSingularSlot"
-        [ test "flags Shape3 call missing required-singular slot" <|
+        [ test "flags Standard call missing required-singular slot" <|
             \() ->
                 """module A exposing (v)
 import M3e.Button
@@ -40,7 +40,7 @@ v = M3e.Button.view [] []
                             , under = "M3e.Button.view"
                             }
                         ]
-        , test "accepts Shape3 call with child" <|
+        , test "accepts Standard call with child" <|
             \() ->
                 """module A exposing (v)
 import M3e.Button
@@ -48,7 +48,7 @@ v = M3e.Button.view [] [ M3e.Button.child a ]
 """
                     |> Review.Test.run (rule buttonFacts)
                     |> Review.Test.expectNoErrors
-        , test "silent on Shape4 call (record is compile-time enforced)" <|
+        , test "silent on Record call (record is compile-time enforced)" <|
             \() ->
                 """module A exposing (v)
 import M3e.Record.Button

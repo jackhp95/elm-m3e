@@ -25,7 +25,7 @@ import Elm.Syntax.Module as Module
 import Elm.Syntax.Node as Node exposing (Node)
 import Elm.Syntax.Range exposing (Range)
 import Facts
-import M3e.Review.Facts exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Surface(..))
 import Review.Fix as Fix
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
@@ -159,8 +159,8 @@ checkCall : Context -> Facts.CallSite -> Fact -> List (Node Expression) -> List 
 checkCall context site fact args =
     let
         ( maybeAttrsList, maybeContentList ) =
-            case site.shape of
-                Shape3 ->
+            case site.surface of
+                Standard ->
                     case args of
                         a :: c :: _ ->
                             ( Just a, Just c )
@@ -171,13 +171,16 @@ checkCall context site fact args =
                         _ ->
                             ( Nothing, Nothing )
 
-                Shape4 ->
+                Record ->
                     case args of
                         _ :: a :: c :: _ ->
                             ( Just a, Just c )
 
                         _ ->
                             ( Nothing, Nothing )
+
+                _ ->
+                    ( Nothing, Nothing )
 
         attrErrors =
             maybeAttrsList

@@ -1,8 +1,8 @@
 module MissingRequiredSingularSlot exposing (rule)
 
-{-| D2: flag Shape3 calls whose content list omits a required-singular slot.
+{-| D2: flag Standard calls whose content list omits a required-singular slot.
 
-Shape4 calls are silent (the required record's field is compile-time-enforced).
+Record calls are silent (the required record's field is compile-time-enforced).
 Advisory posture — silent on unresolved content lists.
 
 @docs rule
@@ -14,7 +14,7 @@ import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
-import M3e.Review.Facts exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Surface(..))
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
@@ -88,7 +88,7 @@ expressionVisitor node context =
         Expression.Application (fnNode :: args) ->
             case Facts.callSite context.lookup fnNode of
                 Just site ->
-                    if site.shape /= Shape3 then
+                    if site.surface /= Standard then
                         ( [], context )
 
                     else

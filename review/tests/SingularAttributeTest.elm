@@ -1,6 +1,6 @@
 module SingularAttributeTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import Review.Test
 import SingularAttribute exposing (rule)
 import Test exposing (Test, describe, test)
@@ -15,7 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = [ ( "variant", "variant" ), ( "disabled", "disabled" ) ]
       , slotRewrites = []
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       }
     ]
@@ -58,7 +58,7 @@ v = M3e.Button.view dynamicAttrs []
 """
                     |> Review.Test.run (rule buttonFacts)
                     |> Review.Test.expectNoErrors
-        , test "flags duplicate attribute in Shape4 call" <|
+        , test "flags duplicate attribute in Record call" <|
             \() ->
                 """module A exposing (v)
 import M3e.Record.Button

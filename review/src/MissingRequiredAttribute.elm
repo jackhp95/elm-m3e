@@ -3,7 +3,7 @@ module MissingRequiredAttribute exposing (rule)
 {-| D1: flag component calls missing a required HTML attribute.
 
 Reads `requiredAttrs` from the generated facts. For each required attr, checks
-that a satisfier is present in the call's attribute list (or, for Shape4, in
+that a satisfier is present in the call's attribute list (or, for Record, in
 the required record's fields).
 
 Satisfier conventions:
@@ -24,7 +24,7 @@ import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Facts
-import M3e.Review.Facts exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Surface(..))
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
@@ -120,11 +120,11 @@ checkCall context site fact fnNode args =
     else
         let
             ( recordArg, attrsList, contentList ) =
-                case site.shape of
-                    Shape3 ->
+                case site.surface of
+                    Standard ->
                         ( Nothing, List.head args, args |> List.drop 1 |> List.head )
 
-                    Shape4 ->
+                    Record ->
                         case args of
                             record :: attrs :: content :: _ ->
                                 ( Just record, Just attrs, Just content )
@@ -134,6 +134,11 @@ checkCall context site fact fnNode args =
 
                             _ ->
                                 ( Nothing, Nothing, Nothing )
+
+                    _ ->
+                        -- Facts.callSite only produces Standard or Record;
+                        -- Html/Cem/Build never reach here. Exhaustiveness only.
+                        ( Nothing, Nothing, Nothing )
 
             attrsTrace =
                 case attrsList of

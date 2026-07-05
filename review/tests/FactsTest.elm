@@ -6,7 +6,7 @@ import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
 import Expect
 import Facts
-import M3e.Review.Facts exposing (Shape(..))
+import M3e.Review.Facts exposing (Surface(..))
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 import Review.Test
@@ -41,7 +41,7 @@ expressionVisitor node context =
                 Just site ->
                     ( [ Rule.error
                             { message =
-                                "probe: " ++ site.noun ++ " " ++ shapeLabel site.shape
+                                "probe: " ++ site.noun ++ " " ++ surfaceLabel site.surface
                             , details = [ "used only for tests" ]
                             }
                             (Node.range fnNode)
@@ -155,14 +155,23 @@ tracedListVisitor node context =
             ( [], context )
 
 
-shapeLabel : Shape -> String
-shapeLabel s =
+surfaceLabel : Surface -> String
+surfaceLabel s =
     case s of
-        Shape3 ->
-            "Shape3"
+        Html ->
+            "Html"
 
-        Shape4 ->
-            "Shape4"
+        Cem ->
+            "Cem"
+
+        Standard ->
+            "Standard"
+
+        Record ->
+            "Record"
+
+        Build ->
+            "Build"
 
 
 all : Test
@@ -368,7 +377,7 @@ v =
                     Expect.pass
             ]
         , describe "callSite"
-            [ test "recognises M3e.Button.view as button/Shape3" <|
+            [ test "recognises M3e.Button.view as button/Standard" <|
                 \_ ->
                     """module A exposing (v)
 import M3e.Button
@@ -377,12 +386,12 @@ v = M3e.Button.view [] []
                         |> Review.Test.run probeRule
                         |> Review.Test.expectErrors
                             [ Review.Test.error
-                                { message = "probe: button Shape3"
+                                { message = "probe: button Standard"
                                 , details = [ "used only for tests" ]
                                 , under = "M3e.Button.view"
                                 }
                             ]
-            , test "recognises M3e.Record.Button.view as button/Shape4" <|
+            , test "recognises M3e.Record.Button.view as button/Record" <|
                 \_ ->
                     """module A exposing (v)
 import M3e.Record.Button
@@ -391,12 +400,12 @@ v = M3e.Record.Button.view {} [] []
                         |> Review.Test.run probeRule
                         |> Review.Test.expectErrors
                             [ Review.Test.error
-                                { message = "probe: button Shape4"
+                                { message = "probe: button Record"
                                 , details = [ "used only for tests" ]
                                 , under = "M3e.Record.Button.view"
                                 }
                             ]
-            , test "recognises M3e.button (barrel) as button/Shape3" <|
+            , test "recognises M3e.button (barrel) as button/Standard" <|
                 \_ ->
                     """module A exposing (v)
 import M3e
@@ -405,12 +414,12 @@ v = M3e.button [] []
                         |> Review.Test.run probeRule
                         |> Review.Test.expectErrors
                             [ Review.Test.error
-                                { message = "probe: button Shape3"
+                                { message = "probe: button Standard"
                                 , details = [ "used only for tests" ]
                                 , under = "M3e.button"
                                 }
                             ]
-            , test "recognises M3e.Record.button (Shape4 barrel)" <|
+            , test "recognises M3e.Record.button (Record barrel)" <|
                 \_ ->
                     """module A exposing (v)
 import M3e.Record
@@ -419,7 +428,7 @@ v = M3e.Record.button {} [] []
                         |> Review.Test.run probeRule
                         |> Review.Test.expectErrors
                             [ Review.Test.error
-                                { message = "probe: button Shape4"
+                                { message = "probe: button Record"
                                 , details = [ "used only for tests" ]
                                 , under = "M3e.Record.button"
                                 }

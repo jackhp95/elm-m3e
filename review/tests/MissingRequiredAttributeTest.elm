@@ -1,6 +1,6 @@
 module MissingRequiredAttributeTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import MissingRequiredAttribute exposing (rule)
 import Review.Test
 import Test exposing (Test, describe, test)
@@ -15,7 +15,7 @@ iconButtonFacts =
       , multiSlots = []
       , attrRewrites = []
       , slotRewrites = [ ( "unnamed", "child" ) ]
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = [ "aria-label" ]
       }
     ]
@@ -30,7 +30,7 @@ fabFacts =
       , multiSlots = []
       , attrRewrites = []
       , slotRewrites = [ ( "unnamed", "child" ), ( "label", "label" ), ( "close-icon", "closeIcon" ) ]
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = [ "aria-label" ]
       }
     ]
@@ -39,7 +39,7 @@ fabFacts =
 all : Test
 all =
     describe "MissingRequiredAttribute"
-        [ test "flags Shape3 call missing aria-label" <|
+        [ test "flags Standard call missing aria-label" <|
             \() ->
                 """module A exposing (v)
 import M3e.IconButton
@@ -56,7 +56,7 @@ v = M3e.IconButton.view [] []
                             , under = "M3e.IconButton.view"
                             }
                         ]
-        , test "accepts Shape3 call with M3e.Aria.label" <|
+        , test "accepts Standard call with M3e.Aria.label" <|
             \() ->
                 """module A exposing (v)
 import M3e.IconButton
@@ -74,7 +74,7 @@ v = M3e.IconButton.view [ M3e.Cem.Attr.attribute "aria-label" "Close" ] []
 """
                     |> Review.Test.run (rule iconButtonFacts)
                     |> Review.Test.expectNoErrors
-        , test "flags Shape4 call missing aria-label" <|
+        , test "flags Record call missing aria-label" <|
             \() ->
                 """module A exposing (v)
 import M3e.Record.IconButton
@@ -106,7 +106,7 @@ import M3e.Card
 v = M3e.Card.view [] []
 """
                     |> Review.Test.run
-                        (rule [ { component = "card", module_ = "M3e.Card", enums = [], requiredSlots = [], multiSlots = [], attrRewrites = [], slotRewrites = [], shapes = [ Shape3 ], requiredAttrs = [] } ])
+                        (rule [ { component = "card", module_ = "M3e.Card", enums = [], requiredSlots = [], multiSlots = [], attrRewrites = [], slotRewrites = [], surfaces = [ Standard ], requiredAttrs = [] } ])
                     |> Review.Test.expectNoErrors
         , test "flags call whose attrs is a let-bound empty list" <|
             \() ->

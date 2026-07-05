@@ -1,6 +1,6 @@
 module PreferSpecificSlotTest exposing (all)
 
-import M3e.Review.Facts as Facts exposing (Shape(..))
+import M3e.Review.Facts as Facts exposing (Surface(..))
 import PreferSpecificSlot exposing (rule)
 import Review.Test
 import Test exposing (Test, describe, test)
@@ -15,7 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = [ ( "variant", "variant" ), ( "shapeAttr", "shape" ) ]
       , slotRewrites = [ ( "unnamed", "child" ), ( "icon", "icon" ) ]
-      , shapes = [ Shape3, Shape4 ]
+      , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       }
     ]
@@ -122,7 +122,7 @@ v = M3e.Button.view [] [ M3e.Button.icon ((M3e.Icon.view [] [])) ]
 """
                             ]
             ]
-        , test "rewrites barrel attr in Shape4 call" <|
+        , test "rewrites barrel attr in Record call" <|
             \() ->
                 """module A exposing (v)
 import M3e

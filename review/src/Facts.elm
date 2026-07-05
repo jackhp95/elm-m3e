@@ -17,7 +17,7 @@ module Facts exposing
 import Dict exposing (Dict)
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
-import M3e.Review.Facts exposing (Fact, Shape(..))
+import M3e.Review.Facts exposing (Fact, Surface(..))
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 
 
@@ -25,7 +25,7 @@ import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 -}
 type alias CallSite =
     { noun : String
-    , shape : Shape
+    , surface : Surface
     }
 
 
@@ -33,10 +33,10 @@ type alias CallSite =
 
 Handles four forms:
 
-  - `M3e.Button.view` → `{ noun = "button", shape = Shape3 }`
-  - `M3e.Record.Button.view` → `{ noun = "button", shape = Shape4 }`
-  - `M3e.button` (barrel) → `{ noun = "button", shape = Shape3 }`
-  - `M3e.Record.button` (Shape4 barrel) → `{ noun = "button", shape = Shape4 }`
+  - `M3e.Button.view` → `{ noun = "button", surface = Standard }`
+  - `M3e.Record.Button.view` → `{ noun = "button", surface = Record }`
+  - `M3e.button` (barrel) → `{ noun = "button", surface = Standard }`
+  - `M3e.Record.button` (Record barrel) → `{ noun = "button", surface = Record }`
 
 Returns `Nothing` for non-top-layer references (`M3e.Cem.*`, `Html.*`, etc.).
 
@@ -47,21 +47,21 @@ callSite lookup fnNode =
         Expression.FunctionOrValue _ name ->
             case Lookup.moduleNameFor lookup fnNode of
                 Just [ "M3e" ] ->
-                    Just { noun = name, shape = Shape3 }
+                    Just { noun = name, surface = Standard }
 
                 Just [ "M3e", "Record" ] ->
-                    Just { noun = name, shape = Shape4 }
+                    Just { noun = name, surface = Record }
 
                 Just [ "M3e", comp ] ->
                     if name == "view" then
-                        Just { noun = decapitalize comp, shape = Shape3 }
+                        Just { noun = decapitalize comp, surface = Standard }
 
                     else
                         Nothing
 
                 Just [ "M3e", "Record", comp ] ->
                     if name == "view" then
-                        Just { noun = decapitalize comp, shape = Shape4 }
+                        Just { noun = decapitalize comp, surface = Record }
 
                     else
                         Nothing

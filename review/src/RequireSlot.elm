@@ -144,7 +144,7 @@ expressionVisitor node context =
 
 {-| The content is the _last_ argument of a fully-applied constructor.
 Uses `Facts.tracedList` to look through dynamic expressions (List.map, concat, etc.).
-We only flag when we have enough args (>=2 for Shape3, >=3 for Shape4).
+We only flag when we have enough args (>=2 for Standard, >=3 for Record).
 When `unresolved = True` we still check the known setters but stay silent if
 there are zero known (we can't distinguish "truly empty" from "all-dynamic").
 -}
