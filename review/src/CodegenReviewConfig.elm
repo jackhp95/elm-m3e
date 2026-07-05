@@ -38,4 +38,20 @@ config =
     , PreferSpecificSlot.rule M3e.Review.Facts.facts
     , NoActionlessButton.rule
     , NoSeamOutsideAllowedModules.rule [ "Native", "Layout", "Kit", "Seam", "EscapeHatch" ]
+
+    -- ## D6 codegen-aware translator (issue #145)
+    --
+    -- Enable exactly ONE of the five rules below to enforce a single canonical
+    -- top-layer surface across the codebase. `elm-review --fix` rewrites every
+    -- non-target call site to the target surface via `Seam.*` residue for any
+    -- lossy pieces. See docs/superpowers/specs/2026-07-05-codegen-aware-translator-design.md.
+    --
+    -- import TranslateToStandard
+    -- import TranslateToBuild
+    -- import TranslateToRecord
+    -- import TranslateToCem
+    -- import TranslateToHtml
+    --
+    -- , TranslateToBuild.rule M3e.Review.Facts.facts
+    --     |> Rule.ignoreErrorsForDirectories [ "src/legacy" ]
     ]
