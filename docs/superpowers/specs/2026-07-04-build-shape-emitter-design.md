@@ -1,7 +1,7 @@
-> **SUPERSEDED (2026-07-04)** — Replaced by `docs/superpowers/plans/2026-07-04-build-shape-crossbar.md`.
+> **SUPERSEDED (2026-07-04)** — Replaced by `docs/superpowers/specs/2026-07-04-build-shape-crossbar-design.md`.
 > The emitter Tasks 4–10 in this file were rewritten during the crossbar redesign;
-> Tasks 1–3 survived. See `docs/superpowers/specs/2026-07-04-build-shape-crossbar-design.md`
-> for design rationale.
+> Tasks 1–3 survived. Implementation plan for the successor:
+> `docs/superpowers/plans/2026-07-04-build-shape-crossbar.md`.
 
 # ⑤ Build shape emitter — `M3e.Build.*` (epic #138 second ship)
 
