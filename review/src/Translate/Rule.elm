@@ -118,17 +118,66 @@ emitFor target fact source c =
         Standard ->
             Translate.Emit.emitStandard fact source c
 
-        Html ->
-            -- Tasks 11-12 will implement dedicated emitters; until then, the
-            -- whole-node Seam escape is a valid fallback (produces a
-            -- composable Element/Attr via Seam).
-            Translate.Residue.wholeSeamEscape fact source c
-
         Cem ->
-            Translate.Residue.wholeSeamEscape fact source c
+            Translate.Emit.emitCem fact source c
+
+        Html ->
+            Translate.Emit.emitHtml fact source c
 
         Record ->
-            Translate.Residue.wholeSeamEscape fact source c
+            if canEmitRecord c then
+                Translate.Emit.emitRecord fact source c
+
+            else
+                -- Missing required content/action — fall back to whole-node
+                -- Seam escape so the result still composes.
+                Translate.Residue.wholeSeamEscape fact source c
 
         Build ->
-            Translate.Residue.wholeSeamEscape fact source c
+            if canEmitBuild c then
+                Translate.Emit.emitBuild fact source c
+
+            else
+                Translate.Residue.wholeSeamEscape fact source c
+
+
+{-| Record shape requires content + action to be present in the canonical form.
+Standard-source calls don't lift these out (they stay in the content list /
+attrs list); those cases can't upgrade to Record cleanly and fall back to
+whole-node Seam escape.
+-}
+canEmitRecord : Canonical -> Bool
+canEmitRecord c =
+    c.requiredContent /= Nothing && c.requiredAction /= Nothing
+
+
+{-| Build shape has the same required-content/action requirement as Record.
+Additionally, `Build` has no attr-list or content-list seam — any residue in
+attrs/content (EnumTokenLossy, EscapedAttr, DynamicAttrTail, UnknownSlotName,
+EscapedContent, DynamicContentTail) triggers whole-node escape.
+-}
+canEmitBuild : Canonical -> Bool
+canEmitBuild c =
+    canEmitRecord c
+        && List.all isCleanAttrForBuild c.attrs
+        && List.all isCleanSlotForBuild c.content
+
+
+isCleanAttrForBuild : Translate.Canonical.AttrItem -> Bool
+isCleanAttrForBuild item =
+    case item of
+        Translate.Canonical.KnownAttr _ ->
+            True
+
+        _ ->
+            False
+
+
+isCleanSlotForBuild : Translate.Canonical.SlotItem -> Bool
+isCleanSlotForBuild item =
+    case item of
+        Translate.Canonical.KnownSlot _ ->
+            True
+
+        _ ->
+            False
