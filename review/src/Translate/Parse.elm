@@ -401,7 +401,7 @@ classifyStandardAttr fact item =
                     in
                     case knownAttr of
                         Just ( _, canonicalName ) ->
-                            KnownAttr { name = canonicalName, value = valueNode }
+                            classifyKnownAttrValue fact canonicalName valueNode (Node.range item)
 
                         Nothing ->
                             EscapedAttr { raw = item }
@@ -411,6 +411,51 @@ classifyStandardAttr fact item =
 
         _ ->
             EscapedAttr { raw = item }
+
+
+{-| Classify a recognised attr's value. If the attr is an enum attr (per
+`fact.enums`) and the value is a _qualified_ token reference (e.g.
+`M3e.Value.bogus`) whose token name the enum doesn't list, the token can't
+survive as a typed setter on the target — route it as `EnumTokenLossy` so the
+emitter escapes it to a raw HTML attribute (`variant="bogus"`) rather than
+emitting an ill-typed setter call. Anything else — a valid token, a non-enum
+attr, or a non-qualified value (a bare variable / dynamic expression, which
+must pass through unchanged rather than be frozen into a string literal) —
+stays a plain `KnownAttr`.
+-}
+classifyKnownAttrValue : Fact -> String -> Node Expression -> Range.Range -> AttrItem
+classifyKnownAttrValue fact canonicalName valueNode range =
+    case rejectedEnumToken fact canonicalName valueNode of
+        Just tokenText ->
+            EnumTokenLossy { name = canonicalName, tokenText = tokenText, range = range }
+
+        Nothing ->
+            KnownAttr { name = canonicalName, value = valueNode }
+
+
+{-| If `canonicalName` is an enum attr and `valueNode` is a qualified token
+reference (`FunctionOrValue (_ :: _) tokenName`, i.e. `M3e.Value.<token>`)
+whose `tokenName` is NOT among that enum's valid tokens, return the token name.
+A valid token, a non-enum attr, or a non-qualified value → Nothing.
+-}
+rejectedEnumToken : Fact -> String -> Node Expression -> Maybe String
+rejectedEnumToken fact canonicalName valueNode =
+    case Node.value valueNode of
+        Expression.FunctionOrValue (_ :: _) tokenName ->
+            fact.enums
+                |> List.filter (\( a, _ ) -> a == canonicalName)
+                |> List.head
+                |> Maybe.andThen
+                    (\( _, tokens ) ->
+                        if List.member tokenName tokens then
+                            Nothing
+
+                        else
+                            Just tokenName
+                    )
+
+        _ ->
+            Nothing
 
 
 classifyStandardSlot : Fact -> Node Expression -> SlotItem
@@ -645,7 +690,7 @@ classifyBuildStage fact stage =
                     in
                     case ( maybeAttr, maybeSlot ) of
                         ( Just ( _, canonicalName ), _ ) ->
-                            Ok (Left (KnownAttr { name = canonicalName, value = valueNode }))
+                            Ok (Left (classifyKnownAttrValue fact canonicalName valueNode (Node.range stage)))
 
                         ( _, Just ( _, canonicalName ) ) ->
                             Ok (Right (KnownSlot { name = canonicalName, body = valueNode }))

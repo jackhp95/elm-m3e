@@ -153,4 +153,35 @@ view =
     M3e.Button.view [] [ M3e.Content.slot "bogus" (Seam.fromHtml (Html.div [ Html.Attributes.attribute "slot" "bogus" ] [])) ]
 """
                         ]
+        , test "Record → Standard: a known M3e.Action.<ctor> reverse-maps to the attr-style setter, not the Seam fallback (#145)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Record.Button
+import M3e.Action
+
+view =
+    M3e.Record.Button.view { content = c, action = M3e.Action.link "/path" } [] []
+"""
+                    |> Review.Test.run (TranslateToStandard.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToStandard"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Record.Button.view { content = c, action = M3e.Action.link \"/path\" } [] []"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Record.Button
+import M3e.Action
+import M3e.Button
+
+view =
+    M3e.Button.view [ M3e.Button.href "/path" ] [ M3e.Button.child c ]
+"""
+                        ]
         ]

@@ -94,7 +94,8 @@ initContext config =
 
 {-| Collect the top-level declaration's `let` bindings (name → bound expression)
 so a required-content item that is a bare variable can be resolved to its setter
-call (#153). Mirrors the scope pattern in ValidEnumValue / SingularSlot. -}
+call (#153). Mirrors the scope pattern in ValidEnumValue / SingularSlot.
+-}
 declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
 declarationEnterVisitor node context =
     case Node.value node of
@@ -129,7 +130,8 @@ declarationEnterVisitor node context =
 
 
 {-| Track the last row occupied by the module header / imports so an added
-`import` can be inserted just after the existing import block. -}
+`import` can be inserted just after the existing import block.
+-}
 moduleDefinitionVisitor : Node Module.Module -> Context -> ( List (Error {}), Context )
 moduleDefinitionVisitor node context =
     ( [], { context | insertionRow = (Node.range node).end.row } )
@@ -182,7 +184,8 @@ expressionVisitor node context =
 modules plus the support/residue modules the emitters can produce. Which ones
 are actually needed depends on the emitted text (a clean Record conversion
 references `M3e.Record.<C>`; a Seam fallback references `Seam` +
-`M3e.Cem.Html.<C>` instead), so `importFixes` filters by literal occurrence. -}
+`M3e.Cem.Html.<C>` instead), so `importFixes` filters by literal occurrence.
+-}
 candidateModules : Fact -> List String
 candidateModules fact =
     let
@@ -202,6 +205,7 @@ candidateModules fact =
     , "Seam"
     , "M3e.Content"
     , "M3e.Action"
+    , "M3e.Element"
     , "Html.Attributes"
     , "Html.Events"
     , "Json.Decode"
@@ -211,7 +215,8 @@ candidateModules fact =
 {-| Emit a single `import` fix for every module the rewritten text references
 that the file does not already import — otherwise `--fix` produces code that
 fails `elm make` with "unknown module" (issue #149). Inserted just after the
-existing import block; sorted so the block stays elm-format-friendly. -}
+existing import block; sorted so the block stays elm-format-friendly.
+-}
 importFixes : Context -> Fact -> String -> List Fix.Fix
 importFixes context fact fixText =
     let
