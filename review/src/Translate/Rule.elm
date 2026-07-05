@@ -12,6 +12,7 @@ other four).
 -}
 
 import Dict exposing (Dict)
+import Elm.Syntax.Declaration as Declaration
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Import exposing (Import)
 import Elm.Syntax.Module as Module
@@ -39,6 +40,7 @@ rule config =
     Rule.newModuleRuleSchemaUsingContextCreator (ruleName config.target) (initContext config)
         |> Rule.withModuleDefinitionVisitor moduleDefinitionVisitor
         |> Rule.withImportVisitor importVisitor
+        |> Rule.withDeclarationEnterVisitor declarationEnterVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -69,6 +71,7 @@ type alias Context =
     , extractSourceCode : Range.Range -> String
     , importedModules : Set (List String)
     , insertionRow : Int
+    , scope : Dict String (Node Expression)
     }
 
 
@@ -82,10 +85,47 @@ initContext config =
             , extractSourceCode = extractSourceCode
             , importedModules = Set.empty
             , insertionRow = 1
+            , scope = Dict.empty
             }
         )
         |> Rule.withModuleNameLookupTable
         |> Rule.withSourceCodeExtractor
+
+
+{-| Collect the top-level declaration's `let` bindings (name → bound expression)
+so a required-content item that is a bare variable can be resolved to its setter
+call (#153). Mirrors the scope pattern in ValidEnumValue / SingularSlot. -}
+declarationEnterVisitor : Node Declaration.Declaration -> Context -> ( List (Error {}), Context )
+declarationEnterVisitor node context =
+    case Node.value node of
+        Declaration.FunctionDeclaration { declaration } ->
+            case Node.value (Node.value declaration).expression of
+                Expression.LetExpression { declarations } ->
+                    let
+                        scope =
+                            List.foldl
+                                (\dec acc ->
+                                    case Node.value dec of
+                                        Expression.LetFunction fn ->
+                                            let
+                                                fnDecl =
+                                                    Node.value fn.declaration
+                                            in
+                                            Dict.insert (Node.value fnDecl.name) fnDecl.expression acc
+
+                                        _ ->
+                                            acc
+                                )
+                                Dict.empty
+                                declarations
+                    in
+                    ( [], { context | scope = scope } )
+
+                _ ->
+                    ( [], { context | scope = Dict.empty } )
+
+        _ ->
+            ( [], context )
 
 
 {-| Track the last row occupied by the module header / imports so an added
@@ -116,7 +156,7 @@ expressionVisitor node context =
             else
                 let
                     canonical =
-                        Translate.Parse.parseCall sourceSurface fact node
+                        Translate.Parse.parseCall context.scope sourceSurface fact node
 
                     fix =
                         emitFor context.target fact context.extractSourceCode canonical

@@ -132,11 +132,11 @@ stripPrefix prefix s =
 
 {-| Dispatch to the correct per-surface parser.
 -}
-parseCall : Surface -> Fact -> Node Expression -> Canonical
-parseCall surface fact node =
+parseCall : Dict String (Node Expression) -> Surface -> Fact -> Node Expression -> Canonical
+parseCall scope surface fact node =
     case ( surface, Node.value node ) of
         ( Standard, Expression.Application (_ :: [ attrList, contentList ]) ) ->
-            parseStandard fact (Node.range node) (extractLiteralList attrList) (extractLiteralList contentList)
+            parseStandard scope fact (Node.range node) (extractLiteralList attrList) (extractLiteralList contentList)
 
         ( Record, Expression.Application (_ :: [ recordArg, attrList, contentList ]) ) ->
             parseRecord fact (Node.range node) recordArg (extractLiteralList attrList) (extractLiteralList contentList)
@@ -187,8 +187,8 @@ attrs (per fact.actionMap) are lifted out of the attrs list. The unnamed slot's
 first child element (if fact.requiredSlots contains "unnamed") is lifted to
 `requiredContent`.
 -}
-parseStandard : Fact -> Range.Range -> List (Node Expression) -> List (Node Expression) -> Canonical
-parseStandard fact range attrItems contentItems =
+parseStandard : Dict String (Node Expression) -> Fact -> Range.Range -> List (Node Expression) -> List (Node Expression) -> Canonical
+parseStandard scope fact range attrItems contentItems =
     let
         actionAttrNames =
             List.map Tuple.first fact.actionMap
@@ -221,7 +221,7 @@ parseStandard fact range attrItems contentItems =
             if hasRequiredUnnamed then
                 case unnamedSetter of
                     Just setterName ->
-                        liftRequiredContent setterName contentItems
+                        liftRequiredContent scope setterName contentItems
 
                     Nothing ->
                         ( Nothing, contentItems )
@@ -245,30 +245,62 @@ parseStandard fact range attrItems contentItems =
 
 {-| Find the first content-list item that calls `setterName` and return its
 argument as the required content. The item is removed from the remaining list.
+
+Recognises both the literal call form (`M3e.Button.child body`) and a bare
+variable bound to that call in an enclosing `let` (`label` where
+`label = M3e.Button.child body`) — the latter resolved through `scope`, which is
+the common shape when reusable label/icon content is bound above the view call
+(#153). Falls back to leaving the item in place (→ Seam escape) for anything not
+resolvable (e.g. function-parameter-bound content).
 -}
-liftRequiredContent : String -> List (Node Expression) -> ( Maybe (Node Expression), List (Node Expression) )
-liftRequiredContent setterName items =
+liftRequiredContent : Dict String (Node Expression) -> String -> List (Node Expression) -> ( Maybe (Node Expression), List (Node Expression) )
+liftRequiredContent scope setterName items =
     let
+        -- The body if `expr` is a `setterName <body>` application, else Nothing.
+        setterBody expr =
+            case Node.value expr of
+                Expression.Application (head :: body :: _) ->
+                    case Node.value head of
+                        Expression.FunctionOrValue _ name ->
+                            if name == setterName then
+                                Just body
+
+                            else
+                                Nothing
+
+                        _ ->
+                            Nothing
+
+                _ ->
+                    Nothing
+
+        -- Resolve a content item to the setter's body: directly, or by looking a
+        -- bare variable up in the enclosing let-scope and testing its binding.
+        liftedBody item =
+            case setterBody item of
+                Just body ->
+                    Just body
+
+                Nothing ->
+                    case Node.value item of
+                        Expression.FunctionOrValue _ varName ->
+                            Dict.get varName scope
+                                |> Maybe.andThen setterBody
+
+                        _ ->
+                            Nothing
+
         go remaining seen =
             case remaining of
                 [] ->
                     ( Nothing, List.reverse seen )
 
                 item :: rest ->
-                    case Node.value item of
-                        Expression.Application (head :: body :: _) ->
-                            case Node.value head of
-                                Expression.FunctionOrValue _ name ->
-                                    if name == setterName then
-                                        ( Just body, List.reverse seen ++ rest )
+                    case liftedBody item of
+                        Just body ->
+                            ( Just body, List.reverse seen ++ rest )
 
-                                    else
-                                        go rest (item :: seen)
-
-                                _ ->
-                                    go rest (item :: seen)
-
-                        _ ->
+                        Nothing ->
                             go rest (item :: seen)
     in
     go items []
