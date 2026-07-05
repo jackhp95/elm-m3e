@@ -147,4 +147,18 @@ v =
 """
                     |> Review.Test.run (rule shape4Facts)
                     |> Review.Test.expectNoErrors
+        , test "does not flag an enum-setter-shaped expression in the content list (#90)" <|
+            \() ->
+                -- `variant Value.circular` appearing in the CONTENT (last) arg is a
+                -- child, not an attribute setter; only the attribute args are checked.
+                """module A exposing (v)
+
+import M3e exposing (button, variant)
+import M3e.Value as Value
+
+v =
+    button [] [ variant Value.circular ]
+"""
+                    |> Review.Test.run (rule facts)
+                    |> Review.Test.expectNoErrors
         ]

@@ -103,7 +103,20 @@ expressionVisitor node context =
                 Just site ->
                     case Dict.get site.noun context.index of
                         Just enums ->
-                            ( List.concatMap (checkArg context enums) args, context )
+                            let
+                                -- Enum SETTERS live in the attribute argument(s); the
+                                -- trailing argument is the content/children list, whose
+                                -- elements are child nodes, not setters. Excluding it
+                                -- mirrors SingularSlot/RequireSlot and avoids flagging a
+                                -- child that happens to be enum-setter-shaped (#90).
+                                attrArgs =
+                                    if List.length args >= 2 then
+                                        List.take (List.length args - 1) args
+
+                                    else
+                                        args
+                            in
+                            ( List.concatMap (checkArg context enums) attrArgs, context )
 
                         Nothing ->
                             ( [], context )
