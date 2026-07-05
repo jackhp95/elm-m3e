@@ -19,7 +19,7 @@
 - `.build` remains on the container's main module and returns `Element supported msg` — same output IR as Shape3/Shape4. It is no longer called on children.
 - The single `M3e.Element.toHtml` at the app root is the only eager evaluation point.
 - ⑤ needs NO elm-review rules; types cover every safety property.
-- The generator MUST work with `mise exec --` on PATH so `elm` is available; `./elm-cem/bin/elm-cem.js` alone silently wipes the output directory (per project memory).
+- The generator invocation from the OUTER repo is: `PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- node ./elm-cem/bin/elm-cem.js --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json --config-from=config/slots.json --config-from=config/examples.generated.json --output=packages/m3e/src` (per `HANDOFF.md` line 74). Without `mise exec --` `elm` isn't on PATH; without the flags, `elm-codegen run` uses the outer repo's application `elm.json` which lacks codegen deps.
 - Compile verification MUST use `elm make --docs=/tmp/x.json` on `packages/m3e/` (compiles all 533 exposed modules), NOT `elm make src/M3e.elm` (only 378 fanned-out modules; misses Build errors).
 - Tasks 1–3 of the prior plan (`Shape5` variant in `Shape` enum + `shapesFor` + Facts alias + `M3e.Build.Internal` module scaffold + `codeShape5 : Maybe String` field in `ExampleRecord`) already shipped; do NOT re-emit or duplicate them.
 - The current elm-cem HEAD is `445018a`. Outer HEAD is `2bff876`. Both on `main`.
@@ -127,7 +127,10 @@ In `Generate.elm`, the function body (which uses `elm-codegen`) needs to emit th
 
 ```bash
 cd /Users/jhp/code/jackhp95/elm-m3e && \
-  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- ./elm-cem/bin/elm-cem.js 2>&1 | tail -5
+  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- node ./elm-cem/bin/elm-cem.js \
+    --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+    --config-from=config/slots.json --config-from=config/examples.generated.json \
+    --output=packages/m3e/src 2>&1 | tail -5
 ```
 Expected: `[m3e] Generated N files` — no `Compilation failed` line.
 
@@ -426,7 +429,10 @@ No change needed for Task 2 — still returns one TopModule per component. (Task
 
 ```bash
 cd /Users/jhp/code/jackhp95/elm-m3e && \
-  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- ./elm-cem/bin/elm-cem.js 2>&1 | tail -5
+  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- node ./elm-cem/bin/elm-cem.js \
+    --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+    --config-from=config/slots.json --config-from=config/examples.generated.json \
+    --output=packages/m3e/src 2>&1 | tail -5
 ```
 Expected: `Generated N files`, no `Compilation failed`.
 
@@ -746,7 +752,10 @@ buildFile =
 
 ```bash
 cd /Users/jhp/code/jackhp95/elm-m3e && \
-  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- ./elm-cem/bin/elm-cem.js 2>&1 | tail -5
+  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- node ./elm-cem/bin/elm-cem.js \
+    --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+    --config-from=config/slots.json --config-from=config/examples.generated.json \
+    --output=packages/m3e/src 2>&1 | tail -5
 
 cd /Users/jhp/code/jackhp95/elm-m3e/packages/m3e && \
   PATH="/Users/jhp/code/jackhp95/elm-m3e/node_modules/.bin:$PATH" \
@@ -846,7 +855,10 @@ buildFile =
 
 ```bash
 cd /Users/jhp/code/jackhp95/elm-m3e && \
-  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- ./elm-cem/bin/elm-cem.js 2>&1 | tail -5
+  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- node ./elm-cem/bin/elm-cem.js \
+    --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+    --config-from=config/slots.json --config-from=config/examples.generated.json \
+    --output=packages/m3e/src 2>&1 | tail -5
 
 cd /Users/jhp/code/jackhp95/elm-m3e/packages/m3e && \
   PATH="/Users/jhp/code/jackhp95/elm-m3e/node_modules/.bin:$PATH" \
@@ -1170,7 +1182,10 @@ The caller at line 654 must be updated to pass the full component list to `gener
 
 ```bash
 cd /Users/jhp/code/jackhp95/elm-m3e && \
-  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- ./elm-cem/bin/elm-cem.js 2>&1 | tail -5
+  PATH="./elm-cem/node_modules/.bin:$PATH" mise exec -- node ./elm-cem/bin/elm-cem.js \
+    --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+    --config-from=config/slots.json --config-from=config/examples.generated.json \
+    --output=packages/m3e/src 2>&1 | tail -5
 
 cd /Users/jhp/code/jackhp95/elm-m3e/packages/m3e && \
   PATH="/Users/jhp/code/jackhp95/elm-m3e/node_modules/.bin:$PATH" \
