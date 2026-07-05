@@ -2021,6 +2021,13 @@
     }
   },
   "Tabs": {
+    "attrTypes": {
+      "disable-pagination": [
+        "true",
+        "false",
+        "auto"
+      ]
+    },
     "slots": {
       "unnamed": {
         "kinds": [

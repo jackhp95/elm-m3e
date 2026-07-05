@@ -66,7 +66,10 @@ tabs =
 
 {-| Whether scroll buttons are disabled. -}
 disablePagination :
-    String
+    M3e.Value.Value { true : M3e.Value.Supported
+    , false : M3e.Value.Supported
+    , auto : M3e.Value.Supported
+    }
     -> Builder { a
         | disablePagination : M3e.Build.Internal.Available
     } s msg kind

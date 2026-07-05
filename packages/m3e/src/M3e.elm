@@ -2511,7 +2511,10 @@ disableHover =
 
 {-| Whether scroll buttons are disabled. -}
 disablePagination :
-    String
+    M3e.Value.Value { true : M3e.Value.Supported
+    , false : M3e.Value.Supported
+    , auto : M3e.Value.Supported
+    }
     -> M3e.Cem.Attr.Attr { c | disablePagination : M3e.Value.Supported } msg
 disablePagination =
     M3e.Cem.Vocab.disablePagination
