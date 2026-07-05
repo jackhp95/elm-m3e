@@ -48,9 +48,12 @@ M3e.Paginator.view [ M3e.Paginator.length 500, M3e.Paginator.pageSize (M3e.Value
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Paginator
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -80,14 +83,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | paginator : M3e.Value.Supported } msg
 view attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Paginator.paginator
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 
@@ -199,7 +202,7 @@ firstPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | firstPageIcon : M3e.Value.Supported } msg
 firstPageIcon el =
-    M3e.Content.slot "first-page-icon" el
+    M3e.Content.Internal.slot "first-page-icon" el
 
 
 {-| Place content in the `previous-page-icon` slot. -}
@@ -207,7 +210,7 @@ previousPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | previousPageIcon : M3e.Value.Supported } msg
 previousPageIcon el =
-    M3e.Content.slot "previous-page-icon" el
+    M3e.Content.Internal.slot "previous-page-icon" el
 
 
 {-| Place content in the `next-page-icon` slot. -}
@@ -215,7 +218,7 @@ nextPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | nextPageIcon : M3e.Value.Supported } msg
 nextPageIcon el =
-    M3e.Content.slot "next-page-icon" el
+    M3e.Content.Internal.slot "next-page-icon" el
 
 
 {-| Place content in the `last-page-icon` slot. -}
@@ -223,4 +226,4 @@ lastPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | lastPageIcon : M3e.Value.Supported } msg
 lastPageIcon el =
-    M3e.Content.slot "last-page-icon" el
+    M3e.Content.Internal.slot "last-page-icon" el

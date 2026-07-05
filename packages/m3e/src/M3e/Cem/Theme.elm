@@ -14,6 +14,7 @@ Middle layer for `<m3e-theme>`: the phantom-typed `Attr` setters (each an OPEN c
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Theme
 import M3e.Value
 
@@ -48,7 +49,7 @@ theme attributes children =
 {-| The hex color from which to derive dynamic color palettes. (default: `"#6750A4"`) -}
 color : String -> M3e.Cem.Attr.Attr { c | color : M3e.Value.Supported } msg
 color =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.color
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Theme.color
 
 
 {-| The contrast level of the theme. (default: `"standard"`) -}
@@ -59,13 +60,15 @@ contrast :
     }
     -> M3e.Cem.Attr.Attr { c | contrast : M3e.Value.Supported } msg
 contrast v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.contrast (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Theme.contrast
+        (M3e.Value.toString v_)
 
 
 {-| The density scale (0, -1, -2). (default: `0`) -}
 density : Float -> M3e.Cem.Attr.Attr { c | density : M3e.Value.Supported } msg
 density =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.density
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Theme.density
 
 
 {-| The color scheme of the theme. (default: `"auto"`) -}
@@ -76,14 +79,16 @@ scheme :
     }
     -> M3e.Cem.Attr.Attr { c | scheme : M3e.Value.Supported } msg
 scheme v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.scheme (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Theme.scheme
+        (M3e.Value.toString v_)
 
 
 {-| Whether to enable strong focus indicators. (default: `false`) -}
 strongFocus :
     Bool -> M3e.Cem.Attr.Attr { c | strongFocus : M3e.Value.Supported } msg
 strongFocus =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.strongFocus
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Theme.strongFocus
 
 
 {-| The color variant of the theme. (default: `"neutral"`) -}
@@ -100,7 +105,9 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Theme.variant
+        (M3e.Value.toString v_)
 
 
 {-| The motion scheme. (default: `"standard"`) -}
@@ -110,10 +117,14 @@ motion :
     }
     -> M3e.Cem.Attr.Attr { c | motion : M3e.Value.Supported } msg
 motion v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.motion (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Theme.motion
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.onChange (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Theme.onChange
+        (Json.Decode.succeed f_)

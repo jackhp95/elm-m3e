@@ -14,6 +14,7 @@ Middle layer for `<m3e-search-view>`: the phantom-typed `Attr` setters (each an 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SearchView
 import M3e.Value
 
@@ -61,7 +62,7 @@ searchView attributes children =
 contained :
     Bool -> M3e.Cem.Attr.Attr { c | contained : M3e.Value.Supported } msg
 contained =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.contained
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchView.contained
 
 
 {-| The behavior mode of the view. (default: `"docked"`) -}
@@ -72,40 +73,42 @@ mode :
     }
     -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
 mode v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.mode (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.SearchView.mode
+        (M3e.Value.toString v_)
 
 
 {-| Whether the view is expanded to show results. (default: `false`) -}
 open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
 open =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.open
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchView.open
 
 
 {-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
 clearLabel :
     String -> M3e.Cem.Attr.Attr { c | clearLabel : M3e.Value.Supported } msg
 clearLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.clearLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchView.clearLabel
 
 
 {-| The accessible label given to the button used to collapse the view. (default: `"Close"`) -}
 closeLabel :
     String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
 closeLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.closeLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchView.closeLabel
 
 
 {-| Whether to hide the search icon. (default: `false`) -}
 hideSearchIcon :
     Bool -> M3e.Cem.Attr.Attr { c | hideSearchIcon : M3e.Value.Supported } msg
 hideSearchIcon =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.hideSearchIcon
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchView.hideSearchIcon
 
 
 {-| Listen for `query` events. -}
 onQuery : msg -> M3e.Cem.Attr.Attr { c | onQuery : M3e.Value.Supported } msg
 onQuery f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SearchView.onQuery
         (Json.Decode.succeed f_)
 
@@ -113,7 +116,7 @@ onQuery f_ =
 {-| Listen for `clear` events. -}
 onClear : msg -> M3e.Cem.Attr.Attr { c | onClear : M3e.Value.Supported } msg
 onClear f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SearchView.onClear
         (Json.Decode.succeed f_)
 
@@ -122,7 +125,7 @@ onClear f_ =
 onBeforetoggle :
     msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
 onBeforetoggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SearchView.onBeforetoggle
         (Json.Decode.succeed f_)
 
@@ -130,6 +133,6 @@ onBeforetoggle f_ =
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SearchView.onToggle
         (Json.Decode.succeed f_)

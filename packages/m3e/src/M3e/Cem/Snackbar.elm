@@ -14,6 +14,7 @@ Middle layer for `<m3e-snackbar>`: the phantom-typed `Attr` setters (each an OPE
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Snackbar
 import M3e.Value
 
@@ -50,34 +51,34 @@ snackbar attributes children =
 {-| The label of the snackbar's action. (default: `""`) -}
 action : String -> M3e.Cem.Attr.Attr { c | action : M3e.Value.Supported } msg
 action =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Snackbar.action
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Snackbar.action
 
 
 {-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`) -}
 closeLabel :
     String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
 closeLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Snackbar.closeLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Snackbar.closeLabel
 
 
 {-| Whether a button is presented that can be used to close the snackbar. (default: `false`) -}
 dismissible :
     Bool -> M3e.Cem.Attr.Attr { c | dismissible : M3e.Value.Supported } msg
 dismissible =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Snackbar.dismissible
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Snackbar.dismissible
 
 
 {-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`) -}
 duration : Float -> M3e.Cem.Attr.Attr { c | duration : M3e.Value.Supported } msg
 duration =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Snackbar.duration
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Snackbar.duration
 
 
 {-| Listen for `beforetoggle` events. -}
 onBeforetoggle :
     msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
 onBeforetoggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Snackbar.onBeforetoggle
         (Json.Decode.succeed f_)
 
@@ -85,6 +86,6 @@ onBeforetoggle f_ =
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Snackbar.onToggle
         (Json.Decode.succeed f_)

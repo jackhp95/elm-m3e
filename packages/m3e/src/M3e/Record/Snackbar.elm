@@ -33,9 +33,12 @@ M3e.Snackbar.view [ M3e.Snackbar.action "Undo", M3e.Snackbar.dismissible True, M
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Snackbar
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -54,14 +57,14 @@ view :
     -> List (M3e.Content.Content { closeIcon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.Snackbar.snackbar
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)
@@ -113,4 +116,4 @@ closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
 closeIcon el =
-    M3e.Content.slot "close-icon" el
+    M3e.Content.Internal.slot "close-icon" el

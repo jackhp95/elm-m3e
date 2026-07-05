@@ -13,6 +13,7 @@ Middle layer for `<m3e-icon>`: the phantom-typed `Attr` setters (each an OPEN ca
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Icon
 import M3e.Value
 
@@ -42,7 +43,7 @@ icon attributes children =
 {-| Whether the icon is filled. (default: `false`) -}
 filled : Bool -> M3e.Cem.Attr.Attr { c | filled : M3e.Value.Supported } msg
 filled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.filled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Icon.filled
 
 
 {-| The grade of the icon. (default: `"medium"`) -}
@@ -53,20 +54,22 @@ grade :
     }
     -> M3e.Cem.Attr.Attr { c | grade : M3e.Value.Supported } msg
 grade v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.grade (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Icon.grade
+        (M3e.Value.toString v_)
 
 
 {-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`) -}
 opticalSize :
     Float -> M3e.Cem.Attr.Attr { c | opticalSize : M3e.Value.Supported } msg
 opticalSize =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.opticalSize
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Icon.opticalSize
 
 
 {-| The name of the icon. (default: `""`) -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Icon.name
 
 
 {-| The appearance variant of the icon. (default: `"outlined"`) -}
@@ -77,10 +80,12 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Icon.variant
+        (M3e.Value.toString v_)
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
 weight : Int -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
 weight =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.weight
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Icon.weight

@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-menu>` — phantom-typed pipeline API. Import qual
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Menu
 import M3e.Cem.Menu
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -50,7 +51,9 @@ menu =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.Menu.menu (List.map M3e.Cem.Attr.forget erased_) ch_
+                  M3e.Cem.Menu.menu
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
+                      ch_
              )
              []
              []
@@ -67,7 +70,7 @@ positionX :
 positionX v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Menu.positionX v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Menu.positionX v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -80,7 +83,7 @@ positionY :
 positionY v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Menu.positionY v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Menu.positionY v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -95,7 +98,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Menu.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Menu.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -108,7 +111,7 @@ submenu :
 submenu v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Menu.submenu v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Menu.submenu v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -121,8 +124,11 @@ onBeforetoggle :
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.onBeforetoggle v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Menu.onBeforetoggle
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -136,8 +142,9 @@ onToggle :
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.onToggle v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Menu.onToggle v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -148,4 +155,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { menu : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

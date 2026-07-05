@@ -11,6 +11,7 @@ Middle layer for `<TooltipElementBase>`: the phantom-typed `Attr` setters (each 
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.TooltipElementBase
 import M3e.Value
 
@@ -39,21 +40,21 @@ tooltipElementBase attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TooltipElementBase.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TooltipElementBase.disabled
 
 
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
 showDelay :
     Float -> M3e.Cem.Attr.Attr { c | showDelay : M3e.Value.Supported } msg
 showDelay =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TooltipElementBase.showDelay
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TooltipElementBase.showDelay
 
 
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
 hideDelay :
     Float -> M3e.Cem.Attr.Attr { c | hideDelay : M3e.Value.Supported } msg
 hideDelay =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TooltipElementBase.hideDelay
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TooltipElementBase.hideDelay
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`) -}
@@ -64,7 +65,7 @@ touchGestures :
     }
     -> M3e.Cem.Attr.Attr { c | touchGestures : M3e.Value.Supported } msg
 touchGestures v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.TooltipElementBase.touchGestures
         (M3e.Value.toString v_)
 
@@ -72,4 +73,4 @@ touchGestures v_ =
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TooltipElementBase.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TooltipElementBase.for

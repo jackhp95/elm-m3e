@@ -9,6 +9,7 @@ Middle layer for `<m3e-badge>`: the phantom-typed `Attr` setters (each an OPEN c
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Badge
 import M3e.Value
 
@@ -40,7 +41,9 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Badge.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Badge.size
+        (M3e.Value.toString v_)
 
 
 {-| The position of the badge, when attached to another element. (default: `"above-after"`) -}
@@ -56,10 +59,12 @@ position :
     }
     -> M3e.Cem.Attr.Attr { c | position : M3e.Value.Supported } msg
 position v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Badge.position (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Badge.position
+        (M3e.Value.toString v_)
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Badge.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Badge.for

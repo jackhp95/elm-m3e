@@ -14,6 +14,7 @@ Middle layer for `<m3e-year-view>`: the phantom-typed `Attr` setters (each an OP
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.YearView
 import M3e.Value
 
@@ -49,44 +50,44 @@ yearView attributes children =
 {-| Whether the view is active. (default: `false`) -}
 active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
 active =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.active
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.YearView.active
 
 
 {-| Today's date. (default: `new Date()`) -}
 today : String -> M3e.Cem.Attr.Attr { c | today : M3e.Value.Supported } msg
 today =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.today
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.YearView.today
 
 
 {-| The selected date. (default: `null`) -}
 date : String -> M3e.Cem.Attr.Attr { c | date : M3e.Value.Supported } msg
 date =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.date
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.YearView.date
 
 
 {-| The active date. (default: `new Date()`) -}
 activeDate :
     String -> M3e.Cem.Attr.Attr { c | activeDate : M3e.Value.Supported } msg
 activeDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.activeDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.YearView.activeDate
 
 
 {-| The minimum date that can be selected. (default: `null`) -}
 minDate : String -> M3e.Cem.Attr.Attr { c | minDate : M3e.Value.Supported } msg
 minDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.minDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.YearView.minDate
 
 
 {-| The maximum date that can be selected. (default: `null`) -}
 maxDate : String -> M3e.Cem.Attr.Attr { c | maxDate : M3e.Value.Supported } msg
 maxDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.maxDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.YearView.maxDate
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.YearView.onChange
         (Json.Decode.succeed f_)
 
@@ -95,6 +96,6 @@ onChange f_ =
 onActiveChange :
     msg -> M3e.Cem.Attr.Attr { c | onActiveChange : M3e.Value.Supported } msg
 onActiveChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.YearView.onActiveChange
         (Json.Decode.succeed f_)

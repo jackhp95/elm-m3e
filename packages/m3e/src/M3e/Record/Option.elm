@@ -36,9 +36,11 @@ M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.loading, M3e.OptionPanel.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Option
 import M3e.Content
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -57,12 +59,14 @@ view :
     -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | option : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
-                  M3e.Cem.Option.option (List.map M3e.Cem.Attr.forget erased) ch
+                  M3e.Cem.Option.option
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
+                      ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)

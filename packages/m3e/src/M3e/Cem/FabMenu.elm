@@ -10,6 +10,7 @@ Middle layer for `<m3e-fab-menu>`: the phantom-typed `Attr` setters (each an OPE
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.FabMenu
 import M3e.Value
 
@@ -45,14 +46,16 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FabMenu.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.FabMenu.variant
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `beforetoggle` events. -}
 onBeforetoggle :
     msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
 onBeforetoggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FabMenu.onBeforetoggle
         (Json.Decode.succeed f_)
 
@@ -60,6 +63,6 @@ onBeforetoggle f_ =
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FabMenu.onToggle
         (Json.Decode.succeed f_)

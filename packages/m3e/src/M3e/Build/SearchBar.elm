@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-search-bar>` — phantom-typed pipeline API. Impor
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SearchBar
 import M3e.Cem.SearchBar
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -50,7 +51,7 @@ searchBar req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.SearchBar.searchBar
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -66,7 +67,7 @@ clearable :
 clearable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchBar.clearable v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchBar.clearable v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -79,7 +80,7 @@ clearLabel :
 clearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchBar.clearLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchBar.clearLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -92,8 +93,11 @@ onClear :
 onClear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.SearchBar.onClear v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.SearchBar.onClear
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -104,4 +108,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { searchBar : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

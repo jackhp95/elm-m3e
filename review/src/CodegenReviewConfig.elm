@@ -13,6 +13,7 @@ import M3e.Review.Facts
 import MissingRequiredAttribute
 import MissingRequiredSingularSlot
 import NoActionlessButton
+import NoInternalImportOutsideAllowed
 import NoSeamOutsideAllowedModules
 import PreferSpecificSlot
 import RequireSlot
@@ -38,6 +39,11 @@ config =
     , PreferSpecificSlot.rule M3e.Review.Facts.facts
     , NoActionlessButton.rule
     , NoSeamOutsideAllowedModules.rule [ "Native", "Layout", "Kit", "Seam", "EscapeHatch" ]
+
+    -- The opaque-IR `*.Internal` boundary (ADR 0014 §2): only generated `M3e.*`
+    -- code and the design-system's Seam/escape modules may import an interior
+    -- module. Mirrors the seam allow-list, plus the `M3e` namespace prefix.
+    , NoInternalImportOutsideAllowed.rule [ "M3e", "Native", "Layout", "Kit", "Seam", "EscapeHatch" ]
 
     -- ## D6 codegen-aware translator (issue #145)
     --

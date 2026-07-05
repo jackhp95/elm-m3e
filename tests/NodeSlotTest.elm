@@ -12,7 +12,7 @@ import EscapeHatch
 import Expect
 import Html
 import Html.Attributes as Attr
-import M3e.Content as Content
+import M3e.Content.Internal as Content
 import M3e.Element as Element
 import M3e.Node as Node
 import Test exposing (Test, describe, test)
@@ -20,7 +20,8 @@ import Test.Html.Query as Query
 import Test.Html.Selector as Selector
 
 
-{-| Render slot-tagged content down to Html so we can query it. -}
+{-| Render slot-tagged content down to Html so we can query it.
+-}
 renderSlotted : String -> Element.Element supported msg -> Html.Html msg
 renderSlotted name el =
     Content.slot name el

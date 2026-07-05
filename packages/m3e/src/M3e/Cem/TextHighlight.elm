@@ -12,6 +12,7 @@ Middle layer for `<m3e-text-highlight>`: the phantom-typed `Attr` setters (each 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.TextHighlight
 import M3e.Value
 
@@ -44,13 +45,13 @@ textHighlight attributes children =
 caseSensitive :
     Bool -> M3e.Cem.Attr.Attr { c | caseSensitive : M3e.Value.Supported } msg
 caseSensitive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextHighlight.caseSensitive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextHighlight.caseSensitive
 
 
 {-| A value indicating whether text highlighting is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextHighlight.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextHighlight.disabled
 
 
 {-| The mode in which to highlight text. (default: `"contains"`) -}
@@ -61,7 +62,7 @@ mode :
     }
     -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
 mode v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.TextHighlight.mode
         (M3e.Value.toString v_)
 
@@ -69,13 +70,13 @@ mode v_ =
 {-| The term to highlight. (default: `""`) -}
 term : String -> M3e.Cem.Attr.Attr { c | term : M3e.Value.Supported } msg
 term =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextHighlight.term
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextHighlight.term
 
 
 {-| Listen for `highlight` events. -}
 onHighlight :
     msg -> M3e.Cem.Attr.Attr { c | onHighlight : M3e.Value.Supported } msg
 onHighlight f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.TextHighlight.onHighlight
         (Json.Decode.succeed f_)

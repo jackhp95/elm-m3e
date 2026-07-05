@@ -14,6 +14,7 @@ Middle layer for `<m3e-list-option>`: the phantom-typed `Attr` setters (each an 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ListOption
 import M3e.Value
 
@@ -56,19 +57,19 @@ listOption attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ListOption.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ListOption.disabled
 
 
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ListOption.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ListOption.selected
 
 
 {-| A string representing the value of the option. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ListOption.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ListOption.value
 
 
 {-| Listen for `beforeinput` events. -}
@@ -76,7 +77,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ListOption.onBeforeinput
         (Json.Decode.map
              f_
@@ -88,7 +89,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ListOption.onInput
         (Json.Decode.map
              f_
@@ -101,7 +102,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ListOption.onChange
         (Json.Decode.map
              f_
@@ -112,6 +113,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ListOption.onClick
         (Json.Decode.succeed f_)

@@ -23,9 +23,12 @@ A bar that provides a prominent entry point for search.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.SearchBar
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -44,14 +47,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | searchBar : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.SearchBar.searchBar
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input)
                   ]
@@ -87,7 +90,7 @@ leading :
     } msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
-    M3e.Content.slot "leading" el
+    M3e.Content.Internal.slot "leading" el
 
 
 {-| Place content in the `trailing` slot. -}
@@ -97,7 +100,7 @@ trailing :
     } msg
     -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
 trailing el =
-    M3e.Content.slot "trailing" el
+    M3e.Content.Internal.slot "trailing" el
 
 
 {-| Place content in the `clear-icon` slot. -}
@@ -105,4 +108,4 @@ clearIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
 clearIcon el =
-    M3e.Content.slot "clear-icon" el
+    M3e.Content.Internal.slot "clear-icon" el

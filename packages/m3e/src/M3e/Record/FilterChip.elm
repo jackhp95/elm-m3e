@@ -25,9 +25,12 @@ A chip users interact with to select/deselect options.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.FilterChip
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -51,14 +54,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | filterChip : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.FilterChip.filterChip
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)
@@ -136,7 +139,7 @@ icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
-    M3e.Content.slot "icon" el
+    M3e.Content.Internal.slot "icon" el
 
 
 {-| Place content in the `trailing-icon` slot. -}
@@ -144,4 +147,4 @@ trailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
 trailingIcon el =
-    M3e.Content.slot "trailing-icon" el
+    M3e.Content.Internal.slot "trailing-icon" el

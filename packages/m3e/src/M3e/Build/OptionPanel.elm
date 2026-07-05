@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-option-panel>` — phantom-typed pipeline API. Imp
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.OptionPanel
 import M3e.Cem.OptionPanel
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -51,7 +52,7 @@ optionPanel =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.OptionPanel.optionPanel
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -70,7 +71,7 @@ state :
 state v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.OptionPanel.state v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.OptionPanel.state v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -85,7 +86,9 @@ scrollStrategy :
 scrollStrategy v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.OptionPanel.scrollStrategy v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.OptionPanel.scrollStrategy v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -98,7 +101,9 @@ fitAnchorWidth :
 fitAnchorWidth v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.OptionPanel.fitAnchorWidth v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.OptionPanel.fitAnchorWidth v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -111,7 +116,8 @@ anchorOffset :
 anchorOffset v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.OptionPanel.anchorOffset v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.OptionPanel.anchorOffset v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -124,8 +130,8 @@ onBeforetoggle :
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.OptionPanel.onBeforetoggle
                        v_
                   )
@@ -142,8 +148,11 @@ onToggle :
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.OptionPanel.onToggle v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.OptionPanel.onToggle
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -154,4 +163,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { optionPanel : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

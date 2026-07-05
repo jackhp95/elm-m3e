@@ -10,9 +10,10 @@ The ⑤ Build shape for `<m3e-optgroup>` — phantom-typed pipeline API. Import 
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Optgroup
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -41,7 +42,7 @@ optgroup =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Optgroup.optgroup
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -54,4 +55,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { optgroup : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

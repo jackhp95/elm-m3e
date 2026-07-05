@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-split-button>` — phantom-typed pipeline API. Imp
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.SplitButton
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -50,7 +51,7 @@ splitButton req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.SplitButton.splitButton
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -74,7 +75,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SplitButton.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SplitButton.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -92,7 +93,7 @@ size :
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SplitButton.size v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SplitButton.size v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -102,4 +103,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { splitButton : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

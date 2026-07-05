@@ -14,10 +14,11 @@ The ⑤ Build shape for `<m3e-input-chip>` — phantom-typed pipeline API. Impor
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.InputChip
 import M3e.Cem.InputChip
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -59,7 +60,7 @@ inputChip req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.InputChip.inputChip
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -75,7 +76,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.InputChip.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -90,7 +91,9 @@ disabledInteractive :
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.InputChip.disabledInteractive v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.InputChip.disabledInteractive v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -103,7 +106,7 @@ removable :
 removable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.InputChip.removable v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.removable v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -116,7 +119,7 @@ removeLabel :
 removeLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.InputChip.removeLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.removeLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -129,7 +132,7 @@ value :
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.InputChip.value v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.value v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -144,7 +147,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.InputChip.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -157,8 +160,11 @@ onRemove :
 onRemove v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.onRemove v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.InputChip.onRemove
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -172,8 +178,11 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.InputChip.onClick
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -184,4 +193,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { inputChip : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

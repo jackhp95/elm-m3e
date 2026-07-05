@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-icon>` — phantom-typed pipeline API. Import qual
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Icon
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -48,7 +49,9 @@ icon =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.Icon.icon (List.map M3e.Cem.Attr.forget erased_) ch_
+                  M3e.Cem.Icon.icon
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
+                      ch_
              )
              []
              []
@@ -63,7 +66,7 @@ filled :
 filled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Icon.filled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Icon.filled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -79,7 +82,7 @@ grade :
 grade v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Icon.grade v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Icon.grade v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -92,7 +95,7 @@ opticalSize :
 opticalSize v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Icon.opticalSize v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Icon.opticalSize v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -105,7 +108,7 @@ name :
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Icon.name v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Icon.name v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -121,7 +124,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Icon.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Icon.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -134,7 +137,7 @@ weight :
 weight v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Icon.weight v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Icon.weight v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -144,4 +147,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { icon : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

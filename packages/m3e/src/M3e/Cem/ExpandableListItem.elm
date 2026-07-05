@@ -14,6 +14,7 @@ Middle layer for `<m3e-expandable-list-item>`: the phantom-typed `Attr` setters 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ExpandableListItem
 import M3e.Value
 
@@ -57,19 +58,19 @@ expandableListItem attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ExpandableListItem.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ExpandableListItem.disabled
 
 
 {-| Whether the item is expanded. (default: `false`) -}
 open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
 open =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ExpandableListItem.open
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ExpandableListItem.open
 
 
 {-| Listen for `opening` events. -}
 onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
 onOpening f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpandableListItem.onOpening
         (Json.Decode.succeed f_)
 
@@ -77,7 +78,7 @@ onOpening f_ =
 {-| Listen for `opened` events. -}
 onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
 onOpened f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpandableListItem.onOpened
         (Json.Decode.succeed f_)
 
@@ -85,7 +86,7 @@ onOpened f_ =
 {-| Listen for `closing` events. -}
 onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
 onClosing f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpandableListItem.onClosing
         (Json.Decode.succeed f_)
 
@@ -93,6 +94,6 @@ onClosing f_ =
 {-| Listen for `closed` events. -}
 onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
 onClosed f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpandableListItem.onClosed
         (Json.Decode.succeed f_)

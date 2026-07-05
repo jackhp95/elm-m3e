@@ -13,7 +13,7 @@ elm-review rules, not by the type system.
 -}
 
 import Html.Attributes
-import M3e.Cem.Attr as Attr exposing (Attr)
+import M3e.Cem.Attr.Internal as Attr exposing (Attr)
 
 
 {-| Set `aria-label` on any component.

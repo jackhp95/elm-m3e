@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-collapsible>` — phantom-typed pipeline API. Impo
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Collapsible
 import M3e.Cem.Html.Collapsible
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -52,7 +53,7 @@ collapsible =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Collapsible.collapsible
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -68,7 +69,7 @@ open :
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Collapsible.open v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.open v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -83,7 +84,7 @@ orientation :
 orientation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Collapsible.orientation v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.orientation v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -96,7 +97,7 @@ noAnimate :
 noAnimate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Collapsible.noAnimate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.noAnimate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -109,8 +110,11 @@ onOpening :
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Collapsible.onOpening v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Collapsible.onOpening
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -124,8 +128,11 @@ onOpened :
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Collapsible.onOpened v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Collapsible.onOpened
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -139,8 +146,11 @@ onClosing :
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Collapsible.onClosing v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Collapsible.onClosing
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -154,8 +164,11 @@ onClosed :
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Collapsible.onClosed v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Collapsible.onClosed
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -166,4 +179,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { collapsible : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

@@ -14,6 +14,7 @@ Middle layer for `<m3e-collapsible>`: the phantom-typed `Attr` setters (each an 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Collapsible
 import M3e.Value
 
@@ -50,7 +51,7 @@ collapsible attributes children =
 {-| Whether content is visible. (default: `false`) -}
 open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
 open =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Collapsible.open
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Collapsible.open
 
 
 {-| Orientation of collapsible content. (default: `"vertical"`) -}
@@ -60,7 +61,7 @@ orientation :
     }
     -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
 orientation v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Collapsible.orientation
         (M3e.Value.toString v_)
 
@@ -69,13 +70,13 @@ orientation v_ =
 noAnimate :
     Bool -> M3e.Cem.Attr.Attr { c | noAnimate : M3e.Value.Supported } msg
 noAnimate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Collapsible.noAnimate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Collapsible.noAnimate
 
 
 {-| Listen for `opening` events. -}
 onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
 onOpening f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Collapsible.onOpening
         (Json.Decode.succeed f_)
 
@@ -83,7 +84,7 @@ onOpening f_ =
 {-| Listen for `opened` events. -}
 onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
 onOpened f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Collapsible.onOpened
         (Json.Decode.succeed f_)
 
@@ -91,7 +92,7 @@ onOpened f_ =
 {-| Listen for `closing` events. -}
 onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
 onClosing f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Collapsible.onClosing
         (Json.Decode.succeed f_)
 
@@ -99,6 +100,6 @@ onClosing f_ =
 {-| Listen for `closed` events. -}
 onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
 onClosed f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Collapsible.onClosed
         (Json.Decode.succeed f_)

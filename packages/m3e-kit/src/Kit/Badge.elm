@@ -23,7 +23,7 @@ would be a natural extension: take a position value and map it to the matching
 import Html
 import Html.Attributes
 import M3e.Cem.Attr as Attr
-import M3e.Element as Element exposing (Element)
+import M3e.Element.Internal as Element exposing (Element)
 import M3e.Node as Node
 import M3e.Value exposing (Supported)
 

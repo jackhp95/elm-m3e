@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-bottom-sheet-trigger>` — phantom-typed pipeline 
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.BottomSheetTrigger
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -46,7 +47,7 @@ bottomSheetTrigger =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.BottomSheetTrigger.bottomSheetTrigger
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -62,7 +63,9 @@ detent :
 detent v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.BottomSheetTrigger.detent v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.BottomSheetTrigger.detent v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -75,7 +78,9 @@ secondary :
 secondary v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.BottomSheetTrigger.secondary v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.BottomSheetTrigger.secondary v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -88,7 +93,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.BottomSheetTrigger.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheetTrigger.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -98,4 +103,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { bottomSheetTrigger : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

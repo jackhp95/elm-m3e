@@ -14,6 +14,7 @@ Middle layer for `<m3e-tabs>`: the phantom-typed `Attr` setters (each an OPEN ca
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Tabs
 import M3e.Value
 
@@ -61,7 +62,7 @@ disablePagination :
     }
     -> M3e.Cem.Attr.Attr { c | disablePagination : M3e.Value.Supported } msg
 disablePagination v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tabs.disablePagination
         (M3e.Value.toString v_)
 
@@ -73,7 +74,7 @@ headerPosition :
     }
     -> M3e.Cem.Attr.Attr { c | headerPosition : M3e.Value.Supported } msg
 headerPosition v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tabs.headerPosition
         (M3e.Value.toString v_)
 
@@ -82,7 +83,7 @@ headerPosition v_ =
 nextPageLabel :
     String -> M3e.Cem.Attr.Attr { c | nextPageLabel : M3e.Value.Supported } msg
 nextPageLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.nextPageLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.nextPageLabel
 
 
 {-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
@@ -90,13 +91,13 @@ previousPageLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousPageLabel : M3e.Value.Supported } msg
 previousPageLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.previousPageLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.previousPageLabel
 
 
 {-| Whether tabs are stretched to fill the header. (default: `false`) -}
 stretch : Bool -> M3e.Cem.Attr.Attr { c | stretch : M3e.Value.Supported } msg
 stretch =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.stretch
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.stretch
 
 
 {-| The appearance variant of the tabs. (default: `"secondary"`) -}
@@ -106,20 +107,24 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Tabs.variant
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onChange (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Tabs.onChange
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `beforeinput` events. -}
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tabs.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -127,4 +132,6 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onInput (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Tabs.onInput
+        (Json.Decode.succeed f_)

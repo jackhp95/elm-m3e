@@ -9,6 +9,7 @@ Middle layer for `<m3e-rich-tooltip-action>`: the phantom-typed `Attr` setters (
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.RichTooltipAction
 import M3e.Value
 
@@ -35,4 +36,5 @@ disableRestoreFocus :
     Bool
     -> M3e.Cem.Attr.Attr { c | disableRestoreFocus : M3e.Value.Supported } msg
 disableRestoreFocus =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.RichTooltipAction.disableRestoreFocus
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.RichTooltipAction.disableRestoreFocus

@@ -10,6 +10,7 @@ Middle layer for `<m3e-search-bar>`: the phantom-typed `Attr` setters (each an O
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SearchBar
 import M3e.Value
 
@@ -45,19 +46,19 @@ searchBar attributes children =
 clearable :
     Bool -> M3e.Cem.Attr.Attr { c | clearable : M3e.Value.Supported } msg
 clearable =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchBar.clearable
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchBar.clearable
 
 
 {-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
 clearLabel :
     String -> M3e.Cem.Attr.Attr { c | clearLabel : M3e.Value.Supported } msg
 clearLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SearchBar.clearLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SearchBar.clearLabel
 
 
 {-| Listen for `clear` events. -}
 onClear : msg -> M3e.Cem.Attr.Attr { c | onClear : M3e.Value.Supported } msg
 onClear f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SearchBar.onClear
         (Json.Decode.succeed f_)

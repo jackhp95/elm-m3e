@@ -9,6 +9,7 @@ Middle layer for `<m3e-theme-icon>`: the phantom-typed `Attr` setters (each an O
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ThemeIcon
 import M3e.Value
 
@@ -35,7 +36,7 @@ themeIcon attributes children =
 {-| The hex color of the theme to preview (default: `"#6750A4"`) -}
 color : String -> M3e.Cem.Attr.Attr { c | color : M3e.Value.Supported } msg
 color =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ThemeIcon.color
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ThemeIcon.color
 
 
 {-| The color scheme of the theme. (default: `"auto"`) -}
@@ -46,7 +47,9 @@ scheme :
     }
     -> M3e.Cem.Attr.Attr { c | scheme : M3e.Value.Supported } msg
 scheme v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ThemeIcon.scheme (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.ThemeIcon.scheme
+        (M3e.Value.toString v_)
 
 
 {-| The color variant of the theme. (default: `"neutral"`) -}
@@ -63,6 +66,6 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ThemeIcon.variant
         (M3e.Value.toString v_)

@@ -12,6 +12,7 @@ Middle layer for `<m3e-nav-bar>`: the phantom-typed `Attr` setters (each an OPEN
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.NavBar
 import M3e.Value
 
@@ -49,20 +50,24 @@ mode :
     }
     -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
 mode v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavBar.mode (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.NavBar.mode
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavBar.onChange (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.NavBar.onChange
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `beforeinput` events. -}
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.NavBar.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -70,4 +75,6 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavBar.onInput (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.NavBar.onInput
+        (Json.Decode.succeed f_)

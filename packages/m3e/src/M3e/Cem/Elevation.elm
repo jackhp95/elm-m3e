@@ -9,6 +9,7 @@ Middle layer for `<m3e-elevation>`: the phantom-typed `Attr` setters (each an OP
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Elevation
 import M3e.Value
 
@@ -35,16 +36,16 @@ elevation attributes children =
 {-| Whether hover and press events will not trigger changes in elevation, when attached to an interactive element. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Elevation.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Elevation.disabled
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Elevation.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Elevation.for
 
 
 {-| The level at which to visually depict elevation. (default: `null`) -}
 level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
 level =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Elevation.level
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Elevation.level

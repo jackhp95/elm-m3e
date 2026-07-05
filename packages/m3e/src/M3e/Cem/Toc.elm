@@ -9,6 +9,7 @@ Middle layer for `<m3e-toc>`: the phantom-typed `Attr` setters (each an OPEN cap
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Toc
 import M3e.Value
 
@@ -36,10 +37,10 @@ toc attributes children =
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Toc.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Toc.for
 
 
 {-| The maximum depth of the table of contents. (default: `2`) -}
 maxDepth : Float -> M3e.Cem.Attr.Attr { c | maxDepth : M3e.Value.Supported } msg
 maxDepth =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Toc.maxDepth
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Toc.maxDepth

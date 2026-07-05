@@ -11,6 +11,7 @@ Middle layer for `<m3e-textarea-autosize>`: the phantom-typed `Attr` setters (ea
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.TextareaAutosize
 import M3e.Value
 
@@ -38,22 +39,22 @@ textareaAutosize attributes children =
 {-| Whether auto-sizing is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextareaAutosize.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextareaAutosize.disabled
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextareaAutosize.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextareaAutosize.for
 
 
 {-| The maximum amount of rows in the `textarea`. (default: `0`) -}
 maxRows : Float -> M3e.Cem.Attr.Attr { c | maxRows : M3e.Value.Supported } msg
 maxRows =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextareaAutosize.maxRows
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextareaAutosize.maxRows
 
 
 {-| The minimum amount of rows in the `textarea`. (default: `0`) -}
 minRows : Float -> M3e.Cem.Attr.Attr { c | minRows : M3e.Value.Supported } msg
 minRows =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TextareaAutosize.minRows
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TextareaAutosize.minRows

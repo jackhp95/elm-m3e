@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-form-field>` — phantom-typed pipeline API. Impor
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.FormField
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -54,7 +55,7 @@ formField =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.FormField.formField
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -70,7 +71,7 @@ floatLabel :
 floatLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FormField.floatLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FormField.floatLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -85,7 +86,9 @@ hideRequiredMarker :
 hideRequiredMarker v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FormField.hideRequiredMarker v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.FormField.hideRequiredMarker v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -101,7 +104,7 @@ hideSubscript :
 hideSubscript v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FormField.hideSubscript v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FormField.hideSubscript v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -116,7 +119,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FormField.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FormField.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -126,4 +129,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { formField : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

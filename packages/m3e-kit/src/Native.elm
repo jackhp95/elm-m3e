@@ -6,8 +6,8 @@ This is the "teams get normal HTML inside our composition" seam (docs §8).
 -}
 
 import Html exposing (Html)
-import M3e.Cem.Attr as Attr exposing (Attr)
-import M3e.Element as Element exposing (Element)
+import M3e.Cem.Attr.Internal as Attr exposing (Attr)
+import M3e.Element.Internal as Element exposing (Element)
 import M3e.Node as Node
 import M3e.Value exposing (Supported)
 

@@ -11,6 +11,7 @@ Middle layer for `<m3e-divider>`: the phantom-typed `Attr` setters (each an OPEN
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Divider
 import M3e.Value
 
@@ -38,23 +39,23 @@ divider attributes children =
 {-| Whether the divider is indented with equal padding on both sides. (default: `false`) -}
 inset : Bool -> M3e.Cem.Attr.Attr { c | inset : M3e.Value.Supported } msg
 inset =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Divider.inset
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Divider.inset
 
 
 {-| Whether the divider is indented with padding on the leading side. (default: `false`) -}
 insetStart :
     Bool -> M3e.Cem.Attr.Attr { c | insetStart : M3e.Value.Supported } msg
 insetStart =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Divider.insetStart
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Divider.insetStart
 
 
 {-| Whether the divider is indented with padding on the trailing side. (default: `false`) -}
 insetEnd : Bool -> M3e.Cem.Attr.Attr { c | insetEnd : M3e.Value.Supported } msg
 insetEnd =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Divider.insetEnd
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Divider.insetEnd
 
 
 {-| Whether the divider is vertically aligned with adjacent content. (default: `false`) -}
 vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
 vertical =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Divider.vertical
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Divider.vertical

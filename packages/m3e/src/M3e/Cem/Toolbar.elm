@@ -11,6 +11,7 @@ Middle layer for `<m3e-toolbar>`: the phantom-typed `Attr` setters (each an OPEN
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Toolbar
 import M3e.Value
 
@@ -38,7 +39,7 @@ toolbar attributes children =
 {-| Whether the toolbar is elevated. (default: `false`) -}
 elevated : Bool -> M3e.Cem.Attr.Attr { c | elevated : M3e.Value.Supported } msg
 elevated =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Toolbar.elevated
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Toolbar.elevated
 
 
 {-| The shape of the toolbar. (default: `"square"`) -}
@@ -48,7 +49,9 @@ shape :
     }
     -> M3e.Cem.Attr.Attr { c | shape : M3e.Value.Supported } msg
 shape v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Toolbar.shape (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Toolbar.shape
+        (M3e.Value.toString v_)
 
 
 {-| The appearance variant of the toolbar. (default: `"standard"`) -}
@@ -58,10 +61,12 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Toolbar.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Toolbar.variant
+        (M3e.Value.toString v_)
 
 
 {-| Whether the element is oriented vertically. (default: `false`) -}
 vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
 vertical =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Toolbar.vertical
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Toolbar.vertical

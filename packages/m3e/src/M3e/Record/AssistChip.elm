@@ -24,8 +24,11 @@ A chip users interact with to perform a smart or automated action that can span 
 import M3e.Action
 import M3e.Cem.AssistChip
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -61,17 +64,19 @@ view :
     -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | assistChip : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.AssistChip.assistChip
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
              (List.append
-                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  (List.map
+                       M3e.Cem.Attr.Internal.forget
+                       (M3e.Action.toAttrs req_.action)
                   )
-                  (List.map M3e.Cem.Attr.forget attributes)
+                  (List.map M3e.Cem.Attr.Internal.forget attributes)
              )
              (List.append
                   [ M3e.Action.wrapContent
@@ -135,4 +140,4 @@ icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
-    M3e.Content.slot "icon" el
+    M3e.Content.Internal.slot "icon" el

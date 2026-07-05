@@ -12,6 +12,7 @@ Middle layer for `<m3e-floating-panel>`: the phantom-typed `Attr` setters (each 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.FloatingPanel
 import M3e.Value
 
@@ -48,7 +49,7 @@ scrollStrategy :
     }
     -> M3e.Cem.Attr.Attr { c | scrollStrategy : M3e.Value.Supported } msg
 scrollStrategy v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FloatingPanel.scrollStrategy
         (M3e.Value.toString v_)
 
@@ -57,21 +58,21 @@ scrollStrategy v_ =
 fitAnchorWidth :
     Bool -> M3e.Cem.Attr.Attr { c | fitAnchorWidth : M3e.Value.Supported } msg
 fitAnchorWidth =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FloatingPanel.fitAnchorWidth
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FloatingPanel.fitAnchorWidth
 
 
 {-| The logical margin, in pixels, between the panel and its anchor. (default: `0`) -}
 anchorOffset :
     Float -> M3e.Cem.Attr.Attr { c | anchorOffset : M3e.Value.Supported } msg
 anchorOffset =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FloatingPanel.anchorOffset
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FloatingPanel.anchorOffset
 
 
 {-| Listen for `beforetoggle` events. -}
 onBeforetoggle :
     msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
 onBeforetoggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FloatingPanel.onBeforetoggle
         (Json.Decode.succeed f_)
 
@@ -79,6 +80,6 @@ onBeforetoggle f_ =
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FloatingPanel.onToggle
         (Json.Decode.succeed f_)

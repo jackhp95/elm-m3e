@@ -12,6 +12,7 @@ Middle layer for `<m3e-input-chip-set>`: the phantom-typed `Attr` setters (each 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.InputChipSet
 import M3e.Value
 
@@ -46,30 +47,30 @@ inputChipSet attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChipSet.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChipSet.disabled
 
 
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChipSet.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChipSet.name
 
 
 {-| Whether a value is required for the element. (default: `false`) -}
 required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
 required =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChipSet.required
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChipSet.required
 
 
 {-| Whether the element is oriented vertically. (default: `false`) -}
 vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
 vertical =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChipSet.vertical
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChipSet.vertical
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.InputChipSet.onChange
         (Json.Decode.succeed f_)

@@ -14,6 +14,7 @@ Middle layer for `<m3e-tab>`: the phantom-typed `Attr` setters (each an OPEN cap
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Tab
 import M3e.Value
 
@@ -51,19 +52,19 @@ tab attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tab.disabled
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tab.for
 
 
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tab.selected
 
 
 {-| Listen for `beforeinput` events. -}
@@ -71,7 +72,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tab.onBeforeinput
         (Json.Decode.map
              f_
@@ -83,7 +84,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tab.onInput
         (Json.Decode.map
              f_
@@ -96,7 +97,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tab.onChange
         (Json.Decode.map
              f_
@@ -107,4 +108,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.onClick (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Tab.onClick
+        (Json.Decode.succeed f_)

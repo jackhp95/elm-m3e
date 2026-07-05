@@ -14,6 +14,7 @@ Middle layer for `<m3e-filter-chip>`: the phantom-typed `Attr` setters (each an 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.FilterChip
 import M3e.Value
 
@@ -56,7 +57,7 @@ filterChip attributes children =
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FilterChip.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FilterChip.disabled
 
 
 {-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
@@ -64,19 +65,19 @@ disabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
 disabledInteractive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FilterChip.disabledInteractive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FilterChip.disabledInteractive
 
 
 {-| A value indicating whether the element is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FilterChip.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FilterChip.selected
 
 
 {-| A string representing the value of the chip. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FilterChip.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FilterChip.value
 
 
 {-| The appearance variant of the chip. (default: `"outlined"`) -}
@@ -86,7 +87,7 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FilterChip.variant
         (M3e.Value.toString v_)
 
@@ -96,7 +97,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FilterChip.onBeforeinput
         (Json.Decode.map
              f_
@@ -108,7 +109,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FilterChip.onInput
         (Json.Decode.map
              f_
@@ -121,7 +122,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FilterChip.onChange
         (Json.Decode.map
              f_
@@ -132,6 +133,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FilterChip.onClick
         (Json.Decode.succeed f_)

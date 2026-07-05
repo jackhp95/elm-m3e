@@ -9,6 +9,7 @@ Middle layer for `<m3e-state-layer>`: the phantom-typed `Attr` setters (each an 
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.StateLayer
 import M3e.Value
 
@@ -37,7 +38,7 @@ be controlled manually using the `show` and `hide` methods. (default: `false`)
 -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.StateLayer.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.StateLayer.disabled
 
 
 {-| Whether hover events will not trigger the state layer. State layers can still
@@ -46,10 +47,10 @@ be controlled manually using the `show` and `hide` methods. (default: `false`)
 disableHover :
     Bool -> M3e.Cem.Attr.Attr { c | disableHover : M3e.Value.Supported } msg
 disableHover =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.StateLayer.disableHover
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.StateLayer.disableHover
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.StateLayer.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.StateLayer.for

@@ -11,6 +11,7 @@ Middle layer for `<m3e-form-field>`: the phantom-typed `Attr` setters (each an O
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.FormField
 import M3e.Value
 
@@ -48,7 +49,7 @@ floatLabel :
     M3e.Value.Value { always : M3e.Value.Supported, auto : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | floatLabel : M3e.Value.Supported } msg
 floatLabel v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FormField.floatLabel
         (M3e.Value.toString v_)
 
@@ -58,7 +59,7 @@ hideRequiredMarker :
     Bool
     -> M3e.Cem.Attr.Attr { c | hideRequiredMarker : M3e.Value.Supported } msg
 hideRequiredMarker =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FormField.hideRequiredMarker
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FormField.hideRequiredMarker
 
 
 {-| Whether subscript content is hidden. (default: `"auto"`) -}
@@ -69,7 +70,7 @@ hideSubscript :
     }
     -> M3e.Cem.Attr.Attr { c | hideSubscript : M3e.Value.Supported } msg
 hideSubscript v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FormField.hideSubscript
         (M3e.Value.toString v_)
 
@@ -81,6 +82,6 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.FormField.variant
         (M3e.Value.toString v_)

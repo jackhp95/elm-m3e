@@ -19,10 +19,11 @@ The ⑤ Build shape for `<m3e-datepicker>` — phantom-typed pipeline API. Impor
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Datepicker
 import M3e.Cem.Html.Datepicker
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -74,7 +75,7 @@ datepicker =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Datepicker.datepicker
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -93,7 +94,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -106,7 +107,7 @@ clearable :
 clearable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.clearable v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.clearable v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -119,7 +120,7 @@ date :
 date v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.date v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.date v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -132,7 +133,7 @@ maxDate :
 maxDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.maxDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.maxDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -145,7 +146,7 @@ minDate :
 minDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.minDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.minDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -158,7 +159,7 @@ range :
 range v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.range v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.range v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -171,7 +172,7 @@ rangeEnd :
 rangeEnd v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.rangeEnd v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.rangeEnd v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -184,7 +185,7 @@ rangeStart :
 rangeStart v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.rangeStart v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.rangeStart v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -197,7 +198,7 @@ startAt :
 startAt v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.startAt v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.startAt v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -213,7 +214,7 @@ startView :
 startView v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.startView v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.startView v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -228,7 +229,9 @@ previousMonthLabel :
 previousMonthLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.previousMonthLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Datepicker.previousMonthLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -241,7 +244,9 @@ nextMonthLabel :
 nextMonthLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.nextMonthLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Datepicker.nextMonthLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -256,7 +261,9 @@ previousYearLabel :
 previousYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.previousYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Datepicker.previousYearLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -269,7 +276,8 @@ nextYearLabel :
 nextYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.nextYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.nextYearLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -286,7 +294,8 @@ previousMultiYearLabel :
 previousMultiYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.previousMultiYearLabel v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Datepicker.previousMultiYearLabel v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -302,7 +311,9 @@ nextMultiYearLabel :
 nextMultiYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.nextMultiYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Datepicker.nextMultiYearLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -315,7 +326,7 @@ clearLabel :
 clearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.clearLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.clearLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -328,7 +339,7 @@ confirmLabel :
 confirmLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.confirmLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.confirmLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -341,7 +352,7 @@ dismissLabel :
 dismissLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.dismissLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.dismissLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -354,7 +365,7 @@ label :
 label v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Datepicker.label v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Datepicker.label v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -367,8 +378,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Datepicker.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Datepicker.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -382,8 +396,8 @@ onBeforetoggle :
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.Datepicker.onBeforetoggle
                        v_
                   )
@@ -400,8 +414,11 @@ onToggle :
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Datepicker.onToggle v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Datepicker.onToggle
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -412,4 +429,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { datepicker : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

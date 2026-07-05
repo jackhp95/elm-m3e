@@ -14,6 +14,7 @@ Middle layer for `<m3e-dialog>`: the phantom-typed `Attr` setters (each an OPEN 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Dialog
 import M3e.Value
 
@@ -60,47 +61,47 @@ dialog attributes children =
 {-| Whether the dialog is an alert. (default: `false`) -}
 alert : Bool -> M3e.Cem.Attr.Attr { c | alert : M3e.Value.Supported } msg
 alert =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.alert
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Dialog.alert
 
 
 {-| The accessible label given to the button used to dismiss the dialog. (default: `"Close"`) -}
 closeLabel :
     String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
 closeLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.closeLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Dialog.closeLabel
 
 
 {-| Whether users cannot click the backdrop or press ESC to dismiss the dialog. (default: `false`) -}
 disableClose :
     Bool -> M3e.Cem.Attr.Attr { c | disableClose : M3e.Value.Supported } msg
 disableClose =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.disableClose
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Dialog.disableClose
 
 
 {-| Whether a button is presented that can be used to close the dialog. (default: `false`) -}
 dismissible :
     Bool -> M3e.Cem.Attr.Attr { c | dismissible : M3e.Value.Supported } msg
 dismissible =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.dismissible
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Dialog.dismissible
 
 
 {-| Whether to disable focus trapping, which keeps keyboard `Tab` navigation within the dialog. (default: `false`) -}
 noFocusTrap :
     Bool -> M3e.Cem.Attr.Attr { c | noFocusTrap : M3e.Value.Supported } msg
 noFocusTrap =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.noFocusTrap
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Dialog.noFocusTrap
 
 
 {-| Whether the dialog is open. (default: `false`) -}
 open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
 open =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.open
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Dialog.open
 
 
 {-| Listen for `opening` events. -}
 onOpening : msg -> M3e.Cem.Attr.Attr { c | onOpening : M3e.Value.Supported } msg
 onOpening f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Dialog.onOpening
         (Json.Decode.succeed f_)
 
@@ -108,13 +109,15 @@ onOpening f_ =
 {-| Listen for `opened` events. -}
 onOpened : msg -> M3e.Cem.Attr.Attr { c | onOpened : M3e.Value.Supported } msg
 onOpened f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onOpened (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Dialog.onOpened
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `closing` events. -}
 onClosing : msg -> M3e.Cem.Attr.Attr { c | onClosing : M3e.Value.Supported } msg
 onClosing f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Dialog.onClosing
         (Json.Decode.succeed f_)
 
@@ -122,10 +125,14 @@ onClosing f_ =
 {-| Listen for `closed` events. -}
 onClosed : msg -> M3e.Cem.Attr.Attr { c | onClosed : M3e.Value.Supported } msg
 onClosed f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onClosed (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Dialog.onClosed
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `cancel` events. -}
 onCancel : msg -> M3e.Cem.Attr.Attr { c | onCancel : M3e.Value.Supported } msg
 onCancel f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onCancel (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Dialog.onCancel
+        (Json.Decode.succeed f_)

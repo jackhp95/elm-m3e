@@ -40,8 +40,11 @@ M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ 
 
 import M3e.Cem.AppBar
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -62,12 +65,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 view attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
-                  M3e.Cem.AppBar.appBar (List.map M3e.Cem.Attr.forget erased) ch
+                  M3e.Cem.AppBar.appBar
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
+                      ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 
@@ -103,7 +108,7 @@ leading :
     } msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
-    M3e.Content.slot "leading" el
+    M3e.Content.Internal.slot "leading" el
 
 
 {-| Place content in the `title` slot. -}
@@ -113,7 +118,7 @@ title :
     } msg
     -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
 title el =
-    M3e.Content.slot "title" el
+    M3e.Content.Internal.slot "title" el
 
 
 {-| Place content in the `subtitle` slot. -}
@@ -123,7 +128,7 @@ subtitle :
     } msg
     -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
 subtitle el =
-    M3e.Content.slot "subtitle" el
+    M3e.Content.Internal.slot "subtitle" el
 
 
 {-| Place content in the `trailing` slot. -}
@@ -135,7 +140,7 @@ trailing :
     } msg
     -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
 trailing el =
-    M3e.Content.slot "trailing" el
+    M3e.Content.Internal.slot "trailing" el
 
 
 {-| Place content in the `leading-icon` slot. -}
@@ -143,7 +148,7 @@ leadingIcon :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | leadingIcon : M3e.Value.Supported } msg
 leadingIcon el =
-    M3e.Content.slot "leading-icon" el
+    M3e.Content.Internal.slot "leading-icon" el
 
 
 {-| Place content in the `trailing-icon` slot. -}
@@ -151,4 +156,4 @@ trailingIcon :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
 trailingIcon el =
-    M3e.Content.slot "trailing-icon" el
+    M3e.Content.Internal.slot "trailing-icon" el

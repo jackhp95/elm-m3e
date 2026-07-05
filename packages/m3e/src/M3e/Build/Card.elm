@@ -16,10 +16,11 @@ The ⑤ Build shape for `<m3e-card>` — phantom-typed pipeline API. Import qual
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Card
 import M3e.Cem.Html.Card
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -66,7 +67,9 @@ card =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.Card.card (List.map M3e.Cem.Attr.forget erased_) ch_
+                  M3e.Cem.Card.card
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
+                      ch_
              )
              []
              []
@@ -81,7 +84,7 @@ actionable :
 actionable v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.actionable v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.actionable v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -94,7 +97,7 @@ inline :
 inline v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.inline v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.inline v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -109,7 +112,7 @@ orientation :
 orientation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.orientation v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.orientation v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -125,7 +128,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -138,7 +141,7 @@ href :
 href v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.href v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.href v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -151,7 +154,7 @@ target :
 target v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.target v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.target v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -164,7 +167,7 @@ rel :
 rel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.rel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.rel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -179,7 +182,7 @@ download :
 download v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.download v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.download v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -194,7 +197,7 @@ name :
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.name v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.name v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -207,7 +210,7 @@ value :
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.value v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.value v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -223,7 +226,7 @@ type_ :
 type_ v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.type_ v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.type_ v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -238,7 +241,8 @@ disabledInteractive :
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.disabledInteractive v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.disabledInteractive v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -251,7 +255,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Card.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Card.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -264,8 +268,8 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Card.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Card.onClick v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -276,4 +280,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { card : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

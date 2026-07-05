@@ -9,6 +9,7 @@ Middle layer for `<m3e-chip>`: the phantom-typed `Attr` setters (each an OPEN ca
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Chip
 import M3e.Value
 
@@ -38,7 +39,7 @@ chip attributes children =
 {-| A string representing the value of the chip. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Chip.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Chip.value
 
 
 {-| The appearance variant of the chip. (default: `"outlined"`) -}
@@ -48,4 +49,6 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Chip.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Chip.variant
+        (M3e.Value.toString v_)

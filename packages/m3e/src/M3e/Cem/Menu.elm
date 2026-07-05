@@ -14,6 +14,7 @@ Middle layer for `<m3e-menu>`: the phantom-typed `Attr` setters (each an OPEN ca
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Menu
 import M3e.Value
 
@@ -51,7 +52,9 @@ positionX :
     }
     -> M3e.Cem.Attr.Attr { c | positionX : M3e.Value.Supported } msg
 positionX v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.positionX (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Menu.positionX
+        (M3e.Value.toString v_)
 
 
 {-| The position of the menu, on the y-axis. (default: `"below"`) -}
@@ -59,7 +62,9 @@ positionY :
     M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | positionY : M3e.Value.Supported } msg
 positionY v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.positionY (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Menu.positionY
+        (M3e.Value.toString v_)
 
 
 {-| The appearance variant of the menu. (default: `"standard"`) -}
@@ -69,20 +74,22 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Menu.variant
+        (M3e.Value.toString v_)
 
 
 {-| A value indicating whether the menu is a submenu. (default: `false`) -}
 submenu : Bool -> M3e.Cem.Attr.Attr { c | submenu : M3e.Value.Supported } msg
 submenu =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.submenu
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Menu.submenu
 
 
 {-| Listen for `beforetoggle` events. -}
 onBeforetoggle :
     msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
 onBeforetoggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Menu.onBeforetoggle
         (Json.Decode.succeed f_)
 
@@ -90,4 +97,6 @@ onBeforetoggle f_ =
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Menu.onToggle (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Menu.onToggle
+        (Json.Decode.succeed f_)

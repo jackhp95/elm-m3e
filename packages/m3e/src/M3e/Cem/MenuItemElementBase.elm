@@ -10,6 +10,7 @@ Middle layer for `<MenuItemElementBase>`: the phantom-typed `Attr` setters (each
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.MenuItemElementBase
 import M3e.Value
 
@@ -38,12 +39,12 @@ menuItemElementBase attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MenuItemElementBase.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItemElementBase.disabled
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.MenuItemElementBase.onClick
         (Json.Decode.succeed f_)

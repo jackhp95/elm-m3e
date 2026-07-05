@@ -14,6 +14,7 @@ Middle layer for `<m3e-breadcrumb-item>`: the phantom-typed `Attr` setters (each
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.BreadcrumbItem
 import M3e.Value
 
@@ -52,13 +53,13 @@ breadcrumbItem attributes children =
 itemLabel :
     String -> M3e.Cem.Attr.Attr { c | itemLabel : M3e.Value.Supported } msg
 itemLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.BreadcrumbItem.itemLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.BreadcrumbItem.itemLabel
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.BreadcrumbItem.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.BreadcrumbItem.disabled
 
 
 {-| Indicates the current item in the breadcrumb path. -}
@@ -72,7 +73,7 @@ current :
     }
     -> M3e.Cem.Attr.Attr { c | current : M3e.Value.Supported } msg
 current v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.BreadcrumbItem.current
         (M3e.Value.toString v_)
 
@@ -80,31 +81,31 @@ current v_ =
 {-| The URL to which the internal breadcrumb link button points. (default: `""`) -}
 href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
 href =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.BreadcrumbItem.href
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.BreadcrumbItem.href
 
 
 {-| The target of the internal breadcrumb link button. (default: `""`) -}
 target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
 target =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.BreadcrumbItem.target
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.BreadcrumbItem.target
 
 
 {-| A value indicating whether the internal link target will be downloaded, optionally specifying a file name. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.BreadcrumbItem.download
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.BreadcrumbItem.download
 
 
 {-| The relationship between the internal link target and the document. (default: `""`) -}
 rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
 rel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.BreadcrumbItem.rel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.BreadcrumbItem.rel
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.BreadcrumbItem.onClick
         (Json.Decode.succeed f_)

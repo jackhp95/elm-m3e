@@ -25,9 +25,12 @@ A chip which represents a discrete piece of information entered by a user.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.InputChip
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -51,14 +54,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.InputChip.inputChip
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)
@@ -127,7 +130,7 @@ avatar :
     M3e.Element.Element { avatar : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | avatar : M3e.Value.Supported } msg
 avatar el =
-    M3e.Content.slot "avatar" el
+    M3e.Content.Internal.slot "avatar" el
 
 
 {-| Place content in the `icon` slot. -}
@@ -135,7 +138,7 @@ icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
-    M3e.Content.slot "icon" el
+    M3e.Content.Internal.slot "icon" el
 
 
 {-| Place content in the `remove-icon` slot. -}
@@ -143,4 +146,4 @@ removeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
 removeIcon el =
-    M3e.Content.slot "remove-icon" el
+    M3e.Content.Internal.slot "remove-icon" el

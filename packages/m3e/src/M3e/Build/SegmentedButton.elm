@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-segmented-button>` — phantom-typed pipeline API.
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SegmentedButton
 import M3e.Cem.SegmentedButton
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -52,7 +53,7 @@ segmentedButton =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.SegmentedButton.segmentedButton
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -68,7 +69,8 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SegmentedButton.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SegmentedButton.disabled v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -85,7 +87,7 @@ hideSelectionIndicator :
 hideSelectionIndicator v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
+             (M3e.Cem.Attr.Internal.forget
                   (M3e.Cem.SegmentedButton.hideSelectionIndicator v_)
              )
              (M3e.Build.Internal.node_ b_)
@@ -100,7 +102,7 @@ multi :
 multi v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SegmentedButton.multi v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SegmentedButton.multi v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -113,7 +115,7 @@ name :
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SegmentedButton.name v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SegmentedButton.name v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -126,8 +128,8 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.SegmentedButton.onChange
                        v_
                   )
@@ -144,8 +146,8 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.SegmentedButton.onBeforeinput
                        v_
                   )
@@ -162,8 +164,8 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.SegmentedButton.onInput
                        v_
                   )
@@ -177,4 +179,4 @@ build :
     Builder a { s | unnamed : M3e.Build.Internal.Filled } msg kind
     -> M3e.Element.Element { segmentedButton : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

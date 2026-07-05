@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-state-layer>` — phantom-typed pipeline API. Impo
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.StateLayer
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -46,7 +47,7 @@ stateLayer =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.StateLayer.stateLayer
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -64,7 +65,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.StateLayer.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.StateLayer.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -79,7 +80,7 @@ disableHover :
 disableHover v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.StateLayer.disableHover v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.StateLayer.disableHover v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -92,7 +93,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.StateLayer.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.StateLayer.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -102,4 +103,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { stateLayer : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

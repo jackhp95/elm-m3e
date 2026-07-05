@@ -14,6 +14,7 @@ Middle layer for `<m3e-segmented-button>`: the phantom-typed `Attr` setters (eac
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SegmentedButton
 import M3e.Value
 
@@ -49,7 +50,7 @@ segmentedButton attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SegmentedButton.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SegmentedButton.disabled
 
 
 {-| Whether to hide the selection indicator. (default: `false`) -}
@@ -59,25 +60,26 @@ hideSelectionIndicator :
         | hideSelectionIndicator : M3e.Value.Supported
     } msg
 hideSelectionIndicator =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SegmentedButton.hideSelectionIndicator
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.SegmentedButton.hideSelectionIndicator
 
 
 {-| Whether multiple options can be selected. (default: `false`) -}
 multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
 multi =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SegmentedButton.multi
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SegmentedButton.multi
 
 
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SegmentedButton.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SegmentedButton.name
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SegmentedButton.onChange
         (Json.Decode.succeed f_)
 
@@ -86,7 +88,7 @@ onChange f_ =
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SegmentedButton.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -94,6 +96,6 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SegmentedButton.onInput
         (Json.Decode.succeed f_)

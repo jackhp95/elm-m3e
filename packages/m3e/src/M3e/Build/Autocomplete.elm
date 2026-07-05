@@ -16,10 +16,11 @@ The ⑤ Build shape for `<m3e-autocomplete>` — phantom-typed pipeline API. Imp
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Autocomplete
 import M3e.Cem.Html.Autocomplete
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -65,7 +66,7 @@ autocomplete =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Autocomplete.autocomplete
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -81,7 +82,9 @@ autoActivate :
 autoActivate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.autoActivate v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Autocomplete.autoActivate v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -94,7 +97,9 @@ caseSensitive :
 caseSensitive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.caseSensitive v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Autocomplete.caseSensitive v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -111,7 +116,7 @@ filter :
 filter v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.filter v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.filter v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -128,7 +133,7 @@ hideSelectionIndicator :
 hideSelectionIndicator v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
+             (M3e.Cem.Attr.Internal.forget
                   (M3e.Cem.Autocomplete.hideSelectionIndicator v_)
              )
              (M3e.Build.Internal.node_ b_)
@@ -143,7 +148,8 @@ hideLoading :
 hideLoading v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.hideLoading v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.hideLoading v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -156,7 +162,7 @@ hideNoData :
 hideNoData v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.hideNoData v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.hideNoData v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -169,7 +175,7 @@ loading :
 loading v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.loading v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.loading v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -182,7 +188,9 @@ loadingLabel :
 loadingLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.loadingLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Autocomplete.loadingLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -195,7 +203,8 @@ noDataLabel :
 noDataLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.noDataLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.noDataLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -208,7 +217,7 @@ panelClass :
 panelClass v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.panelClass v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.panelClass v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -221,7 +230,7 @@ required :
 required v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.required v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.required v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -234,7 +243,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Autocomplete.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -247,8 +256,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Autocomplete.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Autocomplete.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -262,8 +274,11 @@ onQuery :
 onQuery v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Autocomplete.onQuery v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Autocomplete.onQuery
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -277,8 +292,11 @@ onToggle :
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Autocomplete.onToggle v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Autocomplete.onToggle
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -289,4 +307,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { autocomplete : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

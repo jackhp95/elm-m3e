@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-expansion-header>` — phantom-typed pipeline API.
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.ExpansionHeader
 import M3e.Cem.Html.ExpansionHeader
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -52,7 +53,7 @@ expansionHeader =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.ExpansionHeader.expansionHeader
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -68,7 +69,9 @@ hideToggle :
 hideToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ExpansionHeader.hideToggle v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.ExpansionHeader.hideToggle v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -83,7 +86,9 @@ toggleDirection :
 toggleDirection v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ExpansionHeader.toggleDirection v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.ExpansionHeader.toggleDirection v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -98,7 +103,9 @@ togglePosition :
 togglePosition v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ExpansionHeader.togglePosition v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.ExpansionHeader.togglePosition v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -111,7 +118,8 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ExpansionHeader.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ExpansionHeader.disabled v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -124,8 +132,8 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.ExpansionHeader.onClick
                        v_
                   )
@@ -139,4 +147,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { expansionHeader : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

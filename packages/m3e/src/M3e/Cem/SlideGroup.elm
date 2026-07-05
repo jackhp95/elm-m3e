@@ -11,6 +11,7 @@ Middle layer for `<m3e-slide-group>`: the phantom-typed `Attr` setters (each an 
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SlideGroup
 import M3e.Value
 
@@ -43,14 +44,14 @@ slideGroup attributes children =
 {-| Whether scroll buttons are disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SlideGroup.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SlideGroup.disabled
 
 
 {-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
 nextPageLabel :
     String -> M3e.Cem.Attr.Attr { c | nextPageLabel : M3e.Value.Supported } msg
 nextPageLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SlideGroup.nextPageLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SlideGroup.nextPageLabel
 
 
 {-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
@@ -58,17 +59,17 @@ previousPageLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousPageLabel : M3e.Value.Supported } msg
 previousPageLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SlideGroup.previousPageLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SlideGroup.previousPageLabel
 
 
 {-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`) -}
 threshold :
     Float -> M3e.Cem.Attr.Attr { c | threshold : M3e.Value.Supported } msg
 threshold =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SlideGroup.threshold
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SlideGroup.threshold
 
 
 {-| Whether content is oriented vertically. (default: `false`) -}
 vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
 vertical =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SlideGroup.vertical
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SlideGroup.vertical

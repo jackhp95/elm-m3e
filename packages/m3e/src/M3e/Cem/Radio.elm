@@ -14,6 +14,7 @@ Middle layer for `<m3e-radio>`: the phantom-typed `Attr` setters (each an OPEN c
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Radio
 import M3e.Value
 
@@ -52,31 +53,31 @@ radio attributes children =
 {-| Whether the element is checked. (default: `false`) -}
 checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
 checked =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Radio.checked
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.checked
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Radio.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.disabled
 
 
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Radio.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.name
 
 
 {-| Whether the element is required. -}
 required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
 required =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Radio.required
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.required
 
 
 {-| A string representing the value of the radio. (default: `"on"`) -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Radio.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.value
 
 
 {-| Listen for `beforeinput` events. -}
@@ -84,7 +85,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Radio.onBeforeinput
         (Json.Decode.map
              f_
@@ -96,7 +97,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Radio.onInput
         (Json.Decode.map
              f_
@@ -109,7 +110,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Radio.onChange
         (Json.Decode.map
              f_
@@ -120,4 +121,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Radio.onClick (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Radio.onClick
+        (Json.Decode.succeed f_)
