@@ -28,22 +28,22 @@ module M3e exposing
     , hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript
     , hideToggle, hideable, highlightMode, href, icons, indeterminate, inline
     , inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel
-    , label, labelPosition, labelled, lastPageLabel, length, level, linear
-    , loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth
-    , maxRows, min, minDate, minRows, modal, mode, motion
-    , multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel
-    , noFocusTrap, open, opticalSize, optional, orientation, overshootLimit, pageIndex
-    , pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
-    , previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd
-    , rangeStart, rel, removable, removeLabel, required, returnValue, scheme
-    , scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons
-    , size, start, startAt, startDivider, startMode, startView, state
-    , stepAttr, stretch, strongFocus, submenu, target, term, thin
-    , threshold, today, toggle, toggleDirection, togglePosition, touchGestures, type_
-    , unbounded, variant, vertical, weight, width, wrap, wrapDetents
-    , onChange, onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput
-    , onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage
-    , onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+    , label, labelPosition, labelled, lastPageLabel, length, linear, loaded
+    , loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows
+    , min, minDate, minRows, modal, mode, motion, multi
+    , nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap
+    , open, opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize
+    , pageSizeVariant, pageSizes, panelClass, position, positionX, positionY, previousMonthLabel
+    , previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart
+    , rel, removable, removeLabel, required, returnValue, scheme, scrollStrategy
+    , secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons, size
+    , start, startAt, startDivider, startMode, startView, state, stepAttr
+    , stretch, strongFocus, submenu, target, term, thin, threshold
+    , today, toggle, toggleDirection, togglePosition, touchGestures, type_, unbounded
+    , variant, vertical, weight, width, wrap, wrapDetents, onChange
+    , onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
+    , onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage, onCancel
+    , onRemove, onInvalid, onActiveChange, onHighlight
     )
 
 {-|
@@ -83,24 +83,24 @@ The one-import barrel. Re-exposes every component constructor plus the whole sha
 @docs hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href
 @docs icons, indeterminate, inline, inset, insetEnd, insetStart
 @docs invalid, inward, itemLabel, itemsPerPageLabel, label, labelPosition
-@docs labelled, lastPageLabel, length, level, linear, loaded
-@docs loading, loadingLabel, lowered, max, maxDate, maxDepth
-@docs maxRows, min, minDate, minRows, modal, mode
-@docs motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel
-@docs noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
-@docs orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes
-@docs panelClass, position, positionX, positionY, previousMonthLabel, previousMultiYearLabel
-@docs previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart
-@docs rel, removable, removeLabel, required, returnValue, scheme
-@docs scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay
-@docs showFirstLastButtons, size, start, startAt, startDivider, startMode
-@docs startView, state, stepAttr, stretch, strongFocus, submenu
-@docs target, term, thin, threshold, today, toggle
-@docs toggleDirection, togglePosition, touchGestures, type_, unbounded, variant
-@docs vertical, weight, width, wrap, wrapDetents, onChange
-@docs onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput
-@docs onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
-@docs onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+@docs labelled, lastPageLabel, length, linear, loaded, loading
+@docs loadingLabel, lowered, max, maxDate, maxDepth, maxRows
+@docs min, minDate, minRows, modal, mode, motion
+@docs multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate
+@docs noDataLabel, noFocusTrap, open, opticalSize, optional, orientation
+@docs overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
+@docs position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel
+@docs previousYearLabel, radius, range, rangeEnd, rangeStart, rel
+@docs removable, removeLabel, required, returnValue, scheme, scrollStrategy
+@docs secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons
+@docs size, start, startAt, startDivider, startMode, startView
+@docs state, stepAttr, stretch, strongFocus, submenu, target
+@docs term, thin, threshold, today, toggle, toggleDirection
+@docs togglePosition, touchGestures, type_, unbounded, variant, vertical
+@docs weight, width, wrap, wrapDetents, onChange, onOpening
+@docs onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
+@docs onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage
+@docs onCancel, onRemove, onInvalid, onActiveChange, onHighlight
 -}
 
 
@@ -2922,12 +2922,6 @@ length =
     M3e.Cem.Vocab.length
 
 
-{-| The accessibility level of the heading. -}
-level : String -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
-level =
-    M3e.Cem.Vocab.level
-
-
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
 linear : Bool -> M3e.Cem.Attr.Attr { c | linear : M3e.Value.Supported } msg
 linear =
@@ -3593,7 +3587,7 @@ vertical =
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
-weight : String -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
+weight : Int -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
 weight =
     M3e.Cem.Vocab.weight
 

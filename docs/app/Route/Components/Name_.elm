@@ -167,14 +167,14 @@ view app sharedModel =
         [ Element.toNode
             (pane
                 ([ Heading.view { content = Kit.text component.name }
-                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
                     []
                  , Layout.div "max-w-2xl"
                     [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text component.overview ] ]
                  ]
                     ++ usageBlocks sharedModel.apiLayer app.data.usage
                     ++ [ Heading.view { content = Kit.text "API" }
-                            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+                            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
                             []
                        , Card.view [ Card.variant Value.outlined ]
                             [ Card.content (List_.view [] (List_.children (List.map memberRow component.members))) ]
@@ -196,7 +196,7 @@ usageBlocks layer examples =
 
         _ ->
             Heading.view { content = Kit.text "Usage" }
-                [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+                [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
                 []
                 :: List.concatMap (sectionBlock layer) (groupBySection examples)
 
@@ -214,7 +214,7 @@ sectionBlock layer ( section, examples ) =
 
             else
                 [ Heading.view { content = Kit.text section }
-                    [ Heading.variant Value.title, Heading.size Value.large, Heading.level "3" ]
+                    [ Heading.variant Value.title, Heading.size Value.large, Heading.level 3 ]
                     []
                 ]
     in

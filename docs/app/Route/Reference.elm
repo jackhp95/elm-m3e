@@ -112,7 +112,7 @@ head _ =
 pageHeading : Element { s | heading : Supported } msg
 pageHeading =
     Heading.view { content = Kit.text "Component reference" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
         []
 
 

@@ -27,9 +27,9 @@ emphasized val_ =
 
 
 {-| The accessibility level of the heading. -}
-level : String -> Html.Attribute msg
-level =
-    Html.Attributes.attribute "level"
+level : Int -> Html.Attribute msg
+level val_ =
+    Html.Attributes.property "level" (Json.Encode.int val_)
 
 
 {-| The size of the heading. (default: `"medium"`) -}

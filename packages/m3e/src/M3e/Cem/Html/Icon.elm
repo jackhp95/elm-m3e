@@ -53,6 +53,6 @@ variant =
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
-weight : String -> Html.Attribute msg
-weight =
-    Html.Attributes.attribute "weight"
+weight : Int -> Html.Attribute msg
+weight val_ =
+    Html.Attributes.property "weight" (Json.Encode.int val_)

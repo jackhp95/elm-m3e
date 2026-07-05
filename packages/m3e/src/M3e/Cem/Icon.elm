@@ -81,6 +81,6 @@ variant v_ =
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
-weight : String -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
+weight : Int -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
 weight =
     M3e.Cem.Attr.attribute M3e.Cem.Html.Icon.weight

@@ -112,7 +112,7 @@ hero =
     Layout.section "space-y-5"
         [ Kit.overline [ Kit.primary ] [ Kit.text "elm-m3e · m3e-builder" ]
         , Heading.view { content = Kit.text "Type-safe Material 3 Expressive for Elm" }
-            [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+            [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
             []
         , Layout.div "max-w-2xl"
             [ Kit.paragraph Value.large
@@ -140,7 +140,7 @@ hero =
 sectionHeading : String -> Element { s | heading : Supported } msg
 sectionHeading label =
     Heading.view { content = Kit.text label }
-        [ Heading.variant Value.headline, Heading.size Value.medium, Heading.level "2" ]
+        [ Heading.variant Value.headline, Heading.size Value.medium, Heading.level 2 ]
         []
 
 

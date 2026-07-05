@@ -31,6 +31,6 @@ for =
 
 
 {-| The level at which to visually depict elevation. (default: `null`) -}
-level : String -> Html.Attribute msg
-level =
-    Html.Attributes.attribute "level"
+level : Int -> Html.Attribute msg
+level val_ =
+    Html.Attributes.property "level" (Json.Encode.int val_)

@@ -314,11 +314,11 @@
     "examples": [
       {
         "title": "Page header hierarchy with semantic levels",
-        "code": "Native.header [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.large, M3e.Heading.level \"1\" ] [ M3e.Heading.child (Kit.text \"Quarterly report\") ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.medium, M3e.Heading.level \"2\" ] [ M3e.Heading.child (Kit.text \"Revenue overview\") ], Native.p [] [ Kit.text \"A summary of performance across all regions for the quarter.\" ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text \"Updated 2 hours ago\") ] ]"
+        "code": "Native.header [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.large, M3e.Heading.level 1 ] [ M3e.Heading.child (Kit.text \"Quarterly report\") ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.medium, M3e.Heading.level 2 ] [ M3e.Heading.child (Kit.text \"Revenue overview\") ], Native.p [] [ Kit.text \"A summary of performance across all regions for the quarter.\" ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text \"Updated 2 hours ago\") ] ]"
       },
       {
         "title": "Emphasized display heading for a hero section",
-        "code": "Native.section [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True, M3e.Heading.level \"1\" ] [ M3e.Heading.child (Kit.text \"Build faster.\") ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small, M3e.Heading.level \"2\" ] [ M3e.Heading.child (Kit.text \"Ship expressive interfaces with Material 3.\") ] ]"
+        "code": "Native.section [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True, M3e.Heading.level 1 ] [ M3e.Heading.child (Kit.text \"Build faster.\") ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small, M3e.Heading.level 2 ] [ M3e.Heading.child (Kit.text \"Ship expressive interfaces with Material 3.\") ] ]"
       }
     ],
     "docMeta": {
@@ -329,11 +329,11 @@
     "examples": [
       {
         "title": "Icon variants, fill and weight showcase",
-        "code": "Native.nav [] [ M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name \"settings\", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight \"600\" ] [], M3e.Icon.view [ M3e.Icon.name \"star\", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]"
+        "code": "Native.nav [] [ M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name \"settings\", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight 600 ] [], M3e.Icon.view [ M3e.Icon.name \"star\", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]"
       },
       {
         "title": "Light-weight low-grade status icons",
-        "code": "Native.span [] [ M3e.Icon.view [ M3e.Icon.name \"check_circle\", M3e.Icon.filled True, M3e.Icon.weight \"300\", M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name \"error\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight \"500\" ] [], M3e.Icon.view [ M3e.Icon.name \"schedule\", M3e.Icon.opticalSize 20 ] [] ]"
+        "code": "Native.span [] [ M3e.Icon.view [ M3e.Icon.name \"check_circle\", M3e.Icon.filled True, M3e.Icon.weight 300, M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name \"error\", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight 500 ] [], M3e.Icon.view [ M3e.Icon.name \"schedule\", M3e.Icon.opticalSize 20 ] [] ]"
       }
     ],
     "docMeta": {

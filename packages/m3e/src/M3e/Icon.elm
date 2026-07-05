@@ -17,12 +17,12 @@ A small symbol used to easily identify an action or category.
 
 <!-- elm-cem:example title="Icon variants, fill and weight showcase" -->
 ```elm
-Native.nav [] [ M3e.Icon.view [ M3e.Icon.name "home", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name "settings", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight "600" ] [], M3e.Icon.view [ M3e.Icon.name "star", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]
+Native.nav [] [ M3e.Icon.view [ M3e.Icon.name "home", M3e.Icon.variant M3e.Value.outlined ] [], M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.filled True ] [], M3e.Icon.view [ M3e.Icon.name "settings", M3e.Icon.variant M3e.Value.sharp, M3e.Icon.weight 600 ] [], M3e.Icon.view [ M3e.Icon.name "star", M3e.Icon.filled True, M3e.Icon.grade M3e.Value.high, M3e.Icon.opticalSize 40 ] [] ]
 ```
 
 <!-- elm-cem:example title="Light-weight low-grade status icons" -->
 ```elm
-Native.span [] [ M3e.Icon.view [ M3e.Icon.name "check_circle", M3e.Icon.filled True, M3e.Icon.weight "300", M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name "error", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight "500" ] [], M3e.Icon.view [ M3e.Icon.name "schedule", M3e.Icon.opticalSize 20 ] [] ]
+Native.span [] [ M3e.Icon.view [ M3e.Icon.name "check_circle", M3e.Icon.filled True, M3e.Icon.weight 300, M3e.Icon.grade M3e.Value.low ] [], M3e.Icon.view [ M3e.Icon.name "error", M3e.Icon.variant M3e.Value.rounded, M3e.Icon.weight 500 ] [], M3e.Icon.view [ M3e.Icon.name "schedule", M3e.Icon.opticalSize 20 ] [] ]
 ```
 
 @docs view, filled, grade, opticalSize, name, variant
@@ -103,6 +103,6 @@ variant =
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
-weight : String -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
+weight : Int -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
 weight =
     M3e.Cem.Icon.weight

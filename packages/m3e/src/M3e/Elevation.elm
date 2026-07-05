@@ -52,6 +52,6 @@ for =
 
 
 {-| The level at which to visually depict elevation. (default: `null`) -}
-level : String -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
+level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
 level =
     M3e.Cem.Elevation.level

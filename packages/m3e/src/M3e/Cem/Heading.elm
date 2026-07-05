@@ -43,7 +43,7 @@ emphasized =
 
 
 {-| The accessibility level of the heading. -}
-level : String -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
+level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
 level =
     M3e.Cem.Attr.attribute M3e.Cem.Html.Heading.level
 

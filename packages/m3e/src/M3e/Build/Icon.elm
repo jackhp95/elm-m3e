@@ -128,7 +128,7 @@ variant v_ b_ =
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
 weight :
-    String
+    Int
     -> Builder { a | weight : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | weight : M3e.Build.Internal.Used } s msg kind
 weight v_ b_ =

@@ -82,7 +82,7 @@ for v_ b_ =
 
 {-| The level at which to visually depict elevation. (default: `null`) -}
 level :
-    String
+    Int
     -> Builder { a | level : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | level : M3e.Build.Internal.Used } s msg kind
 level v_ b_ =

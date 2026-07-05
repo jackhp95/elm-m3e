@@ -85,7 +85,7 @@ demoBar scaleValue =
 pageHeading : Element { s | heading : Supported } msg
 pageHeading =
     Heading.view { content = Kit.text "Density" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
         []
 
 

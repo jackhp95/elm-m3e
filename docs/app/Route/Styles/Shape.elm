@@ -85,7 +85,7 @@ view _ _ =
         [ Element.toNode
             (pane
                 [ Heading.view { content = Kit.text "Shape" }
-                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+                    [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
                     []
                 , Card.view [ Card.variant Value.outlined ]
                     [ Card.content

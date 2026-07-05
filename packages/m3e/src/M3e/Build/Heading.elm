@@ -72,7 +72,7 @@ emphasized v_ b_ =
 
 {-| The accessibility level of the heading. -}
 level :
-    String
+    Int
     -> Builder { a | level : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | level : M3e.Build.Internal.Used } s msg kind
 level v_ b_ =

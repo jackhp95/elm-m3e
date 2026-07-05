@@ -60,14 +60,14 @@ head _ =
 pageHeading : Element { s | heading : Supported } msg
 pageHeading =
     Heading.view { content = Kit.text "Installation" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level "1" ]
+        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
         []
 
 
 stepHeading : String -> Element { s | heading : Supported } msg
 stepHeading label =
     Heading.view { content = Kit.text label }
-        [ Heading.variant Value.headline, Heading.size Value.small, Heading.level "2" ]
+        [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
         []
 
 
