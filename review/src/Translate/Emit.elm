@@ -1,5 +1,6 @@
 module Translate.Emit exposing
-    ( emitStandard, emitRecord, emitBuild, emitCem, emitHtml
+    ( emitStandard
+    , emitBuild, emitCem, emitHtml, emitRecord
     )
 
 {-| Per-surface emitters. Each takes a `Canonical` and produces the target-
@@ -21,6 +22,88 @@ import M3e.Review.Facts exposing (Fact)
 import Translate.Canonical exposing (..)
 
 
+{-| Compose a list-argument from its already-rendered literal items plus any
+dynamic-tail expressions. With no dynamic tail this is a plain list literal;
+with one or more dynamic tails it becomes `([ literals ] ++ tail)` so the
+variable part is preserved rather than spliced bare into the list (#152).
+-}
+listArg : List String -> List String -> String
+listArg literals dynamics =
+    let
+        base =
+            case literals of
+                [] ->
+                    "[]"
+
+                _ ->
+                    "[ " ++ String.join ", " literals ++ " ]"
+    in
+    case dynamics of
+        [] ->
+            base
+
+        _ ->
+            "(" ++ base ++ " ++ " ++ String.join " ++ " dynamics ++ ")"
+
+
+{-| Partition attr items into (non-dynamic literals, dynamic-tail raw exprs).
+-}
+splitDynAttrs : (Range -> String) -> List AttrItem -> ( List AttrItem, List String )
+splitDynAttrs source items =
+    ( List.filter (not << isDynamicAttr) items
+    , List.filterMap (dynAttrText source) items
+    )
+
+
+isDynamicAttr : AttrItem -> Bool
+isDynamicAttr item =
+    case item of
+        DynamicAttrTail _ ->
+            True
+
+        _ ->
+            False
+
+
+dynAttrText : (Range -> String) -> AttrItem -> Maybe String
+dynAttrText source item =
+    case item of
+        DynamicAttrTail { raw } ->
+            Just (source (Node.range raw))
+
+        _ ->
+            Nothing
+
+
+{-| Partition slot items into (non-dynamic literals, dynamic-tail raw exprs).
+-}
+splitDynSlots : (Range -> String) -> List SlotItem -> ( List SlotItem, List String )
+splitDynSlots source items =
+    ( List.filter (not << isDynamicSlot) items
+    , List.filterMap (dynSlotText source) items
+    )
+
+
+isDynamicSlot : SlotItem -> Bool
+isDynamicSlot item =
+    case item of
+        DynamicContentTail _ ->
+            True
+
+        _ ->
+            False
+
+
+dynSlotText : (Range -> String) -> SlotItem -> Maybe String
+dynSlotText source item =
+    case item of
+        DynamicContentTail { raw } ->
+            Just (source (Node.range raw))
+
+        _ ->
+            Nothing
+
+
 {-| Emit ③ Standard: `M3e.<Comp>.view [ attrs ] [ content ]`.
 
 Action-attrs (either AttrStyle from ①/②/③ source or RecordStyle from ④/⑤
@@ -38,7 +121,7 @@ emitStandard fact source c =
         contentText =
             emitContentList fact source c
     in
-    fact.module_ ++ ".view\n    " ++ attrsText ++ "\n    " ++ contentText
+    fact.module_ ++ ".view " ++ attrsText ++ " " ++ contentText
 
 
 emitAttrsList : Fact -> (Range -> String) -> Canonical -> String
@@ -59,10 +142,13 @@ emitAttrsList fact source c =
                 Nothing ->
                     []
 
+        ( litItems, dynItems ) =
+            splitDynAttrs source c.attrs
+
         items =
-            List.map (emitAttrItem fact source) c.attrs
+            List.map (emitAttrItem fact source) litItems
     in
-    "[ " ++ String.join ", " (actionAttr ++ items) ++ " ]"
+    listArg (actionAttr ++ items) dynItems
 
 
 emitAttrItem : Fact -> (Range -> String) -> AttrItem -> String
@@ -95,10 +181,13 @@ emitContentList fact source c =
                 Nothing ->
                     []
 
+        ( litItems, dynItems ) =
+            splitDynSlots source c.content
+
         items =
-            List.map (emitSlotItem fact source) c.content
+            List.map (emitSlotItem fact source) litItems
     in
-    "[ " ++ String.join ", " (requiredSlot ++ items) ++ " ]"
+    listArg (requiredSlot ++ items) dynItems
 
 
 emitSlotItem : Fact -> (Range -> String) -> SlotItem -> String
@@ -144,16 +233,22 @@ emitRecord fact source c =
         recordArg =
             emitRecordArg fact source c
 
+        ( litAttrs, dynAttrs ) =
+            splitDynAttrs source c.attrs
+
         attrsText =
-            "[ " ++ String.join ", " (List.map (emitAttrItem fact source) c.attrs) ++ " ]"
+            listArg (List.map (emitAttrItem fact source) litAttrs) dynAttrs
+
+        ( litSlots, dynSlots ) =
+            splitDynSlots source c.content
 
         contentText =
-            "[ " ++ String.join ", " (List.map (emitSlotItem fact source) c.content) ++ " ]"
+            listArg (List.map (emitSlotItem fact source) litSlots) dynSlots
 
         recordModule =
             recordModuleFor fact
     in
-    recordModule ++ ".view " ++ recordArg ++ "\n    " ++ attrsText ++ "\n    " ++ contentText
+    recordModule ++ ".view " ++ recordArg ++ " " ++ attrsText ++ " " ++ contentText
 
 
 emitRecordArg : Fact -> (Range -> String) -> Canonical -> String
@@ -304,22 +399,28 @@ emitCem fact source c =
         ctor =
             fact.component
 
+        ( litAttrs, dynAttrs ) =
+            splitDynAttrs source c.attrs
+
         allAttrs =
-            actionAttrsForTarget cemModule fact source c ++ List.map (cemAttrItem cemModule source) c.attrs
+            actionAttrsForTarget cemModule fact source c ++ List.map (cemAttrItem cemModule source) litAttrs
 
         attrsText =
-            "[ " ++ String.join ", " allAttrs ++ " ]"
+            listArg allAttrs dynAttrs
+
+        ( litSlots, dynSlots ) =
+            splitDynSlots source c.content
 
         allContent =
             case c.requiredContent of
                 Just node ->
-                    elementToHtml (source (Node.range node)) :: List.map (cemContentItem source) c.content
+                    elementToHtml (source (Node.range node)) :: List.map (cemContentItem source) litSlots
 
                 Nothing ->
-                    List.map (cemContentItem source) c.content
+                    List.map (cemContentItem source) litSlots
 
         contentText =
-            "[ " ++ String.join ", " allContent ++ " ]"
+            listArg allContent dynSlots
     in
     cemModule ++ "." ++ ctor ++ " " ++ attrsText ++ " " ++ contentText
 
@@ -421,22 +522,28 @@ emitHtml fact source c =
         ctor =
             fact.component
 
+        ( litAttrs, dynAttrs ) =
+            splitDynAttrs source c.attrs
+
         allAttrs =
-            actionAttrsForTarget htmlModule fact source c ++ List.map (htmlAttrItem htmlModule fact source) c.attrs
+            actionAttrsForTarget htmlModule fact source c ++ List.map (htmlAttrItem htmlModule fact source) litAttrs
 
         attrsText =
-            "[ " ++ String.join ", " allAttrs ++ " ]"
+            listArg allAttrs dynAttrs
+
+        ( litSlots, dynSlots ) =
+            splitDynSlots source c.content
 
         allContent =
             case c.requiredContent of
                 Just node ->
-                    elementToHtml (source (Node.range node)) :: List.map (htmlContentItem fact source) c.content
+                    elementToHtml (source (Node.range node)) :: List.map (htmlContentItem fact source) litSlots
 
                 Nothing ->
-                    List.map (htmlContentItem fact source) c.content
+                    List.map (htmlContentItem fact source) litSlots
 
         contentText =
-            "[ " ++ String.join ", " allContent ++ " ]"
+            listArg allContent dynSlots
     in
     htmlModule ++ "." ++ ctor ++ " " ++ attrsText ++ " " ++ contentText
 

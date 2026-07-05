@@ -55,7 +55,36 @@ import M3e.Button
 import M3e.Cem.Html.Button
 
 view =
-    M3e.Cem.Html.Button.button [  ] [  ]
+    M3e.Cem.Html.Button.button [] []
+"""
+                        ]
+        , test "Standard → Html preserves a bare-variable dynamic content tail (#152)" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.Button
+
+view =
+    M3e.Button.view [] moreKids
+"""
+                    |> Review.Test.run (TranslateToHtml.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToHtml"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view [] moreKids"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.Button
+import M3e.Cem.Html.Button
+
+view =
+    M3e.Cem.Html.Button.button [] ([] ++ moreKids)
 """
                         ]
         ]
