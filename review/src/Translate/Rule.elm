@@ -13,12 +13,15 @@ other four).
 
 import Dict exposing (Dict)
 import Elm.Syntax.Expression as Expression exposing (Expression)
+import Elm.Syntax.Import exposing (Import)
+import Elm.Syntax.Module as Module
 import Elm.Syntax.Node as Node exposing (Node)
 import Elm.Syntax.Range as Range
 import M3e.Review.Facts exposing (Fact, Surface(..))
 import Review.Fix as Fix
 import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
+import Set exposing (Set)
 import Translate.Canonical exposing (Canonical)
 import Translate.Emit
 import Translate.Parse
@@ -34,6 +37,8 @@ type alias Config =
 rule : Config -> Rule
 rule config =
     Rule.newModuleRuleSchemaUsingContextCreator (ruleName config.target) (initContext config)
+        |> Rule.withModuleDefinitionVisitor moduleDefinitionVisitor
+        |> Rule.withImportVisitor importVisitor
         |> Rule.withExpressionEnterVisitor expressionVisitor
         |> Rule.fromModuleRuleSchema
 
@@ -62,6 +67,8 @@ type alias Context =
     , facts : List Fact
     , target : Surface
     , extractSourceCode : Range.Range -> String
+    , importedModules : Set (List String)
+    , insertionRow : Int
     }
 
 
@@ -73,10 +80,29 @@ initContext config =
             , facts = config.facts
             , target = config.target
             , extractSourceCode = extractSourceCode
+            , importedModules = Set.empty
+            , insertionRow = 1
             }
         )
         |> Rule.withModuleNameLookupTable
         |> Rule.withSourceCodeExtractor
+
+
+{-| Track the last row occupied by the module header / imports so an added
+`import` can be inserted just after the existing import block. -}
+moduleDefinitionVisitor : Node Module.Module -> Context -> ( List (Error {}), Context )
+moduleDefinitionVisitor node context =
+    ( [], { context | insertionRow = (Node.range node).end.row } )
+
+
+importVisitor : Node Import -> Context -> ( List (Error {}), Context )
+importVisitor node context =
+    ( []
+    , { context
+        | importedModules = Set.insert (Node.value (Node.value node).moduleName) context.importedModules
+        , insertionRow = (Node.range node).end.row
+      }
+    )
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
@@ -104,12 +130,64 @@ expressionVisitor node context =
                                 ]
                             }
                             (Node.range node)
-                            [ Fix.replaceRangeBy (Node.range node) fix ]
+                            (Fix.replaceRangeBy (Node.range node) fix :: importFixes context fact fix)
                 in
                 ( [ err ], context )
 
         Nothing ->
             ( [], context )
+
+
+{-| The modules an emitted rewrite may reference: this component's five surface
+modules plus the support/residue modules the emitters can produce. Which ones
+are actually needed depends on the emitted text (a clean Record conversion
+references `M3e.Record.<C>`; a Seam fallback references `Seam` +
+`M3e.Cem.Html.<C>` instead), so `importFixes` filters by literal occurrence. -}
+candidateModules : Fact -> List String
+candidateModules fact =
+    let
+        comp =
+            case String.split "." fact.module_ of
+                [ "M3e", c ] ->
+                    c
+
+                _ ->
+                    ""
+    in
+    [ "M3e." ++ comp
+    , "M3e.Record." ++ comp
+    , "M3e.Build." ++ comp
+    , "M3e.Cem." ++ comp
+    , "M3e.Cem.Html." ++ comp
+    , "Seam"
+    , "M3e.Content"
+    , "M3e.Action"
+    , "Html.Attributes"
+    , "Html.Events"
+    , "Json.Decode"
+    ]
+
+
+{-| Emit a single `import` fix for every module the rewritten text references
+that the file does not already import — otherwise `--fix` produces code that
+fails `elm make` with "unknown module" (issue #149). Inserted just after the
+existing import block; sorted so the block stays elm-format-friendly. -}
+importFixes : Context -> Fact -> String -> List Fix.Fix
+importFixes context fact fixText =
+    let
+        missing =
+            candidateModules fact
+                |> List.filter (\m -> String.contains (m ++ ".") fixText)
+                |> List.filter (\m -> not (Set.member (String.split "." m) context.importedModules))
+                |> List.sort
+    in
+    if List.isEmpty missing then
+        []
+
+    else
+        [ Fix.insertAt { row = context.insertionRow + 1, column = 1 }
+            (missing |> List.map (\m -> "import " ++ m ++ "\n") |> String.concat)
+        ]
 
 
 emitFor : Surface -> Fact -> (Range.Range -> String) -> Canonical -> String

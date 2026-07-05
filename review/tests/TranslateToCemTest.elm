@@ -43,6 +43,7 @@ view =
                                 """module A exposing (view)
 
 import M3e.Button
+import M3e.Cem.Button
 
 view =
     M3e.Cem.Button.button [  ] [  ]

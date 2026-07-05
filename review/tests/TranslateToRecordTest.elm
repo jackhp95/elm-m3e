@@ -43,6 +43,8 @@ view =
                                 """module A exposing (view)
 
 import M3e.Button
+import M3e.Cem.Html.Button
+import Seam
 
 view =
     Seam.fromHtml (M3e.Cem.Html.Button.button [  ] [  ])
@@ -74,6 +76,8 @@ view =
                                 """module A exposing (Msg, view)
 
 import M3e.Button
+import M3e.Action
+import M3e.Record.Button
 
 type Msg
     = DoThing
