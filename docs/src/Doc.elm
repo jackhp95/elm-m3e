@@ -1,9 +1,9 @@
-module Doc exposing (Lang(..), code_, rawPreview, showcase)
+module Doc exposing (Lang(..), code_, elmSignature, markdown, rawPreview, showcase)
 
 {-| Shared documentation-rendering helpers, lifted from the Styles/GettingStarted
 routes so per-component Usage pages can reuse them.
 
-@docs Lang, code_, rawPreview, showcase
+@docs Lang, code_, elmSignature, markdown, rawPreview, showcase
 
 -}
 
@@ -13,6 +13,8 @@ import Html.Attributes exposing (attribute, class)
 import M3e.Card as Card
 import M3e.Element exposing (Element)
 import M3e.Value as Value exposing (Supported)
+import Markdown.Parser
+import Markdown.Renderer
 import SyntaxHighlight
 
 
@@ -62,7 +64,7 @@ code_ lang s =
 
         wrapperClass : String
         wrapperClass =
-            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-sm leading-relaxed text-on-surface"
+            "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-md leading-relaxed text-on-surface"
 
         parsed : Result () SyntaxHighlight.HCode
         parsed =
@@ -91,3 +93,58 @@ code_ lang s =
                 (pre [ class wrapperClass ]
                     [ code [] [ text trimmed ] ]
                 )
+
+
+{-| Render a Markdown string (component overviews, member docs) as live DOM.
+Falls back to the raw text in a paragraph if parsing/rendering fails, so a
+malformed doc-comment never blanks the page. The `doc-prose` wrapper carries
+the prose spacing/typography from `style.css`.
+-}
+markdown : String -> Element { s | html : Supported } msg
+markdown raw =
+    EscapeHatch.fromHtml
+        (div [ class "doc-prose" ] (markdownBody raw))
+
+
+markdownBody : String -> List (Html.Html msg)
+markdownBody raw =
+    let
+        rendered : Result () (List (Html.Html msg))
+        rendered =
+            Markdown.Parser.parse raw
+                |> Result.mapError (always ())
+                |> Result.andThen
+                    (\blocks ->
+                        Markdown.Renderer.render Markdown.Renderer.defaultHtmlRenderer blocks
+                            |> Result.mapError (always ())
+                    )
+    in
+    case rendered of
+        Ok html ->
+            html
+
+        Err _ ->
+            [ Html.p [] [ text (String.trim raw) ] ]
+
+
+{-| A syntax-highlighted Elm type signature (for API member rows). Rendered as an
+inline `<code>` block so it wraps within the list item; falls back to plain text
+if it doesn't tokenize as Elm.
+-}
+elmSignature : String -> Element { s | html : Supported } msg
+elmSignature s =
+    let
+        trimmed : String
+        trimmed =
+            String.trim s
+    in
+    case SyntaxHighlight.elm trimmed of
+        Ok highlighted ->
+            EscapeHatch.fromHtml
+                (div [ class "text-body-md leading-relaxed" ]
+                    [ SyntaxHighlight.toInlineHtml highlighted ]
+                )
+
+        Err _ ->
+            EscapeHatch.fromHtml
+                (code [ class "text-body-md" ] [ text trimmed ])
