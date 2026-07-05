@@ -80,4 +80,29 @@ v =
 """
                     |> Review.Test.run rule
                     |> Review.Test.expectNoErrors
+        , test "flags a button with an empty attribute list (#92)" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e exposing (button)
+
+v =
+    button [] [ text "hi" ]
+"""
+                    |> Review.Test.run rule
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error { message = message, details = details, under = "button" }
+                            |> Review.Test.atExactly { start = { row = 6, column = 5 }, end = { row = 6, column = 11 } }
+                        ]
+        , test "accepts a button made explicitly inert with disabledInteractive (#92)" <|
+            \() ->
+                """module A exposing (v)
+
+import M3e exposing (button, disabledInteractive)
+
+v =
+    button [ disabledInteractive True ] [ text "hi" ]
+"""
+                    |> Review.Test.run rule
+                    |> Review.Test.expectNoErrors
         ]

@@ -442,4 +442,26 @@ v = M3e.Cem.Button.button [] []
                         |> Review.Test.run probeRule
                         |> Review.Test.expectNoErrors
             ]
+        , describe "the real generated M3e.Review.Facts.facts (drift smoke test)"
+            [ test "is non-empty — the generator populated it" <|
+                \() ->
+                    List.isEmpty M3e.Review.Facts.facts
+                        |> Expect.equal False
+            , test "includes a button fact" <|
+                \() ->
+                    M3e.Review.Facts.facts
+                        |> List.any (\f -> f.component == "button")
+                        |> Expect.equal True
+            , test "every fact's module_ is under the M3e namespace" <|
+                \() ->
+                    M3e.Review.Facts.facts
+                        |> List.all (\f -> String.startsWith "M3e." f.module_)
+                        |> Expect.equal True
+            , test "no enum declares an empty token list" <|
+                \() ->
+                    M3e.Review.Facts.facts
+                        |> List.concatMap .enums
+                        |> List.all (\( _, tokens ) -> not (List.isEmpty tokens))
+                        |> Expect.equal True
+            ]
         ]
