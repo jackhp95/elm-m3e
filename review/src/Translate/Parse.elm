@@ -45,8 +45,8 @@ identifySurface facts lookup node =
 
 classifyModule : List Fact -> ModuleNameLookupTable -> Node Expression -> Maybe ( Surface, Fact )
 classifyModule facts lookup head =
-    case Lookup.moduleNameFor lookup head of
-        Just parts ->
+    case ( Node.value head, Lookup.moduleNameFor lookup head ) of
+        ( Expression.FunctionOrValue _ name, Just parts ) ->
             let
                 m =
                     String.join "." parts
@@ -84,10 +84,40 @@ classifyModule facts lookup head =
 
                 fact =
                     List.filter (\f -> f.module_ == canonicalModule) facts |> List.head
-            in
-            Maybe.map2 Tuple.pair surface fact
 
-        Nothing ->
+                -- Only fire on view / seed / build-terminal functions — not
+                -- on individual setter calls. Standard/Record use `.view`;
+                -- Html/Cem/Build use the component name; Build's terminal
+                -- is `.build`.
+                isEntry surf f =
+                    case surf of
+                        Standard ->
+                            name == "view"
+
+                        Record ->
+                            name == "view"
+
+                        Cem ->
+                            name == f.component
+
+                        Html ->
+                            name == f.component
+
+                        Build ->
+                            name == f.component || name == "build"
+            in
+            case ( surface, fact ) of
+                ( Just s, Just f ) ->
+                    if isEntry s f then
+                        Just ( s, f )
+
+                    else
+                        Nothing
+
+                _ ->
+                    Nothing
+
+        _ ->
             Nothing
 
 
@@ -174,22 +204,74 @@ parseStandard fact range attrItems contentItems =
         attrs =
             List.map (classifyStandardAttr fact) plainAttrs
 
+        -- Required-singular-slot lifting: if fact.requiredSlots contains
+        -- "unnamed" and one content-list item calls the unnamed slot's
+        -- setter (per slotRewrites), lift that item's body into
+        -- requiredContent so Record/Build emitters can use it.
+        unnamedSetter =
+            fact.slotRewrites
+                |> List.filter (\( from, _ ) -> from == "unnamed")
+                |> List.head
+                |> Maybe.map Tuple.second
+
+        hasRequiredUnnamed =
+            List.member "unnamed" fact.requiredSlots
+
+        ( requiredContent_, remainingContent ) =
+            if hasRequiredUnnamed then
+                case unnamedSetter of
+                    Just setterName ->
+                        liftRequiredContent setterName contentItems
+
+                    Nothing ->
+                        ( Nothing, contentItems )
+
+            else
+                ( Nothing, contentItems )
+
         content =
-            List.map (classifyStandardSlot fact) contentItems
+            List.map (classifyStandardSlot fact) remainingContent
     in
     { component = fact.component
     , sourceSurface = Standard
     , sourceRange = range
     , attrs = attrs
     , content = content
-
-    -- Standard doesn't split out requiredContent; the required-singular slot
-    -- (if any) lives in the content list as e.g. `M3e.Button.label ...`.
-    -- The record/build emitters look it up by slot name when they need it.
-    , requiredContent = Nothing
+    , requiredContent = requiredContent_
     , requiredAction = requiredAction_
     , otherRequired = Dict.empty
     }
+
+
+{-| Find the first content-list item that calls `setterName` and return its
+argument as the required content. The item is removed from the remaining list.
+-}
+liftRequiredContent : String -> List (Node Expression) -> ( Maybe (Node Expression), List (Node Expression) )
+liftRequiredContent setterName items =
+    let
+        go remaining seen =
+            case remaining of
+                [] ->
+                    ( Nothing, List.reverse seen )
+
+                item :: rest ->
+                    case Node.value item of
+                        Expression.Application (head :: body :: _) ->
+                            case Node.value head of
+                                Expression.FunctionOrValue _ name ->
+                                    if name == setterName then
+                                        ( Just body, List.reverse seen ++ rest )
+
+                                    else
+                                        go rest (item :: seen)
+
+                                _ ->
+                                    go rest (item :: seen)
+
+                        _ ->
+                            go rest (item :: seen)
+    in
+    go items []
 
 
 isActionAttr : List String -> Node Expression -> Bool
