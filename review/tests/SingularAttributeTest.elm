@@ -17,6 +17,7 @@ buttonFacts =
       , slotRewrites = []
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
+      , actionMap = []
       }
     ]
 

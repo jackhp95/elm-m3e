@@ -20,6 +20,7 @@ facts =
       , slotRewrites = []
       , surfaces = [ Standard ]
       , requiredAttrs = []
+      , actionMap = []
       }
     ]
 
@@ -35,6 +36,7 @@ shape4Facts =
       , slotRewrites = []
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
+      , actionMap = []
       }
     ]
 

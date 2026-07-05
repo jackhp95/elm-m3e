@@ -349,6 +349,10 @@
     "required": {
       "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
     },
+    "actionMap": [
+      ["onClick", "onClick"],
+      ["href", "link"]
+    ],
     "slots": {
       "unnamed": {
         "kinds": [
