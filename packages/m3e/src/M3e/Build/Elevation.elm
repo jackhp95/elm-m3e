@@ -1,27 +1,22 @@
-module M3e.Build.Elevation exposing
-    ( Builder, AttrCaps, SlotCaps, elevation, disabled, for
-    , level, build
-    )
+module M3e.Build.Elevation exposing ( Builder, AttrCaps, SlotCaps, elevation )
 
 {-|
 The ⑤ Build shape for `<m3e-elevation>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Elevation as Elevation`.
 
-@docs Builder, AttrCaps, SlotCaps, elevation, disabled, for
-@docs level, build
+@docs Builder, AttrCaps, SlotCaps, elevation
 -}
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
-import M3e.Cem.Elevation
-import M3e.Element
 import M3e.Node
 import M3e.Value
 
 
-{-| Opaque builder for `<m3e-elevation>`; see `.build` for the terminal. -}
-type Builder attrCaps slotCaps msg
-    = Builder (Fields msg)
+{-| Phantom-typed opaque builder for `<m3e-elevation>`. -}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Build.Internal.Builder { kind
+        | elevation : M3e.Value.Supported
+    } attrCaps slotCaps msg
 
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
@@ -37,92 +32,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg =
-    { disabled : Maybe Bool
-    , for : Maybe String
-    , level : Maybe String
-    , phantomMsg_ : Maybe msg
-    }
-
-
 {-| Seed a `Builder` for `<m3e-elevation>`. -}
-elevation : Builder AttrCaps SlotCaps msg
+elevation : Builder AttrCaps SlotCaps msg kind
 elevation =
-    Builder
-        { disabled = Nothing
-        , for = Nothing
-        , level = Nothing
-        , phantomMsg_ = Nothing
-        }
-
-
-{-| Whether hover and press events will not trigger changes in elevation, when attached to an interactive element. (default: `false`) -}
-disabled :
-    Bool
-    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
-    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
-disabled v_ (Builder f_) =
-    Builder { f_ | disabled = Just v_ }
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for :
-    String
-    -> Builder { a | for : M3e.Build.Internal.Available } s msg
-    -> Builder { a | for : M3e.Build.Internal.Used } s msg
-for v_ (Builder f_) =
-    Builder { f_ | for = Just v_ }
-
-
-{-| The level at which to visually depict elevation. (default: `null`) -}
-level :
-    String
-    -> Builder { a | level : M3e.Build.Internal.Available } s msg
-    -> Builder { a | level : M3e.Build.Internal.Used } s msg
-level v_ (Builder f_) =
-    Builder { f_ | level = Just v_ }
-
-
-{-| Build the `<m3e-elevation>` element from a `Builder`. -}
-build :
-    Builder a s msg
-    -> M3e.Element.Element { kind | elevation : M3e.Value.Supported } msg
-build (Builder f_) =
-    M3e.Element.fromNode
-        (M3e.Node.fromComponent
-             (\erased_ ch_ ->
-                  M3e.Cem.Elevation.elevation
-                      (List.map M3e.Cem.Attr.forget erased_)
-                      ch_
-             )
-             (List.concat
-                  [ Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.Elevation.disabled v_)
-                            ]
-                         )
-                         f_.disabled
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget (M3e.Cem.Elevation.for v_) ]
-                         )
-                         f_.for
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget (M3e.Cem.Elevation.level v_) ]
-                         )
-                         f_.level
-                      )
-                  ]
-             )
-             (List.concat [])
-        )
+    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")

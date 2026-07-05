@@ -1,27 +1,22 @@
-module M3e.Build.TooltipElementBase exposing
-    ( Builder, AttrCaps, SlotCaps, tooltipElementBase, disabled, showDelay
-    , hideDelay, touchGestures, for, build
-    )
+module M3e.Build.TooltipElementBase exposing ( Builder, AttrCaps, SlotCaps, tooltipElementBase )
 
 {-|
 The ⑤ Build shape for `<TooltipElementBase>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TooltipElementBase as TooltipElementBase`.
 
-@docs Builder, AttrCaps, SlotCaps, tooltipElementBase, disabled, showDelay
-@docs hideDelay, touchGestures, for, build
+@docs Builder, AttrCaps, SlotCaps, tooltipElementBase
 -}
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
-import M3e.Cem.TooltipElementBase
-import M3e.Element
 import M3e.Node
 import M3e.Value
 
 
-{-| Opaque builder for `<TooltipElementBase>`; see `.build` for the terminal. -}
-type Builder attrCaps slotCaps msg
-    = Builder (Fields msg)
+{-| Phantom-typed opaque builder for `<TooltipElementBase>`. -}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Build.Internal.Builder { kind
+        | tooltipElementBase : M3e.Value.Supported
+    } attrCaps slotCaps msg
 
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
@@ -39,147 +34,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg =
-    { disabled : Maybe Bool
-    , showDelay : Maybe Float
-    , hideDelay : Maybe Float
-    , touchGestures :
-        Maybe (M3e.Value.Value { auto : M3e.Value.Supported
-        , off : M3e.Value.Supported
-        , on : M3e.Value.Supported
-        })
-    , for : Maybe String
-    , phantomMsg_ : Maybe msg
-    }
-
-
 {-| Seed a `Builder` for `<TooltipElementBase>`. -}
-tooltipElementBase : Builder AttrCaps SlotCaps msg
+tooltipElementBase : Builder AttrCaps SlotCaps msg kind
 tooltipElementBase =
-    Builder
-        { disabled = Nothing
-        , showDelay = Nothing
-        , hideDelay = Nothing
-        , touchGestures = Nothing
-        , for = Nothing
-        , phantomMsg_ = Nothing
-        }
-
-
-{-| Whether the element is disabled. (default: `false`) -}
-disabled :
-    Bool
-    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
-    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
-disabled v_ (Builder f_) =
-    Builder { f_ | disabled = Just v_ }
-
-
-{-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
-showDelay :
-    Float
-    -> Builder { a | showDelay : M3e.Build.Internal.Available } s msg
-    -> Builder { a | showDelay : M3e.Build.Internal.Used } s msg
-showDelay v_ (Builder f_) =
-    Builder { f_ | showDelay = Just v_ }
-
-
-{-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
-hideDelay :
-    Float
-    -> Builder { a | hideDelay : M3e.Build.Internal.Available } s msg
-    -> Builder { a | hideDelay : M3e.Build.Internal.Used } s msg
-hideDelay v_ (Builder f_) =
-    Builder { f_ | hideDelay = Just v_ }
-
-
-{-| The mode in which to handle touch gestures. (default: `"auto"`) -}
-touchGestures :
-    M3e.Value.Value { auto : M3e.Value.Supported
-    , off : M3e.Value.Supported
-    , on : M3e.Value.Supported
-    }
-    -> Builder { a | touchGestures : M3e.Build.Internal.Available } s msg
-    -> Builder { a | touchGestures : M3e.Build.Internal.Used } s msg
-touchGestures v_ (Builder f_) =
-    Builder { f_ | touchGestures = Just v_ }
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for :
-    String
-    -> Builder { a | for : M3e.Build.Internal.Available } s msg
-    -> Builder { a | for : M3e.Build.Internal.Used } s msg
-for v_ (Builder f_) =
-    Builder { f_ | for = Just v_ }
-
-
-{-| Build the `<TooltipElementBase>` element from a `Builder`. -}
-build :
-    Builder a s msg
-    -> M3e.Element.Element { kind
-        | tooltipElementBase : M3e.Value.Supported
-    } msg
-build (Builder f_) =
-    M3e.Element.fromNode
-        (M3e.Node.fromComponent
-             (\erased_ ch_ ->
-                  M3e.Cem.TooltipElementBase.tooltipElementBase
-                      (List.map M3e.Cem.Attr.forget erased_)
-                      ch_
-             )
-             (List.concat
-                  [ Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.TooltipElementBase.disabled v_)
-                            ]
-                         )
-                         f_.disabled
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.TooltipElementBase.showDelay v_)
-                            ]
-                         )
-                         f_.showDelay
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.TooltipElementBase.hideDelay v_)
-                            ]
-                         )
-                         f_.hideDelay
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.TooltipElementBase.touchGestures v_)
-                            ]
-                         )
-                         f_.touchGestures
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.TooltipElementBase.for v_)
-                            ]
-                         )
-                         f_.for
-                      )
-                  ]
-             )
-             (List.concat [])
-        )
+    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")

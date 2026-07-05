@@ -1,27 +1,22 @@
-module M3e.Build.Ripple exposing
-    ( Builder, AttrCaps, SlotCaps, ripple, centered, disabled
-    , for, radius, unbounded, build
-    )
+module M3e.Build.Ripple exposing ( Builder, AttrCaps, SlotCaps, ripple )
 
 {-|
 The ⑤ Build shape for `<m3e-ripple>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Ripple as Ripple`.
 
-@docs Builder, AttrCaps, SlotCaps, ripple, centered, disabled
-@docs for, radius, unbounded, build
+@docs Builder, AttrCaps, SlotCaps, ripple
 -}
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
-import M3e.Cem.Ripple
-import M3e.Element
 import M3e.Node
 import M3e.Value
 
 
-{-| Opaque builder for `<m3e-ripple>`; see `.build` for the terminal. -}
-type Builder attrCaps slotCaps msg
-    = Builder (Fields msg)
+{-| Phantom-typed opaque builder for `<m3e-ripple>`. -}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Build.Internal.Builder { kind
+        | ripple : M3e.Value.Supported
+    } attrCaps slotCaps msg
 
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
@@ -39,132 +34,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg =
-    { centered : Maybe Bool
-    , disabled : Maybe Bool
-    , for : Maybe String
-    , radius : Maybe Float
-    , unbounded : Maybe Bool
-    , phantomMsg_ : Maybe msg
-    }
-
-
 {-| Seed a `Builder` for `<m3e-ripple>`. -}
-ripple : Builder AttrCaps SlotCaps msg
+ripple : Builder AttrCaps SlotCaps msg kind
 ripple =
-    Builder
-        { centered = Nothing
-        , disabled = Nothing
-        , for = Nothing
-        , radius = Nothing
-        , unbounded = Nothing
-        , phantomMsg_ = Nothing
-        }
-
-
-{-| Whether the ripple always originates from the center of the element's bounds, rather
-than originating from the location of the click event. (default: `false`)
--}
-centered :
-    Bool
-    -> Builder { a | centered : M3e.Build.Internal.Available } s msg
-    -> Builder { a | centered : M3e.Build.Internal.Used } s msg
-centered v_ (Builder f_) =
-    Builder { f_ | centered = Just v_ }
-
-
-{-| Whether click events will not trigger the ripple.
-Ripples can be still controlled manually by using the `show` and 'hide' methods. (default: `false`)
--}
-disabled :
-    Bool
-    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg
-    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg
-disabled v_ (Builder f_) =
-    Builder { f_ | disabled = Just v_ }
-
-
-{-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for :
-    String
-    -> Builder { a | for : M3e.Build.Internal.Available } s msg
-    -> Builder { a | for : M3e.Build.Internal.Used } s msg
-for v_ (Builder f_) =
-    Builder { f_ | for = Just v_ }
-
-
-{-| The radius, in pixels, of the ripple. (default: `null`) -}
-radius :
-    Float
-    -> Builder { a | radius : M3e.Build.Internal.Available } s msg
-    -> Builder { a | radius : M3e.Build.Internal.Used } s msg
-radius v_ (Builder f_) =
-    Builder { f_ | radius = Just v_ }
-
-
-{-| Whether the ripple is visible outside the element's bounds. (default: `false`) -}
-unbounded :
-    Bool
-    -> Builder { a | unbounded : M3e.Build.Internal.Available } s msg
-    -> Builder { a | unbounded : M3e.Build.Internal.Used } s msg
-unbounded v_ (Builder f_) =
-    Builder { f_ | unbounded = Just v_ }
-
-
-{-| Build the `<m3e-ripple>` element from a `Builder`. -}
-build :
-    Builder a s msg
-    -> M3e.Element.Element { kind | ripple : M3e.Value.Supported } msg
-build (Builder f_) =
-    M3e.Element.fromNode
-        (M3e.Node.fromComponent
-             (\erased_ ch_ ->
-                  M3e.Cem.Ripple.ripple
-                      (List.map M3e.Cem.Attr.forget erased_)
-                      ch_
-             )
-             (List.concat
-                  [ Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.centered v_) ]
-                         )
-                         f_.centered
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.disabled v_) ]
-                         )
-                         f_.disabled
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ -> [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.for v_) ]
-                         )
-                         f_.for
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.radius v_) ]
-                         )
-                         f_.radius
-                      )
-                  , Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget (M3e.Cem.Ripple.unbounded v_)
-                            ]
-                         )
-                         f_.unbounded
-                      )
-                  ]
-             )
-             (List.concat [])
-        )
+    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")

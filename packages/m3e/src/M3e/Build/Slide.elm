@@ -1,27 +1,22 @@
-module M3e.Build.Slide exposing
-    ( Builder, AttrCaps, SlotCaps, slide, selectedIndex, default
-    , build
-    )
+module M3e.Build.Slide exposing ( Builder, AttrCaps, SlotCaps, slide )
 
 {-|
 The ⑤ Build shape for `<m3e-slide>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Slide as Slide`.
 
-@docs Builder, AttrCaps, SlotCaps, slide, selectedIndex, default
-@docs build
+@docs Builder, AttrCaps, SlotCaps, slide
 -}
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
-import M3e.Cem.Slide
-import M3e.Element
 import M3e.Node
 import M3e.Value
 
 
-{-| Opaque builder for `<m3e-slide>`; see `.build` for the terminal. -}
-type Builder attrCaps slotCaps msg
-    = Builder (Fields msg)
+{-| Phantom-typed opaque builder for `<m3e-slide>`. -}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Build.Internal.Builder { kind
+        | slide : M3e.Value.Supported
+    } attrCaps slotCaps msg
 
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
@@ -34,58 +29,7 @@ type alias SlotCaps =
     {}
 
 
-type alias Fields msg =
-    { selectedIndex : Maybe Float
-    , default : List (M3e.Element.Element {} msg)
-    , phantomMsg_ : Maybe msg
-    }
-
-
 {-| Seed a `Builder` for `<m3e-slide>`. -}
-slide : Builder AttrCaps SlotCaps msg
+slide : Builder AttrCaps SlotCaps msg kind
 slide =
-    Builder { selectedIndex = Nothing, default = [], phantomMsg_ = Nothing }
-
-
-{-| The zero-based index of the visible item. (default: `null`) -}
-selectedIndex :
-    Float
-    -> Builder { a | selectedIndex : M3e.Build.Internal.Available } s msg
-    -> Builder { a | selectedIndex : M3e.Build.Internal.Used } s msg
-selectedIndex v_ (Builder f_) =
-    Builder { f_ | selectedIndex = Just v_ }
-
-
-{-| Add an element to the `unnamed` (multi) slot. -}
-default : M3e.Element.Element {} msg -> Builder a s msg -> Builder a s msg
-default v_ (Builder f_) =
-    Builder { f_ | default = List.append f_.default [ v_ ] }
-
-
-{-| Build the `<m3e-slide>` element from a `Builder`. -}
-build :
-    Builder a s msg
-    -> M3e.Element.Element { kind | slide : M3e.Value.Supported } msg
-build (Builder f_) =
-    M3e.Element.fromNode
-        (M3e.Node.fromComponent
-             (\erased_ ch_ ->
-                  M3e.Cem.Slide.slide (List.map M3e.Cem.Attr.forget erased_) ch_
-             )
-             (List.concat
-                  [ Maybe.withDefault
-                      []
-                      (Maybe.map
-                         (\v_ ->
-                            [ M3e.Cem.Attr.forget
-                                (M3e.Cem.Slide.selectedIndex v_)
-                            ]
-                         )
-                         f_.selectedIndex
-                      )
-                  ]
-             )
-             (List.concat
-                  [ List.map (\el_ -> M3e.Element.toNode el_) f_.default ]
-             )
-        )
+    M3e.Build.Internal.wrap_ (M3e.Node.text "<stub — Task 3 replaces>")
