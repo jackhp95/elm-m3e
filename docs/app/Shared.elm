@@ -409,6 +409,7 @@ appShellBar model =
             ]
             [ AppBar.title (Kit.text "elm-m3e")
             , AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
+            , AppBar.leading (EscapeHatch.asElement brandMark)
             , AppBar.leading (EscapeHatch.asElement menuButton)
             , AppBar.trailing (EscapeHatch.asElement (schemeQuickToggle model))
             , AppBar.trailing (EscapeHatch.asElement (settingsTriggerElement model))
@@ -416,6 +417,24 @@ appShellBar model =
             ]
             |> toHtml
         ]
+
+
+{-| The brand mark in the app bar: the same expressive-triad SVG served as the
+favicon, so the tab icon and the header logo match. Same-origin asset, no external
+fetch.
+-}
+brandMark : Element { html : Supported } Msg
+brandMark =
+    EscapeHatch.fromHtml
+        (Html.img
+            [ Attr.src "/favicon.svg"
+            , Attr.alt "elm-m3e"
+            , Attr.width 28
+            , Attr.height 28
+            , class "ms-2 me-1 rounded-md-corner-small"
+            ]
+            []
+        )
 
 
 {-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
@@ -690,28 +709,49 @@ candidate to component-ify once the NavMenu model is settled.
 -}
 navMenu : String -> Element { s | navMenu : Supported } msg
 navMenu currentPath =
-    let
-        groups : List ( String, String, List ( String, String ) )
-        groups =
-            List.map (\s -> ( s.icon, s.title, s.items )) navSections
-                ++ List.map
+    NavMenu.view []
+        (NavMenu.children
+            (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
+                ++ [ componentsGroup currentPath
+                   , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ) ]
+                   ]
+            )
+        )
+
+
+{-| The single top-level **Components** nav group. Its children are the per-category
+subgroups (Actions, Selection, …), each of which expands to that category's component
+links — so the sidebar carries one "Components" parent instead of seven sibling
+category groups (#106).
+-}
+componentsGroup : String -> Element { s | navMenuItem : Supported } msg
+componentsGroup currentPath =
+    NavMenuItem.view
+        { label = Kit.text "Components" }
+        (if String.startsWith "/components/" currentPath then
+            [ NavMenuItem.open True ]
+
+         else
+            []
+        )
+        (NavMenuItem.icon (Icon.view [ Icon.name "widgets" ] [])
+            :: NavMenuItem.children
+                (List.map
                     (\( category, glyph ) ->
-                        ( glyph
-                        , category
-                        , componentList
-                            |> List.filter (\( _, _, c ) -> c == category)
-                            |> List.map (\( slug, label, _ ) -> ( "/components/" ++ slug, label ))
-                        )
+                        navGroup currentPath
+                            glyph
+                            category
+                            (componentList
+                                |> List.filter (\( _, _, c ) -> c == category)
+                                |> List.map (\( slug, label, _ ) -> ( "/components/" ++ slug, label ))
+                            )
                     )
                     componentCategories
-                ++ [ ( "menu_book", "Reference", [ ( "/reference", "Full API reference" ) ] )
-                   ]
-    in
-    NavMenu.view []
-        (NavMenu.children (List.map (\( glyph, title, items ) -> navGroup currentPath glyph title items) groups))
+                )
+        )
 
 
-navGroup : String -> String -> String -> List ( String, String ) -> Element { navMenuItem : Supported, navMenuItemGroup : Supported, divider : Supported } msg
+navGroup : String -> String -> String -> List ( String, String ) -> Element { s | navMenuItem : Supported } msg
 navGroup currentPath glyph title items =
     NavMenuItem.view
         { label = Kit.text title }
