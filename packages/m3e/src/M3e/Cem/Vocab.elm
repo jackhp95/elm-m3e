@@ -14,18 +14,19 @@ module M3e.Cem.Vocab exposing
     , length, level, linear, loaded, loading, loadingLabel, lowered
     , max, maxDate, maxDepth, maxRows, min, minDate, minRows
     , modal, mode, motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel
-    , nextYearLabel, noAnimate, noDataLabel, noFocusTrap, opticalSize, optional, orientation
-    , overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position
-    , positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
-    , range, rangeEnd, rangeStart, rel, removable, removeLabel, returnValue
-    , scheme, scrollStrategy, secondary, selected, selectedIndex, shape, showDelay
-    , showFirstLastButtons, size, start, startAt, startDivider, startMode, startView
-    , state, step, stretch, strongFocus, submenu, target, term
-    , thin, threshold, today, toggle, toggleDirection, togglePosition, touchGestures
-    , type_, unbounded, variant, vertical, weight, width, wrap
-    , wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed, onClick
-    , onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
-    , onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+    , nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
+    , orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
+    , position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel
+    , radius, range, rangeEnd, rangeStart, rel, removable, removeLabel
+    , required, returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex
+    , shape, showDelay, showFirstLastButtons, size, start, startAt, startDivider
+    , startMode, startView, state, step, stretch, strongFocus, submenu
+    , target, term, thin, threshold, today, toggle, toggleDirection
+    , togglePosition, touchGestures, type_, unbounded, variant, vertical, weight
+    , width, wrap, wrapDetents, onChange, onOpening, onOpened, onClosing
+    , onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
+    , onQuery, onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
+    , onHighlight
     )
 
 {-|
@@ -49,20 +50,20 @@ Shared middle vocabulary: the component-agnostic, phantom-gated attribute and ev
 @docs max, maxDate, maxDepth, maxRows, min, minDate
 @docs minRows, modal, mode, motion, multi, nextMonthLabel
 @docs nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap
-@docs opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize
-@docs pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
-@docs previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range
-@docs rangeEnd, rangeStart, rel, removable, removeLabel, returnValue
-@docs scheme, scrollStrategy, secondary, selected, selectedIndex, shape
-@docs showDelay, showFirstLastButtons, size, start, startAt, startDivider
-@docs startMode, startView, state, step, stretch, strongFocus
-@docs submenu, target, term, thin, threshold, today
-@docs toggle, toggleDirection, togglePosition, touchGestures, type_, unbounded
-@docs variant, vertical, weight, width, wrap, wrapDetents
-@docs onChange, onOpening, onOpened, onClosing, onClosed, onClick
-@docs onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
-@docs onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
-@docs onHighlight
+@docs open, opticalSize, optional, orientation, overshootLimit, pageIndex
+@docs pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX
+@docs positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
+@docs range, rangeEnd, rangeStart, rel, removable, removeLabel
+@docs required, returnValue, scheme, scrollStrategy, secondary, selected
+@docs selectedIndex, shape, showDelay, showFirstLastButtons, size, start
+@docs startAt, startDivider, startMode, startView, state, step
+@docs stretch, strongFocus, submenu, target, term, thin
+@docs threshold, today, toggle, toggleDirection, togglePosition, touchGestures
+@docs type_, unbounded, variant, vertical, weight, width
+@docs wrap, wrapDetents, onChange, onOpening, onOpened, onClosing
+@docs onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle
+@docs onValueChange, onQuery, onClear, onPage, onCancel, onRemove
+@docs onInvalid, onActiveChange, onHighlight
 -}
 
 
@@ -874,6 +875,12 @@ noFocusTrap =
     M3e.Cem.Attr.attribute M3e.Cem.Html.Vocab.noFocusTrap
 
 
+{-| Whether the item is expanded. (default: `false`) -}
+open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
+open =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Vocab.open
+
+
 {-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`) -}
 opticalSize :
     Float -> M3e.Cem.Attr.Attr { c | opticalSize : M3e.Value.Supported } msg
@@ -1060,6 +1067,12 @@ removeLabel :
     String -> M3e.Cem.Attr.Attr { c | removeLabel : M3e.Value.Supported } msg
 removeLabel =
     M3e.Cem.Attr.attribute M3e.Cem.Html.Vocab.removeLabel
+
+
+{-| Whether the element is required. (default: `false`) -}
+required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
+required =
+    M3e.Cem.Attr.attribute M3e.Cem.Html.Vocab.required
 
 
 {-| The value to return from the dialog. (default: `""`) -}

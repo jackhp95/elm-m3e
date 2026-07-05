@@ -73,8 +73,7 @@ name =
 
 
 {-| Whether the element is required. -}
-required :
-    String -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
+required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
 required =
     M3e.Cem.Radio.required
 

@@ -55,9 +55,9 @@ noFocusTrap val_ =
 
 
 {-| Whether the dialog is open. (default: `false`) -}
-open : String -> Html.Attribute msg
-open =
-    Html.Attributes.attribute "open"
+open : Bool -> Html.Attribute msg
+open val_ =
+    Html.Attributes.property "open" (Json.Encode.bool val_)
 
 
 {-| Listen for `opening` events. -}

@@ -103,7 +103,7 @@ name v_ b_ =
 
 {-| Whether the element is required. -}
 required :
-    String
+    Bool
     -> Builder { a | required : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | required : M3e.Build.Internal.Used } s msg kind
 required v_ b_ =

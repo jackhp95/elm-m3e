@@ -92,7 +92,7 @@ noFocusTrap =
 
 
 {-| Whether the dialog is open. (default: `false`) -}
-open : String -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
+open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
 open =
     M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.open
 

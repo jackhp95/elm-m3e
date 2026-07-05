@@ -136,7 +136,7 @@ noFocusTrap v_ b_ =
 
 {-| Whether the dialog is open. (default: `false`) -}
 open :
-    String
+    Bool
     -> Builder { a | open : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | open : M3e.Build.Internal.Used } s msg kind
 open v_ b_ =

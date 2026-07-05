@@ -43,9 +43,13 @@ name =
 
 
 {-| Whether the element is required. -}
-required : String -> Html.Attribute msg
-required =
-    Html.Attributes.attribute "required"
+required : Bool -> Html.Attribute msg
+required val_ =
+    if val_ then
+        Html.Attributes.attribute "required" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A string representing the value of the radio. (default: `"on"`) -}
