@@ -1,3 +1,8 @@
+> **SUPERSEDED (2026-07-04)** — Replaced by `docs/superpowers/plans/2026-07-04-build-shape-crossbar.md`.
+> The emitter Tasks 4–10 in this file were rewritten during the crossbar redesign;
+> Tasks 1–3 survived. See `docs/superpowers/specs/2026-07-04-build-shape-crossbar-design.md`
+> for design rationale.
+
 # ⑤ Build Shape Emitter Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
