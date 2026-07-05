@@ -17,3 +17,6 @@ memory/
 
 # temporary working clone of the elm-cem generator (ADR 8 workflow; delete after push)
 /elm-cem/
+
+# also ignore node_modules symlinks (not just dirs)
+node_modules
