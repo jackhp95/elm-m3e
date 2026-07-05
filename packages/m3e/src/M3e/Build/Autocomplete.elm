@@ -1,7 +1,7 @@
 module M3e.Build.Autocomplete exposing
     ( Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
     , filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel
-    , panelClass, required, for, onChange, onQuery, onToggle
+    , panelClass, required, for, onChange, onQuery, onToggle, build
     )
 
 {-|
@@ -10,7 +10,7 @@ The ⑤ Build shape for `<m3e-autocomplete>` — phantom-typed pipeline API. Imp
 @docs Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
 @docs filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel
 @docs noDataLabel, panelClass, required, for, onChange, onQuery
-@docs onToggle
+@docs onToggle, build
 -}
 
 
@@ -19,6 +19,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Autocomplete
 import M3e.Cem.Html.Autocomplete
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -279,3 +280,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-autocomplete>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { autocomplete : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

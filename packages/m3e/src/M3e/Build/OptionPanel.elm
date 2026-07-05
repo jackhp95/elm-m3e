@@ -1,13 +1,13 @@
 module M3e.Build.OptionPanel exposing
     ( Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
-    , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+    , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-option-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.OptionPanel as OptionPanel`.
 
 @docs Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
-@docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
+@docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.OptionPanel
 import M3e.Cem.OptionPanel
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -146,3 +147,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-option-panel>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { optionPanel : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

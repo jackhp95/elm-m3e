@@ -1,7 +1,7 @@
 module M3e.Build.Paginator exposing
     ( Builder, AttrCaps, SlotCaps, paginator, disabled, firstPageLabel
     , hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize
-    , pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage
+    , pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage, build
     )
 
 {-|
@@ -10,6 +10,7 @@ The ⑤ Build shape for `<m3e-paginator>` — phantom-typed pipeline API. Import
 @docs Builder, AttrCaps, SlotCaps, paginator, disabled, firstPageLabel
 @docs hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex
 @docs pageSize, pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage
+@docs build
 -}
 
 
@@ -18,6 +19,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Paginator
 import M3e.Cem.Paginator
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -262,3 +264,11 @@ onPage v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-paginator>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { paginator : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

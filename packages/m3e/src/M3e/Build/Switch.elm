@@ -1,6 +1,7 @@
 module M3e.Build.Switch exposing
     ( Builder, AttrCaps, SlotCaps, switch, checked, disabled
     , icons, name, value, onBeforeinput, onInput, onChange, onClick
+    , build
     )
 
 {-|
@@ -8,7 +9,7 @@ The ⑤ Build shape for `<m3e-switch>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, switch, checked, disabled
 @docs icons, name, value, onBeforeinput, onInput, onChange
-@docs onClick
+@docs onClick, build
 -}
 
 
@@ -17,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Switch
 import M3e.Cem.Switch
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -188,3 +190,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-switch>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { switch : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

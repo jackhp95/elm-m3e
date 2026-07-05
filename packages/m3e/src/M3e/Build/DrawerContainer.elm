@@ -1,13 +1,13 @@
 module M3e.Build.DrawerContainer exposing
     ( Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
-    , endDivider, start, startMode, startDivider, onChange
+    , endDivider, start, startMode, startDivider, onChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-drawer-container>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.DrawerContainer as DrawerContainer`.
 
 @docs Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
-@docs endDivider, start, startMode, startDivider, onChange
+@docs endDivider, start, startMode, startDivider, onChange, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.DrawerContainer
 import M3e.Cem.Html.DrawerContainer
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -164,3 +165,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-drawer-container>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { drawerContainer : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

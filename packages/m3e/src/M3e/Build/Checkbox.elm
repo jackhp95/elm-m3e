@@ -1,7 +1,7 @@
 module M3e.Build.Checkbox exposing
     ( Builder, AttrCaps, SlotCaps, checkbox, checked, disabled
     , indeterminate, name, required, value, onBeforeinput, onInput, onChange
-    , onInvalid, onClick
+    , onInvalid, onClick, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-checkbox>` — phantom-typed pipeline API. Import 
 
 @docs Builder, AttrCaps, SlotCaps, checkbox, checked, disabled
 @docs indeterminate, name, required, value, onBeforeinput, onInput
-@docs onChange, onInvalid, onClick
+@docs onChange, onInvalid, onClick, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Checkbox
 import M3e.Cem.Html.Checkbox
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -217,3 +218,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-checkbox>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { checkbox : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,17 +1,18 @@
 module M3e.Build.Shape exposing
-    ( Builder, AttrCaps, SlotCaps, shape, name
+    ( Builder, AttrCaps, SlotCaps, shape, name, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-shape>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Shape as Shape`.
 
-@docs Builder, AttrCaps, SlotCaps, shape, name
+@docs Builder, AttrCaps, SlotCaps, shape, name, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Shape
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -92,3 +93,11 @@ name v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Shape.name v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-shape>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { shape : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

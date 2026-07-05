@@ -1,7 +1,7 @@
 module M3e.Build.NavItem exposing
     ( Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
     , download, href, orientation, rel, selected, target, onBeforeinput
-    , onInput, onChange, onClick
+    , onInput, onChange, onClick, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-nav-item>` — phantom-typed pipeline API. Import 
 
 @docs Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
 @docs download, href, orientation, rel, selected, target
-@docs onBeforeinput, onInput, onChange, onClick
+@docs onBeforeinput, onInput, onChange, onClick, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.NavItem
 import M3e.Cem.NavItem
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -235,3 +236,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-nav-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { navItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

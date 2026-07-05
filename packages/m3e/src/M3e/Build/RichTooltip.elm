@@ -1,6 +1,6 @@
 module M3e.Build.RichTooltip exposing
     ( Builder, AttrCaps, SlotCaps, richTooltip, disabled, for
-    , hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
+    , hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-rich-tooltip>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, richTooltip, disabled, for
 @docs hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
+@docs build
 -}
 
 
@@ -185,3 +186,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-rich-tooltip>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { richTooltip : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

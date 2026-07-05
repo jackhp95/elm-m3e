@@ -1,11 +1,11 @@
 module M3e.Build.RichTooltipAction exposing
-    ( Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus
+    ( Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-rich-tooltip-action>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.RichTooltipAction as RichTooltipAction`.
 
-@docs Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus
+@docs Builder, AttrCaps, SlotCaps, richTooltipAction, disableRestoreFocus, build
 -}
 
 
@@ -66,3 +66,11 @@ disableRestoreFocus v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-rich-tooltip-action>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { richTooltipAction : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,15 +1,18 @@
-module M3e.Build.ListItem exposing ( Builder, AttrCaps, SlotCaps, listItem )
+module M3e.Build.ListItem exposing
+    ( Builder, AttrCaps, SlotCaps, listItem, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-list-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListItem as ListItem`.
 
-@docs Builder, AttrCaps, SlotCaps, listItem
+@docs Builder, AttrCaps, SlotCaps, listItem, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.ListItem
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -49,3 +52,11 @@ listItem =
              []
              []
         )
+
+
+{-| Build the `<m3e-list-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { listItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,13 +1,13 @@
 module M3e.Build.ListItemButton exposing
     ( Builder, AttrCaps, SlotCaps, listItemButton, href, target
-    , rel, download, disabled, onClick
+    , rel, download, disabled, onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list-item-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListItemButton as ListItemButton`.
 
 @docs Builder, AttrCaps, SlotCaps, listItemButton, href, target
-@docs rel, download, disabled, onClick
+@docs rel, download, disabled, onClick, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.ListItemButton
 import M3e.Cem.ListItemButton
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -144,3 +145,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-list-item-button>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { listItemButton : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,7 +1,7 @@
 module M3e.Build.Calendar exposing
     ( Builder, AttrCaps, SlotCaps, calendar, date, maxDate
     , minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
-    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
+    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, build
     )
 
 {-|
@@ -10,6 +10,7 @@ The ⑤ Build shape for `<m3e-calendar>` — phantom-typed pipeline API. Import 
 @docs Builder, AttrCaps, SlotCaps, calendar, date, maxDate
 @docs minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
 @docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
+@docs build
 -}
 
 
@@ -18,6 +19,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Calendar
 import M3e.Cem.Html.Calendar
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -261,3 +263,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-calendar>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { calendar : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

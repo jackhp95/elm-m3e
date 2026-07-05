@@ -1,13 +1,13 @@
 module M3e.Build.NavBar exposing
     ( Builder, AttrCaps, SlotCaps, navBar, mode, onChange
-    , onBeforeinput, onInput
+    , onBeforeinput, onInput, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavBar as NavBar`.
 
 @docs Builder, AttrCaps, SlotCaps, navBar, mode, onChange
-@docs onBeforeinput, onInput
+@docs onBeforeinput, onInput, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.NavBar
 import M3e.Cem.NavBar
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -115,3 +116,11 @@ onInput v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-nav-bar>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { navBar : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,7 +1,7 @@
 module M3e.Build.MonthView exposing
     ( Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
     , active, today, date, activeDate, minDate, maxDate, onChange
-    , onActiveChange
+    , onActiveChange, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-month-view>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
 @docs active, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange
+@docs onChange, onActiveChange, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.MonthView
 import M3e.Cem.MonthView
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -199,3 +200,11 @@ onActiveChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-month-view>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { monthView : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

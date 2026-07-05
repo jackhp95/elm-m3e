@@ -1,6 +1,7 @@
 module M3e.Build.Radio exposing
     ( Builder, AttrCaps, SlotCaps, radio, checked, disabled
     , name, required, value, onBeforeinput, onInput, onChange, onClick
+    , build
     )
 
 {-|
@@ -8,7 +9,7 @@ The ⑤ Build shape for `<m3e-radio>` — phantom-typed pipeline API. Import qua
 
 @docs Builder, AttrCaps, SlotCaps, radio, checked, disabled
 @docs name, required, value, onBeforeinput, onInput, onChange
-@docs onClick
+@docs onClick, build
 -}
 
 
@@ -17,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Radio
 import M3e.Cem.Radio
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -183,3 +185,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-radio>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { radio : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,6 +1,6 @@
 module M3e.Build.BreadcrumbItem exposing
     ( Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
-    , current, href, target, download, rel, onClick
+    , current, href, target, download, rel, onClick, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-breadcrumb-item>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
 @docs current, href, target, download, rel, onClick
+@docs build
 -}
 
 
@@ -16,6 +17,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.BreadcrumbItem
 import M3e.Cem.Html.BreadcrumbItem
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -173,3 +175,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-breadcrumb-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { breadcrumbItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

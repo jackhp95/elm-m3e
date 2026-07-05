@@ -1,7 +1,7 @@
 module M3e.Build.Step exposing
     ( Builder, AttrCaps, SlotCaps, step, completed, disabled
     , editable, for, optional, selected, invalid, onBeforeinput, onInput
-    , onChange, onClick
+    , onChange, onClick, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-step>` — phantom-typed pipeline API. Import qual
 
 @docs Builder, AttrCaps, SlotCaps, step, completed, disabled
 @docs editable, for, optional, selected, invalid, onBeforeinput
-@docs onInput, onChange, onClick
+@docs onInput, onChange, onClick, build
 -}
 
 
@@ -221,3 +221,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-step>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { step : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

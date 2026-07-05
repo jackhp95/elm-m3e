@@ -1,15 +1,18 @@
-module M3e.Build.ContentPane exposing ( Builder, AttrCaps, SlotCaps, contentPane )
+module M3e.Build.ContentPane exposing
+    ( Builder, AttrCaps, SlotCaps, contentPane, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-content-pane>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ContentPane as ContentPane`.
 
-@docs Builder, AttrCaps, SlotCaps, contentPane
+@docs Builder, AttrCaps, SlotCaps, contentPane, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.ContentPane
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ contentPane =
              []
              []
         )
+
+
+{-| Build the `<m3e-content-pane>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { contentPane : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

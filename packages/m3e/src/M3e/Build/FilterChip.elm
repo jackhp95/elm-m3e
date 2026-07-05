@@ -1,6 +1,7 @@
 module M3e.Build.FilterChip exposing
     ( Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
     , selected, value, variant, onBeforeinput, onInput, onChange, onClick
+    , build
     )
 
 {-|
@@ -8,7 +9,7 @@ The ⑤ Build shape for `<m3e-filter-chip>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
 @docs selected, value, variant, onBeforeinput, onInput, onChange
-@docs onClick
+@docs onClick, build
 -}
 
 
@@ -197,3 +198,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-filter-chip>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { filterChip : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

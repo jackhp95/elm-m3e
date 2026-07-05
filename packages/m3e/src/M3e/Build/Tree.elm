@@ -1,13 +1,13 @@
 module M3e.Build.Tree exposing
     ( Builder, AttrCaps, SlotCaps, tree, multi, cascade
-    , onChange
+    , onChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-tree>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tree as Tree`.
 
 @docs Builder, AttrCaps, SlotCaps, tree, multi, cascade
-@docs onChange
+@docs onChange, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Tree
 import M3e.Cem.Tree
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -92,3 +93,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-tree>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { tree : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

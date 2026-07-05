@@ -1,15 +1,18 @@
-module M3e.Build.TextOverflow exposing ( Builder, AttrCaps, SlotCaps, textOverflow )
+module M3e.Build.TextOverflow exposing
+    ( Builder, AttrCaps, SlotCaps, textOverflow, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-text-overflow>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TextOverflow as TextOverflow`.
 
-@docs Builder, AttrCaps, SlotCaps, textOverflow
+@docs Builder, AttrCaps, SlotCaps, textOverflow, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.TextOverflow
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ textOverflow =
              []
              []
         )
+
+
+{-| Build the `<m3e-text-overflow>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { textOverflow : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

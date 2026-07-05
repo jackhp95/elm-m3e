@@ -1,13 +1,13 @@
 module M3e.Build.ExpansionHeader exposing
     ( Builder, AttrCaps, SlotCaps, expansionHeader, hideToggle, toggleDirection
-    , togglePosition, disabled, onClick
+    , togglePosition, disabled, onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-expansion-header>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ExpansionHeader as ExpansionHeader`.
 
 @docs Builder, AttrCaps, SlotCaps, expansionHeader, hideToggle, toggleDirection
-@docs togglePosition, disabled, onClick
+@docs togglePosition, disabled, onClick, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.ExpansionHeader
 import M3e.Cem.Html.ExpansionHeader
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -131,3 +132,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-expansion-header>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { expansionHeader : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

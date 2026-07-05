@@ -1,13 +1,13 @@
 module M3e.Build.Tooltip exposing
     ( Builder, AttrCaps, SlotCaps, tooltip, disabled, for
-    , hideDelay, position, showDelay, touchGestures
+    , hideDelay, position, showDelay, touchGestures, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-tooltip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tooltip as Tooltip`.
 
 @docs Builder, AttrCaps, SlotCaps, tooltip, disabled, for
-@docs hideDelay, position, showDelay, touchGestures
+@docs hideDelay, position, showDelay, touchGestures, build
 -}
 
 
@@ -142,3 +142,11 @@ touchGestures v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Tooltip.touchGestures v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-tooltip>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { tooltip : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

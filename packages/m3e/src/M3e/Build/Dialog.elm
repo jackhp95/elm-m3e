@@ -1,7 +1,7 @@
 module M3e.Build.Dialog exposing
     ( Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
     , disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing
-    , onClosed, onCancel
+    , onClosed, onCancel, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-dialog>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
 @docs disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
-@docs onClosing, onClosed, onCancel
+@docs onClosing, onClosed, onCancel, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Dialog
 import M3e.Cem.Html.Dialog
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -219,3 +220,11 @@ onCancel v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-dialog>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { dialog : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

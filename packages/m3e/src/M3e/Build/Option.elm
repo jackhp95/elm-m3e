@@ -1,13 +1,13 @@
 module M3e.Build.Option exposing
     ( Builder, AttrCaps, SlotCaps, option, disabled, disableHighlight
-    , highlightMode, selected, term, value
+    , highlightMode, selected, term, value, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-option>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Option as Option`.
 
 @docs Builder, AttrCaps, SlotCaps, option, disabled, disableHighlight
-@docs highlightMode, selected, term, value
+@docs highlightMode, selected, term, value, build
 -}
 
 
@@ -140,3 +140,11 @@ value v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Option.value v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-option>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { option : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

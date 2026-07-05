@@ -1,13 +1,13 @@
 module M3e.Build.TextHighlight exposing
     ( Builder, AttrCaps, SlotCaps, textHighlight, caseSensitive, disabled
-    , mode, term, onHighlight
+    , mode, term, onHighlight, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-text-highlight>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TextHighlight as TextHighlight`.
 
 @docs Builder, AttrCaps, SlotCaps, textHighlight, caseSensitive, disabled
-@docs mode, term, onHighlight
+@docs mode, term, onHighlight, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.TextHighlight
 import M3e.Cem.TextHighlight
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -128,3 +129,11 @@ onHighlight v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-text-highlight>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { textHighlight : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

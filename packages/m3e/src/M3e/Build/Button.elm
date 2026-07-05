@@ -1,7 +1,7 @@
 module M3e.Build.Button exposing
     ( Builder, AttrCaps, SlotCaps, button, disabled, disabledInteractive
     , name, selected, shape, size, toggle, type_, value
-    , variant, onBeforeinput, onInput, onChange
+    , variant, onBeforeinput, onInput, onChange, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-button>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, button, disabled, disabledInteractive
 @docs name, selected, shape, size, toggle, type_
-@docs value, variant, onBeforeinput, onInput, onChange
+@docs value, variant, onBeforeinput, onInput, onChange, build
 -}
 
 
@@ -292,3 +292,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-button>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { button : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

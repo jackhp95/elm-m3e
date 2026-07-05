@@ -1,15 +1,18 @@
-module M3e.Build.StepperReset exposing ( Builder, AttrCaps, SlotCaps, stepperReset )
+module M3e.Build.StepperReset exposing
+    ( Builder, AttrCaps, SlotCaps, stepperReset, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper-reset>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepperReset as StepperReset`.
 
-@docs Builder, AttrCaps, SlotCaps, stepperReset
+@docs Builder, AttrCaps, SlotCaps, stepperReset, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.StepperReset
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ stepperReset =
              []
              []
         )
+
+
+{-| Build the `<m3e-stepper-reset>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { stepperReset : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

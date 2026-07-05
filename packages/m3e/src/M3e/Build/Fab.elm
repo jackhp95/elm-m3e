@@ -1,6 +1,7 @@
 module M3e.Build.Fab exposing
     ( Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
     , extended, lowered, name, size, type_, value, variant
+    , build
     )
 
 {-|
@@ -8,7 +9,7 @@ The ⑤ Build shape for `<m3e-fab>` — phantom-typed pipeline API. Import quali
 
 @docs Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
 @docs extended, lowered, name, size, type_, value
-@docs variant
+@docs variant, build
 -}
 
 
@@ -218,3 +219,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Fab.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-fab>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { fab : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

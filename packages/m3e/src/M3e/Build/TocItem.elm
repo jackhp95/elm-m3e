@@ -1,13 +1,13 @@
 module M3e.Build.TocItem exposing
     ( Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
-    , onClick
+    , onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-toc-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TocItem as TocItem`.
 
 @docs Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
-@docs onClick
+@docs onClick, build
 -}
 
 
@@ -97,3 +97,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-toc-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { tocItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

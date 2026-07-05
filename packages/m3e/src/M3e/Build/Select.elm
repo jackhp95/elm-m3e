@@ -1,7 +1,7 @@
 module M3e.Build.Select exposing
     ( Builder, AttrCaps, SlotCaps, select, disabled, hideSelectionIndicator
     , multi, name, panelClass, required, onChange, onToggle, onBeforeinput
-    , onInput
+    , onInput, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-select>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, select, disabled, hideSelectionIndicator
 @docs multi, name, panelClass, required, onChange, onToggle
-@docs onBeforeinput, onInput
+@docs onBeforeinput, onInput, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Select
 import M3e.Cem.Select
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -205,3 +206,11 @@ onInput v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-select>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    -> M3e.Element.Element { select : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

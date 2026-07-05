@@ -1,15 +1,18 @@
-module M3e.Build.StepperPrevious exposing ( Builder, AttrCaps, SlotCaps, stepperPrevious )
+module M3e.Build.StepperPrevious exposing
+    ( Builder, AttrCaps, SlotCaps, stepperPrevious, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper-previous>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepperPrevious as StepperPrevious`.
 
-@docs Builder, AttrCaps, SlotCaps, stepperPrevious
+@docs Builder, AttrCaps, SlotCaps, stepperPrevious, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.StepperPrevious
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ stepperPrevious =
              []
              []
         )
+
+
+{-| Build the `<m3e-stepper-previous>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { stepperPrevious : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

@@ -1,17 +1,20 @@
 module M3e.Build.PseudoRadio exposing
     ( Builder, AttrCaps, SlotCaps, pseudoRadio, checked, disabled
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-pseudo-radio>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.PseudoRadio as PseudoRadio`.
 
 @docs Builder, AttrCaps, SlotCaps, pseudoRadio, checked, disabled
+@docs build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.PseudoRadio
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -74,3 +77,11 @@ disabled v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.PseudoRadio.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-pseudo-radio>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { pseudoRadio : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

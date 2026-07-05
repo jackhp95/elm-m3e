@@ -1,13 +1,13 @@
 module M3e.Build.NavRail exposing
     ( Builder, AttrCaps, SlotCaps, navRail, mode, onBeforeinput
-    , onInput, onChange
+    , onInput, onChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-rail>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavRail as NavRail`.
 
 @docs Builder, AttrCaps, SlotCaps, navRail, mode, onBeforeinput
-@docs onInput, onChange
+@docs onInput, onChange, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.NavRail
 import M3e.Cem.NavRail
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -115,3 +116,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-nav-rail>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { navRail : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

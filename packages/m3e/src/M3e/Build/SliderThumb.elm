@@ -1,6 +1,6 @@
 module M3e.Build.SliderThumb exposing
     ( Builder, AttrCaps, SlotCaps, sliderThumb, disabled, name
-    , value, onValueChange, onBeforeinput, onInput, onChange, onClick
+    , value, onValueChange, onBeforeinput, onInput, onChange, onClick, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-slider-thumb>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, sliderThumb, disabled, name
 @docs value, onValueChange, onBeforeinput, onInput, onChange, onClick
+@docs build
 -}
 
 
@@ -16,6 +17,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.SliderThumb
 import M3e.Cem.SliderThumb
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -178,3 +180,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-slider-thumb>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { sliderThumb : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

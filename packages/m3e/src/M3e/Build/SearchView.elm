@@ -1,7 +1,7 @@
 module M3e.Build.SearchView exposing
     ( Builder, AttrCaps, SlotCaps, searchView, contained, mode
     , open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle
-    , onToggle
+    , onToggle, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-search-view>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, searchView, contained, mode
 @docs open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear
-@docs onBeforetoggle, onToggle
+@docs onBeforetoggle, onToggle, build
 -}
 
 
@@ -212,3 +212,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-search-view>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { searchView : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

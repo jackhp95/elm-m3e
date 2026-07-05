@@ -1,13 +1,13 @@
 module M3e.Build.RadioGroup exposing
     ( Builder, AttrCaps, SlotCaps, radioGroup, ariaInvalid, disabled
-    , name, required, onBeforeinput, onInput, onChange
+    , name, required, onBeforeinput, onInput, onChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-radio-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.RadioGroup as RadioGroup`.
 
 @docs Builder, AttrCaps, SlotCaps, radioGroup, ariaInvalid, disabled
-@docs name, required, onBeforeinput, onInput, onChange
+@docs name, required, onBeforeinput, onInput, onChange, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.RadioGroup
 import M3e.Cem.RadioGroup
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -157,3 +158,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-radio-group>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    -> M3e.Element.Element { radioGroup : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

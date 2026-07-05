@@ -1,6 +1,7 @@
 module M3e.Build.TreeItem exposing
     ( Builder, AttrCaps, SlotCaps, treeItem, disabled, indeterminate
     , open, selected, onOpening, onOpened, onClosing, onClosed, onClick
+    , build
     )
 
 {-|
@@ -8,7 +9,7 @@ The ⑤ Build shape for `<m3e-tree-item>` — phantom-typed pipeline API. Import
 
 @docs Builder, AttrCaps, SlotCaps, treeItem, disabled, indeterminate
 @docs open, selected, onOpening, onOpened, onClosing, onClosed
-@docs onClick
+@docs onClick, build
 -}
 
 
@@ -198,3 +199,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-tree-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { treeItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

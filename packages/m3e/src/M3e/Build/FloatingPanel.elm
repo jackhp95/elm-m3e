@@ -1,13 +1,13 @@
 module M3e.Build.FloatingPanel exposing
     ( Builder, AttrCaps, SlotCaps, floatingPanel, scrollStrategy, fitAnchorWidth
-    , anchorOffset, onBeforetoggle, onToggle
+    , anchorOffset, onBeforetoggle, onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-floating-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FloatingPanel as FloatingPanel`.
 
 @docs Builder, AttrCaps, SlotCaps, floatingPanel, scrollStrategy, fitAnchorWidth
-@docs anchorOffset, onBeforetoggle, onToggle
+@docs anchorOffset, onBeforetoggle, onToggle, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.FloatingPanel
 import M3e.Cem.Html.FloatingPanel
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -130,3 +131,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-floating-panel>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { floatingPanel : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

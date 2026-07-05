@@ -3,6 +3,7 @@ module M3e.Build.Datepicker exposing
     , date, maxDate, minDate, range, rangeEnd, rangeStart, startAt
     , startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
     , clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
+    , build
     )
 
 {-|
@@ -12,7 +13,7 @@ The ⑤ Build shape for `<m3e-datepicker>` — phantom-typed pipeline API. Impor
 @docs date, maxDate, minDate, range, rangeEnd, rangeStart
 @docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
 @docs previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label
-@docs onChange, onBeforetoggle, onToggle
+@docs onChange, onBeforetoggle, onToggle, build
 -}
 
 
@@ -21,6 +22,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Datepicker
 import M3e.Cem.Html.Datepicker
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -401,3 +403,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-datepicker>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { datepicker : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

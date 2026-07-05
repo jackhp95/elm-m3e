@@ -1,6 +1,6 @@
 module M3e.Build.NavMenuItem exposing
     ( Builder, AttrCaps, SlotCaps, navMenuItem, disabled, open
-    , selected, onOpening, onOpened, onClosing, onClosed, onClick
+    , selected, onOpening, onOpened, onClosing, onClosed, onClick, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-nav-menu-item>` — phantom-typed pipeline API. Im
 
 @docs Builder, AttrCaps, SlotCaps, navMenuItem, disabled, open
 @docs selected, onOpening, onOpened, onClosing, onClosed, onClick
+@docs build
 -}
 
 
@@ -183,3 +184,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-nav-menu-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

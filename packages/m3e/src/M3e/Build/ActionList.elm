@@ -1,17 +1,18 @@
 module M3e.Build.ActionList exposing
-    ( Builder, AttrCaps, SlotCaps, actionList, variant
+    ( Builder, AttrCaps, SlotCaps, actionList, variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-action-list>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ActionList as ActionList`.
 
-@docs Builder, AttrCaps, SlotCaps, actionList, variant
+@docs Builder, AttrCaps, SlotCaps, actionList, variant, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.ActionList
 import M3e.Cem.Attr
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -61,3 +62,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.ActionList.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-action-list>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { actionList : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

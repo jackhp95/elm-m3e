@@ -1,17 +1,18 @@
 module M3e.Build.Slide exposing
-    ( Builder, AttrCaps, SlotCaps, slide, selectedIndex
+    ( Builder, AttrCaps, SlotCaps, slide, selectedIndex, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-slide>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Slide as Slide`.
 
-@docs Builder, AttrCaps, SlotCaps, slide, selectedIndex
+@docs Builder, AttrCaps, SlotCaps, slide, selectedIndex, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Slide
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -57,3 +58,11 @@ selectedIndex v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Slide.selectedIndex v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-slide>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { slide : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

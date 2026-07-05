@@ -1,17 +1,18 @@
 module M3e.Build.Breadcrumb exposing
-    ( Builder, AttrCaps, SlotCaps, breadcrumb, wrap
+    ( Builder, AttrCaps, SlotCaps, breadcrumb, wrap, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Breadcrumb as Breadcrumb`.
 
-@docs Builder, AttrCaps, SlotCaps, breadcrumb, wrap
+@docs Builder, AttrCaps, SlotCaps, breadcrumb, wrap, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Breadcrumb
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -61,3 +62,11 @@ wrap v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Breadcrumb.wrap v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-breadcrumb>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    -> M3e.Element.Element { breadcrumb : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

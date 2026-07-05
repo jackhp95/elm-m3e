@@ -1,13 +1,13 @@
 module M3e.Build.ListAction exposing
     ( Builder, AttrCaps, SlotCaps, listAction, disabled, download
-    , href, rel, target, onClick
+    , href, rel, target, onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list-action>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListAction as ListAction`.
 
 @docs Builder, AttrCaps, SlotCaps, listAction, disabled, download
-@docs href, rel, target, onClick
+@docs href, rel, target, onClick, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.ListAction
 import M3e.Cem.ListAction
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -141,3 +142,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-list-action>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { listAction : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

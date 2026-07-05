@@ -1,19 +1,20 @@
 module M3e.Build.ThemeIcon exposing
     ( Builder, AttrCaps, SlotCaps, themeIcon, color, scheme
-    , variant
+    , variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-theme-icon>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ThemeIcon as ThemeIcon`.
 
 @docs Builder, AttrCaps, SlotCaps, themeIcon, color, scheme
-@docs variant
+@docs variant, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.ThemeIcon
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -102,3 +103,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.ThemeIcon.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-theme-icon>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { themeIcon : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

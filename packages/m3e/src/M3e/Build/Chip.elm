@@ -1,11 +1,13 @@
 module M3e.Build.Chip exposing
     ( Builder, AttrCaps, SlotCaps, chip, value, variant
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Chip as Chip`.
 
 @docs Builder, AttrCaps, SlotCaps, chip, value, variant
+@docs build
 -}
 
 
@@ -79,3 +81,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Chip.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-chip>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { chip : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

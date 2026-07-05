@@ -1,17 +1,18 @@
 module M3e.Build.FabMenuTrigger exposing
-    ( Builder, AttrCaps, SlotCaps, fabMenuTrigger, for
+    ( Builder, AttrCaps, SlotCaps, fabMenuTrigger, for, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu-trigger>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenuTrigger as FabMenuTrigger`.
 
-@docs Builder, AttrCaps, SlotCaps, fabMenuTrigger, for
+@docs Builder, AttrCaps, SlotCaps, fabMenuTrigger, for, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.FabMenuTrigger
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -59,3 +60,11 @@ for v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.FabMenuTrigger.for v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-fab-menu-trigger>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { fabMenuTrigger : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

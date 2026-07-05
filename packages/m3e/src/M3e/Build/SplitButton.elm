@@ -1,11 +1,13 @@
 module M3e.Build.SplitButton exposing
     ( Builder, AttrCaps, SlotCaps, splitButton, variant, size
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-split-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SplitButton as SplitButton`.
 
 @docs Builder, AttrCaps, SlotCaps, splitButton, variant, size
+@docs build
 -}
 
 
@@ -93,3 +95,11 @@ size v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.SplitButton.size v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-split-button>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { splitButton : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

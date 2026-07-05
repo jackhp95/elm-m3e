@@ -1,13 +1,13 @@
 module M3e.Build.Menu exposing
     ( Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-    , variant, submenu, onBeforetoggle, onToggle
+    , variant, submenu, onBeforetoggle, onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Menu as Menu`.
 
 @docs Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-@docs variant, submenu, onBeforetoggle, onToggle
+@docs variant, submenu, onBeforetoggle, onToggle, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Menu
 import M3e.Cem.Menu
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -140,3 +141,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-menu>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { menu : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

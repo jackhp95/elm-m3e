@@ -1,13 +1,13 @@
 module M3e.Build.SegmentedButton exposing
     ( Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-    , multi, name, onChange, onBeforeinput, onInput
+    , multi, name, onChange, onBeforeinput, onInput, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-segmented-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SegmentedButton as SegmentedButton`.
 
 @docs Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-@docs multi, name, onChange, onBeforeinput, onInput
+@docs multi, name, onChange, onBeforeinput, onInput, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.SegmentedButton
 import M3e.Cem.SegmentedButton
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -167,3 +168,11 @@ onInput v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-segmented-button>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    -> M3e.Element.Element { segmentedButton : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

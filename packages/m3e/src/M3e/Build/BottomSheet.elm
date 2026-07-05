@@ -1,7 +1,7 @@
 module M3e.Build.BottomSheet exposing
     ( Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
     , handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening
-    , onClosing, onCancel, onOpened, onClosed
+    , onClosing, onCancel, onOpened, onClosed, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-bottom-sheet>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
 @docs handleLabel, hideable, hideFriction, modal, open, overshootLimit
-@docs onOpening, onClosing, onCancel, onOpened, onClosed
+@docs onOpening, onClosing, onCancel, onOpened, onClosed, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.BottomSheet
 import M3e.Cem.Html.BottomSheet
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -246,3 +247,11 @@ onClosed v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-bottom-sheet>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { bottomSheet : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

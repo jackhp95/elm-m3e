@@ -1,13 +1,13 @@
 module M3e.Build.SuggestionChip exposing
     ( Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
-    , name, type_, value, variant
+    , name, type_, value, variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-suggestion-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SuggestionChip as SuggestionChip`.
 
 @docs Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
-@docs name, type_, value, variant
+@docs name, type_, value, variant, build
 -}
 
 
@@ -169,3 +169,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.SuggestionChip.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-suggestion-chip>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { suggestionChip : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

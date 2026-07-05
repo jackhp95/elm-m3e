@@ -1,19 +1,20 @@
 module M3e.Build.FormField exposing
     ( Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
-    , hideSubscript, variant
+    , hideSubscript, variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-form-field>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FormField as FormField`.
 
 @docs Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
-@docs hideSubscript, variant
+@docs hideSubscript, variant, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.FormField
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -118,3 +119,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.FormField.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-form-field>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { formField : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

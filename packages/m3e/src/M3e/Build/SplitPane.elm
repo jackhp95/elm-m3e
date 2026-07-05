@@ -1,7 +1,7 @@
 module M3e.Build.SplitPane exposing
     ( Builder, AttrCaps, SlotCaps, splitPane, label, max
     , min, orientation, overshootLimit, step, value, wrapDetents, name
-    , disabled, onChange, onBeforeinput, onInput
+    , disabled, onChange, onBeforeinput, onInput, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-split-pane>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, splitPane, label, max
 @docs min, orientation, overshootLimit, step, value, wrapDetents
-@docs name, disabled, onChange, onBeforeinput, onInput
+@docs name, disabled, onChange, onBeforeinput, onInput, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.SplitPane
 import M3e.Cem.SplitPane
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -246,3 +247,11 @@ onInput v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-split-pane>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { splitPane : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

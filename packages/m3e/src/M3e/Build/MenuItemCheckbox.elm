@@ -1,13 +1,13 @@
 module M3e.Build.MenuItemCheckbox exposing
     ( Builder, AttrCaps, SlotCaps, menuItemCheckbox, disabled, checked
-    , onClick
+    , onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu-item-checkbox>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItemCheckbox as MenuItemCheckbox`.
 
 @docs Builder, AttrCaps, SlotCaps, menuItemCheckbox, disabled, checked
-@docs onClick
+@docs onClick, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.MenuItemCheckbox
 import M3e.Cem.MenuItemCheckbox
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -100,3 +101,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-menu-item-checkbox>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { menuItemCheckbox : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

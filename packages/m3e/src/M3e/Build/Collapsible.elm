@@ -1,13 +1,13 @@
 module M3e.Build.Collapsible exposing
     ( Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-    , noAnimate, onOpening, onOpened, onClosing, onClosed
+    , noAnimate, onOpening, onOpened, onClosing, onClosed, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-collapsible>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Collapsible as Collapsible`.
 
 @docs Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-@docs noAnimate, onOpening, onOpened, onClosing, onClosed
+@docs noAnimate, onOpening, onOpened, onClosing, onClosed, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Collapsible
 import M3e.Cem.Html.Collapsible
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -158,3 +159,11 @@ onClosed v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-collapsible>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { collapsible : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

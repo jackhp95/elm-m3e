@@ -1,15 +1,18 @@
-module M3e.Build.BottomSheetAction exposing ( Builder, AttrCaps, SlotCaps, bottomSheetAction )
+module M3e.Build.BottomSheetAction exposing
+    ( Builder, AttrCaps, SlotCaps, bottomSheetAction, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-bottom-sheet-action>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BottomSheetAction as BottomSheetAction`.
 
-@docs Builder, AttrCaps, SlotCaps, bottomSheetAction
+@docs Builder, AttrCaps, SlotCaps, bottomSheetAction, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.BottomSheetAction
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ bottomSheetAction =
              []
              []
         )
+
+
+{-| Build the `<m3e-bottom-sheet-action>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { bottomSheetAction : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

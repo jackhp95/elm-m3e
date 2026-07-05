@@ -1,19 +1,20 @@
 module M3e.Build.Ripple exposing
     ( Builder, AttrCaps, SlotCaps, ripple, centered, disabled
-    , for, radius, unbounded
+    , for, radius, unbounded, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-ripple>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Ripple as Ripple`.
 
 @docs Builder, AttrCaps, SlotCaps, ripple, centered, disabled
-@docs for, radius, unbounded
+@docs for, radius, unbounded, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Ripple
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -122,3 +123,11 @@ unbounded v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Ripple.unbounded v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-ripple>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { ripple : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

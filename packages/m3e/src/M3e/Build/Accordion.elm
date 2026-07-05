@@ -1,17 +1,18 @@
 module M3e.Build.Accordion exposing
-    ( Builder, AttrCaps, SlotCaps, accordion, multi
+    ( Builder, AttrCaps, SlotCaps, accordion, multi, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-accordion>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Accordion as Accordion`.
 
-@docs Builder, AttrCaps, SlotCaps, accordion, multi
+@docs Builder, AttrCaps, SlotCaps, accordion, multi, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Accordion
 import M3e.Cem.Attr
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -59,3 +60,11 @@ multi v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Accordion.multi v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-accordion>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { accordion : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

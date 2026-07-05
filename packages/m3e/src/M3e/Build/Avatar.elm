@@ -1,15 +1,18 @@
-module M3e.Build.Avatar exposing ( Builder, AttrCaps, SlotCaps, avatar )
+module M3e.Build.Avatar exposing
+    ( Builder, AttrCaps, SlotCaps, avatar, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-avatar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Avatar as Avatar`.
 
-@docs Builder, AttrCaps, SlotCaps, avatar
+@docs Builder, AttrCaps, SlotCaps, avatar, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Avatar
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ avatar =
              []
              []
         )
+
+
+{-| Build the `<m3e-avatar>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { avatar : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

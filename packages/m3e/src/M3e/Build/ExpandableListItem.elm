@@ -1,13 +1,13 @@
 module M3e.Build.ExpandableListItem exposing
     ( Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
-    , onOpening, onOpened, onClosing, onClosed
+    , onOpening, onOpened, onClosing, onClosed, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-expandable-list-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ExpandableListItem as ExpandableListItem`.
 
 @docs Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
-@docs onOpening, onOpened, onClosing, onClosed
+@docs onOpening, onOpened, onClosing, onClosed, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.ExpandableListItem
 import M3e.Cem.Html.ExpandableListItem
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -160,3 +161,11 @@ onClosed v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-expandable-list-item>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { expandableListItem : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

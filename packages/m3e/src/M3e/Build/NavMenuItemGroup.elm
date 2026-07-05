@@ -1,15 +1,18 @@
-module M3e.Build.NavMenuItemGroup exposing ( Builder, AttrCaps, SlotCaps, navMenuItemGroup )
+module M3e.Build.NavMenuItemGroup exposing
+    ( Builder, AttrCaps, SlotCaps, navMenuItemGroup, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-menu-item-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavMenuItemGroup as NavMenuItemGroup`.
 
-@docs Builder, AttrCaps, SlotCaps, navMenuItemGroup
+@docs Builder, AttrCaps, SlotCaps, navMenuItemGroup, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.NavMenuItemGroup
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -44,3 +47,11 @@ navMenuItemGroup =
              []
              []
         )
+
+
+{-| Build the `<m3e-nav-menu-item-group>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { navMenuItemGroup : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

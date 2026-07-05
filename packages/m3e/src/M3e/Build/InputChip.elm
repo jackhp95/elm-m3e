@@ -1,6 +1,6 @@
 module M3e.Build.InputChip exposing
     ( Builder, AttrCaps, SlotCaps, inputChip, disabled, disabledInteractive
-    , removable, removeLabel, value, variant, onRemove, onClick
+    , removable, removeLabel, value, variant, onRemove, onClick, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-input-chip>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, inputChip, disabled, disabledInteractive
 @docs removable, removeLabel, value, variant, onRemove, onClick
+@docs build
 -}
 
 
@@ -176,3 +177,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-input-chip>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { inputChip : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

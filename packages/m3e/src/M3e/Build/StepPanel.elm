@@ -1,15 +1,18 @@
-module M3e.Build.StepPanel exposing ( Builder, AttrCaps, SlotCaps, stepPanel )
+module M3e.Build.StepPanel exposing
+    ( Builder, AttrCaps, SlotCaps, stepPanel, build
+    )
 
 {-|
 The ⑤ Build shape for `<m3e-step-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepPanel as StepPanel`.
 
-@docs Builder, AttrCaps, SlotCaps, stepPanel
+@docs Builder, AttrCaps, SlotCaps, stepPanel, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.StepPanel
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -46,3 +49,11 @@ stepPanel =
              []
              []
         )
+
+
+{-| Build the `<m3e-step-panel>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { stepPanel : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

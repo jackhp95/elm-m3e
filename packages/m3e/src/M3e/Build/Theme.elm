@@ -1,6 +1,6 @@
 module M3e.Build.Theme exposing
     ( Builder, AttrCaps, SlotCaps, theme, color, contrast
-    , density, scheme, strongFocus, variant, motion, onChange
+    , density, scheme, strongFocus, variant, motion, onChange, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-theme>` — phantom-typed pipeline API. Import qua
 
 @docs Builder, AttrCaps, SlotCaps, theme, color, contrast
 @docs density, scheme, strongFocus, variant, motion, onChange
+@docs build
 -}
 
 
@@ -16,6 +17,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Theme
 import M3e.Cem.Theme
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -179,3 +181,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-theme>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { theme : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

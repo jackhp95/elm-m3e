@@ -1,13 +1,13 @@
 module M3e.Build.Snackbar exposing
     ( Builder, AttrCaps, SlotCaps, snackbar, action, closeLabel
-    , dismissible, duration, onBeforetoggle, onToggle
+    , dismissible, duration, onBeforetoggle, onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-snackbar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Snackbar as Snackbar`.
 
 @docs Builder, AttrCaps, SlotCaps, snackbar, action, closeLabel
-@docs dismissible, duration, onBeforetoggle, onToggle
+@docs dismissible, duration, onBeforetoggle, onToggle, build
 -}
 
 
@@ -144,3 +144,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-snackbar>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { snackbar : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

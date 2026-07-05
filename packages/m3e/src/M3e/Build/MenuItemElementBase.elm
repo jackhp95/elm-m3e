@@ -1,11 +1,13 @@
 module M3e.Build.MenuItemElementBase exposing
     ( Builder, AttrCaps, SlotCaps, menuItemElementBase, disabled, onClick
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<MenuItemElementBase>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItemElementBase as MenuItemElementBase`.
 
 @docs Builder, AttrCaps, SlotCaps, menuItemElementBase, disabled, onClick
+@docs build
 -}
 
 
@@ -14,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.MenuItemElementBase
 import M3e.Cem.MenuItemElementBase
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -81,3 +84,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<MenuItemElementBase>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { menuItemElementBase : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

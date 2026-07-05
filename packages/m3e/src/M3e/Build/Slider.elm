@@ -1,7 +1,7 @@
 module M3e.Build.Slider exposing
     ( Builder, AttrCaps, SlotCaps, slider, disabled, discrete
     , labelled, max, min, step, size, onBeforeinput, onInput
-    , onChange
+    , onChange, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-slider>` — phantom-typed pipeline API. Import qu
 
 @docs Builder, AttrCaps, SlotCaps, slider, disabled, discrete
 @docs labelled, max, min, step, size, onBeforeinput
-@docs onInput, onChange
+@docs onInput, onChange, build
 -}
 
 
@@ -18,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.Slider
 import M3e.Cem.Slider
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -203,3 +204,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-slider>` element from a `Builder`. -}
+build :
+    Builder a { s | default : M3e.Build.Internal.Filled } msg kind
+    -> M3e.Element.Element { slider : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

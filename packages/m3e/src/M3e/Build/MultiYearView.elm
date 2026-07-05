@@ -1,6 +1,6 @@
 module M3e.Build.MultiYearView exposing
     ( Builder, AttrCaps, SlotCaps, multiYearView, active, today
-    , date, activeDate, minDate, maxDate, onChange, onActiveChange
+    , date, activeDate, minDate, maxDate, onChange, onActiveChange, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-multi-year-view>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, multiYearView, active, today
 @docs date, activeDate, minDate, maxDate, onChange, onActiveChange
+@docs build
 -}
 
 
@@ -16,6 +17,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Html.MultiYearView
 import M3e.Cem.MultiYearView
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -170,3 +172,11 @@ onActiveChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-multi-year-view>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { multiYearView : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

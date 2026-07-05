@@ -1,7 +1,7 @@
 module M3e.Build.IconButton exposing
     ( Builder, AttrCaps, SlotCaps, iconButton, disabled, disabledInteractive
     , name, selected, shape, size, toggle, type_, value
-    , variant, width, onBeforeinput, onInput, onChange
+    , variant, width, onBeforeinput, onInput, onChange, build
     )
 
 {-|
@@ -10,6 +10,7 @@ The ⑤ Build shape for `<m3e-icon-button>` — phantom-typed pipeline API. Impo
 @docs Builder, AttrCaps, SlotCaps, iconButton, disabled, disabledInteractive
 @docs name, selected, shape, size, toggle, type_
 @docs value, variant, width, onBeforeinput, onInput, onChange
+@docs build
 -}
 
 
@@ -304,3 +305,11 @@ onChange v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-icon-button>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

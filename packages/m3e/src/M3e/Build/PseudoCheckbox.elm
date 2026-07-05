@@ -1,19 +1,20 @@
 module M3e.Build.PseudoCheckbox exposing
     ( Builder, AttrCaps, SlotCaps, pseudoCheckbox, checked, disabled
-    , indeterminate
+    , indeterminate, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-pseudo-checkbox>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.PseudoCheckbox as PseudoCheckbox`.
 
 @docs Builder, AttrCaps, SlotCaps, pseudoCheckbox, checked, disabled
-@docs indeterminate
+@docs indeterminate, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.PseudoCheckbox
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -90,3 +91,11 @@ indeterminate v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.PseudoCheckbox.indeterminate v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-pseudo-checkbox>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { pseudoCheckbox : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

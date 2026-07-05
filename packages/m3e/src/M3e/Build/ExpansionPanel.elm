@@ -1,6 +1,7 @@
 module M3e.Build.ExpansionPanel exposing
     ( Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
     , open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed
+    , build
     )
 
 {-|
@@ -8,7 +9,7 @@ The ⑤ Build shape for `<m3e-expansion-panel>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
 @docs open, toggleDirection, togglePosition, onOpening, onOpened, onClosing
-@docs onClosed
+@docs onClosed, build
 -}
 
 
@@ -17,6 +18,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.ExpansionPanel
 import M3e.Cem.Html.ExpansionPanel
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -204,3 +206,11 @@ onClosed v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-expansion-panel>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { expansionPanel : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

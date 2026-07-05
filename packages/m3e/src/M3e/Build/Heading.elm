@@ -1,13 +1,13 @@
 module M3e.Build.Heading exposing
     ( Builder, AttrCaps, SlotCaps, heading, emphasized, level
-    , size, variant
+    , size, variant, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-heading>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Heading as Heading`.
 
 @docs Builder, AttrCaps, SlotCaps, heading, emphasized, level
-@docs size, variant
+@docs size, variant, build
 -}
 
 
@@ -114,3 +114,11 @@ variant v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.Heading.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-heading>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { heading : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

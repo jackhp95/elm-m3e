@@ -1,13 +1,13 @@
 module M3e.Build.FabMenu exposing
     ( Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
-    , onToggle
+    , onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenu as FabMenu`.
 
 @docs Builder, AttrCaps, SlotCaps, fabMenu, variant, onBeforetoggle
-@docs onToggle
+@docs onToggle, build
 -}
 
 
@@ -16,6 +16,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.FabMenu
 import M3e.Cem.Html.FabMenu
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -100,3 +101,11 @@ onToggle v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-fab-menu>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { fabMenu : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

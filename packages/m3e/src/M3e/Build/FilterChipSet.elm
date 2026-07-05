@@ -1,6 +1,6 @@
 module M3e.Build.FilterChipSet exposing
     ( Builder, AttrCaps, SlotCaps, filterChipSet, disabled, hideSelectionIndicator
-    , multi, name, vertical, onChange, onBeforeinput, onInput
+    , multi, name, vertical, onChange, onBeforeinput, onInput, build
     )
 
 {-|
@@ -8,6 +8,7 @@ The ⑤ Build shape for `<m3e-filter-chip-set>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, filterChipSet, disabled, hideSelectionIndicator
 @docs multi, name, vertical, onChange, onBeforeinput, onInput
+@docs build
 -}
 
 
@@ -16,6 +17,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.FilterChipSet
 import M3e.Cem.Html.FilterChipSet
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -176,3 +178,11 @@ onInput v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-filter-chip-set>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { filterChipSet : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

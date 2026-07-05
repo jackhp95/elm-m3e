@@ -1,13 +1,13 @@
 module M3e.Build.SearchBar exposing
     ( Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-    , onClear
+    , onClear, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-search-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SearchBar as SearchBar`.
 
 @docs Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-@docs onClear
+@docs onClear, build
 -}
 
 
@@ -97,3 +97,11 @@ onClear v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-search-bar>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { searchBar : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

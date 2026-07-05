@@ -1,19 +1,20 @@
 module M3e.Build.TextareaAutosize exposing
     ( Builder, AttrCaps, SlotCaps, textareaAutosize, disabled, for
-    , maxRows, minRows
+    , maxRows, minRows, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-textarea-autosize>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TextareaAutosize as TextareaAutosize`.
 
 @docs Builder, AttrCaps, SlotCaps, textareaAutosize, disabled, for
-@docs maxRows, minRows
+@docs maxRows, minRows, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.TextareaAutosize
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -104,3 +105,11 @@ minRows v_ b_ =
              (M3e.Cem.Attr.forget (M3e.Cem.TextareaAutosize.minRows v_))
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-textarea-autosize>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { textareaAutosize : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)

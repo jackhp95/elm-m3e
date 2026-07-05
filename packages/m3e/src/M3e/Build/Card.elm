@@ -1,7 +1,7 @@
 module M3e.Build.Card exposing
     ( Builder, AttrCaps, SlotCaps, card, actionable, inline
     , orientation, variant, href, target, rel, download, name
-    , value, type_, disabledInteractive, disabled, onClick
+    , value, type_, disabledInteractive, disabled, onClick, build
     )
 
 {-|
@@ -10,6 +10,7 @@ The ⑤ Build shape for `<m3e-card>` — phantom-typed pipeline API. Import qual
 @docs Builder, AttrCaps, SlotCaps, card, actionable, inline
 @docs orientation, variant, href, target, rel, download
 @docs name, value, type_, disabledInteractive, disabled, onClick
+@docs build
 -}
 
 
@@ -18,6 +19,7 @@ import M3e.Build.Internal
 import M3e.Cem.Attr
 import M3e.Cem.Card
 import M3e.Cem.Html.Card
+import M3e.Element
 import M3e.Node
 import M3e.Value
 
@@ -267,3 +269,11 @@ onClick v_ b_ =
              )
              (M3e.Build.Internal.node_ b_)
         )
+
+
+{-| Build the `<m3e-card>` element from a `Builder`. -}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { card : M3e.Value.Supported } msg
+build b_ =
+    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
