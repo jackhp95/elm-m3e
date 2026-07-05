@@ -38,9 +38,12 @@ M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Tabs
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -65,12 +68,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | tabs : M3e.Value.Supported } msg
 view attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
-                  M3e.Cem.Tabs.tabs (List.map M3e.Cem.Attr.forget erased) ch
+                  M3e.Cem.Tabs.tabs
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
+                      ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 
@@ -151,7 +156,7 @@ child :
     M3e.Element.Element { tab : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
-    M3e.Content.slot "" el
+    M3e.Content.Internal.slot "" el
 
 
 {-| Place content in the `panel` slot. -}
@@ -159,7 +164,7 @@ panel :
     M3e.Element.Element { tabPanel : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
 panel el =
-    M3e.Content.slot "panel" el
+    M3e.Content.Internal.slot "panel" el
 
 
 {-| Place content in the `next-icon` slot. -}
@@ -167,7 +172,7 @@ nextIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
 nextIcon el =
-    M3e.Content.slot "next-icon" el
+    M3e.Content.Internal.slot "next-icon" el
 
 
 {-| Place content in the `prev-icon` slot. -}
@@ -175,7 +180,7 @@ prevIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
 prevIcon el =
-    M3e.Content.slot "prev-icon" el
+    M3e.Content.Internal.slot "prev-icon" el
 
 
 {-| Place many elements in the default slot. -}
@@ -183,4 +188,4 @@ children :
     List (M3e.Element.Element { tab : M3e.Value.Supported } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
-    List.map (M3e.Content.slot "") els
+    List.map (M3e.Content.Internal.slot "") els

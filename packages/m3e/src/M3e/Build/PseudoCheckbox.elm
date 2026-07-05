@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-pseudo-checkbox>` — phantom-typed pipeline API. 
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.PseudoCheckbox
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -46,7 +47,7 @@ pseudoCheckbox =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.PseudoCheckbox.pseudoCheckbox
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -62,7 +63,7 @@ checked :
 checked v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.PseudoCheckbox.checked v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.PseudoCheckbox.checked v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -75,7 +76,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.PseudoCheckbox.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.PseudoCheckbox.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -88,7 +89,9 @@ indeterminate :
 indeterminate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.PseudoCheckbox.indeterminate v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.PseudoCheckbox.indeterminate v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -98,4 +101,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { pseudoCheckbox : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

@@ -15,6 +15,7 @@ Middle layer for `<m3e-nav-item>`: the phantom-typed `Attr` setters (each an OPE
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.NavItem
 import M3e.Value
 
@@ -60,7 +61,7 @@ navItem attributes children =
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.disabled
 
 
 {-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
@@ -68,20 +69,20 @@ disabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
 disabledInteractive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.disabledInteractive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.disabledInteractive
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.download
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.download
 
 
 {-| The URL to which the link button points. (default: `""`) -}
 href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
 href =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.href
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.href
 
 
 {-| The layout orientation of the item. (default: `"vertical"`) -}
@@ -91,7 +92,7 @@ orientation :
     }
     -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
 orientation v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.NavItem.orientation
         (M3e.Value.toString v_)
 
@@ -99,19 +100,19 @@ orientation v_ =
 {-| The relationship between the `target` of the link button and the document. (default: `""`) -}
 rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
 rel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.rel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.rel
 
 
 {-| A value indicating whether the element is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.selected
 
 
 {-| The target of the link button. (default: `""`) -}
 target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
 target =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.target
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.NavItem.target
 
 
 {-| Listen for `beforeinput` events. -}
@@ -119,7 +120,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.NavItem.onBeforeinput
         (Json.Decode.map
              f_
@@ -131,7 +132,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.NavItem.onInput
         (Json.Decode.map
              f_
@@ -144,7 +145,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.NavItem.onChange
         (Json.Decode.map
              f_
@@ -155,4 +156,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.onClick (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.NavItem.onClick
+        (Json.Decode.succeed f_)

@@ -15,10 +15,11 @@ The ⑤ Build shape for `<m3e-nav-item>` — phantom-typed pipeline API. Import 
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.NavItem
 import M3e.Cem.NavItem
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -62,7 +63,7 @@ navItem =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.NavItem.navItem
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -78,7 +79,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -93,7 +94,9 @@ disabledInteractive :
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.disabledInteractive v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.NavItem.disabledInteractive v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -106,7 +109,7 @@ download :
 download v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.download v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.download v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -119,7 +122,7 @@ href :
 href v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.href v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.href v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -134,7 +137,7 @@ orientation :
 orientation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.orientation v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.orientation v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -147,7 +150,7 @@ rel :
 rel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.rel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.rel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -160,7 +163,7 @@ selected :
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.selected v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.selected v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -173,7 +176,7 @@ target :
 target v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavItem.target v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.target v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -186,8 +189,11 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.onBeforeinput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavItem.onBeforeinput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -201,8 +207,11 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavItem.onInput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -216,8 +225,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavItem.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -231,8 +243,11 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavItem.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavItem.onClick
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -243,4 +258,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { navItem : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

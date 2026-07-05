@@ -9,6 +9,7 @@ Middle layer for `<m3e-breadcrumb>`: the phantom-typed `Attr` setters (each an O
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Breadcrumb
 import M3e.Value
 
@@ -37,4 +38,4 @@ breadcrumb attributes children =
 {-| Whether items wrap to a new line. (default: `false`) -}
 wrap : Bool -> M3e.Cem.Attr.Attr { c | wrap : M3e.Value.Supported } msg
 wrap =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Breadcrumb.wrap
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Breadcrumb.wrap

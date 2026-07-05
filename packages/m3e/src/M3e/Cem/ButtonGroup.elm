@@ -9,6 +9,7 @@ Middle layer for `<m3e-button-group>`: the phantom-typed `Attr` setters (each an
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ButtonGroup
 import M3e.Value
 
@@ -35,7 +36,7 @@ buttonGroup attributes children =
 {-| Whether multiple toggle buttons can be selected. (default: `false`) -}
 multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
 multi =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ButtonGroup.multi
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ButtonGroup.multi
 
 
 {-| The size of the group. (default: `"small"`) -}
@@ -48,7 +49,9 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ButtonGroup.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.ButtonGroup.size
+        (M3e.Value.toString v_)
 
 
 {-| The appearance variant of the group. (default: `"standard"`) -}
@@ -58,6 +61,6 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ButtonGroup.variant
         (M3e.Value.toString v_)

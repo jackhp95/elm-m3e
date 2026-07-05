@@ -9,6 +9,7 @@ Middle layer for `<m3e-focus-ring>`: the phantom-typed `Attr` setters (each an O
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.FocusRing
 import M3e.Value
 
@@ -37,16 +38,16 @@ Focus rings can be still controlled manually by using the `show` and `hide` meth
 -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FocusRing.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FocusRing.disabled
 
 
 {-| Whether the focus ring animates inward instead of outward. (default: `false`) -}
 inward : Bool -> M3e.Cem.Attr.Attr { c | inward : M3e.Value.Supported } msg
 inward =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FocusRing.inward
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FocusRing.inward
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FocusRing.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FocusRing.for

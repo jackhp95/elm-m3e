@@ -14,6 +14,7 @@ Middle layer for `<m3e-month-view>`: the phantom-typed `Attr` setters (each an O
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.MonthView
 import M3e.Value
 
@@ -52,57 +53,57 @@ monthView attributes children =
 rangeStart :
     String -> M3e.Cem.Attr.Attr { c | rangeStart : M3e.Value.Supported } msg
 rangeStart =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.rangeStart
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.rangeStart
 
 
 {-| End of a date range. (default: `null`) -}
 rangeEnd :
     String -> M3e.Cem.Attr.Attr { c | rangeEnd : M3e.Value.Supported } msg
 rangeEnd =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.rangeEnd
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.rangeEnd
 
 
 {-| Whether the view is active. (default: `false`) -}
 active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
 active =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.active
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.active
 
 
 {-| Today's date. (default: `new Date()`) -}
 today : String -> M3e.Cem.Attr.Attr { c | today : M3e.Value.Supported } msg
 today =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.today
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.today
 
 
 {-| The selected date. (default: `null`) -}
 date : String -> M3e.Cem.Attr.Attr { c | date : M3e.Value.Supported } msg
 date =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.date
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.date
 
 
 {-| The active date. (default: `new Date()`) -}
 activeDate :
     String -> M3e.Cem.Attr.Attr { c | activeDate : M3e.Value.Supported } msg
 activeDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.activeDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.activeDate
 
 
 {-| The minimum date that can be selected. (default: `null`) -}
 minDate : String -> M3e.Cem.Attr.Attr { c | minDate : M3e.Value.Supported } msg
 minDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.minDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.minDate
 
 
 {-| The maximum date that can be selected. (default: `null`) -}
 maxDate : String -> M3e.Cem.Attr.Attr { c | maxDate : M3e.Value.Supported } msg
 maxDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MonthView.maxDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MonthView.maxDate
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.MonthView.onChange
         (Json.Decode.succeed f_)
 
@@ -111,6 +112,6 @@ onChange f_ =
 onActiveChange :
     msg -> M3e.Cem.Attr.Attr { c | onActiveChange : M3e.Value.Supported } msg
 onActiveChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.MonthView.onActiveChange
         (Json.Decode.succeed f_)

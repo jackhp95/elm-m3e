@@ -14,6 +14,7 @@ Middle layer for `<m3e-select>`: the phantom-typed `Attr` setters (each an OPEN 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Select
 import M3e.Value
 
@@ -57,7 +58,7 @@ select attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Select.disabled
 
 
 {-| Whether to hide the selection indicator for single select options. (default: `false`) -}
@@ -67,51 +68,55 @@ hideSelectionIndicator :
         | hideSelectionIndicator : M3e.Value.Supported
     } msg
 hideSelectionIndicator =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.hideSelectionIndicator
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Select.hideSelectionIndicator
 
 
 {-| Whether multiple options can be selected. (default: `false`) -}
 multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
 multi =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.multi
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Select.multi
 
 
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Select.name
 
 
 {-| Class or list of classes to be applied to the select's overlay panel. (default: `""`) -}
 panelClass :
     String -> M3e.Cem.Attr.Attr { c | panelClass : M3e.Value.Supported } msg
 panelClass =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.panelClass
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Select.panelClass
 
 
 {-| Whether the element is required. (default: `false`) -}
 required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
 required =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.required
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Select.required
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.onChange (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Select.onChange
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.onToggle (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Select.onToggle
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `beforeinput` events. -}
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Select.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -119,4 +124,6 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Select.onInput (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Select.onInput
+        (Json.Decode.succeed f_)

@@ -16,6 +16,7 @@ Middle layer for `<m3e-split-pane>`: the phantom-typed `Attr` setters (each an O
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SplitPane
 import M3e.Value
 
@@ -61,19 +62,19 @@ splitPane attributes children =
 {-| The accessible label given to the movable drag handle. (default: `"Resize panes"`) -}
 label : String -> M3e.Cem.Attr.Attr { c | label : M3e.Value.Supported } msg
 label =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.label
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.label
 
 
 {-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`) -}
 max : Float -> M3e.Cem.Attr.Attr { c | max : M3e.Value.Supported } msg
 max =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.max
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.max
 
 
 {-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`) -}
 min : Float -> M3e.Cem.Attr.Attr { c | min : M3e.Value.Supported } msg
 min =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.min
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.min
 
 
 {-| The orientation of the split. (default: `"horizontal"`) -}
@@ -84,7 +85,7 @@ orientation :
     }
     -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
 orientation v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SplitPane.orientation
         (M3e.Value.toString v_)
 
@@ -93,44 +94,44 @@ orientation v_ =
 overshootLimit :
     Float -> M3e.Cem.Attr.Attr { c | overshootLimit : M3e.Value.Supported } msg
 overshootLimit =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.overshootLimit
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.overshootLimit
 
 
 {-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`) -}
 step : Float -> M3e.Cem.Attr.Attr { c | step : M3e.Value.Supported } msg
 step =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.step
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.step
 
 
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
 value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.value
 
 
 {-| Whether cycling through detents will wrap. (default: `false`) -}
 wrapDetents :
     Bool -> M3e.Cem.Attr.Attr { c | wrapDetents : M3e.Value.Supported } msg
 wrapDetents =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.wrapDetents
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.wrapDetents
 
 
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.name
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SplitPane.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SplitPane.disabled
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SplitPane.onChange
         (Json.Decode.succeed f_)
 
@@ -139,7 +140,7 @@ onChange f_ =
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SplitPane.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -147,6 +148,6 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SplitPane.onInput
         (Json.Decode.succeed f_)

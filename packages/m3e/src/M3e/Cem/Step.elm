@@ -14,6 +14,7 @@ Middle layer for `<m3e-step>`: the phantom-typed `Attr` setters (each an OPEN ca
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Step
 import M3e.Value
 
@@ -63,43 +64,43 @@ step attributes children =
 completed :
     Bool -> M3e.Cem.Attr.Attr { c | completed : M3e.Value.Supported } msg
 completed =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.completed
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.completed
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.disabled
 
 
 {-| Whether the step is editable and users can return to it after completion. (default: `false`) -}
 editable : Bool -> M3e.Cem.Attr.Attr { c | editable : M3e.Value.Supported } msg
 editable =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.editable
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.editable
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.for
 
 
 {-| Whether the step is optional. (default: `false`) -}
 optional : Bool -> M3e.Cem.Attr.Attr { c | optional : M3e.Value.Supported } msg
 optional =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.optional
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.optional
 
 
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.selected
 
 
 {-| Whether the step has an error. (default: `false`) -}
 invalid : Bool -> M3e.Cem.Attr.Attr { c | invalid : M3e.Value.Supported } msg
 invalid =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.invalid
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Step.invalid
 
 
 {-| Listen for `beforeinput` events. -}
@@ -107,7 +108,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Step.onBeforeinput
         (Json.Decode.map
              f_
@@ -119,7 +120,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Step.onInput
         (Json.Decode.map
              f_
@@ -132,7 +133,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Step.onChange
         (Json.Decode.map
              f_
@@ -143,4 +144,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Step.onClick (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Step.onClick
+        (Json.Decode.succeed f_)

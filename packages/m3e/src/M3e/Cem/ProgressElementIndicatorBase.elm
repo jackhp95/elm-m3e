@@ -9,6 +9,7 @@ Middle layer for `<ProgressElementIndicatorBase>`: the phantom-typed `Attr` sett
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ProgressElementIndicatorBase
 import M3e.Value
 
@@ -35,13 +36,15 @@ progressElementIndicatorBase attributes children =
 {-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
 value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ProgressElementIndicatorBase.value
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.ProgressElementIndicatorBase.value
 
 
 {-| The maximum progress value. (default: `100`) -}
 max : Float -> M3e.Cem.Attr.Attr { c | max : M3e.Value.Supported } msg
 max =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ProgressElementIndicatorBase.max
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.ProgressElementIndicatorBase.max
 
 
 {-| The appearance of the indicator. (default: `"flat"`) -}
@@ -49,6 +52,6 @@ variant :
     M3e.Value.Value { flat : M3e.Value.Supported, wavy : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ProgressElementIndicatorBase.variant
         (M3e.Value.toString v_)

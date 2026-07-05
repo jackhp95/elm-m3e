@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-focus-ring>` — phantom-typed pipeline API. Impor
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.FocusRing
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -46,7 +47,7 @@ focusRing =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.FocusRing.focusRing
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -64,7 +65,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FocusRing.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FocusRing.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -77,7 +78,7 @@ inward :
 inward v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FocusRing.inward v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FocusRing.inward v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -90,7 +91,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.FocusRing.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FocusRing.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -100,4 +101,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { focusRing : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

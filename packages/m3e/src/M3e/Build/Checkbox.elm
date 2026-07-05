@@ -15,10 +15,11 @@ The ⑤ Build shape for `<m3e-checkbox>` — phantom-typed pipeline API. Import 
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Checkbox
 import M3e.Cem.Html.Checkbox
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -58,7 +59,7 @@ checkbox =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Checkbox.checkbox
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -74,7 +75,7 @@ checked :
 checked v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Checkbox.checked v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.checked v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -87,7 +88,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Checkbox.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -100,7 +101,7 @@ indeterminate :
 indeterminate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Checkbox.indeterminate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.indeterminate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -113,7 +114,7 @@ name :
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Checkbox.name v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.name v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -126,7 +127,7 @@ required :
 required v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Checkbox.required v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.required v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -139,7 +140,7 @@ value :
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Checkbox.value v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.value v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -152,8 +153,10 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Checkbox.onBeforeinput v_
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Checkbox.onBeforeinput
+                       v_
                   )
              )
              (M3e.Build.Internal.node_ b_)
@@ -168,8 +171,11 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Checkbox.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Checkbox.onInput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -183,8 +189,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Checkbox.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Checkbox.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -198,8 +207,11 @@ onInvalid :
 onInvalid v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Checkbox.onInvalid v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Checkbox.onInvalid
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -213,8 +225,11 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Checkbox.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Checkbox.onClick
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -225,4 +240,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { checkbox : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

@@ -9,6 +9,7 @@ Middle layer for `<m3e-shape>`: the phantom-typed `Attr` setters (each an OPEN c
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Shape
 import M3e.Value
 
@@ -70,4 +71,6 @@ name :
     }
     -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Shape.name (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Shape.name
+        (M3e.Value.toString v_)

@@ -9,6 +9,7 @@ Middle layer for `<m3e-action-list>`: the phantom-typed `Attr` setters (each an 
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ActionList
 import M3e.Value
 
@@ -37,6 +38,6 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ActionList.variant
         (M3e.Value.toString v_)

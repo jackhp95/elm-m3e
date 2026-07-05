@@ -16,6 +16,7 @@ Middle layer for `<m3e-calendar>`: the phantom-typed `Attr` setters (each an OPE
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Calendar
 import M3e.Value
 
@@ -59,39 +60,39 @@ calendar attributes children =
 {-| The selected date. (default: `null`) -}
 date : String -> M3e.Cem.Attr.Attr { c | date : M3e.Value.Supported } msg
 date =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.date
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.date
 
 
 {-| The maximum date that can be selected. (default: `null`) -}
 maxDate : String -> M3e.Cem.Attr.Attr { c | maxDate : M3e.Value.Supported } msg
 maxDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.maxDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.maxDate
 
 
 {-| The minimum date that can be selected. (default: `null`) -}
 minDate : String -> M3e.Cem.Attr.Attr { c | minDate : M3e.Value.Supported } msg
 minDate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.minDate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.minDate
 
 
 {-| End of a date range. (default: `null`) -}
 rangeEnd :
     String -> M3e.Cem.Attr.Attr { c | rangeEnd : M3e.Value.Supported } msg
 rangeEnd =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.rangeEnd
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.rangeEnd
 
 
 {-| Start of a date range. (default: `null`) -}
 rangeStart :
     String -> M3e.Cem.Attr.Attr { c | rangeStart : M3e.Value.Supported } msg
 rangeStart =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.rangeStart
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.rangeStart
 
 
 {-| A date specifying the period (month or year) to start the calendar in. (default: `null`) -}
 startAt : String -> M3e.Cem.Attr.Attr { c | startAt : M3e.Value.Supported } msg
 startAt =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.startAt
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.startAt
 
 
 {-| The initial view used to select a date. (default: `"month"`) -}
@@ -102,7 +103,7 @@ startView :
     }
     -> M3e.Cem.Attr.Attr { c | startView : M3e.Value.Supported } msg
 startView v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Calendar.startView
         (M3e.Value.toString v_)
 
@@ -112,14 +113,14 @@ previousMonthLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousMonthLabel : M3e.Value.Supported } msg
 previousMonthLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.previousMonthLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.previousMonthLabel
 
 
 {-| The accessible label given to the button used to move to the next month. (default: `"Next month"`) -}
 nextMonthLabel :
     String -> M3e.Cem.Attr.Attr { c | nextMonthLabel : M3e.Value.Supported } msg
 nextMonthLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.nextMonthLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.nextMonthLabel
 
 
 {-| The accessible label given to the button used to move to the previous year. (default: `"Previous year"`) -}
@@ -127,14 +128,14 @@ previousYearLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousYearLabel : M3e.Value.Supported } msg
 previousYearLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.previousYearLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.previousYearLabel
 
 
 {-| The accessible label given to the button used to move to the next year. (default: `"Next year"`) -}
 nextYearLabel :
     String -> M3e.Cem.Attr.Attr { c | nextYearLabel : M3e.Value.Supported } msg
 nextYearLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.nextYearLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.nextYearLabel
 
 
 {-| The accessible label given to the button used to move to the previous 24 years. (default: `"Previous 24 years"`) -}
@@ -144,7 +145,7 @@ previousMultiYearLabel :
         | previousMultiYearLabel : M3e.Value.Supported
     } msg
 previousMultiYearLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.previousMultiYearLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.previousMultiYearLabel
 
 
 {-| The accessible label given to the button used to move to the next 24 years. (default: `"Next 24 years"`) -}
@@ -152,12 +153,12 @@ nextMultiYearLabel :
     String
     -> M3e.Cem.Attr.Attr { c | nextMultiYearLabel : M3e.Value.Supported } msg
 nextMultiYearLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.nextMultiYearLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Calendar.nextMultiYearLabel
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Calendar.onChange
         (Json.Decode.succeed f_)

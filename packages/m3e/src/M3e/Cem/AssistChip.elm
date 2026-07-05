@@ -14,6 +14,7 @@ Middle layer for `<m3e-assist-chip>`: the phantom-typed `Attr` setters (each an 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.AssistChip
 import M3e.Value
 
@@ -55,7 +56,7 @@ assistChip attributes children =
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.disabled
 
 
 {-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
@@ -63,38 +64,38 @@ disabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
 disabledInteractive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.disabledInteractive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.disabledInteractive
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.download
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.download
 
 
 {-| The URL to which the link button points. (default: `""`) -}
 href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
 href =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.href
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.href
 
 
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.name
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`) -}
 rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
 rel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.rel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.rel
 
 
 {-| The target of the link button. (default: `""`) -}
 target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
 target =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.target
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.target
 
 
 {-| The type of the element. (default: `"button"`) -}
@@ -105,13 +106,15 @@ type_ :
     }
     -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
 type_ v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.type_ (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.AssistChip.type_
+        (M3e.Value.toString v_)
 
 
 {-| A string representing the value of the chip. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AssistChip.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AssistChip.value
 
 
 {-| The appearance variant of the chip. (default: `"outlined"`) -}
@@ -121,7 +124,7 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.AssistChip.variant
         (M3e.Value.toString v_)
 
@@ -129,6 +132,6 @@ variant v_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.AssistChip.onClick
         (Json.Decode.succeed f_)

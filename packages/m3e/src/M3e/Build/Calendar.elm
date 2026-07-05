@@ -16,10 +16,11 @@ The ⑤ Build shape for `<m3e-calendar>` — phantom-typed pipeline API. Import 
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Calendar
 import M3e.Cem.Html.Calendar
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -62,7 +63,7 @@ calendar =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Calendar.calendar
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -78,7 +79,7 @@ date :
 date v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.date v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.date v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -91,7 +92,7 @@ maxDate :
 maxDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.maxDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.maxDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -104,7 +105,7 @@ minDate :
 minDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.minDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.minDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -117,7 +118,7 @@ rangeEnd :
 rangeEnd v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.rangeEnd v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.rangeEnd v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -130,7 +131,7 @@ rangeStart :
 rangeStart v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.rangeStart v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.rangeStart v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -143,7 +144,7 @@ startAt :
 startAt v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.startAt v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.startAt v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -159,7 +160,7 @@ startView :
 startView v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.startView v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.startView v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -174,7 +175,9 @@ previousMonthLabel :
 previousMonthLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.previousMonthLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Calendar.previousMonthLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -187,7 +190,7 @@ nextMonthLabel :
 nextMonthLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.nextMonthLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.nextMonthLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -202,7 +205,9 @@ previousYearLabel :
 previousYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.previousYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Calendar.previousYearLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -215,7 +220,7 @@ nextYearLabel :
 nextYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.nextYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.nextYearLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -232,7 +237,9 @@ previousMultiYearLabel :
 previousMultiYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.previousMultiYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Calendar.previousMultiYearLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -247,7 +254,9 @@ nextMultiYearLabel :
 nextMultiYearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Calendar.nextMultiYearLabel v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Calendar.nextMultiYearLabel v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -260,8 +269,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Calendar.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Calendar.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -272,4 +284,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { calendar : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

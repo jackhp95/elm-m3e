@@ -14,10 +14,11 @@ The ⑤ Build shape for `<m3e-theme>` — phantom-typed pipeline API. Import qua
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Theme
 import M3e.Cem.Theme
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -53,7 +54,9 @@ theme =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.Theme.theme (List.map M3e.Cem.Attr.forget erased_) ch_
+                  M3e.Cem.Theme.theme
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
+                      ch_
              )
              []
              []
@@ -68,7 +71,7 @@ color :
 color v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.color v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.color v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -84,7 +87,7 @@ contrast :
 contrast v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.contrast v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.contrast v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -97,7 +100,7 @@ density :
 density v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.density v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.density v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -113,7 +116,7 @@ scheme :
 scheme v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.scheme v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.scheme v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -126,7 +129,7 @@ strongFocus :
 strongFocus v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.strongFocus v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.strongFocus v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -148,7 +151,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -163,7 +166,7 @@ motion :
 motion v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Theme.motion v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.motion v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -176,8 +179,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Theme.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Theme.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -188,4 +194,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { theme : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

@@ -14,10 +14,11 @@ The ⑤ Build shape for `<m3e-nav-menu-item>` — phantom-typed pipeline API. Im
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.NavMenuItem
 import M3e.Cem.NavMenuItem
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -64,7 +65,7 @@ navMenuItem req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.NavMenuItem.navMenuItem
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -80,7 +81,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavMenuItem.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -93,7 +94,7 @@ open :
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavMenuItem.open v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.open v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -106,7 +107,7 @@ selected :
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.NavMenuItem.selected v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.selected v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -119,8 +120,11 @@ onOpening :
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavMenuItem.onOpening v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavMenuItem.onOpening
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -134,8 +138,11 @@ onOpened :
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavMenuItem.onOpened v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavMenuItem.onOpened
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -149,8 +156,11 @@ onClosing :
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavMenuItem.onClosing v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavMenuItem.onClosing
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -164,8 +174,11 @@ onClosed :
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavMenuItem.onClosed v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavMenuItem.onClosed
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -179,8 +192,11 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.NavMenuItem.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.NavMenuItem.onClick
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -191,4 +207,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

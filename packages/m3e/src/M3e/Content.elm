@@ -1,4 +1,4 @@
-module M3e.Content exposing (Content, slot, toNode)
+module M3e.Content exposing (Content, toNode)
 
 {-| Slot-tagged content for the top-layer double-list `view [attrs] [content]`.
 A `Content slots msg` is an `Element` that has been assigned to a named slot; the
@@ -6,46 +6,27 @@ phantom `slots` row records WHICH slot, so the `view` can enforce that only vali
 slot content type-checks.
 
 The `slots` row is set by the generated per-slot setters' type annotations, which
-each wrap `slot "name"` at a concrete row — that is where the slot-safety
-invariant lives. To keep that the _only_ way to mint slot-tagged content, the
-`Content` constructor is opaque: a consumer cannot hand-build a `Content` with a
-fabricated row and smuggle it into a `view`. Build content through the generated
-setters, not by calling `slot` with an arbitrary name.
+each wrap the internal `slot "name"` at a concrete row — that is where the
+slot-safety invariant lives. To keep that the _only_ way to mint slot-tagged
+content, both the `Content` constructor and the raw `slot` stamper are withheld
+here and live in [`M3e.Content.Internal`](M3e-Content-Internal) (ADR 0014 §2): a
+consumer cannot hand-build a `Content` with a fabricated row and smuggle it into
+a `view`. Build content through the generated setters.
 
-@docs Content, slot, toNode
+@docs Content, toNode
 
 -}
 
-import M3e.Cem.Attr as Attr
-import M3e.Element as Element exposing (Element)
-import M3e.Node as Node exposing (Node)
+import M3e.Content.Internal as I
+import M3e.Node exposing (Node)
 
 
-{-| An `Element` assigned to a named slot. The phantom `slots` row records WHICH
-slot it was placed in, so the generated `view` type-checks that only content
-valid for a component's slots is passed. The constructor is opaque; mint a
-`Content` through the generated per-slot setters or [`slot`](#slot).
+{-| An `Element` assigned to a named slot, opaque and re-exported from
+[`M3e.Content.Internal`](M3e-Content-Internal). The phantom `slots` row records
+WHICH slot it was placed in. Mint one through the generated per-slot setters.
 -}
-type Content slots msg
-    = Content (Node msg)
-
-
-{-| Stamp a slot name onto an element as slot-tagged content. The default (unnamed)
-slot uses `""` and adds no `slot=` attribute; a named slot stamps `slot="name"`.
--}
-slot : String -> Element supported msg -> Content slots msg
-slot name el =
-    let
-        node =
-            Element.toNode el
-    in
-    Content
-        (if name == "" then
-            node
-
-         else
-            Node.addAttr (Attr.forget (Attr.slot name)) node
-        )
+type alias Content slots msg =
+    I.Content slots msg
 
 
 {-| Unwrap slot-tagged content back to its underlying `Node`, discarding the
@@ -53,5 +34,5 @@ phantom slot row. Used by the generated `view` to lower a `Content` list into
 the DOM children it renders.
 -}
 toNode : Content slots msg -> Node msg
-toNode (Content n) =
-    n
+toNode =
+    I.toNode

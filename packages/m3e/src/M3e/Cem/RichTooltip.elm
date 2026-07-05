@@ -14,6 +14,7 @@ Middle layer for `<m3e-rich-tooltip>`: the phantom-typed `Attr` setters (each an
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.RichTooltip
 import M3e.Value
 
@@ -53,20 +54,20 @@ richTooltip attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.RichTooltip.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.RichTooltip.disabled
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.RichTooltip.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.RichTooltip.for
 
 
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
 hideDelay :
     Float -> M3e.Cem.Attr.Attr { c | hideDelay : M3e.Value.Supported } msg
 hideDelay =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.RichTooltip.hideDelay
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.RichTooltip.hideDelay
 
 
 {-| The position of the tooltip. (default: `"below-after"`) -}
@@ -82,7 +83,7 @@ position :
     }
     -> M3e.Cem.Attr.Attr { c | position : M3e.Value.Supported } msg
 position v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.RichTooltip.position
         (M3e.Value.toString v_)
 
@@ -91,7 +92,7 @@ position v_ =
 showDelay :
     Float -> M3e.Cem.Attr.Attr { c | showDelay : M3e.Value.Supported } msg
 showDelay =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.RichTooltip.showDelay
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.RichTooltip.showDelay
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`) -}
@@ -102,7 +103,7 @@ touchGestures :
     }
     -> M3e.Cem.Attr.Attr { c | touchGestures : M3e.Value.Supported } msg
 touchGestures v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.RichTooltip.touchGestures
         (M3e.Value.toString v_)
 
@@ -111,7 +112,7 @@ touchGestures v_ =
 onBeforetoggle :
     msg -> M3e.Cem.Attr.Attr { c | onBeforetoggle : M3e.Value.Supported } msg
 onBeforetoggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.RichTooltip.onBeforetoggle
         (Json.Decode.succeed f_)
 
@@ -119,6 +120,6 @@ onBeforetoggle f_ =
 {-| Listen for `toggle` events. -}
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.RichTooltip.onToggle
         (Json.Decode.succeed f_)

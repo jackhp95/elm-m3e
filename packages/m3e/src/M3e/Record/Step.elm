@@ -31,9 +31,12 @@ A step in a wizard-like workflow.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Step
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -63,12 +66,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
-                  M3e.Cem.Step.step (List.map M3e.Cem.Attr.forget erased) ch
+                  M3e.Cem.Step.step
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
+                      ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
                   (List.map M3e.Content.toNode content_)
@@ -153,7 +158,7 @@ icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
 icon el =
-    M3e.Content.slot "icon" el
+    M3e.Content.Internal.slot "icon" el
 
 
 {-| Place content in the `done-icon` slot. -}
@@ -161,7 +166,7 @@ doneIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | doneIcon : M3e.Value.Supported } msg
 doneIcon el =
-    M3e.Content.slot "done-icon" el
+    M3e.Content.Internal.slot "done-icon" el
 
 
 {-| Place content in the `edit-icon` slot. -}
@@ -169,7 +174,7 @@ editIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | editIcon : M3e.Value.Supported } msg
 editIcon el =
-    M3e.Content.slot "edit-icon" el
+    M3e.Content.Internal.slot "edit-icon" el
 
 
 {-| Place content in the `error-icon` slot. -}
@@ -177,7 +182,7 @@ errorIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | errorIcon : M3e.Value.Supported } msg
 errorIcon el =
-    M3e.Content.slot "error-icon" el
+    M3e.Content.Internal.slot "error-icon" el
 
 
 {-| Place content in the `hint` slot. -}
@@ -185,7 +190,7 @@ hint :
     M3e.Element.Element { text : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
 hint el =
-    M3e.Content.slot "hint" el
+    M3e.Content.Internal.slot "hint" el
 
 
 {-| Place content in the `error` slot. -}
@@ -193,4 +198,4 @@ error :
     M3e.Element.Element { text : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
 error el =
-    M3e.Content.slot "error" el
+    M3e.Content.Internal.slot "error" el

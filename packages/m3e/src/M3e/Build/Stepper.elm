@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-stepper>` — phantom-typed pipeline API. Import q
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Stepper
 import M3e.Cem.Stepper
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -52,7 +53,7 @@ stepper =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Stepper.stepper
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -68,7 +69,7 @@ headerPosition :
 headerPosition v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Stepper.headerPosition v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Stepper.headerPosition v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -81,7 +82,7 @@ labelPosition :
 labelPosition v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Stepper.labelPosition v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Stepper.labelPosition v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -94,7 +95,7 @@ linear :
 linear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Stepper.linear v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Stepper.linear v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -110,7 +111,7 @@ orientation :
 orientation v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Stepper.orientation v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Stepper.orientation v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -123,8 +124,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Stepper.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Stepper.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -138,8 +142,11 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Stepper.onBeforeinput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Stepper.onBeforeinput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -153,8 +160,11 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Stepper.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Stepper.onInput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -165,4 +175,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { stepper : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

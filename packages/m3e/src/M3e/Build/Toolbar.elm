@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-toolbar>` — phantom-typed pipeline API. Import q
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Toolbar
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -47,7 +48,7 @@ toolbar =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Toolbar.toolbar
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -63,7 +64,7 @@ elevated :
 elevated v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Toolbar.elevated v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Toolbar.elevated v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -78,7 +79,7 @@ shape :
 shape v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Toolbar.shape v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Toolbar.shape v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -93,7 +94,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Toolbar.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Toolbar.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -106,7 +107,7 @@ vertical :
 vertical v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Toolbar.vertical v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Toolbar.vertical v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -116,4 +117,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { toolbar : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

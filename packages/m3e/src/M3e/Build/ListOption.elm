@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-list-option>` — phantom-typed pipeline API. Impo
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ListOption
 import M3e.Cem.ListOption
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -57,7 +58,7 @@ listOption =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.ListOption.listOption
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -73,7 +74,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ListOption.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -86,7 +87,7 @@ selected :
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ListOption.selected v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.selected v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -99,7 +100,7 @@ value :
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ListOption.value v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.value v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -112,8 +113,8 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.ListOption.onBeforeinput
                        v_
                   )
@@ -130,8 +131,11 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.ListOption.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.ListOption.onInput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -145,8 +149,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.ListOption.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.ListOption.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -160,8 +167,11 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.ListOption.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.ListOption.onClick
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -172,4 +182,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { listOption : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

@@ -10,6 +10,7 @@ Middle layer for `<m3e-tree>`: the phantom-typed `Attr` setters (each an OPEN ca
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Tree
 import M3e.Value
 
@@ -39,16 +40,18 @@ tree attributes children =
 {-| Whether multiple items can be selected. (default: `false`) -}
 multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
 multi =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tree.multi
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tree.multi
 
 
 {-| Whether multiple item selection cascades to child items. (default: `false`) -}
 cascade : Bool -> M3e.Cem.Attr.Attr { c | cascade : M3e.Value.Supported } msg
 cascade =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tree.cascade
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tree.cascade
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tree.onChange (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Tree.onChange
+        (Json.Decode.succeed f_)

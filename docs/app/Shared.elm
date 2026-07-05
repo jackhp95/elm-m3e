@@ -358,7 +358,7 @@ view _ page model toMsg pageView =
                     [ Seam.asAttribute (class "min-h-screen")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    (List.map Element.fromNode pageView.body)
+                    (List.map Seam.asElement pageView.body)
                 ]
             ]
 

@@ -14,10 +14,11 @@ The ⑤ Build shape for `<m3e-year-view>` — phantom-typed pipeline API. Import
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.YearView
 import M3e.Cem.YearView
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -54,7 +55,7 @@ yearView =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.YearView.yearView
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -70,7 +71,7 @@ active :
 active v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.YearView.active v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.YearView.active v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -83,7 +84,7 @@ today :
 today v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.YearView.today v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.YearView.today v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -96,7 +97,7 @@ date :
 date v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.YearView.date v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.YearView.date v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -109,7 +110,7 @@ activeDate :
 activeDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.YearView.activeDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.YearView.activeDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -122,7 +123,7 @@ minDate :
 minDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.YearView.minDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.YearView.minDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -135,7 +136,7 @@ maxDate :
 maxDate v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.YearView.maxDate v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.YearView.maxDate v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -148,8 +149,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.YearView.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.YearView.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -163,8 +167,8 @@ onActiveChange :
 onActiveChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.YearView.onActiveChange
                        v_
                   )
@@ -178,4 +182,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { yearView : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

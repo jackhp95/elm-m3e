@@ -1,8 +1,9 @@
 module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound, statusCode, update, view)
 
 import Effect exposing (Effect)
+import EscapeHatch
 import Html
-import M3e.Node as Node
+import M3e.Element as Element
 import View exposing (View)
 
 
@@ -42,7 +43,7 @@ internalError =
 view : ErrorPage -> Model -> View Msg
 view error _ =
     { body =
-        [ Node.raw
+        [ EscapeHatch.fromHtml
             (Html.div []
                 [ Html.p []
                     [ Html.text <|
@@ -55,6 +56,7 @@ view error _ =
                     ]
                 ]
             )
+            |> Element.toNode
         ]
     , title =
         case error of

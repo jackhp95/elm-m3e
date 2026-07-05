@@ -13,9 +13,10 @@ The ⑤ Build shape for `<m3e-suggestion-chip>` — phantom-typed pipeline API. 
 
 import M3e.Action
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.SuggestionChip
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -69,10 +70,13 @@ suggestionChip req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.SuggestionChip.suggestionChip
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
-             (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action))
+             (List.map
+                  M3e.Cem.Attr.Internal.forget
+                  (M3e.Action.toAttrs req_.action)
+             )
              [ M3e.Action.wrapContent
                  req_.action
                  (M3e.Element.toNode req_.content)
@@ -88,7 +92,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SuggestionChip.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SuggestionChip.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -103,7 +107,7 @@ disabledInteractive :
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
+             (M3e.Cem.Attr.Internal.forget
                   (M3e.Cem.SuggestionChip.disabledInteractive v_)
              )
              (M3e.Build.Internal.node_ b_)
@@ -118,7 +122,7 @@ name :
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SuggestionChip.name v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SuggestionChip.name v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -134,7 +138,7 @@ type_ :
 type_ v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SuggestionChip.type_ v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SuggestionChip.type_ v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -147,7 +151,7 @@ value :
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SuggestionChip.value v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SuggestionChip.value v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -162,7 +166,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SuggestionChip.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SuggestionChip.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -172,4 +176,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { suggestionChip : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

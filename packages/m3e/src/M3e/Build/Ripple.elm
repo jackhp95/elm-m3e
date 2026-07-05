@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-ripple>` — phantom-typed pipeline API. Import qu
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Ripple
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -48,7 +49,7 @@ ripple =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Ripple.ripple
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -66,7 +67,7 @@ centered :
 centered v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Ripple.centered v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Ripple.centered v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -81,7 +82,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Ripple.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Ripple.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -94,7 +95,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Ripple.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Ripple.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -107,7 +108,7 @@ radius :
 radius v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Ripple.radius v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Ripple.radius v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -120,7 +121,7 @@ unbounded :
 unbounded v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Ripple.unbounded v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Ripple.unbounded v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -130,4 +131,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { ripple : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

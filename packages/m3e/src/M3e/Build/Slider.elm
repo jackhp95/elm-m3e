@@ -15,10 +15,11 @@ The ⑤ Build shape for `<m3e-slider>` — phantom-typed pipeline API. Import qu
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Slider
 import M3e.Cem.Slider
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -57,7 +58,7 @@ slider =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Slider.slider
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -73,7 +74,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -86,7 +87,7 @@ discrete :
 discrete v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.discrete v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.discrete v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -99,7 +100,7 @@ labelled :
 labelled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.labelled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.labelled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -112,7 +113,7 @@ max :
 max v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.max v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.max v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -125,7 +126,7 @@ min :
 min v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.min v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.min v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -138,7 +139,7 @@ step :
 step v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.step v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.step v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -156,7 +157,7 @@ size :
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Slider.size v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Slider.size v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -169,8 +170,11 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.onBeforeinput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Slider.onBeforeinput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -184,8 +188,11 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Slider.onInput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -199,8 +206,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Slider.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -211,4 +221,4 @@ build :
     Builder a { s | unnamed : M3e.Build.Internal.Filled } msg kind
     -> M3e.Element.Element { slider : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

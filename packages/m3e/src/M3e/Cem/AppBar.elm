@@ -9,6 +9,7 @@ Middle layer for `<m3e-app-bar>`: the phantom-typed `Attr` setters (each an OPEN
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.AppBar
 import M3e.Value
 
@@ -43,13 +44,13 @@ appBar attributes children =
 {-| Whether the title and subtitle are centered. (default: `false`) -}
 centered : Bool -> M3e.Cem.Attr.Attr { c | centered : M3e.Value.Supported } msg
 centered =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AppBar.centered
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AppBar.centered
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AppBar.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.AppBar.for
 
 
 {-| The size of the bar. (default: `"small"`) -}
@@ -60,4 +61,6 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.AppBar.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.AppBar.size
+        (M3e.Value.toString v_)

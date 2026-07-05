@@ -38,7 +38,7 @@ import Html exposing (Html)
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import M3e.Cem.Attr as Attr exposing (Attr)
+import M3e.Cem.Attr.Internal as Attr exposing (Attr)
 import M3e.Cem.BottomSheetAction
 import M3e.Cem.BottomSheetTrigger
 import M3e.Cem.DatepickerToggle

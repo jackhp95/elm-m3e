@@ -16,6 +16,7 @@ Middle layer for `<m3e-fab>`: the phantom-typed `Attr` setters (each an OPEN cap
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Fab
 import M3e.Value
 
@@ -58,7 +59,7 @@ fab attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.disabled
 
 
 {-| Whether the element is disabled and interactive. (default: `false`) -}
@@ -66,44 +67,44 @@ disabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
 disabledInteractive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.disabledInteractive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.disabledInteractive
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.download
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.download
 
 
 {-| Whether the button is extended to show the label. (default: `false`) -}
 extended : Bool -> M3e.Cem.Attr.Attr { c | extended : M3e.Value.Supported } msg
 extended =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.extended
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.extended
 
 
 {-| The URL to which the link button points. (default: `""`) -}
 href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
 href =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.href
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.href
 
 
 {-| Whether to present a lowered elevation. (default: `false`) -}
 lowered : Bool -> M3e.Cem.Attr.Attr { c | lowered : M3e.Value.Supported } msg
 lowered =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.lowered
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.lowered
 
 
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.name
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`) -}
 rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
 rel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.rel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.rel
 
 
 {-| The size of the button. (default: `"medium"`) -}
@@ -114,13 +115,15 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Fab.size
+        (M3e.Value.toString v_)
 
 
 {-| The target of the link button. (default: `""`) -}
 target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
 target =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.target
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.target
 
 
 {-| The type of the element. (default: `"button"`) -}
@@ -131,13 +134,15 @@ type_ :
     }
     -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
 type_ v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.type_ (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Fab.type_
+        (M3e.Value.toString v_)
 
 
 {-| The value associated with the element's name when it's submitted with form data. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Fab.value
 
 
 {-| The appearance variant of the button. (default: `"primary-container"`) -}
@@ -152,10 +157,14 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Fab.variant
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Fab.onClick (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Fab.onClick
+        (Json.Decode.succeed f_)

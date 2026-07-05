@@ -15,10 +15,11 @@ The ⑤ Build shape for `<m3e-tabs>` — phantom-typed pipeline API. Import qual
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Tabs
 import M3e.Cem.Tabs
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -57,7 +58,9 @@ tabs =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.Tabs.tabs (List.map M3e.Cem.Attr.forget erased_) ch_
+                  M3e.Cem.Tabs.tabs
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
+                      ch_
              )
              []
              []
@@ -77,7 +80,7 @@ disablePagination :
 disablePagination v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tabs.disablePagination v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.disablePagination v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -92,7 +95,7 @@ headerPosition :
 headerPosition v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tabs.headerPosition v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.headerPosition v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -105,7 +108,7 @@ nextPageLabel :
 nextPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tabs.nextPageLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.nextPageLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -120,7 +123,7 @@ previousPageLabel :
 previousPageLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tabs.previousPageLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.previousPageLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -133,7 +136,7 @@ stretch :
 stretch v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tabs.stretch v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.stretch v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -148,7 +151,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tabs.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -161,8 +164,9 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.onChange v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -176,8 +180,11 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onBeforeinput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Tabs.onBeforeinput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -191,8 +198,8 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tabs.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.onInput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -203,4 +210,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { tabs : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

@@ -31,9 +31,12 @@ An item in a list that can be expanded to show more items.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.ExpandableListItem
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -57,14 +60,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | expandableListItem : M3e.Value.Supported } msg
 view attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.ExpandableListItem.expandableListItem
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 
@@ -112,7 +115,7 @@ child :
     } msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
-    M3e.Content.slot "" el
+    M3e.Content.Internal.slot "" el
 
 
 {-| Place content in the `leading` slot. -}
@@ -124,7 +127,7 @@ leading :
     } msg
     -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
 leading el =
-    M3e.Content.slot "leading" el
+    M3e.Content.Internal.slot "leading" el
 
 
 {-| Place content in the `overline` slot. -}
@@ -134,7 +137,7 @@ overline :
     } msg
     -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
 overline el =
-    M3e.Content.slot "overline" el
+    M3e.Content.Internal.slot "overline" el
 
 
 {-| Place content in the `supporting-text` slot. -}
@@ -144,7 +147,7 @@ supportingText :
     } msg
     -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
 supportingText el =
-    M3e.Content.slot "supporting-text" el
+    M3e.Content.Internal.slot "supporting-text" el
 
 
 {-| Place content in the `toggle-icon` slot. -}
@@ -152,7 +155,7 @@ toggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
 toggleIcon el =
-    M3e.Content.slot "toggle-icon" el
+    M3e.Content.Internal.slot "toggle-icon" el
 
 
 {-| Place content in the `items` slot. -}
@@ -160,7 +163,7 @@ items :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | items : M3e.Value.Supported } msg
 items el =
-    M3e.Content.slot "items" el
+    M3e.Content.Internal.slot "items" el
 
 
 {-| Place many elements in the default slot. -}
@@ -170,4 +173,4 @@ children :
     } msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
-    List.map (M3e.Content.slot "") els
+    List.map (M3e.Content.Internal.slot "") els

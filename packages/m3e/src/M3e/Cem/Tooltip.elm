@@ -13,6 +13,7 @@ Middle layer for `<m3e-tooltip>`: the phantom-typed `Attr` setters (each an OPEN
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Tooltip
 import M3e.Value
 
@@ -42,20 +43,20 @@ tooltip attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tooltip.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tooltip.disabled
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tooltip.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tooltip.for
 
 
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
 hideDelay :
     Float -> M3e.Cem.Attr.Attr { c | hideDelay : M3e.Value.Supported } msg
 hideDelay =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tooltip.hideDelay
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tooltip.hideDelay
 
 
 {-| The position of the tooltip. (default: `"below"`) -}
@@ -67,14 +68,16 @@ position :
     }
     -> M3e.Cem.Attr.Attr { c | position : M3e.Value.Supported } msg
 position v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tooltip.position (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Tooltip.position
+        (M3e.Value.toString v_)
 
 
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
 showDelay :
     Float -> M3e.Cem.Attr.Attr { c | showDelay : M3e.Value.Supported } msg
 showDelay =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Tooltip.showDelay
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tooltip.showDelay
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`) -}
@@ -85,6 +88,6 @@ touchGestures :
     }
     -> M3e.Cem.Attr.Attr { c | touchGestures : M3e.Value.Supported } msg
 touchGestures v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Tooltip.touchGestures
         (M3e.Value.toString v_)

@@ -9,6 +9,7 @@ Middle layer for `<m3e-slide>`: the phantom-typed `Attr` setters (each an OPEN c
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Slide
 import M3e.Value
 
@@ -34,4 +35,4 @@ slide attributes children =
 selectedIndex :
     Float -> M3e.Cem.Attr.Attr { c | selectedIndex : M3e.Value.Supported } msg
 selectedIndex =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slide.selectedIndex
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slide.selectedIndex

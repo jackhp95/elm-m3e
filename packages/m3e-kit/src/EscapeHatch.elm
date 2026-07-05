@@ -1,13 +1,13 @@
-module EscapeHatch exposing (fromHtml, asElement, asAttribute)
+module EscapeHatch exposing (asAttribute, asElement, fromHtml)
 
 {-| The break-glass escape, usable in ANY file. Loud + greppable; the design-system
 team audits usages and fixes either the app or the codegen'd package.
 -}
 
 import Html exposing (Html)
-import M3e.Cem.Attr as Attr exposing (Attr)
-import M3e.Element as Element exposing (Element)
-import M3e.Node as Node
+import M3e.Cem.Attr.Internal as Attr exposing (Attr)
+import M3e.Element.Internal as Element exposing (Element)
+import M3e.Node.Internal as Node
 
 
 fromHtml : Html msg -> Element supported msg

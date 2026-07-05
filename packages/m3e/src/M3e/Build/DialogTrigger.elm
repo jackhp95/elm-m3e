@@ -10,9 +10,10 @@ The ⑤ Build shape for `<m3e-dialog-trigger>` — phantom-typed pipeline API. I
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.DialogTrigger
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -41,7 +42,7 @@ dialogTrigger =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.DialogTrigger.dialogTrigger
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -57,7 +58,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.DialogTrigger.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.DialogTrigger.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -67,4 +68,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { dialogTrigger : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

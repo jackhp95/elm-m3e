@@ -12,6 +12,7 @@ Middle layer for `<m3e-expansion-header>`: the phantom-typed `Attr` setters (eac
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ExpansionHeader
 import M3e.Value
 
@@ -47,7 +48,7 @@ expansionHeader attributes children =
 hideToggle :
     Bool -> M3e.Cem.Attr.Attr { c | hideToggle : M3e.Value.Supported } msg
 hideToggle =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ExpansionHeader.hideToggle
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ExpansionHeader.hideToggle
 
 
 {-| The direction of the expansion toggle. (default: `"vertical"`) -}
@@ -57,7 +58,7 @@ toggleDirection :
     }
     -> M3e.Cem.Attr.Attr { c | toggleDirection : M3e.Value.Supported } msg
 toggleDirection v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpansionHeader.toggleDirection
         (M3e.Value.toString v_)
 
@@ -69,7 +70,7 @@ togglePosition :
     }
     -> M3e.Cem.Attr.Attr { c | togglePosition : M3e.Value.Supported } msg
 togglePosition v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpansionHeader.togglePosition
         (M3e.Value.toString v_)
 
@@ -77,12 +78,12 @@ togglePosition v_ =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ExpansionHeader.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ExpansionHeader.disabled
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ExpansionHeader.onClick
         (Json.Decode.succeed f_)

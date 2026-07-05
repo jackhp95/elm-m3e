@@ -13,10 +13,11 @@ The ⑤ Build shape for `<m3e-tab>` — phantom-typed pipeline API. Import quali
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Tab
 import M3e.Cem.Tab
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -53,7 +54,9 @@ tab =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.Tab.tab (List.map M3e.Cem.Attr.forget erased_) ch_
+                  M3e.Cem.Tab.tab
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
+                      ch_
              )
              []
              []
@@ -68,7 +71,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tab.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tab.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -81,7 +84,7 @@ for :
 for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tab.for v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tab.for v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -94,7 +97,7 @@ selected :
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Tab.selected v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tab.selected v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -107,8 +110,11 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.onBeforeinput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Tab.onBeforeinput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -122,8 +128,8 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tab.onInput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -137,8 +143,8 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tab.onChange v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -152,8 +158,8 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Tab.onClick v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tab.onClick v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -164,4 +170,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { tab : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

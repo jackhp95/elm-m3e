@@ -11,8 +11,10 @@ A base implementation for an element used to convey progress. This class must be
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.ProgressElementIndicatorBase
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -29,14 +31,14 @@ view :
         | progressElementIndicatorBase : M3e.Value.Supported
     } msg
 view attributes children =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.ProgressElementIndicatorBase.progressElementIndicatorBase
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Element.toNode children)
         )
 

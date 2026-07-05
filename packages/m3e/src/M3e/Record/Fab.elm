@@ -34,9 +34,12 @@ M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label "Navigation menu" ] 
 
 import M3e.Action
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Fab
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -77,15 +80,19 @@ view :
     } msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
 view req_ attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
-                  M3e.Cem.Fab.fab (List.map M3e.Cem.Attr.forget erased) ch
+                  M3e.Cem.Fab.fab
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
+                      ch
              )
              (List.append
-                  (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action)
+                  (List.map
+                       M3e.Cem.Attr.Internal.forget
+                       (M3e.Action.toAttrs req_.action)
                   )
-                  (List.map M3e.Cem.Attr.forget attributes)
+                  (List.map M3e.Cem.Attr.Internal.forget attributes)
              )
              (List.append
                   [ M3e.Action.wrapContent
@@ -177,7 +184,7 @@ label :
     M3e.Element.Element { text : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
 label el =
-    M3e.Content.slot "label" el
+    M3e.Content.Internal.slot "label" el
 
 
 {-| Place content in the `close-icon` slot. -}
@@ -185,4 +192,4 @@ closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
 closeIcon el =
-    M3e.Content.slot "close-icon" el
+    M3e.Content.Internal.slot "close-icon" el

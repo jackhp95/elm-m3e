@@ -9,6 +9,7 @@ Middle layer for `<m3e-scroll-container>`: the phantom-typed `Attr` setters (eac
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.ScrollContainer
 import M3e.Value
 
@@ -40,7 +41,7 @@ dividers :
     }
     -> M3e.Cem.Attr.Attr { c | dividers : M3e.Value.Supported } msg
 dividers v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.ScrollContainer.dividers
         (M3e.Value.toString v_)
 
@@ -48,4 +49,4 @@ dividers v_ =
 {-| Whether to present thin scrollbars. (default: `false`) -}
 thin : Bool -> M3e.Cem.Attr.Attr { c | thin : M3e.Value.Supported } msg
 thin =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.ScrollContainer.thin
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.ScrollContainer.thin

@@ -14,6 +14,7 @@ Middle layer for `<m3e-slider>`: the phantom-typed `Attr` setters (each an OPEN 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Slider
 import M3e.Value
 
@@ -52,37 +53,37 @@ slider attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slider.disabled
 
 
 {-| Whether to show tick marks. (default: `false`) -}
 discrete : Bool -> M3e.Cem.Attr.Attr { c | discrete : M3e.Value.Supported } msg
 discrete =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.discrete
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slider.discrete
 
 
 {-| Whether to show value labels when activated. (default: `false`) -}
 labelled : Bool -> M3e.Cem.Attr.Attr { c | labelled : M3e.Value.Supported } msg
 labelled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.labelled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slider.labelled
 
 
 {-| The maximum allowable value. (default: `100`) -}
 max : Float -> M3e.Cem.Attr.Attr { c | max : M3e.Value.Supported } msg
 max =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.max
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slider.max
 
 
 {-| The minimum allowable value. (default: `0`) -}
 min : Float -> M3e.Cem.Attr.Attr { c | min : M3e.Value.Supported } msg
 min =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.min
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slider.min
 
 
 {-| The value at which the thumb will snap. (default: `1`) -}
 step : Float -> M3e.Cem.Attr.Attr { c | step : M3e.Value.Supported } msg
 step =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.step
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Slider.step
 
 
 {-| The size of the slider. (default: `"extra-small"`) -}
@@ -95,14 +96,16 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Slider.size
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `beforeinput` events. -}
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Slider.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -110,10 +113,14 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.onInput (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Slider.onInput
+        (Json.Decode.succeed f_)
 
 
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Slider.onChange (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Slider.onChange
+        (Json.Decode.succeed f_)

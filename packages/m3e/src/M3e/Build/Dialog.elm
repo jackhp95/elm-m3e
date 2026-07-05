@@ -15,10 +15,11 @@ The ⑤ Build shape for `<m3e-dialog>` — phantom-typed pipeline API. Import qu
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Dialog
 import M3e.Cem.Html.Dialog
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -61,7 +62,7 @@ dialog =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Dialog.dialog
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -77,7 +78,7 @@ alert :
 alert v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Dialog.alert v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.alert v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -90,7 +91,7 @@ closeLabel :
 closeLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Dialog.closeLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.closeLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -103,7 +104,7 @@ disableClose :
 disableClose v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Dialog.disableClose v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.disableClose v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -116,7 +117,7 @@ dismissible :
 dismissible v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Dialog.dismissible v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.dismissible v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -129,7 +130,7 @@ noFocusTrap :
 noFocusTrap v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Dialog.noFocusTrap v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.noFocusTrap v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -142,7 +143,7 @@ open :
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Dialog.open v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.open v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -155,8 +156,11 @@ onOpening :
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onOpening v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Dialog.onOpening
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -170,8 +174,11 @@ onOpened :
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onOpened v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Dialog.onOpened
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -185,8 +192,11 @@ onClosing :
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onClosing v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Dialog.onClosing
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -200,8 +210,11 @@ onClosed :
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onClosed v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Dialog.onClosed
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -215,8 +228,11 @@ onCancel :
 onCancel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Dialog.onCancel v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Dialog.onCancel
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -227,4 +243,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { dialog : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

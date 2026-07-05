@@ -44,9 +44,12 @@ Kit.link "/entities/1" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Card
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -77,12 +80,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | card : M3e.Value.Supported } msg
 view attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
-                  M3e.Cem.Card.card (List.map M3e.Cem.Attr.forget erased) ch
+                  M3e.Cem.Card.card
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
+                      ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 
@@ -198,7 +203,7 @@ child :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
 child el =
-    M3e.Content.slot "" el
+    M3e.Content.Internal.slot "" el
 
 
 {-| Place content in the `header` slot. -}
@@ -206,7 +211,7 @@ header :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
 header el =
-    M3e.Content.slot "header" el
+    M3e.Content.Internal.slot "header" el
 
 
 {-| Place content in the `content` slot. -}
@@ -214,7 +219,7 @@ content :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | content : M3e.Value.Supported } msg
 content el =
-    M3e.Content.slot "content" el
+    M3e.Content.Internal.slot "content" el
 
 
 {-| Place content in the `actions` slot. -}
@@ -222,7 +227,7 @@ actions :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
 actions el =
-    M3e.Content.slot "actions" el
+    M3e.Content.Internal.slot "actions" el
 
 
 {-| Place content in the `footer` slot. -}
@@ -230,7 +235,7 @@ footer :
     M3e.Element.Element any msg
     -> M3e.Content.Content { r | footer : M3e.Value.Supported } msg
 footer el =
-    M3e.Content.slot "footer" el
+    M3e.Content.Internal.slot "footer" el
 
 
 {-| Place many elements in the default slot. -}
@@ -238,4 +243,4 @@ children :
     List (M3e.Element.Element any msg)
     -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
 children els =
-    List.map (M3e.Content.slot "") els
+    List.map (M3e.Content.Internal.slot "") els

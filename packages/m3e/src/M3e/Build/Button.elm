@@ -16,10 +16,11 @@ The ⑤ Build shape for `<m3e-button>` — phantom-typed pipeline API. Import qu
 import Json.Decode
 import M3e.Action
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Button
 import M3e.Cem.Html.Button
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -87,10 +88,13 @@ button req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.Button.button
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
-             (List.map M3e.Cem.Attr.forget (M3e.Action.toAttrs req_.action))
+             (List.map
+                  M3e.Cem.Attr.Internal.forget
+                  (M3e.Action.toAttrs req_.action)
+             )
              [ M3e.Action.wrapContent
                  req_.action
                  (M3e.Element.toNode req_.content)
@@ -106,7 +110,7 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -121,7 +125,9 @@ disabledInteractive :
 disabledInteractive v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.disabledInteractive v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Button.disabledInteractive v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -134,7 +140,7 @@ name :
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.name v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.name v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -147,7 +153,7 @@ selected :
 selected v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.selected v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.selected v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -162,7 +168,7 @@ shape :
 shape v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.shape v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.shape v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -180,7 +186,7 @@ size :
 size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.size v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.size v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -193,7 +199,7 @@ toggle :
 toggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.toggle v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.toggle v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -209,7 +215,7 @@ type_ :
 type_ v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.type_ v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.type_ v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -222,7 +228,7 @@ value :
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.value v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.value v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -240,7 +246,7 @@ variant :
 variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.Button.variant v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Button.variant v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -253,8 +259,11 @@ onBeforeinput :
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Button.onBeforeinput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Button.onBeforeinput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -268,8 +277,11 @@ onInput :
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Button.onInput v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Button.onInput
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -283,8 +295,11 @@ onChange :
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.Button.onChange v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.Button.onChange
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -295,4 +310,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { button : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

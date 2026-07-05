@@ -11,6 +11,7 @@ Middle layer for `<m3e-ripple>`: the phantom-typed `Attr` setters (each an OPEN 
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Ripple
 import M3e.Value
 
@@ -41,7 +42,7 @@ than originating from the location of the click event. (default: `false`)
 -}
 centered : Bool -> M3e.Cem.Attr.Attr { c | centered : M3e.Value.Supported } msg
 centered =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Ripple.centered
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Ripple.centered
 
 
 {-| Whether click events will not trigger the ripple.
@@ -49,23 +50,23 @@ Ripples can be still controlled manually by using the `show` and 'hide' methods.
 -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Ripple.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Ripple.disabled
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
 for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
 for =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Ripple.for
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Ripple.for
 
 
 {-| The radius, in pixels, of the ripple. (default: `null`) -}
 radius : Float -> M3e.Cem.Attr.Attr { c | radius : M3e.Value.Supported } msg
 radius =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Ripple.radius
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Ripple.radius
 
 
 {-| Whether the ripple is visible outside the element's bounds. (default: `false`) -}
 unbounded :
     Bool -> M3e.Cem.Attr.Attr { c | unbounded : M3e.Value.Supported } msg
 unbounded =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Ripple.unbounded
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Ripple.unbounded

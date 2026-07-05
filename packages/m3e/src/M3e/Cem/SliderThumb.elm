@@ -14,6 +14,7 @@ Middle layer for `<m3e-slider-thumb>`: the phantom-typed `Attr` setters (each an
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SliderThumb
 import M3e.Value
 
@@ -52,26 +53,26 @@ sliderThumb attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SliderThumb.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SliderThumb.disabled
 
 
 {-| The name that identifies the element when submitting the associated form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SliderThumb.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SliderThumb.name
 
 
 {-| The value of the thumb. (default: `null`) -}
 value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.SliderThumb.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SliderThumb.value
 
 
 {-| Listen for `value-change` events. -}
 onValueChange :
     msg -> M3e.Cem.Attr.Attr { c | onValueChange : M3e.Value.Supported } msg
 onValueChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SliderThumb.onValueChange
         (Json.Decode.succeed f_)
 
@@ -80,7 +81,7 @@ onValueChange f_ =
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SliderThumb.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -88,7 +89,7 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SliderThumb.onInput
         (Json.Decode.succeed f_)
 
@@ -96,7 +97,7 @@ onInput f_ =
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SliderThumb.onChange
         (Json.Decode.succeed f_)
 
@@ -104,6 +105,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.SliderThumb.onClick
         (Json.Decode.succeed f_)

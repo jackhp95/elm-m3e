@@ -15,10 +15,11 @@ The ⑤ Build shape for `<m3e-search-view>` — phantom-typed pipeline API. Impo
 
 import Json.Decode
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.SearchView
 import M3e.Cem.SearchView
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -62,7 +63,7 @@ searchView req_ =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.SearchView.searchView
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -78,7 +79,7 @@ contained :
 contained v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchView.contained v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.contained v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -94,7 +95,7 @@ mode :
 mode v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchView.mode v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.mode v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -107,7 +108,7 @@ open :
 open v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchView.open v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.open v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -120,7 +121,7 @@ clearLabel :
 clearLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchView.clearLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.clearLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -133,7 +134,7 @@ closeLabel :
 closeLabel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchView.closeLabel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.closeLabel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -146,7 +147,9 @@ hideSearchIcon :
 hideSearchIcon v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.SearchView.hideSearchIcon v_))
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.SearchView.hideSearchIcon v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -159,8 +162,11 @@ onQuery :
 onQuery v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.onQuery v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.SearchView.onQuery
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -174,8 +180,11 @@ onClear :
 onClear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.onClear v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.SearchView.onClear
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -189,8 +198,8 @@ onBeforetoggle :
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
                        M3e.Cem.Html.SearchView.onBeforetoggle
                        v_
                   )
@@ -207,8 +216,11 @@ onToggle :
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget
-                  (M3e.Cem.Attr.attribute M3e.Cem.Html.SearchView.onToggle v_)
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.SearchView.onToggle
+                       v_
+                  )
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -219,4 +231,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { searchView : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

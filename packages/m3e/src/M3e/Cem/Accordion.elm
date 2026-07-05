@@ -9,6 +9,7 @@ Middle layer for `<m3e-accordion>`: the phantom-typed `Attr` setters (each an OP
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Accordion
 import M3e.Value
 
@@ -33,4 +34,4 @@ accordion attributes children =
 {-| Whether multiple expansion panels can be open at the same time. (default: `false`) -}
 multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
 multi =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Accordion.multi
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Accordion.multi

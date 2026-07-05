@@ -10,6 +10,7 @@ Middle layer for `<m3e-menu-item-radio>`: the phantom-typed `Attr` setters (each
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.MenuItemRadio
 import M3e.Value
 
@@ -43,18 +44,18 @@ menuItemRadio attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MenuItemRadio.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItemRadio.disabled
 
 
 {-| Whether the element is checked. (default: `false`) -}
 checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
 checked =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.MenuItemRadio.checked
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItemRadio.checked
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.MenuItemRadio.onClick
         (Json.Decode.succeed f_)

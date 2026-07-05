@@ -9,6 +9,7 @@ Middle layer for `<m3e-focus-trap>`: the phantom-typed `Attr` setters (each an O
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.FocusTrap
 import M3e.Value
 
@@ -33,4 +34,4 @@ focusTrap attributes children =
 {-| Disables the focus trap. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.FocusTrap.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FocusTrap.disabled

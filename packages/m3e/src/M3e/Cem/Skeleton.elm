@@ -9,6 +9,7 @@ Middle layer for `<m3e-skeleton>`: the phantom-typed `Attr` setters (each an OPE
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Skeleton
 import M3e.Value
 
@@ -40,7 +41,7 @@ animation :
     }
     -> M3e.Cem.Attr.Attr { c | animation : M3e.Value.Supported } msg
 animation v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Skeleton.animation
         (M3e.Value.toString v_)
 
@@ -54,10 +55,12 @@ shape :
     }
     -> M3e.Cem.Attr.Attr { c | shape : M3e.Value.Supported } msg
 shape v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Skeleton.shape (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Skeleton.shape
+        (M3e.Value.toString v_)
 
 
 {-| Whether the content of the skeleton has been loaded. (default: `false`) -}
 loaded : Bool -> M3e.Cem.Attr.Attr { c | loaded : M3e.Value.Supported } msg
 loaded =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Skeleton.loaded
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Skeleton.loaded

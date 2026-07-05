@@ -12,9 +12,10 @@ The ⑤ Build shape for `<m3e-scroll-container>` — phantom-typed pipeline API.
 
 
 import M3e.Build.Internal
-import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.ScrollContainer
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -45,7 +46,7 @@ scrollContainer =
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
                   M3e.Cem.ScrollContainer.scrollContainer
-                      (List.map M3e.Cem.Attr.forget erased_)
+                      (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
              []
@@ -65,7 +66,8 @@ dividers :
 dividers v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ScrollContainer.dividers v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ScrollContainer.dividers v_)
+             )
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -78,7 +80,7 @@ thin :
 thin v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.forget (M3e.Cem.ScrollContainer.thin v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ScrollContainer.thin v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -88,4 +90,4 @@ build :
     Builder a s msg kind
     -> M3e.Element.Element { scrollContainer : M3e.Value.Supported } msg
 build b_ =
-    M3e.Element.fromNode (M3e.Build.Internal.node_ b_)
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

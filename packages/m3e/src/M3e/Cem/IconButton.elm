@@ -17,6 +17,7 @@ Middle layer for `<m3e-icon-button>`: the phantom-typed `Attr` setters (each an 
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.IconButton
 import M3e.Value
 
@@ -68,7 +69,7 @@ iconButton attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.disabled
 
 
 {-| Whether the element is disabled and interactive. (default: `false`) -}
@@ -76,38 +77,38 @@ disabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
 disabledInteractive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.disabledInteractive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.disabledInteractive
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.download
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.download
 
 
 {-| The URL to which the link button points. (default: `""`) -}
 href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
 href =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.href
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.href
 
 
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.name
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.name
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`) -}
 rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
 rel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.rel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.rel
 
 
 {-| Whether the toggle button is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.selected
 
 
 {-| The shape of the button. (default: `"rounded"`) -}
@@ -117,7 +118,9 @@ shape :
     }
     -> M3e.Cem.Attr.Attr { c | shape : M3e.Value.Supported } msg
 shape v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.shape (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.IconButton.shape
+        (M3e.Value.toString v_)
 
 
 {-| The size of the button. (default: `"small"`) -}
@@ -130,19 +133,21 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.IconButton.size
+        (M3e.Value.toString v_)
 
 
 {-| The target of the link button. (default: `""`) -}
 target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
 target =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.target
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.target
 
 
 {-| Whether the button will toggle between selected and unselected states. (default: `false`) -}
 toggle : Bool -> M3e.Cem.Attr.Attr { c | toggle : M3e.Value.Supported } msg
 toggle =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.toggle
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.toggle
 
 
 {-| The type of the element. (default: `"button"`) -}
@@ -153,13 +158,15 @@ type_ :
     }
     -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
 type_ v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.type_ (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.IconButton.type_
+        (M3e.Value.toString v_)
 
 
 {-| The value associated with the element's name when it's submitted with form data. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.IconButton.value
 
 
 {-| The appearance variant of the button. (default: `"standard"`) -}
@@ -171,7 +178,7 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.IconButton.variant
         (M3e.Value.toString v_)
 
@@ -184,7 +191,9 @@ width :
     }
     -> M3e.Cem.Attr.Attr { c | width : M3e.Value.Supported } msg
 width v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.IconButton.width (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.IconButton.width
+        (M3e.Value.toString v_)
 
 
 {-| Listen for `beforeinput` events. -}
@@ -192,7 +201,7 @@ onBeforeinput :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.IconButton.onBeforeinput
         (Json.Decode.map
              f_
@@ -204,7 +213,7 @@ onBeforeinput f_ =
 onInput :
     (Bool -> msg) -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.IconButton.onInput
         (Json.Decode.map
              f_
@@ -217,7 +226,7 @@ onChange :
     (Bool -> msg)
     -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.IconButton.onChange
         (Json.Decode.map
              f_
@@ -228,6 +237,6 @@ onChange f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.IconButton.onClick
         (Json.Decode.succeed f_)

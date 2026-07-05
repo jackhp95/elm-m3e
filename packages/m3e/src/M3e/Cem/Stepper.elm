@@ -14,6 +14,7 @@ Middle layer for `<m3e-stepper>`: the phantom-typed `Attr` setters (each an OPEN
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Stepper
 import M3e.Value
 
@@ -55,7 +56,7 @@ headerPosition :
     M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | headerPosition : M3e.Value.Supported } msg
 headerPosition v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Stepper.headerPosition
         (M3e.Value.toString v_)
 
@@ -65,7 +66,7 @@ labelPosition :
     M3e.Value.Value { below : M3e.Value.Supported, end : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | labelPosition : M3e.Value.Supported } msg
 labelPosition v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Stepper.labelPosition
         (M3e.Value.toString v_)
 
@@ -73,7 +74,7 @@ labelPosition v_ =
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
 linear : Bool -> M3e.Cem.Attr.Attr { c | linear : M3e.Value.Supported } msg
 linear =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Stepper.linear
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Stepper.linear
 
 
 {-| The orientation of the stepper. (default: `"horizontal"`) -}
@@ -84,7 +85,7 @@ orientation :
     }
     -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
 orientation v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Stepper.orientation
         (M3e.Value.toString v_)
 
@@ -92,7 +93,7 @@ orientation v_ =
 {-| Listen for `change` events. -}
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Stepper.onChange
         (Json.Decode.succeed f_)
 
@@ -101,7 +102,7 @@ onChange f_ =
 onBeforeinput :
     msg -> M3e.Cem.Attr.Attr { c | onBeforeinput : M3e.Value.Supported } msg
 onBeforeinput f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Stepper.onBeforeinput
         (Json.Decode.succeed f_)
 
@@ -109,4 +110,6 @@ onBeforeinput f_ =
 {-| Listen for `input` events. -}
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Stepper.onInput (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Stepper.onInput
+        (Json.Decode.succeed f_)

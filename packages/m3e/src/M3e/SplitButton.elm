@@ -33,9 +33,12 @@ M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.
 
 
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.SplitButton
 import M3e.Content
+import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
@@ -51,14 +54,14 @@ view :
     } msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
 view attributes content_ =
-    M3e.Element.fromNode
+    M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
                   M3e.Cem.SplitButton.splitButton
-                      (List.map M3e.Cem.Attr.forget erased)
+                      (List.map M3e.Cem.Attr.Internal.forget erased)
                       ch
              )
-             (List.map M3e.Cem.Attr.forget attributes)
+             (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.map M3e.Content.toNode content_)
         )
 
@@ -93,7 +96,7 @@ leadingButton :
     M3e.Element.Element { button : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
 leadingButton el =
-    M3e.Content.slot "leading-button" el
+    M3e.Content.Internal.slot "leading-button" el
 
 
 {-| Place content in the `trailing-button` slot. -}
@@ -101,4 +104,4 @@ trailingButton :
     M3e.Element.Element { iconButton : M3e.Value.Supported } msg
     -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
 trailingButton el =
-    M3e.Content.slot "trailing-button" el
+    M3e.Content.Internal.slot "trailing-button" el

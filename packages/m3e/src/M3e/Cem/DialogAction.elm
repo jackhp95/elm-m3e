@@ -9,6 +9,7 @@ Middle layer for `<m3e-dialog-action>`: the phantom-typed `Attr` setters (each a
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.DialogAction
 import M3e.Value
 
@@ -34,4 +35,4 @@ dialogAction attributes children =
 returnValue :
     String -> M3e.Cem.Attr.Attr { c | returnValue : M3e.Value.Supported } msg
 returnValue =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.DialogAction.returnValue
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.DialogAction.returnValue

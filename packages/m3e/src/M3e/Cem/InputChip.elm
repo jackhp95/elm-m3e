@@ -14,6 +14,7 @@ Middle layer for `<m3e-input-chip>`: the phantom-typed `Attr` setters (each an O
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.InputChip
 import M3e.Value
 
@@ -55,7 +56,7 @@ inputChip attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChip.disabled
 
 
 {-| Whether the element is disabled and interactive. (default: `false`) -}
@@ -63,27 +64,27 @@ disabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
 disabledInteractive =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.disabledInteractive
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChip.disabledInteractive
 
 
 {-| Whether the chip is removable. (default: `false`) -}
 removable :
     Bool -> M3e.Cem.Attr.Attr { c | removable : M3e.Value.Supported } msg
 removable =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.removable
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChip.removable
 
 
 {-| The accessible label given to the button used to remove the chip. (default: `"Remove"`) -}
 removeLabel :
     String -> M3e.Cem.Attr.Attr { c | removeLabel : M3e.Value.Supported } msg
 removeLabel =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.removeLabel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChip.removeLabel
 
 
 {-| A string representing the value of the chip. -}
 value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
 value =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.InputChip.value
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.InputChip.value
 
 
 {-| The appearance variant of the chip. (default: `"outlined"`) -}
@@ -93,7 +94,7 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.InputChip.variant
         (M3e.Value.toString v_)
 
@@ -101,7 +102,7 @@ variant v_ =
 {-| Listen for `remove` events. -}
 onRemove : msg -> M3e.Cem.Attr.Attr { c | onRemove : M3e.Value.Supported } msg
 onRemove f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.InputChip.onRemove
         (Json.Decode.succeed f_)
 
@@ -109,6 +110,6 @@ onRemove f_ =
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute
+    M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.InputChip.onClick
         (Json.Decode.succeed f_)

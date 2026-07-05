@@ -10,6 +10,7 @@ Middle layer for `<m3e-toc-item>`: the phantom-typed `Attr` setters (each an OPE
 import Html
 import Json.Decode
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.TocItem
 import M3e.Value
 
@@ -39,16 +40,18 @@ tocItem attributes children =
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TocItem.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TocItem.disabled
 
 
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
 selected =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TocItem.selected
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.TocItem.selected
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.TocItem.onClick (Json.Decode.succeed f_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.TocItem.onClick
+        (Json.Decode.succeed f_)

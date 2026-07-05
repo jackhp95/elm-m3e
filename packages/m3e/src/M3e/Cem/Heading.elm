@@ -11,6 +11,7 @@ Middle layer for `<m3e-heading>`: the phantom-typed `Attr` setters (each an OPEN
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Heading
 import M3e.Value
 
@@ -39,13 +40,13 @@ heading attributes children =
 emphasized :
     Bool -> M3e.Cem.Attr.Attr { c | emphasized : M3e.Value.Supported } msg
 emphasized =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Heading.emphasized
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Heading.emphasized
 
 
 {-| The accessibility level of the heading. -}
 level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
 level =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Heading.level
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Heading.level
 
 
 {-| The size of the heading. (default: `"medium"`) -}
@@ -56,7 +57,9 @@ size :
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
 size v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Heading.size (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Heading.size
+        (M3e.Value.toString v_)
 
 
 {-| The appearance variant of the heading. (default: `"display"`) -}
@@ -68,4 +71,6 @@ variant :
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant v_ =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.Heading.variant (M3e.Value.toString v_)
+    M3e.Cem.Attr.Internal.attribute
+        M3e.Cem.Html.Heading.variant
+        (M3e.Value.toString v_)

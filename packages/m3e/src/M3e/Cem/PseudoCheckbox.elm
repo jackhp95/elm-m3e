@@ -9,6 +9,7 @@ Middle layer for `<m3e-pseudo-checkbox>`: the phantom-typed `Attr` setters (each
 
 import Html
 import M3e.Cem.Attr
+import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.PseudoCheckbox
 import M3e.Value
 
@@ -35,17 +36,17 @@ pseudoCheckbox attributes children =
 {-| A value indicating whether the element is checked. (default: `false`) -}
 checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
 checked =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.PseudoCheckbox.checked
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.PseudoCheckbox.checked
 
 
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.PseudoCheckbox.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.PseudoCheckbox.disabled
 
 
 {-| A value indicating whether the element's checked state is indeterminate. (default: `false`) -}
 indeterminate :
     Bool -> M3e.Cem.Attr.Attr { c | indeterminate : M3e.Value.Supported } msg
 indeterminate =
-    M3e.Cem.Attr.attribute M3e.Cem.Html.PseudoCheckbox.indeterminate
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.PseudoCheckbox.indeterminate
