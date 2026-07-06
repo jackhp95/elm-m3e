@@ -24,12 +24,12 @@ A calendar used to select a date.
 
 <!-- elm-cem:example title="Date picker calendar with a custom header" -->
 ```elm
-M3e.Calendar.view [ M3e.Calendar.date "2025-12-13", M3e.Calendar.minDate "2025-01-01", M3e.Calendar.maxDate "2026-12-31" ] [ M3e.Calendar.header (Kit.text "Select a delivery date") ]
+M3e.Calendar.view [ M3e.Calendar.date "2025-12-13", M3e.Calendar.minDate "2025-01-01", M3e.Calendar.maxDate "2026-12-31" ] [ M3e.Calendar.header (Native.span [] [ Kit.text "Select a delivery date" ]) ]
 ```
 
 <!-- elm-cem:example title="Range calendar starting in the multi-year view" -->
 ```elm
-M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt "2026-06-01", M3e.Calendar.rangeStart "2026-06-10", M3e.Calendar.rangeEnd "2026-06-17", M3e.Calendar.nextMonthLabel "Next month", M3e.Calendar.previousMonthLabel "Previous month" ] [ M3e.Calendar.header (Kit.text "Choose your stay") ]
+M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt "2026-06-01", M3e.Calendar.rangeStart "2026-06-10", M3e.Calendar.rangeEnd "2026-06-17", M3e.Calendar.nextMonthLabel "Next month", M3e.Calendar.previousMonthLabel "Previous month" ] [ M3e.Calendar.header (Native.span [] [ Kit.text "Choose your stay" ]) ]
 ```
 
 @docs view, date, maxDate, minDate, rangeEnd, rangeStart

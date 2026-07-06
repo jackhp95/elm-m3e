@@ -42,6 +42,11 @@ Native.div [] [ M3e.IconButton.view [ M3e.IconButton.href "/rss.xml", M3e.Aria.l
     ]
 ```
 
+<!-- elm-cem:example title="Single link icon button" -->
+```elm
+M3e.IconButton.view [ M3e.IconButton.href "/settings", M3e.Aria.label "Settings" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+```
+
 @docs view, disabled, disabledInteractive, name, selected, shape
 @docs size, toggle, type_, value, variant, width
 @docs onBeforeinput, onInput, onChange, selectedSlot

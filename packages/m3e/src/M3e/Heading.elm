@@ -9,22 +9,6 @@ A heading to a page or section.
 **Component Info:**
 - **Extends:** `LitElement`
 
-<!-- elm-cem:docmeta category=Layout & style -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Page header hierarchy with semantic levels" -->
-```elm
-Native.header [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.large, M3e.Heading.level 1 ] [ M3e.Heading.child (Kit.text "Quarterly report") ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.medium, M3e.Heading.level 2 ] [ M3e.Heading.child (Kit.text "Revenue overview") ], Native.p [] [ Kit.text "A summary of performance across all regions for the quarter." ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Updated 2 hours ago") ] ]
-```
-
-<!-- elm-cem:example title="Emphasized display heading for a hero section" -->
-```elm
-Native.section [] [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True, M3e.Heading.level 1 ] [ M3e.Heading.child (Kit.text "Build faster.") ], M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small, M3e.Heading.level 2 ] [ M3e.Heading.child (Kit.text "Ship expressive interfaces with Material 3.") ] ]
-```
-
 @docs view, emphasized, level, size, variant, child
 @docs children
 -}

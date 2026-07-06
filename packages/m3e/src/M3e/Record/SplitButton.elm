@@ -10,22 +10,6 @@ A button used to show an action with a menu of related actions.
 - `leading-button`: The leading button used to perform the primary action.
 - `trailing-button`: The trailing icon button used to open a menu of related actions.
 
-<!-- elm-cem:docmeta category=Actions -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Filled split button with primary action and menu toggle" -->
-```elm
-M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.filled, M3e.SplitButton.size M3e.Value.medium ] [ M3e.SplitButton.child (Kit.text "Edit") ]
-```
-
-<!-- elm-cem:example title="Tonal split button" -->
-```elm
-M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.tonal, M3e.SplitButton.size M3e.Value.large ] [ M3e.SplitButton.child (Kit.text "Save") ]
-```
-
 @docs view, variant, size
 -}
 

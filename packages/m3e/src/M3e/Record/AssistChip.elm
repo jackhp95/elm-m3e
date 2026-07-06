@@ -16,6 +16,17 @@ A chip users interact with to perform a smart or automated action that can span 
 - `icon`: Renders an icon before the chip's label.
 - `trailing-icon`: Renders an icon after the chip's label.
 
+<!-- elm-cem:docmeta category=Selection -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Assist chip with a leading icon" -->
+```elm
+M3e.AssistChip.view [] [ M3e.AssistChip.icon (M3e.Icon.view [ M3e.Icon.name "event" ] []), M3e.AssistChip.child (Kit.text "Add to calendar") ]
+```
+
 @docs view, disabled, disabledInteractive, download, href, name
 @docs rel, target, type_, value, variant, onClick
 @docs icon

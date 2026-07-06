@@ -16,7 +16,7 @@ Organizes buttons and adds interactions between them.
 
 <!-- elm-cem:example title="Connected toggle group for view selection" -->
 ```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.child (Kit.text "List"), M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "view_list" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Grid"), M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "grid_view" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Map"), M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "map" ] []) ] ])
+M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "view_list" ] []), M3e.Button.child (Kit.text "List") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "grid_view" ] []), M3e.Button.child (Kit.text "Grid") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "map" ] []), M3e.Button.child (Kit.text "Map") ] ])
 ```
 
 <!-- elm-cem:example title="Multi-select formatting toolbar" -->

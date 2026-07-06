@@ -6,17 +6,6 @@ A hierarchical menu, typically used on larger devices, that allows a user to swi
 **Component Info:**
 - **Extends:** `LitElement`
 
-<!-- elm-cem:docmeta category=Navigation -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Nested navigation menu with icons, badges, and links" -->
-```elm
-M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.child (Kit.link "/" [ Kit.text "Home" ]), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []) ], M3e.Divider.view [] [], M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] [ M3e.NavMenuItem.child (Kit.text "Work"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "edit_note" ] []), M3e.NavMenuItem.child (M3e.NavMenuItem.view { label = Kit.text "Articles" } [] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "article" ] []), M3e.NavMenuItem.badge (Kit.text "12") ]) ] ])
-```
-
 @docs view, child, children
 -}
 
