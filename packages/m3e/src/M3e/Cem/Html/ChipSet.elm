@@ -12,10 +12,13 @@ import Html.Attributes
 import Json.Encode
 
 
-{-| The raw `<m3e-chip-set>` element — a partial application of `Html.node`. -}
+{-| The raw `<m3e-chip-set>` element, with the library's fixed host attribute (role="group") stamped ahead of the caller's attributes. -}
 chipSet : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
-chipSet =
-    Html.node "m3e-chip-set"
+chipSet attributes children =
+    Html.node
+        "m3e-chip-set"
+        (Html.Attributes.attribute "role" "group" :: attributes)
+        children
 
 
 {-| Whether the element is oriented vertically. (default: `false`) -}
