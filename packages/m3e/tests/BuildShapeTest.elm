@@ -5,6 +5,7 @@ module BuildShapeTest exposing (main)
 Each function below MUST compile. Failures indicate a broken safety guarantee.
 
 Coverage:
+
   - Bare seed → build (no setters).
   - Optional-singular attr Available → Used, once.
   - Multiple distinct optional-singular attrs in sequence.
@@ -12,10 +13,12 @@ Coverage:
   - Arbitrary slot + leaf child.
   - Arbitrary slot + heterogeneous leaf children.
   - Arbitrary slot + container child fully filled inline.
+
 -}
 
 import Html
 import Kit
+import M3e
 import M3e.Action
 import M3e.Build.Button as Button
 import M3e.Build.Divider as Divider
@@ -28,20 +31,23 @@ import M3e.Build.Select.Slots as SelectSlots
 import M3e.Value
 
 
-{-| Bare seed → build. -}
+{-| Bare seed → build.
+-}
 buttonBare =
     Button.button { content = Kit.text "Click me", action = M3e.Action.none }
         |> Button.build
 
 
-{-| Optional-singular attr applied once. -}
+{-| Optional-singular attr applied once.
+-}
 buttonVariant =
     Button.button { content = Kit.text "x", action = M3e.Action.none }
         |> Button.variant M3e.Value.filled
         |> Button.build
 
 
-{-| A second distinct optional-singular attr applied independently. -}
+{-| A second distinct optional-singular attr applied independently.
+-}
 buttonSize =
     Button.button { content = Kit.text "x", action = M3e.Action.none }
         |> Button.size M3e.Value.small
@@ -50,7 +56,8 @@ buttonSize =
 
 {-| Multiple distinct optional-singular attrs chained in ONE pipeline.
 Proves setter output rows are extensible ({ a | field : Used }, not closed { field : Used }).
-This case was blocked before the row-extensibility fix. -}
+This case was blocked before the row-extensibility fix.
+-}
 buttonChained =
     Button.button { content = Kit.text "x", action = M3e.Action.none }
         |> Button.variant M3e.Value.filled
@@ -58,7 +65,8 @@ buttonChained =
         |> Button.build
 
 
-{-| Kinded slot: Option into Select's unnamed slot, no .build on Option. -}
+{-| Kinded slot: Option into Select's unnamed slot, no .build on Option.
+-}
 selectWithOption =
     Select.select
         |> SelectSlots.option (Option.option { content = Kit.text "Option A" })
@@ -66,14 +74,16 @@ selectWithOption =
         |> Select.build
 
 
-{-| Arbitrary slot: Radio into RadioGroup, no .build on Radio. -}
+{-| Arbitrary slot: Radio into RadioGroup, no .build on Radio.
+-}
 radioGroupWithRadio =
     RadioGroup.radioGroup
         |> RadioGroupSlots.radio Radio.radio
         |> RadioGroup.build
 
 
-{-| Arbitrary slot with heterogeneous leaf children. -}
+{-| Arbitrary slot with heterogeneous leaf children.
+-}
 radioGroupHeterogeneous =
     RadioGroup.radioGroup
         |> RadioGroupSlots.radio Radio.radio
@@ -82,7 +92,8 @@ radioGroupHeterogeneous =
         |> RadioGroup.build
 
 
-{-| Arbitrary slot + container child fully filled inline. -}
+{-| Arbitrary slot + container child fully filled inline.
+-}
 radioGroupWithFilledSelect =
     RadioGroup.radioGroup
         |> RadioGroupSlots.select
@@ -90,6 +101,20 @@ radioGroupWithFilledSelect =
                 |> SelectSlots.option (Option.option { content = Kit.text "Opt" })
             )
         |> RadioGroup.build
+
+
+{-| Type-suffixed conflict vocab (issue #23): the barrel `value` is the DOMINANT
+`String` variant and unifies against a String-`value` component (m3e-radio); the
+suffixed `valueFloat` unifies against a Float-`value` component (m3e-slider-thumb).
+Each must compile on its OWN component. The wrong pairing is proven to fail in
+BuildShapeNegative.
+-}
+okValueString =
+    M3e.radio [ M3e.value "on" ] []
+
+
+okValueFloat =
+    M3e.sliderThumb [ M3e.valueFloat 0.5 ] []
 
 
 main : Html.Html msg

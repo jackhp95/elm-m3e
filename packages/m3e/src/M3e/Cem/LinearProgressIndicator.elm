@@ -25,7 +25,7 @@ linearProgressIndicator :
     List (M3e.Cem.Attr.Attr { bufferValue : M3e.Value.Supported
     , max : M3e.Value.Supported
     , mode : M3e.Value.Supported
-    , value : M3e.Value.Supported
+    , valueFloat : M3e.Value.Supported
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
@@ -66,7 +66,7 @@ mode v_ =
 
 
 {-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
-value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value : Float -> M3e.Cem.Attr.Attr { c | valueFloat : M3e.Value.Supported } msg
 value =
     M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.LinearProgressIndicator.value
 

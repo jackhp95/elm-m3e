@@ -11,30 +11,30 @@ module M3e.Cem.Vocab exposing
     , hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href
     , icons, indeterminate, inline, inset, insetEnd, insetStart, invalid
     , inward, itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel
-    , length, linear, loaded, loading, loadingLabel, lowered, max
-    , maxDate, maxDepth, maxRows, min, minDate, minRows, modal
-    , mode, motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel
-    , noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, orientation
-    , overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position
-    , positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
-    , range, rangeEnd, rangeStart, rel, removable, removeLabel, required
-    , returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex, shape
-    , showDelay, showFirstLastButtons, size, start, startAt, startDivider, startMode
-    , startView, state, step, stretch, strongFocus, submenu, target
-    , term, thin, threshold, today, toggle, toggleDirection, togglePosition
-    , touchGestures, type_, unbounded, variant, vertical, weight, width
-    , wrap, wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed
-    , onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
-    , onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
-    , slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon
-    , slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon
-    , slotContent, slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline
-    , slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix
-    , slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge
-    , slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
-    , slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue, slotNextIcon
-    , slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep
-    , slotPanel, slotOpenToggleIcon
+    , length, level, linear, loaded, loading, loadingLabel, lowered
+    , max, maxDate, maxDepth, maxRows, min, minDate, minRows
+    , modal, mode, motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel
+    , nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
+    , orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
+    , position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel
+    , radius, range, rangeEnd, rangeStart, rel, removable, removeLabel
+    , required, returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex
+    , shape, showDelay, showFirstLastButtons, size, start, startAt, startDivider
+    , startMode, startView, state, step, stretch, strongFocus, submenu
+    , target, term, thin, threshold, today, toggle, toggleDirection
+    , togglePosition, touchGestures, type_, unbounded, variant, vertical, weight
+    , width, wrap, wrapDetents, name, valueFloat, value, onChange
+    , onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
+    , onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage, onCancel
+    , onRemove, onInvalid, onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle
+    , slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
+    , slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter
+    , slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
+    , slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError
+    , slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon
+    , slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
+    , slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
+    , slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
     )
 
 {-|
@@ -54,33 +54,34 @@ Shared middle vocabulary: the component-agnostic, phantom-gated attribute, event
 @docs hideable, highlightMode, href, icons, indeterminate, inline
 @docs inset, insetEnd, insetStart, invalid, inward, itemLabel
 @docs itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length
-@docs linear, loaded, loading, loadingLabel, lowered, max
-@docs maxDate, maxDepth, maxRows, min, minDate, minRows
-@docs modal, mode, motion, multi, nextMonthLabel, nextMultiYearLabel
-@docs nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open
-@docs opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize
-@docs pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
-@docs previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range
-@docs rangeEnd, rangeStart, rel, removable, removeLabel, required
-@docs returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex
-@docs shape, showDelay, showFirstLastButtons, size, start, startAt
-@docs startDivider, startMode, startView, state, step, stretch
-@docs strongFocus, submenu, target, term, thin, threshold
-@docs today, toggle, toggleDirection, togglePosition, touchGestures, type_
-@docs unbounded, variant, vertical, weight, width, wrap
-@docs wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed
-@docs onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
-@docs onQuery, onClear, onPage, onCancel, onRemove, onInvalid
-@docs onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle, slotSubtitle
-@docs slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
-@docs slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions
-@docs slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText
-@docs slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix
-@docs slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput
-@docs slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead
-@docs slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon
-@docs slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
-@docs slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
+@docs level, linear, loaded, loading, loadingLabel, lowered
+@docs max, maxDate, maxDepth, maxRows, min, minDate
+@docs minRows, modal, mode, motion, multi, nextMonthLabel
+@docs nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap
+@docs open, opticalSize, optional, orientation, overshootLimit, pageIndex
+@docs pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX
+@docs positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
+@docs range, rangeEnd, rangeStart, rel, removable, removeLabel
+@docs required, returnValue, scheme, scrollStrategy, secondary, selected
+@docs selectedIndex, shape, showDelay, showFirstLastButtons, size, start
+@docs startAt, startDivider, startMode, startView, state, step
+@docs stretch, strongFocus, submenu, target, term, thin
+@docs threshold, today, toggle, toggleDirection, togglePosition, touchGestures
+@docs type_, unbounded, variant, vertical, weight, width
+@docs wrap, wrapDetents, name, valueFloat, value, onChange
+@docs onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput
+@docs onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
+@docs onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+@docs slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
+@docs slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator
+@docs slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+@docs slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
+@docs slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
+@docs slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
+@docs slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
+@docs slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
+@docs slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon
+@docs slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
 -}
 
 
@@ -746,6 +747,12 @@ lastPageLabel =
 length : Float -> M3e.Cem.Attr.Attr { c | length : M3e.Value.Supported } msg
 length =
     M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.length
+
+
+{-| The accessibility level of the heading. -}
+level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
+level =
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.level
 
 
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
@@ -1482,6 +1489,25 @@ wrapDetents :
     Bool -> M3e.Cem.Attr.Attr { c | wrapDetents : M3e.Value.Supported } msg
 wrapDetents =
     M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.wrapDetents
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+name =
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.name
+
+
+{-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
+valueFloat :
+    Float -> M3e.Cem.Attr.Attr { c | valueFloat : M3e.Value.Supported } msg
+valueFloat =
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.valueFloat
+
+
+{-| A string representing the value of the switch. (default: `"on"`) -}
+value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.value
 
 
 {-| Listen for `change` events. -}

@@ -28,63 +28,64 @@ module M3e exposing
     , hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript
     , hideToggle, hideable, highlightMode, href, icons, indeterminate, inline
     , inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel
-    , label, labelPosition, labelled, lastPageLabel, length, linear, loaded
-    , loading, loadingLabel, lowered, max, maxDate, maxDepth, maxRows
-    , min, minDate, minRows, modal, mode, motion, multi
-    , nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap
-    , open, opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize
-    , pageSizeVariant, pageSizes, panelClass, position, positionX, positionY, previousMonthLabel
-    , previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart
-    , rel, removable, removeLabel, required, returnValue, scheme, scrollStrategy
-    , secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons, size
-    , start, startAt, startDivider, startMode, startView, state, stepAttr
-    , stretch, strongFocus, submenu, target, term, thin, threshold
-    , today, toggle, toggleDirection, togglePosition, touchGestures, type_, unbounded
-    , variant, vertical, weight, width, wrap, wrapDetents, onChange
-    , onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
-    , onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage, onCancel
-    , onRemove, onInvalid, onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle
-    , slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
-    , slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter
-    , slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
-    , slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError
-    , slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon
-    , slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
-    , slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
-    , slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault
-    , treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault
-    , tocSlotDefault, tocSlotOverline, tocSlotTitle, tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel
-    , tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault, tabSlotDefault, tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault
-    , stepSlotDefault, stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError
-    , stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton
-    , splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon, sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon
-    , skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault, buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput
-    , searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon
-    , searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon
-    , paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault
-    , navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge
-    , navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault, navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault
-    , menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault
-    , menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon, menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading
-    , listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline
-    , expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText
-    , listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault
-    , listItemSlotDefault, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault
-    , fabMenuSlotDefault, fabSlotDefault, fabSlotLabel, fabSlotCloseIcon, accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions
-    , expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault, expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart
-    , drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault
-    , datepickerToggleSlotDefault, contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault
-    , inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon
-    , chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon, chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault
-    , cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault
-    , richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault, buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault
-    , buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault
-    , breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault
-    , badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix
-    , formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault
-    , optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault, optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault
-    , appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault
-    , textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault, collapsibleSlotDefault
+    , label, labelPosition, labelled, lastPageLabel, length, level, linear
+    , loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth
+    , maxRows, min, minDate, minRows, modal, mode, motion
+    , multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel
+    , noFocusTrap, open, opticalSize, optional, orientation, overshootLimit, pageIndex
+    , pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
+    , previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd
+    , rangeStart, rel, removable, removeLabel, required, returnValue, scheme
+    , scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons
+    , size, start, startAt, startDivider, startMode, startView, state
+    , stepAttr, stretch, strongFocus, submenu, target, term, thin
+    , threshold, today, toggle, toggleDirection, togglePosition, touchGestures, type_
+    , unbounded, variant, vertical, weight, width, wrap, wrapDetents
+    , name, valueFloat, value, onChange, onOpening, onOpened, onClosing
+    , onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
+    , onQuery, onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
+    , onHighlight, slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
+    , slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected
+    , slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd
+    , slotOverline, slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText
+    , slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput
+    , slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon
+    , slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
+    , slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon
+    , slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon
+    , treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault, tocSlotOverline, tocSlotTitle
+    , tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault
+    , tabSlotDefault, tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault, stepSlotDefault, stepSlotIcon, stepSlotDoneIcon
+    , stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep
+    , stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon
+    , sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault
+    , buttonSegmentSlotDefault, buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading
+    , searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing
+    , searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotDefault
+    , selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault
+    , navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault
+    , navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault
+    , menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon
+    , menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing
+    , actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems
+    , listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading
+    , listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault, listItemSlotDefault, listItemSlotLeading, listItemSlotOverline
+    , listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault, fabSlotLabel
+    , fabSlotCloseIcon, accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault
+    , expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault
+    , dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault, contentPaneSlotDefault, suggestionChipSlotDefault
+    , suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon
+    , filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon
+    , chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader, cardSlotContent, cardSlotActions
+    , cardSlotFooter, calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault
+    , buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon
+    , buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault
+    , bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault
+    , autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix
+    , formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault
+    , optgroupSlotDefault, optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle
+    , appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault
+    , collapsibleSlotDefault
     )
 
 {-|
@@ -124,72 +125,73 @@ The one-import barrel. Re-exposes every component constructor plus the whole sha
 @docs hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href
 @docs icons, indeterminate, inline, inset, insetEnd, insetStart
 @docs invalid, inward, itemLabel, itemsPerPageLabel, label, labelPosition
-@docs labelled, lastPageLabel, length, linear, loaded, loading
-@docs loadingLabel, lowered, max, maxDate, maxDepth, maxRows
-@docs min, minDate, minRows, modal, mode, motion
-@docs multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate
-@docs noDataLabel, noFocusTrap, open, opticalSize, optional, orientation
-@docs overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
-@docs position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel
-@docs previousYearLabel, radius, range, rangeEnd, rangeStart, rel
-@docs removable, removeLabel, required, returnValue, scheme, scrollStrategy
-@docs secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons
-@docs size, start, startAt, startDivider, startMode, startView
-@docs state, stepAttr, stretch, strongFocus, submenu, target
-@docs term, thin, threshold, today, toggle, toggleDirection
-@docs togglePosition, touchGestures, type_, unbounded, variant, vertical
-@docs weight, width, wrap, wrapDetents, onChange, onOpening
-@docs onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
-@docs onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage
-@docs onCancel, onRemove, onInvalid, onActiveChange, onHighlight, slotDefault
-@docs slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon
-@docs slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected
-@docs slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon, slotStart
-@docs slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems, slotLabel
-@docs slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError
-@docs slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon
-@docs slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing
-@docs slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue, slotNextIcon
-@docs slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon
-@docs slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault, treeItemSlotLabel
-@docs treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault
-@docs tocSlotOverline, tocSlotTitle, tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel
-@docs tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault, tabSlotDefault, tabSlotIcon, stepperResetSlotDefault
-@docs stepperPreviousSlotDefault, stepSlotDefault, stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon
-@docs stepSlotHint, stepSlotError, stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel
-@docs splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon
-@docs sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault
-@docs segmentedButtonSlotDefault, buttonSegmentSlotDefault, buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading
-@docs searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon
-@docs searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon
-@docs paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow, selectSlotValue
-@docs navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault
-@docs navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault
-@docs navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon
-@docs menuItemGroupSlotDefault, menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault
-@docs menuItemSlotIcon, menuItemSlotTrailingIcon, menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading
-@docs listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading
-@docs expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault, listActionSlotLeading
-@docs listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline
-@docs listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault, listItemSlotDefault, listItemSlotLeading, listItemSlotOverline
-@docs listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault
-@docs fabSlotLabel, fabSlotCloseIcon, accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader
-@docs expansionPanelSlotToggleIcon, expansionHeaderSlotDefault, expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart
-@docs drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon
-@docs dialogActionSlotDefault, datepickerToggleSlotDefault, contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon, inputChipSetSlotDefault
-@docs inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault
-@docs filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon
-@docs chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader, cardSlotContent
-@docs cardSlotActions, cardSlotFooter, calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead
-@docs richTooltipSlotActions, richTooltipActionSlotDefault, buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault
-@docs buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator
-@docs breadcrumbItemSlotDefault, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault, bottomSheetSlotDefault
-@docs bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading
-@docs autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix
-@docs formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading
-@docs floatingPanelSlotDefault, optgroupSlotDefault, optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading
-@docs appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault
-@docs textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault, collapsibleSlotDefault
+@docs labelled, lastPageLabel, length, level, linear, loaded
+@docs loading, loadingLabel, lowered, max, maxDate, maxDepth
+@docs maxRows, min, minDate, minRows, modal, mode
+@docs motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel
+@docs noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
+@docs orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes
+@docs panelClass, position, positionX, positionY, previousMonthLabel, previousMultiYearLabel
+@docs previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart
+@docs rel, removable, removeLabel, required, returnValue, scheme
+@docs scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay
+@docs showFirstLastButtons, size, start, startAt, startDivider, startMode
+@docs startView, state, stepAttr, stretch, strongFocus, submenu
+@docs target, term, thin, threshold, today, toggle
+@docs toggleDirection, togglePosition, touchGestures, type_, unbounded, variant
+@docs vertical, weight, width, wrap, wrapDetents, name
+@docs valueFloat, value, onChange, onOpening, onOpened, onClosing
+@docs onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle
+@docs onValueChange, onQuery, onClear, onPage, onCancel, onRemove
+@docs onInvalid, onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle
+@docs slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading
+@docs slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent
+@docs slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline
+@docs slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText
+@docs slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon
+@docs slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon
+@docs slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
+@docs slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton
+@docs slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel
+@docs slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon
+@docs treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault, tocSlotOverline, tocSlotTitle
+@docs tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon
+@docs tabPanelSlotDefault, tabSlotDefault, tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault, stepSlotDefault
+@docs stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError
+@docs stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd
+@docs splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon, sliderSlotDefault, slideGroupSlotDefault
+@docs slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault
+@docs buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading
+@docs searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput
+@docs searchBarSlotTrailing, searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon
+@docs paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault
+@docs navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon
+@docs navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault, navItemSlotDefault, navItemSlotIcon
+@docs navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault
+@docs menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon
+@docs menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText
+@docs listOptionSlotTrailing, actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText
+@docs expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText
+@docs listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing
+@docs listSlotDefault, listItemSlotDefault, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing
+@docs headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault, fabSlotLabel, fabSlotCloseIcon
+@docs accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault
+@docs expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault
+@docs dialogSlotDefault, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault
+@docs contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault
+@docs inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon
+@docs filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon, chipSlotDefault, chipSlotIcon
+@docs chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter
+@docs calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault
+@docs buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon, buttonSlotSelected
+@docs buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon
+@docs breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault
+@docs badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault
+@docs formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint
+@docs formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault
+@docs optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle
+@docs appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault
+@docs scrollContainerSlotDefault, collapsibleSlotDefault
 -}
 
 
@@ -603,7 +605,7 @@ splitPane :
     , orientation : M3e.Value.Supported
     , overshootLimit : M3e.Value.Supported
     , step : M3e.Value.Supported
-    , value : M3e.Value.Supported
+    , valueFloat : M3e.Value.Supported
     , wrapDetents : M3e.Value.Supported
     , name : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -676,7 +678,7 @@ slider =
 sliderThumb :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , value : M3e.Value.Supported
+    , valueFloat : M3e.Value.Supported
     , onValueChange : M3e.Value.Supported
     , onBeforeinput : M3e.Value.Supported
     , onInput : M3e.Value.Supported
@@ -723,7 +725,7 @@ skeleton =
 
 {-| Convenience binding for the `M3e.Shape` element: `view` re-exposed from `M3e.Shape`. Import that module directly for the strict, component-scoped types. -}
 shape :
-    List (M3e.Cem.Attr.Attr { name : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { nameEnum : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -852,7 +854,7 @@ radio =
 
 {-| Convenience binding for the `M3e.ProgressElementIndicatorBase` element: `view` re-exposed from `M3e.ProgressElementIndicatorBase`. Import that module directly for the strict, component-scoped types. -}
 progressElementIndicatorBase :
-    List (M3e.Cem.Attr.Attr { value : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { valueFloat : M3e.Value.Supported
     , max : M3e.Value.Supported
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
@@ -3014,6 +3016,12 @@ length =
     M3e.Cem.Vocab.length
 
 
+{-| The accessibility level of the heading. -}
+level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
+level =
+    M3e.Cem.Vocab.level
+
+
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
 linear : Bool -> M3e.Cem.Attr.Attr { c | linear : M3e.Value.Supported } msg
 linear =
@@ -3706,6 +3714,25 @@ wrapDetents :
     Bool -> M3e.Cem.Attr.Attr { c | wrapDetents : M3e.Value.Supported } msg
 wrapDetents =
     M3e.Cem.Vocab.wrapDetents
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+name =
+    M3e.Cem.Vocab.name
+
+
+{-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
+valueFloat :
+    Float -> M3e.Cem.Attr.Attr { c | valueFloat : M3e.Value.Supported } msg
+valueFloat =
+    M3e.Cem.Vocab.valueFloat
+
+
+{-| A string representing the value of the switch. (default: `"on"`) -}
+value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value =
+    M3e.Cem.Vocab.value
 
 
 {-| Listen for `change` events. -}

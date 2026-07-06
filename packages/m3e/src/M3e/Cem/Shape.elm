@@ -20,7 +20,7 @@ import M3e.Value
 - **Extends:** `LitElement`
 -}
 shape :
-    List (M3e.Cem.Attr.Attr { name : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { nameEnum : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (Html.Html msg)
@@ -69,7 +69,7 @@ name :
     , triangle : M3e.Value.Supported
     , verySunny : M3e.Value.Supported
     }
-    -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+    -> M3e.Cem.Attr.Attr { c | nameEnum : M3e.Value.Supported } msg
 name v_ =
     M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Shape.name

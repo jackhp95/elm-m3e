@@ -39,7 +39,7 @@ type alias AttrCaps =
     , orientation : M3e.Build.Internal.Available
     , overshootLimit : M3e.Build.Internal.Available
     , step : M3e.Build.Internal.Available
-    , value : M3e.Build.Internal.Available
+    , valueFloat : M3e.Build.Internal.Available
     , wrapDetents : M3e.Build.Internal.Available
     , name : M3e.Build.Internal.Available
     , disabled : M3e.Build.Internal.Available
@@ -167,8 +167,8 @@ step v_ b_ =
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
 value :
     Float
-    -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | valueFloat : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | valueFloat : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

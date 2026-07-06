@@ -29,7 +29,7 @@ type alias Builder attrCaps slotCaps msg kind =
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    { value : M3e.Build.Internal.Available
+    { valueFloat : M3e.Build.Internal.Available
     , max : M3e.Build.Internal.Available
     , variant : M3e.Build.Internal.Available
     }
@@ -71,8 +71,8 @@ attr a_ b_ =
 {-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
 value :
     Float
-    -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | valueFloat : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | valueFloat : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

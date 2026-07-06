@@ -33,7 +33,7 @@ type alias Builder attrCaps slotCaps msg kind =
 type alias AttrCaps =
     { disabled : M3e.Build.Internal.Available
     , name : M3e.Build.Internal.Available
-    , value : M3e.Build.Internal.Available
+    , valueFloat : M3e.Build.Internal.Available
     , onValueChange : M3e.Build.Internal.Available
     , onBeforeinput : M3e.Build.Internal.Available
     , onInput : M3e.Build.Internal.Available
@@ -104,8 +104,8 @@ name v_ b_ =
 {-| The value of the thumb. (default: `null`) -}
 value :
     Float
-    -> Builder { a | value : M3e.Build.Internal.Available } s msg kind
-    -> Builder { a | value : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | valueFloat : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | valueFloat : M3e.Build.Internal.Used } s msg kind
 value v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr

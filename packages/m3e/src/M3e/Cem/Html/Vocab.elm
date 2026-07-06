@@ -11,21 +11,22 @@ module M3e.Cem.Html.Vocab exposing
     , hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href
     , icons, indeterminate, inline, inset, insetEnd, insetStart, invalid
     , inward, itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel
-    , length, linear, loaded, loading, loadingLabel, lowered, max
-    , maxDate, maxDepth, maxRows, min, minDate, minRows, modal
-    , mode, motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel
-    , noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional, orientation
-    , overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position
-    , positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
-    , range, rangeEnd, rangeStart, rel, removable, removeLabel, required
-    , returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex, shape
-    , showDelay, showFirstLastButtons, size, start, startAt, startDivider, startMode
-    , startView, state, step, stretch, strongFocus, submenu, target
-    , term, thin, threshold, today, toggle, toggleDirection, togglePosition
-    , touchGestures, type_, unbounded, variant, vertical, weight, width
-    , wrap, wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed
-    , onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
-    , onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+    , length, level, linear, loaded, loading, loadingLabel, lowered
+    , max, maxDate, maxDepth, maxRows, min, minDate, minRows
+    , modal, mode, motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel
+    , nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
+    , orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
+    , position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel
+    , radius, range, rangeEnd, rangeStart, rel, removable, removeLabel
+    , required, returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex
+    , shape, showDelay, showFirstLastButtons, size, start, startAt, startDivider
+    , startMode, startView, state, step, stretch, strongFocus, submenu
+    , target, term, thin, threshold, today, toggle, toggleDirection
+    , togglePosition, touchGestures, type_, unbounded, variant, vertical, weight
+    , width, wrap, wrapDetents, name, valueFloat, value, onChange
+    , onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
+    , onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage, onCancel
+    , onRemove, onInvalid, onActiveChange, onHighlight
     )
 
 {-|
@@ -45,24 +46,24 @@ Shared bottom vocabulary: every attribute (merged to one spec per name) and ever
 @docs hideable, highlightMode, href, icons, indeterminate, inline
 @docs inset, insetEnd, insetStart, invalid, inward, itemLabel
 @docs itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length
-@docs linear, loaded, loading, loadingLabel, lowered, max
-@docs maxDate, maxDepth, maxRows, min, minDate, minRows
-@docs modal, mode, motion, multi, nextMonthLabel, nextMultiYearLabel
-@docs nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap, open
-@docs opticalSize, optional, orientation, overshootLimit, pageIndex, pageSize
-@docs pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
-@docs previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range
-@docs rangeEnd, rangeStart, rel, removable, removeLabel, required
-@docs returnValue, scheme, scrollStrategy, secondary, selected, selectedIndex
-@docs shape, showDelay, showFirstLastButtons, size, start, startAt
-@docs startDivider, startMode, startView, state, step, stretch
-@docs strongFocus, submenu, target, term, thin, threshold
-@docs today, toggle, toggleDirection, togglePosition, touchGestures, type_
-@docs unbounded, variant, vertical, weight, width, wrap
-@docs wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed
-@docs onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
-@docs onQuery, onClear, onPage, onCancel, onRemove, onInvalid
-@docs onActiveChange, onHighlight
+@docs level, linear, loaded, loading, loadingLabel, lowered
+@docs max, maxDate, maxDepth, maxRows, min, minDate
+@docs minRows, modal, mode, motion, multi, nextMonthLabel
+@docs nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel, noFocusTrap
+@docs open, opticalSize, optional, orientation, overshootLimit, pageIndex
+@docs pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX
+@docs positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius
+@docs range, rangeEnd, rangeStart, rel, removable, removeLabel
+@docs required, returnValue, scheme, scrollStrategy, secondary, selected
+@docs selectedIndex, shape, showDelay, showFirstLastButtons, size, start
+@docs startAt, startDivider, startMode, startView, state, step
+@docs stretch, strongFocus, submenu, target, term, thin
+@docs threshold, today, toggle, toggleDirection, togglePosition, touchGestures
+@docs type_, unbounded, variant, vertical, weight, width
+@docs wrap, wrapDetents, name, valueFloat, value, onChange
+@docs onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput
+@docs onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
+@docs onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
 -}
 
 
@@ -581,6 +582,12 @@ length val_ =
     Html.Attributes.property "length" (Json.Encode.float val_)
 
 
+{-| The accessibility level of the heading. -}
+level : Int -> Html.Attribute msg
+level val_ =
+    Html.Attributes.property "level" (Json.Encode.int val_)
+
+
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
 linear : Bool -> Html.Attribute msg
 linear val_ =
@@ -1089,6 +1096,24 @@ wrap val_ =
 wrapDetents : Bool -> Html.Attribute msg
 wrapDetents val_ =
     Html.Attributes.property "wrapDetents" (Json.Encode.bool val_)
+
+
+{-| The name that identifies the element when submitting the associated form. -}
+name : String -> Html.Attribute msg
+name =
+    Html.Attributes.attribute "name"
+
+
+{-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
+valueFloat : Float -> Html.Attribute msg
+valueFloat val_ =
+    Html.Attributes.property "value" (Json.Encode.float val_)
+
+
+{-| A string representing the value of the switch. (default: `"on"`) -}
+value : String -> Html.Attribute msg
+value =
+    Html.Attributes.attribute "value"
 
 
 {-| Listen for `change` events. -}

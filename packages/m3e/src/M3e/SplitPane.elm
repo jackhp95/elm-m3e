@@ -85,7 +85,7 @@ view :
     , orientation : M3e.Value.Supported
     , overshootLimit : M3e.Value.Supported
     , step : M3e.Value.Supported
-    , value : M3e.Value.Supported
+    , valueFloat : M3e.Value.Supported
     , wrapDetents : M3e.Value.Supported
     , name : M3e.Value.Supported
     , disabled : M3e.Value.Supported
@@ -154,7 +154,7 @@ step =
 
 
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
-value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value : Float -> M3e.Cem.Attr.Attr { c | valueFloat : M3e.Value.Supported } msg
 value =
     M3e.Cem.SplitPane.value
 

@@ -76,7 +76,7 @@ import M3e.Value
 
 {-| Build the `<m3e-shape>` element (lazy IR). -}
 view :
-    List (M3e.Cem.Attr.Attr { name : M3e.Value.Supported
+    List (M3e.Cem.Attr.Attr { nameEnum : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
@@ -132,7 +132,7 @@ name :
     , triangle : M3e.Value.Supported
     , verySunny : M3e.Value.Supported
     }
-    -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+    -> M3e.Cem.Attr.Attr { c | nameEnum : M3e.Value.Supported } msg
 name =
     M3e.Cem.Shape.name
 

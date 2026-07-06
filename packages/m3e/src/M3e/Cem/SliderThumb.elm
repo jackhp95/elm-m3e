@@ -34,7 +34,7 @@ import M3e.Value
 sliderThumb :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , name : M3e.Value.Supported
-    , value : M3e.Value.Supported
+    , valueFloat : M3e.Value.Supported
     , onValueChange : M3e.Value.Supported
     , onBeforeinput : M3e.Value.Supported
     , onInput : M3e.Value.Supported
@@ -63,7 +63,7 @@ name =
 
 
 {-| The value of the thumb. (default: `null`) -}
-value : Float -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+value : Float -> M3e.Cem.Attr.Attr { c | valueFloat : M3e.Value.Supported } msg
 value =
     M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.SliderThumb.value
 

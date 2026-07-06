@@ -29,7 +29,7 @@ type alias Builder attrCaps slotCaps msg kind =
 
 {-| Per-component attribute capability row for the phantom-typed Builder. -}
 type alias AttrCaps =
-    { name : M3e.Build.Internal.Available }
+    { nameEnum : M3e.Build.Internal.Available }
 
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
@@ -103,8 +103,8 @@ name :
     , triangle : M3e.Value.Supported
     , verySunny : M3e.Value.Supported
     }
-    -> Builder { a | name : M3e.Build.Internal.Available } s msg kind
-    -> Builder { a | name : M3e.Build.Internal.Used } s msg kind
+    -> Builder { a | nameEnum : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | nameEnum : M3e.Build.Internal.Used } s msg kind
 name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
