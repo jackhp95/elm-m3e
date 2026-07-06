@@ -355,7 +355,7 @@ layerTabs index current =
                         [ ButtonSegment.child (Kit.text label) ]
                     )
             )
-            [ ( "Top", Top ), ( "Middle", Middle ), ( "Bottom", Bottom ), ( "HTML", Raw ) ]
+            [ ( "M3e", Top ), ( "M3e.Cem", Middle ), ( "M3e.Cem.Html", Bottom ), ( "HTML", Raw ) ]
         )
 
 
