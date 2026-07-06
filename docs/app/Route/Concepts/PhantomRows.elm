@@ -177,16 +177,21 @@ kitchenSink =
     """If slots are closed consumers, producers are the open counterpart. Userland producers return an **open row** so one value drops into many slots:
 
 - `Kit.text : String -> Element { k | text : Supported } msg` — the `k |` means *"at least text"*, so it unifies with any slot that lists `text`.
-- Native HTML producers return `Element { k | html : Supported } msg` — the **kitchen-sink** `html` kind. It fits every `any` slot (Card content, Dialog body) and every closed slot that lists `html`.
+- Non-semantic native tags (`Native.div`, `Native.p`, `Native.span`) return `Element any msg` — the **widest producer**. A bare type variable in the kind slot means *"any kind at all"*, so it drops into every slot. (Semantic native tags instead stamp their real kind: `Native.a` is `link`, `Native.label` is `label`.)
+- The **kitchen-sink** `html` kind is what `Seam.fromHtml` and `Native.node` carry — `Element { k | html : Supported } msg`. It fits every `any` slot (Card content, Dialog body) and every closed slot that lists `html`.
 
 The open producer row ("I am *at least* X") meets the closed slot row ("I accept *at most* these") in the middle. That handshake is the whole slot-safety story — and `any` slots, being a free type variable, accept the kitchen-sink and everything else."""
 
 
 kitchenSinkCode : String
 kitchenSinkCode =
-    """-- producers are OPEN (`k |`), so they fit many closed slots:
+    """-- open producers (`k |`) fit many closed slots; Seam.fromHtml / Native.node
+-- carry the kitchen-sink `html` kind:
 text : String -> Element { k | text : Supported } msg
-Native.p : List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
+Seam.fromHtml : Html msg -> Element supported msg
+
+-- non-semantic native tags go one wider — `Element any`, which fits EVERY slot:
+Native.p : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
 
 -- an `any` slot is the widest sink — a bare type variable:
 content : Element any msg -> Content { r | content : Supported } msg
@@ -196,9 +201,9 @@ Card.content (Native.p [] [ Kit.text "arbitrary prose is fine here" ])"""
 
 nativeNode : String
 nativeNode =
-    """The native-HTML escape producers — `Native.node`, `Native.div`, `Native.span`, `Native.p`, … — are first-class IR `Element`s, not a way out of the type system. The key detail: their attribute list is `List (Attr c msg)`, the **typed middle-layer `Attr`**, *not* raw `Html.Attribute`.
+    """The native-HTML producers — `Native.node`, `Native.div`, `Native.span`, `Native.p`, … — are first-class IR `Element`s, not a way out of the type system. The key detail: their attribute list is the **typed middle-layer `Attr`**, *not* raw `Html.Attribute`. `Native.node` takes a fully-open `List (Attr c msg)`; the generated tags take an HTML-natural, element-constrained row (every tag admits `slot`; `Native.a` also admits `href`/`target`, and so on).
 
-So you compose the very same typed setters onto a plain `<div>` that you would onto an `<m3e-button>` — `Aria.label`, `Kit.tint`, `Seam.asAttribute (class …)`. Typed attrs in, children of any kind in, and a slottable kitchen-sink `html` `Element` out — native elements stay inside the same composition system."""
+So you compose the very same typed setters onto a plain `<div>` that you would onto an `<m3e-button>` — `Aria.label`, `Kit.tint`, `Seam.asAttribute (class …)`. Typed attrs in, children of any kind in, and a slottable `Element` out: `Native.node` stamps the kitchen-sink `html` kind, while a non-semantic tag like `Native.div` goes wider still to `Element any`. Native elements stay inside the same composition system."""
 
 
 nativeNodeCode : String
