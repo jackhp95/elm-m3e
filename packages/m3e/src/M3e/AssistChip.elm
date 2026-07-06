@@ -1,6 +1,6 @@
 module M3e.AssistChip exposing
-    ( view, disabled, disabledInteractive, name, type_, value
-    , variant, onClick, href, target, rel, download, child
+    ( view, disabled, disabledInteractive, download, href, name
+    , rel, target, type_, value, variant, onClick, child
     , icon, children
     )
 
@@ -17,8 +17,8 @@ A chip users interact with to perform a smart or automated action that can span 
 - `icon`: Renders an icon before the chip's label.
 - `trailing-icon`: Renders an icon after the chip's label.
 
-@docs view, disabled, disabledInteractive, name, type_, value
-@docs variant, onClick, href, target, rel, download
+@docs view, disabled, disabledInteractive, download, href, name
+@docs rel, target, type_, value, variant, onClick
 @docs child, icon, children
 -}
 
@@ -80,10 +80,35 @@ disabledInteractive =
     M3e.Cem.AssistChip.disabledInteractive
 
 
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download :
+    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
+download =
+    M3e.Cem.AssistChip.download
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
+href =
+    M3e.Cem.AssistChip.href
+
+
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
 name =
     M3e.Cem.AssistChip.name
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
+rel =
+    M3e.Cem.AssistChip.rel
+
+
+{-| The target of the link button. (default: `""`) -}
+target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
+target =
+    M3e.Cem.AssistChip.target
 
 
 {-| The type of the element. (default: `"button"`) -}
@@ -117,31 +142,6 @@ variant =
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick =
     M3e.Cem.AssistChip.onClick
-
-
-{-| The URL to which the link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
-    M3e.Cem.AssistChip.href
-
-
-{-| The target of the link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
-    M3e.Cem.AssistChip.target
-
-
-{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
-    M3e.Cem.AssistChip.rel
-
-
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
-download :
-    String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
-    M3e.Cem.AssistChip.download
 
 
 {-| Place content in the `(default)` slot. -}

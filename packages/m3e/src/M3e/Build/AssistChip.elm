@@ -1,20 +1,23 @@
 module M3e.Build.AssistChip exposing
     ( Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
-    , name, type_, value, variant, build
+    , download, href, name, rel, target, type_, value
+    , variant, onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-assist-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.AssistChip as AssistChip`.
 
 @docs Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
-@docs name, type_, value, variant, build
+@docs download, href, name, rel, target, type_
+@docs value, variant, onClick, build
 -}
 
 
-import M3e.Action
+import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.AssistChip
 import M3e.Cem.Attr.Internal
+import M3e.Cem.Html.AssistChip
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -32,10 +35,15 @@ type alias Builder attrCaps slotCaps msg kind =
 type alias AttrCaps =
     { disabled : M3e.Build.Internal.Available
     , disabledInteractive : M3e.Build.Internal.Available
+    , download : M3e.Build.Internal.Available
+    , href : M3e.Build.Internal.Available
     , name : M3e.Build.Internal.Available
+    , rel : M3e.Build.Internal.Available
+    , target : M3e.Build.Internal.Available
     , type_ : M3e.Build.Internal.Available
     , value : M3e.Build.Internal.Available
     , variant : M3e.Build.Internal.Available
+    , onClick : M3e.Build.Internal.Available
     }
 
 
@@ -46,24 +54,7 @@ type alias SlotCaps =
 
 {-| Seed a `Builder` for `<m3e-assist-chip>` with the required fields. -}
 assistChip :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg
-    , action :
-        M3e.Action.Action { click : M3e.Value.Supported
-        , link : M3e.Value.Supported
-        , menuTrigger : M3e.Value.Supported
-        , dialogTrigger : M3e.Value.Supported
-        , fabMenuTrigger : M3e.Value.Supported
-        , bottomSheetTrigger : M3e.Value.Supported
-        , navRailToggle : M3e.Value.Supported
-        , drawerToggle : M3e.Value.Supported
-        , datepickerToggle : M3e.Value.Supported
-        , dialogAction : M3e.Value.Supported
-        , bottomSheetAction : M3e.Value.Supported
-        , richTooltipAction : M3e.Value.Supported
-        , stepperReset : M3e.Value.Supported
-        , stepperPrevious : M3e.Value.Supported
-        } msg
-    }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> Builder AttrCaps SlotCaps msg kind
 assistChip req_ =
     M3e.Build.Internal.wrap_
@@ -73,14 +64,8 @@ assistChip req_ =
                       (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
-             (List.map
-                  M3e.Cem.Attr.Internal.forget
-                  (M3e.Action.toAttrs req_.action)
-             )
-             [ M3e.Action.wrapContent
-                 req_.action
-                 (M3e.Element.toNode req_.content)
-             ]
+             []
+             [ M3e.Element.toNode req_.content ]
         )
 
 
@@ -114,6 +99,32 @@ disabledInteractive v_ b_ =
         )
 
 
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+download :
+    String
+    -> Builder { a | download : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | download : M3e.Build.Internal.Used } s msg kind
+download v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.download v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The URL to which the link button points. (default: `""`) -}
+href :
+    String
+    -> Builder { a | href : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | href : M3e.Build.Internal.Used } s msg kind
+href v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.href v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}
 name :
     String
@@ -123,6 +134,32 @@ name v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.name v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`) -}
+rel :
+    String
+    -> Builder { a | rel : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | rel : M3e.Build.Internal.Used } s msg kind
+rel v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.rel v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The target of the link button. (default: `""`) -}
+target :
+    String
+    -> Builder { a | target : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | target : M3e.Build.Internal.Used } s msg kind
+target v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.target v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -167,6 +204,24 @@ variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Dispatched when the element is clicked. -}
+onClick :
+    Json.Decode.Decoder msg
+    -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
+onClick v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget
+                  (M3e.Cem.Attr.Internal.attribute
+                       M3e.Cem.Html.AssistChip.onClick
+                       v_
+                  )
+             )
              (M3e.Build.Internal.node_ b_)
         )
 

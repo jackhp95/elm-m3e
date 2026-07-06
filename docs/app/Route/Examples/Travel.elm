@@ -27,8 +27,8 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
-import M3e.Aria as Aria
 import M3e.AppBar as AppBar
+import M3e.Aria as Aria
 import M3e.Card as Card
 import M3e.Element as Element exposing (Element)
 import M3e.Icon as Icon
@@ -397,8 +397,6 @@ media place =
 ratingChip : String -> Element { s | assistChip : Supported } (PagesMsg Msg)
 ratingChip rating =
     AssistChip.view
-        { content = Kit.text rating
-        , action = Action.onClick (PagesMsg.fromMsg (SetDest Saved))
-        }
+        { content = Kit.text rating }
         []
         [ AssistChip.icon (Icon.view [ Icon.name "star", Icon.filled True ] []) ]
