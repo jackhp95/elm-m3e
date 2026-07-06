@@ -14,20 +14,9 @@ A non-visual element used to automatically resize a `textarea` to fit its conten
 
 ### Examples
 
-<!-- elm-cem:example title="Auto-resizing comment textarea" -->
+<!-- elm-cem:example title="Disabling" -->
 ```elm
-[ Native.node Html.label [] [ Kit.text "Add a comment" ]
-    , Native.node Html.textarea [] []
-    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "comment", M3e.TextareaAutosize.minRows 2, M3e.TextareaAutosize.maxRows 8 ] []
-    ]
-```
-
-<!-- elm-cem:example title="Disabled auto-sizing on a fixed message box" -->
-```elm
-[ Native.node Html.label [] [ Kit.text "Message" ]
-    , Native.node Html.textarea [] []
-    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "msg", M3e.TextareaAutosize.disabled True ] []
-    ]
+M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field", M3e.TextareaAutosize.disabled True ] []
 ```
 
 @docs view, disabled, for, maxRows, minRows

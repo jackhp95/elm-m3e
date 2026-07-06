@@ -19,9 +19,14 @@ A table of contents that provides in-page scroll navigation.
 
 ### Examples
 
-<!-- elm-cem:example title="Table of contents with overline slot" -->
+<!-- elm-cem:example title="Generating a TOC" -->
 ```elm
-M3e.Toc.view [ M3e.Toc.for "post-content", M3e.Toc.maxDepth 3 ] [ M3e.Toc.overline (Native.span [] [ Kit.text "Contents" ]) ]
+Native.div [] [ M3e.Toc.view [ M3e.Toc.for "d1" ] [ M3e.Toc.overline (Native.span [] [ Kit.text "Overline" ]), M3e.Toc.title (Native.span [] [ Kit.text "Title" ]) ], Native.div [] [ Native.node Html.h2 [] [ Kit.text "Heading 1" ], Native.node Html.h3 [] [ Kit.text "Heading 1.1" ], Native.node Html.h4 [] [ Kit.text "Heading 1.1.1" ], Native.node Html.h3 [] [ Kit.text "Heading 1.2" ], Native.node Html.h2 [] [ Kit.text "Heading 2" ] ] ]
+```
+
+<!-- elm-cem:example title="Heading" -->
+```elm
+M3e.Toc.view [ M3e.Toc.for "d1" ] [ M3e.Toc.overline (Native.span [] [ Kit.text "Overline" ]), M3e.Toc.title (Native.span [] [ Kit.text "Title" ]) ]
 ```
 
 @docs view, for, maxDepth, child, overline, title

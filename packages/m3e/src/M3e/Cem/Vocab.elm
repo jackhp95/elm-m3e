@@ -26,10 +26,19 @@ module M3e.Cem.Vocab exposing
     , wrap, wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed
     , onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
     , onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
+    , slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon
+    , slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon
+    , slotContent, slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline
+    , slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix
+    , slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge
+    , slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
+    , slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue, slotNextIcon
+    , slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep
+    , slotPanel, slotOpenToggleIcon
     )
 
 {-|
-Shared middle vocabulary: the component-agnostic, phantom-gated attribute and event setters — ONE polymorphic function per name, each carrying an OPEN capability row so it type-checks against any component that admits it. The loose counterpart to the strict per-component modules.
+Shared middle vocabulary: the component-agnostic, phantom-gated attribute, event, and slot setters — ONE polymorphic function per name, each carrying an OPEN capability row so it type-checks against any component that admits it. The loose counterpart to the strict per-component modules.
 
 @docs action, actionable, active, activeDate, alert, anchorOffset
 @docs animation, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive
@@ -62,7 +71,16 @@ Shared middle vocabulary: the component-agnostic, phantom-gated attribute and ev
 @docs wrapDetents, onChange, onOpening, onOpened, onClosing, onClosed
 @docs onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
 @docs onQuery, onClear, onPage, onCancel, onRemove, onInvalid
-@docs onActiveChange, onHighlight
+@docs onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle, slotSubtitle
+@docs slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
+@docs slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions
+@docs slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText
+@docs slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix
+@docs slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput
+@docs slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead
+@docs slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon
+@docs slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
+@docs slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
 -}
 
 
@@ -70,6 +88,9 @@ import Json.Decode
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Vocab
+import M3e.Content
+import M3e.Content.Internal
+import M3e.Element
 import M3e.Value
 
 
@@ -1613,3 +1634,467 @@ onHighlight :
     -> M3e.Cem.Attr.Attr { c | onHighlight : M3e.Value.Supported } msg
 onHighlight =
     M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.onHighlight
+
+
+{-| Place content in the `(default)` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotDefault :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
+slotDefault =
+    M3e.Content.Internal.slot ""
+
+
+{-| Place content in the `leading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotLeading :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+slotLeading =
+    M3e.Content.Internal.slot "leading"
+
+
+{-| Place content in the `title` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotTitle :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
+slotTitle =
+    M3e.Content.Internal.slot "title"
+
+
+{-| Place content in the `subtitle` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSubtitle :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
+slotSubtitle =
+    M3e.Content.Internal.slot "subtitle"
+
+
+{-| Place content in the `trailing` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotTrailing :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+slotTrailing =
+    M3e.Content.Internal.slot "trailing"
+
+
+{-| Place content in the `leading-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotLeadingIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | leadingIcon : M3e.Value.Supported } msg
+slotLeadingIcon =
+    M3e.Content.Internal.slot "leading-icon"
+
+
+{-| Place content in the `trailing-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotTrailingIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+slotTrailingIcon =
+    M3e.Content.Internal.slot "trailing-icon"
+
+
+{-| Place content in the `icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+slotIcon =
+    M3e.Content.Internal.slot "icon"
+
+
+{-| Place content in the `loading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotLoading :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
+slotLoading =
+    M3e.Content.Internal.slot "loading"
+
+
+{-| Place content in the `no-data` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotNoData :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | noData : M3e.Value.Supported } msg
+slotNoData =
+    M3e.Content.Internal.slot "no-data"
+
+
+{-| Place content in the `header` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotHeader :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+slotHeader =
+    M3e.Content.Internal.slot "header"
+
+
+{-| Place content in the `separator` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSeparator :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | separator : M3e.Value.Supported } msg
+slotSeparator =
+    M3e.Content.Internal.slot "separator"
+
+
+{-| Place content in the `selected` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSelected :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+slotSelected =
+    M3e.Content.Internal.slot "selected"
+
+
+{-| Place content in the `selected-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSelectedIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+slotSelectedIcon =
+    M3e.Content.Internal.slot "selected-icon"
+
+
+{-| Place content in the `content` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotContent :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | content : M3e.Value.Supported } msg
+slotContent =
+    M3e.Content.Internal.slot "content"
+
+
+{-| Place content in the `actions` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotActions :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+slotActions =
+    M3e.Content.Internal.slot "actions"
+
+
+{-| Place content in the `footer` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotFooter :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | footer : M3e.Value.Supported } msg
+slotFooter =
+    M3e.Content.Internal.slot "footer"
+
+
+{-| Place content in the `close-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotCloseIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+slotCloseIcon =
+    M3e.Content.Internal.slot "close-icon"
+
+
+{-| Place content in the `start` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotStart :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | start : M3e.Value.Supported } msg
+slotStart =
+    M3e.Content.Internal.slot "start"
+
+
+{-| Place content in the `end` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotEnd :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | end : M3e.Value.Supported } msg
+slotEnd =
+    M3e.Content.Internal.slot "end"
+
+
+{-| Place content in the `overline` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotOverline :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+slotOverline =
+    M3e.Content.Internal.slot "overline"
+
+
+{-| Place content in the `supporting-text` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSupportingText :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+slotSupportingText =
+    M3e.Content.Internal.slot "supporting-text"
+
+
+{-| Place content in the `toggle-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotToggleIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+slotToggleIcon =
+    M3e.Content.Internal.slot "toggle-icon"
+
+
+{-| Place content in the `items` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotItems :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | items : M3e.Value.Supported } msg
+slotItems =
+    M3e.Content.Internal.slot "items"
+
+
+{-| Place content in the `label` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotLabel :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+slotLabel =
+    M3e.Content.Internal.slot "label"
+
+
+{-| Place content in the `prefix` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotPrefix :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | prefix : M3e.Value.Supported } msg
+slotPrefix =
+    M3e.Content.Internal.slot "prefix"
+
+
+{-| Place content in the `prefix-text` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotPrefixText :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
+slotPrefixText =
+    M3e.Content.Internal.slot "prefix-text"
+
+
+{-| Place content in the `suffix` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSuffix :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | suffix : M3e.Value.Supported } msg
+slotSuffix =
+    M3e.Content.Internal.slot "suffix"
+
+
+{-| Place content in the `suffix-text` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSuffixText :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
+slotSuffixText =
+    M3e.Content.Internal.slot "suffix-text"
+
+
+{-| Place content in the `hint` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotHint :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+slotHint =
+    M3e.Content.Internal.slot "hint"
+
+
+{-| Place content in the `error` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotError :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+slotError =
+    M3e.Content.Internal.slot "error"
+
+
+{-| Place content in the `avatar` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotAvatar :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | avatar : M3e.Value.Supported } msg
+slotAvatar =
+    M3e.Content.Internal.slot "avatar"
+
+
+{-| Place content in the `remove-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotRemoveIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
+slotRemoveIcon =
+    M3e.Content.Internal.slot "remove-icon"
+
+
+{-| Place content in the `input` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotInput :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+slotInput =
+    M3e.Content.Internal.slot "input"
+
+
+{-| Place content in the `badge` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotBadge :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | badge : M3e.Value.Supported } msg
+slotBadge =
+    M3e.Content.Internal.slot "badge"
+
+
+{-| Place content in the `first-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotFirstPageIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | firstPageIcon : M3e.Value.Supported } msg
+slotFirstPageIcon =
+    M3e.Content.Internal.slot "first-page-icon"
+
+
+{-| Place content in the `previous-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotPreviousPageIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | previousPageIcon : M3e.Value.Supported } msg
+slotPreviousPageIcon =
+    M3e.Content.Internal.slot "previous-page-icon"
+
+
+{-| Place content in the `next-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotNextPageIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | nextPageIcon : M3e.Value.Supported } msg
+slotNextPageIcon =
+    M3e.Content.Internal.slot "next-page-icon"
+
+
+{-| Place content in the `last-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotLastPageIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | lastPageIcon : M3e.Value.Supported } msg
+slotLastPageIcon =
+    M3e.Content.Internal.slot "last-page-icon"
+
+
+{-| Place content in the `subhead` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSubhead :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | subhead : M3e.Value.Supported } msg
+slotSubhead =
+    M3e.Content.Internal.slot "subhead"
+
+
+{-| Place content in the `clear-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotClearIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+slotClearIcon =
+    M3e.Content.Internal.slot "clear-icon"
+
+
+{-| Place content in the `open-leading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotOpenLeading :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | openLeading : M3e.Value.Supported } msg
+slotOpenLeading =
+    M3e.Content.Internal.slot "open-leading"
+
+
+{-| Place content in the `open-trailing` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotOpenTrailing :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | openTrailing : M3e.Value.Supported } msg
+slotOpenTrailing =
+    M3e.Content.Internal.slot "open-trailing"
+
+
+{-| Place content in the `closed-leading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotClosedLeading :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | closedLeading : M3e.Value.Supported } msg
+slotClosedLeading =
+    M3e.Content.Internal.slot "closed-leading"
+
+
+{-| Place content in the `closed-trailing` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotClosedTrailing :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | closedTrailing : M3e.Value.Supported } msg
+slotClosedTrailing =
+    M3e.Content.Internal.slot "closed-trailing"
+
+
+{-| Place content in the `search-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotSearchIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | searchIcon : M3e.Value.Supported } msg
+slotSearchIcon =
+    M3e.Content.Internal.slot "search-icon"
+
+
+{-| Place content in the `arrow` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotArrow :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | arrow : M3e.Value.Supported } msg
+slotArrow =
+    M3e.Content.Internal.slot "arrow"
+
+
+{-| Place content in the `value` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotValue :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | value : M3e.Value.Supported } msg
+slotValue =
+    M3e.Content.Internal.slot "value"
+
+
+{-| Place content in the `next-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotNextIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
+slotNextIcon =
+    M3e.Content.Internal.slot "next-icon"
+
+
+{-| Place content in the `prev-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotPrevIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
+slotPrevIcon =
+    M3e.Content.Internal.slot "prev-icon"
+
+
+{-| Place content in the `leading-button` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotLeadingButton :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
+slotLeadingButton =
+    M3e.Content.Internal.slot "leading-button"
+
+
+{-| Place content in the `trailing-button` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotTrailingButton :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
+slotTrailingButton =
+    M3e.Content.Internal.slot "trailing-button"
+
+
+{-| Place content in the `done-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotDoneIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | doneIcon : M3e.Value.Supported } msg
+slotDoneIcon =
+    M3e.Content.Internal.slot "done-icon"
+
+
+{-| Place content in the `edit-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotEditIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | editIcon : M3e.Value.Supported } msg
+slotEditIcon =
+    M3e.Content.Internal.slot "edit-icon"
+
+
+{-| Place content in the `error-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotErrorIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | errorIcon : M3e.Value.Supported } msg
+slotErrorIcon =
+    M3e.Content.Internal.slot "error-icon"
+
+
+{-| Place content in the `step` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotStep :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | step : M3e.Value.Supported } msg
+slotStep =
+    M3e.Content.Internal.slot "step"
+
+
+{-| Place content in the `panel` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotPanel :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
+slotPanel =
+    M3e.Content.Internal.slot "panel"
+
+
+{-| Place content in the `open-toggle-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+slotOpenToggleIcon :
+    M3e.Element.Element k msg
+    -> M3e.Content.Content { r | openToggleIcon : M3e.Value.Supported } msg
+slotOpenToggleIcon =
+    M3e.Content.Internal.slot "open-toggle-icon"

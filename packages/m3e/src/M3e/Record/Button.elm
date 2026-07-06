@@ -26,35 +26,55 @@ A button users interact with to perform an action.
 
 ## Examples
 
-### Variants
-
-<!-- elm-cem:example title="Five button variants in an action row" -->
-```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), M3e.Button.child (Kit.text "New") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Tonal") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Outlined") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Text") ]
-    ]
-```
-
-<!-- elm-cem:example title="Toggle button and link button with icons" -->
-```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "favorite_border" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text "Saved" ]), M3e.Button.child (Kit.text "Save") ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href "/download", M3e.Button.download "", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.Button.child (Kit.text "Download") ]
-    ]
-```
-
 ### Examples
 
-<!-- elm-cem:example title="Single button with a link action" -->
+<!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href "/get-started" ] [ M3e.Button.child (Kit.text "Get started") ]
+M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
 ```
 
-<!-- elm-cem:example title="Link button with a leading icon" -->
+<!-- elm-cem:example title="Shapes" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "/download" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.Button.child (Kit.text "Download") ]
+M3e.Button.view [ M3e.Button.variant M3e.Value.elevated, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Elevated") ]
+```
+
+<!-- elm-cem:example title="Sizes" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.child (Kit.text "Extra Small") ]
+```
+
+<!-- elm-cem:example title="Icons" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "send" ] []), M3e.Button.child (Kit.text "Send") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []), M3e.Button.child (Kit.text "Open") ]
+    ]
+```
+
+<!-- elm-cem:example title="Toggle" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.elevated, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Elevated Toggle") ]
+```
+
+<!-- elm-cem:example title="Toggle (2)" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "stop" ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text "Stop" ]), M3e.Button.child (Kit.text "Start") ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.disabled True ] [ M3e.Button.child (Kit.text "Disabled") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.disabledInteractive True ] [ M3e.Button.child (Kit.text "Disabled Interactive") ]
+    ]
+```
+
+<!-- elm-cem:example title="Links" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "https://www.google.com", M3e.Button.target "_blank" ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []), M3e.Button.child (Kit.text "Google") ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -3") ]
 ```
 
 @docs view, disabled, disabledInteractive, name, selected, shape

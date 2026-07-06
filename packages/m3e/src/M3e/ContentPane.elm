@@ -12,9 +12,9 @@ A shaped surface for vertically scrollable content.
 
 ### Examples
 
-<!-- elm-cem:example title="Scrollable article surface" -->
+<!-- elm-cem:example title="Content header" -->
 ```elm
-M3e.ContentPane.view [] (M3e.ContentPane.children [ Native.header [] [ Native.node Html.h2 [] [ Kit.text "Release notes" ] ], Native.p [] [ Kit.text "This version introduces a redesigned navigation drawer and refined motion." ], M3e.Divider.view [] [], Native.p [] [ Kit.text "Performance improvements reduce initial load time across all surfaces." ], Native.p [] [ Kit.text "Several accessibility fixes were applied to form controls." ] ])
+M3e.ContentPane.view [] (M3e.ContentPane.children [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Content header") ], Native.p [] [] ])
 ```
 
 @docs view, child, children

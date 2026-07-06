@@ -12,6 +12,41 @@ A non-visual element responsible for application-level theming.
 **Events:**
 - `change`: Dispatched when the theme changes.
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Color" -->
+```elm
+M3e.Theme.view [ M3e.Theme.color "#4285F4" ] []
+```
+
+<!-- elm-cem:example title="Schemes" -->
+```elm
+M3e.Theme.view [ M3e.Theme.color "#4285F4", M3e.Theme.scheme M3e.Value.dark ] []
+```
+
+<!-- elm-cem:example title="Contrast" -->
+```elm
+M3e.Theme.view [ M3e.Theme.color "#4285F4", M3e.Theme.contrast M3e.Value.high ] []
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.Theme.view [ M3e.Theme.density -3 ] []
+```
+
+### Motion
+
+<!-- elm-cem:example title="Motion" -->
+```elm
+[ M3e.Theme.view [ M3e.Theme.motion M3e.Value.standard ] []
+    , M3e.Theme.view [ M3e.Theme.motion M3e.Value.expressive ] []
+    ]
+```
+
 @docs view, color, contrast, density, scheme, strongFocus
 @docs variant, motion, onChange, child, children
 -}

@@ -20,14 +20,49 @@ Allows for the selection of numeric values from a range.
 
 ### Examples
 
-<!-- elm-cem:example title="Discrete labelled volume slider" -->
+<!-- elm-cem:example title="Basic usage" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.discrete True, M3e.Slider.min 0, M3e.Slider.max 100, M3e.Slider.step 10, M3e.Slider.size M3e.Value.medium ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 40 ] []) ]
+M3e.Slider.view [] [ M3e.Slider.child (M3e.SliderThumb.view [] []) ]
 ```
 
-<!-- elm-cem:example title="Range slider with two thumbs" -->
+<!-- elm-cem:example title="Selecting a value" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.min 0, M3e.Slider.max 1000, M3e.Slider.step 50 ] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.name "min-price", M3e.SliderThumb.value 200 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.name "max-price", M3e.SliderThumb.value 800 ] [] ])
+M3e.Slider.view [ M3e.Slider.min 1, M3e.Slider.max 5, M3e.Slider.step 0.5 ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 1.5 ] []) ]
+```
+
+<!-- elm-cem:example title="Selecting a range" -->
+```elm
+M3e.Slider.view [] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.value 80 ] [] ])
+```
+
+<!-- elm-cem:example title="Negative value ranges" -->
+```elm
+M3e.Slider.view [ M3e.Slider.min -50 ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value -20 ] []) ]
+```
+
+<!-- elm-cem:example title="Sizes" -->
+```elm
+M3e.Slider.view [ M3e.Slider.size M3e.Value.extraSmall ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+```
+
+<!-- elm-cem:example title="Labels" -->
+```elm
+M3e.Slider.view [ M3e.Slider.labelled True ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+```
+
+<!-- elm-cem:example title="Tick marks" -->
+```elm
+M3e.Slider.view [ M3e.Slider.discrete True, M3e.Slider.step 10 ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.disabled True ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+```
+
+<!-- elm-cem:example title="Disabling (2)" -->
+```elm
+M3e.Slider.view [ M3e.Slider.labelled True ] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.disabled True, M3e.SliderThumb.value 80 ] [] ])
 ```
 
 @docs view, disabled, discrete, labelled, max, min

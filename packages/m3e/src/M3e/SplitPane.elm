@@ -25,14 +25,39 @@ A dual-view layout that separates content with a movable drag handle.
 
 ### Examples
 
-<!-- elm-cem:example title="Horizontal split pane with min and max constraints" -->
+<!-- elm-cem:example title="Basic usage" -->
 ```elm
-M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.horizontal, M3e.SplitPane.value 35, M3e.SplitPane.min 20, M3e.SplitPane.max 60, M3e.SplitPane.label "Resize sidebar" ] [ M3e.SplitPane.start (Native.nav [] [ Native.ul [] [ Native.li [] [ Kit.text "Inbox" ], Native.li [] [ Kit.text "Drafts" ], Native.li [] [ Kit.text "Sent" ] ] ]), M3e.SplitPane.end (Native.node Html.main_ [] [ Native.p [] [ Kit.text "Select a message to read." ] ]) ]
+M3e.SplitPane.view [ M3e.SplitPane.value 50 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
 ```
 
-<!-- elm-cem:example title="Vertical split pane with snapping detents" -->
+<!-- elm-cem:example title="Orientation" -->
 ```elm
-M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.vertical, M3e.SplitPane.wrapDetents True, M3e.SplitPane.step 5 ] [ M3e.SplitPane.start (Native.section [] [ Native.p [] [ Kit.text "Editor" ] ]), M3e.SplitPane.end (Native.section [] [ Native.p [] [ Kit.text "Preview output" ] ]) ]
+M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.orientation M3e.Value.vertical ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
+```
+
+<!-- elm-cem:example title="Min and max sizes" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.min 25, M3e.SplitPane.max 75 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
+```
+
+<!-- elm-cem:example title="Step size" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.step 10 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
+```
+
+<!-- elm-cem:example title="Detents" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.wrapDetents True ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.disabled True ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
+```
+
+<!-- elm-cem:example title="Nested panes" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.value 25 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.orientation M3e.Value.vertical ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]) ]
 ```
 
 @docs view, label, max, min, orientation, overshootLimit

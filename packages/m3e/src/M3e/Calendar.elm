@@ -22,14 +22,41 @@ A calendar used to select a date.
 
 ### Examples
 
-<!-- elm-cem:example title="Date picker calendar with a custom header" -->
+<!-- elm-cem:example title="Date selection" -->
 ```elm
-M3e.Calendar.view [ M3e.Calendar.date "2025-12-13", M3e.Calendar.minDate "2025-01-01", M3e.Calendar.maxDate "2026-12-31" ] [ M3e.Calendar.header (Native.span [] [ Kit.text "Select a delivery date" ]) ]
+[ M3e.Calendar.view [ M3e.Calendar.date "2026-01-01" ] []
+    , Native.div [] []
+    ]
 ```
 
-<!-- elm-cem:example title="Range calendar starting in the multi-year view" -->
+<!-- elm-cem:example title="Start date" -->
 ```elm
-M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt "2026-06-01", M3e.Calendar.rangeStart "2026-06-10", M3e.Calendar.rangeEnd "2026-06-17", M3e.Calendar.nextMonthLabel "Next month", M3e.Calendar.previousMonthLabel "Previous month" ] [ M3e.Calendar.header (Native.span [] [ Kit.text "Choose your stay" ]) ]
+M3e.Calendar.view [ M3e.Calendar.startAt "2026-01-01" ] []
+```
+
+<!-- elm-cem:example title="Start view" -->
+```elm
+M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear ] []
+```
+
+<!-- elm-cem:example title="Date ranges" -->
+```elm
+M3e.Calendar.view [ M3e.Calendar.rangeStart "2026-01-01", M3e.Calendar.rangeEnd "2026-01-09", M3e.Calendar.startAt "2026-01-01" ] []
+```
+
+<!-- elm-cem:example title="Min and max dates" -->
+```elm
+M3e.Calendar.view [ M3e.Calendar.startAt "2026-04-01", M3e.Calendar.minDate "2026-01-01", M3e.Calendar.maxDate "2026-04-30" ] []
+```
+
+<!-- elm-cem:example title="Blackout dates" -->
+```elm
+M3e.Calendar.view [] []
+```
+
+<!-- elm-cem:example title="Special dates" -->
+```elm
+M3e.Calendar.view [ M3e.Calendar.startAt "2026-04-01" ] []
 ```
 
 @docs view, date, maxDate, minDate, rangeEnd, rangeStart

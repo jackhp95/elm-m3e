@@ -12,21 +12,29 @@ A visual indicator used to label content.
 
 ## Examples
 
-### Examples
+### Sizes
 
-<!-- elm-cem:example title="Notification count badge on a button" -->
+<!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "notifications" ] []), M3e.Button.child (Kit.text "Alerts") ]
-    , M3e.Badge.view [ M3e.Badge.for "notifications" ] [ M3e.Badge.child (Kit.text "10") ]
+[ M3e.Badge.view [ M3e.Badge.size M3e.Value.small ] [ M3e.Badge.child (Kit.text "10") ]
+    , M3e.Badge.view [ M3e.Badge.size M3e.Value.medium ] [ M3e.Badge.child (Kit.text "10") ]
+    , M3e.Badge.view [ M3e.Badge.size M3e.Value.large ] [ M3e.Badge.child (Kit.text "10") ]
     ]
 ```
 
-<!-- elm-cem:example title="Small dot badge and large count badge on icons" -->
+### Examples
+
+<!-- elm-cem:example title="Anchoring" -->
 ```elm
-[ M3e.Icon.view [ M3e.Icon.name "mail" ] []
-    , M3e.Badge.view [ M3e.Badge.for "mail-icon", M3e.Badge.size M3e.Value.small, M3e.Badge.position M3e.Value.aboveAfter ] []
-    , M3e.Icon.view [ M3e.Icon.name "shopping_cart" ] []
-    , M3e.Badge.view [ M3e.Badge.for "cart-icon", M3e.Badge.size M3e.Value.large, M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text "99+") ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Button") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text "AA") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveBefore ] [ M3e.Badge.child (Kit.text "AB") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowBefore ] [ M3e.Badge.child (Kit.text "BB") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowAfter ] [ M3e.Badge.child (Kit.text "BA") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.before ] [ M3e.Badge.child (Kit.text "BE") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.after ] [ M3e.Badge.child (Kit.text "AF") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.above ] [ M3e.Badge.child (Kit.text "A") ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.below ] [ M3e.Badge.child (Kit.text "B") ]
     ]
 ```
 

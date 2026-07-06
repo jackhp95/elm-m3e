@@ -23,14 +23,36 @@ A floating action button (FAB) used to present important actions.
 
 ### Examples
 
-<!-- elm-cem:example title="Small FAB with icon" -->
+<!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label "Navigation menu" ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "menu" ] []) ]
+M3e.Fab.view [ M3e.Fab.variant M3e.Value.primary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
 ```
 
-<!-- elm-cem:example title="Extended FAB with a link action" -->
+<!-- elm-cem:example title="Lowering" -->
 ```elm
-M3e.Fab.view [ M3e.Fab.extended True, M3e.Fab.href "/compose" ] [ M3e.Fab.label (Native.span [] [ Kit.text "Compose" ]), M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "edit" ] []) ]
+M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+```
+
+<!-- elm-cem:example title="Sizes" -->
+```elm
+M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ M3e.Fab.view [ M3e.Fab.disabled True ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+    , M3e.Fab.view [ M3e.Fab.disabledInteractive True ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+    ]
+```
+
+<!-- elm-cem:example title="Extended FABs" -->
+```elm
+M3e.Fab.view [ M3e.Fab.extended True, M3e.Fab.size M3e.Value.small ] [ M3e.Fab.label (Native.span [] [ Kit.text "Extended" ]), M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+```
+
+<!-- elm-cem:example title="Links" -->
+```elm
+M3e.Fab.view [ M3e.Fab.extended True, M3e.Fab.href "https://www.google.com", M3e.Fab.target "_blank" ] [ M3e.Fab.label (Native.span [] [ Kit.text "Google" ]), M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []) ]
 ```
 
 @docs view, disabled, disabledInteractive, extended, lowered, name

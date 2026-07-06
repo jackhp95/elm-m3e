@@ -20,14 +20,39 @@ A button that allows a user to select from a limited set of options.
 
 ### Examples
 
-<!-- elm-cem:example title="Segmented button with icons" -->
+<!-- elm-cem:example title="Anatomy" -->
 ```elm
-M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value "paste", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "content_paste" ] []), M3e.ButtonSegment.child (Kit.text "Paste") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value "file" ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "upload_file" ] []), M3e.ButtonSegment.child (Kit.text "File") ] ])
+M3e.SegmentedButton.view [] [ M3e.SegmentedButton.child (M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ]) ]
 ```
 
-<!-- elm-cem:example title="Segmented button for value selection" -->
+<!-- elm-cem:example title="Icons" -->
 ```elm
-M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value "0.75" ] [ M3e.ButtonSegment.child (Kit.text "0.75x") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value "1", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "1x") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value "1.5" ] [ M3e.ButtonSegment.child (Kit.text "1.5x") ] ])
+M3e.SegmentedButton.view [] [ M3e.SegmentedButton.child (M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), M3e.ButtonSegment.child (Kit.text "Design") ]) ]
+```
+
+<!-- elm-cem:example title="Selection" -->
+```elm
+M3e.SegmentedButton.view [ M3e.SegmentedButton.multi True ] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "12 oz") ] ])
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+M3e.SegmentedButton.view [] [ M3e.SegmentedButton.child (M3e.ButtonSegment.view [ M3e.ButtonSegment.disabled True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), M3e.ButtonSegment.child (Kit.text "Design") ]) ]
+```
+
+<!-- elm-cem:example title="Disabling (2)" -->
+```elm
+M3e.SegmentedButton.view [ M3e.SegmentedButton.disabled True ] [ M3e.SegmentedButton.child (M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), M3e.ButtonSegment.child (Kit.text "Design") ]) ]
+```
+
+<!-- elm-cem:example title="Hiding the selection indicator" -->
+```elm
+M3e.SegmentedButton.view [ M3e.SegmentedButton.hideSelectionIndicator True ] []
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.SegmentedButton.view [] []
 ```
 
 @docs view, disabled, hideSelectionIndicator, multi, name, onChange

@@ -18,17 +18,6 @@ suggested responses or search filters.
 - `icon`: Renders an icon before the chip's label.
 - `trailing-icon`: Renders an icon after the chip's label.
 
-<!-- elm-cem:docmeta category=Selection -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Suggestion chip with a link action" -->
-```elm
-M3e.SuggestionChip.view [ M3e.SuggestionChip.href "/weather" ] [ M3e.SuggestionChip.child (Kit.text "What's the weather?") ]
-```
-
 @docs view, disabled, disabledInteractive, name, type_, value
 @docs variant, onClick, href, target, rel, download
 @docs child, icon, children

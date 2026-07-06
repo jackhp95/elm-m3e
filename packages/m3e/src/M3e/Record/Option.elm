@@ -9,22 +9,6 @@ An option that can be selected.
 **Component Info:**
 - **Extends:** `LitElement`
 
-<!-- elm-cem:docmeta category=Selection -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Autocomplete option panel with grouped results" -->
-```elm
-M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view [ M3e.Option.value "apple" ] [ M3e.Option.child (Kit.text "Apple") ], M3e.Option.view [ M3e.Option.value "banana" ] [ M3e.Option.child (Kit.text "Banana") ], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Native.span [] [ Kit.text "Citrus" ]) ] ++ M3e.Optgroup.children [ M3e.Option.view [ M3e.Option.value "lemon" ] [ M3e.Option.child (Kit.text "Lemon") ], M3e.Option.view [ M3e.Option.value "orange", M3e.Option.selected True ] [ M3e.Option.child (Kit.text "Orange") ], M3e.Option.view [ M3e.Option.value "grapefruit", M3e.Option.disabled True ] [ M3e.Option.child (Kit.text "Grapefruit") ] ]) ])
-```
-
-<!-- elm-cem:example title="Option panel with search-term highlighting" -->
-```elm
-M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.content, M3e.OptionPanel.scrollStrategy M3e.Value.reposition ] (M3e.OptionPanel.children [ M3e.Option.view [ M3e.Option.value "react", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text "React") ], M3e.Option.view [ M3e.Option.value "redux", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text "Redux") ], M3e.Option.view [ M3e.Option.value "remix", M3e.Option.term "re", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text "Remix") ] ])
-```
-
 @docs view, disabled, disableHighlight, highlightMode, selected, term
 @docs value
 -}

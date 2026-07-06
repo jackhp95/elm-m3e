@@ -19,6 +19,27 @@ Provides navigation for paged information, typically used with a table.
 - `next-page-icon`: Slot for a custom next-page icon.
 - `last-page-icon`: Slot for a custom last-page icon.
 
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Paginator.view [ M3e.Paginator.length 100 ] []
+```
+
+<!-- elm-cem:example title="Navigation actions" -->
+```elm
+M3e.Paginator.view [ M3e.Paginator.length 100, M3e.Paginator.showFirstLastButtons True ] []
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.Paginator.view [ M3e.Paginator.length 100, M3e.Paginator.showFirstLastButtons True ] []
+```
+
 @docs view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel
 @docs length, nextPageLabel, pageIndex, pageSize, pageSizes, pageSizeVariant
 @docs previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon, nextPageIcon

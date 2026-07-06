@@ -19,17 +19,6 @@ A chip users interact with to select/deselect options.
 - `icon`: Renders an icon before the chip's label.
 - `trailing-icon`: Renders an icon after the chip's label.
 
-<!-- elm-cem:docmeta category=Selection -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Selected filter chip" -->
-```elm
-M3e.FilterChip.view [ M3e.FilterChip.selected True ] [ M3e.FilterChip.child (Kit.text "Available") ]
-```
-
 @docs view, disabled, disabledInteractive, selected, value, variant
 @docs onBeforeinput, onInput, onChange, onClick, icon, trailingIcon
 -}

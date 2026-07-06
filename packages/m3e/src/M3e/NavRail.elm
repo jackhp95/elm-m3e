@@ -20,9 +20,9 @@ A vertical bar, typically used on larger devices, that allows a user to switch b
 
 ### Examples
 
-<!-- elm-cem:example title="Expanded navigation rail with link destinations" -->
+<!-- elm-cem:example title="Items" -->
 ```elm
-M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.expanded ] (M3e.NavRail.children [ M3e.NavItem.view [ M3e.NavItem.href "/overview", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name "home", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text "Overview") ], M3e.NavItem.view [ M3e.NavItem.href "/components" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "widgets" ] []), M3e.NavItem.child (Kit.text "Components") ], M3e.NavItem.view [ M3e.NavItem.href "/guides" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "menu_book" ] []), M3e.NavItem.child (Kit.text "Guides") ] ])
+M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ]
 ```
 
 @docs view, mode, onBeforeinput, onInput, onChange, child

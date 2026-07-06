@@ -12,9 +12,10 @@ An image, icon or textual initials representing a user or other identity.
 
 ### Examples
 
-<!-- elm-cem:example title="Avatar with image and icon fallback" -->
+<!-- elm-cem:example title="Usage" -->
 ```elm
-[ M3e.Avatar.view [] [ M3e.Avatar.child (Native.img []) ]
+[ M3e.Avatar.view [] [ M3e.Avatar.child (Kit.text "AB") ]
+    , M3e.Avatar.view [] [ M3e.Avatar.child (Native.img []) ]
     , M3e.Avatar.view [] [ M3e.Avatar.child (M3e.Icon.view [ M3e.Icon.name "person" ] []) ]
     ]
 ```

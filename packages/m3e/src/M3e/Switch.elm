@@ -21,14 +21,39 @@ An on/off control that can be toggled by clicking.
 
 ### Examples
 
-<!-- elm-cem:example title="Labelled switch with icons in both states" -->
+<!-- elm-cem:example title="Basic usage" -->
 ```elm
-Native.node Html.label [] [ Kit.text "Enable notifications", M3e.Switch.view [ M3e.Switch.checked True, M3e.Switch.icons M3e.Value.both, M3e.Switch.name "notifications", M3e.Switch.value "enabled" ] [] ]
+M3e.Switch.view [ M3e.Switch.checked True ] []
 ```
 
-<!-- elm-cem:example title="Disabled switch" -->
+<!-- elm-cem:example title="Labels" -->
 ```elm
-Native.node Html.label [] [ Kit.text "Sync over cellular", M3e.Switch.view [ M3e.Switch.disabled True, M3e.Switch.icons M3e.Value.selected ] [] ]
+[ Native.node Html.label [] [ M3e.Switch.view [] [], Kit.text "Switch 1" ]
+    , M3e.Switch.view [] []
+    , Native.node Html.label [] [ Kit.text "Switch 2" ]
+    ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ Native.node Html.label [] [ M3e.Switch.view [ M3e.Switch.disabled True ] [], Kit.text "Disabled Switch 1" ]
+    , M3e.Switch.view [ M3e.Switch.disabled True ] []
+    , Native.node Html.label [] [ Kit.text "Disabled Switch 2" ]
+    ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.Switch.view [] []
+```
+
+### Icons
+
+<!-- elm-cem:example title="Icons" -->
+```elm
+[ M3e.Switch.view [ M3e.Switch.icons M3e.Value.selected, M3e.Switch.checked True ] []
+    , M3e.Switch.view [ M3e.Switch.icons M3e.Value.both ] []
+    ]
 ```
 
 @docs view, checked, disabled, icons, name, value

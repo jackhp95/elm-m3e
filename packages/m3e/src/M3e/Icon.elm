@@ -9,6 +9,17 @@ A small symbol used to easily identify an action or category.
 **Component Info:**
 - **Extends:** `LitElement`
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Basic icons" -->
+```elm
+M3e.Icon.view [ M3e.Icon.name "home" ] []
+```
+
 @docs view, filled, grade, opticalSize, name, variant
 @docs weight
 -}
@@ -17,6 +28,7 @@ A small symbol used to easily identify an action or category.
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Icon
+import M3e.Content
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -33,9 +45,9 @@ view :
     , weight : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Content.Content {} msg)
     -> M3e.Element.Element { s | icon : M3e.Value.Supported } msg
-view attributes children =
+view attributes content_ =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -44,7 +56,7 @@ view attributes children =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Element.toNode children)
+             (List.map M3e.Content.toNode content_)
         )
 
 

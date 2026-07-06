@@ -9,6 +9,28 @@ A heading to a page or section.
 **Component Info:**
 - **Extends:** `LitElement`
 
+<!-- elm-cem:docmeta category=Layout & style -->
+
+## Examples
+
+### Sizes
+
+<!-- elm-cem:example title="Label Small" -->
+```elm
+[ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Display Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.medium ] [ M3e.Heading.child (Kit.text "Display Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Display Small") ]
+    ]
+```
+
+<!-- elm-cem:example title="Label Small (2)" -->
+```elm
+[ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Display Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.medium, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Display Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Display Small") ]
+    ]
+```
+
 @docs view, emphasized, level, size, variant, child
 @docs children
 -}

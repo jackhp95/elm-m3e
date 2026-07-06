@@ -26,26 +26,55 @@ An icon button users interact with to perform a supplementary action.
 
 ### Examples
 
-<!-- elm-cem:example title="Icon button wrapping an icon" -->
+<!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "dark_mode" ] []) ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
 ```
 
-<!-- elm-cem:example title="Link icon buttons in a toolbar" -->
+<!-- elm-cem:example title="Shapes" -->
 ```elm
-Native.div [] [ M3e.IconButton.view [ M3e.IconButton.href "/rss.xml", M3e.Aria.label "RSS Feed" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "rss_feed" ] []) ], M3e.IconButton.view [ M3e.IconButton.href "/feed.json", M3e.Aria.label "JSON Feed" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "data_object" ] []) ] ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.square ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
 ```
 
-<!-- elm-cem:example title="Icon buttons grouped in a media control bar" -->
+<!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.IconButton.view [ M3e.Aria.label "Previous" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "skip_previous" ] []) ]
-    , M3e.IconButton.view [ M3e.Aria.label "Play/Pause" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []) ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+```
+
+<!-- elm-cem:example title="Toggle" -->
+```elm
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
+```
+
+<!-- elm-cem:example title="Toggle (2)" -->
+```elm
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "check" ] []), M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "close" ] []) ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.disabled True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.disabledInteractive True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
     ]
 ```
 
-<!-- elm-cem:example title="Single link icon button" -->
+<!-- elm-cem:example title="Links" -->
 ```elm
-M3e.IconButton.view [ M3e.IconButton.href "/settings", M3e.Aria.label "Settings" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.href "https://www.google.com", M3e.IconButton.target "_blank" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []) ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
+```
+
+### Width
+
+<!-- elm-cem:example title="Widths" -->
+```elm
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.width M3e.Value.narrow ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.width M3e.Value.wide ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+    ]
 ```
 
 @docs view, disabled, disabledInteractive, name, selected, shape

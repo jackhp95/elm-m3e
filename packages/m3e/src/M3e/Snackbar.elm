@@ -16,17 +16,6 @@ Presents short updates about application processes at the bottom of the screen.
 **Slots:**
 - `close-icon`: Renders the icon of the button used to close the snackbar.
 
-<!-- elm-cem:docmeta category=Communication -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Dismissible snackbar with action" -->
-```elm
-M3e.Snackbar.view [ M3e.Snackbar.action "Undo", M3e.Snackbar.dismissible True, M3e.Snackbar.duration 5000, M3e.Snackbar.closeLabel "Dismiss" ] [ M3e.Snackbar.closeIcon (M3e.Icon.view [ M3e.Icon.name "close" ] []), M3e.Snackbar.child (Kit.text "Message archived") ]
-```
-
 @docs view, action, closeLabel, dismissible, duration, onBeforetoggle
 @docs onToggle, child, closeIcon, children
 -}

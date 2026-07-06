@@ -19,28 +19,6 @@ Enhances a text input with suggested options.
 - `loading`: Renders content when loading options.
 - `no-data`: Renders content when there are no options to show.
 
-<!-- elm-cem:docmeta category=Text inputs -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Favorite fruit autocomplete with auto-activation" -->
-```elm
-[ Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]
-    , Native.node Html.input [] []
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit", M3e.Autocomplete.autoActivate True, M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
-    ]
-```
-
-<!-- elm-cem:example title="Starts-with country search with no-data message" -->
-```elm
-[ Native.node Html.label [] [ Kit.text "Country" ]
-    , Native.node Html.input [] []
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "country", M3e.Autocomplete.noDataLabel "No matching countries" ] ([ M3e.Autocomplete.noData (Native.span [] [ Kit.text "Try a different spelling" ]) ] ++ M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Australia") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Brazil") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Canada") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Denmark") ] ])
-    ]
-```
-
 @docs view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
 @docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
 @docs for, onChange, onQuery, onToggle, child, loadingSlot

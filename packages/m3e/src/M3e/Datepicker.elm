@@ -16,6 +16,37 @@ Presents a date picker on a temporary surface.
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.
 
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Variants" -->
+```elm
+M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto ] []
+```
+
+<!-- elm-cem:example title="Date selection" -->
+```elm
+M3e.Datepicker.view [ M3e.Datepicker.date "2026-01-01", M3e.Datepicker.clearable True ] []
+```
+
+<!-- elm-cem:example title="Start date" -->
+```elm
+M3e.Datepicker.view [ M3e.Datepicker.startAt "2026-01-01" ] []
+```
+
+<!-- elm-cem:example title="Start view" -->
+```elm
+M3e.Datepicker.view [ M3e.Datepicker.startView M3e.Value.multiYear ] []
+```
+
+<!-- elm-cem:example title="Min and max dates" -->
+```elm
+M3e.Datepicker.view [ M3e.Datepicker.startAt "2026-04-01", M3e.Datepicker.minDate "2026-01-01", M3e.Datepicker.maxDate "2026-04-30" ] []
+```
+
 @docs view, variant, clearable, date, maxDate, minDate
 @docs range, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
 @docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel

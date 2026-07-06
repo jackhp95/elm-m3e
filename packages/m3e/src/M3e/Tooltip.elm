@@ -15,17 +15,31 @@ Adds additional context to a button or other UI element.
 
 ### Examples
 
-<!-- elm-cem:example title="Simple tooltip on an icon button" -->
+<!-- elm-cem:example title="Plain tooltip" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "refresh" ] []) ]
-    , M3e.Tooltip.view [ M3e.Tooltip.for "refreshBtn", M3e.Tooltip.position M3e.Value.above ] [ M3e.Tooltip.child (Kit.text "Refresh data") ]
+[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "button" ] [ M3e.Tooltip.child (Kit.text "Go Back") ]
     ]
 ```
 
-<!-- elm-cem:example title="Tooltip with touch gestures disabled" -->
+<!-- elm-cem:example title="Delays" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []) ]
-    , M3e.Tooltip.view [ M3e.Tooltip.for "deleteBtn", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] [ M3e.Tooltip.child (Kit.text "Delete item") ]
+[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.showDelay 0, M3e.Tooltip.hideDelay 200 ] [ M3e.Tooltip.child (Kit.text "Go Back") ]
+    ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.disabled True ] [ M3e.Tooltip.child (Kit.text "Go Back") ]
+    ]
+```
+
+<!-- elm-cem:example title="Rich tooltip" -->
+```elm
+[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+    , M3e.RichTooltip.view [ M3e.RichTooltip.for "button" ] [ M3e.RichTooltip.subhead (Native.span [] [ Kit.text "New settings available" ]), M3e.RichTooltip.child (Kit.text "Now you can adjust the uploaded image quality, and upgrade your available storage space.") ]
     ]
 ```
 

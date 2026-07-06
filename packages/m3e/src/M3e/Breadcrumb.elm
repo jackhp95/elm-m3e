@@ -18,14 +18,34 @@ current location within an application.
 
 ### Examples
 
-<!-- elm-cem:example title="Breadcrumb trail" -->
+<!-- elm-cem:example title="Anatomy" -->
 ```elm
-M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/" ] [ M3e.BreadcrumbItem.child (Kit.text "Home") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/work" ] [ M3e.BreadcrumbItem.child (Kit.text "Work") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/work/tags" ] [ M3e.BreadcrumbItem.child (Kit.text "Tags") ] ])
+M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
 ```
 
-<!-- elm-cem:example title="Breadcrumb trail with current page" -->
+<!-- elm-cem:example title="Links" -->
 ```elm
-M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/photos" ] [ M3e.BreadcrumbItem.child (Kit.text "Photos") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "/collections" ] [ M3e.BreadcrumbItem.child (Kit.text "Collections") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.current M3e.Value.page ] [ M3e.BreadcrumbItem.child (Kit.text "Title") ] ])
+M3e.Breadcrumb.view [] [ M3e.Breadcrumb.child (M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "https://developer.mozilla.org/en-US/docs/Web", M3e.BreadcrumbItem.target "_blank" ] [ M3e.BreadcrumbItem.child (Kit.text "Web") ]) ]
+```
+
+<!-- elm-cem:example title="Icons" -->
+```elm
+M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.itemLabel "Dashboard" ] [ M3e.BreadcrumbItem.child (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []) ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+```
+
+<!-- elm-cem:example title="Custom separators" -->
+```elm
+M3e.Breadcrumb.view [] [ M3e.Breadcrumb.separator (Native.span [] [ Kit.text "/" ]), M3e.Breadcrumb.child (M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Dashboard") ]) ]
+```
+
+<!-- elm-cem:example title="Wrapping" -->
+```elm
+M3e.Breadcrumb.view [ M3e.Breadcrumb.wrap True ] []
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.Breadcrumb.view [] []
 ```
 
 @docs view, wrap, child, separator, children

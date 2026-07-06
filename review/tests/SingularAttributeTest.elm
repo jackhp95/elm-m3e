@@ -15,6 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = [ ( "variant", "variant" ), ( "disabled", "disabled" ) ]
       , slotRewrites = []
+      , slotUpgrades = []
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       , actionMap = []

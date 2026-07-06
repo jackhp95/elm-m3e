@@ -12,14 +12,51 @@ A shape used to add emphasis and decorative flair.
 
 ### Examples
 
-<!-- elm-cem:example title="Decorative sunny shape with icon" -->
+<!-- elm-cem:example title="Shapes" -->
 ```elm
-M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (M3e.Icon.view [ M3e.Icon.name "star" ] []) ]
+[ M3e.Shape.view [ M3e.Shape.name M3e.Value.value12SidedCookie ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.value9SidedCookie ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.value8LeafClover ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.value7SidedCookie ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.value6SidedCookie ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.value4SidedCookie ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.value4LeafClover ] []
+    , Native.br
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.arch ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.arrow ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.boom ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.bun ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.diamond ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.fan ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.flower ] []
+    , Native.br
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.gem ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.ghostIsh ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.heart ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.hexagon ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.pentagon ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.pill ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.pixelCircle ] []
+    , Native.br
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.pixelTriangle ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.puffy ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.puffyDiamond ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.semicircle ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.slanted ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.softBoom ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.softBurst ] []
+    , Native.br
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.square ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.circle ] []
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.triangle ] []
+    ]
 ```
 
-<!-- elm-cem:example title="Row of expressive decorative shapes" -->
+<!-- elm-cem:example title="Images and video" -->
 ```elm
-Native.div [] [ M3e.Shape.view [ M3e.Shape.name M3e.Value.value4LeafClover ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.heart ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.diamond ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.burst ] [] ]
+[ M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (Native.img []) ]
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ]) ]
+    ]
 ```
 
 @docs view, name, child, children

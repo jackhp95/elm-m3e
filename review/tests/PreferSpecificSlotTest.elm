@@ -15,6 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = [ ( "variant", "variant" ), ( "shapeAttr", "shape" ) ]
       , slotRewrites = [ ( "unnamed", "child" ), ( "icon", "icon" ) ]
+      , slotUpgrades = []
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       , actionMap = []

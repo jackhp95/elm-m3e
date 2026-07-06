@@ -14,14 +14,27 @@ A thin line that separates content in lists or other containers.
 
 ### Examples
 
-<!-- elm-cem:example title="Dividers separating a settings list" -->
+<!-- elm-cem:example title="Lists" -->
 ```elm
-Native.ul [] [ Native.li [] [ Native.span [] [ Kit.text "Profile" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text "Privacy" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text "Notifications" ] ] ]
+M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ], M3e.Divider.view [] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 2") ], M3e.Divider.view [] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 3") ] ])
 ```
 
-<!-- elm-cem:example title="Vertical divider between toolbar actions" -->
+<!-- elm-cem:example title="Inset" -->
 ```elm
-Native.nav [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []), M3e.Button.child (Kit.text "Bold") ], M3e.Divider.view [ M3e.Divider.vertical True ] [], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.Button.child (Kit.text "Link") ] ]
+[ M3e.Divider.view [] []
+    , M3e.Divider.view [ M3e.Divider.inset True ] []
+    , M3e.Divider.view [ M3e.Divider.insetStart True ] []
+    , M3e.Divider.view [ M3e.Divider.insetEnd True ] []
+    ]
+```
+
+<!-- elm-cem:example title="Orientation" -->
+```elm
+[ M3e.Divider.view [ M3e.Divider.vertical True ] []
+    , M3e.Divider.view [ M3e.Divider.vertical True, M3e.Divider.inset True ] []
+    , M3e.Divider.view [ M3e.Divider.vertical True, M3e.Divider.insetStart True ] []
+    , M3e.Divider.view [ M3e.Divider.vertical True, M3e.Divider.insetEnd True ] []
+    ]
 ```
 
 @docs view, inset, insetStart, insetEnd, vertical

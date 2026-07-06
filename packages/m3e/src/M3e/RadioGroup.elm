@@ -20,17 +20,42 @@ A container for a set of radio buttons.
 
 ### Examples
 
-<!-- elm-cem:example title="Single-choice shipping options" -->
+<!-- elm-cem:example title="Radio groups" -->
 ```elm
-[ Native.node Html.label [] [ Kit.text "Shipping method" ]
-    , Native.br
-    , M3e.RadioGroup.view [ M3e.RadioGroup.name "shipping", M3e.RadioGroup.required True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "standard", M3e.Radio.checked True ] [], Kit.text "Standard (5-7 days)" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "express" ] [], Kit.text "Express (2 days)" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "overnight" ] [], Kit.text "Overnight" ] ])
+M3e.RadioGroup.view [] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ])
+```
+
+<!-- elm-cem:example title="Labels" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Select an option" ]
+    , M3e.RadioGroup.view [] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
     ]
 ```
 
-<!-- elm-cem:example title="Disabled radio group with one disabled option" -->
+<!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.RadioGroup.view [ M3e.RadioGroup.name "plan", M3e.RadioGroup.disabled True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "free", M3e.Radio.checked True ] [], Kit.text "Free" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "pro" ] [], Kit.text "Pro" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "team", M3e.Radio.disabled True ] [], Kit.text "Team" ] ])
+[ Native.node Html.label [] [ Kit.text "Select an option" ]
+    , M3e.RadioGroup.view [] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.disabled True, M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Disabling (2)" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Select an option" ]
+    , M3e.RadioGroup.view [ M3e.RadioGroup.disabled True ] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Required" -->
+```elm
+[ Native.node Html.label [] [ Kit.text "Select an option" ]
+    , M3e.RadioGroup.view [ M3e.RadioGroup.required True ] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -3" ]
 ```
 
 @docs view, ariaInvalid, disabled, name, required, onBeforeinput

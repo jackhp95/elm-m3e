@@ -22,14 +22,33 @@ A checkbox that allows a user to select one or more options from a limited numbe
 
 ### Examples
 
-<!-- elm-cem:example title="Notification preferences with required terms" -->
+<!-- elm-cem:example title="Basic usage" -->
 ```elm
-Native.section [] [ Native.p [] [ Kit.text "Email notifications" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name "news", M3e.Checkbox.value "newsletter" ] [], Kit.text "Product newsletter" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.name "offers", M3e.Checkbox.value "offers" ] [], Kit.text "Special offers" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.indeterminate True, M3e.Checkbox.name "digest", M3e.Checkbox.value "digest" ] [], Kit.text "Weekly digest" ], M3e.Divider.view [] [], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.required True, M3e.Checkbox.name "terms", M3e.Checkbox.value "accepted" ] [], Kit.text "I accept the terms of service" ] ]
+[ M3e.Checkbox.view [] []
+    , M3e.Checkbox.view [ M3e.Checkbox.checked True ] []
+    , M3e.Checkbox.view [ M3e.Checkbox.indeterminate True ] []
+    ]
 ```
 
-<!-- elm-cem:example title="Single checkbox with external label" -->
+<!-- elm-cem:example title="Labels" -->
 ```elm
-Native.div [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name "remember", M3e.Checkbox.value "yes" ] [], Native.node Html.label [] [ Kit.text "Remember me on this device" ] ]
+[ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Checkbox 1" ]
+    , M3e.Checkbox.view [] []
+    , Native.node Html.label [] [ Kit.text "Checkbox 2" ]
+    ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.disabled True ] [], Kit.text "Disabled Checkbox 1" ]
+    , M3e.Checkbox.view [ M3e.Checkbox.disabled True ] []
+    , Native.node Html.label [] [ Kit.text "Disabled Checkbox 2" ]
+    ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -3" ]
 ```
 
 @docs view, checked, disabled, indeterminate, name, required

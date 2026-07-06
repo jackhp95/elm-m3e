@@ -14,14 +14,44 @@ Organizes buttons and adds interactions between them.
 
 ### Examples
 
-<!-- elm-cem:example title="Connected toggle group for view selection" -->
+<!-- elm-cem:example title="Standard" -->
 ```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "view_list" ] []), M3e.Button.child (Kit.text "List") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "grid_view" ] []), M3e.Button.child (Kit.text "Grid") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "map" ] []), M3e.Button.child (Kit.text "Map") ] ])
+M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] []) ], M3e.IconButton.view [ M3e.IconButton.width M3e.Value.wide, M3e.IconButton.variant M3e.Value.filled ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "more_vert" ] []) ] ])
 ```
 
-<!-- elm-cem:example title="Multi-select formatting toolbar" -->
+<!-- elm-cem:example title="Standard (2)" -->
 ```elm
-M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected, M3e.ButtonGroup.multi True, M3e.ButtonGroup.size M3e.Value.medium ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label "Bold" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label "Italic" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "format_italic" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label "Underline" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name "format_underlined" ] []) ] ])
+M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), M3e.Button.child (Kit.text "Share") ] ])
+```
+
+<!-- elm-cem:example title="Standard (3)" -->
+```elm
+M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.width M3e.Value.wide ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "fast_rewind" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.child (Kit.text "Play") ], M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.width M3e.Value.wide ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "fast_forward" ] []) ] ])
+```
+
+<!-- elm-cem:example title="Connected" -->
+```elm
+M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Share") ] ])
+```
+
+<!-- elm-cem:example title="Sizes" -->
+```elm
+M3e.ButtonGroup.view [ M3e.ButtonGroup.size M3e.Value.large ] (M3e.ButtonGroup.children [ M3e.IconButton.view [ M3e.IconButton.size M3e.Value.large ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ], M3e.IconButton.view [ M3e.IconButton.size M3e.Value.large ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] []) ], M3e.IconButton.view [ M3e.IconButton.size M3e.Value.large, M3e.IconButton.width M3e.Value.wide, M3e.IconButton.variant M3e.Value.filled ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ], M3e.IconButton.view [ M3e.IconButton.size M3e.Value.large ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] []) ], M3e.IconButton.view [ M3e.IconButton.size M3e.Value.large ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "more_vert" ] []) ] ])
+```
+
+<!-- elm-cem:example title="Sizes (2)" -->
+```elm
+M3e.ButtonGroup.view [ M3e.ButtonGroup.size M3e.Value.large, M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Share") ] ])
+```
+
+<!-- elm-cem:example title="Selection" -->
+```elm
+M3e.ButtonGroup.view [ M3e.ButtonGroup.multi True ] (M3e.ButtonGroup.children [ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []) ], M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "format_italic" ] []) ], M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "format_underlined" ] []) ] ])
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.ButtonGroup.view [] []
 ```
 
 @docs view, multi, size, variant, child, children

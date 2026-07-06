@@ -18,27 +18,6 @@ A container for form controls that applies Material Design styling and behavior.
 - `hint`: Renders hint text in the fields's subscript, when the control is valid.
 - `error`: Renders error text in the fields's subscript, when the control is invalid.
 
-<!-- elm-cem:docmeta category=Text inputs -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Outlined field with prefix, hint and required marker" -->
-```elm
-M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name "public" ] []), M3e.FormField.prefixText (Native.span [] [ Kit.text "https://" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Include the full domain without a path." ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text "Website" ], Native.node Html.input [] [] ])
-```
-
-<!-- elm-cem:example title="Filled field with always-floating label and error" -->
-```elm
-M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.FormField.floatLabel M3e.Value.always ] ([ M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text "USD" ]), M3e.FormField.error (Native.span [] [ Kit.text "Enter an amount greater than zero." ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text "Amount" ], Native.node Html.input [] [] ])
-```
-
-<!-- elm-cem:example title="Search field with leading and trailing icons" -->
-```elm
-M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.FormField.hideRequiredMarker True ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name "search" ] []), M3e.FormField.suffix (M3e.Icon.view [ M3e.Icon.name "close" ] []) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text "Search docs" ], Native.node Html.input [] [] ])
-```
-
 @docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
 @docs prefix, prefixText, label, suffix, suffixText, hint
 @docs error, children

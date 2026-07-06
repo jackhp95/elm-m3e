@@ -26,14 +26,52 @@ A content container for text, images (or other media), and actions in the contex
 
 ### Examples
 
-<!-- elm-cem:example title="Outlined card with header and content slots" -->
+<!-- elm-cem:example title="Card Header" -->
 ```elm
-M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "People") ]), M3e.Card.content (Native.div [] [ M3e.ChipSet.view [] (M3e.ChipSet.children [ M3e.Chip.view [] [ M3e.Chip.child (Kit.text "Person Name") ], M3e.Chip.view [] [ M3e.Chip.child (Kit.text "Relative") ] ]) ]) ]
+M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]
 ```
 
-<!-- elm-cem:example title="Actionable filled card linking to a detail page" -->
+<!-- elm-cem:example title="Card Header (2)" -->
 ```elm
-Kit.link "/entities/1" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "family_history" ] [], Native.span [] [ Kit.text "Relative" ], M3e.Icon.view [ M3e.Icon.name "chevron_right" ] [] ]) ] ]
+M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]) ]
+```
+
+<!-- elm-cem:example title="Card Header (3)" -->
+```elm
+M3e.Card.view [] [ M3e.Card.child (Kit.text "Card content") ]
+```
+
+<!-- elm-cem:example title="Variants" -->
+```elm
+M3e.Card.view [ M3e.Card.variant M3e.Value.filled ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled" ]) ]
+```
+
+<!-- elm-cem:example title="Inline" -->
+```elm
+M3e.Card.view [ M3e.Card.inline True ] [ M3e.Card.content (Native.div [] [ Kit.text "Inline" ]) ]
+```
+
+<!-- elm-cem:example title="Orientation" -->
+```elm
+M3e.Card.view [ M3e.Card.inline True, M3e.Card.orientation M3e.Value.horizontal ] [ M3e.Card.header (Native.img []), M3e.Card.content (Native.div [] [ Kit.text "Horizontal" ]) ]
+```
+
+<!-- elm-cem:example title="Actionable" -->
+```elm
+M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled" ]) ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True, M3e.Card.disabled True ] [ M3e.Card.content (Native.div [] [ Kit.text "Disabled" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True, M3e.Card.disabledInteractive True ] [ M3e.Card.content (Native.div [] [ Kit.text "Disabled Interactive" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Links" -->
+```elm
+M3e.Card.view [ M3e.Card.actionable True, M3e.Card.href "https://www.google.com", M3e.Card.target "_blank" ] [ M3e.Card.content (Native.div [] [ Kit.text "Google" ]) ]
 ```
 
 @docs view, actionable, inline, orientation, variant, href

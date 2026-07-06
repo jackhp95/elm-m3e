@@ -13,16 +13,35 @@ Presents frequently used actions relevant to the current page.
 
 ## Examples
 
-### Examples
+### Variants
 
-<!-- elm-cem:example title="Vibrant rounded media controls toolbar" -->
+<!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "skip_previous" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "skip_next" ] []) ] ])
+[ M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.standard ] (M3e.Toolbar.children [ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] []) ], M3e.IconButton.view [ M3e.IconButton.width M3e.Value.wide, M3e.IconButton.variant M3e.Value.filled ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "more_vert" ] []) ] ])
+    , M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant ] []
+    ]
 ```
 
-<!-- elm-cem:example title="Elevated vertical editing toolbar" -->
+### Examples
+
+<!-- elm-cem:example title="Shapes" -->
 ```elm
-M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_bold" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_italic" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "format_underlined" ] []) ] ])
+M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] []
+```
+
+<!-- elm-cem:example title="Elevation" -->
+```elm
+M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded, M3e.Toolbar.elevated True ] []
+```
+
+<!-- elm-cem:example title="Orientation" -->
+```elm
+M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded, M3e.Toolbar.vertical True ] []
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.Toolbar.view [] []
 ```
 
 @docs view, elevated, shape, variant, vertical, child

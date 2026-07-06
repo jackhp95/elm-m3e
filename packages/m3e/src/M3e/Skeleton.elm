@@ -14,19 +14,31 @@ A visual placeholder that mimics the layout of content while it's still loading.
 
 ### Examples
 
-<!-- elm-cem:example title="Card loading placeholder with wave animation" -->
+<!-- elm-cem:example title="Card Header" -->
 ```elm
-M3e.Skeleton.view [ M3e.Skeleton.animation M3e.Value.wave, M3e.Skeleton.shape M3e.Value.rounded ] [ M3e.Skeleton.child (Native.div [] [ Native.p [] [ Kit.text "Loading content..." ] ]) ]
+M3e.Skeleton.view [] [ M3e.Skeleton.child (M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]) ]
 ```
 
-<!-- elm-cem:example title="Circular avatar and text placeholders" -->
+<!-- elm-cem:example title="Shape" -->
 ```elm
-Native.div [] [ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [] ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto ] [ M3e.Skeleton.child (Native.div [] []) ]
+    ]
 ```
 
-<!-- elm-cem:example title="Loaded skeleton revealing content" -->
+<!-- elm-cem:example title="Animation" -->
 ```elm
-M3e.Skeleton.view [ M3e.Skeleton.loaded True, M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.p [] [ Kit.text "Content has finished loading." ]) ]
+M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+```
+
+<!-- elm-cem:example title="Animation (2)" -->
+```elm
+M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
 ```
 
 @docs view, animation, shape, loaded, child, children

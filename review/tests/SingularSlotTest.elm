@@ -6,7 +6,8 @@ import SingularSlot exposing (rule)
 import Test exposing (Test, describe, test)
 
 
-{-| A List whose default (`child`) slot is repeatable, but `trailing` is singular. -}
+{-| A List whose default (`child`) slot is repeatable, but `trailing` is singular.
+-}
 facts : List Facts.Fact
 facts =
     [ { component = "listItem"
@@ -16,6 +17,7 @@ facts =
       , multiSlots = [ "default" ]
       , attrRewrites = []
       , slotRewrites = []
+      , slotUpgrades = []
       , surfaces = [ Standard ]
       , requiredAttrs = []
       , actionMap = []
@@ -33,6 +35,7 @@ shape4Facts =
       , multiSlots = [ "default" ]
       , attrRewrites = []
       , slotRewrites = []
+      , slotUpgrades = []
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       , actionMap = []
