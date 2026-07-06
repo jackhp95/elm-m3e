@@ -15,46 +15,45 @@
 //      source-directories straight at review/src collides with its own
 //      ReviewConfig and runs the FULL rule set.)
 //   3. Run `elm-review --report=json` (NOT --fix). The JSON report carries each
-//      error's `fix` as explicit {range,string} edits. We apply the OUTERMOST
-//      non-overlapping node-replacement edits ourselves in ONE pass.
+//      error's `fix` as explicit {range,string} edits. We apply the target-surface
+//      CONVERSION edits and SKIP the whole-node Seam-escape edits ourselves in ONE
+//      pass — a PARTIAL conversion (see applyEdits): convert whatever converts,
+//      leave every un-converted node as its original Standard source.
 //
-//      Why not `--fix-all-without-prompt`: for examples the rule can't cleanly
+//      Why not `--fix-all-without-prompt`: for a node the rule can't cleanly
 //      convert it emits a whole-node `Seam.fromHtml (M3e.Cem.Html.* ...)` escape
 //      — an Html-surface call the SAME rule re-triggers on, wrapping it again on
 //      every fixpoint iteration → unbounded growth → node stack overflow. A
 //      single report-driven pass sidesteps the fixpoint entirely.
 //   4. Recover each binding's rewritten code, compile-verify the whole set, and
 //      keep an output only if it COMPILES and actually reaches the target surface
-//      (contains `M3e.Record.` / `M3e.Build.`). Everything else (pure `Seam.*`
-//      residue, or non-compiling — e.g. a residual setter the target module does
-//      not expose) FALLS BACK to the `top` code so the tab is never broken.
+//      (contains `M3e.Record.` / `M3e.Build.`). Everything else (identity, or a
+//      mixed tree that doesn't type-check) FALLS BACK to the `top` code so the
+//      tab is never broken (the UI then hides the Record/Build tab).
 //
 // Output: config/examples.surfaces.json = { "<Module>": [ { record, build }, ... ] }
 // aligned index-for-index with config/examples.rich.json. build-examples-data.mjs
 // would merge these into docs/data/examples.json (with the elm-format pass).
 //
-// EMPIRICAL RESULT (2026-07-06, run over the current 106-example corpus):
-//   record: 0 converted cleanly, 106 fell back to top
-//   build:  0 converted cleanly, 106 fell back to top
-// The mechanism works (the rules run and their fixes are recovered), but NO
-// example yields compilable Record/Build code, because:
+// EMPIRICAL RESULT (2026-07-06, partial-conversion pass over the 82-example corpus):
+//   record: 33 converted (4 full + 29 partial mixed trees), 49 fell back to top
+//   build:  22 converted (4 full + 18 partial mixed trees), 60 fell back to top
+// (Up from 17/17 under the previous outermost-edit selection, which discarded
+// convertible inner children whenever the outer container escaped.)
 //   * The corpus is composite/gallery-oriented — every action-bearing element
 //     (BreadcrumbItem, NavItem, a Button inside a ButtonGroup, ...) is NESTED
-//     inside a container (`M3e.Breadcrumb.view`, `M3e.NavRail.view`, ...) that
-//     has no required content/action record, so the container becomes a
-//     whole-node `Seam.fromHtml (M3e.Cem.Html.* ...)` escape. That escape feeds
-//     typed `Element`/token content into HTML-typed argument slots and does NOT
-//     type-check, sinking the whole example's binding. There are zero bare
-//     `M3e.<Comp>.view [action] [content]` single-component calls in the corpus.
-//   * The handful of single-component action calls that do exist hit D6 emitter
-//     / generated-module gaps: `emitRecord` leaves a residual attr as Standard
-//     `M3e.Button.download` (rejected by `M3e.Record.Button.view`'s closed attr
-//     row); `M3e.Build.Button` doesn't expose `download`/`icon`; IconButton
-//     hits an `asAttribute` type mismatch.
-// Until the corpus grows bare single-component action examples (or the D6
-// Record/Build emitters + generated modules close those gaps), the Record/Build
-// Usage tabs would be identical to the M3e tab for every example. See the agent
-// report for the full analysis.
+//     inside a container (`M3e.AppBar.view`, `M3e.ButtonGroup.view`, ...) that has
+//     no convertible content/action record. We now leave that container as
+//     Standard `M3e.*` source and convert only the action-bearing children, so a
+//     composite becomes a MIXED tree:
+//       `M3e.ButtonGroup.view [ … ] (M3e.ButtonGroup.children [ M3e.Record.Button.view {…} … ])`.
+//   * A partial only ships if the whole mixed binding type-checks. Some don't and
+//     correctly fall back: e.g. Divider#1 build has Build-converted buttons
+//     (Html-surface) beside a Standard `M3e.Divider.view` (Element) inside one
+//     `Native.nav` list — the list can't hold both types, so it's rejected to
+//     null and the example keeps its 4 tabs.
+//   * Display-only composites (a gallery/nav with no action-bearing child) yield
+//     no conversion edit at all → still fall back to `top` → 4 tabs. Expected.
 
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -183,11 +182,32 @@ function offsetOf(lineStarts, pos) {
   return lineStarts[pos.line - 1] + (pos.column - 1);
 }
 
-// Apply the report's node-replacement edits in one pass. Skip zero-width import
-// insertions (the verify scratch regenerates imports from references). Keep only
-// outermost edits so nested M3e calls (already inlined verbatim by the outer
-// fix) aren't double-transformed.
-function applyEdits(text, jsonReport) {
+// Apply the report's node-replacement edits in one pass, for PARTIAL conversion:
+// apply the real target-surface CONVERSION edits and SKIP the whole-node
+// Seam-escape fallbacks, leaving every un-converted node exactly as it was
+// (valid Standard `M3e.*` source). This lets a composite (a container whose only
+// convertible content is action-bearing children) become a MIXED tree —
+// `M3e.Breadcrumb.view [ … ] [ M3e.Record.Button.view {…}, … ]` — instead of
+// collapsing to a pure Seam residue that never type-checks.
+//
+//   * A CONVERSION edit's replacement references the target surface
+//     (`M3e.Record.` for the record pass, `M3e.Build.` for the build pass). We
+//     apply these.
+//   * An ESCAPE edit's replacement is a whole-node Seam fallback (routes through
+//     `Seam.fromHtml` / `Seam.slot` / `M3e.Cem.Html.`) and never reaches the
+//     target surface. We DROP it — the node stays as its original Standard
+//     source. (Empirically the two classes are disjoint: no edit both reaches
+//     the target surface and is a Seam escape, so filtering on the target token
+//     alone cleanly selects conversions.)
+//
+// Overlap: conversion edits are kept non-overlapping. Sorting outer-first
+// (start asc, then end desc) and dropping any later edit that overlaps a kept
+// one means, for the rare nested convertible call, we PREFER THE OUTER
+// conversion and drop the inner (the outer fix already inlines the inner
+// subtree). Zero-width import insertions are skipped (imports are regenerated
+// from references in the verify scratch).
+function applyEdits(text, jsonReport, surface) {
+  const token = TOKEN[surface];
   const lineStarts = computeLineStarts(text);
   const edits = [];
   for (const fileErr of jsonReport.errors || []) {
@@ -195,14 +215,17 @@ function applyEdits(text, jsonReport) {
       for (const f of problem.fix || []) {
         const s = offsetOf(lineStarts, f.range.start);
         const e = offsetOf(lineStarts, f.range.end);
-        if (e > s) edits.push({ start: s, end: e, string: f.string });
+        if (e <= s) continue; // zero-width import insertion — skip
+        if (!f.string.includes(token)) continue; // not a conversion — leave node as-is
+        edits.push({ start: s, end: e, string: f.string });
       }
     }
   }
   edits.sort((a, b) => a.start - b.start || b.end - a.end);
   const kept = [];
   for (const ed of edits) {
-    if (kept.some((k) => k.start <= ed.start && ed.end <= k.end)) continue;
+    // Drop any conversion that overlaps an already-kept (outer) conversion.
+    if (kept.some((k) => k.start < ed.end && ed.start < k.end)) continue;
     kept.push(ed);
   }
   kept.sort((a, b) => b.start - a.start);
@@ -259,10 +282,11 @@ function main() {
     writeConfig(surface);
     const text = writeTarget(items);
     const json = runReviewJson(surface);
-    const fixedByName = parseBindings(applyEdits(text, json));
+    const fixedByName = parseBindings(applyEdits(text, json, surface));
 
-    // Candidate = translated code that reached the target surface. Otherwise the
-    // rule produced pure Seam residue (or identity) — fall back to top.
+    // Candidate = code that reached the target surface (partial conversions
+    // included — a mixed Standard/target tree still counts). Otherwise the rule
+    // produced pure Seam residue (or identity) — fall back to top.
     const candidates = {};
     for (const it of items) {
       const code = fixedByName[it.name];
@@ -270,22 +294,32 @@ function main() {
     }
     const ok = compilingNames(candidates);
 
-    let clean = 0, fallback = 0;
+    let converted = 0, partial = 0, fallback = 0;
     for (const it of items) {
       const code = candidates[it.name];
-      const use = code && ok.has(it.name) ? code : rich[it.module][it.idx].top;
-      if (code && ok.has(it.name)) clean++; else fallback++;
+      const accept = code && ok.has(it.name);
+      const use = accept ? code : rich[it.module][it.idx].top;
+      if (accept) {
+        converted++;
+        // Partial = compiles + has a target ref but ALSO retains a Standard
+        // 2-segment `M3e.<Comp>.view` container/node (mixed tree).
+        if (/\bM3e\.[A-Z][A-Za-z0-9_]*\.view\b/.test(code)) partial++;
+      } else {
+        fallback++;
+      }
       result[it.module][it.idx][surface] = use;
     }
-    stats[surface] = { clean, fallback };
+    stats[surface] = { converted, partial, fallback };
   }
 
   writeFileSync(OUT, JSON.stringify(result, null, 2) + "\n");
   const total = items.length;
   console.log(`wrote ${OUT} — ${total} examples`);
   for (const s of ["record", "build"]) {
+    const full = stats[s].converted - stats[s].partial;
     console.log(
-      `  ${s}: ${stats[s].clean} converted cleanly (compiled + reached ${TOKEN[s]}*), ` +
+      `  ${s}: ${stats[s].converted} converted (compiled + reached ${TOKEN[s]}*) ` +
+        `= ${full} full + ${stats[s].partial} partial (mixed Standard/target tree), ` +
         `${stats[s].fallback} fell back to top`,
     );
   }
