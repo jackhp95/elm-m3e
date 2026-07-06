@@ -1,4 +1,4 @@
-module Shared exposing (ApiLayer(..), Contrast, Data, Direction, Model, Msg, Scheme, template)
+module Shared exposing (Contrast, Data, Direction, Model, Msg, Scheme, template)
 
 {-| The M3 application shell that frames every docs route.
 
@@ -83,18 +83,6 @@ type Contrast
     | High
 
 
-{-| Which API layer the per-component Usage code blocks are shown in: the strict
-top (`M3e.*`), the loose middle (`M3e.Cem.*`), the bottom (`M3e.Cem.Html.*`), or
-the raw `<m3e-*>` HTML. Every shipped example carries all four (they are verified
-supersets of each other), so the toggle is never partial.
--}
-type ApiLayer
-    = LayerTop
-    | LayerMiddle
-    | LayerBottom
-    | LayerRaw
-
-
 type alias Model =
     { showMenu : Bool
     , viewportWidth : Int
@@ -104,7 +92,6 @@ type alias Model =
     , density : Float
     , dir : Direction
     , settingsOpen : Bool
-    , apiLayer : ApiLayer
     }
 
 
@@ -142,7 +129,6 @@ type Msg
     | SetContrast Contrast
     | SetDensity Float
     | SetDirection Direction
-    | SetApiLayer ApiLayer
 
 
 init :
@@ -167,7 +153,6 @@ init flags _ =
       , density = 0
       , dir = Ltr
       , settingsOpen = False
-      , apiLayer = LayerTop
       }
     , Effect.none
     )
@@ -263,9 +248,6 @@ update msg model =
 
         SetDirection dir ->
             ( { model | dir = dir }, Effect.none )
-
-        SetApiLayer apiLayer ->
-            ( { model | apiLayer = apiLayer }, Effect.none )
 
 
 {-| Watch viewport width to re-open the side drawer when the user crosses from
@@ -540,7 +522,6 @@ settingsBody model =
         , seedColorInput model
         , densitySegmented model
         , directionSegmented model
-        , apiLayerSegmented model
         ]
 
 
@@ -569,19 +550,6 @@ schemeSegmented model =
         [ ( "Light", model.scheme == Light, SetScheme Light )
         , ( "System", model.scheme == Auto, SetScheme Auto )
         , ( "Dark", model.scheme == Dark, SetScheme Dark )
-        ]
-
-
-{-| Selects which API layer the per-component Usage code blocks display:
-Top (`M3e.*`) / Middle (`M3e.Cem.*`) / Bottom (`M3e.Cem.Html.*`) / raw HTML.
--}
-apiLayerSegmented : Model -> Html Msg
-apiLayerSegmented model =
-    segmented
-        [ ( "Top", model.apiLayer == LayerTop, SetApiLayer LayerTop )
-        , ( "Middle", model.apiLayer == LayerMiddle, SetApiLayer LayerMiddle )
-        , ( "Bottom", model.apiLayer == LayerBottom, SetApiLayer LayerBottom )
-        , ( "HTML", model.apiLayer == LayerRaw, SetApiLayer LayerRaw )
         ]
 
 
