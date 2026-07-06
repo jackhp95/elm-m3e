@@ -11,10 +11,10 @@ buttonFacts : List Facts.Fact
 buttonFacts =
     [ { component = "button"
       , module_ = "M3e.Button"
-      , enums = []
+      , enums = [ ( "variant", [ "elevated", "filled", "tonal" ] ) ]
       , requiredSlots = []
       , multiSlots = []
-      , attrRewrites = [ ( "variant", "variant" ), ( "shapeAttr", "shape" ) ]
+      , attrRewrites = [ ( "attrDisabled", "disabled" ), ( "shapeAttr", "shape" ) ]
       , slotRewrites = [ ( "unnamed", "child" ), ( "icon", "icon" ) ]
       , slotUpgrades = [ ( "slotDefault", "buttonSlotDefault" ), ( "slotIcon", "buttonSlotIcon" ) ]
       , surfaces = [ Standard, Record ]
@@ -49,34 +49,24 @@ v = M3e.button [] []
 """
                             ]
             ]
-        , describe "attribute class"
-            [ test "rewrites same-named per-component attr to barrel attr" <|
+        , describe "scalar attribute class"
+            [ test "rewrites a scalar per-component setter to its `attr`-prefixed barrel name" <|
                 \() ->
                     """module A exposing (v)
 import M3e.Button
-v = M3e.Button.view [ M3e.Button.variant elevated ] []
+v = M3e.Button.disabled True
 """
                         |> Review.Test.run (rule buttonFacts)
                         |> Review.Test.expectErrors
                             [ Review.Test.error
-                                { message = "`M3e.Button.view` can be flattened to the barrel constructor `M3e.button`"
-                                , details = detailsFor "constructor"
-                                , under = "M3e.Button.view"
-                                }
-                                |> Review.Test.whenFixed
-                                    """module A exposing (v)
-import M3e.Button
-v = M3e.button [ M3e.Button.variant elevated ] []
-"""
-                            , Review.Test.error
-                                { message = "`M3e.Button.variant` can be flattened to the barrel attribute setter `M3e.variant`"
+                                { message = "`M3e.Button.disabled` can be flattened to the barrel attribute setter `M3e.attrDisabled`"
                                 , details = detailsFor "attribute setter"
-                                , under = "M3e.Button.variant"
+                                , under = "M3e.Button.disabled"
                                 }
                                 |> Review.Test.whenFixed
                                     """module A exposing (v)
 import M3e.Button
-v = M3e.Button.view [ M3e.variant elevated ] []
+v = M3e.attrDisabled True
 """
                             ]
             , test "rewrites collision-suffixed barrel name (shape -> shapeAttr)" <|
@@ -98,6 +88,46 @@ import M3e.Button
 v = M3e.shapeAttr rounded
 """
                             ]
+            ]
+        , describe "enum value class (portmanteau collapse)"
+            [ test "collapses `M3e.<Comp>.<enumAttr> M3e.Value.<lit>` to the `M3e.<attr><Value>` portmanteau" <|
+                \() ->
+                    """module A exposing (v)
+import M3e.Button
+import M3e.Value
+v = M3e.Button.variant M3e.Value.filled
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "`M3e.Button.variant M3e.Value.filled` can be flattened to the barrel enum value `M3e.variantFilled`"
+                                , details = detailsFor "enum value"
+                                , under = "M3e.Button.variant M3e.Value.filled"
+                                }
+                                |> Review.Test.whenFixed
+                                    """module A exposing (v)
+import M3e.Button
+import M3e.Value
+v = M3e.variantFilled
+"""
+                            ]
+            , test "leaves a DYNAMIC enum arg per-component (no static value to fold)" <|
+                \() ->
+                    """module A exposing (v)
+import M3e.Button
+v = M3e.Button.variant chosen
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectNoErrors
+            , test "leaves an enum applied to a NON-listed token per-component" <|
+                \() ->
+                    """module A exposing (v)
+import M3e.Button
+import M3e.Value
+v = M3e.Button.variant M3e.Value.bogus
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectNoErrors
             ]
         , describe "slot class"
             [ test "rewrites per-component slot setter to generalized barrel slot" <|
@@ -149,6 +179,27 @@ v = M3e.Value.elevated
                         |> Review.Test.run (rule buttonFacts)
                         |> Review.Test.expectNoErrors
             ]
+        , describe "universal aria class"
+            [ test "rewrites a universal M3e.Aria setter to its flat `aria*` barrel name" <|
+                \() ->
+                    """module A exposing (v)
+import M3e.Aria
+v = M3e.Aria.label "Back"
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "`M3e.Aria.label` can be flattened to the barrel aria setter `M3e.ariaLabel`"
+                                , details = detailsFor "aria setter"
+                                , under = "M3e.Aria.label"
+                                }
+                                |> Review.Test.whenFixed
+                                    """module A exposing (v)
+import M3e.Aria
+v = M3e.ariaLabel "Back"
+"""
+                            ]
+            ]
         , describe "scope discipline"
             [ test "never touches the Cem / Record / Build surfaces" <|
                 \() ->
@@ -168,7 +219,7 @@ v =
                 \() ->
                     """module A exposing (v)
 import M3e
-v = M3e.button [ M3e.variant elevated ] [ M3e.slotDefault body ]
+v = M3e.button [ M3e.variantFilled, M3e.attrDisabled True ] [ M3e.slotDefault body ]
 """
                         |> Review.Test.run (rule buttonFacts)
                         |> Review.Test.expectNoErrors

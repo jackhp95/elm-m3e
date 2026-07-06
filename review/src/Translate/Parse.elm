@@ -403,15 +403,11 @@ classifyStandardAttr fact item =
         Expression.Application (head :: valueNode :: _) ->
             case Node.value head of
                 Expression.FunctionOrValue moduleParts name ->
-                    -- Check if this attr name is in fact.attrRewrites
-                    let
-                        knownAttr =
-                            fact.attrRewrites
-                                |> List.filter (\( _, top ) -> top == name)
-                                |> List.head
-                    in
-                    case knownAttr of
-                        Just ( _, canonicalName ) ->
+                    -- Recognise the per-component setter: a SCALAR attr via
+                    -- `attrRewrites`, or an ENUM attr via `enums` (enum attrs have
+                    -- no barrel setter so they are NOT in `attrRewrites`).
+                    case canonicalAttrName fact name of
+                        Just canonicalName ->
                             classifyKnownAttrValue fact canonicalName valueNode (Node.range item)
 
                         Nothing ->
@@ -439,6 +435,7 @@ attribute). Recognised so the emitter passes it through verbatim (④ Record /
 The allow-list is matched against the syntactic module prefix of the setter
 call; the generated example corpus always writes these fully qualified
 (`M3e.Aria.label`). Extend the list as further universal-`Attr` modules land.
+
 -}
 universalAttrModules : List (List String)
 universalAttrModules =
@@ -448,6 +445,30 @@ universalAttrModules =
 isUniversalAttrModule : List String -> Bool
 isUniversalAttrModule moduleParts =
     List.member moduleParts universalAttrModules
+
+
+{-| Resolve a per-component setter identifier to its canonical attribute name. A
+SCALAR setter is found through `attrRewrites` (barrel↔per-component map, second
+element = per-component name); an ENUM setter is found through `enums` (enum attrs
+carry no barrel setter, so they are absent from `attrRewrites`) where the key IS
+the canonical name. `Nothing` if the name is neither.
+-}
+canonicalAttrName : Fact -> String -> Maybe String
+canonicalAttrName fact name =
+    case
+        fact.attrRewrites
+            |> List.filter (\( _, top ) -> top == name)
+            |> List.head
+    of
+        Just ( _, canonicalName ) ->
+            Just canonicalName
+
+        Nothing ->
+            if List.any (\( a, _ ) -> a == name) fact.enums then
+                Just name
+
+            else
+                Nothing
 
 
 {-| Classify a recognised attr's value. If the attr is an enum attr (per
@@ -715,18 +736,13 @@ classifyBuildStage fact stage =
             case Node.value head of
                 Expression.FunctionOrValue _ name ->
                     let
-                        maybeAttr =
-                            fact.attrRewrites
-                                |> List.filter (\( _, top ) -> top == name)
-                                |> List.head
-
                         maybeSlot =
                             fact.slotRewrites
                                 |> List.filter (\( _, top ) -> top == name)
                                 |> List.head
                     in
-                    case ( maybeAttr, maybeSlot ) of
-                        ( Just ( _, canonicalName ), _ ) ->
+                    case ( canonicalAttrName fact name, maybeSlot ) of
+                        ( Just canonicalName, _ ) ->
                             Ok (Left (classifyKnownAttrValue fact canonicalName valueNode (Node.range stage)))
 
                         ( _, Just ( _, canonicalName ) ) ->

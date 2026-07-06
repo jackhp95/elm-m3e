@@ -117,14 +117,26 @@ okValueFloat =
     M3e.sliderThumb [ M3e.attrValueFloat 0.5 ] []
 
 
-{-| Barrel flat surface: `attr`-prefixed setters, flat Value tokens, and the
-generalized slot setter all compose on the plain constructor noun. Proves the
-`attr` prefix (enum + bool), the flattened `M3e.filled` token, and `slotDefault`.
+{-| Barrel flat surface: the enum-value PORTMANTEAU constant (`variantFilled`),
+the `attr`-prefixed scalar setter (`attrDisabled`), and the generalized slot
+setter all compose on the plain constructor noun. Proves the portmanteau bakes
+the (attribute × value) pair into one phantom-typed `Attr` and that `slotDefault`
+places default content.
 -}
 barrelFlat =
     M3e.button
-        [ M3e.attrVariant M3e.filled, M3e.attrDisabled True ]
+        [ M3e.variantFilled, M3e.attrDisabled True ]
         [ M3e.slotDefault (Kit.text "Click me") ]
+
+
+{-| The universal `aria*` barrel setters carry an open capability row, so they
+compose on any component (here an icon button that has no `ariaLabel` phantom
+capability of its own).
+-}
+barrelAria =
+    M3e.iconButton
+        [ M3e.ariaLabel "Back" ]
+        [ M3e.slotDefault (M3e.icon [ M3e.attrName "arrow_back" ] []) ]
 
 
 main : Html.Html msg

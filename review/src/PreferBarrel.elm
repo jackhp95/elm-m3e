@@ -28,6 +28,7 @@ genuine `M3e.<Comp>.*` / `M3e.Value.*` surfaces are touched — never `M3e.Cem.*
 
 -}
 
+import Char
 import Dict exposing (Dict)
 import Elm.Syntax.Expression as Expression exposing (Expression)
 import Elm.Syntax.Node as Node exposing (Node)
@@ -83,6 +84,20 @@ initContext reExposedValues facts =
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )
 expressionVisitor node context =
     case Node.value node of
+        -- An enum setter applied to a LITERAL token — `M3e.<Comp>.<enumAttr>
+        -- M3e.Value.<tok>` — collapses to the single portmanteau constant
+        -- `M3e.<enumAttr><Tok>` (`variantFilled`). A DYNAMIC arg (a bare variable /
+        -- computed expression) has no static value to fold, so it is left
+        -- per-component. Handled at the Application node so the whole call is
+        -- replaced in one fix.
+        Expression.Application (fnNode :: argNode :: []) ->
+            case portmanteauCollapse context fnNode argNode of
+                Just err ->
+                    ( [ err ], context )
+
+                Nothing ->
+                    ( [], context )
+
         Expression.FunctionOrValue _ name ->
             case Lookup.moduleNameFor context.lookup node of
                 Just moduleParts ->
@@ -95,6 +110,94 @@ expressionVisitor node context =
             ( [], context )
 
 
+{-| If `fnNode` resolves to a component's enum setter (`M3e.<Comp>.<enumAttr>`) and
+`argNode` resolves to one of that enum's valid tokens (`M3e.Value.<tok>`), fold the
+whole application to the barrel portmanteau `M3e.<enumAttr><Tok>`.
+-}
+portmanteauCollapse : Context -> Node Expression -> Node Expression -> Maybe (Error {})
+portmanteauCollapse context fnNode argNode =
+    case ( Node.value fnNode, Node.value (unwrapParens argNode) ) of
+        ( Expression.FunctionOrValue _ attrName, Expression.FunctionOrValue _ tokenName ) ->
+            case ( Lookup.moduleNameFor context.lookup fnNode, Lookup.moduleNameFor context.lookup (unwrapParens argNode) ) of
+                ( Just fnModule, Just [ "M3e", "Value" ] ) ->
+                    Dict.get (String.join "." fnModule) context.byModule
+                        |> Maybe.andThen (\fact -> portmanteauName fact attrName tokenName)
+                        |> Maybe.map
+                            (\portmanteau ->
+                                barrelError (applicationNode fnNode argNode)
+                                    (String.join "." fnModule ++ "." ++ attrName ++ " M3e.Value." ++ tokenName)
+                                    ("M3e." ++ portmanteau)
+                                    "enum value"
+                            )
+
+                _ ->
+                    Nothing
+
+        _ ->
+            Nothing
+
+
+{-| The portmanteau constant name for `M3e.<enumAttr><Tok>`, or `Nothing` if
+`attrName` is not one of `fact`'s enum attributes or `tokenName` is not one of its
+valid tokens. `fact.enums` keys are the per-component setter identifiers (keyword
+attrs carry a trailing `_`, e.g. `type_`); the portmanteau base strips that so it
+matches the barrel (`typeButton`, not `type_Button`).
+-}
+portmanteauName : Fact -> String -> String -> Maybe String
+portmanteauName fact attrName tokenName =
+    fact.enums
+        |> List.filter (\( a, _ ) -> a == attrName)
+        |> List.head
+        |> Maybe.andThen
+            (\( _, tokens ) ->
+                if List.member tokenName tokens then
+                    Just (dropTrailingUnderscore attrName ++ capitalizeFirst tokenName)
+
+                else
+                    Nothing
+            )
+
+
+dropTrailingUnderscore : String -> String
+dropTrailingUnderscore s =
+    if String.endsWith "_" s then
+        String.dropRight 1 s
+
+    else
+        s
+
+
+capitalizeFirst : String -> String
+capitalizeFirst s =
+    case String.uncons s of
+        Just ( c, rest ) ->
+            String.cons (Char.toUpper c) rest
+
+        Nothing ->
+            s
+
+
+unwrapParens : Node Expression -> Node Expression
+unwrapParens node =
+    case Node.value node of
+        Expression.ParenthesizedExpression inner ->
+            unwrapParens inner
+
+        _ ->
+            node
+
+
+{-| A synthetic node spanning `fn arg`, used as the fix range for a collapse.
+-}
+applicationNode : Node Expression -> Node Expression -> Node Expression
+applicationNode fnNode argNode =
+    Node.Node
+        { start = (Node.range fnNode).start
+        , end = (Node.range argNode).end
+        }
+        (Expression.Application [ fnNode, argNode ])
+
+
 errorsFor : Context -> Node Expression -> String -> List String -> List (Error {})
 errorsFor context node name moduleParts =
     case moduleParts of
@@ -104,6 +207,14 @@ errorsFor context node name moduleParts =
 
             else
                 []
+
+        [ "M3e", "Aria" ] ->
+            case ariaUniversalBarrel name of
+                Just barrelName ->
+                    [ barrelError node ("M3e.Aria." ++ name) ("M3e." ++ barrelName) "aria setter" ]
+
+                Nothing ->
+                    []
 
         _ ->
             case Dict.get (String.join "." moduleParts) context.byModule of
@@ -139,6 +250,28 @@ barrelReplacement fact name =
 
                     Nothing ->
                         Nothing
+
+
+{-| The universal `M3e.Aria.<setter>` functions are re-exposed flat under the
+barrel as `aria<Setter>` (`M3e.Aria.label` → `M3e.ariaLabel`).
+-}
+ariaUniversalBarrel : String -> Maybe String
+ariaUniversalBarrel name =
+    case name of
+        "label" ->
+            Just "ariaLabel"
+
+        "labelledby" ->
+            Just "ariaLabelledby"
+
+        "describedby" ->
+            Just "ariaDescribedby"
+
+        "hidden" ->
+            Just "ariaHidden"
+
+        _ ->
+            Nothing
 
 
 {-| `attrRewrites` maps barrel name → per-component name; read it right-to-left.

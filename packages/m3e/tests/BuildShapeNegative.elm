@@ -93,6 +93,19 @@ valueStringOnFloatComponent =
 -- FAILURE: sliderThumb.value is Float
 
 
+{-| Enum-value portmanteau on a component that lacks the attribute: `variantFilled`
+carries the phantom capability `{ c | variant : Supported }`, but `M3e.divider` has
+no `variant` in its closed view row. TYPE MISMATCH on the capability row — proving
+the baked portmanteau is phantom-gated exactly like the enum setter it wraps.
+-}
+portmanteauOnWrongComponent =
+    M3e.divider [ M3e.variantFilled ] []
+
+
+
+-- FAILURE: divider has no `variant` capability
+
+
 main : Html.Html msg
 main =
     Html.text "BuildShapeNegative — should NOT compile"
