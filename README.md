@@ -234,7 +234,6 @@ render/`Test.Html.Query` suite may be added later for runtime-only behaviors.
 - [`docs/ADOPTION_AND_SLOTS.md`](docs/ADOPTION_AND_SLOTS.md) — the slot model, `any`,
   the escape/extensibility gradient (§8), and the proven encodings.
 - [`docs/THREE_LAYER_PATTERN.md`](docs/THREE_LAYER_PATTERN.md) — the layer mechanics.
-- [`docs/MIGRATION_OLD_TO_NEW.md`](docs/MIGRATION_OLD_TO_NEW.md) — old→new API migration.
 - [`docs/adr/`](docs/adr/) — the architecture decisions (0008–0011 are current).
 
 ## Contributing, versioning & reporting

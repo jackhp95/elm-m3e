@@ -4,10 +4,10 @@ Date: 2026-06-26
 
 ## Status
 
-Accepted. **Supersedes [ADR 5](0005-heterogeneous-chrome-slots.md) in full** and
+Accepted. **Supersedes the retired ADR 5 (heterogeneous-chrome-slots) in full** and
 **the slot-typing guidance of [ADR 4](0004-styling-free-builders.md)** (ADR 4's
 "styling-free" rule stands). This is the canonical description of the library's
-shape; where older `docs-design-*.md` specs (D1–D7) disagree, this ADR wins.
+shape.
 
 ## Context
 

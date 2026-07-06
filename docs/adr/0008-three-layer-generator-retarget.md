@@ -14,7 +14,7 @@ where the IR is now emitted.
 
 Today `elm-cem` emits a single layer — `Cem.M3e.*` `Html`-returning atoms — and
 the typed `M3e.*` library is hand-written on top. The
-[generator-requirements audit](../elm-cem-generator-requirements.md) showed that
+generator-requirements audit showed that
 essentially every way the hand layer deviates from naive codegen is either
 derivable from the CEM alone ([[Mech]]) or from a declarative config ([[Decl]]).
 

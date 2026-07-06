@@ -1,18 +1,18 @@
-# Adoption + the slot/DECL model — live design notes (2026-06-30)
+# Adoption + the slot/DECL model — design notes (2026-06-30)
 
-> Resume point for the conversation after the generator mechanisms were finished.
-> The generator is done and verified; this doc captures **what we decided next**:
-> how the repo adopts the generated output, and the **explicit slot/DECL model**
-> we're converging on. Pick up from §3 (the open slot questions).
+> Design notes captured while the generator mechanisms were being finished. They
+> record the **slot/DECL model** the library converged on; §8 (the escape /
+> extensibility gradient) is still cited from `Seam.elm`. Adoption itself has
+> since happened — the generated output now lives in `packages/m3e/src`; the
+> historical "where we are" note below is kept for the reasoning, not the status.
 
-## 1. Where we actually are (honest)
+## 1. Where we were at the time (historical)
 
 The **generator mechanisms** are complete and verified (three layers, `Value`
 vocab, typed slots/containers, core-gen via `runtime/`, derived events, required
-content + a11y, `Action`, variant-split folding). But **the elm-m3e repo still
-ships the OLD hand-written `src/M3e/`** — the generated model only exists in
-`scratchpad/` + `gen-sample/`. "Done" = the generator can produce it; **not** that
-the repo has adopted it. Outstanding, agreed order:
+content + a11y, `Action`, variant-split folding). At the time of writing the
+generated model had not yet been swapped into the repo; that adoption has since
+landed. The agreed order was:
 
 1. **Slot/DECL model** (this doc, §2–3) — must be locked first; everything keys off it.
 2. **Adopt** — swap generated output into `src/M3e`; migrate consumers.

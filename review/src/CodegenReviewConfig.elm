@@ -58,7 +58,7 @@ config =
     -- Enable exactly ONE of the five rules below to enforce a single canonical
     -- top-layer surface across the codebase. `elm-review --fix` rewrites every
     -- non-target call site to the target surface via `Seam.*` residue for any
-    -- lossy pieces. See docs/superpowers/specs/2026-07-05-codegen-aware-translator-design.md.
+    -- lossy pieces. See docs/adr/0014-seam-boundary-and-typed-userland.md.
     --
     -- import TranslateToStandard
     -- import TranslateToBuild

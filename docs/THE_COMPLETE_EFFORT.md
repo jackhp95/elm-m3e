@@ -6,10 +6,7 @@
 > conflicts with an older doc, this and the ADRs win.
 >
 > Read order: this → [THREE_LAYER_PATTERN.md](THREE_LAYER_PATTERN.md) (the technical
-> core) → [ADRs 0006–0010](adr/) → [elm-cem-retarget-plan.md](elm-cem-retarget-plan.md)
-> (phasing) → [elm-cem-generator-requirements.md](elm-cem-generator-requirements.md)
-> (the original requirement derivation, with a converged banner). Glossary:
-> [CONTEXT.md](../CONTEXT.md).
+> core) → [ADRs 0006–0010](adr/). Glossary: [CONTEXT.md](../CONTEXT.md).
 
 ---
 
@@ -161,9 +158,7 @@ corrections *are* the rationale; preserve them.
 - **Next build**: write nothing new conceptually — implement the three-layer
   partial-application model in the generator, starting with **Button** end-to-end
   (compile-verified with negative phantom probes). The middle layer *is* enum→`Value`
-  (the shared `Value` vocabulary, net-new). Full remaining map:
-  [REMAINING.md](../REMAINING.md). Frictions: [FRICTIONS.md](../FRICTIONS.md).
-  Tracking: elm-m3e#71 ↔ elm-cem#1.
+  (the shared `Value` vocabulary, net-new). Tracking: elm-m3e#71 ↔ elm-cem#1.
 
 ## 9. Hard constraints (do not violate)
 - Do **not** publish any npm/elm package.

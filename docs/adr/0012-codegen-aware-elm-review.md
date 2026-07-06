@@ -20,8 +20,8 @@ encoded in the types; it is elm-review's job.
 
 Those checks need facts only the [[CEM]]/config know (per-component valid enum
 value-sets, required/multi slots, the shorthand↔specific pairing `variant` ↔
-`variantButton`). Two further forces: an autonomous migrator (see
-`docs/ORNITH_MIGRATION_PLAN.md`) needs *machine-actionable* guidance, not prose;
+`variantButton`). Two further forces: an autonomous migrator needs
+*machine-actionable* guidance, not prose;
 and we want rules that can **translate** a call between any two of the five API
 surfaces (bottom, middle, and the top layer in each of its three shapes).
 

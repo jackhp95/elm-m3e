@@ -89,6 +89,6 @@ gh api -X PUT repos/jackhp95/elm-m3e/branches/main/protection \
 
 ## 7. Optional cleanup (audit nits)
 
-- Move maintainer-only root files out of a split package repo: `FRICTIONS.md`,
-  `HANDOFF.md`, `CONTEXT.md`, `docs-design-*.md` (keep them in the monorepo/docs).
+- Move any maintainer-only root files out of a split package repo (keep `CONTEXT.md`
+  and design notes in the monorepo/docs, not the published package root).
 - Set the repo homepage to the package.elm-lang.org page once published.

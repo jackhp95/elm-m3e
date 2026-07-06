@@ -5,8 +5,7 @@ The single declarative config the generator reads (via `bin/elm-cem.js
 optional; a component absent from the config gets safe defaults (free child row, no
 required, no groups). **Hand-authored → may be wrong; loose types + elm-review absorb
 that** (see COMPONENT_AGNOSTIC_API §4-6). ~100 entries today (~28 evidence-based, rest
-at defaults). `slots.evidence.json` = the per-slot citations from the investigation;
-`slots.findings.txt` = review notes (CEM gaps, dedups).
+at defaults).
 
 ```jsonc
 {

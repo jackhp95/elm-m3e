@@ -36,7 +36,7 @@ view : { <required fields> } -> List (Option msg) -> Element { s | <tag> : Suppo
 ## Slots — accepted sets from the Material taxonomy
 
 Derive each slot's accepted set from the m3e CEM + examples (the per-component
-tables researched in `docs/research/`). Map to one of:
+tables from the slot investigation). Map to one of:
 
 | Content kind (M3) | Slot type |
 |---|---|

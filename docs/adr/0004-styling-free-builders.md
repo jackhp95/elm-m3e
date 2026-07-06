@@ -49,7 +49,7 @@ Content slots prefer **typed builder inputs** (another `Ui.*` type) when the
 slotted alternatives form an enumerable set we want to enforce, with a
 parallel `with<Slot>EscapeHatchHtml : Html msg` for the rare arbitrary-Html
 case. Inherently arbitrary slots (`Card.media`/`body`/`footer`,
-`AppBar.leading`/`trailing` — see [ADR 5](0005-heterogeneous-chrome-slots.md))
+`AppBar.leading`/`trailing` — see [ADR 6](0006-m3e-architecture.md))
 stay `Html msg`.
 
 Where text-bearing slots want a terse call site without dropping back to
@@ -63,8 +63,7 @@ classes).
 
 - **Style flows top-down at the call site, not bottom-up from the library.**
   The `tailwind-m3e-web` bridge stays the single source of styling truth.
-- **The 52-builder rollout was nearly mechanical**: per
-  [`docs/research/builder-audit.md`](../research/builder-audit.md), 0
+- **The 52-builder rollout was nearly mechanical**: per the builder audit, 0
   modules baked styling (only `Ui.Toc` had a dead `ui-toc-auto-width` class
   — removed), 34 builders accepted the hatch by mechanical retrofit, and 14
   were "tricky" only because the host element is chosen at render or
@@ -87,7 +86,7 @@ classes).
 - The audit's first cut suggested converting `AppBar.leading`/`trailing` to
   typed `Ui.IconButton` lists. Real consumers (Reply, Rally) mix
   `Search`/`Avatar`/brand icons with action buttons, so those slots are
-  inherently heterogeneous. See [ADR 5](0005-heterogeneous-chrome-slots.md)
+  inherently heterogeneous. See [ADR 6](0006-m3e-architecture.md)
   for the refined rule.
 - The `IconButton` enhancement that *did* land — `withTarget`/`withRel`/`withDownload`
   to round out its anchor surface — lets an "external link" be a single typed

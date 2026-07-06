@@ -12,9 +12,6 @@ Accepted. Reconciles [ADR 11](0011-ir-faithfulness-advisory-cardinality.md)
 supplies the shape matrix that [ADR 12](0012-codegen-aware-elm-review.md)'s
 translator is parameterized over. Governs epic #138 workstream A; B–E build on it.
 
-The companion spec — `docs/superpowers/specs/2026-07-03-top-shape-gradient-design.md`
-— carries the worked translation table and the Facts fields each surface needs.
-
 ## Amendment (2026-07-03) — shape ⑤ moved from record-literal to unified availability phantom
 
 **What changed.** The ⑤ encoding evolved during workstream B's Phase-0 codegen
@@ -231,10 +228,6 @@ the companion spec for the per-component fact maps this requires.
   the shape-variant-vs-safety-depth clarification — #138 E1).
 - ADR 8 (three layers), ADR 9 (composition over injection), ADR 11 (advisory
   cardinality), ADR 12 (codegen-aware review + the translator this feeds).
-- Companion spec: `docs/superpowers/specs/2026-07-03-top-shape-gradient-design.md`.
-- Amendment evidence (2026-07-03): spike design
-  `docs/superpowers/specs/2026-07-03-build-shape-codegen-spike-design.md` +
-  result `docs/superpowers/specs/2026-07-03-build-shape-codegen-spike-result.md`.
 - Generator fork: `elm-cem/codegen/Generate.elm` (`hasRecord` ~L1973,
   `requiredType` ~L1785).
 - Symptom issues the matrix resolves: #115 (AssistChip forced action), #121
