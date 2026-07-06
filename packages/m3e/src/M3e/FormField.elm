@@ -124,12 +124,13 @@ variant =
     M3e.Cem.FormField.variant
 
 
-{-| Place content in the `(default)` slot. -}
+{-| Place content in the `(default)` slot, wiring its `id=` from the required `id` for structural label↔control association (ADR 0010 R6). -}
 child :
-    M3e.Element.Element any msg
+    String
+    -> M3e.Element.Element any msg
     -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
+child id_ el =
+    M3e.Content.Internal.slotWithAttr "" "id" id_ el
 
 
 {-| Place content in the `prefix` slot. -}
@@ -148,12 +149,13 @@ prefixText el =
     M3e.Content.Internal.slot "prefix-text" el
 
 
-{-| Place content in the `label` slot. -}
+{-| Place content in the `label` slot, wiring its `for=` from the required `id` for structural label↔control association (ADR 0010 R6). -}
 label :
-    M3e.Element.Element any msg
+    String
+    -> M3e.Element.Element any msg
     -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
-label el =
-    M3e.Content.Internal.slot "label" el
+label id_ el =
+    M3e.Content.Internal.slotWithAttr "label" "for" id_ el
 
 
 {-| Place content in the `suffix` slot. -}
