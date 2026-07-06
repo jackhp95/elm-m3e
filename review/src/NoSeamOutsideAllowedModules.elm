@@ -5,7 +5,7 @@ module NoSeamOutsideAllowedModules exposing (rule)
 The `Seam` module is the single sanctioned hole in the type system (ADR 0014 §2,
 issue #81): it turns raw `Html` into a `Node`/`Element`/`Attr` and coerces a
 well-typed value to a different phantom row. It exists so the seam between typed
-M3e and raw Elm html is *possible* — but each use throws away a guarantee, so a
+M3e and raw Elm html is _possible_ — but each use throws away a guarantee, so a
 codebase usually wants it **contained** to a few blessed modules (a
 `Native`/`Layout`-style adapter layer) rather than sprinkled through feature code.
 
@@ -30,7 +30,8 @@ import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
-{-| Build the gate from the list of modules allowed to use the seam (dotted names). -}
+{-| Build the gate from the list of modules allowed to use the seam (dotted names).
+-}
 rule : List String -> Rule
 rule allowed =
     Rule.newModuleRuleSchemaUsingContextCreator "NoSeamOutsideAllowedModules" (initContext allowed)
@@ -66,7 +67,8 @@ isAllowed allowed currentModule =
         allowed
 
 
-{-| The modules whose functions are considered seams. -}
+{-| The modules whose functions are considered seams.
+-}
 seamModules : List ModuleName
 seamModules =
     [ [ "Seam" ] ]

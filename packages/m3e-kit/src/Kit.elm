@@ -7,9 +7,9 @@ module Kit exposing
 
 {-| The design-system **userland kit**: the sanctioned home for the visual seam.
 
-`Seam`/`EscapeHatch` discard type guarantees, so they are meant to live only in a
-few blessed adapter modules (see `NoSeamOutsideAllowedModules`, allow-list
-`["Native", "Layout", "Kit"]`). `Layout` owns the _layout_ seam (flex/grid/gap);
+The single `Seam` boundary discards type guarantees, so it is meant to live only
+in a few blessed adapter modules (see `NoSeamOutsideAllowedModules`, allow-list
+`["Native", "Layout", "Kit", ...]`). `Layout` owns the _layout_ seam (flex/grid/gap);
 `Kit` owns the _visual_ seam — typography, color, and (via `Kit.Surface` /
 `Kit.Shape`) surface roles and corner shapes. Feature/route code composes these
 named primitives instead of passing raw Tailwind through the seam itself.

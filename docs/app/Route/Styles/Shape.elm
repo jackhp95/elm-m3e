@@ -8,18 +8,16 @@ the old `Cem.M3e.Shape`/`Shape.attributes` passthrough with the token-driven API
 
 import BackendTask
 import Head
-import Html.Attributes as Attr
 import Kit
+import Layout
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.Record.Heading as Heading
 import M3e.Shape as Shape
 import M3e.Value as Value exposing (Supported)
-import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import View exposing (View)
 
@@ -59,8 +57,7 @@ view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
     let
         shapeCol ( token, label ) =
-            Native.div
-                [ Seam.asAttribute (Attr.class "flex flex-col items-center gap-2") ]
+            Layout.div "flex flex-col items-center gap-2"
                 [ Shape.view [ Shape.name token ] []
                 , Kit.text label
                 ]
@@ -89,8 +86,7 @@ view _ _ =
                     []
                 , Card.view [ Card.variant Value.outlined ]
                     [ Card.content
-                        (Native.div
-                            [ Seam.asAttribute (Attr.class "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6") ]
+                        (Layout.div "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6"
                             (List.map shapeCol shapes)
                         )
                     ]

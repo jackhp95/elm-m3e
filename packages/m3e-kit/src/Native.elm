@@ -7,6 +7,7 @@ This is the "teams get normal HTML inside our composition" seam (docs §8).
 Also hosts the typed native attribute/event escapes (`attribute`, `style`,
 `onClick`) — raw HTML attributes/events lifted through `Seam` once, here, so feature
 code composes them by name instead of reaching for `Seam` at the call site.
+
 -}
 
 import Html exposing (Html)

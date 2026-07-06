@@ -8,12 +8,11 @@ signature and doc comment.
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File
-import EscapeHatch
+import Doc
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
-import Html exposing (Html, a, code, text)
-import Html.Attributes exposing (class, href, id)
+import Html
 import Json.Decode as Decode
 import Kit
 import Layout
@@ -27,7 +26,6 @@ import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -150,13 +148,7 @@ indexGrid components =
     Layout.div "mt-8 flex flex-wrap gap-2"
         (List.map
             (\c ->
-                EscapeHatch.fromHtml
-                    (a
-                        [ href ("#" ++ c.slug)
-                        , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
-                        ]
-                        [ text c.name ]
-                    )
+                Doc.anchorPill { href = "#" ++ c.slug, label = c.name }
             )
             components
         )
@@ -164,8 +156,8 @@ indexGrid components =
 
 componentBlock : Component -> Element { s | html : Supported } msg
 componentBlock c =
-    Native.node (Html.node "section")
-        [ Seam.asAttribute (id c.slug), Seam.asAttribute (class "scroll-mt-6 space-y-4") ]
+    Native.section
+        [ Native.attribute "id" c.slug, Layout.class "scroll-mt-6 space-y-4" ]
         [ Divider.view [] []
         , Native.node (Html.node "h2")
             []
@@ -198,7 +190,7 @@ memberRow m =
         [ Card.content
             (Native.node (Html.node "div")
                 []
-                [ EscapeHatch.fromHtml (preBlock sig)
+                [ Doc.preBlock sig
                 , if m.doc == "" then
                     Kit.text ""
 
@@ -207,12 +199,6 @@ memberRow m =
                 ]
             )
         ]
-
-
-preBlock : String -> Html msg
-preBlock s =
-    Html.pre [ class "overflow-x-auto" ]
-        [ code [] [ text s ] ]
 
 
 {-| Render \\n\\n-separated text as body paragraphs at the given type-scale size.

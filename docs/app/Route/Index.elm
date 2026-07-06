@@ -14,12 +14,12 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html
-import Html.Attributes
 import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e.Action as Action
+import M3e.Aria as Aria
 import M3e.Avatar as Avatar
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
@@ -32,7 +32,6 @@ import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -127,7 +126,7 @@ hero =
             , Button.view { content = Kit.text "Browse the API reference", action = Action.link "/reference" } [ Button.variant Value.outlined ] []
             ]
         , Layout.div "flex items-center gap-3 pt-4"
-            [ Avatar.view [ Seam.asAttribute (Html.Attributes.attribute "aria-label" "Sample avatar") ] [ Avatar.child (Native.img [ Seam.asAttribute (Html.Attributes.src "/avatar-sample.svg") ]) ]
+            [ Avatar.view [ Aria.label "Sample avatar" ] [ Avatar.child (Native.img [ Native.attribute "src" "/avatar-sample.svg" ]) ]
             , Layout.div "flex gap-3"
                 [ Surface.view Surface.primary [ Layout.class "block w-10 h-10", Shape.corner Shape.large ] []
                 , Surface.view Surface.tertiaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []

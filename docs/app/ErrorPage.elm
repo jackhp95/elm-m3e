@@ -1,8 +1,7 @@
 module ErrorPage exposing (ErrorPage, Model, Msg, init, internalError, notFound, statusCode, update, view)
 
+import Doc
 import Effect exposing (Effect)
-import EscapeHatch
-import Html
 import M3e.Element as Element
 import View exposing (View)
 
@@ -43,18 +42,13 @@ internalError =
 view : ErrorPage -> Model -> View Msg
 view error _ =
     { body =
-        [ EscapeHatch.fromHtml
-            (Html.div []
-                [ Html.p []
-                    [ Html.text <|
-                        case error of
-                            NotFound ->
-                                "Page not found. Maybe try another URL?"
+        [ Doc.message
+            (case error of
+                NotFound ->
+                    "Page not found. Maybe try another URL?"
 
-                            InternalError string ->
-                                "Something went wrong.\n" ++ string
-                    ]
-                ]
+                InternalError string ->
+                    "Something went wrong.\n" ++ string
             )
             |> Element.toNode
         ]

@@ -4,7 +4,6 @@ import BackendTask
 import Head
 import Head.Seo as Seo
 import Html
-import Html.Attributes exposing (class, style)
 import Kit
 import Layout
 import M3e.Action as Action
@@ -18,7 +17,6 @@ import Native
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Seam
 import Shared
 import UrlPath
 import View exposing (View)
@@ -70,8 +68,8 @@ demoBar scaleValue =
             [ Kit.onSurfaceVariant ]
             [ Kit.text ("density scale " ++ String.fromInt scaleValue) ]
         , Native.node (Html.node "div")
-            [ Seam.asAttribute (style "--md-sys-density-scale" (String.fromInt scaleValue))
-            , Seam.asAttribute (class "flex flex-wrap gap-2")
+            [ Native.style "--md-sys-density-scale" (String.fromInt scaleValue)
+            , Layout.class "flex flex-wrap gap-2"
             ]
             (List.range 1 4
                 |> List.map
