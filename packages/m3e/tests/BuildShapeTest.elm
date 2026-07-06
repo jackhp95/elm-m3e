@@ -110,11 +110,21 @@ Each must compile on its OWN component. The wrong pairing is proven to fail in
 BuildShapeNegative.
 -}
 okValueString =
-    M3e.radio [ M3e.value "on" ] []
+    M3e.radio [ M3e.attrValue "on" ] []
 
 
 okValueFloat =
-    M3e.sliderThumb [ M3e.valueFloat 0.5 ] []
+    M3e.sliderThumb [ M3e.attrValueFloat 0.5 ] []
+
+
+{-| Barrel flat surface: `attr`-prefixed setters, flat Value tokens, and the
+generalized slot setter all compose on the plain constructor noun. Proves the
+`attr` prefix (enum + bool), the flattened `M3e.filled` token, and `slotDefault`.
+-}
+barrelFlat =
+    M3e.button
+        [ M3e.attrVariant M3e.filled, M3e.attrDisabled True ]
+        [ M3e.slotDefault (Kit.text "Click me") ]
 
 
 main : Html.Html msg

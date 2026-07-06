@@ -20,6 +20,47 @@ A form control that allows users to select a value from a set of predefined opti
 - `arrow`: Renders the dropdown arrow.
 - `value`: Renders the selected value(s).
 
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Favorite fruit" ]), M3e.FormField.child "select" (M3e.Select.view [] (M3e.Select.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])) ]
+```
+
+<!-- elm-cem:example title="Empty options" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Favorite fruit" ]), M3e.FormField.child "select" (M3e.Select.view [] (M3e.Select.children [ M3e.Option.view [ M3e.Option.value "" ] [ M3e.Option.child (Kit.text "None") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])) ]
+```
+
+<!-- elm-cem:example title="Selection" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Toppings" ]), M3e.FormField.child "select" (M3e.Select.view [ M3e.Select.multi True ] (M3e.Select.children [ M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text "Extra cheese") ], M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text "Mushroom") ] ])) ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Favorite fruit" ]), M3e.FormField.child "select" (M3e.Select.view [ M3e.Select.disabled True ] [ M3e.Select.child (M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text "Apples") ]) ]) ]
+```
+
+<!-- elm-cem:example title="Disabling (2)" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Favorite fruit" ]), M3e.FormField.child "select" (M3e.Select.view [] [ M3e.Select.child (M3e.Option.view [ M3e.Option.disabled True ] [ M3e.Option.child (Kit.text "Apples") ]) ]) ]
+```
+
+<!-- elm-cem:example title="Required" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Favorite fruit" ]), M3e.FormField.child "select" (M3e.Select.view [ M3e.Select.required True ] (M3e.Select.children [ M3e.Option.view [ M3e.Option.value "" ] [ M3e.Option.child (Kit.text "None") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ] ])) ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "select" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "select" (M3e.Select.view [ M3e.Select.panelClass "density-3" ] []) ]
+```
+
 @docs view, disabled, hideSelectionIndicator, multi, name, panelClass
 @docs required, onChange, onToggle, onBeforeinput, onInput, child
 @docs arrow, value, children

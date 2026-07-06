@@ -16,76 +16,95 @@ module M3e exposing
     , breadcrumbItemButton, bottomSheetTrigger, bottomSheet, bottomSheetAction, badge, avatar, autocomplete
     , formField, optionPanel, floatingPanel, optgroup, option, focusTrap, appBar
     , textOverflow, textHighlight, stateLayer, slide, scrollContainer, ripple, pseudoRadio
-    , pseudoCheckbox, focusRing, elevation, collapsible, actionElementBase, action, actionable
-    , active, activeDate, alert, anchorOffset, animation, ariaInvalid, autoActivate
-    , bufferValue, cascade, caseSensitive, centered, checked, clearLabel, clearable
-    , closeLabel, color, completed, confirmLabel, contained, contrast, current
-    , date, density, detent, disableClose, disableHighlight, disableHover, disablePagination
-    , disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible, dividers
-    , download, duration, editable, elevated, emphasized, end, endDivider
-    , endMode, extended, filled, filter, firstPageLabel, fitAnchorWidth, floatLabel
-    , for, grade, handle, handleLabel, headerPosition, hideDelay, hideFriction
-    , hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript
-    , hideToggle, hideable, highlightMode, href, icons, indeterminate, inline
-    , inset, insetEnd, insetStart, invalid, inward, itemLabel, itemsPerPageLabel
-    , label, labelPosition, labelled, lastPageLabel, length, level, linear
-    , loaded, loading, loadingLabel, lowered, max, maxDate, maxDepth
-    , maxRows, min, minDate, minRows, modal, mode, motion
-    , multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel
-    , noFocusTrap, open, opticalSize, optional, orientation, overshootLimit, pageIndex
-    , pageSize, pageSizeVariant, pageSizes, panelClass, position, positionX, positionY
-    , previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel, radius, range, rangeEnd
-    , rangeStart, rel, removable, removeLabel, required, returnValue, scheme
-    , scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay, showFirstLastButtons
-    , size, start, startAt, startDivider, startMode, startView, state
-    , stepAttr, stretch, strongFocus, submenu, target, term, thin
-    , threshold, today, toggle, toggleDirection, togglePosition, touchGestures, type_
-    , unbounded, variant, vertical, weight, width, wrap, wrapDetents
-    , name, valueFloat, value, onChange, onOpening, onOpened, onClosing
+    , pseudoCheckbox, focusRing, elevation, collapsible, actionElementBase, attrAction, attrActionable
+    , attrActive, attrActiveDate, attrAlert, attrAnchorOffset, attrAnimation, attrAriaInvalid, attrAutoActivate
+    , attrBufferValue, attrCascade, attrCaseSensitive, attrCentered, attrChecked, attrClearLabel, attrClearable
+    , attrCloseLabel, attrColor, attrCompleted, attrConfirmLabel, attrContained, attrContrast, attrCurrent
+    , attrDate, attrDensity, attrDetent, attrDisableClose, attrDisableHighlight, attrDisableHover, attrDisablePagination
+    , attrDisableRestoreFocus, attrDisabled, attrDisabledInteractive, attrDiscrete, attrDismissLabel, attrDismissible, attrDividers
+    , attrDownload, attrDuration, attrEditable, attrElevated, attrEmphasized, attrEnd, attrEndDivider
+    , attrEndMode, attrExtended, attrFilled, attrFilter, attrFirstPageLabel, attrFitAnchorWidth, attrFloatLabel
+    , attrFor, attrGrade, attrHandle, attrHandleLabel, attrHeaderPosition, attrHideDelay, attrHideFriction
+    , attrHideLoading, attrHideNoData, attrHidePageSize, attrHideRequiredMarker, attrHideSearchIcon, attrHideSelectionIndicator, attrHideSubscript
+    , attrHideToggle, attrHideable, attrHighlightMode, attrHref, attrIcons, attrIndeterminate, attrInline
+    , attrInset, attrInsetEnd, attrInsetStart, attrInvalid, attrInward, attrItemLabel, attrItemsPerPageLabel
+    , attrLabel, attrLabelPosition, attrLabelled, attrLastPageLabel, attrLength, attrLevel, attrLinear
+    , attrLoaded, attrLoading, attrLoadingLabel, attrLowered, attrMax, attrMaxDate, attrMaxDepth
+    , attrMaxRows, attrMin, attrMinDate, attrMinRows, attrModal, attrMode, attrMotion
+    , attrMulti, attrNextMonthLabel, attrNextMultiYearLabel, attrNextPageLabel, attrNextYearLabel, attrNoAnimate, attrNoDataLabel
+    , attrNoFocusTrap, attrOpen, attrOpticalSize, attrOptional, attrOrientation, attrOvershootLimit, attrPageIndex
+    , attrPageSize, attrPageSizeVariant, attrPageSizes, attrPanelClass, attrPosition, attrPositionX, attrPositionY
+    , attrPreviousMonthLabel, attrPreviousMultiYearLabel, attrPreviousPageLabel, attrPreviousYearLabel, attrRadius, attrRange, attrRangeEnd
+    , attrRangeStart, attrRel, attrRemovable, attrRemoveLabel, attrRequired, attrReturnValue, attrScheme
+    , attrScrollStrategy, attrSecondary, attrSelected, attrSelectedIndex, attrShape, attrShowDelay, attrShowFirstLastButtons
+    , attrSize, attrStart, attrStartAt, attrStartDivider, attrStartMode, attrStartView, attrState
+    , attrStep, attrStretch, attrStrongFocus, attrSubmenu, attrTarget, attrTerm, attrThin
+    , attrThreshold, attrToday, attrToggle, attrToggleDirection, attrTogglePosition, attrTouchGestures, attrType
+    , attrUnbounded, attrVariant, attrVertical, attrWeight, attrWidth, attrWrap, attrWrapDetents
+    , attrName, attrValueFloat, attrValue, onChange, onOpening, onOpened, onClosing
     , onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
     , onQuery, onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
-    , onHighlight, slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
-    , slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected
-    , slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd
-    , slotOverline, slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText
-    , slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput
-    , slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon
-    , slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
-    , slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon
-    , slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon
-    , treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault, tocSlotOverline, tocSlotTitle
-    , tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault
-    , tabSlotDefault, tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault, stepSlotDefault, stepSlotIcon, stepSlotDoneIcon
-    , stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep
-    , stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon
-    , sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault
-    , buttonSegmentSlotDefault, buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading
-    , searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing
-    , searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotDefault
-    , selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault
-    , navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault
-    , navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault
-    , menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon
-    , menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing
-    , actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems
-    , listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading
-    , listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault, listItemSlotDefault, listItemSlotLeading, listItemSlotOverline
-    , listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault, fabSlotLabel
-    , fabSlotCloseIcon, accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault
-    , expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault
-    , dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault, contentPaneSlotDefault, suggestionChipSlotDefault
-    , suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon
-    , filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon
-    , chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader, cardSlotContent, cardSlotActions
-    , cardSlotFooter, calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault
-    , buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon
-    , buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault
-    , bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault
-    , autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix
-    , formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault
-    , optgroupSlotDefault, optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle
-    , appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault
-    , collapsibleSlotDefault
+    , onHighlight, rounded, square, standard, vibrant, auto, dark
+    , light, content, expressive, fidelity, fruitSalad, monochrome, neutral
+    , rainbow, tonalSpot, high, medium, true, false, after
+    , before, primary, secondary, both, none, selected, above
+    , below, end, horizontal, vertical, elevated, filled, outlined
+    , tonal, extraLarge, extraSmall, large, small, pulse, wave
+    , circular, value12SidedCookie, value4LeafClover, value4SidedCookie, value6SidedCookie, value7SidedCookie, value8LeafClover
+    , value9SidedCookie, arch, arrow, boom, bun, burst, circle
+    , diamond, fan, flower, gem, ghostIsh, heart, hexagon
+    , oval, pentagon, pill, pixelCircle, pixelTriangle, puffy, puffyDiamond
+    , semicircle, slanted, softBoom, softBurst, sunny, triangle, verySunny
+    , docked, fullscreen, buffer, determinate, indeterminate, query, flat
+    , wavy, all, compact, expanded, contained, uncontained, segmented
+    , low, sharp, display, headline, label, title, tertiary
+    , reset, submit, primaryContainer, secondaryContainer, surface, tertiaryContainer, over
+    , push, side, modal, month, multiYear, year, off
+    , on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected, default
+    , narrow, wide, text, date, location, page, time
+    , contains, endsWith, startsWith, always, never, loading, noData
+    , hide, reposition, aboveBelow, slotDefault, slotLeading, slotTitle, slotSubtitle
+    , slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader
+    , slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+    , slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems, slotLabel
+    , slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar
+    , slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon
+    , slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon
+    , slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon
+    , slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault
+    , treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault
+    , tocSlotOverline, tocSlotTitle, tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon
+    , tabsSlotPrevIcon, tabPanelSlotDefault, tabSlotDefault, tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault, stepSlotDefault
+    , stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotDefault
+    , stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton
+    , snackbarSlotDefault, snackbarSlotCloseIcon, sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault
+    , shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault, buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading
+    , searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading
+    , searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon
+    , paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel
+    , navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon
+    , navMenuItemSlotToggleIcon, navBarSlotDefault, navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon
+    , menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault
+    , menuItemSlotIcon, menuItemSlotTrailingIcon, menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline
+    , listOptionSlotSupportingText, listOptionSlotTrailing, actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText
+    , expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing
+    , listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault, listItemSlotDefault
+    , listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault
+    , fabSlotDefault, fabSlotLabel, fabSlotCloseIcon, accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader
+    , expansionPanelSlotToggleIcon, expansionHeaderSlotDefault, expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd
+    , dialogTriggerSlotDefault, dialogSlotDefault, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault
+    , contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar
+    , inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon, chipSetSlotDefault
+    , assistChipSlotDefault, assistChipSlotIcon, chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader
+    , cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead
+    , richTooltipSlotActions, richTooltipActionSlotDefault, buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon
+    , buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon
+    , breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault
+    , avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText
+    , formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData
+    , optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault, optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading
+    , appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault
+    , slideSlotDefault, scrollContainerSlotDefault, collapsibleSlotDefault
     )
 
 {-|
@@ -111,87 +130,109 @@ The one-import barrel. Re-exposes every component constructor plus the whole sha
 @docs avatar, autocomplete, formField, optionPanel, floatingPanel, optgroup
 @docs option, focusTrap, appBar, textOverflow, textHighlight, stateLayer
 @docs slide, scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing
-@docs elevation, collapsible, actionElementBase, action, actionable, active
-@docs activeDate, alert, anchorOffset, animation, ariaInvalid, autoActivate
-@docs bufferValue, cascade, caseSensitive, centered, checked, clearLabel
-@docs clearable, closeLabel, color, completed, confirmLabel, contained
-@docs contrast, current, date, density, detent, disableClose
-@docs disableHighlight, disableHover, disablePagination, disableRestoreFocus, disabled, disabledInteractive
-@docs discrete, dismissLabel, dismissible, dividers, download, duration
-@docs editable, elevated, emphasized, end, endDivider, endMode
-@docs extended, filled, filter, firstPageLabel, fitAnchorWidth, floatLabel
-@docs for, grade, handle, handleLabel, headerPosition, hideDelay
-@docs hideFriction, hideLoading, hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon
-@docs hideSelectionIndicator, hideSubscript, hideToggle, hideable, highlightMode, href
-@docs icons, indeterminate, inline, inset, insetEnd, insetStart
-@docs invalid, inward, itemLabel, itemsPerPageLabel, label, labelPosition
-@docs labelled, lastPageLabel, length, level, linear, loaded
-@docs loading, loadingLabel, lowered, max, maxDate, maxDepth
-@docs maxRows, min, minDate, minRows, modal, mode
-@docs motion, multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel
-@docs noAnimate, noDataLabel, noFocusTrap, open, opticalSize, optional
-@docs orientation, overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes
-@docs panelClass, position, positionX, positionY, previousMonthLabel, previousMultiYearLabel
-@docs previousPageLabel, previousYearLabel, radius, range, rangeEnd, rangeStart
-@docs rel, removable, removeLabel, required, returnValue, scheme
-@docs scrollStrategy, secondary, selected, selectedIndex, shapeAttr, showDelay
-@docs showFirstLastButtons, size, start, startAt, startDivider, startMode
-@docs startView, state, stepAttr, stretch, strongFocus, submenu
-@docs target, term, thin, threshold, today, toggle
-@docs toggleDirection, togglePosition, touchGestures, type_, unbounded, variant
-@docs vertical, weight, width, wrap, wrapDetents, name
-@docs valueFloat, value, onChange, onOpening, onOpened, onClosing
+@docs elevation, collapsible, actionElementBase, attrAction, attrActionable, attrActive
+@docs attrActiveDate, attrAlert, attrAnchorOffset, attrAnimation, attrAriaInvalid, attrAutoActivate
+@docs attrBufferValue, attrCascade, attrCaseSensitive, attrCentered, attrChecked, attrClearLabel
+@docs attrClearable, attrCloseLabel, attrColor, attrCompleted, attrConfirmLabel, attrContained
+@docs attrContrast, attrCurrent, attrDate, attrDensity, attrDetent, attrDisableClose
+@docs attrDisableHighlight, attrDisableHover, attrDisablePagination, attrDisableRestoreFocus, attrDisabled, attrDisabledInteractive
+@docs attrDiscrete, attrDismissLabel, attrDismissible, attrDividers, attrDownload, attrDuration
+@docs attrEditable, attrElevated, attrEmphasized, attrEnd, attrEndDivider, attrEndMode
+@docs attrExtended, attrFilled, attrFilter, attrFirstPageLabel, attrFitAnchorWidth, attrFloatLabel
+@docs attrFor, attrGrade, attrHandle, attrHandleLabel, attrHeaderPosition, attrHideDelay
+@docs attrHideFriction, attrHideLoading, attrHideNoData, attrHidePageSize, attrHideRequiredMarker, attrHideSearchIcon
+@docs attrHideSelectionIndicator, attrHideSubscript, attrHideToggle, attrHideable, attrHighlightMode, attrHref
+@docs attrIcons, attrIndeterminate, attrInline, attrInset, attrInsetEnd, attrInsetStart
+@docs attrInvalid, attrInward, attrItemLabel, attrItemsPerPageLabel, attrLabel, attrLabelPosition
+@docs attrLabelled, attrLastPageLabel, attrLength, attrLevel, attrLinear, attrLoaded
+@docs attrLoading, attrLoadingLabel, attrLowered, attrMax, attrMaxDate, attrMaxDepth
+@docs attrMaxRows, attrMin, attrMinDate, attrMinRows, attrModal, attrMode
+@docs attrMotion, attrMulti, attrNextMonthLabel, attrNextMultiYearLabel, attrNextPageLabel, attrNextYearLabel
+@docs attrNoAnimate, attrNoDataLabel, attrNoFocusTrap, attrOpen, attrOpticalSize, attrOptional
+@docs attrOrientation, attrOvershootLimit, attrPageIndex, attrPageSize, attrPageSizeVariant, attrPageSizes
+@docs attrPanelClass, attrPosition, attrPositionX, attrPositionY, attrPreviousMonthLabel, attrPreviousMultiYearLabel
+@docs attrPreviousPageLabel, attrPreviousYearLabel, attrRadius, attrRange, attrRangeEnd, attrRangeStart
+@docs attrRel, attrRemovable, attrRemoveLabel, attrRequired, attrReturnValue, attrScheme
+@docs attrScrollStrategy, attrSecondary, attrSelected, attrSelectedIndex, attrShape, attrShowDelay
+@docs attrShowFirstLastButtons, attrSize, attrStart, attrStartAt, attrStartDivider, attrStartMode
+@docs attrStartView, attrState, attrStep, attrStretch, attrStrongFocus, attrSubmenu
+@docs attrTarget, attrTerm, attrThin, attrThreshold, attrToday, attrToggle
+@docs attrToggleDirection, attrTogglePosition, attrTouchGestures, attrType, attrUnbounded, attrVariant
+@docs attrVertical, attrWeight, attrWidth, attrWrap, attrWrapDetents, attrName
+@docs attrValueFloat, attrValue, onChange, onOpening, onOpened, onClosing
 @docs onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle
 @docs onValueChange, onQuery, onClear, onPage, onCancel, onRemove
-@docs onInvalid, onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle
-@docs slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading
-@docs slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent
-@docs slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline
-@docs slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText
-@docs slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon
-@docs slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon
-@docs slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
-@docs slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton
-@docs slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel
-@docs slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon
-@docs treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault, tocSlotOverline, tocSlotTitle
-@docs tocItemSlotDefault, themeSlotDefault, tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon
-@docs tabPanelSlotDefault, tabSlotDefault, tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault, stepSlotDefault
-@docs stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError
-@docs stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd
-@docs splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon, sliderSlotDefault, slideGroupSlotDefault
-@docs slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault
-@docs buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading
-@docs searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput
-@docs searchBarSlotTrailing, searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon
-@docs paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault
-@docs navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon
-@docs navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault, navItemSlotDefault, navItemSlotIcon
-@docs navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault
-@docs menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon
-@docs menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText
-@docs listOptionSlotTrailing, actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText
-@docs expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText
-@docs listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing
-@docs listSlotDefault, listItemSlotDefault, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing
-@docs headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault, fabSlotLabel, fabSlotCloseIcon
-@docs accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault
-@docs expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault
-@docs dialogSlotDefault, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault
-@docs contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault
-@docs inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon
-@docs filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon, chipSlotDefault, chipSlotIcon
-@docs chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter
-@docs calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault
-@docs buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon, buttonSlotSelected
-@docs buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon
-@docs breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault
-@docs badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault
-@docs formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint
-@docs formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault
-@docs optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle
-@docs appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault
-@docs scrollContainerSlotDefault, collapsibleSlotDefault
+@docs onInvalid, onActiveChange, onHighlight, rounded, square, standard
+@docs vibrant, auto, dark, light, content, expressive
+@docs fidelity, fruitSalad, monochrome, neutral, rainbow, tonalSpot
+@docs high, medium, true, false, after, before
+@docs primary, secondary, both, none, selected, above
+@docs below, end, horizontal, vertical, elevated, filled
+@docs outlined, tonal, extraLarge, extraSmall, large, small
+@docs pulse, wave, circular, value12SidedCookie, value4LeafClover, value4SidedCookie
+@docs value6SidedCookie, value7SidedCookie, value8LeafClover, value9SidedCookie, arch, arrow
+@docs boom, bun, burst, circle, diamond, fan
+@docs flower, gem, ghostIsh, heart, hexagon, oval
+@docs pentagon, pill, pixelCircle, pixelTriangle, puffy, puffyDiamond
+@docs semicircle, slanted, softBoom, softBurst, sunny, triangle
+@docs verySunny, docked, fullscreen, buffer, determinate, indeterminate
+@docs query, flat, wavy, all, compact, expanded
+@docs contained, uncontained, segmented, low, sharp, display
+@docs headline, label, title, tertiary, reset, submit
+@docs primaryContainer, secondaryContainer, surface, tertiaryContainer, over, push
+@docs side, modal, month, multiYear, year, off
+@docs on, aboveAfter, aboveBefore, belowAfter, belowBefore, connected
+@docs default, narrow, wide, text, date, location
+@docs page, time, contains, endsWith, startsWith, always
+@docs never, loading, noData, hide, reposition, aboveBelow
+@docs slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
+@docs slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator
+@docs slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+@docs slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
+@docs slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
+@docs slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
+@docs slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
+@docs slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
+@docs slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon
+@docs slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault
+@docs treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, toolbarSlotDefault
+@docs tocSlotDefault, tocSlotOverline, tocSlotTitle, tocItemSlotDefault, themeSlotDefault, tabsSlotDefault
+@docs tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault, tabSlotDefault, tabSlotIcon
+@docs stepperResetSlotDefault, stepperPreviousSlotDefault, stepSlotDefault, stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon
+@docs stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep
+@docs stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault
+@docs snackbarSlotCloseIcon, sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault
+@docs shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault, buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput
+@docs searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon
+@docs searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, radioGroupSlotDefault
+@docs paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow
+@docs selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault
+@docs navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon
+@docs navBarSlotDefault, navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon
+@docs menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault
+@docs menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon, menuTriggerSlotDefault, selectionListSlotDefault, listOptionSlotDefault
+@docs listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, actionListSlotDefault, expandableListItemSlotDefault
+@docs expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault
+@docs listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading
+@docs listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault, listItemSlotDefault, listItemSlotLeading
+@docs listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault
+@docs fabSlotDefault, fabSlotLabel, fabSlotCloseIcon, accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions
+@docs expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault, expansionHeaderSlotToggleIcon, drawerToggleSlotDefault, drawerContainerSlotDefault
+@docs drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault, dialogSlotHeader, dialogSlotActions
+@docs dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault, contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon
+@docs inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon
+@docs filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault
+@docs assistChipSlotIcon, chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader
+@docs cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault
+@docs richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault, buttonGroupSlotDefault, iconButtonSlotDefault, iconButtonSlotSelected
+@docs buttonSlotDefault, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotDefault
+@docs breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault
+@docs bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault
+@docs autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel
+@docs formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData
+@docs optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault, optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault
+@docs appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
+@docs textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault, collapsibleSlotDefault
 -}
 
 
@@ -2391,162 +2432,166 @@ actionElementBase =
 
 
 {-| The label of the snackbar's action. (default: `""`) -}
-action : String -> M3e.Cem.Attr.Attr { c | action : M3e.Value.Supported } msg
-action =
+attrAction :
+    String -> M3e.Cem.Attr.Attr { c | action : M3e.Value.Supported } msg
+attrAction =
     M3e.Cem.Vocab.action
 
 
 {-| Whether the card is "actionable" and will respond to use interaction. (default: `false`) -}
-actionable :
+attrActionable :
     Bool -> M3e.Cem.Attr.Attr { c | actionable : M3e.Value.Supported } msg
-actionable =
+attrActionable =
     M3e.Cem.Vocab.actionable
 
 
 {-| Whether the view is active. (default: `false`) -}
-active : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
-active =
+attrActive : Bool -> M3e.Cem.Attr.Attr { c | active : M3e.Value.Supported } msg
+attrActive =
     M3e.Cem.Vocab.active
 
 
 {-| The active date. (default: `new Date()`) -}
-activeDate :
+attrActiveDate :
     String -> M3e.Cem.Attr.Attr { c | activeDate : M3e.Value.Supported } msg
-activeDate =
+attrActiveDate =
     M3e.Cem.Vocab.activeDate
 
 
 {-| Whether the dialog is an alert. (default: `false`) -}
-alert : Bool -> M3e.Cem.Attr.Attr { c | alert : M3e.Value.Supported } msg
-alert =
+attrAlert : Bool -> M3e.Cem.Attr.Attr { c | alert : M3e.Value.Supported } msg
+attrAlert =
     M3e.Cem.Vocab.alert
 
 
 {-| The logical margin, in pixels, between the panel and its anchor. (default: `0`) -}
-anchorOffset :
+attrAnchorOffset :
     Float -> M3e.Cem.Attr.Attr { c | anchorOffset : M3e.Value.Supported } msg
-anchorOffset =
+attrAnchorOffset =
     M3e.Cem.Vocab.anchorOffset
 
 
 {-| The animation effect of the skeleton. (default: `"wave"`) -}
-animation :
+attrAnimation :
     M3e.Value.Value { none : M3e.Value.Supported
     , pulse : M3e.Value.Supported
     , wave : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | animation : M3e.Value.Supported } msg
-animation =
+attrAnimation =
     M3e.Cem.Vocab.animation
 
 
 {-| Set the `aria-invalid` attribute. -}
-ariaInvalid :
+attrAriaInvalid :
     String -> M3e.Cem.Attr.Attr { c | ariaInvalid : M3e.Value.Supported } msg
-ariaInvalid =
+attrAriaInvalid =
     M3e.Cem.Vocab.ariaInvalid
 
 
 {-| Whether the first option should be automatically activated. (default: `false`) -}
-autoActivate :
+attrAutoActivate :
     Bool -> M3e.Cem.Attr.Attr { c | autoActivate : M3e.Value.Supported } msg
-autoActivate =
+attrAutoActivate =
     M3e.Cem.Vocab.autoActivate
 
 
 {-| A fractional value, between 0 and `max`, indicating buffer progress. (default: `0`) -}
-bufferValue :
+attrBufferValue :
     Float -> M3e.Cem.Attr.Attr { c | bufferValue : M3e.Value.Supported } msg
-bufferValue =
+attrBufferValue =
     M3e.Cem.Vocab.bufferValue
 
 
 {-| Whether multiple item selection cascades to child items. (default: `false`) -}
-cascade : Bool -> M3e.Cem.Attr.Attr { c | cascade : M3e.Value.Supported } msg
-cascade =
+attrCascade :
+    Bool -> M3e.Cem.Attr.Attr { c | cascade : M3e.Value.Supported } msg
+attrCascade =
     M3e.Cem.Vocab.cascade
 
 
 {-| Whether filtering is case sensitive. (default: `false`) -}
-caseSensitive :
+attrCaseSensitive :
     Bool -> M3e.Cem.Attr.Attr { c | caseSensitive : M3e.Value.Supported } msg
-caseSensitive =
+attrCaseSensitive =
     M3e.Cem.Vocab.caseSensitive
 
 
 {-| Whether the title and subtitle are centered. (default: `false`) -}
-centered : Bool -> M3e.Cem.Attr.Attr { c | centered : M3e.Value.Supported } msg
-centered =
+attrCentered :
+    Bool -> M3e.Cem.Attr.Attr { c | centered : M3e.Value.Supported } msg
+attrCentered =
     M3e.Cem.Vocab.centered
 
 
 {-| Whether the element is checked. (default: `false`) -}
-checked : Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
-checked =
+attrChecked :
+    Bool -> M3e.Cem.Attr.Attr { c | checked : M3e.Value.Supported } msg
+attrChecked =
     M3e.Cem.Vocab.checked
 
 
 {-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
-clearLabel :
+attrClearLabel :
     String -> M3e.Cem.Attr.Attr { c | clearLabel : M3e.Value.Supported } msg
-clearLabel =
+attrClearLabel =
     M3e.Cem.Vocab.clearLabel
 
 
 {-| Whether the bar presents a button used to clear the search term. (default: `false`) -}
-clearable :
+attrClearable :
     Bool -> M3e.Cem.Attr.Attr { c | clearable : M3e.Value.Supported } msg
-clearable =
+attrClearable =
     M3e.Cem.Vocab.clearable
 
 
 {-| The accessible label given to the button used to dismiss the snackbar. (default: `"Close"`) -}
-closeLabel :
+attrCloseLabel :
     String -> M3e.Cem.Attr.Attr { c | closeLabel : M3e.Value.Supported } msg
-closeLabel =
+attrCloseLabel =
     M3e.Cem.Vocab.closeLabel
 
 
 {-| The hex color of the theme to preview (default: `"#6750A4"`) -}
-color : String -> M3e.Cem.Attr.Attr { c | color : M3e.Value.Supported } msg
-color =
+attrColor : String -> M3e.Cem.Attr.Attr { c | color : M3e.Value.Supported } msg
+attrColor =
     M3e.Cem.Vocab.color
 
 
 {-| Whether the step has been completed. (default: `false`) -}
-completed :
+attrCompleted :
     Bool -> M3e.Cem.Attr.Attr { c | completed : M3e.Value.Supported } msg
-completed =
+attrCompleted =
     M3e.Cem.Vocab.completed
 
 
 {-| The label given to the button used apply the selected date and close the picker. (default: `"OK"`) -}
-confirmLabel :
+attrConfirmLabel :
     String -> M3e.Cem.Attr.Attr { c | confirmLabel : M3e.Value.Supported } msg
-confirmLabel =
+attrConfirmLabel =
     M3e.Cem.Vocab.confirmLabel
 
 
 {-| Whether the view features a persistent, filled search container. (default: `false`) -}
-contained :
+attrContained :
     Bool -> M3e.Cem.Attr.Attr { c | contained : M3e.Value.Supported } msg
-contained =
+attrContained =
     M3e.Cem.Vocab.contained
 
 
 {-| The contrast level of the theme. (default: `"standard"`) -}
-contrast :
+attrContrast :
     M3e.Value.Value { high : M3e.Value.Supported
     , medium : M3e.Value.Supported
     , standard : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | contrast : M3e.Value.Supported } msg
-contrast =
+attrContrast =
     M3e.Cem.Vocab.contrast
 
 
 {-| Indicates the current item in the breadcrumb path. -}
-current :
+attrCurrent :
     M3e.Value.Value { date : M3e.Value.Supported
     , location : M3e.Value.Supported
     , page : M3e.Value.Supported
@@ -2555,554 +2600,572 @@ current :
     , true : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | current : M3e.Value.Supported } msg
-current =
+attrCurrent =
     M3e.Cem.Vocab.current
 
 
 {-| The selected date. (default: `null`) -}
-date : String -> M3e.Cem.Attr.Attr { c | date : M3e.Value.Supported } msg
-date =
+attrDate : String -> M3e.Cem.Attr.Attr { c | date : M3e.Value.Supported } msg
+attrDate =
     M3e.Cem.Vocab.date
 
 
 {-| The density scale (0, -1, -2). (default: `0`) -}
-density : Float -> M3e.Cem.Attr.Attr { c | density : M3e.Value.Supported } msg
-density =
+attrDensity :
+    Float -> M3e.Cem.Attr.Attr { c | density : M3e.Value.Supported } msg
+attrDensity =
     M3e.Cem.Vocab.density
 
 
 {-| The zero‑based index of the detent the sheet should open to. -}
-detent : Float -> M3e.Cem.Attr.Attr { c | detent : M3e.Value.Supported } msg
-detent =
+attrDetent : Float -> M3e.Cem.Attr.Attr { c | detent : M3e.Value.Supported } msg
+attrDetent =
     M3e.Cem.Vocab.detent
 
 
 {-| Whether users cannot click the backdrop or press ESC to dismiss the dialog. (default: `false`) -}
-disableClose :
+attrDisableClose :
     Bool -> M3e.Cem.Attr.Attr { c | disableClose : M3e.Value.Supported } msg
-disableClose =
+attrDisableClose =
     M3e.Cem.Vocab.disableClose
 
 
 {-| Whether text highlighting is disabled. (default: `false`) -}
-disableHighlight :
+attrDisableHighlight :
     Bool -> M3e.Cem.Attr.Attr { c | disableHighlight : M3e.Value.Supported } msg
-disableHighlight =
+attrDisableHighlight =
     M3e.Cem.Vocab.disableHighlight
 
 
 {-| Whether hover events will not trigger the state layer. State layers can still
 be controlled manually using the `show` and `hide` methods. (default: `false`)
 -}
-disableHover :
+attrDisableHover :
     Bool -> M3e.Cem.Attr.Attr { c | disableHover : M3e.Value.Supported } msg
-disableHover =
+attrDisableHover =
     M3e.Cem.Vocab.disableHover
 
 
 {-| Whether scroll buttons are disabled. -}
-disablePagination :
+attrDisablePagination :
     M3e.Value.Value { true : M3e.Value.Supported
     , false : M3e.Value.Supported
     , auto : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | disablePagination : M3e.Value.Supported } msg
-disablePagination =
+attrDisablePagination =
     M3e.Cem.Vocab.disablePagination
 
 
 {-| Whether to focus should not be restored to the trigger when activated. (default: `false`) -}
-disableRestoreFocus :
+attrDisableRestoreFocus :
     Bool
     -> M3e.Cem.Attr.Attr { c | disableRestoreFocus : M3e.Value.Supported } msg
-disableRestoreFocus =
+attrDisableRestoreFocus =
     M3e.Cem.Vocab.disableRestoreFocus
 
 
 {-| Whether the element is disabled. (default: `false`) -}
-disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
-disabled =
+attrDisabled :
+    Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
+attrDisabled =
     M3e.Cem.Vocab.disabled
 
 
 {-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
-disabledInteractive :
+attrDisabledInteractive :
     Bool
     -> M3e.Cem.Attr.Attr { c | disabledInteractive : M3e.Value.Supported } msg
-disabledInteractive =
+attrDisabledInteractive =
     M3e.Cem.Vocab.disabledInteractive
 
 
 {-| Whether to show tick marks. (default: `false`) -}
-discrete : Bool -> M3e.Cem.Attr.Attr { c | discrete : M3e.Value.Supported } msg
-discrete =
+attrDiscrete :
+    Bool -> M3e.Cem.Attr.Attr { c | discrete : M3e.Value.Supported } msg
+attrDiscrete =
     M3e.Cem.Vocab.discrete
 
 
 {-| The label given to the button used discard the selected date and close the picker. (default: `"Cancel"`) -}
-dismissLabel :
+attrDismissLabel :
     String -> M3e.Cem.Attr.Attr { c | dismissLabel : M3e.Value.Supported } msg
-dismissLabel =
+attrDismissLabel =
     M3e.Cem.Vocab.dismissLabel
 
 
 {-| Whether a button is presented that can be used to close the snackbar. (default: `false`) -}
-dismissible :
+attrDismissible :
     Bool -> M3e.Cem.Attr.Attr { c | dismissible : M3e.Value.Supported } msg
-dismissible =
+attrDismissible =
     M3e.Cem.Vocab.dismissible
 
 
 {-| The dividers used to separate scrollable content. (default: `"above-below"`) -}
-dividers :
+attrDividers :
     M3e.Value.Value { above : M3e.Value.Supported
     , aboveBelow : M3e.Value.Supported
     , below : M3e.Value.Supported
     , none : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | dividers : M3e.Value.Supported } msg
-dividers =
+attrDividers =
     M3e.Cem.Vocab.dividers
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
-download :
+attrDownload :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
-download =
+attrDownload =
     M3e.Cem.Vocab.download
 
 
 {-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`) -}
-duration : Float -> M3e.Cem.Attr.Attr { c | duration : M3e.Value.Supported } msg
-duration =
+attrDuration :
+    Float -> M3e.Cem.Attr.Attr { c | duration : M3e.Value.Supported } msg
+attrDuration =
     M3e.Cem.Vocab.duration
 
 
 {-| Whether the step is editable and users can return to it after completion. (default: `false`) -}
-editable : Bool -> M3e.Cem.Attr.Attr { c | editable : M3e.Value.Supported } msg
-editable =
+attrEditable :
+    Bool -> M3e.Cem.Attr.Attr { c | editable : M3e.Value.Supported } msg
+attrEditable =
     M3e.Cem.Vocab.editable
 
 
 {-| Whether the toolbar is elevated. (default: `false`) -}
-elevated : Bool -> M3e.Cem.Attr.Attr { c | elevated : M3e.Value.Supported } msg
-elevated =
+attrElevated :
+    Bool -> M3e.Cem.Attr.Attr { c | elevated : M3e.Value.Supported } msg
+attrElevated =
     M3e.Cem.Vocab.elevated
 
 
 {-| Whether the heading uses an emphasized typescale. (default: `false`) -}
-emphasized :
+attrEmphasized :
     Bool -> M3e.Cem.Attr.Attr { c | emphasized : M3e.Value.Supported } msg
-emphasized =
+attrEmphasized =
     M3e.Cem.Vocab.emphasized
 
 
 {-| Whether the end drawer is open. (default: `false`) -}
-end : Bool -> M3e.Cem.Attr.Attr { c | end : M3e.Value.Supported } msg
-end =
+attrEnd : Bool -> M3e.Cem.Attr.Attr { c | end : M3e.Value.Supported } msg
+attrEnd =
     M3e.Cem.Vocab.end
 
 
 {-| Whether to show a divider between the end drawer and content for `side` mode. (default: `false`) -}
-endDivider :
+attrEndDivider :
     Bool -> M3e.Cem.Attr.Attr { c | endDivider : M3e.Value.Supported } msg
-endDivider =
+attrEndDivider =
     M3e.Cem.Vocab.endDivider
 
 
 {-| The behavior mode of the end drawer. (default: `"side"`) -}
-endMode :
+attrEndMode :
     M3e.Value.Value { auto : M3e.Value.Supported
     , over : M3e.Value.Supported
     , push : M3e.Value.Supported
     , side : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | endMode : M3e.Value.Supported } msg
-endMode =
+attrEndMode =
     M3e.Cem.Vocab.endMode
 
 
 {-| Whether the button is extended to show the label. (default: `false`) -}
-extended : Bool -> M3e.Cem.Attr.Attr { c | extended : M3e.Value.Supported } msg
-extended =
+attrExtended :
+    Bool -> M3e.Cem.Attr.Attr { c | extended : M3e.Value.Supported } msg
+attrExtended =
     M3e.Cem.Vocab.extended
 
 
 {-| Whether the icon is filled. (default: `false`) -}
-filled : Bool -> M3e.Cem.Attr.Attr { c | filled : M3e.Value.Supported } msg
-filled =
+attrFilled : Bool -> M3e.Cem.Attr.Attr { c | filled : M3e.Value.Supported } msg
+attrFilled =
     M3e.Cem.Vocab.filled
 
 
 {-| Mode in which to filter options. (default: `"contains"`) -}
-filter :
+attrFilter :
     M3e.Value.Value { contains : M3e.Value.Supported
     , endsWith : M3e.Value.Supported
     , none : M3e.Value.Supported
     , startsWith : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | filter : M3e.Value.Supported } msg
-filter =
+attrFilter =
     M3e.Cem.Vocab.filter
 
 
 {-| The accessible label given to the button used to move to the first page. (default: `"First page"`) -}
-firstPageLabel :
+attrFirstPageLabel :
     String -> M3e.Cem.Attr.Attr { c | firstPageLabel : M3e.Value.Supported } msg
-firstPageLabel =
+attrFirstPageLabel =
     M3e.Cem.Vocab.firstPageLabel
 
 
 {-| Whether the panel's width should match its anchor's width. (default: `false`) -}
-fitAnchorWidth :
+attrFitAnchorWidth :
     Bool -> M3e.Cem.Attr.Attr { c | fitAnchorWidth : M3e.Value.Supported } msg
-fitAnchorWidth =
+attrFitAnchorWidth =
     M3e.Cem.Vocab.fitAnchorWidth
 
 
 {-| Specifies whether the label should float always or only when necessary. (default: `"auto"`) -}
-floatLabel :
+attrFloatLabel :
     M3e.Value.Value { always : M3e.Value.Supported, auto : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | floatLabel : M3e.Value.Supported } msg
-floatLabel =
+attrFloatLabel =
     M3e.Cem.Vocab.floatLabel
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
-for : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
-for =
+attrFor : String -> M3e.Cem.Attr.Attr { c | for : M3e.Value.Supported } msg
+attrFor =
     M3e.Cem.Vocab.for
 
 
 {-| The grade of the icon. (default: `"medium"`) -}
-grade :
+attrGrade :
     M3e.Value.Value { high : M3e.Value.Supported
     , low : M3e.Value.Supported
     , medium : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | grade : M3e.Value.Supported } msg
-grade =
+attrGrade =
     M3e.Cem.Vocab.grade
 
 
 {-| Whether to display a drag handle and enable the top region of the sheet as a gesture
 surface for dragging between detents. (default: `false`)
 -}
-handle : Bool -> M3e.Cem.Attr.Attr { c | handle : M3e.Value.Supported } msg
-handle =
+attrHandle : Bool -> M3e.Cem.Attr.Attr { c | handle : M3e.Value.Supported } msg
+attrHandle =
     M3e.Cem.Vocab.handle
 
 
 {-| The accessible label given to the drag handle. (default: `"Drag handle"`) -}
-handleLabel :
+attrHandleLabel :
     String -> M3e.Cem.Attr.Attr { c | handleLabel : M3e.Value.Supported } msg
-handleLabel =
+attrHandleLabel =
     M3e.Cem.Vocab.handleLabel
 
 
 {-| The position of the tab headers. (default: `"before"`) -}
-headerPosition :
+attrHeaderPosition :
     M3e.Value.Value { after : M3e.Value.Supported
     , before : M3e.Value.Supported
     , above : M3e.Value.Supported
     , below : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | headerPosition : M3e.Value.Supported } msg
-headerPosition =
+attrHeaderPosition =
     M3e.Cem.Vocab.headerPosition
 
 
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
-hideDelay :
+attrHideDelay :
     Float -> M3e.Cem.Attr.Attr { c | hideDelay : M3e.Value.Supported } msg
-hideDelay =
+attrHideDelay =
     M3e.Cem.Vocab.hideDelay
 
 
 {-| The friction coefficient to hide the sheet. (default: `0.5`) -}
-hideFriction :
+attrHideFriction :
     Float -> M3e.Cem.Attr.Attr { c | hideFriction : M3e.Value.Supported } msg
-hideFriction =
+attrHideFriction =
     M3e.Cem.Vocab.hideFriction
 
 
 {-| Whether to hide the menu when loading options. (default: `false`) -}
-hideLoading :
+attrHideLoading :
     Bool -> M3e.Cem.Attr.Attr { c | hideLoading : M3e.Value.Supported } msg
-hideLoading =
+attrHideLoading =
     M3e.Cem.Vocab.hideLoading
 
 
 {-| Whether to hide the menu when there are no options to show. (default: `false`) -}
-hideNoData :
+attrHideNoData :
     Bool -> M3e.Cem.Attr.Attr { c | hideNoData : M3e.Value.Supported } msg
-hideNoData =
+attrHideNoData =
     M3e.Cem.Vocab.hideNoData
 
 
 {-| Whether to hide page size selection. (default: `false`) -}
-hidePageSize :
+attrHidePageSize :
     Bool -> M3e.Cem.Attr.Attr { c | hidePageSize : M3e.Value.Supported } msg
-hidePageSize =
+attrHidePageSize =
     M3e.Cem.Vocab.hidePageSize
 
 
 {-| Whether the required marker should be hidden. (default: `false`) -}
-hideRequiredMarker :
+attrHideRequiredMarker :
     Bool
     -> M3e.Cem.Attr.Attr { c | hideRequiredMarker : M3e.Value.Supported } msg
-hideRequiredMarker =
+attrHideRequiredMarker =
     M3e.Cem.Vocab.hideRequiredMarker
 
 
 {-| Whether to hide the search icon. (default: `false`) -}
-hideSearchIcon :
+attrHideSearchIcon :
     Bool -> M3e.Cem.Attr.Attr { c | hideSearchIcon : M3e.Value.Supported } msg
-hideSearchIcon =
+attrHideSearchIcon =
     M3e.Cem.Vocab.hideSearchIcon
 
 
 {-| Whether to hide the selection indicator. (default: `false`) -}
-hideSelectionIndicator :
+attrHideSelectionIndicator :
     Bool
     -> M3e.Cem.Attr.Attr { c
         | hideSelectionIndicator : M3e.Value.Supported
     } msg
-hideSelectionIndicator =
+attrHideSelectionIndicator =
     M3e.Cem.Vocab.hideSelectionIndicator
 
 
 {-| Whether subscript content is hidden. (default: `"auto"`) -}
-hideSubscript :
+attrHideSubscript :
     M3e.Value.Value { always : M3e.Value.Supported
     , auto : M3e.Value.Supported
     , never : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | hideSubscript : M3e.Value.Supported } msg
-hideSubscript =
+attrHideSubscript =
     M3e.Cem.Vocab.hideSubscript
 
 
 {-| Whether to hide the expansion toggle. (default: `false`) -}
-hideToggle :
+attrHideToggle :
     Bool -> M3e.Cem.Attr.Attr { c | hideToggle : M3e.Value.Supported } msg
-hideToggle =
+attrHideToggle =
     M3e.Cem.Vocab.hideToggle
 
 
 {-| Whether the bottom sheet can hide when its swiped down. (default: `false`) -}
-hideable : Bool -> M3e.Cem.Attr.Attr { c | hideable : M3e.Value.Supported } msg
-hideable =
+attrHideable :
+    Bool -> M3e.Cem.Attr.Attr { c | hideable : M3e.Value.Supported } msg
+attrHideable =
     M3e.Cem.Vocab.hideable
 
 
 {-| The mode in which to highlight a term. (default: `"contains"`) -}
-highlightMode :
+attrHighlightMode :
     M3e.Value.Value { contains : M3e.Value.Supported
     , endsWith : M3e.Value.Supported
     , startsWith : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | highlightMode : M3e.Value.Supported } msg
-highlightMode =
+attrHighlightMode =
     M3e.Cem.Vocab.highlightMode
 
 
 {-| The URL to which the link button points. (default: `""`) -}
-href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
-href =
+attrHref : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
+attrHref =
     M3e.Cem.Vocab.href
 
 
 {-| The icons to present. (default: `"none"`) -}
-icons :
+attrIcons :
     M3e.Value.Value { both : M3e.Value.Supported
     , none : M3e.Value.Supported
     , selected : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | icons : M3e.Value.Supported } msg
-icons =
+attrIcons =
     M3e.Cem.Vocab.icons
 
 
 {-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`) -}
-indeterminate :
+attrIndeterminate :
     Bool -> M3e.Cem.Attr.Attr { c | indeterminate : M3e.Value.Supported } msg
-indeterminate =
+attrIndeterminate =
     M3e.Cem.Vocab.indeterminate
 
 
 {-| Whether to present the card inline with surrounding content. (default: `false`) -}
-inline : Bool -> M3e.Cem.Attr.Attr { c | inline : M3e.Value.Supported } msg
-inline =
+attrInline : Bool -> M3e.Cem.Attr.Attr { c | inline : M3e.Value.Supported } msg
+attrInline =
     M3e.Cem.Vocab.inline
 
 
 {-| Whether the divider is indented with equal padding on both sides. (default: `false`) -}
-inset : Bool -> M3e.Cem.Attr.Attr { c | inset : M3e.Value.Supported } msg
-inset =
+attrInset : Bool -> M3e.Cem.Attr.Attr { c | inset : M3e.Value.Supported } msg
+attrInset =
     M3e.Cem.Vocab.inset
 
 
 {-| Whether the divider is indented with padding on the trailing side. (default: `false`) -}
-insetEnd : Bool -> M3e.Cem.Attr.Attr { c | insetEnd : M3e.Value.Supported } msg
-insetEnd =
+attrInsetEnd :
+    Bool -> M3e.Cem.Attr.Attr { c | insetEnd : M3e.Value.Supported } msg
+attrInsetEnd =
     M3e.Cem.Vocab.insetEnd
 
 
 {-| Whether the divider is indented with padding on the leading side. (default: `false`) -}
-insetStart :
+attrInsetStart :
     Bool -> M3e.Cem.Attr.Attr { c | insetStart : M3e.Value.Supported } msg
-insetStart =
+attrInsetStart =
     M3e.Cem.Vocab.insetStart
 
 
 {-| Whether the step has an error. (default: `false`) -}
-invalid : Bool -> M3e.Cem.Attr.Attr { c | invalid : M3e.Value.Supported } msg
-invalid =
+attrInvalid :
+    Bool -> M3e.Cem.Attr.Attr { c | invalid : M3e.Value.Supported } msg
+attrInvalid =
     M3e.Cem.Vocab.invalid
 
 
 {-| Whether the focus ring animates inward instead of outward. (default: `false`) -}
-inward : Bool -> M3e.Cem.Attr.Attr { c | inward : M3e.Value.Supported } msg
-inward =
+attrInward : Bool -> M3e.Cem.Attr.Attr { c | inward : M3e.Value.Supported } msg
+attrInward =
     M3e.Cem.Vocab.inward
 
 
 {-| The accessible label given to the item's internal button. (default: `""`) -}
-itemLabel :
+attrItemLabel :
     String -> M3e.Cem.Attr.Attr { c | itemLabel : M3e.Value.Supported } msg
-itemLabel =
+attrItemLabel =
     M3e.Cem.Vocab.itemLabel
 
 
 {-| The label for the page size selector. (default: `"Items per page:"`) -}
-itemsPerPageLabel :
+attrItemsPerPageLabel :
     String
     -> M3e.Cem.Attr.Attr { c | itemsPerPageLabel : M3e.Value.Supported } msg
-itemsPerPageLabel =
+attrItemsPerPageLabel =
     M3e.Cem.Vocab.itemsPerPageLabel
 
 
 {-| The accessible label given to the movable drag handle. (default: `"Resize panes"`) -}
-label : String -> M3e.Cem.Attr.Attr { c | label : M3e.Value.Supported } msg
-label =
+attrLabel : String -> M3e.Cem.Attr.Attr { c | label : M3e.Value.Supported } msg
+attrLabel =
     M3e.Cem.Vocab.label
 
 
 {-| The position of the step labels, when oriented horizontally. (default: `"end"`) -}
-labelPosition :
+attrLabelPosition :
     M3e.Value.Value { below : M3e.Value.Supported, end : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | labelPosition : M3e.Value.Supported } msg
-labelPosition =
+attrLabelPosition =
     M3e.Cem.Vocab.labelPosition
 
 
 {-| Whether to show value labels when activated. (default: `false`) -}
-labelled : Bool -> M3e.Cem.Attr.Attr { c | labelled : M3e.Value.Supported } msg
-labelled =
+attrLabelled :
+    Bool -> M3e.Cem.Attr.Attr { c | labelled : M3e.Value.Supported } msg
+attrLabelled =
     M3e.Cem.Vocab.labelled
 
 
 {-| The accessible label given to the button used to move to the last page. (default: `"Last page"`) -}
-lastPageLabel :
+attrLastPageLabel :
     String -> M3e.Cem.Attr.Attr { c | lastPageLabel : M3e.Value.Supported } msg
-lastPageLabel =
+attrLastPageLabel =
     M3e.Cem.Vocab.lastPageLabel
 
 
 {-| The length of the total number of items which are being paginated. (default: `0`) -}
-length : Float -> M3e.Cem.Attr.Attr { c | length : M3e.Value.Supported } msg
-length =
+attrLength : Float -> M3e.Cem.Attr.Attr { c | length : M3e.Value.Supported } msg
+attrLength =
     M3e.Cem.Vocab.length
 
 
 {-| The accessibility level of the heading. -}
-level : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
-level =
+attrLevel : Int -> M3e.Cem.Attr.Attr { c | level : M3e.Value.Supported } msg
+attrLevel =
     M3e.Cem.Vocab.level
 
 
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
-linear : Bool -> M3e.Cem.Attr.Attr { c | linear : M3e.Value.Supported } msg
-linear =
+attrLinear : Bool -> M3e.Cem.Attr.Attr { c | linear : M3e.Value.Supported } msg
+attrLinear =
     M3e.Cem.Vocab.linear
 
 
 {-| Whether the content of the skeleton has been loaded. (default: `false`) -}
-loaded : Bool -> M3e.Cem.Attr.Attr { c | loaded : M3e.Value.Supported } msg
-loaded =
+attrLoaded : Bool -> M3e.Cem.Attr.Attr { c | loaded : M3e.Value.Supported } msg
+attrLoaded =
     M3e.Cem.Vocab.loaded
 
 
 {-| Whether options are being loaded. (default: `false`) -}
-loading : Bool -> M3e.Cem.Attr.Attr { c | loading : M3e.Value.Supported } msg
-loading =
+attrLoading :
+    Bool -> M3e.Cem.Attr.Attr { c | loading : M3e.Value.Supported } msg
+attrLoading =
     M3e.Cem.Vocab.loading
 
 
 {-| The text announced and presented when loading options. (default: `"Loading..."`) -}
-loadingLabel :
+attrLoadingLabel :
     String -> M3e.Cem.Attr.Attr { c | loadingLabel : M3e.Value.Supported } msg
-loadingLabel =
+attrLoadingLabel =
     M3e.Cem.Vocab.loadingLabel
 
 
 {-| Whether to present a lowered elevation. (default: `false`) -}
-lowered : Bool -> M3e.Cem.Attr.Attr { c | lowered : M3e.Value.Supported } msg
-lowered =
+attrLowered :
+    Bool -> M3e.Cem.Attr.Attr { c | lowered : M3e.Value.Supported } msg
+attrLowered =
     M3e.Cem.Vocab.lowered
 
 
 {-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`) -}
-max : Float -> M3e.Cem.Attr.Attr { c | max : M3e.Value.Supported } msg
-max =
+attrMax : Float -> M3e.Cem.Attr.Attr { c | max : M3e.Value.Supported } msg
+attrMax =
     M3e.Cem.Vocab.max
 
 
 {-| The maximum date that can be selected. (default: `null`) -}
-maxDate : String -> M3e.Cem.Attr.Attr { c | maxDate : M3e.Value.Supported } msg
-maxDate =
+attrMaxDate :
+    String -> M3e.Cem.Attr.Attr { c | maxDate : M3e.Value.Supported } msg
+attrMaxDate =
     M3e.Cem.Vocab.maxDate
 
 
 {-| The maximum depth of the table of contents. (default: `2`) -}
-maxDepth : Float -> M3e.Cem.Attr.Attr { c | maxDepth : M3e.Value.Supported } msg
-maxDepth =
+attrMaxDepth :
+    Float -> M3e.Cem.Attr.Attr { c | maxDepth : M3e.Value.Supported } msg
+attrMaxDepth =
     M3e.Cem.Vocab.maxDepth
 
 
 {-| The maximum amount of rows in the `textarea`. (default: `0`) -}
-maxRows : Float -> M3e.Cem.Attr.Attr { c | maxRows : M3e.Value.Supported } msg
-maxRows =
+attrMaxRows :
+    Float -> M3e.Cem.Attr.Attr { c | maxRows : M3e.Value.Supported } msg
+attrMaxRows =
     M3e.Cem.Vocab.maxRows
 
 
 {-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`) -}
-min : Float -> M3e.Cem.Attr.Attr { c | min : M3e.Value.Supported } msg
-min =
+attrMin : Float -> M3e.Cem.Attr.Attr { c | min : M3e.Value.Supported } msg
+attrMin =
     M3e.Cem.Vocab.min
 
 
 {-| The minimum date that can be selected. (default: `null`) -}
-minDate : String -> M3e.Cem.Attr.Attr { c | minDate : M3e.Value.Supported } msg
-minDate =
+attrMinDate :
+    String -> M3e.Cem.Attr.Attr { c | minDate : M3e.Value.Supported } msg
+attrMinDate =
     M3e.Cem.Vocab.minDate
 
 
 {-| The minimum amount of rows in the `textarea`. (default: `0`) -}
-minRows : Float -> M3e.Cem.Attr.Attr { c | minRows : M3e.Value.Supported } msg
-minRows =
+attrMinRows :
+    Float -> M3e.Cem.Attr.Attr { c | minRows : M3e.Value.Supported } msg
+attrMinRows =
     M3e.Cem.Vocab.minRows
 
 
 {-| Whether the bottom sheet behaves as modal. (default: `false`) -}
-modal : Bool -> M3e.Cem.Attr.Attr { c | modal : M3e.Value.Supported } msg
-modal =
+attrModal : Bool -> M3e.Cem.Attr.Attr { c | modal : M3e.Value.Supported } msg
+attrModal =
     M3e.Cem.Vocab.modal
 
 
 {-| The behavior mode of the view. (default: `"docked"`) -}
-mode :
+attrMode :
     M3e.Value.Value { docked : M3e.Value.Supported
     , fullscreen : M3e.Value.Supported
     , buffer : M3e.Value.Supported
@@ -3117,154 +3180,155 @@ mode :
     , startsWith : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | mode : M3e.Value.Supported } msg
-mode =
+attrMode =
     M3e.Cem.Vocab.mode
 
 
 {-| The motion scheme. (default: `"standard"`) -}
-motion :
+attrMotion :
     M3e.Value.Value { expressive : M3e.Value.Supported
     , standard : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | motion : M3e.Value.Supported } msg
-motion =
+attrMotion =
     M3e.Cem.Vocab.motion
 
 
 {-| Whether multiple items can be selected. (default: `false`) -}
-multi : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
-multi =
+attrMulti : Bool -> M3e.Cem.Attr.Attr { c | multi : M3e.Value.Supported } msg
+attrMulti =
     M3e.Cem.Vocab.multi
 
 
 {-| The accessible label given to the button used to move to the next month. (default: `"Next month"`) -}
-nextMonthLabel :
+attrNextMonthLabel :
     String -> M3e.Cem.Attr.Attr { c | nextMonthLabel : M3e.Value.Supported } msg
-nextMonthLabel =
+attrNextMonthLabel =
     M3e.Cem.Vocab.nextMonthLabel
 
 
 {-| The accessible label given to the button used to move to the next 24 years. (default: `"Next 24 years"`) -}
-nextMultiYearLabel :
+attrNextMultiYearLabel :
     String
     -> M3e.Cem.Attr.Attr { c | nextMultiYearLabel : M3e.Value.Supported } msg
-nextMultiYearLabel =
+attrNextMultiYearLabel =
     M3e.Cem.Vocab.nextMultiYearLabel
 
 
 {-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
-nextPageLabel :
+attrNextPageLabel :
     String -> M3e.Cem.Attr.Attr { c | nextPageLabel : M3e.Value.Supported } msg
-nextPageLabel =
+attrNextPageLabel =
     M3e.Cem.Vocab.nextPageLabel
 
 
 {-| The accessible label given to the button used to move to the next year. (default: `"Next year"`) -}
-nextYearLabel :
+attrNextYearLabel :
     String -> M3e.Cem.Attr.Attr { c | nextYearLabel : M3e.Value.Supported } msg
-nextYearLabel =
+attrNextYearLabel =
     M3e.Cem.Vocab.nextYearLabel
 
 
 {-| Whether to disable animation. (default: `false`) -}
-noAnimate :
+attrNoAnimate :
     Bool -> M3e.Cem.Attr.Attr { c | noAnimate : M3e.Value.Supported } msg
-noAnimate =
+attrNoAnimate =
     M3e.Cem.Vocab.noAnimate
 
 
 {-| The text announced and presented when no options are available for the current term. (default: `"No options"`) -}
-noDataLabel :
+attrNoDataLabel :
     String -> M3e.Cem.Attr.Attr { c | noDataLabel : M3e.Value.Supported } msg
-noDataLabel =
+attrNoDataLabel =
     M3e.Cem.Vocab.noDataLabel
 
 
 {-| Whether to disable focus trapping, which keeps keyboard `Tab` navigation within the dialog. (default: `false`) -}
-noFocusTrap :
+attrNoFocusTrap :
     Bool -> M3e.Cem.Attr.Attr { c | noFocusTrap : M3e.Value.Supported } msg
-noFocusTrap =
+attrNoFocusTrap =
     M3e.Cem.Vocab.noFocusTrap
 
 
 {-| Whether the item is expanded. (default: `false`) -}
-open : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
-open =
+attrOpen : Bool -> M3e.Cem.Attr.Attr { c | open : M3e.Value.Supported } msg
+attrOpen =
     M3e.Cem.Vocab.open
 
 
 {-| A value from 20 to 48 indicating the optical size of the icon. (default: `24`) -}
-opticalSize :
+attrOpticalSize :
     Float -> M3e.Cem.Attr.Attr { c | opticalSize : M3e.Value.Supported } msg
-opticalSize =
+attrOpticalSize =
     M3e.Cem.Vocab.opticalSize
 
 
 {-| Whether the step is optional. (default: `false`) -}
-optional : Bool -> M3e.Cem.Attr.Attr { c | optional : M3e.Value.Supported } msg
-optional =
+attrOptional :
+    Bool -> M3e.Cem.Attr.Attr { c | optional : M3e.Value.Supported } msg
+attrOptional =
     M3e.Cem.Vocab.optional
 
 
 {-| The orientation of the stepper. (default: `"horizontal"`) -}
-orientation :
+attrOrientation :
     M3e.Value.Value { auto : M3e.Value.Supported
     , horizontal : M3e.Value.Supported
     , vertical : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | orientation : M3e.Value.Supported } msg
-orientation =
+attrOrientation =
     M3e.Cem.Vocab.orientation
 
 
 {-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`) -}
-overshootLimit :
+attrOvershootLimit :
     Float -> M3e.Cem.Attr.Attr { c | overshootLimit : M3e.Value.Supported } msg
-overshootLimit =
+attrOvershootLimit =
     M3e.Cem.Vocab.overshootLimit
 
 
 {-| The zero-based page index of the displayed list of items. (default: `0`) -}
-pageIndex :
+attrPageIndex :
     Float -> M3e.Cem.Attr.Attr { c | pageIndex : M3e.Value.Supported } msg
-pageIndex =
+attrPageIndex =
     M3e.Cem.Vocab.pageIndex
 
 
 {-| The number of items to display in a page. (default: `50`) -}
-pageSize :
+attrPageSize :
     M3e.Value.Value { number : M3e.Value.Supported, all : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | pageSize : M3e.Value.Supported } msg
-pageSize =
+attrPageSize =
     M3e.Cem.Vocab.pageSize
 
 
 {-| The appearance variant of the page size field. (default: `"outlined"`) -}
-pageSizeVariant :
+attrPageSizeVariant :
     M3e.Value.Value { filled : M3e.Value.Supported
     , outlined : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | pageSizeVariant : M3e.Value.Supported } msg
-pageSizeVariant =
+attrPageSizeVariant =
     M3e.Cem.Vocab.pageSizeVariant
 
 
 {-| A comma separated list of available page sizes. (default: `"5,10,25,50,100"`) -}
-pageSizes :
+attrPageSizes :
     String -> M3e.Cem.Attr.Attr { c | pageSizes : M3e.Value.Supported } msg
-pageSizes =
+attrPageSizes =
     M3e.Cem.Vocab.pageSizes
 
 
 {-| Class or list of classes to be applied to the select's overlay panel. (default: `""`) -}
-panelClass :
+attrPanelClass :
     String -> M3e.Cem.Attr.Attr { c | panelClass : M3e.Value.Supported } msg
-panelClass =
+attrPanelClass =
     M3e.Cem.Vocab.panelClass
 
 
 {-| The position of the tooltip. (default: `"below"`) -}
-position :
+attrPosition :
     M3e.Value.Value { above : M3e.Value.Supported
     , aboveAfter : M3e.Value.Supported
     , aboveBefore : M3e.Value.Supported
@@ -3275,191 +3339,193 @@ position :
     , belowBefore : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | position : M3e.Value.Supported } msg
-position =
+attrPosition =
     M3e.Cem.Vocab.position
 
 
 {-| The position of the menu, on the x-axis. (default: `"after"`) -}
-positionX :
+attrPositionX :
     M3e.Value.Value { after : M3e.Value.Supported
     , before : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | positionX : M3e.Value.Supported } msg
-positionX =
+attrPositionX =
     M3e.Cem.Vocab.positionX
 
 
 {-| The position of the menu, on the y-axis. (default: `"below"`) -}
-positionY :
+attrPositionY :
     M3e.Value.Value { above : M3e.Value.Supported, below : M3e.Value.Supported }
     -> M3e.Cem.Attr.Attr { c | positionY : M3e.Value.Supported } msg
-positionY =
+attrPositionY =
     M3e.Cem.Vocab.positionY
 
 
 {-| The accessible label given to the button used to move to the previous month. (default: `"Previous month"`) -}
-previousMonthLabel :
+attrPreviousMonthLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousMonthLabel : M3e.Value.Supported } msg
-previousMonthLabel =
+attrPreviousMonthLabel =
     M3e.Cem.Vocab.previousMonthLabel
 
 
 {-| The accessible label given to the button used to move to the previous 24 years. (default: `"Previous 24 years"`) -}
-previousMultiYearLabel :
+attrPreviousMultiYearLabel :
     String
     -> M3e.Cem.Attr.Attr { c
         | previousMultiYearLabel : M3e.Value.Supported
     } msg
-previousMultiYearLabel =
+attrPreviousMultiYearLabel =
     M3e.Cem.Vocab.previousMultiYearLabel
 
 
 {-| The accessible label given to the button used to move to the previous page. (default: `"Previous page"`) -}
-previousPageLabel :
+attrPreviousPageLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousPageLabel : M3e.Value.Supported } msg
-previousPageLabel =
+attrPreviousPageLabel =
     M3e.Cem.Vocab.previousPageLabel
 
 
 {-| The accessible label given to the button used to move to the previous year. (default: `"Previous year"`) -}
-previousYearLabel :
+attrPreviousYearLabel :
     String
     -> M3e.Cem.Attr.Attr { c | previousYearLabel : M3e.Value.Supported } msg
-previousYearLabel =
+attrPreviousYearLabel =
     M3e.Cem.Vocab.previousYearLabel
 
 
 {-| The radius, in pixels, of the ripple. (default: `null`) -}
-radius : Float -> M3e.Cem.Attr.Attr { c | radius : M3e.Value.Supported } msg
-radius =
+attrRadius : Float -> M3e.Cem.Attr.Attr { c | radius : M3e.Value.Supported } msg
+attrRadius =
     M3e.Cem.Vocab.radius
 
 
 {-| Whether a range of dates can be selected. (default: `false`) -}
-range : Bool -> M3e.Cem.Attr.Attr { c | range : M3e.Value.Supported } msg
-range =
+attrRange : Bool -> M3e.Cem.Attr.Attr { c | range : M3e.Value.Supported } msg
+attrRange =
     M3e.Cem.Vocab.range
 
 
 {-| End of a date range. (default: `null`) -}
-rangeEnd :
+attrRangeEnd :
     String -> M3e.Cem.Attr.Attr { c | rangeEnd : M3e.Value.Supported } msg
-rangeEnd =
+attrRangeEnd =
     M3e.Cem.Vocab.rangeEnd
 
 
 {-| Start of a date range. (default: `null`) -}
-rangeStart :
+attrRangeStart :
     String -> M3e.Cem.Attr.Attr { c | rangeStart : M3e.Value.Supported } msg
-rangeStart =
+attrRangeStart =
     M3e.Cem.Vocab.rangeStart
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`) -}
-rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
-rel =
+attrRel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
+attrRel =
     M3e.Cem.Vocab.rel
 
 
 {-| Whether the chip is removable. (default: `false`) -}
-removable :
+attrRemovable :
     Bool -> M3e.Cem.Attr.Attr { c | removable : M3e.Value.Supported } msg
-removable =
+attrRemovable =
     M3e.Cem.Vocab.removable
 
 
 {-| The accessible label given to the button used to remove the chip. (default: `"Remove"`) -}
-removeLabel :
+attrRemoveLabel :
     String -> M3e.Cem.Attr.Attr { c | removeLabel : M3e.Value.Supported } msg
-removeLabel =
+attrRemoveLabel =
     M3e.Cem.Vocab.removeLabel
 
 
 {-| Whether the element is required. (default: `false`) -}
-required : Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
-required =
+attrRequired :
+    Bool -> M3e.Cem.Attr.Attr { c | required : M3e.Value.Supported } msg
+attrRequired =
     M3e.Cem.Vocab.required
 
 
 {-| The value to return from the dialog. (default: `""`) -}
-returnValue :
+attrReturnValue :
     String -> M3e.Cem.Attr.Attr { c | returnValue : M3e.Value.Supported } msg
-returnValue =
+attrReturnValue =
     M3e.Cem.Vocab.returnValue
 
 
 {-| The color scheme of the theme. (default: `"auto"`) -}
-scheme :
+attrScheme :
     M3e.Value.Value { auto : M3e.Value.Supported
     , dark : M3e.Value.Supported
     , light : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | scheme : M3e.Value.Supported } msg
-scheme =
+attrScheme =
     M3e.Cem.Vocab.scheme
 
 
 {-| The strategy that controls how the panel behaves when its trigger scrolls. (default: `"hide"`) -}
-scrollStrategy :
+attrScrollStrategy :
     M3e.Value.Value { hide : M3e.Value.Supported
     , reposition : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | scrollStrategy : M3e.Value.Supported } msg
-scrollStrategy =
+attrScrollStrategy =
     M3e.Cem.Vocab.scrollStrategy
 
 
 {-| Marks this trigger as a secondary trigger for accessibility. Secondary triggers do not receive ARIA ownership. (default: `false`) -}
-secondary :
+attrSecondary :
     Bool -> M3e.Cem.Attr.Attr { c | secondary : M3e.Value.Supported } msg
-secondary =
+attrSecondary =
     M3e.Cem.Vocab.secondary
 
 
 {-| Whether the item is selected. (default: `false`) -}
-selected : Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
-selected =
+attrSelected :
+    Bool -> M3e.Cem.Attr.Attr { c | selected : M3e.Value.Supported } msg
+attrSelected =
     M3e.Cem.Vocab.selected
 
 
 {-| The zero-based index of the visible item. (default: `null`) -}
-selectedIndex :
+attrSelectedIndex :
     Float -> M3e.Cem.Attr.Attr { c | selectedIndex : M3e.Value.Supported } msg
-selectedIndex =
+attrSelectedIndex =
     M3e.Cem.Vocab.selectedIndex
 
 
 {-| The shape of the toolbar. (default: `"square"`) -}
-shapeAttr :
+attrShape :
     M3e.Value.Value { auto : M3e.Value.Supported
     , circular : M3e.Value.Supported
     , rounded : M3e.Value.Supported
     , square : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | shape : M3e.Value.Supported } msg
-shapeAttr =
+attrShape =
     M3e.Cem.Vocab.shape
 
 
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
-showDelay :
+attrShowDelay :
     Float -> M3e.Cem.Attr.Attr { c | showDelay : M3e.Value.Supported } msg
-showDelay =
+attrShowDelay =
     M3e.Cem.Vocab.showDelay
 
 
 {-| Whether to show first/last buttons. (default: `false`) -}
-showFirstLastButtons :
+attrShowFirstLastButtons :
     Bool
     -> M3e.Cem.Attr.Attr { c | showFirstLastButtons : M3e.Value.Supported } msg
-showFirstLastButtons =
+attrShowFirstLastButtons =
     M3e.Cem.Vocab.showFirstLastButtons
 
 
 {-| The size of the button. (default: `"small"`) -}
-size :
+attrSize :
     M3e.Value.Value { extraLarge : M3e.Value.Supported
     , extraSmall : M3e.Value.Supported
     , large : M3e.Value.Supported
@@ -3467,176 +3533,180 @@ size :
     , small : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | size : M3e.Value.Supported } msg
-size =
+attrSize =
     M3e.Cem.Vocab.size
 
 
 {-| Whether the start drawer is open. (default: `false`) -}
-start : Bool -> M3e.Cem.Attr.Attr { c | start : M3e.Value.Supported } msg
-start =
+attrStart : Bool -> M3e.Cem.Attr.Attr { c | start : M3e.Value.Supported } msg
+attrStart =
     M3e.Cem.Vocab.start
 
 
 {-| A date specifying the period (month or year) to start the calendar in. (default: `null`) -}
-startAt : String -> M3e.Cem.Attr.Attr { c | startAt : M3e.Value.Supported } msg
-startAt =
+attrStartAt :
+    String -> M3e.Cem.Attr.Attr { c | startAt : M3e.Value.Supported } msg
+attrStartAt =
     M3e.Cem.Vocab.startAt
 
 
 {-| Whether to show a divider between the start drawer and content for `side` mode. (default: `false`) -}
-startDivider :
+attrStartDivider :
     Bool -> M3e.Cem.Attr.Attr { c | startDivider : M3e.Value.Supported } msg
-startDivider =
+attrStartDivider =
     M3e.Cem.Vocab.startDivider
 
 
 {-| The behavior mode of the start drawer. (default: `"side"`) -}
-startMode :
+attrStartMode :
     M3e.Value.Value { auto : M3e.Value.Supported
     , over : M3e.Value.Supported
     , push : M3e.Value.Supported
     , side : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | startMode : M3e.Value.Supported } msg
-startMode =
+attrStartMode =
     M3e.Cem.Vocab.startMode
 
 
 {-| The initial view used to select a date. (default: `"month"`) -}
-startView :
+attrStartView :
     M3e.Value.Value { month : M3e.Value.Supported
     , multiYear : M3e.Value.Supported
     , year : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | startView : M3e.Value.Supported } msg
-startView =
+attrStartView =
     M3e.Cem.Vocab.startView
 
 
 {-| The state for which to present content. (default: `"content"`) -}
-state :
+attrState :
     M3e.Value.Value { content : M3e.Value.Supported
     , loading : M3e.Value.Supported
     , noData : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | state : M3e.Value.Supported } msg
-state =
+attrState =
     M3e.Cem.Vocab.state
 
 
 {-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`) -}
-stepAttr : Float -> M3e.Cem.Attr.Attr { c | step : M3e.Value.Supported } msg
-stepAttr =
+attrStep : Float -> M3e.Cem.Attr.Attr { c | step : M3e.Value.Supported } msg
+attrStep =
     M3e.Cem.Vocab.step
 
 
 {-| Whether tabs are stretched to fill the header. (default: `false`) -}
-stretch : Bool -> M3e.Cem.Attr.Attr { c | stretch : M3e.Value.Supported } msg
-stretch =
+attrStretch :
+    Bool -> M3e.Cem.Attr.Attr { c | stretch : M3e.Value.Supported } msg
+attrStretch =
     M3e.Cem.Vocab.stretch
 
 
 {-| Whether to enable strong focus indicators. (default: `false`) -}
-strongFocus :
+attrStrongFocus :
     Bool -> M3e.Cem.Attr.Attr { c | strongFocus : M3e.Value.Supported } msg
-strongFocus =
+attrStrongFocus =
     M3e.Cem.Vocab.strongFocus
 
 
 {-| A value indicating whether the menu is a submenu. (default: `false`) -}
-submenu : Bool -> M3e.Cem.Attr.Attr { c | submenu : M3e.Value.Supported } msg
-submenu =
+attrSubmenu :
+    Bool -> M3e.Cem.Attr.Attr { c | submenu : M3e.Value.Supported } msg
+attrSubmenu =
     M3e.Cem.Vocab.submenu
 
 
 {-| The target of the link button. (default: `""`) -}
-target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
-target =
+attrTarget :
+    String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
+attrTarget =
     M3e.Cem.Vocab.target
 
 
 {-| The search term to highlight. (default: `""`) -}
-term : String -> M3e.Cem.Attr.Attr { c | term : M3e.Value.Supported } msg
-term =
+attrTerm : String -> M3e.Cem.Attr.Attr { c | term : M3e.Value.Supported } msg
+attrTerm =
     M3e.Cem.Vocab.term
 
 
 {-| Whether to present thin scrollbars. (default: `false`) -}
-thin : Bool -> M3e.Cem.Attr.Attr { c | thin : M3e.Value.Supported } msg
-thin =
+attrThin : Bool -> M3e.Cem.Attr.Attr { c | thin : M3e.Value.Supported } msg
+attrThin =
     M3e.Cem.Vocab.thin
 
 
 {-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`) -}
-threshold :
+attrThreshold :
     Float -> M3e.Cem.Attr.Attr { c | threshold : M3e.Value.Supported } msg
-threshold =
+attrThreshold =
     M3e.Cem.Vocab.threshold
 
 
 {-| Today's date. (default: `new Date()`) -}
-today : String -> M3e.Cem.Attr.Attr { c | today : M3e.Value.Supported } msg
-today =
+attrToday : String -> M3e.Cem.Attr.Attr { c | today : M3e.Value.Supported } msg
+attrToday =
     M3e.Cem.Vocab.today
 
 
 {-| Whether the button will toggle between selected and unselected states. (default: `false`) -}
-toggle : Bool -> M3e.Cem.Attr.Attr { c | toggle : M3e.Value.Supported } msg
-toggle =
+attrToggle : Bool -> M3e.Cem.Attr.Attr { c | toggle : M3e.Value.Supported } msg
+attrToggle =
     M3e.Cem.Vocab.toggle
 
 
 {-| The direction of the expansion toggle. (default: `"vertical"`) -}
-toggleDirection :
+attrToggleDirection :
     M3e.Value.Value { horizontal : M3e.Value.Supported
     , vertical : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | toggleDirection : M3e.Value.Supported } msg
-toggleDirection =
+attrToggleDirection =
     M3e.Cem.Vocab.toggleDirection
 
 
 {-| The position of the expansion toggle. (default: `"after"`) -}
-togglePosition :
+attrTogglePosition :
     M3e.Value.Value { after : M3e.Value.Supported
     , before : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | togglePosition : M3e.Value.Supported } msg
-togglePosition =
+attrTogglePosition =
     M3e.Cem.Vocab.togglePosition
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`) -}
-touchGestures :
+attrTouchGestures :
     M3e.Value.Value { auto : M3e.Value.Supported
     , off : M3e.Value.Supported
     , on : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | touchGestures : M3e.Value.Supported } msg
-touchGestures =
+attrTouchGestures =
     M3e.Cem.Vocab.touchGestures
 
 
 {-| The type of the element. (default: `"button"`) -}
-type_ :
+attrType :
     M3e.Value.Value { button : M3e.Value.Supported
     , reset : M3e.Value.Supported
     , submit : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | type_ : M3e.Value.Supported } msg
-type_ =
+attrType =
     M3e.Cem.Vocab.type_
 
 
 {-| Whether the ripple is visible outside the element's bounds. (default: `false`) -}
-unbounded :
+attrUnbounded :
     Bool -> M3e.Cem.Attr.Attr { c | unbounded : M3e.Value.Supported } msg
-unbounded =
+attrUnbounded =
     M3e.Cem.Vocab.unbounded
 
 
 {-| The appearance variant of the toolbar. (default: `"standard"`) -}
-variant :
+attrVariant :
     M3e.Value.Value { content : M3e.Value.Supported
     , expressive : M3e.Value.Supported
     , fidelity : M3e.Value.Supported
@@ -3676,62 +3746,63 @@ variant :
     , outlined : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
-variant =
+attrVariant =
     M3e.Cem.Vocab.variant
 
 
 {-| Whether the element is oriented vertically. (default: `false`) -}
-vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
-vertical =
+attrVertical :
+    Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
+attrVertical =
     M3e.Cem.Vocab.vertical
 
 
 {-| A value from 100 to 700 indicating the weight of the icon. (default: `400`) -}
-weight : Int -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
-weight =
+attrWeight : Int -> M3e.Cem.Attr.Attr { c | weight : M3e.Value.Supported } msg
+attrWeight =
     M3e.Cem.Vocab.weight
 
 
 {-| The width of the button. (default: `"default"`) -}
-width :
+attrWidth :
     M3e.Value.Value { default : M3e.Value.Supported
     , narrow : M3e.Value.Supported
     , wide : M3e.Value.Supported
     }
     -> M3e.Cem.Attr.Attr { c | width : M3e.Value.Supported } msg
-width =
+attrWidth =
     M3e.Cem.Vocab.width
 
 
 {-| Whether items wrap to a new line. (default: `false`) -}
-wrap : Bool -> M3e.Cem.Attr.Attr { c | wrap : M3e.Value.Supported } msg
-wrap =
+attrWrap : Bool -> M3e.Cem.Attr.Attr { c | wrap : M3e.Value.Supported } msg
+attrWrap =
     M3e.Cem.Vocab.wrap
 
 
 {-| Whether cycling through detents will wrap. (default: `false`) -}
-wrapDetents :
+attrWrapDetents :
     Bool -> M3e.Cem.Attr.Attr { c | wrapDetents : M3e.Value.Supported } msg
-wrapDetents =
+attrWrapDetents =
     M3e.Cem.Vocab.wrapDetents
 
 
 {-| The name that identifies the element when submitting the associated form. -}
-name : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
-name =
+attrName : String -> M3e.Cem.Attr.Attr { c | name : M3e.Value.Supported } msg
+attrName =
     M3e.Cem.Vocab.name
 
 
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
-valueFloat :
+attrValueFloat :
     Float -> M3e.Cem.Attr.Attr { c | valueFloat : M3e.Value.Supported } msg
-valueFloat =
+attrValueFloat =
     M3e.Cem.Vocab.valueFloat
 
 
 {-| A string representing the value of the switch. (default: `"on"`) -}
-value : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
-value =
+attrValue : String -> M3e.Cem.Attr.Attr { c | value : M3e.Value.Supported } msg
+attrValue =
     M3e.Cem.Vocab.value
 
 
@@ -3885,6 +3956,826 @@ onHighlight :
     -> M3e.Cem.Attr.Attr { c | onHighlight : M3e.Value.Supported } msg
 onHighlight =
     M3e.Cem.Vocab.onHighlight
+
+
+{-| The `rounded` token, re-exposed flat from `M3e.Value`. -}
+rounded : M3e.Value.Value { a | rounded : M3e.Value.Supported }
+rounded =
+    M3e.Value.rounded
+
+
+{-| The `square` token, re-exposed flat from `M3e.Value`. -}
+square : M3e.Value.Value { a | square : M3e.Value.Supported }
+square =
+    M3e.Value.square
+
+
+{-| The `standard` token, re-exposed flat from `M3e.Value`. -}
+standard : M3e.Value.Value { a | standard : M3e.Value.Supported }
+standard =
+    M3e.Value.standard
+
+
+{-| The `vibrant` token, re-exposed flat from `M3e.Value`. -}
+vibrant : M3e.Value.Value { a | vibrant : M3e.Value.Supported }
+vibrant =
+    M3e.Value.vibrant
+
+
+{-| The `auto` token, re-exposed flat from `M3e.Value`. -}
+auto : M3e.Value.Value { a | auto : M3e.Value.Supported }
+auto =
+    M3e.Value.auto
+
+
+{-| The `dark` token, re-exposed flat from `M3e.Value`. -}
+dark : M3e.Value.Value { a | dark : M3e.Value.Supported }
+dark =
+    M3e.Value.dark
+
+
+{-| The `light` token, re-exposed flat from `M3e.Value`. -}
+light : M3e.Value.Value { a | light : M3e.Value.Supported }
+light =
+    M3e.Value.light
+
+
+{-| The `content` token, re-exposed flat from `M3e.Value`. -}
+content : M3e.Value.Value { a | content : M3e.Value.Supported }
+content =
+    M3e.Value.content
+
+
+{-| The `expressive` token, re-exposed flat from `M3e.Value`. -}
+expressive : M3e.Value.Value { a | expressive : M3e.Value.Supported }
+expressive =
+    M3e.Value.expressive
+
+
+{-| The `fidelity` token, re-exposed flat from `M3e.Value`. -}
+fidelity : M3e.Value.Value { a | fidelity : M3e.Value.Supported }
+fidelity =
+    M3e.Value.fidelity
+
+
+{-| The `fruitSalad` token, re-exposed flat from `M3e.Value`. -}
+fruitSalad : M3e.Value.Value { a | fruitSalad : M3e.Value.Supported }
+fruitSalad =
+    M3e.Value.fruitSalad
+
+
+{-| The `monochrome` token, re-exposed flat from `M3e.Value`. -}
+monochrome : M3e.Value.Value { a | monochrome : M3e.Value.Supported }
+monochrome =
+    M3e.Value.monochrome
+
+
+{-| The `neutral` token, re-exposed flat from `M3e.Value`. -}
+neutral : M3e.Value.Value { a | neutral : M3e.Value.Supported }
+neutral =
+    M3e.Value.neutral
+
+
+{-| The `rainbow` token, re-exposed flat from `M3e.Value`. -}
+rainbow : M3e.Value.Value { a | rainbow : M3e.Value.Supported }
+rainbow =
+    M3e.Value.rainbow
+
+
+{-| The `tonalSpot` token, re-exposed flat from `M3e.Value`. -}
+tonalSpot : M3e.Value.Value { a | tonalSpot : M3e.Value.Supported }
+tonalSpot =
+    M3e.Value.tonalSpot
+
+
+{-| The `high` token, re-exposed flat from `M3e.Value`. -}
+high : M3e.Value.Value { a | high : M3e.Value.Supported }
+high =
+    M3e.Value.high
+
+
+{-| The `medium` token, re-exposed flat from `M3e.Value`. -}
+medium : M3e.Value.Value { a | medium : M3e.Value.Supported }
+medium =
+    M3e.Value.medium
+
+
+{-| The `true` token, re-exposed flat from `M3e.Value`. -}
+true : M3e.Value.Value { a | true : M3e.Value.Supported }
+true =
+    M3e.Value.true
+
+
+{-| The `false` token, re-exposed flat from `M3e.Value`. -}
+false : M3e.Value.Value { a | false : M3e.Value.Supported }
+false =
+    M3e.Value.false
+
+
+{-| The `after` token, re-exposed flat from `M3e.Value`. -}
+after : M3e.Value.Value { a | after : M3e.Value.Supported }
+after =
+    M3e.Value.after
+
+
+{-| The `before` token, re-exposed flat from `M3e.Value`. -}
+before : M3e.Value.Value { a | before : M3e.Value.Supported }
+before =
+    M3e.Value.before
+
+
+{-| The `primary` token, re-exposed flat from `M3e.Value`. -}
+primary : M3e.Value.Value { a | primary : M3e.Value.Supported }
+primary =
+    M3e.Value.primary
+
+
+{-| The `secondary` token, re-exposed flat from `M3e.Value`. -}
+secondary : M3e.Value.Value { a | secondary : M3e.Value.Supported }
+secondary =
+    M3e.Value.secondary
+
+
+{-| The `both` token, re-exposed flat from `M3e.Value`. -}
+both : M3e.Value.Value { a | both : M3e.Value.Supported }
+both =
+    M3e.Value.both
+
+
+{-| The `none` token, re-exposed flat from `M3e.Value`. -}
+none : M3e.Value.Value { a | none : M3e.Value.Supported }
+none =
+    M3e.Value.none
+
+
+{-| The `selected` token, re-exposed flat from `M3e.Value`. -}
+selected : M3e.Value.Value { a | selected : M3e.Value.Supported }
+selected =
+    M3e.Value.selected
+
+
+{-| The `above` token, re-exposed flat from `M3e.Value`. -}
+above : M3e.Value.Value { a | above : M3e.Value.Supported }
+above =
+    M3e.Value.above
+
+
+{-| The `below` token, re-exposed flat from `M3e.Value`. -}
+below : M3e.Value.Value { a | below : M3e.Value.Supported }
+below =
+    M3e.Value.below
+
+
+{-| The `end` token, re-exposed flat from `M3e.Value`. -}
+end : M3e.Value.Value { a | end : M3e.Value.Supported }
+end =
+    M3e.Value.end
+
+
+{-| The `horizontal` token, re-exposed flat from `M3e.Value`. -}
+horizontal : M3e.Value.Value { a | horizontal : M3e.Value.Supported }
+horizontal =
+    M3e.Value.horizontal
+
+
+{-| The `vertical` token, re-exposed flat from `M3e.Value`. -}
+vertical : M3e.Value.Value { a | vertical : M3e.Value.Supported }
+vertical =
+    M3e.Value.vertical
+
+
+{-| The `elevated` token, re-exposed flat from `M3e.Value`. -}
+elevated : M3e.Value.Value { a | elevated : M3e.Value.Supported }
+elevated =
+    M3e.Value.elevated
+
+
+{-| The `filled` token, re-exposed flat from `M3e.Value`. -}
+filled : M3e.Value.Value { a | filled : M3e.Value.Supported }
+filled =
+    M3e.Value.filled
+
+
+{-| The `outlined` token, re-exposed flat from `M3e.Value`. -}
+outlined : M3e.Value.Value { a | outlined : M3e.Value.Supported }
+outlined =
+    M3e.Value.outlined
+
+
+{-| The `tonal` token, re-exposed flat from `M3e.Value`. -}
+tonal : M3e.Value.Value { a | tonal : M3e.Value.Supported }
+tonal =
+    M3e.Value.tonal
+
+
+{-| The `extraLarge` token, re-exposed flat from `M3e.Value`. -}
+extraLarge : M3e.Value.Value { a | extraLarge : M3e.Value.Supported }
+extraLarge =
+    M3e.Value.extraLarge
+
+
+{-| The `extraSmall` token, re-exposed flat from `M3e.Value`. -}
+extraSmall : M3e.Value.Value { a | extraSmall : M3e.Value.Supported }
+extraSmall =
+    M3e.Value.extraSmall
+
+
+{-| The `large` token, re-exposed flat from `M3e.Value`. -}
+large : M3e.Value.Value { a | large : M3e.Value.Supported }
+large =
+    M3e.Value.large
+
+
+{-| The `small` token, re-exposed flat from `M3e.Value`. -}
+small : M3e.Value.Value { a | small : M3e.Value.Supported }
+small =
+    M3e.Value.small
+
+
+{-| The `pulse` token, re-exposed flat from `M3e.Value`. -}
+pulse : M3e.Value.Value { a | pulse : M3e.Value.Supported }
+pulse =
+    M3e.Value.pulse
+
+
+{-| The `wave` token, re-exposed flat from `M3e.Value`. -}
+wave : M3e.Value.Value { a | wave : M3e.Value.Supported }
+wave =
+    M3e.Value.wave
+
+
+{-| The `circular` token, re-exposed flat from `M3e.Value`. -}
+circular : M3e.Value.Value { a | circular : M3e.Value.Supported }
+circular =
+    M3e.Value.circular
+
+
+{-| The `value12SidedCookie` token, re-exposed flat from `M3e.Value`. -}
+value12SidedCookie :
+    M3e.Value.Value { a | value12SidedCookie : M3e.Value.Supported }
+value12SidedCookie =
+    M3e.Value.value12SidedCookie
+
+
+{-| The `value4LeafClover` token, re-exposed flat from `M3e.Value`. -}
+value4LeafClover :
+    M3e.Value.Value { a | value4LeafClover : M3e.Value.Supported }
+value4LeafClover =
+    M3e.Value.value4LeafClover
+
+
+{-| The `value4SidedCookie` token, re-exposed flat from `M3e.Value`. -}
+value4SidedCookie :
+    M3e.Value.Value { a | value4SidedCookie : M3e.Value.Supported }
+value4SidedCookie =
+    M3e.Value.value4SidedCookie
+
+
+{-| The `value6SidedCookie` token, re-exposed flat from `M3e.Value`. -}
+value6SidedCookie :
+    M3e.Value.Value { a | value6SidedCookie : M3e.Value.Supported }
+value6SidedCookie =
+    M3e.Value.value6SidedCookie
+
+
+{-| The `value7SidedCookie` token, re-exposed flat from `M3e.Value`. -}
+value7SidedCookie :
+    M3e.Value.Value { a | value7SidedCookie : M3e.Value.Supported }
+value7SidedCookie =
+    M3e.Value.value7SidedCookie
+
+
+{-| The `value8LeafClover` token, re-exposed flat from `M3e.Value`. -}
+value8LeafClover :
+    M3e.Value.Value { a | value8LeafClover : M3e.Value.Supported }
+value8LeafClover =
+    M3e.Value.value8LeafClover
+
+
+{-| The `value9SidedCookie` token, re-exposed flat from `M3e.Value`. -}
+value9SidedCookie :
+    M3e.Value.Value { a | value9SidedCookie : M3e.Value.Supported }
+value9SidedCookie =
+    M3e.Value.value9SidedCookie
+
+
+{-| The `arch` token, re-exposed flat from `M3e.Value`. -}
+arch : M3e.Value.Value { a | arch : M3e.Value.Supported }
+arch =
+    M3e.Value.arch
+
+
+{-| The `arrow` token, re-exposed flat from `M3e.Value`. -}
+arrow : M3e.Value.Value { a | arrow : M3e.Value.Supported }
+arrow =
+    M3e.Value.arrow
+
+
+{-| The `boom` token, re-exposed flat from `M3e.Value`. -}
+boom : M3e.Value.Value { a | boom : M3e.Value.Supported }
+boom =
+    M3e.Value.boom
+
+
+{-| The `bun` token, re-exposed flat from `M3e.Value`. -}
+bun : M3e.Value.Value { a | bun : M3e.Value.Supported }
+bun =
+    M3e.Value.bun
+
+
+{-| The `burst` token, re-exposed flat from `M3e.Value`. -}
+burst : M3e.Value.Value { a | burst : M3e.Value.Supported }
+burst =
+    M3e.Value.burst
+
+
+{-| The `circle` token, re-exposed flat from `M3e.Value`. -}
+circle : M3e.Value.Value { a | circle : M3e.Value.Supported }
+circle =
+    M3e.Value.circle
+
+
+{-| The `diamond` token, re-exposed flat from `M3e.Value`. -}
+diamond : M3e.Value.Value { a | diamond : M3e.Value.Supported }
+diamond =
+    M3e.Value.diamond
+
+
+{-| The `fan` token, re-exposed flat from `M3e.Value`. -}
+fan : M3e.Value.Value { a | fan : M3e.Value.Supported }
+fan =
+    M3e.Value.fan
+
+
+{-| The `flower` token, re-exposed flat from `M3e.Value`. -}
+flower : M3e.Value.Value { a | flower : M3e.Value.Supported }
+flower =
+    M3e.Value.flower
+
+
+{-| The `gem` token, re-exposed flat from `M3e.Value`. -}
+gem : M3e.Value.Value { a | gem : M3e.Value.Supported }
+gem =
+    M3e.Value.gem
+
+
+{-| The `ghostIsh` token, re-exposed flat from `M3e.Value`. -}
+ghostIsh : M3e.Value.Value { a | ghostIsh : M3e.Value.Supported }
+ghostIsh =
+    M3e.Value.ghostIsh
+
+
+{-| The `heart` token, re-exposed flat from `M3e.Value`. -}
+heart : M3e.Value.Value { a | heart : M3e.Value.Supported }
+heart =
+    M3e.Value.heart
+
+
+{-| The `hexagon` token, re-exposed flat from `M3e.Value`. -}
+hexagon : M3e.Value.Value { a | hexagon : M3e.Value.Supported }
+hexagon =
+    M3e.Value.hexagon
+
+
+{-| The `oval` token, re-exposed flat from `M3e.Value`. -}
+oval : M3e.Value.Value { a | oval : M3e.Value.Supported }
+oval =
+    M3e.Value.oval
+
+
+{-| The `pentagon` token, re-exposed flat from `M3e.Value`. -}
+pentagon : M3e.Value.Value { a | pentagon : M3e.Value.Supported }
+pentagon =
+    M3e.Value.pentagon
+
+
+{-| The `pill` token, re-exposed flat from `M3e.Value`. -}
+pill : M3e.Value.Value { a | pill : M3e.Value.Supported }
+pill =
+    M3e.Value.pill
+
+
+{-| The `pixelCircle` token, re-exposed flat from `M3e.Value`. -}
+pixelCircle : M3e.Value.Value { a | pixelCircle : M3e.Value.Supported }
+pixelCircle =
+    M3e.Value.pixelCircle
+
+
+{-| The `pixelTriangle` token, re-exposed flat from `M3e.Value`. -}
+pixelTriangle : M3e.Value.Value { a | pixelTriangle : M3e.Value.Supported }
+pixelTriangle =
+    M3e.Value.pixelTriangle
+
+
+{-| The `puffy` token, re-exposed flat from `M3e.Value`. -}
+puffy : M3e.Value.Value { a | puffy : M3e.Value.Supported }
+puffy =
+    M3e.Value.puffy
+
+
+{-| The `puffyDiamond` token, re-exposed flat from `M3e.Value`. -}
+puffyDiamond : M3e.Value.Value { a | puffyDiamond : M3e.Value.Supported }
+puffyDiamond =
+    M3e.Value.puffyDiamond
+
+
+{-| The `semicircle` token, re-exposed flat from `M3e.Value`. -}
+semicircle : M3e.Value.Value { a | semicircle : M3e.Value.Supported }
+semicircle =
+    M3e.Value.semicircle
+
+
+{-| The `slanted` token, re-exposed flat from `M3e.Value`. -}
+slanted : M3e.Value.Value { a | slanted : M3e.Value.Supported }
+slanted =
+    M3e.Value.slanted
+
+
+{-| The `softBoom` token, re-exposed flat from `M3e.Value`. -}
+softBoom : M3e.Value.Value { a | softBoom : M3e.Value.Supported }
+softBoom =
+    M3e.Value.softBoom
+
+
+{-| The `softBurst` token, re-exposed flat from `M3e.Value`. -}
+softBurst : M3e.Value.Value { a | softBurst : M3e.Value.Supported }
+softBurst =
+    M3e.Value.softBurst
+
+
+{-| The `sunny` token, re-exposed flat from `M3e.Value`. -}
+sunny : M3e.Value.Value { a | sunny : M3e.Value.Supported }
+sunny =
+    M3e.Value.sunny
+
+
+{-| The `triangle` token, re-exposed flat from `M3e.Value`. -}
+triangle : M3e.Value.Value { a | triangle : M3e.Value.Supported }
+triangle =
+    M3e.Value.triangle
+
+
+{-| The `verySunny` token, re-exposed flat from `M3e.Value`. -}
+verySunny : M3e.Value.Value { a | verySunny : M3e.Value.Supported }
+verySunny =
+    M3e.Value.verySunny
+
+
+{-| The `docked` token, re-exposed flat from `M3e.Value`. -}
+docked : M3e.Value.Value { a | docked : M3e.Value.Supported }
+docked =
+    M3e.Value.docked
+
+
+{-| The `fullscreen` token, re-exposed flat from `M3e.Value`. -}
+fullscreen : M3e.Value.Value { a | fullscreen : M3e.Value.Supported }
+fullscreen =
+    M3e.Value.fullscreen
+
+
+{-| The `buffer` token, re-exposed flat from `M3e.Value`. -}
+buffer : M3e.Value.Value { a | buffer : M3e.Value.Supported }
+buffer =
+    M3e.Value.buffer
+
+
+{-| The `determinate` token, re-exposed flat from `M3e.Value`. -}
+determinate : M3e.Value.Value { a | determinate : M3e.Value.Supported }
+determinate =
+    M3e.Value.determinate
+
+
+{-| The `indeterminate` token, re-exposed flat from `M3e.Value`. -}
+indeterminate : M3e.Value.Value { a | indeterminate : M3e.Value.Supported }
+indeterminate =
+    M3e.Value.indeterminate
+
+
+{-| The `query` token, re-exposed flat from `M3e.Value`. -}
+query : M3e.Value.Value { a | query : M3e.Value.Supported }
+query =
+    M3e.Value.query
+
+
+{-| The `flat` token, re-exposed flat from `M3e.Value`. -}
+flat : M3e.Value.Value { a | flat : M3e.Value.Supported }
+flat =
+    M3e.Value.flat
+
+
+{-| The `wavy` token, re-exposed flat from `M3e.Value`. -}
+wavy : M3e.Value.Value { a | wavy : M3e.Value.Supported }
+wavy =
+    M3e.Value.wavy
+
+
+{-| The `all` token, re-exposed flat from `M3e.Value`. -}
+all : M3e.Value.Value { a | all : M3e.Value.Supported }
+all =
+    M3e.Value.all
+
+
+{-| The `compact` token, re-exposed flat from `M3e.Value`. -}
+compact : M3e.Value.Value { a | compact : M3e.Value.Supported }
+compact =
+    M3e.Value.compact
+
+
+{-| The `expanded` token, re-exposed flat from `M3e.Value`. -}
+expanded : M3e.Value.Value { a | expanded : M3e.Value.Supported }
+expanded =
+    M3e.Value.expanded
+
+
+{-| The `contained` token, re-exposed flat from `M3e.Value`. -}
+contained : M3e.Value.Value { a | contained : M3e.Value.Supported }
+contained =
+    M3e.Value.contained
+
+
+{-| The `uncontained` token, re-exposed flat from `M3e.Value`. -}
+uncontained : M3e.Value.Value { a | uncontained : M3e.Value.Supported }
+uncontained =
+    M3e.Value.uncontained
+
+
+{-| The `segmented` token, re-exposed flat from `M3e.Value`. -}
+segmented : M3e.Value.Value { a | segmented : M3e.Value.Supported }
+segmented =
+    M3e.Value.segmented
+
+
+{-| The `low` token, re-exposed flat from `M3e.Value`. -}
+low : M3e.Value.Value { a | low : M3e.Value.Supported }
+low =
+    M3e.Value.low
+
+
+{-| The `sharp` token, re-exposed flat from `M3e.Value`. -}
+sharp : M3e.Value.Value { a | sharp : M3e.Value.Supported }
+sharp =
+    M3e.Value.sharp
+
+
+{-| The `display` token, re-exposed flat from `M3e.Value`. -}
+display : M3e.Value.Value { a | display : M3e.Value.Supported }
+display =
+    M3e.Value.display
+
+
+{-| The `headline` token, re-exposed flat from `M3e.Value`. -}
+headline : M3e.Value.Value { a | headline : M3e.Value.Supported }
+headline =
+    M3e.Value.headline
+
+
+{-| The `label` token, re-exposed flat from `M3e.Value`. -}
+label : M3e.Value.Value { a | label : M3e.Value.Supported }
+label =
+    M3e.Value.label
+
+
+{-| The `title` token, re-exposed flat from `M3e.Value`. -}
+title : M3e.Value.Value { a | title : M3e.Value.Supported }
+title =
+    M3e.Value.title
+
+
+{-| The `tertiary` token, re-exposed flat from `M3e.Value`. -}
+tertiary : M3e.Value.Value { a | tertiary : M3e.Value.Supported }
+tertiary =
+    M3e.Value.tertiary
+
+
+{-| The `reset` token, re-exposed flat from `M3e.Value`. -}
+reset : M3e.Value.Value { a | reset : M3e.Value.Supported }
+reset =
+    M3e.Value.reset
+
+
+{-| The `submit` token, re-exposed flat from `M3e.Value`. -}
+submit : M3e.Value.Value { a | submit : M3e.Value.Supported }
+submit =
+    M3e.Value.submit
+
+
+{-| The `primaryContainer` token, re-exposed flat from `M3e.Value`. -}
+primaryContainer :
+    M3e.Value.Value { a | primaryContainer : M3e.Value.Supported }
+primaryContainer =
+    M3e.Value.primaryContainer
+
+
+{-| The `secondaryContainer` token, re-exposed flat from `M3e.Value`. -}
+secondaryContainer :
+    M3e.Value.Value { a | secondaryContainer : M3e.Value.Supported }
+secondaryContainer =
+    M3e.Value.secondaryContainer
+
+
+{-| The `surface` token, re-exposed flat from `M3e.Value`. -}
+surface : M3e.Value.Value { a | surface : M3e.Value.Supported }
+surface =
+    M3e.Value.surface
+
+
+{-| The `tertiaryContainer` token, re-exposed flat from `M3e.Value`. -}
+tertiaryContainer :
+    M3e.Value.Value { a | tertiaryContainer : M3e.Value.Supported }
+tertiaryContainer =
+    M3e.Value.tertiaryContainer
+
+
+{-| The `over` token, re-exposed flat from `M3e.Value`. -}
+over : M3e.Value.Value { a | over : M3e.Value.Supported }
+over =
+    M3e.Value.over
+
+
+{-| The `push` token, re-exposed flat from `M3e.Value`. -}
+push : M3e.Value.Value { a | push : M3e.Value.Supported }
+push =
+    M3e.Value.push
+
+
+{-| The `side` token, re-exposed flat from `M3e.Value`. -}
+side : M3e.Value.Value { a | side : M3e.Value.Supported }
+side =
+    M3e.Value.side
+
+
+{-| The `modal` token, re-exposed flat from `M3e.Value`. -}
+modal : M3e.Value.Value { a | modal : M3e.Value.Supported }
+modal =
+    M3e.Value.modal
+
+
+{-| The `month` token, re-exposed flat from `M3e.Value`. -}
+month : M3e.Value.Value { a | month : M3e.Value.Supported }
+month =
+    M3e.Value.month
+
+
+{-| The `multiYear` token, re-exposed flat from `M3e.Value`. -}
+multiYear : M3e.Value.Value { a | multiYear : M3e.Value.Supported }
+multiYear =
+    M3e.Value.multiYear
+
+
+{-| The `year` token, re-exposed flat from `M3e.Value`. -}
+year : M3e.Value.Value { a | year : M3e.Value.Supported }
+year =
+    M3e.Value.year
+
+
+{-| The `off` token, re-exposed flat from `M3e.Value`. -}
+off : M3e.Value.Value { a | off : M3e.Value.Supported }
+off =
+    M3e.Value.off
+
+
+{-| The `on` token, re-exposed flat from `M3e.Value`. -}
+on : M3e.Value.Value { a | on : M3e.Value.Supported }
+on =
+    M3e.Value.on
+
+
+{-| The `aboveAfter` token, re-exposed flat from `M3e.Value`. -}
+aboveAfter : M3e.Value.Value { a | aboveAfter : M3e.Value.Supported }
+aboveAfter =
+    M3e.Value.aboveAfter
+
+
+{-| The `aboveBefore` token, re-exposed flat from `M3e.Value`. -}
+aboveBefore : M3e.Value.Value { a | aboveBefore : M3e.Value.Supported }
+aboveBefore =
+    M3e.Value.aboveBefore
+
+
+{-| The `belowAfter` token, re-exposed flat from `M3e.Value`. -}
+belowAfter : M3e.Value.Value { a | belowAfter : M3e.Value.Supported }
+belowAfter =
+    M3e.Value.belowAfter
+
+
+{-| The `belowBefore` token, re-exposed flat from `M3e.Value`. -}
+belowBefore : M3e.Value.Value { a | belowBefore : M3e.Value.Supported }
+belowBefore =
+    M3e.Value.belowBefore
+
+
+{-| The `connected` token, re-exposed flat from `M3e.Value`. -}
+connected : M3e.Value.Value { a | connected : M3e.Value.Supported }
+connected =
+    M3e.Value.connected
+
+
+{-| The `default` token, re-exposed flat from `M3e.Value`. -}
+default : M3e.Value.Value { a | default : M3e.Value.Supported }
+default =
+    M3e.Value.default
+
+
+{-| The `narrow` token, re-exposed flat from `M3e.Value`. -}
+narrow : M3e.Value.Value { a | narrow : M3e.Value.Supported }
+narrow =
+    M3e.Value.narrow
+
+
+{-| The `wide` token, re-exposed flat from `M3e.Value`. -}
+wide : M3e.Value.Value { a | wide : M3e.Value.Supported }
+wide =
+    M3e.Value.wide
+
+
+{-| The `text` token, re-exposed flat from `M3e.Value`. -}
+text : M3e.Value.Value { a | text : M3e.Value.Supported }
+text =
+    M3e.Value.text
+
+
+{-| The `date` token, re-exposed flat from `M3e.Value`. -}
+date : M3e.Value.Value { a | date : M3e.Value.Supported }
+date =
+    M3e.Value.date
+
+
+{-| The `location` token, re-exposed flat from `M3e.Value`. -}
+location : M3e.Value.Value { a | location : M3e.Value.Supported }
+location =
+    M3e.Value.location
+
+
+{-| The `page` token, re-exposed flat from `M3e.Value`. -}
+page : M3e.Value.Value { a | page : M3e.Value.Supported }
+page =
+    M3e.Value.page
+
+
+{-| The `time` token, re-exposed flat from `M3e.Value`. -}
+time : M3e.Value.Value { a | time : M3e.Value.Supported }
+time =
+    M3e.Value.time
+
+
+{-| The `contains` token, re-exposed flat from `M3e.Value`. -}
+contains : M3e.Value.Value { a | contains : M3e.Value.Supported }
+contains =
+    M3e.Value.contains
+
+
+{-| The `endsWith` token, re-exposed flat from `M3e.Value`. -}
+endsWith : M3e.Value.Value { a | endsWith : M3e.Value.Supported }
+endsWith =
+    M3e.Value.endsWith
+
+
+{-| The `startsWith` token, re-exposed flat from `M3e.Value`. -}
+startsWith : M3e.Value.Value { a | startsWith : M3e.Value.Supported }
+startsWith =
+    M3e.Value.startsWith
+
+
+{-| The `always` token, re-exposed flat from `M3e.Value`. -}
+always : M3e.Value.Value { a | always : M3e.Value.Supported }
+always =
+    M3e.Value.always
+
+
+{-| The `never` token, re-exposed flat from `M3e.Value`. -}
+never : M3e.Value.Value { a | never : M3e.Value.Supported }
+never =
+    M3e.Value.never
+
+
+{-| The `loading` token, re-exposed flat from `M3e.Value`. -}
+loading : M3e.Value.Value { a | loading : M3e.Value.Supported }
+loading =
+    M3e.Value.loading
+
+
+{-| The `noData` token, re-exposed flat from `M3e.Value`. -}
+noData : M3e.Value.Value { a | noData : M3e.Value.Supported }
+noData =
+    M3e.Value.noData
+
+
+{-| The `hide` token, re-exposed flat from `M3e.Value`. -}
+hide : M3e.Value.Value { a | hide : M3e.Value.Supported }
+hide =
+    M3e.Value.hide
+
+
+{-| The `reposition` token, re-exposed flat from `M3e.Value`. -}
+reposition : M3e.Value.Value { a | reposition : M3e.Value.Supported }
+reposition =
+    M3e.Value.reposition
+
+
+{-| The `aboveBelow` token, re-exposed flat from `M3e.Value`. -}
+aboveBelow : M3e.Value.Value { a | aboveBelow : M3e.Value.Supported }
+aboveBelow =
+    M3e.Value.aboveBelow
 
 
 {-| Place content in the `(default)` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotDefault`. -}

@@ -115,11 +115,12 @@ function writeConfig() {
 import M3e.Review.Facts
 import Review.Rule exposing (Rule)
 import PreferBarrel
+import Set
 
 
 config : List Rule
 config =
-    [ PreferBarrel.rule M3e.Review.Facts.facts ]
+    [ PreferBarrel.ruleWith (Set.fromList M3e.Review.Facts.reExposedValueTokens) M3e.Review.Facts.facts ]
 `);
 }
 

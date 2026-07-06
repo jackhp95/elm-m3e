@@ -18,6 +18,52 @@ A container for form controls that applies Material Design styling and behavior.
 - `hint`: Renders hint text in the fields's subscript, when the control is valid.
 - `error`: Renders error text in the fields's subscript, when the control is invalid.
 
+<!-- elm-cem:docmeta category=Text inputs -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Variants" -->
+```elm
+M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Outlined" ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Float label" -->
+```elm
+M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Always float label" ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Hint labels" -->
+```elm
+M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.never ] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Field w/ hint" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Error messages" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "fld5" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.child "fld5" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Error messages (2)" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.error (Native.span [] [ Kit.text "Custom error message" ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Hiding the required marker" -->
+```elm
+M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Prefix and suffix" -->
+```elm
+M3e.FormField.view [] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Amount" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text ".00" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "clear" ] []) ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "fld" (Native.node Html.input [] []) ]
+```
+
 @docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
 @docs prefix, prefixText, label, suffix, suffixText, hint
 @docs error, children

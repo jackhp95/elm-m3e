@@ -14,6 +14,20 @@ A non-visual element used to automatically resize a `textarea` to fit its conten
 
 ### Examples
 
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "field" (Native.node Html.label [] [ Kit.text "Textarea Autosize" ]), M3e.FormField.child "field" (Native.node Html.textarea [] [ Kit.text "<!-- Content omitted for brevity -->" ]) ]
+    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field" ] []
+    ]
+```
+
+<!-- elm-cem:example title="Min and max rows" -->
+```elm
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "field" (Native.node Html.label [] [ Kit.text "Textarea Autosize" ]), M3e.FormField.child "field" (Native.node Html.textarea [] [ Kit.text "<!-- Content omitted for brevity -->" ]) ]
+    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field", M3e.TextareaAutosize.maxRows 5 ] []
+    ]
+```
+
 <!-- elm-cem:example title="Disabling" -->
 ```elm
 M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field", M3e.TextareaAutosize.disabled True ] []

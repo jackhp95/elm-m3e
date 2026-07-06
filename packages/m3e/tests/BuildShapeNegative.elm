@@ -75,7 +75,7 @@ wrongKindChild =
 proving the type suffix is a real safety fence, not cosmetic.
 -}
 valueFloatOnStringComponent =
-    M3e.radio [ M3e.valueFloat 0.5 ] []
+    M3e.radio [ M3e.attrValueFloat 0.5 ] []
 
 
 
@@ -86,7 +86,7 @@ valueFloatOnStringComponent =
 component (m3e-slider-thumb, whose view row carries `valueFloat`, not `value`).
 -}
 valueStringOnFloatComponent =
-    M3e.sliderThumb [ M3e.value "on" ] []
+    M3e.sliderThumb [ M3e.attrValue "on" ] []
 
 
 
