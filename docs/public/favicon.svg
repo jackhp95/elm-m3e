@@ -6,10 +6,12 @@
     </linearGradient>
   </defs>
   <rect x="1" y="1" width="46" height="46" rx="13" fill="url(#g)"/>
-  <!-- Expressive triad: three rounded bars of rising height -->
-  <g fill="#FFFFFF">
-    <rect x="12" y="26" width="6" height="12" rx="3"/>
-    <rect x="21" y="18" width="6" height="20" rx="3"/>
-    <rect x="30" y="10" width="6" height="28" rx="3"/>
+  <!-- Material "palette" glyph: white body with four paint dots -->
+  <g transform="translate(10 10) scale(1.17)">
+    <path fill="#FFFFFF" d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10c1.38 0 2.5-1.12 2.5-2.5 0-.61-.23-1.16-.64-1.67-.08-.1-.13-.21-.13-.33 0-.28.22-.5.5-.5H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/>
+    <circle cx="6.5" cy="12.5" r="1.6" fill="#E5484D"/>
+    <circle cx="9.7" cy="7.5" r="1.6" fill="#F5A623"/>
+    <circle cx="14.3" cy="7.5" r="1.6" fill="#30A46C"/>
+    <circle cx="17.5" cy="12.5" r="1.6" fill="#4590E6"/>
   </g>
 </svg>

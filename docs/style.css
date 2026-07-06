@@ -62,7 +62,7 @@
     padding: 0;
     margin: 0;
     overflow: visible;
-    font-family: inherit;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   }
 
   .elmsh1 {

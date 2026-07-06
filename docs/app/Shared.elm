@@ -321,6 +321,11 @@ view _ page model toMsg pageView =
                 , Theme.scheme (schemeToken model.scheme)
                 , Theme.contrast (contrastToken model.contrast)
                 , Theme.density model.density
+
+                -- density's generated setter is a JS *property*; the component's
+                -- styling keys off the reflected *attribute* (as scheme/contrast do),
+                -- so set it explicitly too or the control has no visible effect.
+                , Seam.asAttribute (attribute "density" (String.fromFloat model.density))
                 ]
                 (List.map Theme.child children)
                 |> toHtml
@@ -416,7 +421,7 @@ brandMark =
             , Attr.alt "elm-m3e"
             , Attr.width 28
             , Attr.height 28
-            , class "ms-2 me-1 rounded-md-corner-small"
+            , class "ms-2 me-1 hidden rounded-md-corner-small md:inline-block"
             ]
             []
         )
@@ -494,7 +499,19 @@ settingsTriggerElement model =
             [ Aria.label "Theme settings" ]
             []
         , if model.settingsOpen then
-            Seam.fromHtml (settingsPanel model)
+            Seam.fromHtml
+                (Html.div []
+                    -- transparent full-viewport backdrop under the panel: a click
+                    -- anywhere outside the panel dismisses the settings.
+                    [ Html.div
+                        [ class "fixed inset-0 z-30 cursor-default"
+                        , Html.Events.onClick ToggleSettings
+                        , attribute "aria-hidden" "true"
+                        ]
+                        []
+                    , settingsPanel model
+                    ]
+                )
 
           else
             Seam.fromHtml (Html.text "")

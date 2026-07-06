@@ -343,7 +343,7 @@ codeFor layer ex =
             Doc.code_ Doc.Elm ex.bottom
 
         Raw ->
-            Doc.code_ Doc.NoLang ex.html
+            Doc.code_ Doc.Xml ex.html
 
 
 {-| Group indexed examples by `.section`, preserving first-seen order of both

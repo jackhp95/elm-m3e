@@ -26,8 +26,8 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
-import M3e.Aria as Aria
 import M3e.AppBar as AppBar
+import M3e.Aria as Aria
 import M3e.Badge as Badge
 import M3e.Card as Card
 import M3e.Cem.Attr exposing (Attr)
@@ -237,7 +237,7 @@ navRail model =
 navBar : Model -> Element { s | navBar : Supported } (PagesMsg Msg)
 navBar model =
     NavBar.view
-        [ Layout.class "shrink-0 md:hidden" ]
+        [ Layout.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
         (NavBar.children (List.map (barItem model.category) destinations))
 
 
@@ -373,7 +373,7 @@ media product =
 -}
 checkoutFab : Element { s | html : Supported } msg
 checkoutFab =
-    Layout.div "pointer-events-none sticky bottom-4 flex justify-end pr-2 md:bottom-6"
+    Layout.div "pointer-events-none sticky bottom-20 flex justify-end pr-2 md:bottom-6"
         [ Layout.span "pointer-events-auto"
             [ Fab.view
                 { content = Icon.view [ Icon.name "shopping_cart_checkout" ] []
