@@ -1,6 +1,6 @@
 module M3e.Element.Internal exposing
     ( Element(..)
-    , fromNode, toNode, withSlot, text, map
+    , fromNode, toNode, withSlot, map
     )
 
 {-| The **unfenced** interior of [`M3e.Element`](M3e-Element): the opaque
@@ -13,13 +13,12 @@ so raw content cannot be minted into an arbitrary `supported` row outside the
 seam. See ADR 0014 §2.
 
 @docs Element
-@docs fromNode, toNode, withSlot, text, map
+@docs fromNode, toNode, withSlot, map
 
 -}
 
 import M3e.Cem.Attr.Internal as Attr
 import M3e.Node as Node exposing (Node)
-import M3e.Value exposing (Supported)
 
 
 {-| The wrapper. `El node` carries the underlying lazy `Node`; the `supported`
@@ -72,10 +71,3 @@ toNode (El n) =
 withSlot : String -> Element supported msg -> Element supported msg
 withSlot name (El node) =
     El (Node.addAttr (Attr.forget (Attr.slot name)) node)
-
-
-{-| The default "element"-kind content constructor (lazy Text node).
--}
-text : String -> Element { s | element : Supported } msg
-text s =
-    El (Node.text s)

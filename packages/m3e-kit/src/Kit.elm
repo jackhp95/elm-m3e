@@ -17,6 +17,12 @@ named primitives instead of passing raw Tailwind through the seam itself.
 
 ## Text producers
 
+`text` and `link` are the **semantic seams** (ADR 0014 §1): no longer privileged
+bespoke producers, they are thin, feature-facing re-exports of the `Seam` couplers
+(`Seam.text`/`Seam.link`), which are in turn built on the generator-emitted
+`M3e.Seam` stampers. Feature code calls these named producers; the raw crossing
+stays fenced in `Seam`. `textLink` is a _styled_ inline link — a visual-kit concern.
+
 @docs text, link, textLink
 
 
@@ -40,6 +46,7 @@ import Html.Attributes
 import M3e.Cem.Attr as Attr exposing (Attr)
 import M3e.Element as Element exposing (Element)
 import M3e.Node as Node
+import M3e.Seam exposing (Link, Text)
 import M3e.Value as Value exposing (Supported, Value)
 import Native
 import Seam
@@ -49,23 +56,20 @@ import Seam
 -- TEXT PRODUCERS --------------------------------------------------------------
 
 
-{-| Slotted text — needs a wrapper, so it carries the `text` kind.
+{-| Slotted text (the `text` seam) — a feature-facing re-export of `Seam.text`,
+built on the generated `M3e.Seam` stamper so it carries the `text` kind.
 -}
-text : String -> Element { k | text : Supported } msg
-text s =
-    Seam.asElement (Node.text s)
+text : String -> Text s msg
+text =
+    Seam.text
 
 
-{-| A plain navigation anchor — the library doesn't opinionate links.
+{-| A plain navigation anchor (the `link` seam) — a feature-facing re-export of
+`Seam.link`. The library doesn't opinionate links; swap the coupler in `Seam`.
 -}
-link : String -> List (Element s msg) -> Element { k | link : Supported } msg
-link href kids =
-    Seam.asElement
-        (Node.fromComponent
-            (\a c -> Html.a (Html.Attributes.href href :: List.map Attr.toAttribute a) c)
-            []
-            (List.map Element.toNode kids)
-        )
+link : String -> List (Element s msg) -> Link s msg
+link =
+    Seam.link
 
 
 {-| An inline text link (`hover:underline`, tinted by the given color roles) —
