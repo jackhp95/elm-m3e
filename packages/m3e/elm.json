@@ -592,6 +592,8 @@
         "M3e.RichTooltipAction",
         "M3e.Ripple",
         "M3e.ScrollContainer",
+        "M3e.Seam",
+        "M3e.Seam.Internal",
         "M3e.SearchBar",
         "M3e.SearchView",
         "M3e.SegmentedButton",

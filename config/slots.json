@@ -2226,5 +2226,10 @@
         "required": false
       }
     }
+  },
+  "_seams": {
+    "text": { "kind": "text", "wrap": "span" },
+    "link": { "kind": "link", "tag": "a" },
+    "label": { "kind": "label", "tag": "label" }
   }
 }

@@ -1,4 +1,4 @@
-module Seam exposing (asAttribute, asElement, forget, fromHtml, stripPhantom)
+module Seam exposing (asAttribute, asElement, forget, fromHtml, label, link, stripPhantom, text)
 
 {-| The **single** sanctioned userland boundary (ADR 0014 §2, issue #81).
 
@@ -21,14 +21,24 @@ modules are collapsed into this one boundary. The crossings split by what they d
     row to another (the loud, greppable "the design system is wrong here"
     break-glass — a row assertion, not a data transformation).
 
+The **semantic seams** (`text`/`link`/`label`, ADR 0014 §1) are also crafted here:
+the generator emits the typed hole (contract types in `M3e.Seam`, stampers in
+`M3e.Seam.Internal`) and this module fills it with the team's concrete producers.
+This is where `Kit.text`/`Kit.link` used to live as privileged producers; now they
+are ordinary couplers built on the generated stampers, so a team can give its own
+`text` (e.g. an i18n web component) a precise, slot-safe type.
+
 See docs/adr/0014-seam-boundary-and-typed-userland.md and ADOPTION\_AND\_SLOTS.md §8.
 
 -}
 
 import Html exposing (Html)
+import Html.Attributes
 import M3e.Cem.Attr.Internal as Attr exposing (Attr)
 import M3e.Element.Internal as Element exposing (Element)
 import M3e.Node.Internal as Node exposing (Node)
+import M3e.Seam exposing (Label, Link, Text)
+import M3e.Seam.Internal as Stamp
 
 
 {-| Lift a raw `Html` leaf into an `Element`, stamping whatever phantom row the
@@ -71,3 +81,53 @@ stripPhantom =
 forget : Attr a msg -> Attr b msg
 forget =
     Attr.forget
+
+
+
+-- SEMANTIC SEAMS (ADR 0014 §1) ------------------------------------------------
+
+
+{-| The `text` seam: slotted text content. A bare text leaf that
+[`M3e.Node.addAttr`](M3e-Node) span-wraps automatically when placed in a named
+slot (so it can carry `slot=`). Built on the generated `M3e.Seam` stamper, so it
+carries the `text` kind and type-checks in any `text` slot.
+
+Swap this body for the team's own text (e.g. an i18n-key web component) without
+touching a single call site — that is the point of the seam.
+
+-}
+text : String -> Text s msg
+text s =
+    Stamp.text (Element.fromNode (Node.text s))
+
+
+{-| The `link` seam: a plain navigation anchor (`<a href>`) wrapping the given
+content. The library doesn't opinionate links; a team styles or swaps this here.
+Carries the `link` kind via the generated stamper.
+-}
+link : String -> List (Element s msg) -> Link s msg
+link href kids =
+    Stamp.link
+        (Element.fromNode
+            (Node.fromComponent
+                (\a c -> Html.a (Html.Attributes.href href :: List.map Attr.toAttribute a) c)
+                []
+                (List.map Element.toNode kids)
+            )
+        )
+
+
+{-| The `label` seam: a native `<label>` wrapping the given content. Carries the
+`label` kind via the generated stamper — the coupler a `for=id`-wired field
+(ADR 0014 §3, #114) composes with.
+-}
+label : List (Element s msg) -> Label s msg
+label kids =
+    Stamp.label
+        (Element.fromNode
+            (Node.fromComponent
+                (\a c -> Html.label (List.map Attr.toAttribute a) c)
+                []
+                (List.map Element.toNode kids)
+            )
+        )
