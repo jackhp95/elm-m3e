@@ -18,7 +18,7 @@ codegen) plus a team's designated `Seam`/escape modules:
 
     config =
         [ NoInternalImportOutsideAllowed.rule
-            [ "M3e", "Seam", "EscapeHatch", "Native", "Kit", "Layout" ]
+            [ "M3e", "Seam", "Native", "Kit", "Layout" ]
         ]
 
 An allow-list entry is a dotted module-name prefix: `"M3e"` matches `M3e`,
