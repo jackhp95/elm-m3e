@@ -84,22 +84,22 @@ collapses to `Html` exactly once, at the application root, via
 
 ```elm
 import Html exposing (Html)
-import Kit
 import M3e.Element
 import M3e.Icon
 import M3e.Node
 import M3e.TreeItem
 
 
+-- `text` is the one-line userland seam every app defines once — see the Quickstart.
 tree : Html msg
 tree =
     M3e.TreeItem.view
-        [ M3e.TreeItem.open True ]                          -- attributes (phantom capability row)
-        [ M3e.TreeItem.label (Kit.text "Getting Started")   -- content (phantom slot row)
+        [ M3e.TreeItem.open True ]                       -- attributes (phantom capability row)
+        [ M3e.TreeItem.label (text "Getting Started")    -- content (phantom slot row)
         , M3e.TreeItem.icon
             (M3e.Icon.view [ M3e.Icon.name "folder" ] [])
         , M3e.TreeItem.child
-            (M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Child") ])
+            (M3e.TreeItem.view [] [ M3e.TreeItem.label (text "Child") ])
         ]
         -- one conversion at the application root turns the typed IR into Html:
         |> M3e.Element.toNode
@@ -111,16 +111,16 @@ record, so the compiler enforces its presence exactly once:
 
 ```elm
 M3e.Record.TreeItem.view
-    { label = Kit.text "Getting Started" }
+    { label = text "Getting Started" }
     [ M3e.Record.TreeItem.open True ]
     [ M3e.Record.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "folder" ] []) ]
 ```
 
-> **`Kit.text` is userland.** `text`/`link`/`label` producers are config-declared
-> semantic *seams*, not part of the published package — the `Kit` module above
-> lives in `packages/m3e-kit/` (copy-paste, not a dependency). A consuming app
-> supplies its own via a small `Seam` adapter; the [Quickstart](#quickstart)
-> below shows a minimal one that needs only the published package.
+> **`text` is a userland seam.** `text`/`link`/`label` producers are config-declared
+> semantic *seams* — the published package ships the seam *mechanism*, not text
+> producers. A consuming app defines a one-line `text` (the [Quickstart](#quickstart)
+> below shows one that needs only the published package) or copies `Kit.text` from
+> `packages/m3e-kit/` (copy-paste, not a dependency).
 
 - **Type-level (the MISI that matters):** kind + capability validity via extensible
   phantom rows. A wrong attribute or a wrong-kind slot child is a **compile error**.
