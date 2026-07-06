@@ -412,22 +412,15 @@ appShellBar model =
         ]
 
 
-{-| The brand mark in the app bar: the same expressive-triad SVG served as the
-favicon, so the tab icon and the header logo match. Same-origin asset, no external
-fetch.
+{-| The brand mark in the app bar: the real Material Symbols "palette" glyph,
+rendered by the m3e `Icon` component from the self-hosted font. Hidden on mobile
+(the drawer takes over there), shown from `md` up.
 -}
 brandMark : Element { html : Supported } Msg
 brandMark =
-    Seam.fromHtml
-        (Html.img
-            [ Attr.src "/favicon.svg"
-            , Attr.alt "elm-m3e"
-            , Attr.width 28
-            , Attr.height 28
-            , class "ms-2 me-1 hidden rounded-md-corner-small md:inline-block"
-            ]
-            []
-        )
+    Native.span
+        [ Seam.asAttribute (class "ms-2 me-1 hidden md:inline-flex") ]
+        [ Icon.view [ Icon.name "palette" ] [] ]
 
 
 {-| The mobile hamburger. Wrapped in a `span.md:hidden` so it's invisible on wider
