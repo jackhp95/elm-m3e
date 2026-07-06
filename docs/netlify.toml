@@ -1,5 +1,8 @@
+# Fully static site: every route is RouteBuilder.single / preRender (no serverRender),
+# so the elm-pages Netlify functions (render/server-render) are unused. We do NOT
+# declare `functions` here — Netlify's default functions dir is netlify/functions, so
+# it ignores the elm-pages `functions/` output and skips the (heavy, failing) bundle.
 [build]
-  functions = "functions/"
   publish = "dist/"
   command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && corepack enable && pnpm install --frozen-lockfile && pnpm run build"
 
@@ -11,6 +14,3 @@
   targetPort = 1234
   autoLaunch = true
   framework = "#custom"
-
-[functions]
-  node_bundler = "esbuild"
