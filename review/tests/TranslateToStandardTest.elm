@@ -118,7 +118,7 @@ view =
     M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child c ]
 """
                         ]
-        , test "Html → Standard: a child with an unknown slot name escapes via M3e.Content.slot (UnknownSlotName)" <|
+        , test "Html → Standard: a child with an unknown slot name escapes via Seam.slot (UnknownSlotName)" <|
             \() ->
                 """module A exposing (view)
 
@@ -146,11 +146,10 @@ import M3e.Cem.Html.Button
 import Html
 import Html.Attributes
 import M3e.Button
-import M3e.Content
 import Seam
 
 view =
-    M3e.Button.view [] [ M3e.Content.slot "bogus" (Seam.fromHtml (Html.div [ Html.Attributes.attribute "slot" "bogus" ] [])) ]
+    M3e.Button.view [] [ Seam.slot "bogus" (Seam.fromHtml (Html.div [ Html.Attributes.attribute "slot" "bogus" ] [])) ]
 """
                         ]
         , test "Record → Standard: a known M3e.Action.<ctor> reverse-maps to the attr-style setter, not the Seam fallback (#145)" <|

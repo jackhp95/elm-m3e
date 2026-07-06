@@ -1,4 +1,4 @@
-module Seam exposing (asAttribute, asElement, forget, fromHtml, label, link, stripPhantom, text)
+module Seam exposing (asAttribute, asElement, forget, fromHtml, label, link, slot, stripPhantom, text)
 
 {-| The **single** sanctioned userland boundary (ADR 0014 §2, issue #81).
 
@@ -35,6 +35,7 @@ See docs/adr/0014-seam-boundary-and-typed-userland.md and ADOPTION\_AND\_SLOTS.m
 import Html exposing (Html)
 import Html.Attributes
 import M3e.Cem.Attr.Internal as Attr exposing (Attr)
+import M3e.Content.Internal as Content exposing (Content)
 import M3e.Element.Internal as Element exposing (Element)
 import M3e.Node.Internal as Node exposing (Node)
 import M3e.Seam exposing (Label, Link, Text)
@@ -64,6 +65,23 @@ capability row, so it type-checks in any component's attribute list.
 asAttribute : Html.Attribute msg -> Attr capability msg
 asAttribute a =
     Attr.attribute (\_ -> a) ()
+
+
+{-| Stamp a slot name onto an `Element`, producing slot-tagged `Content` at
+whatever `slots` row the call site needs. Built on `M3e.Content.Internal.slot`
+(the interior stamper the public `M3e.Content` withholds), so slot-name stamping
+is a governed Seam crossing rather than a raw `.Internal` reach. The default
+(unnamed) slot uses `""` and adds no `slot=` attribute.
+
+This is the coupler the D6 translator's unknown-slot-name residue emits: an
+element bound to a literal slot name the design system doesn't recognise crosses
+back through `Seam` (loud, greppable, `NoSeamOutsideAllowedModules`-flagged)
+instead of reaching for `M3e.Content.Internal` directly.
+
+-}
+slot : String -> Element any msg -> Content slots msg
+slot =
+    Content.slot
 
 
 {-| Coerce an `Element`'s phantom row from one shape to another (formerly

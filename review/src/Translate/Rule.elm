@@ -203,7 +203,6 @@ candidateModules fact =
     , "M3e.Cem." ++ comp
     , "M3e.Cem.Html." ++ comp
     , "Seam"
-    , "M3e.Content"
     , "M3e.Action"
     , "M3e.Element"
     , "Html.Attributes"
