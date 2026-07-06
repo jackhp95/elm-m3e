@@ -37,10 +37,13 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 // docs/scripts/examples-gen/examples-to-elm.mjs -> elm-m3e root is three up.
 const REPO_ROOT = resolve(HERE, "..", "..", "..");
 
-// The mined example corpus lives in the nested m3e-docs repo. Overridable so the
-// converter still resolves if m3e-docs is relocated; default <root>/m3e-docs.
-const M3E_DOCS_DIR = process.env.M3E_DOCS_DIR || resolve(REPO_ROOT, "m3e-docs");
-const EXAMPLES_PATH = resolve(M3E_DOCS_DIR, "data", "examples.json");
+// The example corpus is the VERBATIM matraic doc-site source, extracted by
+// extract-matraic-examples.mjs into a committed file (so clean checkouts need no
+// upstream clone). Refresh it with: npm run build:examples-source. Overridable
+// via M3E_EXAMPLES_PATH for experiments.
+const EXAMPLES_PATH =
+  process.env.M3E_EXAMPLES_PATH ||
+  resolve(REPO_ROOT, "config", "examples.matraic.json");
 const CATEGORIES_PATH = resolve(REPO_ROOT, "config", "categories.json");
 const OUT_GENERATED = resolve(REPO_ROOT, "config", "examples.generated.json");
 const OUT_RICH = resolve(REPO_ROOT, "config", "examples.rich.json");
@@ -110,10 +113,9 @@ function toElmList(pieces) {
 }
 
 function main() {
-  // The mined corpus (m3e-docs) is an untracked working input; the generated
-  // config/examples.rich.json IS committed. On a clean checkout without the
-  // corpus, keep the committed rich/generated files rather than failing the
-  // build — regeneration is a corpus-holder's step, not a fresh-clone step.
+  // The matraic corpus (config/examples.matraic.json) is committed alongside the
+  // generated config/examples.rich.json. If it is somehow absent, keep the
+  // committed rich/generated files rather than failing the build.
   if (!existsSync(EXAMPLES_PATH)) {
     console.warn(
       `build:examples-config: corpus not found at ${EXAMPLES_PATH}; ` +

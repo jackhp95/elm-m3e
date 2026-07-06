@@ -1,32 +1,96 @@
-BottomSheet :: Modal share sheet with action list :: compile: The 1st argument to `child` is not what I expect:
-BottomSheet :: Non-modal filter sheet opening to a detent :: compile: The 1st argument to `child` is not what I expect:
-Datepicker :: Booking range picker with constraints :: compile: I cannot find a `M3e.Datepicker.child` variable:
-Datepicker :: Modal single-date picker :: compile: I cannot find a `M3e.Datepicker.child` variable:
-Dialog :: Alert dialog with close icon :: compile: The 1st argument to `child` is not what I expect:
-Dialog :: Confirmation dialog with header and actions :: compile: The 1st argument to `child` is not what I expect:
-DrawerContainer :: App shell with navigation drawer toggle :: compile: The 1st argument to `children` is not what I expect:
-FabMenu :: Primary FAB revealing a secondary action menu :: compile: The 1st argument to `children` is not what I expect:
-FabMenu :: Tertiary FAB menu with link and disabled items :: compile: The 1st argument to `child` is not what I expect:
-Heading :: Emphasized display heading for a hero section :: compile: The 1st argument to `level` is not what I expect:
-Heading :: Page header hierarchy with semantic levels :: compile: The 1st argument to `level` is not what I expect:
-Icon :: Icon variants, fill and weight showcase :: compile: The 1st argument to `weight` is not what I expect:
-Icon :: Light-weight low-grade status icons :: compile: The 1st argument to `weight` is not what I expect:
-Menu :: Basic action menu triggered from a button :: compile: The 1st argument to `child` is not what I expect:
-Menu :: Nested submenu for sharing options :: compile: The 1st argument to `child` is not what I expect:
-Menu :: View menu with checkbox and radio selection groups :: compile: The 1st argument to `children` is not what I expect:
-NavMenu :: Nested navigation menu with icons, badges, and links :: compile: The 1st argument to `view` is not what I expect:
-NavRail :: Collapsible navigation rail with toggle :: compile: The 1st argument to `children` is not what I expect:
-Option :: Empty option panel loading state :: compile: The 1st argument to `children` is not what I expect:
-Paginator :: Compact paginator with hidden page-size selector :: compile: The 1st argument to `pageSize` is not what I expect:
-Paginator :: Paginator with custom navigation icons :: compile: The 1st argument to `pageSize` is not what I expect:
-Paginator :: Table paginator with first/last navigation :: compile: The 1st argument to `pageSize` is not what I expect:
-Search :: Search bar with leading icon and input :: compile: The 1st argument to `view` is not what I expect:
-SplitButton :: Filled split button with primary action and menu toggle :: compile: The 2nd argument to `view` is not what I expect:
-SplitButton :: Tonal split button :: compile: The 2nd argument to `view` is not what I expect:
-Stepper :: Horizontal stepper with completed and optional steps :: compile: I cannot find a `M3e.Stepper.children` variable:
-Stepper :: Linear vertical stepper with navigation controls :: compile: I cannot find a `M3e.Stepper.children` variable:
-Tabs :: Tabs with icons and panels :: compile: The 1st argument to `children` is not what I expect:
-Theme :: Theme with drawer, nav menu, and app bar shell :: compile: The 1st argument to `child` is not what I expect:
-Tooltip :: Rich tooltip with subhead and actions :: compile: The 1st argument to `child` is not what I expect:
-Tree :: Documentation navigation tree :: compile: The 1st argument to `view` is not what I expect:
-Tree :: Multi-select tree with cascading checkboxes :: compile: The 1st argument to `view` is not what I expect:
+AppBar :: Native module support :: compile: I cannot find a `Html.script` variable:
+AppBar :: Scroll effects :: compile: I cannot find a `M3e.AppBar.child` variable:
+Autocomplete :: Automatic activation :: unknown slot "label" on m3e-form-field
+Autocomplete :: Basic usage :: unknown slot "label" on m3e-form-field
+Autocomplete :: Chips :: unknown slot "label" on m3e-form-field
+Autocomplete :: Custom filtering :: unknown slot "label" on m3e-form-field
+Autocomplete :: Density :: unknown slot "label" on m3e-form-field
+Autocomplete :: Filter modes :: unknown slot "label" on m3e-form-field
+Autocomplete :: Initial load :: unknown slot "label" on m3e-form-field
+Autocomplete :: Native module support (2) :: compile: I cannot find a `Html.script` variable:
+Autocomplete :: Native module support :: compile: I cannot find a `Html.script` variable:
+Autocomplete :: No data :: unknown slot "label" on m3e-form-field
+Autocomplete :: Requiring an option to be selected :: unknown slot "label" on m3e-form-field
+Autocomplete :: Search as you type :: unknown slot "label" on m3e-form-field
+Avatar :: Native module support :: compile: I cannot find a `Html.script` variable:
+Badge :: Native module support :: compile: I cannot find a `Html.script` variable:
+BottomSheet :: Basic usage :: compile: The 1st argument to `child` is not what I expect:
+BottomSheet :: Initial height (2) :: compile: The 1st argument to `child` is not what I expect:
+BottomSheet :: Native module support :: compile: I cannot find a `Html.script` variable:
+Breadcrumb :: Native module support :: compile: I cannot find a `Html.script` variable:
+ButtonGroup :: Native module support (2) :: compile: I cannot find a `Html.script` variable:
+ButtonGroup :: Native module support :: compile: I cannot find a `Html.script` variable:
+Card :: Native module support :: compile: I cannot find a `Html.script` variable:
+Checkbox :: Native module support :: compile: I cannot find a `Html.script` variable:
+Checkbox :: Required :: compile: I cannot find a `M3e.Button.type` variable:
+Chips :: Disabling (4) :: unknown slot "label" on m3e-form-field
+Chips :: Input chips :: unknown slot "label" on m3e-form-field
+Chips :: Prepopulated chips :: unknown slot "label" on m3e-form-field
+ContentPane :: Native module support :: compile: I cannot find a `Html.script` variable:
+Datepicker :: Basic usage :: unknown slot "label" on m3e-form-field
+Datepicker :: Date ranges :: unknown slot "label" on m3e-form-field
+Dialog :: Actions :: compile: The 1st argument to `child` is not what I expect:
+Dialog :: Anatomy :: unmapped attr autofocus on m3e-button
+Dialog :: Opening :: compile: The 1st argument to `child` is not what I expect:
+DrawerContainer :: Toggle :: compile: The 1st argument to `children` is not what I expect:
+FabMenu :: Anatomy :: unknown m3e tag m3e-fab-menu-item
+FabMenu :: Disabling :: unknown m3e tag m3e-fab-menu-item
+FabMenu :: Icons :: unknown m3e tag m3e-fab-menu-item
+FabMenu :: Links :: unknown m3e tag m3e-fab-menu-item
+FabMenu :: Native module support :: compile: I cannot find a `Html.script` variable:
+FabMenu :: Variants :: compile: The 1st argument to `child` is not what I expect:
+FormField :: Density :: unknown slot "label" on m3e-form-field
+FormField :: Error messages (2) :: unknown slot "label" on m3e-form-field
+FormField :: Error messages :: unknown slot "label" on m3e-form-field
+FormField :: Float label :: unknown slot "label" on m3e-form-field
+FormField :: Hiding the required marker :: unknown slot "label" on m3e-form-field
+FormField :: Hint labels :: unknown slot "label" on m3e-form-field
+FormField :: Prefix and suffix :: unknown slot "label" on m3e-form-field
+FormField :: Variants :: unknown slot "label" on m3e-form-field
+Icon :: Variable fonts :: compile: I cannot find a `Html.link` variable:
+Menu :: Basic usage :: compile: The 1st argument to `child` is not what I expect:
+Menu :: Submenus :: compile: The 1st argument to `child` is not what I expect:
+NavBar :: Modes :: compile: I cannot find a `M3e.Value.extended` variable:
+NavMenu :: Disabling :: unmapped attr aria-hidden on m3e-icon
+NavMenu :: Multilevel menus :: unmapped attr aria-hidden on m3e-icon
+NavMenu :: Personal folders (2) :: compile: The 1st argument to `child` is not what I expect:
+NavMenu :: Personal folders :: compile: The 1st argument to `child` is not what I expect:
+NavRail :: Modes :: compile: The 1st argument to `children` is not what I expect:
+Paginator :: Native module support :: compile: I cannot find a `Html.script` variable:
+Paginator :: Page sizes :: compile: The 1st argument to `pageSize` is not what I expect:
+ProgressIndicator :: Determinate :: compile: I cannot find a `M3e.Progress.child` variable:
+Search :: Appearance variants (2) :: compile: The 2nd argument to `view` is not what I expect:
+Search :: Appearance variants :: compile: The 2nd argument to `view` is not what I expect:
+Search :: Hiding the search icon :: compile: The 2nd argument to `view` is not what I expect:
+Search :: Modes (2) :: compile: The 2nd argument to `view` is not what I expect:
+Search :: Modes :: compile: The 2nd argument to `view` is not what I expect:
+Search :: Typical usage :: compile: The 2nd argument to `view` is not what I expect:
+Select :: Basic usage :: unknown slot "label" on m3e-form-field
+Select :: Density :: unknown slot "label" on m3e-form-field
+Select :: Disabling (2) :: unknown slot "label" on m3e-form-field
+Select :: Disabling :: unknown slot "label" on m3e-form-field
+Select :: Empty options :: unknown slot "label" on m3e-form-field
+Select :: Native module support (2) :: compile: I cannot find a `Html.script` variable:
+Select :: Native module support :: compile: I cannot find a `Html.script` variable:
+Select :: Option groups :: unknown slot "label" on m3e-form-field
+Select :: Required :: unknown slot "label" on m3e-form-field
+Select :: Selection :: unknown slot "label" on m3e-form-field
+SplitButton :: Anatomy :: compile: The 1st argument to `view` is not what I expect:
+SplitButton :: Density :: compile: The 2nd argument to `view` is not what I expect:
+SplitButton :: Sizes :: compile: The 2nd argument to `view` is not what I expect:
+SplitButton :: Variants :: compile: The 2nd argument to `view` is not what I expect:
+SplitPane :: Conditional rendering :: unmapped attr hidden on m3e-card
+Stepper :: Basic usage :: unknown slot "label" on m3e-form-field
+Stepper :: Linear stepper :: compile: I cannot find a `M3e.Stepper.children` variable:
+Stepper :: Stepper buttons :: unknown slot "actions" on m3e-step-panel
+Tabs :: Basic usage :: compile: The 1st argument to `children` is not what I expect:
+TextareaAutosize :: Basic usage :: unknown slot "label" on m3e-form-field
+TextareaAutosize :: Min and max rows :: unknown slot "label" on m3e-form-field
+Tooltip :: Actions :: compile: The 1st argument to `child` is not what I expect:
+Tree :: Basic usage :: compile: The 1st argument to `view` is not what I expect:
+Tree :: Cascade selection :: compile: The 1st argument to `view` is not what I expect:
+Tree :: Icons :: compile: The 1st argument to `view` is not what I expect:
+Tree :: Multiple selection :: compile: The 1st argument to `view` is not what I expect:
+Tree :: Native module support :: compile: I cannot find a `Html.script` variable:
+Tree :: Selection :: compile: The 1st argument to `view` is not what I expect:
+Tree :: Toggle icons :: compile: The 2nd argument to `view` is not what I expect:

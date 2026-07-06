@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "build:reference": "node scripts/extract-reference.mjs",
+    "build:examples-source": "node scripts/examples-gen/extract-matraic-examples.mjs",
     "build:examples": "node scripts/build-examples-data.mjs",
     "build:examples-config": "node scripts/examples-gen/examples-to-elm.mjs",
     "build:examples-surfaces": "node scripts/examples-gen/gen-record-build.mjs",
