@@ -26,6 +26,7 @@ import M3e.List as List_
 import M3e.ListItem as ListItem
 import M3e.Record.Heading as Heading
 import M3e.SegmentedButton as SegmentedButton
+import M3e.SuggestionChip as SuggestionChip
 import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -77,11 +78,17 @@ type alias RouteParams =
 
 
 type alias Member =
-    { name : String, kind : String, signature : String, doc : String }
+    { name : String, kind : String, signature : String, doc : String, role : String }
 
 
 type alias Component =
-    { name : String, slug : String, overview : String, members : List Member }
+    { name : String
+    , slug : String
+    , category : String
+    , summary : String
+    , overview : String
+    , members : List Member
+    }
 
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
@@ -113,18 +120,21 @@ type alias ActionData =
 
 memberDecoder : Decode.Decoder Member
 memberDecoder =
-    Decode.map4 Member
+    Decode.map5 Member
         (Decode.field "name" Decode.string)
         (Decode.field "kind" Decode.string)
         (Decode.field "signature" Decode.string)
         (Decode.field "doc" Decode.string)
+        (Decode.oneOf [ Decode.field "role" Decode.string, Decode.succeed "" ])
 
 
 componentDecoder : Decode.Decoder Component
 componentDecoder =
-    Decode.map4 Component
+    Decode.map6 Component
         (Decode.field "name" Decode.string)
         (Decode.field "slug" Decode.string)
+        (Decode.oneOf [ Decode.field "category" Decode.string, Decode.succeed "" ])
+        (Decode.oneOf [ Decode.field "summary" Decode.string, Decode.succeed "" ])
         (Decode.field "overview" Decode.string)
         (Decode.field "members" (Decode.list memberDecoder))
 
@@ -230,15 +240,9 @@ view app _ model =
             (Element.map PagesMsg.fromMsg
                 (pane
                     [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
-                      -- section — intro, Usage, API — so their spacing is uniform.
+                      -- section — header, Usage, API — so their spacing is uniform.
                       Layout.div "space-y-10"
-                        (Layout.div "space-y-4"
-                            [ Heading.view { content = Kit.text component.name }
-                                [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-                                []
-                            , Layout.div "max-w-2xl text-on-surface-variant"
-                                [ Doc.markdown (introOnly component.overview) ]
-                            ]
+                        (header component
                             :: usageBlocks model app.data.usage
                             ++ [ apiSection component.members ]
                         )
@@ -249,49 +253,110 @@ view app _ model =
     }
 
 
-{-| The API-reference section: a heading over an outlined card listing every member.
+{-| The page header, mirroring the matraic component pages: the component name as
+a display heading (with its category chip alongside), the cleaned one-line CEM
+summary, and a barrel-first install card. The verbose Component Info / Events /
+Slots prose that used to trail the summary is dropped — the colocated API section
+below now documents the same events and slots, so repeating them here was clutter.
 -}
-apiSection : List Member -> Element { s | html : Supported, heading : Supported, card : Supported } msg
-apiSection members =
+header : Component -> Element { s | html : Supported, heading : Supported, suggestionChip : Supported } msg
+header component =
     Layout.div "space-y-4"
-        [ Heading.view { content = Kit.text "API" }
-            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
-            []
-        , Card.view [ Card.variant Value.outlined ]
-            [ Card.content (List_.view [] (List_.children (List.map memberRow members))) ]
+        (Layout.div "flex flex-wrap items-center gap-3"
+            (Heading.view { content = Kit.text component.name }
+                [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
+                []
+                :: categoryChip component.category
+            )
+            :: summaryBlock component.summary
+            ++ [ installCard ]
+        )
+
+
+{-| The component's category as a non-interactive suggestion chip, alongside the
+title. Empty ⇒ nothing (many derived/record modules carry no category).
+-}
+categoryChip : String -> List (Element { s | suggestionChip : Supported } msg)
+categoryChip cat =
+    if cat == "" then
+        []
+
+    else
+        [ SuggestionChip.view [] [ SuggestionChip.child (Kit.text cat) ] ]
+
+
+{-| The one-line summary paragraph, constrained to a comfortable reading measure.
+Empty ⇒ nothing.
+-}
+summaryBlock : String -> List (Element { s | html : Supported } msg)
+summaryBlock summary =
+    if summary == "" then
+        []
+
+    else
+        [ Layout.div "max-w-2xl"
+            [ Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text summary ] ]
         ]
 
 
-{-| Keep only the prose intro of an overview: drop everything from the first
-markdown heading onward. The generated overview appends a `## Examples` /
-`### Variants` section whose code dump duplicates — unhighlighted and one giant
-line — the live "Usage" section below, which is confusing. Also drops the
-`<!-- elm-cem:… -->` directive comments. (The proper cut happens in the
-reference extractor too, but that data can't regenerate until the M3e.Native
-`--docs` gap is fixed, so this guards the render path directly.)
+{-| The install snippet: the barrel-first imports every Usage example's top
+surface uses (`M3e.button`, `M3e.variant`, `M3e.Value.elevated`). Rendered as the
+same filled, rounded code block the Usage section uses (matraic's install card is
+a bare `<pre>`); wrapping it in an outlined Card would nest a surface-container
+fill inside a card border — a box-in-box that fights the M3 surface roles.
 -}
-introOnly : String -> String
-introOnly raw =
-    raw
-        |> String.lines
-        |> takeUntilHeading
-        |> List.filter (\l -> not (String.startsWith "<!--" (String.trimLeft l)))
-        |> String.join "\n"
-        |> String.trim
+installCard : Element { s | html : Supported } msg
+installCard =
+    Doc.code_ Doc.Elm "import M3e\nimport M3e.Value"
 
 
-takeUntilHeading : List String -> List String
-takeUntilHeading lines =
-    case lines of
-        [] ->
+{-| The API-reference section, rendered like an elm module page: the members
+grouped by role (constructor + its colocated type aliases, then attribute setters,
+slot setters, and events), each group an overline-labelled outlined card. Members
+keep their `@docs` order within a group. Empty groups drop out.
+-}
+apiSection : List Member -> Element { s | html : Supported, heading : Supported, card : Supported, listItem : Supported } msg
+apiSection members =
+    Layout.div "space-y-6"
+        (Heading.view { content = Kit.text "API" }
+            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
             []
+            :: List.filterMap (apiGroup members) apiGroups
+        )
 
-        line :: rest ->
-            if String.startsWith "#" (String.trimLeft line) then
-                []
 
-            else
-                line :: takeUntilHeading rest
+{-| The API groups, in render order, each with the member roles it collects. The
+constructor group also carries any exposed `type` aliases/unions so a caps/record
+type sits beside the `view` that consumes it. The trailing group catches helper
+values (e.g. `M3e.Action` combinators) that are neither attrs, slots, nor events.
+-}
+apiGroups : List ( String, List String )
+apiGroups =
+    [ ( "Constructor", [ "ctor", "type" ] )
+    , ( "Attributes", [ "attr" ] )
+    , ( "Slots", [ "slot" ] )
+    , ( "Events", [ "event" ] )
+    , ( "Other", [ "other", "" ] )
+    ]
+
+
+{-| One API group: an overline label over an outlined card listing its members.
+`Nothing` when the group has no members, so it drops out of the section rhythm.
+-}
+apiGroup : List Member -> ( String, List String ) -> Maybe (Element { s | html : Supported, card : Supported, listItem : Supported } msg)
+apiGroup members ( label, roles ) =
+    case List.filter (\m -> List.member m.role roles) members of
+        [] ->
+            Nothing
+
+        group ->
+            Just
+                (Layout.div "space-y-3"
+                    [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text label ]
+                    , Card.view [ Card.variant Value.outlined ]
+                        [ Card.content (List_.view [] (List_.children (List.map memberRow group))) ]
+                    ]
+                )
 
 
 {-| Render the Usage section as a single spacing-consistent block: a "Usage"
@@ -474,28 +539,26 @@ pane items =
     ContentPane.view [] (List.map ContentPane.child items)
 
 
-{-| One API member: an optional kind overline (only for non-`value` kinds such
-as `type` — the ubiquitous "value" eyebrow was pure noise), the syntax-highlighted
-`name : signature`, and its Markdown-rendered doc.
+{-| One API member: the syntax-highlighted signature (`type Name` for aliases /
+unions, `name : signature` for values) and its Markdown-rendered doc. The kind
+eyebrow is gone — the enclosing group heading now conveys what each row is.
 -}
 memberRow : Member -> Element { s | listItem : Supported } msg
 memberRow m =
+    let
+        sig : String
+        sig =
+            if m.kind == "type" then
+                "type " ++ m.name
+
+            else if m.signature == "" then
+                m.name
+
+            else
+                m.name ++ " : " ++ m.signature
+    in
     ListItem.view []
-        ((if m.kind == "" || m.kind == "value" then
-            []
-
-          else
-            [ ListItem.overline (Kit.text m.kind) ]
-         )
-            ++ ListItem.child
-                (Doc.elmSignature
-                    (if m.signature == "" then
-                        m.name
-
-                     else
-                        m.name ++ " : " ++ m.signature
-                    )
-                )
+        (ListItem.child (Doc.elmSignature sig)
             :: (if m.doc == "" then
                     []
 

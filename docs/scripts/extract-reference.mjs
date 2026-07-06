@@ -148,9 +148,44 @@ function memberOrder(comment) {
   return names;
 }
 
+// 4b. The component category, from the `<!-- elm-cem:docmeta category=… -->`
+//     directive in the module comment (e.g. `Actions`, `Navigation`). Empty
+//     string when the module carries no directive (derived/record modules).
+function category(comment) {
+  const m = (comment || "").match(/elm-cem:docmeta[^>]*\bcategory=([^>]+?)\s*-->/);
+  return m ? m[1].trim() : "";
+}
+
+// 4c. The one-line CEM summary: the first prose paragraph of the overview
+//     (everything before the first blank line), whitespace-collapsed. This is
+//     the clean sentence shown under the page's display heading — the rest of
+//     the overview (Component Info / Events / Slots bullet lists) is redundant
+//     with the colocated API section below, so the page drops it.
+function summary(overviewText) {
+  const first = (overviewText || "").split(/\n\s*\n/)[0] || "";
+  return first.replace(/\s+/g, " ").trim();
+}
+
+// 4d. Classify a member into the elm-module-page groups the API section renders,
+//     preserving @docs order within each group. `type` (aliases/unions) colocate
+//     with the constructor; `ctor` is `view`; `slot` setters return
+//     `M3e.Content.Content`; `event` setters are the `onX` attribute producers;
+//     everything else that produces an `Attr` is a plain attribute setter.
+function roleOf(m) {
+  const sig = m.signature || "";
+  if (m.kind === "type") return "type";
+  if (m.name === "view") return "ctor";
+  if (/\bM3e\.Content\.Content\b/.test(sig)) return "slot";
+  if (/^on[A-Z]/.test(m.name) && /\bM3e\.Cem\.Attr\.Attr\b/.test(sig)) return "event";
+  if (/\bM3e\.Cem\.Attr\.Attr\b/.test(sig)) return "attr";
+  return "other";
+}
+
 // 5. Build the per-module reference record. `kind`: type for unions and
 //    aliases; value for everything else. Signature on values is the elm type
-//    (multi-line collapsed to a single line by docs.json already).
+//    (multi-line collapsed to a single line by docs.json already). Each member
+//    also carries a `role` so the API section can render elm-module-page groups
+//    (constructor+types, attributes, slots, events) while preserving @docs order.
 function moduleEntry(mod) {
   const name = mod.name.replace(/^M3e\./, "");
   const slug = name.toLowerCase();
@@ -177,7 +212,17 @@ function moduleEntry(mod) {
   for (const n of [...byName.keys()].sort()) {
     if (!seen.has(n)) members.push(byName.get(n));
   }
-  return { name, slug, overview: overview(mod.comment || ""), members };
+  for (const m of members) m.role = roleOf(m);
+
+  const over = overview(mod.comment || "");
+  return {
+    name,
+    slug,
+    category: category(mod.comment || ""),
+    summary: summary(over),
+    overview: over,
+    members,
+  };
 }
 
 // ----- run -----

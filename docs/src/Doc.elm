@@ -26,11 +26,18 @@ import SyntaxHighlight
 
 
 {-| A matraic-style "showcase" card: live demo content in an outlined card.
+
+Deliberately NOT an overflow container: making the card `overflow-x-auto` forces
+`overflow-y: auto` (CSS spec), and m3e components' ~4px state-layer bleed then
+trips a spurious vertical scrollbar. The inner preview (`rawPreview`) wraps its
+items instead, so the card stays within `max-w-full` without clipping — a live
+example's escaping menu/tooltip is free to overflow the card.
+
 -}
 showcase : Element { s | html : Supported } msg -> Element { r | card : Supported } msg
 showcase content =
     Card.view
-        [ Card.variant Value.outlined, Seam.asAttribute (class "max-w-full overflow-x-auto") ]
+        [ Card.variant Value.outlined, Seam.asAttribute (class "max-w-full") ]
         [ Card.content content ]
 
 
@@ -48,7 +55,13 @@ rawPreview html =
     Seam.fromHtml
         (node "raw-html"
             [ attribute "content" html
-            , class "flex max-w-full flex-wrap items-center gap-3 overflow-x-auto"
+
+            -- Wrap wide galleries rather than scroll them, and give the row
+            -- vertical breathing room (`py-2`) so the state-layer/elevation
+            -- bleed of a live component has slack instead of triggering a
+            -- scrollbar. No overflow clipping here: a menu or tooltip opened in
+            -- a live preview must be free to escape the card.
+            , class "flex max-w-full flex-wrap items-center gap-3 py-2"
             ]
             []
         )
