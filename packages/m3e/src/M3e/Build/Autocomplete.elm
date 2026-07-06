@@ -1,7 +1,8 @@
 module M3e.Build.Autocomplete exposing
     ( Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
     , filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel
-    , panelClass, required, for, onChange, onQuery, onToggle, build
+    , panelClass, required, for, onChange, onQuery, onToggle, loadingSlot
+    , noData, build
     )
 
 {-|
@@ -10,15 +11,13 @@ The ⑤ Build shape for `<m3e-autocomplete>` — phantom-typed pipeline API. Imp
 @docs Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
 @docs filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel
 @docs noDataLabel, panelClass, required, for, onChange, onQuery
-@docs onToggle, build
+@docs onToggle, loadingSlot, noData, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Autocomplete
-import M3e.Cem.Html.Autocomplete
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -250,54 +249,65 @@ for v_ b_ =
 
 {-| Dispatched when the committed value changes due to selecting an option or clearing the input. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Autocomplete.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the input is focused or when the user modifies its value. -}
 onQuery :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onQuery : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onQuery : M3e.Build.Internal.Used } s msg kind
 onQuery v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Autocomplete.onQuery
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.onQuery v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the options menu opens or closes. -}
 onToggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Autocomplete.onToggle
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Autocomplete.onToggle v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `loading` slot. -}
+loadingSlot :
+    M3e.Element.Element any msg
+    -> Builder a { s | loading : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | loading : M3e.Build.Internal.Used } msg kind
+loadingSlot el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "loading" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `no-data` slot. -}
+noData :
+    M3e.Element.Element any msg
+    -> Builder a { s | noData : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | noData : M3e.Build.Internal.Used } msg kind
+noData el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "no-data" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

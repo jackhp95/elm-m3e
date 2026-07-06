@@ -146,16 +146,22 @@ emitAttrsList fact source c =
             splitDynAttrs source c.attrs
 
         items =
-            List.map (emitAttrItem fact source) litItems
+            List.map (emitAttrItem fact.module_ source) litItems
     in
     listArg (actionAttr ++ items) dynItems
 
 
-emitAttrItem : Fact -> (Range -> String) -> AttrItem -> String
-emitAttrItem fact source item =
+{-| Emit a residual attr setter qualified with `targetModule` (the surface
+module the call is being rewritten to). Residual attrs must reference the
+TARGET surface's setter — e.g. a Record rewrite emits `M3e.Record.Button.variant`,
+not the Standard `M3e.Button.variant` — so the setter resolves against the
+target module's (possibly closed) attr row (#gap: emitRecord residual attr).
+-}
+emitAttrItem : String -> (Range -> String) -> AttrItem -> String
+emitAttrItem targetModule source item =
     case item of
         KnownAttr { name, value } ->
-            fact.module_ ++ "." ++ name ++ " " ++ source (Node.range value)
+            targetModule ++ "." ++ name ++ " " ++ source (Node.range value)
 
         EnumTokenLossy { name, tokenText } ->
             "Seam.asAttribute (Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\")"
@@ -185,16 +191,20 @@ emitContentList fact source c =
             splitDynSlots source c.content
 
         items =
-            List.map (emitSlotItem fact source) litItems
+            List.map (emitSlotItem fact.module_ source) litItems
     in
     listArg (requiredSlot ++ items) dynItems
 
 
-emitSlotItem : Fact -> (Range -> String) -> SlotItem -> String
-emitSlotItem fact source item =
+{-| Emit a residual slot (content) setter qualified with `targetModule`, for the
+same reason as `emitAttrItem`: the setter must resolve against the target
+surface's content row (a Record rewrite emits `M3e.Record.Button.icon`).
+-}
+emitSlotItem : String -> (Range -> String) -> SlotItem -> String
+emitSlotItem targetModule source item =
     case item of
         KnownSlot { name, body } ->
-            fact.module_ ++ "." ++ name ++ " " ++ source (Node.range body)
+            targetModule ++ "." ++ name ++ " " ++ source (Node.range body)
 
         UnknownSlotName { name, body } ->
             "Seam.slot \"" ++ name ++ "\" (Seam.fromHtml (" ++ source (Node.range body) ++ "))"
@@ -231,6 +241,9 @@ decomposeRecordAction fact source expr =
 emitRecord : Fact -> (Range -> String) -> Canonical -> String
 emitRecord fact source c =
     let
+        recordModule =
+            recordModuleFor fact
+
         recordArg =
             emitRecordArg fact source c
 
@@ -238,16 +251,13 @@ emitRecord fact source c =
             splitDynAttrs source c.attrs
 
         attrsText =
-            listArg (List.map (emitAttrItem fact source) litAttrs) dynAttrs
+            listArg (List.map (emitAttrItem recordModule source) litAttrs) dynAttrs
 
         ( litSlots, dynSlots ) =
             splitDynSlots source c.content
 
         contentText =
-            listArg (List.map (emitSlotItem fact source) litSlots) dynSlots
-
-        recordModule =
-            recordModuleFor fact
+            listArg (List.map (emitSlotItem recordModule source) litSlots) dynSlots
     in
     recordModule ++ ".view " ++ recordArg ++ " " ++ attrsText ++ " " ++ contentText
 

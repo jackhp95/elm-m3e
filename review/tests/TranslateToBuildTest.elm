@@ -99,4 +99,80 @@ view =
     Seam.fromHtml (M3e.Cem.Html.Button.button [] [])
 """
                         ]
+        , test "Standard → Build: an optional slot child becomes a flat Element slot setter in the pipeline" <|
+            \() ->
+                """module A exposing (Msg, view)
+
+import M3e.Button
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Button.view [ M3e.Button.onClick DoThing, M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child c, M3e.Button.icon i ]
+"""
+                    |> Review.Test.run (TranslateToBuild.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToBuild"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view [ M3e.Button.onClick DoThing, M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child c, M3e.Button.icon i ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (Msg, view)
+
+import M3e.Button
+import M3e.Action
+import M3e.Build.Button
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Build.Button.button { content = c, action = M3e.Action.onClick DoThing }
+        |> M3e.Build.Button.variant M3e.Value.filled
+        |> M3e.Build.Button.icon i
+        |> M3e.Build.Button.build
+"""
+                        ]
+        , test "Standard → Build: a component without an action record (AssistChip) keeps onClick as a plain setter" <|
+            \() ->
+                """module A exposing (Msg, view)
+
+import M3e.AssistChip
+
+type Msg
+    = DoThing
+
+view =
+    M3e.AssistChip.view [ M3e.AssistChip.onClick DoThing ] [ M3e.AssistChip.child c ]
+"""
+                    |> Review.Test.run (TranslateToBuild.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.AssistChip call to TranslateToBuild"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.AssistChip.view [ M3e.AssistChip.onClick DoThing ] [ M3e.AssistChip.child c ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (Msg, view)
+
+import M3e.AssistChip
+import M3e.Build.AssistChip
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Build.AssistChip.assistChip { content = c }
+        |> M3e.Build.AssistChip.onClick DoThing
+        |> M3e.Build.AssistChip.build
+"""
+                        ]
         ]

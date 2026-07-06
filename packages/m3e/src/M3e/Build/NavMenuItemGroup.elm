@@ -1,11 +1,11 @@
 module M3e.Build.NavMenuItemGroup exposing
-    ( Builder, AttrCaps, SlotCaps, navMenuItemGroup, build
+    ( Builder, AttrCaps, SlotCaps, navMenuItemGroup, label, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-menu-item-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavMenuItemGroup as NavMenuItemGroup`.
 
-@docs Builder, AttrCaps, SlotCaps, navMenuItemGroup, build
+@docs Builder, AttrCaps, SlotCaps, navMenuItemGroup, label, build
 -}
 
 
@@ -47,6 +47,21 @@ navMenuItemGroup =
              )
              []
              []
+        )
+
+
+{-| Place content in the `label` slot. -}
+label :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , heading : M3e.Value.Supported
+    } msg
+    -> Builder a { s | label : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | label : M3e.Build.Internal.Used } msg kind
+label el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "label" el_))
+             (M3e.Build.Internal.node_ b_)
         )
 
 

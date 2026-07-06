@@ -18,6 +18,7 @@ iconButtonFacts =
       , surfaces = [ Standard, Record ]
       , requiredAttrs = [ "aria-label" ]
       , actionMap = []
+      , usesAction = False
       }
     ]
 
@@ -34,6 +35,7 @@ fabFacts =
       , surfaces = [ Standard, Record ]
       , requiredAttrs = [ "aria-label" ]
       , actionMap = []
+      , usesAction = False
       }
     ]
 
@@ -108,7 +110,7 @@ import M3e.Card
 v = M3e.Card.view [] []
 """
                     |> Review.Test.run
-                        (rule [ { component = "card", module_ = "M3e.Card", enums = [], requiredSlots = [], multiSlots = [], attrRewrites = [], slotRewrites = [], surfaces = [ Standard ], requiredAttrs = [], actionMap = [] } ])
+                        (rule [ { component = "card", module_ = "M3e.Card", enums = [], requiredSlots = [], multiSlots = [], attrRewrites = [], slotRewrites = [], surfaces = [ Standard ], requiredAttrs = [], actionMap = [], usesAction = False } ])
                     |> Review.Test.expectNoErrors
         , test "flags call whose attrs is a let-bound empty list" <|
             \() ->

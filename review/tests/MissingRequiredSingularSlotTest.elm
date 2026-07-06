@@ -18,6 +18,7 @@ buttonFacts =
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       , actionMap = []
+      , usesAction = False
       }
     ]
 

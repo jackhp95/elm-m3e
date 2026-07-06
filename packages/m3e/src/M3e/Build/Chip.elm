@@ -1,13 +1,13 @@
 module M3e.Build.Chip exposing
     ( Builder, AttrCaps, SlotCaps, chip, value, variant
-    , build
+    , icon, trailingIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Chip as Chip`.
 
 @docs Builder, AttrCaps, SlotCaps, chip, value, variant
-@docs build
+@docs icon, trailingIcon, build
 -}
 
 
@@ -82,6 +82,32 @@ variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.Chip.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `trailing-icon` slot. -}
+trailingIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
+trailingIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "trailing-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

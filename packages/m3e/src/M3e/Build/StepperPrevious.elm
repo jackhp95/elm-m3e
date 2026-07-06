@@ -1,11 +1,11 @@
 module M3e.Build.StepperPrevious exposing
-    ( Builder, AttrCaps, SlotCaps, stepperPrevious, build
+    ( Builder, AttrCaps, SlotCaps, stepperPrevious, child, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper-previous>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepperPrevious as StepperPrevious`.
 
-@docs Builder, AttrCaps, SlotCaps, stepperPrevious, build
+@docs Builder, AttrCaps, SlotCaps, stepperPrevious, child, build
 -}
 
 
@@ -47,6 +47,19 @@ stepperPrevious =
              )
              []
              []
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

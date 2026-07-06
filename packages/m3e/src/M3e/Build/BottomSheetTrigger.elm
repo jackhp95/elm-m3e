@@ -1,13 +1,13 @@
 module M3e.Build.BottomSheetTrigger exposing
     ( Builder, AttrCaps, SlotCaps, bottomSheetTrigger, detent, secondary
-    , for, build
+    , for, child, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-bottom-sheet-trigger>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BottomSheetTrigger as BottomSheetTrigger`.
 
 @docs Builder, AttrCaps, SlotCaps, bottomSheetTrigger, detent, secondary
-@docs for, build
+@docs for, child, build
 -}
 
 
@@ -94,6 +94,19 @@ for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheetTrigger.for v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
              (M3e.Build.Internal.node_ b_)
         )
 

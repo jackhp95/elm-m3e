@@ -1,21 +1,19 @@
 module M3e.Build.ExpansionHeader exposing
     ( Builder, AttrCaps, SlotCaps, expansionHeader, hideToggle, toggleDirection
-    , togglePosition, disabled, onClick, build
+    , togglePosition, disabled, onClick, child, toggleIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-expansion-header>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ExpansionHeader as ExpansionHeader`.
 
 @docs Builder, AttrCaps, SlotCaps, expansionHeader, hideToggle, toggleDirection
-@docs togglePosition, disabled, onClick, build
+@docs togglePosition, disabled, onClick, child, toggleIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.ExpansionHeader
-import M3e.Cem.Html.ExpansionHeader
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -126,18 +124,39 @@ disabled v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpansionHeader.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ExpansionHeader.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `toggle-icon` slot. -}
+toggleIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
+toggleIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "toggle-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

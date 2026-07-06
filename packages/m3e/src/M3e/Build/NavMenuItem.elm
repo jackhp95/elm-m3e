@@ -1,6 +1,7 @@
 module M3e.Build.NavMenuItem exposing
     ( Builder, AttrCaps, SlotCaps, navMenuItem, disabled, open
-    , selected, onOpening, onOpened, onClosing, onClosed, onClick, build
+    , selected, onOpening, onOpened, onClosing, onClosed, onClick, icon
+    , badge, selectedIcon, toggleIcon, build
     )
 
 {-|
@@ -8,14 +9,12 @@ The ⑤ Build shape for `<m3e-nav-menu-item>` — phantom-typed pipeline API. Im
 
 @docs Builder, AttrCaps, SlotCaps, navMenuItem, disabled, open
 @docs selected, onOpening, onOpened, onClosing, onClosed, onClick
-@docs build
+@docs icon, badge, selectedIcon, toggleIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.NavMenuItem
 import M3e.Cem.NavMenuItem
 import M3e.Element
 import M3e.Element.Internal
@@ -114,90 +113,119 @@ selected v_ b_ =
 
 {-| Dispatched when the item begins to open. -}
 onOpening :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavMenuItem.onOpening
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.onOpening v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the item has opened. -}
 onOpened :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavMenuItem.onOpened
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.onOpened v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the item begins to close. -}
 onClosing :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavMenuItem.onClosing
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.onClosing v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the item has closed. -}
 onClosed :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavMenuItem.onClosed
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.onClosed v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavMenuItem.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavMenuItem.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `badge` slot. -}
+badge :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , badge : M3e.Value.Supported
+    } msg
+    -> Builder a { s | badge : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | badge : M3e.Build.Internal.Used } msg kind
+badge el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "badge" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `selected-icon` slot. -}
+selectedIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | selectedIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | selectedIcon : M3e.Build.Internal.Used } msg kind
+selectedIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "selected-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `toggle-icon` slot. -}
+toggleIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
+toggleIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "toggle-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

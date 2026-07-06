@@ -1,7 +1,7 @@
 module M3e.Build.AssistChip exposing
     ( Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
     , download, href, name, rel, target, type_, value
-    , variant, onClick, build
+    , variant, onClick, icon, build
     )
 
 {-|
@@ -9,15 +9,13 @@ The ⑤ Build shape for `<m3e-assist-chip>` — phantom-typed pipeline API. Impo
 
 @docs Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
 @docs download, href, name, rel, target, type_
-@docs value, variant, onClick, build
+@docs value, variant, onClick, icon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.AssistChip
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.AssistChip
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -210,18 +208,26 @@ variant v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.AssistChip.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.AssistChip.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

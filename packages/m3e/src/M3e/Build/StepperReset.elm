@@ -1,11 +1,11 @@
 module M3e.Build.StepperReset exposing
-    ( Builder, AttrCaps, SlotCaps, stepperReset, build
+    ( Builder, AttrCaps, SlotCaps, stepperReset, child, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper-reset>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepperReset as StepperReset`.
 
-@docs Builder, AttrCaps, SlotCaps, stepperReset, build
+@docs Builder, AttrCaps, SlotCaps, stepperReset, child, build
 -}
 
 
@@ -47,6 +47,19 @@ stepperReset =
              )
              []
              []
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

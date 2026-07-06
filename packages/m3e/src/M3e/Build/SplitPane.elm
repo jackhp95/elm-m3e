@@ -1,7 +1,7 @@
 module M3e.Build.SplitPane exposing
     ( Builder, AttrCaps, SlotCaps, splitPane, label, max
     , min, orientation, overshootLimit, step, value, wrapDetents, name
-    , disabled, onChange, onBeforeinput, onInput, build
+    , disabled, onChange, onBeforeinput, onInput, start, end, build
     )
 
 {-|
@@ -9,14 +9,13 @@ The ⑤ Build shape for `<m3e-split-pane>` — phantom-typed pipeline API. Impor
 
 @docs Builder, AttrCaps, SlotCaps, splitPane, label, max
 @docs min, orientation, overshootLimit, step, value, wrapDetents
-@docs name, disabled, onChange, onBeforeinput, onInput, build
+@docs name, disabled, onChange, onBeforeinput, onInput, start
+@docs end, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.SplitPane
 import M3e.Cem.SplitPane
 import M3e.Element
 import M3e.Element.Internal
@@ -205,54 +204,65 @@ disabled v_ b_ =
 
 {-| Dispatched when the user finishes adjusting the drag handle. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SplitPane.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SplitPane.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched continuously before the user adjusts the drag handle. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SplitPane.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SplitPane.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched continuously while the user adjusts the drag handle. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SplitPane.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SplitPane.onInput v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `start` slot. -}
+start :
+    M3e.Element.Element any msg
+    -> Builder a { s | start : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | start : M3e.Build.Internal.Used } msg kind
+start el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "start" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `end` slot. -}
+end :
+    M3e.Element.Element any msg
+    -> Builder a { s | end : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | end : M3e.Build.Internal.Used } msg kind
+end el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "end" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

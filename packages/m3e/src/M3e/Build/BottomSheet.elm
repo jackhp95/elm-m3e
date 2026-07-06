@@ -1,7 +1,7 @@
 module M3e.Build.BottomSheet exposing
     ( Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
     , handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening
-    , onClosing, onCancel, onOpened, onClosed, build
+    , onClosing, onCancel, onOpened, onClosed, header, build
     )
 
 {-|
@@ -9,15 +9,14 @@ The ⑤ Build shape for `<m3e-bottom-sheet>` — phantom-typed pipeline API. Imp
 
 @docs Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
 @docs handleLabel, hideable, hideFriction, modal, open, overshootLimit
-@docs onOpening, onClosing, onCancel, onOpened, onClosed, build
+@docs onOpening, onClosing, onCancel, onOpened, onClosed, header
+@docs build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.BottomSheet
-import M3e.Cem.Html.BottomSheet
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -180,90 +179,78 @@ overshootLimit v_ b_ =
 
 {-| Dispatched when the sheet begins to open. -}
 onOpening :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BottomSheet.onOpening
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheet.onOpening v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the sheet begins to close. -}
 onClosing :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BottomSheet.onClosing
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheet.onClosing v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the sheet is cancelled. -}
 onCancel :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onCancel : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onCancel : M3e.Build.Internal.Used } s msg kind
 onCancel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BottomSheet.onCancel
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheet.onCancel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the sheet has opened. -}
 onOpened :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BottomSheet.onOpened
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheet.onOpened v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the sheet has closed. -}
 onClosed :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BottomSheet.onClosed
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BottomSheet.onClosed v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `header` slot. -}
+header :
+    M3e.Element.Element any msg
+    -> Builder a { s | header : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | header : M3e.Build.Internal.Used } msg kind
+header el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "header" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

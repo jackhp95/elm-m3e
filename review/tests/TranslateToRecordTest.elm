@@ -166,4 +166,77 @@ view =
     M3e.Record.Button.view { content = c, action = M3e.Action.onClick DoThing } ([] ++ extra) []
 """
                         ]
+        , test "residual attr + slot setters are qualified with the target Record module" <|
+            \() ->
+                """module A exposing (Msg, view)
+
+import M3e.Button
+import M3e.Value
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.onClick DoThing ] [ M3e.Button.child c, M3e.Button.icon i ]
+"""
+                    |> Review.Test.run (TranslateToRecord.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.Button call to TranslateToRecord"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.onClick DoThing ] [ M3e.Button.child c, M3e.Button.icon i ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (Msg, view)
+
+import M3e.Button
+import M3e.Value
+import M3e.Action
+import M3e.Record.Button
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Record.Button.view { content = c, action = M3e.Action.onClick DoThing } [ M3e.Record.Button.variant M3e.Value.filled ] [ M3e.Record.Button.icon i ]
+"""
+                        ]
+        , test "a component without an action record (AssistChip) keeps onClick as a plain attr, no action field" <|
+            \() ->
+                """module A exposing (Msg, view)
+
+import M3e.AssistChip
+
+type Msg
+    = DoThing
+
+view =
+    M3e.AssistChip.view [ M3e.AssistChip.onClick DoThing ] [ M3e.AssistChip.child c ]
+"""
+                    |> Review.Test.run (TranslateToRecord.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.AssistChip call to TranslateToRecord"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.AssistChip.view [ M3e.AssistChip.onClick DoThing ] [ M3e.AssistChip.child c ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (Msg, view)
+
+import M3e.AssistChip
+import M3e.Record.AssistChip
+
+type Msg
+    = DoThing
+
+view =
+    M3e.Record.AssistChip.view { content = c } [ M3e.Record.AssistChip.onClick DoThing ] []
+"""
+                        ]
         ]

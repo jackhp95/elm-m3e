@@ -1,20 +1,20 @@
 module M3e.Build.ListOption exposing
     ( Builder, AttrCaps, SlotCaps, listOption, disabled, selected
-    , value, onBeforeinput, onInput, onChange, onClick, build
+    , value, onBeforeinput, onInput, onChange, onClick, child, leading
+    , overline, supportingText, trailing, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list-option>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListOption as ListOption`.
 
 @docs Builder, AttrCaps, SlotCaps, listOption, disabled, selected
-@docs value, onBeforeinput, onInput, onChange, onClick, build
+@docs value, onBeforeinput, onInput, onChange, onClick, child
+@docs leading, overline, supportingText, trailing, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.ListOption
 import M3e.Cem.ListOption
 import M3e.Element
 import M3e.Element.Internal
@@ -107,17 +107,13 @@ value v_ b_ =
 
 {-| Dispatched before the selected state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ListOption.onBeforeinput
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -125,54 +121,121 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the selected state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ListOption.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ListOption.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ListOption.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListOption.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `leading` slot. -}
+leading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , avatar : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | leading : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | leading : M3e.Build.Internal.Used } msg kind
+leading el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "leading" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `overline` slot. -}
+overline :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | overline : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | overline : M3e.Build.Internal.Used } msg kind
+overline el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "overline" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `supporting-text` slot. -}
+supportingText :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | supportingText : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | supportingText : M3e.Build.Internal.Used } msg kind
+supportingText el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "supporting-text" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `trailing` slot. -}
+trailing :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , avatar : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    , switch : M3e.Value.Supported
+    , radio : M3e.Value.Supported
+    , checkbox : M3e.Value.Supported
+    } msg
+    -> Builder a { s | trailing : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | trailing : M3e.Build.Internal.Used } msg kind
+trailing el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "trailing" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

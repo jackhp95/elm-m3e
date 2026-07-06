@@ -12,10 +12,8 @@ The ⑤ Build shape for `<m3e-selection-list>` — phantom-typed pipeline API. I
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.SelectionList
 import M3e.Cem.SelectionList
 import M3e.Element
 import M3e.Element.Internal
@@ -138,35 +136,27 @@ disabled v_ b_ =
 
 {-| Dispatched when the selected state of an option changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SelectionList.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SelectionList.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched before the selected state of an option changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SelectionList.onBeforeinput
-                       v_
-                  )
+                  (M3e.Cem.SelectionList.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -174,18 +164,13 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the selected state of an option changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SelectionList.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SelectionList.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 

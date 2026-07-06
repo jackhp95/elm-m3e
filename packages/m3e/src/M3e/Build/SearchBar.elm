@@ -1,20 +1,18 @@
 module M3e.Build.SearchBar exposing
     ( Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-    , onClear, build
+    , onClear, clearIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-search-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SearchBar as SearchBar`.
 
 @docs Builder, AttrCaps, SlotCaps, searchBar, clearable, clearLabel
-@docs onClear, build
+@docs onClear, clearIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.SearchBar
 import M3e.Cem.SearchBar
 import M3e.Element
 import M3e.Element.Internal
@@ -87,18 +85,26 @@ clearLabel v_ b_ =
 
 {-| Dispatched when the search term is cleared. -}
 onClear :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClear : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClear : M3e.Build.Internal.Used } s msg kind
 onClear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SearchBar.onClear
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchBar.onClear v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `clear-icon` slot. -}
+clearIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | clearIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg kind
+clearIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "clear-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

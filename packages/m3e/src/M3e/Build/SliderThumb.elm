@@ -12,10 +12,8 @@ The ⑤ Build shape for `<m3e-slider-thumb>` — phantom-typed pipeline API. Imp
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.SliderThumb
 import M3e.Cem.SliderThumb
 import M3e.Element
 import M3e.Element.Internal
@@ -104,17 +102,14 @@ value v_ b_ =
 
 {-| Listen for `value-change` events. -}
 onValueChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onValueChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onValueChange : M3e.Build.Internal.Used } s msg kind
 onValueChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SliderThumb.onValueChange
-                       v_
-                  )
+                  (M3e.Cem.SliderThumb.onValueChange v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -122,17 +117,14 @@ onValueChange v_ b_ =
 
 {-| Dispatched before the value changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SliderThumb.onBeforeinput
-                       v_
-                  )
+                  (M3e.Cem.SliderThumb.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -140,54 +132,39 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the value changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SliderThumb.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SliderThumb.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the value changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SliderThumb.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SliderThumb.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SliderThumb.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SliderThumb.onClick v_))
              (M3e.Build.Internal.node_ b_)
         )
 

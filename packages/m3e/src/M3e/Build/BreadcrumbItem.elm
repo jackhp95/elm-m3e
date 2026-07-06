@@ -1,6 +1,7 @@
 module M3e.Build.BreadcrumbItem exposing
     ( Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
-    , current, href, target, download, rel, onClick, build
+    , current, href, target, download, rel, onClick, child
+    , icon, build
     )
 
 {-|
@@ -8,15 +9,13 @@ The ⑤ Build shape for `<m3e-breadcrumb-item>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
 @docs current, href, target, download, rel, onClick
-@docs build
+@docs child, icon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.BreadcrumbItem
-import M3e.Cem.Html.BreadcrumbItem
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -165,18 +164,41 @@ rel v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BreadcrumbItem.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BreadcrumbItem.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

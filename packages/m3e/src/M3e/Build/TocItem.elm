@@ -11,10 +11,8 @@ The ⑤ Build shape for `<m3e-toc-item>` — phantom-typed pipeline API. Import 
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.TocItem
 import M3e.Cem.TocItem
 import M3e.Element
 import M3e.Element.Internal
@@ -87,18 +85,13 @@ selected v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.TocItem.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.TocItem.onClick v_))
              (M3e.Build.Internal.node_ b_)
         )
 

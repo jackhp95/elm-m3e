@@ -247,7 +247,7 @@ emitFor target fact source c =
             Translate.Emit.emitHtml fact source c
 
         Record ->
-            if canEmitRecord c then
+            if canEmitRecord fact c then
                 Translate.Emit.emitRecord fact source c
 
             else
@@ -256,21 +256,24 @@ emitFor target fact source c =
                 Translate.Residue.wholeSeamEscape fact source c
 
         Build ->
-            if canEmitBuild c then
+            if canEmitBuild fact c then
                 Translate.Emit.emitBuild fact source c
 
             else
                 Translate.Residue.wholeSeamEscape fact source c
 
 
-{-| Record shape requires content + action to be present in the canonical form.
-Standard-source calls don't lift these out (they stay in the content list /
-attrs list); those cases can't upgrade to Record cleanly and fall back to
-whole-node Seam escape.
+{-| Record shape requires the required content to be present in the canonical
+form; and, for components whose record carries an `action` field
+(`fact.usesAction`), the required action too. Components without an action
+record (e.g. AssistChip) satisfy the record from `content` alone, keeping any
+onClick as a plain attr. Standard-source calls that don't lift these out fall
+back to whole-node Seam escape.
 -}
-canEmitRecord : Canonical -> Bool
-canEmitRecord c =
-    c.requiredContent /= Nothing && c.requiredAction /= Nothing
+canEmitRecord : Fact -> Canonical -> Bool
+canEmitRecord fact c =
+    (c.requiredContent /= Nothing)
+        && (not fact.usesAction || c.requiredAction /= Nothing)
 
 
 {-| Build shape has the same required-content/action requirement as Record.
@@ -278,9 +281,9 @@ Additionally, `Build` has no attr-list or content-list seam — any residue in
 attrs/content (EnumTokenLossy, EscapedAttr, DynamicAttrTail, UnknownSlotName,
 EscapedContent, DynamicContentTail) triggers whole-node escape.
 -}
-canEmitBuild : Canonical -> Bool
-canEmitBuild c =
-    canEmitRecord c
+canEmitBuild : Fact -> Canonical -> Bool
+canEmitBuild fact c =
+    canEmitRecord fact c
         && List.all isCleanAttrForBuild c.attrs
         && List.all isCleanSlotForBuild c.content
 

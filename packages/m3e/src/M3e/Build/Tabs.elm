@@ -1,7 +1,7 @@
 module M3e.Build.Tabs exposing
     ( Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
     , nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
-    , build
+    , nextIcon, prevIcon, build
     )
 
 {-|
@@ -9,14 +9,12 @@ The ⑤ Build shape for `<m3e-tabs>` — phantom-typed pipeline API. Import qual
 
 @docs Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
 @docs nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput
-@docs onInput, build
+@docs onInput, nextIcon, prevIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.Tabs
 import M3e.Cem.Tabs
 import M3e.Element
 import M3e.Element.Internal
@@ -158,49 +156,65 @@ variant v_ b_ =
 
 {-| Dispatched when the selected tab changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.onChange v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched before the selected state of a tab changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Tabs.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state of a tab changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Tabs.onInput v_)
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Tabs.onInput v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `next-icon` slot. -}
+nextIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | nextIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | nextIcon : M3e.Build.Internal.Used } msg kind
+nextIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "next-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `prev-icon` slot. -}
+prevIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | prevIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | prevIcon : M3e.Build.Internal.Used } msg kind
+prevIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "prev-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

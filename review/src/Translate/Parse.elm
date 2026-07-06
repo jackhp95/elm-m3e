@@ -242,8 +242,19 @@ parseStandard scope fact range ( attrItems, attrDyn ) ( contentItems, contentDyn
         actionAttrNames =
             List.map Tuple.first fact.actionMap
 
+        -- Only components whose ④/⑤ record carries an `action` field
+        -- (`fact.usesAction`) lift action-attrs (onClick/href) out of the attrs
+        -- list into `requiredAction`. For components WITHOUT an action record
+        -- (e.g. AssistChip, whose Record shape is `{ content }` and whose onClick
+        -- is a plain attr), the action-attrs stay in the attrs list so the
+        -- Record/Build emitter re-emits them as ordinary `M3e.Record.<C>.onClick`
+        -- setters rather than a spurious `action =` field the record rejects.
         ( actionAttrs, plainAttrs ) =
-            List.partition (isActionAttr actionAttrNames) attrItems
+            if fact.usesAction then
+                List.partition (isActionAttr actionAttrNames) attrItems
+
+            else
+                ( [], attrItems )
 
         requiredAction_ =
             actionAttrs

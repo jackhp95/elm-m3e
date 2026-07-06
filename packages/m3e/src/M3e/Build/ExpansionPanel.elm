@@ -1,7 +1,7 @@
 module M3e.Build.ExpansionPanel exposing
     ( Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
     , open, toggleDirection, togglePosition, onOpening, onOpened, onClosing, onClosed
-    , build
+    , child, header, toggleIcon, build
     )
 
 {-|
@@ -9,15 +9,13 @@ The ⑤ Build shape for `<m3e-expansion-panel>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, expansionPanel, disabled, hideToggle
 @docs open, toggleDirection, togglePosition, onOpening, onOpened, onClosing
-@docs onClosed, build
+@docs onClosed, child, header, toggleIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.ExpansionPanel
-import M3e.Cem.Html.ExpansionPanel
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -145,17 +143,13 @@ togglePosition v_ b_ =
 
 {-| Dispatched when the expansion panel begins to open. -}
 onOpening :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpansionPanel.onOpening
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ExpansionPanel.onOpening v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -163,35 +157,26 @@ onOpening v_ b_ =
 
 {-| Dispatched when the expansion panel has opened. -}
 onOpened :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpansionPanel.onOpened
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ExpansionPanel.onOpened v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the expansion panel begins to close. -}
 onClosing :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpansionPanel.onClosing
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ExpansionPanel.onClosing v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -199,18 +184,52 @@ onClosing v_ b_ =
 
 {-| Dispatched when the expansion panel has closed. -}
 onClosed :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpansionPanel.onClosed
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ExpansionPanel.onClosed v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `header` slot. -}
+header :
+    M3e.Element.Element any msg
+    -> Builder a { s | header : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | header : M3e.Build.Internal.Used } msg kind
+header el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "header" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `toggle-icon` slot. -}
+toggleIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
+toggleIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "toggle-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

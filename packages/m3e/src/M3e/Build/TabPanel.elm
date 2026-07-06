@@ -1,11 +1,11 @@
 module M3e.Build.TabPanel exposing
-    ( Builder, AttrCaps, SlotCaps, tabPanel, build
+    ( Builder, AttrCaps, SlotCaps, tabPanel, child, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-tab-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TabPanel as TabPanel`.
 
-@docs Builder, AttrCaps, SlotCaps, tabPanel, build
+@docs Builder, AttrCaps, SlotCaps, tabPanel, child, build
 -}
 
 
@@ -47,6 +47,19 @@ tabPanel =
              )
              []
              []
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

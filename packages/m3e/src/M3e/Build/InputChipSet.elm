@@ -1,20 +1,18 @@
 module M3e.Build.InputChipSet exposing
     ( Builder, AttrCaps, SlotCaps, inputChipSet, disabled, name
-    , required, vertical, onChange, build
+    , required, vertical, onChange, input, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-input-chip-set>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.InputChipSet as InputChipSet`.
 
 @docs Builder, AttrCaps, SlotCaps, inputChipSet, disabled, name
-@docs required, vertical, onChange, build
+@docs required, vertical, onChange, input, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.InputChipSet
 import M3e.Cem.InputChipSet
 import M3e.Element
 import M3e.Element.Internal
@@ -113,18 +111,26 @@ vertical v_ b_ =
 
 {-| Dispatched when a chip is added to, or removed from, the set. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.InputChipSet.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChipSet.onChange v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `input` slot. -}
+input :
+    M3e.Element.Element any msg
+    -> Builder a { s | input : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | input : M3e.Build.Internal.Used } msg kind
+input el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "input" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

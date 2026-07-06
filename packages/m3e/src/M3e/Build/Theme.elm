@@ -12,10 +12,8 @@ The ⑤ Build shape for `<m3e-theme>` — phantom-typed pipeline API. Import qua
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.Theme
 import M3e.Cem.Theme
 import M3e.Element
 import M3e.Element.Internal
@@ -173,18 +171,13 @@ motion v_ b_ =
 
 {-| Dispatched when the theme changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Theme.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Theme.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 

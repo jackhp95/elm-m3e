@@ -1,7 +1,7 @@
 module M3e.Build.IconButton exposing
     ( Builder, AttrCaps, SlotCaps, iconButton, disabled, disabledInteractive
     , name, selected, shape, size, toggle, type_, value
-    , variant, width, onBeforeinput, onInput, onChange, build
+    , variant, width, onBeforeinput, onInput, onChange, selectedSlot, build
     )
 
 {-|
@@ -10,15 +10,13 @@ The ⑤ Build shape for `<m3e-icon-button>` — phantom-typed pipeline API. Impo
 @docs Builder, AttrCaps, SlotCaps, iconButton, disabled, disabledInteractive
 @docs name, selected, shape, size, toggle, type_
 @docs value, variant, width, onBeforeinput, onInput, onChange
-@docs build
+@docs selectedSlot, build
 -}
 
 
-import Json.Decode
 import M3e.Action
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.IconButton
 import M3e.Cem.IconButton
 import M3e.Element
 import M3e.Element.Internal
@@ -263,17 +261,13 @@ width v_ b_ =
 
 {-| Dispatched before a toggle button's selected state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.IconButton.onBeforeinput
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.IconButton.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -281,36 +275,39 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when a toggle button's selected state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.IconButton.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.IconButton.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when a toggle button's selected state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.IconButton.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.IconButton.onChange v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `selected` slot. -}
+selectedSlot :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | selected : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | selected : M3e.Build.Internal.Used } msg kind
+selectedSlot el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "selected" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

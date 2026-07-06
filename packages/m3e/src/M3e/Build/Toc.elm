@@ -1,13 +1,13 @@
 module M3e.Build.Toc exposing
     ( Builder, AttrCaps, SlotCaps, toc, for, maxDepth
-    , build
+    , child, overline, title, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-toc>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Toc as Toc`.
 
 @docs Builder, AttrCaps, SlotCaps, toc, for, maxDepth
-@docs build
+@docs child, overline, title, build
 -}
 
 
@@ -79,6 +79,45 @@ maxDepth v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.Toc.maxDepth v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `overline` slot. -}
+overline :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | overline : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | overline : M3e.Build.Internal.Used } msg kind
+overline el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "overline" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `title` slot. -}
+title :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | title : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | title : M3e.Build.Internal.Used } msg kind
+title el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "title" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

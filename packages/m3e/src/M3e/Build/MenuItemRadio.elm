@@ -1,20 +1,18 @@
 module M3e.Build.MenuItemRadio exposing
     ( Builder, AttrCaps, SlotCaps, menuItemRadio, disabled, checked
-    , onClick, build
+    , onClick, child, icon, trailingIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu-item-radio>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItemRadio as MenuItemRadio`.
 
 @docs Builder, AttrCaps, SlotCaps, menuItemRadio, disabled, checked
-@docs onClick, build
+@docs onClick, child, icon, trailingIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.MenuItemRadio
 import M3e.Cem.MenuItemRadio
 import M3e.Element
 import M3e.Element.Internal
@@ -88,18 +86,52 @@ checked v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.MenuItemRadio.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItemRadio.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `trailing-icon` slot. -}
+trailingIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
+trailingIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "trailing-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

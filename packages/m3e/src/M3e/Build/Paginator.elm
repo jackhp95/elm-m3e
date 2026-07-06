@@ -1,7 +1,8 @@
 module M3e.Build.Paginator exposing
     ( Builder, AttrCaps, SlotCaps, paginator, disabled, firstPageLabel
     , hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex, pageSize
-    , pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage, build
+    , pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage, firstPageIcon, previousPageIcon
+    , nextPageIcon, lastPageIcon, build
     )
 
 {-|
@@ -10,14 +11,12 @@ The ⑤ Build shape for `<m3e-paginator>` — phantom-typed pipeline API. Import
 @docs Builder, AttrCaps, SlotCaps, paginator, disabled, firstPageLabel
 @docs hidePageSize, itemsPerPageLabel, lastPageLabel, length, nextPageLabel, pageIndex
 @docs pageSize, pageSizes, pageSizeVariant, previousPageLabel, showFirstLastButtons, onPage
-@docs build
+@docs firstPageIcon, previousPageIcon, nextPageIcon, lastPageIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.Paginator
 import M3e.Cem.Paginator
 import M3e.Element
 import M3e.Element.Internal
@@ -263,18 +262,68 @@ showFirstLastButtons v_ b_ =
 
 {-| Dispatched when a user selects a different page size or navigates to another page. -}
 onPage :
-    Json.Decode.Decoder msg
+    (Int -> msg)
     -> Builder { a | onPage : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onPage : M3e.Build.Internal.Used } s msg kind
 onPage v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Paginator.onPage
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Paginator.onPage v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `first-page-icon` slot. -}
+firstPageIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | firstPageIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | firstPageIcon : M3e.Build.Internal.Used } msg kind
+firstPageIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "first-page-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `previous-page-icon` slot. -}
+previousPageIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s
+        | previousPageIcon : M3e.Build.Internal.Available
+    } msg kind
+    -> Builder a { s | previousPageIcon : M3e.Build.Internal.Used } msg kind
+previousPageIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "previous-page-icon" el_)
              )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `next-page-icon` slot. -}
+nextPageIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | nextPageIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | nextPageIcon : M3e.Build.Internal.Used } msg kind
+nextPageIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "next-page-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `last-page-icon` slot. -}
+lastPageIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | lastPageIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | lastPageIcon : M3e.Build.Internal.Used } msg kind
+lastPageIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "last-page-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

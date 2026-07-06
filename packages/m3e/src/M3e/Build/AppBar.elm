@@ -1,13 +1,14 @@
 module M3e.Build.AppBar exposing
     ( Builder, AttrCaps, SlotCaps, appBar, centered, for
-    , size, build
+    , size, leading, title, subtitle, leadingIcon, trailingIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-app-bar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.AppBar as AppBar`.
 
 @docs Builder, AttrCaps, SlotCaps, appBar, centered, for
-@docs size, build
+@docs size, leading, title, subtitle, leadingIcon, trailingIcon
+@docs build
 -}
 
 
@@ -98,6 +99,78 @@ size v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.AppBar.size v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `leading` slot. -}
+leading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    } msg
+    -> Builder a { s | leading : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | leading : M3e.Build.Internal.Used } msg kind
+leading el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "leading" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `title` slot. -}
+title :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | title : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | title : M3e.Build.Internal.Used } msg kind
+title el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "title" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `subtitle` slot. -}
+subtitle :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | subtitle : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | subtitle : M3e.Build.Internal.Used } msg kind
+subtitle el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "subtitle" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `leading-icon` slot. -}
+leadingIcon :
+    M3e.Element.Element any msg
+    -> Builder a { s | leadingIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | leadingIcon : M3e.Build.Internal.Used } msg kind
+leadingIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "leading-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `trailing-icon` slot. -}
+trailingIcon :
+    M3e.Element.Element any msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
+trailingIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "trailing-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

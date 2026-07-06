@@ -1,7 +1,7 @@
 module M3e.Build.Calendar exposing
     ( Builder, AttrCaps, SlotCaps, calendar, date, maxDate
     , minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
-    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, build
+    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, header, build
     )
 
 {-|
@@ -10,15 +10,13 @@ The ⑤ Build shape for `<m3e-calendar>` — phantom-typed pipeline API. Import 
 @docs Builder, AttrCaps, SlotCaps, calendar, date, maxDate
 @docs minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
 @docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
-@docs build
+@docs header, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Calendar
-import M3e.Cem.Html.Calendar
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -263,18 +261,26 @@ nextMultiYearLabel v_ b_ =
 
 {-| Dispatched when the selected date changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (String -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Calendar.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Calendar.onChange v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `header` slot. -}
+header :
+    M3e.Element.Element any msg
+    -> Builder a { s | header : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | header : M3e.Build.Internal.Used } msg kind
+header el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "header" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

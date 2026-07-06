@@ -12,11 +12,9 @@ The ⑤ Build shape for `<m3e-filter-chip-set>` — phantom-typed pipeline API. 
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FilterChipSet
-import M3e.Cem.Html.FilterChipSet
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -136,35 +134,27 @@ vertical v_ b_ =
 
 {-| Dispatched when the selected state of a chip changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChipSet.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChipSet.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched before the selected state of a chip changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChipSet.onBeforeinput
-                       v_
-                  )
+                  (M3e.Cem.FilterChipSet.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -172,18 +162,13 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the selected state of a chip changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChipSet.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChipSet.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 

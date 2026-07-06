@@ -11,10 +11,8 @@ The ⑤ Build shape for `<m3e-text-highlight>` — phantom-typed pipeline API. I
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.TextHighlight
 import M3e.Cem.TextHighlight
 import M3e.Element
 import M3e.Element.Internal
@@ -118,17 +116,14 @@ term v_ b_ =
 
 {-| Dispatched when content is highlighted. -}
 onHighlight :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onHighlight : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onHighlight : M3e.Build.Internal.Used } s msg kind
 onHighlight v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.TextHighlight.onHighlight
-                       v_
-                  )
+                  (M3e.Cem.TextHighlight.onHighlight v_)
              )
              (M3e.Build.Internal.node_ b_)
         )

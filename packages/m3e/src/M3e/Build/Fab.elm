@@ -1,7 +1,7 @@
 module M3e.Build.Fab exposing
     ( Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
     , extended, lowered, name, size, type_, value, variant
-    , build
+    , label, closeIcon, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-fab>` — phantom-typed pipeline API. Import quali
 
 @docs Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
 @docs extended, lowered, name, size, type_, value
-@docs variant, build
+@docs variant, label, closeIcon, build
 -}
 
 
@@ -219,6 +219,32 @@ variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.Fab.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `label` slot. -}
+label :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | label : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | label : M3e.Build.Internal.Used } msg kind
+label el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "label" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `close-icon` slot. -}
+closeIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
+closeIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "close-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 
