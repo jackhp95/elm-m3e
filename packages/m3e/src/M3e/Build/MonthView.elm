@@ -1,15 +1,15 @@
 module M3e.Build.MonthView exposing
-    ( Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
-    , active, today, date, activeDate, minDate, maxDate, onChange
-    , onActiveChange, build
+    ( Builder, AttrCaps, SlotCaps, monthView, attr, rangeStart
+    , rangeEnd, active, today, date, activeDate, minDate, maxDate
+    , onChange, onActiveChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-month-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MonthView as MonthView`.
 
-@docs Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
-@docs active, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange, build
+@docs Builder, AttrCaps, SlotCaps, monthView, attr, rangeStart
+@docs rangeEnd, active, today, date, activeDate, minDate
+@docs maxDate, onChange, onActiveChange, build
 -}
 
 
@@ -61,6 +61,19 @@ monthView =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

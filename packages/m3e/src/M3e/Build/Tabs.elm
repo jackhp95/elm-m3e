@@ -1,15 +1,15 @@
 module M3e.Build.Tabs exposing
-    ( Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
-    , nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput, onInput
-    , nextIcon, prevIcon, build
+    ( Builder, AttrCaps, SlotCaps, tabs, attr, disablePagination
+    , headerPosition, nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput
+    , onInput, nextIcon, prevIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-tabs>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tabs as Tabs`.
 
-@docs Builder, AttrCaps, SlotCaps, tabs, disablePagination, headerPosition
-@docs nextPageLabel, previousPageLabel, stretch, variant, onChange, onBeforeinput
-@docs onInput, nextIcon, prevIcon, build
+@docs Builder, AttrCaps, SlotCaps, tabs, attr, disablePagination
+@docs headerPosition, nextPageLabel, previousPageLabel, stretch, variant, onChange
+@docs onBeforeinput, onInput, nextIcon, prevIcon, build
 -}
 
 
@@ -62,6 +62,19 @@ tabs =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

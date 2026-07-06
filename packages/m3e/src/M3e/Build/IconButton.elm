@@ -1,16 +1,17 @@
 module M3e.Build.IconButton exposing
-    ( Builder, AttrCaps, SlotCaps, iconButton, disabled, disabledInteractive
-    , name, selected, shape, size, toggle, type_, value
-    , variant, width, onBeforeinput, onInput, onChange, selectedSlot, build
+    ( Builder, AttrCaps, SlotCaps, iconButton, attr, disabled
+    , disabledInteractive, name, selected, shape, size, toggle, type_
+    , value, variant, width, onBeforeinput, onInput, onChange, selectedSlot
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-icon-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.IconButton as IconButton`.
 
-@docs Builder, AttrCaps, SlotCaps, iconButton, disabled, disabledInteractive
-@docs name, selected, shape, size, toggle, type_
-@docs value, variant, width, onBeforeinput, onInput, onChange
-@docs selectedSlot, build
+@docs Builder, AttrCaps, SlotCaps, iconButton, attr, disabled
+@docs disabledInteractive, name, selected, shape, size, toggle
+@docs type_, value, variant, width, onBeforeinput, onInput
+@docs onChange, selectedSlot, build
 -}
 
 
@@ -92,6 +93,19 @@ iconButton req_ =
                  req_.action
                  (M3e.Element.toNode req_.content)
              ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

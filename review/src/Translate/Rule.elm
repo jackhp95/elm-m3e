@@ -204,6 +204,7 @@ candidateModules fact =
     , "M3e.Cem.Html." ++ comp
     , "Seam"
     , "M3e.Action"
+    , "M3e.Aria"
     , "M3e.Element"
     , "Html.Attributes"
     , "Html.Events"
@@ -264,16 +265,16 @@ emitFor target fact source c =
 
 
 {-| Record shape requires the required content to be present in the canonical
-form; and, for components whose record carries an `action` field
-(`fact.usesAction`), the required action too. Components without an action
-record (e.g. AssistChip) satisfy the record from `content` alone, keeping any
-onClick as a plain attr. Standard-source calls that don't lift these out fall
-back to whole-node Seam escape.
+form. The `action` field, for components whose record carries one
+(`fact.usesAction`), is always satisfiable: a lifted action is emitted directly,
+and its ABSENCE (an aria-only / icon-only call) is filled with the no-op
+`M3e.Action.none` by `emitRecordArg`. Components without an action record (e.g.
+AssistChip) satisfy the record from `content` alone. Only a missing required
+content forces the whole-node Seam escape.
 -}
 canEmitRecord : Fact -> Canonical -> Bool
-canEmitRecord fact c =
-    (c.requiredContent /= Nothing)
-        && (not fact.usesAction || c.requiredAction /= Nothing)
+canEmitRecord _ c =
+    c.requiredContent /= Nothing
 
 
 {-| Build shape has the same required-content/action requirement as Record.
@@ -292,6 +293,11 @@ isCleanAttrForBuild : Translate.Canonical.AttrItem -> Bool
 isCleanAttrForBuild item =
     case item of
         Translate.Canonical.KnownAttr _ ->
+            True
+
+        -- Universal `Attr` setters (`M3e.Aria.*`) inject cleanly through the
+        -- Build module's generic `attr` seam — not residue.
+        Translate.Canonical.UniversalAttr _ ->
             True
 
         _ ->

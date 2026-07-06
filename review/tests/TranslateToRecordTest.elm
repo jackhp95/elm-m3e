@@ -239,4 +239,36 @@ view =
     M3e.Record.AssistChip.view { content = c } [ M3e.Record.AssistChip.onClick DoThing ] []
 """
                         ]
+        , test "aria-only IconButton (universal M3e.Aria attr, no action) converts to Record with a verbatim attr + default action=none" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.IconButton
+import M3e.Aria
+
+view =
+    M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.IconButton.child icon ]
+"""
+                    |> Review.Test.run (TranslateToRecord.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.IconButton call to TranslateToRecord"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.IconButton.view [ M3e.Aria.label \"Toggle theme\" ] [ M3e.IconButton.child icon ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.IconButton
+import M3e.Aria
+import M3e.Action
+import M3e.Record.IconButton
+
+view =
+    M3e.Record.IconButton.view { content = icon, action = M3e.Action.none } [ M3e.Aria.label "Toggle theme" ] []
+"""
+                        ]
         ]

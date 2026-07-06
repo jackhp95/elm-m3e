@@ -1,14 +1,15 @@
 module M3e.Build.MultiYearView exposing
-    ( Builder, AttrCaps, SlotCaps, multiYearView, active, today
-    , date, activeDate, minDate, maxDate, onChange, onActiveChange, build
+    ( Builder, AttrCaps, SlotCaps, multiYearView, attr, active
+    , today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-multi-year-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MultiYearView as MultiYearView`.
 
-@docs Builder, AttrCaps, SlotCaps, multiYearView, active, today
-@docs date, activeDate, minDate, maxDate, onChange, onActiveChange
-@docs build
+@docs Builder, AttrCaps, SlotCaps, multiYearView, attr, active
+@docs today, date, activeDate, minDate, maxDate, onChange
+@docs onActiveChange, build
 -}
 
 
@@ -58,6 +59,19 @@ multiYearView =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

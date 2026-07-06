@@ -1,16 +1,16 @@
 module M3e.Build.BottomSheet exposing
-    ( Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
-    , handleLabel, hideable, hideFriction, modal, open, overshootLimit, onOpening
-    , onClosing, onCancel, onOpened, onClosed, header, build
+    ( Builder, AttrCaps, SlotCaps, bottomSheet, attr, detent
+    , handle, handleLabel, hideable, hideFriction, modal, open, overshootLimit
+    , onOpening, onClosing, onCancel, onOpened, onClosed, header, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-bottom-sheet>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BottomSheet as BottomSheet`.
 
-@docs Builder, AttrCaps, SlotCaps, bottomSheet, detent, handle
-@docs handleLabel, hideable, hideFriction, modal, open, overshootLimit
-@docs onOpening, onClosing, onCancel, onOpened, onClosed, header
-@docs build
+@docs Builder, AttrCaps, SlotCaps, bottomSheet, attr, detent
+@docs handle, handleLabel, hideable, hideFriction, modal, open
+@docs overshootLimit, onOpening, onClosing, onCancel, onOpened, onClosed
+@docs header, build
 -}
 
 
@@ -65,6 +65,19 @@ bottomSheet =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

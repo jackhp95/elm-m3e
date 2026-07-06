@@ -1,17 +1,18 @@
 module M3e.Build.Card exposing
-    ( Builder, AttrCaps, SlotCaps, card, actionable, inline
-    , orientation, variant, href, target, rel, download, name
-    , value, type_, disabledInteractive, disabled, onClick, child, header
-    , content, actions, footer, build
+    ( Builder, AttrCaps, SlotCaps, card, attr, actionable
+    , inline, orientation, variant, href, target, rel, download
+    , name, value, type_, disabledInteractive, disabled, onClick, child
+    , header, content, actions, footer, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-card>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Card as Card`.
 
-@docs Builder, AttrCaps, SlotCaps, card, actionable, inline
-@docs orientation, variant, href, target, rel, download
-@docs name, value, type_, disabledInteractive, disabled, onClick
-@docs child, header, content, actions, footer, build
+@docs Builder, AttrCaps, SlotCaps, card, attr, actionable
+@docs inline, orientation, variant, href, target, rel
+@docs download, name, value, type_, disabledInteractive, disabled
+@docs onClick, child, header, content, actions, footer
+@docs build
 -}
 
 
@@ -72,6 +73,19 @@ card =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

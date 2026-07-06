@@ -1,16 +1,16 @@
 module M3e.Build.Dialog exposing
-    ( Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
-    , disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing
-    , onClosed, onCancel, header, actions, closeIcon, build
+    ( Builder, AttrCaps, SlotCaps, dialog, attr, alert
+    , closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
+    , onClosing, onClosed, onCancel, header, actions, closeIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-dialog>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Dialog as Dialog`.
 
-@docs Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
-@docs disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
-@docs onClosing, onClosed, onCancel, header, actions, closeIcon
-@docs build
+@docs Builder, AttrCaps, SlotCaps, dialog, attr, alert
+@docs closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening
+@docs onOpened, onClosing, onClosed, onCancel, header, actions
+@docs closeIcon, build
 -}
 
 
@@ -66,6 +66,19 @@ dialog =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,13 +1,14 @@
 module M3e.Build.Collapsible exposing
-    ( Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-    , noAnimate, onOpening, onOpened, onClosing, onClosed, build
+    ( Builder, AttrCaps, SlotCaps, collapsible, attr, open
+    , orientation, noAnimate, onOpening, onOpened, onClosing, onClosed, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-collapsible>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Collapsible as Collapsible`.
 
-@docs Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-@docs noAnimate, onOpening, onOpened, onClosing, onClosed, build
+@docs Builder, AttrCaps, SlotCaps, collapsible, attr, open
+@docs orientation, noAnimate, onOpening, onOpened, onClosing, onClosed
+@docs build
 -}
 
 
@@ -56,6 +57,19 @@ collapsible =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

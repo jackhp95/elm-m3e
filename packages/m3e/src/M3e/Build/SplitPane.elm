@@ -1,16 +1,17 @@
 module M3e.Build.SplitPane exposing
-    ( Builder, AttrCaps, SlotCaps, splitPane, label, max
-    , min, orientation, overshootLimit, step, value, wrapDetents, name
-    , disabled, onChange, onBeforeinput, onInput, start, end, build
+    ( Builder, AttrCaps, SlotCaps, splitPane, attr, label
+    , max, min, orientation, overshootLimit, step, value, wrapDetents
+    , name, disabled, onChange, onBeforeinput, onInput, start, end
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-split-pane>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SplitPane as SplitPane`.
 
-@docs Builder, AttrCaps, SlotCaps, splitPane, label, max
-@docs min, orientation, overshootLimit, step, value, wrapDetents
-@docs name, disabled, onChange, onBeforeinput, onInput, start
-@docs end, build
+@docs Builder, AttrCaps, SlotCaps, splitPane, attr, label
+@docs max, min, orientation, overshootLimit, step, value
+@docs wrapDetents, name, disabled, onChange, onBeforeinput, onInput
+@docs start, end, build
 -}
 
 
@@ -65,6 +66,19 @@ splitPane =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

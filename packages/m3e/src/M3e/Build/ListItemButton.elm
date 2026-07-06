@@ -1,15 +1,15 @@
 module M3e.Build.ListItemButton exposing
-    ( Builder, AttrCaps, SlotCaps, listItemButton, href, target
-    , rel, download, disabled, onClick, child, leading, overline
-    , supportingText, trailing, build
+    ( Builder, AttrCaps, SlotCaps, listItemButton, attr, href
+    , target, rel, download, disabled, onClick, child, leading
+    , overline, supportingText, trailing, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list-item-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListItemButton as ListItemButton`.
 
-@docs Builder, AttrCaps, SlotCaps, listItemButton, href, target
-@docs rel, download, disabled, onClick, child, leading
-@docs overline, supportingText, trailing, build
+@docs Builder, AttrCaps, SlotCaps, listItemButton, attr, href
+@docs target, rel, download, disabled, onClick, child
+@docs leading, overline, supportingText, trailing, build
 -}
 
 
@@ -62,6 +62,19 @@ listItemButton =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,15 +1,15 @@
 module M3e.Build.AssistChip exposing
-    ( Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
-    , download, href, name, rel, target, type_, value
-    , variant, onClick, icon, build
+    ( Builder, AttrCaps, SlotCaps, assistChip, attr, disabled
+    , disabledInteractive, download, href, name, rel, target, type_
+    , value, variant, onClick, icon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-assist-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.AssistChip as AssistChip`.
 
-@docs Builder, AttrCaps, SlotCaps, assistChip, disabled, disabledInteractive
-@docs download, href, name, rel, target, type_
-@docs value, variant, onClick, icon, build
+@docs Builder, AttrCaps, SlotCaps, assistChip, attr, disabled
+@docs disabledInteractive, download, href, name, rel, target
+@docs type_, value, variant, onClick, icon, build
 -}
 
 
@@ -64,6 +64,19 @@ assistChip req_ =
              )
              []
              [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -139,6 +139,9 @@ renderAsHtmlAttr fact source item =
         EnumTokenLossy { name, tokenText } ->
             "Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\""
 
+        UniversalAttr { raw } ->
+            source (Node.range raw)
+
         EscapedAttr { raw } ->
             source (Node.range raw)
 

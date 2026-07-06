@@ -1,11 +1,13 @@
 module M3e.Build.StepperReset exposing
-    ( Builder, AttrCaps, SlotCaps, stepperReset, child, build
+    ( Builder, AttrCaps, SlotCaps, stepperReset, attr, child
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-stepper-reset>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepperReset as StepperReset`.
 
-@docs Builder, AttrCaps, SlotCaps, stepperReset, child, build
+@docs Builder, AttrCaps, SlotCaps, stepperReset, attr, child
+@docs build
 -}
 
 
@@ -47,6 +49,19 @@ stepperReset =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

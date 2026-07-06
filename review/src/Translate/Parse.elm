@@ -402,7 +402,7 @@ classifyStandardAttr fact item =
     case Node.value item of
         Expression.Application (head :: valueNode :: _) ->
             case Node.value head of
-                Expression.FunctionOrValue _ name ->
+                Expression.FunctionOrValue moduleParts name ->
                     -- Check if this attr name is in fact.attrRewrites
                     let
                         knownAttr =
@@ -415,13 +415,39 @@ classifyStandardAttr fact item =
                             classifyKnownAttrValue fact canonicalName valueNode (Node.range item)
 
                         Nothing ->
-                            EscapedAttr { raw = item }
+                            if isUniversalAttrModule moduleParts then
+                                UniversalAttr { raw = item }
+
+                            else
+                                EscapedAttr { raw = item }
 
                 _ ->
                     EscapedAttr { raw = item }
 
         _ ->
             EscapedAttr { raw = item }
+
+
+{-| Universal (`capability`-polymorphic) `Attr` setter modules — a setter drawn
+from one of these is ALREADY an IR `Attr caps msg` that unifies onto any
+component/surface (it is not a per-component setter and not a raw Html
+attribute). Recognised so the emitter passes it through verbatim (④ Record /
+③ Standard / ② Cem) or via the generic `attr` injection (⑤ Build) rather than
+`Seam.asAttribute`-wrapping it as an `EscapedAttr` (which type-errors, since
+`Seam.asAttribute` expects a raw `Html.Attribute`, not an `Attr`).
+
+The allow-list is matched against the syntactic module prefix of the setter
+call; the generated example corpus always writes these fully qualified
+(`M3e.Aria.label`). Extend the list as further universal-`Attr` modules land.
+-}
+universalAttrModules : List (List String)
+universalAttrModules =
+    [ [ "M3e", "Aria" ] ]
+
+
+isUniversalAttrModule : List String -> Bool
+isUniversalAttrModule moduleParts =
+    List.member moduleParts universalAttrModules
 
 
 {-| Classify a recognised attr's value. If the attr is an enum attr (per

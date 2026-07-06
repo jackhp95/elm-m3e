@@ -1,13 +1,13 @@
 module M3e.Build.InputChipSet exposing
-    ( Builder, AttrCaps, SlotCaps, inputChipSet, disabled, name
-    , required, vertical, onChange, input, build
+    ( Builder, AttrCaps, SlotCaps, inputChipSet, attr, disabled
+    , name, required, vertical, onChange, input, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-input-chip-set>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.InputChipSet as InputChipSet`.
 
-@docs Builder, AttrCaps, SlotCaps, inputChipSet, disabled, name
-@docs required, vertical, onChange, input, build
+@docs Builder, AttrCaps, SlotCaps, inputChipSet, attr, disabled
+@docs name, required, vertical, onChange, input, build
 -}
 
 
@@ -54,6 +54,19 @@ inputChipSet =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

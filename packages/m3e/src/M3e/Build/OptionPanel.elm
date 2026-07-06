@@ -1,13 +1,14 @@
 module M3e.Build.OptionPanel exposing
-    ( Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
-    , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, build
+    ( Builder, AttrCaps, SlotCaps, optionPanel, attr, state
+    , scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-option-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.OptionPanel as OptionPanel`.
 
-@docs Builder, AttrCaps, SlotCaps, optionPanel, state, scrollStrategy
-@docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData, build
+@docs Builder, AttrCaps, SlotCaps, optionPanel, attr, state
+@docs scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, noData
+@docs build
 -}
 
 
@@ -55,6 +56,19 @@ optionPanel =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,15 +1,15 @@
 module M3e.Build.DrawerContainer exposing
-    ( Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
-    , endDivider, start, startMode, startDivider, onChange, child, startSlot
-    , endSlot, build
+    ( Builder, AttrCaps, SlotCaps, drawerContainer, attr, end
+    , endMode, endDivider, start, startMode, startDivider, onChange, child
+    , startSlot, endSlot, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-drawer-container>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.DrawerContainer as DrawerContainer`.
 
-@docs Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
-@docs endDivider, start, startMode, startDivider, onChange, child
-@docs startSlot, endSlot, build
+@docs Builder, AttrCaps, SlotCaps, drawerContainer, attr, end
+@docs endMode, endDivider, start, startMode, startDivider, onChange
+@docs child, startSlot, endSlot, build
 -}
 
 
@@ -61,6 +61,19 @@ drawerContainer =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,16 +1,17 @@
 module M3e.Build.Calendar exposing
-    ( Builder, AttrCaps, SlotCaps, calendar, date, maxDate
-    , minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel
-    , previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, header, build
+    ( Builder, AttrCaps, SlotCaps, calendar, attr, date
+    , maxDate, minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
+    , nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange, header
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-calendar>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Calendar as Calendar`.
 
-@docs Builder, AttrCaps, SlotCaps, calendar, date, maxDate
-@docs minDate, rangeEnd, rangeStart, startAt, startView, previousMonthLabel
-@docs nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, onChange
-@docs header, build
+@docs Builder, AttrCaps, SlotCaps, calendar, attr, date
+@docs maxDate, minDate, rangeEnd, rangeStart, startAt, startView
+@docs previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
+@docs onChange, header, build
 -}
 
 
@@ -66,6 +67,19 @@ calendar =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

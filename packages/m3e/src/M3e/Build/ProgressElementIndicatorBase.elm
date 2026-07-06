@@ -1,13 +1,13 @@
 module M3e.Build.ProgressElementIndicatorBase exposing
-    ( Builder, AttrCaps, SlotCaps, progressElementIndicatorBase, value, max
-    , variant, build
+    ( Builder, AttrCaps, SlotCaps, progressElementIndicatorBase, attr, value
+    , max, variant, build
     )
 
 {-|
 The ⑤ Build shape for `<ProgressElementIndicatorBase>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ProgressElementIndicatorBase as ProgressElementIndicatorBase`.
 
-@docs Builder, AttrCaps, SlotCaps, progressElementIndicatorBase, value, max
-@docs variant, build
+@docs Builder, AttrCaps, SlotCaps, progressElementIndicatorBase, attr, value
+@docs max, variant, build
 -}
 
 
@@ -52,6 +52,19 @@ progressElementIndicatorBase =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

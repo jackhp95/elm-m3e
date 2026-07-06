@@ -1,17 +1,17 @@
 module M3e.Build.Autocomplete exposing
-    ( Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
-    , filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel, noDataLabel
-    , panelClass, required, for, onChange, onQuery, onToggle, loadingSlot
-    , noData, build
+    ( Builder, AttrCaps, SlotCaps, autocomplete, attr, autoActivate
+    , caseSensitive, filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel
+    , noDataLabel, panelClass, required, for, onChange, onQuery, onToggle
+    , loadingSlot, noData, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-autocomplete>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Autocomplete as Autocomplete`.
 
-@docs Builder, AttrCaps, SlotCaps, autocomplete, autoActivate, caseSensitive
-@docs filter, hideSelectionIndicator, hideLoading, hideNoData, loading, loadingLabel
-@docs noDataLabel, panelClass, required, for, onChange, onQuery
-@docs onToggle, loadingSlot, noData, build
+@docs Builder, AttrCaps, SlotCaps, autocomplete, attr, autoActivate
+@docs caseSensitive, filter, hideSelectionIndicator, hideLoading, hideNoData, loading
+@docs loadingLabel, noDataLabel, panelClass, required, for, onChange
+@docs onQuery, onToggle, loadingSlot, noData, build
 -}
 
 
@@ -70,6 +70,19 @@ autocomplete =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

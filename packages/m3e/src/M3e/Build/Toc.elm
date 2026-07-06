@@ -1,13 +1,13 @@
 module M3e.Build.Toc exposing
-    ( Builder, AttrCaps, SlotCaps, toc, for, maxDepth
-    , child, overline, title, build
+    ( Builder, AttrCaps, SlotCaps, toc, attr, for
+    , maxDepth, child, overline, title, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-toc>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Toc as Toc`.
 
-@docs Builder, AttrCaps, SlotCaps, toc, for, maxDepth
-@docs child, overline, title, build
+@docs Builder, AttrCaps, SlotCaps, toc, attr, for
+@docs maxDepth, child, overline, title, build
 -}
 
 
@@ -54,6 +54,19 @@ toc =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,13 +1,13 @@
 module M3e.Build.Shape exposing
-    ( Builder, AttrCaps, SlotCaps, shape, name, child
-    , build
+    ( Builder, AttrCaps, SlotCaps, shape, attr, name
+    , child, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-shape>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Shape as Shape`.
 
-@docs Builder, AttrCaps, SlotCaps, shape, name, child
-@docs build
+@docs Builder, AttrCaps, SlotCaps, shape, attr, name
+@docs child, build
 -}
 
 
@@ -49,6 +49,19 @@ shape =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

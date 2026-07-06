@@ -166,6 +166,12 @@ emitAttrItem targetModule source item =
         EnumTokenLossy { name, tokenText } ->
             "Seam.asAttribute (Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\")"
 
+        UniversalAttr { raw } ->
+            -- Already an IR `Attr caps msg` (e.g. `M3e.Aria.label "…"`) — drops
+            -- straight into the target surface's attr list verbatim; the free
+            -- `capability` row unifies with the (possibly closed) attr row.
+            source (Node.range raw)
+
         EscapedAttr { raw } ->
             "Seam.asAttribute (" ++ source (Node.range raw) ++ ")"
 
@@ -263,7 +269,7 @@ emitRecord fact source c =
 
 
 emitRecordArg : Fact -> (Range -> String) -> Canonical -> String
-emitRecordArg _ source c =
+emitRecordArg fact source c =
     let
         contentField =
             case c.requiredContent of
@@ -282,7 +288,16 @@ emitRecordArg _ source c =
                     [ "action = " ++ actionAttrToRecordCall a.name (source (Node.range a.value)) ]
 
                 Nothing ->
-                    []
+                    -- A component whose ④/⑤ record carries an `action` field
+                    -- (`fact.usesAction`) but whose source call bears no action
+                    -- (e.g. an aria-only / icon-only IconButton) still needs the
+                    -- field: default it to the no-op `M3e.Action.none`, which
+                    -- unifies with any capability row.
+                    if fact.usesAction then
+                        [ "action = M3e.Action.none" ]
+
+                    else
+                        []
 
         other =
             c.otherRequired
@@ -374,6 +389,11 @@ buildAttrSetter buildModule source item =
     case item of
         KnownAttr { name, value } ->
             buildModule ++ "." ++ name ++ " " ++ source (Node.range value)
+
+        UniversalAttr { raw } ->
+            -- Inject an already-built universal `Attr` through the Build module's
+            -- generic, non-capability-consuming `attr` setter.
+            buildModule ++ ".attr " ++ argText source raw
 
         _ ->
             "identity  -- residue: Build has no attr-list seam"
@@ -483,6 +503,11 @@ cemAttrItem cemModule source item =
 
         EnumTokenLossy { name, tokenText } ->
             "Seam.asAttribute (Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\")"
+
+        UniversalAttr { raw } ->
+            -- ② Cem's attr list is already `Attr`-typed, so a universal
+            -- `Attr caps msg` sits in it verbatim.
+            source (Node.range raw)
 
         EscapedAttr { raw } ->
             "Seam.asAttribute (" ++ source (Node.range raw) ++ ")"
@@ -622,6 +647,9 @@ htmlAttrItem htmlModule fact source item =
 
         EnumTokenLossy { name, tokenText } ->
             "Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\""
+
+        UniversalAttr { raw } ->
+            source (Node.range raw)
 
         EscapedAttr { raw } ->
             source (Node.range raw)

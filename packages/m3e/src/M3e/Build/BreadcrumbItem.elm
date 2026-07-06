@@ -1,15 +1,15 @@
 module M3e.Build.BreadcrumbItem exposing
-    ( Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
-    , current, href, target, download, rel, onClick, child
-    , icon, build
+    ( Builder, AttrCaps, SlotCaps, breadcrumbItem, attr, itemLabel
+    , disabled, current, href, target, download, rel, onClick
+    , child, icon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BreadcrumbItem as BreadcrumbItem`.
 
-@docs Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
-@docs current, href, target, download, rel, onClick
-@docs child, icon, build
+@docs Builder, AttrCaps, SlotCaps, breadcrumbItem, attr, itemLabel
+@docs disabled, current, href, target, download, rel
+@docs onClick, child, icon, build
 -}
 
 
@@ -61,6 +61,19 @@ breadcrumbItem =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

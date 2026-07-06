@@ -1,16 +1,17 @@
 module M3e.Build.NavItem exposing
-    ( Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
-    , download, href, orientation, rel, selected, target, onBeforeinput
-    , onInput, onChange, onClick, child, icon, selectedIcon, build
+    ( Builder, AttrCaps, SlotCaps, navItem, attr, disabled
+    , disabledInteractive, download, href, orientation, rel, selected, target
+    , onBeforeinput, onInput, onChange, onClick, child, icon, selectedIcon
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavItem as NavItem`.
 
-@docs Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
-@docs download, href, orientation, rel, selected, target
-@docs onBeforeinput, onInput, onChange, onClick, child, icon
-@docs selectedIcon, build
+@docs Builder, AttrCaps, SlotCaps, navItem, attr, disabled
+@docs disabledInteractive, download, href, orientation, rel, selected
+@docs target, onBeforeinput, onInput, onChange, onClick, child
+@docs icon, selectedIcon, build
 -}
 
 
@@ -67,6 +68,19 @@ navItem =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,19 +1,19 @@
 module M3e.Build.Datepicker exposing
-    ( Builder, AttrCaps, SlotCaps, datepicker, variant, clearable
-    , date, maxDate, minDate, range, rangeEnd, rangeStart, startAt
-    , startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel, nextMultiYearLabel
-    , clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle, onToggle
-    , build
+    ( Builder, AttrCaps, SlotCaps, datepicker, attr, variant
+    , clearable, date, maxDate, minDate, range, rangeEnd, rangeStart
+    , startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel, previousMultiYearLabel
+    , nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label, onChange, onBeforetoggle
+    , onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-datepicker>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Datepicker as Datepicker`.
 
-@docs Builder, AttrCaps, SlotCaps, datepicker, variant, clearable
-@docs date, maxDate, minDate, range, rangeEnd, rangeStart
-@docs startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel, nextYearLabel
-@docs previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel, label
-@docs onChange, onBeforetoggle, onToggle, build
+@docs Builder, AttrCaps, SlotCaps, datepicker, attr, variant
+@docs clearable, date, maxDate, minDate, range, rangeEnd
+@docs rangeStart, startAt, startView, previousMonthLabel, nextMonthLabel, previousYearLabel
+@docs nextYearLabel, previousMultiYearLabel, nextMultiYearLabel, clearLabel, confirmLabel, dismissLabel
+@docs label, onChange, onBeforetoggle, onToggle, build
 -}
 
 
@@ -78,6 +78,19 @@ datepicker =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

@@ -1,15 +1,15 @@
 module M3e.Build.ExpandableListItem exposing
-    ( Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
-    , onOpening, onOpened, onClosing, onClosed, child, leading, overline
-    , supportingText, toggleIcon, items, build
+    ( Builder, AttrCaps, SlotCaps, expandableListItem, attr, disabled
+    , open, onOpening, onOpened, onClosing, onClosed, child, leading
+    , overline, supportingText, toggleIcon, items, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-expandable-list-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ExpandableListItem as ExpandableListItem`.
 
-@docs Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
-@docs onOpening, onOpened, onClosing, onClosed, child, leading
-@docs overline, supportingText, toggleIcon, items, build
+@docs Builder, AttrCaps, SlotCaps, expandableListItem, attr, disabled
+@docs open, onOpening, onOpened, onClosing, onClosed, child
+@docs leading, overline, supportingText, toggleIcon, items, build
 -}
 
 
@@ -63,6 +63,19 @@ expandableListItem =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

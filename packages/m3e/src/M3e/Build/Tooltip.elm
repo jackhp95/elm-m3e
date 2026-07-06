@@ -1,13 +1,13 @@
 module M3e.Build.Tooltip exposing
-    ( Builder, AttrCaps, SlotCaps, tooltip, disabled, for
-    , hideDelay, position, showDelay, touchGestures, build
+    ( Builder, AttrCaps, SlotCaps, tooltip, attr, disabled
+    , for, hideDelay, position, showDelay, touchGestures, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-tooltip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Tooltip as Tooltip`.
 
-@docs Builder, AttrCaps, SlotCaps, tooltip, disabled, for
-@docs hideDelay, position, showDelay, touchGestures, build
+@docs Builder, AttrCaps, SlotCaps, tooltip, attr, disabled
+@docs for, hideDelay, position, showDelay, touchGestures, build
 -}
 
 
@@ -57,6 +57,19 @@ tooltip req_ =
              )
              []
              [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

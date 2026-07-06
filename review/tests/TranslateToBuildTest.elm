@@ -175,4 +175,38 @@ view =
         |> M3e.Build.AssistChip.build
 """
                         ]
+        , test "aria-only IconButton (universal M3e.Aria attr, no action) converts to a Build pipeline via the generic attr injection + default action=none" <|
+            \() ->
+                """module A exposing (view)
+
+import M3e.IconButton
+import M3e.Aria
+
+view =
+    M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.IconButton.child icon ]
+"""
+                    |> Review.Test.run (TranslateToBuild.rule M3e.Review.Facts.facts)
+                    |> Review.Test.expectErrors
+                        [ Review.Test.error
+                            { message = "Translate M3e.IconButton call to TranslateToBuild"
+                            , details =
+                                [ "Auto-fixable rewrite between the five API surfaces (D6 translator)."
+                                , "Residue paths (unknown enum tokens, dynamic tails, missing required) escape through `Seam.*` — those will trigger `NoSeamOutsideAllowedModules` in a subsequent pass."
+                                ]
+                            , under = "M3e.IconButton.view [ M3e.Aria.label \"Toggle theme\" ] [ M3e.IconButton.child icon ]"
+                            }
+                            |> Review.Test.whenFixed
+                                """module A exposing (view)
+
+import M3e.IconButton
+import M3e.Aria
+import M3e.Action
+import M3e.Build.IconButton
+
+view =
+    M3e.Build.IconButton.iconButton { content = icon, action = M3e.Action.none }
+        |> M3e.Build.IconButton.attr (M3e.Aria.label "Toggle theme")
+        |> M3e.Build.IconButton.build
+"""
+                        ]
         ]
