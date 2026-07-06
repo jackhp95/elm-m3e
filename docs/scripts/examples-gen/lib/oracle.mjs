@@ -189,12 +189,57 @@ export function buildOracle() {
         // ["text","link"]) so the mapper can unwrap a text-only wrapper into a
         // compatible `Kit.text` / `Kit.link` rather than an incompatible
         // `Native.<tag>` (which carries an `html` row).
-        if (rawName !== "" && required && !multi) {
+        // The generated view folds a required single NAMED slot into its
+        // required record ONLY when the slot's accepted kinds are text/link
+        // (e.g. NavMenuItem/TreeItem `label`). Required slots with element
+        // kinds (e.g. SplitButton `leading-button`, SearchBar `input`) stay
+        // ordinary slot HELPERS in the library — required-ness is enforced by
+        // elm-review, not the record. Mirror that here so the mapper emits a
+        // helper (not a phantom record field) for non-text/link required slots.
+        const foldsToRecord =
+          kinds.length > 0 && kinds.every((k) => k === "text" || k === "link");
+        if (rawName !== "" && required && !multi && foldsToRecord) {
           requiredSlots.push({
             field: camel(rawName),
             rawName,
             kinds,
           });
+        }
+      }
+
+      // Config-only slots: slots declared in config/slots.json that the CEM does
+      // NOT list (e.g. FormField `label`, StepPanel `actions`, SearchBar
+      // `clear-icon`). The GENERATOR emits real helpers for these (from the same
+      // config), so the oracle must know them or the TOP mapper skips the whole
+      // example with "unknown slot". Merge any config key not already covered by
+      // a CEM slot. ("unnamed"/"default" both denote the anonymous default slot.)
+      const seenRaw = new Set(slotEntries.map((s) => s.rawName));
+      for (const cfgKey of Object.keys(slotConfig)) {
+        const rawName =
+          cfgKey === "unnamed" || cfgKey === "default" ? "" : cfgKey;
+        if (seenRaw.has(rawName)) continue;
+        const cfg = slotConfig[cfgKey] ?? {};
+        const base = camel(rawName);
+        const helper =
+          rawName === ""
+            ? "child"
+            : setterNames.has(base)
+              ? base + "Slot"
+              : base;
+        const kinds = Array.isArray(cfg.kinds)
+          ? cfg.kinds
+          : cfg.kinds != null
+            ? [cfg.kinds]
+            : [];
+        const kind = kinds[0] ?? "any";
+        const required = cfg.required === true;
+        const multi = cfg.multi === true;
+        slotEntries.push({ rawName, helper, kind, required, multi });
+        seenRaw.add(rawName);
+        const foldsToRecord =
+          kinds.length > 0 && kinds.every((k) => k === "text" || k === "link");
+        if (rawName !== "" && required && !multi && foldsToRecord) {
+          requiredSlots.push({ field: camel(rawName), rawName, kinds });
         }
       }
 
@@ -205,6 +250,10 @@ export function buildOracle() {
         requiredFields,
         requiredSlots,
         slots: slotEntries,
+        // id↔control wiring (FormField): a `label`/`control` slot whose helper
+        // takes a leading `id`/`for` String argument (ADR 0010 R6). null unless
+        // config/slots.json declares `idWiring` for this module.
+        idWiring: moduleConfig.idWiring ?? null,
         // Present only for variant-group members; the TOP mapper folds them
         // into `M3e.<group.module>.<group.variant>`.
         group: groupByTag[tag] ?? null,

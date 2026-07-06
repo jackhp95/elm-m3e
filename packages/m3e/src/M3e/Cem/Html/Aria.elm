@@ -1,9 +1,9 @@
-module M3e.Cem.Html.Aria exposing (label, labelledby, describedby)
+module M3e.Cem.Html.Aria exposing (label, labelledby, describedby, hidden)
 
 {-| Accessibility attributes for the bottom (raw `elm/html`) layer — universal,
 settable on any element. The strict/middle layers use `M3e.Aria`.
 
-@docs label, labelledby, describedby
+@docs label, labelledby, describedby, hidden
 
 -}
 
@@ -30,3 +30,11 @@ labelledby =
 describedby : String -> Html.Attribute msg
 describedby =
     Html.Attributes.attribute "aria-describedby"
+
+
+{-| Set `aria-hidden` on any element (e.g. `"true"` to hide a decorative
+element from assistive technology).
+-}
+hidden : String -> Html.Attribute msg
+hidden =
+    Html.Attributes.attribute "aria-hidden"

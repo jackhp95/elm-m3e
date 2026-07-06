@@ -19,6 +19,53 @@
       "category": "Navigation"
     }
   },
+  "Autocomplete": {
+    "examples": [
+      {
+        "title": "Basic usage",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]), M3e.FormField.child \"fruit\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ] ])\n    ]"
+      },
+      {
+        "title": "Filter modes",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]), M3e.FormField.child \"fruit\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\", M3e.Autocomplete.caseSensitive True ] []\n    ]"
+      },
+      {
+        "title": "Custom filtering",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]), M3e.FormField.child \"fruit\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ] []\n    ]"
+      },
+      {
+        "title": "No data",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]), M3e.FormField.child \"fruit\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\", M3e.Autocomplete.noDataLabel \"No data\" ] []\n    ]"
+      },
+      {
+        "title": "Initial load",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"state\" (Native.node Html.label [] [ Kit.text \"State\" ]), M3e.FormField.child \"state\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"state\" ] []\n    ]"
+      },
+      {
+        "title": "Search as you type",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"state\" (Native.node Html.label [] [ Kit.text \"State\" ]), M3e.FormField.child \"state\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"state\" ] []\n    ]"
+      },
+      {
+        "title": "Requiring an option to be selected",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]), M3e.FormField.child \"fruit\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\", M3e.Autocomplete.required True ] []\n    ]"
+      },
+      {
+        "title": "Automatic activation",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]), M3e.FormField.child \"fruit\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\", M3e.Autocomplete.autoActivate True ] []\n    ]"
+      },
+      {
+        "title": "Chips",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruits\" ]), M3e.FormField.child \"\" (M3e.InputChipSet.view [ M3e.Aria.label \"Enter favorite fruits\" ] [ M3e.InputChipSet.input (Native.node Html.input [] []) ]) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ] []\n    ]"
+      },
+      {
+        "title": "Density",
+        "code": "[ M3e.FormField.view [] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Density -3\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fld\", M3e.Autocomplete.panelClass \"density-3\" ] []\n    ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Text inputs"
+    }
+  },
   "Avatar": {
     "examples": [
       {
@@ -358,6 +405,18 @@
         "code": "[ M3e.FilterChipSet.view [ M3e.Aria.label \"Filter by topic\", M3e.FilterChipSet.hideSelectionIndicator True ] (M3e.FilterChipSet.children [ M3e.FilterChip.view [] [ M3e.FilterChip.child (Kit.text \"Design\") ], M3e.FilterChip.view [] [ M3e.FilterChip.child (Kit.text \"Accessibility\") ], M3e.FilterChip.view [] [ M3e.FilterChip.icon (M3e.Icon.view [ M3e.Icon.name \"motion_photos_on\" ] []), M3e.FilterChip.child (Kit.text \"Motion\") ], M3e.FilterChip.view [] [ M3e.FilterChip.icon (M3e.Icon.view [ M3e.Icon.name \"description\" ] []), M3e.FilterChip.child (Kit.text \"Documentation\") ] ])\n    , Kit.text \">\"\n    ]"
       },
       {
+        "title": "Input chips",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ]), M3e.FormField.child \"\" (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\" ] [ M3e.InputChipSet.input (Native.node Html.input [] []) ]) ]"
+      },
+      {
+        "title": "Prepopulated chips",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ]), M3e.FormField.child \"\" (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\" ] ([ M3e.InputChipSet.input (Native.node Html.input [] []) ] ++ M3e.InputChipSet.children [ M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Design\") ], M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Accessibility\") ], M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Motion\") ] ])) ]"
+      },
+      {
+        "title": "Disabling (4)",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ]), M3e.FormField.child \"\" (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\", M3e.InputChipSet.disabled True ] ([ M3e.InputChipSet.input (Native.node Html.input [] []) ] ++ M3e.InputChipSet.children [ M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Design\") ], M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Accessibility\") ], M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Motion\") ] ])) ]"
+      },
+      {
         "title": "Suggestion chips",
         "code": "[ M3e.SuggestionChip.view [] [ M3e.SuggestionChip.child (Kit.text \"Outlined Suggestion\") ]\n    , M3e.SuggestionChip.view [ M3e.SuggestionChip.variant M3e.Value.elevated ] [ M3e.SuggestionChip.child (Kit.text \"Elevated Suggestion\") ]\n    ]"
       },
@@ -530,6 +589,45 @@
     ],
     "docMeta": {
       "category": "Actions"
+    }
+  },
+  "FormField": {
+    "examples": [
+      {
+        "title": "Variants",
+        "code": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Outlined\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Float label",
+        "code": "M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Always float label\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Hint labels",
+        "code": "M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.never ] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Field w/ hint\" ]), M3e.FormField.hint (Native.span [] [ Kit.text \"Hint text\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Error messages",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"fld5\" (Native.node Html.label [] [ Kit.text \"Required field\" ]), M3e.FormField.hint (Native.span [] [ Kit.text \"Hint text\" ]), M3e.FormField.child \"fld5\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Error messages (2)",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Required field\" ]), M3e.FormField.hint (Native.span [] [ Kit.text \"Hint text\" ]), M3e.FormField.error (Native.span [] [ Kit.text \"Custom error message\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Hiding the required marker",
+        "code": "M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Required field\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Prefix and suffix",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Amount\" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text \".00\" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"clear\" ] []) ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Density",
+        "code": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Density -3\" ]), M3e.FormField.child \"fld\" (Native.node Html.input [] []) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Text inputs"
     }
   },
   "Heading": {
@@ -868,6 +966,37 @@
       "category": "Selection"
     }
   },
+  "Search": {
+    "examples": [
+      {
+        "title": "Typical usage",
+        "code": "M3e.SearchBar.view [ M3e.SearchBar.clearable True ] [ M3e.SearchBar.leading (M3e.Icon.view [ M3e.Icon.name \"search\" ] []), M3e.SearchBar.input (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Modes",
+        "code": "M3e.SearchView.view [ M3e.SearchView.mode M3e.Value.docked ] [ M3e.SearchView.input (Native.node Html.input [] []), M3e.SearchView.child (M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text \"Result One\") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text \"Result Two\") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text \"Result Three\") ] ])) ]"
+      },
+      {
+        "title": "Modes (2)",
+        "code": "M3e.SearchView.view [ M3e.SearchView.mode M3e.Value.fullscreen ] [ M3e.SearchView.input (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Appearance variants",
+        "code": "M3e.SearchView.view [ M3e.SearchView.mode M3e.Value.docked, M3e.SearchView.contained True ] [ M3e.SearchView.input (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Appearance variants (2)",
+        "code": "M3e.SearchView.view [ M3e.SearchView.mode M3e.Value.fullscreen, M3e.SearchView.contained True ] [ M3e.SearchView.input (Native.node Html.input [] []) ]"
+      },
+      {
+        "title": "Hiding the search icon",
+        "code": "M3e.SearchView.view [ M3e.SearchView.mode M3e.Value.docked, M3e.SearchView.hideSearchIcon True ] [ M3e.SearchView.input (Native.node Html.input [] []) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Text inputs"
+    }
+  },
   "SegmentedButton": {
     "examples": [
       {
@@ -901,6 +1030,41 @@
     ],
     "docMeta": {
       "category": "Actions"
+    }
+  },
+  "Select": {
+    "examples": [
+      {
+        "title": "Basic usage",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]), M3e.FormField.child \"select\" (M3e.Select.view [] (M3e.Select.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ] ])) ]"
+      },
+      {
+        "title": "Empty options",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]), M3e.FormField.child \"select\" (M3e.Select.view [] (M3e.Select.children [ M3e.Option.view [ M3e.Option.value \"\" ] [ M3e.Option.child (Kit.text \"None\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ] ])) ]"
+      },
+      {
+        "title": "Selection",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Toppings\" ]), M3e.FormField.child \"select\" (M3e.Select.view [ M3e.Select.multi True ] (M3e.Select.children [ M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Extra cheese\") ], M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Mushroom\") ] ])) ]"
+      },
+      {
+        "title": "Disabling",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]), M3e.FormField.child \"select\" (M3e.Select.view [ M3e.Select.disabled True ] [ M3e.Select.child (M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Apples\") ]) ]) ]"
+      },
+      {
+        "title": "Disabling (2)",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]), M3e.FormField.child \"select\" (M3e.Select.view [] [ M3e.Select.child (M3e.Option.view [ M3e.Option.disabled True ] [ M3e.Option.child (Kit.text \"Apples\") ]) ]) ]"
+      },
+      {
+        "title": "Required",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]), M3e.FormField.child \"select\" (M3e.Select.view [ M3e.Select.required True ] (M3e.Select.children [ M3e.Option.view [ M3e.Option.value \"\" ] [ M3e.Option.child (Kit.text \"None\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ] ])) ]"
+      },
+      {
+        "title": "Density",
+        "code": "M3e.FormField.view [] [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Density -3\" ]), M3e.FormField.child \"select\" (M3e.Select.view [ M3e.Select.panelClass \"density-3\" ] []) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Text inputs"
     }
   },
   "Shape": {
@@ -1110,6 +1274,14 @@
   },
   "TextareaAutosize": {
     "examples": [
+      {
+        "title": "Basic usage",
+        "code": "[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label \"field\" (Native.node Html.label [] [ Kit.text \"Textarea Autosize\" ]), M3e.FormField.child \"field\" (Native.node Html.textarea [] [ Kit.text \"<!-- Content omitted for brevity -->\" ]) ]\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"field\" ] []\n    ]"
+      },
+      {
+        "title": "Min and max rows",
+        "code": "[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label \"field\" (Native.node Html.label [] [ Kit.text \"Textarea Autosize\" ]), M3e.FormField.child \"field\" (Native.node Html.textarea [] [ Kit.text \"<!-- Content omitted for brevity -->\" ]) ]\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"field\", M3e.TextareaAutosize.maxRows 5 ] []\n    ]"
+      },
       {
         "title": "Disabling",
         "code": "M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"field\", M3e.TextareaAutosize.disabled True ] []"

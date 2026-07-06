@@ -39,6 +39,7 @@ const ARIA_SETTER = {
   "aria-label": "label",
   "aria-labelledby": "labelledby",
   "aria-describedby": "describedby",
+  "aria-hidden": "hidden",
 };
 
 /** Validate + normalize a numeric attribute value to an Elm number literal.
@@ -343,6 +344,11 @@ function elementToElm(node, oracle) {
   // --- Children: group by slot. ---
   const slottedExprs = [];
   const defaultExprs = [];
+  // id↔control wiring (FormField): the default-slot control's `id=` feeds the
+  // `child` helper's leading String argument so `<label for=…>` associates with
+  // it (ADR 0010 R6). Captured from the single default-slot element child.
+  const idWiring = entry.idWiring;
+  let controlId = null;
 
   for (const child of node.childNodes) {
     if (isWhitespaceText(child)) continue;
@@ -351,6 +357,15 @@ function elementToElm(node, oracle) {
       const slotName = child.getAttribute("slot");
       // A required named slot was already consumed into the record field above.
       if (slotName != null && consumedRequiredSlotNames.has(slotName)) continue;
+      // idWiring label slot (FormField `label`): the helper takes a leading
+      // `for`-derived String id, then the label element.
+      if (idWiring && slotName != null && slotName === idWiring.label) {
+        const forId = child.getAttribute("for") ?? "";
+        slottedExprs.push(
+          `M3e.${mod}.${camel(slotName)} "${escapeElmString(forId)}" (${nodeToElm(child, oracle)})`,
+        );
+        continue;
+      }
       if (slotName != null && slotName !== "") {
         const slotEntry = entry.slots.find((s) => s.rawName === slotName);
         if (!slotEntry) {
@@ -360,6 +375,10 @@ function elementToElm(node, oracle) {
           `M3e.${mod}.${slotEntry.helper} (${nodeToElm(child, oracle)})`,
         );
         continue;
+      }
+      // Default-slot element: for an idWiring control, remember its `id=`.
+      if (idWiring && idWiring.control && controlId == null) {
+        controlId = child.getAttribute("id") ?? "";
       }
       defaultExprs.push(nodeToElm(child, oracle));
       continue;
@@ -396,7 +415,15 @@ function elementToElm(node, oracle) {
     recordFields.unshift(`content = ${defaultExprs[0]}`);
   } else if (defaultExprs.length === 1) {
     // Wrap default-slot content with the component's `child` helper (single).
-    singleExprs.push(`M3e.${mod}.child (${defaultExprs[0]})`);
+    // An idWiring control's `child` takes a leading `id` String (from the
+    // control element's `id=`) so a sibling `<label for=…>` associates with it.
+    if (idWiring && idWiring.control) {
+      singleExprs.push(
+        `M3e.${mod}.child "${escapeElmString(controlId ?? "")}" (${defaultExprs[0]})`,
+      );
+    } else {
+      singleExprs.push(`M3e.${mod}.child (${defaultExprs[0]})`);
+    }
   } else if (defaultExprs.length > 1) {
     // `children` returns a LIST — splice, don't nest.
     childrenExpr = `M3e.${mod}.children [ ${defaultExprs.join(", ")} ]`;

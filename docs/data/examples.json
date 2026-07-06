@@ -32,6 +32,101 @@
       }
     ]
   },
+  "autocomplete": {
+    "category": "Text inputs",
+    "examples": [
+      {
+        "title": "Basic usage",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruit</label>\n  <input id=\"fruit\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"fruit\">\n  <m3e-option>Apples</m3e-option>\n  <m3e-option>Oranges</m3e-option>\n  <m3e-option>Bananas</m3e-option>\n  <m3e-option>Grapes</m3e-option>\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ]\n    (M3e.Autocomplete.children\n        [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ]\n        , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ]\n        , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ]\n        , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ]\n        ]\n    )\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete [ M3e.Cem.Autocomplete.for \"fruit\" ]\n    [ M3e.Cem.Option.option [] [ Html.text \"Apples\" ]\n    , M3e.Cem.Option.option [] [ Html.text \"Oranges\" ]\n    , M3e.Cem.Option.option [] [ Html.text \"Bananas\" ]\n    , M3e.Cem.Option.option [] [ Html.text \"Grapes\" ]\n    ]\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete [ M3e.Cem.Html.Autocomplete.for \"fruit\" ]\n    [ M3e.Cem.Html.Option.option [] [ Html.text \"Apples\" ]\n    , M3e.Cem.Html.Option.option [] [ Html.text \"Oranges\" ]\n    , M3e.Cem.Html.Option.option [] [ Html.text \"Bananas\" ]\n    , M3e.Cem.Html.Option.option [] [ Html.text \"Grapes\" ]\n    ]\n]",
+        "record": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ]\n    (M3e.Autocomplete.children\n        [ M3e.Record.Option.view { content = Kit.text \"Apples\" } [] []\n        , M3e.Record.Option.view { content = Kit.text \"Oranges\" } [] []\n        , M3e.Record.Option.view { content = Kit.text \"Bananas\" } [] []\n        , M3e.Record.Option.view { content = Kit.text \"Grapes\" } [] []\n        ]\n    )\n]",
+        "build": null
+      },
+      {
+        "title": "Filter modes",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruit</label>\n  <input id=\"fruit\" value=\"Apple\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"fruit\" filter=\"starts-with\" case-sensitive>\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view\n    [ M3e.Autocomplete.for \"fruit\"\n    , M3e.Autocomplete.caseSensitive True\n    ]\n    []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete\n    [ M3e.Cem.Autocomplete.for \"fruit\"\n    , M3e.Cem.Autocomplete.caseSensitive True\n    ]\n    []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete\n    [ M3e.Cem.Html.Autocomplete.for \"fruit\"\n    , M3e.Cem.Html.Autocomplete.caseSensitive True\n    ]\n    []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Custom filtering",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruit</label>\n  <input id=\"fruit\" value=\"Apple\" />\n</m3e-form-field>\n<m3e-autocomplete class=\"custom-filter\" for=\"fruit\">\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ] []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete [ M3e.Cem.Autocomplete.for \"fruit\" ] []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete [ M3e.Cem.Html.Autocomplete.for \"fruit\" ] []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "No data",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruit</label>\n  <input id=\"fruit\" value=\"Pear\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"fruit\" no-data-label=\"No data\">\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view\n    [ M3e.Autocomplete.for \"fruit\"\n    , M3e.Autocomplete.noDataLabel \"No data\"\n    ]\n    []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete\n    [ M3e.Cem.Autocomplete.for \"fruit\"\n    , M3e.Cem.Autocomplete.noDataLabel \"No data\"\n    ]\n    []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete\n    [ M3e.Cem.Html.Autocomplete.for \"fruit\"\n    , M3e.Cem.Html.Autocomplete.noDataLabel \"No data\"\n    ]\n    []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Initial load",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"state\">State</label>\n  <input id=\"state\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"state\" class=\"lazy\">\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"state\" (Native.node Html.label [] [ Kit.text \"State\" ])\n    , M3e.FormField.child \"state\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view [ M3e.Autocomplete.for \"state\" ] []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"State\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete [ M3e.Cem.Autocomplete.for \"state\" ] []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"State\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete [ M3e.Cem.Html.Autocomplete.for \"state\" ] []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Search as you type",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"state\">State</label>\n  <input id=\"state\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"state\" filter=\"none\" class=\"search\">\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"state\" (Native.node Html.label [] [ Kit.text \"State\" ])\n    , M3e.FormField.child \"state\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view [ M3e.Autocomplete.for \"state\" ] []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"State\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete [ M3e.Cem.Autocomplete.for \"state\" ] []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"State\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete [ M3e.Cem.Html.Autocomplete.for \"state\" ] []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Requiring an option to be selected",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruit</label>\n  <input id=\"fruit\" value=\"Apple\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"fruit\" required>\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view\n    [ M3e.Autocomplete.for \"fruit\"\n    , M3e.Autocomplete.required True\n    ]\n    []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete\n    [ M3e.Cem.Autocomplete.for \"fruit\"\n    , M3e.Cem.Autocomplete.required True\n    ]\n    []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete\n    [ M3e.Cem.Html.Autocomplete.for \"fruit\"\n    , M3e.Cem.Html.Autocomplete.required True\n    ]\n    []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Automatic activation",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruit</label>\n  <input id=\"fruit\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"fruit\" auto-activate>\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ])\n    , M3e.FormField.child \"fruit\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view\n    [ M3e.Autocomplete.for \"fruit\"\n    , M3e.Autocomplete.autoActivate True\n    ]\n    []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete\n    [ M3e.Cem.Autocomplete.for \"fruit\"\n    , M3e.Cem.Autocomplete.autoActivate True\n    ]\n    []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruit\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete\n    [ M3e.Cem.Html.Autocomplete.for \"fruit\"\n    , M3e.Cem.Html.Autocomplete.autoActivate True\n    ]\n    []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Chips",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fruit\">Choose your favorite fruits</label>\n  <m3e-input-chip-set aria-label=\"Enter favorite fruits\">\n    <input id=\"fruit\" slot=\"input\" placeholder=\"Add fruit...\" />\n  </m3e-input-chip-set>\n</m3e-form-field>\n<m3e-autocomplete for=\"fruit\">\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fruit\" (Native.node Html.label [] [ Kit.text \"Choose your favorite fruits\" ])\n    , M3e.FormField.child \"\" (M3e.InputChipSet.view [ M3e.Aria.label \"Enter favorite fruits\" ] [ M3e.InputChipSet.input (Native.node Html.input [] []) ])\n    ]\n, M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\" ] []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruits\" ]\n    , M3e.Cem.InputChipSet.inputChipSet [ M3e.Aria.label \"Enter favorite fruits\" ] [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]\n    ]\n, M3e.Cem.Autocomplete.autocomplete [ M3e.Cem.Autocomplete.for \"fruit\" ] []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Choose your favorite fruits\" ]\n    , M3e.Cem.Html.InputChipSet.inputChipSet [ M3e.Cem.Html.Aria.label \"Enter favorite fruits\" ] [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete [ M3e.Cem.Html.Autocomplete.for \"fruit\" ] []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Density",
+        "html": "<m3e-form-field class=\"density-3\">\n  <label slot=\"label\" for=\"fld\">Density -3</label>\n  <input id=\"fld\" />\n</m3e-form-field>\n<m3e-autocomplete for=\"fld\" panel-class=\"density-3\">\n  <!-- Options omitted for brevity -->\n</m3e-autocomplete>\n<!-- Additional fields omitted for brevity -->",
+        "top": "[ M3e.FormField.view []\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Density -3\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]\n, M3e.Autocomplete.view\n    [ M3e.Autocomplete.for \"fld\"\n    , M3e.Autocomplete.panelClass \"density-3\"\n    ]\n    []\n]",
+        "mid": "[ M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Density -3\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Autocomplete.autocomplete\n    [ M3e.Cem.Autocomplete.for \"fld\"\n    , M3e.Cem.Autocomplete.panelClass \"density-3\"\n    ]\n    []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Density -3\" ]\n    , Html.node \"input\" [] []\n    ]\n, M3e.Cem.Html.Autocomplete.autocomplete\n    [ M3e.Cem.Html.Autocomplete.for \"fld\"\n    , M3e.Cem.Html.Autocomplete.panelClass \"density-3\"\n    ]\n    []\n]",
+        "record": null,
+        "build": null
+      }
+    ]
+  },
   "avatar": {
     "category": "Layout & style",
     "examples": [
@@ -694,6 +789,33 @@
         "build": "[ M3e.FilterChipSet.view\n    [ M3e.Aria.label \"Filter by topic\"\n    , M3e.FilterChipSet.hideSelectionIndicator True\n    ]\n    (M3e.FilterChipSet.children\n        [ M3e.Build.FilterChip.filterChip { content = Kit.text \"Design\" }\n            |> M3e.Build.FilterChip.build\n        , M3e.Build.FilterChip.filterChip { content = Kit.text \"Accessibility\" }\n            |> M3e.Build.FilterChip.build\n        , M3e.Build.FilterChip.filterChip { content = Kit.text \"Motion\" }\n            |> M3e.Build.FilterChip.icon (M3e.Icon.view [ M3e.Icon.name \"motion_photos_on\" ] [])\n            |> M3e.Build.FilterChip.build\n        , M3e.Build.FilterChip.filterChip { content = Kit.text \"Documentation\" }\n            |> M3e.Build.FilterChip.icon (M3e.Icon.view [ M3e.Icon.name \"description\" ] [])\n            |> M3e.Build.FilterChip.build\n        ]\n    )\n, Kit.text \">\"\n]"
       },
       {
+        "title": "Input chips",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"keywords\">Keywords</label>\n  <m3e-input-chip-set aria-label=\"Enter keywords\">\n    <input id=\"keywords\" slot=\"input\" placeholder=\"New keyword...\" />\n  </m3e-input-chip-set>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\" (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\" ] [ M3e.InputChipSet.input (Native.node Html.input [] []) ])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Keywords\" ]\n    , M3e.Cem.InputChipSet.inputChipSet [ M3e.Aria.label \"Enter keywords\" ] [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Keywords\" ]\n    , M3e.Cem.Html.InputChipSet.inputChipSet [ M3e.Cem.Html.Aria.label \"Enter keywords\" ] [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Prepopulated chips",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"keywords\">Keywords</label>\n  <m3e-input-chip-set aria-label=\"Enter keywords\">\n    <m3e-input-chip removable>Design</m3e-input-chip>\n    <m3e-input-chip removable>Accessibility</m3e-input-chip>\n    <m3e-input-chip removable>Motion</m3e-input-chip>\n    <input id=\"keywords\" slot=\"input\" placeholder=\"New keyword...\" />\n  </m3e-input-chip-set>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\"\n        (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\" ]\n            ([ M3e.InputChipSet.input (Native.node Html.input [] []) ]\n                ++ M3e.InputChipSet.children\n                    [ M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Design\") ]\n                    , M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Accessibility\") ]\n                    , M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Motion\") ]\n                    ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Keywords\" ]\n    , M3e.Cem.InputChipSet.inputChipSet [ M3e.Aria.label \"Enter keywords\" ]\n        [ M3e.Cem.InputChip.inputChip [ M3e.Cem.InputChip.removable True ] [ Html.text \"Design\" ]\n        , M3e.Cem.InputChip.inputChip [ M3e.Cem.InputChip.removable True ] [ Html.text \"Accessibility\" ]\n        , M3e.Cem.InputChip.inputChip [ M3e.Cem.InputChip.removable True ] [ Html.text \"Motion\" ]\n        , Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Keywords\" ]\n    , M3e.Cem.Html.InputChipSet.inputChipSet [ M3e.Cem.Html.Aria.label \"Enter keywords\" ]\n        [ M3e.Cem.Html.InputChip.inputChip [ M3e.Cem.Html.InputChip.removable True ] [ Html.text \"Design\" ]\n        , M3e.Cem.Html.InputChip.inputChip [ M3e.Cem.Html.InputChip.removable True ] [ Html.text \"Accessibility\" ]\n        , M3e.Cem.Html.InputChip.inputChip [ M3e.Cem.Html.InputChip.removable True ] [ Html.text \"Motion\" ]\n        , Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n        ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\"\n        (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\" ]\n            ([ M3e.InputChipSet.input (Native.node Html.input [] []) ]\n                ++ M3e.InputChipSet.children\n                    [ M3e.Record.InputChip.view { content = Kit.text \"Design\" } [ M3e.Record.InputChip.removable True ] []\n                    , M3e.Record.InputChip.view { content = Kit.text \"Accessibility\" } [ M3e.Record.InputChip.removable True ] []\n                    , M3e.Record.InputChip.view { content = Kit.text \"Motion\" } [ M3e.Record.InputChip.removable True ] []\n                    ]\n            )\n        )\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\"\n        (M3e.InputChipSet.view [ M3e.Aria.label \"Enter keywords\" ]\n            ([ M3e.InputChipSet.input (Native.node Html.input [] []) ]\n                ++ M3e.InputChipSet.children\n                    [ M3e.Build.InputChip.inputChip { content = Kit.text \"Design\" }\n                        |> M3e.Build.InputChip.removable True\n                        |> M3e.Build.InputChip.build\n                    , M3e.Build.InputChip.inputChip { content = Kit.text \"Accessibility\" }\n                        |> M3e.Build.InputChip.removable True\n                        |> M3e.Build.InputChip.build\n                    , M3e.Build.InputChip.inputChip { content = Kit.text \"Motion\" }\n                        |> M3e.Build.InputChip.removable True\n                        |> M3e.Build.InputChip.build\n                    ]\n            )\n        )\n    ]"
+      },
+      {
+        "title": "Disabling (4)",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"keywords\">Keywords</label>\n  <m3e-input-chip-set aria-label=\"Enter keywords\" disabled>\n    <m3e-input-chip removable>Design</m3e-input-chip>\n    <m3e-input-chip removable>Accessibility</m3e-input-chip>\n    <m3e-input-chip removable>Motion</m3e-input-chip>\n    <input id=\"keywords\" slot=\"input\" placeholder=\"New keyword...\" />\n  </m3e-input-chip-set>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\"\n        (M3e.InputChipSet.view\n            [ M3e.Aria.label \"Enter keywords\"\n            , M3e.InputChipSet.disabled True\n            ]\n            ([ M3e.InputChipSet.input (Native.node Html.input [] []) ]\n                ++ M3e.InputChipSet.children\n                    [ M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Design\") ]\n                    , M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Accessibility\") ]\n                    , M3e.InputChip.view [ M3e.InputChip.removable True ] [ M3e.InputChip.child (Kit.text \"Motion\") ]\n                    ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Keywords\" ]\n    , M3e.Cem.InputChipSet.inputChipSet\n        [ M3e.Aria.label \"Enter keywords\"\n        , M3e.Cem.InputChipSet.disabled True\n        ]\n        [ M3e.Cem.InputChip.inputChip [ M3e.Cem.InputChip.removable True ] [ Html.text \"Design\" ]\n        , M3e.Cem.InputChip.inputChip [ M3e.Cem.InputChip.removable True ] [ Html.text \"Accessibility\" ]\n        , M3e.Cem.InputChip.inputChip [ M3e.Cem.InputChip.removable True ] [ Html.text \"Motion\" ]\n        , Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Keywords\" ]\n    , M3e.Cem.Html.InputChipSet.inputChipSet\n        [ M3e.Cem.Html.Aria.label \"Enter keywords\"\n        , M3e.Cem.Html.InputChipSet.disabled True\n        ]\n        [ M3e.Cem.Html.InputChip.inputChip [ M3e.Cem.Html.InputChip.removable True ] [ Html.text \"Design\" ]\n        , M3e.Cem.Html.InputChip.inputChip [ M3e.Cem.Html.InputChip.removable True ] [ Html.text \"Accessibility\" ]\n        , M3e.Cem.Html.InputChip.inputChip [ M3e.Cem.Html.InputChip.removable True ] [ Html.text \"Motion\" ]\n        , Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n        ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\"\n        (M3e.InputChipSet.view\n            [ M3e.Aria.label \"Enter keywords\"\n            , M3e.InputChipSet.disabled True\n            ]\n            ([ M3e.InputChipSet.input (Native.node Html.input [] []) ]\n                ++ M3e.InputChipSet.children\n                    [ M3e.Record.InputChip.view { content = Kit.text \"Design\" } [ M3e.Record.InputChip.removable True ] []\n                    , M3e.Record.InputChip.view { content = Kit.text \"Accessibility\" } [ M3e.Record.InputChip.removable True ] []\n                    , M3e.Record.InputChip.view { content = Kit.text \"Motion\" } [ M3e.Record.InputChip.removable True ] []\n                    ]\n            )\n        )\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"keywords\" (Native.node Html.label [] [ Kit.text \"Keywords\" ])\n    , M3e.FormField.child \"\"\n        (M3e.InputChipSet.view\n            [ M3e.Aria.label \"Enter keywords\"\n            , M3e.InputChipSet.disabled True\n            ]\n            ([ M3e.InputChipSet.input (Native.node Html.input [] []) ]\n                ++ M3e.InputChipSet.children\n                    [ M3e.Build.InputChip.inputChip { content = Kit.text \"Design\" }\n                        |> M3e.Build.InputChip.removable True\n                        |> M3e.Build.InputChip.build\n                    , M3e.Build.InputChip.inputChip { content = Kit.text \"Accessibility\" }\n                        |> M3e.Build.InputChip.removable True\n                        |> M3e.Build.InputChip.build\n                    , M3e.Build.InputChip.inputChip { content = Kit.text \"Motion\" }\n                        |> M3e.Build.InputChip.removable True\n                        |> M3e.Build.InputChip.build\n                    ]\n            )\n        )\n    ]"
+      },
+      {
         "title": "Suggestion chips",
         "html": "<m3e-suggestion-chip>Outlined Suggestion</m3e-suggestion-chip>\n<m3e-suggestion-chip variant=\"elevated\">Elevated Suggestion</m3e-suggestion-chip>",
         "top": "[ M3e.suggestionChip [] [ M3e.slotDefault (Kit.text \"Outlined Suggestion\") ]\n, M3e.suggestionChip [ M3e.variant M3e.Value.elevated ] [ M3e.slotDefault (Kit.text \"Elevated Suggestion\") ]\n]",
@@ -1008,6 +1130,83 @@
         "top": "M3e.fab\n    [ M3e.extended True\n    , M3e.href \"https://www.google.com\"\n    , M3e.target \"_blank\"\n    ]\n    [ M3e.slotLabel (Native.span [] [ Kit.text \"Google\" ])\n    , M3e.slotDefault (M3e.icon [ M3e.name \"open_in_new_window\" ] [])\n    ]",
         "mid": "M3e.Cem.Fab.fab\n    [ M3e.Cem.Fab.extended True\n    , M3e.Cem.Fab.href \"https://www.google.com\"\n    , M3e.Cem.Fab.target \"_blank\"\n    ]\n    [ M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"open_in_new_window\" ] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Google\" ]\n    ]",
         "bottom": "M3e.Cem.Html.Fab.fab\n    [ M3e.Cem.Html.Fab.extended True\n    , M3e.Cem.Html.Fab.href \"https://www.google.com\"\n    , M3e.Cem.Html.Fab.target \"_blank\"\n    ]\n    [ M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"open_in_new_window\" ] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Google\" ]\n    ]",
+        "record": null,
+        "build": null
+      }
+    ]
+  },
+  "formfield": {
+    "category": "Text inputs",
+    "examples": [
+      {
+        "title": "Variants",
+        "html": "<m3e-form-field variant=\"outlined\">\n  <label slot=\"label\" for=\"fld\">Outlined</label>\n  <input id=\"fld\" />\n</m3e-form-field>\n<!-- Additional variants omitted for brevity -->",
+        "top": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ]\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Outlined\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField [ M3e.Cem.FormField.variant M3e.Value.outlined ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Outlined\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.variant \"outlined\" ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Outlined\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Float label",
+        "html": "<m3e-form-field float-label=\"always\">\n  <label slot=\"label\" for=\"fld\">Always float label</label>\n  <input id=\"fld\" />\n</m3e-form-field>",
+        "top": "M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ]\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Always float label\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField [ M3e.Cem.FormField.floatLabel M3e.Value.always ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Always float label\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.floatLabel \"always\" ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Always float label\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Hint labels",
+        "html": "<m3e-form-field hide-subscript=\"never\">\n  <label slot=\"label\" for=\"fld\">Field w/ hint</label>\n  <input id=\"fld\" />\n  <span slot=\"hint\">Hint text</span>\n</m3e-form-field>",
+        "top": "M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.never ]\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Field w/ hint\" ])\n    , M3e.FormField.hint (Native.span [] [ Kit.text \"Hint text\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField [ M3e.Cem.FormField.hideSubscript M3e.Value.never ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Field w/ hint\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"hint\" ] [ Html.text \"Hint text\" ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.hideSubscript \"never\" ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Field w/ hint\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"hint\" ] [ Html.text \"Hint text\" ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Error messages",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fld5\">Required field</label>\n  <input id=\"fld5\" required />\n  <span slot=\"hint\">Hint text</span>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"fld5\" (Native.node Html.label [] [ Kit.text \"Required field\" ])\n    , M3e.FormField.hint (Native.span [] [ Kit.text \"Hint text\" ])\n    , M3e.FormField.child \"fld5\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Required field\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"hint\" ] [ Html.text \"Hint text\" ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Required field\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"hint\" ] [ Html.text \"Hint text\" ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Error messages (2)",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fld\">Required field</label>\n  <input id=\"fld\" required />\n  <span slot=\"hint\">Hint text</span>\n  <span slot=\"error\">Custom error message</span>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Required field\" ])\n    , M3e.FormField.hint (Native.span [] [ Kit.text \"Hint text\" ])\n    , M3e.FormField.error (Native.span [] [ Kit.text \"Custom error message\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Required field\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"hint\" ] [ Html.text \"Hint text\" ]\n    , Html.span [ Html.Attributes.attribute \"slot\" \"error\" ] [ Html.text \"Custom error message\" ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Required field\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"hint\" ] [ Html.text \"Hint text\" ]\n    , Html.span [ Html.Attributes.attribute \"slot\" \"error\" ] [ Html.text \"Custom error message\" ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Hiding the required marker",
+        "html": "<m3e-form-field hide-required-marker>\n  <label slot=\"label\" for=\"fld\">Required field</label>\n  <input id=\"fld\" required />\n</m3e-form-field>",
+        "top": "M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ]\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Required field\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField [ M3e.Cem.FormField.hideRequiredMarker True ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Required field\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.hideRequiredMarker True ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Required field\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Prefix and suffix",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"fld\">Amount</label>\n  <span slot=\"prefix-text\">$</span>\n  <input id=\"fld\" type=\"number\" placeholder=\"0\" />\n  <span slot=\"suffix-text\">.00</span>\n  <m3e-icon-button slot=\"suffix\">\n    <m3e-icon name=\"clear\"></m3e-icon>\n  </m3e-icon-button>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Amount\" ])\n    , M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ])\n    , M3e.FormField.suffixText (Native.span [] [ Kit.text \".00\" ])\n    , M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"clear\" ] []) ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Amount\" ]\n    , Html.span [ Html.Attributes.attribute \"slot\" \"prefix-text\" ] [ Html.text \"$\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"suffix-text\" ] [ Html.text \".00\" ]\n    , M3e.Cem.IconButton.iconButton [ M3e.Cem.Attr.slot \"suffix\" ] [ M3e.Cem.Icon.icon [ M3e.Cem.Icon.name \"clear\" ] [] ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Amount\" ]\n    , Html.span [ Html.Attributes.attribute \"slot\" \"prefix-text\" ] [ Html.text \"$\" ]\n    , Html.node \"input\" [] []\n    , Html.span [ Html.Attributes.attribute \"slot\" \"suffix-text\" ] [ Html.text \".00\" ]\n    , M3e.Cem.Html.IconButton.iconButton [ Html.Attributes.attribute \"slot\" \"suffix\" ] [ M3e.Cem.Html.Icon.icon [ M3e.Cem.Html.Icon.name \"clear\" ] [] ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Amount\" ])\n    , M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ])\n    , M3e.FormField.suffixText (Native.span [] [ Kit.text \".00\" ])\n    , M3e.FormField.suffix\n        (M3e.Record.IconButton.view\n            { content = M3e.Icon.view [ M3e.Icon.name \"clear\" ] []\n            , action = M3e.Action.none\n            }\n            []\n            []\n        )\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Amount\" ])\n    , M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ])\n    , M3e.FormField.suffixText (Native.span [] [ Kit.text \".00\" ])\n    , M3e.FormField.suffix\n        (M3e.Build.IconButton.iconButton\n            { content = M3e.Icon.view [ M3e.Icon.name \"clear\" ] []\n            , action = M3e.Action.none\n            }\n            |> M3e.Build.IconButton.build\n        )\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]"
+      },
+      {
+        "title": "Density",
+        "html": "<m3e-form-field variant=\"outlined\" class=\"density-3\">\n  <label slot=\"label\" for=\"fld\">Density -3</label>\n  <input id=\"fld\" />\n</m3e-form-field>\n<!-- Additional fields and variants omitted for brevity -->",
+        "top": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ]\n    [ M3e.FormField.label \"fld\" (Native.node Html.label [] [ Kit.text \"Density -3\" ])\n    , M3e.FormField.child \"fld\" (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField [ M3e.Cem.FormField.variant M3e.Value.outlined ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Density -3\" ]\n    , Html.node \"input\" [] []\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.variant \"outlined\" ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Density -3\" ]\n    , Html.node \"input\" [] []\n    ]",
         "record": null,
         "build": null
       }
@@ -1647,6 +1846,65 @@
       }
     ]
   },
+  "searchbar": {
+    "category": "Text inputs",
+    "examples": [
+      {
+        "title": "Typical usage",
+        "html": "<m3e-search-bar clearable>\n  <m3e-icon name=\"search\" slot=\"leading\"></m3e-icon>\n  <input slot=\"input\" placeholder=\"Search...\" />\n</m3e-search-bar>",
+        "top": "M3e.searchBar [ M3e.clearable True ]\n    [ M3e.slotLeading (M3e.icon [ M3e.name \"search\" ] [])\n    , M3e.slotInput (Native.node Html.input [] [])\n    ]",
+        "mid": "M3e.Cem.SearchBar.searchBar [ M3e.Cem.SearchBar.clearable True ]\n    [ M3e.Cem.Icon.icon\n        [ M3e.Cem.Attr.slot \"leading\"\n        , M3e.Cem.Icon.name \"search\"\n        ]\n        []\n    , Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n    ]",
+        "bottom": "M3e.Cem.Html.SearchBar.searchBar [ M3e.Cem.Html.SearchBar.clearable True ]\n    [ M3e.Cem.Html.Icon.icon\n        [ Html.Attributes.attribute \"slot\" \"leading\"\n        , M3e.Cem.Html.Icon.name \"search\"\n        ]\n        []\n    , Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Modes",
+        "html": "<m3e-search-view mode=\"docked\">\n  <input slot=\"input\" placeholder=\"Search...\" />\n  <m3e-list>\n    <m3e-list-item>Result One</m3e-list-item>\n    <m3e-list-item>Result Two</m3e-list-item>\n    <m3e-list-item>Result Three</m3e-list-item>\n  </m3e-list>\n</m3e-search-view>",
+        "top": "M3e.searchView [ M3e.mode M3e.Value.docked ]\n    [ M3e.slotInput (Native.node Html.input [] [])\n    , M3e.slotDefault\n        (M3e.list []\n            (M3e.List.children\n                [ M3e.listItem [] [ M3e.slotDefault (Kit.text \"Result One\") ]\n                , M3e.listItem [] [ M3e.slotDefault (Kit.text \"Result Two\") ]\n                , M3e.listItem [] [ M3e.slotDefault (Kit.text \"Result Three\") ]\n                ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.SearchView.searchView [ M3e.Cem.SearchView.mode M3e.Value.docked ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n    , M3e.Cem.List.list []\n        [ M3e.Cem.ListItem.listItem [] [ Html.text \"Result One\" ]\n        , M3e.Cem.ListItem.listItem [] [ Html.text \"Result Two\" ]\n        , M3e.Cem.ListItem.listItem [] [ Html.text \"Result Three\" ]\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.SearchView.searchView [ M3e.Cem.Html.SearchView.mode \"docked\" ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] []\n    , M3e.Cem.Html.List.list []\n        [ M3e.Cem.Html.ListItem.listItem [] [ Html.text \"Result One\" ]\n        , M3e.Cem.Html.ListItem.listItem [] [ Html.text \"Result Two\" ]\n        , M3e.Cem.Html.ListItem.listItem [] [ Html.text \"Result Three\" ]\n        ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Modes (2)",
+        "html": "<m3e-search-view mode=\"fullscreen\">\n  <input slot=\"input\" placeholder=\"Search...\" />\n  <!-- Results omitted for brevity -->\n</m3e-search-view>",
+        "top": "M3e.searchView [ M3e.mode M3e.Value.fullscreen ] [ M3e.slotInput (Native.node Html.input [] []) ]",
+        "mid": "M3e.Cem.SearchView.searchView [ M3e.Cem.SearchView.mode M3e.Value.fullscreen ] [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "bottom": "M3e.Cem.Html.SearchView.searchView [ M3e.Cem.Html.SearchView.mode \"fullscreen\" ] [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Appearance variants",
+        "html": "<m3e-search-view mode=\"docked\" contained>\n  <input slot=\"input\" placeholder=\"Search...\" />\n  <!-- Results omitted for brevity -->\n</m3e-search-view>",
+        "top": "M3e.searchView\n    [ M3e.mode M3e.Value.docked\n    , M3e.contained True\n    ]\n    [ M3e.slotInput (Native.node Html.input [] []) ]",
+        "mid": "M3e.Cem.SearchView.searchView\n    [ M3e.Cem.SearchView.mode M3e.Value.docked\n    , M3e.Cem.SearchView.contained True\n    ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "bottom": "M3e.Cem.Html.SearchView.searchView\n    [ M3e.Cem.Html.SearchView.mode \"docked\"\n    , M3e.Cem.Html.SearchView.contained True\n    ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Appearance variants (2)",
+        "html": "<m3e-search-view mode=\"fullscreen\" contained>\n  <input slot=\"input\" placeholder=\"Search...\" />\n  <!-- Results omitted for brevity -->\n</m3e-search-view>",
+        "top": "M3e.searchView\n    [ M3e.mode M3e.Value.fullscreen\n    , M3e.contained True\n    ]\n    [ M3e.slotInput (Native.node Html.input [] []) ]",
+        "mid": "M3e.Cem.SearchView.searchView\n    [ M3e.Cem.SearchView.mode M3e.Value.fullscreen\n    , M3e.Cem.SearchView.contained True\n    ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "bottom": "M3e.Cem.Html.SearchView.searchView\n    [ M3e.Cem.Html.SearchView.mode \"fullscreen\"\n    , M3e.Cem.Html.SearchView.contained True\n    ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Hiding the search icon",
+        "html": "<m3e-search-view mode=\"docked\" hide-search-icon>\n  <input slot=\"input\" placeholder=\"Search...\" />\n  <!-- Results omitted for brevity -->\n</m3e-search-view>",
+        "top": "M3e.searchView\n    [ M3e.mode M3e.Value.docked\n    , M3e.hideSearchIcon True\n    ]\n    [ M3e.slotInput (Native.node Html.input [] []) ]",
+        "mid": "M3e.Cem.SearchView.searchView\n    [ M3e.Cem.SearchView.mode M3e.Value.docked\n    , M3e.Cem.SearchView.hideSearchIcon True\n    ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "bottom": "M3e.Cem.Html.SearchView.searchView\n    [ M3e.Cem.Html.SearchView.mode \"docked\"\n    , M3e.Cem.Html.SearchView.hideSearchIcon True\n    ]\n    [ Html.node \"input\" [ Html.Attributes.attribute \"slot\" \"input\" ] [] ]",
+        "record": null,
+        "build": null
+      }
+    ]
+  },
   "segmentedbutton": {
     "category": "Actions",
     "examples": [
@@ -1710,6 +1968,74 @@
         "top": "M3e.segmentedButton [] []",
         "mid": "M3e.Cem.SegmentedButton.segmentedButton [] []",
         "bottom": "M3e.Cem.Html.SegmentedButton.segmentedButton [] []",
+        "record": null,
+        "build": null
+      }
+    ]
+  },
+  "select": {
+    "category": "Text inputs",
+    "examples": [
+      {
+        "title": "Basic usage",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select\">Favorite fruit</label>\n  <m3e-select id=\"select\">\n    <m3e-option>Apples</m3e-option>\n    <m3e-option>Oranges</m3e-option>\n    <m3e-option>Bananas</m3e-option>\n    <m3e-option>Grapes</m3e-option>\n  </m3e-select>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view []\n            (M3e.Select.children\n                [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ]\n                ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Select.select []\n        [ M3e.Cem.Option.option [] [ Html.text \"Apples\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Oranges\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Bananas\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Grapes\" ]\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Html.Select.select []\n        [ M3e.Cem.Html.Option.option [] [ Html.text \"Apples\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Oranges\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Bananas\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Grapes\" ]\n        ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view []\n            (M3e.Select.children\n                [ M3e.Record.Option.view { content = Kit.text \"Apples\" } [] []\n                , M3e.Record.Option.view { content = Kit.text \"Oranges\" } [] []\n                , M3e.Record.Option.view { content = Kit.text \"Bananas\" } [] []\n                , M3e.Record.Option.view { content = Kit.text \"Grapes\" } [] []\n                ]\n            )\n        )\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view []\n            (M3e.Select.children\n                [ M3e.Build.Option.option { content = Kit.text \"Apples\" }\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Oranges\" }\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Bananas\" }\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Grapes\" }\n                    |> M3e.Build.Option.build\n                ]\n            )\n        )\n    ]"
+      },
+      {
+        "title": "Empty options",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select\">Favorite fruit</label>\n  <m3e-select id=\"select\">\n    <m3e-option value=\"\">None</m3e-option>  \n    <m3e-option>Apples</m3e-option>\n    <m3e-option>Oranges</m3e-option>\n    <m3e-option>Bananas</m3e-option>\n    <m3e-option>Grapes</m3e-option>\n  </m3e-select>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view []\n            (M3e.Select.children\n                [ M3e.Option.view [ M3e.Option.value \"\" ] [ M3e.Option.child (Kit.text \"None\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ]\n                ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Select.select []\n        [ M3e.Cem.Option.option [ M3e.Cem.Option.value \"\" ] [ Html.text \"None\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Apples\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Oranges\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Bananas\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Grapes\" ]\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Html.Select.select []\n        [ M3e.Cem.Html.Option.option [ M3e.Cem.Html.Option.value \"\" ] [ Html.text \"None\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Apples\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Oranges\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Bananas\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Grapes\" ]\n        ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view []\n            (M3e.Select.children\n                [ M3e.Record.Option.view { content = Kit.text \"None\" } [ M3e.Record.Option.value \"\" ] []\n                , M3e.Record.Option.view { content = Kit.text \"Apples\" } [] []\n                , M3e.Record.Option.view { content = Kit.text \"Oranges\" } [] []\n                , M3e.Record.Option.view { content = Kit.text \"Bananas\" } [] []\n                , M3e.Record.Option.view { content = Kit.text \"Grapes\" } [] []\n                ]\n            )\n        )\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view []\n            (M3e.Select.children\n                [ M3e.Build.Option.option { content = Kit.text \"None\" }\n                    |> M3e.Build.Option.value \"\"\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Apples\" }\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Oranges\" }\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Bananas\" }\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Grapes\" }\n                    |> M3e.Build.Option.build\n                ]\n            )\n        )\n    ]"
+      },
+      {
+        "title": "Selection",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select\">Toppings</label>\n  <m3e-select id=\"select\" multi>\n    <m3e-option selected>Extra cheese</m3e-option>\n    <m3e-option selected>Mushroom</m3e-option>\n    <!-- Additional option groups omitted for brevity -->\n  </m3e-select>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Toppings\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view [ M3e.Select.multi True ]\n            (M3e.Select.children\n                [ M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Extra cheese\") ]\n                , M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Mushroom\") ]\n                ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Toppings\" ]\n    , M3e.Cem.Select.select [ M3e.Cem.Select.multi True ]\n        [ M3e.Cem.Option.option [ M3e.Cem.Option.selected True ] [ Html.text \"Extra cheese\" ]\n        , M3e.Cem.Option.option [ M3e.Cem.Option.selected True ] [ Html.text \"Mushroom\" ]\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Toppings\" ]\n    , M3e.Cem.Html.Select.select [ M3e.Cem.Html.Select.multi True ]\n        [ M3e.Cem.Html.Option.option [ M3e.Cem.Html.Option.selected True ] [ Html.text \"Extra cheese\" ]\n        , M3e.Cem.Html.Option.option [ M3e.Cem.Html.Option.selected True ] [ Html.text \"Mushroom\" ]\n        ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Toppings\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view [ M3e.Select.multi True ]\n            (M3e.Select.children\n                [ M3e.Record.Option.view { content = Kit.text \"Extra cheese\" } [ M3e.Record.Option.selected True ] []\n                , M3e.Record.Option.view { content = Kit.text \"Mushroom\" } [ M3e.Record.Option.selected True ] []\n                ]\n            )\n        )\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Toppings\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view [ M3e.Select.multi True ]\n            (M3e.Select.children\n                [ M3e.Build.Option.option { content = Kit.text \"Extra cheese\" }\n                    |> M3e.Build.Option.selected True\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Mushroom\" }\n                    |> M3e.Build.Option.selected True\n                    |> M3e.Build.Option.build\n                ]\n            )\n        )\n    ]"
+      },
+      {
+        "title": "Disabling",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select\">Favorite fruit</label>\n  <m3e-select id=\"select\" disabled>\n    <m3e-option selected>Apples</m3e-option>\n    <!-- Additional option groups omitted for brevity -->\n  </m3e-select>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\" (M3e.Select.view [ M3e.Select.disabled True ] [ M3e.Select.child (M3e.Option.view [ M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Apples\") ]) ])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Select.select [ M3e.Cem.Select.disabled True ] [ M3e.Cem.Option.option [ M3e.Cem.Option.selected True ] [ Html.text \"Apples\" ] ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Html.Select.select [ M3e.Cem.Html.Select.disabled True ] [ M3e.Cem.Html.Option.option [ M3e.Cem.Html.Option.selected True ] [ Html.text \"Apples\" ] ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Disabling (2)",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select\">Favorite fruit</label>\n  <m3e-select id=\"select\">\n    <m3e-option disabled>Apples</m3e-option>\n    <!-- Additional option groups omitted for brevity -->\n  </m3e-select>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\" (M3e.Select.view [] [ M3e.Select.child (M3e.Option.view [ M3e.Option.disabled True ] [ M3e.Option.child (Kit.text \"Apples\") ]) ])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Select.select [] [ M3e.Cem.Option.option [ M3e.Cem.Option.disabled True ] [ Html.text \"Apples\" ] ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Html.Select.select [] [ M3e.Cem.Html.Option.option [ M3e.Cem.Html.Option.disabled True ] [ Html.text \"Apples\" ] ]\n    ]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Required",
+        "html": "<m3e-form-field>\n  <label slot=\"label\" for=\"select\">Favorite fruit</label>\n  <m3e-select id=\"select\" required>\n    <m3e-option value=\"\">None</m3e-option>  \n    <m3e-option>Apples</m3e-option>\n    <!-- Additional option groups omitted for brevity -->\n  </m3e-select>\n</m3e-form-field>",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view [ M3e.Select.required True ]\n            (M3e.Select.children\n                [ M3e.Option.view [ M3e.Option.value \"\" ] [ M3e.Option.child (Kit.text \"None\") ]\n                , M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ]\n                ]\n            )\n        )\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Select.select [ M3e.Cem.Select.required True ]\n        [ M3e.Cem.Option.option [ M3e.Cem.Option.value \"\" ] [ Html.text \"None\" ]\n        , M3e.Cem.Option.option [] [ Html.text \"Apples\" ]\n        ]\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Favorite fruit\" ]\n    , M3e.Cem.Html.Select.select [ M3e.Cem.Html.Select.required True ]\n        [ M3e.Cem.Html.Option.option [ M3e.Cem.Html.Option.value \"\" ] [ Html.text \"None\" ]\n        , M3e.Cem.Html.Option.option [] [ Html.text \"Apples\" ]\n        ]\n    ]",
+        "record": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view [ M3e.Select.required True ]\n            (M3e.Select.children\n                [ M3e.Record.Option.view { content = Kit.text \"None\" } [ M3e.Record.Option.value \"\" ] []\n                , M3e.Record.Option.view { content = Kit.text \"Apples\" } [] []\n                ]\n            )\n        )\n    ]",
+        "build": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Favorite fruit\" ])\n    , M3e.FormField.child \"select\"\n        (M3e.Select.view [ M3e.Select.required True ]\n            (M3e.Select.children\n                [ M3e.Build.Option.option { content = Kit.text \"None\" }\n                    |> M3e.Build.Option.value \"\"\n                    |> M3e.Build.Option.build\n                , M3e.Build.Option.option { content = Kit.text \"Apples\" }\n                    |> M3e.Build.Option.build\n                ]\n            )\n        )\n    ]"
+      },
+      {
+        "title": "Density",
+        "html": "<m3e-form-field class=\"density-3\">\n  <label slot=\"label\" for=\"select\">Density -3</label>\n  <m3e-select id=\"select\" panel-class=\"density-3\">\n    <!-- Options omitted for brevity -->\n  </m3e-select>\n</m3e-form-field>\n<!-- Additional fields omitted for brevity -->",
+        "top": "M3e.FormField.view []\n    [ M3e.FormField.label \"select\" (Native.node Html.label [] [ Kit.text \"Density -3\" ])\n    , M3e.FormField.child \"select\" (M3e.Select.view [ M3e.Select.panelClass \"density-3\" ] [])\n    ]",
+        "mid": "M3e.Cem.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Density -3\" ]\n    , M3e.Cem.Select.select [ M3e.Cem.Select.panelClass \"density-3\" ] []\n    ]",
+        "bottom": "M3e.Cem.Html.FormField.formField []\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Density -3\" ]\n    , M3e.Cem.Html.Select.select [ M3e.Cem.Html.Select.panelClass \"density-3\" ] []\n    ]",
         "record": null,
         "build": null
       }
@@ -2092,6 +2418,24 @@
   "textareaautosize": {
     "category": "Text inputs",
     "examples": [
+      {
+        "title": "Basic usage",
+        "html": "<m3e-form-field variant=\"filled\">\n  <label slot=\"label\" for=\"field\">Textarea Autosize</label>\n  <textarea id=\"field\">\n    <!-- Content omitted for brevity -->\n  </textarea>\n</m3e-form-field>\n<m3e-textarea-autosize for=\"field\"></m3e-textarea-autosize>",
+        "top": "[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ]\n    [ M3e.FormField.label \"field\" (Native.node Html.label [] [ Kit.text \"Textarea Autosize\" ])\n    , M3e.FormField.child \"field\" (Native.node Html.textarea [] [ Kit.text \"<!-- Content omitted for brevity -->\" ])\n    ]\n, M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"field\" ] []\n]",
+        "mid": "[ M3e.Cem.FormField.formField [ M3e.Cem.FormField.variant M3e.Value.filled ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Textarea Autosize\" ]\n    , Html.node \"textarea\" [] [ Html.text \"<!-- Content omitted for brevity -->\" ]\n    ]\n, M3e.Cem.TextareaAutosize.textareaAutosize [ M3e.Cem.TextareaAutosize.for \"field\" ] []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.variant \"filled\" ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Textarea Autosize\" ]\n    , Html.node \"textarea\" [] [ Html.text \"<!-- Content omitted for brevity -->\" ]\n    ]\n, M3e.Cem.Html.TextareaAutosize.textareaAutosize [ M3e.Cem.Html.TextareaAutosize.for \"field\" ] []\n]",
+        "record": null,
+        "build": null
+      },
+      {
+        "title": "Min and max rows",
+        "html": "<m3e-form-field variant=\"filled\">\n  <label slot=\"label\" for=\"field\">Textarea Autosize</label>\n  <textarea id=\"field\">\n    <!-- Content omitted for brevity -->\n  </textarea>\n</m3e-form-field>\n<m3e-textarea-autosize for=\"field\" max-rows=\"5\"></m3e-textarea-autosize>",
+        "top": "[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ]\n    [ M3e.FormField.label \"field\" (Native.node Html.label [] [ Kit.text \"Textarea Autosize\" ])\n    , M3e.FormField.child \"field\" (Native.node Html.textarea [] [ Kit.text \"<!-- Content omitted for brevity -->\" ])\n    ]\n, M3e.TextareaAutosize.view\n    [ M3e.TextareaAutosize.for \"field\"\n    , M3e.TextareaAutosize.maxRows 5\n    ]\n    []\n]",
+        "mid": "[ M3e.Cem.FormField.formField [ M3e.Cem.FormField.variant M3e.Value.filled ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Textarea Autosize\" ]\n    , Html.node \"textarea\" [] [ Html.text \"<!-- Content omitted for brevity -->\" ]\n    ]\n, M3e.Cem.TextareaAutosize.textareaAutosize\n    [ M3e.Cem.TextareaAutosize.for \"field\"\n    , M3e.Cem.TextareaAutosize.maxRows 5\n    ]\n    []\n]",
+        "bottom": "[ M3e.Cem.Html.FormField.formField [ M3e.Cem.Html.FormField.variant \"filled\" ]\n    [ Html.label [ Html.Attributes.attribute \"slot\" \"label\" ] [ Html.text \"Textarea Autosize\" ]\n    , Html.node \"textarea\" [] [ Html.text \"<!-- Content omitted for brevity -->\" ]\n    ]\n, M3e.Cem.Html.TextareaAutosize.textareaAutosize\n    [ M3e.Cem.Html.TextareaAutosize.for \"field\"\n    , M3e.Cem.Html.TextareaAutosize.maxRows 5\n    ]\n    []\n]",
+        "record": null,
+        "build": null
+      },
       {
         "title": "Disabling",
         "html": "<m3e-textarea-autosize for=\"field\" disabled></m3e-textarea-autosize>",
