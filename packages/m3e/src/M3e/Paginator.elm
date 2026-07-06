@@ -192,7 +192,8 @@ showFirstLastButtons =
 
 
 {-| Listen for `page` events. -}
-onPage : msg -> M3e.Cem.Attr.Attr { c | onPage : M3e.Value.Supported } msg
+onPage :
+    (Int -> msg) -> M3e.Cem.Attr.Attr { c | onPage : M3e.Value.Supported } msg
 onPage =
     M3e.Cem.Paginator.onPage
 

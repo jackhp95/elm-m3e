@@ -95,8 +95,10 @@ onBeforetoggle f_ =
 
 
 {-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
+onToggle :
+    (String -> msg)
+    -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle f_ =
     M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Menu.onToggle
-        (Json.Decode.succeed f_)
+        (Json.Decode.map f_ (Json.Decode.at [ "newState" ] Json.Decode.string))

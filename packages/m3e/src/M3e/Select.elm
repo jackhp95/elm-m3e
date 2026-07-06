@@ -136,7 +136,9 @@ onChange =
 
 
 {-| Listen for `toggle` events. -}
-onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
+onToggle :
+    (String -> msg)
+    -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle =
     M3e.Cem.Select.onToggle
 

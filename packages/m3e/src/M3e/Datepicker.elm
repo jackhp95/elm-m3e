@@ -240,7 +240,9 @@ label =
 
 
 {-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange :
+    (String -> msg)
+    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange =
     M3e.Cem.Datepicker.onChange
 

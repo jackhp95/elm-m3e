@@ -17,6 +17,7 @@ Middle layer for `<m3e-datepicker>`: the phantom-typed `Attr` setters (each an O
 
 import Html
 import Json.Decode
+import Json.Encode
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Datepicker
@@ -221,11 +222,30 @@ label =
 
 
 {-| Listen for `change` events. -}
-onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
+onChange :
+    (String -> msg)
+    -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange f_ =
     M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Datepicker.onChange
-        (Json.Decode.succeed f_)
+        (Json.Decode.map
+             f_
+             (Json.Decode.andThen
+                  (\v_ ->
+                       case
+                           Json.Decode.decodeString
+                               Json.Decode.string
+                               (Json.Encode.encode 0 v_)
+                       of
+                           Ok s_ ->
+                               Json.Decode.succeed s_
+                       
+                           Err e_ ->
+                               Json.Decode.fail "expected a Date value"
+                  )
+                  (Json.Decode.at [ "target", "date" ] Json.Decode.value)
+             )
+        )
 
 
 {-| Listen for `beforetoggle` events. -}

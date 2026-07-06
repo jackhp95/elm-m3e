@@ -161,8 +161,12 @@ showFirstLastButtons =
 
 
 {-| Listen for `page` events. -}
-onPage : msg -> M3e.Cem.Attr.Attr { c | onPage : M3e.Value.Supported } msg
+onPage :
+    (Int -> msg) -> M3e.Cem.Attr.Attr { c | onPage : M3e.Value.Supported } msg
 onPage f_ =
     M3e.Cem.Attr.Internal.attribute
         M3e.Cem.Html.Paginator.onPage
-        (Json.Decode.succeed f_)
+        (Json.Decode.map
+             f_
+             (Json.Decode.at [ "detail", "pageIndex" ] Json.Decode.int)
+        )
