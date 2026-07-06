@@ -546,6 +546,7 @@
         "M3e.MenuTrigger",
         "M3e.MonthView",
         "M3e.MultiYearView",
+        "M3e.Native",
         "M3e.NavBar",
         "M3e.NavItem",
         "M3e.NavMenu",

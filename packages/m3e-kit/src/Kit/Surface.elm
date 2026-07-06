@@ -19,6 +19,7 @@ home for those classes (see `Kit`).
 
 -}
 
+import Html
 import Html.Attributes
 import M3e.Cem.Attr exposing (Attr)
 import M3e.Element exposing (Element)
@@ -38,7 +39,7 @@ type Surface
 -}
 view : Surface -> List (Attr c msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 view (Surface roles) attrs kids =
-    Native.div
+    Native.node Html.div
         (Seam.asAttribute (Html.Attributes.class (roles.bg ++ " " ++ roles.on)) :: attrs)
         kids
 
