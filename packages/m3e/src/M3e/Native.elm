@@ -9,6 +9,9 @@ CLOSED to the attrs HTML permits on that element (plus `slot`), so
 crossings live inside this generated `M3e.*` module. Do not edit by hand;
 regenerate via `bin/elm-cem.js`.
 
+Element and attribute summaries are adapted from MDN Web Docs
+(https://developer.mozilla.org), licensed CC BY-SA 2.5.
+
 @docs a, label, input, textarea, select, button, span, div, p, ul, li, nav, header, footer, section, img
 @docs alt, checked, cols, disabled, download, for, height, href, max, min, multiple, name, placeholder, readonly, rel, required, rows, src, step, target, type_, value, width
 -}
@@ -47,7 +50,7 @@ label attrs children =
         )
 
 
-{-| The `<input>` HTML element is used to create interactive controls for web-based forms in order to accept data from the user.
+{-| The `<input>` HTML element is used to create interactive controls for web-based forms in order to accept data from the user; a wide variety of types of input data and control widgets are available, depending on the device and user agent. The `<input>` element is one of the most powerful and complex in all of HTML due to the sheer number of combinations of input types and attributes.
 -}
 input :
     List (Attr { checked : Supported, disabled : Supported, max : Supported, min : Supported, multiple : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, slot : Supported, step : Supported, type_ : Supported, value : Supported } msg) -> Element any msg
@@ -60,7 +63,7 @@ input attrs =
         )
 
 
-{-| The `<textarea>` HTML element represents a multi-line plain-text editing control, useful when you want to allow users to enter a sizeable amount of free-form text.
+{-| The `<textarea>` HTML element represents a multi-line plain-text editing control, useful when you want to allow users to enter a sizeable amount of free-form text, for example a comment on a review or feedback form.
 -}
 textarea :
     List (Attr { cols : Supported, disabled : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, rows : Supported, slot : Supported, value : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -86,7 +89,7 @@ select attrs children =
         )
 
 
-{-| The `<button>` HTML element is an interactive element activated by a user with a mouse, keyboard, finger, voice command, or other assistive technology.
+{-| The `<button>` HTML element is an interactive element activated by a user with a mouse, keyboard, finger, voice command, or other assistive technology. Once activated, it then performs an action, such as submitting a form or opening a dialog.
 -}
 button :
     List (Attr { disabled : Supported, name : Supported, slot : Supported, type_ : Supported, value : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -99,7 +102,7 @@ button attrs children =
         )
 
 
-{-| The `<span>` HTML element is a generic inline container for phrasing content, which does not inherently represent anything.
+{-| The `<span>` HTML element is a generic inline container for phrasing content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the `class` or `id` attributes), or because they share attribute values, such as `lang`. It should be used only when no other semantic element is appropriate. `<span>` is very much like a <div> element, but <div> is a block-level element whereas a `<span>` is an inline-level element.
 -}
 span :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -112,7 +115,7 @@ span attrs children =
         )
 
 
-{-| The `<div>` HTML element is the generic container for flow content. It has no effect on the content or layout until styled in some way using CSS.
+{-| The `<div>` HTML element is the generic container for flow content. It has no effect on the content or layout until styled in some way using CSS (e.g., styling is directly applied to it, or some kind of layout model like Flexbox is applied to its parent element).
 -}
 div :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -125,7 +128,7 @@ div attrs children =
         )
 
 
-{-| The `<p>` HTML element represents a paragraph.
+{-| The `<p>` HTML element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.
 -}
 p :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -151,7 +154,7 @@ ul attrs children =
         )
 
 
-{-| The `<li>` HTML element is used to represent an item in a list.
+{-| The `<li>` HTML element is used to represent an item in a list. It must be contained in a parent element: an ordered list (<ol>), an unordered list (<ul>), or a menu (<menu>). In menus and unordered lists, list items are usually displayed using bullet points. In ordered lists, they are usually displayed with an ascending counter on the left, such as a number or letter.
 -}
 li :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -164,7 +167,7 @@ li attrs children =
         )
 
 
-{-| The `<nav>` HTML element represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents.
+{-| The `<nav>` HTML element represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents. Common examples of navigation sections are menus, tables of contents, and indexes.
 -}
 nav :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -177,7 +180,7 @@ nav attrs children =
         )
 
 
-{-| The `<header>` HTML element represents introductory content, typically a group of introductory or navigational aids.
+{-| The `<header>` HTML element represents introductory content, typically a group of introductory or navigational aids. It may contain some heading elements but also a logo, a search form, an author name, and other elements.
 -}
 header :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -190,7 +193,7 @@ header attrs children =
         )
 
 
-{-| The `<footer>` HTML element represents a footer for its nearest ancestor sectioning content or sectioning root element.
+{-| The `<footer>` HTML element represents a footer for its nearest ancestor sectioning content or sectioning root element. A `<footer>` typically contains information about the author of the section, copyright data or links to related documents.
 -}
 footer :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -203,7 +206,7 @@ footer attrs children =
         )
 
 
-{-| The `<section>` HTML element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it.
+{-| The `<section>` HTML element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. Sections should always have a heading, with very few exceptions.
 -}
 section :
     List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
@@ -229,49 +232,49 @@ img attrs =
         )
 
 
-{-| Alternative text describing the image, shown when the image cannot be displayed and read out by assistive technology. Valid on `<img>`, `<area>`.
+{-| Defines text that can replace the image in the page. Valid on `<img>`, `<area>`.
 -}
 alt : String -> Attr { c | alt : Supported } msg
 alt =
     Attr.attribute Html.Attributes.alt
 
 
-{-| Whether a checkbox or radio-button `<input>` is selected (checked) by default. Valid on `<input>`.
+{-| Valid for both `radio` and `checkbox` types, `checked` is a Boolean attribute. If present on a `radio` type, it indicates that the radio button is the currently selected one in the group of same-named radio buttons. If present on a `checkbox` type, it indicates that the checkbox is checked by default (when the page loads). It does not indicate whether this checkbox is currently checked: if the checkbox's state is changed, this content attribute does not reflect the change. (Only the `HTMLInputElement`'s `checked` IDL attribute is updated.) Valid on `<input>`.
 -}
 checked : Bool -> Attr { c | checked : Supported } msg
 checked =
     Attr.attribute Html.Attributes.checked
 
 
-{-| The visible width of the `<textarea>` control, in average character widths. Valid on `<textarea>`.
+{-| The visible width of the text control, in average character widths. If it is specified, it must be a positive integer. If it is not specified, the default value is `20`. Valid on `<textarea>`.
 -}
 cols : Int -> Attr { c | cols : Supported } msg
 cols =
     Attr.attribute Html.Attributes.cols
 
 
-{-| Whether the control is disabled, meaning the user cannot interact with it and its value is not submitted with the form. Valid on `<input>`, `<textarea>`, `<select>`, `<button>`, `<option>`.
+{-| The Boolean `disabled` attribute, when present, makes the element not mutable, focusable, or even submitted with the form. The user can neither edit nor focus on the control, nor its form control descendants. Valid on `<input>`, `<textarea>`, `<select>`, `<button>`, `<option>`.
 -}
 disabled : Bool -> Attr { c | disabled : Supported } msg
 disabled =
     Attr.attribute Html.Attributes.disabled
 
 
-{-| Prompts the user to save the linked URL instead of navigating to it; if given a value, it is used as the suggested filename for the saved file. Valid on `<a>`, `<area>`.
+{-| Causes the browser to treat the linked URL as a download. Can be used with or without a `filename` value. Valid on `<a>`, `<area>`.
 -}
 download : String -> Attr { c | download : Supported } msg
 download =
     Attr.attribute Html.Attributes.download
 
 
-{-| The `id` of a labelable form-related element in the same document as the `<label>` element it associates with. Valid on `<label>`, `<output>`.
+{-| The `for` attribute is an allowed attribute for <label> and <output>. When used on a `<label>` element it indicates the form element that this label describes. When used on an `<output>` element it allows for an explicit relationship between the elements that represent values which are used in the output. Valid on `<label>`, `<output>`.
 -}
 for : String -> Attr { c | for : Supported } msg
 for =
     Attr.attribute Html.Attributes.for
 
 
-{-| The intrinsic height of the image, in pixels. Valid on `<img>`.
+{-| The intrinsic height of the image, in pixels. Must be an integer without a unit. Valid on `<img>`.
 -}
 height : Int -> Attr { c | height : Supported } msg
 height =
@@ -285,105 +288,105 @@ href =
     Attr.attribute Html.Attributes.href
 
 
-{-| The greatest (maximum) value acceptable for a numeric, date, or time `<input>`. Valid on `<input>`.
+{-| The `max` attribute defines the maximum value that is acceptable and valid for the input containing the attribute. If the `value` of the element is greater than this, the element fails validation. This value must be greater than or equal to the value of the `min` attribute. If the `max` attribute is present but is not specified or is invalid, no `max` value is applied. If the `max` attribute is valid and a non-empty value is greater than the maximum allowed by the `max` attribute, constraint validation will prevent form submission. Valid on `<input>`.
 -}
 max : String -> Attr { c | max : Supported } msg
 max =
     Attr.attribute Html.Attributes.max
 
 
-{-| The most negative (minimum) value acceptable for a numeric, date, or time `<input>`. Valid on `<input>`.
+{-| The `min` attribute defines the minimum value that is acceptable and valid for the input containing the attribute. If the `value` of the element is less than this, the element fails validation. This value must be less than or equal to the value of the `max` attribute. Valid on `<input>`.
 -}
 min : String -> Attr { c | min : Supported } msg
 min =
     Attr.attribute Html.Attributes.min
 
 
-{-| Whether the control allows more than one value: multiple selected options on a `<select>`, or multiple comma-separated values on an email or file `<input>`. Valid on `<select>`, `<input>`.
+{-| The Boolean `multiple` attribute, if set, means the form control accepts one or more values. The attribute is valid for the email and file input types and the <select>. The manner by which the user opts for multiple values depends on the form control. Valid on `<select>`, `<input>`.
 -}
 multiple : Bool -> Attr { c | multiple : Supported } msg
 multiple =
     Attr.attribute Html.Attributes.multiple
 
 
-{-| The name of the form control, submitted with the form as part of a name/value pair. Valid on `<input>`, `<textarea>`, `<select>`, `<button>`.
+{-| A string specifying a name for the input control. This name is submitted along with the control's value when the form data is submitted. Valid on `<input>`, `<textarea>`, `<select>`, `<button>`.
 -}
 name : String -> Attr { c | name : Supported } msg
 name =
     Attr.attribute Html.Attributes.name
 
 
-{-| A short hint describing the expected value of the control, displayed before the user enters a value. Valid on `<input>`, `<textarea>`.
+{-| The `placeholder` attribute defines the text displayed in a form control when the control has no value. The placeholder text should provide a brief hint to the user as to the expected type of data that should be entered into the control. Valid on `<input>`, `<textarea>`.
 -}
 placeholder : String -> Attr { c | placeholder : Supported } msg
 placeholder =
     Attr.attribute Html.Attributes.placeholder
 
 
-{-| Whether the value of the control cannot be edited by the user (though it can still be submitted with the form). Valid on `<input>`, `<textarea>`.
+{-| The Boolean `readonly` attribute, when present, makes the element not mutable, meaning the user can not edit the control. Valid on `<input>`, `<textarea>`.
 -}
 readonly : Bool -> Attr { c | readonly : Supported } msg
 readonly =
     Attr.attribute Html.Attributes.readonly
 
 
-{-| The relationship of the linked URL to the current document, as a space-separated list of link types. Valid on `<a>`, `<area>`, `<link>`.
+{-| The `rel` attribute defines the relationship between a linked resource and the current document. Valid on <link>, <a>, <area>, and <form>, the supported values depend on the element on which the attribute is found. Valid on `<a>`, `<area>`, `<link>`.
 -}
 rel : String -> Attr { c | rel : Supported } msg
 rel =
     Attr.attribute Html.Attributes.rel
 
 
-{-| Whether the user must specify a value for the control before the owning form can be submitted. Valid on `<input>`, `<textarea>`, `<select>`.
+{-| The Boolean `required` attribute, if present, indicates that the user must specify a value for the input before the owning form can be submitted. Valid on `<input>`, `<textarea>`, `<select>`.
 -}
 required : Bool -> Attr { c | required : Supported } msg
 required =
     Attr.attribute Html.Attributes.required
 
 
-{-| The number of visible text lines for the `<textarea>` control. Valid on `<textarea>`.
+{-| The number of visible text lines for the control. If it is specified, it must be a positive integer. If it is not specified, the default value is 2. Valid on `<textarea>`.
 -}
 rows : Int -> Attr { c | rows : Supported } msg
 rows =
     Attr.attribute Html.Attributes.rows
 
 
-{-| The URL of the image resource to embed. Valid on `<img>`.
+{-| The image URL. At least one of `src` and `srcset` is required for an `<img>` element. If `srcset` is specified, `src` is used in one of two ways. Valid on `<img>`.
 -}
 src : String -> Attr { c | src : Supported } msg
 src =
     Attr.attribute Html.Attributes.src
 
 
-{-| The granularity that the value must adhere to for a numeric, date, or time `<input>`, or `any` to allow any value. Valid on `<input>`.
+{-| The `step` attribute is a number that specifies the granularity that the value must adhere to or the keyword `any`. It is valid for the numeric input types, including the date, month, week, time, datetime-local, number and range types. Valid on `<input>`.
 -}
 step : String -> Attr { c | step : Supported } msg
 step =
     Attr.attribute Html.Attributes.step
 
 
-{-| Where to display the linked URL, as the name of a browsing context (a tab, window, or `<iframe>`); keywords include `_self`, `_blank`, `_parent`, and `_top`. Valid on `<a>`, `<area>`, `<form>`.
+{-| Where to display the linked URL, as the name for a browsing context (a tab, window, or <iframe>). The following keywords have special meanings for where to load the URL. Valid on `<a>`, `<area>`, `<form>`.
 -}
 target : String -> Attr { c | target : Supported } msg
 target =
     Attr.attribute Html.Attributes.target
 
 
-{-| How an `<input>` element behaves and is displayed (for example `text`, `checkbox`, or `number`), or the default behavior of a `<button>` (`submit`, `reset`, or `button`). Valid on `<input>`, `<button>`.
+{-| A string specifying the type of control to render. For example, to create a checkbox, a value of `checkbox` is used. If omitted (or an unknown value is specified), the input type `text` is used, creating a plaintext input field. Valid on `<input>`, `<button>`.
 -}
 type_ : String -> Attr { c | type_ : Supported } msg
 type_ =
     Attr.attribute Html.Attributes.type_
 
 
-{-| The value of the form control, submitted with the form as part of a name/value pair. Valid on `<input>`, `<textarea>`, `<button>`, `<option>`.
+{-| The input control's value. When specified in the HTML, this is the initial value, and from then on it can be altered or retrieved at any time using JavaScript to access the respective HTMLInputElement object's `value` property. The `value` attribute is always optional, though should be considered mandatory for `checkbox`, `radio`, and `hidden`. Valid on `<input>`, `<textarea>`, `<button>`, `<option>`.
 -}
 value : String -> Attr { c | value : Supported } msg
 value =
     Attr.attribute Html.Attributes.value
 
 
-{-| The intrinsic width of the image, in pixels. Valid on `<img>`.
+{-| The intrinsic width of the image in pixels. Must be an integer without a unit. Valid on `<img>`.
 -}
 width : Int -> Attr { c | width : Supported } msg
 width =
