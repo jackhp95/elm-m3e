@@ -1,20 +1,27 @@
-module Doc exposing (Lang(..), code_, elmSignature, markdown, rawPreview, showcase)
+module Doc exposing (Lang(..), anchorPill, code_, elmSignature, markdown, message, preBlock, rawPreview, showcase)
 
 {-| Shared documentation-rendering helpers, lifted from the Styles/GettingStarted
 routes so per-component Usage pages can reuse them.
 
-@docs Lang, code_, elmSignature, markdown, rawPreview, showcase
+This is also the docs app's designated **Seam adapter** (ADR 0014 §2): the doc
+routes render syntax-highlighted code, Markdown, and small raw-HTML leaves that
+have no typed M3e producer, so those raw-`Html`→`Element` crossings are
+centralised here as named helpers (`rawPreview`, `markdown`, `code_`,
+`elmSignature`, `anchorPill`, `preBlock`, `message`) instead of scattering
+`Seam.fromHtml` through feature routes.
+
+@docs Lang, anchorPill, code_, elmSignature, markdown, message, preBlock, rawPreview, showcase
 
 -}
 
-import EscapeHatch
-import Html exposing (code, div, node, pre, text)
-import Html.Attributes exposing (attribute, class)
+import Html exposing (Html, a, code, div, node, p, pre, text)
+import Html.Attributes exposing (attribute, class, href)
 import M3e.Card as Card
 import M3e.Element exposing (Element)
 import M3e.Value as Value exposing (Supported)
 import Markdown.Parser
 import Markdown.Renderer
+import Seam
 import SyntaxHighlight
 
 
@@ -36,7 +43,7 @@ on hydration.
 -}
 rawPreview : String -> Element { s | html : Supported } msg
 rawPreview html =
-    EscapeHatch.fromHtml
+    Seam.fromHtml
         (node "raw-html"
             [ attribute "content" html
             , class "flex flex-wrap items-center gap-3"
@@ -83,13 +90,13 @@ code_ lang s =
     in
     case parsed of
         Ok highlighted ->
-            EscapeHatch.fromHtml
+            Seam.fromHtml
                 (div [ class wrapperClass ]
                     [ SyntaxHighlight.toBlockHtml Nothing highlighted ]
                 )
 
         Err _ ->
-            EscapeHatch.fromHtml
+            Seam.fromHtml
                 (pre [ class wrapperClass ]
                     [ code [] [ text trimmed ] ]
                 )
@@ -102,14 +109,14 @@ the prose spacing/typography from `style.css`.
 -}
 markdown : String -> Element { s | html : Supported } msg
 markdown raw =
-    EscapeHatch.fromHtml
+    Seam.fromHtml
         (div [ class "doc-prose" ] (markdownBody raw))
 
 
-markdownBody : String -> List (Html.Html msg)
+markdownBody : String -> List (Html msg)
 markdownBody raw =
     let
-        rendered : Result () (List (Html.Html msg))
+        rendered : Result () (List (Html msg))
         rendered =
             Markdown.Parser.parse raw
                 |> Result.mapError (always ())
@@ -124,7 +131,7 @@ markdownBody raw =
             html
 
         Err _ ->
-            [ Html.p [] [ text (String.trim raw) ] ]
+            [ p [] [ text (String.trim raw) ] ]
 
 
 {-| A syntax-highlighted Elm type signature (for API member rows). Rendered as an
@@ -140,11 +147,45 @@ elmSignature s =
     in
     case SyntaxHighlight.elm trimmed of
         Ok highlighted ->
-            EscapeHatch.fromHtml
+            Seam.fromHtml
                 (div [ class "text-body-md leading-relaxed" ]
                     [ SyntaxHighlight.toInlineHtml highlighted ]
                 )
 
         Err _ ->
-            EscapeHatch.fromHtml
+            Seam.fromHtml
                 (code [ class "text-body-md" ] [ text trimmed ])
+
+
+{-| A rounded "pill" anchor for the reference index (a same-page `#slug` link
+carrying the outline/hover chrome). Raw `<a>` because the library doesn't
+opinionate plain navigation anchors.
+-}
+anchorPill : { href : String, label : String } -> Element { s | html : Supported } msg
+anchorPill link =
+    Seam.fromHtml
+        (a
+            [ href link.href
+            , class "rounded-full border border-outline px-3 py-1 text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface no-underline"
+            ]
+            [ text link.label ]
+        )
+
+
+{-| A horizontally-scrollable `<pre><code>` block for a verbatim signature line.
+-}
+preBlock : String -> Element { s | html : Supported } msg
+preBlock s =
+    Seam.fromHtml
+        (pre [ class "overflow-x-auto" ]
+            [ code [] [ text s ] ]
+        )
+
+
+{-| A minimal `<div><p>…</p></div>` text block, for framework surfaces (e.g. the
+error page) that render a plain message with no typed M3e producer at hand.
+-}
+message : String -> Element { s | html : Supported } msg
+message body =
+    Seam.fromHtml
+        (div [] [ p [] [ text body ] ])

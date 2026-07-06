@@ -24,15 +24,13 @@ import BackendTask
 import Effect exposing (Effect)
 import Head
 import Html
-import Html.Attributes as Attr
-import Html.Events
 import Kit
 import Kit.Avatar as Avatar
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e.Action as Action
-import M3e.Aria as Aria
 import M3e.AppBar as AppBar
+import M3e.Aria as Aria
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
 import M3e.Icon as Icon
@@ -48,7 +46,6 @@ import M3e.Value as Value exposing (Supported)
 import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
-import Seam
 import Shared
 import UrlPath exposing (UrlPath)
 import View exposing (View)
@@ -284,8 +281,8 @@ searchBar =
     SearchBar.view
         { input =
             Native.node Html.input
-                [ Seam.asAttribute (Attr.placeholder "Search mail")
-                , Seam.asAttribute (Attr.type_ "search")
+                [ Native.attribute "placeholder" "Search mail"
+                , Native.attribute "type" "search"
                 ]
                 []
         }
@@ -356,8 +353,8 @@ messageRow selected index message =
     ListItem.view
         [ Surface.asAttribute rowSurface
         , Layout.class "cursor-pointer"
-        , Seam.asAttribute (Attr.attribute "role" "button")
-        , Seam.asAttribute (Html.Events.onClick (SelectMessage index))
+        , Native.attribute "role" "button"
+        , Native.onClick (SelectMessage index)
         ]
         [ ListItem.leading (Avatar.initials message.initials)
         , ListItem.child (Kit.text message.sender)

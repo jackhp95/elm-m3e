@@ -2,21 +2,22 @@ module NoSeamOutsideAllowedModules exposing (rule)
 
 {-| Generalized **seam gate** (successor to the Ui-era `NoRawLayoutOutsideLayoutModule`).
 
-The `Seam` and `EscapeHatch` modules are the sanctioned holes in the type system: they
-turn raw `Html` into a `Node`/`Element`/`Attr` (`Seam`) or coerce a well-typed value to a
-different capability row (`EscapeHatch`). They exist so the seam between typed M3e and raw
-Elm html is *possible* — but each use throws away a guarantee, so a codebase usually wants
-them **contained** to a few blessed modules (a `Native`/`Layout`-style adapter layer)
-rather than sprinkled through feature code.
+The `Seam` module is the single sanctioned hole in the type system (ADR 0014 §2,
+issue #81): it turns raw `Html` into a `Node`/`Element`/`Attr` and coerces a
+well-typed value to a different phantom row. It exists so the seam between typed
+M3e and raw Elm html is _possible_ — but each use throws away a guarantee, so a
+codebase usually wants it **contained** to a few blessed modules (a
+`Native`/`Layout`-style adapter layer) rather than sprinkled through feature code.
 
-This rule flags any reference to a `Seam.*` or `EscapeHatch.*` function from a module not
-in the configured allow-list. Point-free uses (`List.map Seam.asElement`) are caught too.
+This rule flags any reference to a `Seam.*` function from a module not in the
+configured allow-list. Point-free uses (`List.map Seam.asElement`) are caught too.
 
     config =
         [ NoSeamOutsideAllowedModules.rule [ "Native", "Layout", "Kit" ] ]
 
-Allow-list entries are dotted module names (`"Ui.Layout"`). An empty list gates the seam
-everywhere.
+Allow-list entries are dotted module-name **prefixes**: `"Kit"` allows `Kit` and
+every `Kit.*` submodule (`Kit.Surface`, `Kit.Shape`, …); `"Ui.Layout"` allows just
+that module and its descendants. An empty list gates the seam everywhere.
 
 @docs rule
 
@@ -29,7 +30,8 @@ import Review.ModuleNameLookupTable as Lookup exposing (ModuleNameLookupTable)
 import Review.Rule as Rule exposing (Error, Rule)
 
 
-{-| Build the gate from the list of modules allowed to use the seam (dotted names). -}
+{-| Build the gate from the list of modules allowed to use the seam (dotted names).
+-}
 rule : List String -> Rule
 rule allowed =
     Rule.newModuleRuleSchemaUsingContextCreator "NoSeamOutsideAllowedModules" (initContext allowed)
@@ -48,17 +50,28 @@ initContext allowed =
     Rule.initContextCreator
         (\lookup moduleName () ->
             { lookup = lookup
-            , gated = not (List.member (String.join "." moduleName) allowed)
+            , gated = not (isAllowed allowed (String.join "." moduleName))
             }
         )
         |> Rule.withModuleNameLookupTable
         |> Rule.withModuleName
 
 
-{-| The modules whose functions are considered seams. -}
+{-| A module is allowed when its name equals or is nested under (dot-boundary) one
+of the allow-list prefixes — so `"Kit"` covers `Kit` and `Kit.Surface`.
+-}
+isAllowed : List String -> String -> Bool
+isAllowed allowed currentModule =
+    List.any
+        (\prefix -> currentModule == prefix || String.startsWith (prefix ++ ".") currentModule)
+        allowed
+
+
+{-| The modules whose functions are considered seams.
+-}
 seamModules : List ModuleName
 seamModules =
-    [ [ "Seam" ], [ "EscapeHatch" ] ]
+    [ [ "Seam" ] ]
 
 
 expressionVisitor : Node Expression -> Context -> ( List (Error {}), Context )

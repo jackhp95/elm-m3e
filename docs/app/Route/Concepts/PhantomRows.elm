@@ -137,7 +137,7 @@ neverConvert : String
 neverConvert =
     """`M3e.Button.view … : Element { s | button : Supported } msg` reads as *"I am a button."* You never rewrite that into `{ icon }` or anything else. Composition in this library is **add-only**: helpers like `withSlot`, `leadingIcon`, or the `M3e.*` slot setters only ever *add* a `slot=` association — they never change or strip the kind.
 
-So there is no `phantomA → phantomB` conversion function, by design. If you genuinely must place a kind a slot forbids (you believe the design system is wrong), you don't "convert" — you reach for the loud, greppable break-glass `EscapeHatch.asElement` (a.k.a. `stripPhantom`). It coerces the row, it's easy to `grep`, and the design-system team **audits** every use: they either fix the misuse or fix the generated binding. It's a pressure-release valve, not a data transformation."""
+So there is no `phantomA → phantomB` conversion function, by design. If you genuinely must place a kind a slot forbids (you believe the design system is wrong), you don't "convert" — you reach for the loud, greppable break-glass `Seam.stripPhantom` (formerly `EscapeHatch.asElement`). It coerces the row, it's easy to `grep`, and the design-system team **audits** every use: they either fix the misuse or fix the generated binding. It's a pressure-release valve, not a data transformation."""
 
 
 neverConvertCode : String
@@ -149,7 +149,7 @@ withSlot : String -> Element supported msg -> Element supported msg
 -- convert : Element { button } msg -> Element { icon } msg   -- does not exist
 
 -- the only escape is loud, greppable, and audited:
-EscapeHatch.asElement : Element a msg -> Element b msg"""
+Seam.stripPhantom : Element a msg -> Element b msg"""
 
 
 cheatSheet : String
@@ -169,7 +169,7 @@ cheatSheet =
 | `M3e.NavMenuItem` | `icon` | `icon` |
 | `M3e.NavMenuItem` | *(default)* | `navMenuItem` (nested items) |
 
-Two things to note. An **`any`** slot (like `Card.content : Element any msg`) takes a bare type variable, so *every* kind fits — that's the widest sink. And a **closed** slot lists a fixed set; to place anything outside it you must step through `EscapeHatch`, never a conversion."""
+Two things to note. An **`any`** slot (like `Card.content : Element any msg`) takes a bare type variable, so *every* kind fits — that's the widest sink. And a **closed** slot lists a fixed set; to place anything outside it you must step through `Seam`, never a conversion."""
 
 
 kitchenSink : String

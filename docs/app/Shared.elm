@@ -17,7 +17,6 @@ is `Module.view [attrs] [content]`.
 import BackendTask exposing (BackendTask)
 import Browser.Events
 import Effect exposing (Effect)
-import EscapeHatch
 import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Html.Attributes as Attr exposing (attribute, class)
@@ -368,8 +367,8 @@ view _ page model toMsg pageView =
                     [ Seam.asAttribute (class "grid h-screen grid-rows-[auto_1fr]")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    [ EscapeHatch.fromHtml (Html.map toMsg (appShellBar model))
-                    , EscapeHatch.fromHtml (drawerShell model page (List.map Node.toHtml pageView.body))
+                    [ Seam.fromHtml (Html.map toMsg (appShellBar model))
+                    , Seam.fromHtml (drawerShell model page (List.map Node.toHtml pageView.body))
                     ]
                 ]
             ]
@@ -409,11 +408,15 @@ appShellBar model =
             ]
             [ AppBar.title (Kit.text "elm-m3e")
             , AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
-            , AppBar.leading (EscapeHatch.asElement brandMark)
-            , AppBar.leading (EscapeHatch.asElement menuButton)
-            , AppBar.trailing (EscapeHatch.asElement (schemeQuickToggle model))
-            , AppBar.trailing (EscapeHatch.asElement (settingsTriggerElement model))
-            , AppBar.trailing (EscapeHatch.asElement githubLink)
+            , AppBar.leading
+                (Seam.stripPhantom
+                    (Native.span [ Seam.asAttribute (class "flex items-center") ]
+                        [ brandMark, menuButton ]
+                    )
+                )
+            , AppBar.trailing (Seam.stripPhantom (schemeQuickToggle model))
+            , AppBar.trailing (Seam.stripPhantom (settingsTriggerElement model))
+            , AppBar.trailing (Seam.stripPhantom githubLink)
             ]
             |> toHtml
         ]
@@ -425,7 +428,7 @@ fetch.
 -}
 brandMark : Element { html : Supported } Msg
 brandMark =
-    EscapeHatch.fromHtml
+    Seam.fromHtml
         (Html.img
             [ Attr.src "/favicon.svg"
             , Attr.alt "elm-m3e"
@@ -509,10 +512,10 @@ settingsTriggerElement model =
             [ Aria.label "Theme settings" ]
             []
         , if model.settingsOpen then
-            EscapeHatch.fromHtml (settingsPanel model)
+            Seam.fromHtml (settingsPanel model)
 
           else
-            EscapeHatch.fromHtml (Html.text "")
+            Seam.fromHtml (Html.text "")
         ]
 
 
@@ -523,7 +526,7 @@ settingsPanel model =
             [ Card.variant Value.filled ]
             [ Card.header
                 (Heading.view { content = Kit.text "Theme settings" } [ Heading.variant Value.title ] [])
-            , Card.content (EscapeHatch.fromHtml (settingsBody model))
+            , Card.content (Seam.fromHtml (settingsBody model))
             ]
             |> toHtml
         ]
@@ -702,7 +705,7 @@ drawerShell model page body =
                 -- the ContentPane provides its own container padding; keep only a
                 -- modest inline margin like matraic's #body (margin-inline: 1rem).
                 [ Seam.asAttribute (class "mx-auto w-full max-w-5xl px-2 py-2") ]
-                (List.map EscapeHatch.fromHtml body)
+                (List.map Seam.fromHtml body)
             )
         ]
         |> toHtml

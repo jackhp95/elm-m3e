@@ -29,24 +29,24 @@ v =
                             , under = "Seam.asAttribute"
                             }
                         ]
-        , test "flags EscapeHatch point-free use" <|
+        , test "flags a point-free Seam.stripPhantom use" <|
             \() ->
                 """module Route.Home exposing (v)
 
-import EscapeHatch
+import Seam
 
 v =
-    List.map EscapeHatch.asElement xs
+    List.map Seam.stripPhantom xs
 """
                     |> Review.Test.run (rule [ "Native" ])
                     |> Review.Test.expectErrors
                         [ Review.Test.error
-                            { message = "`EscapeHatch.asElement` used outside an allowed module"
+                            { message = "`Seam.stripPhantom` used outside an allowed module"
                             , details =
-                                [ "`EscapeHatch.asElement` is a seam that discards a type guarantee — it should be contained to the adapter modules in this rule's allow-list, not used in feature code."
+                                [ "`Seam.stripPhantom` is a seam that discards a type guarantee — it should be contained to the adapter modules in this rule's allow-list, not used in feature code."
                                 , "Move this into an allowed module (a Native/Layout-style layer), or reach for a typed M3e API that doesn't need the escape hatch."
                                 ]
-                            , under = "EscapeHatch.asElement"
+                            , under = "Seam.stripPhantom"
                             }
                         ]
         , test "allows the seam inside an allowed module" <|
@@ -60,5 +60,17 @@ div cls =
     Seam.asAttribute (Attr.class cls)
 """
                     |> Review.Test.run (rule [ "Native", "Layout" ])
+                    |> Review.Test.expectNoErrors
+        , test "allows the seam in a submodule of an allow-list prefix" <|
+            \() ->
+                """module Kit.Surface exposing (view)
+
+import Html.Attributes as Attr
+import Seam
+
+view cls =
+    Seam.asAttribute (Attr.class cls)
+"""
+                    |> Review.Test.run (rule [ "Native", "Kit" ])
                     |> Review.Test.expectNoErrors
         ]

@@ -8,10 +8,11 @@ copy these (and adapt them) into their own app.
   plain `<a>`). Carry the `text` / `link` kind.
 - **`Native`** — native-HTML IR producers (`div`/`span`/`p`/`a`/`strong`/`ul`/`li`/
   `img`/…), carrying the `html` kind — normal HTML inside the composition.
-- **`EscapeHatch`** — the loud, auditable break-glass: `fromHtml`, `asElement`
-  (phantom coercion / stripPhantom), `asAttribute`.
-- **`Seam`** — the sanctioned constructor for canonizing new supported kinds
-  (design-system files only; no suppression).
+- **`Seam`** — the single sanctioned userland boundary (ADR 0014 §2, #81): the
+  loud, auditable break-glass built on the `*.Internal` modules. Lifts raw `Html`
+  into the typed IR (`fromHtml`, `asElement`, `asAttribute`) and coerces phantom
+  rows (`stripPhantom`, `forget`). Collapses the former `EscapeHatch` into itself
+  so there is exactly one crossing point.
 
 Design rationale: `docs/ADOPTION_AND_SLOTS.md` §8. Built on `packages/m3e`; wired
 into the repo's root + docs `source-directories`.
