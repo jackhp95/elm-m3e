@@ -161,4 +161,25 @@ v =
 """
                     |> Review.Test.run (rule facts)
                     |> Review.Test.expectNoErrors
+        , test "does not flag a let-bound (non-inline) enum setter — documented false negative" <|
+            \() ->
+                -- The rule only recognizes an INLINE `<setter> <token>` application as a
+                -- setter element. A let-bound setter appears in the attr list as a bare
+                -- variable (`setInvalid`), which `tracedList` returns as-is without
+                -- expanding it against scope, so `checkSetter` never matches and the
+                -- invalid `circular` token slips through. This pins that boundary.
+                """module A exposing (v)
+
+import M3e exposing (button, variant)
+import M3e.Value as Value
+
+v =
+    let
+        setInvalid =
+            variant Value.circular
+    in
+    button [ setInvalid ] []
+"""
+                    |> Review.Test.run (rule facts)
+                    |> Review.Test.expectNoErrors
         ]

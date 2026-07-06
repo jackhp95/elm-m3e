@@ -41,6 +41,26 @@ shape4Facts =
     ]
 
 
+{-| A component whose default slot is required but NOT repeatable (required-singular):
+the constructor's required record already type-enforces it, so this rule intentionally
+skips it — `buildIndex` intersects requiredSlots with multiSlots, leaving nothing here.
+-}
+requiredSingularFacts : List Facts.Fact
+requiredSingularFacts =
+    [ { component = "grid"
+      , module_ = "M3e.Grid"
+      , enums = []
+      , requiredSlots = [ "default" ]
+      , multiSlots = []
+      , attrRewrites = []
+      , slotRewrites = []
+      , surfaces = [ Standard ]
+      , requiredAttrs = []
+      , actionMap = []
+      }
+    ]
+
+
 all : Test
 all =
     describe "RequireSlot"
@@ -130,5 +150,31 @@ v =
     M3e.Record.Grid.view {} [] (List.map child items)
 """
                     |> Review.Test.run (rule shape4Facts)
+                    |> Review.Test.expectNoErrors
+        , test "does not flag a required slot that is not multi (type-enforced elsewhere)" <|
+            \() ->
+                -- required-singular: the constructor's required record already enforces
+                -- presence, so this rule stays silent even with an empty content list.
+                """module A exposing (v)
+
+import M3e exposing (grid)
+
+v =
+    grid [] []
+"""
+                    |> Review.Test.run (rule requiredSingularFacts)
+                    |> Review.Test.expectNoErrors
+        , test "stays silent for a partially-applied constructor (not enough args)" <|
+            \() ->
+                -- `grid []` is not fully applied (no content list yet); the rule only
+                -- checks calls with the content argument present (>= 2 args).
+                """module A exposing (v)
+
+import M3e exposing (grid)
+
+v =
+    grid []
+"""
+                    |> Review.Test.run (rule facts)
                     |> Review.Test.expectNoErrors
         ]
