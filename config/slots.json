@@ -2231,5 +2231,9 @@
     "text": { "kind": "text", "wrap": "span" },
     "link": { "kind": "link", "tag": "a" },
     "label": { "kind": "label", "tag": "label" }
+  },
+  "_native": {
+    "emit": ["a", "label", "input", "textarea", "select", "button", "span", "div", "p", "ul", "li", "nav", "header", "footer", "section", "img"],
+    "semantics": { "a": "link", "label": "label" }
   }
 }
