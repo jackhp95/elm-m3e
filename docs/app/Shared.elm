@@ -656,6 +656,7 @@ navSections =
       , items =
             [ ( "/concepts/phantom-rows", "Phantom rows" )
             , ( "/concepts/build", "The ⑤ Build pipeline" )
+            , ( "/concepts/text-field", "Text field by composition" )
             ]
       }
     , { title = "Styles"
