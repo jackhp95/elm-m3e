@@ -629,6 +629,9 @@
         ]
     },
     "ChipSet": {
+        "staticAttrs": {
+            "role": "group"
+        },
         "slots": {
             "unnamed": {
                 "kinds": [
@@ -675,6 +678,9 @@
         ]
     },
     "FilterChipSet": {
+        "staticAttrs": {
+            "role": "group"
+        },
         "slots": {
             "unnamed": {
                 "kinds": [
@@ -724,6 +730,9 @@
         ]
     },
     "InputChipSet": {
+        "staticAttrs": {
+            "role": "group"
+        },
         "slots": {
             "unnamed": {
                 "kinds": [

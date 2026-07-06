@@ -16,11 +16,14 @@ import Json.Decode
 import Json.Encode
 
 
-{-| The raw `<m3e-input-chip-set>` element — a partial application of `Html.node`. -}
+{-| The raw `<m3e-input-chip-set>` element, with the library's fixed host attribute (role="group") stamped ahead of the caller's attributes. -}
 inputChipSet :
     List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
-inputChipSet =
-    Html.node "m3e-input-chip-set"
+inputChipSet attributes children =
+    Html.node
+        "m3e-input-chip-set"
+        (Html.Attributes.attribute "role" "group" :: attributes)
+        children
 
 
 {-| Whether the element is disabled. (default: `false`) -}
