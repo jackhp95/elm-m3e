@@ -355,30 +355,18 @@ filterChip =
 
 {-| Convenience binding for the `M3e.Record.AssistChip` element: `view` re-exposed from `M3e.Record.AssistChip`. Import that module directly for the strict, component-scoped types. -}
 assistChip :
-    { content : M3e.Element.Element { text : M3e.Value.Supported } msg
-    , action :
-        M3e.Action.Action { click : M3e.Value.Supported
-        , link : M3e.Value.Supported
-        , menuTrigger : M3e.Value.Supported
-        , dialogTrigger : M3e.Value.Supported
-        , fabMenuTrigger : M3e.Value.Supported
-        , bottomSheetTrigger : M3e.Value.Supported
-        , navRailToggle : M3e.Value.Supported
-        , drawerToggle : M3e.Value.Supported
-        , datepickerToggle : M3e.Value.Supported
-        , dialogAction : M3e.Value.Supported
-        , bottomSheetAction : M3e.Value.Supported
-        , richTooltipAction : M3e.Value.Supported
-        , stepperReset : M3e.Value.Supported
-        , stepperPrevious : M3e.Value.Supported
-        } msg
-    }
+    { content : M3e.Element.Element { text : M3e.Value.Supported } msg }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , disabledInteractive : M3e.Value.Supported
+    , download : M3e.Value.Supported
+    , href : M3e.Value.Supported
     , name : M3e.Value.Supported
+    , rel : M3e.Value.Supported
+    , target : M3e.Value.Supported
     , type_ : M3e.Value.Supported
     , value : M3e.Value.Supported
     , variant : M3e.Value.Supported
+    , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
     -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)

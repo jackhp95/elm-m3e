@@ -398,9 +398,7 @@ readingPane message =
 labelChip : String -> Element { s | assistChip : Supported } msg
 labelChip name =
     AssistChip.view
-        { content = Kit.text name
-        , action = Action.link "#"
-        }
+        { content = Kit.text name }
         []
         [ AssistChip.icon (Icon.view [ Icon.name "label" ] []) ]
 
