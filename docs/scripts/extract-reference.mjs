@@ -119,7 +119,13 @@ function overview(comment) {
   for (const raw of lines) {
     const l = raw.replace(/\s+$/, "");
     if (/^@docs\b/.test(l.trim())) break;
-    if (/^#\s/.test(l)) break;
+    // Stop at ANY ATX heading (h1–h6). The prose overview precedes every
+    // section; `## Examples` / `### Variants` and their code dumps belong to
+    // the live "Usage" section, not the intro (the old `/^#\s/` only caught h1,
+    // so `## Examples` leaked the whole example code block into the overview).
+    if (/^#{1,6}\s/.test(l)) break;
+    // Drop elm-cem HTML-comment directives (e.g. `<!-- elm-cem:docmeta … -->`).
+    if (/^<!--.*-->\s*$/.test(l.trim())) continue;
     out.push(l);
   }
   return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();

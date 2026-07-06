@@ -16,6 +16,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { execFileSync } from "child_process";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, "../..");
@@ -38,6 +39,43 @@ const SLUG_ALIASES = {
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
+}
+
+const ELM_FORMAT = path.resolve(here, "../node_modules/.bin/elm-format");
+
+// The converter emits each example as ONE long unwrapped expression (a bare
+// expr, or `[ e1\n    , e2\n    ]`), which reads as broken indentation and
+// overflows. Run it through elm-format by wrapping it in a trivial declaration,
+// formatting the module, then extracting + de-indenting the body. Falls back to
+// the original string if elm-format is unavailable or the wrapped form doesn't
+// parse (so a single odd example never breaks the build).
+function formatElm(code) {
+  if (!code || typeof code !== "string") return code;
+  const wrapped =
+    "module F exposing (s)\n\n\ns =\n" +
+    code
+      .split("\n")
+      .map((l) => "    " + l)
+      .join("\n") +
+    "\n";
+  try {
+    const out = execFileSync(ELM_FORMAT, ["--stdin"], {
+      input: wrapped,
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "ignore"],
+    });
+    const marker = "\ns =\n";
+    const i = out.indexOf(marker);
+    if (i < 0) return code;
+    return out
+      .slice(i + marker.length)
+      .replace(/\s+$/, "")
+      .split("\n")
+      .map((l) => (l.startsWith("    ") ? l.slice(4) : l))
+      .join("\n");
+  } catch {
+    return code;
+  }
 }
 
 function main() {
@@ -71,9 +109,9 @@ function main() {
         title: ex.title,
         ...(ex.section ? { section: ex.section } : {}),
         html: ex.html,
-        top: ex.top,
-        mid: ex.mid,
-        bottom: ex.bottom,
+        top: formatElm(ex.top),
+        mid: formatElm(ex.mid),
+        bottom: formatElm(ex.bottom),
       })),
     };
   }

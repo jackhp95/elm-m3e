@@ -217,7 +217,7 @@ view app _ model =
                                 [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
                                 []
                             , Layout.div "max-w-2xl text-on-surface-variant"
-                                [ Doc.markdown component.overview ]
+                                [ Doc.markdown (introOnly component.overview) ]
                             ]
                             :: usageBlocks model app.data.usage
                             ++ [ apiSection component.members ]
@@ -240,6 +240,38 @@ apiSection members =
         , Card.view [ Card.variant Value.outlined ]
             [ Card.content (List_.view [] (List_.children (List.map memberRow members))) ]
         ]
+
+
+{-| Keep only the prose intro of an overview: drop everything from the first
+markdown heading onward. The generated overview appends a `## Examples` /
+`### Variants` section whose code dump duplicates — unhighlighted and one giant
+line — the live "Usage" section below, which is confusing. Also drops the
+`<!-- elm-cem:… -->` directive comments. (The proper cut happens in the
+reference extractor too, but that data can't regenerate until the M3e.Native
+`--docs` gap is fixed, so this guards the render path directly.)
+-}
+introOnly : String -> String
+introOnly raw =
+    raw
+        |> String.lines
+        |> takeUntilHeading
+        |> List.filter (\l -> not (String.startsWith "<!--" (String.trimLeft l)))
+        |> String.join "\n"
+        |> String.trim
+
+
+takeUntilHeading : List String -> List String
+takeUntilHeading lines =
+    case lines of
+        [] ->
+            []
+
+        line :: rest ->
+            if String.startsWith "#" (String.trimLeft line) then
+                []
+
+            else
+                line :: takeUntilHeading rest
 
 
 {-| Render the Usage section as a single spacing-consistent block: a "Usage"
