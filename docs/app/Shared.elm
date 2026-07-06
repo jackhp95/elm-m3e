@@ -322,16 +322,13 @@ view _ page model toMsg pageView =
                 , Theme.contrast (contrastToken model.contrast)
                 , Theme.density model.density
 
-                -- The m3e-theme element's `density` prop/attr is NON-reactive: a
-                -- runtime change never refreshes `--md-sys-density-scale`, so the
-                -- control had no effect. Set the CSS variable directly instead —
-                -- browser-verified to resize density-aware components (a checkbox
-                -- goes 40px→28px at scale -3). `Theme.density` is kept in case the
-                -- element is fixed upstream.
-                , Seam.asAttribute
-                    (attribute "style"
-                        ("--md-sys-density-scale: " ++ String.fromFloat model.density)
-                    )
+                -- The m3e-theme element's `density` prop/attr is NON-reactive, so the
+                -- control has no effect unless we drive `--md-sys-density-scale` (which
+                -- the m3e components read via density.calc) ourselves. Elm can't set a
+                -- CSS custom property directly — `style` uses `node.style[key]=…` which
+                -- ignores `--vars`, and `attribute "style"` gets clobbered on re-render —
+                -- so it goes through a Tailwind arbitrary-property CLASS instead.
+                , Seam.asAttribute (class (densityClass model.density))
                 ]
                 (List.map Theme.child children)
                 |> toHtml
@@ -604,6 +601,22 @@ seedColorInput model =
             , Html.code [ class "text-body-md text-on-surface-variant" ] [ Html.text model.seed ]
             ]
         ]
+
+
+{-| Drive `--md-sys-density-scale` via a Tailwind arbitrary-property class — Elm
+cannot set a CSS custom property directly. The three class strings are literals
+so Tailwind's scanner (`@source "./app"` in style.css) emits all three rules.
+-}
+densityClass : Float -> String
+densityClass d =
+    if d <= -2 then
+        "[--md-sys-density-scale:-2]"
+
+    else if d <= -1 then
+        "[--md-sys-density-scale:-1]"
+
+    else
+        "[--md-sys-density-scale:0]"
 
 
 densitySegmented : Model -> Html Msg
