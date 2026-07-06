@@ -11,9 +11,6 @@ importers:
       '@m3e/web':
         specifier: ^2.5.13
         version: 2.5.13(@floating-ui/utils@0.2.11)(lit@3.3.3)(tslib@2.8.1)
-      '@netlify/functions':
-        specifier: ^5.2.0
-        version: 5.3.0
       linkedom:
         specifier: ^0.18.0
         version: 0.18.12
@@ -30,9 +27,6 @@ importers:
       elm:
         specifier: ^0.19.1-6
         version: 0.19.1-6
-      elm-codegen:
-        specifier: ^0.6.3
-        version: 0.6.3
       elm-format:
         specifier: ^0.8.8
         version: 0.8.8
@@ -450,14 +444,6 @@ packages:
 
   '@material/material-color-utilities@0.4.0':
     resolution: {integrity: sha512-dlq6VExJReb8dhjj3a/yTigr3ncNwoFmL5Iy2ENtbDX03EmNeOEdZ+vsaGrj7RTuO+mB7L58II4LCsl4NpM8uw==}
-
-  '@netlify/functions@5.3.0':
-    resolution: {integrity: sha512-FP+xCoZMkMOUsKa4UdG/oiK/2md1/TxuXvqqieaMVMgDbFFMaHI8h0oHCViUY73kPbKV6HyzayaSXGYXKpBSoQ==}
-    engines: {node: '>=18.0.0'}
-
-  '@netlify/types@2.8.0':
-    resolution: {integrity: sha512-8/g0Pt6y6wXj5Ia5eeYLiXhRfWeqZXGXpGFeCiiQdUOem+FPtXdA4+YdGxqzWc7D0AvptKSO01KGeeVWHSu8Kg==}
-    engines: {node: ^18.14.0 || >=20}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -983,10 +969,6 @@ packages:
     resolution: {integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==}
     engines: {node: '>= 6'}
 
-  commander@8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
-    engines: {node: '>= 12'}
-
   composed-offset-position@0.0.6:
     resolution: {integrity: sha512-Q7dLompI6lUwd7LWyIcP66r4WcS9u7AL2h8HaeipiRfCRPLMWqRx8fYsjb4OHi6UQFifO7XtNC2IlEJ1ozIFxw==}
     peerDependencies:
@@ -1142,10 +1124,6 @@ packages:
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
-
-  elm-codegen@0.6.3:
-    resolution: {integrity: sha512-X9S7ltwF78gjOmL5Rl79sMszMJlsBh44VwSXBgUah8vkobkRog2yfyMmMzyZmac/hzoRTP6Z98FFJY4A/xtUpQ==}
-    hasBin: true
 
   elm-doc-preview@6.0.1:
     resolution: {integrity: sha512-G/xgVRKpbLuqliQmBINQFE6I0YAwqET2+SabiyXE47kaVChkhIz91HlZudUvCzTG/CV2ci7AERtAwYzQ4bjOKA==}
@@ -2760,12 +2738,6 @@ snapshots:
 
   '@material/material-color-utilities@0.4.0': {}
 
-  '@netlify/functions@5.3.0':
-    dependencies:
-      '@netlify/types': 2.8.0
-
-  '@netlify/types@2.8.0': {}
-
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -3213,8 +3185,6 @@ snapshots:
 
   commander@6.2.1: {}
 
-  commander@8.3.0: {}
-
   composed-offset-position@0.0.6(@floating-ui/utils@0.2.11):
     dependencies:
       '@floating-ui/utils': 0.2.11
@@ -3373,13 +3343,6 @@ snapshots:
       gopd: 1.2.0
 
   ee-first@1.1.1: {}
-
-  elm-codegen@0.6.3:
-    dependencies:
-      chalk: 4.1.2
-      chokidar: 3.6.0
-      commander: 8.3.0
-      node-elm-compiler: 5.0.6
 
   elm-doc-preview@6.0.1:
     dependencies:
