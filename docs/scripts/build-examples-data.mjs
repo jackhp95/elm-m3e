@@ -22,6 +22,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, "../..");
 
 const RICH = path.resolve(REPO, "config/examples.rich.json");
+const SURFACES = path.resolve(REPO, "config/examples.surfaces.json");
 const CATEGORIES = path.resolve(REPO, "config/categories.json");
 const REFERENCE = path.resolve(here, "../data/reference.json");
 const OUT = path.resolve(here, "../data/examples.json");
@@ -88,8 +89,22 @@ function formatElm(code) {
   return tryFormat(broken) ?? tryFormat(code) ?? code;
 }
 
+// The ④ Record / ⑤ Build surfaces (config/examples.surfaces.json) are produced
+// by the D6 translator harness (gen-record-build.mjs), index-aligned with the
+// rich file. For every example the harness emits either the TRANSLATED surface
+// code (which contains an `M3e.Record.` / `M3e.Build.` reference) or a fallback
+// COPY of the top code (when the example doesn't cleanly convert). We surface a
+// tab only for a real translation: a fallback is stored as `null` here so the UI
+// hides the tab rather than showing a hollow duplicate of the M3e tab.
+function surfaceOrNull(code, token) {
+  return code && typeof code === "string" && code.includes(token)
+    ? formatElm(code)
+    : null;
+}
+
 function main() {
   const rich = readJson(RICH);
+  const surfaces = fs.existsSync(SURFACES) ? readJson(SURFACES) : {};
   const categories = readJson(CATEGORIES);
 
   // Known route slugs (for a non-silent mismatch warning). reference.json may
@@ -113,16 +128,22 @@ function main() {
       // Still emit it — harmless dead data — so nothing is silently lost.
     }
 
+    const moduleSurfaces = surfaces[module] ?? [];
     out[slug] = {
       category,
-      examples: rich[module].map((ex) => ({
-        title: ex.title,
-        ...(ex.section ? { section: ex.section } : {}),
-        html: ex.html,
-        top: formatElm(ex.top),
-        mid: formatElm(ex.mid),
-        bottom: formatElm(ex.bottom),
-      })),
+      examples: rich[module].map((ex, idx) => {
+        const surf = moduleSurfaces[idx] ?? {};
+        return {
+          title: ex.title,
+          ...(ex.section ? { section: ex.section } : {}),
+          html: ex.html,
+          top: formatElm(ex.top),
+          mid: formatElm(ex.mid),
+          bottom: formatElm(ex.bottom),
+          record: surfaceOrNull(surf.record, "M3e.Record."),
+          build: surfaceOrNull(surf.build, "M3e.Build."),
+        };
+      }),
     };
   }
 

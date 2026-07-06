@@ -1,0 +1,414 @@
+{
+  "AppBar": [
+    {
+      "record": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Back\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"arrow_back\" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text \"Top 10 hiking trails\" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text \"Discover popular trails\" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label \"Bookmark\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"bookmark\", M3e.Icon.filled True ] []) ]) ]",
+      "build": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Back\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"arrow_back\" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text \"Top 10 hiking trails\" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text \"Discover popular trails\" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Aria.label \"Bookmark\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"bookmark\", M3e.Icon.filled True ] []) ]) ]"
+    },
+    {
+      "record": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Open navigation\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text \"Inbox\" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text \"24 unread messages\" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Search\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"search\" ] []) ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"More options\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"more_vert\" ] []) ]) ]",
+      "build": "M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large, M3e.AppBar.centered True ] [ M3e.AppBar.leadingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Open navigation\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text \"Inbox\" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text \"24 unread messages\" ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"Search\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"search\" ] []) ]), M3e.AppBar.trailingIcon (M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Aria.label \"More options\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"more_vert\" ] []) ]) ]"
+    }
+  ],
+  "AssistChip": [
+    {
+      "record": "M3e.Record.AssistChip.view { content = (Kit.text \"Add to calendar\") } [] [ M3e.Record.AssistChip.icon (M3e.Icon.view [ M3e.Icon.name \"event\" ] []) ]",
+      "build": "M3e.Build.AssistChip.assistChip { content = (Kit.text \"Add to calendar\") }\n    |> M3e.Build.AssistChip.icon (M3e.Icon.view [ M3e.Icon.name \"event\" ] [])\n    |> M3e.Build.AssistChip.build"
+    }
+  ],
+  "Autocomplete": [
+    {
+      "record": "[ Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]\n    , Native.node Html.input [] []\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\", M3e.Autocomplete.autoActivate True, M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ] ])\n    ]",
+      "build": "[ Native.node Html.label [] [ Kit.text \"Choose your favorite fruit\" ]\n    , Native.node Html.input [] []\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"fruit\", M3e.Autocomplete.autoActivate True, M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Grapes\") ] ])\n    ]"
+    },
+    {
+      "record": "[ Native.node Html.label [] [ Kit.text \"Country\" ]\n    , Native.node Html.input [] []\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"country\", M3e.Autocomplete.noDataLabel \"No matching countries\" ] ([ M3e.Autocomplete.noData (Native.span [] [ Kit.text \"Try a different spelling\" ]) ] ++ M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Australia\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Brazil\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Canada\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Denmark\") ] ])\n    ]",
+      "build": "[ Native.node Html.label [] [ Kit.text \"Country\" ]\n    , Native.node Html.input [] []\n    , M3e.Autocomplete.view [ M3e.Autocomplete.for \"country\", M3e.Autocomplete.noDataLabel \"No matching countries\" ] ([ M3e.Autocomplete.noData (Native.span [] [ Kit.text \"Try a different spelling\" ]) ] ++ M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text \"Australia\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Brazil\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Canada\") ], M3e.Option.view [] [ M3e.Option.child (Kit.text \"Denmark\") ] ])\n    ]"
+    }
+  ],
+  "Avatar": [
+    {
+      "record": "[ M3e.Avatar.view [] [ M3e.Avatar.child (Native.img []) ]\n    , M3e.Avatar.view [] [ M3e.Avatar.child (M3e.Icon.view [ M3e.Icon.name \"person\" ] []) ]\n    ]",
+      "build": "[ M3e.Avatar.view [] [ M3e.Avatar.child (Native.img []) ]\n    , M3e.Avatar.view [] [ M3e.Avatar.child (M3e.Icon.view [ M3e.Icon.name \"person\" ] []) ]\n    ]"
+    }
+  ],
+  "Badge": [
+    {
+      "record": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"notifications\" ] []), M3e.Button.child (Kit.text \"Alerts\") ]\n    , M3e.Badge.view [ M3e.Badge.for \"notifications\" ] [ M3e.Badge.child (Kit.text \"10\") ]\n    ]",
+      "build": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"notifications\" ] []), M3e.Button.child (Kit.text \"Alerts\") ]\n    , M3e.Badge.view [ M3e.Badge.for \"notifications\" ] [ M3e.Badge.child (Kit.text \"10\") ]\n    ]"
+    },
+    {
+      "record": "[ M3e.Icon.view [ M3e.Icon.name \"mail\" ] []\n    , M3e.Badge.view [ M3e.Badge.for \"mail-icon\", M3e.Badge.size M3e.Value.small, M3e.Badge.position M3e.Value.aboveAfter ] []\n    , M3e.Icon.view [ M3e.Icon.name \"shopping_cart\" ] []\n    , M3e.Badge.view [ M3e.Badge.for \"cart-icon\", M3e.Badge.size M3e.Value.large, M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text \"99+\") ]\n    ]",
+      "build": "[ M3e.Icon.view [ M3e.Icon.name \"mail\" ] []\n    , M3e.Badge.view [ M3e.Badge.for \"mail-icon\", M3e.Badge.size M3e.Value.small, M3e.Badge.position M3e.Value.aboveAfter ] []\n    , M3e.Icon.view [ M3e.Icon.name \"shopping_cart\" ] []\n    , M3e.Badge.view [ M3e.Badge.for \"cart-icon\", M3e.Badge.size M3e.Value.large, M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text \"99+\") ]\n    ]"
+    }
+  ],
+  "Breadcrumb": [
+    {
+      "record": "M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Home\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/work\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Work\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/work/tags\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Tags\") ] ])",
+      "build": "M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Home\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/work\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Work\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/work/tags\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Tags\") ] ])"
+    },
+    {
+      "record": "M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/photos\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Photos\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/collections\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Collections\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.current M3e.Value.page ] [ M3e.BreadcrumbItem.child (Kit.text \"Title\") ] ])",
+      "build": "M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/photos\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Photos\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href \"/collections\" ] [ M3e.BreadcrumbItem.child (Kit.text \"Collections\") ], M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.current M3e.Value.page ] [ M3e.BreadcrumbItem.child (Kit.text \"Title\") ] ])"
+    }
+  ],
+  "Button": [
+    {
+      "record": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"add\" ] []), M3e.Button.child (Kit.text \"New\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text \"Tonal\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text \"Elevated\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Outlined\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text \"Text\") ]\n    ]",
+      "build": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"add\" ] []), M3e.Button.child (Kit.text \"New\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text \"Tonal\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text \"Elevated\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Outlined\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text \"Text\") ]\n    ]"
+    },
+    {
+      "record": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"favorite_border\" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text \"Saved\" ]), M3e.Button.child (Kit.text \"Save\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href \"/download\", M3e.Button.download \"\", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []), M3e.Button.child (Kit.text \"Download\") ]\n    ]",
+      "build": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"favorite_border\" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text \"Saved\" ]), M3e.Button.child (Kit.text \"Save\") ]\n    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href \"/download\", M3e.Button.download \"\", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []), M3e.Button.child (Kit.text \"Download\") ]\n    ]"
+    },
+    {
+      "record": "M3e.Record.Button.view { content = (Kit.text \"Get started\"), action = M3e.Action.link \"/get-started\" } [ M3e.Record.Button.variant M3e.Value.filled ] []",
+      "build": "M3e.Build.Button.button { content = (Kit.text \"Get started\"), action = M3e.Action.link \"/get-started\" }\n    |> M3e.Build.Button.variant M3e.Value.filled\n    |> M3e.Build.Button.build"
+    },
+    {
+      "record": "M3e.Record.Button.view { content = (Kit.text \"Download\"), action = M3e.Action.link \"/download\" } [ M3e.Record.Button.variant M3e.Value.tonal ] [ M3e.Record.Button.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] []) ]",
+      "build": "M3e.Build.Button.button { content = (Kit.text \"Download\"), action = M3e.Action.link \"/download\" }\n    |> M3e.Build.Button.variant M3e.Value.tonal\n    |> M3e.Build.Button.icon (M3e.Icon.view [ M3e.Icon.name \"download\" ] [])\n    |> M3e.Build.Button.build"
+    }
+  ],
+  "ButtonGroup": [
+    {
+      "record": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"view_list\" ] []), M3e.Button.child (Kit.text \"List\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"grid_view\" ] []), M3e.Button.child (Kit.text \"Grid\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"map\" ] []), M3e.Button.child (Kit.text \"Map\") ] ])",
+      "build": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Button.selected True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"view_list\" ] []), M3e.Button.child (Kit.text \"List\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"grid_view\" ] []), M3e.Button.child (Kit.text \"Grid\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"map\" ] []), M3e.Button.child (Kit.text \"Map\") ] ])"
+    },
+    {
+      "record": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected, M3e.ButtonGroup.multi True, M3e.ButtonGroup.size M3e.Value.medium ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Bold\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Italic\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Underline\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] []) ] ])",
+      "build": "M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected, M3e.ButtonGroup.multi True, M3e.ButtonGroup.size M3e.Value.medium ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Bold\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Italic\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square, M3e.Button.toggle True, M3e.Aria.label \"Underline\" ] [ M3e.Button.child (M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] []) ] ])"
+    }
+  ],
+  "Calendar": [
+    {
+      "record": "M3e.Calendar.view [ M3e.Calendar.date \"2025-12-13\", M3e.Calendar.minDate \"2025-01-01\", M3e.Calendar.maxDate \"2026-12-31\" ] [ M3e.Calendar.header (Native.span [] [ Kit.text \"Select a delivery date\" ]) ]",
+      "build": "M3e.Calendar.view [ M3e.Calendar.date \"2025-12-13\", M3e.Calendar.minDate \"2025-01-01\", M3e.Calendar.maxDate \"2026-12-31\" ] [ M3e.Calendar.header (Native.span [] [ Kit.text \"Select a delivery date\" ]) ]"
+    },
+    {
+      "record": "M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt \"2026-06-01\", M3e.Calendar.rangeStart \"2026-06-10\", M3e.Calendar.rangeEnd \"2026-06-17\", M3e.Calendar.nextMonthLabel \"Next month\", M3e.Calendar.previousMonthLabel \"Previous month\" ] [ M3e.Calendar.header (Native.span [] [ Kit.text \"Choose your stay\" ]) ]",
+      "build": "M3e.Calendar.view [ M3e.Calendar.startView M3e.Value.multiYear, M3e.Calendar.startAt \"2026-06-01\", M3e.Calendar.rangeStart \"2026-06-10\", M3e.Calendar.rangeEnd \"2026-06-17\", M3e.Calendar.nextMonthLabel \"Next month\", M3e.Calendar.previousMonthLabel \"Previous month\" ] [ M3e.Calendar.header (Native.span [] [ Kit.text \"Choose your stay\" ]) ]"
+    }
+  ],
+  "Card": [
+    {
+      "record": "M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text \"People\") ]), M3e.Card.content (Native.div [] [ M3e.ChipSet.view [] (M3e.ChipSet.children [ M3e.Chip.view [] [ M3e.Chip.child (Kit.text \"Person Name\") ], M3e.Chip.view [] [ M3e.Chip.child (Kit.text \"Relative\") ] ]) ]) ]",
+      "build": "M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text \"People\") ]), M3e.Card.content (Native.div [] [ M3e.ChipSet.view [] (M3e.ChipSet.children [ M3e.Chip.view [] [ M3e.Chip.child (Kit.text \"Person Name\") ], M3e.Chip.view [] [ M3e.Chip.child (Kit.text \"Relative\") ] ]) ]) ]"
+    },
+    {
+      "record": "Kit.link \"/entities/1\" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"family_history\" ] [], Native.span [] [ Kit.text \"Relative\" ], M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] [] ]) ] ]",
+      "build": "Kit.link \"/entities/1\" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"family_history\" ] [], Native.span [] [ Kit.text \"Relative\" ], M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] [] ]) ] ]"
+    }
+  ],
+  "Checkbox": [
+    {
+      "record": "Native.section [] [ Native.p [] [ Kit.text \"Email notifications\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name \"news\", M3e.Checkbox.value \"newsletter\" ] [], Kit.text \"Product newsletter\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.name \"offers\", M3e.Checkbox.value \"offers\" ] [], Kit.text \"Special offers\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.indeterminate True, M3e.Checkbox.name \"digest\", M3e.Checkbox.value \"digest\" ] [], Kit.text \"Weekly digest\" ], M3e.Divider.view [] [], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.required True, M3e.Checkbox.name \"terms\", M3e.Checkbox.value \"accepted\" ] [], Kit.text \"I accept the terms of service\" ] ]",
+      "build": "Native.section [] [ Native.p [] [ Kit.text \"Email notifications\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name \"news\", M3e.Checkbox.value \"newsletter\" ] [], Kit.text \"Product newsletter\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.name \"offers\", M3e.Checkbox.value \"offers\" ] [], Kit.text \"Special offers\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.indeterminate True, M3e.Checkbox.name \"digest\", M3e.Checkbox.value \"digest\" ] [], Kit.text \"Weekly digest\" ], M3e.Divider.view [] [], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.required True, M3e.Checkbox.name \"terms\", M3e.Checkbox.value \"accepted\" ] [], Kit.text \"I accept the terms of service\" ] ]"
+    },
+    {
+      "record": "Native.div [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name \"remember\", M3e.Checkbox.value \"yes\" ] [], Native.node Html.label [] [ Kit.text \"Remember me on this device\" ] ]",
+      "build": "Native.div [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True, M3e.Checkbox.name \"remember\", M3e.Checkbox.value \"yes\" ] [], Native.node Html.label [] [ Kit.text \"Remember me on this device\" ] ]"
+    }
+  ],
+  "Chips": [
+    {
+      "record": "M3e.Record.Chip.view { content = (Kit.text \"Library\") } [] [ M3e.Record.Chip.icon (M3e.Icon.view [ M3e.Icon.name \"menu_book\" ] []) ]",
+      "build": "M3e.Build.Chip.chip { content = (Kit.text \"Library\") }\n    |> M3e.Build.Chip.icon (M3e.Icon.view [ M3e.Icon.name \"menu_book\" ] [])\n    |> M3e.Build.Chip.build"
+    }
+  ],
+  "ContentPane": [
+    {
+      "record": "M3e.ContentPane.view [] (M3e.ContentPane.children [ Native.header [] [ Native.node Html.h2 [] [ Kit.text \"Release notes\" ] ], Native.p [] [ Kit.text \"This version introduces a redesigned navigation drawer and refined motion.\" ], M3e.Divider.view [] [], Native.p [] [ Kit.text \"Performance improvements reduce initial load time across all surfaces.\" ], Native.p [] [ Kit.text \"Several accessibility fixes were applied to form controls.\" ] ])",
+      "build": "M3e.ContentPane.view [] (M3e.ContentPane.children [ Native.header [] [ Native.node Html.h2 [] [ Kit.text \"Release notes\" ] ], Native.p [] [ Kit.text \"This version introduces a redesigned navigation drawer and refined motion.\" ], M3e.Divider.view [] [], Native.p [] [ Kit.text \"Performance improvements reduce initial load time across all surfaces.\" ], Native.p [] [ Kit.text \"Several accessibility fixes were applied to form controls.\" ] ])"
+    }
+  ],
+  "Divider": [
+    {
+      "record": "Native.ul [] [ Native.li [] [ Native.span [] [ Kit.text \"Profile\" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text \"Privacy\" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text \"Notifications\" ] ] ]",
+      "build": "Native.ul [] [ Native.li [] [ Native.span [] [ Kit.text \"Profile\" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text \"Privacy\" ] ], M3e.Divider.view [ M3e.Divider.insetStart True ] [], Native.li [] [ Native.span [] [ Kit.text \"Notifications\" ] ] ]"
+    },
+    {
+      "record": "Native.nav [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []), M3e.Button.child (Kit.text \"Bold\") ], M3e.Divider.view [ M3e.Divider.vertical True ] [], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.Button.child (Kit.text \"Link\") ] ]",
+      "build": "Native.nav [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []), M3e.Button.child (Kit.text \"Bold\") ], M3e.Divider.view [ M3e.Divider.vertical True ] [], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"link\" ] []), M3e.Button.child (Kit.text \"Link\") ] ]"
+    }
+  ],
+  "DrawerContainer": [
+    {
+      "record": "M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.side, M3e.DrawerContainer.startDivider True, M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link \"/inbox\" [ Kit.text \"Inbox\" ], Kit.link \"/sent\" [ Kit.text \"Sent\" ], Kit.link \"/archive\" [ Kit.text \"Archive\" ] ]), M3e.DrawerContainer.endSlot (Native.node Html.aside [] [ Native.node Html.h2 [] [ Kit.text \"Filters\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text \"Unread only\" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.header [] [ Native.node Html.h1 [] [ Kit.text \"Inbox\" ] ], Native.p [] [ Kit.text \"Your messages appear here.\" ] ]) ]",
+      "build": "M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.side, M3e.DrawerContainer.startDivider True, M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.nav [] [ Kit.link \"/inbox\" [ Kit.text \"Inbox\" ], Kit.link \"/sent\" [ Kit.text \"Sent\" ], Kit.link \"/archive\" [ Kit.text \"Archive\" ] ]), M3e.DrawerContainer.endSlot (Native.node Html.aside [] [ Native.node Html.h2 [] [ Kit.text \"Filters\" ], Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text \"Unread only\" ] ]), M3e.DrawerContainer.child (Native.node Html.main_ [] [ Native.header [] [ Native.node Html.h1 [] [ Kit.text \"Inbox\" ] ], Native.p [] [ Kit.text \"Your messages appear here.\" ] ]) ]"
+    }
+  ],
+  "ExpansionPanel": [
+    {
+      "record": "M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"How do I reset my password?\" ]), M3e.ExpansionPanel.toggleIcon (M3e.Icon.view [ M3e.Icon.name \"expand_more\" ] []), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Open Settings, choose Security, then select Reset password. A link will be sent to your email.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Can I change my plan later?\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Yes. Plans can be upgraded or downgraded at any time from the Billing page.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Where can I download invoices?\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"All invoices are available under Billing, in the Invoice history section.\" ]) ] ])",
+      "build": "M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"How do I reset my password?\" ]), M3e.ExpansionPanel.toggleIcon (M3e.Icon.view [ M3e.Icon.name \"expand_more\" ] []), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Open Settings, choose Security, then select Reset password. A link will be sent to your email.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Can I change my plan later?\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Yes. Plans can be upgraded or downgraded at any time from the Billing page.\" ]) ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Where can I download invoices?\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"All invoices are available under Billing, in the Invoice history section.\" ]) ] ])"
+    },
+    {
+      "record": "M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"notifications\" ] [], Native.span [] [ Kit.text \"Notification preferences\" ] ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text \"Cancel\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text \"Save\") ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Choose how and when we contact you about account activity and product updates.\" ]) ]",
+      "build": "M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before ] [ M3e.ExpansionPanel.header (Native.div [] [ M3e.Icon.view [ M3e.Icon.name \"notifications\" ] [], Native.span [] [ Kit.text \"Notification preferences\" ] ]), M3e.ExpansionPanel.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text \"Cancel\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text \"Save\") ] ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Choose how and when we contact you about account activity and product updates.\" ]) ]"
+    },
+    {
+      "record": "M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Shipping\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Standard delivery arrives in 3 to 5 business days.\" ]) ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Returns\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Items can be returned within 30 days of receipt.\" ]) ] ])",
+      "build": "M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Shipping\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Standard delivery arrives in 3 to 5 business days.\" ]) ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text \"Returns\" ]), M3e.ExpansionPanel.child (Native.p [] [ Kit.text \"Items can be returned within 30 days of receipt.\" ]) ] ])"
+    }
+  ],
+  "Fab": [
+    {
+      "record": "M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label \"Navigation menu\" ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]",
+      "build": "M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Aria.label \"Navigation menu\" ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name \"menu\" ] []) ]"
+    },
+    {
+      "record": "M3e.Record.Fab.view { content = (M3e.Icon.view [ M3e.Icon.name \"edit\" ] []), action = M3e.Action.link \"/compose\" } [ M3e.Record.Fab.extended True ] [ M3e.Record.Fab.label (Native.span [] [ Kit.text \"Compose\" ]) ]",
+      "build": "M3e.Build.Fab.fab { content = (M3e.Icon.view [ M3e.Icon.name \"edit\" ] []), action = M3e.Action.link \"/compose\" }\n    |> M3e.Build.Fab.extended True\n    |> M3e.Build.Fab.label (Native.span [] [ Kit.text \"Compose\" ])\n    |> M3e.Build.Fab.build"
+    }
+  ],
+  "FilterChip": [
+    {
+      "record": "M3e.Record.FilterChip.view { content = (Kit.text \"Available\") } [ M3e.Record.FilterChip.selected True ] []",
+      "build": "M3e.Build.FilterChip.filterChip { content = (Kit.text \"Available\") }\n    |> M3e.Build.FilterChip.selected True\n    |> M3e.Build.FilterChip.build"
+    }
+  ],
+  "FormField": [
+    {
+      "record": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name \"public\" ] []), M3e.FormField.prefixText (Native.span [] [ Kit.text \"https://\" ]), M3e.FormField.hint (Native.span [] [ Kit.text \"Include the full domain without a path.\" ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Website\" ], Native.node Html.input [] [] ])",
+      "build": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name \"public\" ] []), M3e.FormField.prefixText (Native.span [] [ Kit.text \"https://\" ]), M3e.FormField.hint (Native.span [] [ Kit.text \"Include the full domain without a path.\" ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Website\" ], Native.node Html.input [] [] ])"
+    },
+    {
+      "record": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.FormField.floatLabel M3e.Value.always ] ([ M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text \"USD\" ]), M3e.FormField.error (Native.span [] [ Kit.text \"Enter an amount greater than zero.\" ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Amount\" ], Native.node Html.input [] [] ])",
+      "build": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.FormField.floatLabel M3e.Value.always ] ([ M3e.FormField.prefixText (Native.span [] [ Kit.text \"$\" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text \"USD\" ]), M3e.FormField.error (Native.span [] [ Kit.text \"Enter an amount greater than zero.\" ]) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Amount\" ], Native.node Html.input [] [] ])"
+    },
+    {
+      "record": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.FormField.hideRequiredMarker True ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name \"search\" ] []), M3e.FormField.suffix (M3e.Icon.view [ M3e.Icon.name \"close\" ] []) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Search docs\" ], Native.node Html.input [] [] ])",
+      "build": "M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.FormField.hideRequiredMarker True ] ([ M3e.FormField.prefix (M3e.Icon.view [ M3e.Icon.name \"search\" ] []), M3e.FormField.suffix (M3e.Icon.view [ M3e.Icon.name \"close\" ] []) ] ++ M3e.FormField.children [ Native.node Html.label [] [ Kit.text \"Search docs\" ], Native.node Html.input [] [] ])"
+    }
+  ],
+  "IconButton": [
+    {
+      "record": "M3e.IconButton.view [ M3e.Aria.label \"Toggle theme\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"dark_mode\" ] []) ]",
+      "build": "M3e.IconButton.view [ M3e.Aria.label \"Toggle theme\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"dark_mode\" ] []) ]"
+    },
+    {
+      "record": "Native.div [] [ M3e.IconButton.view [ M3e.IconButton.href \"/rss.xml\", M3e.Aria.label \"RSS Feed\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"rss_feed\" ] []) ], M3e.IconButton.view [ M3e.IconButton.href \"/feed.json\", M3e.Aria.label \"JSON Feed\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"data_object\" ] []) ] ]",
+      "build": "Native.div [] [ M3e.IconButton.view [ M3e.IconButton.href \"/rss.xml\", M3e.Aria.label \"RSS Feed\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"rss_feed\" ] []) ], M3e.IconButton.view [ M3e.IconButton.href \"/feed.json\", M3e.Aria.label \"JSON Feed\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"data_object\" ] []) ] ]"
+    },
+    {
+      "record": "[ M3e.IconButton.view [ M3e.Aria.label \"Previous\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] []) ]\n    , M3e.IconButton.view [ M3e.Aria.label \"Play/Pause\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] []) ]\n    ]",
+      "build": "[ M3e.IconButton.view [ M3e.Aria.label \"Previous\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] []) ]\n    , M3e.IconButton.view [ M3e.Aria.label \"Play/Pause\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] []) ]\n    ]"
+    },
+    {
+      "record": "M3e.IconButton.view [ M3e.IconButton.href \"/settings\", M3e.Aria.label \"Settings\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"settings\" ] []) ]",
+      "build": "M3e.IconButton.view [ M3e.IconButton.href \"/settings\", M3e.Aria.label \"Settings\" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name \"settings\" ] []) ]"
+    }
+  ],
+  "InputChip": [
+    {
+      "record": "M3e.Record.InputChip.view { content = (Kit.text \"Design\") } [] []",
+      "build": "M3e.Build.InputChip.inputChip { content = (Kit.text \"Design\") }\n    |> M3e.Build.InputChip.build"
+    }
+  ],
+  "List": [
+    {
+      "record": "M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text \"Engineering\" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text \"ada@example.com\" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Ada Lovelace\") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text \"Design\" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text \"grace@example.com\" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Grace Hopper\") ] ])",
+      "build": "M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text \"Engineering\" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text \"ada@example.com\" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Ada Lovelace\") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text \"Design\" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text \"grace@example.com\" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []), M3e.ListItem.child (Kit.text \"Grace Hopper\") ] ])"
+    },
+    {
+      "record": "M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ListAction.view [ M3e.ListAction.href \"/account\" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"manage_accounts\" ] []), M3e.ListAction.trailing (M3e.Icon.view [ M3e.Icon.name \"open_in_new\" ] []), M3e.ListAction.child (Kit.text \"Account\") ], M3e.ListAction.view [ M3e.ListAction.href \"/billing\" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"payments\" ] []), M3e.ListAction.child (Kit.text \"Billing\") ], M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"lock\" ] []), M3e.ListAction.child (Kit.text \"Admin tools\") ] ])",
+      "build": "M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ListAction.view [ M3e.ListAction.href \"/account\" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"manage_accounts\" ] []), M3e.ListAction.trailing (M3e.Icon.view [ M3e.Icon.name \"open_in_new\" ] []), M3e.ListAction.child (Kit.text \"Account\") ], M3e.ListAction.view [ M3e.ListAction.href \"/billing\" ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"payments\" ] []), M3e.ListAction.child (Kit.text \"Billing\") ], M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name \"lock\" ] []), M3e.ListAction.child (Kit.text \"Admin tools\") ] ])"
+    },
+    {
+      "record": "M3e.SelectionList.view [ M3e.SelectionList.multi True, M3e.SelectionList.name \"topics\" ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.value \"news\", M3e.ListOption.selected True ] [ M3e.ListOption.leading (M3e.Icon.view [ M3e.Icon.name \"feed\" ] []), M3e.ListOption.child (Kit.text \"Product news\") ], M3e.ListOption.view [ M3e.ListOption.value \"offers\" ] [ M3e.ListOption.leading (M3e.Icon.view [ M3e.Icon.name \"local_offer\" ] []), M3e.ListOption.child (Kit.text \"Special offers\") ], M3e.ExpandableListItem.view [ M3e.ExpandableListItem.open True ] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name \"folder\" ] []), M3e.ExpandableListItem.items (M3e.ListOption.view [ M3e.ListOption.value \"beta\" ] [ M3e.ListOption.child (Kit.text \"Beta features\") ]), M3e.ExpandableListItem.items (M3e.ListOption.view [ M3e.ListOption.value \"api\" ] [ M3e.ListOption.child (Kit.text \"API updates\") ]), M3e.ExpandableListItem.child (Kit.text \"Advanced\") ] ])",
+      "build": "M3e.SelectionList.view [ M3e.SelectionList.multi True, M3e.SelectionList.name \"topics\" ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.value \"news\", M3e.ListOption.selected True ] [ M3e.ListOption.leading (M3e.Icon.view [ M3e.Icon.name \"feed\" ] []), M3e.ListOption.child (Kit.text \"Product news\") ], M3e.ListOption.view [ M3e.ListOption.value \"offers\" ] [ M3e.ListOption.leading (M3e.Icon.view [ M3e.Icon.name \"local_offer\" ] []), M3e.ListOption.child (Kit.text \"Special offers\") ], M3e.ExpandableListItem.view [ M3e.ExpandableListItem.open True ] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name \"folder\" ] []), M3e.ExpandableListItem.items (M3e.ListOption.view [ M3e.ListOption.value \"beta\" ] [ M3e.ListOption.child (Kit.text \"Beta features\") ]), M3e.ExpandableListItem.items (M3e.ListOption.view [ M3e.ListOption.value \"api\" ] [ M3e.ListOption.child (Kit.text \"API updates\") ]), M3e.ExpandableListItem.child (Kit.text \"Advanced\") ] ])"
+    }
+  ],
+  "LoadingIndicator": [
+    {
+      "record": "Native.section [] [ Native.header [] [ Native.node Html.h2 [] [ Kit.text \"Your dashboard\" ] ], Native.div [] [ M3e.LoadingIndicator.view [] [], Native.p [] [ Kit.text \"Loading your latest activity...\" ] ] ]",
+      "build": "Native.section [] [ Native.header [] [ Native.node Html.h2 [] [ Kit.text \"Your dashboard\" ] ], Native.div [] [ M3e.LoadingIndicator.view [] [], Native.p [] [ Kit.text \"Loading your latest activity...\" ] ] ]"
+    },
+    {
+      "record": "Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []), M3e.Button.child (Kit.text \"Refreshing\") ] ]",
+      "build": "Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.disabled True ] [ M3e.Button.icon (M3e.LoadingIndicator.view [ M3e.LoadingIndicator.variant M3e.Value.contained ] []), M3e.Button.child (Kit.text \"Refreshing\") ] ]"
+    }
+  ],
+  "NavBar": [
+    {
+      "record": "Native.nav [] [ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.compact ] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Home\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"search\" ] []), M3e.NavItem.child (Kit.text \"Explore\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"favorite\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Saved\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.NavItem.child (Kit.text \"Profile\") ] ]) ]",
+      "build": "Native.nav [] [ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.compact ] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Home\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"search\" ] []), M3e.NavItem.child (Kit.text \"Explore\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"favorite\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"favorite\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Saved\") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"person\" ] []), M3e.NavItem.child (Kit.text \"Profile\") ] ]) ]"
+    },
+    {
+      "record": "Native.nav [] [ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.expanded ] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.href \"/inbox\", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"inbox\" ] []), M3e.NavItem.child (Kit.text \"Inbox\") ], M3e.NavItem.view [ M3e.NavItem.href \"/sent\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"send\" ] []), M3e.NavItem.child (Kit.text \"Sent\") ], M3e.NavItem.view [ M3e.NavItem.href \"/drafts\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"drafts\" ] []), M3e.NavItem.child (Kit.text \"Drafts\") ], M3e.NavItem.view [ M3e.NavItem.href \"/archive\", M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"archive\" ] []), M3e.NavItem.child (Kit.text \"Archive\") ] ]) ]",
+      "build": "Native.nav [] [ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.expanded ] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.href \"/inbox\", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"inbox\" ] []), M3e.NavItem.child (Kit.text \"Inbox\") ], M3e.NavItem.view [ M3e.NavItem.href \"/sent\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"send\" ] []), M3e.NavItem.child (Kit.text \"Sent\") ], M3e.NavItem.view [ M3e.NavItem.href \"/drafts\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"drafts\" ] []), M3e.NavItem.child (Kit.text \"Drafts\") ], M3e.NavItem.view [ M3e.NavItem.href \"/archive\", M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"archive\" ] []), M3e.NavItem.child (Kit.text \"Archive\") ] ]) ]"
+    }
+  ],
+  "NavRail": [
+    {
+      "record": "M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.expanded ] (M3e.NavRail.children [ M3e.NavItem.view [ M3e.NavItem.href \"/overview\", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Overview\") ], M3e.NavItem.view [ M3e.NavItem.href \"/components\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"widgets\" ] []), M3e.NavItem.child (Kit.text \"Components\") ], M3e.NavItem.view [ M3e.NavItem.href \"/guides\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"menu_book\" ] []), M3e.NavItem.child (Kit.text \"Guides\") ] ])",
+      "build": "M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.expanded ] (M3e.NavRail.children [ M3e.NavItem.view [ M3e.NavItem.href \"/overview\", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"home\" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name \"home\", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text \"Overview\") ], M3e.NavItem.view [ M3e.NavItem.href \"/components\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"widgets\" ] []), M3e.NavItem.child (Kit.text \"Components\") ], M3e.NavItem.view [ M3e.NavItem.href \"/guides\" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name \"menu_book\" ] []), M3e.NavItem.child (Kit.text \"Guides\") ] ])"
+    }
+  ],
+  "Option": [
+    {
+      "record": "M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view [ M3e.Option.value \"apple\" ] [ M3e.Option.child (Kit.text \"Apple\") ], M3e.Option.view [ M3e.Option.value \"banana\" ] [ M3e.Option.child (Kit.text \"Banana\") ], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Native.span [] [ Kit.text \"Citrus\" ]) ] ++ M3e.Optgroup.children [ M3e.Option.view [ M3e.Option.value \"lemon\" ] [ M3e.Option.child (Kit.text \"Lemon\") ], M3e.Option.view [ M3e.Option.value \"orange\", M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Orange\") ], M3e.Option.view [ M3e.Option.value \"grapefruit\", M3e.Option.disabled True ] [ M3e.Option.child (Kit.text \"Grapefruit\") ] ]) ])",
+      "build": "M3e.OptionPanel.view [ M3e.OptionPanel.fitAnchorWidth True ] (M3e.OptionPanel.children [ M3e.Option.view [ M3e.Option.value \"apple\" ] [ M3e.Option.child (Kit.text \"Apple\") ], M3e.Option.view [ M3e.Option.value \"banana\" ] [ M3e.Option.child (Kit.text \"Banana\") ], M3e.Optgroup.view [] ([ M3e.Optgroup.label (Native.span [] [ Kit.text \"Citrus\" ]) ] ++ M3e.Optgroup.children [ M3e.Option.view [ M3e.Option.value \"lemon\" ] [ M3e.Option.child (Kit.text \"Lemon\") ], M3e.Option.view [ M3e.Option.value \"orange\", M3e.Option.selected True ] [ M3e.Option.child (Kit.text \"Orange\") ], M3e.Option.view [ M3e.Option.value \"grapefruit\", M3e.Option.disabled True ] [ M3e.Option.child (Kit.text \"Grapefruit\") ] ]) ])"
+    },
+    {
+      "record": "M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.content, M3e.OptionPanel.scrollStrategy M3e.Value.reposition ] (M3e.OptionPanel.children [ M3e.Option.view [ M3e.Option.value \"react\", M3e.Option.term \"re\", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text \"React\") ], M3e.Option.view [ M3e.Option.value \"redux\", M3e.Option.term \"re\", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text \"Redux\") ], M3e.Option.view [ M3e.Option.value \"remix\", M3e.Option.term \"re\", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text \"Remix\") ] ])",
+      "build": "M3e.OptionPanel.view [ M3e.OptionPanel.state M3e.Value.content, M3e.OptionPanel.scrollStrategy M3e.Value.reposition ] (M3e.OptionPanel.children [ M3e.Option.view [ M3e.Option.value \"react\", M3e.Option.term \"re\", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text \"React\") ], M3e.Option.view [ M3e.Option.value \"redux\", M3e.Option.term \"re\", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text \"Redux\") ], M3e.Option.view [ M3e.Option.value \"remix\", M3e.Option.term \"re\", M3e.Option.highlightMode M3e.Value.startsWith ] [ M3e.Option.child (Kit.text \"Remix\") ] ])"
+    }
+  ],
+  "ProgressIndicator": [
+    {
+      "record": "[ Native.div [] [ Native.p [] [ Kit.text \"Uploading files...\" ], M3e.Progress.linear [ M3e.Progress.value 65, M3e.Progress.max 100 ] [] ]\n    , Native.div [] [ M3e.Progress.circular [ M3e.Progress.value 65, M3e.Progress.max 100, M3e.Progress.variant M3e.Value.wavy ] [] ]\n    ]",
+      "build": "[ Native.div [] [ Native.p [] [ Kit.text \"Uploading files...\" ], M3e.Progress.linear [ M3e.Progress.value 65, M3e.Progress.max 100 ] [] ]\n    , Native.div [] [ M3e.Progress.circular [ M3e.Progress.value 65, M3e.Progress.max 100, M3e.Progress.variant M3e.Value.wavy ] [] ]\n    ]"
+    },
+    {
+      "record": "[ M3e.Progress.linear [ M3e.Progress.mode M3e.Value.indeterminate ] []\n    , M3e.Progress.circular [ M3e.Progress.indeterminate True ] []\n    ]",
+      "build": "[ M3e.Progress.linear [ M3e.Progress.mode M3e.Value.indeterminate ] []\n    , M3e.Progress.circular [ M3e.Progress.indeterminate True ] []\n    ]"
+    },
+    {
+      "record": "M3e.Progress.linear [ M3e.Progress.mode M3e.Value.buffer, M3e.Progress.value 40, M3e.Progress.bufferValue 75, M3e.Progress.max 100 ] []",
+      "build": "M3e.Progress.linear [ M3e.Progress.mode M3e.Value.buffer, M3e.Progress.value 40, M3e.Progress.bufferValue 75, M3e.Progress.max 100 ] []"
+    }
+  ],
+  "RadioGroup": [
+    {
+      "record": "[ Native.node Html.label [] [ Kit.text \"Shipping method\" ]\n    , Native.br\n    , M3e.RadioGroup.view [ M3e.RadioGroup.name \"shipping\", M3e.RadioGroup.required True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"standard\", M3e.Radio.checked True ] [], Kit.text \"Standard (5-7 days)\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"express\" ] [], Kit.text \"Express (2 days)\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"overnight\" ] [], Kit.text \"Overnight\" ] ])\n    ]",
+      "build": "[ Native.node Html.label [] [ Kit.text \"Shipping method\" ]\n    , Native.br\n    , M3e.RadioGroup.view [ M3e.RadioGroup.name \"shipping\", M3e.RadioGroup.required True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"standard\", M3e.Radio.checked True ] [], Kit.text \"Standard (5-7 days)\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"express\" ] [], Kit.text \"Express (2 days)\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"overnight\" ] [], Kit.text \"Overnight\" ] ])\n    ]"
+    },
+    {
+      "record": "M3e.RadioGroup.view [ M3e.RadioGroup.name \"plan\", M3e.RadioGroup.disabled True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"free\", M3e.Radio.checked True ] [], Kit.text \"Free\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"pro\" ] [], Kit.text \"Pro\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"team\", M3e.Radio.disabled True ] [], Kit.text \"Team\" ] ])",
+      "build": "M3e.RadioGroup.view [ M3e.RadioGroup.name \"plan\", M3e.RadioGroup.disabled True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"free\", M3e.Radio.checked True ] [], Kit.text \"Free\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"pro\" ] [], Kit.text \"Pro\" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value \"team\", M3e.Radio.disabled True ] [], Kit.text \"Team\" ] ])"
+    }
+  ],
+  "SegmentedButton": [
+    {
+      "record": "M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"paste\", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name \"content_paste\" ] []), M3e.ButtonSegment.child (Kit.text \"Paste\") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"file\" ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name \"upload_file\" ] []), M3e.ButtonSegment.child (Kit.text \"File\") ] ])",
+      "build": "M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"paste\", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name \"content_paste\" ] []), M3e.ButtonSegment.child (Kit.text \"Paste\") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"file\" ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name \"upload_file\" ] []), M3e.ButtonSegment.child (Kit.text \"File\") ] ])"
+    },
+    {
+      "record": "M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"0.75\" ] [ M3e.ButtonSegment.child (Kit.text \"0.75x\") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"1\", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text \"1x\") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"1.5\" ] [ M3e.ButtonSegment.child (Kit.text \"1.5x\") ] ])",
+      "build": "M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"0.75\" ] [ M3e.ButtonSegment.child (Kit.text \"0.75x\") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"1\", M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text \"1x\") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.value \"1.5\" ] [ M3e.ButtonSegment.child (Kit.text \"1.5x\") ] ])"
+    }
+  ],
+  "Select": [
+    {
+      "record": "[ Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]\n    , Native.br\n    , M3e.Select.view [ M3e.Select.name \"fruit\", M3e.Select.required True ] (M3e.Select.children [ M3e.Option.view [ M3e.Option.value \"apple\" ] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [ M3e.Option.value \"orange\" ] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [ M3e.Option.value \"banana\" ] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [ M3e.Option.value \"grape\" ] [ M3e.Option.child (Kit.text \"Grapes\") ] ])\n    ]",
+      "build": "[ Native.node Html.label [] [ Kit.text \"Favorite fruit\" ]\n    , Native.br\n    , M3e.Select.view [ M3e.Select.name \"fruit\", M3e.Select.required True ] (M3e.Select.children [ M3e.Option.view [ M3e.Option.value \"apple\" ] [ M3e.Option.child (Kit.text \"Apples\") ], M3e.Option.view [ M3e.Option.value \"orange\" ] [ M3e.Option.child (Kit.text \"Oranges\") ], M3e.Option.view [ M3e.Option.value \"banana\" ] [ M3e.Option.child (Kit.text \"Bananas\") ], M3e.Option.view [ M3e.Option.value \"grape\" ] [ M3e.Option.child (Kit.text \"Grapes\") ] ])\n    ]"
+    },
+    {
+      "record": "M3e.Select.view [ M3e.Select.multi True, M3e.Select.name \"languages\" ] ([ M3e.Select.arrow (M3e.Icon.view [ M3e.Icon.name \"expand_more\" ] []) ] ++ M3e.Select.children [ M3e.Option.view [ M3e.Option.value \"javascript\" ] [ M3e.Option.child (Kit.text \"JavaScript\") ], M3e.Option.view [ M3e.Option.value \"typescript\" ] [ M3e.Option.child (Kit.text \"TypeScript\") ], M3e.Option.view [ M3e.Option.value \"python\" ] [ M3e.Option.child (Kit.text \"Python\") ], M3e.Option.view [ M3e.Option.value \"rust\" ] [ M3e.Option.child (Kit.text \"Rust\") ] ])",
+      "build": "M3e.Select.view [ M3e.Select.multi True, M3e.Select.name \"languages\" ] ([ M3e.Select.arrow (M3e.Icon.view [ M3e.Icon.name \"expand_more\" ] []) ] ++ M3e.Select.children [ M3e.Option.view [ M3e.Option.value \"javascript\" ] [ M3e.Option.child (Kit.text \"JavaScript\") ], M3e.Option.view [ M3e.Option.value \"typescript\" ] [ M3e.Option.child (Kit.text \"TypeScript\") ], M3e.Option.view [ M3e.Option.value \"python\" ] [ M3e.Option.child (Kit.text \"Python\") ], M3e.Option.view [ M3e.Option.value \"rust\" ] [ M3e.Option.child (Kit.text \"Rust\") ] ])"
+    }
+  ],
+  "Shape": [
+    {
+      "record": "M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (M3e.Icon.view [ M3e.Icon.name \"star\" ] []) ]",
+      "build": "M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (M3e.Icon.view [ M3e.Icon.name \"star\" ] []) ]"
+    },
+    {
+      "record": "Native.div [] [ M3e.Shape.view [ M3e.Shape.name M3e.Value.value4LeafClover ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.heart ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.diamond ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.burst ] [] ]",
+      "build": "Native.div [] [ M3e.Shape.view [ M3e.Shape.name M3e.Value.value4LeafClover ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.heart ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.diamond ] [], M3e.Shape.view [ M3e.Shape.name M3e.Value.burst ] [] ]"
+    }
+  ],
+  "Skeleton": [
+    {
+      "record": "M3e.Skeleton.view [ M3e.Skeleton.animation M3e.Value.wave, M3e.Skeleton.shape M3e.Value.rounded ] [ M3e.Skeleton.child (Native.div [] [ Native.p [] [ Kit.text \"Loading content...\" ] ]) ]",
+      "build": "M3e.Skeleton.view [ M3e.Skeleton.animation M3e.Value.wave, M3e.Skeleton.shape M3e.Value.rounded ] [ M3e.Skeleton.child (Native.div [] [ Native.p [] [ Kit.text \"Loading content...\" ] ]) ]"
+    },
+    {
+      "record": "Native.div [] [ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [] ]",
+      "build": "Native.div [] [ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [], M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [] ]"
+    },
+    {
+      "record": "M3e.Skeleton.view [ M3e.Skeleton.loaded True, M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.p [] [ Kit.text \"Content has finished loading.\" ]) ]",
+      "build": "M3e.Skeleton.view [ M3e.Skeleton.loaded True, M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.p [] [ Kit.text \"Content has finished loading.\" ]) ]"
+    }
+  ],
+  "SlideGroup": [
+    {
+      "record": "M3e.SlideGroup.view [ M3e.SlideGroup.threshold 48, M3e.SlideGroup.previousPageLabel \"Scroll left\", M3e.SlideGroup.nextPageLabel \"Scroll right\" ] ([ M3e.SlideGroup.prevIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.SlideGroup.nextIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []) ] ++ M3e.SlideGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text \"All\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Photos\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Videos\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Documents\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Music\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Archives\") ] ])",
+      "build": "M3e.SlideGroup.view [ M3e.SlideGroup.threshold 48, M3e.SlideGroup.previousPageLabel \"Scroll left\", M3e.SlideGroup.nextPageLabel \"Scroll right\" ] ([ M3e.SlideGroup.prevIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_left\" ] []), M3e.SlideGroup.nextIcon (M3e.Icon.view [ M3e.Icon.name \"chevron_right\" ] []) ] ++ M3e.SlideGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text \"All\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Photos\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Videos\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Documents\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Music\") ], M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text \"Archives\") ] ])"
+    },
+    {
+      "record": "M3e.SlideGroup.view [ M3e.SlideGroup.vertical True, M3e.SlideGroup.threshold 32 ] (M3e.SlideGroup.children [ Native.div [] [ Kit.text \"Item 1\" ], Native.div [] [ Kit.text \"Item 2\" ], Native.div [] [ Kit.text \"Item 3\" ], Native.div [] [ Kit.text \"Item 4\" ], Native.div [] [ Kit.text \"Item 5\" ] ])",
+      "build": "M3e.SlideGroup.view [ M3e.SlideGroup.vertical True, M3e.SlideGroup.threshold 32 ] (M3e.SlideGroup.children [ Native.div [] [ Kit.text \"Item 1\" ], Native.div [] [ Kit.text \"Item 2\" ], Native.div [] [ Kit.text \"Item 3\" ], Native.div [] [ Kit.text \"Item 4\" ], Native.div [] [ Kit.text \"Item 5\" ] ])"
+    }
+  ],
+  "Slider": [
+    {
+      "record": "M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.discrete True, M3e.Slider.min 0, M3e.Slider.max 100, M3e.Slider.step 10, M3e.Slider.size M3e.Value.medium ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 40 ] []) ]",
+      "build": "M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.discrete True, M3e.Slider.min 0, M3e.Slider.max 100, M3e.Slider.step 10, M3e.Slider.size M3e.Value.medium ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 40 ] []) ]"
+    },
+    {
+      "record": "M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.min 0, M3e.Slider.max 1000, M3e.Slider.step 50 ] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.name \"min-price\", M3e.SliderThumb.value 200 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.name \"max-price\", M3e.SliderThumb.value 800 ] [] ])",
+      "build": "M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.min 0, M3e.Slider.max 1000, M3e.Slider.step 50 ] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.name \"min-price\", M3e.SliderThumb.value 200 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.name \"max-price\", M3e.SliderThumb.value 800 ] [] ])"
+    }
+  ],
+  "Snackbar": [
+    {
+      "record": "M3e.Record.Snackbar.view { content = (Kit.text \"Message archived\") } [ M3e.Record.Snackbar.action \"Undo\", M3e.Record.Snackbar.dismissible True, M3e.Record.Snackbar.duration 5000, M3e.Record.Snackbar.closeLabel \"Dismiss\" ] [ M3e.Record.Snackbar.closeIcon (M3e.Icon.view [ M3e.Icon.name \"close\" ] []) ]",
+      "build": "M3e.Build.Snackbar.snackbar { content = (Kit.text \"Message archived\") }\n    |> M3e.Build.Snackbar.action \"Undo\"\n    |> M3e.Build.Snackbar.dismissible True\n    |> M3e.Build.Snackbar.duration 5000\n    |> M3e.Build.Snackbar.closeLabel \"Dismiss\"\n    |> M3e.Build.Snackbar.closeIcon (M3e.Icon.view [ M3e.Icon.name \"close\" ] [])\n    |> M3e.Build.Snackbar.build"
+    }
+  ],
+  "SplitPane": [
+    {
+      "record": "M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.horizontal, M3e.SplitPane.value 35, M3e.SplitPane.min 20, M3e.SplitPane.max 60, M3e.SplitPane.label \"Resize sidebar\" ] [ M3e.SplitPane.start (Native.nav [] [ Native.ul [] [ Native.li [] [ Kit.text \"Inbox\" ], Native.li [] [ Kit.text \"Drafts\" ], Native.li [] [ Kit.text \"Sent\" ] ] ]), M3e.SplitPane.end (Native.node Html.main_ [] [ Native.p [] [ Kit.text \"Select a message to read.\" ] ]) ]",
+      "build": "M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.horizontal, M3e.SplitPane.value 35, M3e.SplitPane.min 20, M3e.SplitPane.max 60, M3e.SplitPane.label \"Resize sidebar\" ] [ M3e.SplitPane.start (Native.nav [] [ Native.ul [] [ Native.li [] [ Kit.text \"Inbox\" ], Native.li [] [ Kit.text \"Drafts\" ], Native.li [] [ Kit.text \"Sent\" ] ] ]), M3e.SplitPane.end (Native.node Html.main_ [] [ Native.p [] [ Kit.text \"Select a message to read.\" ] ]) ]"
+    },
+    {
+      "record": "M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.vertical, M3e.SplitPane.wrapDetents True, M3e.SplitPane.step 5 ] [ M3e.SplitPane.start (Native.section [] [ Native.p [] [ Kit.text \"Editor\" ] ]), M3e.SplitPane.end (Native.section [] [ Native.p [] [ Kit.text \"Preview output\" ] ]) ]",
+      "build": "M3e.SplitPane.view [ M3e.SplitPane.orientation M3e.Value.vertical, M3e.SplitPane.wrapDetents True, M3e.SplitPane.step 5 ] [ M3e.SplitPane.start (Native.section [] [ Native.p [] [ Kit.text \"Editor\" ] ]), M3e.SplitPane.end (Native.section [] [ Native.p [] [ Kit.text \"Preview output\" ] ]) ]"
+    }
+  ],
+  "SuggestionChip": [
+    {
+      "record": "M3e.Record.SuggestionChip.view { content = (Kit.text \"What's the weather?\"), action = M3e.Action.link \"/weather\" } [] []",
+      "build": "M3e.Build.SuggestionChip.suggestionChip { content = (Kit.text \"What's the weather?\"), action = M3e.Action.link \"/weather\" }\n    |> M3e.Build.SuggestionChip.build"
+    }
+  ],
+  "Switch": [
+    {
+      "record": "Native.node Html.label [] [ Kit.text \"Enable notifications\", M3e.Switch.view [ M3e.Switch.checked True, M3e.Switch.icons M3e.Value.both, M3e.Switch.name \"notifications\", M3e.Switch.value \"enabled\" ] [] ]",
+      "build": "Native.node Html.label [] [ Kit.text \"Enable notifications\", M3e.Switch.view [ M3e.Switch.checked True, M3e.Switch.icons M3e.Value.both, M3e.Switch.name \"notifications\", M3e.Switch.value \"enabled\" ] [] ]"
+    },
+    {
+      "record": "Native.node Html.label [] [ Kit.text \"Sync over cellular\", M3e.Switch.view [ M3e.Switch.disabled True, M3e.Switch.icons M3e.Value.selected ] [] ]",
+      "build": "Native.node Html.label [] [ Kit.text \"Sync over cellular\", M3e.Switch.view [ M3e.Switch.disabled True, M3e.Switch.icons M3e.Value.selected ] [] ]"
+    }
+  ],
+  "TextareaAutosize": [
+    {
+      "record": "[ Native.node Html.label [] [ Kit.text \"Add a comment\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"comment\", M3e.TextareaAutosize.minRows 2, M3e.TextareaAutosize.maxRows 8 ] []\n    ]",
+      "build": "[ Native.node Html.label [] [ Kit.text \"Add a comment\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"comment\", M3e.TextareaAutosize.minRows 2, M3e.TextareaAutosize.maxRows 8 ] []\n    ]"
+    },
+    {
+      "record": "[ Native.node Html.label [] [ Kit.text \"Message\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"msg\", M3e.TextareaAutosize.disabled True ] []\n    ]",
+      "build": "[ Native.node Html.label [] [ Kit.text \"Message\" ]\n    , Native.node Html.textarea [] []\n    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for \"msg\", M3e.TextareaAutosize.disabled True ] []\n    ]"
+    }
+  ],
+  "Toc": [
+    {
+      "record": "M3e.Toc.view [ M3e.Toc.for \"post-content\", M3e.Toc.maxDepth 3 ] [ M3e.Toc.overline (Native.span [] [ Kit.text \"Contents\" ]) ]",
+      "build": "M3e.Toc.view [ M3e.Toc.for \"post-content\", M3e.Toc.maxDepth 3 ] [ M3e.Toc.overline (Native.span [] [ Kit.text \"Contents\" ]) ]"
+    }
+  ],
+  "Toolbar": [
+    {
+      "record": "M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"skip_next\" ] []) ] ])",
+      "build": "M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.Value.rounded ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"skip_previous\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"play_arrow\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"skip_next\" ] []) ] ])"
+    },
+    {
+      "record": "M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] []) ] ])",
+      "build": "M3e.Toolbar.view [ M3e.Toolbar.vertical True, M3e.Toolbar.elevated True, M3e.Toolbar.shape M3e.Value.square ] (M3e.Toolbar.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_bold\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_italic\" ] []) ], M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"format_underlined\" ] []) ] ])"
+    }
+  ],
+  "Tooltip": [
+    {
+      "record": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"refresh\" ] []) ]\n    , M3e.Tooltip.view [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] [ M3e.Tooltip.child (Kit.text \"Refresh data\") ]\n    ]",
+      "build": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"refresh\" ] []) ]\n    , M3e.Tooltip.view [ M3e.Tooltip.for \"refreshBtn\", M3e.Tooltip.position M3e.Value.above ] [ M3e.Tooltip.child (Kit.text \"Refresh data\") ]\n    ]"
+    },
+    {
+      "record": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []) ]\n    , M3e.Tooltip.view [ M3e.Tooltip.for \"deleteBtn\", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] [ M3e.Tooltip.child (Kit.text \"Delete item\") ]\n    ]",
+      "build": "[ M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name \"delete\" ] []) ]\n    , M3e.Tooltip.view [ M3e.Tooltip.for \"deleteBtn\", M3e.Tooltip.position M3e.Value.after, M3e.Tooltip.touchGestures M3e.Value.off, M3e.Tooltip.hideDelay 400 ] [ M3e.Tooltip.child (Kit.text \"Delete item\") ]\n    ]"
+    }
+  ]
+}

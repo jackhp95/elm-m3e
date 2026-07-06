@@ -34,13 +34,26 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
-{-| Which API layer each Usage example is shown in: the strict top (`M3e.*`), the
-loose middle (`M3e.Cem.*`), the bottom (`M3e.Cem.Html.*`), or the raw `<m3e-*>`
-HTML. Every shipped example carries all four (verified supersets of each other),
-so the per-example tab strip is never partial.
+{-| Which API surface a Usage example is shown in, by module name:
+
+  - `Top` — `M3e` (the strict Standard surface, always present)
+  - `Record` — `M3e.Record` (the ④ record-of-slots surface; per-example)
+  - `Build` — `M3e.Build` (the ⑤ pipeline surface; per-example)
+  - `Middle` — `M3e.Cem` (loose, always present)
+  - `Bottom` — `M3e.Cem.Html` (raw elm/html-flavoured, always present)
+  - `Raw` — the raw `<m3e-*>` HTML (always present)
+
+`M3e`, `M3e.Cem`, `M3e.Cem.Html` and `HTML` are verified for every example, so
+those four tabs are always offered. `M3e.Record` / `M3e.Build` are offered only
+when this example cleanly converts to that surface (its `record` / `build` field
+is non-null) — a composite gallery has no single-component record/build form, so
+those tabs are hidden rather than shown as a hollow duplicate of `M3e`.
+
 -}
 type Layer
     = Top
+    | Record
+    | Build
     | Middle
     | Bottom
     | Raw
@@ -72,8 +85,11 @@ type alias Component =
 
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
-API layer (top/middle/bottom). `section` groups examples under a sub-heading
-("" = ungrouped).
+API surface. `top`/`mid`/`bottom` (M3e / M3e.Cem / M3e.Cem.Html) are present for
+every example; `record` (M3e.Record) and `build` (M3e.Build) are present only
+when the example cleanly converts to that single-component surface (else
+`Nothing`, so the UI hides the tab). `section` groups examples under a
+sub-heading ("" = ungrouped).
 -}
 type alias UsageExample =
     { title : String
@@ -82,6 +98,8 @@ type alias UsageExample =
     , top : String
     , mid : String
     , bottom : String
+    , record : Maybe String
+    , build : Maybe String
     }
 
 
@@ -113,13 +131,15 @@ componentDecoder =
 
 usageExampleDecoder : Decode.Decoder UsageExample
 usageExampleDecoder =
-    Decode.map6 UsageExample
+    Decode.map8 UsageExample
         (Decode.field "title" Decode.string)
         (Decode.oneOf [ Decode.field "section" Decode.string, Decode.succeed "" ])
         (Decode.field "html" Decode.string)
         (Decode.field "top" Decode.string)
         (Decode.field "mid" Decode.string)
         (Decode.field "bottom" Decode.string)
+        (Decode.oneOf [ Decode.field "record" (Decode.nullable Decode.string), Decode.succeed Nothing ])
+        (Decode.oneOf [ Decode.field "build" (Decode.nullable Decode.string), Decode.succeed Nothing ])
 
 
 allComponents : BackendTask FatalError (List Component)
@@ -317,11 +337,10 @@ sectionBlock model ( section, examples ) =
 
 
 {-| A live preview paired with a per-example tab strip that switches its code
-between the API layers: strict top (`M3e.*`), loose middle (`M3e.Cem.*`), bottom
-(`M3e.Cem.Html.*`), or raw HTML. Every example carries all four, so the tabs are
-never partial; the selection lives in `model.layers` keyed by this example's
-index, defaulting to `Top`. Grouped as one `space-y-3` block so title/preview/
-tabs/code stay tight while sections stay apart.
+between the API surfaces by module name (`M3e`, optionally `M3e.Record` /
+`M3e.Build`, `M3e.Cem`, `M3e.Cem.Html`, `HTML`). The selection lives in
+`model.layers` keyed by this example's index, defaulting to `Top`. Grouped as one
+`space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
 exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg
 exampleBlock model ( index, ex ) =
@@ -333,40 +352,90 @@ exampleBlock model ( index, ex ) =
     Layout.div "space-y-3"
         [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
-        , layerTabs index layer
+        , layerTabs index layer ex
         , codeFor layer ex
         ]
+
+
+{-| The surfaces offered for one example, in fixed order. `M3e`, `M3e.Cem`,
+`M3e.Cem.Html` and `HTML` are universal; `M3e.Record` / `M3e.Build` appear only
+when this example converted to that single-component surface (its field is
+non-null). Order: M3e, M3e.Record, M3e.Build, M3e.Cem, M3e.Cem.Html, HTML.
+-}
+layersFor : UsageExample -> List ( String, Layer )
+layersFor ex =
+    let
+        optional : Maybe String -> String -> Layer -> List ( String, Layer )
+        optional field label layer =
+            case field of
+                Just _ ->
+                    [ ( label, layer ) ]
+
+                Nothing ->
+                    []
+    in
+    ( "M3e", Top )
+        :: (optional ex.record "M3e.Record" Record
+                ++ optional ex.build "M3e.Build" Build
+                ++ [ ( "M3e.Cem", Middle )
+                   , ( "M3e.Cem.Html", Bottom )
+                   , ( "HTML", Raw )
+                   ]
+           )
 
 
 {-| The per-example tab strip: a single-select `SegmentedButton` (the same control
 the app already uses for its theme toggles) whose checked segment is this example's
 current layer and whose clicks record a `SelectLayer` for this example's index only.
+The available segments are dynamic per example (four or six). Up to six labels
+won't fit a fixed row on mobile, so the strip lives in an `overflow-x-auto`
+container and scrolls horizontally rather than wrapping or clipping.
 -}
-layerTabs : Int -> Layer -> Element { s | segmentedButton : Supported } Msg
-layerTabs index current =
-    SegmentedButton.view []
-        (List.map
-            (\( label, layer ) ->
-                SegmentedButton.child
-                    (ButtonSegment.view
-                        [ ButtonSegment.checked (layer == current)
-                        , ButtonSegment.onClick (SelectLayer index layer)
-                        ]
-                        [ ButtonSegment.child (Kit.text label) ]
-                    )
+layerTabs : Int -> Layer -> UsageExample -> Element { s | html : Supported, segmentedButton : Supported } Msg
+layerTabs index current ex =
+    Layout.div "overflow-x-auto"
+        [ SegmentedButton.view []
+            (List.map
+                (\( label, layer ) ->
+                    SegmentedButton.child
+                        (ButtonSegment.view
+                            [ ButtonSegment.checked (layer == current)
+                            , ButtonSegment.onClick (SelectLayer index layer)
+                            ]
+                            [ ButtonSegment.child (Kit.text label) ]
+                        )
+                )
+                (layersFor ex)
             )
-            [ ( "M3e", Top ), ( "M3e.Cem", Middle ), ( "M3e.Cem.Html", Bottom ), ( "HTML", Raw ) ]
-        )
+        ]
 
 
-{-| The code block for the selected layer. The three Elm layers highlight as Elm;
-the raw `<m3e-*>` HTML layer highlights as plain markup.
+{-| The code block for the selected surface. The Elm surfaces highlight as Elm;
+the raw `<m3e-*>` HTML surface highlights as plain markup. `Record` / `Build` are
+optional — if the selected surface isn't available for this example (its field is
+`Nothing`), fall back to the always-present `M3e` (top) code.
 -}
 codeFor : Layer -> UsageExample -> Element { s | html : Supported } msg
 codeFor layer ex =
     case layer of
         Top ->
             Doc.code_ Doc.Elm ex.top
+
+        Record ->
+            case ex.record of
+                Just code ->
+                    Doc.code_ Doc.Elm code
+
+                Nothing ->
+                    Doc.code_ Doc.Elm ex.top
+
+        Build ->
+            case ex.build of
+                Just code ->
+                    Doc.code_ Doc.Elm code
+
+                Nothing ->
+                    Doc.code_ Doc.Elm ex.top
 
         Middle ->
             Doc.code_ Doc.Elm ex.mid

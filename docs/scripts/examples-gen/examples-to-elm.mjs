@@ -22,7 +22,7 @@
 // API (see verify-examples.mjs); non-compiling examples are DROPPED and logged
 // to config/examples.skipped.txt with a `compile: <firstErrorLine>` reason.
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { parseHTML } from "linkedom";
@@ -110,6 +110,17 @@ function toElmList(pieces) {
 }
 
 function main() {
+  // The mined corpus (m3e-docs) is an untracked working input; the generated
+  // config/examples.rich.json IS committed. On a clean checkout without the
+  // corpus, keep the committed rich/generated files rather than failing the
+  // build — regeneration is a corpus-holder's step, not a fresh-clone step.
+  if (!existsSync(EXAMPLES_PATH)) {
+    console.warn(
+      `build:examples-config: corpus not found at ${EXAMPLES_PATH}; ` +
+        "keeping committed config/examples.rich.json (skipping regeneration).",
+    );
+    return;
+  }
   const corpus = readJson(EXAMPLES_PATH);
   const categories = readJson(CATEGORIES_PATH);
   const oracle = buildOracle();
