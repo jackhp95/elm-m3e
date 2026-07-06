@@ -1,4 +1,4 @@
-module M3e.Content.Internal exposing (Content(..), slot, toNode)
+module M3e.Content.Internal exposing (Content(..), slot, slotWithAttr, toNode)
 
 {-| The **unfenced** interior of [`M3e.Content`](M3e-Content): the opaque
 `Content` type _with its constructor_ plus the raw [`slot`](#slot) stamper, which
@@ -8,10 +8,11 @@ can mint slot-tagged content at any `slots` row. Importable only by generated
 content through the generated per-slot setters, never by minting an arbitrary
 slot row here. See ADR 0014 §2.
 
-@docs Content, slot, toNode
+@docs Content, slot, slotWithAttr, toNode
 
 -}
 
+import Html.Attributes
 import M3e.Cem.Attr.Internal as Attr
 import M3e.Element as Element exposing (Element)
 import M3e.Node as Node exposing (Node)
@@ -42,6 +43,29 @@ slot name el =
 
          else
             Node.addAttr (Attr.forget (Attr.slot name)) node
+        )
+
+
+{-| Like [`slot`](#slot), but ALSO stamps a single raw `name="value"` attribute
+onto the element. This is the generator's **for/id auto-wiring** primitive (ADR
+0010 R6): a sibling-slot form-field's control-slot setter stamps `id="<id>"` and
+its label-slot setter stamps `for="<id>"`, so the label↔control association is
+structural. `slotName == ""` (the default slot) adds no `slot=` attribute, just
+the extra attribute; a named slot stamps both.
+-}
+slotWithAttr : String -> String -> String -> Element supported msg -> Content slots msg
+slotWithAttr slotName attrName attrValue el =
+    let
+        withAttr =
+            Element.toNode el
+                |> Node.addAttr (Attr.forget (Attr.attribute (Html.Attributes.attribute attrName) attrValue))
+    in
+    Content
+        (if slotName == "" then
+            withAttr
+
+         else
+            Node.addAttr (Attr.forget (Attr.slot slotName)) withAttr
         )
 
 

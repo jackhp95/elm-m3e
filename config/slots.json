@@ -211,6 +211,10 @@
         "multi": false,
         "required": false
       }
+    },
+    "idWiring": {
+      "control": "unnamed",
+      "label": "label"
     }
   },
   "Autocomplete": {
