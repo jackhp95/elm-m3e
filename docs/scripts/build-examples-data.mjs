@@ -49,8 +49,7 @@ const ELM_FORMAT = path.resolve(here, "../node_modules/.bin/elm-format");
 // formatting the module, then extracting + de-indenting the body. Falls back to
 // the original string if elm-format is unavailable or the wrapped form doesn't
 // parse (so a single odd example never breaks the build).
-function formatElm(code) {
-  if (!code || typeof code !== "string") return code;
+function tryFormat(code) {
   const wrapped =
     "module F exposing (s)\n\n\ns =\n" +
     code
@@ -66,7 +65,7 @@ function formatElm(code) {
     });
     const marker = "\ns =\n";
     const i = out.indexOf(marker);
-    if (i < 0) return code;
+    if (i < 0) return null;
     return out
       .slice(i + marker.length)
       .replace(/\s+$/, "")
@@ -74,8 +73,19 @@ function formatElm(code) {
       .map((l) => (l.startsWith("    ") ? l.slice(4) : l))
       .join("\n");
   } catch {
-    return code;
+    return null;
   }
+}
+
+function formatElm(code) {
+  if (!code || typeof code !== "string") return code;
+  // elm-format never wraps by width, so a long single-line expression stays
+  // long. Force a multi-line layout by inserting a newline before every `, `
+  // and ` |> `; elm-format then re-indents it canonically. If the pre-broken
+  // form doesn't parse (e.g. a `, ` inside a string literal), fall back to
+  // formatting the original as-is, then to the raw string.
+  const broken = code.replace(/, /g, "\n, ").replace(/ \|> /g, "\n|> ");
+  return tryFormat(broken) ?? tryFormat(code) ?? code;
 }
 
 function main() {

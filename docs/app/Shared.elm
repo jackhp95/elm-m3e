@@ -322,10 +322,16 @@ view _ page model toMsg pageView =
                 , Theme.contrast (contrastToken model.contrast)
                 , Theme.density model.density
 
-                -- density's generated setter is a JS *property*; the component's
-                -- styling keys off the reflected *attribute* (as scheme/contrast do),
-                -- so set it explicitly too or the control has no visible effect.
-                , Seam.asAttribute (attribute "density" (String.fromFloat model.density))
+                -- The m3e-theme element's `density` prop/attr is NON-reactive: a
+                -- runtime change never refreshes `--md-sys-density-scale`, so the
+                -- control had no effect. Set the CSS variable directly instead —
+                -- browser-verified to resize density-aware components (a checkbox
+                -- goes 40px→28px at scale -3). `Theme.density` is kept in case the
+                -- element is fixed upstream.
+                , Seam.asAttribute
+                    (attribute "style"
+                        ("--md-sys-density-scale: " ++ String.fromFloat model.density)
+                    )
                 ]
                 (List.map Theme.child children)
                 |> toHtml
