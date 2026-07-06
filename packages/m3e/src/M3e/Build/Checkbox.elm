@@ -1,23 +1,21 @@
 module M3e.Build.Checkbox exposing
-    ( Builder, AttrCaps, SlotCaps, checkbox, checked, disabled
-    , indeterminate, name, required, value, onBeforeinput, onInput, onChange
-    , onInvalid, onClick, build
+    ( Builder, AttrCaps, SlotCaps, checkbox, attr, checked
+    , disabled, indeterminate, name, required, value, onBeforeinput, onInput
+    , onChange, onInvalid, onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-checkbox>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Checkbox as Checkbox`.
 
-@docs Builder, AttrCaps, SlotCaps, checkbox, checked, disabled
-@docs indeterminate, name, required, value, onBeforeinput, onInput
-@docs onChange, onInvalid, onClick, build
+@docs Builder, AttrCaps, SlotCaps, checkbox, attr, checked
+@docs disabled, indeterminate, name, required, value, onBeforeinput
+@docs onInput, onChange, onInvalid, onClick, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Checkbox
-import M3e.Cem.Html.Checkbox
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -64,6 +62,19 @@ checkbox =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -147,90 +158,65 @@ value v_ b_ =
 
 {-| Dispatched before the checked state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Checkbox.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the checked state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Checkbox.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the checked state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Checkbox.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when a form is submitted and the element fails constraint validation. -}
 onInvalid :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInvalid : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInvalid : M3e.Build.Internal.Used } s msg kind
 onInvalid v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Checkbox.onInvalid
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.onInvalid v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Checkbox.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Checkbox.onClick v_))
              (M3e.Build.Internal.node_ b_)
         )
 

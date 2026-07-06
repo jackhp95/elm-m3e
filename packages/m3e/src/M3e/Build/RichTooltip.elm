@@ -1,21 +1,20 @@
 module M3e.Build.RichTooltip exposing
-    ( Builder, AttrCaps, SlotCaps, richTooltip, disabled, for
-    , hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle, build
+    ( Builder, AttrCaps, SlotCaps, richTooltip, attr, disabled
+    , for, hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
+    , subhead, actions, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-rich-tooltip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.RichTooltip as RichTooltip`.
 
-@docs Builder, AttrCaps, SlotCaps, richTooltip, disabled, for
-@docs hideDelay, position, showDelay, touchGestures, onBeforetoggle, onToggle
-@docs build
+@docs Builder, AttrCaps, SlotCaps, richTooltip, attr, disabled
+@docs for, hideDelay, position, showDelay, touchGestures, onBeforetoggle
+@docs onToggle, subhead, actions, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.RichTooltip
 import M3e.Cem.RichTooltip
 import M3e.Element
 import M3e.Element.Internal
@@ -64,6 +63,19 @@ richTooltip req_ =
              )
              []
              [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -160,17 +172,14 @@ touchGestures v_ b_ =
 
 {-| Dispatched before the toggle state changes. -}
 onBeforetoggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.RichTooltip.onBeforetoggle
-                       v_
-                  )
+                  (M3e.Cem.RichTooltip.onBeforetoggle v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -178,18 +187,39 @@ onBeforetoggle v_ b_ =
 
 {-| Dispatched after the toggle state has changed. -}
 onToggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.RichTooltip.onToggle
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.RichTooltip.onToggle v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `subhead` slot. -}
+subhead :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | subhead : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | subhead : M3e.Build.Internal.Used } msg kind
+subhead el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "subhead" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `actions` slot. -}
+actions :
+    M3e.Element.Element any msg
+    -> Builder a { s | actions : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | actions : M3e.Build.Internal.Used } msg kind
+actions el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "actions" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

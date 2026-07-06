@@ -146,19 +146,31 @@ emitAttrsList fact source c =
             splitDynAttrs source c.attrs
 
         items =
-            List.map (emitAttrItem fact source) litItems
+            List.map (emitAttrItem fact.module_ source) litItems
     in
     listArg (actionAttr ++ items) dynItems
 
 
-emitAttrItem : Fact -> (Range -> String) -> AttrItem -> String
-emitAttrItem fact source item =
+{-| Emit a residual attr setter qualified with `targetModule` (the surface
+module the call is being rewritten to). Residual attrs must reference the
+TARGET surface's setter — e.g. a Record rewrite emits `M3e.Record.Button.variant`,
+not the Standard `M3e.Button.variant` — so the setter resolves against the
+target module's (possibly closed) attr row (#gap: emitRecord residual attr).
+-}
+emitAttrItem : String -> (Range -> String) -> AttrItem -> String
+emitAttrItem targetModule source item =
     case item of
         KnownAttr { name, value } ->
-            fact.module_ ++ "." ++ name ++ " " ++ source (Node.range value)
+            targetModule ++ "." ++ name ++ " " ++ source (Node.range value)
 
         EnumTokenLossy { name, tokenText } ->
             "Seam.asAttribute (Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\")"
+
+        UniversalAttr { raw } ->
+            -- Already an IR `Attr caps msg` (e.g. `M3e.Aria.label "…"`) — drops
+            -- straight into the target surface's attr list verbatim; the free
+            -- `capability` row unifies with the (possibly closed) attr row.
+            source (Node.range raw)
 
         EscapedAttr { raw } ->
             "Seam.asAttribute (" ++ source (Node.range raw) ++ ")"
@@ -185,16 +197,20 @@ emitContentList fact source c =
             splitDynSlots source c.content
 
         items =
-            List.map (emitSlotItem fact source) litItems
+            List.map (emitSlotItem fact.module_ source) litItems
     in
     listArg (requiredSlot ++ items) dynItems
 
 
-emitSlotItem : Fact -> (Range -> String) -> SlotItem -> String
-emitSlotItem fact source item =
+{-| Emit a residual slot (content) setter qualified with `targetModule`, for the
+same reason as `emitAttrItem`: the setter must resolve against the target
+surface's content row (a Record rewrite emits `M3e.Record.Button.icon`).
+-}
+emitSlotItem : String -> (Range -> String) -> SlotItem -> String
+emitSlotItem targetModule source item =
     case item of
         KnownSlot { name, body } ->
-            fact.module_ ++ "." ++ name ++ " " ++ source (Node.range body)
+            targetModule ++ "." ++ name ++ " " ++ source (Node.range body)
 
         UnknownSlotName { name, body } ->
             "Seam.slot \"" ++ name ++ "\" (Seam.fromHtml (" ++ source (Node.range body) ++ "))"
@@ -231,6 +247,9 @@ decomposeRecordAction fact source expr =
 emitRecord : Fact -> (Range -> String) -> Canonical -> String
 emitRecord fact source c =
     let
+        recordModule =
+            recordModuleFor fact
+
         recordArg =
             emitRecordArg fact source c
 
@@ -238,22 +257,19 @@ emitRecord fact source c =
             splitDynAttrs source c.attrs
 
         attrsText =
-            listArg (List.map (emitAttrItem fact source) litAttrs) dynAttrs
+            listArg (List.map (emitAttrItem recordModule source) litAttrs) dynAttrs
 
         ( litSlots, dynSlots ) =
             splitDynSlots source c.content
 
         contentText =
-            listArg (List.map (emitSlotItem fact source) litSlots) dynSlots
-
-        recordModule =
-            recordModuleFor fact
+            listArg (List.map (emitSlotItem recordModule source) litSlots) dynSlots
     in
     recordModule ++ ".view " ++ recordArg ++ " " ++ attrsText ++ " " ++ contentText
 
 
 emitRecordArg : Fact -> (Range -> String) -> Canonical -> String
-emitRecordArg _ source c =
+emitRecordArg fact source c =
     let
         contentField =
             case c.requiredContent of
@@ -272,7 +288,16 @@ emitRecordArg _ source c =
                     [ "action = " ++ actionAttrToRecordCall a.name (source (Node.range a.value)) ]
 
                 Nothing ->
-                    []
+                    -- A component whose ④/⑤ record carries an `action` field
+                    -- (`fact.usesAction`) but whose source call bears no action
+                    -- (e.g. an aria-only / icon-only IconButton) still needs the
+                    -- field: default it to the no-op `M3e.Action.none`, which
+                    -- unifies with any capability row.
+                    if fact.usesAction then
+                        [ "action = M3e.Action.none" ]
+
+                    else
+                        []
 
         other =
             c.otherRequired
@@ -364,6 +389,11 @@ buildAttrSetter buildModule source item =
     case item of
         KnownAttr { name, value } ->
             buildModule ++ "." ++ name ++ " " ++ source (Node.range value)
+
+        UniversalAttr { raw } ->
+            -- Inject an already-built universal `Attr` through the Build module's
+            -- generic, non-capability-consuming `attr` setter.
+            buildModule ++ ".attr " ++ argText source raw
 
         _ ->
             "identity  -- residue: Build has no attr-list seam"
@@ -473,6 +503,11 @@ cemAttrItem cemModule source item =
 
         EnumTokenLossy { name, tokenText } ->
             "Seam.asAttribute (Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\")"
+
+        UniversalAttr { raw } ->
+            -- ② Cem's attr list is already `Attr`-typed, so a universal
+            -- `Attr caps msg` sits in it verbatim.
+            source (Node.range raw)
 
         EscapedAttr { raw } ->
             "Seam.asAttribute (" ++ source (Node.range raw) ++ ")"
@@ -612,6 +647,9 @@ htmlAttrItem htmlModule fact source item =
 
         EnumTokenLossy { name, tokenText } ->
             "Html.Attributes.attribute \"" ++ name ++ "\" \"" ++ tokenText ++ "\""
+
+        UniversalAttr { raw } ->
+            source (Node.range raw)
 
         EscapedAttr { raw } ->
             source (Node.range raw)

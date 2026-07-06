@@ -19,6 +19,7 @@ facts =
       , surfaces = [ Standard ]
       , requiredAttrs = []
       , actionMap = []
+      , usesAction = False
       }
     ]
 
@@ -35,6 +36,7 @@ shape4Facts =
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       , actionMap = []
+      , usesAction = False
       }
     ]
 

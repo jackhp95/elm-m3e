@@ -1,13 +1,13 @@
 module M3e.Build.Badge exposing
-    ( Builder, AttrCaps, SlotCaps, badge, size, position
-    , for, build
+    ( Builder, AttrCaps, SlotCaps, badge, attr, size
+    , position, for, child, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-badge>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Badge as Badge`.
 
-@docs Builder, AttrCaps, SlotCaps, badge, size, position
-@docs for, build
+@docs Builder, AttrCaps, SlotCaps, badge, attr, size
+@docs position, for, child, build
 -}
 
 
@@ -52,6 +52,19 @@ badge =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -101,6 +114,19 @@ for v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.Badge.for v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
              (M3e.Build.Internal.node_ b_)
         )
 

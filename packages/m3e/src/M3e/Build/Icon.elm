@@ -1,13 +1,13 @@
 module M3e.Build.Icon exposing
-    ( Builder, AttrCaps, SlotCaps, icon, filled, grade
-    , opticalSize, name, variant, weight, build
+    ( Builder, AttrCaps, SlotCaps, icon, attr, filled
+    , grade, opticalSize, name, variant, weight, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-icon>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Icon as Icon`.
 
-@docs Builder, AttrCaps, SlotCaps, icon, filled, grade
-@docs opticalSize, name, variant, weight, build
+@docs Builder, AttrCaps, SlotCaps, icon, attr, filled
+@docs grade, opticalSize, name, variant, weight, build
 -}
 
 
@@ -55,6 +55,19 @@ icon =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

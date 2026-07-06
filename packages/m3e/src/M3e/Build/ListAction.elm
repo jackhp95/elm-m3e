@@ -1,20 +1,20 @@
 module M3e.Build.ListAction exposing
-    ( Builder, AttrCaps, SlotCaps, listAction, disabled, download
-    , href, rel, target, onClick, build
+    ( Builder, AttrCaps, SlotCaps, listAction, attr, disabled
+    , download, href, rel, target, onClick, child, leading
+    , overline, supportingText, trailing, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-list-action>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ListAction as ListAction`.
 
-@docs Builder, AttrCaps, SlotCaps, listAction, disabled, download
-@docs href, rel, target, onClick, build
+@docs Builder, AttrCaps, SlotCaps, listAction, attr, disabled
+@docs download, href, rel, target, onClick, child
+@docs leading, overline, supportingText, trailing, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.ListAction
 import M3e.Cem.ListAction
 import M3e.Element
 import M3e.Element.Internal
@@ -62,6 +62,19 @@ listAction =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -132,18 +145,107 @@ target v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ListAction.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.ListAction.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `leading` slot. -}
+leading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , avatar : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | leading : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | leading : M3e.Build.Internal.Used } msg kind
+leading el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "leading" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `overline` slot. -}
+overline :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | overline : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | overline : M3e.Build.Internal.Used } msg kind
+overline el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "overline" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `supporting-text` slot. -}
+supportingText :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | supportingText : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | supportingText : M3e.Build.Internal.Used } msg kind
+supportingText el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "supporting-text" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `trailing` slot. -}
+trailing :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , avatar : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    , switch : M3e.Value.Supported
+    , radio : M3e.Value.Supported
+    , checkbox : M3e.Value.Supported
+    } msg
+    -> Builder a { s | trailing : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | trailing : M3e.Build.Internal.Used } msg kind
+trailing el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "trailing" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

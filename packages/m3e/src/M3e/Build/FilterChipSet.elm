@@ -1,22 +1,21 @@
 module M3e.Build.FilterChipSet exposing
-    ( Builder, AttrCaps, SlotCaps, filterChipSet, disabled, hideSelectionIndicator
-    , multi, name, vertical, onChange, onBeforeinput, onInput, build
+    ( Builder, AttrCaps, SlotCaps, filterChipSet, attr, disabled
+    , hideSelectionIndicator, multi, name, vertical, onChange, onBeforeinput, onInput
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-filter-chip-set>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FilterChipSet as FilterChipSet`.
 
-@docs Builder, AttrCaps, SlotCaps, filterChipSet, disabled, hideSelectionIndicator
-@docs multi, name, vertical, onChange, onBeforeinput, onInput
-@docs build
+@docs Builder, AttrCaps, SlotCaps, filterChipSet, attr, disabled
+@docs hideSelectionIndicator, multi, name, vertical, onChange, onBeforeinput
+@docs onInput, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FilterChipSet
-import M3e.Cem.Html.FilterChipSet
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -60,6 +59,19 @@ filterChipSet =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -136,35 +148,27 @@ vertical v_ b_ =
 
 {-| Dispatched when the selected state of a chip changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChipSet.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChipSet.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched before the selected state of a chip changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChipSet.onBeforeinput
-                       v_
-                  )
+                  (M3e.Cem.FilterChipSet.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -172,18 +176,13 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the selected state of a chip changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChipSet.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChipSet.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 

@@ -38,6 +38,11 @@ type alias Canonical =
 
   - `KnownAttr` — recognised setter with a value expression.
   - `EnumTokenLossy` — uphill token that Facts' `enums` doesn't cover.
+  - `UniversalAttr` — an already-`Attr`-producing universal setter (`M3e.Aria.*`,
+    etc.) whose value sits on ANY component/surface via a free `capability` row.
+    It is NOT a raw Html attribute, so it must pass through verbatim (Record /
+    Standard / Cem attr list) or via the generic `attr` injection (Build) rather
+    than be `Seam.asAttribute`-wrapped like an `EscapedAttr`.
   - `EscapedAttr` — parser couldn't classify; carry the raw expression.
   - `DynamicAttrTail` — variable-bound tail of an attr list.
 
@@ -45,6 +50,7 @@ type alias Canonical =
 type AttrItem
     = KnownAttr { name : String, value : Node Expression }
     | EnumTokenLossy { name : String, tokenText : String, range : Range }
+    | UniversalAttr { raw : Node Expression }
     | EscapedAttr { raw : Node Expression }
     | DynamicAttrTail { raw : Node Expression }
 

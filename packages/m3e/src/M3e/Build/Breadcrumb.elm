@@ -1,11 +1,13 @@
 module M3e.Build.Breadcrumb exposing
-    ( Builder, AttrCaps, SlotCaps, breadcrumb, wrap, build
+    ( Builder, AttrCaps, SlotCaps, breadcrumb, attr, wrap
+    , separator, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Breadcrumb as Breadcrumb`.
 
-@docs Builder, AttrCaps, SlotCaps, breadcrumb, wrap, build
+@docs Builder, AttrCaps, SlotCaps, breadcrumb, attr, wrap
+@docs separator, build
 -}
 
 
@@ -52,6 +54,19 @@ breadcrumb =
         )
 
 
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
 {-| Whether items wrap to a new line. (default: `false`) -}
 wrap :
     Bool
@@ -61,6 +76,19 @@ wrap v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.Breadcrumb.wrap v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `separator` slot. -}
+separator :
+    M3e.Element.Element any msg
+    -> Builder a { s | separator : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | separator : M3e.Build.Internal.Used } msg kind
+separator el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "separator" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

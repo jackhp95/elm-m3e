@@ -29,7 +29,9 @@ import SyntaxHighlight
 -}
 showcase : Element { s | html : Supported } msg -> Element { r | card : Supported } msg
 showcase content =
-    Card.view [ Card.variant Value.outlined ] [ Card.content content ]
+    Card.view
+        [ Card.variant Value.outlined, Seam.asAttribute (class "max-w-full overflow-x-auto") ]
+        [ Card.content content ]
 
 
 {-| Render a raw HTML string as live DOM. The embedded `<m3e-*>` custom elements
@@ -46,7 +48,7 @@ rawPreview html =
     Seam.fromHtml
         (node "raw-html"
             [ attribute "content" html
-            , class "flex flex-wrap items-center gap-3"
+            , class "flex max-w-full flex-wrap items-center gap-3 overflow-x-auto"
             ]
             []
         )
@@ -58,6 +60,7 @@ type Lang
     = Elm
     | Json
     | Shell
+    | Xml
     | NoLang
 
 
@@ -84,6 +87,9 @@ code_ lang s =
 
                 Shell ->
                     SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
+
+                Xml ->
+                    SyntaxHighlight.xml trimmed |> Result.mapError (always ())
 
                 NoLang ->
                     SyntaxHighlight.noLang trimmed |> Result.mapError (always ())

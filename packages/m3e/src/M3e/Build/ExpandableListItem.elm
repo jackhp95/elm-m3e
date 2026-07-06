@@ -1,21 +1,21 @@
 module M3e.Build.ExpandableListItem exposing
-    ( Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
-    , onOpening, onOpened, onClosing, onClosed, build
+    ( Builder, AttrCaps, SlotCaps, expandableListItem, attr, disabled
+    , open, onOpening, onOpened, onClosing, onClosed, child, leading
+    , overline, supportingText, toggleIcon, items, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-expandable-list-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.ExpandableListItem as ExpandableListItem`.
 
-@docs Builder, AttrCaps, SlotCaps, expandableListItem, disabled, open
-@docs onOpening, onOpened, onClosing, onClosed, build
+@docs Builder, AttrCaps, SlotCaps, expandableListItem, attr, disabled
+@docs open, onOpening, onOpened, onClosing, onClosed, child
+@docs leading, overline, supportingText, toggleIcon, items, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.ExpandableListItem
-import M3e.Cem.Html.ExpandableListItem
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -66,6 +66,19 @@ expandableListItem =
         )
 
 
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
 {-| Whether the element is disabled. (default: `false`) -}
 disabled :
     Bool
@@ -96,17 +109,14 @@ open v_ b_ =
 
 {-| Dispatched when the item begins to open. -}
 onOpening :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpandableListItem.onOpening
-                       v_
-                  )
+                  (M3e.Cem.ExpandableListItem.onOpening v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -114,17 +124,14 @@ onOpening v_ b_ =
 
 {-| Dispatched when the item has opened. -}
 onOpened :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpandableListItem.onOpened
-                       v_
-                  )
+                  (M3e.Cem.ExpandableListItem.onOpened v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -132,17 +139,14 @@ onOpened v_ b_ =
 
 {-| Dispatched when the item begins to close. -}
 onClosing :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpandableListItem.onClosing
-                       v_
-                  )
+                  (M3e.Cem.ExpandableListItem.onClosing v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -150,18 +154,103 @@ onClosing v_ b_ =
 
 {-| Dispatched when the item has closed. -}
 onClosed :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.ExpandableListItem.onClosed
-                       v_
-                  )
+                  (M3e.Cem.ExpandableListItem.onClosed v_)
              )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `leading` slot. -}
+leading :
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , avatar : M3e.Value.Supported
+    , text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | leading : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | leading : M3e.Build.Internal.Used } msg kind
+leading el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "leading" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `overline` slot. -}
+overline :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | overline : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | overline : M3e.Build.Internal.Used } msg kind
+overline el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "overline" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `supporting-text` slot. -}
+supportingText :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> Builder a { s | supportingText : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | supportingText : M3e.Build.Internal.Used } msg kind
+supportingText el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "supporting-text" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `toggle-icon` slot. -}
+toggleIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
+toggleIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "toggle-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `items` slot. -}
+items :
+    M3e.Element.Element any msg
+    -> Builder a { s | items : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | items : M3e.Build.Internal.Used } msg kind
+items el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "items" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

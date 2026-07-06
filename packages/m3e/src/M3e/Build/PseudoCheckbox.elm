@@ -1,13 +1,13 @@
 module M3e.Build.PseudoCheckbox exposing
-    ( Builder, AttrCaps, SlotCaps, pseudoCheckbox, checked, disabled
-    , indeterminate, build
+    ( Builder, AttrCaps, SlotCaps, pseudoCheckbox, attr, checked
+    , disabled, indeterminate, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-pseudo-checkbox>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.PseudoCheckbox as PseudoCheckbox`.
 
-@docs Builder, AttrCaps, SlotCaps, pseudoCheckbox, checked, disabled
-@docs indeterminate, build
+@docs Builder, AttrCaps, SlotCaps, pseudoCheckbox, attr, checked
+@docs disabled, indeterminate, build
 -}
 
 
@@ -52,6 +52,19 @@ pseudoCheckbox =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

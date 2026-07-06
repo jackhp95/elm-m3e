@@ -1,22 +1,20 @@
 module M3e.Build.Radio exposing
-    ( Builder, AttrCaps, SlotCaps, radio, checked, disabled
-    , name, required, value, onBeforeinput, onInput, onChange, onClick
-    , build
+    ( Builder, AttrCaps, SlotCaps, radio, attr, checked
+    , disabled, name, required, value, onBeforeinput, onInput, onChange
+    , onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-radio>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Radio as Radio`.
 
-@docs Builder, AttrCaps, SlotCaps, radio, checked, disabled
-@docs name, required, value, onBeforeinput, onInput, onChange
-@docs onClick, build
+@docs Builder, AttrCaps, SlotCaps, radio, attr, checked
+@docs disabled, name, required, value, onBeforeinput, onInput
+@docs onChange, onClick, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.Radio
 import M3e.Cem.Radio
 import M3e.Element
 import M3e.Element.Internal
@@ -62,6 +60,19 @@ radio =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -132,68 +143,52 @@ value v_ b_ =
 
 {-| Dispatched before the checked state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Radio.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Radio.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the checked state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.onInput v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Radio.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the checked state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Radio.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Radio.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Radio.onClick v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Radio.onClick v_))
              (M3e.Build.Internal.node_ b_)
         )
 

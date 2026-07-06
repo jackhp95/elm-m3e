@@ -1,23 +1,22 @@
 module M3e.Build.Dialog exposing
-    ( Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
-    , disableClose, dismissible, noFocusTrap, open, onOpening, onOpened, onClosing
-    , onClosed, onCancel, build
+    ( Builder, AttrCaps, SlotCaps, dialog, attr, alert
+    , closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
+    , onClosing, onClosed, onCancel, header, actions, closeIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-dialog>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Dialog as Dialog`.
 
-@docs Builder, AttrCaps, SlotCaps, dialog, alert, closeLabel
-@docs disableClose, dismissible, noFocusTrap, open, onOpening, onOpened
-@docs onClosing, onClosed, onCancel, build
+@docs Builder, AttrCaps, SlotCaps, dialog, attr, alert
+@docs closeLabel, disableClose, dismissible, noFocusTrap, open, onOpening
+@docs onOpened, onClosing, onClosed, onCancel, header, actions
+@docs closeIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Dialog
-import M3e.Cem.Html.Dialog
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -67,6 +66,19 @@ dialog =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -150,90 +162,104 @@ open v_ b_ =
 
 {-| Dispatched when the dialog begins to open. -}
 onOpening :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Dialog.onOpening
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.onOpening v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the dialog has opened. -}
 onOpened :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Dialog.onOpened
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.onOpened v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the dialog begins to close. -}
 onClosing :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Dialog.onClosing
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.onClosing v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the dialog has closed. -}
 onClosed :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Dialog.onClosed
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.onClosed v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the dialog is cancelled. -}
 onCancel :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onCancel : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onCancel : M3e.Build.Internal.Used } s msg kind
 onCancel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Dialog.onCancel
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Dialog.onCancel v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `header` slot. -}
+header :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | header : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | header : M3e.Build.Internal.Used } msg kind
+header el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "header" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `actions` slot. -}
+actions :
+    M3e.Element.Element any msg
+    -> Builder a { s | actions : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | actions : M3e.Build.Internal.Used } msg kind
+actions el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "actions" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `close-icon` slot. -}
+closeIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
+closeIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "close-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

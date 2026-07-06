@@ -124,6 +124,20 @@ export function buildOracle() {
       const requiredConfig = moduleConfig.required;
       if (requiredConfig && typeof requiredConfig === "object") {
         for (const key of Object.keys(requiredConfig)) {
+          // An `action:`-kinded required field (Button/IconButton/Fab/... take a
+          // required `action` on the ④ Record view) is NOT a required record
+          // field at the strict TOP (Standard `M3e.*`) layer: the Standard view
+          // has no required record and realizes the action through ordinary
+          // `href`/`onClick` Attr setters. Skip it here so an action-bearing
+          // element sources its action from `href` (-> `M3e.<mod>.href "…"`)
+          // like any other attribute. The ④/⑤ translator rules then lift that
+          // `href` into `action = M3e.Action.link { href = … }`.
+          if (
+            typeof requiredConfig[key] === "string" &&
+            requiredConfig[key].startsWith("action:")
+          ) {
+            continue;
+          }
           // Keys may be camelCase (e.g. "ariaLabel"). camel() collapses a
           // separator-free word to lowercase, so kebab first to recover the
           // word boundaries: camel(kebab("ariaLabel")) === "ariaLabel".

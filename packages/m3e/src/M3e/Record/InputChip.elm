@@ -19,6 +19,17 @@ A chip which represents a discrete piece of information entered by a user.
 - `remove-icon`: Renders the icon for the button used to remove the chip.
 - `trailing-icon`: Renders an icon after the chip's label.
 
+<!-- elm-cem:docmeta category=Selection -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Input chip with label" -->
+```elm
+M3e.InputChip.view [] [ M3e.InputChip.child (Kit.text "Design") ]
+```
+
 @docs view, disabled, disabledInteractive, removable, removeLabel, value
 @docs variant, onRemove, onClick, avatar, icon, removeIcon
 -}

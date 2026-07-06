@@ -16,11 +16,13 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { execFileSync } from "child_process";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, "../..");
 
 const RICH = path.resolve(REPO, "config/examples.rich.json");
+const SURFACES = path.resolve(REPO, "config/examples.surfaces.json");
 const CATEGORIES = path.resolve(REPO, "config/categories.json");
 const REFERENCE = path.resolve(here, "../data/reference.json");
 const OUT = path.resolve(here, "../data/examples.json");
@@ -40,8 +42,69 @@ function readJson(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
 
+const ELM_FORMAT = path.resolve(here, "../node_modules/.bin/elm-format");
+
+// The converter emits each example as ONE long unwrapped expression (a bare
+// expr, or `[ e1\n    , e2\n    ]`), which reads as broken indentation and
+// overflows. Run it through elm-format by wrapping it in a trivial declaration,
+// formatting the module, then extracting + de-indenting the body. Falls back to
+// the original string if elm-format is unavailable or the wrapped form doesn't
+// parse (so a single odd example never breaks the build).
+function tryFormat(code) {
+  const wrapped =
+    "module F exposing (s)\n\n\ns =\n" +
+    code
+      .split("\n")
+      .map((l) => "    " + l)
+      .join("\n") +
+    "\n";
+  try {
+    const out = execFileSync(ELM_FORMAT, ["--stdin"], {
+      input: wrapped,
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "ignore"],
+    });
+    const marker = "\ns =\n";
+    const i = out.indexOf(marker);
+    if (i < 0) return null;
+    return out
+      .slice(i + marker.length)
+      .replace(/\s+$/, "")
+      .split("\n")
+      .map((l) => (l.startsWith("    ") ? l.slice(4) : l))
+      .join("\n");
+  } catch {
+    return null;
+  }
+}
+
+function formatElm(code) {
+  if (!code || typeof code !== "string") return code;
+  // elm-format never wraps by width, so a long single-line expression stays
+  // long. Force a multi-line layout by inserting a newline before every `, `
+  // and ` |> `; elm-format then re-indents it canonically. If the pre-broken
+  // form doesn't parse (e.g. a `, ` inside a string literal), fall back to
+  // formatting the original as-is, then to the raw string.
+  const broken = code.replace(/, /g, "\n, ").replace(/ \|> /g, "\n|> ");
+  return tryFormat(broken) ?? tryFormat(code) ?? code;
+}
+
+// The ④ Record / ⑤ Build surfaces (config/examples.surfaces.json) are produced
+// by the D6 translator harness (gen-record-build.mjs), index-aligned with the
+// rich file. For every example the harness emits either the TRANSLATED surface
+// code (which contains an `M3e.Record.` / `M3e.Build.` reference) or a fallback
+// COPY of the top code (when the example doesn't cleanly convert). We surface a
+// tab only for a real translation: a fallback is stored as `null` here so the UI
+// hides the tab rather than showing a hollow duplicate of the M3e tab.
+function surfaceOrNull(code, token) {
+  return code && typeof code === "string" && code.includes(token)
+    ? formatElm(code)
+    : null;
+}
+
 function main() {
   const rich = readJson(RICH);
+  const surfaces = fs.existsSync(SURFACES) ? readJson(SURFACES) : {};
   const categories = readJson(CATEGORIES);
 
   // Known route slugs (for a non-silent mismatch warning). reference.json may
@@ -65,16 +128,22 @@ function main() {
       // Still emit it — harmless dead data — so nothing is silently lost.
     }
 
+    const moduleSurfaces = surfaces[module] ?? [];
     out[slug] = {
       category,
-      examples: rich[module].map((ex) => ({
-        title: ex.title,
-        ...(ex.section ? { section: ex.section } : {}),
-        html: ex.html,
-        top: ex.top,
-        mid: ex.mid,
-        bottom: ex.bottom,
-      })),
+      examples: rich[module].map((ex, idx) => {
+        const surf = moduleSurfaces[idx] ?? {};
+        return {
+          title: ex.title,
+          ...(ex.section ? { section: ex.section } : {}),
+          html: ex.html,
+          top: formatElm(ex.top),
+          mid: formatElm(ex.mid),
+          bottom: formatElm(ex.bottom),
+          record: surfaceOrNull(surf.record, "M3e.Record."),
+          build: surfaceOrNull(surf.build, "M3e.Build."),
+        };
+      }),
     };
   }
 

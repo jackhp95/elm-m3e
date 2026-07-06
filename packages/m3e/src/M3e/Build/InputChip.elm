@@ -1,21 +1,20 @@
 module M3e.Build.InputChip exposing
-    ( Builder, AttrCaps, SlotCaps, inputChip, disabled, disabledInteractive
-    , removable, removeLabel, value, variant, onRemove, onClick, build
+    ( Builder, AttrCaps, SlotCaps, inputChip, attr, disabled
+    , disabledInteractive, removable, removeLabel, value, variant, onRemove, onClick
+    , avatar, icon, removeIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-input-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.InputChip as InputChip`.
 
-@docs Builder, AttrCaps, SlotCaps, inputChip, disabled, disabledInteractive
-@docs removable, removeLabel, value, variant, onRemove, onClick
-@docs build
+@docs Builder, AttrCaps, SlotCaps, inputChip, attr, disabled
+@docs disabledInteractive, removable, removeLabel, value, variant, onRemove
+@docs onClick, avatar, icon, removeIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.InputChip
 import M3e.Cem.InputChip
 import M3e.Element
 import M3e.Element.Internal
@@ -65,6 +64,19 @@ inputChip req_ =
              )
              []
              [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -154,36 +166,65 @@ variant v_ b_ =
 
 {-| Dispatched when the remove button is clicked or DELETE or BACKSPACE key is pressed. -}
 onRemove :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onRemove : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onRemove : M3e.Build.Internal.Used } s msg kind
 onRemove v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.InputChip.onRemove
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.onRemove v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.InputChip.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.InputChip.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `avatar` slot. -}
+avatar :
+    M3e.Element.Element { avatar : M3e.Value.Supported } msg
+    -> Builder a { s | avatar : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | avatar : M3e.Build.Internal.Used } msg kind
+avatar el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "avatar" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `remove-icon` slot. -}
+removeIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | removeIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | removeIcon : M3e.Build.Internal.Used } msg kind
+removeIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "remove-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

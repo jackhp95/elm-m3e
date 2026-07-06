@@ -1195,7 +1195,7 @@ icon :
     , weight : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element child msg)
     -> M3e.Element.Element { s | icon : M3e.Value.Supported } msg
 icon =
     M3e.Icon.view

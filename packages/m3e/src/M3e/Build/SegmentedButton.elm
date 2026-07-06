@@ -1,20 +1,19 @@
 module M3e.Build.SegmentedButton exposing
-    ( Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-    , multi, name, onChange, onBeforeinput, onInput, build
+    ( Builder, AttrCaps, SlotCaps, segmentedButton, attr, disabled
+    , hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-segmented-button>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SegmentedButton as SegmentedButton`.
 
-@docs Builder, AttrCaps, SlotCaps, segmentedButton, disabled, hideSelectionIndicator
-@docs multi, name, onChange, onBeforeinput, onInput, build
+@docs Builder, AttrCaps, SlotCaps, segmentedButton, attr, disabled
+@docs hideSelectionIndicator, multi, name, onChange, onBeforeinput, onInput
+@docs build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.SegmentedButton
 import M3e.Cem.SegmentedButton
 import M3e.Element
 import M3e.Element.Internal
@@ -58,6 +57,19 @@ segmentedButton =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -122,17 +134,13 @@ name v_ b_ =
 
 {-| Dispatched when the checked state of a segment changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SegmentedButton.onChange
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SegmentedButton.onChange v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -140,17 +148,14 @@ onChange v_ b_ =
 
 {-| Dispatched before the checked state of a segment changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SegmentedButton.onBeforeinput
-                       v_
-                  )
+                  (M3e.Cem.SegmentedButton.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -158,18 +163,13 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the checked state of a segment changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SegmentedButton.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SegmentedButton.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 

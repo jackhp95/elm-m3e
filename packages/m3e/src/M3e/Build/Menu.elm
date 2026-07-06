@@ -1,20 +1,18 @@
 module M3e.Build.Menu exposing
-    ( Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-    , variant, submenu, onBeforetoggle, onToggle, build
+    ( Builder, AttrCaps, SlotCaps, menu, attr, positionX
+    , positionY, variant, submenu, onBeforetoggle, onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-menu>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Menu as Menu`.
 
-@docs Builder, AttrCaps, SlotCaps, menu, positionX, positionY
-@docs variant, submenu, onBeforetoggle, onToggle, build
+@docs Builder, AttrCaps, SlotCaps, menu, attr, positionX
+@docs positionY, variant, submenu, onBeforetoggle, onToggle, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.Menu
 import M3e.Cem.Menu
 import M3e.Element
 import M3e.Element.Internal
@@ -57,6 +55,19 @@ menu =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -118,34 +129,26 @@ submenu v_ b_ =
 
 {-| Dispatched before the toggle state changes. -}
 onBeforetoggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Menu.onBeforetoggle
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Menu.onBeforetoggle v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched after the toggle state has changed. -}
 onToggle :
-    Json.Decode.Decoder msg
+    (String -> msg)
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Menu.onToggle v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Menu.onToggle v_))
              (M3e.Build.Internal.node_ b_)
         )
 

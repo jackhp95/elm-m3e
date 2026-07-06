@@ -22,26 +22,6 @@ A dialog that provides important prompts in a user flow.
 - `actions`: Renders the actions of the dialog.
 - `close-icon`: Renders the icon of the button used to close the dialog.
 
-<!-- elm-cem:docmeta category=Containment -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Confirmation dialog with header and actions" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "Delete project", action = M3e.Action.opensDialog "confirm" } [ M3e.Record.Button.variant M3e.Value.filled ] []
-    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] [ M3e.Dialog.header (Kit.text "Delete project?"), M3e.Dialog.actions (Native.div [] [ M3e.Record.Button.view { content = Kit.text "Cancel", action = M3e.Action.dialogAction { returnValue = "cancel" } } [ M3e.Record.Button.variant M3e.Value.text ] [], M3e.Record.Button.view { content = Kit.text "Delete", action = M3e.Action.dialogAction { returnValue = "delete" } } [ M3e.Record.Button.variant M3e.Value.filled ] [ M3e.Record.Button.icon (M3e.Icon.view [ M3e.Icon.name "delete" ] []) ] ]), M3e.Dialog.child (Native.p [] [ Kit.text "This action permanently removes the project and all of its files. This cannot be undone." ]) ]
-    ]
-```
-
-<!-- elm-cem:example title="Alert dialog with close icon" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "Session timeout", action = M3e.Action.opensDialog "info" } [ M3e.Record.Button.variant M3e.Value.tonal ] []
-    , M3e.Dialog.view [ M3e.Dialog.alert True, M3e.Dialog.dismissible True ] [ M3e.Dialog.closeIcon (M3e.Icon.view [ M3e.Icon.name "close" ] []), M3e.Dialog.header (Kit.text "Your session has expired"), M3e.Dialog.actions (Native.div [] [ M3e.Record.Button.view { content = Kit.text "Sign in", action = M3e.Action.dialogAction { returnValue = "ok" } } [ M3e.Record.Button.variant M3e.Value.filled ] [] ]), M3e.Dialog.child (Native.p [] [ Kit.text "For your security, you have been signed out due to inactivity. Please sign in again to continue." ]) ]
-    ]
-```
-
 @docs view, alert, closeLabel, disableClose, dismissible, noFocusTrap
 @docs open, onOpening, onOpened, onClosing, onClosed, onCancel
 @docs child, header, actions, closeIcon, children

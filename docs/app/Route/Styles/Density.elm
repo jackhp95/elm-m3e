@@ -61,6 +61,26 @@ head _ =
         |> Seo.website
 
 
+{-| Elm can't set a CSS custom property (`style`/`Native.style` use
+`node.style[key]=…`, which ignores `--vars`), so scope `--md-sys-density-scale`
+to this subtree via a Tailwind arbitrary-property class. Literal strings per
+scale so Tailwind's scanner emits all four rules.
+-}
+densityScaleClass : Int -> String
+densityScaleClass n =
+    if n <= -3 then
+        "[--md-sys-density-scale:-3]"
+
+    else if n == -2 then
+        "[--md-sys-density-scale:-2]"
+
+    else if n == -1 then
+        "[--md-sys-density-scale:-1]"
+
+    else
+        "[--md-sys-density-scale:0]"
+
+
 demoBar : Int -> Element { s | html : Supported } msg
 demoBar scaleValue =
     Layout.div "space-y-2"
@@ -68,9 +88,7 @@ demoBar scaleValue =
             [ Kit.onSurfaceVariant ]
             [ Kit.text ("density scale " ++ String.fromInt scaleValue) ]
         , Native.node (Html.node "div")
-            [ Native.style "--md-sys-density-scale" (String.fromInt scaleValue)
-            , Layout.class "flex flex-wrap gap-2"
-            ]
+            [ Layout.class (densityScaleClass scaleValue ++ " flex flex-wrap gap-2") ]
             (List.range 1 4
                 |> List.map
                     (\_ ->
@@ -103,7 +121,7 @@ view _ _ =
                     , Layout.div "max-w-2xl"
                         [ Kit.paragraph Value.large
                             [ Kit.onSurfaceVariant ]
-                            [ Kit.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree with an inline style." ]
+                            [ Kit.text "Density compacts components for information-dense UIs. The --md-sys-density-scale token runs 0 (default, comfortable) through negative values (more compact). Set it globally via the app bar Density control, or scope it to a subtree. The scales below run 0 to -3." ]
                         ]
                     ]
                 , Card.view

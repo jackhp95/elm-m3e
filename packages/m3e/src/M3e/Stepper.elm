@@ -18,22 +18,6 @@ Provides a wizard-like workflow by dividing content into logical steps.
 - `step`: Renders a step.
 - `panel`: Renders a panel.
 
-<!-- elm-cem:docmeta category=Navigation -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Horizontal stepper with completed and optional steps" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.horizontal, M3e.Stepper.headerPosition M3e.Value.above, M3e.Stepper.labelPosition M3e.Value.end ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "acct", M3e.Step.completed True, M3e.Step.editable True ] [ M3e.Step.child (Kit.text "Account"), M3e.Step.icon (M3e.Icon.view [ M3e.Icon.name "person" ] []) ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "profile", M3e.Step.selected True ] [ M3e.Step.child (Kit.text "Profile"), M3e.Step.hint (Kit.text "Tell us about yourself") ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "review", M3e.Step.optional True ] [ M3e.Step.child (Kit.text "Review") ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Account details saved." ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Enter your profile information." ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Review and submit." ]) ]) ]
-```
-
-<!-- elm-cem:example title="Linear vertical stepper with navigation controls" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.vertical, M3e.Stepper.linear True ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "s1", M3e.Step.selected True ] [ M3e.Step.child (Kit.text "Choose a plan") ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "s2" ] [ M3e.Step.child (Kit.text "Payment") ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.child (Native.p [] [ Kit.text "Pick the plan that fits you." ]) ]), M3e.Stepper.panel (M3e.StepPanel.view [] (M3e.StepPanel.children [ Native.p [] [ Kit.text "Confirm and reset if needed." ], M3e.Record.Button.view { content = Kit.text "Back", action = M3e.Action.stepperPrevious } [] [], M3e.Record.Button.view { content = Kit.text "Start over", action = M3e.Action.stepperReset } [] [] ])) ]
-```
-
 @docs view, headerPosition, labelPosition, linear, orientation, onChange
 @docs onBeforeinput, onInput, step, panel
 -}

@@ -1,15 +1,15 @@
 module M3e.Build.Fab exposing
-    ( Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
-    , extended, lowered, name, size, type_, value, variant
-    , build
+    ( Builder, AttrCaps, SlotCaps, fab, attr, disabled
+    , disabledInteractive, extended, lowered, name, size, type_, value
+    , variant, label, closeIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-fab>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Fab as Fab`.
 
-@docs Builder, AttrCaps, SlotCaps, fab, disabled, disabledInteractive
-@docs extended, lowered, name, size, type_, value
-@docs variant, build
+@docs Builder, AttrCaps, SlotCaps, fab, attr, disabled
+@docs disabledInteractive, extended, lowered, name, size, type_
+@docs value, variant, label, closeIcon, build
 -}
 
 
@@ -88,6 +88,19 @@ fab req_ =
                  req_.action
                  (M3e.Element.toNode req_.content)
              ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -219,6 +232,32 @@ variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.Fab.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `label` slot. -}
+label :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | label : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | label : M3e.Build.Internal.Used } msg kind
+label el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "label" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `close-icon` slot. -}
+closeIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
+closeIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "close-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

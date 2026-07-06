@@ -98,7 +98,7 @@ Then the **deferred RISK** — **Phase A1 (mid/bottom layers):** extend `to-elm.
 cd m3e-docs && node scripts/examples-to-elm.mjs   # regenerate config/examples.generated.json (compile-verified)
 cd /Users/jack/Documents/code/elm-m3e && node elm-cem/bin/elm-cem.js \
   --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
-  --config-from=config/slots.json --config-from=config/examples.generated.json \
+  --config-from=config/slots.json --config-from=config/native-mdn.json --config-from=config/examples.generated.json \
   --output=packages/m3e/src
 
 # Gates:

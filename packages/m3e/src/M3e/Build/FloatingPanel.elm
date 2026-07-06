@@ -1,21 +1,19 @@
 module M3e.Build.FloatingPanel exposing
-    ( Builder, AttrCaps, SlotCaps, floatingPanel, scrollStrategy, fitAnchorWidth
-    , anchorOffset, onBeforetoggle, onToggle, build
+    ( Builder, AttrCaps, SlotCaps, floatingPanel, attr, scrollStrategy
+    , fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-floating-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FloatingPanel as FloatingPanel`.
 
-@docs Builder, AttrCaps, SlotCaps, floatingPanel, scrollStrategy, fitAnchorWidth
-@docs anchorOffset, onBeforetoggle, onToggle, build
+@docs Builder, AttrCaps, SlotCaps, floatingPanel, attr, scrollStrategy
+@docs fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FloatingPanel
-import M3e.Cem.Html.FloatingPanel
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -56,6 +54,19 @@ floatingPanel =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -108,17 +119,14 @@ anchorOffset v_ b_ =
 
 {-| Dispatched before the toggle state changes. -}
 onBeforetoggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FloatingPanel.onBeforetoggle
-                       v_
-                  )
+                  (M3e.Cem.FloatingPanel.onBeforetoggle v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -126,18 +134,13 @@ onBeforetoggle v_ b_ =
 
 {-| Dispatched after the toggle state has changed. -}
 onToggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FloatingPanel.onToggle
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FloatingPanel.onToggle v_))
              (M3e.Build.Internal.node_ b_)
         )
 

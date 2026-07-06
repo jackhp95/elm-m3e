@@ -1,21 +1,20 @@
 module M3e.Build.Collapsible exposing
-    ( Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-    , noAnimate, onOpening, onOpened, onClosing, onClosed, build
+    ( Builder, AttrCaps, SlotCaps, collapsible, attr, open
+    , orientation, noAnimate, onOpening, onOpened, onClosing, onClosed, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-collapsible>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Collapsible as Collapsible`.
 
-@docs Builder, AttrCaps, SlotCaps, collapsible, open, orientation
-@docs noAnimate, onOpening, onOpened, onClosing, onClosed, build
+@docs Builder, AttrCaps, SlotCaps, collapsible, attr, open
+@docs orientation, noAnimate, onOpening, onOpened, onClosing, onClosed
+@docs build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Collapsible
-import M3e.Cem.Html.Collapsible
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -58,6 +57,19 @@ collapsible =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -104,72 +116,52 @@ noAnimate v_ b_ =
 
 {-| Dispatched when the collapsible begins to open. -}
 onOpening :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpening : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpening : M3e.Build.Internal.Used } s msg kind
 onOpening v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Collapsible.onOpening
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.onOpening v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the collapsible has opened. -}
 onOpened :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onOpened : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onOpened : M3e.Build.Internal.Used } s msg kind
 onOpened v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Collapsible.onOpened
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.onOpened v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the collapsible begins to close. -}
 onClosing :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosing : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosing : M3e.Build.Internal.Used } s msg kind
 onClosing v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Collapsible.onClosing
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.onClosing v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the collapsible has closed. -}
 onClosed :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClosed : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClosed : M3e.Build.Internal.Used } s msg kind
 onClosed v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Collapsible.onClosed
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Collapsible.onClosed v_))
              (M3e.Build.Internal.node_ b_)
         )
 

@@ -1,23 +1,21 @@
 module M3e.Build.FilterChip exposing
-    ( Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
-    , selected, value, variant, onBeforeinput, onInput, onChange, onClick
-    , build
+    ( Builder, AttrCaps, SlotCaps, filterChip, attr, disabled
+    , disabledInteractive, selected, value, variant, onBeforeinput, onInput, onChange
+    , onClick, icon, trailingIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-filter-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FilterChip as FilterChip`.
 
-@docs Builder, AttrCaps, SlotCaps, filterChip, disabled, disabledInteractive
-@docs selected, value, variant, onBeforeinput, onInput, onChange
-@docs onClick, build
+@docs Builder, AttrCaps, SlotCaps, filterChip, attr, disabled
+@docs disabledInteractive, selected, value, variant, onBeforeinput, onInput
+@docs onChange, onClick, icon, trailingIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FilterChip
-import M3e.Cem.Html.FilterChip
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -66,6 +64,19 @@ filterChip req_ =
              )
              []
              [ M3e.Element.toNode req_.content ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -142,17 +153,13 @@ variant v_ b_ =
 
 {-| Dispatched before the selected state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChip.onBeforeinput
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChip.onBeforeinput v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -160,54 +167,65 @@ onBeforeinput v_ b_ =
 
 {-| Dispatched when the selected state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChip.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChip.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChip.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChip.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.FilterChip.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FilterChip.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `trailing-icon` slot. -}
+trailingIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
+trailingIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "trailing-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

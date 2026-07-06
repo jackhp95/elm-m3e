@@ -20,11 +20,6 @@ A vertical bar, typically used on larger devices, that allows a user to switch b
 
 ### Examples
 
-<!-- elm-cem:example title="Collapsible navigation rail with toggle" -->
-```elm
-M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.auto ] (M3e.NavRail.children [ M3e.Record.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "menu" ] [], action = M3e.Action.togglesNavRail "main-rail" } [ M3e.Record.IconButton.toggle True ] [ M3e.Record.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "menu_open" ] []) ], M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.NavItem.child (Kit.text "Dashboard") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "folder" ] []), M3e.NavItem.child (Kit.text "Projects") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "insights" ] []), M3e.NavItem.child (Kit.text "Reports") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "settings" ] []), M3e.NavItem.child (Kit.text "Settings") ] ])
-```
-
 <!-- elm-cem:example title="Expanded navigation rail with link destinations" -->
 ```elm
 M3e.NavRail.view [ M3e.NavRail.mode M3e.Value.expanded ] (M3e.NavRail.children [ M3e.NavItem.view [ M3e.NavItem.href "/overview", M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []), M3e.NavItem.selectedIcon (M3e.Icon.view [ M3e.Icon.name "home", M3e.Icon.filled True ] []), M3e.NavItem.child (Kit.text "Overview") ], M3e.NavItem.view [ M3e.NavItem.href "/components" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "widgets" ] []), M3e.NavItem.child (Kit.text "Components") ], M3e.NavItem.view [ M3e.NavItem.href "/guides" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "menu_book" ] []), M3e.NavItem.child (Kit.text "Guides") ] ])

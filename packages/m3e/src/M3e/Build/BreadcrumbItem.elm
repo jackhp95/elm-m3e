@@ -1,22 +1,21 @@
 module M3e.Build.BreadcrumbItem exposing
-    ( Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
-    , current, href, target, download, rel, onClick, build
+    ( Builder, AttrCaps, SlotCaps, breadcrumbItem, attr, itemLabel
+    , disabled, current, href, target, download, rel, onClick
+    , child, icon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-breadcrumb-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.BreadcrumbItem as BreadcrumbItem`.
 
-@docs Builder, AttrCaps, SlotCaps, breadcrumbItem, itemLabel, disabled
-@docs current, href, target, download, rel, onClick
-@docs build
+@docs Builder, AttrCaps, SlotCaps, breadcrumbItem, attr, itemLabel
+@docs disabled, current, href, target, download, rel
+@docs onClick, child, icon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.BreadcrumbItem
-import M3e.Cem.Html.BreadcrumbItem
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -62,6 +61,19 @@ breadcrumbItem =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -165,18 +177,41 @@ rel v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.BreadcrumbItem.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.BreadcrumbItem.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

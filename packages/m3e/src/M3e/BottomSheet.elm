@@ -20,26 +20,6 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 **Slots:**
 - `header`: Renders the header of the sheet.
 
-<!-- elm-cem:docmeta category=Containment -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Modal share sheet with action list" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "Share", action = M3e.Action.opensBottomSheet "share-sheet" } [ M3e.Record.Button.variant M3e.Value.tonal ] []
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (Kit.text "Share to"), M3e.BottomSheet.child (M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Copy link") ]) ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "mail" ] []), M3e.ListAction.child (M3e.BottomSheetAction.view [] [ M3e.BottomSheetAction.child (Kit.text "Email") ]) ] ])) ]
-    ]
-```
-
-<!-- elm-cem:example title="Non-modal filter sheet opening to a detent" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "Filters", action = M3e.Action.opensBottomSheetWith { for = "filters-sheet", detent = Just 1, secondary = Nothing } } [ M3e.Record.Button.variant M3e.Value.outlined ] []
-    , M3e.BottomSheet.view [ M3e.BottomSheet.handle True ] ([ M3e.BottomSheet.header (Kit.text "Filters") ] ++ M3e.BottomSheet.children [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.checked True ] [], Kit.text "In stock only" ], Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "On sale" ], M3e.Record.Button.view { content = Kit.text "Apply", action = M3e.Action.bottomSheetAction } [ M3e.Record.Button.variant M3e.Value.filled ] [] ])
-    ]
-```
-
 @docs view, detent, handle, handleLabel, hideable, hideFriction
 @docs modal, open, overshootLimit, onOpening, onClosing, onCancel
 @docs onOpened, onClosed, child, header, children

@@ -33,7 +33,7 @@ M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.header (M3e.Hea
 
 <!-- elm-cem:example title="Actionable filled card linking to a detail page" -->
 ```elm
-Kit.link "/entities/1" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "family_history" ] [], Kit.text "Relative", M3e.Icon.view [ M3e.Icon.name "chevron_right" ] [] ]) ] ]
+Kit.link "/entities/1" [ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ M3e.Icon.view [ M3e.Icon.name "family_history" ] [], Native.span [] [ Kit.text "Relative" ], M3e.Icon.view [ M3e.Icon.name "chevron_right" ] [] ]) ] ]
 ```
 
 @docs view, actionable, inline, orientation, variant, href

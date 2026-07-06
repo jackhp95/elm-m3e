@@ -1,22 +1,21 @@
 module M3e.Build.SearchView exposing
-    ( Builder, AttrCaps, SlotCaps, searchView, contained, mode
-    , open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear, onBeforetoggle
-    , onToggle, build
+    ( Builder, AttrCaps, SlotCaps, searchView, attr, contained
+    , mode, open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear
+    , onBeforetoggle, onToggle, searchIcon, closeIcon, clearIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-search-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SearchView as SearchView`.
 
-@docs Builder, AttrCaps, SlotCaps, searchView, contained, mode
-@docs open, clearLabel, closeLabel, hideSearchIcon, onQuery, onClear
-@docs onBeforetoggle, onToggle, build
+@docs Builder, AttrCaps, SlotCaps, searchView, attr, contained
+@docs mode, open, clearLabel, closeLabel, hideSearchIcon, onQuery
+@docs onClear, onBeforetoggle, onToggle, searchIcon, closeIcon, clearIcon
+@docs build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.SearchView
 import M3e.Cem.SearchView
 import M3e.Element
 import M3e.Element.Internal
@@ -68,6 +67,19 @@ searchView req_ =
              )
              []
              [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input) ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -156,53 +168,40 @@ hideSearchIcon v_ b_ =
 
 {-| Dispatched when the view is opened or when the user modifies the search term. -}
 onQuery :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onQuery : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onQuery : M3e.Build.Internal.Used } s msg kind
 onQuery v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SearchView.onQuery
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.onQuery v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the search term is cleared. -}
 onClear :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClear : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClear : M3e.Build.Internal.Used } s msg kind
 onClear v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SearchView.onClear
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.onClear v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched before the toggle state changes. -}
 onBeforetoggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforetoggle : M3e.Build.Internal.Used } s msg kind
 onBeforetoggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SearchView.onBeforetoggle
-                       v_
-                  )
+                  (M3e.Cem.SearchView.onBeforetoggle v_)
              )
              (M3e.Build.Internal.node_ b_)
         )
@@ -210,18 +209,52 @@ onBeforetoggle v_ b_ =
 
 {-| Dispatched after the toggle state has changed. -}
 onToggle :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.SearchView.onToggle
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.SearchView.onToggle v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `search-icon` slot. -}
+searchIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | searchIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | searchIcon : M3e.Build.Internal.Used } msg kind
+searchIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "search-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `close-icon` slot. -}
+closeIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
+closeIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "close-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `clear-icon` slot. -}
+clearIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | clearIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg kind
+clearIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "clear-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

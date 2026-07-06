@@ -1,20 +1,18 @@
 module M3e.Build.NavRail exposing
-    ( Builder, AttrCaps, SlotCaps, navRail, mode, onBeforeinput
-    , onInput, onChange, build
+    ( Builder, AttrCaps, SlotCaps, navRail, attr, mode
+    , onBeforeinput, onInput, onChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-rail>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavRail as NavRail`.
 
-@docs Builder, AttrCaps, SlotCaps, navRail, mode, onBeforeinput
-@docs onInput, onChange, build
+@docs Builder, AttrCaps, SlotCaps, navRail, attr, mode
+@docs onBeforeinput, onInput, onChange, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.NavRail
 import M3e.Cem.NavRail
 import M3e.Element
 import M3e.Element.Internal
@@ -58,6 +56,19 @@ navRail =
         )
 
 
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
 {-| The mode in which items in the rail are presented. (default: `"compact"`) -}
 mode :
     M3e.Value.Value { auto : M3e.Value.Supported
@@ -76,54 +87,39 @@ mode v_ b_ =
 
 {-| Dispatched before the selected state of an item changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavRail.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavRail.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state of an item changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavRail.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavRail.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state of an item changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavRail.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavRail.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 

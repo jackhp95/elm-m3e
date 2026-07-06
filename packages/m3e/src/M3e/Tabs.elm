@@ -20,17 +20,6 @@ Organizes content into separate views where only one view can be visible at a ti
 - `next-icon`: Renders the icon to present for the next button used to paginate.
 - `prev-icon`: Renders the icon to present for the previous button used to paginate.
 
-<!-- elm-cem:docmeta category=Navigation -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Tabs with icons and panels" -->
-```elm
-M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab-photos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo_library" ] []), M3e.Tab.child (Kit.text "Photos") ], M3e.Tab.view [ M3e.Tab.for "tab-facts" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "psychology" ] []), M3e.Tab.child (Kit.text "Facts") ] ] ++ [ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Native.p [] [ Kit.text "Photo grid goes here." ]) ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Native.p [] [ Kit.text "Facts go here." ]) ]) ])
-```
-
 @docs view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
 @docs variant, onChange, onBeforeinput, onInput, child, panel
 @docs nextIcon, prevIcon, children

@@ -1,11 +1,13 @@
 module M3e.Build.Accordion exposing
-    ( Builder, AttrCaps, SlotCaps, accordion, multi, build
+    ( Builder, AttrCaps, SlotCaps, accordion, attr, multi
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-accordion>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Accordion as Accordion`.
 
-@docs Builder, AttrCaps, SlotCaps, accordion, multi, build
+@docs Builder, AttrCaps, SlotCaps, accordion, attr, multi
+@docs build
 -}
 
 
@@ -47,6 +49,19 @@ accordion =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 

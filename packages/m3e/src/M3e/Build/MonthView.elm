@@ -1,22 +1,20 @@
 module M3e.Build.MonthView exposing
-    ( Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
-    , active, today, date, activeDate, minDate, maxDate, onChange
-    , onActiveChange, build
+    ( Builder, AttrCaps, SlotCaps, monthView, attr, rangeStart
+    , rangeEnd, active, today, date, activeDate, minDate, maxDate
+    , onChange, onActiveChange, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-month-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MonthView as MonthView`.
 
-@docs Builder, AttrCaps, SlotCaps, monthView, rangeStart, rangeEnd
-@docs active, today, date, activeDate, minDate, maxDate
-@docs onChange, onActiveChange, build
+@docs Builder, AttrCaps, SlotCaps, monthView, attr, rangeStart
+@docs rangeEnd, active, today, date, activeDate, minDate
+@docs maxDate, onChange, onActiveChange, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.MonthView
 import M3e.Cem.MonthView
 import M3e.Element
 import M3e.Element.Internal
@@ -63,6 +61,19 @@ monthView =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -172,35 +183,26 @@ maxDate v_ b_ =
 
 {-| Listen for `change` events. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.MonthView.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MonthView.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Listen for `active-change` events. -}
 onActiveChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onActiveChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onActiveChange : M3e.Build.Internal.Used } s msg kind
 onActiveChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.MonthView.onActiveChange
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MonthView.onActiveChange v_)
              )
              (M3e.Build.Internal.node_ b_)
         )

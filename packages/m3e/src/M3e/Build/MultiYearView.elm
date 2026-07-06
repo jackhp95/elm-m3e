@@ -1,21 +1,20 @@
 module M3e.Build.MultiYearView exposing
-    ( Builder, AttrCaps, SlotCaps, multiYearView, active, today
-    , date, activeDate, minDate, maxDate, onChange, onActiveChange, build
+    ( Builder, AttrCaps, SlotCaps, multiYearView, attr, active
+    , today, date, activeDate, minDate, maxDate, onChange, onActiveChange
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-multi-year-view>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MultiYearView as MultiYearView`.
 
-@docs Builder, AttrCaps, SlotCaps, multiYearView, active, today
-@docs date, activeDate, minDate, maxDate, onChange, onActiveChange
-@docs build
+@docs Builder, AttrCaps, SlotCaps, multiYearView, attr, active
+@docs today, date, activeDate, minDate, maxDate, onChange
+@docs onActiveChange, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.MultiYearView
 import M3e.Cem.MultiYearView
 import M3e.Element
 import M3e.Element.Internal
@@ -60,6 +59,19 @@ multiYearView =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -144,35 +156,27 @@ maxDate v_ b_ =
 
 {-| Listen for `change` events. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.MultiYearView.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MultiYearView.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Listen for `active-change` events. -}
 onActiveChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onActiveChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onActiveChange : M3e.Build.Internal.Used } s msg kind
 onActiveChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.MultiYearView.onActiveChange
-                       v_
-                  )
+                  (M3e.Cem.MultiYearView.onActiveChange v_)
              )
              (M3e.Build.Internal.node_ b_)
         )

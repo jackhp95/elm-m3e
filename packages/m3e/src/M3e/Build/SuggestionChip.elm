@@ -1,13 +1,14 @@
 module M3e.Build.SuggestionChip exposing
-    ( Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
-    , name, type_, value, variant, build
+    ( Builder, AttrCaps, SlotCaps, suggestionChip, attr, disabled
+    , disabledInteractive, name, type_, value, variant, icon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-suggestion-chip>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SuggestionChip as SuggestionChip`.
 
-@docs Builder, AttrCaps, SlotCaps, suggestionChip, disabled, disabledInteractive
-@docs name, type_, value, variant, build
+@docs Builder, AttrCaps, SlotCaps, suggestionChip, attr, disabled
+@docs disabledInteractive, name, type_, value, variant, icon
+@docs build
 -}
 
 
@@ -81,6 +82,19 @@ suggestionChip req_ =
                  req_.action
                  (M3e.Element.toNode req_.content)
              ]
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -167,6 +181,19 @@ variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.SuggestionChip.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

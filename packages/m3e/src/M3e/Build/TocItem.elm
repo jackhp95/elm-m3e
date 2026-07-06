@@ -1,20 +1,18 @@
 module M3e.Build.TocItem exposing
-    ( Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
-    , onClick, build
+    ( Builder, AttrCaps, SlotCaps, tocItem, attr, disabled
+    , selected, onClick, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-toc-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.TocItem as TocItem`.
 
-@docs Builder, AttrCaps, SlotCaps, tocItem, disabled, selected
-@docs onClick, build
+@docs Builder, AttrCaps, SlotCaps, tocItem, attr, disabled
+@docs selected, onClick, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.TocItem
 import M3e.Cem.TocItem
 import M3e.Element
 import M3e.Element.Internal
@@ -59,6 +57,19 @@ tocItem req_ =
         )
 
 
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled :
     Bool
@@ -87,18 +98,13 @@ selected v_ b_ =
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.TocItem.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.TocItem.onClick v_))
              (M3e.Build.Internal.node_ b_)
         )
 

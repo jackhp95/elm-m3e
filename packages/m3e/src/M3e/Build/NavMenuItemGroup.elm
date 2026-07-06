@@ -1,11 +1,13 @@
 module M3e.Build.NavMenuItemGroup exposing
-    ( Builder, AttrCaps, SlotCaps, navMenuItemGroup, build
+    ( Builder, AttrCaps, SlotCaps, navMenuItemGroup, attr, label
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-menu-item-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavMenuItemGroup as NavMenuItemGroup`.
 
-@docs Builder, AttrCaps, SlotCaps, navMenuItemGroup, build
+@docs Builder, AttrCaps, SlotCaps, navMenuItemGroup, attr, label
+@docs build
 -}
 
 
@@ -47,6 +49,34 @@ navMenuItemGroup =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `label` slot. -}
+label :
+    M3e.Element.Element { text : M3e.Value.Supported
+    , heading : M3e.Value.Supported
+    } msg
+    -> Builder a { s | label : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | label : M3e.Build.Internal.Used } msg kind
+label el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "label" el_))
+             (M3e.Build.Internal.node_ b_)
         )
 
 

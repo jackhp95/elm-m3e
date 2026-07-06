@@ -14,7 +14,7 @@ A list of items.
 
 <!-- elm-cem:example title="Contact list with leading icons and trailing chevrons" -->
 ```elm
-M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Kit.text "Engineering"), M3e.ListItem.supportingText (Kit.text "ada@example.com"), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.ListItem.child (Kit.text "Ada Lovelace") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Kit.text "Design"), M3e.ListItem.supportingText (Kit.text "grace@example.com"), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.ListItem.child (Kit.text "Grace Hopper") ] ])
+M3e.List.view [ M3e.List.variant M3e.Value.standard ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text "Engineering" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "ada@example.com" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.ListItem.child (Kit.text "Ada Lovelace") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text "Design" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "grace@example.com" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.ListItem.child (Kit.text "Grace Hopper") ] ])
 ```
 
 <!-- elm-cem:example title="Action list of navigable links" -->

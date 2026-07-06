@@ -242,8 +242,19 @@ parseStandard scope fact range ( attrItems, attrDyn ) ( contentItems, contentDyn
         actionAttrNames =
             List.map Tuple.first fact.actionMap
 
+        -- Only components whose ④/⑤ record carries an `action` field
+        -- (`fact.usesAction`) lift action-attrs (onClick/href) out of the attrs
+        -- list into `requiredAction`. For components WITHOUT an action record
+        -- (e.g. AssistChip, whose Record shape is `{ content }` and whose onClick
+        -- is a plain attr), the action-attrs stay in the attrs list so the
+        -- Record/Build emitter re-emits them as ordinary `M3e.Record.<C>.onClick`
+        -- setters rather than a spurious `action =` field the record rejects.
         ( actionAttrs, plainAttrs ) =
-            List.partition (isActionAttr actionAttrNames) attrItems
+            if fact.usesAction then
+                List.partition (isActionAttr actionAttrNames) attrItems
+
+            else
+                ( [], attrItems )
 
         requiredAction_ =
             actionAttrs
@@ -391,7 +402,7 @@ classifyStandardAttr fact item =
     case Node.value item of
         Expression.Application (head :: valueNode :: _) ->
             case Node.value head of
-                Expression.FunctionOrValue _ name ->
+                Expression.FunctionOrValue moduleParts name ->
                     -- Check if this attr name is in fact.attrRewrites
                     let
                         knownAttr =
@@ -404,13 +415,39 @@ classifyStandardAttr fact item =
                             classifyKnownAttrValue fact canonicalName valueNode (Node.range item)
 
                         Nothing ->
-                            EscapedAttr { raw = item }
+                            if isUniversalAttrModule moduleParts then
+                                UniversalAttr { raw = item }
+
+                            else
+                                EscapedAttr { raw = item }
 
                 _ ->
                     EscapedAttr { raw = item }
 
         _ ->
             EscapedAttr { raw = item }
+
+
+{-| Universal (`capability`-polymorphic) `Attr` setter modules — a setter drawn
+from one of these is ALREADY an IR `Attr caps msg` that unifies onto any
+component/surface (it is not a per-component setter and not a raw Html
+attribute). Recognised so the emitter passes it through verbatim (④ Record /
+③ Standard / ② Cem) or via the generic `attr` injection (⑤ Build) rather than
+`Seam.asAttribute`-wrapping it as an `EscapedAttr` (which type-errors, since
+`Seam.asAttribute` expects a raw `Html.Attribute`, not an `Attr`).
+
+The allow-list is matched against the syntactic module prefix of the setter
+call; the generated example corpus always writes these fully qualified
+(`M3e.Aria.label`). Extend the list as further universal-`Attr` modules land.
+-}
+universalAttrModules : List (List String)
+universalAttrModules =
+    [ [ "M3e", "Aria" ] ]
+
+
+isUniversalAttrModule : List String -> Bool
+isUniversalAttrModule moduleParts =
+    List.member moduleParts universalAttrModules
 
 
 {-| Classify a recognised attr's value. If the attr is an enum attr (per

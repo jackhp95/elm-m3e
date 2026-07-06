@@ -1,13 +1,15 @@
 module M3e.Build.FormField exposing
-    ( Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
-    , hideSubscript, variant, build
+    ( Builder, AttrCaps, SlotCaps, formField, attr, floatLabel
+    , hideRequiredMarker, hideSubscript, variant, prefix, prefixText, suffix, suffixText
+    , hint, error, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-form-field>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FormField as FormField`.
 
-@docs Builder, AttrCaps, SlotCaps, formField, floatLabel, hideRequiredMarker
-@docs hideSubscript, variant, build
+@docs Builder, AttrCaps, SlotCaps, formField, attr, floatLabel
+@docs hideRequiredMarker, hideSubscript, variant, prefix, prefixText, suffix
+@docs suffixText, hint, error, build
 -}
 
 
@@ -60,6 +62,19 @@ formField =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -120,6 +135,84 @@ variant v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.FormField.variant v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `prefix` slot. -}
+prefix :
+    M3e.Element.Element any msg
+    -> Builder a { s | prefix : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | prefix : M3e.Build.Internal.Used } msg kind
+prefix el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "prefix" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `prefix-text` slot. -}
+prefixText :
+    M3e.Element.Element any msg
+    -> Builder a { s | prefixText : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | prefixText : M3e.Build.Internal.Used } msg kind
+prefixText el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "prefix-text" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `suffix` slot. -}
+suffix :
+    M3e.Element.Element any msg
+    -> Builder a { s | suffix : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | suffix : M3e.Build.Internal.Used } msg kind
+suffix el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "suffix" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `suffix-text` slot. -}
+suffixText :
+    M3e.Element.Element any msg
+    -> Builder a { s | suffixText : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | suffixText : M3e.Build.Internal.Used } msg kind
+suffixText el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "suffix-text" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `hint` slot. -}
+hint :
+    M3e.Element.Element any msg
+    -> Builder a { s | hint : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | hint : M3e.Build.Internal.Used } msg kind
+hint el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "hint" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `error` slot. -}
+error :
+    M3e.Element.Element any msg
+    -> Builder a { s | error : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | error : M3e.Build.Internal.Used } msg kind
+error el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "error" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

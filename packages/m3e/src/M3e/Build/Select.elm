@@ -1,22 +1,20 @@
 module M3e.Build.Select exposing
-    ( Builder, AttrCaps, SlotCaps, select, disabled, hideSelectionIndicator
-    , multi, name, panelClass, required, onChange, onToggle, onBeforeinput
-    , onInput, build
+    ( Builder, AttrCaps, SlotCaps, select, attr, disabled
+    , hideSelectionIndicator, multi, name, panelClass, required, onChange, onToggle
+    , onBeforeinput, onInput, arrow, value, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-select>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Select as Select`.
 
-@docs Builder, AttrCaps, SlotCaps, select, disabled, hideSelectionIndicator
-@docs multi, name, panelClass, required, onChange, onToggle
-@docs onBeforeinput, onInput, build
+@docs Builder, AttrCaps, SlotCaps, select, attr, disabled
+@docs hideSelectionIndicator, multi, name, panelClass, required, onChange
+@docs onToggle, onBeforeinput, onInput, arrow, value, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.Select
 import M3e.Cem.Select
 import M3e.Element
 import M3e.Element.Internal
@@ -66,6 +64,19 @@ select =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -155,72 +166,78 @@ required v_ b_ =
 
 {-| Dispatched when the selected state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Select.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Select.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Listen for `toggle` events. -}
 onToggle :
-    Json.Decode.Decoder msg
+    (String -> msg)
     -> Builder { a | onToggle : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onToggle : M3e.Build.Internal.Used } s msg kind
 onToggle v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Select.onToggle
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Select.onToggle v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched before the selected state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Select.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Select.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.Select.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.Select.onInput v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `arrow` slot. -}
+arrow :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | arrow : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | arrow : M3e.Build.Internal.Used } msg kind
+arrow el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "arrow" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `value` slot. -}
+value :
+    M3e.Element.Element any msg
+    -> Builder a { s | value : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | value : M3e.Build.Internal.Used } msg kind
+value el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "value" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

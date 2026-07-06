@@ -204,6 +204,7 @@ candidateModules fact =
     , "M3e.Cem.Html." ++ comp
     , "Seam"
     , "M3e.Action"
+    , "M3e.Aria"
     , "M3e.Element"
     , "Html.Attributes"
     , "Html.Events"
@@ -247,7 +248,7 @@ emitFor target fact source c =
             Translate.Emit.emitHtml fact source c
 
         Record ->
-            if canEmitRecord c then
+            if canEmitRecord fact c then
                 Translate.Emit.emitRecord fact source c
 
             else
@@ -256,21 +257,24 @@ emitFor target fact source c =
                 Translate.Residue.wholeSeamEscape fact source c
 
         Build ->
-            if canEmitBuild c then
+            if canEmitBuild fact c then
                 Translate.Emit.emitBuild fact source c
 
             else
                 Translate.Residue.wholeSeamEscape fact source c
 
 
-{-| Record shape requires content + action to be present in the canonical form.
-Standard-source calls don't lift these out (they stay in the content list /
-attrs list); those cases can't upgrade to Record cleanly and fall back to
-whole-node Seam escape.
+{-| Record shape requires the required content to be present in the canonical
+form. The `action` field, for components whose record carries one
+(`fact.usesAction`), is always satisfiable: a lifted action is emitted directly,
+and its ABSENCE (an aria-only / icon-only call) is filled with the no-op
+`M3e.Action.none` by `emitRecordArg`. Components without an action record (e.g.
+AssistChip) satisfy the record from `content` alone. Only a missing required
+content forces the whole-node Seam escape.
 -}
-canEmitRecord : Canonical -> Bool
-canEmitRecord c =
-    c.requiredContent /= Nothing && c.requiredAction /= Nothing
+canEmitRecord : Fact -> Canonical -> Bool
+canEmitRecord _ c =
+    c.requiredContent /= Nothing
 
 
 {-| Build shape has the same required-content/action requirement as Record.
@@ -278,9 +282,9 @@ Additionally, `Build` has no attr-list or content-list seam — any residue in
 attrs/content (EnumTokenLossy, EscapedAttr, DynamicAttrTail, UnknownSlotName,
 EscapedContent, DynamicContentTail) triggers whole-node escape.
 -}
-canEmitBuild : Canonical -> Bool
-canEmitBuild c =
-    canEmitRecord c
+canEmitBuild : Fact -> Canonical -> Bool
+canEmitBuild fact c =
+    canEmitRecord fact c
         && List.all isCleanAttrForBuild c.attrs
         && List.all isCleanSlotForBuild c.content
 
@@ -289,6 +293,11 @@ isCleanAttrForBuild : Translate.Canonical.AttrItem -> Bool
 isCleanAttrForBuild item =
     case item of
         Translate.Canonical.KnownAttr _ ->
+            True
+
+        -- Universal `Attr` setters (`M3e.Aria.*`) inject cleanly through the
+        -- Build module's generic `attr` seam — not residue.
+        Translate.Canonical.UniversalAttr _ ->
             True
 
         _ ->

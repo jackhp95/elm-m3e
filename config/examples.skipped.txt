@@ -1,0 +1,32 @@
+BottomSheet :: Modal share sheet with action list :: compile: The 1st argument to `child` is not what I expect:
+BottomSheet :: Non-modal filter sheet opening to a detent :: compile: The 1st argument to `child` is not what I expect:
+Datepicker :: Booking range picker with constraints :: compile: I cannot find a `M3e.Datepicker.child` variable:
+Datepicker :: Modal single-date picker :: compile: I cannot find a `M3e.Datepicker.child` variable:
+Dialog :: Alert dialog with close icon :: compile: The 1st argument to `child` is not what I expect:
+Dialog :: Confirmation dialog with header and actions :: compile: The 1st argument to `child` is not what I expect:
+DrawerContainer :: App shell with navigation drawer toggle :: compile: The 1st argument to `children` is not what I expect:
+FabMenu :: Primary FAB revealing a secondary action menu :: compile: The 1st argument to `children` is not what I expect:
+FabMenu :: Tertiary FAB menu with link and disabled items :: compile: The 1st argument to `child` is not what I expect:
+Heading :: Emphasized display heading for a hero section :: compile: The 1st argument to `level` is not what I expect:
+Heading :: Page header hierarchy with semantic levels :: compile: The 1st argument to `level` is not what I expect:
+Icon :: Icon variants, fill and weight showcase :: compile: The 1st argument to `weight` is not what I expect:
+Icon :: Light-weight low-grade status icons :: compile: The 1st argument to `weight` is not what I expect:
+Menu :: Basic action menu triggered from a button :: compile: The 1st argument to `child` is not what I expect:
+Menu :: Nested submenu for sharing options :: compile: The 1st argument to `child` is not what I expect:
+Menu :: View menu with checkbox and radio selection groups :: compile: The 1st argument to `children` is not what I expect:
+NavMenu :: Nested navigation menu with icons, badges, and links :: compile: The 1st argument to `view` is not what I expect:
+NavRail :: Collapsible navigation rail with toggle :: compile: The 1st argument to `children` is not what I expect:
+Option :: Empty option panel loading state :: compile: The 1st argument to `children` is not what I expect:
+Paginator :: Compact paginator with hidden page-size selector :: compile: The 1st argument to `pageSize` is not what I expect:
+Paginator :: Paginator with custom navigation icons :: compile: The 1st argument to `pageSize` is not what I expect:
+Paginator :: Table paginator with first/last navigation :: compile: The 1st argument to `pageSize` is not what I expect:
+Search :: Search bar with leading icon and input :: compile: The 1st argument to `view` is not what I expect:
+SplitButton :: Filled split button with primary action and menu toggle :: compile: The 2nd argument to `view` is not what I expect:
+SplitButton :: Tonal split button :: compile: The 2nd argument to `view` is not what I expect:
+Stepper :: Horizontal stepper with completed and optional steps :: compile: I cannot find a `M3e.Stepper.children` variable:
+Stepper :: Linear vertical stepper with navigation controls :: compile: I cannot find a `M3e.Stepper.children` variable:
+Tabs :: Tabs with icons and panels :: compile: The 1st argument to `children` is not what I expect:
+Theme :: Theme with drawer, nav menu, and app bar shell :: compile: The 1st argument to `child` is not what I expect:
+Tooltip :: Rich tooltip with subhead and actions :: compile: The 1st argument to `child` is not what I expect:
+Tree :: Documentation navigation tree :: compile: The 1st argument to `view` is not what I expect:
+Tree :: Multi-select tree with cascading checkboxes :: compile: The 1st argument to `view` is not what I expect:

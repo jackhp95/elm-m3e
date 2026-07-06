@@ -13,34 +13,6 @@ Presents a list of choices on a temporary surface.
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.
 
-<!-- elm-cem:docmeta category=Navigation -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Basic action menu triggered from a button" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "File", action = M3e.Action.opensMenu "file-menu" } [ M3e.Record.Button.variant M3e.Value.outlined ] [ M3e.Record.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "arrow_drop_down" ] []) ]
-    , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "note_add" ] []), M3e.MenuItem.child (Kit.text "New document") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "folder_open" ] []), M3e.MenuItem.child (Kit.text "Open") ], M3e.MenuItem.view [ M3e.MenuItem.disabled True ] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "save" ] []), M3e.MenuItem.child (Kit.text "Save") ] ])
-    ]
-```
-
-<!-- elm-cem:example title="View menu with checkbox and radio selection groups" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "View", action = M3e.Action.opensMenu "view-menu" } [ M3e.Record.Button.variant M3e.Value.text ] []
-    , M3e.Menu.view [ M3e.Menu.variant M3e.Value.vibrant ] (M3e.Menu.children [ M3e.MenuItemCheckbox.view [ M3e.MenuItemCheckbox.checked True ] [ M3e.MenuItemCheckbox.child (Kit.text "Show sidebar") ], M3e.MenuItemCheckbox.view [] [ M3e.MenuItemCheckbox.child (Kit.text "Show status bar") ], M3e.Divider.view [] [], M3e.MenuItemGroup.view [] (M3e.MenuItemGroup.children [ M3e.MenuItemRadio.view [ M3e.MenuItemRadio.checked True ] [ M3e.MenuItemRadio.child (Kit.text "Comfortable") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text "Cozy") ], M3e.MenuItemRadio.view [] [ M3e.MenuItemRadio.child (Kit.text "Compact") ] ]) ])
-    ]
-```
-
-<!-- elm-cem:example title="Nested submenu for sharing options" -->
-```elm
-[ M3e.Record.Button.view { content = Kit.text "Share", action = M3e.Action.opensMenu "share-menu" } [ M3e.Record.Button.variant M3e.Value.filled ] []
-    , M3e.Menu.view [] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "link" ] []), M3e.MenuItem.child (Kit.text "Copy link") ], M3e.MenuItem.view [] [ M3e.MenuItem.icon (M3e.Icon.view [ M3e.Icon.name "group" ] []), M3e.MenuItem.trailingIcon (M3e.Icon.view [ M3e.Icon.name "chevron_right" ] []), M3e.MenuItem.child (M3e.MenuTrigger.view [ M3e.MenuTrigger.for "people-menu" ] [ M3e.MenuTrigger.child (Kit.text "Share with people") ]) ] ])
-    , M3e.Menu.view [ M3e.Menu.submenu True, M3e.Menu.positionX M3e.Value.after ] (M3e.Menu.children [ M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text "Alex Chen") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text "Jordan Lee") ], M3e.MenuItem.view [] [ M3e.MenuItem.child (Kit.text "Sam Rivera") ] ])
-    ]
-```
-
 @docs view, positionX, positionY, variant, submenu, onBeforetoggle
 @docs onToggle, child, children
 -}

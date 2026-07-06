@@ -1,11 +1,13 @@
 module M3e.Build.StepPanel exposing
-    ( Builder, AttrCaps, SlotCaps, stepPanel, build
+    ( Builder, AttrCaps, SlotCaps, stepPanel, attr, child
+    , actions, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-step-panel>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.StepPanel as StepPanel`.
 
-@docs Builder, AttrCaps, SlotCaps, stepPanel, build
+@docs Builder, AttrCaps, SlotCaps, stepPanel, attr, child
+@docs actions, build
 -}
 
 
@@ -49,6 +51,45 @@ stepPanel =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `actions` slot. -}
+actions :
+    M3e.Element.Element any msg
+    -> Builder a { s | actions : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | actions : M3e.Build.Internal.Used } msg kind
+actions el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "actions" el_))
+             (M3e.Build.Internal.node_ b_)
         )
 
 

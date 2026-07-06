@@ -1,22 +1,22 @@
 module M3e.Build.NavItem exposing
-    ( Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
-    , download, href, orientation, rel, selected, target, onBeforeinput
-    , onInput, onChange, onClick, build
+    ( Builder, AttrCaps, SlotCaps, navItem, attr, disabled
+    , disabledInteractive, download, href, orientation, rel, selected, target
+    , onBeforeinput, onInput, onChange, onClick, child, icon, selectedIcon
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-nav-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.NavItem as NavItem`.
 
-@docs Builder, AttrCaps, SlotCaps, navItem, disabled, disabledInteractive
-@docs download, href, orientation, rel, selected, target
-@docs onBeforeinput, onInput, onChange, onClick, build
+@docs Builder, AttrCaps, SlotCaps, navItem, attr, disabled
+@docs disabledInteractive, download, href, orientation, rel, selected
+@docs target, onBeforeinput, onInput, onChange, onClick, child
+@docs icon, selectedIcon, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.NavItem
 import M3e.Cem.NavItem
 import M3e.Element
 import M3e.Element.Internal
@@ -68,6 +68,19 @@ navItem =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -183,72 +196,91 @@ target v_ b_ =
 
 {-| Dispatched before the selected state changes. -}
 onBeforeinput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onBeforeinput : M3e.Build.Internal.Used } s msg kind
 onBeforeinput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavItem.onBeforeinput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.onBeforeinput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state changes. -}
 onInput :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onInput : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onInput : M3e.Build.Internal.Used } s msg kind
 onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavItem.onInput
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.onInput v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the selected state changes. -}
 onChange :
-    Json.Decode.Decoder msg
+    (Bool -> msg)
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavItem.onChange
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.onChange v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
 {-| Dispatched when the element is clicked. -}
 onClick :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onClick : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onClick : M3e.Build.Internal.Used } s msg kind
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.NavItem.onClick
-                       v_
-                  )
-             )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.NavItem.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `selected-icon` slot. -}
+selectedIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | selectedIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | selectedIcon : M3e.Build.Internal.Used } msg kind
+selectedIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "selected-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

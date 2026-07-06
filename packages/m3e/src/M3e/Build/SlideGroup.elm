@@ -1,13 +1,14 @@
 module M3e.Build.SlideGroup exposing
-    ( Builder, AttrCaps, SlotCaps, slideGroup, disabled, nextPageLabel
-    , previousPageLabel, threshold, vertical, build
+    ( Builder, AttrCaps, SlotCaps, slideGroup, attr, disabled
+    , nextPageLabel, previousPageLabel, threshold, vertical, nextIcon, prevIcon, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-slide-group>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.SlideGroup as SlideGroup`.
 
-@docs Builder, AttrCaps, SlotCaps, slideGroup, disabled, nextPageLabel
-@docs previousPageLabel, threshold, vertical, build
+@docs Builder, AttrCaps, SlotCaps, slideGroup, attr, disabled
+@docs nextPageLabel, previousPageLabel, threshold, vertical, nextIcon, prevIcon
+@docs build
 -}
 
 
@@ -56,6 +57,19 @@ slideGroup =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -125,6 +139,32 @@ vertical v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.SlideGroup.vertical v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `next-icon` slot. -}
+nextIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | nextIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | nextIcon : M3e.Build.Internal.Used } msg kind
+nextIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "next-icon" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `prev-icon` slot. -}
+prevIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | prevIcon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | prevIcon : M3e.Build.Internal.Used } msg kind
+prevIcon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "prev-icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

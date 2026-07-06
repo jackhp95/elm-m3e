@@ -1,21 +1,21 @@
 module M3e.Build.DrawerContainer exposing
-    ( Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
-    , endDivider, start, startMode, startDivider, onChange, build
+    ( Builder, AttrCaps, SlotCaps, drawerContainer, attr, end
+    , endMode, endDivider, start, startMode, startDivider, onChange, child
+    , startSlot, endSlot, build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-drawer-container>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.DrawerContainer as DrawerContainer`.
 
-@docs Builder, AttrCaps, SlotCaps, drawerContainer, end, endMode
-@docs endDivider, start, startMode, startDivider, onChange, build
+@docs Builder, AttrCaps, SlotCaps, drawerContainer, attr, end
+@docs endMode, endDivider, start, startMode, startDivider, onChange
+@docs child, startSlot, endSlot, build
 -}
 
 
-import Json.Decode
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
 import M3e.Cem.DrawerContainer
-import M3e.Cem.Html.DrawerContainer
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -61,6 +61,19 @@ drawerContainer =
              )
              []
              []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times. -}
+attr :
+    M3e.Cem.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+             (M3e.Cem.Attr.Internal.forget a_)
+             (M3e.Build.Internal.node_ b_)
         )
 
 
@@ -158,18 +171,53 @@ startDivider v_ b_ =
 
 {-| Dispatched when the state of the start or end drawers change. -}
 onChange :
-    Json.Decode.Decoder msg
+    msg
     -> Builder { a | onChange : M3e.Build.Internal.Available } s msg kind
     -> Builder { a | onChange : M3e.Build.Internal.Used } s msg kind
 onChange v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget
-                  (M3e.Cem.Attr.Internal.attribute
-                       M3e.Cem.Html.DrawerContainer.onChange
-                       v_
-                  )
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.DrawerContainer.onChange v_)
              )
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `start` slot. -}
+startSlot :
+    M3e.Element.Element any msg
+    -> Builder a { s | start : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | start : M3e.Build.Internal.Used } msg kind
+startSlot el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "start" el_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `end` slot. -}
+endSlot :
+    M3e.Element.Element any msg
+    -> Builder a { s | end : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | end : M3e.Build.Internal.Used } msg kind
+endSlot el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "end" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

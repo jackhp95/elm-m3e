@@ -30,18 +30,31 @@ A button users interact with to perform an action.
 
 <!-- elm-cem:example title="Five button variants in an action row" -->
 ```elm
-[ M3e.Record.Button.view { action = M3e.Action.button onClick, content = Kit.text "New" } [ M3e.Button.variant M3e.Value.filled, M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []) ] []
-    , M3e.Record.Button.view { action = M3e.Action.button onClick, content = Kit.text "Tonal" } [ M3e.Button.variant M3e.Value.tonal ] []
-    , M3e.Record.Button.view { action = M3e.Action.button onClick, content = Kit.text "Elevated" } [ M3e.Button.variant M3e.Value.elevated ] []
-    , M3e.Record.Button.view { action = M3e.Action.button onClick, content = Kit.text "Outlined" } [ M3e.Button.variant M3e.Value.outlined ] []
-    , M3e.Record.Button.view { action = M3e.Action.button onClick, content = Kit.text "Text" } [ M3e.Button.variant M3e.Value.text ] []
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), M3e.Button.child (Kit.text "New") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Tonal") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Outlined") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Text") ]
     ]
 ```
 
 <!-- elm-cem:example title="Toggle button and link button with icons" -->
 ```elm
-[ M3e.Record.Button.view { action = M3e.Action.link { href = "/download" }, content = Kit.text "Download" } [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.large, M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []) ] []
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "favorite_border" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "favorite", M3e.Icon.filled True ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text "Saved" ]), M3e.Button.child (Kit.text "Save") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href "/download", M3e.Button.download "", M3e.Button.size M3e.Value.large ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.Button.child (Kit.text "Download") ]
     ]
+```
+
+### Examples
+
+<!-- elm-cem:example title="Single button with a link action" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.href "/get-started" ] [ M3e.Button.child (Kit.text "Get started") ]
+```
+
+<!-- elm-cem:example title="Link button with a leading icon" -->
+```elm
+M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "/download" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "download" ] []), M3e.Button.child (Kit.text "Download") ]
 ```
 
 @docs view, disabled, disabledInteractive, name, selected, shape
