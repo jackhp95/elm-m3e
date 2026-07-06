@@ -12,30 +12,51 @@ import BackendTask exposing (BackendTask)
 import BackendTask.File
 import Dict exposing (Dict)
 import Doc
+import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Json.Decode as Decode
 import Kit
 import Layout
+import M3e.ButtonSegment as ButtonSegment
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.List as List_
 import M3e.ListItem as ListItem
 import M3e.Record.Heading as Heading
+import M3e.SegmentedButton as SegmentedButton
 import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
-import RouteBuilder exposing (App, StatelessRoute)
+import RouteBuilder exposing (App, StatefulRoute)
 import Shared
+import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
+{-| Which API layer each Usage example is shown in: the strict top (`M3e.*`), the
+loose middle (`M3e.Cem.*`), the bottom (`M3e.Cem.Html.*`), or the raw `<m3e-*>`
+HTML. Every shipped example carries all four (verified supersets of each other),
+so the per-example tab strip is never partial.
+-}
+type Layer
+    = Top
+    | Middle
+    | Bottom
+    | Raw
+
+
+{-| Per-example layer selection, keyed by each example's global index on the page
+(assigned before section grouping). A missing key means the example is still on
+its default top layer — so the model starts empty and only records deviations,
+and each example's tabs move independently of every other's.
+-}
 type alias Model =
-    {}
+    { layers : Dict Int Layer }
 
 
-type alias Msg =
-    ()
+type Msg
+    = SelectLayer Int Layer
 
 
 type alias RouteParams =
@@ -117,10 +138,32 @@ allUsage =
         |> BackendTask.allowFatal
 
 
-route : StatelessRoute RouteParams Data ActionData
+route : StatefulRoute RouteParams Data ActionData Model Msg
 route =
     RouteBuilder.preRender { head = head, pages = pages, data = data }
-        |> RouteBuilder.buildNoState { view = view }
+        |> RouteBuilder.buildWithLocalState
+            { view = view
+            , init = init
+            , update = update
+            , subscriptions = subscriptions
+            }
+
+
+init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
+init _ _ =
+    ( { layers = Dict.empty }, Effect.none )
+
+
+update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
+update _ _ msg model =
+    case msg of
+        SelectLayer index layer ->
+            ( { model | layers = Dict.insert index layer model.layers }, Effect.none )
+
+
+subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions _ _ _ _ =
+    Sub.none
 
 
 pages : BackendTask FatalError (List RouteParams)
@@ -154,8 +197,8 @@ head _ =
     []
 
 
-view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
-view app sharedModel =
+view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
+view app _ model =
     let
         component : Component
         component =
@@ -164,21 +207,23 @@ view app sharedModel =
     { title = component.name ++ " · elm-m3e"
     , body =
         [ Element.toNode
-            (pane
-                [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
-                  -- section — intro, Usage, API — so their spacing is uniform.
-                  Layout.div "space-y-10"
-                    (Layout.div "space-y-4"
-                        [ Heading.view { content = Kit.text component.name }
-                            [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-                            []
-                        , Layout.div "max-w-2xl text-on-surface-variant"
-                            [ Doc.markdown component.overview ]
-                        ]
-                        :: usageBlocks sharedModel.apiLayer app.data.usage
-                        ++ [ apiSection component.members ]
-                    )
-                ]
+            (Element.map PagesMsg.fromMsg
+                (pane
+                    [ -- One vertical rhythm (`space-y-10`) governs every top-level doc
+                      -- section — intro, Usage, API — so their spacing is uniform.
+                      Layout.div "space-y-10"
+                        (Layout.div "space-y-4"
+                            [ Heading.view { content = Kit.text component.name }
+                                [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
+                                []
+                            , Layout.div "max-w-2xl text-on-surface-variant"
+                                [ Doc.markdown component.overview ]
+                            ]
+                            :: usageBlocks model app.data.usage
+                            ++ [ apiSection component.members ]
+                        )
+                    ]
+                )
             )
         ]
     }
@@ -201,8 +246,8 @@ apiSection members =
 heading over its per-section sub-headings and examples. Empty ⇒ nothing (so it
 drops cleanly out of the top-level `space-y-10` rhythm).
 -}
-usageBlocks : Shared.ApiLayer -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
-usageBlocks layer examples =
+usageBlocks : Model -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg)
+usageBlocks model examples =
     case examples of
         [] ->
             []
@@ -212,18 +257,20 @@ usageBlocks layer examples =
                 (Heading.view { content = Kit.text "Usage" }
                     [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
                     []
-                    :: List.concatMap (sectionBlock layer) (groupBySection examples)
+                    :: List.concatMap (sectionBlock model)
+                        (groupBySection (List.indexedMap Tuple.pair examples))
                 )
             ]
 
 
 {-| One section: an optional sub-heading (skipped for the ungrouped "" section)
-followed by each example's live preview paired with its code.
+followed by each example's live preview paired with its per-example code tabs.
+Examples carry their page-global index so each tab strip stays independent.
 -}
-sectionBlock : Shared.ApiLayer -> ( String, List UsageExample ) -> List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
-sectionBlock layer ( section, examples ) =
+sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg)
+sectionBlock model ( section, examples ) =
     let
-        heading : List (Element { s | html : Supported, heading : Supported, card : Supported } msg)
+        heading : List (Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg)
         heading =
             if section == "" then
                 []
@@ -234,49 +281,81 @@ sectionBlock layer ( section, examples ) =
                     []
                 ]
     in
-    heading ++ List.map (exampleBlock layer) examples
+    heading ++ List.map (exampleBlock model) examples
 
 
-{-| A live preview paired with its code in the selected API layer: strict top
-(`M3e.*`), loose middle (`M3e.Cem.*`), bottom (`M3e.Cem.Html.*`), or raw HTML.
-Every example carries all four, so the toggle is never partial. Grouped as one
-`space-y-3` block so title/preview/code stay tight while sections stay apart.
+{-| A live preview paired with a per-example tab strip that switches its code
+between the API layers: strict top (`M3e.*`), loose middle (`M3e.Cem.*`), bottom
+(`M3e.Cem.Html.*`), or raw HTML. Every example carries all four, so the tabs are
+never partial; the selection lives in `model.layers` keyed by this example's
+index, defaulting to `Top`. Grouped as one `space-y-3` block so title/preview/
+tabs/code stay tight while sections stay apart.
 -}
-exampleBlock : Shared.ApiLayer -> UsageExample -> Element { s | html : Supported, heading : Supported, card : Supported } msg
-exampleBlock layer ex =
+exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg
+exampleBlock model ( index, ex ) =
     let
-        code : Element { s | html : Supported, heading : Supported, card : Supported } msg
-        code =
-            case layer of
-                Shared.LayerTop ->
-                    Doc.code_ Doc.Elm ex.top
-
-                Shared.LayerMiddle ->
-                    Doc.code_ Doc.Elm ex.mid
-
-                Shared.LayerBottom ->
-                    Doc.code_ Doc.Elm ex.bottom
-
-                Shared.LayerRaw ->
-                    Doc.code_ Doc.NoLang ex.html
+        layer : Layer
+        layer =
+            Dict.get index model.layers |> Maybe.withDefault Top
     in
     Layout.div "space-y-3"
         [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
-        , code
+        , layerTabs index layer
+        , codeFor layer ex
         ]
 
 
-{-| Group examples by `.section`, preserving first-seen order of both sections
-and examples within each section.
+{-| The per-example tab strip: a single-select `SegmentedButton` (the same control
+the app already uses for its theme toggles) whose checked segment is this example's
+current layer and whose clicks record a `SelectLayer` for this example's index only.
 -}
-groupBySection : List UsageExample -> List ( String, List UsageExample )
+layerTabs : Int -> Layer -> Element { s | segmentedButton : Supported } Msg
+layerTabs index current =
+    SegmentedButton.view []
+        (List.map
+            (\( label, layer ) ->
+                SegmentedButton.child
+                    (ButtonSegment.view
+                        [ ButtonSegment.checked (layer == current)
+                        , ButtonSegment.onClick (SelectLayer index layer)
+                        ]
+                        [ ButtonSegment.child (Kit.text label) ]
+                    )
+            )
+            [ ( "Top", Top ), ( "Middle", Middle ), ( "Bottom", Bottom ), ( "HTML", Raw ) ]
+        )
+
+
+{-| The code block for the selected layer. The three Elm layers highlight as Elm;
+the raw `<m3e-*>` HTML layer highlights as plain markup.
+-}
+codeFor : Layer -> UsageExample -> Element { s | html : Supported } msg
+codeFor layer ex =
+    case layer of
+        Top ->
+            Doc.code_ Doc.Elm ex.top
+
+        Middle ->
+            Doc.code_ Doc.Elm ex.mid
+
+        Bottom ->
+            Doc.code_ Doc.Elm ex.bottom
+
+        Raw ->
+            Doc.code_ Doc.NoLang ex.html
+
+
+{-| Group indexed examples by `.section`, preserving first-seen order of both
+sections and examples within each section (indices stay attached).
+-}
+groupBySection : List ( Int, UsageExample ) -> List ( String, List ( Int, UsageExample ) )
 groupBySection examples =
     let
         sections : List String
         sections =
             List.foldl
-                (\ex acc ->
+                (\( _, ex ) acc ->
                     if List.member ex.section acc then
                         acc
 
@@ -286,7 +365,7 @@ groupBySection examples =
                 []
                 examples
     in
-    List.map (\sec -> ( sec, List.filter (\ex -> ex.section == sec) examples )) sections
+    List.map (\sec -> ( sec, List.filter (\( _, ex ) -> ex.section == sec) examples )) sections
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
