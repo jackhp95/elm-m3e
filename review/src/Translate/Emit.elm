@@ -197,10 +197,10 @@ emitSlotItem fact source item =
             fact.module_ ++ "." ++ name ++ " " ++ source (Node.range body)
 
         UnknownSlotName { name, body } ->
-            "M3e.Content.slot \"" ++ name ++ "\" (Seam.fromHtml (" ++ source (Node.range body) ++ "))"
+            "Seam.slot \"" ++ name ++ "\" (Seam.fromHtml (" ++ source (Node.range body) ++ "))"
 
         EscapedContent { raw } ->
-            "M3e.Content.slot \"\" (Seam.fromHtml (" ++ source (Node.range raw) ++ "))"
+            "Seam.slot \"\" (Seam.fromHtml (" ++ source (Node.range raw) ++ "))"
 
         DynamicContentTail { raw } ->
             source (Node.range raw)
