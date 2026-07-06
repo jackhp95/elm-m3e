@@ -15,7 +15,7 @@ buttonFacts =
       , multiSlots = []
       , attrRewrites = [ ( "variant", "variant" ), ( "shapeAttr", "shape" ) ]
       , slotRewrites = [ ( "unnamed", "child" ), ( "icon", "icon" ) ]
-      , slotUpgrades = []
+      , slotUpgrades = [ ( "slotDefault", "buttonSlotDefault" ), ( "slotIcon", "buttonSlotIcon" ) ]
       , surfaces = [ Standard, Record ]
       , requiredAttrs = []
       , actionMap = []
@@ -124,6 +124,37 @@ import M3e.Icon
 v = M3e.Button.view [] [ M3e.Button.icon ((M3e.Icon.view [] [])) ]
 """
                             ]
+            ]
+        , describe "slot upgrade case (generalized barrel slot -> specific)"
+            [ test "upgrades M3e.slotIcon to M3e.buttonSlotIcon inside M3e.button" <|
+                \() ->
+                    """module A exposing (v)
+import M3e
+v = M3e.button [] [ M3e.slotIcon theIcon ]
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectErrors
+                            [ Review.Test.error
+                                { message = "`M3e.slotIcon` can be upgraded to the button-specific slot `M3e.buttonSlotIcon`"
+                                , details =
+                                    [ "Inside `M3e.button` the specific setter constrains the slot body to the kinds this component actually accepts, catching mismatched content at compile time."
+                                    ]
+                                , under = "M3e.slotIcon"
+                                }
+                                |> Review.Test.whenFixed
+                                    """module A exposing (v)
+import M3e
+v = M3e.button [] [ M3e.buttonSlotIcon theIcon ]
+"""
+                            ]
+            , test "leaves M3e.slotIcon alone outside any known call site" <|
+                \() ->
+                    """module A exposing (v)
+import M3e
+v = M3e.slotIcon theIcon
+"""
+                        |> Review.Test.run (rule buttonFacts)
+                        |> Review.Test.expectNoErrors
             ]
         , test "rewrites barrel attr in Record call" <|
             \() ->

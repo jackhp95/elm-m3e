@@ -191,8 +191,13 @@ checkCall context site fact args =
             maybeContentList
                 |> Maybe.map (checkSlots context fact)
                 |> Maybe.withDefault []
+
+        slotUpgradeErrors =
+            maybeContentList
+                |> Maybe.map (checkSlotUpgrades context fact)
+                |> Maybe.withDefault []
     in
-    attrErrors ++ slotErrors
+    attrErrors ++ slotErrors ++ slotUpgradeErrors
 
 
 checkAttrs : Context -> Fact -> Node Expression -> List (Error {})
@@ -324,6 +329,67 @@ slotErrorFor context fact element =
 
                         _ ->
                             Nothing
+
+                _ ->
+                    Nothing
+
+        _ ->
+            Nothing
+
+
+{-| Upgrade case: a GENERALIZED barrel slot setter used as content of a known
+enclosing constructor is promoted to the component-SPECIFIC barrel setter, using
+the enclosing component's `slotUpgrades` map (generalized → specific). Example:
+`M3e.button [] [ M3e.slotIcon (…) ]` → `M3e.button [] [ M3e.buttonSlotIcon (…) ]`.
+
+Unlike the attr/`.slot` cases this stays entirely within the `M3e` barrel — the
+specific setter is a re-export too — so there is no import to insert. A bare
+`M3e.slotIcon` outside any known call site is left alone (the component, and thus
+the right specific setter, is unknown).
+
+-}
+checkSlotUpgrades : Context -> Fact -> Node Expression -> List (Error {})
+checkSlotUpgrades context fact contentNode =
+    let
+        trace =
+            Facts.tracedList context.lookup context.scope contentNode
+    in
+    if trace.unresolved then
+        []
+
+    else
+        List.filterMap (slotUpgradeErrorFor context fact) trace.known
+
+
+slotUpgradeErrorFor : Context -> Fact -> Node Expression -> Maybe (Error {})
+slotUpgradeErrorFor context fact element =
+    case Node.value element of
+        Expression.Application (setterNode :: _) ->
+            case ( Node.value setterNode, Lookup.moduleNameFor context.lookup setterNode ) of
+                ( Expression.FunctionOrValue _ generalized, Just [ "M3e" ] ) ->
+                    fact.slotUpgrades
+                        |> List.filter (\( g, _ ) -> g == generalized)
+                        |> List.head
+                        |> Maybe.map
+                            (\( _, specific ) ->
+                                Rule.errorWithFix
+                                    { message =
+                                        "`M3e."
+                                            ++ generalized
+                                            ++ "` can be upgraded to the "
+                                            ++ fact.component
+                                            ++ "-specific slot `M3e."
+                                            ++ specific
+                                            ++ "`"
+                                    , details =
+                                        [ "Inside `M3e."
+                                            ++ fact.component
+                                            ++ "` the specific setter constrains the slot body to the kinds this component actually accepts, catching mismatched content at compile time."
+                                        ]
+                                    }
+                                    (Node.range setterNode)
+                                    [ Fix.replaceRangeBy (Node.range setterNode) ("M3e." ++ specific) ]
+                            )
 
                 _ ->
                     Nothing

@@ -23,6 +23,7 @@ const REPO = path.resolve(here, "../..");
 
 const RICH = path.resolve(REPO, "config/examples.rich.json");
 const SURFACES = path.resolve(REPO, "config/examples.surfaces.json");
+const BARREL = path.resolve(REPO, "config/examples.barrel.json");
 const CATEGORIES = path.resolve(REPO, "config/categories.json");
 const REFERENCE = path.resolve(here, "../data/reference.json");
 const OUT = path.resolve(here, "../data/examples.json");
@@ -105,6 +106,9 @@ function surfaceOrNull(code, token) {
 function main() {
   const rich = readJson(RICH);
   const surfaces = fs.existsSync(SURFACES) ? readJson(SURFACES) : {};
+  // Barrel-first `top` overrides (config/examples.barrel.json), index-aligned with
+  // rich[module]; a null entry (or a missing file) keeps the Standard `top`.
+  const barrel = fs.existsSync(BARREL) ? readJson(BARREL) : {};
   const categories = readJson(CATEGORIES);
 
   // Known route slugs (for a non-silent mismatch warning). reference.json may
@@ -129,6 +133,7 @@ function main() {
     }
 
     const moduleSurfaces = surfaces[module] ?? [];
+    const moduleBarrel = barrel[module] ?? [];
     out[slug] = {
       category,
       examples: rich[module].map((ex, idx) => {
@@ -137,7 +142,7 @@ function main() {
           title: ex.title,
           ...(ex.section ? { section: ex.section } : {}),
           html: ex.html,
-          top: formatElm(ex.top),
+          top: formatElm(moduleBarrel[idx] ?? ex.top),
           mid: formatElm(ex.mid),
           bottom: formatElm(ex.bottom),
           record: surfaceOrNull(surf.record, "M3e.Record."),
