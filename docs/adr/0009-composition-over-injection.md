@@ -8,6 +8,13 @@ Accepted. Builds on [ADR 6](0006-m3e-architecture.md) (typed slots) and
 [ADR 8](0008-three-layer-generator-retarget.md). **Supersedes the "element
 injection stays HAND" position** in the generator-requirements R8.
 
+**Superseded in part by [ADR 15](0015-unwrap-default-slot-phantoms-as-guidance.md):**
+on the M3e top layer the double-list `Content` wrapper (`child`/`children`) is
+retired — default children are raw `Element`s and named slots are
+`Element`-returning setters — with the composition guarantees this ADR encoded in
+types moved to codegen-aware elm-review. The two-mechanism model (typed slots +
+container/item families) is unchanged.
+
 ## Context
 
 The generator-requirements audit found a class of components whose hand wrappers

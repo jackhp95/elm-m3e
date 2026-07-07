@@ -20,10 +20,13 @@ at — it removes ~500 redundant generated functions (`disabled` alone was emitt
 
 `M3e.Button` exposes just its constructor:
 ```elm
-button : { required } -> List (Attr caps msg) -> List (Content slots msg) -> Element { s | button : Supported } msg
+button : { required } -> List (Attr caps msg) -> List (Element slots msg) -> Element { s | button : Supported } msg
 ```
 **The double-list shape is unchanged** (required record + attrs list + content
-list). What changes is that Button no longer exposes `disabled`/`variant`/`icon`/… —
+list) but the content list is now raw **`Element`s**, not a `Content` wrapper
+(ADR 15): default children drop straight in, named-slot setters return an
+`Element` that stamps its own `slot=`. What changes beyond that is that Button no
+longer exposes `disabled`/`variant`/`icon`/… —
 those move to the shared vocabulary. A component module is now essentially one
 function + its capability/slot row aliases.
 
@@ -58,11 +61,13 @@ text control, a number on a slider; `type`), we do what the DOM does:
 
 ## 6. Slots — general + specific, elm-review bridges
 
-For slot content setters, ship **both**:
-- **General:** `trailingSlot : Element { … union of all valid "trailing" kinds … } msg -> Content { r | trailing : Supported } msg`
+For slot content setters, ship **both**. Each takes a kind-constrained **input**,
+stamps `slot="trailing"`, and returns a free `Element` (ADR 15 — no `Content`
+type) that drops into the container's single content list:
+- **General:** `trailingSlot : Element { … union of all valid "trailing" kinds … } msg -> Element k msg`
   — accepts everything any component's `trailing` slot accepts (loose).
-- **Specific:** `appBarTrailingSlot : Element { iconButton } msg -> Content { r | trailing : Supported } msg`
-  — strictly typed to AppBar's `trailing`.
+- **Specific:** `appBarTrailingSlot : Element { iconButton } msg -> Element k msg`
+  — input strictly typed to AppBar's `trailing`.
 - An **elm-review rule** auto-rewrites the general call to the correct
   `<component><Slot>Slot` prefix, and flags inputs that no component accepts.
 - The **general canonical** defaults to the most common accepted kind (config-overridable).
@@ -104,7 +109,8 @@ ever point *down*, avoids circular imports.
   The middle and top share the exact `Attr { c | cap } msg` phantom, so the **attr
   vocab is defined once at the middle level** (`M3e.Cem.Vocab`) and the **top reuses
   it**; the top vocab (`M3e.Vocab`) adds only what's new up there — constructors
-  returning `Element`, and the `Content`/slot setters. Bottom vocab = raw `htmlAttr`;
+  returning `Element`, and the `Element`-returning named-slot setters (ADR 15; no
+  `Content` type). Bottom vocab = raw `htmlAttr`;
   middle wraps it in `M3e.Cem.Attr.attribute` → phantom `Attr`.
 - **Names are disambiguated in Vocab, attribute-first + component-suffixed:**
   `variantButton`, `variantChip` (so autocomplete on `variant` surfaces the typed

@@ -10,6 +10,10 @@ that rejection applied only to enum/`Value` *setter* outputs (which stay
 `Html.Attribute`); this ADR governs the component *view* output and the layering,
 where the IR is now emitted.
 
+**Amended by [ADR 15](0015-unwrap-default-slot-phantoms-as-guidance.md):** the
+top-layer double-list composition retires the `Content` wrapper — default
+children are raw `Element`s, named slots are `Element`-returning setters.
+
 ## Context
 
 Today `elm-cem` emits a single layer — `Cem.M3e.*` `Html`-returning atoms — and

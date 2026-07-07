@@ -17,6 +17,13 @@ as a universal placeable kind. **Extends** ADR 10's native-HTML IR. Keeps ADR 10
 `for=id`/`id=id` wiring and `Hand = ∅` (userland seams are *userland*, not library
 hand-code).
 
+**Narrowed by [ADR 15](0015-unwrap-default-slot-phantoms-as-guidance.md):** §2's
+single `Content` opaque-IR boundary no longer fences the *default* slot — ADR 15
+retires `Content` on the M3e top layer (raw `Element` default children,
+`Element`-returning named-slot setters), so the seam fences *named-slot* placement
+only and the userland `Seam` relocates from `Content.Internal` to
+`Element.Internal`.
+
 ## Context
 
 ADR 10 decided that text/label are just constructors of a loosely-typed

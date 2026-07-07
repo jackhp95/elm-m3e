@@ -47,7 +47,8 @@ at defaults).
     // for/id auto-wiring: names the control slot and the label slot so the
     // generator stamps id="<id>" on the control and for="<id>" on the label,
     // making the label<->control association structural (ADR 0010 R6,
-    // via M3e.Content.Internal.slotWithAttr).
+    // via M3e.Element.Internal.withAttr — ADR 15 relocated this from the
+    // retired Content.Internal.slotWithAttr).
     "idWiring": { "control": "unnamed", "label": "label" }
   },
 
@@ -107,7 +108,8 @@ at defaults).
 - **`idWiring`** — object naming the two slots involved in `for`/`id` auto-wiring:
   `{ "control": "<slotName>", "label": "<slotName>" }`. The generator stamps
   `id="<generated>"` on the control-slot element and `for="<generated>"` on the
-  label-slot element (via `M3e.Content.Internal.slotWithAttr`, ADR 0010 R6), so the
+  label-slot element (via `M3e.Element.Internal.withAttr`, ADR 0010 R6 — ADR 15
+  relocated this from the retired `Content.Internal.slotWithAttr`), so the
   label↔control association is structural rather than hand-wired.
 - **`group`** — object of `memberName → tag` for variant-split folding (fold several
   manifest tags into one Elm module, e.g. `Progress`).
