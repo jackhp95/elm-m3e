@@ -22,7 +22,6 @@ Card :: Native module support :: filtered: registration-only (script/link)
 Checkbox :: Native module support :: filtered: registration-only (script/link)
 Checkbox :: Required :: degraded: top: I cannot find a `M3e.Button.type` variable: | mid: I cannot find a `M3e.Cem.Button.type` variable: | bottom: I cannot find a `M3e.Cem.Html.Button.type` variable:
 ContentPane :: Native module support :: filtered: registration-only (script/link)
-ContentPane :: Usage :: degraded: top: unmapped attr m3e-toc-ignore on m3e-heading | mid: I cannot find a `M3e.Cem.Attr.attribute` variable:
 Datepicker :: Basic usage :: degraded: top: The 1st argument to `children` is not what I expect:
 Datepicker :: Blackout dates :: degraded: top: The 1st argument to `children` is not what I expect:
 Datepicker :: Date ranges :: degraded: top: The 1st argument to `children` is not what I expect:
@@ -32,17 +31,17 @@ Datepicker :: Special dates :: degraded: top: The 1st argument to `children` is 
 Datepicker :: Start date :: degraded: top: The 1st argument to `children` is not what I expect:
 Datepicker :: Start view :: degraded: top: The 1st argument to `children` is not what I expect:
 Dialog :: Actions :: degraded: top: The 1st argument to `child` is not what I expect:
-Dialog :: Anatomy :: degraded: top: unmapped attr autofocus on m3e-button | mid: I cannot find a `M3e.Cem.Attr.attribute` variable:
+Dialog :: Anatomy :: degraded: top: The 1st argument to `child` is not what I expect:
 Dialog :: Opening :: degraded: top: The 1st argument to `child` is not what I expect:
 DrawerContainer :: Toggle :: degraded: top: The 1st argument to `children` is not what I expect:
 Fab :: Extended FABs :: degraded: top: The 1st argument to `label` is not what I expect:
 Fab :: Links :: degraded: top: The 1st argument to `label` is not what I expect:
-FabMenu :: Anatomy :: degraded: top: unknown m3e tag m3e-fab-menu-item | mid: unknown m3e tag m3e-fab-menu-item | bottom: unknown m3e tag m3e-fab-menu-item
-FabMenu :: Disabling :: degraded: top: unknown m3e tag m3e-fab-menu-item | mid: unknown m3e tag m3e-fab-menu-item | bottom: unknown m3e tag m3e-fab-menu-item
-FabMenu :: Icons :: degraded: top: unknown m3e tag m3e-fab-menu-item | mid: unknown m3e tag m3e-fab-menu-item | bottom: unknown m3e tag m3e-fab-menu-item
-FabMenu :: Links :: degraded: top: unknown m3e tag m3e-fab-menu-item | mid: unknown m3e tag m3e-fab-menu-item | bottom: unknown m3e tag m3e-fab-menu-item
+FabMenu :: Anatomy :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
+FabMenu :: Disabling :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
+FabMenu :: Icons :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
+FabMenu :: Links :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
 FabMenu :: Native module support :: filtered: registration-only (script/link)
-FabMenu :: Variants :: degraded: top: unknown m3e tag m3e-fab-menu-item | mid: unknown m3e tag m3e-fab-menu-item | bottom: unknown m3e tag m3e-fab-menu-item
+FabMenu :: Variants :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
 Icon :: Variable fonts :: filtered: registration-only (script/link)
 List :: Variants :: degraded: top: The 1st argument to `variant` is not what I expect: | mid: The 1st argument to `variant` is not what I expect:
 Menu :: Basic usage :: degraded: top: The 1st argument to `child` is not what I expect:
@@ -55,10 +54,8 @@ Menu :: Radios :: degraded: top: The 1st argument to `child` is not what I expec
 Menu :: Submenus :: degraded: top: The 1st argument to `child` is not what I expect:
 Menu :: Variants :: degraded: top: The 1st argument to `child` is not what I expect:
 NavBar :: Modes :: degraded: top: I cannot find a `M3e.Value.extended` variable: | mid: I cannot find a `M3e.Value.extended` variable:
-NavMenu :: Density :: degraded: top: unmapped attr m3e-toc-ignore on m3e-heading | mid: I cannot find a `M3e.Cem.Attr.attribute` variable:
-NavMenu :: Disabling :: degraded: top: The 1st argument to `view` is not what I expect:
-NavMenu :: Grouping top-level items :: degraded: top: unmapped attr m3e-toc-ignore on m3e-heading | mid: I cannot find a `M3e.Cem.Attr.attribute` variable:
-NavMenu :: Multilevel menus :: degraded: top: The 1st argument to `view` is not what I expect:
+NavMenu :: Density :: degraded: top: The 1st argument to `badge` is not what I expect:
+NavMenu :: Grouping top-level items :: degraded: top: The 1st argument to `badge` is not what I expect:
 NavMenu :: Personal folders (2) :: degraded: top: The 1st argument to `child` is not what I expect:
 NavMenu :: Personal folders :: degraded: top: The 1st argument to `child` is not what I expect:
 NavRail :: Modes :: degraded: top: The 1st argument to `label` is not what I expect:
@@ -72,26 +69,13 @@ SplitButton :: Anatomy :: degraded: top: The 1st argument to `children` is not w
 SplitButton :: Density :: degraded: top: The 1st argument to `children` is not what I expect:
 SplitButton :: Sizes :: degraded: top: The 1st argument to `children` is not what I expect:
 SplitButton :: Variants :: degraded: top: The 1st argument to `children` is not what I expect:
-SplitPane :: Conditional rendering :: degraded: top: unmapped attr hidden on m3e-card | mid: I cannot find a `M3e.Cem.Attr.attribute` variable:
-Stepper :: Basic usage :: degraded: top: unknown m3e tag m3e-stepper-next | mid: unknown m3e tag m3e-stepper-next | bottom: unknown m3e tag m3e-stepper-next
-Stepper :: Header positions :: degraded: top: unknown m3e tag m3e-stepper-next | mid: unknown m3e tag m3e-stepper-next | bottom: unknown m3e tag m3e-stepper-next
-Stepper :: Label positions :: degraded: top: unknown m3e tag m3e-stepper-next | mid: unknown m3e tag m3e-stepper-next | bottom: unknown m3e tag m3e-stepper-next
-Stepper :: Linear stepper :: degraded: top: unknown m3e tag m3e-stepper-next | mid: unknown m3e tag m3e-stepper-next | bottom: unknown m3e tag m3e-stepper-next
-Stepper :: Orientation :: degraded: top: unknown m3e tag m3e-stepper-next | mid: unknown m3e tag m3e-stepper-next | bottom: unknown m3e tag m3e-stepper-next
-Stepper :: Stepper buttons :: degraded: top: unknown m3e tag m3e-stepper-next | mid: unknown m3e tag m3e-stepper-next | bottom: unknown m3e tag m3e-stepper-next
-Tabs :: Basic usage :: degraded: top: The 1st argument to `children` is not what I expect:
-Tabs :: Disabling :: degraded: top: The 1st argument to `children` is not what I expect:
-Tabs :: Header positions :: degraded: top: The 1st argument to `children` is not what I expect:
-Tabs :: Stretching :: degraded: top: The 1st argument to `children` is not what I expect:
-Tabs :: Variants :: degraded: top: The 1st argument to `children` is not what I expect:
+Stepper :: Basic usage :: degraded: top: The 1st argument to `child` is not what I expect:
+Stepper :: Header positions :: degraded: top: The 1st argument to `child` is not what I expect:
+Stepper :: Label positions :: degraded: top: The 1st argument to `child` is not what I expect:
+Stepper :: Linear stepper :: degraded: top: The 1st argument to `child` is not what I expect:
+Stepper :: Orientation :: degraded: top: The 1st argument to `child` is not what I expect:
+Stepper :: Stepper buttons :: degraded: top: The 1st argument to `child` is not what I expect:
 Toc :: Heading :: degraded: top: The 1st argument to `title` is not what I expect:
 Tooltip :: Actions :: degraded: top: The 1st argument to `child` is not what I expect:
 Tooltip :: Rich tooltip :: degraded: top: The 1st argument to `subhead` is not what I expect:
-Tree :: Basic usage :: degraded: top: The 1st argument to `view` is not what I expect:
-Tree :: Cascade selection :: degraded: top: The 1st argument to `view` is not what I expect:
-Tree :: Density :: degraded: top: The 1st argument to `view` is not what I expect:
-Tree :: Icons :: degraded: top: The 1st argument to `view` is not what I expect:
-Tree :: Multiple selection :: degraded: top: The 1st argument to `view` is not what I expect:
 Tree :: Native module support :: filtered: registration-only (script/link)
-Tree :: Selection :: degraded: top: The 1st argument to `view` is not what I expect:
-Tree :: Toggle icons :: degraded: top: The 1st argument to `view` is not what I expect:

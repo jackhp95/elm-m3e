@@ -44,8 +44,55 @@ function enumLiterals(typeText) {
   return out;
 }
 
+// A component's produced KIND (as used in slots.json `kinds` lists) is its
+// module name decapitalized: TabPanel -> "tabPanel", Step -> "step". This is
+// NOT `camel`, which folds a separator-free PascalCase word to all-lowercase.
+const decapitalize = (s) => (s ? s.charAt(0).toLowerCase() + s.slice(1) : s);
+
+// Fix A — tagName reconciliation. The @m3e/web 2.5.13 CEM carries the SAME
+// analyzer defect B1.5b fixed in the library generator: two element classes
+// have a WRONG class-level `tagName` that collides with a sibling —
+// M3eStepperNextElement.tagName === "m3e-stepper-previous" and
+// M3eFabMenuItemElement.tagName === "m3e-menu-item". The
+// `custom-element-definition` exports carry the real registration tag
+// (`customElements.define(name, class)`), so overwrite each referenced
+// declaration's `tagName` from its export BEFORE the oracle keys entries by
+// tagName — otherwise m3e-stepper-next / m3e-fab-menu-item are never created
+// and degrade with "unknown m3e tag". No-op wherever the analyzer agrees.
+function reconcileTagNames(cem) {
+  const declByKey = new Map();
+  for (const mod of cem.modules ?? []) {
+    for (const d of mod.declarations ?? []) {
+      if (!d.name) continue;
+      declByKey.set(`${mod.path}\0${d.name}`, d);
+      if (!declByKey.has(d.name)) declByKey.set(d.name, d);
+    }
+  }
+  for (const mod of cem.modules ?? []) {
+    for (const ex of mod.exports ?? []) {
+      if (ex.kind !== "custom-element-definition" || !ex.name) continue;
+      const ref = ex.declaration ?? {};
+      const decl =
+        (ref.module != null && declByKey.get(`${ref.module}\0${ref.name}`)) ||
+        declByKey.get(ref.name);
+      // Only rewrite an actual custom-element declaration whose tag differs. The
+      // `customElement` guard mirrors elm-cem/bin/elm-cem.js: it stops a by-name
+      // fallback (declByKey.get(ref.name)) from stamping a tagName onto a
+      // non-element declaration that happens to share a name in another module.
+      // No-op for correct analyzers, keeping logs clean and churn minimal.
+      if (decl && decl.customElement && decl.tagName !== ex.name) {
+        console.error(
+          `oracle: reconciled tagName ${JSON.stringify(decl.tagName)} -> ${JSON.stringify(ex.name)} for ${decl.name}`
+        );
+        decl.tagName = ex.name;
+      }
+    }
+  }
+}
+
 export function buildOracle() {
   const cem = readJson(CEM_PATH);
+  reconcileTagNames(cem);
   const slots = readJson(SLOTS_PATH);
 
   // Variant groups: a `group` config folds several tags into ONE top module
@@ -163,8 +210,15 @@ export function buildOracle() {
           const base = camel(rawName);
           helper = setterNames.has(base) ? base + "Slot" : base;
         }
-        const cfgKey = rawName === "" ? "default" : rawName;
-        const cfg = slotConfig[cfgKey] ?? {};
+        // Fix B — the default (anonymous) slot's config lives under the
+        // "unnamed" key in config/slots.json (NOT "default"). Reading the wrong
+        // key silently dropped required/multi/kinds for the default slot, so
+        // `defaultUnionKinds` below was empty and Fix C could misroute a bare
+        // union child (e.g. an IconButton's default `icon`) into a named slot.
+        const cfg =
+          rawName === ""
+            ? (slotConfig["unnamed"] ?? slotConfig["default"] ?? {})
+            : (slotConfig[rawName] ?? {});
         // `kinds` was loosened in slots.json: it is now EITHER a list of accepted
         // element rows (`["text","link"]`) OR a scalar string (`"arbitrary"` /
         // `"any"`) for slots that take anything. Normalize to a list so callers
@@ -181,7 +235,7 @@ export function buildOracle() {
         // helper). The mapper needs required/multi to reproduce that.
         const required = cfg.required === true;
         const multi = cfg.multi === true;
-        slotEntries.push({ rawName, helper, kind, required, multi });
+        slotEntries.push({ rawName, helper, kind, kinds, required, multi });
 
         // A required, single-value NAMED slot -> required record field named
         // after the slot (camelCased), sourced from the `slot="X"` child.
@@ -234,7 +288,7 @@ export function buildOracle() {
         const kind = kinds[0] ?? "any";
         const required = cfg.required === true;
         const multi = cfg.multi === true;
-        slotEntries.push({ rawName, helper, kind, required, multi });
+        slotEntries.push({ rawName, helper, kind, kinds, required, multi });
         seenRaw.add(rawName);
         const foldsToRecord =
           kinds.length > 0 && kinds.every((k) => k === "text" || k === "link");
@@ -243,9 +297,40 @@ export function buildOracle() {
         }
       }
 
+      // Fix C — per-container child routing by produced kind. A default-slot
+      // child with NO `slot=` attr is distinguished only by tag (e.g.
+      // <m3e-tab-panel> vs <m3e-tab>). Route it to the NAMED slot whose accepted
+      // kind matches the child's produced kind, so a composite's heterogeneous
+      // default children (panels vs tabs, steps vs step-panels) each reach their
+      // typed slot helper instead of one mis-typed `M3e.<mod>.children [...]`.
+      // EXCLUDE kinds already in the default (unnamed) children union so
+      // union-row composites (Menu/MenuItemGroup/NavMenu/FabMenu) keep routing
+      // their children through `children`; exclude required text/link NAMED
+      // slots (sourced from their `slot="X"` child via the requiredSlots path);
+      // and exclude any kind accepted by more than one named slot (ambiguous).
+      const defaultUnionKinds = new Set(
+        slotEntries.find((s) => s.rawName === "")?.kinds ?? [],
+      );
+      const requiredSlotNames = new Set(requiredSlots.map((r) => r.rawName));
+      const kindOwners = {};
+      for (const s of slotEntries) {
+        if (s.rawName === "" || requiredSlotNames.has(s.rawName)) continue;
+        for (const k of s.kinds) {
+          if (defaultUnionKinds.has(k)) continue;
+          (kindOwners[k] ??= new Set()).add(s.helper);
+        }
+      }
+      const childSlotByKind = {};
+      for (const [k, helpers] of Object.entries(kindOwners)) {
+        if (helpers.size === 1) childSlotByKind[k] = [...helpers][0];
+      }
+
       oracle[tag] = {
         tag,
         module,
+        // Produced kind (this element's kind as a child of another container).
+        kind: decapitalize(module),
+        childSlotByKind,
         attributes,
         requiredFields,
         requiredSlots,
