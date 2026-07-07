@@ -25,15 +25,19 @@ The **complete** markup is present in every `.showcase` card (verified: all 310 
 
 ## Design overview
 
-Two phases, each independently shippable:
+Three phases, each independently shippable:
 
-- **B1 — Re-source from `.showcase`.** Complete markup → correct previews + complete code +
-  fewer drops. High value, self-contained.
+- **B1 — Re-source from `.showcase`.** Complete markup → correct previews + complete code.
+  High value, self-contained. **DONE** (branch `docs/example-sourcing`) — but it revealed that
+  complete markup *exposes* converter/library gaps the hollow shells were masking (net example
+  count went 265→250, skips 60→97). Hence B1.5.
+- **B1.5 — Recover + exceed the example count (converter coverage).** Close the three
+  independent causes that drop examples, so we ship *more* examples than before — the actual
+  "more examples than matraic" goal. See the dedicated section below.
 - **B2 — Auto-derived folding.** Native `<details>` regions so complete code stays readable.
 
-Non-goal (both phases): the ~60 examples currently dropped for **API/converter** reasons
-(`Html.script` "Native module support", `child`/`children` mismatches, unmapped attrs — see
-`config/examples.skipped.txt`) are a separate, smaller thread. B does not attempt them.
+B1's earlier "non-goal" (the API/converter drops) is now **B1.5's whole point** — it turned out
+to be the dominant lever for example count, not a small side thread.
 
 ---
 
@@ -71,13 +75,98 @@ stays — it still drops genuinely unconvertible cases, now far fewer). `gen-rec
 converter emits. The live preview (`Doc.rawPreview`) now receives complete markup, so previews
 stop being hollow with no `Doc.elm` change required for B1.
 
-### B1 success criteria
+### B1 outcome (as implemented)
 
 - `/components/appbar` "Sizes" (and other brevity sections) render **complete** app bars, not
-  empty shells — verified with playwright.
-- Example count in `docs/data/examples.json` **increases** materially vs. current (brevity-drop
-  recovery); `config/examples.skipped.txt` shrinks to essentially the API-gap cases only.
-- All existing gates stay green (`build:ci`, `elm-format`, `check:nav`).
+  empty shells — verified with playwright. ✅ Correctness win.
+- **Count regressed**, not improved: `data/examples.json` went 265→250, `examples.skipped.txt`
+  60→97. Complete markup *exposes* converter/library gaps the hollow shells masked (an empty
+  `<m3e-app-bar>` compiled trivially; its complete form hits real gaps). Zero brevity/hollow
+  skips remain — the new skips are all genuine coverage gaps. This is why B1 is **not merged
+  standalone**: it is bundled with B1.5, which recovers and exceeds the old count.
+- Gates green (`build:ci`, `elm-format`, `check:nav`). ✅
+
+---
+
+## B1.5 — Converter coverage (recover + exceed the count)
+
+The 97 drops have **three independent root causes** (not one). All are currently fatal because
+of a single meta-cause, so the fix is layered: a safety net that recovers everything, plus
+targeted fixes that restore full-fidelity output.
+
+### Meta-cause: the all-or-nothing layer invariant
+
+`examples-to-elm.mjs:222-224` enforces that an example ships **only if top (M3e) AND mid
+(M3e.Cem) AND bottom (M3e.Cem.Html) all compile** — "so the layer toggle is never partial."
+This is the opposite of the library's own layered/escape-hatch philosophy (lower layers exist
+as fallbacks for what the strict top can't express). A single strict-top failure discards the
+whole example even though the permissive layers + HTML compile fine.
+
+**Fix (the safety net) — graceful degradation.** Ship an example if **≥1 surface compiles**;
+record per-example which surfaces are valid. The renderer (`app/Route/Components/Name_.elm`,
+`layersFor`/`layerTabs`) shows only the valid surface tabs. This alone recovers **all 97**
+(they all compile at HTML/bottom), honoring the layer design. Trade-off vs. the prior uniformity
+choice: genuine-gap examples show a *partial* toggle (e.g. HTML + bottom, no strict M3e tab) —
+accepted, because showing an example at 2-3 layers beats dropping it. The targeted fixes below
+then restore most examples to full 4-tab parity, so partial toggles are the rare residue.
+
+### Cause 1 — converter child-routing bug (most of the ~55 arg-type failures)
+
+`to-elm.mjs` (elementToElm) lumps ALL slot-less children into one `M3e.<Mod>.children [...]`.
+That only type-checks when `children`'s phantom row is a UNION over every child kind (true for
+Menu/NavMenu/FabMenu — those already work). It breaks for composites that route children to
+DIFFERENT helpers. **Fix — route slot-less children per-tag** using the routing table (see the
+`docs-composite-routing-table` memory / the M3e module signatures):
+
+- Tabs: `m3e-tab`→`children`, `m3e-tab-panel`→`Tabs.panel` (single-Content named slot).
+- Stepper: `m3e-step`→`Stepper.step`, `m3e-step-panel`→`Stepper.panel` (no `children`).
+- SplitButton: `slot=leading-button`→`leadingButton`, `slot=trailing-button`→`trailingButton`.
+- Tree/NavMenuItem/Step/RichTooltip/Option/Select: route named-slot children (icons, labels,
+  badges, actions, subhead, arrow/value) to their slot helpers; nested items/default text to
+  `children`/`child`.
+
+### Cause 2 — Elm-library version skew
+
+Docs render with **@m3e/web 2.5.13** (matraic source = matraic-m3e @ c9c781a). The generated
+Elm library `packages/m3e` (v1.0.0) is behind: web components that exist in 2.5.13 have no Elm
+binding — confirmed for `m3e-stepper-next` and `m3e-fab-menu-item` (real custom elements in
+2.5.13, but no `StepperNext.elm` / `FabMenuItem.elm`). **Fix — regenerate `packages/m3e` from
+2.5.13's CEM via elm-cem.** This adds the missing bindings; the converter (Cause 1 fix) can then
+route those tags. Regen may ripple into the reference/docs — verify the whole build after.
+
+### Cause 3 — genuine API gaps (no path even in the current lib)
+
+`m3e-optgroup` inside `m3e-select` (no `Select.optgroup` helper), Menu submenus (`submenu` is an
+Attr Bool + a separate `<m3e-menu>` via MenuTrigger, no nested-child path). **Not fixed in B1.5**
+— the graceful-degradation safety net ships these at HTML/bottom; real support is deferred
+library-design work.
+
+### Cheap buckets
+
+- **`<script>` "Native module support" (17):** every one is a bare
+  `<script type="module" src="…/dist/X.js">` — meaningless as Elm. **Filter at extraction.**
+- **Misc attrs (~6):** `m3e-toc-ignore`, `hidden`, `autofocus` — add to droppable-attr list or
+  map to setters.
+
+### B1.5 decomposition + sequence
+
+- **B1.5a — Graceful degradation** (the safety net). Highest leverage, smallest change;
+  immediately recovers all 97 and makes every later fix incremental (upgrade a tab, not
+  all-or-nothing). Do first.
+- **B1.5b — Library regen** from @m3e/web 2.5.13's CEM (Cause 2). Adds StepperNext/FabMenuItem.
+- **B1.5c — Converter routing fix** (Cause 1) + cheap buckets (script filter, attrs), now
+  including the regen'd tags.
+- Cause 3 (genuine gaps) is covered by 1.5a and deferred otherwise.
+
+### B1.5 success criteria
+
+- `data/examples.json` total example count **exceeds** the pre-B1 baseline (265) — verified.
+- No example that compiles at any layer is dropped; `examples.skipped.txt` contains only the
+  genuine-gap residue (optgroup-in-select, menu submenus), each also visibly shipping at
+  HTML/bottom on its component page — verified with playwright.
+- Composite pages (Tabs, Stepper, SplitButton, Tree, Select) show full 4-tab parity where the
+  routing fix + regen apply — spot-verified with playwright.
+- All gates green; `packages/m3e` regen doesn't break the reference or the docs build.
 
 ---
 
