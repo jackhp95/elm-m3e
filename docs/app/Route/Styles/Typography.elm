@@ -76,9 +76,9 @@ scale =
     , ( Kit.body Value.large [ Kit.onSurface ] [ Kit.text "Body Large" ], "text-body-lg" )
     , ( Kit.body Value.medium [ Kit.onSurface ] [ Kit.text "Body Medium" ], "text-body-md" )
     , ( Kit.body Value.small [ Kit.onSurface ] [ Kit.text "Body Small" ], "text-body-sm" )
-    , ( Kit.label Value.large [ Kit.onSurface ] [ Kit.text "Label Large" ], "text-label-lg" )
-    , ( Kit.label Value.medium [ Kit.onSurface ] [ Kit.text "Label Medium" ], "text-label-md" )
-    , ( Kit.label Value.small [ Kit.onSurface ] [ Kit.text "Label Small" ], "text-label-sm" )
+    , ( Kit.labelText Value.large [ Kit.onSurface ] [ Kit.text "Label Large" ], "text-label-lg" )
+    , ( Kit.labelText Value.medium [ Kit.onSurface ] [ Kit.text "Label Medium" ], "text-label-md" )
+    , ( Kit.labelText Value.small [ Kit.onSurface ] [ Kit.text "Label Small" ], "text-label-sm" )
     ]
 
 

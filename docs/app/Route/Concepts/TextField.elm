@@ -144,7 +144,7 @@ heading2 s =
 
 section : String -> List (Block msg) -> Block msg
 section title items =
-    Layout.section "space-y-3" (heading2 title :: items)
+    Layout.section "space-y-4" (heading2 title :: items)
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -153,7 +153,7 @@ view _ _ =
     , body =
         [ Element.toNode
             (pane
-                [ Layout.div "space-y-10"
+                [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
                         [ heading1 "Text field by composition"
                         , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]

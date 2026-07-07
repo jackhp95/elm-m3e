@@ -651,7 +651,9 @@ navSections =
     , { title = "Concepts"
       , icon = "school"
       , items =
-            [ ( "/concepts/phantom-rows", "Phantom rows" )
+            [ ( "/concepts/layers", "The layers" )
+            , ( "/concepts/userland", "Userland" )
+            , ( "/concepts/phantom-rows", "Phantom rows" )
             , ( "/concepts/build", "The ⑤ Build pipeline" )
             , ( "/concepts/text-field", "Text field by composition" )
             ]

@@ -100,12 +100,12 @@ view _ _ =
     , body =
         [ Element.toNode
             (pane
-                [ Layout.div "space-y-10"
+                [ Layout.div "space-y-12"
                     [ Layout.section "space-y-4"
                         [ heading1 "The ⑤ Build pipeline"
                         , Layout.div "max-w-2xl text-on-surface-variant" [ Doc.markdown intro ]
                         ]
-                    , Layout.section "space-y-3"
+                    , Layout.section "space-y-4"
                         [ Doc.markdown body
                         , Doc.showcase (Layout.div "flex flex-wrap items-center gap-3" [ saveButton ])
                         , Doc.code_ Doc.Elm source

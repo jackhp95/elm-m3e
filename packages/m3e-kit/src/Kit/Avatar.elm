@@ -34,6 +34,6 @@ initials text =
                 [ Shape.corner Shape.full
                 , Seam.asAttribute (Html.Attributes.class "flex h-10 w-10 items-center justify-center")
                 ]
-                [ Kit.label Value.medium [] [ Kit.text text ] ]
+                [ Kit.labelText Value.medium [] [ Kit.text text ] ]
             )
         ]

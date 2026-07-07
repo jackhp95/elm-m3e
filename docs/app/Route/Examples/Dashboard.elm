@@ -22,8 +22,8 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e.Action as Action
-import M3e.Aria as Aria
 import M3e.AppBar as AppBar
+import M3e.Aria as Aria
 import M3e.Card as Card
 import M3e.Divider as Divider
 import M3e.Element as Element exposing (Element)
@@ -315,7 +315,7 @@ kpiCard k =
     Card.view [ Card.variant Value.filled ]
         [ Card.content
             (Layout.div "flex flex-col gap-2 p-4"
-                [ Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text k.label ]
+                [ Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text k.label ]
                 , Kit.display Value.small [] [ Kit.text k.value ]
                 , trendDelta k.trend k.delta
                 ]
@@ -336,7 +336,7 @@ trendDelta trend delta =
     in
     Layout.div "flex items-center gap-1"
         [ Kit.colored [ role ] [ Icon.view [ Icon.name iconName ] [] ]
-        , Kit.label Value.large [ role ] [ Kit.text delta ]
+        , Kit.labelText Value.large [ role ] [ Kit.text delta ]
         ]
 
 
@@ -383,7 +383,7 @@ budgetRow b =
     Layout.div "flex flex-col gap-2"
         [ Layout.div "flex items-center justify-between gap-2"
             [ Kit.body Value.medium [] [ Kit.text b.category ]
-            , Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text b.amount ]
+            , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text b.amount ]
             ]
         , Progress.linear
             [ Progress.value b.used, Progress.max b.max ]
@@ -418,7 +418,7 @@ activityRow a =
     in
     ListItem.view []
         [ ListItem.leading
-            (Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text a.date ])
+            (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text a.date ])
         , ListItem.child (Kit.text a.description)
         , ListItem.trailing
             (Kit.title Value.medium [ role ] [ Kit.text a.amount ])

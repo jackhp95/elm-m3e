@@ -59,21 +59,27 @@ import { Elm } from "./Main.elm";
 Elm.Main.init({ node: document.getElementById("root") });
 ```
 
-## The API — five addressable surfaces per component
+## The API — six addressable surfaces per component
 
-Every component is generated at **five** addressable surfaces
-(see [ADR 0013](docs/adr/0013-top-shape-matrix-and-translation.md)):
+Each component is generated across **five surface families** — the enum
+`Html · Cem · Standard · Record · Build` in
+[`M3e.Review.Facts`](packages/m3e/src/M3e/Review/Facts.elm) — which present as
+**six** addressable call shapes (`Standard` covers both the barrel and the
+per-component `view`). See [ADR 0013](docs/adr/0013-top-shape-matrix-and-translation.md):
 
 | Surface | Module | Call shape |
 | --- | --- | --- |
-| **Barrel** (top) | `M3e` | `M3e.treeItem [attrs] [content]` — lowercase name |
-| **Per-component** (top) | `M3e.TreeItem` | `M3e.TreeItem.view [attrs] [content]` — double list |
-| **Record** (top) | `M3e.Record.TreeItem` | `view { required } [attrs] [content]` — required slots hoisted into a record |
+| **Barrel** (top, `Standard`) | `M3e` | `M3e.treeItem [attrs] [content]` — lowercase name |
+| **Per-component** (top, `Standard`) | `M3e.TreeItem` | `M3e.TreeItem.view [attrs] [content]` — double list |
+| **Record** (top) | `M3e.Record.TreeItem` | `view { required } [attrs] [content]` — required slots/fields hoisted into a record. *Emitted only where a component has required slots or fields (~21 of 127 components).* |
+| **Build** (top) | `M3e.Build.TreeItem` | `empty \|> label … \|> icon … \|> view` — start empty and set each slot/attr through a pipeline. *Emitted broadly (most components).* |
 | **Middle** | `M3e.Cem.TreeItem` | phantom-typed attrs, ordinary `Html` children, returns `Html` |
 | **Bottom** | `M3e.Cem.Html.TreeItem` | plain `elm/html`, one constructor per tag |
 
-The three **top** shapes are co-equal peers — the extra `M3e.Record` / `M3e.Build`
-segment names a *shape variant*, not a deeper/less-safe layer. The
+The four **top** shapes (Barrel, Per-component, Record, Build) are co-equal peers —
+the extra `M3e.Record` / `M3e.Build` segment names a *shape variant*, not a
+deeper/less-safe layer, and Record/Build appear only where a component earns them
+(required fields → Record; the incremental pipeline → Build). The
 `M3e` → `M3e.Cem` → `M3e.Cem.Html` axis is the **escape gradient** (deeper = less
 safe, more raw). **Start at the top** (`M3e.*` or the `M3e` barrel); reach deeper
 only to escape.
@@ -223,10 +229,25 @@ Deploy (Netlify): **Base directory** = `docs`; build/publish come from
 ## Testing
 
 The old IR-introspection unit suite was removed — the double-list makes those facts
-compile-time guarantees. Coverage now lives in **the type system** (a green
-`elm make packages/m3e` proves every slot/attr invariant) plus
-`docs/tests-browser/` (Playwright, for what only a real browser shows). A lean
-render/`Test.Html.Query` suite may be added later for runtime-only behaviors.
+compile-time guarantees. Coverage now lives in four layers:
+
+- **The type system** — a green `elm make packages/m3e` proves every slot/attr
+  invariant; the generated `M3e.Build.*` shape carries positive/negative type-level
+  checks in [`packages/m3e/tests/BuildShapeTest.elm`](packages/m3e/tests/BuildShapeTest.elm)
+  and [`BuildShapeNegative.elm`](packages/m3e/tests/BuildShapeNegative.elm).
+- **elm-review rules** — the repo's strongest coverage: the custom rules in `review/src`
+  (`NoSeamOutsideAllowedModules`, `NoInternalImportOutsideAllowed`, `NoActionlessButton`,
+  `NoProprietaryDsClasses`, `ExtractToSeam`, …) each ship a test file under
+  [`review/tests/`](review/tests/), on top of the codegen-aware rules sourced from
+  [`jackhp95/elm-review-cem`](https://github.com/jackhp95/elm-review-cem). Run with
+  `elm-review --config review`.
+- **`Test.Html.Query` runtime suite** — targeted regression tests for the hand-written
+  IR core under [`tests/`](tests/): `NodeSlotTest.elm` (named-slot survives on
+  `Raw`/mapped nodes, #79) and `IrCoreTest.elm` (`addChild` leaf no-op, `map`→`Raw`
+  collapse, `slotWithAttr` for/id wiring, Text/Raw→`<span>` attr promotion). Run with
+  `npx elm-test@0.19.1 --compiler node_modules/.bin/elm`.
+- **Playwright** — [`docs/tests-browser/`](docs/tests-browser/), for the runtime contract
+  (shadow DOM, DOM properties, the a11y tree) that only a real browser shows.
 
 ## Docs (read order)
 
