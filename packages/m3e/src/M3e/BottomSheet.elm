@@ -26,41 +26,6 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 
 ### Examples
 
-<!-- elm-cem:example title="Variants" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True ] []
-```
-
-<!-- elm-cem:example title="Drag handles" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] []
-```
-
-<!-- elm-cem:example title="Detents" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] []
-```
-
-<!-- elm-cem:example title="Initial height" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.detent 1 ] []
-```
-
-<!-- elm-cem:example title="Collapsed height" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] []
-```
-
-<!-- elm-cem:example title="Hideability" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] []
-```
-
-<!-- elm-cem:example title="Hideability (2)" -->
-```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] []
-```
-
 <!-- elm-cem:example title="Choose a destination" -->
 ```elm
 M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Choose a destination") ]) ]

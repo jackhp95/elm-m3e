@@ -51,7 +51,26 @@ M3e.ButtonGroup.view [ M3e.ButtonGroup.multi True ] (M3e.ButtonGroup.children [ 
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.ButtonGroup.view [] []
+[ M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), M3e.Button.child (Kit.text "Share") ] ])
+    , Native.br
+    , M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), M3e.Button.child (Kit.text "Share") ] ])
+    , Native.br
+    , M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), M3e.Button.child (Kit.text "Share") ] ])
+    , Native.br
+    , M3e.ButtonGroup.view [] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "directions_car" ] []), M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "share" ] []), M3e.Button.child (Kit.text "Share") ] ])
+    ]
+```
+
+<!-- elm-cem:example title="Density (2)" -->
+```elm
+[ M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Share") ] ])
+    , Native.br
+    , M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Share") ] ])
+    , Native.br
+    , M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Share") ] ])
+    , Native.br
+    , M3e.ButtonGroup.view [ M3e.ButtonGroup.variant M3e.Value.connected ] (M3e.ButtonGroup.children [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Start") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Directions") ], M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Share") ] ])
+    ]
 ```
 
 @docs view, multi, size, variant, child, children

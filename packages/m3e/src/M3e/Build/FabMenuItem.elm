@@ -1,31 +1,29 @@
-module M3e.Build.MenuItem exposing
-    ( Builder, AttrCaps, SlotCaps, menuItem, attr, disabled
-    , download, href, rel, target, onClick, child, icon
-    , trailingIcon, build
+module M3e.Build.FabMenuItem exposing
+    ( Builder, AttrCaps, SlotCaps, fabMenuItem, attr, disabled
+    , download, href, rel, target, onClick, build
     )
 
 {-|
-The ⑤ Build shape for `<m3e-menu-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.MenuItem as MenuItem`.
+The ⑤ Build shape for `<m3e-fab-menu-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenuItem as FabMenuItem`.
 
-@docs Builder, AttrCaps, SlotCaps, menuItem, attr, disabled
-@docs download, href, rel, target, onClick, child
-@docs icon, trailingIcon, build
+@docs Builder, AttrCaps, SlotCaps, fabMenuItem, attr, disabled
+@docs download, href, rel, target, onClick, build
 -}
 
 
 import M3e.Build.Internal
 import M3e.Cem.Attr.Internal
-import M3e.Cem.MenuItem
+import M3e.Cem.FabMenuItem
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
 import M3e.Value
 
 
-{-| Phantom-typed opaque builder for `<m3e-menu-item>`. -}
+{-| Phantom-typed opaque builder for `<m3e-fab-menu-item>`. -}
 type alias Builder attrCaps slotCaps msg kind =
     M3e.Build.Internal.Builder { kind
-        | menuItem : M3e.Value.Supported
+        | fabMenuItem : M3e.Value.Supported
     } attrCaps slotCaps msg
 
 
@@ -42,19 +40,16 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    { unnamed : M3e.Build.Internal.Available
-    , icon : M3e.Build.Internal.Available
-    , trailingIcon : M3e.Build.Internal.Available
-    }
+    {}
 
 
-{-| Seed a `Builder` for `<m3e-menu-item>`. -}
-menuItem : Builder AttrCaps SlotCaps msg kind
-menuItem =
+{-| Seed a `Builder` for `<m3e-fab-menu-item>`. -}
+fabMenuItem : Builder AttrCaps SlotCaps msg kind
+fabMenuItem =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
-                  M3e.Cem.MenuItem.menuItem
+                  M3e.Cem.FabMenuItem.fabMenuItem
                       (List.map M3e.Cem.Attr.Internal.forget erased_)
                       ch_
              )
@@ -84,12 +79,12 @@ disabled :
 disabled v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItem.disabled v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.disabled v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
-{-| Whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String
     -> Builder { a | download : M3e.Build.Internal.Available } s msg kind
@@ -97,7 +92,7 @@ download :
 download v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItem.download v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.download v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -110,7 +105,7 @@ href :
 href v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItem.href v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.href v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -123,7 +118,7 @@ rel :
 rel v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItem.rel v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.rel v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -136,7 +131,7 @@ target :
 target v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItem.target v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.target v_))
              (M3e.Build.Internal.node_ b_)
         )
 
@@ -149,66 +144,14 @@ onClick :
 onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
-             (M3e.Cem.Attr.Internal.forget (M3e.Cem.MenuItem.onClick v_))
+             (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.onClick v_))
              (M3e.Build.Internal.node_ b_)
         )
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , dialogTrigger : M3e.Value.Supported
-    , dialogAction : M3e.Value.Supported
-    , menuTrigger : M3e.Value.Supported
-    , fabMenuTrigger : M3e.Value.Supported
-    , bottomSheetTrigger : M3e.Value.Supported
-    , bottomSheetAction : M3e.Value.Supported
-    , stepperPrevious : M3e.Value.Supported
-    , stepperReset : M3e.Value.Supported
-    , richTooltipAction : M3e.Value.Supported
-    , drawerToggle : M3e.Value.Supported
-    , datepickerToggle : M3e.Value.Supported
-    , navRailToggle : M3e.Value.Supported
-    } msg
-    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
-    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
-child el_ b_ =
-    M3e.Build.Internal.wrap_
-        (M3e.Node.addChild
-             (M3e.Element.toNode el_)
-             (M3e.Build.Internal.node_ b_)
-        )
-
-
-{-| Place content in the `icon` slot. -}
-icon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
-    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
-icon el_ b_ =
-    M3e.Build.Internal.wrap_
-        (M3e.Node.addChild
-             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
-             (M3e.Build.Internal.node_ b_)
-        )
-
-
-{-| Place content in the `trailing-icon` slot. -}
-trailingIcon :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
-    -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
-trailingIcon el_ b_ =
-    M3e.Build.Internal.wrap_
-        (M3e.Node.addChild
-             (M3e.Element.toNode (M3e.Element.withSlot "trailing-icon" el_))
-             (M3e.Build.Internal.node_ b_)
-        )
-
-
-{-| Build the `<m3e-menu-item>` element from a `Builder`. -}
+{-| Build the `<m3e-fab-menu-item>` element from a `Builder`. -}
 build :
     Builder a s msg kind
-    -> M3e.Element.Element { menuItem : M3e.Value.Supported } msg
+    -> M3e.Element.Element { fabMenuItem : M3e.Value.Supported } msg
 build b_ =
     M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

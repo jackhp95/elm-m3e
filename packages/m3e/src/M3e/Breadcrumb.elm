@@ -35,17 +35,21 @@ M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.
 
 <!-- elm-cem:example title="Custom separators" -->
 ```elm
-M3e.Breadcrumb.view [] [ M3e.Breadcrumb.separator (Native.span [] [ Kit.text "/" ]), M3e.Breadcrumb.child (M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Dashboard") ]) ]
+M3e.Breadcrumb.view [] ([ M3e.Breadcrumb.separator (Native.span [] [ Kit.text "/" ]) ] ++ M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
 ```
 
 <!-- elm-cem:example title="Wrapping" -->
 ```elm
-M3e.Breadcrumb.view [ M3e.Breadcrumb.wrap True ] []
+M3e.Breadcrumb.view [ M3e.Breadcrumb.wrap True ] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Lorem ipsum dolor sit amet") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Consectetur adipiscing elit sed do") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Tempor incididunt ut labore et dolore") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Magna aliqua ut enim ad minim veniam") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Quis nostrud exercitation ullamco laboris nisi ut aliquip") ] ])
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Breadcrumb.view [] []
+[ M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+    , M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+    , M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+    , M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+    ]
 ```
 
 @docs view, wrap, child, separator, children

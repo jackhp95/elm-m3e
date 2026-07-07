@@ -48,7 +48,11 @@ A checkbox that allows a user to select one or more options from a limited numbe
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -3" ]
+[ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -3" ]
+    , Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -2" ]
+    , Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -1" ]
+    , Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density 0" ]
+    ]
 ```
 
 @docs view, checked, disabled, indeterminate, name, required

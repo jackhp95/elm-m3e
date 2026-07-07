@@ -22,8 +22,11 @@ M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child 
 <!-- elm-cem:example title="Inset" -->
 ```elm
 [ M3e.Divider.view [] []
+    , Native.br
     , M3e.Divider.view [ M3e.Divider.inset True ] []
+    , Native.br
     , M3e.Divider.view [ M3e.Divider.insetStart True ] []
+    , Native.br
     , M3e.Divider.view [ M3e.Divider.insetEnd True ] []
     ]
 ```

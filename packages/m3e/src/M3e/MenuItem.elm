@@ -4,10 +4,10 @@ module M3e.MenuItem exposing
     )
 
 {-|
-An item of a floating action button (FAB) menu.
+An item of a menu.
 
 **Component Info:**
-- **Extends:** `LitElement`
+- **Extends:** `MenuItemElementBase` from `/src/menu/MenuItemElementBase`
 
 **Events:**
 - `click`: Dispatched when the element is clicked.
@@ -66,7 +66,7 @@ disabled =
     M3e.Cem.MenuItem.disabled
 
 
-{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+{-| Whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =

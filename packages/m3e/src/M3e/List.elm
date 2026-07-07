@@ -17,14 +17,9 @@ A list of items.
 M3e.List.view [] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "person" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text "Overline" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (Native.span [] [ Kit.text "100+" ]), M3e.ListItem.child (Kit.text "Headline") ]) ]
 ```
 
-<!-- elm-cem:example title="Variants" -->
-```elm
-M3e.List.view [] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ]) ]
-```
-
 <!-- elm-cem:example title="Variants (2)" -->
 ```elm
-M3e.List.view [ M3e.List.variant M3e.Value.segmented ] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ]) ]
+M3e.List.view [ M3e.List.variant M3e.Value.segmented ] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 2") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 3") ] ])
 ```
 
 <!-- elm-cem:example title="Multiline items" -->
@@ -34,22 +29,22 @@ M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child 
 
 <!-- elm-cem:example title="Media content" -->
 ```elm
-M3e.List.view [] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ]) ]
+M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListItem.overline (Native.span [] [ Kit.text "Overline" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Label text") ] ])
 ```
 
 <!-- elm-cem:example title="Media content (2)" -->
 ```elm
-M3e.List.view [] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Avatar.view [] [ M3e.Avatar.child (Kit.text "AB") ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ]) ]
+M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Avatar.view [] [ M3e.Avatar.child (Kit.text "AB") ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Avatar.view [] [ M3e.Avatar.child (Kit.text "AB") ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (M3e.Avatar.view [] [ M3e.Avatar.child (Kit.text "AB") ]), M3e.ListItem.overline (Native.span [] [ Kit.text "Overline" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Label text") ] ])
 ```
 
 <!-- elm-cem:example title="Media content (3)" -->
 ```elm
-M3e.List.view [] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.leading (Native.img []), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ]) ]
+M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (Native.img []), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (Native.img []), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (Native.img []), M3e.ListItem.overline (Native.span [] [ Kit.text "Overline" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Label text") ] ])
 ```
 
 <!-- elm-cem:example title="Media content (4)" -->
 ```elm
-M3e.List.view [] [ M3e.List.child (M3e.ListItem.view [] [ M3e.ListItem.leading (Native.node Html.video [] [ Native.node Html.source [] [] ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ]) ]
+M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.leading (Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.leading (Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ]), M3e.ListItem.overline (Native.span [] [ Kit.text "Overline" ]), M3e.ListItem.supportingText (Native.span [] [ Kit.text "Supporting text" ]), M3e.ListItem.trailing (M3e.Icon.view [ M3e.Icon.name "arrow_right" ] []), M3e.ListItem.child (Kit.text "Label text") ], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Label text") ] ])
 ```
 
 <!-- elm-cem:example title="Dividers" -->
@@ -59,27 +54,27 @@ M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child 
 
 <!-- elm-cem:example title="Dividers (2)" -->
 ```elm
-M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ], M3e.Divider.view [ M3e.Divider.inset True ] [] ])
+M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ], M3e.Divider.view [ M3e.Divider.inset True ] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 2") ], M3e.Divider.view [ M3e.Divider.inset True ] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 3") ] ])
 ```
 
 <!-- elm-cem:example title="Action lists" -->
 ```elm
-M3e.ActionList.view [] [ M3e.ActionList.child (M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 1") ]) ]
+M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 1") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 2") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 3") ] ])
 ```
 
 <!-- elm-cem:example title="Action lists (2)" -->
 ```elm
-M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] [ M3e.ActionList.child (M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 1") ]) ]
+M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 1") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 2") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 3") ] ])
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.ActionList.view [] [ M3e.ActionList.child (M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.child (Kit.text "Disabled action 1") ]) ]
+M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.child (Kit.text "Disabled action 1") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 2") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 3") ] ])
 ```
 
 <!-- elm-cem:example title="Disabling (2)" -->
 ```elm
-M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] [ M3e.ActionList.child (M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.child (Kit.text "Disabled action 1") ]) ]
+M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ListAction.view [ M3e.ListAction.disabled True ] [ M3e.ListAction.child (Kit.text "Disabled action 1") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 2") ], M3e.ListAction.view [] [ M3e.ListAction.child (Kit.text "Action 3") ] ])
 ```
 
 <!-- elm-cem:example title="Links" -->
@@ -89,32 +84,32 @@ M3e.ActionList.view [] [ M3e.ActionList.child (M3e.ListAction.view [ M3e.ListAct
 
 <!-- elm-cem:example title="Nested lists" -->
 ```elm
-M3e.ActionList.view [] [ M3e.ActionList.child (M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ]) ]
+M3e.ActionList.view [] (M3e.ActionList.children [ M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ], M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ], M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ] ])
 ```
 
 <!-- elm-cem:example title="Nested lists (2)" -->
 ```elm
-M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] [ M3e.ActionList.child (M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ]) ]
+M3e.ActionList.view [ M3e.ActionList.variant M3e.Value.segmented ] (M3e.ActionList.children [ M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ], M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ], M3e.ExpandableListItem.view [] [ M3e.ExpandableListItem.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ExpandableListItem.items (Native.div [] [ M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ], M3e.ListAction.view [] [ M3e.ListAction.leading (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.ListAction.child (Kit.text "List item") ] ]), M3e.ExpandableListItem.child (Kit.text "List item") ] ])
 ```
 
 <!-- elm-cem:example title="Selection lists" -->
 ```elm
-M3e.SelectionList.view [] [ M3e.SelectionList.child (M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ]) ]
+M3e.SelectionList.view [] (M3e.SelectionList.children [ M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 <!-- elm-cem:example title="Selection lists (2)" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented ] [ M3e.SelectionList.child (M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ]) ]
+M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented ] (M3e.SelectionList.children [ M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 <!-- elm-cem:example title="Multiple selection" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.multi True ] [ M3e.SelectionList.child (M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ]) ]
+M3e.SelectionList.view [ M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 <!-- elm-cem:example title="Multiple selection (2)" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] [ M3e.SelectionList.child (M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ]) ]
+M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 <!-- elm-cem:example title="Hiding the selection indicator" -->
@@ -124,17 +119,17 @@ M3e.SelectionList.view [ M3e.SelectionList.multi True, M3e.SelectionList.hideSel
 
 <!-- elm-cem:example title="Disabling (3)" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [ M3e.ListOption.selected True, M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 1") ] ])
+M3e.SelectionList.view [ M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [ M3e.ListOption.selected True, M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 <!-- elm-cem:example title="Disabling (4)" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [ M3e.ListOption.selected True, M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 1") ] ])
+M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [ M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [ M3e.ListOption.selected True, M3e.ListOption.disabled True ] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] []
+M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] (M3e.SelectionList.children [ M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 1") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 2") ], M3e.ListOption.view [] [ M3e.ListOption.child (Kit.text "Option 3") ] ])
 ```
 
 @docs view, variant, child, children

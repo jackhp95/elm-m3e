@@ -28,34 +28,42 @@ M3e.RadioGroup.view [] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3
 <!-- elm-cem:example title="Labels" -->
 ```elm
 [ Native.node Html.label [] [ Kit.text "Select an option" ]
-    , M3e.RadioGroup.view [] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    , Native.br
+    , M3e.RadioGroup.view [] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ])
     ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
 [ Native.node Html.label [] [ Kit.text "Select an option" ]
-    , M3e.RadioGroup.view [] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.disabled True, M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    , Native.br
+    , M3e.RadioGroup.view [] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.disabled True, M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ])
     ]
 ```
 
 <!-- elm-cem:example title="Disabling (2)" -->
 ```elm
 [ Native.node Html.label [] [ Kit.text "Select an option" ]
-    , M3e.RadioGroup.view [ M3e.RadioGroup.disabled True ] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    , Native.br
+    , M3e.RadioGroup.view [ M3e.RadioGroup.disabled True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ])
     ]
 ```
 
 <!-- elm-cem:example title="Required" -->
 ```elm
 [ Native.node Html.label [] [ Kit.text "Select an option" ]
-    , M3e.RadioGroup.view [ M3e.RadioGroup.required True ] [ M3e.RadioGroup.child (Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ]) ]
+    , Native.br
+    , M3e.RadioGroup.view [ M3e.RadioGroup.required True ] (M3e.RadioGroup.children [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ])
     ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -3" ]
+[ Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -3" ]
+    , Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -2" ]
+    , Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -1" ]
+    , Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density 0" ]
+    ]
 ```
 
 @docs view, ariaInvalid, disabled, name, required, onBeforeinput

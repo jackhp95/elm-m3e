@@ -26,24 +26,29 @@ A content container for text, images (or other media), and actions in the contex
 
 ### Examples
 
-<!-- elm-cem:example title="Card Header" -->
+<!-- elm-cem:example title="Anatomy" -->
 ```elm
 M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]
 ```
 
-<!-- elm-cem:example title="Card Header (2)" -->
+<!-- elm-cem:example title="Card Header" -->
 ```elm
 M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]) ]
 ```
 
-<!-- elm-cem:example title="Card Header (3)" -->
+<!-- elm-cem:example title="Card Header (2)" -->
 ```elm
 M3e.Card.view [] [ M3e.Card.child (Kit.text "Card content") ]
 ```
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.Card.view [ M3e.Card.variant M3e.Value.filled ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled" ]) ]
+[ M3e.Card.view [ M3e.Card.variant M3e.Value.filled ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Value.outlined ] [ M3e.Card.content (Native.div [] [ Kit.text "Outlined" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Value.elevated ] [ M3e.Card.content (Native.div [] [ Kit.text "Elevated" ]) ]
+    ]
 ```
 
 <!-- elm-cem:example title="Inline" -->
@@ -58,7 +63,12 @@ M3e.Card.view [ M3e.Card.inline True, M3e.Card.orientation M3e.Value.horizontal 
 
 <!-- elm-cem:example title="Actionable" -->
 ```elm
-M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled" ]) ]
+[ M3e.Card.view [ M3e.Card.variant M3e.Value.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled Actionable" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Value.outlined, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Outlined Actionable" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Value.elevated, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Elevated Actionable" ]) ]
+    ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->

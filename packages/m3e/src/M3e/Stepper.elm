@@ -18,27 +18,6 @@ Provides a wizard-like workflow by dividing content into logical steps.
 - `step`: Renders a step.
 - `panel`: Renders a panel.
 
-<!-- elm-cem:docmeta category=Navigation -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Orientation" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.vertical ] []
-```
-
-<!-- elm-cem:example title="Header positions" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.headerPosition M3e.Value.below ] []
-```
-
-<!-- elm-cem:example title="Label positions" -->
-```elm
-M3e.Stepper.view [ M3e.Stepper.labelPosition M3e.Value.below ] []
-```
-
 @docs view, headerPosition, labelPosition, linear, orientation, onChange
 @docs onBeforeinput, onInput, step, panel
 -}

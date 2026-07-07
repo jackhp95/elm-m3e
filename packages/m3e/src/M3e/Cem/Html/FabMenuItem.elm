@@ -1,12 +1,12 @@
-module M3e.Cem.Html.MenuItem exposing
-    ( menuItem, disabled, download, href, rel, target
+module M3e.Cem.Html.FabMenuItem exposing
+    ( fabMenuItem, disabled, download, href, rel, target
     , onClick
     )
 
 {-|
-Bottom layer for `<m3e-menu-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
+Bottom layer for `<m3e-fab-menu-item>`: the plain `elm/html` API — one element constructor plus raw attribute and event setters, R1-correct DOM emission, no phantom typing. The rawest escape in the gradient.
 
-@docs menuItem, disabled, download, href, rel, target
+@docs fabMenuItem, disabled, download, href, rel, target
 @docs onClick
 -}
 
@@ -18,10 +18,10 @@ import Json.Decode
 import Json.Encode
 
 
-{-| The raw `<m3e-menu-item>` element — a partial application of `Html.node`. -}
-menuItem : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
-menuItem =
-    Html.node "m3e-menu-item"
+{-| The raw `<m3e-fab-menu-item>` element — a partial application of `Html.node`. -}
+fabMenuItem : List (Html.Attribute msg) -> List (Html.Html msg) -> Html.Html msg
+fabMenuItem =
+    Html.node "m3e-fab-menu-item"
 
 
 {-| Whether the element is disabled. (default: `false`) -}
@@ -30,7 +30,7 @@ disabled val_ =
     Html.Attributes.property "disabled" (Json.Encode.bool val_)
 
 
-{-| Whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download : String -> Html.Attribute msg
 download =
     Html.Attributes.attribute "download"

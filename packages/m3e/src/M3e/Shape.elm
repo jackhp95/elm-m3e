@@ -59,6 +59,11 @@ A shape used to add emphasis and decorative flair.
     ]
 ```
 
+<!-- elm-cem:example title="Morphing" -->
+```elm
+M3e.Shape.view [] []
+```
+
 @docs view, name, child, children
 -}
 
