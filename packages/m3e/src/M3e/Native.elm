@@ -53,7 +53,7 @@ label attrs children =
 {-| The `<input>` HTML element is used to create interactive controls for web-based forms in order to accept data from the user; a wide variety of types of input data and control widgets are available, depending on the device and user agent. The `<input>` element is one of the most powerful and complex in all of HTML due to the sheer number of combinations of input types and attributes.
 -}
 input :
-    List (Attr { checked : Supported, disabled : Supported, max : Supported, min : Supported, multiple : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, slot : Supported, step : Supported, type_ : Supported, value : Supported } msg) -> Element any msg
+    List (Attr { checked : Supported, disabled : Supported, max : Supported, min : Supported, multiple : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, slot : Supported, step : Supported, type_ : Supported, value : Supported } msg) -> Element { k | html : Supported } msg
 input attrs =
     Element.fromNode
         (Node.fromComponent
@@ -66,7 +66,7 @@ input attrs =
 {-| The `<textarea>` HTML element represents a multi-line plain-text editing control, useful when you want to allow users to enter a sizeable amount of free-form text, for example a comment on a review or feedback form.
 -}
 textarea :
-    List (Attr { cols : Supported, disabled : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, rows : Supported, slot : Supported, value : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { cols : Supported, disabled : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, rows : Supported, slot : Supported, value : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 textarea attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -79,7 +79,7 @@ textarea attrs children =
 {-| The `<select>` HTML element represents a control that provides a menu of options.
 -}
 select :
-    List (Attr { disabled : Supported, multiple : Supported, name : Supported, required : Supported, slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { disabled : Supported, multiple : Supported, name : Supported, required : Supported, slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 select attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -92,7 +92,7 @@ select attrs children =
 {-| The `<button>` HTML element is an interactive element activated by a user with a mouse, keyboard, finger, voice command, or other assistive technology. Once activated, it then performs an action, such as submitting a form or opening a dialog.
 -}
 button :
-    List (Attr { disabled : Supported, name : Supported, slot : Supported, type_ : Supported, value : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { disabled : Supported, name : Supported, slot : Supported, type_ : Supported, value : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 button attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -105,7 +105,7 @@ button attrs children =
 {-| The `<span>` HTML element is a generic inline container for phrasing content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the `class` or `id` attributes), or because they share attribute values, such as `lang`. It should be used only when no other semantic element is appropriate. `<span>` is very much like a <div> element, but <div> is a block-level element whereas a `<span>` is an inline-level element.
 -}
 span :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 span attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -118,7 +118,7 @@ span attrs children =
 {-| The `<div>` HTML element is the generic container for flow content. It has no effect on the content or layout until styled in some way using CSS (e.g., styling is directly applied to it, or some kind of layout model like Flexbox is applied to its parent element).
 -}
 div :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 div attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -131,7 +131,7 @@ div attrs children =
 {-| The `<p>` HTML element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.
 -}
 p :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 p attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -144,7 +144,7 @@ p attrs children =
 {-| The `<ul>` HTML element represents an unordered list of items, typically rendered as a bulleted list.
 -}
 ul :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 ul attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -157,7 +157,7 @@ ul attrs children =
 {-| The `<li>` HTML element is used to represent an item in a list. It must be contained in a parent element: an ordered list (<ol>), an unordered list (<ul>), or a menu (<menu>). In menus and unordered lists, list items are usually displayed using bullet points. In ordered lists, they are usually displayed with an ascending counter on the left, such as a number or letter.
 -}
 li :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 li attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -170,7 +170,7 @@ li attrs children =
 {-| The `<nav>` HTML element represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents. Common examples of navigation sections are menus, tables of contents, and indexes.
 -}
 nav :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 nav attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -183,7 +183,7 @@ nav attrs children =
 {-| The `<header>` HTML element represents introductory content, typically a group of introductory or navigational aids. It may contain some heading elements but also a logo, a search form, an author name, and other elements.
 -}
 header :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 header attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -196,7 +196,7 @@ header attrs children =
 {-| The `<footer>` HTML element represents a footer for its nearest ancestor sectioning content or sectioning root element. A `<footer>` typically contains information about the author of the section, copyright data or links to related documents.
 -}
 footer :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 footer attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -209,7 +209,7 @@ footer attrs children =
 {-| The `<section>` HTML element represents a generic standalone section of a document, which doesn't have a more specific semantic element to represent it. Sections should always have a heading, with very few exceptions.
 -}
 section :
-    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+    List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 section attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -222,7 +222,7 @@ section attrs children =
 {-| The `<img>` HTML element embeds an image into the document.
 -}
 img :
-    List (Attr { alt : Supported, height : Supported, slot : Supported, src : Supported, width : Supported } msg) -> Element any msg
+    List (Attr { alt : Supported, height : Supported, slot : Supported, src : Supported, width : Supported } msg) -> Element { k | html : Supported } msg
 img attrs =
     Element.fromNode
         (Node.fromComponent

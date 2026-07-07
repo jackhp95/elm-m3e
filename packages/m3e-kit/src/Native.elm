@@ -54,63 +54,63 @@ a =
 
 {-| A `<div>`. See [`M3e.Native.div`](M3e-Native#div).
 -}
-div : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+div : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 div =
     M3e.Native.div
 
 
 {-| A `<span>`. See [`M3e.Native.span`](M3e-Native#span).
 -}
-span : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+span : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 span =
     M3e.Native.span
 
 
 {-| A `<section>`. See [`M3e.Native.section`](M3e-Native#section).
 -}
-section : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+section : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 section =
     M3e.Native.section
 
 
 {-| A `<nav>`. See [`M3e.Native.nav`](M3e-Native#nav).
 -}
-nav : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+nav : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 nav =
     M3e.Native.nav
 
 
 {-| A `<header>`. See [`M3e.Native.header`](M3e-Native#header).
 -}
-header : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+header : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 header =
     M3e.Native.header
 
 
 {-| A `<footer>`. See [`M3e.Native.footer`](M3e-Native#footer).
 -}
-footer : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+footer : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 footer =
     M3e.Native.footer
 
 
 {-| A `<p>`. See [`M3e.Native.p`](M3e-Native#p).
 -}
-p : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+p : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 p =
     M3e.Native.p
 
 
 {-| A `<ul>`. See [`M3e.Native.ul`](M3e-Native#ul).
 -}
-ul : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+ul : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 ul =
     M3e.Native.ul
 
 
 {-| An `<li>`. See [`M3e.Native.li`](M3e-Native#li).
 -}
-li : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element any msg
+li : List (Attr { slot : Supported } msg) -> List (Element s msg) -> Element { k | html : Supported } msg
 li =
     M3e.Native.li
 
@@ -119,7 +119,7 @@ li =
 -}
 img :
     List (Attr { alt : Supported, height : Supported, slot : Supported, src : Supported, width : Supported } msg)
-    -> Element any msg
+    -> Element { k | html : Supported } msg
 img =
     M3e.Native.img
 
@@ -138,7 +138,7 @@ label =
 -}
 input :
     List (Attr { checked : Supported, disabled : Supported, max : Supported, min : Supported, multiple : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, slot : Supported, step : Supported, type_ : Supported, value : Supported } msg)
-    -> Element any msg
+    -> Element { k | html : Supported } msg
 input =
     M3e.Native.input
 
@@ -148,7 +148,7 @@ input =
 button :
     List (Attr { disabled : Supported, name : Supported, slot : Supported, type_ : Supported, value : Supported } msg)
     -> List (Element s msg)
-    -> Element any msg
+    -> Element { k | html : Supported } msg
 button =
     M3e.Native.button
 
@@ -158,7 +158,7 @@ button =
 select :
     List (Attr { disabled : Supported, multiple : Supported, name : Supported, required : Supported, slot : Supported } msg)
     -> List (Element s msg)
-    -> Element any msg
+    -> Element { k | html : Supported } msg
 select =
     M3e.Native.select
 
@@ -168,7 +168,7 @@ select =
 textarea :
     List (Attr { cols : Supported, disabled : Supported, name : Supported, placeholder : Supported, readonly : Supported, required : Supported, rows : Supported, slot : Supported, value : Supported } msg)
     -> List (Element s msg)
-    -> Element any msg
+    -> Element { k | html : Supported } msg
 textarea =
     M3e.Native.textarea
 
