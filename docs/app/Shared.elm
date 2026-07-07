@@ -836,6 +836,7 @@ componentList =
     , ( "loadingindicator", "Loading Indicator", "Communication" )
     , ( "menu", "Menu", "Navigation" )
     , ( "navbar", "Navigation Bar", "Navigation" )
+    , ( "navmenu", "Nav Menu", "Navigation" )
     , ( "navrail", "Navigation Rail", "Navigation" )
     , ( "paginator", "Paginator", "Navigation" )
     , ( "progress", "Progress", "Communication" )
