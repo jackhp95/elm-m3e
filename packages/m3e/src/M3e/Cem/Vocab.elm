@@ -26,15 +26,15 @@ module M3e.Cem.Vocab exposing
     , width, wrap, wrapDetents, name, valueFloat, value, onChange
     , onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput, onInput
     , onBeforetoggle, onToggle, onValueChange, onQuery, onClear, onPage, onCancel
-    , onRemove, onInvalid, onActiveChange, onHighlight, slotDefault, slotLeading, slotTitle
-    , slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
-    , slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter
-    , slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
-    , slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError
-    , slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon
-    , slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
-    , slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
-    , slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
+    , onRemove, onInvalid, onActiveChange, onHighlight, slotLeading, slotTitle, slotSubtitle
+    , slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader
+    , slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+    , slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems, slotLabel
+    , slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar
+    , slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon
+    , slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon
+    , slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon
+    , slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
     )
 
 {-|
@@ -72,16 +72,16 @@ Shared middle vocabulary: the component-agnostic, phantom-gated attribute, event
 @docs onOpening, onOpened, onClosing, onClosed, onClick, onBeforeinput
 @docs onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
 @docs onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight
-@docs slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
-@docs slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator
-@docs slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
-@docs slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
-@docs slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
-@docs slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
-@docs slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
-@docs slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
-@docs slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon
-@docs slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
+@docs slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon
+@docs slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected
+@docs slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon, slotStart
+@docs slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems, slotLabel
+@docs slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint, slotError
+@docs slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon
+@docs slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing
+@docs slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue, slotNextIcon
+@docs slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon
+@docs slotStep, slotPanel, slotOpenToggleIcon
 -}
 
 
@@ -89,9 +89,8 @@ import Json.Decode
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Html.Vocab
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
+import M3e.Element.Internal
 import M3e.Value
 
 
@@ -1662,465 +1661,444 @@ onHighlight =
     M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.Vocab.onHighlight
 
 
-{-| Place content in the `(default)` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotDefault :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-slotDefault =
-    M3e.Content.Internal.slot ""
-
-
-{-| Place content in the `leading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `leading` slot: stamp `slot="leading"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotLeading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotLeading =
-    M3e.Content.Internal.slot "leading"
+    M3e.Element.Internal.placeSlot "leading"
 
 
-{-| Place content in the `title` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `title` slot: stamp `slot="title"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotTitle :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotTitle =
-    M3e.Content.Internal.slot "title"
+    M3e.Element.Internal.placeSlot "title"
 
 
-{-| Place content in the `subtitle` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `subtitle` slot: stamp `slot="subtitle"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotSubtitle :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotSubtitle =
-    M3e.Content.Internal.slot "subtitle"
+    M3e.Element.Internal.placeSlot "subtitle"
 
 
-{-| Place content in the `trailing` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `trailing` slot: stamp `slot="trailing"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotTrailing :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    , searchBar : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotTrailing =
-    M3e.Content.Internal.slot "trailing"
+    M3e.Element.Internal.placeSlot "trailing"
 
 
-{-| Place content in the `leading-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotLeadingIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | leadingIcon : M3e.Value.Supported } msg
+{-| Place content in the `leading-icon` slot: stamp `slot="leading-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotLeadingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotLeadingIcon =
-    M3e.Content.Internal.slot "leading-icon"
+    M3e.Element.Internal.placeSlot "leading-icon"
 
 
-{-| Place content in the `trailing-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotTrailingIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+{-| Place content in the `trailing-icon` slot: stamp `slot="trailing-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotTrailingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotTrailingIcon =
-    M3e.Content.Internal.slot "trailing-icon"
+    M3e.Element.Internal.placeSlot "trailing-icon"
 
 
-{-| Place content in the `icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `icon` slot: stamp `slot="icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotIcon =
-    M3e.Content.Internal.slot "icon"
+    M3e.Element.Internal.placeSlot "icon"
 
 
-{-| Place content in the `loading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotLoading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
+{-| Place content in the `loading` slot: stamp `slot="loading"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotLoading : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotLoading =
-    M3e.Content.Internal.slot "loading"
+    M3e.Element.Internal.placeSlot "loading"
 
 
-{-| Place content in the `no-data` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotNoData :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | noData : M3e.Value.Supported } msg
+{-| Place content in the `no-data` slot: stamp `slot="no-data"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotNoData : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotNoData =
-    M3e.Content.Internal.slot "no-data"
+    M3e.Element.Internal.placeSlot "no-data"
 
 
-{-| Place content in the `header` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotHeader :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+{-| Place content in the `header` slot: stamp `slot="header"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotHeader : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotHeader =
-    M3e.Content.Internal.slot "header"
+    M3e.Element.Internal.placeSlot "header"
 
 
-{-| Place content in the `separator` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotSeparator :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | separator : M3e.Value.Supported } msg
+{-| Place content in the `separator` slot: stamp `slot="separator"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotSeparator : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotSeparator =
-    M3e.Content.Internal.slot "separator"
+    M3e.Element.Internal.placeSlot "separator"
 
 
-{-| Place content in the `selected` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `selected` slot: stamp `slot="selected"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotSelected :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotSelected =
-    M3e.Content.Internal.slot "selected"
+    M3e.Element.Internal.placeSlot "selected"
 
 
-{-| Place content in the `selected-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `selected-icon` slot: stamp `slot="selected-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotSelectedIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotSelectedIcon =
-    M3e.Content.Internal.slot "selected-icon"
+    M3e.Element.Internal.placeSlot "selected-icon"
 
 
-{-| Place content in the `content` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotContent :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | content : M3e.Value.Supported } msg
+{-| Place content in the `content` slot: stamp `slot="content"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotContent : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotContent =
-    M3e.Content.Internal.slot "content"
+    M3e.Element.Internal.placeSlot "content"
 
 
-{-| Place content in the `actions` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotActions :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+{-| Place content in the `actions` slot: stamp `slot="actions"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotActions : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotActions =
-    M3e.Content.Internal.slot "actions"
+    M3e.Element.Internal.placeSlot "actions"
 
 
-{-| Place content in the `footer` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotFooter :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | footer : M3e.Value.Supported } msg
+{-| Place content in the `footer` slot: stamp `slot="footer"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotFooter : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotFooter =
-    M3e.Content.Internal.slot "footer"
+    M3e.Element.Internal.placeSlot "footer"
 
 
-{-| Place content in the `close-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `close-icon` slot: stamp `slot="close-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotCloseIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotCloseIcon =
-    M3e.Content.Internal.slot "close-icon"
+    M3e.Element.Internal.placeSlot "close-icon"
 
 
-{-| Place content in the `start` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotStart :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | start : M3e.Value.Supported } msg
+{-| Place content in the `start` slot: stamp `slot="start"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotStart : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotStart =
-    M3e.Content.Internal.slot "start"
+    M3e.Element.Internal.placeSlot "start"
 
 
-{-| Place content in the `end` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotEnd :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | end : M3e.Value.Supported } msg
+{-| Place content in the `end` slot: stamp `slot="end"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotEnd : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotEnd =
-    M3e.Content.Internal.slot "end"
+    M3e.Element.Internal.placeSlot "end"
 
 
-{-| Place content in the `overline` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `overline` slot: stamp `slot="overline"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotOverline :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotOverline =
-    M3e.Content.Internal.slot "overline"
+    M3e.Element.Internal.placeSlot "overline"
 
 
-{-| Place content in the `supporting-text` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `supporting-text` slot: stamp `slot="supporting-text"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotSupportingText :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotSupportingText =
-    M3e.Content.Internal.slot "supporting-text"
+    M3e.Element.Internal.placeSlot "supporting-text"
 
 
-{-| Place content in the `toggle-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `toggle-icon` slot: stamp `slot="toggle-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotToggleIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotToggleIcon =
-    M3e.Content.Internal.slot "toggle-icon"
+    M3e.Element.Internal.placeSlot "toggle-icon"
 
 
-{-| Place content in the `items` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotItems :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | items : M3e.Value.Supported } msg
+{-| Place content in the `items` slot: stamp `slot="items"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotItems : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotItems =
-    M3e.Content.Internal.slot "items"
+    M3e.Element.Internal.placeSlot "items"
 
 
-{-| Place content in the `label` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `label` slot: stamp `slot="label"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotLabel :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotLabel =
-    M3e.Content.Internal.slot "label"
+    M3e.Element.Internal.placeSlot "label"
 
 
-{-| Place content in the `prefix` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotPrefix :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | prefix : M3e.Value.Supported } msg
+{-| Place content in the `prefix` slot: stamp `slot="prefix"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotPrefix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotPrefix =
-    M3e.Content.Internal.slot "prefix"
+    M3e.Element.Internal.placeSlot "prefix"
 
 
-{-| Place content in the `prefix-text` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotPrefixText :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
+{-| Place content in the `prefix-text` slot: stamp `slot="prefix-text"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotPrefixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotPrefixText =
-    M3e.Content.Internal.slot "prefix-text"
+    M3e.Element.Internal.placeSlot "prefix-text"
 
 
-{-| Place content in the `suffix` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotSuffix :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | suffix : M3e.Value.Supported } msg
+{-| Place content in the `suffix` slot: stamp `slot="suffix"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotSuffix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotSuffix =
-    M3e.Content.Internal.slot "suffix"
+    M3e.Element.Internal.placeSlot "suffix"
 
 
-{-| Place content in the `suffix-text` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotSuffixText :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
+{-| Place content in the `suffix-text` slot: stamp `slot="suffix-text"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotSuffixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotSuffixText =
-    M3e.Content.Internal.slot "suffix-text"
+    M3e.Element.Internal.placeSlot "suffix-text"
 
 
-{-| Place content in the `hint` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotHint :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+{-| Place content in the `hint` slot: stamp `slot="hint"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotHint : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotHint =
-    M3e.Content.Internal.slot "hint"
+    M3e.Element.Internal.placeSlot "hint"
 
 
-{-| Place content in the `error` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotError :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+{-| Place content in the `error` slot: stamp `slot="error"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotError : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotError =
-    M3e.Content.Internal.slot "error"
+    M3e.Element.Internal.placeSlot "error"
 
 
-{-| Place content in the `avatar` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `avatar` slot: stamp `slot="avatar"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotAvatar :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | avatar : M3e.Value.Supported } msg
+    M3e.Element.Element { avatar : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotAvatar =
-    M3e.Content.Internal.slot "avatar"
+    M3e.Element.Internal.placeSlot "avatar"
 
 
-{-| Place content in the `remove-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `remove-icon` slot: stamp `slot="remove-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotRemoveIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotRemoveIcon =
-    M3e.Content.Internal.slot "remove-icon"
+    M3e.Element.Internal.placeSlot "remove-icon"
 
 
-{-| Place content in the `input` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotInput :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+{-| Place content in the `input` slot: stamp `slot="input"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotInput : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotInput =
-    M3e.Content.Internal.slot "input"
+    M3e.Element.Internal.placeSlot "input"
 
 
-{-| Place content in the `badge` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `badge` slot: stamp `slot="badge"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotBadge :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | badge : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , badge : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotBadge =
-    M3e.Content.Internal.slot "badge"
+    M3e.Element.Internal.placeSlot "badge"
 
 
-{-| Place content in the `first-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `first-page-icon` slot: stamp `slot="first-page-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotFirstPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | firstPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotFirstPageIcon =
-    M3e.Content.Internal.slot "first-page-icon"
+    M3e.Element.Internal.placeSlot "first-page-icon"
 
 
-{-| Place content in the `previous-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `previous-page-icon` slot: stamp `slot="previous-page-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotPreviousPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | previousPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotPreviousPageIcon =
-    M3e.Content.Internal.slot "previous-page-icon"
+    M3e.Element.Internal.placeSlot "previous-page-icon"
 
 
-{-| Place content in the `next-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `next-page-icon` slot: stamp `slot="next-page-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotNextPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | nextPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotNextPageIcon =
-    M3e.Content.Internal.slot "next-page-icon"
+    M3e.Element.Internal.placeSlot "next-page-icon"
 
 
-{-| Place content in the `last-page-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `last-page-icon` slot: stamp `slot="last-page-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotLastPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | lastPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotLastPageIcon =
-    M3e.Content.Internal.slot "last-page-icon"
+    M3e.Element.Internal.placeSlot "last-page-icon"
 
 
-{-| Place content in the `subhead` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `subhead` slot: stamp `slot="subhead"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotSubhead :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | subhead : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotSubhead =
-    M3e.Content.Internal.slot "subhead"
+    M3e.Element.Internal.placeSlot "subhead"
 
 
-{-| Place content in the `clear-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `clear-icon` slot: stamp `slot="clear-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotClearIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotClearIcon =
-    M3e.Content.Internal.slot "clear-icon"
+    M3e.Element.Internal.placeSlot "clear-icon"
 
 
-{-| Place content in the `open-leading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `open-leading` slot: stamp `slot="open-leading"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotOpenLeading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | openLeading : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotOpenLeading =
-    M3e.Content.Internal.slot "open-leading"
+    M3e.Element.Internal.placeSlot "open-leading"
 
 
-{-| Place content in the `open-trailing` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `open-trailing` slot: stamp `slot="open-trailing"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotOpenTrailing :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | openTrailing : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotOpenTrailing =
-    M3e.Content.Internal.slot "open-trailing"
+    M3e.Element.Internal.placeSlot "open-trailing"
 
 
-{-| Place content in the `closed-leading` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `closed-leading` slot: stamp `slot="closed-leading"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotClosedLeading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | closedLeading : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotClosedLeading =
-    M3e.Content.Internal.slot "closed-leading"
+    M3e.Element.Internal.placeSlot "closed-leading"
 
 
-{-| Place content in the `closed-trailing` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `closed-trailing` slot: stamp `slot="closed-trailing"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotClosedTrailing :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | closedTrailing : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotClosedTrailing =
-    M3e.Content.Internal.slot "closed-trailing"
+    M3e.Element.Internal.placeSlot "closed-trailing"
 
 
-{-| Place content in the `search-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `search-icon` slot: stamp `slot="search-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotSearchIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | searchIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotSearchIcon =
-    M3e.Content.Internal.slot "search-icon"
+    M3e.Element.Internal.placeSlot "search-icon"
 
 
-{-| Place content in the `arrow` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `arrow` slot: stamp `slot="arrow"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotArrow :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | arrow : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotArrow =
-    M3e.Content.Internal.slot "arrow"
+    M3e.Element.Internal.placeSlot "arrow"
 
 
-{-| Place content in the `value` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
-slotValue :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | value : M3e.Value.Supported } msg
+{-| Place content in the `value` slot: stamp `slot="value"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
+slotValue : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotValue =
-    M3e.Content.Internal.slot "value"
+    M3e.Element.Internal.placeSlot "value"
 
 
-{-| Place content in the `next-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `next-icon` slot: stamp `slot="next-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotNextIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotNextIcon =
-    M3e.Content.Internal.slot "next-icon"
+    M3e.Element.Internal.placeSlot "next-icon"
 
 
-{-| Place content in the `prev-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `prev-icon` slot: stamp `slot="prev-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotPrevIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotPrevIcon =
-    M3e.Content.Internal.slot "prev-icon"
+    M3e.Element.Internal.placeSlot "prev-icon"
 
 
-{-| Place content in the `leading-button` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `leading-button` slot: stamp `slot="leading-button"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotLeadingButton :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
+    M3e.Element.Element { button : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotLeadingButton =
-    M3e.Content.Internal.slot "leading-button"
+    M3e.Element.Internal.placeSlot "leading-button"
 
 
-{-| Place content in the `trailing-button` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `trailing-button` slot: stamp `slot="trailing-button"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotTrailingButton :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotTrailingButton =
-    M3e.Content.Internal.slot "trailing-button"
+    M3e.Element.Internal.placeSlot "trailing-button"
 
 
-{-| Place content in the `done-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `done-icon` slot: stamp `slot="done-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotDoneIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | doneIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotDoneIcon =
-    M3e.Content.Internal.slot "done-icon"
+    M3e.Element.Internal.placeSlot "done-icon"
 
 
-{-| Place content in the `edit-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `edit-icon` slot: stamp `slot="edit-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotEditIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | editIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotEditIcon =
-    M3e.Content.Internal.slot "edit-icon"
+    M3e.Element.Internal.placeSlot "edit-icon"
 
 
-{-| Place content in the `error-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `error-icon` slot: stamp `slot="error-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotErrorIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | errorIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotErrorIcon =
-    M3e.Content.Internal.slot "error-icon"
+    M3e.Element.Internal.placeSlot "error-icon"
 
 
-{-| Place content in the `step` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `step` slot: stamp `slot="step"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotStep :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | step : M3e.Value.Supported } msg
+    M3e.Element.Element { step : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotStep =
-    M3e.Content.Internal.slot "step"
+    M3e.Element.Internal.placeSlot "step"
 
 
-{-| Place content in the `panel` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `panel` slot: stamp `slot="panel"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotPanel :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
+    M3e.Element.Element { stepPanel : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotPanel =
-    M3e.Content.Internal.slot "panel"
+    M3e.Element.Internal.placeSlot "panel"
 
 
-{-| Place content in the `open-toggle-icon` slot. Component-agnostic: the element kind is loose, but the result only type-checks against a component whose view declares this slot. -}
+{-| Place content in the `open-toggle-icon` slot: stamp `slot="open-toggle-icon"` onto an element (kind-guided INPUT, free output row). Component-agnostic; cross-component slot misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule. -}
 slotOpenToggleIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | openToggleIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotOpenToggleIcon =
-    M3e.Content.Internal.slot "open-toggle-icon"
+    M3e.Element.Internal.placeSlot "open-toggle-icon"

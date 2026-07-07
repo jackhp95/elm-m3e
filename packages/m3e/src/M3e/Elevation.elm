@@ -26,7 +26,7 @@ view :
     , level : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | elevation : M3e.Value.Supported } msg
 view attributes children =
     M3e.Element.Internal.fromNode

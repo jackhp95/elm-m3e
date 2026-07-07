@@ -2,7 +2,7 @@ module M3e.IconButton exposing
     ( view, disabled, disabledInteractive, name, selected, shape
     , size, toggle, type_, value, variant, width, onBeforeinput
     , onInput, onChange, onClick, href, target, rel, download
-    , child, selectedSlot, children
+    , selectedSlot
     )
 
 {-|
@@ -129,15 +129,13 @@ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.hre
 @docs view, disabled, disabledInteractive, name, selected, shape
 @docs size, toggle, type_, value, variant, width
 @docs onBeforeinput, onInput, onChange, onClick, href, target
-@docs rel, download, child, selectedSlot, children
+@docs rel, download, selectedSlot
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.IconButton
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -167,11 +165,9 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , selected : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | iconButton : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -180,7 +176,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -333,25 +329,9 @@ download =
     M3e.Cem.IconButton.download
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `selected` slot. -}
 selectedSlot :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 selectedSlot el =
-    M3e.Content.Internal.slot "selected" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "selected" el

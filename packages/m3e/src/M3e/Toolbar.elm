@@ -1,6 +1,5 @@
 module M3e.Toolbar exposing
-    ( view, elevated, shape, variant, vertical, child
-    , children
+    ( view, elevated, shape, variant, vertical
     )
 
 {-|
@@ -44,16 +43,13 @@ M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.
 M3e.Toolbar.view [] (M3e.Toolbar.children [ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] []) ], M3e.IconButton.view [ M3e.IconButton.width M3e.Value.wide, M3e.IconButton.variant M3e.Value.filled ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] []) ], M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "more_vert" ] []) ] ])
 ```
 
-@docs view, elevated, shape, variant, vertical, child
-@docs children
+@docs view, elevated, shape, variant, vertical
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Toolbar
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -68,9 +64,9 @@ view :
     , vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | toolbar : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -79,7 +75,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -113,19 +109,3 @@ variant =
 vertical : Bool -> M3e.Cem.Attr.Attr { c | vertical : M3e.Value.Supported } msg
 vertical =
     M3e.Cem.Toolbar.vertical
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

@@ -1,6 +1,4 @@
-module M3e.Tree exposing
-    ( view, multi, cascade, onChange, child, children
-    )
+module M3e.Tree exposing ( view, multi, cascade, onChange )
 
 {-|
 Presents hierarchical data in a tree structure.
@@ -52,15 +50,13 @@ M3e.Tree.view [] [ M3e.Tree.child (M3e.TreeItem.view [ M3e.TreeItem.open True ] 
 M3e.Tree.view [] [ M3e.Tree.child (M3e.TreeItem.view [ M3e.TreeItem.open True ] ([ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []) ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Installation"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []) ] ])) ]
 ```
 
-@docs view, multi, cascade, onChange, child, children
+@docs view, multi, cascade, onChange
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Tree
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -74,9 +70,9 @@ view :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { treeItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tree : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -85,7 +81,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -105,19 +101,3 @@ cascade =
 onChange : msg -> M3e.Cem.Attr.Attr { c | onChange : M3e.Value.Supported } msg
 onChange =
     M3e.Cem.Tree.onChange
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { treeItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { treeItem : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

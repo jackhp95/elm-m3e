@@ -1,7 +1,6 @@
 module M3e.Select exposing
     ( view, disabled, hideSelectionIndicator, multi, name, panelClass
-    , required, onChange, onToggle, onBeforeinput, onInput, child, arrow
-    , value, children
+    , required, onChange, onToggle, onBeforeinput, onInput, arrow, value
     )
 
 {-|
@@ -66,16 +65,14 @@ M3e.FormField.view [] [ M3e.FormField.label "select7" (Native.node Html.label []
 ```
 
 @docs view, disabled, hideSelectionIndicator, multi, name, panelClass
-@docs required, onChange, onToggle, onBeforeinput, onInput, child
-@docs arrow, value, children
+@docs required, onChange, onToggle, onBeforeinput, onInput, arrow
+@docs value
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Select
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -96,12 +93,9 @@ view :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , arrow : M3e.Value.Supported
-    , value : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { option : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | select : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -110,7 +104,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -182,33 +176,15 @@ onInput =
     M3e.Cem.Select.onInput
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { option : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `arrow` slot. -}
 arrow :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | arrow : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 arrow el =
-    M3e.Content.Internal.slot "arrow" el
+    M3e.Element.Internal.placeSlot "arrow" el
 
 
 {-| Place content in the `value` slot. -}
-value :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | value : M3e.Value.Supported } msg
+value : M3e.Element.Element any msg -> M3e.Element.Element k msg
 value el =
-    M3e.Content.Internal.slot "value" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { option : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "value" el

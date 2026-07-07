@@ -1,7 +1,6 @@
 module M3e.FormField exposing
-    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
+    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, control
     , prefix, prefixText, label, suffix, suffixText, hint, error
-    , children
     )
 
 {-|
@@ -81,17 +80,15 @@ M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [] [ 
     ]
 ```
 
-@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
+@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, control
 @docs prefix, prefixText, label, suffix, suffixText, hint
-@docs error, children
+@docs error
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FormField
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -106,17 +103,9 @@ view :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , prefix : M3e.Value.Supported
-    , prefixText : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , suffix : M3e.Value.Supported
-    , suffixText : M3e.Value.Supported
-    , hint : M3e.Value.Supported
-    , error : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | formField : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -125,7 +114,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -167,74 +156,48 @@ variant =
 
 
 {-| Place content in the `(default)` slot, wiring its `id=` from the required `id` for structural label↔control association (ADR 0010 R6). -}
-child :
-    String
-    -> M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child id_ el =
-    M3e.Content.Internal.slotWithAttr "" "id" id_ el
+control : String -> M3e.Element.Element k msg -> M3e.Element.Element k msg
+control id_ el =
+    M3e.Element.withAttr "id" id_ el
 
 
 {-| Place content in the `prefix` slot. -}
-prefix :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | prefix : M3e.Value.Supported } msg
+prefix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 prefix el =
-    M3e.Content.Internal.slot "prefix" el
+    M3e.Element.Internal.placeSlot "prefix" el
 
 
 {-| Place content in the `prefix-text` slot. -}
-prefixText :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
+prefixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 prefixText el =
-    M3e.Content.Internal.slot "prefix-text" el
+    M3e.Element.Internal.placeSlot "prefix-text" el
 
 
 {-| Place content in the `label` slot, wiring its `for=` from the required `id` for structural label↔control association (ADR 0010 R6). -}
-label :
-    String
-    -> M3e.Element.Element any msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+label : String -> M3e.Element.Element any msg -> M3e.Element.Element k msg
 label id_ el =
-    M3e.Content.Internal.slotWithAttr "label" "for" id_ el
+    M3e.Element.Internal.placeSlot "label" (M3e.Element.withAttr "for" id_ el)
 
 
 {-| Place content in the `suffix` slot. -}
-suffix :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | suffix : M3e.Value.Supported } msg
+suffix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 suffix el =
-    M3e.Content.Internal.slot "suffix" el
+    M3e.Element.Internal.placeSlot "suffix" el
 
 
 {-| Place content in the `suffix-text` slot. -}
-suffixText :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
+suffixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 suffixText el =
-    M3e.Content.Internal.slot "suffix-text" el
+    M3e.Element.Internal.placeSlot "suffix-text" el
 
 
 {-| Place content in the `hint` slot. -}
-hint :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+hint : M3e.Element.Element any msg -> M3e.Element.Element k msg
 hint el =
-    M3e.Content.Internal.slot "hint" el
+    M3e.Element.Internal.placeSlot "hint" el
 
 
 {-| Place content in the `error` slot. -}
-error :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+error : M3e.Element.Element any msg -> M3e.Element.Element k msg
 error el =
-    M3e.Content.Internal.slot "error" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "error" el

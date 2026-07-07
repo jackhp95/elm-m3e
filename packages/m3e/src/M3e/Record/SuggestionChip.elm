@@ -26,8 +26,6 @@ import M3e.Action
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.SuggestionChip
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -62,7 +60,7 @@ view :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | suggestionChip : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -84,7 +82,7 @@ view req_ attributes content_ =
                       req_.action
                       (M3e.Element.toNode req_.content)
                   ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 
@@ -139,6 +137,6 @@ variant =
 {-| Place content in the `icon` slot. -}
 icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 icon el =
-    M3e.Content.Internal.slot "icon" el
+    M3e.Element.Internal.placeSlot "icon" el

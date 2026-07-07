@@ -19,8 +19,6 @@ A button used to show an action with a menu of related actions.
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.SplitButton
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -33,11 +31,9 @@ view :
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leadingButton : M3e.Value.Supported
-    , trailingButton : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -46,7 +42,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -78,14 +74,14 @@ size =
 {-| Place content in the `leading-button` slot. -}
 leadingButton :
     M3e.Element.Element { button : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 leadingButton el =
-    M3e.Content.Internal.slot "leading-button" el
+    M3e.Element.Internal.placeSlot "leading-button" el
 
 
 {-| Place content in the `trailing-button` slot. -}
 trailingButton :
     M3e.Element.Element { iconButton : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 trailingButton el =
-    M3e.Content.Internal.slot "trailing-button" el
+    M3e.Element.Internal.placeSlot "trailing-button" el

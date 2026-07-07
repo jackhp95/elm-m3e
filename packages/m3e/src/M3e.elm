@@ -61,48 +61,35 @@ module M3e exposing
     , variantOutlined, widthDefault, widthNarrow, widthWide, ariaLabel, ariaLabelledby, ariaDescribedby
     , ariaHidden, onChange, onOpening, onOpened, onClosing, onClosed, onClick
     , onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery, onClear
-    , onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight, slotDefault
-    , slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon
-    , slotLoading, slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent
-    , slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText
-    , slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText
-    , slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
-    , slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing
-    , slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon
-    , slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel
-    , slotOpenToggleIcon, treeSlotDefault, treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon
-    , treeItemSlotOpenToggleIcon, toolbarSlotDefault, tocSlotDefault, tocSlotOverline, tocSlotTitle, tocItemSlotDefault, themeSlotDefault
-    , tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault, tabSlotDefault, tabSlotIcon
-    , stepperResetSlotDefault, stepperPreviousSlotDefault, stepperNextSlotDefault, stepSlotDefault, stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon
-    , stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotDefault, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel
-    , splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon, sliderSlotDefault
-    , slideGroupSlotDefault, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault
-    , buttonSegmentSlotIcon, searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing
-    , searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon
-    , radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotDefault, selectSlotArrow
-    , selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel, navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault
-    , navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault, navItemSlotDefault
-    , navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault
-    , menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon, menuTriggerSlotDefault
-    , selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, actionListSlotDefault
-    , expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotDefault
-    , listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline
-    , listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault, listItemSlotDefault, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText
-    , listItemSlotTrailing, headingSlotDefault, fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault, fabSlotLabel, fabSlotCloseIcon
-    , accordionSlotDefault, expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault, expansionHeaderSlotToggleIcon
-    , drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault, dialogSlotHeader
-    , dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault, contentPaneSlotDefault, suggestionChipSlotDefault, suggestionChipSlotIcon
-    , inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault
-    , filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon, chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon, chipSlotDefault
-    , chipSlotIcon, chipSlotTrailingIcon, cardSlotDefault, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter
-    , calendarSlotHeader, tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault, buttonGroupSlotDefault
-    , iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon
-    , breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault
-    , bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault, avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading
+    , onPage, onCancel, onRemove, onInvalid, onActiveChange, onHighlight, slotLeading
+    , slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading
+    , slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions
+    , slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon
+    , slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
+    , slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon
+    , slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading
+    , slotClosedTrailing, slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton
+    , slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
+    , treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, tocSlotOverline, tocSlotTitle
+    , tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabSlotIcon, stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon
+    , stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart
+    , splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotCloseIcon, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, buttonSegmentSlotIcon
+    , searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon
+    , searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon
+    , paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotArrow, selectSlotValue, navMenuItemGroupSlotLabel, navMenuItemSlotLabel, navMenuItemSlotIcon
+    , navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon
+    , menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon, menuItemSlotTrailingIcon, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText
+    , listOptionSlotTrailing, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotLeading
+    , listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing
+    , listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabSlotLabel, fabSlotCloseIcon, expansionPanelSlotActions
+    , expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions
+    , dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon
+    , filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent, cardSlotActions
+    , cardSlotFooter, calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected
+    , buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading
     , autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText
-    , formFieldSlotHint, formFieldSlotError, optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault
-    , optgroupSlotLabel, optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing
-    , appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault, collapsibleSlotDefault
+    , formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle
+    , appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
     )
 
 {-|
@@ -181,55 +168,39 @@ The one-import barrel. Re-exposes every component constructor plus the whole sha
 @docs onChange, onOpening, onOpened, onClosing, onClosed, onClick
 @docs onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
 @docs onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
-@docs onHighlight, slotDefault, slotLeading, slotTitle, slotSubtitle, slotTrailing
-@docs slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader
-@docs slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter
-@docs slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon
-@docs slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText
-@docs slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge
-@docs slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon
-@docs slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow
-@docs slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon
-@docs slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon, treeSlotDefault
-@docs treeItemSlotDefault, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon
-@docs toolbarSlotDefault, tocSlotDefault, tocSlotOverline, tocSlotTitle, tocItemSlotDefault, themeSlotDefault
-@docs tabsSlotDefault, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabPanelSlotDefault, tabSlotDefault
-@docs tabSlotIcon, stepperResetSlotDefault, stepperPreviousSlotDefault, stepperNextSlotDefault, stepSlotDefault, stepSlotIcon
-@docs stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotDefault
-@docs stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton
-@docs splitButtonSlotTrailingButton, snackbarSlotDefault, snackbarSlotCloseIcon, sliderSlotDefault, slideGroupSlotDefault, slideGroupSlotNextIcon
-@docs slideGroupSlotPrevIcon, skeletonSlotDefault, shapeSlotDefault, segmentedButtonSlotDefault, buttonSegmentSlotDefault, buttonSegmentSlotIcon
-@docs searchViewSlotDefault, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing
-@docs searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing
-@docs searchBarSlotClearIcon, radioGroupSlotDefault, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon
-@docs selectSlotDefault, selectSlotArrow, selectSlotValue, navRailToggleSlotDefault, navRailSlotDefault, navMenuItemGroupSlotLabel
-@docs navMenuItemGroupSlotDefault, navMenuSlotDefault, navMenuItemSlotDefault, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge
-@docs navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navBarSlotDefault, navItemSlotDefault, navItemSlotIcon, navItemSlotSelectedIcon
-@docs menuItemRadioSlotDefault, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemGroupSlotDefault, menuItemCheckboxSlotDefault, menuItemCheckboxSlotIcon
-@docs menuItemCheckboxSlotTrailingIcon, menuSlotDefault, menuItemSlotDefault, menuItemSlotIcon, menuItemSlotTrailingIcon, menuTriggerSlotDefault
-@docs selectionListSlotDefault, listOptionSlotDefault, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing
-@docs actionListSlotDefault, expandableListItemSlotDefault, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon
-@docs expandableListItemSlotItems, listActionSlotDefault, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing
-@docs listItemButtonSlotDefault, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listSlotDefault
-@docs listItemSlotDefault, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, headingSlotDefault
-@docs fabMenuTriggerSlotDefault, fabMenuSlotDefault, fabSlotDefault, fabSlotLabel, fabSlotCloseIcon, accordionSlotDefault
-@docs expansionPanelSlotDefault, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotDefault, expansionHeaderSlotToggleIcon
-@docs drawerToggleSlotDefault, drawerContainerSlotDefault, drawerContainerSlotStart, drawerContainerSlotEnd, dialogTriggerSlotDefault, dialogSlotDefault
-@docs dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, dialogActionSlotDefault, datepickerToggleSlotDefault, contentPaneSlotDefault
-@docs suggestionChipSlotDefault, suggestionChipSlotIcon, inputChipSetSlotDefault, inputChipSetSlotInput, inputChipSlotDefault, inputChipSlotAvatar
-@docs inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSetSlotDefault, filterChipSlotDefault, filterChipSlotIcon, filterChipSlotTrailingIcon
-@docs chipSetSlotDefault, assistChipSlotDefault, assistChipSlotIcon, chipSlotDefault, chipSlotIcon, chipSlotTrailingIcon
-@docs cardSlotDefault, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader
-@docs tooltipSlotDefault, richTooltipSlotDefault, richTooltipSlotSubhead, richTooltipSlotActions, richTooltipActionSlotDefault, buttonGroupSlotDefault
-@docs iconButtonSlotDefault, iconButtonSlotSelected, buttonSlotDefault, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon
-@docs buttonSlotTrailingIcon, breadcrumbSlotDefault, breadcrumbSlotSeparator, breadcrumbItemSlotDefault, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon
-@docs breadcrumbItemButtonSlotDefault, bottomSheetTriggerSlotDefault, bottomSheetSlotDefault, bottomSheetSlotHeader, bottomSheetActionSlotDefault, badgeSlotDefault
-@docs avatarSlotDefault, autocompleteSlotDefault, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix
+@docs onHighlight, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
+@docs slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator
+@docs slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+@docs slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
+@docs slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
+@docs slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
+@docs slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
+@docs slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
+@docs slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon
+@docs slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon, treeItemSlotLabel, treeItemSlotIcon
+@docs treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, tocSlotOverline, tocSlotTitle, tabsSlotPanel
+@docs tabsSlotNextIcon, tabsSlotPrevIcon, tabSlotIcon, stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon
+@docs stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotActions, stepperSlotStep, stepperSlotPanel
+@docs splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton, snackbarSlotCloseIcon, slideGroupSlotNextIcon
+@docs slideGroupSlotPrevIcon, buttonSegmentSlotIcon, searchViewSlotInput, searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading
+@docs searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput
+@docs searchBarSlotTrailing, searchBarSlotClearIcon, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon
+@docs selectSlotArrow, selectSlotValue, navMenuItemGroupSlotLabel, navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge
+@docs navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navItemSlotIcon, navItemSlotSelectedIcon, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon
+@docs menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon, menuItemSlotTrailingIcon, listOptionSlotLeading, listOptionSlotOverline
+@docs listOptionSlotSupportingText, listOptionSlotTrailing, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon
+@docs expandableListItemSlotItems, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotLeading
+@docs listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText
+@docs listItemSlotTrailing, fabSlotLabel, fabSlotCloseIcon, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon
+@docs expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon
+@docs suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon
+@docs filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent
+@docs cardSlotActions, cardSlotFooter, calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected
+@docs buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon
+@docs breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix
 @docs formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError
-@docs optionPanelSlotDefault, optionPanelSlotNoData, optionPanelSlotLoading, floatingPanelSlotDefault, optgroupSlotDefault, optgroupSlotLabel
-@docs optionSlotDefault, focusTrapSlotDefault, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing
-@docs appBarSlotLeadingIcon, appBarSlotTrailingIcon, textOverflowSlotDefault, textHighlightSlotDefault, slideSlotDefault, scrollContainerSlotDefault
-@docs collapsibleSlotDefault
+@docs optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle
+@docs appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
 -}
 
 
@@ -260,7 +231,6 @@ import M3e.Checkbox
 import M3e.Chip
 import M3e.ChipSet
 import M3e.Collapsible
-import M3e.Content
 import M3e.ContentPane
 import M3e.Datepicker
 import M3e.DatepickerToggle
@@ -374,7 +344,7 @@ tree :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { treeItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tree : M3e.Value.Supported } msg
 tree =
     M3e.Tree.view
@@ -393,13 +363,7 @@ treeItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    , openToggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { treeItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | treeItem : M3e.Value.Supported } msg
 treeItem =
     M3e.TreeItem.view
@@ -413,7 +377,7 @@ toolbar :
     , vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | toolbar : M3e.Value.Supported } msg
 toolbar =
     M3e.Toolbar.view
@@ -425,10 +389,7 @@ toc :
     , maxDepth : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , overline : M3e.Value.Supported
-    , title : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | toc : M3e.Value.Supported } msg
 toc =
     M3e.Toc.view
@@ -441,7 +402,7 @@ tocItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tocItem : M3e.Value.Supported } msg
 tocItem =
     M3e.TocItem.view
@@ -454,7 +415,7 @@ themeIcon :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | themeIcon : M3e.Value.Supported } msg
 themeIcon =
     M3e.ThemeIcon.view
@@ -472,7 +433,7 @@ theme :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | theme : M3e.Value.Supported } msg
 theme =
     M3e.Theme.view
@@ -486,7 +447,7 @@ textareaAutosize :
     , minRows : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | textareaAutosize : M3e.Value.Supported } msg
 textareaAutosize =
     M3e.TextareaAutosize.view
@@ -505,11 +466,7 @@ tabs :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , panel : M3e.Value.Supported
-    , nextIcon : M3e.Value.Supported
-    , prevIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { tab : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tabs : M3e.Value.Supported } msg
 tabs =
     M3e.Tabs.view
@@ -518,7 +475,7 @@ tabs =
 {-| Convenience binding for the `M3e.TabPanel` element: `view` re-exposed from `M3e.TabPanel`. Import that module directly for the strict, component-scoped types. -}
 tabPanel :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | tabPanel : M3e.Value.Supported } msg
 tabPanel =
     M3e.TabPanel.view
@@ -535,9 +492,7 @@ tab :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tab : M3e.Value.Supported } msg
 tab =
     M3e.Tab.view
@@ -556,7 +511,7 @@ switch :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | switch : M3e.Value.Supported } msg
 switch =
     M3e.Switch.view
@@ -565,7 +520,7 @@ switch =
 {-| Convenience binding for the `M3e.StepperReset` element: `view` re-exposed from `M3e.StepperReset`. Import that module directly for the strict, component-scoped types. -}
 stepperReset :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | stepperReset : M3e.Value.Supported } msg
 stepperReset =
     M3e.StepperReset.view
@@ -574,7 +529,7 @@ stepperReset =
 {-| Convenience binding for the `M3e.StepperPrevious` element: `view` re-exposed from `M3e.StepperPrevious`. Import that module directly for the strict, component-scoped types. -}
 stepperPrevious :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | stepperPrevious : M3e.Value.Supported } msg
 stepperPrevious =
     M3e.StepperPrevious.view
@@ -583,7 +538,7 @@ stepperPrevious =
 {-| Convenience binding for the `M3e.StepperNext` element: `view` re-exposed from `M3e.StepperNext`. Import that module directly for the strict, component-scoped types. -}
 stepperNext :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | stepperNext : M3e.Value.Supported } msg
 stepperNext =
     M3e.StepperNext.view
@@ -604,14 +559,7 @@ step :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , doneIcon : M3e.Value.Supported
-    , editIcon : M3e.Value.Supported
-    , errorIcon : M3e.Value.Supported
-    , hint : M3e.Value.Supported
-    , error : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
 step =
     M3e.Step.view
@@ -620,9 +568,7 @@ step =
 {-| Convenience binding for the `M3e.StepPanel` element: `view` re-exposed from `M3e.StepPanel`. Import that module directly for the strict, component-scoped types. -}
 stepPanel :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | stepPanel : M3e.Value.Supported } msg
 stepPanel =
     M3e.StepPanel.view
@@ -639,9 +585,7 @@ stepper :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { step : M3e.Value.Supported
-    , panel : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | stepper : M3e.Value.Supported } msg
 stepper =
     M3e.Stepper.view
@@ -664,9 +608,7 @@ splitPane :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { start : M3e.Value.Supported
-    , end : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | splitPane : M3e.Value.Supported } msg
 splitPane =
     M3e.SplitPane.view
@@ -678,9 +620,7 @@ splitButton :
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leadingButton : M3e.Value.Supported
-    , trailingButton : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
 splitButton =
     M3e.SplitButton.view
@@ -696,9 +636,7 @@ snackbar :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
 snackbar =
     M3e.Snackbar.view
@@ -718,7 +656,7 @@ slider :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | slider : M3e.Value.Supported } msg
 slider =
     M3e.Slider.view
@@ -736,7 +674,7 @@ sliderThumb :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | sliderThumb : M3e.Value.Supported } msg
 sliderThumb =
     M3e.SliderThumb.view
@@ -751,10 +689,7 @@ slideGroup :
     , vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , nextIcon : M3e.Value.Supported
-    , prevIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | slideGroup : M3e.Value.Supported } msg
 slideGroup =
     M3e.SlideGroup.view
@@ -767,7 +702,7 @@ skeleton :
     , loaded : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | skeleton : M3e.Value.Supported } msg
 skeleton =
     M3e.Skeleton.view
@@ -778,7 +713,7 @@ shape :
     List (M3e.Cem.Attr.Attr { nameEnum : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | shape : M3e.Value.Supported } msg
 shape =
     M3e.Shape.view
@@ -795,7 +730,7 @@ segmentedButton :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | segmentedButton : M3e.Value.Supported } msg
 segmentedButton =
     M3e.SegmentedButton.view
@@ -812,9 +747,7 @@ buttonSegment :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | buttonSegment : M3e.Value.Supported } msg
 buttonSegment =
     M3e.ButtonSegment.view
@@ -834,16 +767,7 @@ searchView :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , input : M3e.Value.Supported
-    , openLeading : M3e.Value.Supported
-    , openTrailing : M3e.Value.Supported
-    , closedLeading : M3e.Value.Supported
-    , closedTrailing : M3e.Value.Supported
-    , searchIcon : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    , clearIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | searchView : M3e.Value.Supported } msg
 searchView =
     M3e.SearchView.view
@@ -856,11 +780,7 @@ searchBar :
     , onClear : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leading : M3e.Value.Supported
-    , input : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
-    , clearIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | searchBar : M3e.Value.Supported } msg
 searchBar =
     M3e.SearchBar.view
@@ -877,7 +797,7 @@ radioGroup :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | radioGroup : M3e.Value.Supported } msg
 radioGroup =
     M3e.RadioGroup.view
@@ -896,7 +816,7 @@ radio :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | radio : M3e.Value.Supported } msg
 radio =
     M3e.Radio.view
@@ -909,7 +829,7 @@ progressElementIndicatorBase :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s
         | progressElementIndicatorBase : M3e.Value.Supported
     } msg
@@ -935,11 +855,7 @@ paginator :
     , onPage : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { firstPageIcon : M3e.Value.Supported
-    , previousPageIcon : M3e.Value.Supported
-    , nextPageIcon : M3e.Value.Supported
-    , lastPageIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | paginator : M3e.Value.Supported } msg
 paginator =
     M3e.Paginator.view
@@ -959,10 +875,7 @@ select :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , arrow : M3e.Value.Supported
-    , value : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { option : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | select : M3e.Value.Supported } msg
 select =
     M3e.Select.view
@@ -973,7 +886,7 @@ navRailToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | navRailToggle : M3e.Value.Supported } msg
 navRailToggle =
     M3e.NavRailToggle.view
@@ -987,7 +900,10 @@ navRail :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { navItem : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , fab : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | navRail : M3e.Value.Supported } msg
 navRail =
     M3e.NavRail.view
@@ -996,9 +912,7 @@ navRail =
 {-| Convenience binding for the `M3e.NavMenuItemGroup` element: `view` re-exposed from `M3e.NavMenuItemGroup`. Import that module directly for the strict, component-scoped types. -}
 navMenuItemGroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { label : M3e.Value.Supported
-    , default : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navMenuItemGroup : M3e.Value.Supported } msg
 navMenuItemGroup =
     M3e.NavMenuItemGroup.view
@@ -1007,7 +921,10 @@ navMenuItemGroup =
 {-| Convenience binding for the `M3e.NavMenu` element: `view` re-exposed from `M3e.NavMenu`. Import that module directly for the strict, component-scoped types. -}
 navMenu :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { navMenuItem : M3e.Value.Supported
+    , navMenuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | navMenu : M3e.Value.Supported } msg
 navMenu =
     M3e.NavMenu.view
@@ -1025,13 +942,7 @@ navMenuItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , badge : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navMenuItem : M3e.Value.Supported } msg
 navMenuItem =
     M3e.NavMenuItem.view
@@ -1045,7 +956,7 @@ navBar :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { navItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navBar : M3e.Value.Supported } msg
 navBar =
     M3e.NavBar.view
@@ -1067,10 +978,7 @@ navItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navItem : M3e.Value.Supported } msg
 navItem =
     M3e.NavItem.view
@@ -1083,10 +991,7 @@ menuItemRadio :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | menuItemRadio : M3e.Value.Supported } msg
 menuItemRadio =
     M3e.MenuItemRadio.view
@@ -1095,7 +1000,10 @@ menuItemRadio =
 {-| Convenience binding for the `M3e.MenuItemGroup` element: `view` re-exposed from `M3e.MenuItemGroup`. Import that module directly for the strict, component-scoped types. -}
 menuItemGroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { menuItem : M3e.Value.Supported
+    , menuItemCheckbox : M3e.Value.Supported
+    , menuItemRadio : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | menuItemGroup : M3e.Value.Supported } msg
 menuItemGroup =
     M3e.MenuItemGroup.view
@@ -1108,10 +1016,7 @@ menuItemCheckbox :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | menuItemCheckbox : M3e.Value.Supported } msg
 menuItemCheckbox =
     M3e.MenuItemCheckbox.view
@@ -1127,7 +1032,12 @@ menu :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { menuItem : M3e.Value.Supported
+    , menuItemCheckbox : M3e.Value.Supported
+    , menuItemRadio : M3e.Value.Supported
+    , menuItemGroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | menu : M3e.Value.Supported } msg
 menu =
     M3e.Menu.view
@@ -1143,9 +1053,19 @@ menuItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | menuItem : M3e.Value.Supported } msg
 menuItem =
@@ -1157,7 +1077,7 @@ menuTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | menuTrigger : M3e.Value.Supported } msg
 menuTrigger =
     M3e.MenuTrigger.view
@@ -1169,7 +1089,7 @@ menuItemElementBase :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | menuItemElementBase : M3e.Value.Supported } msg
 menuItemElementBase =
     M3e.MenuItemElementBase.view
@@ -1180,7 +1100,7 @@ loadingIndicator :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | loadingIndicator : M3e.Value.Supported } msg
 loadingIndicator =
     M3e.LoadingIndicator.view
@@ -1198,7 +1118,10 @@ selectionList :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { listOption : M3e.Value.Supported
+    , expandableListItem : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | selectionList : M3e.Value.Supported } msg
 selectionList =
     M3e.SelectionList.view
@@ -1215,11 +1138,8 @@ listOption :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , leading : M3e.Value.Supported
-    , overline : M3e.Value.Supported
-    , supportingText : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | listOption : M3e.Value.Supported } msg
 listOption =
@@ -1231,7 +1151,10 @@ actionList :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { listAction : M3e.Value.Supported
+    , expandableListItem : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | actionList : M3e.Value.Supported } msg
 actionList =
     M3e.ActionList.view
@@ -1247,12 +1170,8 @@ expandableListItem :
     , onClosed : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , leading : M3e.Value.Supported
-    , overline : M3e.Value.Supported
-    , supportingText : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    , items : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | expandableListItem : M3e.Value.Supported } msg
 expandableListItem =
@@ -1269,11 +1188,20 @@ listAction :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , leading : M3e.Value.Supported
-    , overline : M3e.Value.Supported
-    , supportingText : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | listAction : M3e.Value.Supported } msg
 listAction =
@@ -1290,11 +1218,8 @@ listItemButton :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , leading : M3e.Value.Supported
-    , overline : M3e.Value.Supported
-    , supportingText : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | listItemButton : M3e.Value.Supported } msg
 listItemButton =
@@ -1306,7 +1231,12 @@ list :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { listItem : M3e.Value.Supported
+    , listAction : M3e.Value.Supported
+    , expandableListItem : M3e.Value.Supported
+    , listOption : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | list : M3e.Value.Supported } msg
 list =
     M3e.List.view
@@ -1315,11 +1245,8 @@ list =
 {-| Convenience binding for the `M3e.ListItem` element: `view` re-exposed from `M3e.ListItem`. Import that module directly for the strict, component-scoped types. -}
 listItem :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , leading : M3e.Value.Supported
-    , overline : M3e.Value.Supported
-    , supportingText : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | listItem : M3e.Value.Supported } msg
 listItem =
@@ -1336,7 +1263,7 @@ icon :
     , weight : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | icon : M3e.Value.Supported } msg
 icon =
     M3e.Icon.view
@@ -1350,7 +1277,7 @@ heading :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | heading : M3e.Value.Supported } msg
 heading =
     M3e.Heading.view
@@ -1361,7 +1288,7 @@ fabMenuTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | fabMenuTrigger : M3e.Value.Supported } msg
 fabMenuTrigger =
     M3e.FabMenuTrigger.view
@@ -1377,7 +1304,7 @@ fabMenuItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | fabMenuItem : M3e.Value.Supported } msg
 fabMenuItem =
     M3e.FabMenuItem.view
@@ -1390,7 +1317,9 @@ fabMenu :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { fabMenuItem : M3e.Value.Supported
+    , menuItem : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | fabMenu : M3e.Value.Supported } msg
 fabMenu =
     M3e.FabMenu.view
@@ -1414,10 +1343,7 @@ fab :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
 fab =
     M3e.Fab.view
@@ -1428,7 +1354,7 @@ accordion :
     List (M3e.Cem.Attr.Attr { multi : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { expansionPanel : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | accordion : M3e.Value.Supported } msg
 accordion =
     M3e.Accordion.view
@@ -1447,11 +1373,7 @@ expansionPanel :
     , onClosed : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    , header : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | expansionPanel : M3e.Value.Supported } msg
 expansionPanel =
     M3e.ExpansionPanel.view
@@ -1466,9 +1388,7 @@ expansionHeader :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | expansionHeader : M3e.Value.Supported } msg
 expansionHeader =
     M3e.ExpansionHeader.view
@@ -1479,7 +1399,7 @@ drawerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | drawerToggle : M3e.Value.Supported } msg
 drawerToggle =
     M3e.DrawerToggle.view
@@ -1496,10 +1416,7 @@ drawerContainer :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , start : M3e.Value.Supported
-    , end : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | drawerContainer : M3e.Value.Supported } msg
 drawerContainer =
     M3e.DrawerContainer.view
@@ -1513,7 +1430,7 @@ divider :
     , vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | divider : M3e.Value.Supported } msg
 divider =
     M3e.Divider.view
@@ -1524,7 +1441,7 @@ dialogTrigger :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | dialogTrigger : M3e.Value.Supported } msg
 dialogTrigger =
     M3e.DialogTrigger.view
@@ -1545,11 +1462,7 @@ dialog :
     , onCancel : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , header : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | dialog : M3e.Value.Supported } msg
 dialog =
     M3e.Dialog.view
@@ -1560,7 +1473,7 @@ dialogAction :
     List (M3e.Cem.Attr.Attr { returnValue : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | dialogAction : M3e.Value.Supported } msg
 dialogAction =
     M3e.DialogAction.view
@@ -1571,7 +1484,7 @@ datepickerToggle :
     List (M3e.Cem.Attr.Attr { for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | datepickerToggle : M3e.Value.Supported } msg
 datepickerToggle =
     M3e.DatepickerToggle.view
@@ -1604,7 +1517,7 @@ datepicker :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | datepicker : M3e.Value.Supported } msg
 datepicker =
     M3e.Datepicker.view
@@ -1613,7 +1526,7 @@ datepicker =
 {-| Convenience binding for the `M3e.ContentPane` element: `view` re-exposed from `M3e.ContentPane`. Import that module directly for the strict, component-scoped types. -}
 contentPane :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | contentPane : M3e.Value.Supported } msg
 contentPane =
     M3e.ContentPane.view
@@ -1634,9 +1547,7 @@ suggestionChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | suggestionChip : M3e.Value.Supported } msg
 suggestionChip =
     M3e.SuggestionChip.view
@@ -1651,9 +1562,7 @@ inputChipSet :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , input : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { inputChip : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | inputChipSet : M3e.Value.Supported } msg
 inputChipSet =
     M3e.InputChipSet.view
@@ -1671,11 +1580,7 @@ inputChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , avatar : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , removeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
 inputChip =
     M3e.InputChip.view
@@ -1693,7 +1598,7 @@ filterChipSet :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { filterChip : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | filterChipSet : M3e.Value.Supported } msg
 filterChipSet =
     M3e.FilterChipSet.view
@@ -1712,10 +1617,7 @@ filterChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | filterChip : M3e.Value.Supported } msg
 filterChip =
     M3e.FilterChip.view
@@ -1726,7 +1628,12 @@ chipSet :
     List (M3e.Cem.Attr.Attr { vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { assistChip : M3e.Value.Supported
+    , chip : M3e.Value.Supported
+    , filterChip : M3e.Value.Supported
+    , inputChip : M3e.Value.Supported
+    , suggestionChip : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | chipSet : M3e.Value.Supported } msg
 chipSet =
     M3e.ChipSet.view
@@ -1747,9 +1654,7 @@ assistChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | assistChip : M3e.Value.Supported } msg
 assistChip =
     M3e.AssistChip.view
@@ -1761,10 +1666,7 @@ chip :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | chip : M3e.Value.Supported } msg
 chip =
     M3e.Chip.view
@@ -1785,7 +1687,7 @@ checkbox :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | checkbox : M3e.Value.Supported } msg
 checkbox =
     M3e.Checkbox.view
@@ -1809,12 +1711,7 @@ card :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , header : M3e.Value.Supported
-    , content : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    , footer : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | card : M3e.Value.Supported } msg
 card =
     M3e.Card.view
@@ -1838,7 +1735,7 @@ calendar :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { header : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | calendar : M3e.Value.Supported } msg
 calendar =
     M3e.Calendar.view
@@ -1856,7 +1753,7 @@ yearView :
     , onActiveChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | yearView : M3e.Value.Supported } msg
 yearView =
     M3e.YearView.view
@@ -1874,7 +1771,7 @@ multiYearView :
     , onActiveChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | multiYearView : M3e.Value.Supported } msg
 multiYearView =
     M3e.MultiYearView.view
@@ -1894,7 +1791,7 @@ monthView :
     , onActiveChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | monthView : M3e.Value.Supported } msg
 monthView =
     M3e.MonthView.view
@@ -1910,7 +1807,7 @@ tooltip :
     , touchGestures : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tooltip : M3e.Value.Supported } msg
 tooltip =
     M3e.Tooltip.view
@@ -1928,10 +1825,7 @@ richTooltip :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , subhead : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | richTooltip : M3e.Value.Supported } msg
 richTooltip =
     M3e.RichTooltip.view
@@ -1946,7 +1840,7 @@ tooltipElementBase :
     , for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | tooltipElementBase : M3e.Value.Supported } msg
 tooltipElementBase =
     M3e.TooltipElementBase.view
@@ -1957,7 +1851,7 @@ richTooltipAction :
     List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | richTooltipAction : M3e.Value.Supported } msg
 richTooltipAction =
     M3e.RichTooltipAction.view
@@ -1970,7 +1864,9 @@ buttonGroup :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { button : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | buttonGroup : M3e.Value.Supported } msg
 buttonGroup =
     M3e.ButtonGroup.view
@@ -1999,9 +1895,7 @@ iconButton :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , selected : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | iconButton : M3e.Value.Supported } msg
 iconButton =
     M3e.IconButton.view
@@ -2029,11 +1923,8 @@ button :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
     , icon : M3e.Value.Supported
-    , selected : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
 button =
@@ -2045,9 +1936,7 @@ breadcrumb :
     List (M3e.Cem.Attr.Attr { wrap : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , separator : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { breadcrumbItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | breadcrumb : M3e.Value.Supported } msg
 breadcrumb =
     M3e.Breadcrumb.view
@@ -2065,7 +1954,7 @@ breadcrumbItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
     , icon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | breadcrumbItem : M3e.Value.Supported } msg
@@ -2084,8 +1973,8 @@ breadcrumbItemButton :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported
-    , default : M3e.Value.Supported
+    -> List (M3e.Element.Element { text : M3e.Value.Supported
+    , icon : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s
         | breadcrumbItemButton : M3e.Value.Supported
@@ -2101,7 +1990,7 @@ bottomSheetTrigger :
     , for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | bottomSheetTrigger : M3e.Value.Supported } msg
 bottomSheetTrigger =
     M3e.BottomSheetTrigger.view
@@ -2124,9 +2013,7 @@ bottomSheet :
     , onClosed : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , header : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | bottomSheet : M3e.Value.Supported } msg
 bottomSheet =
     M3e.BottomSheet.view
@@ -2135,7 +2022,7 @@ bottomSheet =
 {-| Convenience binding for the `M3e.BottomSheetAction` element: `view` re-exposed from `M3e.BottomSheetAction`. Import that module directly for the strict, component-scoped types. -}
 bottomSheetAction :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | bottomSheetAction : M3e.Value.Supported } msg
 bottomSheetAction =
     M3e.BottomSheetAction.view
@@ -2148,7 +2035,7 @@ badge :
     , for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | badge : M3e.Value.Supported } msg
 badge =
     M3e.Badge.view
@@ -2157,7 +2044,7 @@ badge =
 {-| Convenience binding for the `M3e.Avatar` element: `view` re-exposed from `M3e.Avatar`. Import that module directly for the strict, component-scoped types. -}
 avatar :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | avatar : M3e.Value.Supported } msg
 avatar =
     M3e.Avatar.view
@@ -2182,9 +2069,8 @@ autocomplete :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , loading : M3e.Value.Supported
-    , noData : M3e.Value.Supported
+    -> List (M3e.Element.Element { option : M3e.Value.Supported
+    , optgroup : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | autocomplete : M3e.Value.Supported } msg
 autocomplete =
@@ -2199,15 +2085,7 @@ formField :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , prefix : M3e.Value.Supported
-    , prefixText : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , suffix : M3e.Value.Supported
-    , suffixText : M3e.Value.Supported
-    , hint : M3e.Value.Supported
-    , error : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | formField : M3e.Value.Supported } msg
 formField =
     M3e.FormField.view
@@ -2223,9 +2101,9 @@ optionPanel :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , noData : M3e.Value.Supported
-    , loading : M3e.Value.Supported
+    -> List (M3e.Element.Element { option : M3e.Value.Supported
+    , optgroup : M3e.Value.Supported
+    , divider : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | optionPanel : M3e.Value.Supported } msg
 optionPanel =
@@ -2241,7 +2119,7 @@ floatingPanel :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | floatingPanel : M3e.Value.Supported } msg
 floatingPanel =
     M3e.FloatingPanel.view
@@ -2250,9 +2128,7 @@ floatingPanel =
 {-| Convenience binding for the `M3e.Optgroup` element: `view` re-exposed from `M3e.Optgroup`. Import that module directly for the strict, component-scoped types. -}
 optgroup :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { option : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | optgroup : M3e.Value.Supported } msg
 optgroup =
     M3e.Optgroup.view
@@ -2268,7 +2144,7 @@ option :
     , value : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | option : M3e.Value.Supported } msg
 option =
     M3e.Option.view
@@ -2279,7 +2155,7 @@ focusTrap :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | focusTrap : M3e.Value.Supported } msg
 focusTrap =
     M3e.FocusTrap.view
@@ -2292,13 +2168,7 @@ appBar :
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leading : M3e.Value.Supported
-    , title : M3e.Value.Supported
-    , subtitle : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
-    , leadingIcon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | appBar : M3e.Value.Supported } msg
 appBar =
     M3e.AppBar.view
@@ -2307,7 +2177,7 @@ appBar =
 {-| Convenience binding for the `M3e.TextOverflow` element: `view` re-exposed from `M3e.TextOverflow`. Import that module directly for the strict, component-scoped types. -}
 textOverflow :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | textOverflow : M3e.Value.Supported } msg
 textOverflow =
     M3e.TextOverflow.view
@@ -2322,7 +2192,7 @@ textHighlight :
     , onHighlight : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | textHighlight : M3e.Value.Supported } msg
 textHighlight =
     M3e.TextHighlight.view
@@ -2335,7 +2205,7 @@ stateLayer :
     , for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | stateLayer : M3e.Value.Supported } msg
 stateLayer =
     M3e.StateLayer.view
@@ -2346,7 +2216,7 @@ slide :
     List (M3e.Cem.Attr.Attr { selectedIndex : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | slide : M3e.Value.Supported } msg
 slide =
     M3e.Slide.view
@@ -2358,7 +2228,7 @@ scrollContainer :
     , thin : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | scrollContainer : M3e.Value.Supported } msg
 scrollContainer =
     M3e.ScrollContainer.view
@@ -2373,7 +2243,7 @@ ripple :
     , unbounded : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | ripple : M3e.Value.Supported } msg
 ripple =
     M3e.Ripple.view
@@ -2385,7 +2255,7 @@ pseudoRadio :
     , disabled : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | pseudoRadio : M3e.Value.Supported } msg
 pseudoRadio =
     M3e.PseudoRadio.view
@@ -2398,7 +2268,7 @@ pseudoCheckbox :
     , indeterminate : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | pseudoCheckbox : M3e.Value.Supported } msg
 pseudoCheckbox =
     M3e.PseudoCheckbox.view
@@ -2411,7 +2281,7 @@ focusRing :
     , for : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | focusRing : M3e.Value.Supported } msg
 focusRing =
     M3e.FocusRing.view
@@ -2424,7 +2294,7 @@ elevation :
     , level : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | elevation : M3e.Value.Supported } msg
 elevation =
     M3e.Elevation.view
@@ -2441,7 +2311,7 @@ collapsible :
     , onClosed : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | collapsible : M3e.Value.Supported } msg
 collapsible =
     M3e.Collapsible.view
@@ -2450,7 +2320,7 @@ collapsible =
 {-| Convenience binding for the `M3e.ActionElementBase` element: `view` re-exposed from `M3e.ActionElementBase`. Import that module directly for the strict, component-scoped types. -}
 actionElementBase :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | actionElementBase : M3e.Value.Supported } msg
 actionElementBase =
     M3e.ActionElementBase.view
@@ -4538,1347 +4408,970 @@ onHighlight =
     M3e.Cem.Vocab.onHighlight
 
 
-{-| Place content in the `(default)` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotDefault`. -}
-slotDefault :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-slotDefault =
-    M3e.Cem.Vocab.slotDefault
-
-
-{-| Place content in the `leading` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotLeading`. -}
+{-| Place content in the `leading` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotLeading`. -}
 slotLeading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotLeading =
     M3e.Cem.Vocab.slotLeading
 
 
-{-| Place content in the `title` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotTitle`. -}
+{-| Place content in the `title` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotTitle`. -}
 slotTitle :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotTitle =
     M3e.Cem.Vocab.slotTitle
 
 
-{-| Place content in the `subtitle` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSubtitle`. -}
+{-| Place content in the `subtitle` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSubtitle`. -}
 slotSubtitle :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotSubtitle =
     M3e.Cem.Vocab.slotSubtitle
 
 
-{-| Place content in the `trailing` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotTrailing`. -}
+{-| Place content in the `trailing` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotTrailing`. -}
 slotTrailing :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported
+    , button : M3e.Value.Supported
+    , searchBar : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotTrailing =
     M3e.Cem.Vocab.slotTrailing
 
 
-{-| Place content in the `leading-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotLeadingIcon`. -}
-slotLeadingIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | leadingIcon : M3e.Value.Supported } msg
+{-| Place content in the `leading-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotLeadingIcon`. -}
+slotLeadingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotLeadingIcon =
     M3e.Cem.Vocab.slotLeadingIcon
 
 
-{-| Place content in the `trailing-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotTrailingIcon`. -}
-slotTrailingIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+{-| Place content in the `trailing-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotTrailingIcon`. -}
+slotTrailingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotTrailingIcon =
     M3e.Cem.Vocab.slotTrailingIcon
 
 
-{-| Place content in the `icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotIcon`. -}
+{-| Place content in the `icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotIcon`. -}
 slotIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotIcon =
     M3e.Cem.Vocab.slotIcon
 
 
-{-| Place content in the `loading` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotLoading`. -}
-slotLoading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
+{-| Place content in the `loading` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotLoading`. -}
+slotLoading : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotLoading =
     M3e.Cem.Vocab.slotLoading
 
 
-{-| Place content in the `no-data` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotNoData`. -}
-slotNoData :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | noData : M3e.Value.Supported } msg
+{-| Place content in the `no-data` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotNoData`. -}
+slotNoData : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotNoData =
     M3e.Cem.Vocab.slotNoData
 
 
-{-| Place content in the `header` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotHeader`. -}
-slotHeader :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+{-| Place content in the `header` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotHeader`. -}
+slotHeader : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotHeader =
     M3e.Cem.Vocab.slotHeader
 
 
-{-| Place content in the `separator` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSeparator`. -}
-slotSeparator :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | separator : M3e.Value.Supported } msg
+{-| Place content in the `separator` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSeparator`. -}
+slotSeparator : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotSeparator =
     M3e.Cem.Vocab.slotSeparator
 
 
-{-| Place content in the `selected` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSelected`. -}
+{-| Place content in the `selected` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSelected`. -}
 slotSelected :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , icon : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotSelected =
     M3e.Cem.Vocab.slotSelected
 
 
-{-| Place content in the `selected-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSelectedIcon`. -}
+{-| Place content in the `selected-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSelectedIcon`. -}
 slotSelectedIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotSelectedIcon =
     M3e.Cem.Vocab.slotSelectedIcon
 
 
-{-| Place content in the `content` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotContent`. -}
-slotContent :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | content : M3e.Value.Supported } msg
+{-| Place content in the `content` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotContent`. -}
+slotContent : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotContent =
     M3e.Cem.Vocab.slotContent
 
 
-{-| Place content in the `actions` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotActions`. -}
-slotActions :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+{-| Place content in the `actions` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotActions`. -}
+slotActions : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotActions =
     M3e.Cem.Vocab.slotActions
 
 
-{-| Place content in the `footer` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotFooter`. -}
-slotFooter :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | footer : M3e.Value.Supported } msg
+{-| Place content in the `footer` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotFooter`. -}
+slotFooter : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotFooter =
     M3e.Cem.Vocab.slotFooter
 
 
-{-| Place content in the `close-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotCloseIcon`. -}
+{-| Place content in the `close-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotCloseIcon`. -}
 slotCloseIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotCloseIcon =
     M3e.Cem.Vocab.slotCloseIcon
 
 
-{-| Place content in the `start` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotStart`. -}
-slotStart :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | start : M3e.Value.Supported } msg
+{-| Place content in the `start` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotStart`. -}
+slotStart : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotStart =
     M3e.Cem.Vocab.slotStart
 
 
-{-| Place content in the `end` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotEnd`. -}
-slotEnd :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | end : M3e.Value.Supported } msg
+{-| Place content in the `end` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotEnd`. -}
+slotEnd : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotEnd =
     M3e.Cem.Vocab.slotEnd
 
 
-{-| Place content in the `overline` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotOverline`. -}
+{-| Place content in the `overline` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotOverline`. -}
 slotOverline :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotOverline =
     M3e.Cem.Vocab.slotOverline
 
 
-{-| Place content in the `supporting-text` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSupportingText`. -}
+{-| Place content in the `supporting-text` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSupportingText`. -}
 slotSupportingText :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , html : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotSupportingText =
     M3e.Cem.Vocab.slotSupportingText
 
 
-{-| Place content in the `toggle-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotToggleIcon`. -}
+{-| Place content in the `toggle-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotToggleIcon`. -}
 slotToggleIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotToggleIcon =
     M3e.Cem.Vocab.slotToggleIcon
 
 
-{-| Place content in the `items` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotItems`. -}
-slotItems :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | items : M3e.Value.Supported } msg
+{-| Place content in the `items` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotItems`. -}
+slotItems : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotItems =
     M3e.Cem.Vocab.slotItems
 
 
-{-| Place content in the `label` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotLabel`. -}
+{-| Place content in the `label` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotLabel`. -}
 slotLabel :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotLabel =
     M3e.Cem.Vocab.slotLabel
 
 
-{-| Place content in the `prefix` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotPrefix`. -}
-slotPrefix :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | prefix : M3e.Value.Supported } msg
+{-| Place content in the `prefix` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotPrefix`. -}
+slotPrefix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotPrefix =
     M3e.Cem.Vocab.slotPrefix
 
 
-{-| Place content in the `prefix-text` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotPrefixText`. -}
-slotPrefixText :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
+{-| Place content in the `prefix-text` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotPrefixText`. -}
+slotPrefixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotPrefixText =
     M3e.Cem.Vocab.slotPrefixText
 
 
-{-| Place content in the `suffix` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSuffix`. -}
-slotSuffix :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | suffix : M3e.Value.Supported } msg
+{-| Place content in the `suffix` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSuffix`. -}
+slotSuffix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotSuffix =
     M3e.Cem.Vocab.slotSuffix
 
 
-{-| Place content in the `suffix-text` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSuffixText`. -}
-slotSuffixText :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
+{-| Place content in the `suffix-text` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSuffixText`. -}
+slotSuffixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotSuffixText =
     M3e.Cem.Vocab.slotSuffixText
 
 
-{-| Place content in the `hint` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotHint`. -}
-slotHint :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+{-| Place content in the `hint` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotHint`. -}
+slotHint : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotHint =
     M3e.Cem.Vocab.slotHint
 
 
-{-| Place content in the `error` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotError`. -}
-slotError :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+{-| Place content in the `error` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotError`. -}
+slotError : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotError =
     M3e.Cem.Vocab.slotError
 
 
-{-| Place content in the `avatar` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotAvatar`. -}
+{-| Place content in the `avatar` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotAvatar`. -}
 slotAvatar :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | avatar : M3e.Value.Supported } msg
+    M3e.Element.Element { avatar : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotAvatar =
     M3e.Cem.Vocab.slotAvatar
 
 
-{-| Place content in the `remove-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotRemoveIcon`. -}
+{-| Place content in the `remove-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotRemoveIcon`. -}
 slotRemoveIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotRemoveIcon =
     M3e.Cem.Vocab.slotRemoveIcon
 
 
-{-| Place content in the `input` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotInput`. -}
-slotInput :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+{-| Place content in the `input` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotInput`. -}
+slotInput : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotInput =
     M3e.Cem.Vocab.slotInput
 
 
-{-| Place content in the `badge` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotBadge`. -}
+{-| Place content in the `badge` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotBadge`. -}
 slotBadge :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | badge : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported
+    , badge : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotBadge =
     M3e.Cem.Vocab.slotBadge
 
 
-{-| Place content in the `first-page-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotFirstPageIcon`. -}
+{-| Place content in the `first-page-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotFirstPageIcon`. -}
 slotFirstPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | firstPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotFirstPageIcon =
     M3e.Cem.Vocab.slotFirstPageIcon
 
 
-{-| Place content in the `previous-page-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotPreviousPageIcon`. -}
+{-| Place content in the `previous-page-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotPreviousPageIcon`. -}
 slotPreviousPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | previousPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotPreviousPageIcon =
     M3e.Cem.Vocab.slotPreviousPageIcon
 
 
-{-| Place content in the `next-page-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotNextPageIcon`. -}
+{-| Place content in the `next-page-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotNextPageIcon`. -}
 slotNextPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | nextPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotNextPageIcon =
     M3e.Cem.Vocab.slotNextPageIcon
 
 
-{-| Place content in the `last-page-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotLastPageIcon`. -}
+{-| Place content in the `last-page-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotLastPageIcon`. -}
 slotLastPageIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | lastPageIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotLastPageIcon =
     M3e.Cem.Vocab.slotLastPageIcon
 
 
-{-| Place content in the `subhead` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSubhead`. -}
+{-| Place content in the `subhead` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSubhead`. -}
 slotSubhead :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | subhead : M3e.Value.Supported } msg
+    M3e.Element.Element { text : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotSubhead =
     M3e.Cem.Vocab.slotSubhead
 
 
-{-| Place content in the `clear-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotClearIcon`. -}
+{-| Place content in the `clear-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotClearIcon`. -}
 slotClearIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotClearIcon =
     M3e.Cem.Vocab.slotClearIcon
 
 
-{-| Place content in the `open-leading` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotOpenLeading`. -}
+{-| Place content in the `open-leading` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotOpenLeading`. -}
 slotOpenLeading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | openLeading : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotOpenLeading =
     M3e.Cem.Vocab.slotOpenLeading
 
 
-{-| Place content in the `open-trailing` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotOpenTrailing`. -}
+{-| Place content in the `open-trailing` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotOpenTrailing`. -}
 slotOpenTrailing :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | openTrailing : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotOpenTrailing =
     M3e.Cem.Vocab.slotOpenTrailing
 
 
-{-| Place content in the `closed-leading` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotClosedLeading`. -}
+{-| Place content in the `closed-leading` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotClosedLeading`. -}
 slotClosedLeading :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | closedLeading : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotClosedLeading =
     M3e.Cem.Vocab.slotClosedLeading
 
 
-{-| Place content in the `closed-trailing` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotClosedTrailing`. -}
+{-| Place content in the `closed-trailing` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotClosedTrailing`. -}
 slotClosedTrailing :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | closedTrailing : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported
+    , iconButton : M3e.Value.Supported
+    } msg
+    -> M3e.Element.Element k msg
 slotClosedTrailing =
     M3e.Cem.Vocab.slotClosedTrailing
 
 
-{-| Place content in the `search-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotSearchIcon`. -}
+{-| Place content in the `search-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotSearchIcon`. -}
 slotSearchIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | searchIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotSearchIcon =
     M3e.Cem.Vocab.slotSearchIcon
 
 
-{-| Place content in the `arrow` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotArrow`. -}
+{-| Place content in the `arrow` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotArrow`. -}
 slotArrow :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | arrow : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotArrow =
     M3e.Cem.Vocab.slotArrow
 
 
-{-| Place content in the `value` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotValue`. -}
-slotValue :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | value : M3e.Value.Supported } msg
+{-| Place content in the `value` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotValue`. -}
+slotValue : M3e.Element.Element any msg -> M3e.Element.Element k msg
 slotValue =
     M3e.Cem.Vocab.slotValue
 
 
-{-| Place content in the `next-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotNextIcon`. -}
+{-| Place content in the `next-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotNextIcon`. -}
 slotNextIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotNextIcon =
     M3e.Cem.Vocab.slotNextIcon
 
 
-{-| Place content in the `prev-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotPrevIcon`. -}
+{-| Place content in the `prev-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotPrevIcon`. -}
 slotPrevIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotPrevIcon =
     M3e.Cem.Vocab.slotPrevIcon
 
 
-{-| Place content in the `leading-button` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotLeadingButton`. -}
+{-| Place content in the `leading-button` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotLeadingButton`. -}
 slotLeadingButton :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
+    M3e.Element.Element { button : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotLeadingButton =
     M3e.Cem.Vocab.slotLeadingButton
 
 
-{-| Place content in the `trailing-button` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotTrailingButton`. -}
+{-| Place content in the `trailing-button` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotTrailingButton`. -}
 slotTrailingButton :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
+    M3e.Element.Element { iconButton : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotTrailingButton =
     M3e.Cem.Vocab.slotTrailingButton
 
 
-{-| Place content in the `done-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotDoneIcon`. -}
+{-| Place content in the `done-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotDoneIcon`. -}
 slotDoneIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | doneIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotDoneIcon =
     M3e.Cem.Vocab.slotDoneIcon
 
 
-{-| Place content in the `edit-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotEditIcon`. -}
+{-| Place content in the `edit-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotEditIcon`. -}
 slotEditIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | editIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotEditIcon =
     M3e.Cem.Vocab.slotEditIcon
 
 
-{-| Place content in the `error-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotErrorIcon`. -}
+{-| Place content in the `error-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotErrorIcon`. -}
 slotErrorIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | errorIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotErrorIcon =
     M3e.Cem.Vocab.slotErrorIcon
 
 
-{-| Place content in the `step` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotStep`. -}
+{-| Place content in the `step` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotStep`. -}
 slotStep :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | step : M3e.Value.Supported } msg
+    M3e.Element.Element { step : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotStep =
     M3e.Cem.Vocab.slotStep
 
 
-{-| Place content in the `panel` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotPanel`. -}
+{-| Place content in the `panel` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotPanel`. -}
 slotPanel :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
+    M3e.Element.Element { stepPanel : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotPanel =
     M3e.Cem.Vocab.slotPanel
 
 
-{-| Place content in the `open-toggle-icon` slot (component-agnostic; element kind loose). The kind-safe per-component form is `<component>SlotOpenToggleIcon`. -}
+{-| Place content in the `open-toggle-icon` slot (component-agnostic; kind-guided input). The per-component form is `<component>SlotOpenToggleIcon`. -}
 slotOpenToggleIcon :
-    M3e.Element.Element k msg
-    -> M3e.Content.Content { r | openToggleIcon : M3e.Value.Supported } msg
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slotOpenToggleIcon =
     M3e.Cem.Vocab.slotOpenToggleIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Tree`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-treeSlotDefault :
-    M3e.Element.Element { treeItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-treeSlotDefault =
-    M3e.Tree.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-treeItemSlotDefault :
-    M3e.Element.Element { treeItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-treeItemSlotDefault =
-    M3e.TreeItem.child
-
-
-{-| Kind-safe `label` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
+{-| Per-component `label` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
 treeItemSlotLabel :
     M3e.Element.Element { text : M3e.Value.Supported
     , link : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 treeItemSlotLabel =
     M3e.TreeItem.label
 
 
-{-| Kind-safe `icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 treeItemSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 treeItemSlotIcon =
     M3e.TreeItem.icon
 
 
-{-| Kind-safe `selected-icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
+{-| Per-component `selected-icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
 treeItemSlotSelectedIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 treeItemSlotSelectedIcon =
     M3e.TreeItem.selectedIcon
 
 
-{-| Kind-safe `toggle-icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
+{-| Per-component `toggle-icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
 treeItemSlotToggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 treeItemSlotToggleIcon =
     M3e.TreeItem.toggleIcon
 
 
-{-| Kind-safe `open-toggle-icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotOpenToggleIcon`. -}
+{-| Per-component `open-toggle-icon` slot setter for `M3e.TreeItem`, re-exposed flat. The loose, component-agnostic form is `slotOpenToggleIcon`. -}
 treeItemSlotOpenToggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | openToggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 treeItemSlotOpenToggleIcon =
     M3e.TreeItem.openToggleIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Toolbar`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-toolbarSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-toolbarSlotDefault =
-    M3e.Toolbar.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Toc`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-tocSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-tocSlotDefault =
-    M3e.Toc.child
-
-
-{-| Kind-safe `overline` slot setter for `M3e.Toc`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
+{-| Per-component `overline` slot setter for `M3e.Toc`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
 tocSlotOverline :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 tocSlotOverline =
     M3e.Toc.overline
 
 
-{-| Kind-safe `title` slot setter for `M3e.Toc`, re-exposed flat. The loose, component-agnostic form is `slotTitle`. -}
+{-| Per-component `title` slot setter for `M3e.Toc`, re-exposed flat. The loose, component-agnostic form is `slotTitle`. -}
 tocSlotTitle :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 tocSlotTitle =
     M3e.Toc.title
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.TocItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-tocItemSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-tocItemSlotDefault =
-    M3e.TocItem.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Theme`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-themeSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-themeSlotDefault =
-    M3e.Theme.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-tabsSlotDefault :
-    M3e.Element.Element { tab : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-tabsSlotDefault =
-    M3e.Tabs.child
-
-
-{-| Kind-safe `panel` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotPanel`. -}
+{-| Per-component `panel` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotPanel`. -}
 tabsSlotPanel :
     M3e.Element.Element { tabPanel : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 tabsSlotPanel =
     M3e.Tabs.panel
 
 
-{-| Kind-safe `next-icon` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotNextIcon`. -}
+{-| Per-component `next-icon` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotNextIcon`. -}
 tabsSlotNextIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 tabsSlotNextIcon =
     M3e.Tabs.nextIcon
 
 
-{-| Kind-safe `prev-icon` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotPrevIcon`. -}
+{-| Per-component `prev-icon` slot setter for `M3e.Tabs`, re-exposed flat. The loose, component-agnostic form is `slotPrevIcon`. -}
 tabsSlotPrevIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 tabsSlotPrevIcon =
     M3e.Tabs.prevIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.TabPanel`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-tabPanelSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-tabPanelSlotDefault =
-    M3e.TabPanel.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Tab`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-tabSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-tabSlotDefault =
-    M3e.Tab.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.Tab`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.Tab`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 tabSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 tabSlotIcon =
     M3e.Tab.icon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.StepperReset`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-stepperResetSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-stepperResetSlotDefault =
-    M3e.StepperReset.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.StepperPrevious`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-stepperPreviousSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-stepperPreviousSlotDefault =
-    M3e.StepperPrevious.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.StepperNext`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-stepperNextSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-stepperNextSlotDefault =
-    M3e.StepperNext.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-stepSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-stepSlotDefault =
-    M3e.Step.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 stepSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepSlotIcon =
     M3e.Step.icon
 
 
-{-| Kind-safe `done-icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotDoneIcon`. -}
+{-| Per-component `done-icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotDoneIcon`. -}
 stepSlotDoneIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | doneIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepSlotDoneIcon =
     M3e.Step.doneIcon
 
 
-{-| Kind-safe `edit-icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotEditIcon`. -}
+{-| Per-component `edit-icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotEditIcon`. -}
 stepSlotEditIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | editIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepSlotEditIcon =
     M3e.Step.editIcon
 
 
-{-| Kind-safe `error-icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotErrorIcon`. -}
+{-| Per-component `error-icon` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotErrorIcon`. -}
 stepSlotErrorIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | errorIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepSlotErrorIcon =
     M3e.Step.errorIcon
 
 
-{-| Kind-safe `hint` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotHint`. -}
+{-| Per-component `hint` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotHint`. -}
 stepSlotHint :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepSlotHint =
     M3e.Step.hint
 
 
-{-| Kind-safe `error` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotError`. -}
+{-| Per-component `error` slot setter for `M3e.Step`, re-exposed flat. The loose, component-agnostic form is `slotError`. -}
 stepSlotError :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepSlotError =
     M3e.Step.error
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.StepPanel`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-stepPanelSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-stepPanelSlotDefault =
-    M3e.StepPanel.child
-
-
-{-| Kind-safe `actions` slot setter for `M3e.StepPanel`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
-stepPanelSlotActions :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+{-| Per-component `actions` slot setter for `M3e.StepPanel`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
+stepPanelSlotActions : M3e.Element.Element any msg -> M3e.Element.Element k msg
 stepPanelSlotActions =
     M3e.StepPanel.actions
 
 
-{-| Kind-safe `step` slot setter for `M3e.Stepper`, re-exposed flat. The loose, component-agnostic form is `slotStep`. -}
+{-| Per-component `step` slot setter for `M3e.Stepper`, re-exposed flat. The loose, component-agnostic form is `slotStep`. -}
 stepperSlotStep :
     M3e.Element.Element { step : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | step : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepperSlotStep =
     M3e.Stepper.step
 
 
-{-| Kind-safe `panel` slot setter for `M3e.Stepper`, re-exposed flat. The loose, component-agnostic form is `slotPanel`. -}
+{-| Per-component `panel` slot setter for `M3e.Stepper`, re-exposed flat. The loose, component-agnostic form is `slotPanel`. -}
 stepperSlotPanel :
     M3e.Element.Element { stepPanel : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 stepperSlotPanel =
     M3e.Stepper.panel
 
 
-{-| Kind-safe `start` slot setter for `M3e.SplitPane`, re-exposed flat. The loose, component-agnostic form is `slotStart`. -}
-splitPaneSlotStart :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | start : M3e.Value.Supported } msg
+{-| Per-component `start` slot setter for `M3e.SplitPane`, re-exposed flat. The loose, component-agnostic form is `slotStart`. -}
+splitPaneSlotStart : M3e.Element.Element any msg -> M3e.Element.Element k msg
 splitPaneSlotStart =
     M3e.SplitPane.start
 
 
-{-| Kind-safe `end` slot setter for `M3e.SplitPane`, re-exposed flat. The loose, component-agnostic form is `slotEnd`. -}
-splitPaneSlotEnd :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | end : M3e.Value.Supported } msg
+{-| Per-component `end` slot setter for `M3e.SplitPane`, re-exposed flat. The loose, component-agnostic form is `slotEnd`. -}
+splitPaneSlotEnd : M3e.Element.Element any msg -> M3e.Element.Element k msg
 splitPaneSlotEnd =
     M3e.SplitPane.end
 
 
-{-| Kind-safe `leading-button` slot setter for `M3e.SplitButton`, re-exposed flat. The loose, component-agnostic form is `slotLeadingButton`. -}
+{-| Per-component `leading-button` slot setter for `M3e.SplitButton`, re-exposed flat. The loose, component-agnostic form is `slotLeadingButton`. -}
 splitButtonSlotLeadingButton :
     M3e.Element.Element { button : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | leadingButton : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 splitButtonSlotLeadingButton =
     M3e.SplitButton.leadingButton
 
 
-{-| Kind-safe `trailing-button` slot setter for `M3e.SplitButton`, re-exposed flat. The loose, component-agnostic form is `slotTrailingButton`. -}
+{-| Per-component `trailing-button` slot setter for `M3e.SplitButton`, re-exposed flat. The loose, component-agnostic form is `slotTrailingButton`. -}
 splitButtonSlotTrailingButton :
     M3e.Element.Element { iconButton : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingButton : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 splitButtonSlotTrailingButton =
     M3e.SplitButton.trailingButton
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Snackbar`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-snackbarSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-snackbarSlotDefault =
-    M3e.Snackbar.child
-
-
-{-| Kind-safe `close-icon` slot setter for `M3e.Snackbar`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
+{-| Per-component `close-icon` slot setter for `M3e.Snackbar`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
 snackbarSlotCloseIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 snackbarSlotCloseIcon =
     M3e.Snackbar.closeIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Slider`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-sliderSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-sliderSlotDefault =
-    M3e.Slider.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.SlideGroup`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-slideGroupSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-slideGroupSlotDefault =
-    M3e.SlideGroup.child
-
-
-{-| Kind-safe `next-icon` slot setter for `M3e.SlideGroup`, re-exposed flat. The loose, component-agnostic form is `slotNextIcon`. -}
+{-| Per-component `next-icon` slot setter for `M3e.SlideGroup`, re-exposed flat. The loose, component-agnostic form is `slotNextIcon`. -}
 slideGroupSlotNextIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slideGroupSlotNextIcon =
     M3e.SlideGroup.nextIcon
 
 
-{-| Kind-safe `prev-icon` slot setter for `M3e.SlideGroup`, re-exposed flat. The loose, component-agnostic form is `slotPrevIcon`. -}
+{-| Per-component `prev-icon` slot setter for `M3e.SlideGroup`, re-exposed flat. The loose, component-agnostic form is `slotPrevIcon`. -}
 slideGroupSlotPrevIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 slideGroupSlotPrevIcon =
     M3e.SlideGroup.prevIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Skeleton`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-skeletonSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-skeletonSlotDefault =
-    M3e.Skeleton.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Shape`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-shapeSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-shapeSlotDefault =
-    M3e.Shape.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.SegmentedButton`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-segmentedButtonSlotDefault :
-    M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-segmentedButtonSlotDefault =
-    M3e.SegmentedButton.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ButtonSegment`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-buttonSegmentSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-buttonSegmentSlotDefault =
-    M3e.ButtonSegment.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.ButtonSegment`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.ButtonSegment`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 buttonSegmentSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 buttonSegmentSlotIcon =
     M3e.ButtonSegment.icon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-searchViewSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-searchViewSlotDefault =
-    M3e.SearchView.child
-
-
-{-| Kind-safe `input` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotInput`. -}
-searchViewSlotInput :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+{-| Per-component `input` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotInput`. -}
+searchViewSlotInput : M3e.Element.Element any msg -> M3e.Element.Element k msg
 searchViewSlotInput =
     M3e.SearchView.input
 
 
-{-| Kind-safe `open-leading` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotOpenLeading`. -}
+{-| Per-component `open-leading` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotOpenLeading`. -}
 searchViewSlotOpenLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | openLeading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotOpenLeading =
     M3e.SearchView.openLeading
 
 
-{-| Kind-safe `open-trailing` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotOpenTrailing`. -}
+{-| Per-component `open-trailing` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotOpenTrailing`. -}
 searchViewSlotOpenTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | openTrailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotOpenTrailing =
     M3e.SearchView.openTrailing
 
 
-{-| Kind-safe `closed-leading` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotClosedLeading`. -}
+{-| Per-component `closed-leading` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotClosedLeading`. -}
 searchViewSlotClosedLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | closedLeading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotClosedLeading =
     M3e.SearchView.closedLeading
 
 
-{-| Kind-safe `closed-trailing` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotClosedTrailing`. -}
+{-| Per-component `closed-trailing` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotClosedTrailing`. -}
 searchViewSlotClosedTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | closedTrailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotClosedTrailing =
     M3e.SearchView.closedTrailing
 
 
-{-| Kind-safe `search-icon` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotSearchIcon`. -}
+{-| Per-component `search-icon` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotSearchIcon`. -}
 searchViewSlotSearchIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | searchIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotSearchIcon =
     M3e.SearchView.searchIcon
 
 
-{-| Kind-safe `close-icon` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
+{-| Per-component `close-icon` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
 searchViewSlotCloseIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotCloseIcon =
     M3e.SearchView.closeIcon
 
 
-{-| Kind-safe `clear-icon` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotClearIcon`. -}
+{-| Per-component `clear-icon` slot setter for `M3e.SearchView`, re-exposed flat. The loose, component-agnostic form is `slotClearIcon`. -}
 searchViewSlotClearIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchViewSlotClearIcon =
     M3e.SearchView.clearIcon
 
 
-{-| Kind-safe `leading` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 searchBarSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchBarSlotLeading =
     M3e.SearchBar.leading
 
 
-{-| Kind-safe `input` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotInput`. -}
-searchBarSlotInput :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+{-| Per-component `input` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotInput`. -}
+searchBarSlotInput : M3e.Element.Element any msg -> M3e.Element.Element k msg
 searchBarSlotInput =
     M3e.SearchBar.input
 
 
-{-| Kind-safe `trailing` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
+{-| Per-component `trailing` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
 searchBarSlotTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchBarSlotTrailing =
     M3e.SearchBar.trailing
 
 
-{-| Kind-safe `clear-icon` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotClearIcon`. -}
+{-| Per-component `clear-icon` slot setter for `M3e.SearchBar`, re-exposed flat. The loose, component-agnostic form is `slotClearIcon`. -}
 searchBarSlotClearIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchBarSlotClearIcon =
     M3e.SearchBar.clearIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.RadioGroup`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-radioGroupSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-radioGroupSlotDefault =
-    M3e.RadioGroup.child
-
-
-{-| Kind-safe `first-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotFirstPageIcon`. -}
+{-| Per-component `first-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotFirstPageIcon`. -}
 paginatorSlotFirstPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | firstPageIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 paginatorSlotFirstPageIcon =
     M3e.Paginator.firstPageIcon
 
 
-{-| Kind-safe `previous-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotPreviousPageIcon`. -}
+{-| Per-component `previous-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotPreviousPageIcon`. -}
 paginatorSlotPreviousPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | previousPageIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 paginatorSlotPreviousPageIcon =
     M3e.Paginator.previousPageIcon
 
 
-{-| Kind-safe `next-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotNextPageIcon`. -}
+{-| Per-component `next-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotNextPageIcon`. -}
 paginatorSlotNextPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | nextPageIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 paginatorSlotNextPageIcon =
     M3e.Paginator.nextPageIcon
 
 
-{-| Kind-safe `last-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotLastPageIcon`. -}
+{-| Per-component `last-page-icon` slot setter for `M3e.Paginator`, re-exposed flat. The loose, component-agnostic form is `slotLastPageIcon`. -}
 paginatorSlotLastPageIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | lastPageIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 paginatorSlotLastPageIcon =
     M3e.Paginator.lastPageIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Select`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-selectSlotDefault :
-    M3e.Element.Element { option : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-selectSlotDefault =
-    M3e.Select.child
-
-
-{-| Kind-safe `arrow` slot setter for `M3e.Select`, re-exposed flat. The loose, component-agnostic form is `slotArrow`. -}
+{-| Per-component `arrow` slot setter for `M3e.Select`, re-exposed flat. The loose, component-agnostic form is `slotArrow`. -}
 selectSlotArrow :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | arrow : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 selectSlotArrow =
     M3e.Select.arrow
 
 
-{-| Kind-safe `value` slot setter for `M3e.Select`, re-exposed flat. The loose, component-agnostic form is `slotValue`. -}
-selectSlotValue :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | value : M3e.Value.Supported } msg
+{-| Per-component `value` slot setter for `M3e.Select`, re-exposed flat. The loose, component-agnostic form is `slotValue`. -}
+selectSlotValue : M3e.Element.Element any msg -> M3e.Element.Element k msg
 selectSlotValue =
     M3e.Select.value
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.NavRailToggle`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navRailToggleSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navRailToggleSlotDefault =
-    M3e.NavRailToggle.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.NavRail`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navRailSlotDefault :
-    M3e.Element.Element { navItem : M3e.Value.Supported
-    , iconButton : M3e.Value.Supported
-    , fab : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navRailSlotDefault =
-    M3e.NavRail.child
-
-
-{-| Kind-safe `label` slot setter for `M3e.NavMenuItemGroup`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
+{-| Per-component `label` slot setter for `M3e.NavMenuItemGroup`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
 navMenuItemGroupSlotLabel :
     M3e.Element.Element { text : M3e.Value.Supported
     , heading : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navMenuItemGroupSlotLabel =
     M3e.NavMenuItemGroup.label
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.NavMenuItemGroup`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navMenuItemGroupSlotDefault :
-    M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navMenuItemGroupSlotDefault =
-    M3e.NavMenuItemGroup.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.NavMenu`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navMenuSlotDefault :
-    M3e.Element.Element { navMenuItem : M3e.Value.Supported
-    , navMenuItemGroup : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navMenuSlotDefault =
-    M3e.NavMenu.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navMenuItemSlotDefault :
-    M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navMenuItemSlotDefault =
-    M3e.NavMenuItem.child
-
-
-{-| Kind-safe `label` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
+{-| Per-component `label` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
 navMenuItemSlotLabel :
     M3e.Element.Element { text : M3e.Value.Supported
     , link : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navMenuItemSlotLabel =
     M3e.NavMenuItem.label
 
 
-{-| Kind-safe `icon` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 navMenuItemSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navMenuItemSlotIcon =
     M3e.NavMenuItem.icon
 
 
-{-| Kind-safe `badge` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotBadge`. -}
+{-| Per-component `badge` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotBadge`. -}
 navMenuItemSlotBadge :
     M3e.Element.Element { text : M3e.Value.Supported
     , badge : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | badge : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navMenuItemSlotBadge =
     M3e.NavMenuItem.badge
 
 
-{-| Kind-safe `selected-icon` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
+{-| Per-component `selected-icon` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
 navMenuItemSlotSelectedIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navMenuItemSlotSelectedIcon =
     M3e.NavMenuItem.selectedIcon
 
 
-{-| Kind-safe `toggle-icon` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
+{-| Per-component `toggle-icon` slot setter for `M3e.NavMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
 navMenuItemSlotToggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navMenuItemSlotToggleIcon =
     M3e.NavMenuItem.toggleIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.NavBar`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navBarSlotDefault :
-    M3e.Element.Element { navItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navBarSlotDefault =
-    M3e.NavBar.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.NavItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-navItemSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-navItemSlotDefault =
-    M3e.NavItem.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.NavItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.NavItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 navItemSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navItemSlotIcon =
     M3e.NavItem.icon
 
 
-{-| Kind-safe `selected-icon` slot setter for `M3e.NavItem`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
+{-| Per-component `selected-icon` slot setter for `M3e.NavItem`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
 navItemSlotSelectedIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 navItemSlotSelectedIcon =
     M3e.NavItem.selectedIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.MenuItemRadio`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-menuItemRadioSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-menuItemRadioSlotDefault =
-    M3e.MenuItemRadio.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.MenuItemRadio`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.MenuItemRadio`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 menuItemRadioSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 menuItemRadioSlotIcon =
     M3e.MenuItemRadio.icon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.MenuItemRadio`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.MenuItemRadio`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 menuItemRadioSlotTrailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 menuItemRadioSlotTrailingIcon =
     M3e.MenuItemRadio.trailingIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.MenuItemGroup`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-menuItemGroupSlotDefault :
-    M3e.Element.Element { menuItem : M3e.Value.Supported
-    , menuItemCheckbox : M3e.Value.Supported
-    , menuItemRadio : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-menuItemGroupSlotDefault =
-    M3e.MenuItemGroup.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.MenuItemCheckbox`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-menuItemCheckboxSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-menuItemCheckboxSlotDefault =
-    M3e.MenuItemCheckbox.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.MenuItemCheckbox`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.MenuItemCheckbox`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 menuItemCheckboxSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 menuItemCheckboxSlotIcon =
     M3e.MenuItemCheckbox.icon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.MenuItemCheckbox`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.MenuItemCheckbox`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 menuItemCheckboxSlotTrailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 menuItemCheckboxSlotTrailingIcon =
     M3e.MenuItemCheckbox.trailingIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Menu`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-menuSlotDefault :
-    M3e.Element.Element { menuItem : M3e.Value.Supported
-    , menuItemCheckbox : M3e.Value.Supported
-    , menuItemRadio : M3e.Value.Supported
-    , menuItemGroup : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-menuSlotDefault =
-    M3e.Menu.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.MenuItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-menuItemSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , dialogTrigger : M3e.Value.Supported
-    , dialogAction : M3e.Value.Supported
-    , menuTrigger : M3e.Value.Supported
-    , fabMenuTrigger : M3e.Value.Supported
-    , bottomSheetTrigger : M3e.Value.Supported
-    , bottomSheetAction : M3e.Value.Supported
-    , stepperPrevious : M3e.Value.Supported
-    , stepperReset : M3e.Value.Supported
-    , richTooltipAction : M3e.Value.Supported
-    , drawerToggle : M3e.Value.Supported
-    , datepickerToggle : M3e.Value.Supported
-    , navRailToggle : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-menuItemSlotDefault =
-    M3e.MenuItem.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.MenuItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.MenuItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 menuItemSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 menuItemSlotIcon =
     M3e.MenuItem.icon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.MenuItem`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.MenuItem`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 menuItemSlotTrailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 menuItemSlotTrailingIcon =
     M3e.MenuItem.trailingIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.MenuTrigger`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-menuTriggerSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-menuTriggerSlotDefault =
-    M3e.MenuTrigger.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.SelectionList`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-selectionListSlotDefault :
-    M3e.Element.Element { listOption : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-selectionListSlotDefault =
-    M3e.SelectionList.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-listOptionSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , html : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-listOptionSlotDefault =
-    M3e.ListOption.child
-
-
-{-| Kind-safe `leading` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 listOptionSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
     , text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listOptionSlotLeading =
     M3e.ListOption.leading
 
 
-{-| Kind-safe `overline` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
+{-| Per-component `overline` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
 listOptionSlotOverline :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listOptionSlotOverline =
     M3e.ListOption.overline
 
 
-{-| Kind-safe `supporting-text` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
+{-| Per-component `supporting-text` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
 listOptionSlotSupportingText :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listOptionSlotSupportingText =
     M3e.ListOption.supportingText
 
 
-{-| Kind-safe `trailing` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
+{-| Per-component `trailing` slot setter for `M3e.ListOption`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
 listOptionSlotTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
@@ -5888,135 +5381,91 @@ listOptionSlotTrailing :
     , radio : M3e.Value.Supported
     , checkbox : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listOptionSlotTrailing =
     M3e.ListOption.trailing
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.ActionList`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-actionListSlotDefault :
-    M3e.Element.Element { listAction : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-actionListSlotDefault =
-    M3e.ActionList.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-expandableListItemSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , html : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-expandableListItemSlotDefault =
-    M3e.ExpandableListItem.child
-
-
-{-| Kind-safe `leading` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 expandableListItemSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
     , text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 expandableListItemSlotLeading =
     M3e.ExpandableListItem.leading
 
 
-{-| Kind-safe `overline` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
+{-| Per-component `overline` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
 expandableListItemSlotOverline :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 expandableListItemSlotOverline =
     M3e.ExpandableListItem.overline
 
 
-{-| Kind-safe `supporting-text` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
+{-| Per-component `supporting-text` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
 expandableListItemSlotSupportingText :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 expandableListItemSlotSupportingText =
     M3e.ExpandableListItem.supportingText
 
 
-{-| Kind-safe `toggle-icon` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
+{-| Per-component `toggle-icon` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
 expandableListItemSlotToggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 expandableListItemSlotToggleIcon =
     M3e.ExpandableListItem.toggleIcon
 
 
-{-| Kind-safe `items` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotItems`. -}
+{-| Per-component `items` slot setter for `M3e.ExpandableListItem`, re-exposed flat. The loose, component-agnostic form is `slotItems`. -}
 expandableListItemSlotItems :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | items : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 expandableListItemSlotItems =
     M3e.ExpandableListItem.items
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-listActionSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , dialogTrigger : M3e.Value.Supported
-    , dialogAction : M3e.Value.Supported
-    , menuTrigger : M3e.Value.Supported
-    , fabMenuTrigger : M3e.Value.Supported
-    , bottomSheetTrigger : M3e.Value.Supported
-    , bottomSheetAction : M3e.Value.Supported
-    , stepperPrevious : M3e.Value.Supported
-    , stepperReset : M3e.Value.Supported
-    , richTooltipAction : M3e.Value.Supported
-    , drawerToggle : M3e.Value.Supported
-    , datepickerToggle : M3e.Value.Supported
-    , navRailToggle : M3e.Value.Supported
-    , html : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-listActionSlotDefault =
-    M3e.ListAction.child
-
-
-{-| Kind-safe `leading` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 listActionSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
     , text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listActionSlotLeading =
     M3e.ListAction.leading
 
 
-{-| Kind-safe `overline` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
+{-| Per-component `overline` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
 listActionSlotOverline :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listActionSlotOverline =
     M3e.ListAction.overline
 
 
-{-| Kind-safe `supporting-text` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
+{-| Per-component `supporting-text` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
 listActionSlotSupportingText :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listActionSlotSupportingText =
     M3e.ListAction.supportingText
 
 
-{-| Kind-safe `trailing` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
+{-| Per-component `trailing` slot setter for `M3e.ListAction`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
 listActionSlotTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
@@ -6026,54 +5475,44 @@ listActionSlotTrailing :
     , radio : M3e.Value.Supported
     , checkbox : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listActionSlotTrailing =
     M3e.ListAction.trailing
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-listItemButtonSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , html : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-listItemButtonSlotDefault =
-    M3e.ListItemButton.child
-
-
-{-| Kind-safe `leading` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 listItemButtonSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
     , text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemButtonSlotLeading =
     M3e.ListItemButton.leading
 
 
-{-| Kind-safe `overline` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
+{-| Per-component `overline` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
 listItemButtonSlotOverline :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemButtonSlotOverline =
     M3e.ListItemButton.overline
 
 
-{-| Kind-safe `supporting-text` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
+{-| Per-component `supporting-text` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
 listItemButtonSlotSupportingText :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemButtonSlotSupportingText =
     M3e.ListItemButton.supportingText
 
 
-{-| Kind-safe `trailing` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
+{-| Per-component `trailing` slot setter for `M3e.ListItemButton`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
 listItemButtonSlotTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
@@ -6083,67 +5522,44 @@ listItemButtonSlotTrailing :
     , radio : M3e.Value.Supported
     , checkbox : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemButtonSlotTrailing =
     M3e.ListItemButton.trailing
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.List`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-listSlotDefault :
-    M3e.Element.Element { listItem : M3e.Value.Supported
-    , listAction : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , listOption : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-listSlotDefault =
-    M3e.List.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-listItemSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , html : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-listItemSlotDefault =
-    M3e.ListItem.child
-
-
-{-| Kind-safe `leading` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 listItemSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
     , text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemSlotLeading =
     M3e.ListItem.leading
 
 
-{-| Kind-safe `overline` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
+{-| Per-component `overline` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotOverline`. -}
 listItemSlotOverline :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | overline : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemSlotOverline =
     M3e.ListItem.overline
 
 
-{-| Kind-safe `supporting-text` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
+{-| Per-component `supporting-text` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotSupportingText`. -}
 listItemSlotSupportingText :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | supportingText : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemSlotSupportingText =
     M3e.ListItem.supportingText
 
 
-{-| Kind-safe `trailing` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
+{-| Per-component `trailing` slot setter for `M3e.ListItem`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
 listItemSlotTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , avatar : M3e.Value.Supported
@@ -6153,878 +5569,431 @@ listItemSlotTrailing :
     , radio : M3e.Value.Supported
     , checkbox : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 listItemSlotTrailing =
     M3e.ListItem.trailing
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Heading`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-headingSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-headingSlotDefault =
-    M3e.Heading.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.FabMenuTrigger`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-fabMenuTriggerSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-fabMenuTriggerSlotDefault =
-    M3e.FabMenuTrigger.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.FabMenu`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-fabMenuSlotDefault :
-    M3e.Element.Element { fabMenuItem : M3e.Value.Supported
-    , menuItem : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-fabMenuSlotDefault =
-    M3e.FabMenu.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Fab`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-fabSlotDefault :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-fabSlotDefault =
-    M3e.Fab.child
-
-
-{-| Kind-safe `label` slot setter for `M3e.Fab`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
+{-| Per-component `label` slot setter for `M3e.Fab`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
 fabSlotLabel :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 fabSlotLabel =
     M3e.Fab.label
 
 
-{-| Kind-safe `close-icon` slot setter for `M3e.Fab`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
+{-| Per-component `close-icon` slot setter for `M3e.Fab`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
 fabSlotCloseIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 fabSlotCloseIcon =
     M3e.Fab.closeIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Accordion`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-accordionSlotDefault :
-    M3e.Element.Element { expansionPanel : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-accordionSlotDefault =
-    M3e.Accordion.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-expansionPanelSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-expansionPanelSlotDefault =
-    M3e.ExpansionPanel.child
-
-
-{-| Kind-safe `actions` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
+{-| Per-component `actions` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
 expansionPanelSlotActions :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 expansionPanelSlotActions =
     M3e.ExpansionPanel.actions
 
 
-{-| Kind-safe `header` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
+{-| Per-component `header` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
 expansionPanelSlotHeader :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 expansionPanelSlotHeader =
     M3e.ExpansionPanel.header
 
 
-{-| Kind-safe `toggle-icon` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
+{-| Per-component `toggle-icon` slot setter for `M3e.ExpansionPanel`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
 expansionPanelSlotToggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 expansionPanelSlotToggleIcon =
     M3e.ExpansionPanel.toggleIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.ExpansionHeader`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-expansionHeaderSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-expansionHeaderSlotDefault =
-    M3e.ExpansionHeader.child
-
-
-{-| Kind-safe `toggle-icon` slot setter for `M3e.ExpansionHeader`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
+{-| Per-component `toggle-icon` slot setter for `M3e.ExpansionHeader`, re-exposed flat. The loose, component-agnostic form is `slotToggleIcon`. -}
 expansionHeaderSlotToggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 expansionHeaderSlotToggleIcon =
     M3e.ExpansionHeader.toggleIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.DrawerToggle`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-drawerToggleSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-drawerToggleSlotDefault =
-    M3e.DrawerToggle.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.DrawerContainer`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-drawerContainerSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-drawerContainerSlotDefault =
-    M3e.DrawerContainer.child
-
-
-{-| Kind-safe `start` slot setter for `M3e.DrawerContainer`, re-exposed flat. The loose, component-agnostic form is `slotStart`. -}
+{-| Per-component `start` slot setter for `M3e.DrawerContainer`, re-exposed flat. The loose, component-agnostic form is `slotStart`. -}
 drawerContainerSlotStart :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | start : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 drawerContainerSlotStart =
     M3e.DrawerContainer.startSlot
 
 
-{-| Kind-safe `end` slot setter for `M3e.DrawerContainer`, re-exposed flat. The loose, component-agnostic form is `slotEnd`. -}
+{-| Per-component `end` slot setter for `M3e.DrawerContainer`, re-exposed flat. The loose, component-agnostic form is `slotEnd`. -}
 drawerContainerSlotEnd :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | end : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 drawerContainerSlotEnd =
     M3e.DrawerContainer.endSlot
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.DialogTrigger`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-dialogTriggerSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-dialogTriggerSlotDefault =
-    M3e.DialogTrigger.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-dialogSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-dialogSlotDefault =
-    M3e.Dialog.child
-
-
-{-| Kind-safe `header` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
+{-| Per-component `header` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
 dialogSlotHeader :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 dialogSlotHeader =
     M3e.Dialog.header
 
 
-{-| Kind-safe `actions` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
-dialogSlotActions :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+{-| Per-component `actions` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
+dialogSlotActions : M3e.Element.Element any msg -> M3e.Element.Element k msg
 dialogSlotActions =
     M3e.Dialog.actions
 
 
-{-| Kind-safe `close-icon` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
+{-| Per-component `close-icon` slot setter for `M3e.Dialog`, re-exposed flat. The loose, component-agnostic form is `slotCloseIcon`. -}
 dialogSlotCloseIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 dialogSlotCloseIcon =
     M3e.Dialog.closeIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.DialogAction`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-dialogActionSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-dialogActionSlotDefault =
-    M3e.DialogAction.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.DatepickerToggle`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-datepickerToggleSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-datepickerToggleSlotDefault =
-    M3e.DatepickerToggle.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ContentPane`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-contentPaneSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-contentPaneSlotDefault =
-    M3e.ContentPane.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.SuggestionChip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-suggestionChipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-suggestionChipSlotDefault =
-    M3e.SuggestionChip.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.SuggestionChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.SuggestionChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 suggestionChipSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 suggestionChipSlotIcon =
     M3e.SuggestionChip.icon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.InputChipSet`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-inputChipSetSlotDefault :
-    M3e.Element.Element { inputChip : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-inputChipSetSlotDefault =
-    M3e.InputChipSet.child
-
-
-{-| Kind-safe `input` slot setter for `M3e.InputChipSet`, re-exposed flat. The loose, component-agnostic form is `slotInput`. -}
-inputChipSetSlotInput :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+{-| Per-component `input` slot setter for `M3e.InputChipSet`, re-exposed flat. The loose, component-agnostic form is `slotInput`. -}
+inputChipSetSlotInput : M3e.Element.Element any msg -> M3e.Element.Element k msg
 inputChipSetSlotInput =
     M3e.InputChipSet.input
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-inputChipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-inputChipSlotDefault =
-    M3e.InputChip.child
-
-
-{-| Kind-safe `avatar` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotAvatar`. -}
+{-| Per-component `avatar` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotAvatar`. -}
 inputChipSlotAvatar :
     M3e.Element.Element { avatar : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | avatar : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 inputChipSlotAvatar =
     M3e.InputChip.avatar
 
 
-{-| Kind-safe `icon` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 inputChipSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 inputChipSlotIcon =
     M3e.InputChip.icon
 
 
-{-| Kind-safe `remove-icon` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotRemoveIcon`. -}
+{-| Per-component `remove-icon` slot setter for `M3e.InputChip`, re-exposed flat. The loose, component-agnostic form is `slotRemoveIcon`. -}
 inputChipSlotRemoveIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 inputChipSlotRemoveIcon =
     M3e.InputChip.removeIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.FilterChipSet`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-filterChipSetSlotDefault :
-    M3e.Element.Element { filterChip : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-filterChipSetSlotDefault =
-    M3e.FilterChipSet.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.FilterChip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-filterChipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-filterChipSlotDefault =
-    M3e.FilterChip.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.FilterChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.FilterChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 filterChipSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 filterChipSlotIcon =
     M3e.FilterChip.icon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.FilterChip`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.FilterChip`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 filterChipSlotTrailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 filterChipSlotTrailingIcon =
     M3e.FilterChip.trailingIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.ChipSet`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-chipSetSlotDefault :
-    M3e.Element.Element { assistChip : M3e.Value.Supported
-    , chip : M3e.Value.Supported
-    , filterChip : M3e.Value.Supported
-    , inputChip : M3e.Value.Supported
-    , suggestionChip : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-chipSetSlotDefault =
-    M3e.ChipSet.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.AssistChip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-assistChipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-assistChipSlotDefault =
-    M3e.AssistChip.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.AssistChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.AssistChip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 assistChipSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 assistChipSlotIcon =
     M3e.AssistChip.icon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Chip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-chipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-chipSlotDefault =
-    M3e.Chip.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.Chip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.Chip`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 chipSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 chipSlotIcon =
     M3e.Chip.icon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.Chip`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.Chip`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 chipSlotTrailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 chipSlotTrailingIcon =
     M3e.Chip.trailingIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-cardSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-cardSlotDefault =
-    M3e.Card.child
-
-
-{-| Kind-safe `header` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
-cardSlotHeader :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+{-| Per-component `header` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
+cardSlotHeader : M3e.Element.Element any msg -> M3e.Element.Element k msg
 cardSlotHeader =
     M3e.Card.header
 
 
-{-| Kind-safe `content` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotContent`. -}
-cardSlotContent :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | content : M3e.Value.Supported } msg
+{-| Per-component `content` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotContent`. -}
+cardSlotContent : M3e.Element.Element any msg -> M3e.Element.Element k msg
 cardSlotContent =
     M3e.Card.content
 
 
-{-| Kind-safe `actions` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
-cardSlotActions :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+{-| Per-component `actions` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
+cardSlotActions : M3e.Element.Element any msg -> M3e.Element.Element k msg
 cardSlotActions =
     M3e.Card.actions
 
 
-{-| Kind-safe `footer` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotFooter`. -}
-cardSlotFooter :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | footer : M3e.Value.Supported } msg
+{-| Per-component `footer` slot setter for `M3e.Card`, re-exposed flat. The loose, component-agnostic form is `slotFooter`. -}
+cardSlotFooter : M3e.Element.Element any msg -> M3e.Element.Element k msg
 cardSlotFooter =
     M3e.Card.footer
 
 
-{-| Kind-safe `header` slot setter for `M3e.Calendar`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
-calendarSlotHeader :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+{-| Per-component `header` slot setter for `M3e.Calendar`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
+calendarSlotHeader : M3e.Element.Element any msg -> M3e.Element.Element k msg
 calendarSlotHeader =
     M3e.Calendar.header
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Tooltip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-tooltipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-tooltipSlotDefault =
-    M3e.Tooltip.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.RichTooltip`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-richTooltipSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-richTooltipSlotDefault =
-    M3e.RichTooltip.child
-
-
-{-| Kind-safe `subhead` slot setter for `M3e.RichTooltip`, re-exposed flat. The loose, component-agnostic form is `slotSubhead`. -}
+{-| Per-component `subhead` slot setter for `M3e.RichTooltip`, re-exposed flat. The loose, component-agnostic form is `slotSubhead`. -}
 richTooltipSlotSubhead :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | subhead : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 richTooltipSlotSubhead =
     M3e.RichTooltip.subhead
 
 
-{-| Kind-safe `actions` slot setter for `M3e.RichTooltip`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
+{-| Per-component `actions` slot setter for `M3e.RichTooltip`, re-exposed flat. The loose, component-agnostic form is `slotActions`. -}
 richTooltipSlotActions :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 richTooltipSlotActions =
     M3e.RichTooltip.actions
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.RichTooltipAction`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-richTooltipActionSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-richTooltipActionSlotDefault =
-    M3e.RichTooltipAction.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ButtonGroup`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-buttonGroupSlotDefault :
-    M3e.Element.Element { button : M3e.Value.Supported
-    , iconButton : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-buttonGroupSlotDefault =
-    M3e.ButtonGroup.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.IconButton`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-iconButtonSlotDefault :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-iconButtonSlotDefault =
-    M3e.IconButton.child
-
-
-{-| Kind-safe `selected` slot setter for `M3e.IconButton`, re-exposed flat. The loose, component-agnostic form is `slotSelected`. -}
+{-| Per-component `selected` slot setter for `M3e.IconButton`, re-exposed flat. The loose, component-agnostic form is `slotSelected`. -}
 iconButtonSlotSelected :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 iconButtonSlotSelected =
     M3e.IconButton.selectedSlot
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-buttonSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-buttonSlotDefault =
-    M3e.Button.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 buttonSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported
     , loadingIndicator : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 buttonSlotIcon =
     M3e.Button.icon
 
 
-{-| Kind-safe `selected` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotSelected`. -}
+{-| Per-component `selected` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotSelected`. -}
 buttonSlotSelected :
     M3e.Element.Element { text : M3e.Value.Supported
     , icon : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 buttonSlotSelected =
     M3e.Button.selectedSlot
 
 
-{-| Kind-safe `selected-icon` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
+{-| Per-component `selected-icon` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotSelectedIcon`. -}
 buttonSlotSelectedIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 buttonSlotSelectedIcon =
     M3e.Button.selectedIcon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.Button`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 buttonSlotTrailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 buttonSlotTrailingIcon =
     M3e.Button.trailingIcon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Breadcrumb`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-breadcrumbSlotDefault :
-    M3e.Element.Element { breadcrumbItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-breadcrumbSlotDefault =
-    M3e.Breadcrumb.child
-
-
-{-| Kind-safe `separator` slot setter for `M3e.Breadcrumb`, re-exposed flat. The loose, component-agnostic form is `slotSeparator`. -}
+{-| Per-component `separator` slot setter for `M3e.Breadcrumb`, re-exposed flat. The loose, component-agnostic form is `slotSeparator`. -}
 breadcrumbSlotSeparator :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | separator : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 breadcrumbSlotSeparator =
     M3e.Breadcrumb.separator
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.BreadcrumbItem`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-breadcrumbItemSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-breadcrumbItemSlotDefault =
-    M3e.BreadcrumbItem.child
-
-
-{-| Kind-safe `icon` slot setter for `M3e.BreadcrumbItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.BreadcrumbItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 breadcrumbItemSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 breadcrumbItemSlotIcon =
     M3e.BreadcrumbItem.icon
 
 
-{-| Kind-safe `icon` slot setter for `M3e.BreadcrumbItemButton`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+{-| Per-component `icon` slot setter for `M3e.BreadcrumbItemButton`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
 breadcrumbItemButtonSlotIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 breadcrumbItemButtonSlotIcon =
     M3e.BreadcrumbItemButton.icon
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.BreadcrumbItemButton`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-breadcrumbItemButtonSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-breadcrumbItemButtonSlotDefault =
-    M3e.BreadcrumbItemButton.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.BottomSheetTrigger`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-bottomSheetTriggerSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-bottomSheetTriggerSlotDefault =
-    M3e.BottomSheetTrigger.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.BottomSheet`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-bottomSheetSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-bottomSheetSlotDefault =
-    M3e.BottomSheet.child
-
-
-{-| Kind-safe `header` slot setter for `M3e.BottomSheet`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
-bottomSheetSlotHeader :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+{-| Per-component `header` slot setter for `M3e.BottomSheet`, re-exposed flat. The loose, component-agnostic form is `slotHeader`. -}
+bottomSheetSlotHeader : M3e.Element.Element any msg -> M3e.Element.Element k msg
 bottomSheetSlotHeader =
     M3e.BottomSheet.header
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.BottomSheetAction`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-bottomSheetActionSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-bottomSheetActionSlotDefault =
-    M3e.BottomSheetAction.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Badge`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-badgeSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-badgeSlotDefault =
-    M3e.Badge.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Avatar`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-avatarSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-avatarSlotDefault =
-    M3e.Avatar.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Autocomplete`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-autocompleteSlotDefault :
-    M3e.Element.Element { option : M3e.Value.Supported
-    , optgroup : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-autocompleteSlotDefault =
-    M3e.Autocomplete.child
-
-
-{-| Kind-safe `loading` slot setter for `M3e.Autocomplete`, re-exposed flat. The loose, component-agnostic form is `slotLoading`. -}
+{-| Per-component `loading` slot setter for `M3e.Autocomplete`, re-exposed flat. The loose, component-agnostic form is `slotLoading`. -}
 autocompleteSlotLoading :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 autocompleteSlotLoading =
     M3e.Autocomplete.loadingSlot
 
 
-{-| Kind-safe `no-data` slot setter for `M3e.Autocomplete`, re-exposed flat. The loose, component-agnostic form is `slotNoData`. -}
+{-| Per-component `no-data` slot setter for `M3e.Autocomplete`, re-exposed flat. The loose, component-agnostic form is `slotNoData`. -}
 autocompleteSlotNoData :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | noData : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 autocompleteSlotNoData =
     M3e.Autocomplete.noData
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
+{-| Per-component `(default)` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
 formFieldSlotDefault :
-    String
-    -> M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
+    String -> M3e.Element.Element k msg -> M3e.Element.Element k msg
 formFieldSlotDefault =
-    M3e.FormField.child
+    M3e.FormField.control
 
 
-{-| Kind-safe `prefix` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotPrefix`. -}
-formFieldSlotPrefix :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | prefix : M3e.Value.Supported } msg
+{-| Per-component `prefix` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotPrefix`. -}
+formFieldSlotPrefix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotPrefix =
     M3e.FormField.prefix
 
 
-{-| Kind-safe `prefix-text` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotPrefixText`. -}
+{-| Per-component `prefix-text` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotPrefixText`. -}
 formFieldSlotPrefixText :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotPrefixText =
     M3e.FormField.prefixText
 
 
-{-| Kind-safe `label` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
+{-| Per-component `label` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
 formFieldSlotLabel :
-    String
-    -> M3e.Element.Element any msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    String -> M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotLabel =
     M3e.FormField.label
 
 
-{-| Kind-safe `suffix` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotSuffix`. -}
-formFieldSlotSuffix :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | suffix : M3e.Value.Supported } msg
+{-| Per-component `suffix` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotSuffix`. -}
+formFieldSlotSuffix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotSuffix =
     M3e.FormField.suffix
 
 
-{-| Kind-safe `suffix-text` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotSuffixText`. -}
+{-| Per-component `suffix-text` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotSuffixText`. -}
 formFieldSlotSuffixText :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotSuffixText =
     M3e.FormField.suffixText
 
 
-{-| Kind-safe `hint` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotHint`. -}
-formFieldSlotHint :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+{-| Per-component `hint` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotHint`. -}
+formFieldSlotHint : M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotHint =
     M3e.FormField.hint
 
 
-{-| Kind-safe `error` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotError`. -}
-formFieldSlotError :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+{-| Per-component `error` slot setter for `M3e.FormField`, re-exposed flat. The loose, component-agnostic form is `slotError`. -}
+formFieldSlotError : M3e.Element.Element any msg -> M3e.Element.Element k msg
 formFieldSlotError =
     M3e.FormField.error
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.OptionPanel`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-optionPanelSlotDefault :
-    M3e.Element.Element { option : M3e.Value.Supported
-    , optgroup : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-optionPanelSlotDefault =
-    M3e.OptionPanel.child
-
-
-{-| Kind-safe `no-data` slot setter for `M3e.OptionPanel`, re-exposed flat. The loose, component-agnostic form is `slotNoData`. -}
-optionPanelSlotNoData :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | noData : M3e.Value.Supported } msg
+{-| Per-component `no-data` slot setter for `M3e.OptionPanel`, re-exposed flat. The loose, component-agnostic form is `slotNoData`. -}
+optionPanelSlotNoData : M3e.Element.Element any msg -> M3e.Element.Element k msg
 optionPanelSlotNoData =
     M3e.OptionPanel.noData
 
 
-{-| Kind-safe `loading` slot setter for `M3e.OptionPanel`, re-exposed flat. The loose, component-agnostic form is `slotLoading`. -}
+{-| Per-component `loading` slot setter for `M3e.OptionPanel`, re-exposed flat. The loose, component-agnostic form is `slotLoading`. -}
 optionPanelSlotLoading :
     M3e.Element.Element { circularProgressIndicator : M3e.Value.Supported
     , loadingIndicator : M3e.Value.Supported
     , text : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 optionPanelSlotLoading =
     M3e.OptionPanel.loading
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.FloatingPanel`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-floatingPanelSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-floatingPanelSlotDefault =
-    M3e.FloatingPanel.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Optgroup`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-optgroupSlotDefault :
-    M3e.Element.Element { option : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-optgroupSlotDefault =
-    M3e.Optgroup.child
-
-
-{-| Kind-safe `label` slot setter for `M3e.Optgroup`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
+{-| Per-component `label` slot setter for `M3e.Optgroup`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}
 optgroupSlotLabel :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 optgroupSlotLabel =
     M3e.Optgroup.label
 
 
-{-| Kind-safe `(default)` slot setter for `M3e.Option`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-optionSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-optionSlotDefault =
-    M3e.Option.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.FocusTrap`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-focusTrapSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-focusTrapSlotDefault =
-    M3e.FocusTrap.child
-
-
-{-| Kind-safe `leading` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
+{-| Per-component `leading` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotLeading`. -}
 appBarSlotLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     , button : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 appBarSlotLeading =
     M3e.AppBar.leading
 
 
-{-| Kind-safe `title` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotTitle`. -}
+{-| Per-component `title` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotTitle`. -}
 appBarSlotTitle :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | title : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 appBarSlotTitle =
     M3e.AppBar.title
 
 
-{-| Kind-safe `subtitle` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotSubtitle`. -}
+{-| Per-component `subtitle` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotSubtitle`. -}
 appBarSlotSubtitle :
     M3e.Element.Element { text : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | subtitle : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 appBarSlotSubtitle =
     M3e.AppBar.subtitle
 
 
-{-| Kind-safe `trailing` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
+{-| Per-component `trailing` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotTrailing`. -}
 appBarSlotTrailing :
     M3e.Element.Element { iconButton : M3e.Value.Supported
     , button : M3e.Value.Supported
     , searchBar : M3e.Value.Supported
     , html : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 appBarSlotTrailing =
     M3e.AppBar.trailing
 
 
-{-| Kind-safe `leading-icon` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotLeadingIcon`. -}
-appBarSlotLeadingIcon :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | leadingIcon : M3e.Value.Supported } msg
+{-| Per-component `leading-icon` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotLeadingIcon`. -}
+appBarSlotLeadingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
 appBarSlotLeadingIcon =
     M3e.AppBar.leadingIcon
 
 
-{-| Kind-safe `trailing-icon` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
+{-| Per-component `trailing-icon` slot setter for `M3e.AppBar`, re-exposed flat. The loose, component-agnostic form is `slotTrailingIcon`. -}
 appBarSlotTrailingIcon :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    M3e.Element.Element any msg -> M3e.Element.Element k msg
 appBarSlotTrailingIcon =
     M3e.AppBar.trailingIcon
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.TextOverflow`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-textOverflowSlotDefault :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-textOverflowSlotDefault =
-    M3e.TextOverflow.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.TextHighlight`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-textHighlightSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-textHighlightSlotDefault =
-    M3e.TextHighlight.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Slide`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-slideSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-slideSlotDefault =
-    M3e.Slide.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.ScrollContainer`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-scrollContainerSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-scrollContainerSlotDefault =
-    M3e.ScrollContainer.child
-
-
-{-| Kind-safe `(default)` slot setter for `M3e.Collapsible`, re-exposed flat. The loose, component-agnostic form is `slotDefault`. -}
-collapsibleSlotDefault :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-collapsibleSlotDefault =
-    M3e.Collapsible.child

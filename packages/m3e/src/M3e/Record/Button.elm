@@ -118,8 +118,6 @@ import M3e.Action
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Button
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -164,11 +162,7 @@ view :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported
-    , selected : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -190,7 +184,7 @@ view req_ attributes content_ =
                       req_.action
                       (M3e.Element.toNode req_.content)
                   ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 
@@ -308,9 +302,9 @@ icon :
     M3e.Element.Element { icon : M3e.Value.Supported
     , loadingIndicator : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 icon el =
-    M3e.Content.Internal.slot "icon" el
+    M3e.Element.Internal.placeSlot "icon" el
 
 
 {-| Place content in the `selected` slot. -}
@@ -318,22 +312,22 @@ selectedSlot :
     M3e.Element.Element { text : M3e.Value.Supported
     , icon : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 selectedSlot el =
-    M3e.Content.Internal.slot "selected" el
+    M3e.Element.Internal.placeSlot "selected" el
 
 
 {-| Place content in the `selected-icon` slot. -}
 selectedIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selectedIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 selectedIcon el =
-    M3e.Content.Internal.slot "selected-icon" el
+    M3e.Element.Internal.placeSlot "selected-icon" el
 
 
 {-| Place content in the `trailing-icon` slot. -}
 trailingIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | trailingIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 trailingIcon el =
-    M3e.Content.Internal.slot "trailing-icon" el
+    M3e.Element.Internal.placeSlot "trailing-icon" el

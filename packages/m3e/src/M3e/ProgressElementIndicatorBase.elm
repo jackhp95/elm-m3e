@@ -26,7 +26,7 @@ view :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s
         | progressElementIndicatorBase : M3e.Value.Supported
     } msg

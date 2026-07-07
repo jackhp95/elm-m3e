@@ -44,7 +44,6 @@ Adds additional context to a button or other UI element.
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Tooltip
-import M3e.Content
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -62,7 +61,7 @@ view :
     , touchGestures : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | tooltip : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -75,7 +74,7 @@ view req_ attributes content_ =
              (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 

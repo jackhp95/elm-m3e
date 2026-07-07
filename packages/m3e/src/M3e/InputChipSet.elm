@@ -1,6 +1,6 @@
 module M3e.InputChipSet exposing
     ( view, disabled, name, required, vertical, onChange
-    , child, input, children
+    , input
     )
 
 {-|
@@ -16,15 +16,13 @@ A container that transforms user input into a cohesive set of interactive chips,
 - `input`: Renders the input element used to add new chips to the set.
 
 @docs view, disabled, name, required, vertical, onChange
-@docs child, input, children
+@docs input
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.InputChipSet
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -40,11 +38,9 @@ view :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , input : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { inputChip : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | inputChipSet : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -53,7 +49,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -87,25 +83,7 @@ onChange =
     M3e.Cem.InputChipSet.onChange
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { inputChip : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `input` slot. -}
-input :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+input : M3e.Element.Element any msg -> M3e.Element.Element k msg
 input el =
-    M3e.Content.Internal.slot "input" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { inputChip : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "input" el

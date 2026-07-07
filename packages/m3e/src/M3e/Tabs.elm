@@ -1,7 +1,6 @@
 module M3e.Tabs exposing
     ( view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
-    , variant, onChange, onBeforeinput, onInput, child, panel, nextIcon
-    , prevIcon, children
+    , variant, onChange, onBeforeinput, onInput, panel, nextIcon, prevIcon
     )
 
 {-|
@@ -62,16 +61,14 @@ M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True ] [ M
 ```
 
 @docs view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch
-@docs variant, onChange, onBeforeinput, onInput, child, panel
-@docs nextIcon, prevIcon, children
+@docs variant, onChange, onBeforeinput, onInput, panel, nextIcon
+@docs prevIcon
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Tabs
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -91,13 +88,9 @@ view :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , panel : M3e.Value.Supported
-    , nextIcon : M3e.Value.Supported
-    , prevIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { tab : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | tabs : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -106,7 +99,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -181,41 +174,25 @@ onInput =
     M3e.Cem.Tabs.onInput
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { tab : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `panel` slot. -}
 panel :
     M3e.Element.Element { tabPanel : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | panel : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 panel el =
-    M3e.Content.Internal.slot "panel" el
+    M3e.Element.Internal.placeSlot "panel" el
 
 
 {-| Place content in the `next-icon` slot. -}
 nextIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | nextIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 nextIcon el =
-    M3e.Content.Internal.slot "next-icon" el
+    M3e.Element.Internal.placeSlot "next-icon" el
 
 
 {-| Place content in the `prev-icon` slot. -}
 prevIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | prevIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 prevIcon el =
-    M3e.Content.Internal.slot "prev-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { tab : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "prev-icon" el

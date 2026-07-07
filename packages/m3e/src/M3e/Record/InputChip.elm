@@ -27,8 +27,6 @@ A chip which represents a discrete piece of information entered by a user.
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.InputChip
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -48,10 +46,7 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { avatar : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , removeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -64,7 +59,7 @@ view req_ attributes content_ =
              (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 
@@ -128,22 +123,22 @@ onClick =
 {-| Place content in the `avatar` slot. -}
 avatar :
     M3e.Element.Element { avatar : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | avatar : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 avatar el =
-    M3e.Content.Internal.slot "avatar" el
+    M3e.Element.Internal.placeSlot "avatar" el
 
 
 {-| Place content in the `icon` slot. -}
 icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 icon el =
-    M3e.Content.Internal.slot "icon" el
+    M3e.Element.Internal.placeSlot "icon" el
 
 
 {-| Place content in the `remove-icon` slot. -}
 removeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | removeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 removeIcon el =
-    M3e.Content.Internal.slot "remove-icon" el
+    M3e.Element.Internal.placeSlot "remove-icon" el

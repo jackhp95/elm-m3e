@@ -1,6 +1,5 @@
 module M3e.FloatingPanel exposing
     ( view, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
-    , child, children
     )
 
 {-|
@@ -14,15 +13,12 @@ A lightweight, generic floating surface used to present content above the page.
 - `toggle`: Dispatched after the toggle state has changed.
 
 @docs view, scrollStrategy, fitAnchorWidth, anchorOffset, onBeforetoggle, onToggle
-@docs child, children
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FloatingPanel
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -38,9 +34,9 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | floatingPanel : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -49,7 +45,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -88,19 +84,3 @@ onBeforetoggle =
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle =
     M3e.Cem.FloatingPanel.onToggle
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

@@ -1,4 +1,4 @@
-module M3e.ActionList exposing ( view, variant, child, children )
+module M3e.ActionList exposing ( view, variant )
 
 {-|
 A list of actions.
@@ -6,15 +6,13 @@ A list of actions.
 **Component Info:**
 - **Extends:** `M3eListElement` from `/src/list/ListElement`
 
-@docs view, variant, child, children
+@docs view, variant
 -}
 
 
 import M3e.Cem.ActionList
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -26,9 +24,12 @@ view :
     List (M3e.Cem.Attr.Attr { variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { listAction : M3e.Value.Supported
+    , expandableListItem : M3e.Value.Supported
+    , divider : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | actionList : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -37,7 +38,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -49,25 +50,3 @@ variant :
     -> M3e.Cem.Attr.Attr { c | variant : M3e.Value.Supported } msg
 variant =
     M3e.Cem.ActionList.variant
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { listAction : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { listAction : M3e.Value.Supported
-    , expandableListItem : M3e.Value.Supported
-    , divider : M3e.Value.Supported
-    } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

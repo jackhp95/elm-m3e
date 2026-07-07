@@ -1,7 +1,7 @@
 module M3e.Autocomplete exposing
     ( view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
     , hideNoData, loading, loadingLabel, noDataLabel, panelClass, required, for
-    , onChange, onQuery, onToggle, child, loadingSlot, noData, children
+    , onChange, onQuery, onToggle, loadingSlot, noData
     )
 
 {-|
@@ -103,16 +103,13 @@ Enhances a text input with suggested options.
 
 @docs view, autoActivate, caseSensitive, filter, hideSelectionIndicator, hideLoading
 @docs hideNoData, loading, loadingLabel, noDataLabel, panelClass, required
-@docs for, onChange, onQuery, onToggle, child, loadingSlot
-@docs noData, children
+@docs for, onChange, onQuery, onToggle, loadingSlot, noData
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Autocomplete
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -138,12 +135,11 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , loading : M3e.Value.Supported
-    , noData : M3e.Value.Supported
+    -> List (M3e.Element.Element { option : M3e.Value.Supported
+    , optgroup : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | autocomplete : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -152,7 +148,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -263,37 +259,13 @@ onToggle =
     M3e.Cem.Autocomplete.onToggle
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { option : M3e.Value.Supported
-    , optgroup : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `loading` slot. -}
-loadingSlot :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | loading : M3e.Value.Supported } msg
+loadingSlot : M3e.Element.Element any msg -> M3e.Element.Element k msg
 loadingSlot el =
-    M3e.Content.Internal.slot "loading" el
+    M3e.Element.Internal.placeSlot "loading" el
 
 
 {-| Place content in the `no-data` slot. -}
-noData :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | noData : M3e.Value.Supported } msg
+noData : M3e.Element.Element any msg -> M3e.Element.Element k msg
 noData el =
-    M3e.Content.Internal.slot "no-data" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { option : M3e.Value.Supported
-    , optgroup : M3e.Value.Supported
-    } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "no-data" el
