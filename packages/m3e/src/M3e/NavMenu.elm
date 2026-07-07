@@ -6,6 +6,22 @@ A hierarchical menu, typically used on larger devices, that allows a user to swi
 **Component Info:**
 - **Extends:** `LitElement`
 
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Multilevel menus" -->
+```elm
+M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] ([ M3e.NavMenuItem.label (Kit.text "Getting Started"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch", M3e.Aria.hidden "true" ] []) ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Overview"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "widgets", M3e.Aria.hidden "true" ] []) ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Installation"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2", M3e.Aria.hidden "true" ] []) ] ]), M3e.NavMenuItem.view [] ([ M3e.NavMenuItem.label (Kit.text "Actions") ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Button") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon Button") ] ]) ])
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.open True, M3e.NavMenuItem.disabled True ] ([ M3e.NavMenuItem.label (Kit.text "Getting Started"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch", M3e.Aria.hidden "true" ] []) ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Overview"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "widgets", M3e.Aria.hidden "true" ] []) ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Installation"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2", M3e.Aria.hidden "true" ] []) ] ]), M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] ([ M3e.NavMenuItem.label (Kit.text "Actions") ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.disabled True ] [ M3e.NavMenuItem.label (Kit.text "Button") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text "Icon Button") ] ]) ])
+```
+
 @docs view, child, children
 -}
 

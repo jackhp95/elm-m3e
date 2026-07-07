@@ -55,6 +55,11 @@ M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.wrapDetents True ] [ 
 M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.disabled True ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
 ```
 
+<!-- elm-cem:example title="Conditional rendering" -->
+```elm
+M3e.SplitPane.view [ M3e.SplitPane.value 50 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]
+```
+
 <!-- elm-cem:example title="Nested panes" -->
 ```elm
 M3e.SplitPane.view [ M3e.SplitPane.value 25 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.orientation M3e.Value.vertical ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]) ]
