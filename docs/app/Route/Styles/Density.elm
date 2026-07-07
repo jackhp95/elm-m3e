@@ -107,7 +107,7 @@ pageHeading =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

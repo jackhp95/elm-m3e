@@ -337,7 +337,7 @@ view _ page model toMsg pageView =
                 -- so it goes through a Tailwind arbitrary-property CLASS instead.
                 , Seam.asAttribute (class (densityClass model.density))
                 ]
-                (List.map Theme.child children)
+                children
                 |> toHtml
 
         absolutePath : String
@@ -535,11 +535,9 @@ segmented segments =
     SegmentedButton.view []
         (List.map
             (\( label, checked, msg ) ->
-                SegmentedButton.child
-                    (ButtonSegment.view
-                        [ ButtonSegment.checked checked, ButtonSegment.onClick msg ]
-                        [ ButtonSegment.child (Kit.text label) ]
-                    )
+                ButtonSegment.view
+                    [ ButtonSegment.checked checked, ButtonSegment.onClick msg ]
+                    [ Kit.text label ]
             )
             segments
         )
@@ -693,13 +691,11 @@ drawerShell toMsg model page body =
             (navMenu currentPath)
         , DrawerContainer.endSlot
             (Seam.fromHtml (Html.map toMsg (settingsDrawerContent model)))
-        , DrawerContainer.child
-            (Native.div
-                -- the ContentPane provides its own container padding; keep only a
-                -- modest inline margin like matraic's #body (margin-inline: 1rem).
-                [ Seam.asAttribute (class "mx-auto w-full max-w-5xl px-2 py-2") ]
-                (List.map Seam.fromHtml body)
-            )
+        , Native.div
+            -- the ContentPane provides its own container padding; keep only a
+            -- modest inline margin like matraic's #body (margin-inline: 1rem).
+            [ Seam.asAttribute (class "mx-auto w-full max-w-5xl px-2 py-2") ]
+            (List.map Seam.fromHtml body)
         ]
         |> toHtml
 
@@ -726,12 +722,10 @@ candidate to component-ify once the NavMenu model is settled.
 navMenu : String -> Element { s | navMenu : Supported } msg
 navMenu currentPath =
     NavMenu.view []
-        (NavMenu.children
-            (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
-                ++ [ componentsGroup currentPath
-                   , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ) ]
-                   ]
-            )
+        (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
+            ++ [ componentsGroup currentPath
+               , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ) ]
+               ]
         )
 
 
@@ -751,19 +745,17 @@ componentsGroup currentPath =
             []
         )
         (NavMenuItem.icon (Icon.view [ Icon.name "widgets" ] [])
-            :: NavMenuItem.children
-                (List.map
-                    (\( category, glyph ) ->
-                        navGroup currentPath
-                            glyph
-                            category
-                            (componentList
-                                |> List.filter (\( _, _, c ) -> c == category)
-                                |> List.map (\( slug, label, _ ) -> ( "/components/" ++ slug, label ))
-                            )
-                    )
-                    componentCategories
+            :: List.map
+                (\( category, glyph ) ->
+                    navGroup currentPath
+                        glyph
+                        category
+                        (componentList
+                            |> List.filter (\( _, _, c ) -> c == category)
+                            |> List.map (\( slug, label, _ ) -> ( "/components/" ++ slug, label ))
+                        )
                 )
+                componentCategories
         )
 
 
@@ -781,7 +773,7 @@ navGroup currentPath glyph title items =
             []
         )
         (NavMenuItem.icon (Icon.view [ Icon.name glyph ] [])
-            :: NavMenuItem.children (List.map (navLeaf currentPath) items)
+            :: List.map (navLeaf currentPath) items
         )
 
 

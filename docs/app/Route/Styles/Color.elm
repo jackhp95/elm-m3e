@@ -110,7 +110,7 @@ sectionHeading label =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 {-| A matraic-style "showcase" card: live demos in an outlined card's content slot.

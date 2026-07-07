@@ -69,7 +69,7 @@ head _ =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 type alias Block msg =
