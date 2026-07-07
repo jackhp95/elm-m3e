@@ -188,7 +188,7 @@ topShapesCode =
 
 M3e.Button.view
     [ M3e.Button.variant Value.filled ]
-    [ Content.default (Kit.text "Save") ]
+    [ Kit.text "Save" ]
 
 M3e.Record.Button.view
     { content = Kit.text "Save", action = Action.link "#" }
