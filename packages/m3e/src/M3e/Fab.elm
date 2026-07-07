@@ -25,25 +25,25 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.variant M3e.Value.primary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.surface ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.variant M3e.Value.primary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.surface ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Lowering" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.surface ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.surface ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
@@ -51,9 +51,9 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.large ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.large ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
@@ -61,26 +61,26 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.disabled True ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.disabledInteractive True ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.disabled True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.disabledInteractive True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 

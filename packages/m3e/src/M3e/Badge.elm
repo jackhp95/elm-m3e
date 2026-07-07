@@ -14,9 +14,9 @@ A visual indicator used to label content.
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.Badge.view [ M3e.Badge.size M3e.Value.small ] [ M3e.Badge.child (Kit.text "10") ]
-    , M3e.Badge.view [ M3e.Badge.size M3e.Value.medium ] [ M3e.Badge.child (Kit.text "10") ]
-    , M3e.Badge.view [ M3e.Badge.size M3e.Value.large ] [ M3e.Badge.child (Kit.text "10") ]
+[ M3e.Badge.view [ M3e.Badge.size M3e.Value.small ] [ Kit.text "10" ]
+    , M3e.Badge.view [ M3e.Badge.size M3e.Value.medium ] [ Kit.text "10" ]
+    , M3e.Badge.view [ M3e.Badge.size M3e.Value.large ] [ Kit.text "10" ]
     ]
 ```
 
@@ -24,15 +24,15 @@ A visual indicator used to label content.
 
 <!-- elm-cem:example title="Anchoring" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Button") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveAfter ] [ M3e.Badge.child (Kit.text "AA") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveBefore ] [ M3e.Badge.child (Kit.text "AB") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowBefore ] [ M3e.Badge.child (Kit.text "BB") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowAfter ] [ M3e.Badge.child (Kit.text "BA") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.before ] [ M3e.Badge.child (Kit.text "BE") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.after ] [ M3e.Badge.child (Kit.text "AF") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.above ] [ M3e.Badge.child (Kit.text "A") ]
-    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.below ] [ M3e.Badge.child (Kit.text "B") ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ Kit.text "Button" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveAfter ] [ Kit.text "AA" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveBefore ] [ Kit.text "AB" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowBefore ] [ Kit.text "BB" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowAfter ] [ Kit.text "BA" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.before ] [ Kit.text "BE" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.after ] [ Kit.text "AF" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.above ] [ Kit.text "A" ]
+    , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.below ] [ Kit.text "B" ]
     ]
 ```
 

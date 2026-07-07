@@ -27,77 +27,77 @@ Enhances a text input with suggested options.
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.child "fruit" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Filter modes" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit5" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.child "fruit5" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit5", M3e.Autocomplete.caseSensitive True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit5" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit5" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit5", M3e.Autocomplete.caseSensitive True ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Custom filtering" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit4" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.child "fruit4" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit4" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit4" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit4" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit4" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="No data" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit6" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.child "fruit6" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit6", M3e.Autocomplete.noDataLabel "No data" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit6" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit6" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit6", M3e.Autocomplete.noDataLabel "No data" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Initial load" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "state" (Native.node Html.label [] [ Kit.text "State" ]), M3e.FormField.child "state" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [] [ M3e.FormField.label "state" (Native.node Html.label [] [ Kit.text "State" ]), M3e.FormField.control "state" (Native.node Html.input [] []) ]
     , M3e.Autocomplete.view [ M3e.Autocomplete.for "state" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
     ]
 ```
 
 <!-- elm-cem:example title="Search as you type" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "state2" (Native.node Html.label [] [ Kit.text "State" ]), M3e.FormField.child "state2" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [] [ M3e.FormField.label "state2" (Native.node Html.label [] [ Kit.text "State" ]), M3e.FormField.control "state2" (Native.node Html.input [] []) ]
     , M3e.Autocomplete.view [ M3e.Autocomplete.for "state2" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
     ]
 ```
 
 <!-- elm-cem:example title="Requiring an option to be selected" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit2" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.child "fruit2" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit2", M3e.Autocomplete.required True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit2" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit2" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit2", M3e.Autocomplete.required True ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Automatic activation" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit3" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.child "fruit3" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit3", M3e.Autocomplete.autoActivate True ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit3" (Native.node Html.label [] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit3" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit3", M3e.Autocomplete.autoActivate True ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Chips" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "fruit7" (Native.node Html.label [] [ Kit.text "Choose your favorite fruits" ]), M3e.FormField.child "" (M3e.InputChipSet.view [ M3e.Aria.label "Enter favorite fruits" ] [ M3e.InputChipSet.input (Native.node Html.input [] []) ]) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit7" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "fruit7" (Native.node Html.label [] [ Kit.text "Choose your favorite fruits" ]), M3e.FormField.control "" (M3e.InputChipSet.view [ M3e.Aria.label "Enter favorite fruits" ] [ M3e.InputChipSet.input (Native.node Html.input [] []) ]) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit7" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "d1" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "d1" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d1", M3e.Autocomplete.panelClass "density-3" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
-    , M3e.FormField.view [] [ M3e.FormField.label "d2" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.child "d2" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d2", M3e.Autocomplete.panelClass "density-2" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
-    , M3e.FormField.view [] [ M3e.FormField.label "d3" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.child "d3" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d3", M3e.Autocomplete.panelClass "density-1" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
-    , M3e.FormField.view [] [ M3e.FormField.label "d4" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.child "d4" (Native.node Html.input [] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d4", M3e.Autocomplete.panelClass "density-0" ] (M3e.Autocomplete.children [ M3e.Option.view [] [ M3e.Option.child (Kit.text "Apples") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Oranges") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Bananas") ], M3e.Option.view [] [ M3e.Option.child (Kit.text "Grapes") ] ])
+[ M3e.FormField.view [] [ M3e.FormField.label "d1" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.control "d1" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d1", M3e.Autocomplete.panelClass "density-3" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
+    , M3e.FormField.view [] [ M3e.FormField.label "d2" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.control "d2" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d2", M3e.Autocomplete.panelClass "density-2" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
+    , M3e.FormField.view [] [ M3e.FormField.label "d3" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.control "d3" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d3", M3e.Autocomplete.panelClass "density-1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
+    , M3e.FormField.view [] [ M3e.FormField.label "d4" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.control "d4" (Native.node Html.input [] []) ]
+    , M3e.Autocomplete.view [ M3e.Autocomplete.for "d4", M3e.Autocomplete.panelClass "density-0" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 

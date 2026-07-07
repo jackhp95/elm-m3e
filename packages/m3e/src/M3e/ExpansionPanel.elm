@@ -28,32 +28,32 @@ An expandable details-summary view.
 
 <!-- elm-cem:example title="Standalone panels" -->
 ```elm
-M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Standalone panels (2)" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Toggles" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before, M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before, M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Toggles (2)" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.hideToggle True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.hideToggle True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Accordion" -->
 ```elm
-M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the first panel") ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the second panel") ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the third panel") ] ])
+M3e.Accordion.view [] [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), Kit.text "I am content for the first panel" ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), Kit.text "I am content for the second panel" ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), Kit.text "I am content for the third panel" ] ]
 ```
 
 <!-- elm-cem:example title="Accordion (2)" -->
 ```elm
-M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the first panel") ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the second panel") ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the third panel") ] ])
+M3e.Accordion.view [ M3e.Accordion.multi True ] [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), Kit.text "I am content for the first panel" ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), Kit.text "I am content for the second panel" ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), Kit.text "I am content for the third panel" ] ]
 ```
 
 @docs view, disabled, hideToggle, open, toggleDirection, togglePosition

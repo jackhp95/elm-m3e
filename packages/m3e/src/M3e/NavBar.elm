@@ -21,22 +21,22 @@ A horizontal bar, typically used on smaller devices, that allows a user to switc
 
 <!-- elm-cem:example title="Items" -->
 ```elm
-M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ]
+M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ]
 ```
 
 <!-- elm-cem:example title="Selection" -->
 ```elm
-M3e.NavBar.view [] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), M3e.NavItem.child (Kit.text "Global") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), M3e.NavItem.child (Kit.text "For you") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), M3e.NavItem.child (Kit.text "Trending") ] ])
+M3e.NavBar.view [] [ M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), Kit.text "Global" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), Kit.text "For you" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), Kit.text "Trending" ] ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.NavBar.view [] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ], M3e.NavItem.view [ M3e.NavItem.disabledInteractive True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), M3e.NavItem.child (Kit.text "Global") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), M3e.NavItem.child (Kit.text "For you") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), M3e.NavItem.child (Kit.text "Trending") ] ])
+M3e.NavBar.view [] [ M3e.NavItem.view [ M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ], M3e.NavItem.view [ M3e.NavItem.disabledInteractive True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), Kit.text "Global" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), Kit.text "For you" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), Kit.text "Trending" ] ]
 ```
 
 <!-- elm-cem:example title="Links" -->
 ```elm
-M3e.NavBar.view [] [ M3e.NavBar.child (M3e.NavItem.view [ M3e.NavItem.href "https://www.google.com", M3e.NavItem.target "_blank" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ]) ]
+M3e.NavBar.view [] [ M3e.NavItem.view [ M3e.NavItem.href "https://www.google.com", M3e.NavItem.target "_blank" ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ] ]
 ```
 
 @docs view, mode, onChange, onBeforeinput, onInput

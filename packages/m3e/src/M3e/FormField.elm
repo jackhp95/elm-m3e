@@ -25,8 +25,8 @@ A container for form controls that applies Material Design styling and behavior.
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [] [ Kit.text "Outlined" ]), M3e.FormField.child "fld1" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "fld2" (Native.node Html.label [] [ Kit.text "Filled" ]), M3e.FormField.child "fld2" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [] [ Kit.text "Outlined" ]), M3e.FormField.control "fld1" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "fld2" (Native.node Html.label [] [ Kit.text "Filled" ]), M3e.FormField.control "fld2" (Native.node Html.input [] []) ]
     ]
 ```
 
@@ -34,49 +34,49 @@ A container for form controls that applies Material Design styling and behavior.
 
 <!-- elm-cem:example title="Float label" -->
 ```elm
-M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ] [ M3e.FormField.label "fld3" (Native.node Html.label [] [ Kit.text "Always float label" ]), M3e.FormField.child "fld3" (Native.node Html.input [] []) ]
+M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ] [ M3e.FormField.label "fld3" (Native.node Html.label [] [ Kit.text "Always float label" ]), M3e.FormField.control "fld3" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Hint labels" -->
 ```elm
-M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.auto ] [ M3e.FormField.label "fld4" (Native.node Html.label [] [ Kit.text "Field w/ hint" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.child "fld4" (Native.node Html.input [] []) ]
+M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.auto ] [ M3e.FormField.label "fld4" (Native.node Html.label [] [ Kit.text "Field w/ hint" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.control "fld4" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Error messages" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld5" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.child "fld5" (Native.node Html.input [] []) ]
+M3e.FormField.view [] [ M3e.FormField.label "fld5" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.control "fld5" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Error messages (2)" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld6" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.error (Native.span [] [ Kit.text "Custom error message" ]), M3e.FormField.child "fld6" (Native.node Html.input [] []) ]
+M3e.FormField.view [] [ M3e.FormField.label "fld6" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.error (Native.span [] [ Kit.text "Custom error message" ]), M3e.FormField.control "fld6" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Hiding the required marker" -->
 ```elm
-M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label "fld7" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.child "fld7" (Native.node Html.input [] []) ]
+M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label "fld7" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.control "fld7" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Prefix and suffix" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [] [ Kit.text "Amount" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text ".00" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "clear" ] []) ]), M3e.FormField.child "fld8" (Native.node Html.input [] []) ]
+M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [] [ Kit.text "Amount" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text ".00" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "clear" ] [] ]), M3e.FormField.control "fld8" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld1" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "dfld1" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld2" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.child "dfld2" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld3" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.child "dfld3" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld4" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.child "dfld4" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld1" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld1" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld2" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld2" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld3" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld3" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld4" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld4" (Native.node Html.input [] []) ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld5" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "dfld5" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld6" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.child "dfld6" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld7" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.child "dfld7" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld8" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.child "dfld8" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld5" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld5" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld6" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld6" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld7" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld7" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld8" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld8" (Native.node Html.input [] []) ]
     ]
 ```
 

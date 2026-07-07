@@ -54,8 +54,8 @@ A shape used to add emphasis and decorative flair.
 
 <!-- elm-cem:example title="Images and video" -->
 ```elm
-[ M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (Native.img []) ]
-    , M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ M3e.Shape.child (Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ]) ]
+[ M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ Native.img [] ]
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ] ]
     ]
 ```
 

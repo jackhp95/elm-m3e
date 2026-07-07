@@ -16,7 +16,7 @@ A thin line that separates content in lists or other containers.
 
 <!-- elm-cem:example title="Lists" -->
 ```elm
-M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ], M3e.Divider.view [] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 2") ], M3e.Divider.view [] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 3") ] ])
+M3e.List.view [] [ M3e.ListItem.view [] [ Kit.text "Item 1" ], M3e.Divider.view [] [], M3e.ListItem.view [] [ Kit.text "Item 2" ], M3e.Divider.view [] [], M3e.ListItem.view [] [ Kit.text "Item 3" ] ]
 ```
 
 <!-- elm-cem:example title="Inset" -->

@@ -22,53 +22,53 @@ Allows for the selection of numeric values from a range.
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-M3e.Slider.view [] [ M3e.Slider.child (M3e.SliderThumb.view [] []) ]
+M3e.Slider.view [] [ M3e.SliderThumb.view [] [] ]
 ```
 
 <!-- elm-cem:example title="Selecting a value" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.min 1, M3e.Slider.max 5, M3e.Slider.step 0.5 ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 1.5 ] []) ]
+M3e.Slider.view [ M3e.Slider.min 1, M3e.Slider.max 5, M3e.Slider.step 0.5 ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 1.5 ] [] ]
 ```
 
 <!-- elm-cem:example title="Selecting a range" -->
 ```elm
-M3e.Slider.view [] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.value 80 ] [] ])
+M3e.Slider.view [] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.value 80 ] [] ]
 ```
 
 <!-- elm-cem:example title="Negative value ranges" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.min -50 ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value -20 ] []) ]
+M3e.Slider.view [ M3e.Slider.min -50 ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value -20 ] [] ]
 ```
 
 <!-- elm-cem:example title="Labels" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.labelled True ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+M3e.Slider.view [ M3e.Slider.labelled True ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [] ]
 ```
 
 <!-- elm-cem:example title="Tick marks" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.discrete True, M3e.Slider.step 10 ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+M3e.Slider.view [ M3e.Slider.discrete True, M3e.Slider.step 10 ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [] ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.disabled True ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] []) ]
+M3e.Slider.view [ M3e.Slider.labelled True, M3e.Slider.disabled True ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [] ]
 ```
 
 <!-- elm-cem:example title="Disabling (2)" -->
 ```elm
-M3e.Slider.view [ M3e.Slider.labelled True ] (M3e.Slider.children [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.disabled True, M3e.SliderThumb.value 80 ] [] ])
+M3e.Slider.view [ M3e.Slider.labelled True ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 20 ] [], M3e.SliderThumb.view [ M3e.SliderThumb.disabled True, M3e.SliderThumb.value 80 ] [] ]
 ```
 
 ### Sizes
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.Slider.view [ M3e.Slider.size M3e.Value.extraSmall ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] []) ]
-    , M3e.Slider.view [ M3e.Slider.size M3e.Value.small ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] []) ]
-    , M3e.Slider.view [ M3e.Slider.size M3e.Value.medium ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] []) ]
-    , M3e.Slider.view [ M3e.Slider.size M3e.Value.large ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] []) ]
-    , M3e.Slider.view [ M3e.Slider.size M3e.Value.extraLarge ] [ M3e.Slider.child (M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] []) ]
+[ M3e.Slider.view [ M3e.Slider.size M3e.Value.extraSmall ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] [] ]
+    , M3e.Slider.view [ M3e.Slider.size M3e.Value.small ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] [] ]
+    , M3e.Slider.view [ M3e.Slider.size M3e.Value.medium ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] [] ]
+    , M3e.Slider.view [ M3e.Slider.size M3e.Value.large ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] [] ]
+    , M3e.Slider.view [ M3e.Slider.size M3e.Value.extraLarge ] [ M3e.SliderThumb.view [ M3e.SliderThumb.value 50 ] [] ]
     ]
 ```
 

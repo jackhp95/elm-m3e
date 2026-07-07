@@ -21,7 +21,7 @@ A vertical bar, typically used on larger devices, that allows a user to switch b
 
 <!-- elm-cem:example title="Items" -->
 ```elm
-M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ]
+M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ]
 ```
 
 @docs view, mode, onBeforeinput, onInput, onChange

@@ -24,32 +24,32 @@ A container for one or two sliding drawers.
 
 <!-- elm-cem:example title="Drawers" -->
 ```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.end True ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]), M3e.DrawerContainer.child (Native.div [] [ Kit.text "Main content" ]) ]
+M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.end True ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
 ```
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), M3e.DrawerContainer.child (Native.div [] [ Kit.text "Main content" ]) ]
+M3e.DrawerContainer.view [ M3e.DrawerContainer.start True ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
 ```
 
 <!-- elm-cem:example title="Modes" -->
 ```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.push ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), M3e.DrawerContainer.child (Native.div [] [ Kit.text "Main content" ]) ]
+M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.push ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
 ```
 
 <!-- elm-cem:example title="Modes (2)" -->
 ```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), M3e.DrawerContainer.child (Native.div [] [ Kit.text "Main content" ]) ]
+M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
 ```
 
 <!-- elm-cem:example title="Dividers" -->
 ```elm
-M3e.DrawerContainer.view [ M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Value.side, M3e.DrawerContainer.endDivider True ] [ M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]), M3e.DrawerContainer.child (Native.div [] [ Kit.text "Main content" ]) ]
+M3e.DrawerContainer.view [ M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Value.side, M3e.DrawerContainer.endDivider True ] [ M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
 ```
 
 <!-- elm-cem:example title="Accessibility" -->
 ```elm
-M3e.DrawerContainer.view [] [ M3e.DrawerContainer.startSlot (Native.nav [] []), M3e.DrawerContainer.endSlot (Native.node Html.aside [] []), M3e.DrawerContainer.child (Native.node Html.main_ [] []) ]
+M3e.DrawerContainer.view [] [ M3e.DrawerContainer.startSlot (Native.nav [] []), M3e.DrawerContainer.endSlot (Native.node Html.aside [] []), Native.node Html.main_ [] [] ]
 ```
 
 @docs view, end, endMode, endDivider, start, startMode

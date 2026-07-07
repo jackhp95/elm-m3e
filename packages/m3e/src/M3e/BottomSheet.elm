@@ -28,7 +28,7 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 
 <!-- elm-cem:example title="Choose a destination" -->
 ```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Choose a destination") ]) ]
+M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ Kit.text "Choose a destination" ]) ]
 ```
 
 @docs view, detent, handle, handleLabel, hideable, hideFriction

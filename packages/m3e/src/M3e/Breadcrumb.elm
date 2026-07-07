@@ -18,35 +18,35 @@ current location within an application.
 
 <!-- elm-cem:example title="Anatomy" -->
 ```elm
-M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [] [ Kit.text "Dashboard" ], M3e.BreadcrumbItem.view [] [ Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ Kit.text "Annual" ] ]
 ```
 
 <!-- elm-cem:example title="Links" -->
 ```elm
-M3e.Breadcrumb.view [] [ M3e.Breadcrumb.child (M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "https://developer.mozilla.org/en-US/docs/Web", M3e.BreadcrumbItem.target "_blank" ] [ M3e.BreadcrumbItem.child (Kit.text "Web") ]) ]
+M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.href "https://developer.mozilla.org/en-US/docs/Web", M3e.BreadcrumbItem.target "_blank" ] [ Kit.text "Web" ] ]
 ```
 
 <!-- elm-cem:example title="Icons" -->
 ```elm
-M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.itemLabel "Dashboard" ] [ M3e.BreadcrumbItem.child (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []) ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [ M3e.BreadcrumbItem.itemLabel "Dashboard" ] [ M3e.Icon.view [ M3e.Icon.name "dashboard" ] [] ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), Kit.text "Annual" ] ]
 ```
 
 <!-- elm-cem:example title="Custom separators" -->
 ```elm
-M3e.Breadcrumb.view [] ([ M3e.Breadcrumb.separator (Native.span [] [ Kit.text "/" ]) ] ++ M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+M3e.Breadcrumb.view [] [ M3e.Breadcrumb.separator (Native.span [] [ Kit.text "/" ]), M3e.BreadcrumbItem.view [] [ Kit.text "Dashboard" ], M3e.BreadcrumbItem.view [] [ Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ Kit.text "Annual" ] ]
 ```
 
 <!-- elm-cem:example title="Wrapping" -->
 ```elm
-M3e.Breadcrumb.view [ M3e.Breadcrumb.wrap True ] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Lorem ipsum dolor sit amet") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Consectetur adipiscing elit sed do") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Tempor incididunt ut labore et dolore") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Magna aliqua ut enim ad minim veniam") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.child (Kit.text "Quis nostrud exercitation ullamco laboris nisi ut aliquip") ] ])
+M3e.Breadcrumb.view [ M3e.Breadcrumb.wrap True ] [ M3e.BreadcrumbItem.view [] [ Kit.text "Lorem ipsum dolor sit amet" ], M3e.BreadcrumbItem.view [] [ Kit.text "Consectetur adipiscing elit sed do" ], M3e.BreadcrumbItem.view [] [ Kit.text "Tempor incididunt ut labore et dolore" ], M3e.BreadcrumbItem.view [] [ Kit.text "Magna aliqua ut enim ad minim veniam" ], M3e.BreadcrumbItem.view [] [ Kit.text "Quis nostrud exercitation ullamco laboris nisi ut aliquip" ] ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
-    , M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
-    , M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
-    , M3e.Breadcrumb.view [] (M3e.Breadcrumb.children [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), M3e.BreadcrumbItem.child (Kit.text "Dashboard") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), M3e.BreadcrumbItem.child (Kit.text "Reports") ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), M3e.BreadcrumbItem.child (Kit.text "Annual") ] ])
+[ M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), Kit.text "Dashboard" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), Kit.text "Annual" ] ]
+    , M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), Kit.text "Dashboard" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), Kit.text "Annual" ] ]
+    , M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), Kit.text "Dashboard" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), Kit.text "Annual" ] ]
+    , M3e.Breadcrumb.view [] [ M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "dashboard" ] []), Kit.text "Dashboard" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "analytics" ] []), Kit.text "Reports" ], M3e.BreadcrumbItem.view [] [ M3e.BreadcrumbItem.icon (M3e.Icon.view [ M3e.Icon.name "calendar_month" ] []), Kit.text "Annual" ] ]
     ]
 ```
 
