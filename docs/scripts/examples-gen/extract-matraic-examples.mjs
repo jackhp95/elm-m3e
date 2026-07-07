@@ -29,7 +29,7 @@
 // ../matraic-m3e of the elm-m3e repo root).
 
 import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, resolve, basename } from "node:path";
 import { parseHTML } from "linkedom";
 
@@ -59,10 +59,28 @@ function decodePre(pre) {
   return pre.textContent.replace(/^\n/, "").replace(/[ \t\r\n]+$/, "");
 }
 
-/** One page -> { slug, examples: [{title, description, code, source}], nonHtml: [...] }. */
-function extractPage(file) {
-  const slug = basename(file, ".html");
-  const html = readFileSync(file, "utf8");
+/** Strip common leading indentation and blank leading/trailing lines. */
+export function dedent(s) {
+  const lines = s.replace(/\t/g, "  ").split("\n");
+  while (lines.length && lines[0].trim() === "") lines.shift();
+  while (lines.length && lines[lines.length - 1].trim() === "") lines.pop();
+  const indents = lines
+    .filter((l) => l.trim() !== "")
+    .map((l) => l.match(/^ */)[0].length);
+  const min = indents.length ? Math.min(...indents) : 0;
+  return lines.map((l) => l.slice(min)).join("\n");
+}
+
+/** Complete component markup from a .showcase card's slotted content, dedented. */
+function showcaseCode(card) {
+  const content = card.querySelector('[slot="content"]');
+  if (!content) return null;
+  const code = dedent(content.innerHTML);
+  return code.trim().startsWith("<") ? code : null;
+}
+
+/** Pure, testable core: (slug, htmlString) -> { slug, examples, nonHtml }. */
+export function extractPageFromHtml(slug, html) {
   const { document } = parseHTML(html);
 
   const examples = [];
@@ -71,57 +89,79 @@ function extractPage(file) {
 
   let title = "Usage";
   let description = "";
+  // Cards accumulated under the current heading section.
+  let section = { showcases: [], examplePres: [] };
 
-  // Document-order stream of the elements we care about. querySelectorAll
-  // preserves document order, so a single pass tracks the "current" heading and
-  // description that each example card falls under.
+  const pushExample = (code, brevitySource) => {
+    const n = (titleCounts.get(title) || 0) + 1;
+    titleCounts.set(title, n);
+    const rec = {
+      title: n === 1 ? title : `${title} (${n})`,
+      description,
+      code,
+      source: `matraic: docs/components/${slug}.html`,
+    };
+    if (brevitySource) rec.brevitySource = brevitySource;
+    examples.push(rec);
+  };
+
+  const flush = () => {
+    const brevitySource =
+      section.examplePres.length > 0 ? decodePre(section.examplePres[0]) : null;
+    if (section.showcases.length > 0) {
+      // Showcase-backed: one COMPLETE example per showcase card.
+      for (const card of section.showcases) {
+        const code = showcaseCode(card);
+        if (code) pushExample(code, brevitySource);
+      }
+    } else {
+      // Pure-code section (install/native/CSS): keep the current pre sourcing.
+      for (const pre of section.examplePres) {
+        const code = decodePre(pre);
+        if (!code.trim().startsWith("<")) {
+          nonHtml.push({ title, snippet: code.slice(0, 60) });
+          continue;
+        }
+        pushExample(code, null);
+      }
+    }
+    section = { showcases: [], examplePres: [] };
+  };
+
   const stream = document.querySelectorAll("m3e-heading, p, m3e-card");
   for (const el of stream) {
     const tag = el.tagName.toLowerCase();
 
     if (tag === "m3e-heading") {
-      // Level-1 is the component name banner; sub-headings (2/3) are titles.
-      const level = el.getAttribute("level");
-      if (level === "1") continue;
+      if (el.getAttribute("level") === "1") continue; // component-name banner
+      flush(); // close the previous section before switching headings
       title = normText(el.textContent) || "Usage";
-      description = ""; // a fresh heading resets the running description
+      description = "";
       continue;
     }
-
     if (tag === "p") {
       description = normText(el.textContent);
       continue;
     }
 
-    // m3e-card: only the class="example" cards are source; skip showcase/install.
+    // m3e-card
     const cls = el.getAttribute("class") || "";
-    if (!/\bexample\b/.test(cls)) continue;
-    const pre = el.querySelector("pre");
-    if (!pre) continue;
-
-    const code = decodePre(pre);
-    if (!code.trim().startsWith("<")) {
-      // A CSS/JS snippet card (e.g. the density custom-property block) — not
-      // convertible HTML. Record it so nothing is silently dropped.
-      nonHtml.push({ title, snippet: code.slice(0, 60) });
-      continue;
+    if (/\bshowcase\b/.test(cls)) {
+      section.showcases.push(el);
+    } else if (/\bexample\b/.test(cls)) {
+      const pre = el.querySelector("pre");
+      if (pre) section.examplePres.push(pre);
     }
-
-    // Disambiguate repeated titles within a page (e.g. two example cards under
-    // the same subsection) so downstream keys/anchors stay unique.
-    const n = (titleCounts.get(title) || 0) + 1;
-    titleCounts.set(title, n);
-    const finalTitle = n === 1 ? title : `${title} (${n})`;
-
-    examples.push({
-      title: finalTitle,
-      description,
-      code,
-      source: `matraic: docs/components/${slug}.html`,
-    });
+    // other cards (install banners without a pre, etc.) are ignored as before
   }
+  flush(); // final section
 
   return { slug, examples, nonHtml };
+}
+
+function extractPage(file) {
+  const slug = basename(file, ".html");
+  return extractPageFromHtml(slug, readFileSync(file, "utf8"));
 }
 
 function main() {
@@ -182,4 +222,7 @@ function main() {
   console.log(`wrote ${OUT_PATH}`);
 }
 
-main();
+// Run only when invoked directly (not when imported by tests).
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}

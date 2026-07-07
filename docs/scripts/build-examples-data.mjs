@@ -3,9 +3,13 @@
 // (`config/categories.json`).
 //
 // Output schema (consumed by Route.Components.Name_):
-//   { "<slug>": { category, examples: [ { title, section?, html, top } ] } }
+//   { "<slug>": { category, examples: [ { title, section?, html,
+//                 top, mid, bottom, record, build } ] } }
 // keyed by component SLUG (lowercased module name, matching reference.json
-// slugs and the /components/:slug route).
+// slugs and the /components/:slug route). `html` is always present; every Elm
+// surface (top/mid/bottom/record/build) is nullable — a null means that surface
+// didn't compile for this example, and the UI hides its tab. `formatElm`/
+// `surfaceOrNull` pass null straight through.
 //
 // The rich file is keyed by PascalCase module (e.g. "Button", "IconButton").
 // A module's slug is its lowercased name. A handful of corpus family-names

@@ -219,6 +219,9 @@ function main() {
   const items = [];
   for (const module of Object.keys(rich)) {
     rich[module].forEach((ex, idx) => {
+      // A degraded example may have a null top (no strict M3e surface): nothing
+      // to barrel-rewrite, so leave its sidecar entry null (already the default).
+      if (ex.top == null) return;
       items.push({ module, idx, name: bindingName(module, idx), code: ex.top });
     });
   }

@@ -19,8 +19,12 @@
 // If any sibling skips, the whole example skips with that reason.
 //
 // Every candidate example is then COMPILE-VERIFIED against the real M3e.* / Kit
-// API (see verify-examples.mjs); non-compiling examples are DROPPED and logged
-// to config/examples.skipped.txt with a `compile: <firstErrorLine>` reason.
+// API (see verify-examples.mjs) at EACH surface (top/mid/bottom) independently.
+// A surface that fails to compile (or that the converter couldn't map) has its
+// field NULLED and the example is KEPT — it ships at whatever surfaces compiled
+// plus its always-present HTML. Only registration-only <script>/<link> cards are
+// filtered out. Each outcome is logged to config/examples.skipped.txt as either
+// `degraded: <surface>: <reason>` (kept, surface nulled) or `filtered:`.
 
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -131,7 +135,7 @@ function main() {
   const skippedLines = [];
 
   let total = 0;
-  let converted = 0;
+  let filtered = 0;
 
   // Deterministic order over corpus keys.
   for (const slug of Object.keys(corpus).sort()) {
@@ -148,21 +152,36 @@ function main() {
     for (const ex of corpus[slug]) {
       total += 1;
       const { title, code: rawHtml } = ex;
-      const res = convertExample(rawHtml, oracle);
 
-      if (res.skip) {
-        skippedLines.push(`${module} :: ${title} :: ${res.skip}`);
+      // Skip registration-only cards (e.g. "Native module support"): all
+      // top-level nodes are <script>/<link>. They have no meaningful preview
+      // or Elm surface, so they are filtered out entirely (not degraded).
+      const tops = topLevelNodes(rawHtml);
+      if (
+        tops.length > 0 &&
+        tops.every(
+          (n) => n.nodeType === 1 && /^(script|link)$/i.test(n.tagName),
+        )
+      ) {
+        filtered += 1;
+        skippedLines.push(
+          `${module} :: ${title} :: filtered: registration-only (script/link)`,
+        );
         continue;
       }
 
-      converted += 1;
+      // Convert the strict top surface. A converter skip is NOT a drop: the
+      // example still ships its HTML surface (and possibly mid/bottom); its
+      // `top` field simply becomes null. The skip reason is carried for the log.
+      const res = convertExample(rawHtml, oracle);
       const section = deriveSection(rawHtml, oracle);
       examples.push({
         title,
-        code: res.code,
+        // null when the top converter couldn't map it; a compile failure later
+        // may also null a non-null top. Carried internally, split at write time.
+        code: res.skip ? null : res.code,
+        topSkip: res.skip || null,
         ...(section ? { section } : {}),
-        // Carried internally for the rich data file; stripped from the
-        // elm-cem-facing examples.generated.json at write time.
         html: rawHtml,
       });
     }
@@ -172,79 +191,37 @@ function main() {
     }
   }
 
-  // --- COMPILE-VERIFY every candidate against the real M3e.* / Kit API. ------
-  // Anything that fails `elm make` is DROPPED and logged with its reason. This
-  // is the "examples can't lie" gate: only compiling Elm survives.
-  const { failures, fatal } = verifyExamples(generated);
-  if (fatal) {
-    console.error(
-      "FATAL: the scratch verification app did not build (harness/elm.json issue):\n" +
-        fatal,
-    );
-    process.exit(2);
-  }
-
-  // Index failures by module for O(1) drop; sort each module's drop indices
-  // descending so splicing doesn't shift later indices.
-  const failByModule = new Map(); // module -> Map(idx -> firstErrorLine)
-  for (const f of failures) {
-    if (!failByModule.has(f.module)) failByModule.set(f.module, new Map());
-    failByModule.get(f.module).set(f.idx, f.firstErrorLine);
-  }
-
-  let compileDropped = 0;
-  for (const module of Object.keys(generated)) {
-    const drops = failByModule.get(module);
-    if (!drops) continue;
-    const kept = [];
-    generated[module].examples.forEach((ex, idx) => {
-      if (drops.has(idx)) {
-        compileDropped += 1;
-        converted -= 1;
-        skippedLines.push(
-          `${module} :: ${ex.title} :: compile: ${drops.get(idx)}`,
-        );
-      } else {
-        kept.push(ex);
-      }
-    });
-    if (kept.length > 0) {
-      generated[module].examples = kept;
-    } else {
-      delete generated[module];
-    }
-  }
-
-  // --- Phase A1: emit + compile-verify the middle (M3e.Cem.*) and bottom
-  // (M3e.Cem.Html.*) layers for every TOP-surviving example. -----------------
-  // These layers are permissive supersets of the strict top, so a mid/bottom
-  // failure is a converter defect (or a genuinely unrepresentable example) —
-  // NOT a "layer unavailable" state. We enforce an ALL-OR-NOTHING invariant: an
-  // example ships only if top, mid AND bottom all compile, so the docs-site
-  // layer toggle is never partial. Everything dropped here is logged.
-  for (const module of Object.keys(generated)) {
-    for (const ex of generated[module].examples) {
-      ex.mid = convertExample(ex.html, oracle, "middle");
-      ex.bottom = convertExample(ex.html, oracle, "bottom");
-    }
-  }
-
-  // A sentinel shadow map so verifyExamples can attribute each layer failure to
-  // (module, idx): a skipped layer gets an unbound-variable sentinel so it
-  // registers as a compile failure at its own idx.
-  const layerFailures = (layerKey) => {
+  // --- COMPILE-VERIFY each API surface INDEPENDENTLY against the real M3e.* /
+  // Kit API. A layer that fails `elm make` (or that the converter couldn't map)
+  // has its field NULLED — the example is KEPT, never dropped. Every example
+  // always retains its HTML surface, so no example can lose all surfaces. This
+  // is graceful degradation: an example ships at whatever surfaces compiled and
+  // the docs-site toggle simply hides the tabs that didn't.
+  //
+  // `shadowFor` maps each example to a single code string for one layer,
+  // substituting an unbound sentinel when that layer has no code (converter
+  // skip) so verifyExamples attributes a compile failure to that exact (module,
+  // idx) — which we then turn into a null field rather than a drop.
+  const shadowFor = (getCode) => {
     const shadow = {};
     for (const module of Object.keys(generated)) {
       shadow[module] = {
         examples: generated[module].examples.map((ex) => ({
           title: ex.title,
-          code: ex[layerKey].code ? ex[layerKey].code : "layerSkippedSentinel",
+          code: getCode(ex) || "layerSkippedSentinel",
         })),
       };
     }
-    const { failures, fatal } = verifyExamples(shadow);
+    return shadow;
+  };
+
+  const verifyLayer = (getCode, label) => {
+    const { failures, fatal } = verifyExamples(shadowFor(getCode));
     if (fatal) {
-      console.error(`FATAL: ${layerKey}-layer verification did not build:\n` + fatal);
+      console.error(
+        `FATAL: ${label}-layer verification did not build (harness/elm.json issue):\n` +
+          fatal,
+      );
       process.exit(2);
     }
     return new Map(
@@ -252,54 +229,97 @@ function main() {
     );
   };
 
-  const midFail = layerFailures("mid");
-  const botFail = layerFailures("bottom");
+  // Top surface: code lives directly on the example (null ⇒ converter skip).
+  const topFail = verifyLayer((ex) => ex.code, "top");
 
-  let layerDropped = 0;
+  // Generate the middle (M3e.Cem.*) and bottom (M3e.Cem.Html.*) surfaces for
+  // EVERY example (not only top-survivors), then verify each independently.
   for (const module of Object.keys(generated)) {
-    const kept = [];
-    generated[module].examples.forEach((ex, idx) => {
-      const key = `${module}#${idx}`;
-      const midReason = ex.mid.skip || midFail.get(key);
-      const botReason = ex.bottom.skip || botFail.get(key);
-      if (midReason || botReason) {
-        layerDropped += 1;
-        converted -= 1;
-        const parts = [];
-        if (midReason) parts.push(`mid: ${midReason}`);
-        if (botReason) parts.push(`bottom: ${botReason}`);
-        skippedLines.push(`${module} :: ${ex.title} :: layer ${parts.join(" | ")}`);
-      } else {
-        kept.push(ex);
-      }
-    });
-    if (kept.length > 0) generated[module].examples = kept;
-    else delete generated[module];
+    for (const ex of generated[module].examples) {
+      ex.mid = convertExample(ex.html, oracle, "middle");
+      ex.bottom = convertExample(ex.html, oracle, "bottom");
+    }
   }
+  const midFail = verifyLayer((ex) => ex.mid.code, "mid");
+  const botFail = verifyLayer((ex) => ex.bottom.code, "bottom");
 
   // Split the built data into two outputs (stable, alphabetized keys):
   //   sortedGenerated -> elm-cem-facing {examples:[{title,code,section}],docMeta}
+  //                      (carries ONLY compiling top expressions)
   //   rich            -> docs-facing   {Module:[{title,section,html,top,mid,bottom}]}
+  //                      (top/mid/bottom each string | null)
   const sortedGenerated = {};
   const rich = {};
+  let fullyCompiled = 0;
+  let degraded = 0;
+  let droppedNoSurface = 0;
+  const nulled = { top: 0, mid: 0, bottom: 0 };
+
   for (const key of Object.keys(generated).sort()) {
-    const { examples: exs, docMeta } = generated[key];
-    sortedGenerated[key] = {
-      examples: exs.map(({ title, code, section }) => ({
-        title,
-        code,
-        ...(section ? { section } : {}),
-      })),
-      docMeta,
-    };
-    rich[key] = exs.map(({ title, section, html, code, mid, bottom }) => ({
-      title,
-      ...(section ? { section } : {}),
-      html,
-      top: code,
-      mid: mid.code,
-      bottom: bottom.code,
-    }));
+    const richExs = [];
+    const genExs = [];
+    generated[key].examples.forEach((ex, idx) => {
+      const k = `${key}#${idx}`;
+      const topReason = ex.topSkip || topFail.get(k) || null;
+      const midReason = ex.mid.skip || midFail.get(k) || null;
+      const botReason = ex.bottom.skip || botFail.get(k) || null;
+
+      const top = topReason ? null : ex.code;
+      const mid = midReason ? null : ex.mid.code;
+      const bottom = botReason ? null : ex.bottom.code;
+
+      // Defensive: drop only if the example truly has NO surface. `html` is
+      // always present, so this branch is unreachable in practice.
+      if (!ex.html && top == null && mid == null && bottom == null) {
+        droppedNoSurface += 1;
+        skippedLines.push(`${key} :: ${ex.title} :: dropped: no surface`);
+        return;
+      }
+
+      if (topReason) nulled.top += 1;
+      if (midReason) nulled.mid += 1;
+      if (botReason) nulled.bottom += 1;
+
+      if (topReason || midReason || botReason) {
+        degraded += 1;
+        const parts = [];
+        if (topReason) parts.push(`top: ${topReason}`);
+        if (midReason) parts.push(`mid: ${midReason}`);
+        if (botReason) parts.push(`bottom: ${botReason}`);
+        skippedLines.push(
+          `${key} :: ${ex.title} :: degraded: ${parts.join(" | ")}`,
+        );
+      } else {
+        fullyCompiled += 1;
+      }
+
+      richExs.push({
+        title: ex.title,
+        ...(ex.section ? { section: ex.section } : {}),
+        html: ex.html,
+        top,
+        mid,
+        bottom,
+      });
+
+      // The elm-cem-facing generated.json carries ONLY a compiling top
+      // expression; an example whose top nulled contributes no `code` binding.
+      if (top != null) {
+        genExs.push({
+          title: ex.title,
+          code: top,
+          ...(ex.section ? { section: ex.section } : {}),
+        });
+      }
+    });
+
+    if (richExs.length > 0) rich[key] = richExs;
+    if (genExs.length > 0) {
+      sortedGenerated[key] = {
+        examples: genExs,
+        docMeta: generated[key].docMeta,
+      };
+    }
   }
 
   // Keep the skip log deterministic.
@@ -312,14 +332,15 @@ function main() {
     skippedLines.length ? skippedLines.join("\n") + "\n" : "",
   );
 
-  const componentCount = Object.keys(sortedGenerated).length;
+  const keptExamples = Object.values(rich).reduce((n, exs) => n + exs.length, 0);
+  const componentCount = Object.keys(rich).length;
   const zeroExampleCount = Object.keys(corpus).length - componentCount;
 
   console.log(
-    `converted+compiled(3 layers) ${converted} / total ${total}; ` +
-      `skipped ${total - converted} (convert ${total - converted - compileDropped - layerDropped}, ` +
-      `top-compile ${compileDropped}, mid/bottom-layer ${layerDropped}) ` +
-      `across ${componentCount} components`,
+    `kept ${keptExamples} / total ${total} examples across ${componentCount} components: ` +
+      `${fullyCompiled} full-surface, ${degraded} degraded ` +
+      `(nulled top ${nulled.top}, mid ${nulled.mid}, bottom ${nulled.bottom}); ` +
+      `filtered ${filtered} (registration-only), dropped ${droppedNoSurface} (no surface)`,
   );
   console.log(`components with zero examples: ${zeroExampleCount}`);
 }
