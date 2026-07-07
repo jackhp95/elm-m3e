@@ -431,6 +431,10 @@
   "ContentPane": {
     "examples": [
       {
+        "title": "Usage",
+        "code": "M3e.ContentPane.view [] (M3e.ContentPane.children [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text \"Content header\") ], Native.p [] [ Kit.text \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae ligula at ipsum pulvinar tincidunt.\\n    Integer feugiat, tortor non aliquet facilisis, velit risus faucibus lorem, vitae porttitor justo arcu\\n    nec sapien. Curabitur euismod, urna vel placerat dictum, augue sem ullamcorper velit, id interdum neque\\n    magna non nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.\\n    Suspendisse potenti. Praesent ac orci eget urna volutpat fermentum. Donec non mi sed sapien gravida\\n    aliquet. Vivamus at orci id libero scelerisque convallis. Pellentesque habitant morbi tristique senectus\\n    et netus et malesuada fames ac turpis egestas. Cras ac erat id velit pharetra luctus. Mauris sed nisl\\n    sed arcu facilisis tincidunt. Aliquam erat volutpat. Sed sit amet massa non magna gravida cursus. Sed\\n    vulputate, velit id suscipit convallis, lorem ipsum varius neque, sed porttitor lacus justo vitae\\n    libero. Integer at felis vel lacus porta posuere. Aenean non lorem ac nulla gravida tincidunt.\\n    Pellentesque vel urna id libero dictum gravida. Donec sit amet velit nec sapien ultricies tincidunt.\\n    Vivamus in augue id libero sodales tincidunt. Integer id lorem nec sapien bibendum tincidunt. Sed id\\n    lacus non justo viverra tincidunt. Curabitur id risus vitae justo tincidunt gravida. Vivamus id ligula\\n    non ipsum porta tincidunt. Pellentesque id lorem nec sapien dictum tincidunt. Integer id lorem nec\\n    sapien bibendum tincidunt.\" ] ])"
+      },
+      {
         "title": "Content header",
         "code": "M3e.ContentPane.view [] (M3e.ContentPane.children [ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text \"Content header\") ], Native.p [] [] ])"
       }
@@ -842,6 +846,21 @@
       "category": "Navigation"
     }
   },
+  "NavMenu": {
+    "examples": [
+      {
+        "title": "Multilevel menus",
+        "code": "M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] ([ M3e.NavMenuItem.label (Kit.text \"Getting Started\"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"rocket_launch\", M3e.Aria.hidden \"true\" ] []) ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Overview\"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"widgets\", M3e.Aria.hidden \"true\" ] []) ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Installation\"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"package_2\", M3e.Aria.hidden \"true\" ] []) ] ]), M3e.NavMenuItem.view [] ([ M3e.NavMenuItem.label (Kit.text \"Actions\") ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Button\") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Icon\") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Icon Button\") ] ]) ])"
+      },
+      {
+        "title": "Disabling",
+        "code": "M3e.NavMenu.view [] (M3e.NavMenu.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.open True, M3e.NavMenuItem.disabled True ] ([ M3e.NavMenuItem.label (Kit.text \"Getting Started\"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"rocket_launch\", M3e.Aria.hidden \"true\" ] []) ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Overview\"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"widgets\", M3e.Aria.hidden \"true\" ] []) ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Installation\"), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name \"package_2\", M3e.Aria.hidden \"true\" ] []) ] ]), M3e.NavMenuItem.view [ M3e.NavMenuItem.open True ] ([ M3e.NavMenuItem.label (Kit.text \"Actions\") ] ++ M3e.NavMenuItem.children [ M3e.NavMenuItem.view [ M3e.NavMenuItem.disabled True ] [ M3e.NavMenuItem.label (Kit.text \"Button\") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Icon\") ], M3e.NavMenuItem.view [] [ M3e.NavMenuItem.label (Kit.text \"Icon Button\") ] ]) ])"
+      }
+    ],
+    "docMeta": {
+      "category": "Navigation"
+    }
+  },
   "NavRail": {
     "examples": [
       {
@@ -1182,6 +1201,10 @@
         "code": "M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.disabled True ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]"
       },
       {
+        "title": "Conditional rendering",
+        "code": "M3e.SplitPane.view [ M3e.SplitPane.value 50 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]"
+      },
+      {
         "title": "Nested panes",
         "code": "M3e.SplitPane.view [ M3e.SplitPane.value 25 ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.SplitPane.view [ M3e.SplitPane.value 50, M3e.SplitPane.orientation M3e.Value.vertical ] [ M3e.SplitPane.start (M3e.Card.view [] []), M3e.SplitPane.end (M3e.Card.view [] []) ]) ]"
       }
@@ -1220,6 +1243,26 @@
   },
   "Tabs": {
     "examples": [
+      {
+        "title": "Basic usage",
+        "code": "M3e.Tabs.view [] ([ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Videos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Photos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Audio\") ]) ] ++ M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"videos\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"videocam\" ] []), M3e.Tab.child (Kit.text \"Video\") ], M3e.Tab.view [ M3e.Tab.for \"photos\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"audio\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"music_note\" ] []), M3e.Tab.child (Kit.text \"Audio\") ] ])"
+      },
+      {
+        "title": "Variants",
+        "code": "M3e.Tabs.view [ M3e.Tabs.variant M3e.Value.primary ] ([ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Videos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Photos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Audio\") ]) ] ++ M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"tab1\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"videocam\" ] []), M3e.Tab.child (Kit.text \"Video\") ], M3e.Tab.view [ M3e.Tab.for \"tab2\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"tab3\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"music_note\" ] []), M3e.Tab.child (Kit.text \"Audio\") ] ])"
+      },
+      {
+        "title": "Stretching",
+        "code": "M3e.Tabs.view [ M3e.Tabs.stretch True ] ([ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Videos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Photos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Audio\") ]) ] ++ M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"tab7\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"videocam\" ] []), M3e.Tab.child (Kit.text \"Video\") ], M3e.Tab.view [ M3e.Tab.for \"tab8\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"tab9\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"music_note\" ] []), M3e.Tab.child (Kit.text \"Audio\") ] ])"
+      },
+      {
+        "title": "Header positions",
+        "code": "M3e.Tabs.view [ M3e.Tabs.headerPosition M3e.Value.after ] ([ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Videos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Photos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Audio\") ]) ] ++ M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"tab4\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"videocam\" ] []), M3e.Tab.child (Kit.text \"Video\") ], M3e.Tab.view [ M3e.Tab.for \"tab5\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"tab6\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"music_note\" ] []), M3e.Tab.child (Kit.text \"Audio\") ] ])"
+      },
+      {
+        "title": "Disabling",
+        "code": "M3e.Tabs.view [] ([ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Videos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Photos\") ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text \"Audio\") ]) ] ++ M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for \"tab10\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"videocam\" ] []), M3e.Tab.child (Kit.text \"Video\") ], M3e.Tab.view [ M3e.Tab.disabled True, M3e.Tab.for \"tab11\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"photo\" ] []), M3e.Tab.child (Kit.text \"Photos\") ], M3e.Tab.view [ M3e.Tab.for \"tab12\" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name \"music_note\" ] []), M3e.Tab.child (Kit.text \"Audio\") ] ])"
+      },
       {
         "title": "Pagination",
         "code": "M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True ] [ M3e.Tab.child (Kit.text \"Tab 1\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 2\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 3\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 4\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 5\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 6\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 7\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 8\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 9\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 10\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 11\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 12\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 13\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 14\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 15\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 16\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 17\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 18\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 19\") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text \"Tab 20\") ] ])"
@@ -1325,6 +1368,41 @@
     ],
     "docMeta": {
       "category": "Communication"
+    }
+  },
+  "Tree": {
+    "examples": [
+      {
+        "title": "Basic usage",
+        "code": "M3e.Tree.view [] (M3e.Tree.children [ M3e.TreeItem.view [ M3e.TreeItem.open True ] ([ M3e.TreeItem.label (Kit.text \"Getting Started\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Overview\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Installation\") ] ]), M3e.TreeItem.view [] ([ M3e.TreeItem.label (Kit.text \"Components\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Button\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Card\") ] ]) ])"
+      },
+      {
+        "title": "Selection",
+        "code": "M3e.Tree.view [] (M3e.Tree.children [ M3e.TreeItem.view [ M3e.TreeItem.open True ] ([ M3e.TreeItem.label (Kit.text \"Getting Started\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [ M3e.TreeItem.selected True ] [ M3e.TreeItem.label (Kit.text \"Overview\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Installation\") ] ]), M3e.TreeItem.view [] ([ M3e.TreeItem.label (Kit.text \"Components\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Button\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Card\") ] ]) ])"
+      },
+      {
+        "title": "Multiple selection",
+        "code": "M3e.Tree.view [ M3e.Tree.multi True ] (M3e.Tree.children [ M3e.TreeItem.view [] ([ M3e.TreeItem.label (Kit.text \"Fruits\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Apples\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Oranges\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Bananas\") ] ]), M3e.TreeItem.view [] ([ M3e.TreeItem.label (Kit.text \"Vegetables\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Carrots\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Broccoli\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Spinach\") ] ]) ])"
+      },
+      {
+        "title": "Cascade selection",
+        "code": "M3e.Tree.view [ M3e.Tree.multi True, M3e.Tree.cascade True ] (M3e.Tree.children [ M3e.TreeItem.view [] ([ M3e.TreeItem.label (Kit.text \"Fruits\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Apples\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Oranges\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Bananas\") ] ]), M3e.TreeItem.view [] ([ M3e.TreeItem.label (Kit.text \"Vegetables\") ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Carrots\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Broccoli\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Spinach\") ] ]) ])"
+      },
+      {
+        "title": "Icons",
+        "code": "M3e.Tree.view [] [ M3e.Tree.child (M3e.TreeItem.view [ M3e.TreeItem.open True ] ([ M3e.TreeItem.label (Kit.text \"Getting Started\"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"rocket_launch\" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Overview\"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"near_me\" ] []) ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Installation\"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"package_2\" ] []) ] ])) ]"
+      },
+      {
+        "title": "Toggle icons",
+        "code": "M3e.Tree.view [] [ M3e.Tree.child (M3e.TreeItem.view [ M3e.TreeItem.open True ] ([ M3e.TreeItem.label (Kit.text \"Getting Started\"), M3e.TreeItem.toggleIcon (M3e.Icon.view [ M3e.Icon.name \"add_box\" ] []), M3e.TreeItem.openToggleIcon (M3e.Icon.view [ M3e.Icon.name \"indeterminate_check_box\" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Overview\") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Installation\") ] ])) ]"
+      },
+      {
+        "title": "Density",
+        "code": "M3e.Tree.view [] [ M3e.Tree.child (M3e.TreeItem.view [ M3e.TreeItem.open True ] ([ M3e.TreeItem.label (Kit.text \"Getting Started\"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"rocket_launch\" ] []) ] ++ M3e.TreeItem.children [ M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Overview\"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"near_me\" ] []) ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text \"Installation\"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name \"package_2\" ] []) ] ])) ]"
+      }
+    ],
+    "docMeta": {
+      "category": "Layout & style"
     }
   }
 }

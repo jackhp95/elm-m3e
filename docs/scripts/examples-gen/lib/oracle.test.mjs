@@ -22,3 +22,32 @@ test("icon-button module; aria-label is NOT a required field (universal setter)"
   // aria moved off the phantom/required system -> settable via M3e.Aria on anything.
   assert.ok(!ib.requiredFields.some((f) => f.field === "ariaLabel"));
 });
+
+// Fix A — tagName reconciliation. The @m3e/web CEM stamps a WRONG class-level
+// tagName on two element classes (M3eStepperNextElement.tagName ===
+// "m3e-stepper-previous"); the custom-element-definition export carries the
+// real registration tag. reconcileTagNames() overwrites the declaration from
+// its export so the oracle keys these entries by the correct tag. Without it,
+// m3e-stepper-next / m3e-fab-menu-item never resolve and degrade to "unknown
+// m3e tag".
+test("Fix A: reconciled tags resolve to their own module", () => {
+  assert.ok(oracle["m3e-stepper-next"], "m3e-stepper-next tag resolves");
+  assert.equal(oracle["m3e-stepper-next"].module, "StepperNext");
+  assert.equal(oracle["m3e-stepper-next"].kind, "stepperNext");
+  assert.ok(oracle["m3e-fab-menu-item"], "m3e-fab-menu-item tag resolves");
+  assert.equal(oracle["m3e-fab-menu-item"].module, "FabMenuItem");
+  assert.equal(oracle["m3e-fab-menu-item"].kind, "fabMenuItem");
+});
+
+// Fix C — per-container child routing by produced kind. A composite's default
+// children with no `slot=` attr route to the NAMED slot whose accepted kind
+// matches (panels -> panel, step-panels -> panel). Union-row containers (Menu)
+// keep an empty routing map so their heterogeneous children flow through
+// `children`.
+test("Fix C: childSlotByKind routes typed default children", () => {
+  assert.equal(oracle["m3e-tabs"].childSlotByKind.tabPanel, "panel");
+  assert.equal(oracle["m3e-stepper"].childSlotByKind.step, "step");
+  assert.equal(oracle["m3e-stepper"].childSlotByKind.stepPanel, "panel");
+  // Union-row container: no per-kind routing (children flow through `children`).
+  assert.deepEqual(oracle["m3e-menu"].childSlotByKind, {});
+});

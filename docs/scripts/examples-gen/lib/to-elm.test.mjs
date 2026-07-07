@@ -31,16 +31,17 @@ test("checkbox without aria-label converts (aria is optional)", () => {
 
 // --- (a) required-record view form ---------------------------------------
 
-// IconButton exposes NO `child`/`children` helper: its default slot is
-// `required + single`, so the codegen folds it into the required record as the
-// `content` field. aria-label is now a universal optional setter (M3e.Aria.label
-// in the attribute list), NOT a required-record field.
-test("icon-button folds default icon slot into content; aria is a setter", () => {
+// IconButton exposes a 2-arg `view : List Attr -> List Content` plus a `child`
+// helper (the B1.5b library regen removed default-slot content-record folding —
+// there is no `{ content = ... }` record form). Its single default icon child is
+// wrapped by `M3e.IconButton.child`. aria-label is a universal optional setter
+// (M3e.Aria.label in the attribute list), NOT a required-record field.
+test("icon-button default icon slot -> child helper; aria is a setter", () => {
   const r = conv(
     `<m3e-icon-button aria-label="Toggle theme"><m3e-icon name="dark_mode"></m3e-icon></m3e-icon-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.IconButton.view { content = M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [] } [ M3e.Aria.label "Toggle theme" ] []`,
+    code: `M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "dark_mode" ] []) ]`,
   });
 });
 
@@ -52,9 +53,14 @@ test("checkbox aria-label -> M3e.Aria.label setter", () => {
   });
 });
 
-test("icon-button missing required content (default slot) -> skip", () => {
+// Default content is optional at the type level (List Content; required-ness is
+// an elm-review concern), so a childless icon-button converts to an empty-content
+// view rather than skipping.
+test("icon-button with no default content converts (empty content)", () => {
   const r = conv(`<m3e-icon-button aria-label="X"></m3e-icon-button>`);
-  assert.ok(r.skip && /content/.test(r.skip));
+  assert.deepEqual(r, {
+    code: `M3e.IconButton.view [ M3e.Aria.label "X" ] []`,
+  });
 });
 
 test("icon standalone", () => {
@@ -121,28 +127,29 @@ test("skip on unknown m3e tag", () => {
 
 // --- Required-record field sourced from a NAMED slot child -----------------
 
-// NavMenuItem/TreeItem have a required `label` NAMED slot that the codegen
-// folds into the required record as a `label` field (there is NO `label` slot
-// helper). Confirmed against packages/m3e/src/M3e/NavMenuItem.elm:
-//   view : { label : Element { text, link } msg } -> ...
-// with `M3e.Element.withSlot "label" req_.label`.
+// NavMenuItem/TreeItem have a required `label` NAMED slot. In the current
+// library this is an ordinary Content slot HELPER (`M3e.NavMenuItem.label`) on a
+// 2-arg `view : List Attr -> List Content` — NOT a folded required-record field.
+// Confirmed against packages/m3e/src/M3e/NavMenuItem.elm (`label : ... -> Content`
+// at line 134, `view attributes content_`). The `slot="label"` child is still
+// consumed here (and still required) but emitted as `M3e.NavMenuItem.label (…)`.
 test("nav-menu-item required label sourced from slot=label child", () => {
   const r = conv(
     `<m3e-nav-menu-item selected><m3e-icon slot="icon" name="home"></m3e-icon><a slot="label" href="/">Home</a></m3e-nav-menu-item>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.NavMenuItem.view { label = Kit.link "/" [ Kit.text "Home" ] } [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []) ]`,
+    code: `M3e.NavMenuItem.view [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.label (Kit.link "/" [ Kit.text "Home" ]), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []) ]`,
   });
 });
 
 // TreeItem nests child tree-items via the (default) `child` helper while its
-// own `label` comes from the required named slot.
+// own `label` comes from the required named slot helper.
 test("tree-item required label + nested child tree-items", () => {
   const r = conv(
     `<m3e-tree-item open><span slot="label">Getting Started</span><m3e-tree-item><span slot="label">Overview</span></m3e-tree-item></m3e-tree-item>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.TreeItem.view { label = Kit.text "Getting Started" } [ M3e.TreeItem.open True ] [ M3e.TreeItem.child (M3e.TreeItem.view { label = Kit.text "Overview" } [] []) ]`,
+    code: `M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.child (M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview") ]) ]`,
   });
 });
 
@@ -152,11 +159,28 @@ test("nav-menu-item missing required label slot -> skip", () => {
   assert.ok(r.skip && /label/.test(r.skip));
 });
 
+// --- Fix C: per-container child routing by produced kind -------------------
+
+// A <m3e-tabs> composite carries heterogeneous default children with NO `slot=`
+// attr: <m3e-tab> (kind `tab`, the default union) and <m3e-tab-panel> (kind
+// `tabPanel`, owned by the named `panel` slot). Fix C routes the panel to the
+// typed `M3e.Tabs.panel (...)` named-slot Content while the tab stays a default
+// `M3e.Tabs.child (...)` — instead of lumping both into one mis-typed children.
+test("tabs: bare tab-panel child routes to named panel slot; tab -> child", () => {
+  const r = conv(
+    `<m3e-tabs><m3e-tab>One</m3e-tab><m3e-tab-panel>First panel</m3e-tab-panel></m3e-tabs>`,
+  );
+  assert.deepEqual(r, {
+    code: `M3e.Tabs.view [] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text "First panel") ]), M3e.Tabs.child (M3e.Tab.view [] [ M3e.Tab.child (Kit.text "One") ]) ]`,
+  });
+});
+
 // --- Card with slotted content (2-arg view) + folded-content children ------
 
-// Heading/Chip also fold their required single text default slot into a
-// `content` record field; assert structurally (not brittle deepEqual) that the
-// whole Card example maps without skipping and uses the real helper names.
+// Heading/Chip wrap their single text default child with the `child` helper
+// (2-arg views, no content-record fold); assert structurally (not brittle
+// deepEqual) that the whole Card example maps without skipping and uses the real
+// helper names.
 test("card with header + content(div) slots", () => {
   const r = conv(
     `<m3e-card variant="outlined"><m3e-heading slot="header" variant="title" size="small">People</m3e-heading><div slot="content"><m3e-chip-set><m3e-chip>Name</m3e-chip></m3e-chip-set></div></m3e-card>`,
@@ -166,8 +190,8 @@ test("card with header + content(div) slots", () => {
   assert.match(r.code, /M3e\.Card\.header/);
   assert.match(r.code, /M3e\.Card\.content/);
   assert.match(r.code, /Native\.div/);
-  assert.match(r.code, /M3e\.Heading\.view \{ content = Kit\.text "People" \}/);
-  assert.match(r.code, /M3e\.Chip\.view \{ content = Kit\.text "Name" \}/);
+  assert.match(r.code, /M3e\.Heading\.child \(Kit\.text "People"\)/);
+  assert.match(r.code, /M3e\.Chip\.child \(Kit\.text "Name"\)/);
 });
 
 // --- (b) plain HTML + (c) anchor -> Kit.link --------------------------------

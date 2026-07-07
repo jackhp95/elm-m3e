@@ -62,6 +62,13 @@ const isDroppableAttr = (name) =>
   name === "id" ||
   name === "class" ||
   name === "style" ||
+  // Docs-site TOC marker; no Elm setter -> drop (like id/class).
+  name === "m3e-toc-ignore" ||
+  // Global HTML attrs with no universal Elm setter. Only reached when the
+  // component itself exposes no typed setter for the attr (the setter path
+  // runs first), so a component that DOES map hidden/autofocus is unaffected.
+  name === "hidden" ||
+  name === "autofocus" ||
   name.startsWith("data-");
 
 // Collected across a single toElm() run for logging/inspection.
@@ -238,15 +245,6 @@ function elementToElm(node, oracle) {
   const mod = entry.group ? entry.group.module : entry.module;
   const ctor = entry.group ? entry.group.variant : "view";
 
-  // Does the default slot fold into the required record as a `content` field?
-  // (A required, single-value default slot is not a `child` helper.)
-  const defaultSlot = entry.slots.find((s) => s.rawName === "");
-  const foldsContent = !!(
-    defaultSlot &&
-    defaultSlot.required &&
-    !defaultSlot.multi
-  );
-
   const attrPairs = [...node.attributes].map((a) => [a.name, a.value]);
 
   // --- Required-record named fields sourced from ATTRIBUTES. ---
@@ -263,13 +261,16 @@ function elementToElm(node, oracle) {
     recordFields.push(`${field} = "${escapeElmString(pair[1])}"`);
   }
 
-  // --- Required-record fields sourced from a NAMED SLOT child. ---
-  // (e.g. NavMenuItem/TreeItem `label` <- `slot="label"` child.) The codegen
-  // folds a required single-value named slot into the required record as a
-  // field of the same (camelCased) name — there is NO slot helper for it. We
-  // consume the matching child here; it must not also be routed as a slot.
+  // --- Required text/link NAMED slots sourced from a `slot="X"` child. ---
+  // (e.g. NavMenuItem/TreeItem `label` <- `slot="label"` child.) In the current
+  // library these are ordinary Content slot HELPERS (`M3e.TreeItem.label`, a
+  // 2-arg `view : List Attr -> List Content`), NOT a folded required-record
+  // field — required-ness is enforced by elm-review. We still consume the
+  // matching child here (so it is not double-routed by the children loop) and
+  // still require its presence, then emit the slot helper into `slottedExprs`.
   const requiredSlots = entry.requiredSlots ?? [];
   const consumedRequiredSlotNames = new Set();
+  const requiredSlotExprs = [];
   for (const { field, rawName, kinds } of requiredSlots) {
     const matches = [...node.childNodes].filter(
       (c) => c.nodeType === 1 && c.getAttribute("slot") === rawName,
@@ -280,7 +281,7 @@ function elementToElm(node, oracle) {
     if (matches.length > 1) {
       skip(`multiple children for required ${field} slot on ${tag}`);
     }
-    // A text/link-kinded field (e.g. `label`) types as `Element { text, link }`.
+    // A text/link-kinded slot (e.g. `label`) types as `Element { text, link }`.
     // Render it through the text/link unwrapper so a `<span>`/`<div>` wrapper
     // folds to `Kit.text` rather than an incompatible `Native.<tag>`.
     const onlyTextLink =
@@ -290,7 +291,9 @@ function elementToElm(node, oracle) {
     const expr = onlyTextLink
       ? textLinkSlotChild(matches[0], tag, field, oracle)
       : nodeToElm(matches[0], oracle);
-    recordFields.push(`${field} = ${expr}`);
+    const slotEntry = entry.slots.find((s) => s.rawName === rawName);
+    const helper = slotEntry ? slotEntry.helper : camel(rawName);
+    requiredSlotExprs.push(`M3e.${mod}.${helper} (${expr})`);
     consumedRequiredSlotNames.add(rawName);
   }
 
@@ -376,6 +379,25 @@ function elementToElm(node, oracle) {
         );
         continue;
       }
+      // Fix C: a no-`slot=` default child distinguished only by TAG routes to
+      // the NAMED slot helper whose accepted kind matches the child's produced
+      // kind (e.g. <m3e-tab-panel> -> M3e.Tabs.panel, <m3e-step> ->
+      // M3e.Stepper.step, <m3e-step-panel> -> M3e.Stepper.panel). Without this a
+      // composite's heterogeneous default children collapse into one
+      // `M3e.<mod>.children [ ... ]` whose List is not homogeneous and fails to
+      // typecheck. The map excludes the container's default-union kinds, so
+      // union-row composites (Menu/NavMenu/FabMenu) are unaffected.
+      const childTag = child.tagName.toLowerCase();
+      if (childTag.startsWith("m3e-")) {
+        const childKind = oracle[childTag]?.kind;
+        const helper = childKind ? entry.childSlotByKind?.[childKind] : null;
+        if (helper) {
+          slottedExprs.push(
+            `M3e.${mod}.${helper} (${nodeToElm(child, oracle)})`,
+          );
+          continue;
+        }
+      }
       // Default-slot element: for an idWiring control, remember its `id=`.
       if (idWiring && idWiring.control && controlId == null) {
         controlId = child.getAttribute("id") ?? "";
@@ -393,27 +415,19 @@ function elementToElm(node, oracle) {
     // Comments and other node types are ignored.
   }
 
-  // A required, single-value default slot is folded into the required record as
-  // a bare `content` field (no child/children helper). It is prepended so the
-  // record reads `{ content = ..., <named fields> }`, matching the codegen.
-  //
-  // Otherwise, default children are wrapped by the component's `child`/`children`
-  // helper. CRITICAL: `child x` returns ONE `Content`, but `children [ ... ]`
-  // returns a `List Content` (the codegen defines it as `List.map (slot "")`).
-  // A list-returning helper therefore CANNOT sit as an element inside the
+  // Default children are wrapped by the component's `child`/`children` helper.
+  // (The current library exposes a 2-arg `view : List Attr -> List Content`
+  // for every component plus `child`/`children` slot helpers — NO component
+  // folds its required single default slot into a `{ content }` record field.
+  // Required-ness of default content is enforced by elm-review, not the types.)
+  // CRITICAL: `child x` returns ONE `Content`, but `children [ ... ]` returns a
+  // `List Content` (the codegen defines it as `List.map (slot "")`). A
+  // list-returning helper therefore CANNOT sit as an element inside the
   // `[ ... ]` content list — that yields `List (List Content)` and fails to
   // compile. We keep it as a separate spliced fragment appended with `++`.
-  const singleExprs = [...slottedExprs]; // each a single `Content`
+  const singleExprs = [...requiredSlotExprs, ...slottedExprs]; // each a single `Content`
   let childrenExpr = null; // a `List Content` fragment, or null
-  if (foldsContent) {
-    if (defaultExprs.length === 0) {
-      skip(`missing required content (default slot) on ${tag}`);
-    }
-    if (defaultExprs.length > 1) {
-      skip(`multiple children for single-value content slot on ${tag}`);
-    }
-    recordFields.unshift(`content = ${defaultExprs[0]}`);
-  } else if (defaultExprs.length === 1) {
+  if (defaultExprs.length === 1) {
     // Wrap default-slot content with the component's `child` helper (single).
     // An idWiring control's `child` takes a leading `id` String (from the
     // control element's `id=`) so a sibling `<label for=…>` associates with it.
