@@ -188,6 +188,47 @@
   }
 }
 
+/* Sliding code panels (stream C). `Doc.Slider.slidingPanels` mounts every API-
+   surface panel in a horizontal `.sp-track` flex row inside a `<slide-panels>`
+   viewport; Elm sets the track's `transform: translateX(-N00%)` inline to bring
+   the active panel into view, and the JS custom element keeps the viewport height
+   locked to the active panel. No `display:none` on panels — off-screen is via the
+   transform + this viewport's clip only, so folds + find-in-page stay intact. */
+@layer components {
+  .sp-viewport {
+    display: block;
+    overflow: hidden;
+    /* JS sets the px height; this animates the change. Falls back to height:auto
+       (tallest panel) if the custom element never upgrades. */
+    transition: height 0.3s ease;
+  }
+
+  .sp-track {
+    display: flex;
+    /* Each panel keeps its own content height — WITHOUT this, the default
+       `align-items: stretch` grows every panel to the tallest sibling, so a tall
+       (or fold-expanded) inactive panel would leave empty space under a short
+       active one and defeat the per-panel height-sync. */
+    align-items: flex-start;
+    transition: transform 0.3s ease;
+  }
+
+  /* Each panel fills the viewport; min-width:0 lets the inner `.overflow-x-auto`
+     code box scroll horizontally instead of stretching the flex item. */
+  .sp-panel {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+
+  /* Honour reduced motion: switch instantly, no slide or height animation. */
+  @media (prefers-reduced-motion: reduce) {
+    .sp-viewport,
+    .sp-track {
+      transition: none;
+    }
+  }
+}
+
 /* M3 document base: the shell's <m3e-theme> cascades --md-sys-color-* /
    --md-sys-typescale-* onto every descendant, but the bare <html>/<body>
    outside that subtree needs the surface + type scale too, or the viewport

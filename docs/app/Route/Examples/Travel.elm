@@ -18,6 +18,7 @@ is used only for layout (flex / grid / gap / padding / responsive visibility).
 -}
 
 import BackendTask
+import Doc.Slider
 import Effect exposing (Effect)
 import Head
 import Html
@@ -299,9 +300,36 @@ content model =
     Layout.div "flex flex-col gap-8 p-4 md:p-8"
         [ hero
         , categoryTabs model.category
-        , rail "Popular destinations" (popular model.category)
+        , popularRails model.category
         , rail "Nearby getaways" nearby
         ]
+
+
+{-| The category-driven "Popular destinations" rail, sliding between categories.
+Reuses `Doc.Slider.slidingPanels` (the same helper the API-surface code toggle
+uses): every category's rail is mounted in the track, and switching the category
+tab slides the prior rail out and the new one in. The static "Nearby getaways"
+rail below is category-independent and stays put.
+-}
+popularRails : Category -> Element { s | html : Supported } (PagesMsg Msg)
+popularRails current =
+    Doc.Slider.slidingPanels
+        (categoryIndex current)
+        (List.map (\( c, _ ) -> rail "Popular destinations" (popular c)) categories)
+
+
+{-| The 0-based position of the active category within `categories` — the rail
+`slidingPanels` translates into view.
+-}
+categoryIndex : Category -> Int
+categoryIndex current =
+    categories
+        |> List.map Tuple.first
+        |> List.indexedMap Tuple.pair
+        |> List.filter (\( _, c ) -> c == current)
+        |> List.head
+        |> Maybe.map Tuple.first
+        |> Maybe.withDefault 0
 
 
 {-| A search hero: a headline over a `SearchBar`, wrapped in a tinted, extra-large

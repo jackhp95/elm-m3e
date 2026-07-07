@@ -12,6 +12,7 @@ import BackendTask exposing (BackendTask)
 import BackendTask.File
 import Dict exposing (Dict)
 import Doc
+import Doc.Slider
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
@@ -419,8 +420,28 @@ exampleBlock model ( index, ex ) =
         [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
         , Doc.showcase (Doc.rawPreview ex.html)
         , layerTabs index layer ex
-        , codeFor layer ex
+        , Doc.Slider.slidingPanels
+            (activeIndexFor layer ex)
+            (List.map (\( _, l ) -> codeFor l ex) (layersFor ex))
         ]
+
+
+{-| The 0-based position of the selected `layer` within `layersFor ex` — the panel
+`slidingPanels` translates into view. Every panel in `layersFor ex` is mounted (one
+`codeFor` surface each) so the prior panel can slide out as the new one slides in;
+this index just drives the track offset. Clamps to 0 if the layer isn't offered
+(unreachable — the selection comes from `defaultLayerFor`/a tab click, both drawn
+from `layersFor`).
+-}
+activeIndexFor : Layer -> UsageExample -> Int
+activeIndexFor layer ex =
+    layersFor ex
+        |> List.map Tuple.second
+        |> List.indexedMap Tuple.pair
+        |> List.filter (\( _, l ) -> l == layer)
+        |> List.head
+        |> Maybe.map Tuple.first
+        |> Maybe.withDefault 0
 
 
 {-| The surfaces offered for one example, in fixed order. Each Elm surface
