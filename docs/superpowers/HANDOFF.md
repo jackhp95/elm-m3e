@@ -108,34 +108,56 @@ parsing/rendering here), `rawPreview` (line ~53). Renderer glue in `Name_.elm`. 
 `modern-web-guidance` skill → guide `search-hidden-content` (native `<details>` stays find-in-page
 searchable). Verify folds + Ctrl-F reveal with playwright.
 
-### C — Tab/panel sliding (needs a design cycle)
+### C — Tab/panel sliding (design the implementation; product calls DECIDED)
 
-**Product intent (from the user's original brief):** Material tabs should *slide* — clicking a
-tab slides the prior panel out and the new one in — instead of DOM-swapping content. This applies
-to the **API-surface toggle** on component pages (the `M3e / M3e.Cem / … / HTML` tabs), which
-today just swaps `codeFor`'s output in place. Code: `Name_.elm` `layerTabs` (line ~468) +
-`codeFor` (~490).
+**Product intent (from the user's brief):** Material tabs should *slide* — clicking a tab slides
+the prior panel out and the new one in — instead of DOM-swapping content.
 
-**Run a design cycle** (brainstorm → spec → plan). Approach hint: a horizontal track with all
-panels, `translateX` by selected index, or the View Transitions API — consult `modern-web-guidance`
-(view transitions / scroll-driven). Keep it lightweight; no heavy deps. Make the product calls
-yourself.
+**DECIDED (2026-07-07, do NOT re-ask):** the sliding treatment applies to **ALL tab UI in the
+docs**, not just the API-surface code toggle. So build a **reusable sliding-panel tabs component/
+helper** and use it everywhere tabs appear (the `M3e / M3e.Cem / … / HTML` code toggle in
+`Name_.elm` `layerTabs`/`codeFor` (~line 468/490) is the primary case; audit the docs for other
+tab-like UI and apply the same treatment).
 
-### D — Docs app shell (needs a design cycle)
+**Design the implementation** (spec → plan; the product decision above is settled). Approach hint:
+a horizontal track holding all panels, `translateX` by selected index, honoring
+`prefers-reduced-motion`; or the View Transitions API — consult `modern-web-guidance` (view
+transitions / scroll-driven). Decide the mechanics yourself (directionality, height handling —
+watch the M3e-vs-HTML code-height difference, DOM cost of keeping all panels mounted across ~15
+examples/page). Keep it lightweight; no heavy deps.
 
-**Product intent (from the user's original brief), all in `docs/app/Shared.elm`:**
-1. Emulate **matraic's mobile app-bar pattern** at the top (reference the matraic clone's
-   `../matraic-m3e/docs/` app-bar/drawer CSS + markup for the pattern). `viewAppBar` ~line 395.
-2. Emulate **matraic's settings-drawer pattern** for our settings drawer. `settingsPanel` ~line
-   508.
-3. Use the **GitHub logo** instead of the generic code glyph for the GitHub link. `githubLink`
-   (line ~442) currently uses `Icon.name "code"` — swap for a real GitHub mark (inline SVG via a
-   Native/raw node, since Material Symbols has no brand logo).
-4. **Remove the light/dark quick-toggle from the app bar** — `schemeQuickToggle` (line ~458, wired
-   at ~407) — because that control already lives inside the settings drawer.
+### D — Docs app shell (design the implementation; product calls DECIDED)
 
-**Run a design cycle.** Reference memory `docs-mobile-polish-and-surfaces` (KEY LESSON: Elm can't
-set CSS vars → use Tailwind `[--var:val]` classes).
+**Product intent (from the user's brief), all in `docs/app/Shared.elm`.** The user chose to
+**clone matraic's shell closely** (not just adopt the mechanics) — so read matraic's actual shell
+and reproduce its layout/structure/styling faithfully, in our stack.
+
+**Matraic's shell (ground truth — read it): `../matraic-m3e/docs/index.html` (lines ~25-62) + its
+CSS (`docs/main.css`, `docs/components/drawer-container.css`, `nav-menu.css`).** The structure:
+a single `<m3e-drawer-container start-mode="auto" end-mode="auto">` holding the nav in
+`slot="start"` (`<m3e-nav-menu>`) and settings in `slot="end"`; the `<m3e-app-bar>` (class
+`docs-header-bar`) hosts a `<m3e-drawer-toggle for="nav-drawer">` hamburger (left) and a settings
+`<m3e-icon-button>` whose `<m3e-drawer-toggle for="settings-drawer">` opens the end drawer.
+`auto` mode = persistent sidebar on desktop, modal overlay on mobile.
+
+**DECIDED (2026-07-07, do NOT re-ask):**
+1. **Fidelity: clone matraic closely.** Match its shell layout/structure/styling faithfully.
+2. **Settings → convert to a right-side (`end`) drawer** in the same drawer-container as the nav
+   (replacing our current Card popover). Today: `settingsPanel`/`settingsTriggerElement`/scrim
+   (~line 508+). Rebuild as a `slot="end"` drawer toggled from the app bar.
+3. **Nav drawer → adopt matraic's `start-mode="auto"` behavior** (persistent desktop / hamburger
+   overlay on mobile), replacing our current always-persistent left sidebar (`drawerShell`).
+4. **GitHub link → real GitHub logo.** `githubLink` (~line 442) uses `Icon.name "code"` — swap for
+   an inline GitHub mark SVG (Material Symbols has no brand logo; use a Native/raw node, and make
+   it adapt to light/dark).
+5. **Remove the app-bar theme quick-toggle** — `schemeQuickToggle` (~line 458, wired ~407) — the
+   theme control lives in the settings drawer.
+
+**Design the implementation** (spec → plan; product decisions above are settled — don't relitigate
+them). **Constraint (memory `docs-mobile-polish-and-surfaces`): Elm can't set CSS variables → use
+Tailwind `[--var:val]` classes** for any CSS-var-driven matraic styling. This stream touches
+`Shared.elm`, which wraps every page — review with extra care and playwright at both mobile and
+desktop viewports.
 
 ---
 
