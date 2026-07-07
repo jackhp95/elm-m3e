@@ -4,7 +4,12 @@
 # it ignores the elm-pages `functions/` output and skips the (heavy, failing) bundle.
 [build]
   publish = "dist/"
-  command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && corepack enable && pnpm install --frozen-lockfile && pnpm run build"
+  # build:ci regenerates only the gitignored reference.json (elm make --docs, no rules)
+  # and runs elm-pages against the COMMITTED examples data. It skips build:assets'
+  # rule-driven harness (gen-record-build/gen-barrel), whose rules live in the
+  # sibling jackhp95/elm-review-cem package that isn't present on CI (or published yet).
+  # Regenerate examples locally with `pnpm run build:assets` and commit before deploying.
+  command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && corepack enable && pnpm install --frozen-lockfile && pnpm run build:ci"
 
 [build.environment]
   NODE_VERSION = "22"
