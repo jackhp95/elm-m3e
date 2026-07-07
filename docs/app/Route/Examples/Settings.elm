@@ -226,7 +226,7 @@ sections =
 desktopRail : String -> Element { s | navRail : Supported } (PagesMsg Msg)
 desktopRail current =
     NavRail.view [ Layout.class "hidden md:flex shrink-0" ]
-        (NavRail.children (List.map (navItem current) sections))
+        (List.map (navItem current) sections)
 
 
 {-| Mobile bottom navigation bar — hidden at `md` and up, pinned to the viewport
@@ -235,7 +235,7 @@ bottom so it stays put while the content scrolls.
 mobileBar : String -> Element { s | navBar : Supported } (PagesMsg Msg)
 mobileBar current =
     NavBar.view [ Layout.class "md:hidden fixed inset-x-0 bottom-0" ]
-        (NavBar.children (List.map (navItem current) sections))
+        (List.map (navItem current) sections)
 
 
 navItem : String -> ( String, String, String ) -> Element { s | navItem : Supported } (PagesMsg Msg)
@@ -245,7 +245,7 @@ navItem current ( section, name, iconName ) =
         , NavItem.onClick (PagesMsg.fromMsg (SelectSection section))
         ]
         [ NavItem.icon (Icon.view [ Icon.name iconName ] [])
-        , NavItem.child (Kit.text name)
+        , Kit.text name
         ]
 
 
@@ -322,7 +322,7 @@ accountCard =
             (dividize
                 [ ListItem.view []
                     [ ListItem.leading (Avatar.initials "JD")
-                    , ListItem.child (Kit.text "Jane Doe")
+                    , Kit.text "Jane Doe"
                     , ListItem.supportingText (Kit.text "jane@example.com")
                     , ListItem.trailing (Icon.view [ Icon.name "chevron_right" ] [])
                     ]
@@ -339,7 +339,7 @@ switchRow : String -> String -> String -> Bool -> Msg -> Row (PagesMsg Msg)
 switchRow iconName label supporting on toggle =
     ListItem.view []
         [ ListItem.leading (Icon.view [ Icon.name iconName ] [])
-        , ListItem.child (Kit.text label)
+        , Kit.text label
         , ListItem.supportingText (Kit.text supporting)
         , ListItem.trailing
             (Switch.view
@@ -358,7 +358,7 @@ themeRow : String -> String -> String -> String -> Row (PagesMsg Msg)
 themeRow theme label iconName current =
     ListItem.view []
         [ ListItem.leading (Icon.view [ Icon.name iconName ] [])
-        , ListItem.child (Kit.text label)
+        , Kit.text label
         , ListItem.trailing
             (Radio.view
                 [ Aria.label label
@@ -392,7 +392,7 @@ densityRow =
             , Aria.label "Display density"
             , Layout.class "w-full"
             ]
-            [ Slider.child (SliderThumb.view [ SliderThumb.value 2 ] []) ]
+            [ SliderThumb.view [ SliderThumb.value 2 ] [] ]
         ]
 
 
@@ -402,7 +402,7 @@ linkRow : String -> String -> String -> Row msg
 linkRow iconName label supporting =
     ListItem.view []
         [ ListItem.leading (Icon.view [ Icon.name iconName ] [])
-        , ListItem.child (Kit.text label)
+        , Kit.text label
         , ListItem.supportingText (Kit.text supporting)
         , ListItem.trailing (Icon.view [ Icon.name "chevron_right" ] [])
         ]
@@ -414,7 +414,7 @@ infoRow : String -> String -> String -> Row msg
 infoRow iconName label value =
     ListItem.view []
         [ ListItem.leading (Icon.view [ Icon.name iconName ] [])
-        , ListItem.child (Kit.text label)
+        , Kit.text label
         , ListItem.trailing
             (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text value ])
         ]

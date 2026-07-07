@@ -74,7 +74,7 @@ head _ =
 
 {-| A plain text field: an **outlined `M3e.FormField`** wrapping a seam-`text`
 label (`Kit.text`) and a typed native `<input>` (`M3e.Native.input`).
-`FormField.label id` stamps `for=id`; `FormField.child id` stamps `id=id` on the
+`FormField.label id` stamps `for=id`; `FormField.control id` stamps `id=id` on the
 control — so the two share one id and the field renders a real
 `<label for=…>` ↔ `<input id=…>` association, no raw HTML through the seam.
 -}
@@ -85,7 +85,7 @@ emailField =
         [ FormField.label "email-field"
             (M3e.Native.label [] [ Kit.text "Email address" ])
         , FormField.hint (Kit.text "We'll never share it.")
-        , FormField.child "email-field"
+        , FormField.control "email-field"
             (M3e.Native.input
                 [ M3e.Native.type_ "email"
                 , M3e.Native.placeholder "you@example.com"
@@ -105,7 +105,7 @@ searchField =
         [ FormField.label "search-field"
             (M3e.Native.label [] [ Kit.text "Search docs" ])
         , FormField.prefix (Icon.view [ Icon.name "search" ] [])
-        , FormField.child "search-field"
+        , FormField.control "search-field"
             (M3e.Native.input
                 [ M3e.Native.type_ "search"
                 , M3e.Native.placeholder "Search…"
@@ -121,7 +121,7 @@ searchField =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 type alias Block msg =
@@ -196,7 +196,7 @@ Put together, a text field is composable and typed end-to-end, with a real acces
 
 textBody : String
 textBody =
-    """The field below is built through that composition — an outlined `FormField` holds a seam-`text` label, a `hint`, and a typed native `<input type="email">`. `FormField.label "email-field"` and `FormField.child "email-field"` share one id, so the rendered DOM carries a genuine `<label for="email-field">` bound to `<input id="email-field">`:"""
+    """The field below is built through that composition — an outlined `FormField` holds a seam-`text` label, a `hint`, and a typed native `<input type="email">`. `FormField.label "email-field"` and `FormField.control "email-field"` share one id, so the rendered DOM carries a genuine `<label for="email-field">` bound to `<input id="email-field">`:"""
 
 
 emailSource : String
@@ -214,7 +214,7 @@ emailField =
         [ FormField.label "email-field"
             (M3e.Native.label [] [ Kit.text "Email address" ])
         , FormField.hint (Kit.text "We'll never share it.")
-        , FormField.child "email-field"
+        , FormField.control "email-field"
             (M3e.Native.input
                 [ M3e.Native.type_ "email"
                 , M3e.Native.placeholder "you@example.com"
@@ -238,7 +238,7 @@ searchField =
         [ FormField.label "search-field"
             (M3e.Native.label [] [ Kit.text "Search docs" ])
         , FormField.prefix (Icon.view [ Icon.name "search" ] [])
-        , FormField.child "search-field"
+        , FormField.control "search-field"
             (M3e.Native.input
                 [ M3e.Native.type_ "search"
                 , M3e.Native.placeholder "Search…"
@@ -253,7 +253,7 @@ wiringBody =
     """The label↔control association is not hand-rolled markup — it is stamped by the two `FormField` couplers, which take the id as their first argument (ADR 0010 R6):
 
 - **`FormField.label id el`** places `el` in the `label` slot and stamps `for=id` onto it.
-- **`FormField.child id el`** places `el` in the default (control) slot and stamps `id=id` onto it.
+- **`FormField.control id el`** places `el` in the default (control) slot and stamps `id=id` onto it.
 
 Pass the *same* id to both and the field is accessible by construction — the compiler tracks the kinds, `FormField` tracks the association. The `<input>` never needs its own `for`/`id` attributes in your source; the couplers wire them."""
 
@@ -261,9 +261,9 @@ Pass the *same* id to both and the field is accessible by construction — the c
 wiringSource : String
 wiringSource =
     """-- the couplers stamp the association from a shared id:
-FormField.label : String -> Element any msg -> Content { r | label : Supported } msg
-FormField.child : String -> Element any msg -> Content { r | default : Supported } msg
+FormField.label : String -> Element any msg -> Element k msg
+FormField.control : String -> Element k msg -> Element k msg
 
 -- for=id  ← FormField.label "email-field" …
--- id=id   ← FormField.child "email-field" …
+-- id=id   ← FormField.control "email-field" …
 -- one id, one accessible <label for> ↔ <input id> pair, zero raw HTML."""

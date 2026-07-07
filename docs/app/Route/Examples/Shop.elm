@@ -31,7 +31,6 @@ import M3e.Aria as Aria
 import M3e.Badge as Badge
 import M3e.Card as Card
 import M3e.Cem.Attr exposing (Attr)
-import M3e.Content exposing (Content)
 import M3e.Element as Element exposing (Element)
 import M3e.FilterChipSet as FilterChipSet
 import M3e.Icon as Icon
@@ -219,7 +218,7 @@ cartAction count =
                 [ IconButton.variant Value.standard, Aria.label "Cart" ]
                 []
         , badge =
-            Badge.view [] [ Badge.child (Kit.text (String.fromInt count)) ]
+            Badge.view [] [ Kit.text (String.fromInt count) ]
         }
 
 
@@ -229,7 +228,7 @@ navRail : Model -> Element { s | navRail : Supported } (PagesMsg Msg)
 navRail model =
     NavRail.view
         [ Layout.class "hidden shrink-0 md:flex" ]
-        (NavRail.children (List.map (railItem model.category) destinations))
+        (List.map (railItem model.category) destinations)
 
 
 {-| Bottom navigation bar — mobile only.
@@ -238,7 +237,7 @@ navBar : Model -> Element { s | navBar : Supported } (PagesMsg Msg)
 navBar model =
     NavBar.view
         [ Layout.class "fixed inset-x-0 bottom-0 z-30 md:hidden" ]
-        (NavBar.children (List.map (barItem model.category) destinations))
+        (List.map (barItem model.category) destinations)
 
 
 type alias Destination =
@@ -280,7 +279,7 @@ navDestination current dest =
     in
     NavItem.view attrs
         [ NavItem.icon (Icon.view [ Icon.name dest.icon ] [])
-        , NavItem.child (Kit.text dest.label)
+        , Kit.text dest.label
         ]
 
 
@@ -314,16 +313,14 @@ filterBar current =
         ]
 
 
-categoryChip : String -> String -> Content { r | default : Supported } (PagesMsg Msg)
+categoryChip : String -> String -> Element { s | filterChip : Supported } (PagesMsg Msg)
 categoryChip current cat =
-    FilterChipSet.child
-        (FilterChip.view
-            { content = Kit.text cat }
-            [ FilterChip.selected (cat == current)
-            , FilterChip.onClick (PagesMsg.fromMsg (SetCategory cat))
-            ]
-            []
-        )
+    FilterChip.view
+        { content = Kit.text cat }
+        [ FilterChip.selected (cat == current)
+        , FilterChip.onClick (PagesMsg.fromMsg (SetCategory cat))
+        ]
+        []
 
 
 {-| Responsive product grid: 1 col on mobile, 2 on small, 3/4 on larger screens.
