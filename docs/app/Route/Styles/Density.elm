@@ -84,7 +84,7 @@ densityScaleClass n =
 demoBar : Int -> Element { s | html : Supported } msg
 demoBar scaleValue =
     Layout.div "space-y-2"
-        [ Kit.label Value.large
+        [ Kit.labelText Value.large
             [ Kit.onSurfaceVariant ]
             [ Kit.text ("density scale " ++ String.fromInt scaleValue) ]
         , Native.node (Html.node "div")

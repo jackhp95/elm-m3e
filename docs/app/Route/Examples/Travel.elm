@@ -375,7 +375,7 @@ placeCard place =
                     , Kit.body Value.small [ Kit.onSurfaceVariant ] [ Kit.text place.region ]
                     , Layout.div "flex items-center justify-between"
                         [ ratingChip place.rating
-                        , Kit.label Value.large [ Kit.primary ] [ Kit.text place.price ]
+                        , Kit.labelText Value.large [ Kit.primary ] [ Kit.text place.price ]
                         ]
                     ]
                 )

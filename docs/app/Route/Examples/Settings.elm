@@ -416,5 +416,5 @@ infoRow iconName label value =
         [ ListItem.leading (Icon.view [ Icon.name iconName ] [])
         , ListItem.child (Kit.text label)
         , ListItem.trailing
-            (Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text value ])
+            (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text value ])
         ]

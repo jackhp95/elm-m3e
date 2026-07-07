@@ -17,9 +17,11 @@ modules are collapsed into this one boundary. The crossings split by what they d
 
   - `fromHtml` / `asElement` / `asAttribute` — lift raw `Html` (or a bare `Node`)
     into the typed IR, stamping any phantom row the call site needs.
-  - `stripPhantom` / `forget` — coerce an already-typed value from one phantom
+  - `stripPhantom` / `forget` — re-type an already-typed value from one phantom
     row to another (the loud, greppable "the design system is wrong here"
-    break-glass — a row assertion, not a data transformation).
+    break-glass). Both are behavior-preserving: `forget` is a pure row cast on the
+    `Attr`, while `stripPhantom` rebuilds the `Element` wrapper (`toNode >> fromNode`)
+    to re-open its row — no change to the rendered output either way.
 
 The **semantic seams** (`text`/`link`/`label`, ADR 0014 §1) are also crafted here:
 the generator emits the typed hole (contract types in `M3e.Seam`, stampers in

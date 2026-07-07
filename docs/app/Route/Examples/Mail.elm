@@ -366,7 +366,7 @@ messageRow selected index message =
                 ]
             )
         , ListItem.trailing
-            (Kit.label Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.time ])
+            (Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text message.time ])
         ]
 
 
@@ -385,7 +385,7 @@ readingPane message =
             [ Avatar.initials message.initials
             , Layout.colWith "flex flex-col"
                 [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text message.sender ]
-                , Kit.label Value.small [ Kit.onSurfaceVariant ] [ Kit.text ("to me · " ++ message.time) ]
+                , Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text ("to me · " ++ message.time) ]
                 ]
             ]
         , Layout.rowWith "flex flex-wrap gap-2"

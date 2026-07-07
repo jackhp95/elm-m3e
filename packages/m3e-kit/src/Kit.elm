@@ -1,6 +1,6 @@
 module Kit exposing
     ( text, link, textLink
-    , Size, display, headline, title, body, label, code, paragraph
+    , Size, display, headline, title, body, labelText, code, paragraph
     , colored, overline, tint
     , TextColor, onSurface, onSurfaceVariant, primary, secondary, tertiary, error
     )
@@ -31,7 +31,7 @@ stays fenced in `Seam`. `textLink` is a _styled_ inline link — a visual-kit co
 Each renders an inline `<span>` (or `<code>`) carrying exactly one M3 type-scale
 class plus any color roles, so route code never writes `text-body-lg` by hand.
 
-@docs Size, display, headline, title, body, label, code, paragraph
+@docs Size, display, headline, title, body, labelText, code, paragraph
 
 
 ## Color
@@ -82,7 +82,7 @@ textLink href colors kids =
             (\a c ->
                 Html.a
                     (Html.Attributes.href href
-                        :: Html.Attributes.class (String.join " " ("hover:underline" :: List.map textColorClass colors))
+                        :: Attr.toAttribute (classAttr [ "hover:underline" ] colors)
                         :: List.map Attr.toAttribute a
                     )
                     c
@@ -125,13 +125,7 @@ color roles. Rendered as `tag`.
 typescale : (List (Attribute msg) -> List (Html msg) -> Html msg) -> String -> Size -> List TextColor -> List (Element s msg) -> Element { k | html : Supported } msg
 typescale tag role size colors kids =
     Native.node tag
-        [ Seam.asAttribute
-            (Html.Attributes.class
-                (String.join " "
-                    (("text-" ++ role ++ "-" ++ sizeSuffix size) :: List.map textColorClass colors)
-                )
-            )
-        ]
+        [ classAttr [ "text-" ++ role ++ "-" ++ sizeSuffix size ] colors ]
         kids
 
 
@@ -163,10 +157,12 @@ body =
     typescale Html.span "body"
 
 
-{-| Label type scale (`text-label-{lg|md|sm}`), rendered `<span>`.
+{-| Label type scale (`text-label-{lg|md|sm}`), rendered `<span>`. Named
+`labelText` (not `label`) so it doesn't collide with the `<label>`-element
+producers `Native.label` / `Seam.label`, which feature code commonly imports.
 -}
-label : Size -> List TextColor -> List (Element s msg) -> Element { k | html : Supported } msg
-label =
+labelText : Size -> List TextColor -> List (Element s msg) -> Element { k | html : Supported } msg
+labelText =
     typescale Html.span "label"
 
 
@@ -192,13 +188,7 @@ block `<p>` so it sits on its own line above a heading.
 overline : List TextColor -> List (Element s msg) -> Element { k | html : Supported } msg
 overline colors kids =
     Native.node (Html.node "p")
-        [ Seam.asAttribute
-            (Html.Attributes.class
-                (String.join " "
-                    ("text-label-lg uppercase tracking-wide" :: List.map textColorClass colors)
-                )
-            )
-        ]
+        [ classAttr [ "text-label-lg uppercase tracking-wide" ] colors ]
         kids
 
 
@@ -218,13 +208,26 @@ textColorClass (TextColor cls) =
     cls
 
 
+{-| The one place the `class="<leading tokens> <color roles>"` idiom lives: compose
+a class `Attr` from leading literal class tokens plus a list of color roles. Every
+typography/color producer (`textLink`/`typescale`/`overline`/`colored`/`tint`)
+builds its class list through here so the join/order is identical.
+-}
+classAttr : List String -> List TextColor -> Attr c msg
+classAttr extras colors =
+    Seam.asAttribute
+        (Html.Attributes.class
+            (String.join " " (extras ++ List.map textColorClass colors))
+        )
+
+
 {-| Tint arbitrary content (e.g. an icon) with the given color roles, without
 imposing a type scale. Rendered `<span>`.
 -}
 colored : List TextColor -> List (Element s msg) -> Element { k | html : Supported } msg
 colored colors kids =
     Native.span
-        [ Seam.asAttribute (Html.Attributes.class (String.join " " (List.map textColorClass colors))) ]
+        [ classAttr [] colors ]
         kids
 
 
@@ -234,7 +237,7 @@ it in a `<span>` or overriding its type scale. The attribute form of `colored`.
 -}
 tint : List TextColor -> Attr c msg
 tint colors =
-    Seam.asAttribute (Html.Attributes.class (String.join " " (List.map textColorClass colors)))
+    classAttr [] colors
 
 
 {-| `text-on-surface`.

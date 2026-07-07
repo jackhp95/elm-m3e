@@ -343,7 +343,7 @@ productCard product =
         , Card.content
             (Layout.div "flex flex-col gap-0.5 px-1"
                 [ Kit.title Value.medium [ Kit.onSurface ] [ Kit.text product.name ]
-                , Kit.label Value.large [ Kit.onSurfaceVariant ] [ Kit.text product.category ]
+                , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text product.category ]
                 ]
             )
         , Card.actions

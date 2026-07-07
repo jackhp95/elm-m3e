@@ -89,7 +89,7 @@ swatch ( label, bg, role ) =
         , Shape.corner Shape.medium
         , Surface.outlined
         ]
-        [ Kit.label Value.large [] [ Kit.text label ]
+        [ Kit.labelText Value.large [] [ Kit.text label ]
         , Kit.code Value.small [] [ Kit.text bg ]
         ]
 
