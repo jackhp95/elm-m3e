@@ -124,6 +124,8 @@ view _ _ =
                         [ Doc.markdown topShapes
                         , Doc.code_ Doc.Elm topShapesCode
                         ]
+                    , section "Which layer guarantees what"
+                        [ Doc.markdown guaranteeSplit ]
                     , section "Descending for control"
                         [ Doc.markdown descending
                         , Doc.code_ Doc.Elm descendingCode
@@ -196,6 +198,22 @@ M3e.Record.Button.view
 M3e.Build.Button.button { content = Kit.text "Save", action = Action.link "#" }
     |> Button.variant Value.filled
     |> Button.build"""
+
+
+guaranteeSplit : String
+guaranteeSplit =
+    """The three shapes aren't just ergonomics — they're where the *strictness* lives, and each layer promises a different amount on purpose:
+
+| Layer / shape | Promises | Enforced by |
+|---|---|---|
+| `M3e.<Comp>.view` | Ergonomics + **guidance**: which setter to call, roughly what a slot wants. Not a soundness boundary. | Phantom rows (advisory) + elm-review |
+| `M3e.Record.<Comp>` | The collaborators a component **can't render without** are present at the call site. | Required record (compile-time) |
+| `M3e.Build.<Comp>` | Each capability applied **at most once**, order-free; nothing forgotten. | Capability rows `Available → Used` (compile-time) |
+| *(every layer)* | Known slot names, required slots present, sensible child kinds. | Codegen-aware [elm-review](/concepts/phantom-rows) |
+
+So the top layer is the **nicest** surface, not the strictest — reach for `Record` or `Build` when you want the compiler to hold a guarantee, and let elm-review catch composition mistakes across all of them. The [phantom rows](/concepts/phantom-rows) guide you on the top layer; they are not relied on there as absolute truth.
+
+This is why the top layer's default slot takes plain children — `M3e.Toolbar.view [] [ buttonA, buttonB ]`, no `child`/`children` wrapper (see ADR 15, `docs/adr/`). The wrapper bought a slot-*name* check that's only partial on the many `any` slots anyway, so that check moves to elm-review and the surface stays light."""
 
 
 descending : String

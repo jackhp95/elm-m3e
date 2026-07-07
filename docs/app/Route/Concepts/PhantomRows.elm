@@ -128,6 +128,8 @@ view _ _ =
                         [ Doc.markdown neverConvert
                         , Doc.code_ Doc.Elm neverConvertCode
                         ]
+                    , section "Guidance, not a guarantee"
+                        [ Doc.markdown guidanceNotGuarantee ]
                     ]
                 ]
             )
@@ -218,3 +220,12 @@ withSlot : String -> Element supported msg -> Element supported msg
 
 -- the only escape is loud, greppable, and audited (see Userland):
 Seam.stripPhantom : Element a msg -> Element b msg"""
+
+
+guidanceNotGuarantee : String
+guidanceNotGuarantee =
+    """Read the kind row on the **M3e top layer** as a *guide*, not a court of final truth. Most container slots are unrestricted — a card's body, header, and footer, a dialog's content, a toolbar all take `Element any` — so for them the row checks only that you named a **slot the container actually has**, not that the child belongs there. Nothing stops `M3e.Card` from accepting a fab-menu-item, a nav rail, or another whole card; `any` means any. The worst a genuinely wrong slot does at runtime is *not render* — an unmatched `slot=` is dropped from the shadow tree.
+
+That is deliberate. The hard composition guarantees live where they're worth their cost: `M3e.Record.*` pins the collaborators a component can't render without, `M3e.Build.*` types capabilities through a pipeline, and codegen-aware elm-review is the composition safety net that flags unknown slot names, missing required slots, and disallowed child kinds. See [The layers](/concepts/layers) for which layer promises what. The top layer trades that strictness for ergonomics on purpose.
+
+**Direction ([ADR 15]).** Because the row is guidance on this layer, the default slot is being *unwrapped*: `M3e.<Comp>.view` will take default children as **raw `Element`s** — `M3e.Toolbar.view [] [ saveButton, cancelButton ]`, no `child`/`children` — while named slots stay setters that stamp their own `slot=` and drop into the same list. The `Content` wrapper retires here, and the slot-name, required-slot, and allowed-kind checks move to elm-review. Same components, a surface that reads like `elm/html`, and the guarantees kept where they hold. (`[ADR 15]` = `docs/adr/0015-unwrap-default-slot-phantoms-as-guidance.md`.)"""
