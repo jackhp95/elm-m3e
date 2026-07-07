@@ -1,5 +1,18 @@
 # Docs Overhaul — Handoff (2026-07-07)
 
+> **✅ COMPLETE (2026-07-07).** The entire remaining queue ran to completion and is merged to
+> `origin/main`: **B1.5b** (regen `packages/m3e` from 2.5.13 — added `M3e.StepperNext`/`FabMenuItem`
+> via an elm-cem tagName-reconcile fix, `104a2ff`), **B1.5c** (converter child-routing — composites
+> regain the strict `M3e` API tab, `279a3e1`), **B2** (native-`<details>` auto-derived code folding,
+> `7e75e0f`), **C** (sliding tab panels, `fe6b723`), **D** (matraic-faithful app shell — settings
+> end-drawer, GitHub mark, no quick-toggle, `d4542f1`). Each shipped through spec → plan → implementer
+> → spec-compliance + code-quality review → full verification bar (build:ci exit 0, elm-format clean,
+> check-nav OK, playwright at mobile + desktop) → `--no-ff` merge. Specs/plans in
+> `docs/superpowers/specs|plans/`. The elm-cem CLI fix lives on its own repo (jackhp95/elm-cem `main`
+> `43100d4`). Nothing in the queue remains. The sections below are the historical brief.
+
+
+
 You are picking up a multi-stream overhaul of the elm-m3e documentation site
 (`docs/`, an elm-pages v3 app deployed to Netlify at elm-m3e.netlify.app). Three streams
 are **shipped**; five remain. This doc tells you exactly what's done, what's next, where the
