@@ -272,6 +272,9 @@ function main() {
   const items = [];
   for (const module of Object.keys(rich)) {
     rich[module].forEach((ex, idx) => {
+      // A degraded example may have a null top (no strict M3e surface): there is
+      // no source to translate to Record/Build, so its entry stays {} (default).
+      if (ex.top == null) return;
       items.push({ module, idx, name: bindingName(module, idx), code: ex.top });
     });
   }
