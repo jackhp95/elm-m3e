@@ -14,6 +14,7 @@ See `review/README.md` for the rationale behind each rule and every relaxation.
 
 -}
 
+import Cem
 import CodegenReviewConfig
 import CognitiveComplexity
 import Docs.ReviewAtDocs
@@ -42,11 +43,8 @@ import NoUnused.Modules
 import NoUnused.Parameters
 import NoUnused.Patterns
 import NoUnused.Variables
-import RequireSlot
 import Review.Rule as Rule exposing (Rule)
 import Simplify
-import SingularSlot
-import ValidEnumValue
 
 
 config : List Rule
@@ -286,24 +284,31 @@ materialDiscipline =
     ]
 
 
-{-| The facts-driven Vocab-API rules (ADR 0012), enabled here after an `elm-review` run
-confirmed the docs pass clean. They read the generated `M3e.Review.Facts`, so a
-`@m3e/web` bump only regenerates the facts — the rule logic is unchanged.
+{-| The facts-driven, namespace-agnostic Vocab-API rules (ADR 0012), now sourced
+from the published `jackhp95/elm-review-cem` package via `Cem.all`. They read the
+generated `M3e.Review.Facts.facts`, so a `@m3e/web` bump only regenerates the
+facts — the rule logic (which lives in the package) is unchanged.
 
-The seam gate (`NoSeamOutsideAllowedModules`) and the opaque-IR backstop
-(`NoInternalImportOutsideAllowed`) are also enforced on this repo — they arrive via
-`CodegenReviewConfig.config`, which is concatenated into `config` below. The docs
-app's Tailwind/raw-HTML crossings are centralised in its designated adapters
-(`Layout`, `Kit`, `Native`, `Doc`, `Shared`), which are on that rule's allow-list,
-so feature routes stay seam-free (ADR 0014 §2, #81).
+`Cem.all` bundles every non-opt-in facts rule (ValidEnumValue, RequireSlot,
+SingularSlot, SingularAttribute, MissingRequiredAttribute,
+MissingRequiredSingularSlot, PreferSpecificSlot). The opt-in `Cem.preferBarrel`
+and the five `Cem.translateTo*` surface translators are enabled ad hoc by the
+`docs/scripts/examples-gen` harness, not here.
+
+The seam gate (`NoSeamOutsideAllowedModules`), the opaque-IR backstop
+(`NoInternalImportOutsideAllowed`), and `NoActionlessButton` are the M3e-specific
+rules; they arrive via `CodegenReviewConfig.config`, which is concatenated into
+`config` below. The docs app's Tailwind/raw-HTML crossings are centralised in its
+designated adapters (`Layout`, `Kit`, `Native`, `Doc`, `Shared`), which are on
+that rule's allow-list, so feature routes stay seam-free (ADR 0014 §2, #81).
+
+TODO: swap the `../../elm-review-cem/src` source-directory in `review/elm.json`
+for a published `jackhp95/elm-review-cem` dependency once it is on the registry.
 
 -}
 codegenAware : List Rule
 codegenAware =
-    [ ValidEnumValue.rule M3e.Review.Facts.facts
-    , SingularSlot.rule M3e.Review.Facts.facts
-    , RequireSlot.rule M3e.Review.Facts.facts
-    ]
+    Cem.all M3e.Review.Facts.facts
 
 
 

@@ -1,43 +1,18 @@
-module M3e.Review.Facts exposing (Fact, Surface(..), facts, reExposedValueTokens)
+module M3e.Review.Facts exposing (facts, reExposedValueTokens)
 
 {-| GENERATED — per-component facts for the codegen-aware elm-review rules
 (ADR 0012). Do not edit by hand; regenerate via `bin/elm-cem.js`.
 
-@docs Fact, Surface, facts, reExposedValueTokens
+The `Fact` and `Surface` types come from the published
+`jackhp95/elm-review-cem` package (module `Cem.Facts`); this generated
+module only supplies the data. The library never imports this module, so
+`elm make --docs` never compiles it and the `Cem.Facts` import never
+enters the library's own dependency surface.
+
+@docs facts, reExposedValueTokens
 -}
 
-
-{-| The five addressable API surfaces (ADR 0013 / D6 translator spec).
-`Html` = `M3e.Cem.Html.<Comp>`; `Cem` = `M3e.Cem.<Comp>`; `Standard` =
-`M3e.<Comp>` (double-list top); `Record` = `M3e.Record.<Comp>` (record +
-double-list); `Build` = `M3e.Build.<Comp>` (phantom-typed pipeline).
--}
-type Surface
-    = Html
-    | Cem
-    | Standard
-    | Record
-    | Build
-
-
-{-| Per-component facts: valid enum token names per attribute, the
-required/multi slot names, which surfaces the component emits at, which
-HTML attributes are required (for D1 missing-required-attribute rule).
--}
-type alias Fact =
-    { component : String
-    , module_ : String
-    , enums : List ( String, List String )
-    , requiredSlots : List String
-    , multiSlots : List String
-    , attrRewrites : List ( String, String )
-    , slotRewrites : List ( String, String )
-    , slotUpgrades : List ( String, String )
-    , surfaces : List Surface
-    , requiredAttrs : List String
-    , actionMap : List ( String, String )
-    , usesAction : Bool
-    }
+import Cem.Facts exposing (Fact, Surface(..))
 
 
 {-| Every top-layer component's facts. -}

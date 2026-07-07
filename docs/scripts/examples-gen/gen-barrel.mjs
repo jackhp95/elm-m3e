@@ -104,7 +104,9 @@ function writeConfig() {
   execFileSync("cp", ["-R", `${REPO}/review/src/.`, resolve(CFG, "src")]);
   writeFileSync(resolve(CFG, "elm.json"), JSON.stringify({
     type: "application",
-    "source-directories": ["src", `${REPO}/packages/m3e/src`],
+    // The codegen-aware rules now live in the jackhp95/elm-review-cem package;
+    // pull them in via source-dir until it is a published dependency.
+    "source-directories": ["src", `${REPO}/packages/m3e/src`, `${REPO}/../elm-review-cem/src`],
     "elm-version": "0.19.1",
     dependencies: reviewElm.dependencies,
     "test-dependencies": reviewElm["test-dependencies"],
@@ -112,15 +114,15 @@ function writeConfig() {
   writeFileSync(resolve(CFG, "src", "ReviewConfig.elm"),
 `module ReviewConfig exposing (config)
 
+import Cem.PreferBarrel
 import M3e.Review.Facts
 import Review.Rule exposing (Rule)
-import PreferBarrel
 import Set
 
 
 config : List Rule
 config =
-    [ PreferBarrel.ruleWith (Set.fromList M3e.Review.Facts.reExposedValueTokens) M3e.Review.Facts.facts ]
+    [ Cem.PreferBarrel.ruleWith (Set.fromList M3e.Review.Facts.reExposedValueTokens) M3e.Review.Facts.facts ]
 `);
 }
 

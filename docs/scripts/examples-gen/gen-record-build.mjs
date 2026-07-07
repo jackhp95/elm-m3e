@@ -74,7 +74,7 @@ const OUT = resolve(REPO, "config/examples.surfaces.json");
 
 const TARGET = "/tmp/d6-target";
 const CFG = { record: "/tmp/d6-cfg-record", build: "/tmp/d6-cfg-build" };
-const RULE = { record: "TranslateToRecord", build: "TranslateToBuild" };
+const RULE = { record: "Cem.TranslateToRecord", build: "Cem.TranslateToBuild" };
 const TOKEN = { record: "M3e.Record.", build: "M3e.Build." };
 
 const reviewElm = JSON.parse(readFileSync(`${REPO}/review/elm.json`, "utf8"));
@@ -135,7 +135,9 @@ function writeConfig(surface) {
   execFileSync("cp", ["-R", `${REPO}/review/src/.`, resolve(dir, "src")]);
   writeFileSync(resolve(dir, "elm.json"), JSON.stringify({
     type: "application",
-    "source-directories": ["src", `${REPO}/packages/m3e/src`],
+    // The codegen-aware translator rules now live in the jackhp95/elm-review-cem
+    // package; pull them in via source-dir until it is a published dependency.
+    "source-directories": ["src", `${REPO}/packages/m3e/src`, `${REPO}/../elm-review-cem/src`],
     "elm-version": "0.19.1",
     dependencies: reviewElm.dependencies,
     "test-dependencies": reviewElm["test-dependencies"],
