@@ -1,6 +1,7 @@
 {
   "name": "m3e-builder-docs",
   "type": "module",
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "build:reference": "node scripts/extract-reference.mjs",
     "build:examples-source": "node scripts/examples-gen/extract-matraic-examples.mjs",
