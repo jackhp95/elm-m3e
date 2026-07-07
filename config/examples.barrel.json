@@ -26,6 +26,16 @@
     "[ M3e.button [ M3e.variantOutlined ] [ M3e.slotDefault (Kit.text \"Button\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAboveAfter ] [ M3e.slotDefault (Kit.text \"AA\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAboveBefore ] [ M3e.slotDefault (Kit.text \"AB\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBelowBefore ] [ M3e.slotDefault (Kit.text \"BB\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBelowAfter ] [ M3e.slotDefault (Kit.text \"BA\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBefore ] [ M3e.slotDefault (Kit.text \"BE\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAfter ] [ M3e.slotDefault (Kit.text \"AF\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAbove ] [ M3e.slotDefault (Kit.text \"A\") ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBelow ] [ M3e.slotDefault (Kit.text \"B\") ]\n    ]"
   ],
   "BottomSheet": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
     "M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True, M3e.attrHideable True ] [ M3e.slotHeader (M3e.heading [ M3e.variantTitle, M3e.sizeLarge ] [ M3e.slotDefault (Kit.text \"Choose a destination\") ]) ]"
   ],
   "Breadcrumb": [
@@ -42,6 +52,7 @@
     "[ M3e.button [ M3e.variantTonal, M3e.sizeExtraSmall ] [ M3e.slotDefault (Kit.text \"Extra Small\") ]\n    , M3e.button [ M3e.variantTonal, M3e.sizeSmall ] [ M3e.slotDefault (Kit.text \"Small\") ]\n    , M3e.button [ M3e.variantTonal, M3e.sizeMedium ] [ M3e.slotDefault (Kit.text \"Medium\") ]\n    , M3e.button [ M3e.variantTonal, M3e.sizeLarge ] [ M3e.slotDefault (Kit.text \"Large\") ]\n    , M3e.button [ M3e.variantTonal, M3e.sizeExtraLarge ] [ M3e.slotDefault (Kit.text \"Extra Large\") ]\n    ]",
     "[ M3e.button [ M3e.variantTonal ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"send\" ] []), M3e.slotDefault (Kit.text \"Send\") ]\n    , M3e.button [ M3e.variantTonal ] [ M3e.slotTrailingIcon (M3e.icon [ M3e.attrName \"open_in_new_window\" ] []), M3e.slotDefault (Kit.text \"Open\") ]\n    ]",
     "[ M3e.button [ M3e.variantElevated, M3e.attrToggle True ] [ M3e.slotDefault (Kit.text \"Elevated Toggle\") ]\n    , M3e.button [ M3e.variantFilled, M3e.attrToggle True ] [ M3e.slotDefault (Kit.text \"Filled Toggle\") ]\n    , M3e.button [ M3e.variantTonal, M3e.attrToggle True ] [ M3e.slotDefault (Kit.text \"Tonal Toggle\") ]\n    , M3e.button [ M3e.variantOutlined, M3e.attrToggle True ] [ M3e.slotDefault (Kit.text \"Outlined Toggle\") ]\n    ]",
+    null,
     "[ M3e.button [ M3e.variantFilled, M3e.attrDisabled True ] [ M3e.slotDefault (Kit.text \"Disabled\") ]\n    , M3e.button [ M3e.variantFilled, M3e.attrDisabledInteractive True ] [ M3e.slotDefault (Kit.text \"Disabled Interactive\") ]\n    ]",
     "M3e.button [ M3e.variantTonal, M3e.attrHref \"https://www.google.com\", M3e.attrTarget \"_blank\" ] [ M3e.slotTrailingIcon (M3e.icon [ M3e.attrName \"open_in_new_window\" ] []), M3e.slotDefault (Kit.text \"Google\") ]",
     "[ M3e.button [ M3e.variantFilled, M3e.sizeExtraSmall ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density -3\") ]\n    , M3e.button [ M3e.variantFilled, M3e.sizeExtraSmall ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density -2\") ]\n    , M3e.button [ M3e.variantFilled, M3e.sizeExtraSmall ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density -1\") ]\n    , M3e.button [ M3e.variantFilled, M3e.sizeExtraSmall ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density 0\") ]\n    ]",
@@ -82,6 +93,7 @@
     "[ M3e.checkbox [] []\n    , M3e.checkbox [ M3e.attrChecked True ] []\n    , M3e.checkbox [ M3e.attrIndeterminate True ] []\n    ]",
     "[ Native.node Html.label [] [ M3e.checkbox [] [], Kit.text \"Checkbox 1\" ]\n    , M3e.checkbox [] []\n    , Native.node Html.label [] [ Kit.text \"Checkbox 2\" ]\n    ]",
     "[ Native.node Html.label [] [ M3e.checkbox [ M3e.attrDisabled True ] [], Kit.text \"Disabled Checkbox 1\" ]\n    , M3e.checkbox [ M3e.attrDisabled True ] []\n    , Native.node Html.label [] [ Kit.text \"Disabled Checkbox 2\" ]\n    ]",
+    null,
     "[ Native.node Html.label [] [ M3e.checkbox [] [], Kit.text \"Density -3\" ]\n    , Native.node Html.label [] [ M3e.checkbox [] [], Kit.text \"Density -2\" ]\n    , Native.node Html.label [] [ M3e.checkbox [] [], Kit.text \"Density -1\" ]\n    , Native.node Html.label [] [ M3e.checkbox [] [], Kit.text \"Density 0\" ]\n    ]"
   ],
   "Chips": [
@@ -109,10 +121,24 @@
     "[ M3e.assistChip [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density -3\") ]\n    , M3e.assistChip [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density -2\") ]\n    , M3e.assistChip [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density -1\") ]\n    , M3e.assistChip [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotDefault (Kit.text \"Density 0\") ]\n    ]"
   ],
   "ContentPane": [
+    null,
     "M3e.contentPane [] (M3e.ContentPane.children [ M3e.heading [ M3e.variantDisplay, M3e.sizeLarge ] [ M3e.slotDefault (Kit.text \"Content header\") ], Native.p [] [] ])"
   ],
   "Datepicker": [
-    "M3e.datepicker [ M3e.variantAuto ] []"
+    null,
+    "M3e.datepicker [ M3e.variantAuto ] []",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "Dialog": [
+    null,
+    null,
+    null
   ],
   "Divider": [
     "M3e.list [] (M3e.List.children [ M3e.listItem [] [ M3e.slotDefault (Kit.text \"Item 1\") ], M3e.divider [] [], M3e.listItem [] [ M3e.slotDefault (Kit.text \"Item 2\") ], M3e.divider [] [], M3e.listItem [] [ M3e.slotDefault (Kit.text \"Item 3\") ] ])",
@@ -125,6 +151,7 @@
     "M3e.drawerContainer [ M3e.attrStart True, M3e.startModePush ] [ M3e.slotStart (Native.div [] [ Kit.text \"Start drawer\" ]), M3e.slotDefault (Native.div [] [ Kit.text \"Main content\" ]) ]",
     "M3e.drawerContainer [ M3e.attrStart True, M3e.startModeOver ] [ M3e.slotStart (Native.div [] [ Kit.text \"Start drawer\" ]), M3e.slotDefault (Native.div [] [ Kit.text \"Main content\" ]) ]",
     "M3e.drawerContainer [ M3e.attrEnd True, M3e.endModeSide, M3e.attrEndDivider True ] [ M3e.slotEnd (Native.div [] [ Kit.text \"End drawer\" ]), M3e.slotDefault (Native.div [] [ Kit.text \"Main content\" ]) ]",
+    null,
     "M3e.drawerContainer [] [ M3e.slotStart (Native.nav [] []), M3e.slotEnd (Native.node Html.aside [] []), M3e.slotDefault (Native.node Html.main_ [] []) ]"
   ],
   "ExpansionPanel": [
@@ -140,8 +167,17 @@
     "[ M3e.fab [ M3e.attrLowered True, M3e.variantPrimary ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrLowered True, M3e.variantPrimaryContainer ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrLowered True, M3e.variantSecondary ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrLowered True, M3e.variantSecondaryContainer ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrLowered True, M3e.variantTertiary ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrLowered True, M3e.variantTertiaryContainer ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrLowered True, M3e.variantSurface ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    ]",
     "[ M3e.fab [ M3e.sizeSmall ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeMedium ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeLarge ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    ]",
     "[ M3e.fab [ M3e.attrDisabled True ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.attrDisabledInteractive True ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    ]",
+    null,
+    null,
     "[ M3e.fab [ M3e.sizeSmall ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeSmall ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeSmall ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeSmall ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    ]",
     "[ M3e.fab [ M3e.sizeMedium ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeMedium ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeMedium ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    , M3e.fab [ M3e.sizeMedium ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ]\n    ]"
+  ],
+  "FabMenu": [
+    null,
+    null,
+    null,
+    null,
+    null
   ],
   "FormField": [
     null,
@@ -179,6 +215,7 @@
   ],
   "List": [
     "M3e.list [] [ M3e.slotDefault (M3e.listItem [] [ M3e.slotLeading (M3e.icon [ M3e.attrName \"person\" ] []), M3e.slotOverline (Native.span [] [ Kit.text \"Overline\" ]), M3e.slotSupportingText (Native.span [] [ Kit.text \"Supporting text\" ]), M3e.slotTrailing (Native.span [] [ Kit.text \"100+\" ]), M3e.slotDefault (Kit.text \"Headline\") ]) ]",
+    null,
     "M3e.list [ M3e.variantSegmented ] (M3e.List.children [ M3e.listItem [] [ M3e.slotDefault (Kit.text \"Item 1\") ], M3e.listItem [] [ M3e.slotDefault (Kit.text \"Item 2\") ], M3e.listItem [] [ M3e.slotDefault (Kit.text \"Item 3\") ] ])",
     "M3e.list [] (M3e.List.children [ M3e.listItem [] [ M3e.slotDefault (Kit.text \"Label text\") ], M3e.listItem [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Supporting text\" ]), M3e.slotDefault (Kit.text \"Label text\") ], M3e.listItem [] [ M3e.slotOverline (Native.span [] [ Kit.text \"Overline\" ]), M3e.slotSupportingText (Native.span [] [ Kit.text \"Supporting text\" ]), M3e.slotDefault (Kit.text \"Label text\") ] ])",
     "M3e.list [] (M3e.List.children [ M3e.listItem [] [ M3e.slotLeading (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotTrailing (M3e.icon [ M3e.attrName \"arrow_right\" ] []), M3e.slotDefault (Kit.text \"Label text\") ], M3e.listItem [] [ M3e.slotLeading (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotSupportingText (Native.span [] [ Kit.text \"Supporting text\" ]), M3e.slotTrailing (M3e.icon [ M3e.attrName \"arrow_right\" ] []), M3e.slotDefault (Kit.text \"Label text\") ], M3e.listItem [] [ M3e.slotLeading (M3e.icon [ M3e.attrName \"stars\" ] []), M3e.slotOverline (Native.span [] [ Kit.text \"Overline\" ]), M3e.slotSupportingText (Native.span [] [ Kit.text \"Supporting text\" ]), M3e.slotTrailing (M3e.icon [ M3e.attrName \"arrow_right\" ] []), M3e.slotDefault (Kit.text \"Label text\") ], M3e.listItem [] [ M3e.slotDefault (Kit.text \"Label text\") ] ])",
@@ -206,21 +243,44 @@
   "LoadingIndicator": [
     "[ M3e.loadingIndicator [] []\n    , M3e.loadingIndicator [ M3e.variantContained ] []\n    ]"
   ],
+  "Menu": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
   "NavBar": [
+    null,
     "M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"news\" ] []), M3e.slotDefault (Kit.text \"News\") ]",
     "M3e.navBar [] (M3e.NavBar.children [ M3e.navItem [ M3e.attrSelected True ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"news\" ] []), M3e.slotDefault (Kit.text \"News\") ], M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"globe\" ] []), M3e.slotDefault (Kit.text \"Global\") ], M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"star\" ] []), M3e.slotDefault (Kit.text \"For you\") ], M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"newsstand\" ] []), M3e.slotDefault (Kit.text \"Trending\") ] ])",
     "M3e.navBar [] (M3e.NavBar.children [ M3e.navItem [ M3e.attrDisabled True ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"news\" ] []), M3e.slotDefault (Kit.text \"News\") ], M3e.navItem [ M3e.attrDisabledInteractive True ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"globe\" ] []), M3e.slotDefault (Kit.text \"Global\") ], M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"star\" ] []), M3e.slotDefault (Kit.text \"For you\") ], M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"newsstand\" ] []), M3e.slotDefault (Kit.text \"Trending\") ] ])",
     "M3e.navBar [] [ M3e.slotDefault (M3e.navItem [ M3e.attrHref \"https://www.google.com\", M3e.attrTarget \"_blank\" ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"news\" ] []), M3e.slotDefault (Kit.text \"News\") ]) ]"
   ],
+  "NavMenu": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
   "NavRail": [
+    null,
     "M3e.navItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"news\" ] []), M3e.slotDefault (Kit.text \"News\") ]"
   ],
   "Paginator": [
     "M3e.paginator [ M3e.attrLength 100 ] []",
+    null,
     "M3e.paginator [ M3e.attrLength 100, M3e.attrShowFirstLastButtons True ] []",
     "M3e.paginator [ M3e.attrLength 100, M3e.attrShowFirstLastButtons True ] []"
   ],
   "ProgressIndicator": [
+    null,
     null,
     null,
     null,
@@ -253,6 +313,7 @@
     "[ M3e.segmentedButton [] (M3e.SegmentedButton.children [ M3e.buttonSegment [ M3e.attrChecked True ] [ M3e.slotDefault (Kit.text \"8 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"12 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"16 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"20 oz\") ] ])\n    , Native.br\n    , Native.br\n    , M3e.segmentedButton [] (M3e.SegmentedButton.children [ M3e.buttonSegment [ M3e.attrChecked True ] [ M3e.slotDefault (Kit.text \"8 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"12 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"16 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"20 oz\") ] ])\n    , Native.br\n    , Native.br\n    , M3e.segmentedButton [] (M3e.SegmentedButton.children [ M3e.buttonSegment [ M3e.attrChecked True ] [ M3e.slotDefault (Kit.text \"8 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"12 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"16 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"20 oz\") ] ])\n    , Native.br\n    , Native.br\n    , M3e.segmentedButton [] (M3e.SegmentedButton.children [ M3e.buttonSegment [ M3e.attrChecked True ] [ M3e.slotDefault (Kit.text \"8 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"12 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"16 oz\") ], M3e.buttonSegment [] [ M3e.slotDefault (Kit.text \"20 oz\") ] ])\n    ]"
   ],
   "Select": [
+    null,
     null,
     null,
     null,
@@ -293,8 +354,23 @@
     "M3e.button [] [ M3e.slotDefault (Kit.text \"Delete file\") ]",
     "M3e.button [] [ M3e.slotDefault (Kit.text \"Delete file\") ]"
   ],
+  "SplitButton": [
+    null,
+    null,
+    null,
+    null
+  ],
   "SplitPane": [
     null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "Stepper": [
     null,
     null,
     null,
@@ -310,6 +386,11 @@
     "[ M3e.switch [] []\n    , M3e.switch [] []\n    , M3e.switch [] []\n    , M3e.switch [] []\n    ]"
   ],
   "Tabs": [
+    null,
+    null,
+    null,
+    null,
+    null,
     "M3e.tabs [] (M3e.Tabs.children [ M3e.tab [ M3e.attrSelected True ] [ M3e.slotDefault (Kit.text \"Tab 1\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 2\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 3\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 4\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 5\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 6\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 7\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 8\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 9\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 10\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 11\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 12\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 13\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 14\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 15\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 16\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 17\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 18\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 19\") ], M3e.tab [] [ M3e.slotDefault (Kit.text \"Tab 20\") ] ])",
     "M3e.tabs [] (M3e.Tabs.children [ M3e.tab [ M3e.attrSelected True ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"videocam\" ] []), M3e.slotDefault (Kit.text \"Video\") ], M3e.tab [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"photo\" ] []), M3e.slotDefault (Kit.text \"Photos\") ], M3e.tab [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"music_note\" ] []), M3e.slotDefault (Kit.text \"Audio\") ] ])"
   ],
@@ -325,6 +406,9 @@
     "[ M3e.theme [ M3e.attrStrongFocus True, M3e.attrDensity -3 ] [ M3e.slotDefault (M3e.button [ M3e.variantFilled, M3e.sizeMedium ] [ M3e.slotDefault (Kit.text \"-3 density\") ]) ]\n    , M3e.theme [ M3e.attrStrongFocus True, M3e.attrDensity -2 ] [ M3e.slotDefault (M3e.button [ M3e.variantFilled, M3e.sizeMedium ] [ M3e.slotDefault (Kit.text \"-2 density\") ]) ]\n    , M3e.theme [ M3e.attrStrongFocus True, M3e.attrDensity -1 ] [ M3e.slotDefault (M3e.button [ M3e.variantFilled, M3e.sizeMedium ] [ M3e.slotDefault (Kit.text \"-1 density\") ]) ]\n    , M3e.theme [ M3e.attrStrongFocus True, M3e.attrDensity 0 ] [ M3e.slotDefault (M3e.button [ M3e.variantFilled, M3e.sizeMedium ] [ M3e.slotDefault (Kit.text \"0 (default) density\") ]) ]\n    , M3e.theme [ M3e.attrStrongFocus True, M3e.attrDensity 1 ] [ M3e.slotDefault (M3e.button [ M3e.variantFilled, M3e.sizeMedium ] [ M3e.slotDefault (Kit.text \"1 density\") ]) ]\n    ]",
     "[ M3e.theme [ M3e.attrStrongFocus True, M3e.motionStandard ] [ M3e.slotDefault (Native.node Html.label [] [ Kit.text \"Standard\", M3e.switch [] [] ]) ]\n    , M3e.theme [ M3e.attrStrongFocus True, M3e.motionExpressive ] [ M3e.slotDefault (Native.node Html.label [] [ Kit.text \"Expressive\", M3e.switch [] [] ]) ]\n    ]"
   ],
+  "Toc": [
+    null
+  ],
   "Toolbar": [
     "[ M3e.toolbar [ M3e.variantStandard ] (M3e.Toolbar.children [ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_forward\" ] []) ], M3e.iconButton [ M3e.widthWide, M3e.variantFilled ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"picture_in_picture\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"more_vert\" ] []) ] ])\n    , M3e.toolbar [ M3e.variantVibrant ] (M3e.Toolbar.children [ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_forward\" ] []) ], M3e.iconButton [ M3e.widthWide, M3e.variantFilled ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"picture_in_picture\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"more_vert\" ] []) ] ])\n    ]",
     "M3e.toolbar [ M3e.variantVibrant, M3e.shapeRounded ] (M3e.Toolbar.children [ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_forward\" ] []) ], M3e.iconButton [ M3e.widthWide, M3e.variantFilled ] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"add\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"picture_in_picture\" ] []) ], M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"more_vert\" ] []) ] ])",
@@ -335,6 +419,17 @@
   "Tooltip": [
     "[ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ]\n    , M3e.tooltip [ M3e.attrFor \"button\" ] [ M3e.slotDefault (Kit.text \"Go Back\") ]\n    ]",
     "[ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ]\n    , M3e.tooltip [ M3e.attrFor \"button\", M3e.attrShowDelay 0, M3e.attrHideDelay 200 ] [ M3e.slotDefault (Kit.text \"Go Back\") ]\n    ]",
-    "[ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ]\n    , M3e.tooltip [ M3e.attrFor \"button\", M3e.attrDisabled True ] [ M3e.slotDefault (Kit.text \"Go Back\") ]\n    ]"
+    "[ M3e.iconButton [] [ M3e.slotDefault (M3e.icon [ M3e.attrName \"arrow_back\" ] []) ]\n    , M3e.tooltip [ M3e.attrFor \"button\", M3e.attrDisabled True ] [ M3e.slotDefault (Kit.text \"Go Back\") ]\n    ]",
+    null,
+    null
+  ],
+  "Tree": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
   ]
 }
