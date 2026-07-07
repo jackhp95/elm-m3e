@@ -255,7 +255,7 @@ navRail : Dest -> Element { s | html : Supported } (PagesMsg Msg)
 navRail current =
     Layout.div "hidden md:flex"
         [ NavRail.view []
-            (NavRail.children (List.map (railItem current) destinations))
+            (List.map (railItem current) destinations)
         ]
 
 
@@ -266,7 +266,7 @@ railItem current ( dest, iconName, label ) =
         , NavItem.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ NavItem.icon (Icon.view [ Icon.name iconName ] [])
-        , NavItem.child (Kit.text label)
+        , Kit.text label
         ]
 
 
@@ -276,7 +276,7 @@ navBar : Dest -> Element { s | html : Supported } (PagesMsg Msg)
 navBar current =
     Layout.div "md:hidden"
         [ NavBar.view []
-            (NavBar.children (List.map (barItem current) destinations))
+            (List.map (barItem current) destinations)
         ]
 
 
@@ -287,7 +287,7 @@ barItem current ( dest, iconName, label ) =
         , NavItem.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ NavItem.icon (Icon.view [ Icon.name iconName ] [])
-        , NavItem.child (Kit.text label)
+        , Kit.text label
         ]
 
 
@@ -362,7 +362,7 @@ searchBar =
 categoryTabs : Category -> Element { s | tabs : Supported } (PagesMsg Msg)
 categoryTabs current =
     Tabs.view []
-        (Tabs.children (List.map (categoryTab current) categories))
+        (List.map (categoryTab current) categories)
 
 
 categoryTab : Category -> ( Category, String ) -> Element { s | tab : Supported } (PagesMsg Msg)
@@ -371,7 +371,7 @@ categoryTab current ( category, label ) =
         [ Tab.selected (category == current)
         , Tab.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
-        [ Tab.child (Kit.text label) ]
+        [ Kit.text label ]
 
 
 

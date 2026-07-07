@@ -1,6 +1,4 @@
-module M3e.Skeleton exposing
-    ( view, animation, shape, loaded, child, children
-    )
+module M3e.Skeleton exposing ( view, animation, shape, loaded )
 
 {-|
 A visual placeholder that mimics the layout of content while it's still loading.
@@ -19,60 +17,58 @@ A visual placeholder that mimics the layout of content while it's still loading.
 [ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Loaded" ]
     , Native.br
     , Native.br
-    , M3e.Skeleton.view [] [ M3e.Skeleton.child (M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]) ]
+    , M3e.Skeleton.view [] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Card Header" -->
 ```elm
-M3e.Skeleton.view [] [ M3e.Skeleton.child (M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]) ]
+M3e.Skeleton.view [] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ] ]
 ```
 
 <!-- elm-cem:example title="Shape" -->
 ```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular ] [ M3e.Skeleton.child (Native.div [] []) ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto ] [ Native.div [] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Animation" -->
 ```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Animation (2)" -->
 ```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
     ]
 ```
 
-@docs view, animation, shape, loaded, child, children
+@docs view, animation, shape, loaded
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Skeleton
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -86,9 +82,9 @@ view :
     , loaded : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | skeleton : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -97,7 +93,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -128,19 +124,3 @@ shape =
 loaded : Bool -> M3e.Cem.Attr.Attr { c | loaded : M3e.Value.Supported } msg
 loaded =
     M3e.Cem.Skeleton.loaded
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

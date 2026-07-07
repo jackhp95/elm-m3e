@@ -2,7 +2,7 @@ module M3e.IconButton exposing
     ( view, disabled, disabledInteractive, name, selected, shape
     , size, toggle, type_, value, variant, width, onBeforeinput
     , onInput, onChange, onClick, href, target, rel, download
-    , child, selectedSlot, children
+    , selectedSlot
     )
 
 {-|
@@ -28,28 +28,28 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Shapes" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.square ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.shape M3e.Value.square ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.shape M3e.Value.square ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.shape M3e.Value.square ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.square ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.shape M3e.Value.square ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.shape M3e.Value.square ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.shape M3e.Value.square ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Toggle" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.toggle True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
     ]
 ```
 
@@ -57,11 +57,11 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.small ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.medium ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.large ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.extraLarge ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.large ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.size M3e.Value.extraLarge ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
@@ -69,8 +69,8 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Widths" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.width M3e.Value.narrow ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.width M3e.Value.wide ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.width M3e.Value.narrow ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.width M3e.Value.wide ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
@@ -78,66 +78,64 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Toggle (2)" -->
 ```elm
-M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "check" ] []), M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "close" ] []) ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "check" ] []), M3e.Icon.view [ M3e.Icon.name "close" ] [] ]
 ```
 
 <!-- elm-cem:example title="Toggle (3)" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.shape M3e.Value.rounded, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
     , Native.br
     , Native.br
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "search" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.outlined, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "search" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.standard, M3e.IconButton.shape M3e.Value.square, M3e.IconButton.toggle True, M3e.IconButton.selected True ] [ M3e.Icon.view [ M3e.Icon.name "settings" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.disabled True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.disabledInteractive True ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.disabled True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.disabledInteractive True ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Links" -->
 ```elm
-M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.href "https://www.google.com", M3e.IconButton.target "_blank" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []) ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.href "https://www.google.com", M3e.IconButton.target "_blank" ] [ M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] [] ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
+[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
     ]
 ```
 
 @docs view, disabled, disabledInteractive, name, selected, shape
 @docs size, toggle, type_, value, variant, width
 @docs onBeforeinput, onInput, onChange, onClick, href, target
-@docs rel, download, child, selectedSlot, children
+@docs rel, download, selectedSlot
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.IconButton
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -167,11 +165,9 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , selected : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | iconButton : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -180,7 +176,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -333,25 +329,9 @@ download =
     M3e.Cem.IconButton.download
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `selected` slot. -}
 selectedSlot :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | selected : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 selectedSlot el =
-    M3e.Content.Internal.slot "selected" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "selected" el

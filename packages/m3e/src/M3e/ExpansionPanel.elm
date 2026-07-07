@@ -1,7 +1,6 @@
 module M3e.ExpansionPanel exposing
     ( view, disabled, hideToggle, open, toggleDirection, togglePosition
-    , onOpening, onOpened, onClosing, onClosed, child, actions, header
-    , toggleIcon, children
+    , onOpening, onOpened, onClosing, onClosed, actions, header, toggleIcon
     )
 
 {-|
@@ -29,45 +28,43 @@ An expandable details-summary view.
 
 <!-- elm-cem:example title="Standalone panels" -->
 ```elm
-M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Standalone panels (2)" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Toggles" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before, M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.togglePosition M3e.Value.before, M3e.ExpansionPanel.toggleDirection M3e.Value.horizontal ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Toggles (2)" -->
 ```elm
-M3e.ExpansionPanel.view [ M3e.ExpansionPanel.hideToggle True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), M3e.ExpansionPanel.child (Kit.text "Panel contents") ]
+M3e.ExpansionPanel.view [ M3e.ExpansionPanel.hideToggle True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel header" ]), Kit.text "Panel contents" ]
 ```
 
 <!-- elm-cem:example title="Accordion" -->
 ```elm
-M3e.Accordion.view [] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the first panel") ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the second panel") ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the third panel") ] ])
+M3e.Accordion.view [] [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), Kit.text "I am content for the first panel" ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), Kit.text "I am content for the second panel" ], M3e.ExpansionPanel.view [] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), Kit.text "I am content for the third panel" ] ]
 ```
 
 <!-- elm-cem:example title="Accordion (2)" -->
 ```elm
-M3e.Accordion.view [ M3e.Accordion.multi True ] (M3e.Accordion.children [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the first panel") ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the second panel") ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), M3e.ExpansionPanel.child (Kit.text "I am content for the third panel") ] ])
+M3e.Accordion.view [ M3e.Accordion.multi True ] [ M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 1" ]), Kit.text "I am content for the first panel" ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 2" ]), Kit.text "I am content for the second panel" ], M3e.ExpansionPanel.view [ M3e.ExpansionPanel.open True ] [ M3e.ExpansionPanel.header (Native.span [] [ Kit.text "Panel 3" ]), Kit.text "I am content for the third panel" ] ]
 ```
 
 @docs view, disabled, hideToggle, open, toggleDirection, togglePosition
-@docs onOpening, onOpened, onClosing, onClosed, child, actions
-@docs header, toggleIcon, children
+@docs onOpening, onOpened, onClosing, onClosed, actions, header
+@docs toggleIcon
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.ExpansionPanel
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -87,13 +84,9 @@ view :
     , onClosed : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    , header : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | expansionPanel : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -102,7 +95,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -169,41 +162,21 @@ onClosed =
     M3e.Cem.ExpansionPanel.onClosed
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `actions` slot. -}
-actions :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | actions : M3e.Value.Supported } msg
+actions : M3e.Element.Element any msg -> M3e.Element.Element k msg
 actions el =
-    M3e.Content.Internal.slot "actions" el
+    M3e.Element.Internal.placeSlot "actions" el
 
 
 {-| Place content in the `header` slot. -}
-header :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | header : M3e.Value.Supported } msg
+header : M3e.Element.Element any msg -> M3e.Element.Element k msg
 header el =
-    M3e.Content.Internal.slot "header" el
+    M3e.Element.Internal.placeSlot "header" el
 
 
 {-| Place content in the `toggle-icon` slot. -}
 toggleIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | toggleIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 toggleIcon el =
-    M3e.Content.Internal.slot "toggle-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "toggle-icon" el

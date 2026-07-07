@@ -88,7 +88,7 @@ head _ =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -126,7 +126,7 @@ hero =
             , Button.view { content = Kit.text "Browse the API reference", action = Action.link "/reference" } [ Button.variant Value.outlined ] []
             ]
         , Layout.div "flex items-center gap-3 pt-4"
-            [ Avatar.view [ Aria.label "Sample avatar" ] [ Avatar.child (Native.img [ Native.attribute "src" "/avatar-sample.svg" ]) ]
+            [ Avatar.view [ Aria.label "Sample avatar" ] [ Native.img [ Native.attribute "src" "/avatar-sample.svg" ] ]
             , Layout.div "flex gap-3"
                 [ Surface.view Surface.primary [ Layout.class "block w-10 h-10", Shape.corner Shape.large ] []
                 , Surface.view Surface.tertiaryContainer [ Layout.class "block w-10 h-10", Shape.corner Shape.extraLarge ] []

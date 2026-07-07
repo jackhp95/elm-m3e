@@ -25,8 +25,6 @@ A bar that provides a prominent entry point for search.
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.SearchBar
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -40,13 +38,9 @@ view :
     , onClear : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leading : M3e.Value.Supported
-    , input : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
-    , clearIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | searchBar : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -55,7 +49,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -84,17 +78,15 @@ leading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | leading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 leading el =
-    M3e.Content.Internal.slot "leading" el
+    M3e.Element.Internal.placeSlot "leading" el
 
 
 {-| Place content in the `input` slot. -}
-input :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | input : M3e.Value.Supported } msg
+input : M3e.Element.Element any msg -> M3e.Element.Element k msg
 input el =
-    M3e.Content.Internal.slot "input" el
+    M3e.Element.Internal.placeSlot "input" el
 
 
 {-| Place content in the `trailing` slot. -}
@@ -102,14 +94,14 @@ trailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | trailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 trailing el =
-    M3e.Content.Internal.slot "trailing" el
+    M3e.Element.Internal.placeSlot "trailing" el
 
 
 {-| Place content in the `clear-icon` slot. -}
 clearIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 clearIcon el =
-    M3e.Content.Internal.slot "clear-icon" el
+    M3e.Element.Internal.placeSlot "clear-icon" el

@@ -29,11 +29,9 @@ import Seam
 initials : String -> Element { s | avatar : Supported } msg
 initials text =
     Avatar.view [ Seam.asAttribute (Html.Attributes.class "flex") ]
-        [ Avatar.child
-            (Surface.view Surface.secondaryContainer
-                [ Shape.corner Shape.full
-                , Seam.asAttribute (Html.Attributes.class "flex h-10 w-10 items-center justify-center")
-                ]
-                [ Kit.labelText Value.medium [] [ Kit.text text ] ]
-            )
+        [ Surface.view Surface.secondaryContainer
+            [ Shape.corner Shape.full
+            , Seam.asAttribute (Html.Attributes.class "flex h-10 w-10 items-center justify-center")
+            ]
+            [ Kit.labelText Value.medium [] [ Kit.text text ] ]
         ]

@@ -228,7 +228,7 @@ desktopRail : Element { s | html : Supported } msg
 desktopRail =
     Layout.div "hidden md:flex sticky top-0 self-start"
         [ NavRail.view []
-            (NavRail.children (List.map railItem destinations))
+            (List.map railItem destinations)
         ]
 
 
@@ -237,7 +237,7 @@ railItem d =
     NavItem.view
         [ NavItem.href "#", NavItem.selected d.selected ]
         [ NavItem.icon (Icon.view [ Icon.name d.icon ] [])
-        , NavItem.child (Kit.text d.name)
+        , Kit.text d.name
         ]
 
 
@@ -247,7 +247,7 @@ mobileBar : Element { s | html : Supported } msg
 mobileBar =
     Layout.div "md:hidden sticky bottom-0 z-10"
         [ NavBar.view []
-            (NavBar.children (List.map barItem destinations))
+            (List.map barItem destinations)
         ]
 
 
@@ -256,7 +256,7 @@ barItem d =
     NavItem.view
         [ NavItem.href "#", NavItem.selected d.selected ]
         [ NavItem.icon (Icon.view [ Icon.name d.icon ] [])
-        , NavItem.child (Kit.text d.name)
+        , Kit.text d.name
         ]
 
 
@@ -419,7 +419,7 @@ activityRow a =
     ListItem.view []
         [ ListItem.leading
             (Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text a.date ])
-        , ListItem.child (Kit.text a.description)
+        , Kit.text a.description
         , ListItem.trailing
             (Kit.title Value.medium [ role ] [ Kit.text a.amount ])
         ]

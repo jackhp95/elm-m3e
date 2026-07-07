@@ -1,7 +1,6 @@
 module M3e.FormField exposing
-    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
+    ( view, floatLabel, hideRequiredMarker, hideSubscript, variant, control
     , prefix, prefixText, label, suffix, suffixText, hint, error
-    , children
     )
 
 {-|
@@ -26,8 +25,8 @@ A container for form controls that applies Material Design styling and behavior.
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [] [ Kit.text "Outlined" ]), M3e.FormField.child "fld1" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "fld2" (Native.node Html.label [] [ Kit.text "Filled" ]), M3e.FormField.child "fld2" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [] [ Kit.text "Outlined" ]), M3e.FormField.control "fld1" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "fld2" (Native.node Html.label [] [ Kit.text "Filled" ]), M3e.FormField.control "fld2" (Native.node Html.input [] []) ]
     ]
 ```
 
@@ -35,63 +34,61 @@ A container for form controls that applies Material Design styling and behavior.
 
 <!-- elm-cem:example title="Float label" -->
 ```elm
-M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ] [ M3e.FormField.label "fld3" (Native.node Html.label [] [ Kit.text "Always float label" ]), M3e.FormField.child "fld3" (Native.node Html.input [] []) ]
+M3e.FormField.view [ M3e.FormField.floatLabel M3e.Value.always ] [ M3e.FormField.label "fld3" (Native.node Html.label [] [ Kit.text "Always float label" ]), M3e.FormField.control "fld3" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Hint labels" -->
 ```elm
-M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.auto ] [ M3e.FormField.label "fld4" (Native.node Html.label [] [ Kit.text "Field w/ hint" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.child "fld4" (Native.node Html.input [] []) ]
+M3e.FormField.view [ M3e.FormField.hideSubscript M3e.Value.auto ] [ M3e.FormField.label "fld4" (Native.node Html.label [] [ Kit.text "Field w/ hint" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.control "fld4" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Error messages" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld5" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.child "fld5" (Native.node Html.input [] []) ]
+M3e.FormField.view [] [ M3e.FormField.label "fld5" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.control "fld5" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Error messages (2)" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld6" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.error (Native.span [] [ Kit.text "Custom error message" ]), M3e.FormField.child "fld6" (Native.node Html.input [] []) ]
+M3e.FormField.view [] [ M3e.FormField.label "fld6" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.hint (Native.span [] [ Kit.text "Hint text" ]), M3e.FormField.error (Native.span [] [ Kit.text "Custom error message" ]), M3e.FormField.control "fld6" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Hiding the required marker" -->
 ```elm
-M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label "fld7" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.child "fld7" (Native.node Html.input [] []) ]
+M3e.FormField.view [ M3e.FormField.hideRequiredMarker True ] [ M3e.FormField.label "fld7" (Native.node Html.label [] [ Kit.text "Required field" ]), M3e.FormField.control "fld7" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Prefix and suffix" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [] [ Kit.text "Amount" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text ".00" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "clear" ] []) ]), M3e.FormField.child "fld8" (Native.node Html.input [] []) ]
+M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [] [ Kit.text "Amount" ]), M3e.FormField.prefixText (Native.span [] [ Kit.text "$" ]), M3e.FormField.suffixText (Native.span [] [ Kit.text ".00" ]), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "clear" ] [] ]), M3e.FormField.control "fld8" (Native.node Html.input [] []) ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld1" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "dfld1" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld2" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.child "dfld2" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld3" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.child "dfld3" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld4" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.child "dfld4" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld1" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld1" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld2" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld2" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld3" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld3" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld4" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld4" (Native.node Html.input [] []) ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld5" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.child "dfld5" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld6" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.child "dfld6" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld7" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.child "dfld7" (Native.node Html.input [] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld8" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.child "dfld8" (Native.node Html.input [] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld5" (Native.node Html.label [] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld5" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld6" (Native.node Html.label [] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld6" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld7" (Native.node Html.label [] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld7" (Native.node Html.input [] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld8" (Native.node Html.label [] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld8" (Native.node Html.input [] []) ]
     ]
 ```
 
-@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, child
+@docs view, floatLabel, hideRequiredMarker, hideSubscript, variant, control
 @docs prefix, prefixText, label, suffix, suffixText, hint
-@docs error, children
+@docs error
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FormField
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -106,17 +103,9 @@ view :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , prefix : M3e.Value.Supported
-    , prefixText : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , suffix : M3e.Value.Supported
-    , suffixText : M3e.Value.Supported
-    , hint : M3e.Value.Supported
-    , error : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | formField : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -125,7 +114,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -167,74 +156,48 @@ variant =
 
 
 {-| Place content in the `(default)` slot, wiring its `id=` from the required `id` for structural label↔control association (ADR 0010 R6). -}
-child :
-    String
-    -> M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child id_ el =
-    M3e.Content.Internal.slotWithAttr "" "id" id_ el
+control : String -> M3e.Element.Element k msg -> M3e.Element.Element k msg
+control id_ el =
+    M3e.Element.withAttr "id" id_ el
 
 
 {-| Place content in the `prefix` slot. -}
-prefix :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | prefix : M3e.Value.Supported } msg
+prefix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 prefix el =
-    M3e.Content.Internal.slot "prefix" el
+    M3e.Element.Internal.placeSlot "prefix" el
 
 
 {-| Place content in the `prefix-text` slot. -}
-prefixText :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | prefixText : M3e.Value.Supported } msg
+prefixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 prefixText el =
-    M3e.Content.Internal.slot "prefix-text" el
+    M3e.Element.Internal.placeSlot "prefix-text" el
 
 
 {-| Place content in the `label` slot, wiring its `for=` from the required `id` for structural label↔control association (ADR 0010 R6). -}
-label :
-    String
-    -> M3e.Element.Element any msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+label : String -> M3e.Element.Element any msg -> M3e.Element.Element k msg
 label id_ el =
-    M3e.Content.Internal.slotWithAttr "label" "for" id_ el
+    M3e.Element.Internal.placeSlot "label" (M3e.Element.withAttr "for" id_ el)
 
 
 {-| Place content in the `suffix` slot. -}
-suffix :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | suffix : M3e.Value.Supported } msg
+suffix : M3e.Element.Element any msg -> M3e.Element.Element k msg
 suffix el =
-    M3e.Content.Internal.slot "suffix" el
+    M3e.Element.Internal.placeSlot "suffix" el
 
 
 {-| Place content in the `suffix-text` slot. -}
-suffixText :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | suffixText : M3e.Value.Supported } msg
+suffixText : M3e.Element.Element any msg -> M3e.Element.Element k msg
 suffixText el =
-    M3e.Content.Internal.slot "suffix-text" el
+    M3e.Element.Internal.placeSlot "suffix-text" el
 
 
 {-| Place content in the `hint` slot. -}
-hint :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+hint : M3e.Element.Element any msg -> M3e.Element.Element k msg
 hint el =
-    M3e.Content.Internal.slot "hint" el
+    M3e.Element.Internal.placeSlot "hint" el
 
 
 {-| Place content in the `error` slot. -}
-error :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+error : M3e.Element.Element any msg -> M3e.Element.Element k msg
 error el =
-    M3e.Content.Internal.slot "error" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "error" el

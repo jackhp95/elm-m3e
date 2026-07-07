@@ -264,6 +264,20 @@ function main() {
     `wrote ${BARREL} — ${items.length} examples: ${barreled} barrelised, ` +
       `${unchanged} already barrel/no-op, ${fallback} fell back to Standard top`,
   );
+
+  // An all-null barrel (zero barrelised results) over a non-empty corpus almost
+  // always means the elm-review app failed to compile — PreferBarrel then emits
+  // no fix edits, every example silently falls back to its Standard top, and the
+  // barrel surface vanishes without any error. Fail loudly rather than pass a
+  // hollow barrel down the pipeline.
+  if (items.length > 0 && barreled === 0) {
+    console.error(
+      `\nFATAL: gen-barrel produced 0 barrelised examples from ${items.length} ` +
+        `candidates (all-null). This usually means the elm-review app did not ` +
+        `compile (no PreferBarrel fixes were emitted). Refusing to pass silently.`,
+    );
+    process.exit(1);
+  }
 }
 
 main();

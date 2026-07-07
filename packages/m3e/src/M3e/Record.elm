@@ -17,7 +17,6 @@ The M3e.Record barrel: shortcut re-exports of M3e.Record.<Comp>.view for the com
 
 import M3e.Action
 import M3e.Cem.Attr
-import M3e.Content
 import M3e.Element
 import M3e.Record.AssistChip
 import M3e.Record.Button
@@ -61,12 +60,7 @@ treeItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    , openToggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | treeItem : M3e.Value.Supported } msg
 treeItem =
     M3e.Record.TreeItem.view
@@ -80,7 +74,7 @@ tocItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | tocItem : M3e.Value.Supported } msg
 tocItem =
     M3e.Record.TocItem.view
@@ -102,13 +96,7 @@ step :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported
-    , doneIcon : M3e.Value.Supported
-    , editIcon : M3e.Value.Supported
-    , errorIcon : M3e.Value.Supported
-    , hint : M3e.Value.Supported
-    , error : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
 step =
     M3e.Record.Step.view
@@ -124,7 +112,7 @@ splitButton :
     , size : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | splitButton : M3e.Value.Supported } msg
 splitButton =
     M3e.Record.SplitButton.view
@@ -141,7 +129,7 @@ snackbar :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { closeIcon : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
 snackbar =
     M3e.Record.Snackbar.view
@@ -162,15 +150,7 @@ searchView :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , openLeading : M3e.Value.Supported
-    , openTrailing : M3e.Value.Supported
-    , closedLeading : M3e.Value.Supported
-    , closedTrailing : M3e.Value.Supported
-    , searchIcon : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    , clearIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | searchView : M3e.Value.Supported } msg
 searchView =
     M3e.Record.SearchView.view
@@ -184,10 +164,7 @@ searchBar :
     , onClear : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { leading : M3e.Value.Supported
-    , trailing : M3e.Value.Supported
-    , clearIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | searchBar : M3e.Value.Supported } msg
 searchBar =
     M3e.Record.SearchBar.view
@@ -210,12 +187,7 @@ navMenuItem :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , badge : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , toggleIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | navMenuItem : M3e.Value.Supported } msg
 navMenuItem =
     M3e.Record.NavMenuItem.view
@@ -230,7 +202,7 @@ heading :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | heading : M3e.Value.Supported } msg
 heading =
     M3e.Record.Heading.view
@@ -267,9 +239,7 @@ fab :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { label : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
 fab =
     M3e.Record.Fab.view
@@ -303,7 +273,7 @@ suggestionChip :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | suggestionChip : M3e.Value.Supported } msg
 suggestionChip =
     M3e.Record.SuggestionChip.view
@@ -322,10 +292,7 @@ inputChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { avatar : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , removeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | inputChip : M3e.Value.Supported } msg
 inputChip =
     M3e.Record.InputChip.view
@@ -345,9 +312,7 @@ filterChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | filterChip : M3e.Value.Supported } msg
 filterChip =
     M3e.Record.FilterChip.view
@@ -369,7 +334,7 @@ assistChip :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | assistChip : M3e.Value.Supported } msg
 assistChip =
     M3e.Record.AssistChip.view
@@ -382,9 +347,7 @@ chip :
     , variant : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | chip : M3e.Value.Supported } msg
 chip =
     M3e.Record.Chip.view
@@ -401,7 +364,7 @@ tooltip :
     , touchGestures : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | tooltip : M3e.Value.Supported } msg
 tooltip =
     M3e.Record.Tooltip.view
@@ -420,9 +383,7 @@ richTooltip :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { subhead : M3e.Value.Supported
-    , actions : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | richTooltip : M3e.Value.Supported } msg
 richTooltip =
     M3e.Record.RichTooltip.view
@@ -434,7 +395,7 @@ richTooltipAction :
     -> List (M3e.Cem.Attr.Attr { disableRestoreFocus : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | richTooltipAction : M3e.Value.Supported } msg
 richTooltipAction =
     M3e.Record.RichTooltipAction.view
@@ -476,7 +437,7 @@ iconButton :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { selected : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | iconButton : M3e.Value.Supported } msg
 iconButton =
     M3e.Record.IconButton.view
@@ -520,11 +481,7 @@ button :
     , onChange : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { icon : M3e.Value.Supported
-    , selected : M3e.Value.Supported
-    , selectedIcon : M3e.Value.Supported
-    , trailingIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
 button =
     M3e.Record.Button.view
@@ -541,7 +498,7 @@ option :
     , value : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | option : M3e.Value.Supported } msg
 option =
     M3e.Record.Option.view

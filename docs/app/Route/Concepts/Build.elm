@@ -84,7 +84,7 @@ saveButton =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 heading1 : String -> Element { s | heading : Supported } msg

@@ -1,6 +1,6 @@
 module M3e.Element exposing
     ( Element
-    , toNode, withSlot, map
+    , toNode, withSlot, withAttr, map
     )
 
 {-| A phantom-typed wrapper around a lazy [`Node`](M3e-Node): an `Element supported msg`
@@ -18,7 +18,7 @@ config-declared userland **seams** (ADR 0014 §1), crafted in the team's `Seam`
 module on the generated `M3e.Seam` contracts.
 
 @docs Element
-@docs toNode, withSlot, map
+@docs toNode, withSlot, withAttr, map
 
 -}
 
@@ -54,3 +54,12 @@ toNode =
 withSlot : String -> Element supported msg -> Element supported msg
 withSlot =
     I.withSlot
+
+
+{-| Stamp a single raw `name="value"` attribute onto an element, leaving its
+phantom `supported` row untouched. See
+[`M3e.Element.Internal.withAttr`](M3e-Element-Internal#withAttr).
+-}
+withAttr : String -> String -> Element supported msg -> Element supported msg
+withAttr =
+    I.withAttr

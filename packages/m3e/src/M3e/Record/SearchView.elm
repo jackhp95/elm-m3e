@@ -1,7 +1,7 @@
 module M3e.Record.SearchView exposing
     ( view, contained, mode, open, clearLabel, closeLabel
-    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child, openLeading
-    , openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon, children
+    , hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, openLeading, openTrailing
+    , closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon
     )
 
 {-|
@@ -24,17 +24,14 @@ A surface that presents suggestions and results for a search.
 - `closed-trailing`: When closed, renders content after the input of the view.
 
 @docs view, contained, mode, open, clearLabel, closeLabel
-@docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, child
-@docs openLeading, openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon
-@docs clearIcon, children
+@docs hideSearchIcon, onQuery, onClear, onBeforetoggle, onToggle, openLeading
+@docs openTrailing, closedLeading, closedTrailing, searchIcon, closeIcon, clearIcon
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.SearchView
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -56,15 +53,7 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , openLeading : M3e.Value.Supported
-    , openTrailing : M3e.Value.Supported
-    , closedLeading : M3e.Value.Supported
-    , closedTrailing : M3e.Value.Supported
-    , searchIcon : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    , clearIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | searchView : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -78,7 +67,7 @@ view req_ attributes content_ =
              (List.append
                   [ M3e.Element.toNode (M3e.Element.withSlot "input" req_.input)
                   ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 
@@ -153,22 +142,14 @@ onToggle =
     M3e.Cem.SearchView.onToggle
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element any msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `open-leading` slot. -}
 openLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | openLeading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 openLeading el =
-    M3e.Content.Internal.slot "open-leading" el
+    M3e.Element.Internal.placeSlot "open-leading" el
 
 
 {-| Place content in the `open-trailing` slot. -}
@@ -176,9 +157,9 @@ openTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | openTrailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 openTrailing el =
-    M3e.Content.Internal.slot "open-trailing" el
+    M3e.Element.Internal.placeSlot "open-trailing" el
 
 
 {-| Place content in the `closed-leading` slot. -}
@@ -186,9 +167,9 @@ closedLeading :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | closedLeading : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 closedLeading el =
-    M3e.Content.Internal.slot "closed-leading" el
+    M3e.Element.Internal.placeSlot "closed-leading" el
 
 
 {-| Place content in the `closed-trailing` slot. -}
@@ -196,38 +177,30 @@ closedTrailing :
     M3e.Element.Element { icon : M3e.Value.Supported
     , iconButton : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | closedTrailing : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 closedTrailing el =
-    M3e.Content.Internal.slot "closed-trailing" el
+    M3e.Element.Internal.placeSlot "closed-trailing" el
 
 
 {-| Place content in the `search-icon` slot. -}
 searchIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | searchIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 searchIcon el =
-    M3e.Content.Internal.slot "search-icon" el
+    M3e.Element.Internal.placeSlot "search-icon" el
 
 
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 closeIcon el =
-    M3e.Content.Internal.slot "close-icon" el
+    M3e.Element.Internal.placeSlot "close-icon" el
 
 
 {-| Place content in the `clear-icon` slot. -}
 clearIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | clearIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 clearIcon el =
-    M3e.Content.Internal.slot "clear-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element any msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "clear-icon" el

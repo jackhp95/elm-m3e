@@ -3,17 +3,17 @@ Autocomplete :: Native module support (2) :: filtered: registration-only (script
 Autocomplete :: Native module support :: filtered: registration-only (script/link)
 Avatar :: Native module support :: filtered: registration-only (script/link)
 Badge :: Native module support :: filtered: registration-only (script/link)
-BottomSheet :: Basic usage :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Collapsed height :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Detents :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Drag handles :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Headers :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Hideability (2) :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Hideability :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Initial height (2) :: degraded: top: The 1st argument to `child` is not what I expect:
-BottomSheet :: Initial height :: degraded: top: The 1st argument to `child` is not what I expect:
+BottomSheet :: Basic usage :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Collapsed height :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Detents :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Drag handles :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Headers :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Hideability (2) :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Hideability :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Initial height (2) :: degraded: top: The 2nd argument to `view` is not what I expect:
+BottomSheet :: Initial height :: degraded: top: The 2nd argument to `view` is not what I expect:
 BottomSheet :: Native module support :: filtered: registration-only (script/link)
-BottomSheet :: Variants :: degraded: top: The 1st argument to `child` is not what I expect:
+BottomSheet :: Variants :: degraded: top: The 2nd argument to `view` is not what I expect:
 Breadcrumb :: Native module support :: filtered: registration-only (script/link)
 Button :: Toggle (2) :: degraded: top: The 1st argument to `selectedSlot` is not what I expect:
 ButtonGroup :: Native module support (2) :: filtered: registration-only (script/link)
@@ -22,18 +22,18 @@ Card :: Native module support :: filtered: registration-only (script/link)
 Checkbox :: Native module support :: filtered: registration-only (script/link)
 Checkbox :: Required :: degraded: top: I cannot find a `M3e.Button.type` variable: | mid: I cannot find a `M3e.Cem.Button.type` variable: | bottom: I cannot find a `M3e.Cem.Html.Button.type` variable:
 ContentPane :: Native module support :: filtered: registration-only (script/link)
-Datepicker :: Basic usage :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Blackout dates :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Date ranges :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Date selection :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Min and max dates :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Special dates :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Start date :: degraded: top: The 1st argument to `children` is not what I expect:
-Datepicker :: Start view :: degraded: top: The 1st argument to `children` is not what I expect:
-Dialog :: Actions :: degraded: top: The 1st argument to `child` is not what I expect:
-Dialog :: Anatomy :: degraded: top: The 1st argument to `child` is not what I expect:
-Dialog :: Opening :: degraded: top: The 1st argument to `child` is not what I expect:
-DrawerContainer :: Toggle :: degraded: top: The 1st argument to `children` is not what I expect:
+Datepicker :: Basic usage :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Blackout dates :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Date ranges :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Date selection :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Min and max dates :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Special dates :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Start date :: degraded: top: The 2nd argument to `view` is not what I expect:
+Datepicker :: Start view :: degraded: top: The 2nd argument to `view` is not what I expect:
+Dialog :: Actions :: degraded: top: The 2nd argument to `view` is not what I expect:
+Dialog :: Anatomy :: degraded: top: The 2nd argument to `view` is not what I expect:
+Dialog :: Opening :: degraded: top: The 2nd argument to `view` is not what I expect:
+DrawerContainer :: Toggle :: degraded: top: The 2nd argument to `view` is not what I expect:
 Fab :: Extended FABs :: degraded: top: The 1st argument to `label` is not what I expect:
 Fab :: Links :: degraded: top: The 1st argument to `label` is not what I expect:
 FabMenu :: Anatomy :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
@@ -44,38 +44,37 @@ FabMenu :: Native module support :: filtered: registration-only (script/link)
 FabMenu :: Variants :: degraded: top: I cannot find a `M3e.FabMenuItem.icon` variable:
 Icon :: Variable fonts :: filtered: registration-only (script/link)
 List :: Variants :: degraded: top: The 1st argument to `variant` is not what I expect: | mid: The 1st argument to `variant` is not what I expect:
-Menu :: Basic usage :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Checkboxes :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Density :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Disabling :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Icons :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Radios (2) :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Radios :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Submenus :: degraded: top: The 1st argument to `child` is not what I expect:
-Menu :: Variants :: degraded: top: The 1st argument to `child` is not what I expect:
+Menu :: Basic usage :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Checkboxes :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Density :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Disabling :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Icons :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Radios (2) :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Radios :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Submenus :: degraded: top: The 2nd argument to `view` is not what I expect:
+Menu :: Variants :: degraded: top: The 2nd argument to `view` is not what I expect:
 NavBar :: Modes :: degraded: top: I cannot find a `M3e.Value.extended` variable: | mid: I cannot find a `M3e.Value.extended` variable:
 NavMenu :: Density :: degraded: top: The 1st argument to `badge` is not what I expect:
 NavMenu :: Grouping top-level items :: degraded: top: The 1st argument to `badge` is not what I expect:
-NavMenu :: Personal folders (2) :: degraded: top: The 1st argument to `child` is not what I expect:
-NavMenu :: Personal folders :: degraded: top: The 1st argument to `child` is not what I expect:
+NavMenu :: Personal folders (2) :: degraded: top: The 2nd argument to `view` is not what I expect:
+NavMenu :: Personal folders :: degraded: top: The 2nd argument to `view` is not what I expect:
 NavRail :: Modes :: degraded: top: The 1st argument to `label` is not what I expect:
 Paginator :: Native module support :: filtered: registration-only (script/link)
 Paginator :: Page sizes :: degraded: top: The 1st argument to `pageSize` is not what I expect: | mid: The 1st argument to `pageSize` is not what I expect:
-ProgressIndicator :: Determinate :: degraded: top: I cannot find a `M3e.Progress.child` variable:
 Select :: Native module support (2) :: filtered: registration-only (script/link)
 Select :: Native module support :: filtered: registration-only (script/link)
-Select :: Option groups :: degraded: top: The 1st argument to `children` is not what I expect:
-SplitButton :: Anatomy :: degraded: top: The 1st argument to `children` is not what I expect:
-SplitButton :: Density :: degraded: top: The 1st argument to `children` is not what I expect:
-SplitButton :: Sizes :: degraded: top: The 1st argument to `children` is not what I expect:
-SplitButton :: Variants :: degraded: top: The 1st argument to `children` is not what I expect:
-Stepper :: Basic usage :: degraded: top: The 1st argument to `child` is not what I expect:
-Stepper :: Header positions :: degraded: top: The 1st argument to `child` is not what I expect:
-Stepper :: Label positions :: degraded: top: The 1st argument to `child` is not what I expect:
-Stepper :: Linear stepper :: degraded: top: The 1st argument to `child` is not what I expect:
-Stepper :: Orientation :: degraded: top: The 1st argument to `child` is not what I expect:
-Stepper :: Stepper buttons :: degraded: top: The 1st argument to `child` is not what I expect:
+Select :: Option groups :: degraded: top: The 2nd argument to `view` is not what I expect:
+SplitButton :: Anatomy :: degraded: top: The 2nd argument to `view` is not what I expect:
+SplitButton :: Density :: degraded: top: The 2nd argument to `view` is not what I expect:
+SplitButton :: Sizes :: degraded: top: The 2nd argument to `view` is not what I expect:
+SplitButton :: Variants :: degraded: top: The 2nd argument to `view` is not what I expect:
+Stepper :: Basic usage :: degraded: top: The 2nd argument to `view` is not what I expect:
+Stepper :: Header positions :: degraded: top: The 2nd argument to `view` is not what I expect:
+Stepper :: Label positions :: degraded: top: The 2nd argument to `view` is not what I expect:
+Stepper :: Linear stepper :: degraded: top: The 2nd argument to `view` is not what I expect:
+Stepper :: Orientation :: degraded: top: The 2nd argument to `view` is not what I expect:
+Stepper :: Stepper buttons :: degraded: top: The 2nd argument to `view` is not what I expect:
 Toc :: Heading :: degraded: top: The 1st argument to `title` is not what I expect:
-Tooltip :: Actions :: degraded: top: The 1st argument to `child` is not what I expect:
+Tooltip :: Actions :: degraded: top: The 2nd argument to `view` is not what I expect:
 Tooltip :: Rich tooltip :: degraded: top: The 1st argument to `subhead` is not what I expect:
 Tree :: Native module support :: filtered: registration-only (script/link)

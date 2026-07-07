@@ -177,7 +177,11 @@ function compileAndCollectErrors() {
         byBinding: new Map(),
       };
     }
-    return { report, byBinding: mapReportToBindings(report) };
+    const { byBinding, structuralFatal } = mapReportToBindings(report);
+    if (structuralFatal) {
+      return { report, byBinding, fatal: structuralFatal };
+    }
+    return { report, byBinding };
   }
 }
 
@@ -190,13 +194,32 @@ function renderMessage(message) {
     .join("");
 }
 
+/** basename of the one file we compile — anything else is external/unattributable. */
+function isScratchPath(path) {
+  if (!path) return false;
+  return path.replace(/\\/g, "/").split("/").pop() === "Verify.elm";
+}
+
 /**
  * Map an elm --report=json compile error report to bindings.
  * Two report shapes: { type:"compile-errors", errors:[...] } (type/name errors)
  * and { type:"error", ... } (single structural error, e.g. bad import/parse).
+ *
+ * Returns { byBinding, structuralFatal }. `structuralFatal` (a string) is set
+ * when an error can NOT be attributed to a single example binding in our scratch
+ * `Verify.elm` — i.e. it lives in an external/library source file, or it is a
+ * structural (`type:"error"`) failure whose region doesn't land inside any
+ * binding. Such an error would otherwise be dropped as "<unattributed>", leaving
+ * ALL bindings error-free and thus GLOBAL-PASSING every example — the exact
+ * silent false-pass that masked a real MODULE-NOT-FOUND during the ADR-15
+ * refactor. We surface it as fatal so verification fails loudly instead.
  */
 function mapReportToBindings(report) {
   const byBinding = new Map();
+  let structuralFatal = null;
+  const noteFatal = (msg) => {
+    if (!structuralFatal) structuralFatal = msg;
+  };
   const src = readFileSync(resolve(SCRATCH, "src", "Verify.elm"), "utf8");
   const srcLines = src.split("\n");
 
@@ -224,26 +247,56 @@ function mapReportToBindings(report) {
 
   if (report.type === "compile-errors") {
     for (const fileErr of report.errors || []) {
+      // An error whose FILE isn't our scratch Verify.elm is structural and
+      // unattributable to any example (e.g. a MODULE-NOT-FOUND surfaced inside a
+      // library source). It must be fatal, not silently dropped.
+      if (!isScratchPath(fileErr.path)) {
+        const first = (fileErr.problems || [])[0];
+        noteFatal(
+          `compile error in external file ${fileErr.path || "<unknown>"}` +
+            (first ? `:\n${renderMessage(first.message)}` : ""),
+        );
+        continue;
+      }
       for (const problem of fileErr.problems || []) {
         const line = problem.region?.start?.line ?? 0;
         const name =
           bindingForLine(line) ??
           // fall back: some name errors reference the binding by name in text
           nameFromMessage(renderMessage(problem.message), bindingAt);
+        if (!name) {
+          // An error inside Verify.elm we cannot pin to a binding (e.g. the
+          // import block) is structural — fail rather than global-pass.
+          noteFatal(
+            `unattributable compile error in Verify.elm (line ${line}):\n` +
+              renderMessage(problem.message),
+          );
+          continue;
+        }
         push(name, { line, message: renderMessage(problem.message) });
       }
     }
   } else if (report.type === "error") {
-    // Structural (single) error — e.g. a bad import. Not attributable to one
-    // binding; surface as fatal-ish so the caller can decide.
+    // Structural (single) error — e.g. a bad import / parse failure. If it lands
+    // in an external file OR doesn't resolve to a binding, it is unattributable
+    // and must be fatal (never a silent all-pass).
     const line = report.region?.start?.line ?? 0;
-    push(bindingForLine(line), {
-      line,
-      message: renderMessage(report.message),
-      structural: true,
-    });
+    const name = isScratchPath(report.path) ? bindingForLine(line) : null;
+    if (!name) {
+      noteFatal(
+        `structural compile error` +
+          (report.path ? ` in ${report.path}` : "") +
+          `:\n${renderMessage(report.message)}`,
+      );
+    } else {
+      push(name, {
+        line,
+        message: renderMessage(report.message),
+        structural: true,
+      });
+    }
   }
-  return byBinding;
+  return { byBinding, structuralFatal };
 }
 
 function nameFromMessage(text, bindingAt) {

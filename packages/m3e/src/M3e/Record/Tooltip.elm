@@ -17,22 +17,22 @@ Adds additional context to a button or other UI element.
 
 <!-- elm-cem:example title="Plain tooltip" -->
 ```elm
-[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]
-    , M3e.Tooltip.view [ M3e.Tooltip.for "button" ] [ M3e.Tooltip.child (Kit.text "Go Back") ]
+[ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "button" ] [ Kit.text "Go Back" ]
     ]
 ```
 
 <!-- elm-cem:example title="Delays" -->
 ```elm
-[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]
-    , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.showDelay 0, M3e.Tooltip.hideDelay 200 ] [ M3e.Tooltip.child (Kit.text "Go Back") ]
+[ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.showDelay 0, M3e.Tooltip.hideDelay 200 ] [ Kit.text "Go Back" ]
     ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]
-    , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.disabled True ] [ M3e.Tooltip.child (Kit.text "Go Back") ]
+[ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
+    , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.disabled True ] [ Kit.text "Go Back" ]
     ]
 ```
 
@@ -44,7 +44,6 @@ Adds additional context to a button or other UI element.
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Tooltip
-import M3e.Content
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -62,7 +61,7 @@ view :
     , touchGestures : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | tooltip : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -75,7 +74,7 @@ view req_ attributes content_ =
              (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 

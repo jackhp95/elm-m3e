@@ -1,7 +1,7 @@
 module M3e.Fab exposing
     ( view, disabled, disabledInteractive, extended, lowered, name
     , size, type_, value, variant, onClick, href, target
-    , rel, download, child, label, closeIcon, children
+    , rel, download, label, closeIcon
     )
 
 {-|
@@ -25,25 +25,25 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.variant M3e.Value.primary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.surface ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.variant M3e.Value.primary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.variant M3e.Value.surface ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Lowering" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.surface ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.primaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.secondaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiary ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.tertiaryContainer ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.lowered True, M3e.Fab.variant M3e.Value.surface ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
@@ -51,9 +51,9 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.large ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.large ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
@@ -61,41 +61,38 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.disabled True ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.disabledInteractive True ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.disabled True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.disabledInteractive True ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Fab.child (M3e.Icon.view [ M3e.Icon.name "add" ] []) ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 @docs view, disabled, disabledInteractive, extended, lowered, name
 @docs size, type_, value, variant, onClick, href
-@docs target, rel, download, child, label, closeIcon
-@docs children
+@docs target, rel, download, label, closeIcon
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Fab
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -120,12 +117,9 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , label : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -134,7 +128,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -244,33 +238,17 @@ download =
     M3e.Cem.Fab.download
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `label` slot. -}
 label :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 label el =
-    M3e.Content.Internal.slot "label" el
+    M3e.Element.Internal.placeSlot "label" el
 
 
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 closeIcon el =
-    M3e.Content.Internal.slot "close-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "close-icon" el

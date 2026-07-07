@@ -24,17 +24,17 @@ Presents short updates about application processes at the bottom of the screen.
 
 <!-- elm-cem:example title="Snackbar service" -->
 ```elm
-M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
+M3e.Button.view [] [ Kit.text "Delete file" ]
 ```
 
 <!-- elm-cem:example title="Actions" -->
 ```elm
-M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
+M3e.Button.view [] [ Kit.text "Delete file" ]
 ```
 
 <!-- elm-cem:example title="Dismissal" -->
 ```elm
-M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
+M3e.Button.view [] [ Kit.text "Delete file" ]
 ```
 
 @docs view, action, closeLabel, dismissible, duration, onBeforetoggle
@@ -45,8 +45,6 @@ M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Snackbar
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -64,7 +62,7 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { closeIcon : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
 view req_ attributes content_ =
     M3e.Element.Internal.fromNode
@@ -77,7 +75,7 @@ view req_ attributes content_ =
              (List.map M3e.Cem.Attr.Internal.forget attributes)
              (List.append
                   [ M3e.Element.toNode req_.content ]
-                  (List.map M3e.Content.toNode content_)
+                  (List.map M3e.Element.toNode content_)
              )
         )
 
@@ -124,6 +122,6 @@ onToggle =
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 closeIcon el =
-    M3e.Content.Internal.slot "close-icon" el
+    M3e.Element.Internal.placeSlot "close-icon" el

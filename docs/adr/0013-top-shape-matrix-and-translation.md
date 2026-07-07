@@ -12,6 +12,10 @@ Accepted. Reconciles [ADR 11](0011-ir-faithfulness-advisory-cardinality.md)
 supplies the shape matrix that [ADR 12](0012-codegen-aware-elm-review.md)'s
 translator is parameterized over. Governs epic #138 workstream A; B–E build on it.
 
+**Amended by [ADR 15](0015-unwrap-default-slot-phantoms-as-guidance.md):** on the
+③ Standard shape the default slot is unwrapped (raw `Element` children, no
+`child`/`children`; `Content` retires); ④ Record and ⑤ Build are unchanged.
+
 ## Amendment (2026-07-03) — shape ⑤ moved from record-literal to unified availability phantom
 
 **What changed.** The ⑤ encoding evolved during workstream B's Phase-0 codegen

@@ -1,6 +1,4 @@
-module M3e.FabMenu exposing
-    ( view, variant, onBeforetoggle, onToggle, child, children
-    )
+module M3e.FabMenu exposing ( view, variant, onBeforetoggle, onToggle )
 
 {-|
 A menu, opened from a floating action button (FAB), used to display multiple related actions.
@@ -12,15 +10,13 @@ A menu, opened from a floating action button (FAB), used to display multiple rel
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.
 
-@docs view, variant, onBeforetoggle, onToggle, child, children
+@docs view, variant, onBeforetoggle, onToggle
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.FabMenu
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -34,9 +30,11 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { fabMenuItem : M3e.Value.Supported
+    , menuItem : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | fabMenu : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -45,7 +43,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -71,23 +69,3 @@ onBeforetoggle =
 onToggle : msg -> M3e.Cem.Attr.Attr { c | onToggle : M3e.Value.Supported } msg
 onToggle =
     M3e.Cem.FabMenu.onToggle
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { fabMenuItem : M3e.Value.Supported
-    , menuItem : M3e.Value.Supported
-    } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { fabMenuItem : M3e.Value.Supported
-    , menuItem : M3e.Value.Supported
-    } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

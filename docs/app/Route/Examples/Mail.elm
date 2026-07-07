@@ -231,7 +231,7 @@ navRail : Element { s | html : Supported } Msg
 navRail =
     Layout.nav "hidden md:flex"
         [ NavRail.view [ NavRail.mode Value.expanded ]
-            (NavRail.children (List.indexedMap railItem destinations))
+            (List.indexedMap railItem destinations)
         ]
 
 
@@ -240,7 +240,7 @@ railItem index d =
     NavItem.view
         [ NavItem.selected (index == 0) ]
         [ NavItem.icon (Icon.view [ Icon.name d.icon ] [])
-        , NavItem.child (Kit.text d.label)
+        , Kit.text d.label
         ]
 
 
@@ -250,7 +250,7 @@ bottomBar : Element { s | html : Supported } Msg
 bottomBar =
     Layout.nav "md:hidden fixed inset-x-0 bottom-0"
         [ NavBar.view []
-            (NavBar.children (List.indexedMap barItem destinations))
+            (List.indexedMap barItem destinations)
         ]
 
 
@@ -259,7 +259,7 @@ barItem index d =
     NavItem.view
         [ NavItem.selected (index == 0) ]
         [ NavItem.icon (Icon.view [ Icon.name d.icon ] [])
-        , NavItem.child (Kit.text d.label)
+        , Kit.text d.label
         ]
 
 
@@ -327,10 +327,8 @@ is painted with a `surfaceContainer` background.
 messageList : Model -> Element { s | list : Supported } Msg
 messageList model =
     List_.view []
-        (List_.children
-            (List.intersperse divider
-                (List.indexedMap (messageRow model.selected) inbox)
-            )
+        (List.intersperse divider
+            (List.indexedMap (messageRow model.selected) inbox)
         )
 
 
@@ -357,7 +355,7 @@ messageRow selected index message =
         , Native.onClick (SelectMessage index)
         ]
         [ ListItem.leading (Avatar.initials message.initials)
-        , ListItem.child (Kit.text message.sender)
+        , Kit.text message.sender
         , ListItem.supportingText
             (Layout.span "block"
                 [ Kit.body Value.medium [ Kit.onSurface ] [ Kit.text message.subject ]

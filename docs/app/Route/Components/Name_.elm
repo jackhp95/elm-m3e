@@ -283,7 +283,7 @@ categoryChip cat =
         []
 
     else
-        [ SuggestionChip.view [] [ SuggestionChip.child (Kit.text cat) ] ]
+        [ SuggestionChip.view [] [ Kit.text cat ] ]
 
 
 {-| The one-line summary paragraph, constrained to a comfortable reading measure.
@@ -355,7 +355,7 @@ apiGroup members ( label, roles ) =
                 (Layout.div "space-y-3"
                     [ Kit.overline [ Kit.onSurfaceVariant ] [ Kit.text label ]
                     , Card.view [ Card.variant Value.outlined ]
-                        [ Card.content (List_.view [] (List_.children (List.map memberRow group))) ]
+                        [ Card.content (List_.view [] (List.map memberRow group)) ]
                     ]
                 )
 
@@ -491,13 +491,11 @@ layerTabs index current ex =
     Tabs.view []
         (List.map
             (\( label, layer ) ->
-                Tabs.child
-                    (Tab.view
-                        [ Tab.selected (layer == current)
-                        , Tab.onClick (SelectLayer index layer)
-                        ]
-                        [ Tab.child (Kit.text label) ]
-                    )
+                Tab.view
+                    [ Tab.selected (layer == current)
+                    , Tab.onClick (SelectLayer index layer)
+                    ]
+                    [ Kit.text label ]
             )
             (layersFor ex)
         )
@@ -566,7 +564,7 @@ groupBySection examples =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 {-| One API member: the syntax-highlighted signature (`type Name` for aliases /
@@ -588,7 +586,7 @@ memberRow m =
                 m.name ++ " : " ++ m.signature
     in
     ListItem.view []
-        (ListItem.child (Doc.elmSignature sig)
+        (Doc.elmSignature sig
             :: (if m.doc == "" then
                     []
 

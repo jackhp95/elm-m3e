@@ -16,7 +16,7 @@ A thin line that separates content in lists or other containers.
 
 <!-- elm-cem:example title="Lists" -->
 ```elm
-M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 1") ], M3e.Divider.view [] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 2") ], M3e.Divider.view [] [], M3e.ListItem.view [] [ M3e.ListItem.child (Kit.text "Item 3") ] ])
+M3e.List.view [] [ M3e.ListItem.view [] [ Kit.text "Item 1" ], M3e.Divider.view [] [], M3e.ListItem.view [] [ Kit.text "Item 2" ], M3e.Divider.view [] [], M3e.ListItem.view [] [ Kit.text "Item 3" ] ]
 ```
 
 <!-- elm-cem:example title="Inset" -->
@@ -47,7 +47,6 @@ M3e.List.view [] (M3e.List.children [ M3e.ListItem.view [] [ M3e.ListItem.child 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Divider
-import M3e.Content
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -62,9 +61,9 @@ view :
     , vertical : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content {} msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | divider : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -73,7 +72,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 

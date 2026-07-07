@@ -1,4 +1,4 @@
-module M3e.NavMenuItemGroup exposing ( view, label, child, children )
+module M3e.NavMenuItemGroup exposing ( view, label )
 
 {-|
 A top-level semantic grouping of items in a navigation menu.
@@ -9,15 +9,13 @@ A top-level semantic grouping of items in a navigation menu.
 **Slots:**
 - `label`: Renders the label of the group.
 
-@docs view, label, child, children
+@docs view, label
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.NavMenuItemGroup
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -27,11 +25,9 @@ import M3e.Value
 {-| Build the `<m3e-nav-menu-item-group>` element (lazy IR). -}
 view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { label : M3e.Value.Supported
-    , default : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | navMenuItemGroup : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -40,7 +36,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -49,22 +45,6 @@ label :
     M3e.Element.Element { text : M3e.Value.Supported
     , heading : M3e.Value.Supported
     } msg
-    -> M3e.Content.Content { r | label : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 label el =
-    M3e.Content.Internal.slot "label" el
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { navMenuItem : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "label" el

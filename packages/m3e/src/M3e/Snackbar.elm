@@ -1,6 +1,6 @@
 module M3e.Snackbar exposing
     ( view, action, closeLabel, dismissible, duration, onBeforetoggle
-    , onToggle, child, closeIcon, children
+    , onToggle, closeIcon
     )
 
 {-|
@@ -24,29 +24,27 @@ Presents short updates about application processes at the bottom of the screen.
 
 <!-- elm-cem:example title="Snackbar service" -->
 ```elm
-M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
+M3e.Button.view [] [ Kit.text "Delete file" ]
 ```
 
 <!-- elm-cem:example title="Actions" -->
 ```elm
-M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
+M3e.Button.view [] [ Kit.text "Delete file" ]
 ```
 
 <!-- elm-cem:example title="Dismissal" -->
 ```elm
-M3e.Button.view [] [ M3e.Button.child (Kit.text "Delete file") ]
+M3e.Button.view [] [ Kit.text "Delete file" ]
 ```
 
 @docs view, action, closeLabel, dismissible, duration, onBeforetoggle
-@docs onToggle, child, closeIcon, children
+@docs onToggle, closeIcon
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Snackbar
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -63,11 +61,9 @@ view :
     , onToggle : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , closeIcon : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | snackbar : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -76,7 +72,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -119,25 +115,9 @@ onToggle =
     M3e.Cem.Snackbar.onToggle
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `close-icon` slot. -}
 closeIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | closeIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 closeIcon el =
-    M3e.Content.Internal.slot "close-icon" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "close-icon" el

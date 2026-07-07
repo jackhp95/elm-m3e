@@ -23,7 +23,7 @@ import M3e.Value
 {-| Build the `<div>` element (lazy IR). -}
 view :
     List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
-    -> List (M3e.Element.Element child msg)
+    -> List (M3e.Element.Element any msg)
     -> M3e.Element.Element { s | actionElementBase : M3e.Value.Supported } msg
 view attributes children =
     M3e.Element.Internal.fromNode

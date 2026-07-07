@@ -1,6 +1,6 @@
 module M3e.SegmentedButton exposing
     ( view, disabled, hideSelectionIndicator, multi, name, onChange
-    , onBeforeinput, onInput, child, children
+    , onBeforeinput, onInput
     )
 
 {-|
@@ -22,59 +22,57 @@ A button that allows a user to select from a limited set of options.
 
 <!-- elm-cem:example title="Anatomy" -->
 ```elm
-M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "12 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "16 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "20 oz") ] ])
+M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
 ```
 
 <!-- elm-cem:example title="Icons" -->
 ```elm
-M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), M3e.ButtonSegment.child (Kit.text "Design") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), M3e.ButtonSegment.child (Kit.text "Accessibility") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), M3e.ButtonSegment.child (Kit.text "Motion") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), M3e.ButtonSegment.child (Kit.text "Documentation") ] ])
+M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), Kit.text "Design" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), Kit.text "Accessibility" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
 ```
 
 <!-- elm-cem:example title="Selection" -->
 ```elm
-M3e.SegmentedButton.view [ M3e.SegmentedButton.multi True ] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "12 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "16 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "20 oz") ] ])
+M3e.SegmentedButton.view [ M3e.SegmentedButton.multi True ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.disabled True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), M3e.ButtonSegment.child (Kit.text "Design") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), M3e.ButtonSegment.child (Kit.text "Accessibility") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), M3e.ButtonSegment.child (Kit.text "Motion") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), M3e.ButtonSegment.child (Kit.text "Documentation") ] ])
+M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.disabled True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), Kit.text "Design" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), Kit.text "Accessibility" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
 ```
 
 <!-- elm-cem:example title="Disabling (2)" -->
 ```elm
-M3e.SegmentedButton.view [ M3e.SegmentedButton.disabled True ] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), M3e.ButtonSegment.child (Kit.text "Design") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), M3e.ButtonSegment.child (Kit.text "Accessibility") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), M3e.ButtonSegment.child (Kit.text "Motion") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), M3e.ButtonSegment.child (Kit.text "Documentation") ] ])
+M3e.SegmentedButton.view [ M3e.SegmentedButton.disabled True ] [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "palette" ] []), Kit.text "Design" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "accessibility_new" ] []), Kit.text "Accessibility" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
 ```
 
 <!-- elm-cem:example title="Hiding the selection indicator" -->
 ```elm
-M3e.SegmentedButton.view [ M3e.SegmentedButton.hideSelectionIndicator True ] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "Design") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "Accessibility") ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), M3e.ButtonSegment.child (Kit.text "Motion") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), M3e.ButtonSegment.child (Kit.text "Documentation") ] ])
+M3e.SegmentedButton.view [ M3e.SegmentedButton.hideSelectionIndicator True ] [ M3e.ButtonSegment.view [] [ Kit.text "Design" ], M3e.ButtonSegment.view [] [ Kit.text "Accessibility" ], M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "motion_photos_on" ] []), Kit.text "Motion" ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.icon (M3e.Icon.view [ M3e.Icon.name "description" ] []), Kit.text "Documentation" ] ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "12 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "16 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "20 oz") ] ])
+[ M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     , Native.br
     , Native.br
-    , M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "12 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "16 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "20 oz") ] ])
+    , M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     , Native.br
     , Native.br
-    , M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "12 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "16 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "20 oz") ] ])
+    , M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     , Native.br
     , Native.br
-    , M3e.SegmentedButton.view [] (M3e.SegmentedButton.children [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ M3e.ButtonSegment.child (Kit.text "8 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "12 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "16 oz") ], M3e.ButtonSegment.view [] [ M3e.ButtonSegment.child (Kit.text "20 oz") ] ])
+    , M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     ]
 ```
 
 @docs view, disabled, hideSelectionIndicator, multi, name, onChange
-@docs onBeforeinput, onInput, child, children
+@docs onBeforeinput, onInput
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.SegmentedButton
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -92,9 +90,9 @@ view :
     , onInput : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | segmentedButton : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -103,7 +101,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -152,19 +150,3 @@ onBeforeinput =
 onInput : msg -> M3e.Cem.Attr.Attr { c | onInput : M3e.Value.Supported } msg
 onInput =
     M3e.Cem.SegmentedButton.onInput
-
-
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { buttonSegment : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els

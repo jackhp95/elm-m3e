@@ -78,7 +78,7 @@ selectWithOption =
 -}
 radioGroupWithRadio =
     RadioGroup.radioGroup
-        |> RadioGroupSlots.radio Radio.radio
+        |> RadioGroupSlots.unnamed Radio.radio
         |> RadioGroup.build
 
 
@@ -86,9 +86,9 @@ radioGroupWithRadio =
 -}
 radioGroupHeterogeneous =
     RadioGroup.radioGroup
-        |> RadioGroupSlots.radio Radio.radio
-        |> RadioGroupSlots.divider Divider.divider
-        |> RadioGroupSlots.radio Radio.radio
+        |> RadioGroupSlots.unnamed Radio.radio
+        |> RadioGroupSlots.unnamed Divider.divider
+        |> RadioGroupSlots.unnamed Radio.radio
         |> RadioGroup.build
 
 
@@ -96,7 +96,7 @@ radioGroupHeterogeneous =
 -}
 radioGroupWithFilledSelect =
     RadioGroup.radioGroup
-        |> RadioGroupSlots.select
+        |> RadioGroupSlots.unnamed
             (Select.select
                 |> SelectSlots.option (Option.option { content = Kit.text "Opt" })
             )
@@ -117,16 +117,16 @@ okValueFloat =
     M3e.sliderThumb [ M3e.attrValueFloat 0.5 ] []
 
 
-{-| Barrel flat surface: the enum-value PORTMANTEAU constant (`variantFilled`),
-the `attr`-prefixed scalar setter (`attrDisabled`), and the generalized slot
-setter all compose on the plain constructor noun. Proves the portmanteau bakes
-the (attribute × value) pair into one phantom-typed `Attr` and that `slotDefault`
-places default content.
+{-| Barrel flat surface: the enum-value PORTMANTEAU constant (`variantFilled`)
+and the `attr`-prefixed scalar setter (`attrDisabled`) compose on the plain
+constructor noun. Proves the portmanteau bakes the (attribute × value) pair into
+one phantom-typed `Attr`. Default-slot children are passed as raw `Element`s (ADR
+15) — no `slotDefault`/`child` wrapper.
 -}
 barrelFlat =
     M3e.button
         [ M3e.variantFilled, M3e.attrDisabled True ]
-        [ M3e.slotDefault (Kit.text "Click me") ]
+        [ Kit.text "Click me" ]
 
 
 {-| The universal `aria*` barrel setters carry an open capability row, so they
@@ -136,7 +136,7 @@ capability of its own).
 barrelAria =
     M3e.iconButton
         [ M3e.ariaLabel "Back" ]
-        [ M3e.slotDefault (M3e.icon [ M3e.attrName "arrow_back" ] []) ]
+        [ M3e.icon [ M3e.attrName "arrow_back" ] [] ]
 
 
 main : Html.Html msg

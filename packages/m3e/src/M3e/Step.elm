@@ -1,7 +1,7 @@
 module M3e.Step exposing
     ( view, completed, disabled, editable, for, optional
-    , selected, invalid, onBeforeinput, onInput, onChange, onClick, child
-    , icon, doneIcon, editIcon, errorIcon, hint, error, children
+    , selected, invalid, onBeforeinput, onInput, onChange, onClick, icon
+    , doneIcon, editIcon, errorIcon, hint, error
     )
 
 {-|
@@ -26,16 +26,13 @@ A step in a wizard-like workflow.
 
 @docs view, completed, disabled, editable, for, optional
 @docs selected, invalid, onBeforeinput, onInput, onChange, onClick
-@docs child, icon, doneIcon, editIcon, errorIcon, hint
-@docs error, children
+@docs icon, doneIcon, editIcon, errorIcon, hint, error
 -}
 
 
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
 import M3e.Cem.Step
-import M3e.Content
-import M3e.Content.Internal
 import M3e.Element
 import M3e.Element.Internal
 import M3e.Node
@@ -57,16 +54,9 @@ view :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Content.Content { default : M3e.Value.Supported
-    , icon : M3e.Value.Supported
-    , doneIcon : M3e.Value.Supported
-    , editIcon : M3e.Value.Supported
-    , errorIcon : M3e.Value.Supported
-    , hint : M3e.Value.Supported
-    , error : M3e.Value.Supported
-    } msg)
+    -> List (M3e.Element.Element { text : M3e.Value.Supported } msg)
     -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
-view attributes content_ =
+view attributes children =
     M3e.Element.Internal.fromNode
         (M3e.Node.fromComponent
              (\erased ch ->
@@ -75,7 +65,7 @@ view attributes content_ =
                       ch
              )
              (List.map M3e.Cem.Attr.Internal.forget attributes)
-             (List.map M3e.Content.toNode content_)
+             (List.map M3e.Element.toNode children)
         )
 
 
@@ -151,65 +141,49 @@ onClick =
     M3e.Cem.Step.onClick
 
 
-{-| Place content in the `(default)` slot. -}
-child :
-    M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | default : M3e.Value.Supported } msg
-child el =
-    M3e.Content.Internal.slot "" el
-
-
 {-| Place content in the `icon` slot. -}
 icon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 icon el =
-    M3e.Content.Internal.slot "icon" el
+    M3e.Element.Internal.placeSlot "icon" el
 
 
 {-| Place content in the `done-icon` slot. -}
 doneIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | doneIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 doneIcon el =
-    M3e.Content.Internal.slot "done-icon" el
+    M3e.Element.Internal.placeSlot "done-icon" el
 
 
 {-| Place content in the `edit-icon` slot. -}
 editIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | editIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 editIcon el =
-    M3e.Content.Internal.slot "edit-icon" el
+    M3e.Element.Internal.placeSlot "edit-icon" el
 
 
 {-| Place content in the `error-icon` slot. -}
 errorIcon :
     M3e.Element.Element { icon : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | errorIcon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 errorIcon el =
-    M3e.Content.Internal.slot "error-icon" el
+    M3e.Element.Internal.placeSlot "error-icon" el
 
 
 {-| Place content in the `hint` slot. -}
 hint :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | hint : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 hint el =
-    M3e.Content.Internal.slot "hint" el
+    M3e.Element.Internal.placeSlot "hint" el
 
 
 {-| Place content in the `error` slot. -}
 error :
     M3e.Element.Element { text : M3e.Value.Supported } msg
-    -> M3e.Content.Content { r | error : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
 error el =
-    M3e.Content.Internal.slot "error" el
-
-
-{-| Place many elements in the default slot. -}
-children :
-    List (M3e.Element.Element { text : M3e.Value.Supported } msg)
-    -> List (M3e.Content.Content { r | default : M3e.Value.Supported } msg)
-children els =
-    List.map (M3e.Content.Internal.slot "") els
+    M3e.Element.Internal.placeSlot "error" el

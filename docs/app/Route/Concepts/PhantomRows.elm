@@ -73,7 +73,7 @@ head _ =
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
-    ContentPane.view [] (List.map ContentPane.child items)
+    ContentPane.view [] items
 
 
 type alias Block msg =
@@ -161,13 +161,13 @@ Without the rows on the return types the composition guarantees fall apart — t
 
 handshake : String
 handshake =
-    """The kind row is how slots stay type-safe: a **slot** is a *closed consumer* ("I accept only these kinds") and a piece of **content** is an *open producer* ("I am *at least* this kind"). They meet at compile time — no runtime slot checks, no orphan content silently vanishing into the default slot.
+    """The kind row is how the top layer steers slot composition: a **slot** is a *closed consumer* ("I accept only these kinds") and a piece of **content** is an *open producer* ("I am *at least* this kind"). They meet at compile time — no runtime slot checks in the row itself.
 
 - `Kit.text : String -> Element { k | text : Supported } msg` — the `k |` means *"at least text"*, so it unifies with any slot that lists `text`.
 - Non-semantic native tags (`Native.div`, `Native.p`) return `Element any msg` — the **widest producer**. A bare type variable in the kind slot means *"any kind at all"*, so it drops into every slot.
-- An **`any` slot** (like `Card.content : Element any msg`) is the widest sink — a bare type variable that accepts every kind.
+- The **consumer** is either a kind-restricted **default-children list** (`M3e.Button.view`'s `List (Element { text, icon })`) or a **named-slot setter's input** (`Card.content : Element any msg -> Element k msg`). An `any` consumer is the widest sink — a bare type variable that accepts every kind.
 
-The open producer row ("at least X") meets the closed slot row ("at most these") in the middle. That handshake is the entire slot-safety story."""
+The open producer row ("at least X") meets the consumer's row ("at most these") in the middle. On the top layer that handshake is **guidance** — it steers you to the right slot; the hard composition checks are enforced by elm-review (see *Guidance, not a guarantee* below)."""
 
 
 handshakeCode : String
@@ -178,10 +178,15 @@ text : String -> Element { k | text : Supported } msg
 -- non-semantic native tags go widest — `Element any` fits EVERY slot:
 Native.p : List (Attr c msg) -> List (Element s msg) -> Element any msg
 
--- an `any` slot is the widest sink — a bare type variable:
-content : Element any msg -> Content { r | content : Supported } msg
+-- DEFAULT children are raw `Element`s; the view list's kind is the guidance:
+M3e.Button.view : List (Attr …) -> List (Element { text, icon }) -> Element { s | button }
 
-Card.content (Native.p [] [ Kit.text "arbitrary prose is fine here" ])"""
+-- a NAMED-slot setter takes a kind-constrained INPUT, stamps `slot="content"`
+-- (via placeSlot), and returns a FREE `Element` — so it drops into the SAME
+-- list as the default children. Its input type is the guidance:
+Card.content : Element any msg -> Element k msg
+
+Card.view [] [ Card.content (Native.p [] [ Kit.text "arbitrary prose is fine here" ]) ]"""
 
 
 cheatSheet : String
@@ -228,4 +233,4 @@ guidanceNotGuarantee =
 
 That is deliberate. The hard composition guarantees live where they're worth their cost: `M3e.Record.*` pins the collaborators a component can't render without, `M3e.Build.*` types capabilities through a pipeline, and codegen-aware elm-review is the composition safety net that flags unknown slot names, missing required slots, and disallowed child kinds. See [The layers](/concepts/layers) for which layer promises what. The top layer trades that strictness for ergonomics on purpose.
 
-**Direction ([ADR 15]).** Because the row is guidance on this layer, the default slot is being *unwrapped*: `M3e.<Comp>.view` will take default children as **raw `Element`s** — `M3e.Toolbar.view [] [ saveButton, cancelButton ]`, no `child`/`children` — while named slots stay setters that stamp their own `slot=` and drop into the same list. The `Content` wrapper retires here, and the slot-name, required-slot, and allowed-kind checks move to elm-review. Same components, a surface that reads like `elm/html`, and the guarantees kept where they hold. (`[ADR 15]` = `docs/adr/0015-unwrap-default-slot-phantoms-as-guidance.md`.)"""
+**Shipped ([ADR 15]).** Because the row is guidance on this layer, the default slot is **unwrapped**: `M3e.<Comp>.view` takes default children as **raw `Element`s** — `M3e.Toolbar.view [] [ saveButton, cancelButton ]`, no `child`/`children` wrapper — while named slots are setters that take a kind-constrained input, stamp their own `slot=` (via `placeSlot`), and return a free `Element` that drops into the same list. There is no `Content` type. The slot-name, required-slot, and allowed-kind checks live in elm-review (the `Cem.ValidSlotKind` rule plus the known-slot / required-slot rules). Same components, a surface that reads like `elm/html`, and the hard guarantees kept where they hold. (`[ADR 15]` = `docs/adr/0015-unwrap-default-slot-phantoms-as-guidance.md`.)"""
