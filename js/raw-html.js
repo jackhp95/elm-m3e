@@ -4,10 +4,10 @@
 // elm-pages hydration, so a custom element owns its own subtree instead.
 //
 // SECURITY CONTRACT: `content` MUST be build-time-constant, author-controlled
-// HTML only. In this repo the sole caller is Doc.rawPreview, fed by
-// docs/data/examples.json which is generated at build time from
-// config/*.rich.json — never from user input, URL/query params, or any string
-// fetched/derived at runtime. Do NOT route untrusted input here: parsing an
+// HTML only. In this repo the callers are Doc.rawPreview (fed by
+// docs/data/examples.json, generated at build time from config/*.rich.json) and
+// Shared.githubMark (a hard-coded SVG literal) — never from user input,
+// URL/query params, or any string fetched/derived at runtime. Do NOT route untrusted input here: parsing an
 // arbitrary HTML string into the live DOM is a DOM-XSS sink (inline event
 // handlers, <img onerror>, etc. execute on adoption). If a future caller needs
 // to render untrusted HTML, sanitize it (e.g. DOMPurify) BEFORE it reaches this

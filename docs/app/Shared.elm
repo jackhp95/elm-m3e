@@ -3,10 +3,10 @@ module Shared exposing (Contrast, Data, Direction, Model, Msg, Scheme, template)
 {-| The M3 application shell that frames every docs route.
 
 Owns the single `<m3e-theme>` for the whole app, renders a real `M3e.AppBar`
-top app bar with the live theme controls in an outlined `M3e.Card` popover,
-and a persistent left sidebar mirroring matraic's IA. Every icon goes
-through `M3e.Icon`; every action through `M3e.IconButton`; every theme
-toggle through `M3e.SegmentedButton`.
+top app bar, and an `M3e.DrawerContainer` holding the nav in the `start` slot
+and the live theme controls in an `end`-slot settings drawer — cloning
+matraic's shell. Every icon goes through `M3e.Icon`; every action through
+`M3e.IconButton`; every theme control through `M3e.SegmentedButton`.
 
 Migrated to the Vocab API (2026-07-01): the old hand `Theme.Scheme`/`Theme.Contrast`
 unions are now local (the new `M3e.Theme` is token-driven), and every constructor
@@ -28,13 +28,11 @@ import M3e.Action as Action
 import M3e.AppBar as AppBar
 import M3e.Aria as Aria
 import M3e.ButtonSegment as ButtonSegment
-import M3e.Card as Card
 import M3e.DrawerContainer as DrawerContainer
 import M3e.Element as Element exposing (Element)
 import M3e.Icon as Icon
 import M3e.NavMenu as NavMenu
 import M3e.Node as Node
-import M3e.Record.Heading as Heading
 import M3e.Record.IconButton as IconButton
 import M3e.Record.NavMenuItem as NavMenuItem
 import M3e.SegmentedButton as SegmentedButton
@@ -124,6 +122,7 @@ type Msg
     | CloseMenu
     | ViewportResized Int
     | ToggleSettings
+    | DrawerChanged Bool Bool
     | SetScheme Scheme
     | SetSeed String
     | SetContrast Contrast
@@ -231,6 +230,14 @@ update msg model =
 
         ToggleSettings ->
             ( { model | settingsOpen = not model.settingsOpen }, Effect.none )
+
+        -- The `<m3e-drawer-container>` `change` event reports the element's own
+        -- open state (scrim click, Esc, breakpoint auto-close). Sync our booleans
+        -- from it so an element-driven close can't desync Elm (which would need a
+        -- double-toggle to reopen). `event.target.start`/`.end` are the reflected
+        -- boolean properties read by `drawerChangeDecoder`.
+        DrawerChanged startOpen endOpen ->
+            ( { model | showMenu = startOpen, settingsOpen = endOpen }, Effect.none )
 
         SetScheme scheme ->
             ( { model | scheme = scheme }
@@ -358,7 +365,7 @@ view _ page model toMsg pageView =
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
                     [ Seam.fromHtml (Html.map toMsg (appShellBar model))
-                    , Seam.fromHtml (drawerShell model page (List.map Node.toHtml pageView.body))
+                    , Seam.fromHtml (drawerShell toMsg model page (List.map Node.toHtml pageView.body))
                     ]
                 ]
             ]
@@ -391,7 +398,7 @@ directionAttr dir =
 appShellBar : Model -> Html Msg
 appShellBar model =
     Html.header
-        [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container shadow-md-level1" ]
+        [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container-low shadow-md-level1" ]
         [ AppBar.view
             [ AppBar.size Value.small
             , Seam.asAttribute (Attr.id "docs-app-bar")
@@ -404,9 +411,8 @@ appShellBar model =
                         [ brandMark, menuButton ]
                     )
                 )
-            , AppBar.trailing (Seam.stripPhantom (schemeQuickToggle model))
-            , AppBar.trailing (Seam.stripPhantom (settingsTriggerElement model))
             , AppBar.trailing (Seam.stripPhantom githubLink)
+            , AppBar.trailing (Seam.stripPhantom settingsButton)
             ]
             |> toHtml
         ]
@@ -439,10 +445,17 @@ menuButton =
         ]
 
 
+{-| The GitHub link. The GitHub mark is an inline `<svg fill="currentColor">`
+(path copied verbatim from matraic's `docs/index.html`) so it inherits the app
+bar's on-surface foreground and adapts to light/dark — a Material Symbol `code`
+glyph was a stand-in. The SVG rides in via the docs' `raw-html` custom element
+(same seam as `Doc.rawPreview`); parsed inside a `<template>` it lands in the SVG
+namespace and renders as a real vector.
+-}
 githubLink : Element { iconButton : Supported } Msg
 githubLink =
     IconButton.view
-        { content = Icon.view [ Icon.name "code" ] []
+        { content = Seam.fromHtml githubMark
         , action =
             Action.linkWith
                 { href = "https://github.com/jackhp95/elm-m3e"
@@ -455,87 +468,63 @@ githubLink =
         []
 
 
-schemeQuickToggle : Model -> Element { iconButton : Supported } Msg
-schemeQuickToggle model =
-    let
-        ( next, iconName, iconLabel ) =
-            case model.scheme of
-                Light ->
-                    ( Dark, "dark_mode", "Switch to dark mode" )
+githubMark : Html msg
+githubMark =
+    Html.node "raw-html"
+        [ attribute "content" githubMarkSvg
+        , class "inline-flex"
+        ]
+        []
 
-                Dark ->
-                    ( Auto, "brightness_auto", "Use system color scheme" )
 
-                Auto ->
-                    ( Light, "light_mode", "Switch to light mode" )
-    in
+githubMarkSvg : String
+githubMarkSvg =
+    "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\" fill=\"currentColor\" width=\"24\" height=\"24\" aria-hidden=\"true\" style=\"display:block\"><path d=\"M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5l0 52C323 491.5 335.5 500 350.5 494 441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5l0-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21z\"/></svg>"
+
+
+{-| The app-bar settings control: a plain icon button that flips `settingsOpen`,
+which drives the end drawer's `open` state. (Was a Card popover trigger.)
+-}
+settingsButton : Element { iconButton : Supported } Msg
+settingsButton =
     IconButton.view
-        { content = Icon.view [ Icon.name iconName ] []
-        , action = Action.onClick (SetScheme next)
+        { content = Icon.view [ Icon.name "settings" ] []
+        , action = Action.onClick ToggleSettings
         }
-        [ Aria.label iconLabel ]
+        [ Aria.label "Settings" ]
         []
 
 
 
--- SETTINGS POPOVER (anchored to a relative-positioned wrapper)
+-- SETTINGS (end drawer content — cloned from matraic's #settings-drawer)
 
 
-{-| The trailing settings control: a `relative`-positioned wrapper holding the
-trigger icon button and — when open — the settings panel.
+{-| The theme controls, rendered into the drawer-container's `end` slot. Styled
+like matraic's `#settings-drawer` (flex column, row-gap, padding — see
+`style.css`), each control preceded by a label. All our richer controls are kept
+(scheme, contrast, seed color, density, direction); only their LOCATION moved
+from the old Card popover into this end drawer.
 -}
-settingsTriggerElement : Model -> Element { html : Supported } Msg
-settingsTriggerElement model =
-    Native.div
-        [ Seam.asAttribute (class "relative") ]
-        [ IconButton.view
-            { content = Icon.view [ Icon.name "tune" ] []
-            , action = Action.onClick ToggleSettings
-            }
-            [ Aria.label "Theme settings" ]
-            []
-        , if model.settingsOpen then
-            Seam.fromHtml
-                (Html.div []
-                    -- transparent full-viewport backdrop under the panel: a click
-                    -- anywhere outside the panel dismisses the settings.
-                    [ Html.div
-                        [ class "fixed inset-0 z-30 cursor-default"
-                        , Html.Events.onClick ToggleSettings
-                        , attribute "aria-hidden" "true"
-                        ]
-                        []
-                    , settingsPanel model
-                    ]
-                )
-
-          else
-            Seam.fromHtml (Html.text "")
-        ]
-
-
-settingsPanel : Model -> Html Msg
-settingsPanel model =
-    Html.div [ class "fixed left-2 right-2 top-14 z-40 sm:left-auto sm:right-2 sm:w-72" ]
-        [ Card.view
-            [ Card.variant Value.filled ]
-            [ Card.header
-                (Heading.view { content = Kit.text "Theme settings" } [ Heading.variant Value.title ] [])
-            , Card.content (Seam.fromHtml (settingsBody model))
-            ]
-            |> toHtml
-        ]
-
-
-settingsBody : Model -> Html Msg
-settingsBody model =
-    Html.div [ class "space-y-4" ]
-        [ schemeSegmented model
-        , contrastSegmented model
+settingsDrawerContent : Model -> Html Msg
+settingsDrawerContent model =
+    Html.div
+        [ Attr.id "settings-drawer", attribute "role" "complementary" ]
+        [ controlLabel "Source color"
         , seedColorInput model
+        , controlLabel "Color scheme"
+        , schemeSegmented model
+        , controlLabel "Contrast"
+        , contrastSegmented model
+        , controlLabel "Density"
         , densitySegmented model
+        , controlLabel "Directionality"
         , directionSegmented model
         ]
+
+
+controlLabel : String -> Html Msg
+controlLabel label =
+    Html.div [ class "text-label-lg font-medium text-on-surface" ] [ Html.text label ]
 
 
 {-| One segmented-button control: `SegmentedButton` holding `ButtonSegment`
@@ -577,22 +566,16 @@ contrastSegmented model =
 
 seedColorInput : Model -> Html Msg
 seedColorInput model =
-    Html.div [ class "space-y-1.5" ]
-        [ Html.label
-            [ Attr.for "docs-seed", class "block text-label-md text-on-surface-variant" ]
-            [ Html.text "Source color" ]
-        , Html.div [ class "flex items-center gap-3" ]
-            [ Html.input
-                [ Attr.type_ "color"
-                , Attr.id "docs-seed"
-                , Attr.value model.seed
-                , Html.Events.onInput SetSeed
-                , class "h-9 w-12 cursor-pointer rounded border border-outline-variant bg-transparent"
-                , attribute "aria-label" "Source color"
-                ]
-                []
-            , Html.code [ class "text-body-md text-on-surface-variant" ] [ Html.text model.seed ]
+    Html.div [ class "flex items-center gap-3" ]
+        [ Html.input
+            [ Attr.type_ "color"
+            , Attr.id "docs-seed"
+            , Attr.value model.seed
+            , Html.Events.onInput SetSeed
+            , attribute "aria-label" "Source color"
             ]
+            []
+        , Html.code [ class "text-body-md text-on-surface-variant" ] [ Html.text model.seed ]
         ]
 
 
@@ -686,8 +669,8 @@ navSections =
 panel is the hierarchical nav-menu and whose default content is the page body.
 The nav is `NavItem` links inside `NavMenuItem` groups inside a `NavMenu`.
 -}
-drawerShell : Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
-drawerShell model page body =
+drawerShell : (Msg -> msg) -> Model -> { path : UrlPath, route : Maybe Route } -> List (Html msg) -> Html msg
+drawerShell toMsg model page body =
     let
         currentPath : String
         currentPath =
@@ -697,9 +680,19 @@ drawerShell model page body =
         [ Seam.asAttribute (Attr.id "docs-drawer")
         , DrawerContainer.startMode Value.auto
         , DrawerContainer.start (not (isMobile model) || model.showMenu)
+        , DrawerContainer.endMode Value.auto
+        , DrawerContainer.end model.settingsOpen
+
+        -- Sync our drawer booleans from the element's own `change` event (scrim
+        -- click, Esc, breakpoint auto-close) so element-driven closes don't leave
+        -- Elm's state stale (which would need a double-toggle to reopen). The
+        -- Shared.Msg decoder is mapped to the outer msg via `toMsg`.
+        , Seam.asAttribute (Html.Events.on "change" (Decode.map toMsg drawerChangeDecoder))
         ]
         [ DrawerContainer.startSlot
             (navMenu currentPath)
+        , DrawerContainer.endSlot
+            (Seam.fromHtml (Html.map toMsg (settingsDrawerContent model)))
         , DrawerContainer.child
             (Native.div
                 -- the ContentPane provides its own container padding; keep only a
@@ -709,6 +702,19 @@ drawerShell model page body =
             )
         ]
         |> toHtml
+
+
+{-| Decode the `<m3e-drawer-container>` `change` event: `event.target.start` and
+`event.target.end` are the reflected boolean properties for each drawer's open
+state. Change events bubbling up from inner components (e.g. the settings
+segmented buttons) have a target without these properties, so the decoder fails
+and Elm ignores them — exactly what we want.
+-}
+drawerChangeDecoder : Decode.Decoder Msg
+drawerChangeDecoder =
+    Decode.map2 DrawerChanged
+        (Decode.at [ "target", "start" ] Decode.bool)
+        (Decode.at [ "target", "end" ] Decode.bool)
 
 
 {-| TODO(migrate): the old nav used `NavigationDrawer.group`/`link`; the new

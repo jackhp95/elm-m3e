@@ -365,3 +365,58 @@
     color: var(--md-sys-color-on-surface);
   }
 }
+
+/* ── App shell surfaces + settings drawer (clone of matraic's docs shell) ──
+   These are plain CSS rules (not Tailwind utilities): Elm cannot set a CSS
+   custom property (`element.style[--var]=…` is a no-op and `attribute "style"`
+   is clobbered on re-render), but a stylesheet rule sets the property on the
+   host and it pierces the shadow boundary into the m3e component — exactly how
+   matraic's `.docs-header-bar` / `.docs-drawer-container` do it. */
+
+/* App bar surface (matraic `.docs-header-bar`). */
+#docs-app-bar {
+  --m3e-app-bar-container-color: var(--md-sys-color-surface-container-low);
+}
+
+/* Drawer surfaces (matraic `.docs-drawer-container`): side drawers sit on
+   surface-container-low; the mobile modal (overlay) drawer on surface-container. */
+#docs-drawer {
+  --m3e-drawer-container-color: var(--md-sys-color-surface-container-low);
+  --m3e-modal-drawer-container-color: var(--md-sys-color-surface-container);
+}
+
+/* Settings end-drawer content (matraic `#settings-drawer`). */
+#settings-drawer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  box-sizing: border-box;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+}
+
+#settings-drawer m3e-segmented-button {
+  width: fit-content;
+}
+
+/* Round color swatch (matraic's `input[type="color"]`), scoped to the drawer. */
+#settings-drawer input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  outline-color: var(--md-sys-color-secondary);
+}
+
+#settings-drawer input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+#settings-drawer input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
