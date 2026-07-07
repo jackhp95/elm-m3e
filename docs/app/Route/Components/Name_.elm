@@ -18,15 +18,15 @@ import Head
 import Json.Decode as Decode
 import Kit
 import Layout
-import M3e.ButtonSegment as ButtonSegment
 import M3e.Card as Card
 import M3e.ContentPane as ContentPane
 import M3e.Element as Element exposing (Element)
 import M3e.List as List_
 import M3e.ListItem as ListItem
 import M3e.Record.Heading as Heading
-import M3e.SegmentedButton as SegmentedButton
 import M3e.SuggestionChip as SuggestionChip
+import M3e.Tab as Tab
+import M3e.Tabs as Tabs
 import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -363,7 +363,7 @@ apiGroup members ( label, roles ) =
 heading over its per-section sub-headings and examples. Empty ⇒ nothing (so it
 drops cleanly out of the top-level `space-y-10` rhythm).
 -}
-usageBlocks : Model -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg)
+usageBlocks : Model -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
 usageBlocks model examples =
     case examples of
         [] ->
@@ -384,10 +384,10 @@ usageBlocks model examples =
 followed by each example's live preview paired with its per-example code tabs.
 Examples carry their page-global index so each tab strip stays independent.
 -}
-sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg)
+sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
 sectionBlock model ( section, examples ) =
     let
-        heading : List (Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg)
+        heading : List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
         heading =
             if section == "" then
                 []
@@ -407,7 +407,7 @@ between the API surfaces by module name (`M3e`, optionally `M3e.Record` /
 `model.layers` keyed by this example's index, defaulting to `Top`. Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
-exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : Supported, heading : Supported, card : Supported, segmentedButton : Supported } Msg
+exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg
 exampleBlock model ( index, ex ) =
     let
         layer : Layer
@@ -449,30 +449,28 @@ layersFor ex =
            )
 
 
-{-| The per-example tab strip: a single-select `SegmentedButton` (the same control
-the app already uses for its theme toggles) whose checked segment is this example's
-current layer and whose clicks record a `SelectLayer` for this example's index only.
-The available segments are dynamic per example (four or six). Up to six labels
-won't fit a fixed row on mobile, so the strip lives in an `overflow-x-auto`
-container and scrolls horizontally rather than wrapping or clipping.
+{-| The per-example surface selector: a single-select `Tabs` bar whose selected
+tab is this example's current layer and whose clicks record a `SelectLayer` for
+this example's index only. The tabs are dynamic per example (four or six); `Tabs`
+paginates/scrolls them horizontally on narrow viewports natively, so there's no
+`overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
+trips a spurious vertical scrollbar on the control's state-layer bleed.
 -}
-layerTabs : Int -> Layer -> UsageExample -> Element { s | html : Supported, segmentedButton : Supported } Msg
+layerTabs : Int -> Layer -> UsageExample -> Element { s | html : Supported, tabs : Supported } Msg
 layerTabs index current ex =
-    Layout.div "overflow-x-auto"
-        [ SegmentedButton.view []
-            (List.map
-                (\( label, layer ) ->
-                    SegmentedButton.child
-                        (ButtonSegment.view
-                            [ ButtonSegment.checked (layer == current)
-                            , ButtonSegment.onClick (SelectLayer index layer)
-                            ]
-                            [ ButtonSegment.child (Kit.text label) ]
-                        )
-                )
-                (layersFor ex)
+    Tabs.view []
+        (List.map
+            (\( label, layer ) ->
+                Tabs.child
+                    (Tab.view
+                        [ Tab.selected (layer == current)
+                        , Tab.onClick (SelectLayer index layer)
+                        ]
+                        [ Tab.child (Kit.text label) ]
+                    )
             )
-        ]
+            (layersFor ex)
+        )
 
 
 {-| The code block for the selected surface. The Elm surfaces highlight as Elm;
