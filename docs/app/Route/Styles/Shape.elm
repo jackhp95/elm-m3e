@@ -55,28 +55,6 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
 view _ _ =
-    let
-        shapeCol ( token, label ) =
-            Layout.div "flex flex-col items-center gap-2"
-                [ Shape.view [ Shape.name token ] []
-                , Kit.text label
-                ]
-
-        shapes =
-            [ ( Value.circle, "Circle" )
-            , ( Value.flower, "Flower" )
-            , ( Value.heart, "Heart" )
-            , ( Value.pill, "Pill" )
-            , ( Value.diamond, "Diamond" )
-            , ( Value.gem, "Gem" )
-            , ( Value.sunny, "Sunny" )
-            , ( Value.burst, "Burst" )
-            , ( Value.hexagon, "Hexagon" )
-            , ( Value.triangle, "Triangle" )
-            , ( Value.oval, "Oval" )
-            , ( Value.arch, "Arch" )
-            ]
-    in
     { title = "Shape · elm-m3e"
     , body =
         [ Element.toNode
@@ -87,7 +65,27 @@ view _ _ =
                 , Card.view [ Card.variant Value.outlined ]
                     [ Card.content
                         (Layout.div "grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6"
-                            (List.map shapeCol shapes)
+                            (List.map
+                                (\( token, label ) ->
+                                    Layout.div "flex flex-col items-center gap-2"
+                                        [ Shape.view [ Shape.name token ] []
+                                        , Kit.text label
+                                        ]
+                                )
+                                [ ( Value.circle, "Circle" )
+                                , ( Value.flower, "Flower" )
+                                , ( Value.heart, "Heart" )
+                                , ( Value.pill, "Pill" )
+                                , ( Value.diamond, "Diamond" )
+                                , ( Value.gem, "Gem" )
+                                , ( Value.sunny, "Sunny" )
+                                , ( Value.burst, "Burst" )
+                                , ( Value.hexagon, "Hexagon" )
+                                , ( Value.triangle, "Triangle" )
+                                , ( Value.oval, "Oval" )
+                                , ( Value.arch, "Arch" )
+                                ]
+                            )
                         )
                     ]
                 ]
