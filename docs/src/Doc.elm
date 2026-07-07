@@ -56,12 +56,15 @@ rawPreview html =
         (node "raw-html"
             [ attribute "content" html
 
-            -- Wrap wide galleries rather than scroll them, and give the row
-            -- vertical breathing room (`py-2`) so the state-layer/elevation
-            -- bleed of a live component has slack instead of triggering a
-            -- scrollbar. No overflow clipping here: a menu or tooltip opened in
-            -- a live preview must be free to escape the card.
-            , class "flex max-w-full flex-wrap items-center gap-3 py-2"
+            -- Plain block flow, matching matraic's `.showcase` (which sets no
+            -- flex): each component uses its own `display`, so inline components
+            -- (buttons/chips) flow and wrap while full-width components (linear
+            -- progress, sliders, dividers, text fields) fill the row. No flex
+            -- row — that collapses width-less components to min-content. No
+            -- overflow clipping either: an escaping menu/tooltip must be free to
+            -- leave the card, and `overflow-x-auto` would force a spurious
+            -- vertical scrollbar off the ~4px state-layer bleed.
+            , class "max-w-full py-2"
             ]
             []
         )
