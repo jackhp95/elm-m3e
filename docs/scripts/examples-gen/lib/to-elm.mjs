@@ -348,8 +348,8 @@ function elementToElm(node, oracle) {
   const slottedExprs = [];
   const defaultExprs = [];
   // id↔control wiring (FormField): the default-slot control's `id=` feeds the
-  // `child` helper's leading String argument so `<label for=…>` associates with
-  // it (ADR 0010 R6). Captured from the single default-slot element child.
+  // `control` helper's leading String argument so `<label for=…>` associates
+  // with it (ADR 0010 R6). Captured from the single default-slot element child.
   const idWiring = entry.idWiring;
   let controlId = null;
 
@@ -415,54 +415,35 @@ function elementToElm(node, oracle) {
     // Comments and other node types are ignored.
   }
 
-  // Default children are wrapped by the component's `child`/`children` helper.
-  // (The current library exposes a 2-arg `view : List Attr -> List Content`
-  // for every component plus `child`/`children` slot helpers — NO component
-  // folds its required single default slot into a `{ content }` record field.
-  // Required-ness of default content is enforced by elm-review, not the types.)
-  // CRITICAL: `child x` returns ONE `Content`, but `children [ ... ]` returns a
-  // `List Content` (the codegen defines it as `List.map (slot "")`). A
-  // list-returning helper therefore CANNOT sit as an element inside the
-  // `[ ... ]` content list — that yields `List (List Content)` and fails to
-  // compile. We keep it as a separate spliced fragment appended with `++`.
-  const singleExprs = [...requiredSlotExprs, ...slottedExprs]; // each a single `Content`
-  let childrenExpr = null; // a `List Content` fragment, or null
-  if (defaultExprs.length === 1) {
-    // Wrap default-slot content with the component's `child` helper (single).
-    // An idWiring control's `child` takes a leading `id` String (from the
-    // control element's `id=`) so a sibling `<label for=…>` associates with it.
-    if (idWiring && idWiring.control) {
-      singleExprs.push(
-        `M3e.${mod}.child "${escapeElmString(controlId ?? "")}" (${defaultExprs[0]})`,
-      );
-    } else {
-      singleExprs.push(`M3e.${mod}.child (${defaultExprs[0]})`);
-    }
-  } else if (defaultExprs.length > 1) {
-    // `children` returns a LIST — splice, don't nest.
-    childrenExpr = `M3e.${mod}.children [ ${defaultExprs.join(", ")} ]`;
+  // Content is a single flat `List Element`. The retarget dropped the
+  // `child`/`children` wrappers: the top-layer `view : List Attr -> List Element`
+  // takes RAW default-child elements, and every named-slot setter now returns a
+  // free `Element`. So named-slot setter calls (`requiredSlotExprs`/`slottedExprs`)
+  // sit in the SAME list as the raw default children — no wrapping, no `++`
+  // splicing. FormField is the one exception: its default-slot control keeps
+  // id↔`for` wiring via the RENAMED `control` setter (was `child`), taking the
+  // control element's `id=` as a leading String so a sibling `<label for=…>`
+  // associates with it (ADR 0010 R6). Required-ness of default content is an
+  // elm-review concern, not a type.
+  const defaultElementExprs = [];
+  if (idWiring && idWiring.control && defaultExprs.length === 1) {
+    defaultElementExprs.push(
+      `M3e.${mod}.control "${escapeElmString(controlId ?? "")}" (${defaultExprs[0]})`,
+    );
+  } else {
+    defaultElementExprs.push(...defaultExprs);
   }
+
+  const contentExprs = [
+    ...requiredSlotExprs,
+    ...slottedExprs,
+    ...defaultElementExprs,
+  ];
+  const contentList =
+    contentExprs.length === 0 ? "[]" : `[ ${contentExprs.join(", ")} ]`;
 
   const attrsList =
     attrExprs.length === 0 ? "[]" : `[ ${attrExprs.join(", ")} ]`;
-
-  // Assemble the content argument as a single `List Content` expression:
-  //   - only single Contents      -> `[ a, b ]`
-  //   - only a children fragment   -> `M3e.X.children [ ... ]`
-  //   - both                       -> `[ a, b ] ++ M3e.X.children [ ... ]`
-  let contentList;
-  const singleList =
-    singleExprs.length === 0 ? "[]" : `[ ${singleExprs.join(", ")} ]`;
-  if (childrenExpr == null) {
-    contentList = singleList;
-  } else if (singleExprs.length === 0) {
-    // Parenthesize: as the view's content argument, a bare `children [ ... ]`
-    // would otherwise be read as two separate arguments (`children` and the
-    // list) rather than one applied expression.
-    contentList = `(${childrenExpr})`;
-  } else {
-    contentList = `(${singleList} ++ ${childrenExpr})`;
-  }
 
   // Required record (named fields and/or folded content) -> 3-arg view form.
   const hasRecord = recordFields.length > 0;

@@ -11,13 +11,13 @@ test("button with icon slot + text", () => {
     `<m3e-button variant="filled"><m3e-icon slot="icon" name="add"></m3e-icon>New</m3e-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), M3e.Button.child (Kit.text "New") ]`,
+    code: `M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] []), Kit.text "New" ]`,
   });
 });
 
 test("plain text-only button", () => {
   assert.deepEqual(conv(`<m3e-button variant="tonal">Tonal</m3e-button>`), {
-    code: `M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Tonal") ]`,
+    code: `M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ Kit.text "Tonal" ]`,
   });
 });
 
@@ -31,17 +31,17 @@ test("checkbox without aria-label converts (aria is optional)", () => {
 
 // --- (a) required-record view form ---------------------------------------
 
-// IconButton exposes a 2-arg `view : List Attr -> List Content` plus a `child`
-// helper (the B1.5b library regen removed default-slot content-record folding —
-// there is no `{ content = ... }` record form). Its single default icon child is
-// wrapped by `M3e.IconButton.child`. aria-label is a universal optional setter
-// (M3e.Aria.label in the attribute list), NOT a required-record field.
-test("icon-button default icon slot -> child helper; aria is a setter", () => {
+// IconButton exposes `view : List Attr -> List Element` (the retarget dropped
+// the `child`/`children` wrappers — a default child is now emitted as the raw
+// element itself). Its single default icon child is therefore the bare
+// `M3e.Icon.view (…)`. aria-label is a universal optional setter (M3e.Aria.label
+// in the attribute list), NOT a required-record field.
+test("icon-button default icon slot -> raw element; aria is a setter", () => {
   const r = conv(
     `<m3e-icon-button aria-label="Toggle theme"><m3e-icon name="dark_mode"></m3e-icon></m3e-icon-button>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "dark_mode" ] []) ]`,
+    code: `M3e.IconButton.view [ M3e.Aria.label "Toggle theme" ] [ M3e.Icon.view [ M3e.Icon.name "dark_mode" ] [] ]`,
   });
 });
 
@@ -77,18 +77,18 @@ test("bool attr on a 2-arg component (icon filled)", () => {
 
 test("enum attr rendered via M3e.Value with camelCase", () => {
   assert.deepEqual(conv(`<m3e-button size="extra-large">Big</m3e-button>`), {
-    code: `M3e.Button.view [ M3e.Button.size M3e.Value.extraLarge ] [ M3e.Button.child (Kit.text "Big") ]`,
+    code: `M3e.Button.view [ M3e.Button.size M3e.Value.extraLarge ] [ Kit.text "Big" ]`,
   });
 });
 
-// `children` returns a `List Content` (codegen: `List.map (slot "")`), so it
-// must be the content argument directly — NOT nested as one element inside a
-// `[ ... ]` list (that would be `List (List Content)` and fail to compile).
-test("multiple default children -> children [...] spliced as the content arg", () => {
+// The retarget unwrapped the default slot: multiple default children are just
+// raw `Element`s in the view's flat `List Element` content argument — no
+// `children [ ... ]` wrapper, no `++` splicing.
+test("multiple default children -> raw elements in the flat content list", () => {
   assert.deepEqual(
     conv(`<m3e-button variant="text"><m3e-icon name="a"></m3e-icon>Hi</m3e-button>`),
     {
-      code: `M3e.Button.view [ M3e.Button.variant M3e.Value.text ] (M3e.Button.children [ M3e.Icon.view [ M3e.Icon.name "a" ] [], Kit.text "Hi" ])`,
+      code: `M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Icon.view [ M3e.Icon.name "a" ] [], Kit.text "Hi" ]`,
     },
   );
 });
@@ -96,7 +96,7 @@ test("multiple default children -> children [...] spliced as the content arg", (
 test("string attr with escaping", () => {
   const r = conv(`<m3e-button href='/a"b'>Go</m3e-button>`);
   assert.deepEqual(r, {
-    code: `M3e.Button.view [ M3e.Button.href "/a\\"b" ] [ M3e.Button.child (Kit.text "Go") ]`,
+    code: `M3e.Button.view [ M3e.Button.href "/a\\"b" ] [ Kit.text "Go" ]`,
   });
 });
 
@@ -142,14 +142,14 @@ test("nav-menu-item required label sourced from slot=label child", () => {
   });
 });
 
-// TreeItem nests child tree-items via the (default) `child` helper while its
-// own `label` comes from the required named slot helper.
+// TreeItem nests child tree-items as raw default `Element`s while its own
+// `label` comes from the required named slot helper.
 test("tree-item required label + nested child tree-items", () => {
   const r = conv(
     `<m3e-tree-item open><span slot="label">Getting Started</span><m3e-tree-item><span slot="label">Overview</span></m3e-tree-item></m3e-tree-item>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.child (M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview") ]) ]`,
+    code: `M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview") ] ]`,
   });
 });
 
@@ -164,23 +164,23 @@ test("nav-menu-item missing required label slot -> skip", () => {
 // A <m3e-tabs> composite carries heterogeneous default children with NO `slot=`
 // attr: <m3e-tab> (kind `tab`, the default union) and <m3e-tab-panel> (kind
 // `tabPanel`, owned by the named `panel` slot). Fix C routes the panel to the
-// typed `M3e.Tabs.panel (...)` named-slot Content while the tab stays a default
-// `M3e.Tabs.child (...)` — instead of lumping both into one mis-typed children.
-test("tabs: bare tab-panel child routes to named panel slot; tab -> child", () => {
+// typed `M3e.Tabs.panel (...)` named-slot Element while the tab stays a raw
+// default `Element` — instead of lumping both into one mis-typed list.
+test("tabs: bare tab-panel child routes to named panel slot; tab -> raw element", () => {
   const r = conv(
     `<m3e-tabs><m3e-tab>One</m3e-tab><m3e-tab-panel>First panel</m3e-tab-panel></m3e-tabs>`,
   );
   assert.deepEqual(r, {
-    code: `M3e.Tabs.view [] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ M3e.TabPanel.child (Kit.text "First panel") ]), M3e.Tabs.child (M3e.Tab.view [] [ M3e.Tab.child (Kit.text "One") ]) ]`,
+    code: `M3e.Tabs.view [] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "First panel" ]), M3e.Tab.view [] [ Kit.text "One" ] ]`,
   });
 });
 
 // --- Card with slotted content (2-arg view) + folded-content children ------
 
-// Heading/Chip wrap their single text default child with the `child` helper
-// (2-arg views, no content-record fold); assert structurally (not brittle
-// deepEqual) that the whole Card example maps without skipping and uses the real
-// helper names.
+// Heading/Chip emit their single text default child as a raw `Element` (the
+// retarget dropped the `child`/`children` wrappers); assert structurally (not
+// brittle deepEqual) that the whole Card example maps without skipping and uses
+// the real helper names.
 test("card with header + content(div) slots", () => {
   const r = conv(
     `<m3e-card variant="outlined"><m3e-heading slot="header" variant="title" size="small">People</m3e-heading><div slot="content"><m3e-chip-set><m3e-chip>Name</m3e-chip></m3e-chip-set></div></m3e-card>`,
@@ -190,8 +190,9 @@ test("card with header + content(div) slots", () => {
   assert.match(r.code, /M3e\.Card\.header/);
   assert.match(r.code, /M3e\.Card\.content/);
   assert.match(r.code, /Native\.div/);
-  assert.match(r.code, /M3e\.Heading\.child \(Kit\.text "People"\)/);
-  assert.match(r.code, /M3e\.Chip\.child \(Kit\.text "Name"\)/);
+  assert.match(r.code, /M3e\.Heading\.view \[[^\]]*\] \[ Kit\.text "People" \]/);
+  assert.match(r.code, /M3e\.Chip\.view \[\] \[ Kit\.text "Name" \]/);
+  assert.doesNotMatch(r.code, /\.child/);
 });
 
 // --- (b) plain HTML + (c) anchor -> Kit.link --------------------------------
@@ -301,7 +302,7 @@ test("numeric attribute -> Float literal (no quotes) at all layers", () => {
 
 test("void elements (<hr>/<br>) are 0-arg Native values, not called with args", () => {
   assert.deepEqual(conv(`<m3e-menu id="m"><hr></m3e-menu>`), {
-    code: `M3e.Menu.view [] [ M3e.Menu.child (Native.hr) ]`,
+    code: `M3e.Menu.view [] [ Native.hr ]`,
   });
 });
 
