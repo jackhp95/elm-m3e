@@ -11,17 +11,6 @@ Presents hierarchical data in a tree structure.
 **Events:**
 - `change`: Dispatched when the selected state changes.
 
-<!-- elm-cem:docmeta category=Layout & style -->
-
-## Examples
-
-### Examples
-
-<!-- elm-cem:example title="Density" -->
-```elm
-M3e.Tree.view [] []
-```
-
 @docs view, multi, cascade, onChange, child, children
 -}
 

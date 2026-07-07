@@ -1,12 +1,12 @@
-module M3e.Cem.MenuItem exposing
-    ( menuItem, disabled, download, href, rel, target
+module M3e.Cem.FabMenuItem exposing
+    ( fabMenuItem, disabled, download, href, rel, target
     , onClick
     )
 
 {-|
-Middle layer for `<m3e-menu-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.MenuItem` module for everyday use.
+Middle layer for `<m3e-fab-menu-item>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.FabMenuItem` module for everyday use.
 
-@docs menuItem, disabled, download, href, rel, target
+@docs fabMenuItem, disabled, download, href, rel, target
 @docs onClick
 -}
 
@@ -15,23 +15,22 @@ import Html
 import Json.Decode
 import M3e.Cem.Attr
 import M3e.Cem.Attr.Internal
-import M3e.Cem.Html.MenuItem
+import M3e.Cem.Html.FabMenuItem
 import M3e.Value
 
 
-{-| An item of a menu.
+{-| An item of a floating action button (FAB) menu.
 
 **Component Info:**
-- **Extends:** `MenuItemElementBase` from `/src/menu/MenuItemElementBase`
+- **Extends:** `LitElement`
 
 **Events:**
 - `click`: Dispatched when the element is clicked.
 
 **Slots:**
 - `icon`: Renders an icon before the items's label.
-- `trailing-icon`: Renders an icon after the item's label.
 -}
-menuItem :
+fabMenuItem :
     List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
     , download : M3e.Value.Supported
     , href : M3e.Value.Supported
@@ -42,8 +41,8 @@ menuItem :
     } msg)
     -> List (Html.Html msg)
     -> Html.Html msg
-menuItem attributes children =
-    M3e.Cem.Html.MenuItem.menuItem
+fabMenuItem attributes children =
+    M3e.Cem.Html.FabMenuItem.fabMenuItem
         (List.map M3e.Cem.Attr.toAttribute attributes)
         children
 
@@ -51,37 +50,37 @@ menuItem attributes children =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> M3e.Cem.Attr.Attr { c | disabled : M3e.Value.Supported } msg
 disabled =
-    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItem.disabled
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FabMenuItem.disabled
 
 
-{-| Whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
+{-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
 download :
     String -> M3e.Cem.Attr.Attr { c | download : M3e.Value.Supported } msg
 download =
-    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItem.download
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FabMenuItem.download
 
 
 {-| The URL to which the link button points. (default: `""`) -}
 href : String -> M3e.Cem.Attr.Attr { c | href : M3e.Value.Supported } msg
 href =
-    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItem.href
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FabMenuItem.href
 
 
 {-| The relationship between the `target` of the link button and the document. (default: `""`) -}
 rel : String -> M3e.Cem.Attr.Attr { c | rel : M3e.Value.Supported } msg
 rel =
-    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItem.rel
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FabMenuItem.rel
 
 
 {-| The target of the link button. (default: `""`) -}
 target : String -> M3e.Cem.Attr.Attr { c | target : M3e.Value.Supported } msg
 target =
-    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.MenuItem.target
+    M3e.Cem.Attr.Internal.attribute M3e.Cem.Html.FabMenuItem.target
 
 
 {-| Listen for `click` events. -}
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick f_ =
     M3e.Cem.Attr.Internal.attribute
-        M3e.Cem.Html.MenuItem.onClick
+        M3e.Cem.Html.FabMenuItem.onClick
         (Json.Decode.succeed f_)

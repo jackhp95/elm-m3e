@@ -28,18 +28,24 @@ A bar, placed a the top of a screen, used to help users navigate through an appl
 M3e.AppBar.view [] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Value.tonal ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] []) ]) ]
 ```
 
-<!-- elm-cem:example title="Centered" -->
-```elm
-M3e.AppBar.view [ M3e.AppBar.centered True ] []
-```
-
-### Sizes
-
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-[ M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] []
-    , M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large ] []
-    ]
+M3e.AppBar.view [ M3e.AppBar.size M3e.Value.medium ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Value.tonal ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] []) ]) ]
+```
+
+<!-- elm-cem:example title="Sizes (2)" -->
+```elm
+M3e.AppBar.view [ M3e.AppBar.size M3e.Value.large ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Value.tonal ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] []) ]) ]
+```
+
+<!-- elm-cem:example title="Centered" -->
+```elm
+M3e.AppBar.view [ M3e.AppBar.centered True ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "bookmark" ] []) ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "help" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "help" ] []) ]) ]
+```
+
+<!-- elm-cem:example title="Scroll effects" -->
+```elm
+Native.div [] [ M3e.AppBar.view [ M3e.AppBar.for "scrollContainer" ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "arrow_back" ] []) ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Value.tonal ] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] []) ]) ], Native.div [] [ Kit.text "Scroll down to see the elevation effect" ] ]
 ```
 
 @docs view, centered, for, size, leading, title

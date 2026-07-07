@@ -16,15 +16,15 @@ A non-visual element used to automatically resize a `textarea` to fit its conten
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "field" (Native.node Html.label [] [ Kit.text "Textarea Autosize" ]), M3e.FormField.child "field" (Native.node Html.textarea [] [ Kit.text "<!-- Content omitted for brevity -->" ]) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "field" (Native.node Html.label [] [ Kit.text "Textarea Autosize" ]), M3e.FormField.child "field" (Native.node Html.textarea [] [ Kit.text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." ]) ]
     , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field" ] []
     ]
 ```
 
 <!-- elm-cem:example title="Min and max rows" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "field" (Native.node Html.label [] [ Kit.text "Textarea Autosize" ]), M3e.FormField.child "field" (Native.node Html.textarea [] [ Kit.text "<!-- Content omitted for brevity -->" ]) ]
-    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field", M3e.TextareaAutosize.maxRows 5 ] []
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "field2" (Native.node Html.label [] [ Kit.text "Textarea Autosize" ]), M3e.FormField.child "field2" (Native.node Html.textarea [] [ Kit.text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." ]) ]
+    , M3e.TextareaAutosize.view [ M3e.TextareaAutosize.for "field2", M3e.TextareaAutosize.maxRows 5 ] []
     ]
 ```
 

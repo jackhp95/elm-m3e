@@ -27,12 +27,12 @@ M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] [
 
 <!-- elm-cem:example title="Selection" -->
 ```elm
-M3e.NavBar.view [] [ M3e.NavBar.child (M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ]) ]
+M3e.NavBar.view [] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.selected True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), M3e.NavItem.child (Kit.text "Global") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), M3e.NavItem.child (Kit.text "For you") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), M3e.NavItem.child (Kit.text "Trending") ] ])
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.NavBar.view [] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ], M3e.NavItem.view [ M3e.NavItem.disabledInteractive True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), M3e.NavItem.child (Kit.text "Global") ] ])
+M3e.NavBar.view [] (M3e.NavBar.children [ M3e.NavItem.view [ M3e.NavItem.disabled True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), M3e.NavItem.child (Kit.text "News") ], M3e.NavItem.view [ M3e.NavItem.disabledInteractive True ] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), M3e.NavItem.child (Kit.text "Global") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), M3e.NavItem.child (Kit.text "For you") ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), M3e.NavItem.child (Kit.text "Trending") ] ])
 ```
 
 <!-- elm-cem:example title="Links" -->

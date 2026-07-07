@@ -14,6 +14,15 @@ A visual placeholder that mimics the layout of content while it's still loading.
 
 ### Examples
 
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+[ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Loaded" ]
+    , Native.br
+    , Native.br
+    , M3e.Skeleton.view [] [ M3e.Skeleton.child (M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]) ]
+    ]
+```
+
 <!-- elm-cem:example title="Card Header" -->
 ```elm
 M3e.Skeleton.view [] [ M3e.Skeleton.child (M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Card Header") ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Action") ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]) ]
@@ -33,12 +42,26 @@ M3e.Skeleton.view [] [ M3e.Skeleton.child (M3e.Card.view [] [ M3e.Card.header (M
 
 <!-- elm-cem:example title="Animation" -->
 ```elm
-M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.pulse ] [ M3e.Skeleton.child (Native.div [] []) ]
+    ]
 ```
 
 <!-- elm-cem:example title="Animation (2)" -->
 ```elm
-M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    , Native.br
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ M3e.Skeleton.child (Native.div [] []) ]
+    ]
 ```
 
 @docs view, animation, shape, loaded, child, children

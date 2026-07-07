@@ -26,29 +26,14 @@ Organizes content into separate views where only one view can be visible at a ti
 
 ### Examples
 
-<!-- elm-cem:example title="Variants" -->
+<!-- elm-cem:example title="Pagination" -->
 ```elm
-M3e.Tabs.view [ M3e.Tabs.variant M3e.Value.primary ] []
-```
-
-<!-- elm-cem:example title="Stretching" -->
-```elm
-M3e.Tabs.view [ M3e.Tabs.stretch True ] []
-```
-
-<!-- elm-cem:example title="Header positions" -->
-```elm
-M3e.Tabs.view [ M3e.Tabs.headerPosition M3e.Value.after ] []
-```
-
-<!-- elm-cem:example title="Disabling" -->
-```elm
-M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "videos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), M3e.Tab.child (Kit.text "Video") ], M3e.Tab.view [ M3e.Tab.disabled True, M3e.Tab.for "photos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), M3e.Tab.child (Kit.text "Photos") ] ])
+M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True ] [ M3e.Tab.child (Kit.text "Tab 1") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 2") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 3") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 4") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 5") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 6") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 7") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 8") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 9") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 10") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 11") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 12") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 13") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 14") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 15") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 16") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 17") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 18") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 19") ], M3e.Tab.view [] [ M3e.Tab.child (Kit.text "Tab 20") ] ])
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Tabs.view [] []
+M3e.Tabs.view [] (M3e.Tabs.children [ M3e.Tab.view [ M3e.Tab.selected True ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), M3e.Tab.child (Kit.text "Video") ], M3e.Tab.view [] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), M3e.Tab.child (Kit.text "Photos") ], M3e.Tab.view [] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), M3e.Tab.child (Kit.text "Audio") ] ])
 ```
 
 @docs view, disablePagination, headerPosition, nextPageLabel, previousPageLabel, stretch

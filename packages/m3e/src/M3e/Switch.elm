@@ -44,7 +44,11 @@ M3e.Switch.view [ M3e.Switch.checked True ] []
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Switch.view [] []
+[ M3e.Switch.view [] []
+    , M3e.Switch.view [] []
+    , M3e.Switch.view [] []
+    , M3e.Switch.view [] []
+    ]
 ```
 
 ### Icons

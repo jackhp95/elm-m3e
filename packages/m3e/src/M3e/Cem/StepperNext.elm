@@ -1,0 +1,28 @@
+module M3e.Cem.StepperNext exposing ( stepperNext )
+
+{-|
+Middle layer for `<m3e-stepper-next>`: the phantom-typed `Attr` setters (each an OPEN capability row) and an eager component that evaluates them onto the bottom `elm/html` layer. This is the loose, escape-hatch form; prefer the strict `M3e.StepperNext` module for everyday use.
+
+@docs stepperNext
+-}
+
+
+import Html
+import M3e.Cem.Attr
+import M3e.Cem.Html.StepperNext
+import M3e.Value
+
+
+{-| An element, nested within a clickable element, used to move a stepper to the next step.
+
+**Component Info:**
+- **Extends:** `StepperButtonElementBase` from `/src/stepper/StepperButtonElementBase`
+-}
+stepperNext :
+    List (M3e.Cem.Attr.Attr { slot : M3e.Value.Supported } msg)
+    -> List (Html.Html msg)
+    -> Html.Html msg
+stepperNext attributes children =
+    M3e.Cem.Html.StepperNext.stepperNext
+        (List.map M3e.Cem.Attr.toAttribute attributes)
+        children

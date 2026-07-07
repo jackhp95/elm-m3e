@@ -36,13 +36,6 @@ Adds additional context to a button or other UI element.
     ]
 ```
 
-<!-- elm-cem:example title="Rich tooltip" -->
-```elm
-[ M3e.IconButton.view [] [ M3e.IconButton.child (M3e.Icon.view [ M3e.Icon.name "settings" ] []) ]
-    , M3e.RichTooltip.view [ M3e.RichTooltip.for "button" ] [ M3e.RichTooltip.subhead (Native.span [] [ Kit.text "New settings available" ]), M3e.RichTooltip.child (Kit.text "Now you can adjust the uploaded image quality, and upgrade your available storage space.") ]
-    ]
-```
-
 @docs view, disabled, for, hideDelay, position, showDelay
 @docs touchGestures
 -}

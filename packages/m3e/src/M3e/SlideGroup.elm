@@ -21,12 +21,12 @@ Presents pagination controls used to scroll overflowing content.
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-M3e.SlideGroup.view [] [ M3e.SlideGroup.child (Native.div [] [ Kit.text "Item 1" ]) ]
+M3e.SlideGroup.view [] (M3e.SlideGroup.children [ Native.div [] [ Kit.text "Item 1" ], Native.div [] [ Kit.text "Item 2" ], Native.div [] [ Kit.text "Item 3" ], Native.div [] [ Kit.text "Item 4" ], Native.div [] [ Kit.text "Item 5" ], Native.div [] [ Kit.text "Item 6" ], Native.div [] [ Kit.text "Item 7" ], Native.div [] [ Kit.text "Item 8" ], Native.div [] [ Kit.text "Item 9" ], Native.div [] [ Kit.text "Item 10" ], Native.div [] [ Kit.text "Item 11" ], Native.div [] [ Kit.text "Item 12" ], Native.div [] [ Kit.text "Item 13" ], Native.div [] [ Kit.text "Item 14" ], Native.div [] [ Kit.text "Item 15" ], Native.div [] [ Kit.text "Item 16" ], Native.div [] [ Kit.text "Item 17" ], Native.div [] [ Kit.text "Item 18" ], Native.div [] [ Kit.text "Item 19" ], Native.div [] [ Kit.text "Item 20" ] ])
 ```
 
 <!-- elm-cem:example title="Orientation" -->
 ```elm
-M3e.SlideGroup.view [ M3e.SlideGroup.vertical True ] [ M3e.SlideGroup.child (Native.div [] [ Kit.text "Item 1" ]) ]
+M3e.SlideGroup.view [ M3e.SlideGroup.vertical True ] (M3e.SlideGroup.children [ Native.div [] [ Kit.text "Item 1" ], Native.div [] [ Kit.text "Item 2" ], Native.div [] [ Kit.text "Item 3" ], Native.div [] [ Kit.text "Item 4" ], Native.div [] [ Kit.text "Item 5" ], Native.div [] [ Kit.text "Item 6" ], Native.div [] [ Kit.text "Item 7" ], Native.div [] [ Kit.text "Item 8" ], Native.div [] [ Kit.text "Item 9" ], Native.div [] [ Kit.text "Item 10" ], Native.div [] [ Kit.text "Item 11" ], Native.div [] [ Kit.text "Item 12" ], Native.div [] [ Kit.text "Item 13" ], Native.div [] [ Kit.text "Item 14" ], Native.div [] [ Kit.text "Item 15" ], Native.div [] [ Kit.text "Item 16" ], Native.div [] [ Kit.text "Item 17" ], Native.div [] [ Kit.text "Item 18" ], Native.div [] [ Kit.text "Item 19" ], Native.div [] [ Kit.text "Item 20" ] ])
 ```
 
 @docs view, disabled, nextPageLabel, previousPageLabel, threshold, vertical

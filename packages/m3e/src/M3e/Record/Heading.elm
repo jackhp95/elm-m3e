@@ -12,6 +12,42 @@ A heading to a page or section.
 
 ## Examples
 
+### Examples
+
+<!-- elm-cem:example title="Typescale variants and sizes" -->
+```elm
+[ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Display Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.medium ] [ M3e.Heading.child (Kit.text "Display Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Display Small") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Headline Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.medium ] [ M3e.Heading.child (Kit.text "Headline Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Headline Small") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Title Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.medium ] [ M3e.Heading.child (Kit.text "Title Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Title Small") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.large ] [ M3e.Heading.child (Kit.text "Label Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.medium ] [ M3e.Heading.child (Kit.text "Label Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.small ] [ M3e.Heading.child (Kit.text "Label Small") ]
+    ]
+```
+
+<!-- elm-cem:example title="Emphasized typescale" -->
+```elm
+[ M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Display Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.medium, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Display Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Display Small") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Headline Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.medium, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Headline Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.headline, M3e.Heading.size M3e.Value.small, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Headline Small") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Title Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.medium, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Title Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.small, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Title Small") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.large, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Label Large") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.medium, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Label Medium") ]
+    , M3e.Heading.view [ M3e.Heading.variant M3e.Value.label, M3e.Heading.size M3e.Value.small, M3e.Heading.emphasized True ] [ M3e.Heading.child (Kit.text "Label Small") ]
+    ]
+```
+
 ### Sizes
 
 <!-- elm-cem:example title="Label Small" -->

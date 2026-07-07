@@ -20,6 +20,16 @@ A small symbol used to easily identify an action or category.
 M3e.Icon.view [ M3e.Icon.name "home" ] []
 ```
 
+<!-- elm-cem:example title="SVG icons" -->
+```elm
+[ M3e.Icon.view [ M3e.Icon.variant M3e.Value.outlined, M3e.Icon.name "search" ] []
+    , M3e.Icon.view [ M3e.Icon.variant M3e.Value.outlined, M3e.Icon.name "home" ] []
+    , M3e.Icon.view [ M3e.Icon.variant M3e.Value.outlined, M3e.Icon.name "settings" ] []
+    , M3e.Icon.view [ M3e.Icon.variant M3e.Value.outlined, M3e.Icon.name "favorite" ] []
+    , M3e.Icon.view [ M3e.Icon.variant M3e.Value.outlined, M3e.Icon.name "notifications" ] []
+    ]
+```
+
 @docs view, filled, grade, opticalSize, name, variant
 @docs weight
 -}

@@ -26,38 +26,56 @@ A button users interact with to perform an action.
 
 ## Examples
 
-### Examples
+### Variants
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.elevated ] [ M3e.Button.child (Kit.text "Elevated") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.child (Kit.text "Filled") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.child (Kit.text "Tonal") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ M3e.Button.child (Kit.text "Outlined") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.text ] [ M3e.Button.child (Kit.text "Text") ]
+    ]
 ```
 
 <!-- elm-cem:example title="Shapes" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.elevated, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Elevated") ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.elevated, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Elevated") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Filled") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Tonal") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Outlined") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.text, M3e.Button.shape M3e.Value.square ] [ M3e.Button.child (Kit.text "Square Text") ]
+    ]
 ```
+
+<!-- elm-cem:example title="Toggle" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.elevated, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Elevated Toggle") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Filled Toggle") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Tonal Toggle") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.outlined, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Outlined Toggle") ]
+    ]
+```
+
+### Sizes
 
 <!-- elm-cem:example title="Sizes" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.child (Kit.text "Extra Small") ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.child (Kit.text "Extra Small") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.small ] [ M3e.Button.child (Kit.text "Small") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.medium ] [ M3e.Button.child (Kit.text "Medium") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.large ] [ M3e.Button.child (Kit.text "Large") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.size M3e.Value.extraLarge ] [ M3e.Button.child (Kit.text "Extra Large") ]
+    ]
 ```
+
+### Examples
 
 <!-- elm-cem:example title="Icons" -->
 ```elm
 [ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "send" ] []), M3e.Button.child (Kit.text "Send") ]
     , M3e.Button.view [ M3e.Button.variant M3e.Value.tonal ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []), M3e.Button.child (Kit.text "Open") ]
     ]
-```
-
-<!-- elm-cem:example title="Toggle" -->
-```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.elevated, M3e.Button.toggle True ] [ M3e.Button.child (Kit.text "Elevated Toggle") ]
-```
-
-<!-- elm-cem:example title="Toggle (2)" -->
-```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.toggle True ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "play_arrow" ] []), M3e.Button.selectedIcon (M3e.Icon.view [ M3e.Icon.name "stop" ] []), M3e.Button.selectedSlot (Native.span [] [ Kit.text "Stop" ]), M3e.Button.child (Kit.text "Start") ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
@@ -74,7 +92,20 @@ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "https://w
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -3") ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -3") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -2") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -1") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density 0") ]
+    ]
+```
+
+<!-- elm-cem:example title="Density (2)" -->
+```elm
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -3") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -2") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density -1") ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), M3e.Button.child (Kit.text "Density 0") ]
+    ]
 ```
 
 @docs view, disabled, disabledInteractive, name, selected, shape
