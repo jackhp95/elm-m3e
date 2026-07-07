@@ -92,19 +92,19 @@ type alias Component =
 
 
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
-API surface. `top`/`mid`/`bottom` (M3e / M3e.Cem / M3e.Cem.Html) are present for
-every example; `record` (M3e.Record) and `build` (M3e.Build) are present only
-when the example cleanly converts to that single-component surface (else
-`Nothing`, so the UI hides the tab). `section` groups examples under a
-sub-heading ("" = ungrouped).
+API surface. Every Elm surface is optional — `top`/`mid`/`bottom` (M3e /
+M3e.Cem / M3e.Cem.Html) and `record` (M3e.Record) / `build` (M3e.Build) are each
+present only when that surface compiled for this example (else `Nothing`, so the
+UI hides its tab). `html` is the one guaranteed surface — its live preview always
+renders. `section` groups examples under a sub-heading ("" = ungrouped).
 -}
 type alias UsageExample =
     { title : String
     , section : String
     , html : String
-    , top : String
-    , mid : String
-    , bottom : String
+    , top : Maybe String
+    , mid : Maybe String
+    , bottom : Maybe String
     , record : Maybe String
     , build : Maybe String
     }
@@ -145,9 +145,9 @@ usageExampleDecoder =
         (Decode.field "title" Decode.string)
         (Decode.oneOf [ Decode.field "section" Decode.string, Decode.succeed "" ])
         (Decode.field "html" Decode.string)
-        (Decode.field "top" Decode.string)
-        (Decode.field "mid" Decode.string)
-        (Decode.field "bottom" Decode.string)
+        (Decode.oneOf [ Decode.field "top" (Decode.nullable Decode.string), Decode.succeed Nothing ])
+        (Decode.oneOf [ Decode.field "mid" (Decode.nullable Decode.string), Decode.succeed Nothing ])
+        (Decode.oneOf [ Decode.field "bottom" (Decode.nullable Decode.string), Decode.succeed Nothing ])
         (Decode.oneOf [ Decode.field "record" (Decode.nullable Decode.string), Decode.succeed Nothing ])
         (Decode.oneOf [ Decode.field "build" (Decode.nullable Decode.string), Decode.succeed Nothing ])
 
@@ -402,9 +402,10 @@ sectionBlock model ( section, examples ) =
 
 
 {-| A live preview paired with a per-example tab strip that switches its code
-between the API surfaces by module name (`M3e`, optionally `M3e.Record` /
-`M3e.Build`, `M3e.Cem`, `M3e.Cem.Html`, `HTML`). The selection lives in
-`model.layers` keyed by this example's index, defaulting to `Top`. Grouped as one
+between the API surfaces by module name (optionally `M3e`, `M3e.Record` /
+`M3e.Build`, `M3e.Cem`, `M3e.Cem.Html`, and always `HTML`). The selection lives in
+`model.layers` keyed by this example's index, defaulting to the first available
+surface (`defaultLayerFor`). Grouped as one
 `space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
 -}
 exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg
@@ -412,7 +413,7 @@ exampleBlock model ( index, ex ) =
     let
         layer : Layer
         layer =
-            Dict.get index model.layers |> Maybe.withDefault Top
+            Dict.get index model.layers |> Maybe.withDefault (defaultLayerFor ex)
     in
     Layout.div "space-y-3"
         [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
@@ -422,10 +423,11 @@ exampleBlock model ( index, ex ) =
         ]
 
 
-{-| The surfaces offered for one example, in fixed order. `M3e`, `M3e.Cem`,
-`M3e.Cem.Html` and `HTML` are universal; `M3e.Record` / `M3e.Build` appear only
-when this example converted to that single-component surface (its field is
-non-null). Order: M3e, M3e.Record, M3e.Build, M3e.Cem, M3e.Cem.Html, HTML.
+{-| The surfaces offered for one example, in fixed order. Each Elm surface
+(`M3e`, `M3e.Record`, `M3e.Build`, `M3e.Cem`, `M3e.Cem.Html`) appears only when
+it compiled for this example (its field is non-null); `HTML` is the one universal
+surface and is always offered last. Order: M3e, M3e.Record, M3e.Build, M3e.Cem,
+M3e.Cem.Html, HTML.
 -}
 layersFor : UsageExample -> List ( String, Layer )
 layersFor ex =
@@ -439,14 +441,21 @@ layersFor ex =
                 Nothing ->
                     []
     in
-    ( "M3e", Top )
-        :: (optional ex.record "M3e.Record" Record
-                ++ optional ex.build "M3e.Build" Build
-                ++ [ ( "M3e.Cem", Middle )
-                   , ( "M3e.Cem.Html", Bottom )
-                   , ( "HTML", Raw )
-                   ]
-           )
+    optional ex.top "M3e" Top
+        ++ optional ex.record "M3e.Record" Record
+        ++ optional ex.build "M3e.Build" Build
+        ++ optional ex.mid "M3e.Cem" Middle
+        ++ optional ex.bottom "M3e.Cem.Html" Bottom
+        ++ [ ( "HTML", Raw ) ]
+
+
+{-| The layer an example opens on when the user hasn't chosen one: the first
+surface `layersFor` offers (its strictest available Elm surface, or `HTML` when
+no Elm surface compiled). `HTML` is always present, so the fallback is total.
+-}
+defaultLayerFor : UsageExample -> Layer
+defaultLayerFor ex =
+    layersFor ex |> List.head |> Maybe.map Tuple.second |> Maybe.withDefault Raw
 
 
 {-| The per-example surface selector: a single-select `Tabs` bar whose selected
@@ -474,37 +483,39 @@ layerTabs index current ex =
 
 
 {-| The code block for the selected surface. The Elm surfaces highlight as Elm;
-the raw `<m3e-*>` HTML surface highlights as plain markup. `Record` / `Build` are
-optional — if the selected surface isn't available for this example (its field is
-`Nothing`), fall back to the always-present `M3e` (top) code.
+the raw `<m3e-*>` HTML surface highlights as plain markup. Every Elm surface is
+optional — `layersFor` only offers a tab whose field is present, so a `Nothing`
+is unreachable here; it falls back to the always-present HTML surface defensively.
 -}
 codeFor : Layer -> UsageExample -> Element { s | html : Supported } msg
 codeFor layer ex =
+    let
+        elmOrHtml : Maybe String -> Element { s | html : Supported } msg
+        elmOrHtml field =
+            case field of
+                Just code ->
+                    Doc.code_ Doc.Elm code
+
+                Nothing ->
+                    -- Unreachable: layersFor never offers a tab whose field is
+                    -- Nothing. Fall back to the always-present HTML surface.
+                    Doc.code_ Doc.Xml ex.html
+    in
     case layer of
         Top ->
-            Doc.code_ Doc.Elm ex.top
+            elmOrHtml ex.top
 
         Record ->
-            case ex.record of
-                Just code ->
-                    Doc.code_ Doc.Elm code
-
-                Nothing ->
-                    Doc.code_ Doc.Elm ex.top
+            elmOrHtml ex.record
 
         Build ->
-            case ex.build of
-                Just code ->
-                    Doc.code_ Doc.Elm code
-
-                Nothing ->
-                    Doc.code_ Doc.Elm ex.top
+            elmOrHtml ex.build
 
         Middle ->
-            Doc.code_ Doc.Elm ex.mid
+            elmOrHtml ex.mid
 
         Bottom ->
-            Doc.code_ Doc.Elm ex.bottom
+            elmOrHtml ex.bottom
 
         Raw ->
             Doc.code_ Doc.Xml ex.html
