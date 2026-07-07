@@ -24,7 +24,12 @@ if (start === -1) {
   console.error("check-nav: could not find `componentList =` in Shared.elm");
   process.exit(1);
 }
-const block = shared.slice(start, shared.indexOf("\n    ]", start));
+const end = shared.indexOf("\n    ]", start);
+if (end === -1) {
+  console.error("check-nav: could not find end of componentList literal");
+  process.exit(1);
+}
+const block = shared.slice(start, end);
 const navSlugs = [...block.matchAll(/\(\s*"([^"]+)"\s*,/g)].map((m) => m[1]);
 
 if (navSlugs.length === 0) {
