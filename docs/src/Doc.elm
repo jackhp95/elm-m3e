@@ -14,6 +14,7 @@ centralised here as named helpers (`rawPreview`, `markdown`, `code_`,
 
 -}
 
+import Doc.Fold as Fold
 import Html exposing (Html, a, code, div, node, p, pre, text)
 import Html.Attributes exposing (attribute, class, href)
 import M3e.Card as Card
@@ -91,37 +92,49 @@ code_ lang s =
         wrapperClass : String
         wrapperClass =
             "overflow-x-auto rounded-md-corner-medium bg-surface-container p-4 text-body-md leading-relaxed text-on-surface"
+    in
+    -- Auto-derived folding (stream B2): the fold tree is computed from the raw
+    -- string and highlighted per line, so we assemble nested `<details>`
+    -- ourselves rather than emitting one flat highlighted block.
+    Seam.fromHtml
+        (div [ class wrapperClass ]
+            [ Fold.viewWith (highlightLine lang) trimmed ]
+        )
 
+
+{-| Highlight a single code line, keeping the `.elmshN` token classes. Falls
+back to plain text if the line doesn't tokenize (never crashes; per-line
+highlighting can lose multi-line context, but example code rarely has it).
+-}
+highlightLine : Lang -> String -> Html msg
+highlightLine lang line =
+    let
         parsed : Result () SyntaxHighlight.HCode
         parsed =
-            case lang of
+            (case lang of
                 Elm ->
-                    SyntaxHighlight.elm trimmed |> Result.mapError (always ())
+                    SyntaxHighlight.elm line
 
                 Json ->
-                    SyntaxHighlight.json trimmed |> Result.mapError (always ())
+                    SyntaxHighlight.json line
 
                 Shell ->
-                    SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
+                    SyntaxHighlight.noLang line
 
                 Xml ->
-                    SyntaxHighlight.xml trimmed |> Result.mapError (always ())
+                    SyntaxHighlight.xml line
 
                 NoLang ->
-                    SyntaxHighlight.noLang trimmed |> Result.mapError (always ())
+                    SyntaxHighlight.noLang line
+            )
+                |> Result.mapError (always ())
     in
     case parsed of
         Ok highlighted ->
-            Seam.fromHtml
-                (div [ class wrapperClass ]
-                    [ SyntaxHighlight.toBlockHtml Nothing highlighted ]
-                )
+            SyntaxHighlight.toInlineHtml highlighted
 
         Err _ ->
-            Seam.fromHtml
-                (pre [ class wrapperClass ]
-                    [ code [] [ text trimmed ] ]
-                )
+            text line
 
 
 {-| Render a Markdown string (component overviews, member docs) as live DOM.

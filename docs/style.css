@@ -116,6 +116,78 @@
   }
 }
 
+/* Auto-derived code folding (stream B2). `Doc.code_` emits a `.cf-root` tree of
+   nested native `<details>` (chevron folds) computed from indentation, plus `…`
+   folds for repeated siblings. Native `<details>` keeps folded content
+   find-in-page searchable + keyboard-toggleable with NO `display:none` of our
+   own — never add one, it would break find-in-page. */
+@layer components {
+  .cf-root {
+    white-space: pre;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  /* A single code line, and a fold header, share one left gutter so the chevron
+     never shifts code: equal-indent lines align regardless of header/leaf. */
+  .cf-leaf,
+  .cf-root summary.cf-summary {
+    display: block;
+    padding-inline-start: 1.3ch;
+    margin: 0;
+  }
+
+  .cf-root details.cf-fold {
+    margin: 0;
+  }
+
+  /* The fold header row. `position: relative` anchors the chevron in the gutter. */
+  .cf-root summary.cf-summary {
+    position: relative;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .cf-root summary.cf-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Rotating chevron in the shared gutter (currentColor, subdued). */
+  .cf-root summary.cf-summary::before {
+    content: "▸";
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--md-sys-color-on-surface-variant);
+    transition: transform 150ms ease;
+  }
+
+  .cf-root details.cf-fold[open] > summary.cf-summary::before {
+    transform: rotate(90deg);
+  }
+
+  /* Repeated-sibling `…` fold: distinct affordance, no chevron, subdued. */
+  .cf-root summary.cf-summary.cf-ellipsis {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .cf-root summary.cf-summary.cf-ellipsis::before {
+    content: none;
+  }
+
+  /* Visible keyboard focus ring consistent with the site's primary accent. */
+  .cf-root summary.cf-summary:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 1px;
+    border-radius: 2px;
+  }
+
+  /* No fold animation when the user asks to reduce motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .cf-root summary.cf-summary::before {
+      transition: none;
+    }
+  }
+}
+
 /* M3 document base: the shell's <m3e-theme> cascades --md-sys-color-* /
    --md-sys-typescale-* onto every descendant, but the bare <html>/<body>
    outside that subtree needs the surface + type scale too, or the viewport
