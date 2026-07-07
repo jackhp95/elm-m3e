@@ -5,6 +5,7 @@
 import "@m3e/web/all";
 import "../js/avt-snackbar.js";
 import "../js/raw-html.js";
+import "../js/slide-panels.js";
 import "./style.css";
 
 type ElmPagesInit = {
