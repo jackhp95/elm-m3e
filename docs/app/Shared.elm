@@ -724,7 +724,7 @@ navMenu currentPath =
     NavMenu.view []
         (List.map (\s -> navGroup currentPath s.icon s.title s.items) navSections
             ++ [ componentsGroup currentPath
-               , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ) ]
+               , navGroup currentPath "menu_book" "Reference" [ ( "/reference", "Full API reference" ), ( "/roundtrip", "Round-trip report" ) ]
                ]
         )
 
