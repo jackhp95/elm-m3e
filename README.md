@@ -101,11 +101,11 @@ tree : Html msg
 tree =
     M3e.TreeItem.view
         [ M3e.TreeItem.open True ]                       -- attributes (phantom capability row)
-        [ M3e.TreeItem.label (text "Getting Started")    -- content (phantom slot row)
+        [ M3e.TreeItem.label (text "Getting Started")    -- a named slot (setter)
         , M3e.TreeItem.icon
             (M3e.Icon.view [ M3e.Icon.name "folder" ] [])
-        , M3e.TreeItem.child
-            (M3e.TreeItem.view [] [ M3e.TreeItem.label (text "Child") ])
+        , M3e.TreeItem.view [] [ M3e.TreeItem.label (text "Child") ]
+            -- a default-slot child is just the raw Element — no wrapper
         ]
         -- one conversion at the application root turns the typed IR into Html:
         |> M3e.Element.toNode
@@ -190,7 +190,7 @@ view model =
         [ M3e.Button.variant M3e.Value.filled
         , M3e.Button.onClick Clicked
         ]
-        [ M3e.Button.child (text ("Clicked " ++ String.fromInt model.count))
+        [ text ("Clicked " ++ String.fromInt model.count)
         , M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "add" ] [])
         ]
         |> M3e.Element.toNode
