@@ -53,6 +53,26 @@ test("checkbox aria-label -> M3e.Aria.label setter", () => {
   });
 });
 
+// Universal HTML attributes (id/for/class/style) are settable on ANY component
+// via M3e.Attributes (open-row Attr), mirroring the universal aria path. `style`
+// parses the raw "k: v; k2: v2" string into a list of (k, v) tuples (CSS custom
+// properties survive). `for` here is universal because m3e-checkbox has no typed
+// `for` setter (components that DO map `for` keep their typed setter — see below).
+test("top: universal id/for/class/style via M3e.Attributes; style -> tuples", () => {
+  const html = `<m3e-checkbox id="c1" class="a b" style="color: red; --x: 1px" for="ctrl" checked></m3e-checkbox>`;
+  assert.deepEqual(conv(html), {
+    code: `M3e.Checkbox.view [ M3e.Attributes.id "c1", M3e.Attributes.class "a b", M3e.Attributes.style [ ( "color", "red" ), ( "--x", "1px" ) ], M3e.Attributes.for "ctrl", M3e.Checkbox.checked True ] []`,
+  });
+});
+
+// A component that DOES declare `for` (m3e-app-bar) keeps its TYPED setter; the
+// universal fallback only fires when no typed setter exists.
+test("top: typed `for` (m3e-app-bar) is preserved, not overridden by universal", () => {
+  assert.deepEqual(conv(`<m3e-app-bar for="scrollContainer"></m3e-app-bar>`), {
+    code: `M3e.AppBar.view [ M3e.AppBar.for "scrollContainer" ] []`,
+  });
+});
+
 // Default content is optional at the type level (List Content; required-ness is
 // an elm-review concern), so a childless icon-button converts to an empty-content
 // view rather than skipping.
@@ -120,24 +140,20 @@ test("string attr with escaping", () => {
   });
 });
 
-// A genuinely unmappable attr (not id/class/style/data-*, no oracle setter)
+// A genuinely unmappable attr (not id/for/class/style/data-*, no oracle setter)
 // still short-circuits the example — we stay conservative about dropping.
 test("skip on unmapped attr", () => {
-  const r = conv(`<m3e-button data-foo="x" for="y">Hi</m3e-button>`);
-  assert.ok(r.skip && /for/.test(r.skip));
+  const r = conv(`<m3e-button data-foo="x" wibble="y">Hi</m3e-button>`);
+  assert.ok(r.skip && /wibble/.test(r.skip));
 });
 
-// Non-structural presentational/identity attrs (id/class/style/data-*) on an
-// m3e element are DROPPED (not skipped), matching plain-HTML behavior.
-test("m3e element with id/class is converted (attrs dropped), not skipped", () => {
+// Universal id/class/style on an m3e element now emit M3e.Attributes setters
+// (no longer dropped), alongside the component's own typed setters.
+test("m3e element with id/class emits universal M3e.Attributes setters", () => {
   const r = conv(`<m3e-button variant="filled" id="x" class="y">Go</m3e-button>`);
-  assert.ok(
-    r.code &&
-      /M3e\.Button\.view \[ M3e\.Button\.variant M3e\.Value\.filled \]/.test(
-        r.code,
-      ),
-  );
-  assert.ok(!/id|class/.test(r.code));
+  assert.deepEqual(r, {
+    code: `M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Attributes.id "x", M3e.Attributes.class "y" ] [ Kit.text "Go" ]`,
+  });
 });
 
 test("skip on unknown m3e tag", () => {
@@ -316,6 +332,23 @@ test("bottom: aria-label via M3e.Cem.Html.Aria.label + typed bool", () => {
   });
 });
 
+// Universal id/for/class/style: M3e.Attributes at the middle layer (open-row
+// Attr), M3e.Cem.Html.Attributes at the bottom (raw Html.Attribute). Mirrors the
+// universal aria path; `style` parses to (k, v) tuples on both layers.
+test("middle: universal id/for/class/style via M3e.Attributes", () => {
+  const html = `<m3e-checkbox id="c1" class="a b" style="color: red; --x: 1px" for="ctrl" checked></m3e-checkbox>`;
+  assert.deepEqual(mid(html), {
+    code: `M3e.Cem.Checkbox.checkbox [ M3e.Attributes.id "c1", M3e.Attributes.class "a b", M3e.Attributes.style [ ( "color", "red" ), ( "--x", "1px" ) ], M3e.Attributes.for "ctrl", M3e.Cem.Checkbox.checked True ] []`,
+  });
+});
+
+test("bottom: universal id/for/class/style via M3e.Cem.Html.Attributes", () => {
+  const html = `<m3e-checkbox id="c1" class="a b" style="color: red; --x: 1px" for="ctrl" checked></m3e-checkbox>`;
+  assert.deepEqual(bot(html), {
+    code: `M3e.Cem.Html.Checkbox.checkbox [ M3e.Cem.Html.Attributes.id "c1", M3e.Cem.Html.Attributes.class "a b", M3e.Cem.Html.Attributes.style [ ( "color", "red" ), ( "--x", "1px" ) ], M3e.Cem.Html.Attributes.for "ctrl", M3e.Cem.Html.Checkbox.checked True ] []`,
+  });
+});
+
 test("mid/bottom: plain text-only button", () => {
   assert.deepEqual(mid(`<m3e-button variant="tonal">Tonal</m3e-button>`), {
     code: `M3e.Cem.Button.button [ M3e.Cem.Button.variant M3e.Value.tonal ] [ Html.text "Tonal" ]`,
@@ -355,7 +388,7 @@ test("numeric attribute -> Float literal (no quotes) at all layers", () => {
 
 test("void elements (<hr>/<br>) are 0-arg Native values, not called with args", () => {
   assert.deepEqual(conv(`<m3e-menu id="m"><hr></m3e-menu>`), {
-    code: `M3e.Menu.view [] [ Native.hr ]`,
+    code: `M3e.Menu.view [ M3e.Attributes.id "m" ] [ Native.hr ]`,
   });
 });
 

@@ -42,6 +42,39 @@ const ARIA_SETTER = {
   "aria-hidden": "hidden",
 };
 
+// Universal HTML attributes: like Aria, these are settable on ANY component
+// (independent of the phantom rows) via the `Attributes` modules. Top/middle
+// layers use `M3e.Attributes` (open-row `Attr capability msg`); the bottom layer
+// uses `M3e.Cem.Html.Attributes` (`Html.Attribute msg`). The setter name equals
+// the HTML attr name for all four. Only emitted when a component exposes NO
+// typed setter for the name (the typed lookup runs first), so a component that
+// DOES map e.g. `for` (m3e-app-bar) keeps its own typed setter.
+const UNIVERSAL_ATTR = new Set(["id", "for", "class", "style"]);
+
+/** Parse a raw HTML `style="k: v; k2: v2"` string into an Elm tuple-list source
+ * `[ ( "k", "v" ), … ]`. Splits on `;` then the first `:`; trims each side; drops
+ * empty declarations. Feeds `M3e.Attributes.style` / `M3e.Cem.Html.Attributes.style`
+ * (both take `List ( String, String )`). */
+function styleTuples(value) {
+  const pairs = [];
+  for (const decl of value.split(";")) {
+    const i = decl.indexOf(":");
+    if (i === -1) continue;
+    const k = decl.slice(0, i).trim();
+    const v = decl.slice(i + 1).trim();
+    if (k === "" || v === "") continue;
+    pairs.push(`( "${escapeElmString(k)}", "${escapeElmString(v)}" )`);
+  }
+  return pairs.length ? `[ ${pairs.join(", ")} ]` : "[]";
+}
+
+/** Emit a universal HTML-attribute setter (id/for/class/style) qualified by the
+ * layer's `Attributes` module. Mirrors the `ARIA_SETTER` universal path. */
+function universalAttrExpr(mod, name, value) {
+  if (name === "style") return `${mod}.style ${styleTuples(value)}`;
+  return `${mod}.${name} "${escapeElmString(value)}"`;
+}
+
 /** Validate + normalize a numeric attribute value to an Elm number literal.
  * Accepts an optional sign, integer, or simple decimal (Elm rejects `.5`/`5.`).
  * A non-numeric value skips (the compile gate would reject it anyway). */
@@ -59,10 +92,9 @@ function numberLiteral(value, tag, name) {
 // this is the m3e-element equivalent for the known-safe set. Anything NOT in
 // this set (and without an oracle setter) is still conservatively skipped.
 const isDroppableAttr = (name) =>
-  name === "id" ||
-  name === "class" ||
-  name === "style" ||
-  // Docs-site TOC marker; no Elm setter -> drop (like id/class).
+  // NOTE: id/class/style/for are no longer dropped here — they emit universal
+  // setters via `UNIVERSAL_ATTR`/`universalAttrExpr` (checked before this).
+  // Docs-site TOC marker; no Elm setter -> drop.
   name === "m3e-toc-ignore" ||
   // Global HTML attrs with no universal Elm setter. Only reached when the
   // component itself exposes no typed setter for the attr (the setter path
@@ -359,18 +391,18 @@ function elementToElm(node, oracle) {
 
     const attr = entry.attributes.find((a) => a.htmlName === name);
     if (!attr) {
-      // Non-structural presentational/identity attrs (id/class/style/data-*)
-      // have no typed setter: drop them (with a log) rather than skipping the
-      // whole example. Anything else genuinely unmappable still skips.
-      //
-      // DEFERRED (WS3d-universal, needs WS-CEM): once elm-cem ships universal
-      // `M3e.id`/`M3e.for`/`M3e.class`/`M3e.style` setters (settable on any
-      // component, like `M3e.Aria.*`), emit those here for `id`/`class`/`style`
-      // on m3e components instead of dropping — mirror the `ARIA_SETTER` path
-      // above. NOT done now: those setters are not in the committed library yet,
-      // and emitting them would fail to compile. The controller wires this at
-      // integration after the library regen. (Native/plain elements already
-      // carry these via `Native.attribute` / `Html.Attributes.attribute`.)
+      // Universal HTML-attribute setters (id/for/class/style): settable on ANY
+      // component via `M3e.Attributes` (open-row `Attr`), mirroring the Aria
+      // path. Reached only when the component exposes no typed setter for the
+      // name (the typed lookup above ran first), so a component that DOES map
+      // `for` (e.g. m3e-app-bar) keeps its own typed setter.
+      if (UNIVERSAL_ATTR.has(name)) {
+        attrExprs.push(universalAttrExpr("M3e.Attributes", name, value));
+        continue;
+      }
+      // Other non-structural attrs (data-*, hidden, autofocus, toc marker) have
+      // no typed setter: drop them (with a log) rather than skipping the whole
+      // example. Anything else genuinely unmappable still skips.
       if (isDroppableAttr(name)) {
         droppedAttrs.push({ tag, name, value });
         continue;
@@ -703,6 +735,16 @@ function cemNodeToElm(node, oracle, layer, slotName) {
     const typed = cemTypedAttr(entry, layer, name, value);
     if (typed != null) {
       attrExprs.push(typed);
+      continue;
+    }
+    // Universal HTML-attribute setters (id/for/class/style): `M3e.Attributes` at
+    // the middle layer (open-row `Attr`), `M3e.Cem.Html.Attributes` at the bottom
+    // (raw `Html.Attribute`). Mirrors the Aria universal path; reached only when
+    // the component has no typed setter for the name.
+    if (UNIVERSAL_ATTR.has(name)) {
+      const attrMod =
+        layer === "bottom" ? "M3e.Cem.Html.Attributes" : "M3e.Attributes";
+      attrExprs.push(universalAttrExpr(attrMod, name, value));
       continue;
     }
     if (isDroppableAttr(name)) {
