@@ -8,4 +8,8 @@ test("drawer groups components by category", async ({ page }) => {
   for (const c of ["Actions","Communication","Containment","Navigation","Selection","Text inputs","Layout & style"]) {
     await expect(page.getByText(c, { exact: true }).first()).toBeVisible();
   }
+  // The "Components" nav group auto-opens on any /components/* route
+  // (Shared.componentsGroup), so the "All components" leaf is already visible
+  // without an extra expand click.
+  await expect(page.getByRole("link", { name: "All components" })).toBeVisible();
 });
