@@ -1,0 +1,4 @@
+# Default owner for everything in this repo.
+# The M3e.* library under packages/m3e/src is generated — changes there should come
+# from the generator (elm-cem/) or config/, not hand-edits.
+* @jackhp95

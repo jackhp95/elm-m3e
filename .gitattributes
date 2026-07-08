@@ -1,0 +1,18 @@
+# Normalize line endings across platforms.
+* text=auto eol=lf
+
+# Keep dev-only paths out of `git archive` / GitHub source tarballs.
+/docs                 export-ignore
+/tests                export-ignore
+/review               export-ignore
+/.github              export-ignore
+/.gitattributes       export-ignore
+/.gitignore           export-ignore
+/CONTRIBUTING.md      export-ignore
+/CODE_OF_CONDUCT.md   export-ignore
+/SECURITY.md          export-ignore
+config                export-ignore
+
+# Mark generated/lock files so diffs and language stats treat them as generated.
+package-lock.json     linguist-generated=true
+packages/m3e/src/**   linguist-generated=true

@@ -1,5 +1,8 @@
 # elm-m3e · `M3e.*` — type-safe Material 3 Expressive for Elm
 
+[![CI](https://github.com/jackhp95/elm-m3e/actions/workflows/ci.yml/badge.svg)](https://github.com/jackhp95/elm-m3e/actions/workflows/ci.yml)
+[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE)
+
 A **Make-Impossible-States-Impossible** Elm surface over matraic's
 [`@m3e/web`](https://github.com/matraic/m3e) Material 3 Expressive web components.
 The invariant is the **Material 3 spec + accessibility**, not the DOM: slots are
