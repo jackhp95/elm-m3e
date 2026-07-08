@@ -47,6 +47,13 @@ M3e.DrawerContainer.view [ M3e.DrawerContainer.start True, M3e.DrawerContainer.s
 M3e.DrawerContainer.view [ M3e.DrawerContainer.end True, M3e.DrawerContainer.endMode M3e.Value.side, M3e.DrawerContainer.endDivider True ] [ M3e.DrawerContainer.endSlot (Native.div [] [ Kit.text "End drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
 ```
 
+<!-- elm-cem:example title="Toggle" -->
+```elm
+[ M3e.IconButton.view [ M3e.Aria.label "Menu", M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "menu_open" ] []), M3e.Icon.view [ M3e.Icon.name "menu" ] [], M3e.DrawerToggle.view [ M3e.DrawerToggle.for "nav-drawer" ] [] ]
+    , M3e.DrawerContainer.view [ M3e.DrawerContainer.startMode M3e.Value.over ] [ M3e.DrawerContainer.startSlot (Native.div [] [ Kit.text "Start drawer" ]), Native.div [] [ Kit.text "Main content" ] ]
+    ]
+```
+
 <!-- elm-cem:example title="Accessibility" -->
 ```elm
 M3e.DrawerContainer.view [] [ M3e.DrawerContainer.startSlot (Native.nav [] []), M3e.DrawerContainer.endSlot (Native.node Html.aside [] []), Native.node Html.main_ [] [] ]

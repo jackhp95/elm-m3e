@@ -18,6 +18,42 @@ Provides a wizard-like workflow by dividing content into logical steps.
 - `step`: Renders a step.
 - `panel`: Renders a panel.
 
+<!-- elm-cem:docmeta category=Navigation -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Basic usage" -->
+```elm
+M3e.Stepper.view [] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step1" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step2" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step3" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name" (Native.node Html.label [] [ Kit.text "Name" ]), M3e.FormField.control "name" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address" (Native.node Html.label [] [ Kit.text "Address" ]), M3e.FormField.control "address" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]), Kit.text "Done" ]) ]
+```
+
+<!-- elm-cem:example title="Orientation" -->
+```elm
+M3e.Stepper.view [ M3e.Stepper.orientation M3e.Value.vertical ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step4" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step5" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step6" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name2" (Native.node Html.label [] [ Kit.text "Name" ]), M3e.FormField.control "name2" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address2" (Native.node Html.label [] [ Kit.text "Address" ]), M3e.FormField.control "address2" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]), Kit.text "Done" ]) ]
+```
+
+<!-- elm-cem:example title="Header positions" -->
+```elm
+M3e.Stepper.view [ M3e.Stepper.headerPosition M3e.Value.below ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step7" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step8" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step9" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name3" (Native.node Html.label [] [ Kit.text "Name" ]), M3e.FormField.control "name3" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address3" (Native.node Html.label [] [ Kit.text "Address" ]), M3e.FormField.control "address3" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]), Kit.text "Done" ]) ]
+```
+
+<!-- elm-cem:example title="Label positions" -->
+```elm
+M3e.Stepper.view [ M3e.Stepper.labelPosition M3e.Value.below ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step10" ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step11" ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step12" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name4" (Native.node Html.label [] [ Kit.text "Name" ]), M3e.FormField.control "name4" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address4" (Native.node Html.label [] [ Kit.text "Address" ]), M3e.FormField.control "address4" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]), Kit.text "Done" ]) ]
+```
+
+<!-- elm-cem:example title="Stepper buttons" -->
+```elm
+M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]) ]
+```
+
+<!-- elm-cem:example title="Linear stepper" -->
+```elm
+M3e.Stepper.view [ M3e.Stepper.linear True ] [ M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step13", M3e.Step.editable True ] [ Kit.text "Fill out your name" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step14", M3e.Step.editable True ] [ Kit.text "Fill out your address" ]), M3e.Stepper.step (M3e.Step.view [ M3e.Step.for "step15" ] [ Kit.text "Done" ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "name5" (Native.node Html.label [] [ Kit.text "Name" ]), M3e.FormField.control "name5" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperNext.view [] [ Kit.text "Next" ] ] ]), Native.node Html.form [] [ M3e.FormField.view [] [ M3e.FormField.label "address5" (Native.node Html.label [] [ Kit.text "Address" ]), M3e.FormField.control "address5" (Native.node Html.input [] []) ] ] ]), M3e.Stepper.panel (M3e.StepPanel.view [] [ M3e.StepPanel.actions (Native.div [] [ M3e.Button.view [] [ M3e.StepperPrevious.view [] [ Kit.text "Back" ] ], M3e.Button.view [] [ M3e.StepperReset.view [] [ Kit.text "Reset" ] ] ]), Kit.text "Done" ]) ]
+```
+
 @docs view, headerPosition, labelPosition, linear, orientation, onChange
 @docs onBeforeinput, onInput, step, panel
 -}

@@ -10,6 +10,17 @@ A menu, opened from a floating action button (FAB), used to display multiple rel
 - `beforetoggle`: Dispatched before the toggle state changes.
 - `toggle`: Dispatched after the toggle state has changed.
 
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Icons" -->
+```elm
+M3e.FabMenuItem.view [] [ M3e.FabMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "email", M3e.Icon.filled True ] []), Kit.text "Email" ]
+```
+
 @docs view, variant, onBeforetoggle, onToggle
 -}
 

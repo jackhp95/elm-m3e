@@ -1,13 +1,21 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Plan 3 B3 — the per-component Usage section renders:
- *   1. a "Usage" heading appears above the "API" heading,
- *   2. the live preview (<raw-html>) populates and its <m3e-*> upgrades
- *      (has a shadowRoot), inheriting the page theme,
- *   3. a code block shows the derived M3e Elm.
+ * The per-component Usage section renders a live preview plus the derived Elm
+ * across the available API surfaces, switched by a per-example tab strip.
+ *
+ * Two rendering facts shape these assertions:
+ *  - the code is syntax-highlighted, so a token like `M3e.button` is split
+ *    across multiple spans (no single leaf holds it contiguously), and
+ *  - long code blocks fold into a closed `<details class="cf-fold">`, and every
+ *    surface's panel is mounted at once (the tab strip slides between them, with
+ *    inactive panels `inert`/off-screen).
+ * So we assert code *presence* (`toBeAttached`) and reserve visibility checks for
+ * stable, unfolded anchors (the Usage heading and the tab strip). The top surface
+ * is barrelised (ADR 15 / the example pipeline), so the `M3e` tab shows the flat
+ * barrel `M3e.button`, not `M3e.Button.view`.
  */
-test("/components/button shows a live Usage section with code", async ({
+test("/components/button shows a live Usage section with preview + code", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -19,7 +27,6 @@ test("/components/button shows a live Usage section with code", async ({
   await page.goto("/components/button");
   // Not `waitForLoadState("networkidle")`: the elm-pages dev server holds a
   // long-lived `/stream` SSE connection open, so network idle never fires.
-  // Wait deterministically for the live preview to populate and upgrade.
   await page.waitForFunction(() => {
     const hosts = [...document.querySelectorAll("raw-html")];
     return hosts
@@ -30,50 +37,44 @@ test("/components/button shows a live Usage section with code", async ({
   // (1) Usage heading present.
   await expect(page.getByText("Usage", { exact: true }).first()).toBeVisible();
 
-  // (2) The live preview populated and upgraded: a raw-html host contains an
-  //     m3e-button that has a shadowRoot.
+  // (2) The live preview populated and upgraded.
   const upgraded = await page.evaluate(() => {
     const hosts = [...document.querySelectorAll("raw-html")];
-    const btn = hosts
+    return hosts
       .flatMap((h) => [...h.querySelectorAll("m3e-button")])
-      .find((el) => (el as HTMLElement & { shadowRoot: unknown }).shadowRoot);
-    return Boolean(btn);
+      .some((el) => Boolean((el as HTMLElement & { shadowRoot: unknown }).shadowRoot));
   });
   expect(upgraded).toBe(true);
 
-  // (3) The code block shows the M3e Elm the preview was derived from.
-  await expect(page.getByText("M3e.Button.view").first()).toBeVisible();
+  // (3) The derived M3e (barrel) code is rendered (attached; may be folded).
+  await expect(page.getByText("M3e.button").first()).toBeAttached();
 
   expect(errors, `console errors:\n${errors.join("\n")}`).toEqual([]);
 });
 
-test("the API-layer toggle switches Usage code across all four layers", async ({
+test("/components/button renders code for every available API surface", async ({
   page,
 }) => {
   await page.goto("/components/button");
-  // Not `waitForLoadState("networkidle")` (the dev server's `/stream` SSE never
-  // idles). The `toBeVisible` assertions below already auto-wait.
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll("code.elmsh")].some((c) =>
+      (c.textContent || "").includes("M3e.button"),
+    ),
+  );
 
-  // Default layer = Top: strict M3e.* Elm.
-  await expect(page.getByText("M3e.Button.view").first()).toBeVisible();
+  // Each surface's panel is mounted, so all four code shapes are present. Match on
+  // the containing element (highlighting fragments the token across spans).
+  for (const code of [
+    "M3e.button", // M3e (top, barrelised)
+    "M3e.Cem.Button.button", // M3e.Cem (middle)
+    "M3e.Cem.Html.Button.button", // M3e.Cem.Html (bottom)
+    "<m3e-button", // raw HTML
+  ]) {
+    await expect(page.getByText(code).first()).toBeAttached();
+  }
 
-  await page.locator('[aria-label="Theme settings"]').click();
-
-  // Middle -> M3e.Cem.Button.button
-  await page.getByText("Middle", { exact: true }).click();
-  await expect(page.getByText("M3e.Cem.Button.button").first()).toBeVisible();
-
-  // Bottom -> M3e.Cem.Html.Button.button
-  await page.getByText("Bottom", { exact: true }).click();
-  await expect(
-    page.getByText("M3e.Cem.Html.Button.button").first(),
-  ).toBeVisible();
-
-  // HTML -> raw <m3e-button ...> markup
-  await page.getByText("HTML", { exact: true }).click();
-  await expect(page.getByText("<m3e-button").first()).toBeVisible();
-
-  // Back to Top.
-  await page.getByText("Top", { exact: true }).click();
-  await expect(page.getByText("M3e.Button.view").first()).toBeVisible();
+  // The layer tab strip is rendered and interactive (labels are the module names).
+  const cemTab = page.getByText("M3e.Cem", { exact: true }).first();
+  await expect(cemTab).toBeVisible();
+  await cemTab.click();
 });

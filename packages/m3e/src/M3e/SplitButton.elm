@@ -12,6 +12,47 @@ A button used to show an action with a menu of related actions.
 - `leading-button`: The leading button used to perform the primary action.
 - `trailing-button`: The trailing icon button used to open a menu of related actions.
 
+<!-- elm-cem:docmeta category=Actions -->
+
+## Examples
+
+### Examples
+
+<!-- elm-cem:example title="Anatomy" -->
+```elm
+[ M3e.SplitButton.view [] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu" ] [] ]) ]
+    , M3e.Menu.view [ M3e.Menu.positionX M3e.Value.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
+    ]
+```
+
+<!-- elm-cem:example title="Variants" -->
+```elm
+[ M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.filled ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.tonal ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.outlined ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.variant M3e.Value.elevated ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu1" ] [] ]) ]
+    , M3e.Menu.view [ M3e.Menu.positionX M3e.Value.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
+    ]
+```
+
+<!-- elm-cem:example title="Sizes" -->
+```elm
+[ M3e.SplitButton.view [ M3e.SplitButton.size M3e.Value.extraSmall ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Value.small ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Value.medium ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Value.large ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
+    , M3e.SplitButton.view [ M3e.SplitButton.size M3e.Value.extraLarge ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu2" ] [] ]) ]
+    , M3e.Menu.view [ M3e.Menu.positionX M3e.Value.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
+    ]
+```
+
+<!-- elm-cem:example title="Density" -->
+```elm
+[ M3e.SplitButton.view [ M3e.SplitButton.size M3e.Value.extraSmall ] [ M3e.SplitButton.leadingButton (M3e.Button.view [] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "edit" ] []), Kit.text "Edit" ]), M3e.SplitButton.trailingButton (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "keyboard_arrow_down" ] [], M3e.MenuTrigger.view [ M3e.MenuTrigger.for "menu3" ] [] ]) ]
+    , M3e.Menu.view [ M3e.Menu.positionX M3e.Value.before ] [ M3e.MenuItem.view [] [ Kit.text "Rename" ], M3e.MenuItem.view [] [ Kit.text "Copy" ], M3e.MenuItem.view [] [ Kit.text "Delete" ] ]
+    ]
+```
+
 @docs view, variant, size, leadingButton, trailingButton
 -}
 

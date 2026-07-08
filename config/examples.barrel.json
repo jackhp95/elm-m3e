@@ -26,16 +26,16 @@
     "[ M3e.button [ M3e.variantOutlined ] [ Kit.text \"Button\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAboveAfter ] [ Kit.text \"AA\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAboveBefore ] [ Kit.text \"AB\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBelowBefore ] [ Kit.text \"BB\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBelowAfter ] [ Kit.text \"BA\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBefore ] [ Kit.text \"BE\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAfter ] [ Kit.text \"AF\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionAbove ] [ Kit.text \"A\" ]\n    , M3e.badge [ M3e.attrFor \"btn\", M3e.positionBelow ] [ Kit.text \"B\" ]\n    ]"
   ],
   "BottomSheet": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet\" ] [ Kit.text \"Open bottom sheet\" ] ]\n    , M3e.bottomSheet [] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet2\" ] [ Kit.text \"Open modal bottom sheet\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet3\" ] [ Kit.text \"Open draggable modal bottom sheet\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet4\" ] [ Kit.text \"Open draggable modal bottom sheet with detents\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet7\" ] [ Kit.text \"Open draggable modal bottom sheet with detents at half\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True, M3e.attrDetent 1 ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet8\", M3e.attrDetent 1 ] [ Kit.text \"Open draggable modal bottom sheet with detents at half via trigger\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet9\" ] [ Kit.text \"Open draggable modal bottom sheet with detents at collapsed with custom peek\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet5\" ] [ Kit.text \"Open hideable modal bottom sheet\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True, M3e.attrHideable True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet6\" ] [ Kit.text \"Open hideable modal bottom sheet with detents\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True, M3e.attrHideable True ] [ M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.bottomSheetTrigger [ M3e.attrFor \"bottomSheet10\" ] [ Kit.text \"Open hideable modal bottom sheet with detents and header\" ] ]\n    , M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True, M3e.attrHideable True, M3e.ariaLabelledby \"sheetTitle\" ] [ M3e.slotHeader (M3e.heading [ M3e.variantTitle, M3e.sizeLarge ] [ Kit.text \"Choose a destination\" ]), M3e.actionList [] [ M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Add to a note\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Keep\" ] ], M3e.listAction [] [ M3e.slotSupportingText (Native.span [] [ Kit.text \"Embed in a document\" ]), M3e.bottomSheetAction [] [ Kit.text \"Google Docs\" ] ] ] ]\n    ]",
     "M3e.bottomSheet [ M3e.attrModal True, M3e.attrHandle True, M3e.attrHideable True ] [ M3e.slotHeader (M3e.heading [ M3e.variantTitle, M3e.sizeLarge ] [ Kit.text \"Choose a destination\" ]) ]"
   ],
   "Breadcrumb": [
@@ -137,8 +137,8 @@
   ],
   "Dialog": [
     null,
-    null,
-    null
+    "[ M3e.button [ M3e.variantFilled ] [ M3e.dialogTrigger [ M3e.attrFor \"dlg\" ] [ Kit.text \"Open Dialog\" ] ]\n    , M3e.dialog [ M3e.attrDismissible True ] []\n    ]",
+    "M3e.button [] [ M3e.dialogAction [ M3e.attrReturnValue \"ok\" ] [ Kit.text \"Close\" ] ]"
   ],
   "Divider": [
     "M3e.list [] [ M3e.listItem [] [ Kit.text \"Item 1\" ], M3e.divider [] [], M3e.listItem [] [ Kit.text \"Item 2\" ], M3e.divider [] [], M3e.listItem [] [ Kit.text \"Item 3\" ] ]",
@@ -151,7 +151,7 @@
     "M3e.drawerContainer [ M3e.attrStart True, M3e.startModePush ] [ M3e.slotStart (Native.div [] [ Kit.text \"Start drawer\" ]), Native.div [] [ Kit.text \"Main content\" ] ]",
     "M3e.drawerContainer [ M3e.attrStart True, M3e.startModeOver ] [ M3e.slotStart (Native.div [] [ Kit.text \"Start drawer\" ]), Native.div [] [ Kit.text \"Main content\" ] ]",
     "M3e.drawerContainer [ M3e.attrEnd True, M3e.endModeSide, M3e.attrEndDivider True ] [ M3e.slotEnd (Native.div [] [ Kit.text \"End drawer\" ]), Native.div [] [ Kit.text \"Main content\" ] ]",
-    null,
+    "[ M3e.iconButton [ M3e.ariaLabel \"Menu\", M3e.attrToggle True ] [ M3e.slotSelected (M3e.icon [ M3e.attrName \"menu_open\" ] []), M3e.icon [ M3e.attrName \"menu\" ] [], M3e.drawerToggle [ M3e.attrFor \"nav-drawer\" ] [] ]\n    , M3e.drawerContainer [ M3e.startModeOver ] [ M3e.slotStart (Native.div [] [ Kit.text \"Start drawer\" ]), Native.div [] [ Kit.text \"Main content\" ] ]\n    ]",
     "M3e.drawerContainer [] [ M3e.slotStart (Native.nav [] []), M3e.slotEnd (Native.node Html.aside [] []), Native.node Html.main_ [] [] ]"
   ],
   "ExpansionPanel": [
@@ -175,7 +175,7 @@
   "FabMenu": [
     null,
     null,
-    null,
+    "M3e.fabMenuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"email\", M3e.attrFilled True ] []), Kit.text \"Email\" ]",
     null,
     null
   ],
@@ -244,15 +244,15 @@
     "[ M3e.loadingIndicator [] []\n    , M3e.loadingIndicator [ M3e.variantContained ] []\n    ]"
   ],
   "Menu": [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu1\" ] [ Kit.text \"Menu\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ Kit.text \"Item 1\" ], M3e.menuItem [] [ Kit.text \"Item 2\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"vmenu1\" ] [ Kit.text \"Vibrant menu\" ] ]\n    , M3e.menu [ M3e.variantVibrant ] [ M3e.menuItem [] [ Kit.text \"Item 1\" ], M3e.menuItem [] [ Kit.text \"Item 2\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu8\" ] [ Kit.text \"Menu items with icons\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"dialpad\" ] []), Kit.text \"Redial\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"voicemail\" ] []), Kit.text \"Check voice mail\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"notifications_off\" ] []), Kit.text \"Disable alerts\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu9\" ] [ Kit.text \"Menu with disabled items\" ] ]\n    , M3e.menu [] [ M3e.menuItem [ M3e.attrDisabled True ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"dialpad\" ] []), Kit.text \"Redial\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"voicemail\" ] []), Kit.text \"Check voice mail\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"notifications_off\" ] []), Kit.text \"Disable alerts\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu2\" ] [ Kit.text \"Menu with checkboxes\" ] ]\n    , M3e.menu [] [ M3e.menuItemCheckbox [ M3e.attrChecked True ] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"format_bold\" ] []), Kit.text \"Bold\" ], M3e.menuItemCheckbox [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"format_italic\" ] []), Kit.text \"Italic\" ], M3e.menuItemCheckbox [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"format_underlined\" ] []), Kit.text \"Underline\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu3\" ] [ Kit.text \"Menu with radios\" ] ]\n    , M3e.menu [] [ M3e.menuItemRadio [ M3e.attrChecked True ] [ Kit.text \"Ascending\" ], M3e.menuItemRadio [] [ Kit.text \"Descending\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu4\" ] [ Kit.text \"Menu with radio groups\" ] ]\n    , M3e.menu [] [ M3e.menuItemGroup [] [ M3e.menuItemRadio [ M3e.attrChecked True ] [ Kit.text \"Ascending\" ], M3e.menuItemRadio [] [ Kit.text \"Descending\" ] ], M3e.divider [] [], M3e.menuItemGroup [] [ M3e.menuItemRadio [ M3e.attrChecked True ] [ Kit.text \"Alphabetical\" ], M3e.menuItemRadio [] [ Kit.text \"By Date\" ] ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu5\" ] [ Kit.text \"Menu with submenus\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ M3e.menuTrigger [ M3e.attrFor \"menu6\" ] [ Kit.text \"Fruits with A\" ] ], M3e.menuItem [] [ Kit.text \"Grapes\" ], M3e.menuItem [] [ Kit.text \"Olive\" ], M3e.menuItem [] [ Kit.text \"Orange\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ Kit.text \"Apricot\" ], M3e.menuItem [] [ Kit.text \"Avocado\" ], M3e.menuItem [] [ M3e.menuTrigger [ M3e.attrFor \"menu7\" ] [ Kit.text \"Apples\" ] ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ Kit.text \"Fuji\" ], M3e.menuItem [] [ Kit.text \"Granny Smith\" ], M3e.menuItem [] [ Kit.text \"Red Delicious\" ] ]\n    ]",
+    "[ M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu-density-3\" ] [ Kit.text \"Density -3\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 1\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 2\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 3\" ] ]\n    , M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu-density-2\" ] [ Kit.text \"Density -2\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 1\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 2\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 3\" ] ]\n    , M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu-density-1\" ] [ Kit.text \"Density -1\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 1\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 2\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 3\" ] ]\n    , M3e.button [] [ M3e.menuTrigger [ M3e.attrFor \"menu-density-0\" ] [ Kit.text \"Density 0\" ] ]\n    , M3e.menu [] [ M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 1\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 2\" ], M3e.menuItem [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"stars\" ] []), Kit.text \"Item 3\" ] ]\n    ]"
   ],
   "NavBar": [
     null,
@@ -355,10 +355,10 @@
     "M3e.button [] [ Kit.text \"Delete file\" ]"
   ],
   "SplitButton": [
-    null,
-    null,
-    null,
-    null
+    "[ M3e.splitButton [] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu\" ] [] ]) ]\n    , M3e.menu [ M3e.positionXBefore ] [ M3e.menuItem [] [ Kit.text \"Rename\" ], M3e.menuItem [] [ Kit.text \"Copy\" ], M3e.menuItem [] [ Kit.text \"Delete\" ] ]\n    ]",
+    "[ M3e.splitButton [ M3e.variantFilled ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu1\" ] [] ]) ]\n    , M3e.splitButton [ M3e.variantTonal ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu1\" ] [] ]) ]\n    , M3e.splitButton [ M3e.variantOutlined ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu1\" ] [] ]) ]\n    , M3e.splitButton [ M3e.variantElevated ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu1\" ] [] ]) ]\n    , M3e.menu [ M3e.positionXBefore ] [ M3e.menuItem [] [ Kit.text \"Rename\" ], M3e.menuItem [] [ Kit.text \"Copy\" ], M3e.menuItem [] [ Kit.text \"Delete\" ] ]\n    ]",
+    "[ M3e.splitButton [ M3e.sizeExtraSmall ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu2\" ] [] ]) ]\n    , M3e.splitButton [ M3e.sizeSmall ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu2\" ] [] ]) ]\n    , M3e.splitButton [ M3e.sizeMedium ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu2\" ] [] ]) ]\n    , M3e.splitButton [ M3e.sizeLarge ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu2\" ] [] ]) ]\n    , M3e.splitButton [ M3e.sizeExtraLarge ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu2\" ] [] ]) ]\n    , M3e.menu [ M3e.positionXBefore ] [ M3e.menuItem [] [ Kit.text \"Rename\" ], M3e.menuItem [] [ Kit.text \"Copy\" ], M3e.menuItem [] [ Kit.text \"Delete\" ] ]\n    ]",
+    "[ M3e.splitButton [ M3e.sizeExtraSmall ] [ M3e.slotLeadingButton (M3e.button [] [ M3e.slotIcon (M3e.icon [ M3e.attrName \"edit\" ] []), Kit.text \"Edit\" ]), M3e.slotTrailingButton (M3e.iconButton [] [ M3e.icon [ M3e.attrName \"keyboard_arrow_down\" ] [], M3e.menuTrigger [ M3e.attrFor \"menu3\" ] [] ]) ]\n    , M3e.menu [ M3e.positionXBefore ] [ M3e.menuItem [] [ Kit.text \"Rename\" ], M3e.menuItem [] [ Kit.text \"Copy\" ], M3e.menuItem [] [ Kit.text \"Delete\" ] ]\n    ]"
   ],
   "SplitPane": [
     null,
@@ -375,7 +375,7 @@
     null,
     null,
     null,
-    null,
+    "M3e.stepPanel [] [ M3e.slotActions (Native.div [] [ M3e.button [] [ M3e.stepperPrevious [] [ Kit.text \"Back\" ] ], M3e.button [] [ M3e.stepperNext [] [ Kit.text \"Next\" ] ] ]) ]",
     null
   ],
   "Switch": [
