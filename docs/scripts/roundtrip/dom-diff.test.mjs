@@ -53,3 +53,70 @@ test("a removed trailing root is detected", () => {
   assert.equal(r.matches, false);
   assert.ok(r.deviations.some((d) => d.kind === "removed-element"));
 });
+
+// --- cosmetic vs functional classification (WS4) ---
+
+test("a class diff is cosmetic and functionalMatches stays true", () => {
+  const r = diffHtml("<div>x</div>", '<div class="p-2 flex">x</div>');
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "class");
+  assert.ok(dev, "expected a class deviation");
+  assert.equal(dev.cosmetic, true);
+  assert.equal(r.functionalMatches, true);
+});
+
+test("a style diff is cosmetic and functionalMatches stays true", () => {
+  const r = diffHtml('<div style="color: red">x</div>', "<div>x</div>");
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "style");
+  assert.ok(dev, "expected a style deviation");
+  assert.equal(dev.cosmetic, true);
+  assert.equal(r.functionalMatches, true);
+});
+
+test("an unreferenced id diff is cosmetic", () => {
+  const r = diffHtml('<input id="bar">', "<input>");
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "id");
+  assert.ok(dev, "expected an id deviation");
+  assert.equal(dev.cosmetic, true);
+  assert.equal(r.functionalMatches, true);
+});
+
+test("an id diff referenced by a `for` on the other side is functional", () => {
+  const r = diffHtml('<input id="foo"><label for="foo">L</label>', '<input><label for="foo">L</label>');
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "id");
+  assert.ok(dev, "expected an id deviation");
+  assert.equal(dev.cosmetic, false);
+  assert.equal(r.functionalMatches, false);
+});
+
+test("an added role is cosmetic (implied ARIA role made explicit)", () => {
+  const r = diffHtml("<m3e-form-field></m3e-form-field>", '<m3e-form-field role="group"></m3e-form-field>');
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "role");
+  assert.ok(dev, "expected a role deviation");
+  assert.equal(dev.kind, "added-attr");
+  assert.equal(dev.cosmetic, true);
+  assert.equal(r.functionalMatches, true);
+});
+
+test("an added slot is cosmetic (slot placement made explicit)", () => {
+  const r = diffHtml("<m3e-drawer-container><div>x</div></m3e-drawer-container>", '<m3e-drawer-container><div slot="end">x</div></m3e-drawer-container>');
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "slot");
+  assert.ok(dev, "expected a slot deviation");
+  assert.equal(dev.kind, "added-attr");
+  assert.equal(dev.cosmetic, true);
+  assert.equal(r.functionalMatches, true);
+});
+
+test("a changed component attr (variant) is functional", () => {
+  const r = diffHtml('<m3e-button variant="filled"></m3e-button>', '<m3e-button variant="tonal"></m3e-button>');
+  assert.equal(r.matches, false);
+  const dev = r.deviations.find((d) => d.attr === "variant");
+  assert.ok(dev, "expected a variant deviation");
+  assert.equal(dev.cosmetic, false);
+  assert.equal(r.functionalMatches, false);
+});
