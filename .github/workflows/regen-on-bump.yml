@@ -1,0 +1,95 @@
+name: Regenerate on @m3e/web bump
+
+# When Dependabot (or anyone) bumps @m3e/web, regenerate packages/m3e from the new
+# Custom Elements Manifest and commit the diff back onto the PR, so the generated
+# library and the upstream web components never drift. The regen command is
+# deterministic — a no-op bump produces no commit. The existing CI workflow then
+# re-runs on the pushed commit and proves the regenerated output still compiles.
+
+on:
+  pull_request:
+    paths:
+      - "docs/package.json"
+      - "docs/pnpm-lock.yaml"
+
+# Needed to push the regenerated output back onto the PR branch.
+permissions:
+  contents: write
+
+jobs:
+  regen:
+    name: Regenerate packages/m3e
+    # Only same-repo PR branches (Dependabot pushes in-repo) — we can't push to forks.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          # PREREQUISITE: add a repo secret ELM_CEM_TOKEN — a PAT (or fine-grained
+          # token) with READ access to the private jackhp95/elm-cem generator and
+          # WRITE (contents) access to this repo. The default GITHUB_TOKEN cannot
+          # read the sibling generator repo, and pushes it makes don't re-trigger CI.
+          # Falls back to GITHUB_TOKEN so checkout still succeeds and the clone
+          # step below can emit a clear error if the secret is absent.
+          token: ${{ secrets.ELM_CEM_TOKEN || github.token }}
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Detect whether @m3e/web actually changed
+        id: changed
+        run: |
+          if git diff "origin/${{ github.event.pull_request.base.ref }}...HEAD" -- \
+               docs/pnpm-lock.yaml docs/package.json | grep -q '@m3e/web'; then
+            echo "m3e=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "m3e=false" >> "$GITHUB_OUTPUT"
+            echo "@m3e/web unchanged in this PR — skipping regen."
+          fi
+
+      - name: Install docs deps (materializes @m3e/web/dist/custom-elements.json)
+        if: steps.changed.outputs.m3e == 'true'
+        run: cd docs && pnpm install --frozen-lockfile
+
+      - name: Fetch the elm-cem generator (private, gitignored in this repo)
+        if: steps.changed.outputs.m3e == 'true'
+        env:
+          ELM_CEM_TOKEN: ${{ secrets.ELM_CEM_TOKEN }}
+        run: |
+          if [ -z "$ELM_CEM_TOKEN" ]; then
+            echo "::error::ELM_CEM_TOKEN is not set. Add a PAT with read access to \
+          jackhp95/elm-cem and write access to this repo, or vendor/submodule the \
+          generator. See .github/workflows/regen-on-bump.yml."
+            exit 1
+          fi
+          git clone --depth 1 \
+            "https://x-access-token:${ELM_CEM_TOKEN}@github.com/jackhp95/elm-cem.git" elm-cem
+          cd elm-cem && npm ci
+
+      - name: Regenerate packages/m3e
+        if: steps.changed.outputs.m3e == 'true'
+        run: |
+          node elm-cem/bin/elm-cem.js \
+            --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
+            --config-from=config/slots.json \
+            --config-from=config/native-mdn.json \
+            --config-from=config/examples.generated.json \
+            --output=packages/m3e/src
+
+      - name: Commit regenerated output to the PR
+        if: steps.changed.outputs.m3e == 'true'
+        run: |
+          # elm-cem/ is gitignored, so only the generated packages/m3e diff is staged.
+          if git diff --quiet -- packages/m3e; then
+            echo "No regen diff — generated output already matches the bumped @m3e/web."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add packages/m3e
+            git commit -m "regen(m3e): sync generated output to bumped @m3e/web"
+            git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+          fi
