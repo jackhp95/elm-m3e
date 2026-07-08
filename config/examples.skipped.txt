@@ -10,7 +10,6 @@ ButtonGroup :: Native module support (2) :: filtered: registration-only (script/
 ButtonGroup :: Native module support :: filtered: registration-only (script/link)
 Card :: Native module support :: filtered: registration-only (script/link)
 Checkbox :: Native module support :: filtered: registration-only (script/link)
-Checkbox :: Required :: degraded: top: I cannot find a `M3e.Button.type` variable: | mid: I cannot find a `M3e.Cem.Button.type` variable: | bottom: I cannot find a `M3e.Cem.Html.Button.type` variable:
 ContentPane :: Native module support :: filtered: registration-only (script/link)
 Dialog :: Anatomy :: degraded: top: The 1st argument to `header` is not what I expect:
 Fab :: Extended FABs :: degraded: top: The 1st argument to `label` is not what I expect:
@@ -21,8 +20,6 @@ FabMenu :: Links :: degraded: top: The 2nd argument to `view` is not what I expe
 FabMenu :: Native module support :: filtered: registration-only (script/link)
 FabMenu :: Variants :: degraded: top: The 2nd argument to `view` is not what I expect:
 Icon :: Variable fonts :: filtered: registration-only (script/link)
-List :: Variants :: degraded: top: The 1st argument to `variant` is not what I expect: | mid: The 1st argument to `variant` is not what I expect:
-NavBar :: Modes :: degraded: top: I cannot find a `M3e.Value.extended` variable: | mid: I cannot find a `M3e.Value.extended` variable:
 NavMenu :: Density :: degraded: top: The 1st argument to `badge` is not what I expect:
 NavMenu :: Grouping top-level items :: degraded: top: The 1st argument to `badge` is not what I expect:
 NavMenu :: Personal folders (2) :: degraded: top: The 2nd argument to `view` is not what I expect:
