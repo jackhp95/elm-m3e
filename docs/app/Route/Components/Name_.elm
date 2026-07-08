@@ -9,14 +9,13 @@ imported all 55 component modules; those are deferred — this restores the refe
 -}
 
 import BackendTask exposing (BackendTask)
-import BackendTask.File
-import Dict exposing (Dict)
+import Dict
 import Doc
-import Doc.Slider
+import Doc.Data exposing (Component, allComponents, allUsage, componentDecoder)
+import Doc.Usage as Usage exposing (UsageExample)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
-import Json.Decode as Decode
 import Kit
 import Layout
 import M3e.Card as Card
@@ -26,8 +25,6 @@ import M3e.List as List_
 import M3e.ListItem as ListItem
 import M3e.Record.Heading as Heading
 import M3e.SuggestionChip as SuggestionChip
-import M3e.Tab as Tab
-import M3e.Tabs as Tabs
 import M3e.Value as Value exposing (Supported)
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
@@ -36,79 +33,16 @@ import UrlPath exposing (UrlPath)
 import View exposing (View)
 
 
-{-| Which API surface a Usage example is shown in, by module name:
-
-  - `Top` — `M3e` (the strict Standard surface, always present)
-  - `Record` — `M3e.Record` (the ④ record-of-slots surface; per-example)
-  - `Build` — `M3e.Build` (the ⑤ pipeline surface; per-example)
-  - `Middle` — `M3e.Cem` (loose, always present)
-  - `Bottom` — `M3e.Cem.Html` (raw elm/html-flavoured, always present)
-  - `Raw` — the raw `<m3e-*>` HTML (always present)
-
-`M3e`, `M3e.Cem`, `M3e.Cem.Html` and `HTML` are verified for every example, so
-those four tabs are always offered. `M3e.Record` / `M3e.Build` are offered only
-when this example cleanly converts to that surface (its `record` / `build` field
-is non-null) — a composite gallery has no single-component record/build form, so
-those tabs are hidden rather than shown as a hollow duplicate of `M3e`.
-
--}
-type Layer
-    = Top
-    | Record
-    | Build
-    | Middle
-    | Bottom
-    | Raw
-
-
-{-| Per-example layer selection, keyed by each example's global index on the page
-(assigned before section grouping). A missing key means the example is still on
-its default top layer — so the model starts empty and only records deviations,
-and each example's tabs move independently of every other's.
--}
 type alias Model =
-    { layers : Dict Int Layer }
+    Usage.Model
 
 
-type Msg
-    = SelectLayer Int Layer
+type alias Msg =
+    Usage.Msg
 
 
 type alias RouteParams =
     { name : String }
-
-
-type alias Member =
-    { name : String, kind : String, signature : String, doc : String, role : String }
-
-
-type alias Component =
-    { name : String
-    , slug : String
-    , category : String
-    , summary : String
-    , overview : String
-    , members : List Member
-    }
-
-
-{-| A verified Usage example: its live-preview HTML and the derived Elm in each
-API surface. Every Elm surface is optional — `top`/`mid`/`bottom` (M3e /
-M3e.Cem / M3e.Cem.Html) and `record` (M3e.Record) / `build` (M3e.Build) are each
-present only when that surface compiled for this example (else `Nothing`, so the
-UI hides its tab). `html` is the one guaranteed surface — its live preview always
-renders. `section` groups examples under a sub-heading ("" = ungrouped).
--}
-type alias UsageExample =
-    { title : String
-    , section : String
-    , html : String
-    , top : Maybe String
-    , mid : Maybe String
-    , bottom : Maybe String
-    , record : Maybe String
-    , build : Maybe String
-    }
 
 
 type alias Data =
@@ -117,56 +51,6 @@ type alias Data =
 
 type alias ActionData =
     {}
-
-
-memberDecoder : Decode.Decoder Member
-memberDecoder =
-    Decode.map5 Member
-        (Decode.field "name" Decode.string)
-        (Decode.field "kind" Decode.string)
-        (Decode.field "signature" Decode.string)
-        (Decode.field "doc" Decode.string)
-        (Decode.oneOf [ Decode.field "role" Decode.string, Decode.succeed "" ])
-
-
-componentDecoder : Decode.Decoder Component
-componentDecoder =
-    Decode.map6 Component
-        (Decode.field "name" Decode.string)
-        (Decode.field "slug" Decode.string)
-        (Decode.oneOf [ Decode.field "category" Decode.string, Decode.succeed "" ])
-        (Decode.oneOf [ Decode.field "summary" Decode.string, Decode.succeed "" ])
-        (Decode.field "overview" Decode.string)
-        (Decode.field "members" (Decode.list memberDecoder))
-
-
-usageExampleDecoder : Decode.Decoder UsageExample
-usageExampleDecoder =
-    Decode.map8 UsageExample
-        (Decode.field "title" Decode.string)
-        (Decode.oneOf [ Decode.field "section" Decode.string, Decode.succeed "" ])
-        (Decode.field "html" Decode.string)
-        (Decode.oneOf [ Decode.field "top" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-        (Decode.oneOf [ Decode.field "mid" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-        (Decode.oneOf [ Decode.field "bottom" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-        (Decode.oneOf [ Decode.field "record" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-        (Decode.oneOf [ Decode.field "build" (Decode.nullable Decode.string), Decode.succeed Nothing ])
-
-
-allComponents : BackendTask FatalError (List Component)
-allComponents =
-    BackendTask.File.jsonFile (Decode.list componentDecoder) "data/reference.json"
-        |> BackendTask.allowFatal
-
-
-{-| All Usage examples keyed by component slug. Missing file / entry ⇒ no Usage.
--}
-allUsage : BackendTask FatalError (Dict String (List UsageExample))
-allUsage =
-    BackendTask.File.jsonFile
-        (Decode.dict (Decode.field "examples" (Decode.list usageExampleDecoder)))
-        "data/examples.json"
-        |> BackendTask.allowFatal
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -182,14 +66,12 @@ route =
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init _ _ =
-    ( { layers = Dict.empty }, Effect.none )
+    ( Usage.init, Effect.none )
 
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ msg model =
-    case msg of
-        SelectLayer index layer ->
-            ( { model | layers = Dict.insert index layer model.layers }, Effect.none )
+    ( Usage.update msg model, Effect.none )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
@@ -244,7 +126,7 @@ view app _ model =
                       -- section — header, Usage, API — so their spacing is uniform.
                       Layout.div "space-y-10"
                         (header component
-                            :: usageBlocks model app.data.usage
+                            :: Usage.usageBlocks 0 model app.data.usage
                             ++ [ apiSection component.members ]
                         )
                     ]
@@ -316,7 +198,7 @@ grouped by role (constructor + its colocated type aliases, then attribute setter
 slot setters, and events), each group an overline-labelled outlined card. Members
 keep their `@docs` order within a group. Empty groups drop out.
 -}
-apiSection : List Member -> Element { s | html : Supported, heading : Supported, card : Supported, listItem : Supported } msg
+apiSection : List Doc.Data.Member -> Element { s | html : Supported, heading : Supported, card : Supported, listItem : Supported } msg
 apiSection members =
     Layout.div "space-y-6"
         (Heading.view { content = Kit.text "API" }
@@ -344,7 +226,7 @@ apiGroups =
 {-| One API group: an overline label over an outlined card listing its members.
 `Nothing` when the group has no members, so it drops out of the section rhythm.
 -}
-apiGroup : List Member -> ( String, List String ) -> Maybe (Element { s | html : Supported, card : Supported, listItem : Supported } msg)
+apiGroup : List Doc.Data.Member -> ( String, List String ) -> Maybe (Element { s | html : Supported, card : Supported, listItem : Supported } msg)
 apiGroup members ( label, roles ) =
     case List.filter (\m -> List.member m.role roles) members of
         [] ->
@@ -360,208 +242,6 @@ apiGroup members ( label, roles ) =
                 )
 
 
-{-| Render the Usage section as a single spacing-consistent block: a "Usage"
-heading over its per-section sub-headings and examples. Empty ⇒ nothing (so it
-drops cleanly out of the top-level `space-y-10` rhythm).
--}
-usageBlocks : Model -> List UsageExample -> List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
-usageBlocks model examples =
-    case examples of
-        [] ->
-            []
-
-        _ ->
-            [ Layout.div "space-y-6"
-                (Heading.view { content = Kit.text "Usage" }
-                    [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
-                    []
-                    :: List.concatMap (sectionBlock model)
-                        (groupBySection (List.indexedMap Tuple.pair examples))
-                )
-            ]
-
-
-{-| One section: an optional sub-heading (skipped for the ungrouped "" section)
-followed by each example's live preview paired with its per-example code tabs.
-Examples carry their page-global index so each tab strip stays independent.
--}
-sectionBlock : Model -> ( String, List ( Int, UsageExample ) ) -> List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
-sectionBlock model ( section, examples ) =
-    let
-        heading : List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
-        heading =
-            if section == "" then
-                []
-
-            else
-                [ Heading.view { content = Kit.text section }
-                    [ Heading.variant Value.title, Heading.size Value.large, Heading.level 3 ]
-                    []
-                ]
-    in
-    heading ++ List.map (exampleBlock model) examples
-
-
-{-| A live preview paired with a per-example tab strip that switches its code
-between the API surfaces by module name (optionally `M3e`, `M3e.Record` /
-`M3e.Build`, `M3e.Cem`, `M3e.Cem.Html`, and always `HTML`). The selection lives in
-`model.layers` keyed by this example's index, defaulting to the first available
-surface (`defaultLayerFor`). Grouped as one
-`space-y-3` block so title/preview/tabs/code stay tight while sections stay apart.
--}
-exampleBlock : Model -> ( Int, UsageExample ) -> Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg
-exampleBlock model ( index, ex ) =
-    let
-        layer : Layer
-        layer =
-            Dict.get index model.layers |> Maybe.withDefault (defaultLayerFor ex)
-    in
-    Layout.div "space-y-3"
-        [ Kit.paragraph Value.medium [ Kit.onSurfaceVariant ] [ Kit.text ex.title ]
-        , Doc.showcase (Doc.rawPreview ex.html)
-        , layerTabs index layer ex
-        , Doc.Slider.slidingPanels
-            (activeIndexFor layer ex)
-            (List.map (\( _, l ) -> codeFor l ex) (layersFor ex))
-        ]
-
-
-{-| The 0-based position of the selected `layer` within `layersFor ex` — the panel
-`slidingPanels` translates into view. Every panel in `layersFor ex` is mounted (one
-`codeFor` surface each) so the prior panel can slide out as the new one slides in;
-this index just drives the track offset. Clamps to 0 if the layer isn't offered
-(unreachable — the selection comes from `defaultLayerFor`/a tab click, both drawn
-from `layersFor`).
--}
-activeIndexFor : Layer -> UsageExample -> Int
-activeIndexFor layer ex =
-    layersFor ex
-        |> List.map Tuple.second
-        |> List.indexedMap Tuple.pair
-        |> List.filter (\( _, l ) -> l == layer)
-        |> List.head
-        |> Maybe.map Tuple.first
-        |> Maybe.withDefault 0
-
-
-{-| The surfaces offered for one example, in fixed order. Each Elm surface
-(`M3e`, `M3e.Record`, `M3e.Build`, `M3e.Cem`, `M3e.Cem.Html`) appears only when
-it compiled for this example (its field is non-null); `HTML` is the one universal
-surface and is always offered last. Order: M3e, M3e.Record, M3e.Build, M3e.Cem,
-M3e.Cem.Html, HTML.
--}
-layersFor : UsageExample -> List ( String, Layer )
-layersFor ex =
-    let
-        optional : Maybe String -> String -> Layer -> List ( String, Layer )
-        optional field label layer =
-            case field of
-                Just _ ->
-                    [ ( label, layer ) ]
-
-                Nothing ->
-                    []
-    in
-    optional ex.top "M3e" Top
-        ++ optional ex.record "M3e.Record" Record
-        ++ optional ex.build "M3e.Build" Build
-        ++ optional ex.mid "M3e.Cem" Middle
-        ++ optional ex.bottom "M3e.Cem.Html" Bottom
-        ++ [ ( "HTML", Raw ) ]
-
-
-{-| The layer an example opens on when the user hasn't chosen one: the first
-surface `layersFor` offers (its strictest available Elm surface, or `HTML` when
-no Elm surface compiled). `HTML` is always present, so the fallback is total.
--}
-defaultLayerFor : UsageExample -> Layer
-defaultLayerFor ex =
-    layersFor ex |> List.head |> Maybe.map Tuple.second |> Maybe.withDefault Raw
-
-
-{-| The per-example surface selector: a single-select `Tabs` bar whose selected
-tab is this example's current layer and whose clicks record a `SelectLayer` for
-this example's index only. The tabs are dynamic per example (four or six); `Tabs`
-paginates/scrolls them horizontally on narrow viewports natively, so there's no
-`overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
-trips a spurious vertical scrollbar on the control's state-layer bleed.
--}
-layerTabs : Int -> Layer -> UsageExample -> Element { s | html : Supported, tabs : Supported } Msg
-layerTabs index current ex =
-    Tabs.view []
-        (List.map
-            (\( label, layer ) ->
-                Tab.view
-                    [ Tab.selected (layer == current)
-                    , Tab.onClick (SelectLayer index layer)
-                    ]
-                    [ Kit.text label ]
-            )
-            (layersFor ex)
-        )
-
-
-{-| The code block for the selected surface. The Elm surfaces highlight as Elm;
-the raw `<m3e-*>` HTML surface highlights as plain markup. Every Elm surface is
-optional — `layersFor` only offers a tab whose field is present, so a `Nothing`
-is unreachable here; it falls back to the always-present HTML surface defensively.
--}
-codeFor : Layer -> UsageExample -> Element { s | html : Supported } msg
-codeFor layer ex =
-    let
-        elmOrHtml : Maybe String -> Element { s | html : Supported } msg
-        elmOrHtml field =
-            case field of
-                Just code ->
-                    Doc.code_ Doc.Elm code
-
-                Nothing ->
-                    -- Unreachable: layersFor never offers a tab whose field is
-                    -- Nothing. Fall back to the always-present HTML surface.
-                    Doc.code_ Doc.Xml ex.html
-    in
-    case layer of
-        Top ->
-            elmOrHtml ex.top
-
-        Record ->
-            elmOrHtml ex.record
-
-        Build ->
-            elmOrHtml ex.build
-
-        Middle ->
-            elmOrHtml ex.mid
-
-        Bottom ->
-            elmOrHtml ex.bottom
-
-        Raw ->
-            Doc.code_ Doc.Xml ex.html
-
-
-{-| Group indexed examples by `.section`, preserving first-seen order of both
-sections and examples within each section (indices stay attached).
--}
-groupBySection : List ( Int, UsageExample ) -> List ( String, List ( Int, UsageExample ) )
-groupBySection examples =
-    let
-        sections : List String
-        sections =
-            List.foldl
-                (\( _, ex ) acc ->
-                    if List.member ex.section acc then
-                        acc
-
-                    else
-                        acc ++ [ ex.section ]
-                )
-                []
-                examples
-    in
-    List.map (\sec -> ( sec, List.filter (\( _, ex ) -> ex.section == sec) examples )) sections
-
-
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
 pane items =
     ContentPane.view [] items
@@ -571,7 +251,7 @@ pane items =
 unions, `name : signature` for values) and its Markdown-rendered doc. The kind
 eyebrow is gone — the enclosing group heading now conveys what each row is.
 -}
-memberRow : Member -> Element { s | listItem : Supported } msg
+memberRow : Doc.Data.Member -> Element { s | listItem : Supported } msg
 memberRow m =
     let
         sig : String
