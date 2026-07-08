@@ -74,6 +74,22 @@ const isDroppableAttr = (name) =>
 // Collected across a single toElm() run for logging/inspection.
 let droppedAttrs = [];
 
+/** Is `value` one of an enum attribute's known CEM tokens? An attr with no
+ * collected token set (enumValues empty) is treated as unvalidated -> accept. */
+function isValidEnumValue(attr, value) {
+  const tokens = attr.enumValues ?? [];
+  return tokens.length === 0 || tokens.includes(value);
+}
+
+/** Record + loudly log an invalid enum value being dropped (degradation). The
+ * bad token would otherwise emit a non-existent `M3e.Value.<x>` and null the
+ * surface; dropping it degrades the one attribute instead. */
+function recordInvalidEnum(tag, name, value, attr) {
+  const reason = `invalid enum value "${value}" for ${name} on ${tag} (expected one of ${(attr.enumValues ?? []).join("|")})`;
+  droppedAttrs.push({ tag, name, value, reason });
+  console.error(`to-elm: dropped ${reason}`);
+}
+
 // Void (empty) elements whose `Native.<tag>` is a 0-arg value, not a function.
 const VOID_NATIVE_TAGS = new Set(["br", "hr"]);
 
@@ -184,11 +200,35 @@ function textLinkSlotChild(node, tag, field, oracle) {
   skip(`unmappable ${field} slot child <${childTag}> on ${tag}`);
 }
 
+/**
+ * Raw HTML attributes on a Native element, as `Native.attribute "n" "v"` exprs.
+ * `Native.attribute` is the sanctioned `Seam.asAttribute (Html.Attributes.
+ * attribute name value)` wrapper (m3e-kit `Native.elm`) carrying a fully-open
+ * capability row, so it composes onto any Native element (`div`/`input`/`img`/…)
+ * regardless of that element's constrained attr row. This carries functional
+ * attrs (`value`/`placeholder`/`type`/`src`/…) that were previously DROPPED,
+ * so an `<input value="…">` round-trips. `slot` is excluded — a plain child of
+ * an m3e container carries its slot structurally via the parent's slot helper,
+ * not as an attribute here. `href` is excluded for the caller that already
+ * emits it (`<a>` -> Kit.link).
+ */
+function nativeAttrExprs(node, { excludeHref = false } = {}) {
+  const out = [];
+  for (const attr of node.attributes) {
+    const name = attr.name;
+    if (name === "slot") continue;
+    if (excludeHref && name === "href") continue;
+    out.push(`Native.attribute "${escapeElmString(name)}" "${escapeElmString(attr.value)}"`);
+  }
+  return out;
+}
+
 /** Map a plain (non-m3e) HTML element to Elm. */
 function plainElementToElm(node, oracle) {
   const tag = node.tagName.toLowerCase();
 
-  // <a href="URL"> -> Kit.link "URL" [ children ].
+  // <a href="URL"> -> Kit.link "URL" [ children ]. Kit.link has no attribute
+  // parameter, so its other attributes cannot be carried here.
   if (tag === "a") {
     const href = node.getAttribute("href");
     if (href == null) {
@@ -200,30 +240,32 @@ function plainElementToElm(node, oracle) {
   }
 
   // Void elements (`Native.br`/`Native.hr`) are 0-arg VALUES, not functions —
-  // they take neither attributes nor children.
+  // they take neither attributes nor children, so their attrs cannot be carried.
   if (VOID_NATIVE_TAGS.has(tag)) {
     return `Native.${tag}`;
   }
 
+  const attrs = nativeAttrExprs(node);
+  const attrList = attrs.length === 0 ? "[]" : `[ ${attrs.join(", ")} ]`;
+
   // `Native.img` takes ONLY attributes (no children): `img : List Attr -> ...`.
   if (tag === "img") {
-    return `Native.img []`;
+    return `Native.img ${attrList}`;
   }
 
   const children = childNodesToElm(node, oracle);
   const list = children.length === 0 ? "[]" : `[ ${children.join(", ")} ]`;
 
-  // v1: attributes other than slot/href are dropped (not skipped).
   if (NATIVE_TAGS.has(tag)) {
-    return `Native.${tag} [] ${list}`;
+    return `Native.${tag} ${attrList} ${list}`;
   }
 
-  // Any other tag (label, etc.) -> Native.node Html.<tag>. Emitted code
+  // Any other tag (label, input, etc.) -> Native.node Html.<tag>. Emitted code
   // references `Html.<tag>`, so the example module needs an `Html` import
   // (handled by the orchestrator when assembling the module). `main` clashes
   // with the app entrypoint, so elm/html exposes it as `main_`.
   const htmlFn = tag === "main" ? "main_" : tag;
-  return `Native.node Html.${htmlFn} [] ${list}`;
+  return `Native.node Html.${htmlFn} ${attrList} ${list}`;
 }
 
 function elementToElm(node, oracle) {
@@ -270,7 +312,12 @@ function elementToElm(node, oracle) {
   // still require its presence, then emit the slot helper into `slottedExprs`.
   const requiredSlots = entry.requiredSlots ?? [];
   const consumedRequiredSlotNames = new Set();
-  const requiredSlotExprs = [];
+  // Validate presence/uniqueness of each required named slot here, but keep the
+  // rendered expr in a by-name MAP so the children loop can emit it in its
+  // ORIGINAL DOM position (rather than hoisting all required slots first). The
+  // content is a flat `List Element` and required-ness is an elm-review concern,
+  // so source order is honest and improves round-trip fidelity.
+  const requiredSlotExprByName = new Map();
   for (const { field, rawName, kinds } of requiredSlots) {
     const matches = [...node.childNodes].filter(
       (c) => c.nodeType === 1 && c.getAttribute("slot") === rawName,
@@ -293,7 +340,7 @@ function elementToElm(node, oracle) {
       : nodeToElm(matches[0], oracle);
     const slotEntry = entry.slots.find((s) => s.rawName === rawName);
     const helper = slotEntry ? slotEntry.helper : camel(rawName);
-    requiredSlotExprs.push(`M3e.${mod}.${helper} (${expr})`);
+    requiredSlotExprByName.set(rawName, `M3e.${mod}.${helper} (${expr})`);
     consumedRequiredSlotNames.add(rawName);
   }
 
@@ -315,6 +362,15 @@ function elementToElm(node, oracle) {
       // Non-structural presentational/identity attrs (id/class/style/data-*)
       // have no typed setter: drop them (with a log) rather than skipping the
       // whole example. Anything else genuinely unmappable still skips.
+      //
+      // DEFERRED (WS3d-universal, needs WS-CEM): once elm-cem ships universal
+      // `M3e.id`/`M3e.for`/`M3e.class`/`M3e.style` setters (settable on any
+      // component, like `M3e.Aria.*`), emit those here for `id`/`class`/`style`
+      // on m3e components instead of dropping — mirror the `ARIA_SETTER` path
+      // above. NOT done now: those setters are not in the committed library yet,
+      // and emitting them would fail to compile. The controller wires this at
+      // integration after the library regen. (Native/plain elements already
+      // carry these via `Native.attribute` / `Html.Attributes.attribute`.)
       if (isDroppableAttr(name)) {
         droppedAttrs.push({ tag, name, value });
         continue;
@@ -325,6 +381,17 @@ function elementToElm(node, oracle) {
     // Array/function/object-typed attrs have no generated setter -> drop.
     if (attr.kind === "skip") {
       droppedAttrs.push({ tag, name, value });
+      continue;
+    }
+
+    // An enum attribute whose HTML value is NOT one of the CEM's known tokens
+    // (e.g. NavBar mode="extended" — the real set is auto|compact|expanded) has
+    // no backing `M3e.Value.<x>` token, so emitting it would fail to compile and
+    // null the whole surface. Validate against the collected token set and DROP
+    // the attribute (recording a reason + a loud log) so a bad value degrades
+    // gracefully instead of silently poisoning the example.
+    if (attr.kind === "enum" && !isValidEnumValue(attr, value)) {
+      recordInvalidEnum(tag, name, value, attr);
       continue;
     }
 
@@ -344,9 +411,14 @@ function elementToElm(node, oracle) {
     }
   }
 
-  // --- Children: group by slot. ---
-  const slottedExprs = [];
-  const defaultExprs = [];
+  // --- Children: emit in ORIGINAL DOM ORDER. ---
+  // Each child becomes one ordered item: a "slotted" item is a fully-rendered
+  // named-slot / required-slot / Fix-C setter call; a "default" item defers its
+  // render so the idWiring single-control wrap can be applied below. Building a
+  // single ordered list (instead of separate slotted/default buckets that were
+  // concatenated) keeps `tab,tab,panel,panel` as `tab,tab,panel,panel` on the
+  // round trip instead of hoisting every slotted child ahead of the defaults.
+  const orderedItems = [];
   // id↔control wiring (FormField): the default-slot control's `id=` feeds the
   // `control` helper's leading String argument so `<label for=…>` associates
   // with it (ADR 0010 R6). Captured from the single default-slot element child.
@@ -358,15 +430,22 @@ function elementToElm(node, oracle) {
 
     if (child.nodeType === 1) {
       const slotName = child.getAttribute("slot");
-      // A required named slot was already consumed into the record field above.
-      if (slotName != null && consumedRequiredSlotNames.has(slotName)) continue;
+      // A required named slot: emit its (already-validated) expr IN POSITION.
+      if (slotName != null && consumedRequiredSlotNames.has(slotName)) {
+        orderedItems.push({
+          kind: "slotted",
+          expr: requiredSlotExprByName.get(slotName),
+        });
+        continue;
+      }
       // idWiring label slot (FormField `label`): the helper takes a leading
       // `for`-derived String id, then the label element.
       if (idWiring && slotName != null && slotName === idWiring.label) {
         const forId = child.getAttribute("for") ?? "";
-        slottedExprs.push(
-          `M3e.${mod}.${camel(slotName)} "${escapeElmString(forId)}" (${nodeToElm(child, oracle)})`,
-        );
+        orderedItems.push({
+          kind: "slotted",
+          expr: `M3e.${mod}.${camel(slotName)} "${escapeElmString(forId)}" (${nodeToElm(child, oracle)})`,
+        });
         continue;
       }
       if (slotName != null && slotName !== "") {
@@ -374,9 +453,10 @@ function elementToElm(node, oracle) {
         if (!slotEntry) {
           skip(`unknown slot "${slotName}" on ${tag}`);
         }
-        slottedExprs.push(
-          `M3e.${mod}.${slotEntry.helper} (${nodeToElm(child, oracle)})`,
-        );
+        orderedItems.push({
+          kind: "slotted",
+          expr: `M3e.${mod}.${slotEntry.helper} (${nodeToElm(child, oracle)})`,
+        });
         continue;
       }
       // Fix C: a no-`slot=` default child distinguished only by TAG routes to
@@ -392,9 +472,10 @@ function elementToElm(node, oracle) {
         const childKind = oracle[childTag]?.kind;
         const helper = childKind ? entry.childSlotByKind?.[childKind] : null;
         if (helper) {
-          slottedExprs.push(
-            `M3e.${mod}.${helper} (${nodeToElm(child, oracle)})`,
-          );
+          orderedItems.push({
+            kind: "slotted",
+            expr: `M3e.${mod}.${helper} (${nodeToElm(child, oracle)})`,
+          });
           continue;
         }
       }
@@ -402,13 +483,13 @@ function elementToElm(node, oracle) {
       if (idWiring && idWiring.control && controlId == null) {
         controlId = child.getAttribute("id") ?? "";
       }
-      defaultExprs.push(nodeToElm(child, oracle));
+      orderedItems.push({ kind: "default", node: child });
       continue;
     }
 
     if (child.nodeType === 3) {
       // Non-whitespace text -> default-slot content.
-      defaultExprs.push(nodeToElm(child, oracle));
+      orderedItems.push({ kind: "default", node: child });
       continue;
     }
 
@@ -418,27 +499,23 @@ function elementToElm(node, oracle) {
   // Content is a single flat `List Element`. The retarget dropped the
   // `child`/`children` wrappers: the top-layer `view : List Attr -> List Element`
   // takes RAW default-child elements, and every named-slot setter now returns a
-  // free `Element`. So named-slot setter calls (`requiredSlotExprs`/`slottedExprs`)
-  // sit in the SAME list as the raw default children — no wrapping, no `++`
-  // splicing. FormField is the one exception: its default-slot control keeps
-  // id↔`for` wiring via the RENAMED `control` setter (was `child`), taking the
-  // control element's `id=` as a leading String so a sibling `<label for=…>`
-  // associates with it (ADR 0010 R6). Required-ness of default content is an
-  // elm-review concern, not a type.
-  const defaultElementExprs = [];
-  if (idWiring && idWiring.control && defaultExprs.length === 1) {
-    defaultElementExprs.push(
-      `M3e.${mod}.control "${escapeElmString(controlId ?? "")}" (${defaultExprs[0]})`,
-    );
-  } else {
-    defaultElementExprs.push(...defaultExprs);
-  }
-
-  const contentExprs = [
-    ...requiredSlotExprs,
-    ...slottedExprs,
-    ...defaultElementExprs,
-  ];
+  // free `Element`. So named-slot setter calls sit in the SAME list as the raw
+  // default children — no wrapping, no `++` splicing, and IN SOURCE ORDER.
+  // FormField is the one exception: its lone default-slot control keeps id↔`for`
+  // wiring via the RENAMED `control` setter (was `child`), taking the control
+  // element's `id=` as a leading String so a sibling `<label for=…>` associates
+  // with it (ADR 0010 R6). Required-ness of default content is an elm-review
+  // concern, not a type.
+  const defaultCount = orderedItems.filter((i) => i.kind === "default").length;
+  const wrapControl =
+    idWiring && idWiring.control && defaultCount === 1;
+  const contentExprs = orderedItems.map((item) => {
+    if (item.kind === "slotted") return item.expr;
+    const expr = nodeToElm(item.node, oracle);
+    return wrapControl
+      ? `M3e.${mod}.control "${escapeElmString(controlId ?? "")}" (${expr})`
+      : expr;
+  });
   const contentList =
     contentExprs.length === 0 ? "[]" : `[ ${contentExprs.join(", ")} ]`;
 
@@ -569,12 +646,25 @@ function cemNodeToElm(node, oracle, layer, slotName) {
         `Html.Attributes.attribute "slot" "${escapeElmString(slotName)}"`,
       );
     }
-    // <a href> keeps its href; other attrs (class/id/...) drop.
-    if (tag === "a") {
+    // <a href> keeps its href via the typed helper; carry ALL other raw HTML
+    // attributes (`value`/`placeholder`/`type`/`src`/class/id/…) as
+    // `Html.Attributes.attribute`, so a plain `<input value="…">` round-trips
+    // instead of dropping its functional attributes. `slot` (handled above) and
+    // the already-emitted `href` are skipped.
+    const isAnchor = tag === "a";
+    if (isAnchor) {
       const href = node.getAttribute("href");
       if (href != null) {
         attrExprs.push(`Html.Attributes.href "${escapeElmString(href)}"`);
       }
+    }
+    for (const attr of node.attributes) {
+      const name = attr.name;
+      if (name === "slot") continue;
+      if (isAnchor && name === "href") continue;
+      attrExprs.push(
+        `Html.Attributes.attribute "${escapeElmString(name)}" "${escapeElmString(attr.value)}"`,
+      );
     }
     const children = cemChildren(node, oracle, layer);
     const fn = HTML_TAGS.has(tag) ? `Html.${tag}` : `Html.node "${tag}"`;
@@ -600,6 +690,14 @@ function cemNodeToElm(node, oracle, layer, slotName) {
     const known = entry.attributes.find((a) => a.htmlName === name);
     if (known && known.kind === "skip") {
       droppedAttrs.push({ tag, name, value });
+      continue;
+    }
+    // Invalid enum value: drop consistently with the top layer (the middle
+    // layer's `M3e.Value.<x>` token would not exist; the bottom layer would
+    // emit a semantically-wrong raw string). Degrade the attribute, not the
+    // surface.
+    if (known && known.kind === "enum" && !isValidEnumValue(known, value)) {
+      recordInvalidEnum(tag, name, value, known);
       continue;
     }
     const typed = cemTypedAttr(entry, layer, name, value);

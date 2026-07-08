@@ -81,6 +81,26 @@ test("enum attr rendered via M3e.Value with camelCase", () => {
   });
 });
 
+// 3a: an attr named after an Elm keyword (`type`) targets the escaped setter
+// (`type_`), not the invalid `M3e.Button.type`. This is what let Checkbox
+// "Required" (which contains `<m3e-button type="submit">`) convert.
+test("keyword attr `type` -> escaped `type_` setter", () => {
+  const r = conv(`<m3e-button variant="filled" type="submit">Submit</m3e-button>`);
+  assert.ok(!r.skip, `expected no skip, got: ${r.skip}`);
+  assert.match(r.code, /M3e\.Button\.type_ /);
+  assert.doesNotMatch(r.code, /M3e\.Button\.type /);
+});
+
+// 3b: a valid enum value emits its Value token; an INVALID one is dropped
+// (degrades) rather than emitting a non-existent `M3e.Value.extended`.
+test("enum: valid value emits token, invalid value is dropped", () => {
+  assert.deepEqual(conv(`<m3e-nav-bar mode="expanded"></m3e-nav-bar>`), {
+    code: `M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.expanded ] []`,
+  });
+  const bad = conv(`<m3e-nav-bar mode="extended"></m3e-nav-bar>`);
+  assert.deepEqual(bad, { code: `M3e.NavBar.view [] []` });
+});
+
 // The retarget unwrapped the default slot: multiple default children are just
 // raw `Element`s in the view's flat `List Element` content argument — no
 // `children [ ... ]` wrapper, no `++` splicing.
@@ -137,8 +157,11 @@ test("nav-menu-item required label sourced from slot=label child", () => {
   const r = conv(
     `<m3e-nav-menu-item selected><m3e-icon slot="icon" name="home"></m3e-icon><a slot="label" href="/">Home</a></m3e-nav-menu-item>`,
   );
+  // Children are emitted in DOM order: the `slot="icon"` child precedes the
+  // `slot="label"` child in the source, so `icon` precedes `label` here (the
+  // required `label` slot is no longer hoisted ahead of the rest).
   assert.deepEqual(r, {
-    code: `M3e.NavMenuItem.view [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.label (Kit.link "/" [ Kit.text "Home" ]), M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []) ]`,
+    code: `M3e.NavMenuItem.view [ M3e.NavMenuItem.selected True ] [ M3e.NavMenuItem.icon (M3e.Icon.view [ M3e.Icon.name "home" ] []), M3e.NavMenuItem.label (Kit.link "/" [ Kit.text "Home" ]) ]`,
   });
 });
 
@@ -170,8 +193,21 @@ test("tabs: bare tab-panel child routes to named panel slot; tab -> raw element"
   const r = conv(
     `<m3e-tabs><m3e-tab>One</m3e-tab><m3e-tab-panel>First panel</m3e-tab-panel></m3e-tabs>`,
   );
+  // Source DOM order is preserved: the `<m3e-tab>` (raw default child) precedes
+  // the Fix-C-routed `<m3e-tab-panel>` (named `panel` slot), so `tab,panel`
+  // stays `tab,panel` on the round trip.
   assert.deepEqual(r, {
-    code: `M3e.Tabs.view [] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "First panel" ]), M3e.Tab.view [] [ Kit.text "One" ] ]`,
+    code: `M3e.Tabs.view [] [ M3e.Tab.view [] [ Kit.text "One" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "First panel" ]) ]`,
+  });
+});
+
+// 3c: two tabs then two panels stays tab,tab,panel,panel (no hoisting swap).
+test("tabs: interleaved children preserve source order (tab,tab,panel,panel)", () => {
+  const r = conv(
+    `<m3e-tabs><m3e-tab>A</m3e-tab><m3e-tab>B</m3e-tab><m3e-tab-panel>PA</m3e-tab-panel><m3e-tab-panel>PB</m3e-tab-panel></m3e-tabs>`,
+  );
+  assert.deepEqual(r, {
+    code: `M3e.Tabs.view [] [ M3e.Tab.view [] [ Kit.text "A" ], M3e.Tab.view [] [ Kit.text "B" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "PA" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "PB" ]) ]`,
   });
 });
 
@@ -204,11 +240,28 @@ test("plain div maps to Native.div", () => {
   });
 });
 
-test("plain div drops class attribute but does not skip", () => {
+// 3d-native: raw HTML attributes on a Native element are now CARRIED via
+// `Native.attribute` (were dropped in v1) so they round-trip.
+test("plain div carries its class attribute via Native.attribute", () => {
   const r = conv(`<div class="grid"><m3e-icon name="a"></m3e-icon></div>`);
   assert.deepEqual(r, {
-    code: `Native.div [] [ M3e.Icon.view [ M3e.Icon.name "a" ] [] ]`,
+    code: `Native.div [ Native.attribute "class" "grid" ] [ M3e.Icon.view [ M3e.Icon.name "a" ] [] ]`,
   });
+});
+
+// 3d-native: functional attrs on <input> (value/placeholder/type) are carried.
+test("input carries value/placeholder/type via Native.attribute", () => {
+  const r = conv(`<m3e-menu><input type="text" placeholder="Name" value="Jo"></m3e-menu>`);
+  assert.match(
+    r.code,
+    /Native\.node Html\.input \[ Native\.attribute "type" "text", Native\.attribute "placeholder" "Name", Native\.attribute "value" "Jo" \] \[\]/,
+  );
+});
+
+// 3d-native: <img> (attrs-only Native) carries src.
+test("img carries src via Native.attribute", () => {
+  const r = conv(`<m3e-menu><img src="/x.png"></m3e-menu>`);
+  assert.match(r.code, /Native\.img \[ Native\.attribute "src" "\/x\.png" \]/);
 });
 
 test("label maps to Native.node Html.label", () => {
