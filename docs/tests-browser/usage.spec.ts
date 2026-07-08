@@ -51,14 +51,12 @@ test("/components/button shows a live Usage section with preview + code", async 
   // (3) The derived M3e (barrel) code is rendered (attached; may be folded).
   await expect(page.getByText("M3e.button").first()).toBeAttached();
 
-  // Code folds render OPEN by default (Phase C): every cf-fold <details> should
-  // carry the `open` attribute so the code shows without a click.
-  const folds = page.locator("details.cf-fold");
-  const foldCount = await folds.count();
-  expect(foldCount).toBeGreaterThan(0);
-  for (let i = 0; i < foldCount; i++) {
-    await expect(folds.nth(i)).toHaveAttribute("open", "");
-  }
+  // Code folds render OPEN by default (Phase C). Assert with count queries
+  // (race-free vs a per-fold loop): at least one fold exists and none lack `open`.
+  await expect(page.locator("details.cf-fold").first()).toBeAttached();
+  await expect
+    .poll(async () => page.locator("details.cf-fold:not([open])").count())
+    .toBe(0);
 
   expect(errors, `console errors:\n${errors.join("\n")}`).toEqual([]);
 });
