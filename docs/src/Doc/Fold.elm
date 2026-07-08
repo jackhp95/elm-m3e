@@ -15,9 +15,10 @@ result is identical across every surface tab):
 
   - **Indentation chevron folds** (Phase 1): a line whose next non-blank line is
     more deeply indented is a fold _header_; its body spans following lines until
-    indentation returns to `<=` the header indent. Regions nest. A body longer
-    than `defaultCollapseThreshold` starts collapsed (the design-sanctioned
-    heuristic that stands in for matraic-guided default-collapse).
+    indentation returns to `<=` the header indent. Regions nest. Every fold now
+    renders **open** by default; `defaultCollapseThreshold` is retained only as
+    part of the fold-tree data model exercised by `serialize`/`FoldTest.elm` and
+    no longer drives the rendered `open` state.
 
   - **Repeated-sibling `…` folds** (Phase 2): a run of `>= 3` consecutive
     single-line siblings at equal indent whose leading construct is identical
@@ -40,7 +41,8 @@ import Html.Attributes exposing (attribute, class)
 
   - `Leaf` — a plain code line, kept verbatim (with its leading indentation).
   - `Fold` — an indentation region: a header line + a nested body; `collapsed`
-    is the heuristic default-collapse flag.
+    is a data-model flag exercised by `serialize`/`FoldTest.elm`, not the
+    rendered `open` state (folds render open by default).
   - `Siblings` — a `>= 3` run of repeated single-line siblings, rendered as `…`.
 
 -}
@@ -50,9 +52,10 @@ type Node
     | Siblings (List String)
 
 
-{-| A fold whose body has more than this many raw lines starts collapsed. Tuned
-so brevity/boilerplate blocks (e.g. appbar "Sizes", 17 body lines) load closed
-while short examples (e.g. appbar "Centered", 6 body lines) stay open.
+{-| A fold whose body has more than this many raw lines is flagged `collapsed` in
+the fold-tree data model. Folds now render open by default, so this threshold no
+longer drives the rendered `open` state — it is retained only for the
+`serialize`/`FoldTest.elm` debug format.
 -}
 defaultCollapseThreshold : Int
 defaultCollapseThreshold =
