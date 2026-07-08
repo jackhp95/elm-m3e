@@ -7,16 +7,34 @@
  * index. Returns the inner text, its length, and the index just past the
  * closing bracket. This is the single primitive all balanced-scanning here
  * is built from.
+ *
+ * String-literal aware: brackets living inside an Elm "..." string are not
+ * counted toward depth, and a backslash escapes the next char (so `\"` does
+ * not close the string).
  */
 function readBalancedGroup(code, openIndex) {
   const open = code[openIndex];
   const close = open === "(" ? ")" : "]";
   let depth = 0;
+  let inString = false;
   const start = openIndex + 1;
   let i = openIndex;
   for (; i < code.length; i++) {
-    if (code[i] === open) depth++;
-    else if (code[i] === close) {
+    const ch = code[i];
+    if (inString) {
+      if (ch === "\\") {
+        i++; // skip the escaped char
+        continue;
+      }
+      if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === open) depth++;
+    else if (ch === close) {
       depth--;
       if (depth === 0) return { inner: code.slice(start, i), len: i - start, end: i + 1 };
     }
@@ -29,7 +47,8 @@ function readBalancedGroup(code, openIndex) {
  * bracket/paren group (e.g. `Native.div [] [ ... ]` has an attrs list AND a
  * children list). Walk consecutive whitespace-separated groups immediately
  * after the identifier and concatenate them, so structure hiding in later
- * args (like a Native children list) isn't missed.
+ * args (like a Native children list) isn't missed. Returns the combined inner
+ * text, its char span, and the index just past the last consumed group.
  */
 function collectArgsAfter(code, fromIndex) {
   let i = fromIndex;
@@ -43,37 +62,51 @@ function collectArgsAfter(code, fromIndex) {
     charsInside += group.len;
     i = group.end;
   }
-  return { inner, charsInside };
+  return { inner, charsInside, end: i };
 }
 
-function scanMechanism(code, prefix) {
+/** Every call site of `prefix.*` as an interval [start, end) plus its span. */
+function collectSites(code, prefix) {
   const re = new RegExp("\\b" + prefix + "\\.[A-Za-z][A-Za-z0-9_]*", "g");
-  let m,
-    count = 0,
-    charsInside = 0;
-  const inners = [];
+  let m;
+  const sites = [];
   while ((m = re.exec(code)) !== null) {
-    count++;
-    const { inner, charsInside: len } = collectArgsAfter(code, m.index + m[0].length);
-    charsInside += len;
-    inners.push(inner);
+    const { inner, charsInside, end } = collectArgsAfter(code, m.index + m[0].length);
+    sites.push({ mechanism: prefix, start: m.index, end, span: charsInside, inner });
   }
-  return { count, charsInside, inners };
+  return sites;
 }
 
 export function scanEscapes(code) {
   if (typeof code !== "string" || code.length === 0) {
     return { converted: false, seam: { count: 0, charsInside: 0 }, native: { count: 0, charsInside: 0 }, charsInside: 0, benign: true };
   }
-  const seam = scanMechanism(code, "Seam");
-  const native = scanMechanism(code, "Native");
-  const nativeBenign = native.inners.every((inner) => !/M3e\.|Native\.|Html\./.test(inner));
-  const benign = seam.count === 0 && nativeBenign;
+
+  const seamSites = collectSites(code, "Seam");
+  const nativeSites = collectSites(code, "Native");
+  const all = [...seamSites, ...nativeSites];
+
+  // A site is "outermost" when no OTHER escape interval fully contains it.
+  // Char metrics count only outermost spans, so a Seam nested inside a Native
+  // (the standard idiom) is charged once, to the Native — never to both.
+  const isContained = (s) =>
+    all.some((o) => o !== s && o.start <= s.start && s.end <= o.end);
+  const outerSpan = (sites) =>
+    sites.reduce((sum, s) => sum + (isContained(s) ? 0 : s.span), 0);
+
+  // Counts always include every site (nested ones too): `benign` leans on
+  // seam.count to catch a Seam buried inside a Native, since the regex below
+  // only inspects Native inner regions.
+  const seamCharsInside = outerSpan(seamSites);
+  const nativeCharsInside = outerSpan(nativeSites);
+  const nativeBenign = nativeSites.every((s) => !/M3e\.|Native\.|Html\./.test(s.inner));
+  const benign = seamSites.length === 0 && nativeBenign;
+
   return {
     converted: true,
-    seam: { count: seam.count, charsInside: seam.charsInside },
-    native: { count: native.count, charsInside: native.charsInside },
-    charsInside: seam.charsInside + native.charsInside,
+    seam: { count: seamSites.length, charsInside: seamCharsInside },
+    native: { count: nativeSites.length, charsInside: nativeCharsInside },
+    charsInside: seamCharsInside + nativeCharsInside,
     benign,
   };
 }
