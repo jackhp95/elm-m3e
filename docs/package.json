@@ -10,6 +10,8 @@
     "build:examples-surfaces": "node scripts/examples-gen/gen-record-build.mjs",
     "build:examples-barrel": "node scripts/examples-gen/gen-barrel.mjs",
     "test:examples-gen": "node --test scripts/examples-gen/lib/*.test.mjs",
+    "verify:roundtrip": "node scripts/verify-roundtrip.mjs",
+    "test:roundtrip": "node --test scripts/roundtrip/*.test.mjs",
     "check:nav": "node scripts/check-nav.mjs",
     "build:assets": "npm run build:reference && npm run build:examples-config && npm run build:examples-surfaces && npm run build:examples-barrel && npm run build:examples && npm run check:nav",
     "gen": "elm-pages gen && echo 'elm-pages gen: OK (.elm-pages regenerated)'",
