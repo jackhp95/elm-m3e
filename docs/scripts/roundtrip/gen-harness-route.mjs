@@ -1,6 +1,17 @@
 // Code-generate a transient elm-pages route that SSR-renders every converted
-// cell wrapped in <div data-rt="Module/index/surface">. NOT committed (gitignored)
-// and NOT deployed (Netlify uses build:ci which never runs this).
+// cell wrapped in a <div data-rt="Module/index/surface"> element. NOT committed
+// (gitignored) and NOT deployed (Netlify uses build:ci which never runs this).
+//
+// The docs app's View type is `{ title : String, body : List (M3e.Node.Node msg) }`
+// — body must be a list of Nodes, NOT Html. M3e.Node is opaque (no public
+// Html -> Node), so every cell is turned into an Element and then Element.toNode'd:
+//   - top/record/build/barrel surfaces already return Element  -> use the raw expr.
+//   - mid/bottom surfaces return `Html msg`                    -> lift via Seam.fromHtml.
+// The data-rt wrapper is a Native.div carrying a Seam.asAttribute attribute, so it
+// stays an Element the whole way. Per-cell bindings are un-annotated: each surface's
+// Element carries a different phantom capability row, so no single concrete
+// annotation is possible (this is exactly why verify-examples.mjs leaves bindings
+// un-annotated too).
 
 import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -13,7 +24,14 @@ const ROUTE = resolve(REPO, "docs", "app", "Route", "RoundtripHarness.elm");
 
 const STDLIB = new Set(["Html", "Json", "VirtualDom", "Basics", "Dict", "Set", "List", "Maybe", "Result", "String", "Char", "Tuple", "Array"]);
 
-const ADAPTER = { top: "elementToHtml", record: "elementToHtml", build: "elementToHtml", barrel: "elementToHtml", mid: "identity", bottom: "identity" };
+// Surfaces whose cell expression is already an `Element` need no lifting; the
+// rest return `Html msg` and are lifted into an Element via Seam.fromHtml.
+const ELEMENT_SURFACES = new Set(["top", "record", "build", "barrel"]);
+
+// Modules imported under an alias / exposing — never emit them as plain imports
+// (a duplicate import is a compile error), and never let the forced-import scan
+// re-add them as plain imports either.
+const ALIASED = new Set(["M3e.Element", "PagesMsg"]);
 
 function bindingName(module, index, surface) {
   return `cell_${module.replace(/\./g, "_")}_${index}_${surface}`;
@@ -25,10 +43,15 @@ function bindingName(module, index, surface) {
  */
 export function generateHarness(cells, resolves) {
   const converted = cells.filter((c) => c.converted);
-  const imports = new Set(["M3e.Element", "M3e.Node", "Html", "Html.Attributes"]);
+
+  // Plain imports: the harness's own fixed deps plus every resolvable module the
+  // cell expressions reference. Aliased/exposing modules are handled separately.
+  const imports = new Set(["Html", "Html.Attributes", "Native", "Seam"]);
   for (const c of converted) {
     for (const mod of referencedModules(c.elm)) {
-      if (!STDLIB.has(mod.split(".")[0]) && resolves(mod)) imports.add(mod);
+      if (STDLIB.has(mod.split(".")[0])) continue;
+      if (ALIASED.has(mod)) continue;
+      if (resolves(mod)) imports.add(mod);
     }
   }
 
@@ -41,6 +64,7 @@ export function generateHarness(cells, resolves) {
   L.push("import BackendTask exposing (BackendTask)");
   L.push("import FatalError exposing (FatalError)");
   L.push("import Head");
+  L.push("import M3e.Element as Element");
   L.push("import PagesMsg exposing (PagesMsg)");
   L.push("import RouteBuilder exposing (App, StatelessRoute)");
   L.push("import Shared");
@@ -61,34 +85,37 @@ export function generateHarness(cells, resolves) {
   L.push("head : App Data ActionData RouteParams -> List Head.Tag");
   L.push("head _ = []");
   L.push("");
-  L.push("elementToHtml : M3e.Element.Element any msg -> Html.Html msg");
-  L.push("elementToHtml el = M3e.Node.toHtml (M3e.Element.toNode el)");
-  L.push("");
-  L.push("identity : a -> a");
-  L.push("identity x = x");
-  L.push("");
+  // Per-cell bindings — NO type annotation (each surface carries a different
+  // phantom capability row; inference types each one on its own).
   for (const c of converted) {
-    const adapter = ADAPTER[c.surface];
     const name = bindingName(c.module, c.index, c.surface);
-    L.push(`${name} : Html.Html msg`);
-    L.push(`${name} =`);
-    L.push(`    ${adapter}`);
+    const lift = !ELEMENT_SURFACES.has(c.surface); // mid/bottom -> Seam.fromHtml
+    const multiline = c.elm.includes("\n");
     const body = c.elm.split("\n").map((l) => "        " + l).join("\n");
-    L.push(`        (${c.elm.includes("\n") ? "\n" + body + "\n        " : c.elm})`);
+    const expr = multiline ? "\n" + body + "\n        " : c.elm;
+    L.push(`${name} =`);
+    if (lift) {
+      L.push("    Seam.fromHtml");
+      L.push(`        (${expr})`);
+    } else {
+      L.push(`    ${multiline ? "(" + expr + ")" : expr}`);
+    }
     L.push("");
   }
   L.push("view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)");
   L.push("view _ _ =");
   L.push('    { title = "roundtrip-harness"');
   L.push("    , body =");
-  L.push("        [ Html.map (\\_ -> PagesMsg.fromMsg ()) (Html.div []");
-  L.push("            [");
+  L.push("        [");
   const wrapped = converted.map((c) => {
     const id = `${c.module}/${c.index}/${c.surface}`;
-    return `            Html.div [ Html.Attributes.attribute "data-rt" "${id}" ] [ ${bindingName(c.module, c.index, c.surface)} ]`;
+    const name = bindingName(c.module, c.index, c.surface);
+    return (
+      "        Element.toNode (Element.map PagesMsg.fromMsg " +
+      `(Native.div [ Seam.asAttribute (Html.Attributes.attribute "data-rt" "${id}") ] [ ${name} ]))`
+    );
   });
-  L.push(wrapped.join("\n            ,\n"));
-  L.push("            ])");
+  L.push(wrapped.join("\n        ,\n"));
   L.push("        ]");
   L.push("    }");
   L.push("");

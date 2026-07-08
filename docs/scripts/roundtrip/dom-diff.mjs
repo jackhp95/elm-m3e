@@ -28,6 +28,9 @@ function rootOf(html) {
   // top level, so wrap in a known container and read its first element child.
   const { document } = parseHTML(`<div id="__rt_root__">${html}</div>`);
   const wrapper = document.getElementById("__rt_root__");
+  // Reads only firstElementChild: cells are single-root by contract, so any
+  // extra top-level siblings in a multi-root fragment are silently ignored
+  // (A6 relies on this single-root contract).
   const el = wrapper ? wrapper.firstElementChild : null;
   return el ? toTree(el) : null;
 }
