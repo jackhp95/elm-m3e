@@ -420,3 +420,11 @@
   border: none;
   border-radius: 50%;
 }
+
+/* Kitchen-sink page: skip rendering off-screen component blocks until scrolled
+   near, keeping the 329-example /components/all page snappy. contain-intrinsic-size
+   reserves an estimated height so the scrollbar stays stable. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 1200px;
+}

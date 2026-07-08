@@ -1,7 +1,7 @@
 module Layout exposing
     ( row, col, stack, center, container
     , rowWith, colWith, stackWith, gridWith, sectionWith, centerWith, containerWith
-    , div, section, span, nav, ul, li
+    , div, divWithId, section, span, nav, ul, li
     , class
     )
 
@@ -36,7 +36,7 @@ than inlined.
 
 ## Generic tag helpers
 
-@docs div, section, span, nav, ul, li
+@docs div, divWithId, section, span, nav, ul, li
 
 
 ## Layout attribute
@@ -210,6 +210,15 @@ exactly — never add, drop, or reorder classes here.
 div : String -> List (Element s msg) -> Element { k | html : Supported } msg
 div cls children =
     Native.div [ Seam.asAttribute (Attr.class cls) ] children
+
+
+{-| A `<div>` carrying the given Tailwind class string verbatim plus an `id`
+attribute, so the block can be deep-linked (e.g. `/components/all#button`).
+Same discipline as `div`: the class string is passed through exactly.
+-}
+divWithId : String -> String -> List (Element s msg) -> Element { k | html : Supported } msg
+divWithId id cls children =
+    Native.div [ Seam.asAttribute (Attr.id id), Seam.asAttribute (Attr.class cls) ] children
 
 
 {-| A `<section>` element carrying the given Tailwind class string verbatim.
