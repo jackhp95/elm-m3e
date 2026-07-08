@@ -11,7 +11,7 @@ imported all 55 component modules; those are deferred — this restores the refe
 import BackendTask exposing (BackendTask)
 import Dict
 import Doc
-import Doc.Data exposing (Component, allComponents, allUsage, componentDecoder)
+import Doc.Data exposing (Component, allComponents, allUsage)
 import Doc.Usage as Usage exposing (UsageExample)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)

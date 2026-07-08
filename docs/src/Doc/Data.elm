@@ -3,8 +3,6 @@ module Doc.Data exposing
     , Member
     , allComponents
     , allUsage
-    , componentDecoder
-    , memberDecoder
     )
 
 import BackendTask exposing (BackendTask)

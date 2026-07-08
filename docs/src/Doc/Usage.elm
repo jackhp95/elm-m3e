@@ -1,7 +1,7 @@
 module Doc.Usage exposing
-    ( Layer(..)
+    ( Layer
     , Model
-    , Msg(..)
+    , Msg
     , UsageExample
     , init
     , update
@@ -15,7 +15,7 @@ import Doc.Slider
 import Json.Decode as Decode
 import Kit
 import Layout
-import M3e.Element as Element exposing (Element)
+import M3e.Element exposing (Element)
 import M3e.Record.Heading as Heading
 import M3e.Tab as Tab
 import M3e.Tabs as Tabs
