@@ -36,6 +36,8 @@ jobs:
           token: ${{ secrets.ELM_CEM_TOKEN || github.token }}
 
       - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: docs/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: "22"

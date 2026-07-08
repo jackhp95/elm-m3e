@@ -11,8 +11,8 @@ instead of the named slot it was assigned to.
 import Expect
 import Html
 import Html.Attributes as Attr
-import M3e.Content.Internal as Content
 import M3e.Element as Element
+import M3e.Element.Internal as EI
 import M3e.Node as Node
 import Seam
 import Test exposing (Test, describe, test)
@@ -24,8 +24,13 @@ import Test.Html.Selector as Selector
 -}
 renderSlotted : String -> Element.Element supported msg -> Html.Html msg
 renderSlotted name el =
-    Content.slot name el
-        |> Content.toNode
+    (if name == "" then
+        el
+
+     else
+        EI.withSlot name el
+    )
+        |> EI.toNode
         |> Node.toHtml
 
 

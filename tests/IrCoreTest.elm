@@ -1,7 +1,7 @@
 module IrCoreTest exposing (suite)
 
 {-| Runtime tests for the hand-written IR-core reductions in `M3e.Node.Internal`
-and `M3e.Content.Internal` — the four footguns `elm make` cannot catch:
+and `M3e.Element.Internal` — the four footguns `elm make` cannot catch:
 
 1.  `addChild` silently no-ops when the parent is a `Text`/`Raw` leaf (the child
     is dropped).
@@ -21,8 +21,8 @@ import Expect
 import Html
 import Html.Attributes as HtmlAttr
 import M3e.Cem.Attr as CemAttr
-import M3e.Content.Internal as Content
 import M3e.Element as Element
+import M3e.Element.Internal as EI
 import M3e.Node.Internal as Node
 import Seam
 import Test exposing (Test, describe, test)
@@ -71,6 +71,22 @@ wrapped node =
         |> Query.fromHtml
 
 
+{-| ADR-15 replacement for the retired `Content.slotWithAttr`, composed from the
+surviving `M3e.Element.Internal` primitives: an empty slot name adds no `slot=`
+(the default slot is now raw children), a named slot stamps `slot="name"`, and
+both stamp the extra attribute (the for/id association).
+-}
+slotWithAttr : String -> String -> String -> Element.Element supported msg -> Element.Element supported msg
+slotWithAttr slotName attrName attrValue el =
+    (if slotName == "" then
+        el
+
+     else
+        EI.withSlot slotName el
+    )
+        |> EI.withAttr attrName attrValue
+
+
 suite : Test
 suite =
     describe "IR-core runtime reductions"
@@ -111,11 +127,11 @@ suite =
                         |> Query.findAll [ Selector.tag "child-marker" ]
                         |> Query.count (Expect.equal 0)
             ]
-        , describe "Content.slotWithAttr — for/id auto-wiring"
+        , describe "slotWithAttr (ADR-15 withSlot + withAttr) — for/id auto-wiring"
             [ test "stamps BOTH slot= and the extra attribute (for/id association)" <|
                 \_ ->
-                    Content.slotWithAttr "label" "for" "field-1" labelEl
-                        |> Content.toNode
+                    slotWithAttr "label" "for" "field-1" labelEl
+                        |> EI.toNode
                         |> Node.toHtml
                         |> Query.fromHtml
                         |> Query.has
@@ -124,8 +140,8 @@ suite =
                             ]
             , test "the default (unnamed) slot stamps only the attribute, no slot=" <|
                 \_ ->
-                    Content.slotWithAttr "" "id" "field-1" labelEl
-                        |> Content.toNode
+                    slotWithAttr "" "id" "field-1" labelEl
+                        |> EI.toNode
                         |> wrapped
                         |> Expect.all
                             [ Query.has [ Selector.attribute (HtmlAttr.attribute "id" "field-1") ]
