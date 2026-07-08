@@ -49,6 +49,8 @@ type alias SurfaceAgg =
     , usedEscapeHatch : Int
     , roundtripMatched : Int
     , roundtripDeviated : Int
+    , roundtripFunctionalMatched : Int
+    , roundtripFunctionalDeviated : Int
     }
 
 
@@ -61,6 +63,7 @@ type alias Cell =
     , native : Int
     , charsInside : Int
     , matches : Maybe Bool
+    , functionalMatches : Maybe Bool
     , deviationCount : Int
     }
 
@@ -81,23 +84,26 @@ type alias ActionData =
 
 surfaceAggDecoder : Decode.Decoder SurfaceAgg
 surfaceAggDecoder =
-    Decode.map6 SurfaceAgg
+    Decode.map8 SurfaceAgg
         (Decode.field "total" Decode.int)
         (Decode.field "converted" Decode.int)
         (Decode.field "clean" Decode.int)
         (Decode.field "usedEscapeHatch" Decode.int)
         (Decode.field "roundtripMatched" Decode.int)
         (Decode.field "roundtripDeviated" Decode.int)
+        (Decode.oneOf [ Decode.field "roundtripFunctionalMatched" Decode.int, Decode.succeed 0 ])
+        (Decode.oneOf [ Decode.field "roundtripFunctionalDeviated" Decode.int, Decode.succeed 0 ])
 
 
 type alias Roundtrip =
-    { matches : Bool, deviations : List Decode.Value }
+    { matches : Bool, functionalMatches : Bool, deviations : List Decode.Value }
 
 
 roundtripDecoder : Decode.Decoder Roundtrip
 roundtripDecoder =
-    Decode.map2 Roundtrip
+    Decode.map3 Roundtrip
         (Decode.field "matches" Decode.bool)
+        (Decode.oneOf [ Decode.field "functionalMatches" Decode.bool, Decode.field "matches" Decode.bool ])
         (Decode.field "deviations" (Decode.list Decode.value))
 
 
@@ -113,6 +119,7 @@ cellDecoder =
             , native = native
             , charsInside = charsInside
             , matches = Maybe.map .matches rt
+            , functionalMatches = Maybe.map .functionalMatches rt
             , deviationCount =
                 rt
                     |> Maybe.map (.deviations >> List.length)
@@ -210,16 +217,23 @@ head _ =
 rankedCells : List Cell -> List Cell
 rankedCells cells =
     let
+        -- Rank on FUNCTIONAL deviations: true functional mismatches surface
+        -- first, then escape-hatch users, then cosmetic-only deviations, then
+        -- fully clean cells. A cosmetic-only-deviating cell (functionalMatches
+        -- True, matches False) ranks below a genuine functional deviation.
         rank : Cell -> Int
         rank c =
-            if c.matches == Just False then
+            if c.functionalMatches == Just False then
                 0
 
             else if c.charsInside > 0 then
                 1
 
-            else
+            else if c.matches == Just False then
                 2
+
+            else
+                3
     in
     List.sortBy (\c -> ( rank c, negate c.charsInside )) cells
 
@@ -250,7 +264,7 @@ view app _ =
                 , Layout.div "mt-2 max-w-2xl"
                     [ Kit.paragraph Value.large
                         [ Kit.onSurfaceVariant ]
-                        [ Kit.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API surface, how many examples convert, stay clean of escape hatches, and survive the round-trip byte-for-byte. Cells are ranked deviations-first so regressions surface at the top." ]
+                        [ Kit.text "Every example is converted from HTML to Elm and back to HTML. This page reports, per API surface, how many examples convert, stay clean of escape hatches, and survive the round-trip. A clean round-trip means no functional deviations — cosmetic differences (class/style, unreferenced ids, and typed-layer role/slot normalization) are recorded but not scored. Cells are ranked functional-deviations-first so real regressions surface at the top." ]
                     ]
                 , summarySection app.data.perSurface
                 , cellsSection app.data.cells
@@ -298,10 +312,20 @@ surfaceRow ( name, agg ) =
                 , Kit.body Value.medium
                     []
                     [ Kit.text
-                        (String.fromInt agg.roundtripMatched
-                            ++ " round-trip matched · "
+                        (String.fromInt agg.roundtripFunctionalMatched
+                            ++ " functional clean · "
+                            ++ String.fromInt agg.roundtripFunctionalDeviated
+                            ++ " functional deviated"
+                        )
+                    ]
+                , Kit.body Value.small
+                    [ Kit.onSurfaceVariant ]
+                    [ Kit.text
+                        ("(strict: "
+                            ++ String.fromInt agg.roundtripMatched
+                            ++ " matched · "
                             ++ String.fromInt agg.roundtripDeviated
-                            ++ " deviated"
+                            ++ " deviated)"
                         )
                     ]
                 ]
@@ -331,12 +355,16 @@ cellRow c =
                 "not converted"
 
             else
-                case c.matches of
-                    Just True ->
-                        "round-trip matched"
-
+                case c.functionalMatches of
                     Just False ->
-                        String.fromInt c.deviationCount ++ " deviation(s)"
+                        String.fromInt c.deviationCount ++ " deviation(s), functional"
+
+                    Just True ->
+                        if c.matches == Just False then
+                            String.fromInt c.deviationCount ++ " cosmetic deviation(s)"
+
+                        else
+                            "round-trip matched"
 
                     Nothing ->
                         "round-trip not run"
@@ -347,7 +375,7 @@ cellRow c =
 
         deviationColor : List Kit.TextColor
         deviationColor =
-            if c.matches == Just False then
+            if c.functionalMatches == Just False then
                 [ Kit.error ]
 
             else

@@ -44,7 +44,7 @@ function runLayer2(cells) {
     for (const cell of cells) {
       if (!cell.converted) continue;
       const got = rendered.get(cell.id);
-      if (got == null) { cell.roundtrip = { matches: false, deviations: [{ kind: "not-rendered" }] }; continue; }
+      if (got == null) { cell.roundtrip = { matches: false, functionalMatches: false, deviations: [{ kind: "not-rendered", cosmetic: false }] }; continue; }
       cell.roundtrip = diffHtml(cell.raw, got);
     }
   } finally {
@@ -96,6 +96,8 @@ function main() {
     if (render) {
       perSurface[s].roundtripMatched = converted.filter((c) => c.roundtrip && c.roundtrip.matches === true).length;
       perSurface[s].roundtripDeviated = converted.filter((c) => c.roundtrip && !c.roundtrip.matches).length;
+      perSurface[s].roundtripFunctionalMatched = converted.filter((c) => c.roundtrip && c.roundtrip.functionalMatches === true).length;
+      perSurface[s].roundtripFunctionalDeviated = converted.filter((c) => c.roundtrip && c.roundtrip.functionalMatches === false).length;
     }
   }
 
