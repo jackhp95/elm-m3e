@@ -327,14 +327,19 @@ cellRow c =
     let
         deviationText : String
         deviationText =
-            if c.matches == Just False then
-                String.fromInt c.deviationCount ++ " deviation(s)"
-
-            else if c.matches == Just True then
-                "round-trip matched"
+            if not c.converted then
+                "not converted"
 
             else
-                "not converted"
+                case c.matches of
+                    Just True ->
+                        "round-trip matched"
+
+                    Just False ->
+                        String.fromInt c.deviationCount ++ " deviation(s)"
+
+                    Nothing ->
+                        "round-trip not run"
 
         escapeText : String
         escapeText =
