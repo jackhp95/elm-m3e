@@ -428,3 +428,16 @@
   content-visibility: auto;
   contain-intrinsic-size: 0 1200px;
 }
+
+/* Custom elements render raw, unstyled light-DOM until Lit upgrades them.
+   Hide undefined ones (opacity keeps the layout box → no shift), then fade in
+   on upgrade. :where() keeps specificity 0 so element-specific rules win. */
+:where(:not(:defined)) {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(:defined) {
+    transition: opacity 180ms ease-out;
+  }
+}
