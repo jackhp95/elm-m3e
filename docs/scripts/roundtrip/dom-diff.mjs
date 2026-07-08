@@ -23,16 +23,26 @@ function toTree(el) {
   return { type: "el", tag: el.tagName.toLowerCase(), attrs: canonAttrs(el), children };
 }
 
-function rootOf(html) {
+function rootsOf(html) {
   // linkedom drops unknown/custom elements out of <body> when parsed at the
-  // top level, so wrap in a known container and read its first element child.
+  // top level, so wrap in a known container and collect ALL its top-level
+  // children. ~42% of corpus cells are multi-root (a bare list of sibling
+  // elements); comparing only the first root would hide any deviation in the
+  // 2nd+ siblings. We fold every top-level child into a synthetic "#roots"
+  // node so the existing positional diffNode compares every root.
   const { document } = parseHTML(`<div id="__rt_root__">${html}</div>`);
-  const wrapper = document.getElementById("__rt_root__");
-  // Reads only firstElementChild: cells are single-root by contract, so any
-  // extra top-level siblings in a multi-root fragment are silently ignored
-  // (A6 relies on this single-root contract).
-  const el = wrapper ? wrapper.firstElementChild : null;
-  return el ? toTree(el) : null;
+  const wrapper = document.querySelector("#__rt_root__");
+  const children = [];
+  if (wrapper) {
+    for (const child of wrapper.childNodes) {
+      if (child.nodeType === 1) children.push(toTree(child));
+      else if (child.nodeType === 3) {
+        const t = child.textContent.replace(/\s+/g, " ").trim();
+        if (t) children.push({ type: "text", text: t });
+      }
+    }
+  }
+  return { type: "el", tag: "#roots", attrs: {}, children };
 }
 
 function diffNode(a, b, path, out) {
@@ -65,7 +75,7 @@ function diffNode(a, b, path, out) {
 
 /** @returns {{ matches: boolean, deviations: Array<object> }} */
 export function diffHtml(expectedRawHtml, actualRenderedHtml) {
-  const a = rootOf(expectedRawHtml), b = rootOf(actualRenderedHtml);
+  const a = rootsOf(expectedRawHtml), b = rootsOf(actualRenderedHtml);
   const deviations = [];
   diffNode(a, b, "", deviations);
   return { matches: deviations.length === 0, deviations };

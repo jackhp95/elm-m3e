@@ -97,6 +97,12 @@ export function generateHarness(cells, resolves) {
   for (const c of converted) {
     const name = bindingName(c.module, c.index, c.surface);
     const lift = !ELEMENT_SURFACES.has(c.surface); // mid/bottom -> Seam.fromHtml
+    // Heuristic: a bare leading `[` means the converter emitted a multi-root
+    // sibling fragment (List). This assumes the converter only ever emits
+    // either a single expression or a bare `[...]` list body — verified 0
+    // counterexamples in the current corpus. A wrapper-prefixed list (e.g.
+    // `List.map f [...]` or `( [...] )`) would be misdetected as single-root;
+    // revisit this guard if the converter's output shape changes.
     const isList = c.elm.trim().startsWith("["); // multi-root sibling fragment
     const multiline = c.elm.includes("\n");
     const body = c.elm.split("\n").map((l) => "        " + l).join("\n");

@@ -35,3 +35,21 @@ test("a missing element is a structured deviation", () => {
   assert.equal(r.matches, false);
   assert.ok(r.deviations.some((d) => d.kind === "removed-element"));
 });
+
+test("identical multi-root fragments match", () => {
+  const r = diffHtml("<button>A</button><button>B</button>", "<button>A</button><button>B</button>");
+  assert.equal(r.matches, true);
+  assert.deepEqual(r.deviations, []);
+});
+
+test("a deviation in the SECOND root is detected", () => {
+  const r = diffHtml("<button>A</button><button>B</button>", "<button>A</button><button>C</button>");
+  assert.equal(r.matches, false);
+  assert.ok(r.deviations.some((d) => d.kind === "changed-text"));
+});
+
+test("a removed trailing root is detected", () => {
+  const r = diffHtml("<a></a><b></b>", "<a></a>");
+  assert.equal(r.matches, false);
+  assert.ok(r.deviations.some((d) => d.kind === "removed-element"));
+});
