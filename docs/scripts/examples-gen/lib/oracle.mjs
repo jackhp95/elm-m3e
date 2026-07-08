@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { camel, pascal } from "./naming.mjs";
+import { camel, pascal, safeField } from "./naming.mjs";
 
 // docs/scripts/examples-gen/lib/oracle.mjs -> elm-m3e root is four levels up.
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -43,6 +43,18 @@ function enumLiterals(typeText) {
   while ((m = re.exec(typeText)) !== null) out.push(m[1]);
   return out;
 }
+
+// Enum-typed attributes whose CEM entry carries an un-inlined type ALIAS
+// (`type.text: "FormSubmitterType"`) with NO `parsedType` union to read literals
+// from. The library generator resolved these aliases to `M3e.Value` enums during
+// generation, so the top layer's setter takes a `M3e.Value.<token>` — emitting a
+// bare string would fail to compile. All other enum aliases in the @m3e/web CEM
+// (ButtonVariant, NavBarMode, …) DO carry `parsedType`, so this fallback is only
+// needed for the alias(es) that don't. `FormSubmitterType` = the HTML
+// `<button type>` set, mapped to the `M3e.Value.{button,reset,submit}` tokens.
+const ALIAS_ENUM_LITERALS = {
+  FormSubmitterType: ["submit", "reset", "button"],
+};
 
 // A component's produced KIND (as used in slots.json `kinds` lists) is its
 // module name decapitalized: TabPanel -> "tabPanel", Step -> "step". This is
@@ -129,8 +141,10 @@ export function buildOracle() {
         // Attribute setters use the PLAIN camelCase name — the generator does
         // NOT reserved-bump them (Attr.elm: `elmName = camel attribute.name`),
         // so `min`/`max`/etc. stay as-is. (`setterNames` is still tracked for
-        // the slot-helper collision bump below.)
-        const setter = camel(htmlName);
+        // the slot-helper collision bump below.) It DOES escape Elm keywords
+        // (`type` -> `type_`), mirroring the generator's `safeField`, so a `type`
+        // attribute targets the real `M3e.<Mod>.type_` setter (not `.type`).
+        const setter = safeField(camel(htmlName));
         setterNames.add(setter);
 
         const typeText = attr.type?.text ?? "";
@@ -156,9 +170,15 @@ export function buildOracle() {
           kind = "skip";
         } else {
           const lits = enumLiterals(enumSource);
+          const aliasLits = ALIAS_ENUM_LITERALS[bare] ?? null;
           if (lits.length >= 2) {
             kind = "enum";
             enumValues = lits;
+          } else if (aliasLits) {
+            // Un-inlined enum alias (no parsedType union): resolve via the known
+            // alias->literals map so the setter targets `M3e.Value.<token>`.
+            kind = "enum";
+            enumValues = aliasLits;
           } else {
             kind = "string";
           }

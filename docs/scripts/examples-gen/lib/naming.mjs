@@ -70,3 +70,33 @@ export const constructor = pascal;
 export function avoidConflicts(name, taken) {
   return RESERVED.has(name) || taken.has(name) ? name + "Attr" : name;
 }
+
+// Elm reserved keywords. A field/attr setter that would collide with one is
+// escaped with a trailing "_" (`type` -> `type_`). Faithful port of
+// elm-cem/codegen/Generate.elm `elmKeywords` + `safeField`, which the library
+// generator uses to name attribute setters (e.g. `Native.input`'s `type_`).
+export const elmKeywords = new Set([
+  "type",
+  "module",
+  "where",
+  "import",
+  "as",
+  "exposing",
+  "port",
+  "let",
+  "in",
+  "if",
+  "then",
+  "else",
+  "case",
+  "of",
+  "infix",
+  "alias",
+  "effect",
+  "command",
+  "subscription",
+]);
+
+export function safeField(name) {
+  return elmKeywords.has(name) ? name + "_" : name;
+}
