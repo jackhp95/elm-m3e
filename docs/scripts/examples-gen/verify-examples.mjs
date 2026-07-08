@@ -71,7 +71,7 @@ function bindingName(module, idx) {
  */
 const STDLIB_ROOTS = new Set(["Html", "Json", "VirtualDom", "Basics", "Dict", "Set", "List", "Maybe", "Result", "String", "Char", "Tuple", "Array"]);
 const moduleFileCache = new Map();
-function moduleResolves(mod) {
+export function moduleResolves(mod) {
   if (moduleFileCache.has(mod)) return moduleFileCache.get(mod);
   const rel = mod.replace(/\./g, "/") + ".elm";
   const resolved =
