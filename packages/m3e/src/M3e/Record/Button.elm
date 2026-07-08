@@ -129,6 +129,19 @@ view :
     { content :
         M3e.Element.Element { text : M3e.Value.Supported
         , icon : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        , stepperNext : M3e.Value.Supported
         } msg
     , action :
         M3e.Action.Action { click : M3e.Value.Supported
@@ -145,6 +158,7 @@ view :
         , richTooltipAction : M3e.Value.Supported
         , stepperReset : M3e.Value.Supported
         , stepperPrevious : M3e.Value.Supported
+        , stepperNext : M3e.Value.Supported
         } msg
     }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported

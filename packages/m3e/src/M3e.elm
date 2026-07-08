@@ -81,15 +81,15 @@ module M3e exposing
     , menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon, menuItemSlotTrailingIcon, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText
     , listOptionSlotTrailing, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotLeading
     , listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing
-    , listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabSlotLabel, fabSlotCloseIcon, expansionPanelSlotActions
-    , expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions
-    , dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon
-    , filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent, cardSlotActions
-    , cardSlotFooter, calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected
-    , buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading
-    , autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText
-    , formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle
-    , appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
+    , listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabMenuItemSlotIcon, fabSlotLabel, fabSlotCloseIcon
+    , expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd, dialogSlotHeader
+    , dialogSlotActions, dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon
+    , filterChipSlotIcon, filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent
+    , cardSlotActions, cardSlotFooter, calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon
+    , buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader
+    , autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix
+    , formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel, appBarSlotLeading
+    , appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
     )
 
 {-|
@@ -191,16 +191,16 @@ The one-import barrel. Re-exposes every component constructor plus the whole sha
 @docs listOptionSlotSupportingText, listOptionSlotTrailing, expandableListItemSlotLeading, expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon
 @docs expandableListItemSlotItems, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotLeading
 @docs listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText
-@docs listItemSlotTrailing, fabSlotLabel, fabSlotCloseIcon, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon
-@docs expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon
-@docs suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon
-@docs filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent
-@docs cardSlotActions, cardSlotFooter, calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected
-@docs buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon
-@docs breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix
-@docs formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError
-@docs optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle
-@docs appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
+@docs listItemSlotTrailing, fabMenuItemSlotIcon, fabSlotLabel, fabSlotCloseIcon, expansionPanelSlotActions, expansionPanelSlotHeader
+@docs expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions
+@docs dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon
+@docs filterChipSlotIcon, filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader
+@docs cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions
+@docs iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator
+@docs breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault
+@docs formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint
+@docs formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle
+@docs appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
 -}
 
 
@@ -1895,7 +1895,21 @@ iconButton :
     , onClick : M3e.Value.Supported
     , slot : M3e.Value.Supported
     } msg)
-    -> List (M3e.Element.Element { icon : M3e.Value.Supported } msg)
+    -> List (M3e.Element.Element { icon : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperNext : M3e.Value.Supported
+    } msg)
     -> M3e.Element.Element { s | iconButton : M3e.Value.Supported } msg
 iconButton =
     M3e.IconButton.view
@@ -1925,6 +1939,19 @@ button :
     } msg)
     -> List (M3e.Element.Element { text : M3e.Value.Supported
     , icon : M3e.Value.Supported
+    , menuTrigger : M3e.Value.Supported
+    , dialogTrigger : M3e.Value.Supported
+    , fabMenuTrigger : M3e.Value.Supported
+    , bottomSheetTrigger : M3e.Value.Supported
+    , navRailToggle : M3e.Value.Supported
+    , drawerToggle : M3e.Value.Supported
+    , datepickerToggle : M3e.Value.Supported
+    , dialogAction : M3e.Value.Supported
+    , bottomSheetAction : M3e.Value.Supported
+    , richTooltipAction : M3e.Value.Supported
+    , stepperReset : M3e.Value.Supported
+    , stepperPrevious : M3e.Value.Supported
+    , stepperNext : M3e.Value.Supported
     } msg)
     -> M3e.Element.Element { s | button : M3e.Value.Supported } msg
 button =
@@ -5572,6 +5599,14 @@ listItemSlotTrailing :
     -> M3e.Element.Element k msg
 listItemSlotTrailing =
     M3e.ListItem.trailing
+
+
+{-| Per-component `icon` slot setter for `M3e.FabMenuItem`, re-exposed flat. The loose, component-agnostic form is `slotIcon`. -}
+fabMenuItemSlotIcon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
+fabMenuItemSlotIcon =
+    M3e.FabMenuItem.icon
 
 
 {-| Per-component `label` slot setter for `M3e.Fab`, re-exposed flat. The loose, component-agnostic form is `slotLabel`. -}

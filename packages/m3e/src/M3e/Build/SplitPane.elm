@@ -1,8 +1,7 @@
 module M3e.Build.SplitPane exposing
     ( Builder, AttrCaps, SlotCaps, splitPane, attr, label
     , max, min, orientation, overshootLimit, step, value, wrapDetents
-    , name, disabled, onChange, onBeforeinput, onInput, start, end
-    , build
+    , name, disabled, onChange, onBeforeinput, onInput, build
     )
 
 {-|
@@ -11,7 +10,7 @@ The ⑤ Build shape for `<m3e-split-pane>` — phantom-typed pipeline API. Impor
 @docs Builder, AttrCaps, SlotCaps, splitPane, attr, label
 @docs max, min, orientation, overshootLimit, step, value
 @docs wrapDetents, name, disabled, onChange, onBeforeinput, onInput
-@docs start, end, build
+@docs build
 -}
 
 
@@ -51,12 +50,14 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    { start : M3e.Build.Internal.Available, end : M3e.Build.Internal.Available }
+    {}
 
 
-{-| Seed a `Builder` for `<m3e-split-pane>`. -}
-splitPane : Builder AttrCaps SlotCaps msg kind
-splitPane =
+{-| Seed a `Builder` for `<m3e-split-pane>` with the required fields. -}
+splitPane :
+    { start : M3e.Element.Element any msg, end : M3e.Element.Element any msg }
+    -> Builder AttrCaps SlotCaps msg kind
+splitPane req_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
@@ -65,7 +66,9 @@ splitPane =
                       ch_
              )
              []
-             []
+             [ M3e.Element.toNode (M3e.Element.withSlot "start" req_.start)
+             , M3e.Element.toNode (M3e.Element.withSlot "end" req_.end)
+             ]
         )
 
 
@@ -251,32 +254,6 @@ onInput v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.SplitPane.onInput v_))
-             (M3e.Build.Internal.node_ b_)
-        )
-
-
-{-| Place content in the `start` slot. -}
-start :
-    M3e.Element.Element any msg
-    -> Builder a { s | start : M3e.Build.Internal.Available } msg kind
-    -> Builder a { s | start : M3e.Build.Internal.Used } msg kind
-start el_ b_ =
-    M3e.Build.Internal.wrap_
-        (M3e.Node.addChild
-             (M3e.Element.toNode (M3e.Element.withSlot "start" el_))
-             (M3e.Build.Internal.node_ b_)
-        )
-
-
-{-| Place content in the `end` slot. -}
-end :
-    M3e.Element.Element any msg
-    -> Builder a { s | end : M3e.Build.Internal.Available } msg kind
-    -> Builder a { s | end : M3e.Build.Internal.Used } msg kind
-end el_ b_ =
-    M3e.Build.Internal.wrap_
-        (M3e.Node.addChild
-             (M3e.Element.toNode (M3e.Element.withSlot "end" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

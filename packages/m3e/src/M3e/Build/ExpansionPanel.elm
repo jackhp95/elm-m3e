@@ -1,7 +1,7 @@
 module M3e.Build.ExpansionPanel exposing
     ( Builder, AttrCaps, SlotCaps, expansionPanel, attr, disabled
     , hideToggle, open, toggleDirection, togglePosition, onOpening, onOpened, onClosing
-    , onClosed, child, header, toggleIcon, build
+    , onClosed, child, toggleIcon, build
     )
 
 {-|
@@ -9,7 +9,7 @@ The ⑤ Build shape for `<m3e-expansion-panel>` — phantom-typed pipeline API. 
 
 @docs Builder, AttrCaps, SlotCaps, expansionPanel, attr, disabled
 @docs hideToggle, open, toggleDirection, togglePosition, onOpening, onOpened
-@docs onClosing, onClosed, child, header, toggleIcon, build
+@docs onClosing, onClosed, child, toggleIcon, build
 -}
 
 
@@ -46,14 +46,15 @@ type alias AttrCaps =
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
     { unnamed : M3e.Build.Internal.Available
-    , header : M3e.Build.Internal.Available
     , toggleIcon : M3e.Build.Internal.Available
     }
 
 
-{-| Seed a `Builder` for `<m3e-expansion-panel>`. -}
-expansionPanel : Builder AttrCaps SlotCaps msg kind
-expansionPanel =
+{-| Seed a `Builder` for `<m3e-expansion-panel>` with the required fields. -}
+expansionPanel :
+    { header : M3e.Element.Element any msg }
+    -> Builder AttrCaps SlotCaps msg kind
+expansionPanel req_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.fromComponent
              (\erased_ ch_ ->
@@ -62,7 +63,7 @@ expansionPanel =
                       ch_
              )
              []
-             []
+             [ M3e.Element.toNode (M3e.Element.withSlot "header" req_.header) ]
         )
 
 
@@ -217,19 +218,6 @@ child el_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addChild
              (M3e.Element.toNode el_)
-             (M3e.Build.Internal.node_ b_)
-        )
-
-
-{-| Place content in the `header` slot. -}
-header :
-    M3e.Element.Element any msg
-    -> Builder a { s | header : M3e.Build.Internal.Available } msg kind
-    -> Builder a { s | header : M3e.Build.Internal.Used } msg kind
-header el_ b_ =
-    M3e.Build.Internal.wrap_
-        (M3e.Node.addChild
-             (M3e.Element.toNode (M3e.Element.withSlot "header" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

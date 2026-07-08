@@ -371,7 +371,7 @@
     },
     "Button": {
         "required": {
-            "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+            "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious,stepperNext"
         },
         "actionMap": [
             [
@@ -387,7 +387,20 @@
             "unnamed": {
                 "kinds": [
                     "text",
-                    "icon"
+                    "icon",
+                    "menuTrigger",
+                    "dialogTrigger",
+                    "fabMenuTrigger",
+                    "bottomSheetTrigger",
+                    "navRailToggle",
+                    "drawerToggle",
+                    "datepickerToggle",
+                    "dialogAction",
+                    "bottomSheetAction",
+                    "richTooltipAction",
+                    "stepperReset",
+                    "stepperPrevious",
+                    "stepperNext"
                 ],
                 "multi": false,
                 "required": true
@@ -426,7 +439,7 @@
     },
     "IconButton": {
         "required": {
-            "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious"
+            "action": "action:click,link,menuTrigger,dialogTrigger,fabMenuTrigger,bottomSheetTrigger,navRailToggle,drawerToggle,datepickerToggle,dialogAction,bottomSheetAction,richTooltipAction,stepperReset,stepperPrevious,stepperNext"
         },
         "requiredAttrs": [
             "aria-label"
@@ -434,7 +447,20 @@
         "slots": {
             "unnamed": {
                 "kinds": [
-                    "icon"
+                    "icon",
+                    "menuTrigger",
+                    "dialogTrigger",
+                    "fabMenuTrigger",
+                    "bottomSheetTrigger",
+                    "navRailToggle",
+                    "drawerToggle",
+                    "datepickerToggle",
+                    "dialogAction",
+                    "bottomSheetAction",
+                    "richTooltipAction",
+                    "stepperReset",
+                    "stepperPrevious",
+                    "stepperNext"
                 ],
                 "multi": false,
                 "required": true
@@ -848,7 +874,7 @@
                     "expansionPanel"
                 ],
                 "multi": true,
-                "required": false
+                "required": true
             }
         }
     },
@@ -891,7 +917,7 @@
             "header": {
                 "kinds": "arbitrary",
                 "multi": false,
-                "required": false
+                "required": true
             },
             "toggle-icon": {
                 "kinds": [
@@ -1910,12 +1936,12 @@
             "start": {
                 "kinds": "arbitrary",
                 "multi": false,
-                "required": false
+                "required": true
             },
             "end": {
                 "kinds": "arbitrary",
                 "multi": false,
-                "required": false
+                "required": true
             }
         }
     },
@@ -2313,6 +2339,22 @@
         "semantics": {
             "a": "link",
             "label": "label"
+        }
+    },
+    "FabMenuItem": {
+        "slots": {
+            "unnamed": {
+                "kinds": "arbitrary",
+                "multi": false,
+                "required": false
+            },
+            "icon": {
+                "kinds": [
+                    "icon"
+                ],
+                "multi": false,
+                "required": false
+            }
         }
     }
 }

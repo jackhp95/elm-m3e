@@ -1,6 +1,6 @@
 module M3e.FabMenuItem exposing
     ( view, disabled, download, href, rel, target
-    , onClick
+    , onClick, icon
     )
 
 {-|
@@ -16,7 +16,7 @@ An item of a floating action button (FAB) menu.
 - `icon`: Renders an icon before the items's label.
 
 @docs view, disabled, download, href, rel, target
-@docs onClick
+@docs onClick, icon
 -}
 
 
@@ -89,3 +89,11 @@ target =
 onClick : msg -> M3e.Cem.Attr.Attr { c | onClick : M3e.Value.Supported } msg
 onClick =
     M3e.Cem.FabMenuItem.onClick
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> M3e.Element.Element k msg
+icon el =
+    M3e.Element.Internal.placeSlot "icon" el

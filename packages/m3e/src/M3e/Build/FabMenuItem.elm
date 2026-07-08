@@ -1,13 +1,15 @@
 module M3e.Build.FabMenuItem exposing
     ( Builder, AttrCaps, SlotCaps, fabMenuItem, attr, disabled
-    , download, href, rel, target, onClick, build
+    , download, href, rel, target, onClick, child, icon
+    , build
     )
 
 {-|
 The ⑤ Build shape for `<m3e-fab-menu-item>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.FabMenuItem as FabMenuItem`.
 
 @docs Builder, AttrCaps, SlotCaps, fabMenuItem, attr, disabled
-@docs download, href, rel, target, onClick, build
+@docs download, href, rel, target, onClick, child
+@docs icon, build
 -}
 
 
@@ -40,7 +42,9 @@ type alias AttrCaps =
 
 {-| Per-component slot capability row for the phantom-typed Builder. -}
 type alias SlotCaps =
-    {}
+    { unnamed : M3e.Build.Internal.Available
+    , icon : M3e.Build.Internal.Available
+    }
 
 
 {-| Seed a `Builder` for `<m3e-fab-menu-item>`. -}
@@ -145,6 +149,32 @@ onClick v_ b_ =
     M3e.Build.Internal.wrap_
         (M3e.Node.addAttr
              (M3e.Cem.Attr.Internal.forget (M3e.Cem.FabMenuItem.onClick v_))
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `(default)` slot. -}
+child :
+    M3e.Element.Element any msg
+    -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
+child el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode el_)
+             (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Place content in the `icon` slot. -}
+icon :
+    M3e.Element.Element { icon : M3e.Value.Supported } msg
+    -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
+    -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
+icon el_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addChild
+             (M3e.Element.toNode (M3e.Element.withSlot "icon" el_))
              (M3e.Build.Internal.node_ b_)
         )
 

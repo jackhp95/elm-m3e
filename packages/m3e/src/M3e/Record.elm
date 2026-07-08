@@ -1,17 +1,17 @@
 module M3e.Record exposing
-    ( treeItem, tocItem, step, splitButton, snackbar, searchView
-    , searchBar, navMenuItem, heading, fab, suggestionChip, inputChip, filterChip
-    , assistChip, chip, tooltip, richTooltip, richTooltipAction, iconButton, button
-    , option
+    ( treeItem, tocItem, step, splitPane, splitButton, snackbar
+    , searchView, searchBar, navMenuItem, heading, fab, expansionPanel, suggestionChip
+    , inputChip, filterChip, assistChip, chip, tooltip, richTooltip, richTooltipAction
+    , iconButton, button, option
     )
 
 {-|
 The M3e.Record barrel: shortcut re-exports of M3e.Record.<Comp>.view for the components that accept a required record. Each entry is a 3-arg constructor (`required record → [attributes] → [content] → Element`). Use `M3e.<Comp>.view` for the loose 2-arg shape. Combine with `M3e.disabled` (from `M3e`) or `M3e.Cem.<Comp>.disabled` for attribute setters.
 
-@docs treeItem, tocItem, step, splitButton, snackbar, searchView
-@docs searchBar, navMenuItem, heading, fab, suggestionChip, inputChip
-@docs filterChip, assistChip, chip, tooltip, richTooltip, richTooltipAction
-@docs iconButton, button, option
+@docs treeItem, tocItem, step, splitPane, splitButton, snackbar
+@docs searchView, searchBar, navMenuItem, heading, fab, expansionPanel
+@docs suggestionChip, inputChip, filterChip, assistChip, chip, tooltip
+@docs richTooltip, richTooltipAction, iconButton, button, option
 -}
 
 
@@ -21,6 +21,7 @@ import M3e.Element
 import M3e.Record.AssistChip
 import M3e.Record.Button
 import M3e.Record.Chip
+import M3e.Record.ExpansionPanel
 import M3e.Record.Fab
 import M3e.Record.FilterChip
 import M3e.Record.Heading
@@ -34,6 +35,7 @@ import M3e.Record.SearchBar
 import M3e.Record.SearchView
 import M3e.Record.Snackbar
 import M3e.Record.SplitButton
+import M3e.Record.SplitPane
 import M3e.Record.Step
 import M3e.Record.SuggestionChip
 import M3e.Record.TocItem
@@ -100,6 +102,30 @@ step :
     -> M3e.Element.Element { s | step : M3e.Value.Supported } msg
 step =
     M3e.Record.Step.view
+
+
+{-| Convenience binding for the `M3e.Record.SplitPane` element: `view` re-exposed from `M3e.Record.SplitPane`. Import that module directly for the strict, component-scoped types. -}
+splitPane :
+    { start : M3e.Element.Element any msg, end : M3e.Element.Element any msg }
+    -> List (M3e.Cem.Attr.Attr { label : M3e.Value.Supported
+    , max : M3e.Value.Supported
+    , min : M3e.Value.Supported
+    , orientation : M3e.Value.Supported
+    , overshootLimit : M3e.Value.Supported
+    , step : M3e.Value.Supported
+    , valueFloat : M3e.Value.Supported
+    , wrapDetents : M3e.Value.Supported
+    , name : M3e.Value.Supported
+    , disabled : M3e.Value.Supported
+    , onChange : M3e.Value.Supported
+    , onBeforeinput : M3e.Value.Supported
+    , onInput : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element any msg)
+    -> M3e.Element.Element { s | splitPane : M3e.Value.Supported } msg
+splitPane =
+    M3e.Record.SplitPane.view
 
 
 {-| Convenience binding for the `M3e.Record.SplitButton` element: `view` re-exposed from `M3e.Record.SplitButton`. Import that module directly for the strict, component-scoped types. -}
@@ -243,6 +269,26 @@ fab :
     -> M3e.Element.Element { s | fab : M3e.Value.Supported } msg
 fab =
     M3e.Record.Fab.view
+
+
+{-| Convenience binding for the `M3e.Record.ExpansionPanel` element: `view` re-exposed from `M3e.Record.ExpansionPanel`. Import that module directly for the strict, component-scoped types. -}
+expansionPanel :
+    { header : M3e.Element.Element any msg }
+    -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
+    , hideToggle : M3e.Value.Supported
+    , open : M3e.Value.Supported
+    , toggleDirection : M3e.Value.Supported
+    , togglePosition : M3e.Value.Supported
+    , onOpening : M3e.Value.Supported
+    , onOpened : M3e.Value.Supported
+    , onClosing : M3e.Value.Supported
+    , onClosed : M3e.Value.Supported
+    , slot : M3e.Value.Supported
+    } msg)
+    -> List (M3e.Element.Element any msg)
+    -> M3e.Element.Element { s | expansionPanel : M3e.Value.Supported } msg
+expansionPanel =
+    M3e.Record.ExpansionPanel.view
 
 
 {-| Convenience binding for the `M3e.Record.SuggestionChip` element: `view` re-exposed from `M3e.Record.SuggestionChip`. Import that module directly for the strict, component-scoped types. -}
@@ -403,7 +449,22 @@ richTooltipAction =
 
 {-| Convenience binding for the `M3e.Record.IconButton` element: `view` re-exposed from `M3e.Record.IconButton`. Import that module directly for the strict, component-scoped types. -}
 iconButton :
-    { content : M3e.Element.Element { icon : M3e.Value.Supported } msg
+    { content :
+        M3e.Element.Element { icon : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        , stepperNext : M3e.Value.Supported
+        } msg
     , action :
         M3e.Action.Action { click : M3e.Value.Supported
         , link : M3e.Value.Supported
@@ -419,6 +480,7 @@ iconButton :
         , richTooltipAction : M3e.Value.Supported
         , stepperReset : M3e.Value.Supported
         , stepperPrevious : M3e.Value.Supported
+        , stepperNext : M3e.Value.Supported
         } msg
     }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
@@ -448,6 +510,19 @@ button :
     { content :
         M3e.Element.Element { text : M3e.Value.Supported
         , icon : M3e.Value.Supported
+        , menuTrigger : M3e.Value.Supported
+        , dialogTrigger : M3e.Value.Supported
+        , fabMenuTrigger : M3e.Value.Supported
+        , bottomSheetTrigger : M3e.Value.Supported
+        , navRailToggle : M3e.Value.Supported
+        , drawerToggle : M3e.Value.Supported
+        , datepickerToggle : M3e.Value.Supported
+        , dialogAction : M3e.Value.Supported
+        , bottomSheetAction : M3e.Value.Supported
+        , richTooltipAction : M3e.Value.Supported
+        , stepperReset : M3e.Value.Supported
+        , stepperPrevious : M3e.Value.Supported
+        , stepperNext : M3e.Value.Supported
         } msg
     , action :
         M3e.Action.Action { click : M3e.Value.Supported
@@ -464,6 +539,7 @@ button :
         , richTooltipAction : M3e.Value.Supported
         , stepperReset : M3e.Value.Supported
         , stepperPrevious : M3e.Value.Supported
+        , stepperNext : M3e.Value.Supported
         } msg
     }
     -> List (M3e.Cem.Attr.Attr { disabled : M3e.Value.Supported
