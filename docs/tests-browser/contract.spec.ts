@@ -4,8 +4,8 @@ import { test, expect, Locator } from "@playwright/test";
  * Runtime contract tests — assert the things `Test.Html` structurally cannot:
  * shadow DOM content, DOM properties, and the accessibility tree.
  *
- * Each test navigates to a docs component page (which renders the real `Ui.*`
- * module) and waits for the custom elements to upgrade.
+ * Each test navigates to a docs component page (which renders the real `M3e.*`
+ * component via its live Usage previews) and waits for the custom elements to upgrade.
  */
 
 /** Wait until a custom element tag is defined (upgraded) in the page. */
@@ -101,35 +101,38 @@ test.describe("coverage — runtime behaviors Test.Html cannot observe", () => {
     // activated — a runtime state transition (`:popover-open`) invisible to
     // Test.Html. (The trigger has no box of its own; its wrapping button is the
     // activation target.)
-    const menu = page.locator(`${CONTENT} m3e-menu`).first();
-    await menu.waitFor({ state: "attached" });
-    const isOpen = () => menu.evaluate((el) => el.matches(":popover-open"));
-    expect(await isOpen(), "menu starts closed").toBe(false);
-    await page
-      .locator(`${CONTENT} m3e-button`)
-      .filter({ hasText: "File" })
-      .first()
-      .click();
+    const menus = page.locator(`${CONTENT} m3e-menu`);
+    await menus.first().waitFor({ state: "attached" });
+    const anyOpen = () =>
+      menus.evaluateAll((els) => els.some((el) => el.matches(":popover-open")));
+    expect(await anyOpen(), "menus start closed").toBe(false);
+    // Activate the first example's menu trigger. The trigger label is
+    // example-derived (e.g. "Menu"), so target the trigger element itself
+    // rather than a hardcoded label.
+    await page.locator(`${CONTENT} m3e-menu-trigger`).first().click();
     await expect
-      .poll(isOpen, { message: "menu opens on trigger activation" })
+      .poll(anyOpen, { message: "a menu opens on trigger activation" })
       .toBe(true);
   });
 
-  test("Skeleton: a loaded skeleton reveals its projected content", async ({ page }) => {
+  test("Skeleton: upgrades and exposes its loaded state as a DOM property", async ({ page }) => {
     await page.goto("/components/skeleton");
     await waitDefined(page, "m3e-skeleton");
-    // The "loaded" preview projects real content once done loading. Scope to the
-    // live preview — the code block below it also contains this text.
-    const loadedSkel = page.locator(`${CONTENT} m3e-skeleton[loaded]`).first();
-    await loadedSkel.waitFor();
-    await expect(
-      loadedSkel.getByText("Content has finished loading.")
-    ).toBeVisible();
-    // `loaded` is a DOM property (invisible to Test.Html) — assert it at runtime.
-    const loaded = await loadedSkel.evaluate(
+    // `loaded` is a DOM *property* (Html.Attributes.property), invisible to
+    // Test.Html. The mined Usage examples render skeletons in the loading state,
+    // so assert the runtime property reflects that (loaded === false) and the
+    // element upgrades. (No `loaded` example is currently mined for this page; if
+    // one is added, tighten this to assert content projection — see #76.)
+    // Only DOM properties are read below, so wait for attachment, not visibility
+    // (the first example may sit in a non-active tab panel).
+    const skel = page.locator(`${CONTENT} m3e-skeleton`).first();
+    await skel.waitFor({ state: "attached" });
+    const upgraded = await skel.evaluate((el) => !!el.shadowRoot);
+    expect(upgraded, "m3e-skeleton must be upgraded").toBe(true);
+    const loaded = await skel.evaluate(
       (el) => (el as unknown as { loaded: boolean }).loaded
     );
-    expect(loaded).toBe(true);
+    expect(loaded, "a loading-state skeleton reflects loaded === false").toBe(false);
   });
 
   // Note: BottomSheet's number gesture properties (hide-friction / overshoot-
