@@ -84,10 +84,12 @@ Surfaces that render identically to raw HTML by construction (notably
   `{ converted, escapeHatch: { seam, native, charsInside }, roundtrip: { matches, deviations: [...] } }`,
   plus per-surface aggregates (e.g. "M3e: 78% clean round-trip, 12% needed an
   escape hatch, 4 deviations").
-- **Human:** a generated, ranked standalone dev artifact (`roundtrip-report.html`,
-  **not deployed**) — **deviations first** (each with its structured HTML diff),
-  then heavy-escape-hatch cells, then clean. It is a verification tool, not
-  consumer docs; can be promoted to a docs route later if desired.
+- **Human:** a generated, ranked **deployed docs route** (decided 2026-07-08) —
+  **deviations first** (each with its structured HTML diff), then
+  heavy-escape-hatch cells, then clean. It renders from
+  `docs/data/roundtrip-report.json` like any other data-driven route. Reads as an
+  internal-facing verification/transparency page rather than component docs, but is
+  live on the deployed site.
 
 ### How it runs
 
@@ -158,8 +160,17 @@ specs assert code *presence* (`toBeAttached`), not visibility.
   a spot of components render; verify at mobile + desktop.
 - **Part C:** a Playwright assertion that a code `<details>` is `open` by default.
 
-## Sequencing
+## Sequencing (decided 2026-07-08)
 
-C (trivial) → B (contained docs feature) → A (the harness), or A first if it's the
-priority. A's Layer 1 (escape-hatch/convertibility report) can ship before Layer 2
-(SSR round-trip) since it needs no rendering — a natural incremental split.
+**C → B → A.** C (trivial, one-line) first, then B (contained docs feature), then A
+(the harness). A splits into **Layer 1** (escape-hatch/convertibility report, no
+render — ships first) then **Layer 2** (SSR round-trip + semantic diff). Gate-later
+(baseline + CI regression check) is a follow-up after Layer 2, not part of the
+initial ship.
+
+## Decisions log (2026-07-08)
+
+- **Sequencing:** C → B → A; within A, Layer 1 before Layer 2.
+- **Human report:** deployed docs route (not a local-only artifact).
+- **Kitchen-sink:** full parity (heading + previews + code tabs) at `/components/all`,
+  with `content-visibility: auto`; previews-only is the fallback only if still heavy.
