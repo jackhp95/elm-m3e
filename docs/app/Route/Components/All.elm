@@ -36,11 +36,14 @@ import View exposing (View)
 
 
 type alias Model =
-    Usage.Model
+    { usage : Usage.Model
+    , revealed : Bool
+    }
 
 
-type alias Msg =
-    Usage.Msg
+type Msg
+    = UsageMsg Usage.Msg
+    | Reveal
 
 
 type alias RouteParams =
@@ -72,13 +75,24 @@ data =
 
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
-init _ _ =
-    ( Usage.init, Effect.none )
+init app _ =
+    -- Deep-links (`/components/all#button`) carry a URL fragment; reveal the
+    -- stacked content immediately so the browser can scroll to the anchor.
+    ( { usage = Usage.init
+      , revealed = app.url |> Maybe.andThen .fragment |> (/=) Nothing
+      }
+    , Effect.none
+    )
 
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
 update _ _ msg model =
-    ( Usage.update msg model, Effect.none )
+    case msg of
+        UsageMsg um ->
+            ( { model | usage = Usage.update um model.usage }, Effect.none )
+
+        Reveal ->
+            ( { model | revealed = True }, Effect.none )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
@@ -106,22 +120,83 @@ head _ =
 
 view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMsg Msg)
 view app _ model =
+    let
+        heading : Element { s | html : Supported, heading : Supported } Msg
+        heading =
+            Heading.view { content = Kit.text "All components" }
+                [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
+                []
+
+        content : List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
+        content =
+            if model.revealed then
+                stackedBlocks model.usage app.data
+                    |> List.map (Element.map UsageMsg)
+
+            else
+                [ overview app.data ]
+    in
     { title = "All components · elm-m3e"
     , body =
         [ Element.toNode
             (Element.map PagesMsg.fromMsg
                 (pane
-                    [ Layout.div "space-y-12"
-                        (Heading.view { content = Kit.text "All components" }
-                            [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-                            []
-                            :: stackedBlocks model app.data
-                        )
-                    ]
+                    [ Layout.div "space-y-12" (heading :: content) ]
                 )
             )
         ]
     }
+
+
+{-| The opt-in gate shown before the user reveals the stacked kitchen sink.
+
+Rendering every component's live examples up front upgrades ~1800 custom
+elements at once (~30s to interactive), so we defer that cost: a short blurb,
+a summary line, the category names, and a **Show all components** button that
+flips `revealed` on click.
+
+-}
+overview : Data -> Element { s | html : Supported, card : Supported } Msg
+overview d =
+    let
+        withExamples : List Component
+        withExamples =
+            d.components
+                |> List.filter
+                    (\c ->
+                        Dict.get c.slug d.usage
+                            |> Maybe.withDefault []
+                            |> List.isEmpty
+                            |> not
+                    )
+
+        exampleCount : Int
+        exampleCount =
+            d.usage |> Dict.values |> List.map List.length |> List.sum
+
+        summary : String
+        summary =
+            String.fromInt (List.length withExamples)
+                ++ " components · "
+                ++ String.fromInt exampleCount
+                ++ " examples · "
+                ++ String.fromInt (List.length Shared.componentCategories)
+                ++ " categories"
+    in
+    Layout.div "max-w-2xl space-y-6"
+        [ Kit.paragraph Value.large
+            [ Kit.onSurfaceVariant ]
+            [ Kit.text "This page stacks every component's live Usage examples on a single page. Loading them all at once upgrades hundreds of interactive custom elements, so it can take a moment to become fully interactive." ]
+        , Kit.body Value.medium
+            [ Kit.onSurface ]
+            [ Kit.text summary ]
+        , Kit.body Value.medium
+            [ Kit.onSurfaceVariant ]
+            [ Kit.text (Shared.componentCategories |> List.map Tuple.first |> String.join " · ") ]
+        , Layout.button Reveal
+            "inline-flex items-center rounded-full bg-primary px-6 py-3 text-label-lg text-on-primary hover:opacity-90 cursor-pointer"
+            [ Kit.text "Show all components" ]
+        ]
 
 
 pane : List (Element { s | html : Supported } msg) -> Element { r | contentPane : Supported } msg
@@ -134,7 +209,7 @@ wrapped in an `id`-anchored `.cv-auto` block. A running offset (the count of
 examples already placed) is threaded through `Usage.usageBlocks` so each
 component's tab strips occupy a disjoint index range in the shared model.
 -}
-stackedBlocks : Model -> Data -> List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
+stackedBlocks : Usage.Model -> Data -> List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Usage.Msg)
 stackedBlocks model d =
     let
         orderedComponents : List Component
@@ -142,14 +217,14 @@ stackedBlocks model d =
             Shared.componentCategories
                 |> List.concatMap (\( category, _ ) -> List.filter (\c -> c.category == category) d.components)
 
-        step : Component -> ( Int, List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg) ) -> ( Int, List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg) )
+        step : Component -> ( Int, List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Usage.Msg) ) -> ( Int, List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Usage.Msg) )
         step component ( offset, acc ) =
             let
                 examples : List UsageExample
                 examples =
                     Dict.get component.slug d.usage |> Maybe.withDefault []
 
-                block : List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Msg)
+                block : List (Element { s | html : Supported, heading : Supported, card : Supported, tabs : Supported } Usage.Msg)
                 block =
                     if List.isEmpty examples then
                         []

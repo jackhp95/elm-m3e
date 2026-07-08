@@ -2,6 +2,7 @@ module Layout exposing
     ( row, col, stack, center, container
     , rowWith, colWith, stackWith, gridWith, sectionWith, centerWith, containerWith
     , div, divWithId, section, span, nav, ul, li
+    , button
     , class
     )
 
@@ -39,6 +40,11 @@ than inlined.
 @docs div, divWithId, section, span, nav, ul, li
 
 
+## Interactive helpers
+
+@docs button
+
+
 ## Layout attribute
 
 @docs class
@@ -46,6 +52,7 @@ than inlined.
 -}
 
 import Html.Attributes as Attr
+import Html.Events
 import M3e.Cem.Attr
 import M3e.Element exposing (Element)
 import M3e.Value exposing (Supported)
@@ -270,6 +277,23 @@ Use for list items whose layout is driven by Tailwind utilities.
 li : String -> List (Element s msg) -> Element { k | html : Supported } msg
 li cls children =
     Native.li [ Seam.asAttribute (Attr.class cls) ] children
+
+
+{-| A native `<button>` carrying the given Tailwind class string verbatim and an
+`onClick` handler.
+
+For docs-app affordances that need a plain clickable button without an M3e
+component (e.g. the `/components/all` reveal gate). Keeps the `Seam`/`onClick`
+crossing fenced in this adapter, so feature routes stay seam-free.
+
+-}
+button : msg -> String -> List (Element s msg) -> Element { k | html : Supported } msg
+button onClick cls children =
+    Native.button
+        [ Seam.asAttribute (Html.Events.onClick onClick)
+        , Seam.asAttribute (Attr.class cls)
+        ]
+        children
 
 
 {-| A layout class string as a composable attribute.

@@ -3,12 +3,15 @@ import { test, expect } from "@playwright/test";
 /**
  * `/components/all` is the kitchen-sink page: every component's Usage section
  * stacked on one page, in drawer category order, each wrapped in an
- * `id`-anchored `.cv-auto` block (e.g. `#button`). This is a broad smoke test —
- * the per-component depth (live preview, every API surface, code folds) is
- * already covered by `usage.spec.ts` and `all-components.spec.ts`; here we only
- * confirm the stacked page itself mounts cleanly and the anchors exist.
+ * `id`-anchored `.cv-auto` block (e.g. `#button`). The heavy stacked content is
+ * gated behind an opt-in overview — the ~1800 custom-element upgrades only
+ * happen after clicking "Show all components" (auto-revealed for `#`-fragment
+ * deep-links). This is a broad smoke test — the per-component depth (live
+ * preview, every API surface, code folds) is already covered by `usage.spec.ts`
+ * and `all-components.spec.ts`; here we only confirm the gate reveals and the
+ * stacked page mounts cleanly with its anchors.
  */
-test("/components/all mounts and renders many components", async ({ page }) => {
+test("/components/all reveals and renders many components", async ({ page }) => {
   // The kitchen sink stacks all 329 examples on one page (every component's
   // Usage section at once), so first paint + hydration genuinely takes longer
   // than the default 30s Playwright test timeout — this is real render cost,
@@ -22,11 +25,17 @@ test("/components/all mounts and renders many components", async ({ page }) => {
   page.on("pageerror", (e) => errors.push(String(e)));
 
   await page.goto("/components/all");
+
+  // The page loads gated: the heading plus an opt-in overview, no stacked
+  // blocks yet. Click "Show all components" to reveal the kitchen sink (this is
+  // what defers the ~1800 custom-element upgrades until the user opts in).
+  await page.getByRole("button", { name: /show all components/i }).click();
+
   // Not `waitForLoadState("networkidle")`: the elm-pages dev server holds a
   // long-lived `/stream` SSE connection open, so network idle never fires.
   // The page uses no `.max-w-4xl` wrapper (unlike the per-component pages), so
   // scope the wait to `document.body` and wait for at least one `m3e-*`
-  // element to actually upgrade (ran connectedCallback).
+  // element to actually upgrade (ran connectedCallback) — after the reveal.
   await page.waitForFunction(() =>
     [...document.body.querySelectorAll("*")].some((el) => {
       const t = el.tagName.toLowerCase();
