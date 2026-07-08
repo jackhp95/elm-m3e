@@ -7,13 +7,15 @@ import { test, expect } from "@playwright/test";
  * Two rendering facts shape these assertions:
  *  - the code is syntax-highlighted, so a token like `M3e.button` is split
  *    across multiple spans (no single leaf holds it contiguously), and
- *  - long code blocks fold into a closed `<details class="cf-fold">`, and every
+ *  - long code blocks fold into `<details class="cf-fold">`, which render OPEN
+ *    by default as of Phase C, so their text is present and visible; every
  *    surface's panel is mounted at once (the tab strip slides between them, with
  *    inactive panels `inert`/off-screen).
- * So we assert code *presence* (`toBeAttached`) and reserve visibility checks for
- * stable, unfolded anchors (the Usage heading and the tab strip). The top surface
- * is barrelised (ADR 15 / the example pipeline), so the `M3e` tab shows the flat
- * barrel `M3e.button`, not `M3e.Button.view`.
+ * So we assert code *presence* (`toBeAttached`) for surfaces behind inactive tabs,
+ * reserve visibility checks for stable, unfolded anchors (the Usage heading and
+ * the tab strip), and separately assert the `open` attribute on every fold. The
+ * top surface is barrelised (ADR 15 / the example pipeline), so the `M3e` tab
+ * shows the flat barrel `M3e.button`, not `M3e.Button.view`.
  */
 test("/components/button shows a live Usage section with preview + code", async ({
   page,
@@ -48,6 +50,15 @@ test("/components/button shows a live Usage section with preview + code", async 
 
   // (3) The derived M3e (barrel) code is rendered (attached; may be folded).
   await expect(page.getByText("M3e.button").first()).toBeAttached();
+
+  // Code folds render OPEN by default (Phase C): every cf-fold <details> should
+  // carry the `open` attribute so the code shows without a click.
+  const folds = page.locator("details.cf-fold");
+  const foldCount = await folds.count();
+  expect(foldCount).toBeGreaterThan(0);
+  for (let i = 0; i < foldCount; i++) {
+    await expect(folds.nth(i)).toHaveAttribute("open", "");
+  }
 
   expect(errors, `console errors:\n${errors.join("\n")}`).toEqual([]);
 });

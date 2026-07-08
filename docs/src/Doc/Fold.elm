@@ -316,7 +316,7 @@ renderNode hl node =
 
         Fold f ->
             Html.node "details"
-                (class "cf-fold" :: openAttr (not f.collapsed))
+                (class "cf-fold" :: openAttr True)
                 [ Html.node "summary" [ class "cf-summary" ] [ hl f.header ]
                 , Html.div [ class "cf-body" ] (List.map (renderNode hl) f.body)
                 ]
@@ -328,7 +328,7 @@ renderNode hl node =
                     String.repeat (List.head raws |> Maybe.map leadingSpaces |> Maybe.withDefault 0) " "
             in
             Html.node "details"
-                [ class "cf-fold cf-sib" ]
+                (class "cf-fold cf-sib" :: openAttr True)
                 [ Html.node "summary"
                     [ class "cf-summary cf-ellipsis" ]
                     [ Html.text (indent ++ "…") ]
