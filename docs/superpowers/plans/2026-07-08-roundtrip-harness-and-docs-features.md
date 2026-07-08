@@ -449,10 +449,17 @@ Claude-Session: https://claude.ai/code/session_01Ap4D1B7LnEde7MVfd5uuCy"
 
 ### Task B4: Expose `componentCategories` from `Shared.elm`
 
+> **RESEQUENCED during execution (2026-07-08):** exposing `componentCategories`
+> before its consumer exists trips `NoUnused.Exports` (the export is unused until
+> the `/components/all` route imports it). This step is therefore **deferred into
+> Task B7**, where the route becomes the real consumer and the export lands clean.
+> Task B5 (the nav leaf) does **not** need the export — `componentCategories` is
+> used internally by `componentsGroup` — so B5 ships on its own.
+
 **Files:**
 - Modify: `docs/app/Shared.elm` (module declaration line 1; `componentCategories` ~791-800)
 
-- [ ] **Step 1: Add to the exposing list**
+- [ ] **Step 1: Add to the exposing list** *(do this in Task B7, not here)*
 
 `Shared.elm:1` currently reads:
 ```elm
@@ -548,6 +555,13 @@ Expected: at least 1 match (the hand-authored rule is emitted; unlike Tailwind-g
 **Files:**
 - Create: `docs/app/Route/Components/All.elm`
 - Reference: `docs/app/Route/Index.elm` (StatelessRoute `single` scaffold), `docs/app/Route/Components/Name_.elm` (stateful view + `pane`)
+
+- [ ] **Step 0: Expose `componentCategories` from `Shared.elm` (moved from Task B4)**
+
+Add `componentCategories` to `Shared.elm:1`'s exposing list (it becomes used the moment `All.elm` imports it below, so no `NoUnused.Exports`):
+```elm
+module Shared exposing (Contrast, Data, Direction, Model, Msg, Scheme, componentCategories, template)
+```
 
 - [ ] **Step 1: Read a `single` route and the `pane`/`header` helpers**
 
