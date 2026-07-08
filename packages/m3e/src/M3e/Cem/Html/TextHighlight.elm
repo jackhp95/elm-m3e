@@ -13,7 +13,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-text-highlight>` element — a partial application of `Html.node`. -}
@@ -26,13 +25,21 @@ textHighlight =
 {-| Whether matching is case sensitive. (default: `false`) -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "case-sensitive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether text highlighting is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The mode in which to highlight text. (default: `"contains"`) -}

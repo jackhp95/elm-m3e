@@ -11,7 +11,6 @@ Bottom layer for `<m3e-linear-progress-indicator>`: the plain `elm/html` API —
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-linear-progress-indicator>` element — a partial application of `Html.node`. -}
@@ -24,13 +23,13 @@ linearProgressIndicator =
 {-| A fractional value, between 0 and `max`, indicating buffer progress. (default: `0`) -}
 bufferValue : Float -> Html.Attribute msg
 bufferValue val_ =
-    Html.Attributes.property "bufferValue" (Json.Encode.float val_)
+    Html.Attributes.attribute "buffer-value" (String.fromFloat val_)
 
 
 {-| The maximum progress value. (default: `100`) -}
 max : Float -> Html.Attribute msg
 max val_ =
-    Html.Attributes.property "max" (Json.Encode.float val_)
+    Html.Attributes.attribute "max" (String.fromFloat val_)
 
 
 {-| The mode of the progress bar. (default: `"determinate"`) -}
@@ -42,7 +41,7 @@ mode =
 {-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
 value : Float -> Html.Attribute msg
 value val_ =
-    Html.Attributes.property "value" (Json.Encode.float val_)
+    Html.Attributes.attribute "value" (String.fromFloat val_)
 
 
 {-| The appearance of the indicator. (default: `"flat"`) -}

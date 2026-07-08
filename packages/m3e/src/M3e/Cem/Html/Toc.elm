@@ -9,7 +9,6 @@ Bottom layer for `<m3e-toc>`: the plain `elm/html` API — one element construct
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-toc>` element — a partial application of `Html.node`. -}
@@ -27,4 +26,4 @@ for =
 {-| The maximum depth of the table of contents. (default: `2`) -}
 maxDepth : Float -> Html.Attribute msg
 maxDepth val_ =
-    Html.Attributes.property "maxDepth" (Json.Encode.float val_)
+    Html.Attributes.attribute "max-depth" (String.fromFloat val_)

@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-input-chip>` element — a partial application of `Html.node`. -}
@@ -27,19 +26,31 @@ inputChip =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled and interactive. (default: `false`) -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled-interactive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the chip is removable. (default: `false`) -}
 removable : Bool -> Html.Attribute msg
 removable val_ =
-    Html.Attributes.property "removable" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "removable" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessible label given to the button used to remove the chip. (default: `"Remove"`) -}

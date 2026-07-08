@@ -9,7 +9,6 @@ Bottom layer for `<m3e-slide>`: the plain `elm/html` API — one element constru
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-slide>` element — a partial application of `Html.node`. -}
@@ -21,4 +20,4 @@ slide =
 {-| The zero-based index of the visible item. (default: `null`) -}
 selectedIndex : Float -> Html.Attribute msg
 selectedIndex val_ =
-    Html.Attributes.property "selectedIndex" (Json.Encode.float val_)
+    Html.Attributes.attribute "selected-index" (String.fromFloat val_)

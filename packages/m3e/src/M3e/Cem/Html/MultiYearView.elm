@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-multi-year-view>` element — a partial application of `Html.node`. -}
@@ -28,7 +27,11 @@ multiYearView =
 {-| Whether the view is active. (default: `false`) -}
 active : Bool -> Html.Attribute msg
 active val_ =
-    Html.Attributes.property "active" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "active" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Today's date. (default: `new Date()`) -}

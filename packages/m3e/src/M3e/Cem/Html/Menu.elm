@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-menu>` element — a partial application of `Html.node`. -}
@@ -45,7 +44,11 @@ variant =
 {-| A value indicating whether the menu is a submenu. (default: `false`) -}
 submenu : Bool -> Html.Attribute msg
 submenu val_ =
-    Html.Attributes.property "submenu" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "submenu" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `beforetoggle` events. -}

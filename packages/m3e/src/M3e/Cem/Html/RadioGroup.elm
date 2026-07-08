@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-radio-group>` element — a partial application of `Html.node`. -}
@@ -33,7 +32,11 @@ ariaInvalid =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The name that identifies the element when submitting the associated form. -}
@@ -45,7 +48,11 @@ name =
 {-| Whether the element is required. (default: `false`) -}
 required : Bool -> Html.Attribute msg
 required val_ =
-    Html.Attributes.property "required" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "required" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `beforeinput` events. -}

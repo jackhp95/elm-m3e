@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-dialog>` element — a partial application of `Html.node`. -}
@@ -27,7 +26,11 @@ dialog =
 {-| Whether the dialog is an alert. (default: `false`) -}
 alert : Bool -> Html.Attribute msg
 alert val_ =
-    Html.Attributes.property "alert" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "alert" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessible label given to the button used to dismiss the dialog. (default: `"Close"`) -}
@@ -39,25 +42,41 @@ closeLabel =
 {-| Whether users cannot click the backdrop or press ESC to dismiss the dialog. (default: `false`) -}
 disableClose : Bool -> Html.Attribute msg
 disableClose val_ =
-    Html.Attributes.property "disableClose" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disable-close" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether a button is presented that can be used to close the dialog. (default: `false`) -}
 dismissible : Bool -> Html.Attribute msg
 dismissible val_ =
-    Html.Attributes.property "dismissible" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "dismissible" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to disable focus trapping, which keeps keyboard `Tab` navigation within the dialog. (default: `false`) -}
 noFocusTrap : Bool -> Html.Attribute msg
 noFocusTrap val_ =
-    Html.Attributes.property "noFocusTrap" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "no-focus-trap" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the dialog is open. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
-    Html.Attributes.property "open" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "open" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `opening` events. -}

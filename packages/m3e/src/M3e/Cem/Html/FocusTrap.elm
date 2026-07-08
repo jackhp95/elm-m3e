@@ -9,7 +9,6 @@ Bottom layer for `<m3e-focus-trap>`: the plain `elm/html` API — one element co
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-focus-trap>` element — a partial application of `Html.node`. -}
@@ -21,4 +20,8 @@ focusTrap =
 {-| Disables the focus trap. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []

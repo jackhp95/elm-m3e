@@ -32,7 +32,7 @@ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.V
 
 <!-- elm-cem:example title="Card Header" -->
 ```elm
-M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ Kit.text "Action" ] ]) ]
+M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [ Native.attribute "end" "" ] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ Kit.text "Action" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Card Header (2)" -->
@@ -57,7 +57,7 @@ M3e.Card.view [ M3e.Card.inline True ] [ M3e.Card.content (Native.div [] [ Kit.t
 
 <!-- elm-cem:example title="Orientation" -->
 ```elm
-M3e.Card.view [ M3e.Card.inline True, M3e.Card.orientation M3e.Value.horizontal ] [ M3e.Card.header (Native.img []), M3e.Card.content (Native.div [] [ Kit.text "Horizontal" ]) ]
+M3e.Card.view [ M3e.Card.inline True, M3e.Card.orientation M3e.Value.horizontal ] [ M3e.Card.header (Native.img [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/thumb/1.jpg?ip=x480" ]), M3e.Card.content (Native.div [] [ Kit.text "Horizontal" ]) ]
 ```
 
 <!-- elm-cem:example title="Actionable" -->

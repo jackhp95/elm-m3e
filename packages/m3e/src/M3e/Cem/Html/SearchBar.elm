@@ -11,7 +11,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-search-bar>` element — a partial application of `Html.node`. -}
@@ -23,7 +22,11 @@ searchBar =
 {-| Whether the bar presents a button used to clear the search term. (default: `false`) -}
 clearable : Bool -> Html.Attribute msg
 clearable val_ =
-    Html.Attributes.property "clearable" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "clearable" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}

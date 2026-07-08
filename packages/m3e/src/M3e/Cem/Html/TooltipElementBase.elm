@@ -11,7 +11,6 @@ Bottom layer for `<TooltipElementBase>`: the plain `elm/html` API — one elemen
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<div>` element — a partial application of `Html.node`. -}
@@ -24,19 +23,23 @@ tooltipElementBase =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
 showDelay : Float -> Html.Attribute msg
 showDelay val_ =
-    Html.Attributes.property "showDelay" (Json.Encode.float val_)
+    Html.Attributes.attribute "show-delay" (String.fromFloat val_)
 
 
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
 hideDelay : Float -> Html.Attribute msg
 hideDelay val_ =
-    Html.Attributes.property "hideDelay" (Json.Encode.float val_)
+    Html.Attributes.attribute "hide-delay" (String.fromFloat val_)
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`) -}

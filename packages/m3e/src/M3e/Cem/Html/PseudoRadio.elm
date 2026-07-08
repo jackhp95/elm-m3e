@@ -9,7 +9,6 @@ Bottom layer for `<m3e-pseudo-radio>`: the plain `elm/html` API — one element 
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-pseudo-radio>` element — a partial application of `Html.node`. -}
@@ -21,10 +20,18 @@ pseudoRadio =
 {-| A value indicating whether the element is checked. (default: `false`) -}
 checked : Bool -> Html.Attribute msg
 checked val_ =
-    Html.Attributes.property "checked" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "checked" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []

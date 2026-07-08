@@ -11,7 +11,6 @@ Bottom layer for `<m3e-circular-progress-indicator>`: the plain `elm/html` API â
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-circular-progress-indicator>` element â€” a partial application of `Html.node`. -}
@@ -24,19 +23,23 @@ circularProgressIndicator =
 {-| Whether to show something is happening without conveying progress. (default: `false`) -}
 indeterminate : Bool -> Html.Attribute msg
 indeterminate val_ =
-    Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "indeterminate" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The maximum progress value. (default: `100`) -}
 max : Float -> Html.Attribute msg
 max val_ =
-    Html.Attributes.property "max" (Json.Encode.float val_)
+    Html.Attributes.attribute "max" (String.fromFloat val_)
 
 
 {-| A fractional value, between 0 and `max`, indicating progress. (default: `0`) -}
 value : Float -> Html.Attribute msg
 value val_ =
-    Html.Attributes.property "value" (Json.Encode.float val_)
+    Html.Attributes.attribute "value" (String.fromFloat val_)
 
 
 {-| The appearance of the indicator. (default: `"flat"`) -}

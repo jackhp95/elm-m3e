@@ -34,7 +34,7 @@ A checkbox that allows a user to select one or more options from a limited numbe
 ```elm
 [ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Checkbox 1" ]
     , M3e.Checkbox.view [] []
-    , Native.node Html.label [] [ Kit.text "Checkbox 2" ]
+    , Native.node Html.label [ Native.attribute "for" "chk2" ] [ Kit.text "Checkbox 2" ]
     ]
 ```
 
@@ -42,8 +42,13 @@ A checkbox that allows a user to select one or more options from a limited numbe
 ```elm
 [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.disabled True ] [], Kit.text "Disabled Checkbox 1" ]
     , M3e.Checkbox.view [ M3e.Checkbox.disabled True ] []
-    , Native.node Html.label [] [ Kit.text "Disabled Checkbox 2" ]
+    , Native.node Html.label [ Native.attribute "for" "chk3" ] [ Kit.text "Disabled Checkbox 2" ]
     ]
+```
+
+<!-- elm-cem:example title="Required" -->
+```elm
+Native.node Html.form [] [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.name "accepted", M3e.Checkbox.required True ] [], Kit.text "I accept the Terms and Conditions" ], Native.br, M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.type_ M3e.Value.submit ] [ Kit.text "Submit" ] ]
 ```
 
 <!-- elm-cem:example title="Density" -->

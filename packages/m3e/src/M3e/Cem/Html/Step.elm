@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-step>` element — a partial application of `Html.node`. -}
@@ -27,19 +26,31 @@ step =
 {-| Whether the step has been completed. (default: `false`) -}
 completed : Bool -> Html.Attribute msg
 completed val_ =
-    Html.Attributes.property "completed" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "completed" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the step is editable and users can return to it after completion. (default: `false`) -}
 editable : Bool -> Html.Attribute msg
 editable val_ =
-    Html.Attributes.property "editable" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "editable" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
@@ -51,19 +62,31 @@ for =
 {-| Whether the step is optional. (default: `false`) -}
 optional : Bool -> Html.Attribute msg
 optional val_ =
-    Html.Attributes.property "optional" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "optional" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> Html.Attribute msg
 selected val_ =
-    Html.Attributes.property "selected" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "selected" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the step has an error. (default: `false`) -}
 invalid : Bool -> Html.Attribute msg
 invalid val_ =
-    Html.Attributes.property "invalid" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "invalid" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `beforeinput` events. -}

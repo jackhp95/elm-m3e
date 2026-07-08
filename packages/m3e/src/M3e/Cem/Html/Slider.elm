@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-slider>` element — a partial application of `Html.node`. -}
@@ -27,37 +26,49 @@ slider =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to show tick marks. (default: `false`) -}
 discrete : Bool -> Html.Attribute msg
 discrete val_ =
-    Html.Attributes.property "discrete" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "discrete" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to show value labels when activated. (default: `false`) -}
 labelled : Bool -> Html.Attribute msg
 labelled val_ =
-    Html.Attributes.property "labelled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "labelled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The maximum allowable value. (default: `100`) -}
 max : Float -> Html.Attribute msg
 max val_ =
-    Html.Attributes.property "max" (Json.Encode.float val_)
+    Html.Attributes.attribute "max" (String.fromFloat val_)
 
 
 {-| The minimum allowable value. (default: `0`) -}
 min : Float -> Html.Attribute msg
 min val_ =
-    Html.Attributes.property "min" (Json.Encode.float val_)
+    Html.Attributes.attribute "min" (String.fromFloat val_)
 
 
 {-| The value at which the thumb will snap. (default: `1`) -}
 step : Float -> Html.Attribute msg
 step val_ =
-    Html.Attributes.property "step" (Json.Encode.float val_)
+    Html.Attributes.attribute "step" (String.fromFloat val_)
 
 
 {-| The size of the slider. (default: `"extra-small"`) -}

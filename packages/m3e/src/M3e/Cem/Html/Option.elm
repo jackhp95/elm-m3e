@@ -13,7 +13,6 @@ Bottom layer for `<m3e-option>`: the plain `elm/html` API — one element constr
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-option>` element — a partial application of `Html.node`. -}
@@ -25,13 +24,21 @@ option =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether text highlighting is disabled. (default: `false`) -}
 disableHighlight : Bool -> Html.Attribute msg
 disableHighlight val_ =
-    Html.Attributes.property "disableHighlight" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disable-highlight" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The mode in which to highlight a term. (default: `"contains"`) -}
@@ -43,7 +50,11 @@ highlightMode =
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> Html.Attribute msg
 selected val_ =
-    Html.Attributes.property "selected" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "selected" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The search term to highlight. (default: `""`) -}

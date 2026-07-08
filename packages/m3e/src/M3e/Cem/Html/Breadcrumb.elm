@@ -9,7 +9,6 @@ Bottom layer for `<m3e-breadcrumb>`: the plain `elm/html` API — one element co
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-breadcrumb>` element — a partial application of `Html.node`. -}
@@ -21,4 +20,8 @@ breadcrumb =
 {-| Whether items wrap to a new line. (default: `false`) -}
 wrap : Bool -> Html.Attribute msg
 wrap val_ =
-    Html.Attributes.property "wrap" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "wrap" ""
+    
+    else
+        Html.Attributes.classList []

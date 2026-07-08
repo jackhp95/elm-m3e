@@ -28,37 +28,37 @@ M3e.Skeleton.view [] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3
 
 <!-- elm-cem:example title="Shape" -->
 ```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular ] [ Native.div [] [] ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px; border-radius: 16px" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Animation" -->
 ```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.pulse ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px; border-radius: 16px" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Animation (2)" -->
 ```elm
-[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
+[ M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.circular, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.rounded, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.square, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px" ] [] ]
     , Native.br
-    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [] [] ]
+    , M3e.Skeleton.view [ M3e.Skeleton.shape M3e.Value.auto, M3e.Skeleton.animation M3e.Value.none ] [ Native.div [ Native.attribute "style" "width: 100px; height: 100px; border-radius: 16px" ] [] ]
     ]
 ```
 

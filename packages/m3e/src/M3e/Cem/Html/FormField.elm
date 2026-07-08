@@ -11,7 +11,6 @@ Bottom layer for `<m3e-form-field>`: the plain `elm/html` API — one element co
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-form-field>` element — a partial application of `Html.node`. -}
@@ -29,7 +28,11 @@ floatLabel =
 {-| Whether the required marker should be hidden. (default: `false`) -}
 hideRequiredMarker : Bool -> Html.Attribute msg
 hideRequiredMarker val_ =
-    Html.Attributes.property "hideRequiredMarker" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-required-marker" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether subscript content is hidden. (default: `"auto"`) -}

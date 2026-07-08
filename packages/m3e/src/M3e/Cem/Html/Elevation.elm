@@ -9,7 +9,6 @@ Bottom layer for `<m3e-elevation>`: the plain `elm/html` API — one element con
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-elevation>` element — a partial application of `Html.node`. -}
@@ -21,7 +20,11 @@ elevation =
 {-| Whether hover and press events will not trigger changes in elevation, when attached to an interactive element. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
@@ -33,4 +36,4 @@ for =
 {-| The level at which to visually depict elevation. (default: `null`) -}
 level : Int -> Html.Attribute msg
 level val_ =
-    Html.Attributes.property "level" (Json.Encode.int val_)
+    Html.Attributes.attribute "level" (String.fromInt val_)

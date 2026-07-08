@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-checkbox>` element — a partial application of `Html.node`. -}
@@ -27,19 +26,31 @@ checkbox =
 {-| Whether the element is checked. (default: `false`) -}
 checked : Bool -> Html.Attribute msg
 checked val_ =
-    Html.Attributes.property "checked" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "checked" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element's checked state is indeterminate. (default: `false`) -}
 indeterminate : Bool -> Html.Attribute msg
 indeterminate val_ =
-    Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "indeterminate" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The name that identifies the element when submitting the associated form. -}
@@ -51,7 +62,11 @@ name =
 {-| Whether the element is required. (default: `false`) -}
 required : Bool -> Html.Attribute msg
 required val_ =
-    Html.Attributes.property "required" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "required" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A string representing the value of the checkbox. (default: `"on"`) -}

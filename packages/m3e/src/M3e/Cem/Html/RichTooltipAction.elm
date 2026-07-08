@@ -9,7 +9,6 @@ Bottom layer for `<m3e-rich-tooltip-action>`: the plain `elm/html` API — one e
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-rich-tooltip-action>` element — a partial application of `Html.node`. -}
@@ -22,4 +21,8 @@ richTooltipAction =
 {-| Whether to focus should not be restored to the trigger when activated. (default: `false`) -}
 disableRestoreFocus : Bool -> Html.Attribute msg
 disableRestoreFocus val_ =
-    Html.Attributes.property "disableRestoreFocus" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disable-restore-focus" ""
+    
+    else
+        Html.Attributes.classList []

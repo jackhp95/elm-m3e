@@ -9,7 +9,6 @@ Bottom layer for `<m3e-focus-ring>`: the plain `elm/html` API — one element co
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-focus-ring>` element — a partial application of `Html.node`. -}
@@ -23,13 +22,21 @@ Focus rings can be still controlled manually by using the `show` and `hide` meth
 -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the focus ring animates inward instead of outward. (default: `false`) -}
 inward : Bool -> Html.Attribute msg
 inward val_ =
-    Html.Attributes.property "inward" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "inward" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}

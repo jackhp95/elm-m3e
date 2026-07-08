@@ -77,7 +77,7 @@ An icon button users interact with to perform a supplementary action.
 
 <!-- elm-cem:example title="Toggle (2)" -->
 ```elm
-M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "check" ] []), M3e.Icon.view [ M3e.Icon.name "close" ] [] ]
+M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.toggle True ] [ M3e.Icon.view [ M3e.Icon.name "close" ] [], M3e.IconButton.selectedSlot (M3e.Icon.view [ M3e.Icon.name "check" ] []) ]
 ```
 
 <!-- elm-cem:example title="Toggle (3)" -->

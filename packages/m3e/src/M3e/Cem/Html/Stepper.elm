@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-stepper>` element — a partial application of `Html.node`. -}
@@ -39,7 +38,11 @@ labelPosition =
 {-| Whether the validity of previous steps should be checked or not. (default: `false`) -}
 linear : Bool -> Html.Attribute msg
 linear val_ =
-    Html.Attributes.property "linear" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "linear" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The orientation of the stepper. (default: `"horizontal"`) -}

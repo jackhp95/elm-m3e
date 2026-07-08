@@ -11,7 +11,6 @@ Bottom layer for `<m3e-textarea-autosize>`: the plain `elm/html` API — one ele
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-textarea-autosize>` element — a partial application of `Html.node`. -}
@@ -24,7 +23,11 @@ textareaAutosize =
 {-| Whether auto-sizing is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
@@ -36,10 +39,10 @@ for =
 {-| The maximum amount of rows in the `textarea`. (default: `0`) -}
 maxRows : Float -> Html.Attribute msg
 maxRows val_ =
-    Html.Attributes.property "maxRows" (Json.Encode.float val_)
+    Html.Attributes.attribute "max-rows" (String.fromFloat val_)
 
 
 {-| The minimum amount of rows in the `textarea`. (default: `0`) -}
 minRows : Float -> Html.Attribute msg
 minRows val_ =
-    Html.Attributes.property "minRows" (Json.Encode.float val_)
+    Html.Attributes.attribute "min-rows" (String.fromFloat val_)

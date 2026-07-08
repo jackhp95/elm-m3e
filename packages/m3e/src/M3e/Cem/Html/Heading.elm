@@ -11,7 +11,6 @@ Bottom layer for `<m3e-heading>`: the plain `elm/html` API — one element const
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-heading>` element — a partial application of `Html.node`. -}
@@ -23,13 +22,17 @@ heading =
 {-| Whether the heading uses an emphasized typescale. (default: `false`) -}
 emphasized : Bool -> Html.Attribute msg
 emphasized val_ =
-    Html.Attributes.property "emphasized" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "emphasized" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessibility level of the heading. -}
 level : Int -> Html.Attribute msg
 level val_ =
-    Html.Attributes.property "level" (Json.Encode.int val_)
+    Html.Attributes.attribute "level" (String.fromInt val_)
 
 
 {-| The size of the heading. (default: `"medium"`) -}

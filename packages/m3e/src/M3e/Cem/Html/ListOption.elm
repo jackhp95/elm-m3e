@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-list-option>` element — a partial application of `Html.node`. -}
@@ -27,13 +26,21 @@ listOption =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is selected. (default: `false`) -}
 selected : Bool -> Html.Attribute msg
 selected val_ =
-    Html.Attributes.property "selected" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "selected" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A string representing the value of the option. -}

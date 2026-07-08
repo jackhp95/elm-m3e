@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-assist-chip>` element — a partial application of `Html.node`. -}
@@ -27,13 +26,21 @@ assistChip =
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the element is disabled and interactive. (default: `false`) -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled-interactive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}

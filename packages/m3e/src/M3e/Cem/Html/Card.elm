@@ -17,7 +17,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-card>` element — a partial application of `Html.node`. -}
@@ -29,13 +28,21 @@ card =
 {-| Whether the card is "actionable" and will respond to use interaction. (default: `false`) -}
 actionable : Bool -> Html.Attribute msg
 actionable val_ =
-    Html.Attributes.property "actionable" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "actionable" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to present the card inline with surrounding content. (default: `false`) -}
 inline : Bool -> Html.Attribute msg
 inline val_ =
-    Html.Attributes.property "inline" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "inline" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The orientation of the card. (default: `"vertical"`) -}
@@ -99,13 +106,21 @@ type_ =
 {-| Whether the element is disabled and interactive. (default: `false`) -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled-interactive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `click` events. -}

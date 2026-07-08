@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-slider-thumb>` element — a partial application of `Html.node`. -}
@@ -27,7 +26,11 @@ sliderThumb =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The name that identifies the element when submitting the associated form. -}
@@ -39,7 +42,7 @@ name =
 {-| The value of the thumb. (default: `null`) -}
 value : Float -> Html.Attribute msg
 value val_ =
-    Html.Attributes.property "value" (Json.Encode.float val_)
+    Html.Attributes.attribute "value" (String.fromFloat val_)
 
 
 {-| Listen for `value-change` events. -}

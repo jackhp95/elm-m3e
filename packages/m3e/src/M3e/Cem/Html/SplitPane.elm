@@ -17,7 +17,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-split-pane>` element — a partial application of `Html.node`. -}
@@ -35,13 +34,13 @@ label =
 {-| A fractional value, between 0 and 100, indicating the maximum size of the start pane. (default: `100`) -}
 max : Float -> Html.Attribute msg
 max val_ =
-    Html.Attributes.property "max" (Json.Encode.float val_)
+    Html.Attributes.attribute "max" (String.fromFloat val_)
 
 
 {-| A fractional value, between 0 and 100, indicating the minimum size of the start pane. (default: `0`) -}
 min : Float -> Html.Attribute msg
 min val_ =
-    Html.Attributes.property "min" (Json.Encode.float val_)
+    Html.Attributes.attribute "min" (String.fromFloat val_)
 
 
 {-| The orientation of the split. (default: `"horizontal"`) -}
@@ -53,25 +52,29 @@ orientation =
 {-| A fractional value, between 0 and 100, indicating the maximum visual overshoot allowed when dragging past the minimum or maximum size. (default: `4`) -}
 overshootLimit : Float -> Html.Attribute msg
 overshootLimit val_ =
-    Html.Attributes.property "overshootLimit" (Json.Encode.float val_)
+    Html.Attributes.attribute "overshoot-limit" (String.fromFloat val_)
 
 
 {-| A fractional value, between 0 and 100, indicating the increment by which to adjust the value when resized via keyboard. (default: `1`) -}
 step : Float -> Html.Attribute msg
 step val_ =
-    Html.Attributes.property "step" (Json.Encode.float val_)
+    Html.Attributes.attribute "step" (String.fromFloat val_)
 
 
 {-| A fractional value, between 0 and 100, indicating the size of the start pane. (default: `50`) -}
 value : Float -> Html.Attribute msg
 value val_ =
-    Html.Attributes.property "value" (Json.Encode.float val_)
+    Html.Attributes.attribute "value" (String.fromFloat val_)
 
 
 {-| Whether cycling through detents will wrap. (default: `false`) -}
 wrapDetents : Bool -> Html.Attribute msg
 wrapDetents val_ =
-    Html.Attributes.property "wrapDetents" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "wrap-detents" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The name that identifies the element when submitting the associated form. -}
@@ -83,7 +86,11 @@ name =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `change` events. -}

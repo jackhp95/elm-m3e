@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-collapsible>` element — a partial application of `Html.node`. -}
@@ -27,7 +26,11 @@ collapsible =
 {-| Whether content is visible. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
-    Html.Attributes.property "open" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "open" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Orientation of collapsible content. (default: `"vertical"`) -}
@@ -39,7 +42,11 @@ orientation =
 {-| Whether to disable animation. (default: `false`) -}
 noAnimate : Bool -> Html.Attribute msg
 noAnimate val_ =
-    Html.Attributes.property "noAnimate" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "no-animate" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `opening` events. -}

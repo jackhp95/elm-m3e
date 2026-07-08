@@ -11,7 +11,6 @@ Bottom layer for `<m3e-ripple>`: the plain `elm/html` API — one element constr
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-ripple>` element — a partial application of `Html.node`. -}
@@ -25,7 +24,11 @@ than originating from the location of the click event. (default: `false`)
 -}
 centered : Bool -> Html.Attribute msg
 centered val_ =
-    Html.Attributes.property "centered" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "centered" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether click events will not trigger the ripple.
@@ -33,7 +36,11 @@ Ripples can be still controlled manually by using the `show` and 'hide' methods.
 -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
@@ -45,10 +52,14 @@ for =
 {-| The radius, in pixels, of the ripple. (default: `null`) -}
 radius : Float -> Html.Attribute msg
 radius val_ =
-    Html.Attributes.property "radius" (Json.Encode.float val_)
+    Html.Attributes.attribute "radius" (String.fromFloat val_)
 
 
 {-| Whether the ripple is visible outside the element's bounds. (default: `false`) -}
 unbounded : Bool -> Html.Attribute msg
 unbounded val_ =
-    Html.Attributes.property "unbounded" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "unbounded" ""
+    
+    else
+        Html.Attributes.classList []

@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-search-view>` element — a partial application of `Html.node`. -}
@@ -27,7 +26,11 @@ searchView =
 {-| Whether the view features a persistent, filled search container. (default: `false`) -}
 contained : Bool -> Html.Attribute msg
 contained val_ =
-    Html.Attributes.property "contained" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "contained" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The behavior mode of the view. (default: `"docked"`) -}
@@ -39,7 +42,11 @@ mode =
 {-| Whether the view is expanded to show results. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
-    Html.Attributes.property "open" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "open" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessible label given to the button used to clear the search term. (default: `"Clear"`) -}
@@ -57,7 +64,11 @@ closeLabel =
 {-| Whether to hide the search icon. (default: `false`) -}
 hideSearchIcon : Bool -> Html.Attribute msg
 hideSearchIcon val_ =
-    Html.Attributes.property "hideSearchIcon" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-search-icon" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `query` events. -}

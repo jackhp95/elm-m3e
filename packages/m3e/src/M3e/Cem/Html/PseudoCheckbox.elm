@@ -9,7 +9,6 @@ Bottom layer for `<m3e-pseudo-checkbox>`: the plain `elm/html` API — one eleme
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-pseudo-checkbox>` element — a partial application of `Html.node`. -}
@@ -22,16 +21,28 @@ pseudoCheckbox =
 {-| A value indicating whether the element is checked. (default: `false`) -}
 checked : Bool -> Html.Attribute msg
 checked val_ =
-    Html.Attributes.property "checked" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "checked" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the element's checked state is indeterminate. (default: `false`) -}
 indeterminate : Bool -> Html.Attribute msg
 indeterminate val_ =
-    Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "indeterminate" ""
+    
+    else
+        Html.Attributes.classList []

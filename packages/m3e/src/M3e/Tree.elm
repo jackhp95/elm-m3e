@@ -37,17 +37,17 @@ M3e.Tree.view [ M3e.Tree.multi True, M3e.Tree.cascade True ] [ M3e.TreeItem.view
 
 <!-- elm-cem:example title="Icons" -->
 ```elm
-M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []), M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []) ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Installation"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []) ] ] ]
+M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []), M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []), M3e.TreeItem.label (Kit.text "Overview") ], M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []), M3e.TreeItem.label (Kit.text "Installation") ] ] ]
 ```
 
 <!-- elm-cem:example title="Toggle icons" -->
 ```elm
-M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.toggleIcon (M3e.Icon.view [ M3e.Icon.name "add_box" ] []), M3e.TreeItem.openToggleIcon (M3e.Icon.view [ M3e.Icon.name "indeterminate_check_box" ] []), M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Installation") ] ] ]
+M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.toggleIcon (M3e.Icon.view [ M3e.Icon.name "add_box" ] []), M3e.TreeItem.openToggleIcon (M3e.Icon.view [ M3e.Icon.name "indeterminate_check_box" ] []), M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview") ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Installation") ] ] ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []), M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Overview"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []) ], M3e.TreeItem.view [] [ M3e.TreeItem.label (Kit.text "Installation"), M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []) ] ] ]
+M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []), M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []), M3e.TreeItem.label (Kit.text "Overview") ], M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []), M3e.TreeItem.label (Kit.text "Installation") ] ] ]
 ```
 
 @docs view, multi, cascade, onChange

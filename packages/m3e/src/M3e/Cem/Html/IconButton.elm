@@ -18,7 +18,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-icon-button>` element — a partial application of `Html.node`. -}
@@ -30,13 +29,21 @@ iconButton =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled and interactive. (default: `false`) -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled-interactive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
@@ -66,7 +73,11 @@ rel =
 {-| Whether the toggle button is selected. (default: `false`) -}
 selected : Bool -> Html.Attribute msg
 selected val_ =
-    Html.Attributes.property "selected" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "selected" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The shape of the button. (default: `"rounded"`) -}
@@ -90,7 +101,11 @@ target =
 {-| Whether the button will toggle between selected and unselected states. (default: `false`) -}
 toggle : Bool -> Html.Attribute msg
 toggle val_ =
-    Html.Attributes.property "toggle" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "toggle" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The type of the element. (default: `"button"`) -}

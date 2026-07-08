@@ -11,7 +11,6 @@ Bottom layer for `<m3e-toolbar>`: the plain `elm/html` API — one element const
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-toolbar>` element — a partial application of `Html.node`. -}
@@ -23,7 +22,11 @@ toolbar =
 {-| Whether the toolbar is elevated. (default: `false`) -}
 elevated : Bool -> Html.Attribute msg
 elevated val_ =
-    Html.Attributes.property "elevated" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "elevated" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The shape of the toolbar. (default: `"square"`) -}
@@ -41,4 +44,8 @@ variant =
 {-| Whether the element is oriented vertically. (default: `false`) -}
 vertical : Bool -> Html.Attribute msg
 vertical val_ =
-    Html.Attributes.property "vertical" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "vertical" ""
+    
+    else
+        Html.Attributes.classList []

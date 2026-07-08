@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-rich-tooltip>` element — a partial application of `Html.node`. -}
@@ -27,7 +26,11 @@ richTooltip =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}
@@ -39,7 +42,7 @@ for =
 {-| The amount of time, in milliseconds, before hiding the tooltip. (default: `200`) -}
 hideDelay : Float -> Html.Attribute msg
 hideDelay val_ =
-    Html.Attributes.property "hideDelay" (Json.Encode.float val_)
+    Html.Attributes.attribute "hide-delay" (String.fromFloat val_)
 
 
 {-| The position of the tooltip. (default: `"below-after"`) -}
@@ -51,7 +54,7 @@ position =
 {-| The amount of time, in milliseconds, before showing the tooltip. (default: `0`) -}
 showDelay : Float -> Html.Attribute msg
 showDelay val_ =
-    Html.Attributes.property "showDelay" (Json.Encode.float val_)
+    Html.Attributes.attribute "show-delay" (String.fromFloat val_)
 
 
 {-| The mode in which to handle touch gestures. (default: `"auto"`) -}

@@ -9,7 +9,6 @@ Bottom layer for `<m3e-chip-set>`: the plain `elm/html` API — one element cons
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-chip-set>` element, with the library's fixed host attribute (role="group") stamped ahead of the caller's attributes. -}
@@ -24,4 +23,8 @@ chipSet attributes children =
 {-| Whether the element is oriented vertically. (default: `false`) -}
 vertical : Bool -> Html.Attribute msg
 vertical val_ =
-    Html.Attributes.property "vertical" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "vertical" ""
+    
+    else
+        Html.Attributes.classList []

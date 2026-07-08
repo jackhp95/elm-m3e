@@ -13,7 +13,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-expansion-header>` element — a partial application of `Html.node`. -}
@@ -26,7 +25,11 @@ expansionHeader =
 {-| Whether to hide the expansion toggle. (default: `false`) -}
 hideToggle : Bool -> Html.Attribute msg
 hideToggle val_ =
-    Html.Attributes.property "hideToggle" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-toggle" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The direction of the expansion toggle. (default: `"vertical"`) -}
@@ -44,7 +47,11 @@ togglePosition =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `click` events. -}

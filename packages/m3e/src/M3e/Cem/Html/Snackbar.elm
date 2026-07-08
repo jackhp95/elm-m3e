@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-snackbar>` element — a partial application of `Html.node`. -}
@@ -39,13 +38,17 @@ closeLabel =
 {-| Whether a button is presented that can be used to close the snackbar. (default: `false`) -}
 dismissible : Bool -> Html.Attribute msg
 dismissible val_ =
-    Html.Attributes.property "dismissible" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "dismissible" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The length of time, in milliseconds, to wait before automatically dismissing the snackbar. (default: `3000`) -}
 duration : Float -> Html.Attribute msg
 duration val_ =
-    Html.Attributes.property "duration" (Json.Encode.float val_)
+    Html.Attributes.attribute "duration" (String.fromFloat val_)
 
 
 {-| Listen for `beforetoggle` events. -}

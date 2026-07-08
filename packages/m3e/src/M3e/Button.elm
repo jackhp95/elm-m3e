@@ -88,7 +88,7 @@ A button users interact with to perform an action.
 
 <!-- elm-cem:example title="Links" -->
 ```elm
-M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "https://www.google.com", M3e.Button.target "_blank" ] [ M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []), Kit.text "Google" ]
+M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "https://www.google.com", M3e.Button.target "_blank" ] [ Kit.text "Google", M3e.Button.trailingIcon (M3e.Icon.view [ M3e.Icon.name "open_in_new_window" ] []) ]
 ```
 
 <!-- elm-cem:example title="Density" -->

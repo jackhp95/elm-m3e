@@ -30,7 +30,7 @@ M3e.Switch.view [ M3e.Switch.checked True ] []
 ```elm
 [ Native.node Html.label [] [ M3e.Switch.view [] [], Kit.text "Switch 1" ]
     , M3e.Switch.view [] []
-    , Native.node Html.label [] [ Kit.text "Switch 2" ]
+    , Native.node Html.label [ Native.attribute "for" "switch2" ] [ Kit.text "Switch 2" ]
     ]
 ```
 
@@ -38,7 +38,7 @@ M3e.Switch.view [ M3e.Switch.checked True ] []
 ```elm
 [ Native.node Html.label [] [ M3e.Switch.view [ M3e.Switch.disabled True ] [], Kit.text "Disabled Switch 1" ]
     , M3e.Switch.view [ M3e.Switch.disabled True ] []
-    , Native.node Html.label [] [ Kit.text "Disabled Switch 2" ]
+    , Native.node Html.label [ Native.attribute "for" "chk3" ] [ Kit.text "Disabled Switch 2" ]
     ]
 ```
 

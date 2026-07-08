@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-theme>` element — a partial application of `Html.node`. -}
@@ -39,7 +38,7 @@ contrast =
 {-| The density scale (0, -1, -2). (default: `0`) -}
 density : Float -> Html.Attribute msg
 density val_ =
-    Html.Attributes.property "density" (Json.Encode.float val_)
+    Html.Attributes.attribute "density" (String.fromFloat val_)
 
 
 {-| The color scheme of the theme. (default: `"auto"`) -}
@@ -51,7 +50,11 @@ scheme =
 {-| Whether to enable strong focus indicators. (default: `false`) -}
 strongFocus : Bool -> Html.Attribute msg
 strongFocus val_ =
-    Html.Attributes.property "strongFocus" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "strong-focus" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The color variant of the theme. (default: `"neutral"`) -}

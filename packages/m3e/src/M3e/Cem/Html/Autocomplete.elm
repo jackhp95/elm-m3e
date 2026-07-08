@@ -17,7 +17,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-autocomplete>` element — a partial application of `Html.node`. -}
@@ -30,13 +29,21 @@ autocomplete =
 {-| Whether the first option should be automatically activated. (default: `false`) -}
 autoActivate : Bool -> Html.Attribute msg
 autoActivate val_ =
-    Html.Attributes.property "autoActivate" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "auto-activate" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether filtering is case sensitive. (default: `false`) -}
 caseSensitive : Bool -> Html.Attribute msg
 caseSensitive val_ =
-    Html.Attributes.property "caseSensitive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "case-sensitive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Mode in which to filter options. (default: `"contains"`) -}
@@ -48,25 +55,41 @@ filter =
 {-| Whether to hide the selection indicator. (default: `false`) -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-selection-indicator" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to hide the menu when loading options. (default: `false`) -}
 hideLoading : Bool -> Html.Attribute msg
 hideLoading val_ =
-    Html.Attributes.property "hideLoading" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-loading" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to hide the menu when there are no options to show. (default: `false`) -}
 hideNoData : Bool -> Html.Attribute msg
 hideNoData val_ =
-    Html.Attributes.property "hideNoData" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-no-data" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether options are being loaded. (default: `false`) -}
 loading : Bool -> Html.Attribute msg
 loading val_ =
-    Html.Attributes.property "loading" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "loading" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The text announced and presented when loading options. (default: `"Loading..."`) -}
@@ -90,7 +113,11 @@ panelClass =
 {-| Whether the user is required to make a selection when interacting with the autocomplete. (default: `false`) -}
 required : Bool -> Html.Attribute msg
 required val_ =
-    Html.Attributes.property "required" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "required" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}

@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-tabs>` element — a partial application of `Html.node`. -}
@@ -51,7 +50,11 @@ previousPageLabel =
 {-| Whether tabs are stretched to fill the header. (default: `false`) -}
 stretch : Bool -> Html.Attribute msg
 stretch val_ =
-    Html.Attributes.property "stretch" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "stretch" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The appearance variant of the tabs. (default: `"secondary"`) -}

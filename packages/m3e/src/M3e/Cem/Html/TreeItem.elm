@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-tree-item>` element — a partial application of `Html.node`. -}
@@ -27,25 +26,41 @@ treeItem =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the element's selected / checked state is indeterminate. (default: `false`) -}
 indeterminate : Bool -> Html.Attribute msg
 indeterminate val_ =
-    Html.Attributes.property "indeterminate" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "indeterminate" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the item is expanded. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
-    Html.Attributes.property "open" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "open" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the item is selected. (default: `false`) -}
 selected : Bool -> Html.Attribute msg
 selected val_ =
-    Html.Attributes.property "selected" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "selected" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `opening` events. -}

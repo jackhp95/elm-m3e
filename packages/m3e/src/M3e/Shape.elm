@@ -54,8 +54,8 @@ A shape used to add emphasis and decorative flair.
 
 <!-- elm-cem:example title="Images and video" -->
 ```elm
-[ M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ Native.img [] ]
-    , M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ Native.node Html.video [] [ Native.node Html.source [] [], Native.node Html.source [] [] ] ]
+[ M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ Native.img [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/thumb/1.jpg?ip=x480" ] ]
+    , M3e.Shape.view [ M3e.Shape.name M3e.Value.sunny ] [ Native.node Html.video [ Native.attribute "autoplay" "", Native.attribute "loop" "", Native.attribute "poster" "https://www.shutterstock.com/shutterstock/videos/1006393/thumb/1.jpg?ip=x480", Native.attribute "preload" "auto" ] [ Native.node Html.source [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/preview/stock-footage-business-people-working-in-office.webm", Native.attribute "type" "video/webm" ] [], Native.node Html.source [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/preview/stock-footage-business-people-working-in-office.mp4", Native.attribute "type" "video/mp4" ] [] ] ]
     ]
 ```
 

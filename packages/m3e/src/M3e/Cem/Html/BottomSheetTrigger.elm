@@ -9,7 +9,6 @@ Bottom layer for `<m3e-bottom-sheet-trigger>`: the plain `elm/html` API — one 
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-bottom-sheet-trigger>` element — a partial application of `Html.node`. -}
@@ -22,13 +21,17 @@ bottomSheetTrigger =
 {-| The zero‑based index of the detent the sheet should open to. -}
 detent : Float -> Html.Attribute msg
 detent val_ =
-    Html.Attributes.property "detent" (Json.Encode.float val_)
+    Html.Attributes.attribute "detent" (String.fromFloat val_)
 
 
 {-| Marks this trigger as a secondary trigger for accessibility. Secondary triggers do not receive ARIA ownership. (default: `false`) -}
 secondary : Bool -> Html.Attribute msg
 secondary val_ =
-    Html.Attributes.property "secondary" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "secondary" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The identifier of the interactive control to which this element is attached. (default: `null`) -}

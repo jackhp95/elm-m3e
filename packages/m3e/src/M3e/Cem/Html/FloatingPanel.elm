@@ -13,7 +13,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-floating-panel>` element — a partial application of `Html.node`. -}
@@ -32,13 +31,17 @@ scrollStrategy =
 {-| Whether the panel's width should match its anchor's width. (default: `false`) -}
 fitAnchorWidth : Bool -> Html.Attribute msg
 fitAnchorWidth val_ =
-    Html.Attributes.property "fitAnchorWidth" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "fit-anchor-width" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The logical margin, in pixels, between the panel and its anchor. (default: `0`) -}
 anchorOffset : Float -> Html.Attribute msg
 anchorOffset val_ =
-    Html.Attributes.property "anchorOffset" (Json.Encode.float val_)
+    Html.Attributes.attribute "anchor-offset" (String.fromFloat val_)
 
 
 {-| Listen for `beforetoggle` events. -}

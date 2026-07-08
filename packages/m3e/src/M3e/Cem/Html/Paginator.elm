@@ -17,7 +17,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-paginator>` element — a partial application of `Html.node`. -}
@@ -29,7 +28,11 @@ paginator =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessible label given to the button used to move to the first page. (default: `"First page"`) -}
@@ -41,7 +44,11 @@ firstPageLabel =
 {-| Whether to hide page size selection. (default: `false`) -}
 hidePageSize : Bool -> Html.Attribute msg
 hidePageSize val_ =
-    Html.Attributes.property "hidePageSize" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-page-size" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The label for the page size selector. (default: `"Items per page:"`) -}
@@ -59,7 +66,7 @@ lastPageLabel =
 {-| The length of the total number of items which are being paginated. (default: `0`) -}
 length : Float -> Html.Attribute msg
 length val_ =
-    Html.Attributes.property "length" (Json.Encode.float val_)
+    Html.Attributes.attribute "length" (String.fromFloat val_)
 
 
 {-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
@@ -71,7 +78,7 @@ nextPageLabel =
 {-| The zero-based page index of the displayed list of items. (default: `0`) -}
 pageIndex : Float -> Html.Attribute msg
 pageIndex val_ =
-    Html.Attributes.property "pageIndex" (Json.Encode.float val_)
+    Html.Attributes.attribute "page-index" (String.fromFloat val_)
 
 
 {-| The number of items to display in a page. (default: `50`) -}
@@ -101,7 +108,11 @@ previousPageLabel =
 {-| Whether to show first/last buttons. (default: `false`) -}
 showFirstLastButtons : Bool -> Html.Attribute msg
 showFirstLastButtons val_ =
-    Html.Attributes.property "showFirstLastButtons" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "show-first-last-buttons" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `page` events. -}

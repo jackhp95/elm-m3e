@@ -25,7 +25,7 @@ A calendar used to select a date.
 <!-- elm-cem:example title="Date selection" -->
 ```elm
 [ M3e.Calendar.view [ M3e.Calendar.date "2026-01-01" ] []
-    , Native.div [] []
+    , Native.div [ Native.attribute "id" "selected-date" ] []
     ]
 ```
 

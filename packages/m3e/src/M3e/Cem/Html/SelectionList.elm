@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-selection-list>` element — a partial application of `Html.node`. -}
@@ -28,13 +27,21 @@ selectionList =
 {-| Whether to hide the selection indicator. (default: `false`) -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-selection-indicator" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether multiple items can be selected. (default: `false`) -}
 multi : Bool -> Html.Attribute msg
 multi val_ =
-    Html.Attributes.property "multi" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "multi" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The appearance variant of the list. (default: `"standard"`) -}
@@ -52,7 +59,11 @@ name =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `change` events. -}

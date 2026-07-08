@@ -9,7 +9,6 @@ Bottom layer for `<m3e-skeleton>`: the plain `elm/html` API — one element cons
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-skeleton>` element — a partial application of `Html.node`. -}
@@ -33,4 +32,8 @@ shape =
 {-| Whether the content of the skeleton has been loaded. (default: `false`) -}
 loaded : Bool -> Html.Attribute msg
 loaded val_ =
-    Html.Attributes.property "loaded" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "loaded" ""
+    
+    else
+        Html.Attributes.classList []

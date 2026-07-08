@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-expansion-panel>` element — a partial application of `Html.node`. -}
@@ -28,19 +27,31 @@ expansionPanel =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to hide the expansion toggle. (default: `false`) -}
 hideToggle : Bool -> Html.Attribute msg
 hideToggle val_ =
-    Html.Attributes.property "hideToggle" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-toggle" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the panel is expanded. (default: `false`) -}
 open : Bool -> Html.Attribute msg
 open val_ =
-    Html.Attributes.property "open" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "open" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The direction of the expansion toggle. (default: `"vertical"`) -}

@@ -19,7 +19,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-datepicker>` element — a partial application of `Html.node`. -}
@@ -37,7 +36,11 @@ variant =
 {-| Whether the user can clear the selected date and close the picker. (default: `false`) -}
 clearable : Bool -> Html.Attribute msg
 clearable val_ =
-    Html.Attributes.property "clearable" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "clearable" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The selected date. (default: `null`) -}
@@ -61,7 +64,11 @@ minDate =
 {-| Whether a range of dates can be selected. (default: `false`) -}
 range : Bool -> Html.Attribute msg
 range val_ =
-    Html.Attributes.property "range" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "range" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| End of a date range. (default: `null`) -}

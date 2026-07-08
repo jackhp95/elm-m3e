@@ -9,7 +9,6 @@ Bottom layer for `<m3e-scroll-container>`: the plain `elm/html` API — one elem
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-scroll-container>` element — a partial application of `Html.node`. -}
@@ -28,4 +27,8 @@ dividers =
 {-| Whether to present thin scrollbars. (default: `false`) -}
 thin : Bool -> Html.Attribute msg
 thin val_ =
-    Html.Attributes.property "thin" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "thin" ""
+    
+    else
+        Html.Attributes.classList []

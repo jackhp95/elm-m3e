@@ -27,27 +27,27 @@ Organizes content into separate views where only one view can be visible at a ti
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-M3e.Tabs.view [] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]), M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "videos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "photos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "audio" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ] ]
+M3e.Tabs.view [] [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "videos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "photos" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "audio" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]) ]
 ```
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
-M3e.Tabs.view [ M3e.Tabs.variant M3e.Value.primary ] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]), M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab1" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "tab2" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab3" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ] ]
+M3e.Tabs.view [ M3e.Tabs.variant M3e.Value.primary ] [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab1" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "tab2" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab3" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]) ]
 ```
 
 <!-- elm-cem:example title="Stretching" -->
 ```elm
-M3e.Tabs.view [ M3e.Tabs.stretch True ] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]), M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab7" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "tab8" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab9" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ] ]
+M3e.Tabs.view [ M3e.Tabs.stretch True ] [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab7" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "tab8" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab9" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]) ]
 ```
 
 <!-- elm-cem:example title="Header positions" -->
 ```elm
-M3e.Tabs.view [ M3e.Tabs.headerPosition M3e.Value.after ] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]), M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab4" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "tab5" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab6" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ] ]
+M3e.Tabs.view [ M3e.Tabs.headerPosition M3e.Value.after ] [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab4" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.for "tab5" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab6" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]) ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.Tabs.view [] [ M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]), M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab10" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.disabled True, M3e.Tab.for "tab11" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab12" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ] ]
+M3e.Tabs.view [] [ M3e.Tab.view [ M3e.Tab.selected True, M3e.Tab.for "tab10" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "videocam" ] []), Kit.text "Video" ], M3e.Tab.view [ M3e.Tab.disabled True, M3e.Tab.for "tab11" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "photo" ] []), Kit.text "Photos" ], M3e.Tab.view [ M3e.Tab.for "tab12" ] [ M3e.Tab.icon (M3e.Icon.view [ M3e.Icon.name "music_note" ] []), Kit.text "Audio" ], M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Videos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Photos" ]), M3e.Tabs.panel (M3e.TabPanel.view [] [ Kit.text "Audio" ]) ]
 ```
 
 <!-- elm-cem:example title="Pagination" -->

@@ -11,7 +11,6 @@ Bottom layer for `<m3e-slide-group>`: the plain `elm/html` API — one element c
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-slide-group>` element — a partial application of `Html.node`. -}
@@ -23,7 +22,11 @@ slideGroup =
 {-| Whether scroll buttons are disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The accessible label given to the button used to move to the next page. (default: `"Next page"`) -}
@@ -41,10 +44,14 @@ previousPageLabel =
 {-| A value, in pixels, indicating the scroll threshold at which to begin showing pagination controls. (default: `0`) -}
 threshold : Float -> Html.Attribute msg
 threshold val_ =
-    Html.Attributes.property "threshold" (Json.Encode.float val_)
+    Html.Attributes.attribute "threshold" (String.fromFloat val_)
 
 
 {-| Whether content is oriented vertically. (default: `false`) -}
 vertical : Bool -> Html.Attribute msg
 vertical val_ =
-    Html.Attributes.property "vertical" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "vertical" ""
+    
+    else
+        Html.Attributes.classList []

@@ -19,6 +19,14 @@ A horizontal bar, typically used on smaller devices, that allows a user to switc
 
 ### Examples
 
+<!-- elm-cem:example title="Modes" -->
+```elm
+[ M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.compact ] [ M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), Kit.text "Global" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), Kit.text "For you" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), Kit.text "Trending" ] ]
+    , Native.br
+    , M3e.NavBar.view [ M3e.NavBar.mode M3e.Value.expanded ] [ M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "globe" ] []), Kit.text "Global" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "star" ] []), Kit.text "For you" ], M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "newsstand" ] []), Kit.text "Trending" ] ]
+    ]
+```
+
 <!-- elm-cem:example title="Items" -->
 ```elm
 M3e.NavItem.view [] [ M3e.NavItem.icon (M3e.Icon.view [ M3e.Icon.name "news" ] []), Kit.text "News" ]

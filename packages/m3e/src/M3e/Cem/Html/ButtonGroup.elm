@@ -9,7 +9,6 @@ Bottom layer for `<m3e-button-group>`: the plain `elm/html` API — one element 
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-button-group>` element — a partial application of `Html.node`. -}
@@ -21,7 +20,11 @@ buttonGroup =
 {-| Whether multiple toggle buttons can be selected. (default: `false`) -}
 multi : Bool -> Html.Attribute msg
 multi val_ =
-    Html.Attributes.property "multi" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "multi" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The size of the group. (default: `"small"`) -}

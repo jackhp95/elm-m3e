@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-drawer-container>` element — a partial application of `Html.node`. -}
@@ -28,7 +27,11 @@ drawerContainer =
 {-| Whether the end drawer is open. (default: `false`) -}
 end : Bool -> Html.Attribute msg
 end val_ =
-    Html.Attributes.property "end" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "end" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The behavior mode of the end drawer. (default: `"side"`) -}
@@ -40,13 +43,21 @@ endMode =
 {-| Whether to show a divider between the end drawer and content for `side` mode. (default: `false`) -}
 endDivider : Bool -> Html.Attribute msg
 endDivider val_ =
-    Html.Attributes.property "endDivider" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "end-divider" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the start drawer is open. (default: `false`) -}
 start : Bool -> Html.Attribute msg
 start val_ =
-    Html.Attributes.property "start" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "start" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The behavior mode of the start drawer. (default: `"side"`) -}
@@ -58,7 +69,11 @@ startMode =
 {-| Whether to show a divider between the start drawer and content for `side` mode. (default: `false`) -}
 startDivider : Bool -> Html.Attribute msg
 startDivider val_ =
-    Html.Attributes.property "startDivider" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "start-divider" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `change` events. -}

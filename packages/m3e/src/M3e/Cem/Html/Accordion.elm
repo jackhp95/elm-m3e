@@ -9,7 +9,6 @@ Bottom layer for `<m3e-accordion>`: the plain `elm/html` API — one element con
 
 import Html
 import Html.Attributes
-import Json.Encode
 
 
 {-| The raw `<m3e-accordion>` element — a partial application of `Html.node`. -}
@@ -21,4 +20,8 @@ accordion =
 {-| Whether multiple expansion panels can be open at the same time. (default: `false`) -}
 multi : Bool -> Html.Attribute msg
 multi val_ =
-    Html.Attributes.property "multi" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "multi" ""
+    
+    else
+        Html.Attributes.classList []

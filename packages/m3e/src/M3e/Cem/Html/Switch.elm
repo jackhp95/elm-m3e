@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-switch>` element — a partial application of `Html.node`. -}
@@ -27,13 +26,21 @@ switch =
 {-| Whether the element is checked. (default: `false`) -}
 checked : Bool -> Html.Attribute msg
 checked val_ =
-    Html.Attributes.property "checked" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "checked" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The icons to present. (default: `"none"`) -}

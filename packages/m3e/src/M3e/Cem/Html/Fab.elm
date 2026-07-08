@@ -17,7 +17,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-fab>` element — a partial application of `Html.node`. -}
@@ -29,13 +28,21 @@ fab =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether the element is disabled and interactive. (default: `false`) -}
 disabledInteractive : Bool -> Html.Attribute msg
 disabledInteractive val_ =
-    Html.Attributes.property "disabledInteractive" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled-interactive" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| A value indicating whether the `target` of the link button will be downloaded, optionally specifying the new name of the file. (default: `null`) -}
@@ -47,7 +54,11 @@ download =
 {-| Whether the button is extended to show the label. (default: `false`) -}
 extended : Bool -> Html.Attribute msg
 extended val_ =
-    Html.Attributes.property "extended" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "extended" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The URL to which the link button points. (default: `""`) -}
@@ -59,7 +70,11 @@ href =
 {-| Whether to present a lowered elevation. (default: `false`) -}
 lowered : Bool -> Html.Attribute msg
 lowered val_ =
-    Html.Attributes.property "lowered" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "lowered" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The name of the element, submitted as a pair with the element's `value` as part of form data, when the element is used to submit a form. -}

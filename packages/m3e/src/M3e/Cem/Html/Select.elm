@@ -15,7 +15,6 @@ import Html
 import Html.Attributes
 import Html.Events
 import Json.Decode
-import Json.Encode
 
 
 {-| The raw `<m3e-select>` element — a partial application of `Html.node`. -}
@@ -27,19 +26,31 @@ select =
 {-| Whether the element is disabled. (default: `false`) -}
 disabled : Bool -> Html.Attribute msg
 disabled val_ =
-    Html.Attributes.property "disabled" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "disabled" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether to hide the selection indicator for single select options. (default: `false`) -}
 hideSelectionIndicator : Bool -> Html.Attribute msg
 hideSelectionIndicator val_ =
-    Html.Attributes.property "hideSelectionIndicator" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "hide-selection-indicator" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Whether multiple options can be selected. (default: `false`) -}
 multi : Bool -> Html.Attribute msg
 multi val_ =
-    Html.Attributes.property "multi" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "multi" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| The name that identifies the element when submitting the associated form. -}
@@ -57,7 +68,11 @@ panelClass =
 {-| Whether the element is required. (default: `false`) -}
 required : Bool -> Html.Attribute msg
 required val_ =
-    Html.Attributes.property "required" (Json.Encode.bool val_)
+    if val_ then
+        Html.Attributes.attribute "required" ""
+    
+    else
+        Html.Attributes.classList []
 
 
 {-| Listen for `change` events. -}
