@@ -29,7 +29,7 @@ M3e.RadioGroup.view [] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.
 ```elm
 [ Native.node Html.label [ Native.attribute "for" "radio-group" ] [ Kit.text "Select an option" ]
     , Native.br
-    , M3e.RadioGroup.view [] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
+    , M3e.RadioGroup.view [ M3e.Attributes.id "radio-group" ] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
     ]
 ```
 
@@ -37,7 +37,7 @@ M3e.RadioGroup.view [] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.
 ```elm
 [ Native.node Html.label [ Native.attribute "for" "radio-group2" ] [ Kit.text "Select an option" ]
     , Native.br
-    , M3e.RadioGroup.view [] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.disabled True, M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
+    , M3e.RadioGroup.view [ M3e.Attributes.id "radio-group2" ] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.disabled True, M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
     ]
 ```
 
@@ -45,7 +45,7 @@ M3e.RadioGroup.view [] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.
 ```elm
 [ Native.node Html.label [ Native.attribute "for" "radio-group3" ] [ Kit.text "Select an option" ]
     , Native.br
-    , M3e.RadioGroup.view [ M3e.RadioGroup.disabled True ] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
+    , M3e.RadioGroup.view [ M3e.Attributes.id "radio-group3", M3e.RadioGroup.disabled True ] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
     ]
 ```
 
@@ -53,16 +53,16 @@ M3e.RadioGroup.view [] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.
 ```elm
 [ Native.node Html.label [ Native.attribute "for" "radio-group4" ] [ Kit.text "Select an option" ]
     , Native.br
-    , M3e.RadioGroup.view [ M3e.RadioGroup.required True ] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
+    , M3e.RadioGroup.view [ M3e.Attributes.id "radio-group4", M3e.RadioGroup.required True ] [ Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "1" ] [], Kit.text "Option 1" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "2" ] [], Kit.text "Option 2" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "3" ] [], Kit.text "Option 3" ], Native.node Html.label [] [ M3e.Radio.view [ M3e.Radio.value "4" ] [], Kit.text "Option 4" ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -3" ]
-    , Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -2" ]
-    , Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density -1" ]
-    , Native.node Html.label [] [ M3e.Radio.view [] [], Kit.text "Density 0" ]
+[ Native.node Html.label [] [ M3e.Radio.view [ M3e.Attributes.class "density-3" ] [], Kit.text "Density -3" ]
+    , Native.node Html.label [] [ M3e.Radio.view [ M3e.Attributes.class "density-2" ] [], Kit.text "Density -2" ]
+    , Native.node Html.label [] [ M3e.Radio.view [ M3e.Attributes.class "density-1" ] [], Kit.text "Density -1" ]
+    , Native.node Html.label [] [ M3e.Radio.view [ M3e.Attributes.class "density-0" ] [], Kit.text "Density 0" ]
     ]
 ```
 

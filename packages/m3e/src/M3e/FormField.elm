@@ -64,19 +64,19 @@ M3e.FormField.view [] [ M3e.FormField.label "fld8" (Native.node Html.label [ Nat
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld1" (Native.node Html.label [ Native.attribute "for" "dfld1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld1" (Native.node Html.input [ Native.attribute "id" "dfld1" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld2" (Native.node Html.label [ Native.attribute "for" "dfld2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld2" (Native.node Html.input [ Native.attribute "id" "dfld2" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld3" (Native.node Html.label [ Native.attribute "for" "dfld3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld3" (Native.node Html.input [ Native.attribute "id" "dfld3" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "dfld4" (Native.node Html.label [ Native.attribute "for" "dfld4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld4" (Native.node Html.input [ Native.attribute "id" "dfld4" ] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.Attributes.class "density-3" ] [ M3e.FormField.label "dfld1" (Native.node Html.label [ Native.attribute "for" "dfld1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld1" (Native.node Html.input [ Native.attribute "id" "dfld1" ] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.Attributes.class "density-2" ] [ M3e.FormField.label "dfld2" (Native.node Html.label [ Native.attribute "for" "dfld2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld2" (Native.node Html.input [ Native.attribute "id" "dfld2" ] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.Attributes.class "density-1" ] [ M3e.FormField.label "dfld3" (Native.node Html.label [ Native.attribute "for" "dfld3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld3" (Native.node Html.input [ Native.attribute "id" "dfld3" ] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined, M3e.Attributes.class "density-0" ] [ M3e.FormField.label "dfld4" (Native.node Html.label [ Native.attribute "for" "dfld4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld4" (Native.node Html.input [ Native.attribute "id" "dfld4" ] []) ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld5" (Native.node Html.label [ Native.attribute "for" "dfld5" ] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld5" (Native.node Html.input [ Native.attribute "id" "dfld5" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld6" (Native.node Html.label [ Native.attribute "for" "dfld6" ] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld6" (Native.node Html.input [ Native.attribute "id" "dfld6" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld7" (Native.node Html.label [ Native.attribute "for" "dfld7" ] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld7" (Native.node Html.input [ Native.attribute "id" "dfld7" ] []) ]
-    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled ] [ M3e.FormField.label "dfld8" (Native.node Html.label [ Native.attribute "for" "dfld8" ] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld8" (Native.node Html.input [ Native.attribute "id" "dfld8" ] []) ]
+[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.Attributes.class "density-3" ] [ M3e.FormField.label "dfld5" (Native.node Html.label [ Native.attribute "for" "dfld5" ] [ Kit.text "Density -3" ]), M3e.FormField.control "dfld5" (Native.node Html.input [ Native.attribute "id" "dfld5" ] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.Attributes.class "density-2" ] [ M3e.FormField.label "dfld6" (Native.node Html.label [ Native.attribute "for" "dfld6" ] [ Kit.text "Density -2" ]), M3e.FormField.control "dfld6" (Native.node Html.input [ Native.attribute "id" "dfld6" ] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.Attributes.class "density-1" ] [ M3e.FormField.label "dfld7" (Native.node Html.label [ Native.attribute "for" "dfld7" ] [ Kit.text "Density -1" ]), M3e.FormField.control "dfld7" (Native.node Html.input [ Native.attribute "id" "dfld7" ] []) ]
+    , M3e.FormField.view [ M3e.FormField.variant M3e.Value.filled, M3e.Attributes.class "density-0" ] [ M3e.FormField.label "dfld8" (Native.node Html.label [ Native.attribute "for" "dfld8" ] [ Kit.text "Density 0" ]), M3e.FormField.control "dfld8" (Native.node Html.input [ Native.attribute "id" "dfld8" ] []) ]
     ]
 ```
 

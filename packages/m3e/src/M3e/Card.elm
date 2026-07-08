@@ -57,7 +57,7 @@ M3e.Card.view [ M3e.Card.inline True ] [ M3e.Card.content (Native.div [] [ Kit.t
 
 <!-- elm-cem:example title="Orientation" -->
 ```elm
-M3e.Card.view [ M3e.Card.inline True, M3e.Card.orientation M3e.Value.horizontal ] [ M3e.Card.header (Native.img [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/thumb/1.jpg?ip=x480" ]), M3e.Card.content (Native.div [] [ Kit.text "Horizontal" ]) ]
+M3e.Card.view [ M3e.Attributes.class "image-card", M3e.Card.inline True, M3e.Card.orientation M3e.Value.horizontal ] [ M3e.Card.header (Native.img [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/thumb/1.jpg?ip=x480" ]), M3e.Card.content (Native.div [] [ Kit.text "Horizontal" ]) ]
 ```
 
 <!-- elm-cem:example title="Actionable" -->

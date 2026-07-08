@@ -134,7 +134,7 @@ M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.Sele
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.SelectionList.view [ M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] [ M3e.ListOption.view [] [ Kit.text "Option 1" ], M3e.ListOption.view [] [ Kit.text "Option 2" ], M3e.ListOption.view [] [ Kit.text "Option 3" ] ]
+M3e.SelectionList.view [ M3e.Attributes.class "density-3", M3e.SelectionList.variant M3e.Value.segmented, M3e.SelectionList.multi True ] [ M3e.ListOption.view [] [ Kit.text "Option 1" ], M3e.ListOption.view [] [ Kit.text "Option 2" ], M3e.ListOption.view [] [ Kit.text "Option 3" ] ]
 ```
 
 @docs view, variant

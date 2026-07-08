@@ -17,21 +17,21 @@ Adds additional context to a button or other UI element.
 
 <!-- elm-cem:example title="Plain tooltip" -->
 ```elm
-[ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
+[ M3e.IconButton.view [ M3e.Attributes.id "button" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
     , M3e.Tooltip.view [ M3e.Tooltip.for "button" ] [ Kit.text "Go Back" ]
     ]
 ```
 
 <!-- elm-cem:example title="Delays" -->
 ```elm
-[ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
+[ M3e.IconButton.view [ M3e.Attributes.id "button" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
     , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.showDelay 0, M3e.Tooltip.hideDelay 200 ] [ Kit.text "Go Back" ]
     ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-[ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
+[ M3e.IconButton.view [ M3e.Attributes.id "button" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]
     , M3e.Tooltip.view [ M3e.Tooltip.for "button", M3e.Tooltip.disabled True ] [ Kit.text "Go Back" ]
     ]
 ```

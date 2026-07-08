@@ -24,7 +24,7 @@ A visual indicator used to label content.
 
 <!-- elm-cem:example title="Anchoring" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.outlined ] [ Kit.text "Button" ]
+[ M3e.Button.view [ M3e.Attributes.id "btn", M3e.Button.variant M3e.Value.outlined ] [ Kit.text "Button" ]
     , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveAfter ] [ Kit.text "AA" ]
     , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.aboveBefore ] [ Kit.text "AB" ]
     , M3e.Badge.view [ M3e.Badge.for "btn", M3e.Badge.position M3e.Value.belowBefore ] [ Kit.text "BB" ]

@@ -29,76 +29,76 @@ A sheet used to show secondary content anchored to the bottom of the screen.
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet" ] [ Kit.text "Open bottom sheet" ] ]
-    , M3e.BottomSheet.view [] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet" ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Variants" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet2" ] [ Kit.text "Open modal bottom sheet" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet2", M3e.BottomSheet.modal True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Drag handles" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet3" ] [ Kit.text "Open draggable modal bottom sheet" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet3", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Detents" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet4" ] [ Kit.text "Open draggable modal bottom sheet with detents" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet4", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Initial height" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet7" ] [ Kit.text "Open draggable modal bottom sheet with detents at half" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.detent 1 ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet7", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.detent 1 ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Initial height (2)" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet8", M3e.BottomSheetTrigger.detent 1 ] [ Kit.text "Open draggable modal bottom sheet with detents at half via trigger" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet8", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Collapsed height" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet9" ] [ Kit.text "Open draggable modal bottom sheet with detents at collapsed with custom peek" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet9", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.Attributes.style [ ( "--m3e-bottom-sheet-peek-height", "36px" ) ] ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Hideability" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet5" ] [ Kit.text "Open hideable modal bottom sheet" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet5", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Hideability (2)" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet6" ] [ Kit.text "Open hideable modal bottom sheet with detents" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet6", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Headers" -->
 ```elm
 [ M3e.Button.view [] [ M3e.BottomSheetTrigger.view [ M3e.BottomSheetTrigger.for "bottomSheet10" ] [ Kit.text "Open hideable modal bottom sheet with detents and header" ] ]
-    , M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True, M3e.Aria.labelledby "sheetTitle" ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ Kit.text "Choose a destination" ]), M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
+    , M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet10", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True, M3e.Aria.labelledby "sheetTitle" ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Attributes.id "sheetTitle", M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ Kit.text "Choose a destination" ]), M3e.ActionList.view [] [ M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Keep" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Add to a note" ]) ], M3e.ListAction.view [] [ M3e.BottomSheetAction.view [] [ Kit.text "Google Docs" ], M3e.ListAction.supportingText (Native.span [] [ Kit.text "Embed in a document" ]) ] ] ]
     ]
 ```
 
 <!-- elm-cem:example title="Choose a destination" -->
 ```elm
-M3e.BottomSheet.view [ M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ Kit.text "Choose a destination" ]) ]
+M3e.BottomSheet.view [ M3e.Attributes.id "bottomSheet", M3e.BottomSheet.modal True, M3e.BottomSheet.handle True, M3e.BottomSheet.hideable True ] [ M3e.BottomSheet.header (M3e.Heading.view [ M3e.Attributes.id "sheetTitle", M3e.Heading.variant M3e.Value.title, M3e.Heading.size M3e.Value.large ] [ Kit.text "Choose a destination" ]) ]
 ```
 
 @docs view, detent, handle, handleLabel, hideable, hideFriction

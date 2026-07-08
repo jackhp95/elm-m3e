@@ -47,7 +47,7 @@ M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.t
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Tree.view [] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []), M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []), M3e.TreeItem.label (Kit.text "Overview") ], M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []), M3e.TreeItem.label (Kit.text "Installation") ] ] ]
+M3e.Tree.view [ M3e.Attributes.class "density-3" ] [ M3e.TreeItem.view [ M3e.TreeItem.open True ] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "rocket_launch" ] []), M3e.TreeItem.label (Kit.text "Getting Started"), M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "near_me" ] []), M3e.TreeItem.label (Kit.text "Overview") ], M3e.TreeItem.view [] [ M3e.TreeItem.icon (M3e.Icon.view [ M3e.Icon.name "package_2" ] []), M3e.TreeItem.label (Kit.text "Installation") ] ] ]
 ```
 
 @docs view, multi, cascade, onChange

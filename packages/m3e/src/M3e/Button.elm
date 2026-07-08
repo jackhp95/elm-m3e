@@ -93,19 +93,19 @@ M3e.Button.view [ M3e.Button.variant M3e.Value.tonal, M3e.Button.href "https://w
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -3" ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -2" ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -1" ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density 0" ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall, M3e.Attributes.class "density-3" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -3" ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall, M3e.Attributes.class "density-2" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -2" ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall, M3e.Attributes.class "density-1" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -1" ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Button.size M3e.Value.extraSmall, M3e.Attributes.class "density-0" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density 0" ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -3" ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -2" ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -1" ]
-    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density 0" ]
+[ M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Attributes.class "density-3" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -3" ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Attributes.class "density-2" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -2" ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Attributes.class "density-1" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density -1" ]
+    , M3e.Button.view [ M3e.Button.variant M3e.Value.filled, M3e.Attributes.class "density-0" ] [ M3e.Button.icon (M3e.Icon.view [ M3e.Icon.name "stars" ] []), Kit.text "Density 0" ]
     ]
 ```
 

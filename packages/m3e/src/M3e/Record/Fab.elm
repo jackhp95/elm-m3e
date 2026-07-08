@@ -67,19 +67,19 @@ A floating action button (FAB) used to present important actions.
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Attributes.class "density-3" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Attributes.class "density-2" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Attributes.class "density-1" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.small, M3e.Attributes.class "density-0" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
-    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+[ M3e.Fab.view [ M3e.Fab.size M3e.Value.medium, M3e.Attributes.class "density-3" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium, M3e.Attributes.class "density-2" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium, M3e.Attributes.class "density-1" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
+    , M3e.Fab.view [ M3e.Fab.size M3e.Value.medium, M3e.Attributes.class "density-0" ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ]
     ]
 ```
 

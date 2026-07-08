@@ -24,17 +24,17 @@ Presents short updates about application processes at the bottom of the screen.
 
 <!-- elm-cem:example title="Snackbar service" -->
 ```elm
-M3e.Button.view [] [ Kit.text "Delete file" ]
+M3e.Button.view [ M3e.Attributes.id "example1" ] [ Kit.text "Delete file" ]
 ```
 
 <!-- elm-cem:example title="Actions" -->
 ```elm
-M3e.Button.view [] [ Kit.text "Delete file" ]
+M3e.Button.view [ M3e.Attributes.id "example2" ] [ Kit.text "Delete file" ]
 ```
 
 <!-- elm-cem:example title="Dismissal" -->
 ```elm
-M3e.Button.view [] [ Kit.text "Delete file" ]
+M3e.Button.view [ M3e.Attributes.id "example3" ] [ Kit.text "Delete file" ]
 ```
 
 @docs view, action, closeLabel, dismissible, duration, onBeforetoggle

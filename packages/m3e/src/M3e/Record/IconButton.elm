@@ -109,19 +109,19 @@ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.tonal, M3e.IconButton.hre
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+[ M3e.IconButton.view [ M3e.Attributes.class "density-3", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.Attributes.class "density-2", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.Attributes.class "density-1", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.Attributes.class "density-0", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.extraSmall ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
     ]
 ```
 
 <!-- elm-cem:example title="Density (2)" -->
 ```elm
-[ M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
-    , M3e.IconButton.view [ M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+[ M3e.IconButton.view [ M3e.Attributes.class "density-3", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.Attributes.class "density-2", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.Attributes.class "density-1", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
+    , M3e.IconButton.view [ M3e.Attributes.class "density-0", M3e.IconButton.variant M3e.Value.filled, M3e.IconButton.size M3e.Value.small ] [ M3e.Icon.view [ M3e.Icon.name "check" ] [] ]
     ]
 ```
 

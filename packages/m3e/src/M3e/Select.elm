@@ -27,40 +27,40 @@ A form control that allows users to select a value from a set of predefined opti
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "select1" (Native.node Html.label [ Native.attribute "for" "select1" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select1" (M3e.Select.view [] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+M3e.FormField.view [] [ M3e.FormField.label "select1" (Native.node Html.label [ Native.attribute "for" "select1" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select1" (M3e.Select.view [ M3e.Attributes.id "select1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Empty options" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "select2" (Native.node Html.label [ Native.attribute "for" "select2" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select2" (M3e.Select.view [] [ M3e.Option.view [ M3e.Option.value "" ] [ Kit.text "None" ], M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+M3e.FormField.view [] [ M3e.FormField.label "select2" (Native.node Html.label [ Native.attribute "for" "select2" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select2" (M3e.Select.view [ M3e.Attributes.id "select2" ] [ M3e.Option.view [ M3e.Option.value "" ] [ Kit.text "None" ], M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Selection" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "select4" (Native.node Html.label [ Native.attribute "for" "select4" ] [ Kit.text "Toppings" ]), M3e.FormField.control "select4" (M3e.Select.view [ M3e.Select.multi True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Extra cheese" ], M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Mushroom" ], M3e.Option.view [] [ Kit.text "Onion" ], M3e.Option.view [] [ Kit.text "Pepperoni" ], M3e.Option.view [] [ Kit.text "Sausage" ], M3e.Option.view [] [ Kit.text "Tomato" ] ]) ]
+M3e.FormField.view [] [ M3e.FormField.label "select4" (Native.node Html.label [ Native.attribute "for" "select4" ] [ Kit.text "Toppings" ]), M3e.FormField.control "select4" (M3e.Select.view [ M3e.Attributes.id "select4", M3e.Select.multi True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Extra cheese" ], M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Mushroom" ], M3e.Option.view [] [ Kit.text "Onion" ], M3e.Option.view [] [ Kit.text "Pepperoni" ], M3e.Option.view [] [ Kit.text "Sausage" ], M3e.Option.view [] [ Kit.text "Tomato" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Disabling" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "select5" (Native.node Html.label [ Native.attribute "for" "select5" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select5" (M3e.Select.view [ M3e.Select.disabled True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+M3e.FormField.view [] [ M3e.FormField.label "select5" (Native.node Html.label [ Native.attribute "for" "select5" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select5" (M3e.Select.view [ M3e.Attributes.id "select5", M3e.Select.disabled True ] [ M3e.Option.view [ M3e.Option.selected True ] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Disabling (2)" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "select6" (Native.node Html.label [ Native.attribute "for" "select6" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select6" (M3e.Select.view [] [ M3e.Option.view [ M3e.Option.disabled True ] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+M3e.FormField.view [] [ M3e.FormField.label "select6" (Native.node Html.label [ Native.attribute "for" "select6" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select6" (M3e.Select.view [ M3e.Attributes.id "select6" ] [ M3e.Option.view [ M3e.Option.disabled True ] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Required" -->
 ```elm
-M3e.FormField.view [] [ M3e.FormField.label "select7" (Native.node Html.label [ Native.attribute "for" "select7" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select7" (M3e.Select.view [ M3e.Select.required True ] [ M3e.Option.view [ M3e.Option.value "" ] [ Kit.text "None" ], M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+M3e.FormField.view [] [ M3e.FormField.label "select7" (Native.node Html.label [ Native.attribute "for" "select7" ] [ Kit.text "Favorite fruit" ]), M3e.FormField.control "select7" (M3e.Select.view [ M3e.Attributes.id "select7", M3e.Select.required True ] [ M3e.Option.view [ M3e.Option.value "" ] [ Kit.text "None" ], M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
 ```
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "ds1" (Native.node Html.label [ Native.attribute "for" "ds1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "ds1" (M3e.Select.view [ M3e.Select.panelClass "density-3" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    , M3e.FormField.view [] [ M3e.FormField.label "ds2" (Native.node Html.label [ Native.attribute "for" "ds2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "ds2" (M3e.Select.view [ M3e.Select.panelClass "density-2" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    , M3e.FormField.view [] [ M3e.FormField.label "ds3" (Native.node Html.label [ Native.attribute "for" "ds3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "ds3" (M3e.Select.view [ M3e.Select.panelClass "density-1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
-    , M3e.FormField.view [] [ M3e.FormField.label "ds4" (Native.node Html.label [ Native.attribute "for" "ds4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "ds4" (M3e.Select.view [ M3e.Select.panelClass "density-0" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+[ M3e.FormField.view [ M3e.Attributes.class "density-3" ] [ M3e.FormField.label "ds1" (Native.node Html.label [ Native.attribute "for" "ds1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "ds1" (M3e.Select.view [ M3e.Attributes.id "ds1", M3e.Select.panelClass "density-3" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+    , M3e.FormField.view [ M3e.Attributes.class "density-2" ] [ M3e.FormField.label "ds2" (Native.node Html.label [ Native.attribute "for" "ds2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "ds2" (M3e.Select.view [ M3e.Attributes.id "ds2", M3e.Select.panelClass "density-2" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+    , M3e.FormField.view [ M3e.Attributes.class "density-1" ] [ M3e.FormField.label "ds3" (Native.node Html.label [ Native.attribute "for" "ds3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "ds3" (M3e.Select.view [ M3e.Attributes.id "ds3", M3e.Select.panelClass "density-1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
+    , M3e.FormField.view [ M3e.Attributes.class "density-0" ] [ M3e.FormField.label "ds4" (Native.node Html.label [ Native.attribute "for" "ds4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "ds4" (M3e.Select.view [ M3e.Attributes.id "ds4", M3e.Select.panelClass "density-0" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]) ]
     ]
 ```
 

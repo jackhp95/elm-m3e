@@ -31,7 +31,7 @@ A dialog that provides important prompts in a user flow.
 <!-- elm-cem:example title="Opening" -->
 ```elm
 [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ M3e.DialogTrigger.view [ M3e.DialogTrigger.for "dlg" ] [ Kit.text "Open Dialog" ] ]
-    , M3e.Dialog.view [ M3e.Dialog.dismissible True ] []
+    , M3e.Dialog.view [ M3e.Attributes.id "dlg", M3e.Dialog.dismissible True ] []
     ]
 ```
 

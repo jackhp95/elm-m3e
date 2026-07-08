@@ -33,7 +33,7 @@ A checkbox that allows a user to select one or more options from a limited numbe
 <!-- elm-cem:example title="Labels" -->
 ```elm
 [ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Checkbox 1" ]
-    , M3e.Checkbox.view [] []
+    , M3e.Checkbox.view [ M3e.Attributes.id "chk2" ] []
     , Native.node Html.label [ Native.attribute "for" "chk2" ] [ Kit.text "Checkbox 2" ]
     ]
 ```
@@ -41,7 +41,7 @@ A checkbox that allows a user to select one or more options from a limited numbe
 <!-- elm-cem:example title="Disabling" -->
 ```elm
 [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Checkbox.disabled True ] [], Kit.text "Disabled Checkbox 1" ]
-    , M3e.Checkbox.view [ M3e.Checkbox.disabled True ] []
+    , M3e.Checkbox.view [ M3e.Attributes.id "chk3", M3e.Checkbox.disabled True ] []
     , Native.node Html.label [ Native.attribute "for" "chk3" ] [ Kit.text "Disabled Checkbox 2" ]
     ]
 ```
@@ -53,10 +53,10 @@ Native.node Html.form [] [ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.C
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -3" ]
-    , Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -2" ]
-    , Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density -1" ]
-    , Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Density 0" ]
+[ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Attributes.class "density-3" ] [], Kit.text "Density -3" ]
+    , Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Attributes.class "density-2" ] [], Kit.text "Density -2" ]
+    , Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Attributes.class "density-1" ] [], Kit.text "Density -1" ]
+    , Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Attributes.class "density-0" ] [], Kit.text "Density 0" ]
     ]
 ```
 

@@ -42,7 +42,7 @@ Enhances a text input with suggested options.
 <!-- elm-cem:example title="Custom filtering" -->
 ```elm
 [ M3e.FormField.view [] [ M3e.FormField.label "fruit4" (Native.node Html.label [ Native.attribute "for" "fruit4" ] [ Kit.text "Choose your favorite fruit" ]), M3e.FormField.control "fruit4" (Native.node Html.input [ Native.attribute "id" "fruit4" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "fruit4" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
+    , M3e.Autocomplete.view [ M3e.Attributes.class "custom-filter", M3e.Autocomplete.for "fruit4" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```
 
@@ -56,14 +56,14 @@ Enhances a text input with suggested options.
 <!-- elm-cem:example title="Initial load" -->
 ```elm
 [ M3e.FormField.view [] [ M3e.FormField.label "state" (Native.node Html.label [ Native.attribute "for" "state" ] [ Kit.text "State" ]), M3e.FormField.control "state" (Native.node Html.input [ Native.attribute "id" "state" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "state" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
+    , M3e.Autocomplete.view [ M3e.Attributes.class "lazy", M3e.Autocomplete.for "state" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
     ]
 ```
 
 <!-- elm-cem:example title="Search as you type" -->
 ```elm
 [ M3e.FormField.view [] [ M3e.FormField.label "state2" (Native.node Html.label [ Native.attribute "for" "state2" ] [ Kit.text "State" ]), M3e.FormField.control "state2" (Native.node Html.input [ Native.attribute "id" "state2" ] []) ]
-    , M3e.Autocomplete.view [ M3e.Autocomplete.for "state2" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
+    , M3e.Autocomplete.view [ M3e.Attributes.class "search", M3e.Autocomplete.for "state2" ] [ M3e.Autocomplete.loadingSlot (M3e.LoadingIndicator.view [] []) ]
     ]
 ```
 
@@ -90,13 +90,13 @@ Enhances a text input with suggested options.
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.FormField.view [] [ M3e.FormField.label "d1" (Native.node Html.label [ Native.attribute "for" "d1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "d1" (Native.node Html.input [ Native.attribute "id" "d1" ] []) ]
+[ M3e.FormField.view [ M3e.Attributes.class "density-3" ] [ M3e.FormField.label "d1" (Native.node Html.label [ Native.attribute "for" "d1" ] [ Kit.text "Density -3" ]), M3e.FormField.control "d1" (Native.node Html.input [ Native.attribute "id" "d1" ] []) ]
     , M3e.Autocomplete.view [ M3e.Autocomplete.for "d1", M3e.Autocomplete.panelClass "density-3" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    , M3e.FormField.view [] [ M3e.FormField.label "d2" (Native.node Html.label [ Native.attribute "for" "d2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "d2" (Native.node Html.input [ Native.attribute "id" "d2" ] []) ]
+    , M3e.FormField.view [ M3e.Attributes.class "density-2" ] [ M3e.FormField.label "d2" (Native.node Html.label [ Native.attribute "for" "d2" ] [ Kit.text "Density -2" ]), M3e.FormField.control "d2" (Native.node Html.input [ Native.attribute "id" "d2" ] []) ]
     , M3e.Autocomplete.view [ M3e.Autocomplete.for "d2", M3e.Autocomplete.panelClass "density-2" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    , M3e.FormField.view [] [ M3e.FormField.label "d3" (Native.node Html.label [ Native.attribute "for" "d3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "d3" (Native.node Html.input [ Native.attribute "id" "d3" ] []) ]
+    , M3e.FormField.view [ M3e.Attributes.class "density-1" ] [ M3e.FormField.label "d3" (Native.node Html.label [ Native.attribute "for" "d3" ] [ Kit.text "Density -1" ]), M3e.FormField.control "d3" (Native.node Html.input [ Native.attribute "id" "d3" ] []) ]
     , M3e.Autocomplete.view [ M3e.Autocomplete.for "d3", M3e.Autocomplete.panelClass "density-1" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
-    , M3e.FormField.view [] [ M3e.FormField.label "d4" (Native.node Html.label [ Native.attribute "for" "d4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "d4" (Native.node Html.input [ Native.attribute "id" "d4" ] []) ]
+    , M3e.FormField.view [ M3e.Attributes.class "density-0" ] [ M3e.FormField.label "d4" (Native.node Html.label [ Native.attribute "for" "d4" ] [ Kit.text "Density 0" ]), M3e.FormField.control "d4" (Native.node Html.input [ Native.attribute "id" "d4" ] []) ]
     , M3e.Autocomplete.view [ M3e.Autocomplete.for "d4", M3e.Autocomplete.panelClass "density-0" ] [ M3e.Option.view [] [ Kit.text "Apples" ], M3e.Option.view [] [ Kit.text "Oranges" ], M3e.Option.view [] [ Kit.text "Bananas" ], M3e.Option.view [] [ Kit.text "Grapes" ] ]
     ]
 ```

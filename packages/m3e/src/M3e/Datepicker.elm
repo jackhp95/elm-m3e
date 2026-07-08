@@ -25,7 +25,7 @@ Presents a date picker on a temporary surface.
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld1" (Native.node Html.label [ Native.attribute "for" "fld1" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld1" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld1" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "datepicker" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto ] []
+    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Attributes.id "datepicker" ] []
     ]
 ```
 
@@ -37,49 +37,49 @@ M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto ] []
 <!-- elm-cem:example title="Date selection" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld8" (Native.node Html.label [ Native.attribute "for" "fld8" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld8" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld8" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker5" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Datepicker.date "2026-01-01", M3e.Datepicker.clearable True ] []
+    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Attributes.id "picker5", M3e.Datepicker.date "2026-01-01", M3e.Datepicker.clearable True ] []
     ]
 ```
 
 <!-- elm-cem:example title="Start date" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld7" (Native.node Html.label [ Native.attribute "for" "fld7" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld7" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld7" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker4" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Datepicker.startAt "2026-01-01" ] []
+    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Attributes.id "picker4", M3e.Datepicker.startAt "2026-01-01" ] []
     ]
 ```
 
 <!-- elm-cem:example title="Start view" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld6" (Native.node Html.label [ Native.attribute "for" "fld6" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld6" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld6" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker3" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Datepicker.startView M3e.Value.multiYear ] []
+    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Attributes.id "picker3", M3e.Datepicker.startView M3e.Value.multiYear ] []
     ]
 ```
 
 <!-- elm-cem:example title="Date ranges" -->
 ```elm
-[ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld5" (Native.node Html.label [ Native.attribute "for" "fld5" ] [ Kit.text "Date Range Field" ]), M3e.FormField.control "fld5" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld5" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "date-range" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY - MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.rangeStart "2026-01-01", M3e.Datepicker.rangeEnd "2026-01-09", M3e.Datepicker.startAt "2026-01-01" ] []
+[ M3e.FormField.view [ M3e.Attributes.id "range-field", M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld5" (Native.node Html.label [ Native.attribute "for" "fld5" ] [ Kit.text "Date Range Field" ]), M3e.FormField.control "fld5" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld5" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "date-range" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY - MM/DD/YYYY" ]) ]
+    , M3e.Datepicker.view [ M3e.Attributes.id "date-range", M3e.Datepicker.rangeStart "2026-01-01", M3e.Datepicker.rangeEnd "2026-01-09", M3e.Datepicker.startAt "2026-01-01" ] []
     ]
 ```
 
 <!-- elm-cem:example title="Min and max dates" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld4" (Native.node Html.label [ Native.attribute "for" "fld4" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld4" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld4" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "picker1" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.startAt "2026-04-01", M3e.Datepicker.minDate "2026-01-01", M3e.Datepicker.maxDate "2026-04-30" ] []
+    , M3e.Datepicker.view [ M3e.Attributes.id "picker1", M3e.Datepicker.startAt "2026-04-01", M3e.Datepicker.minDate "2026-01-01", M3e.Datepicker.maxDate "2026-04-30" ] []
     ]
 ```
 
 <!-- elm-cem:example title="Blackout dates" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld3" (Native.node Html.label [ Native.attribute "for" "fld3" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld3" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld3" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "blackout-dates" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto ] []
+    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Attributes.id "blackout-dates" ] []
     ]
 ```
 
 <!-- elm-cem:example title="Special dates" -->
 ```elm
 [ M3e.FormField.view [ M3e.FormField.variant M3e.Value.outlined ] [ M3e.FormField.label "fld2" (Native.node Html.label [ Native.attribute "for" "fld2" ] [ Kit.text "Date Field" ]), M3e.FormField.control "fld2" (Native.node Html.input [ Native.attribute "autocomplete" "off", Native.attribute "id" "fld2" ] []), M3e.FormField.suffix (M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "calendar_today" ] [], M3e.DatepickerToggle.view [ M3e.DatepickerToggle.for "special-dates" ] [] ]), M3e.FormField.hint (Native.span [] [ Kit.text "MM/DD/YYYY" ]) ]
-    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Datepicker.startAt "2026-04-01" ] []
+    , M3e.Datepicker.view [ M3e.Datepicker.variant M3e.Value.auto, M3e.Attributes.id "special-dates", M3e.Datepicker.startAt "2026-04-01" ] []
     ]
 ```
 

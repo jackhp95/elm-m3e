@@ -14,10 +14,10 @@ A visual placeholder that mimics the layout of content while it's still loading.
 
 <!-- elm-cem:example title="Basic usage" -->
 ```elm
-[ Native.node Html.label [] [ M3e.Checkbox.view [] [], Kit.text "Loaded" ]
+[ Native.node Html.label [] [ M3e.Checkbox.view [ M3e.Attributes.id "toggle1" ] [], Kit.text "Loaded" ]
     , Native.br
     , Native.br
-    , M3e.Skeleton.view [] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ] ]
+    , M3e.Skeleton.view [ M3e.Attributes.id "skeleton1" ] [ M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Value.display, M3e.Heading.size M3e.Value.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Value.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ] ]
     ]
 ```
 

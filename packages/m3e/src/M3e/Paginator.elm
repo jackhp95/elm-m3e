@@ -37,7 +37,7 @@ M3e.Paginator.view [ M3e.Paginator.length 100, M3e.Paginator.showFirstLastButton
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Paginator.view [ M3e.Paginator.length 100, M3e.Paginator.showFirstLastButtons True ] []
+M3e.Paginator.view [ M3e.Attributes.class "density-3", M3e.Paginator.length 100, M3e.Paginator.showFirstLastButtons True ] []
 ```
 
 @docs view, disabled, firstPageLabel, hidePageSize, itemsPerPageLabel, lastPageLabel

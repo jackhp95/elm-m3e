@@ -24,7 +24,7 @@ A calendar used to select a date.
 
 <!-- elm-cem:example title="Date selection" -->
 ```elm
-[ M3e.Calendar.view [ M3e.Calendar.date "2026-01-01" ] []
+[ M3e.Calendar.view [ M3e.Attributes.id "calendar", M3e.Calendar.date "2026-01-01" ] []
     , Native.div [ Native.attribute "id" "selected-date" ] []
     ]
 ```
@@ -51,12 +51,12 @@ M3e.Calendar.view [ M3e.Calendar.startAt "2026-04-01", M3e.Calendar.minDate "202
 
 <!-- elm-cem:example title="Blackout dates" -->
 ```elm
-M3e.Calendar.view [] []
+M3e.Calendar.view [ M3e.Attributes.id "blackout-dates" ] []
 ```
 
 <!-- elm-cem:example title="Special dates" -->
 ```elm
-M3e.Calendar.view [ M3e.Calendar.startAt "2026-04-01" ] []
+M3e.Calendar.view [ M3e.Attributes.id "special-dates", M3e.Calendar.startAt "2026-04-01" ] []
 ```
 
 @docs view, date, maxDate, minDate, rangeEnd, rangeStart

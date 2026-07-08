@@ -52,16 +52,16 @@ M3e.SegmentedButton.view [ M3e.SegmentedButton.hideSelectionIndicator True ] [ M
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-[ M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
+[ M3e.SegmentedButton.view [ M3e.Attributes.class "density-3" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     , Native.br
     , Native.br
-    , M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
+    , M3e.SegmentedButton.view [ M3e.Attributes.class "density-2" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     , Native.br
     , Native.br
-    , M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
+    , M3e.SegmentedButton.view [ M3e.Attributes.class "density-1" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     , Native.br
     , Native.br
-    , M3e.SegmentedButton.view [] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
+    , M3e.SegmentedButton.view [ M3e.Attributes.class "density-0" ] [ M3e.ButtonSegment.view [ M3e.ButtonSegment.checked True ] [ Kit.text "8 oz" ], M3e.ButtonSegment.view [] [ Kit.text "12 oz" ], M3e.ButtonSegment.view [] [ Kit.text "16 oz" ], M3e.ButtonSegment.view [] [ Kit.text "20 oz" ] ]
     ]
 ```
 

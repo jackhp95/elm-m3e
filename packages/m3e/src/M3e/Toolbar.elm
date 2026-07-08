@@ -40,7 +40,7 @@ M3e.Toolbar.view [ M3e.Toolbar.variant M3e.Value.vibrant, M3e.Toolbar.shape M3e.
 
 <!-- elm-cem:example title="Density" -->
 ```elm
-M3e.Toolbar.view [] [ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] [] ], M3e.IconButton.view [ M3e.IconButton.width M3e.Value.wide, M3e.IconButton.variant M3e.Value.filled ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "more_vert" ] [] ] ]
+M3e.Toolbar.view [ M3e.Attributes.class "density-3" ] [ M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "arrow_forward" ] [] ], M3e.IconButton.view [ M3e.IconButton.width M3e.Value.wide, M3e.IconButton.variant M3e.Value.filled ] [ M3e.Icon.view [ M3e.Icon.name "add" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "picture_in_picture" ] [] ], M3e.IconButton.view [] [ M3e.Icon.view [ M3e.Icon.name "more_vert" ] [] ] ]
 ```
 
 @docs view, elevated, shape, variant, vertical
