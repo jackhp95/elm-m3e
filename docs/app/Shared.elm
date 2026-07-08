@@ -745,6 +745,7 @@ componentsGroup currentPath =
             []
         )
         (NavMenuItem.icon (Icon.view [ Icon.name "widgets" ] [])
+            :: navLeaf currentPath ( "/components/all", "All components" )
             :: List.map
                 (\( category, glyph ) ->
                     navGroup currentPath
