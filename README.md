@@ -132,8 +132,11 @@ M3e.Record.TreeItem.view
   phantom rows. A wrong attribute or a wrong-kind slot child is a **compile error**.
 - **`any` slots** accept any element (a plain type variable). **`EscapeHatch`** is the
   loud, auditable break-glass when the design system is wrong.
-- **Advisory (generated elm-review + docs):** required-presence and singular
-  cardinality — see [ADR 0011](docs/adr/0011-ir-faithfulness-advisory-cardinality.md).
+- **Advisory (generated elm-review + docs):** required-presence, singular
+  cardinality, and — post-ADR-15 — slot-kind correctness for open `any` slots
+  (`Cem.ValidSlotKind`, `Lenient` by default / `Strict` opt-in) — see
+  [ADR 0011](docs/adr/0011-ir-faithfulness-advisory-cardinality.md) and
+  [ADR 0015](docs/adr/0015-unwrap-default-slot-phantoms-as-guidance.md).
 - The IR is for **composition**, not introspection; it renders once at
   `M3e.Node.toHtml`.
 
@@ -231,9 +234,13 @@ Deploy (Netlify): **Base directory** = `docs`; build/publish come from
 The old IR-introspection unit suite was removed — the double-list makes those facts
 compile-time guarantees. Coverage now lives in four layers:
 
-- **The type system** — a green `elm make packages/m3e` proves every slot/attr
-  invariant; the generated `M3e.Build.*` shape carries positive/negative type-level
-  checks in [`packages/m3e/tests/BuildShapeTest.elm`](packages/m3e/tests/BuildShapeTest.elm)
+- **The type system** — a green `elm make packages/m3e` proves the *closed-slot*
+  invariants: named-slot inputs and kind-restricted default child lists are compile
+  errors, as is a wrong enum value or an unadmitted attribute. (Open `any`-default
+  slots accept any element by design — their slot-kind correctness is elm-review
+  guidance, not a compile-time fact; see the elm-review layer below.) The generated
+  `M3e.Build.*` shape carries positive/negative type-level checks in
+  [`packages/m3e/tests/BuildShapeTest.elm`](packages/m3e/tests/BuildShapeTest.elm)
   and [`BuildShapeNegative.elm`](packages/m3e/tests/BuildShapeNegative.elm).
 - **elm-review rules** — the repo's strongest coverage: the custom rules in `review/src`
   (`NoSeamOutsideAllowedModules`, `NoInternalImportOutsideAllowed`, `NoActionlessButton`,
@@ -255,7 +262,8 @@ compile-time guarantees. Coverage now lives in four layers:
 - [`docs/ADOPTION_AND_SLOTS.md`](docs/ADOPTION_AND_SLOTS.md) — the slot model, `any`,
   the escape/extensibility gradient (§8), and the proven encodings.
 - [`docs/THREE_LAYER_PATTERN.md`](docs/THREE_LAYER_PATTERN.md) — the layer mechanics.
-- [`docs/adr/`](docs/adr/) — the architecture decisions (0008–0011 are current).
+- [`docs/adr/`](docs/adr/) — the architecture decisions (0008–0015 are current;
+  0013 is the shape matrix, 0015 the default-slot unwrap).
 
 ## Contributing, versioning & reporting
 
