@@ -86,20 +86,27 @@ export function generateHarness(cells, resolves) {
   L.push("head _ = []");
   L.push("");
   // Per-cell bindings — NO type annotation (each surface carries a different
-  // phantom capability row; inference types each one on its own).
+  // phantom capability row; inference types each one on its own). Every binding
+  // evaluates to a `List Element` (the wrapper div's children) so that both
+  // single-root cells and multi-root cells (whose converted source is a bare
+  // `[ a, b, … ]` list of siblings) are handled uniformly:
+  //   - element surface, single root : [ (expr) ]
+  //   - element surface, list root   : (expr)                       -- already List Element
+  //   - mid/bottom, single root       : [ Seam.fromHtml (expr) ]
+  //   - mid/bottom, list root         : List.map Seam.fromHtml (expr)
   for (const c of converted) {
     const name = bindingName(c.module, c.index, c.surface);
     const lift = !ELEMENT_SURFACES.has(c.surface); // mid/bottom -> Seam.fromHtml
+    const isList = c.elm.trim().startsWith("["); // multi-root sibling fragment
     const multiline = c.elm.includes("\n");
     const body = c.elm.split("\n").map((l) => "        " + l).join("\n");
-    const expr = multiline ? "\n" + body + "\n        " : c.elm;
+    const inner = multiline ? "\n" + body + "\n        " : c.elm;
+    const paren = `(${inner})`;
     L.push(`${name} =`);
-    if (lift) {
-      L.push("    Seam.fromHtml");
-      L.push(`        (${expr})`);
-    } else {
-      L.push(`    ${multiline ? "(" + expr + ")" : expr}`);
-    }
+    if (lift && isList) L.push(`    List.map Seam.fromHtml ${paren}`);
+    else if (lift) L.push(`    [ Seam.fromHtml ${paren} ]`);
+    else if (isList) L.push(`    ${paren}`);
+    else L.push(`    [ ${paren} ]`);
     L.push("");
   }
   L.push("view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)");
@@ -112,7 +119,7 @@ export function generateHarness(cells, resolves) {
     const name = bindingName(c.module, c.index, c.surface);
     return (
       "        Element.toNode (Element.map PagesMsg.fromMsg " +
-      `(Native.div [ Seam.asAttribute (Html.Attributes.attribute "data-rt" "${id}") ] [ ${name} ]))`
+      `(Native.div [ Seam.asAttribute (Html.Attributes.attribute "data-rt" "${id}") ] ${name}))`
     );
   });
   L.push(wrapped.join("\n        ,\n"));
