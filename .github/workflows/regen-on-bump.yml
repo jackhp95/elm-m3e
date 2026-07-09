@@ -35,7 +35,7 @@ jobs:
           # pushes the regen commit — you just re-run CI on the PR manually.
           token: ${{ secrets.ELM_CEM_TOKEN || github.token }}
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: docs/package.json
       - uses: actions/setup-node@v4
