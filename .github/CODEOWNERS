@@ -1,4 +1,3 @@
-# Default owner for everything in this repo.
-# The M3e.* library under packages/m3e/src is generated — changes there should come
-# from the generator (elm-cem/) or config/, not hand-edits.
+# Every change requests review from the repo owner.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 * @jackhp95
