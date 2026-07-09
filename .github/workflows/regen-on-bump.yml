@@ -27,12 +27,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-          # PREREQUISITE: add a repo secret ELM_CEM_TOKEN — a PAT (or fine-grained
-          # token) with READ access to the private jackhp95/elm-cem generator and
-          # WRITE (contents) access to this repo. The default GITHUB_TOKEN cannot
-          # read the sibling generator repo, and pushes it makes don't re-trigger CI.
-          # Falls back to GITHUB_TOKEN so checkout still succeeds and the clone
-          # step below can emit a clear error if the secret is absent.
+          # ELM_CEM_TOKEN is OPTIONAL. The generator jackhp95/elm-cem is public, so
+          # the clone step below needs no token. The only remaining reason for a PAT:
+          # a commit pushed with the default GITHUB_TOKEN does NOT re-trigger CI, so
+          # if you want the regen commit to auto-run CI on the PR, set ELM_CEM_TOKEN
+          # to a PAT with WRITE (contents) on this repo. Without it GITHUB_TOKEN still
+          # pushes the regen commit — you just re-run CI on the PR manually.
           token: ${{ secrets.ELM_CEM_TOKEN || github.token }}
 
       - uses: pnpm/action-setup@v4
@@ -57,19 +57,12 @@ jobs:
         if: steps.changed.outputs.m3e == 'true'
         run: cd docs && pnpm install --frozen-lockfile
 
-      - name: Fetch the elm-cem generator (private, gitignored in this repo)
+      - name: Fetch the elm-cem generator (public, gitignored in this repo)
         if: steps.changed.outputs.m3e == 'true'
-        env:
-          ELM_CEM_TOKEN: ${{ secrets.ELM_CEM_TOKEN }}
+        # jackhp95/elm-cem is public — a token-free clone, mirroring how ci.yml
+        # fetches the public elm-review-cem sibling.
         run: |
-          if [ -z "$ELM_CEM_TOKEN" ]; then
-            echo "::error::ELM_CEM_TOKEN is not set. Add a PAT with read access to \
-          jackhp95/elm-cem and write access to this repo, or vendor/submodule the \
-          generator. See .github/workflows/regen-on-bump.yml."
-            exit 1
-          fi
-          git clone --depth 1 \
-            "https://x-access-token:${ELM_CEM_TOKEN}@github.com/jackhp95/elm-cem.git" elm-cem
+          git clone --depth 1 https://github.com/jackhp95/elm-cem.git elm-cem
           cd elm-cem && npm ci
 
       - name: Regenerate packages/m3e
