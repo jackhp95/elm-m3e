@@ -11,7 +11,7 @@ jobs:
     name: Library — format, test, review
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The codegen-aware elm-review rules live in the sibling public repo
       # jackhp95/elm-review-cem. The review config and the examples-gen pipeline
@@ -85,7 +85,7 @@ jobs:
       # matches (extract-reference.mjs otherwise derives a per-worktree path).
       M3E_DOCS_GEN_DIR: /tmp/m3e-docs-gen
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The codegen-aware elm-review rules live in the sibling public repo
       # jackhp95/elm-review-cem. The review config and the examples-gen pipeline
@@ -131,7 +131,7 @@ jobs:
       # Same pin as the docs job: keep the scratch dir at the cached path.
       M3E_DOCS_GEN_DIR: /tmp/m3e-docs-gen
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The codegen-aware elm-review rules live in the sibling public repo
       # jackhp95/elm-review-cem. The review config and the examples-gen pipeline
