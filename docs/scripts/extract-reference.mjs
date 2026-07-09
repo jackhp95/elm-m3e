@@ -28,7 +28,7 @@ import { fileURLToPath } from "url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(here, "../..");
-const SRC_M3E = path.resolve(REPO, "packages/m3e/src/M3e");
+const SRC_M3E = path.resolve(REPO, "src/M3e");
 const OUT = path.resolve(here, "../data/reference.json");
 const ELM_BIN = path.resolve(REPO, "docs/node_modules/.bin/elm");
 

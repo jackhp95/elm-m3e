@@ -3,47 +3,33 @@
 The governance and docs blockers from the release-readiness audit
 ([#136](https://github.com/jackhp95/elm-m3e/issues/136)) are handled in the repo
 (CHANGELOG, CONTRIBUTING, SECURITY, LICENSE reconciled to BSD-3-Clause, README
-fixed + verified, self-contained `packages/m3e/README.md`).
+fixed + verified, consumer-facing root README).
 
 The steps below are **irreversible or require owner privileges** and are
 deliberately **not** done by automation. Run them yourself, in order.
 
-## 1. Resolve the nested-package structure (BLOCKER)
+## 0. Structure — RESOLVED
 
 Elm publishes a package from the **repo root** — the package `elm.json` must be at
-the root of `github.com/jackhp95/elm-m3e`. Today the package is nested at
-`packages/m3e/elm.json` while the repo root `elm.json` is an `application`. Pick one:
+the root of `github.com/jackhp95/elm-m3e`. This is now the case: the package was
+flattened to the root (`elm.json` + `src/`), the generator/docs/tests live in
+subdirectories (`elm-cem/`, `docs/`, `docs/kit/`, `tests/`), and `.gitattributes`
+`export-ignore`s everything but the package. No split, no second repo.
 
-- **Option A — split (matches the memory'd plan).** Extract `packages/m3e/` into
-  its own repo whose root *is* the package (`elm.json`, `src/`, `LICENSE`,
-  `README.md`, `CHANGELOG.md` all at root). The self-contained
-  `packages/m3e/README.md` and `packages/m3e/LICENSE` already exist for this. The
-  monorepo keeps the docs site / generator and consumes the package.
+Verify (green today):
 
-  ```bash
-  # sketch: seed a package repo from the packages/m3e subtree
-  git subtree split --prefix=packages/m3e -b m3e-package
-  # push that branch to the new repo's main, then verify from its root:
-  #   elm make src/M3e.elm --output=/dev/null
-  ```
+```bash
+elm make src/M3e.elm --output=/dev/null   # from the repo root
+```
 
-- **Option B — restructure in place.** Make the package `elm.json` the repo root
-  and move the docs/generator under a subdirectory. Larger diff; only if you want a
-  single repo.
+## 1. Confirm license (already reconciled — verify only)
 
-Do **not** tag or publish until `elm make src/M3e.elm --output=/dev/null` is green
-from the package's repo root.
+Root `LICENSE` (BSD-3-Clause), root `elm.json` (`"license": "BSD-3-Clause"`), and
+root `package.json` all agree on **BSD-3-Clause**.
 
-## 2. Confirm license (already reconciled — verify only)
+## 2. Tag and push `1.0.0`
 
-`LICENSE` (root, BSD-3-Clause, 2026), `packages/m3e/LICENSE`,
-`packages/m3e/elm.json` (`"license": "BSD-3-Clause"`), and root `package.json` all
-agree on **BSD-3-Clause**. Confirm the chosen package root ships a matching
-`LICENSE`; fix any drift the split introduces.
-
-## 3. Tag and push `1.0.0`
-
-From the package's repo root, on the release commit:
+On the release commit, from the repo root:
 
 ```bash
 git tag 1.0.0
@@ -52,26 +38,26 @@ git push origin 1.0.0
 
 Elm requires an exact `MAJOR.MINOR.PATCH` tag matching `elm.json`'s `version`.
 
-## 4. Publish to the Elm registry
+> **Not yet.** The library is deliberately prerelease ("breaking changes are
+> embraced"). Only tag when you're ready to freeze the `1.0.0` API — Elm versions
+> are permanent.
+
+## 3. Publish to the Elm registry
 
 ```bash
-elm publish        # run from the package repo root
+elm publish        # run from the repo root
 ```
 
 `elm publish` validates the license, that every exposed value is documented, and
 that the tag exists. Publishing is **permanent** — a version cannot be unpublished
 or overwritten.
 
-## 5. Flip the repo public
+## 4. Repo is already public
 
-```bash
-gh repo edit jackhp95/elm-m3e --visibility public --accept-visibility-change-consequences
-gh repo edit jackhp95/elm-m3e \
-  --description "Type-safe, generated M3e.* Material 3 Expressive Elm bindings over @m3e/web" \
-  --add-topic elm --add-topic material-3 --add-topic web-components --add-topic material-you
-```
+`jackhp95/elm-m3e` (and the `elm-cem` generator and `elm-review-cem` rules) are
+already public, with description + topics + homepage set. Nothing to do here.
 
-## 6. Enable repo security & protection (after going public)
+## 5. Enable repo security & protection (optional hardening)
 
 ```bash
 # Secret scanning + push protection
@@ -87,8 +73,6 @@ gh api -X PUT repos/jackhp95/elm-m3e/branches/main/protection \
   --input protection.json   # required_status_checks (library/docs/harness), required PR reviews
 ```
 
-## 7. Optional cleanup (audit nits)
+## 6. After publishing
 
-- Move any maintainer-only root files out of a split package repo (keep `CONTEXT.md`
-  and design notes in the monorepo/docs, not the published package root).
-- Set the repo homepage to the package.elm-lang.org page once published.
+- Point the repo homepage at the package.elm-lang.org page (currently the docs site).

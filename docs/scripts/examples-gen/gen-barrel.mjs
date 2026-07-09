@@ -36,8 +36,8 @@ import { verifyExamples } from "./verify-examples.mjs";
 const HERE = dirname(fileURLToPath(import.meta.url));
 // docs/scripts/examples-gen/gen-barrel.mjs -> elm-m3e root is three up.
 const REPO = resolve(HERE, "..", "..", "..");
-const LIB_SRC = `${REPO}/packages/m3e/src`;
-const KIT_SRC = `${REPO}/packages/m3e-kit/src`;
+const LIB_SRC = `${REPO}/src`;
+const KIT_SRC = `${REPO}/docs/kit`;
 const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
 const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
 
@@ -106,7 +106,7 @@ function writeConfig() {
     type: "application",
     // The codegen-aware rules now live in the jackhp95/elm-review-cem package;
     // pull them in via source-dir until it is a published dependency.
-    "source-directories": ["src", `${REPO}/packages/m3e/src`, `${REPO}/../elm-review-cem/src`],
+    "source-directories": ["src", `${REPO}/src`, `${REPO}/../elm-review-cem/src`],
     "elm-version": "0.19.1",
     dependencies: reviewElm.dependencies,
     "test-dependencies": reviewElm["test-dependencies"],

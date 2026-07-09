@@ -1,6 +1,6 @@
 name: Regenerate on @m3e/web bump
 
-# When Dependabot (or anyone) bumps @m3e/web, regenerate packages/m3e from the new
+# When Dependabot (or anyone) bumps @m3e/web, regenerate src from the new
 # Custom Elements Manifest and commit the diff back onto the PR, so the generated
 # library and the upstream web components never drift. The regen command is
 # deterministic — a no-op bump produces no commit. The existing CI workflow then
@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   regen:
-    name: Regenerate packages/m3e
+    name: Regenerate src
     # Only same-repo PR branches (Dependabot pushes in-repo) — we can't push to forks.
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
@@ -65,7 +65,7 @@ jobs:
           git clone --depth 1 https://github.com/jackhp95/elm-cem.git elm-cem
           cd elm-cem && npm ci
 
-      - name: Regenerate packages/m3e
+      - name: Regenerate src
         if: steps.changed.outputs.m3e == 'true'
         run: |
           node elm-cem/bin/elm-cem.js \
@@ -73,18 +73,18 @@ jobs:
             --config-from=config/slots.json \
             --config-from=config/native-mdn.json \
             --config-from=config/examples.generated.json \
-            --output=packages/m3e/src
+            --output=src
 
       - name: Commit regenerated output to the PR
         if: steps.changed.outputs.m3e == 'true'
         run: |
-          # elm-cem/ is gitignored, so only the generated packages/m3e diff is staged.
-          if git diff --quiet -- packages/m3e; then
+          # elm-cem/ is gitignored, so only the generated src diff is staged.
+          if git diff --quiet -- src; then
             echo "No regen diff — generated output already matches the bumped @m3e/web."
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add packages/m3e
+            git add src
             git commit -m "regen(m3e): sync generated output to bumped @m3e/web"
             git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
           fi

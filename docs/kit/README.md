@@ -1,4 +1,4 @@
-# m3e-kit (packages/m3e-kit) — userland producers
+# Kit (docs/kit) — userland producers
 
 **Copyable, NOT part of the published package.** These complete the composition
 surface with things the library intentionally doesn't opinionate. Fork consumers
@@ -14,5 +14,5 @@ copy these (and adapt them) into their own app.
   rows (`stripPhantom`, `forget`). Collapses the former `EscapeHatch` into itself
   so there is exactly one crossing point.
 
-Design rationale: `docs/ADOPTION_AND_SLOTS.md` §8. Built on `packages/m3e`; wired
+Design rationale: `docs/ADOPTION_AND_SLOTS.md` §8. Built on the `M3e.*` library (`src/`); wired
 into the repo's root + docs `source-directories`.

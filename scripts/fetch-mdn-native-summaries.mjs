@@ -25,7 +25,7 @@
 //       --config-from=config/slots.json \
 //       --config-from=config/native-mdn.json \
 //       --config-from=config/examples.generated.json \
-//       --output=packages/m3e/src
+//       --output=src
 //
 // Requires Node 18+ (global `fetch`). Verified on Node 22.
 //

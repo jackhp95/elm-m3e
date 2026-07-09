@@ -27,8 +27,8 @@ import { verifyExamples } from "./verify-examples.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "..", "..", "..");
-const LIB_SRC = `${REPO}/packages/m3e/src`;
-const KIT_SRC = `${REPO}/packages/m3e-kit/src`;
+const LIB_SRC = `${REPO}/src`;
+const KIT_SRC = `${REPO}/docs/kit`;
 const ELM_BIN = `${REPO}/docs/node_modules/.bin/elm`;
 const REVIEW_BIN = `${REPO}/docs/node_modules/.bin/elm-review`;
 const ELM_FORMAT = `${REPO}/docs/node_modules/.bin/elm-format`;
@@ -98,7 +98,7 @@ function writeConfig(imports, ruleExpr) {
   execFileSync("cp", ["-R", `${REPO}/review/src/.`, resolve(CFG, "src")]);
   writeFileSync(resolve(CFG, "elm.json"), JSON.stringify({
     type: "application",
-    "source-directories": ["src", `${REPO}/packages/m3e/src`, `${REPO}/../elm-review-cem/src`],
+    "source-directories": ["src", `${REPO}/src`, `${REPO}/../elm-review-cem/src`],
     "elm-version": "0.19.1",
     dependencies: reviewElm.dependencies,
     "test-dependencies": reviewElm["test-dependencies"],

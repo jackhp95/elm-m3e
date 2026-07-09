@@ -144,7 +144,7 @@ These live at the root of the config (not under a component key) and are prefixe
   telling the generator which phantom `kind` each hand-written `Seam` producer stamps
   and how it renders. Today: `text` (`kind: "text"`, `wrap: "span"`), `link`
   (`kind: "link"`, `tag: "a"`), `label` (`kind: "label"`, `tag: "label"`). Drives the
-  generated contract types in `M3e.Seam` that `packages/m3e-kit/src/Seam.elm` fills.
+  generated contract types in `M3e.Seam` that `docs/kit/Seam.elm` fills.
 - **`_native`** — the native-HTML IR emit list: `{ "emit": [ …tag names… ],
   "semantics": { tag: kind, … } }`. `emit` is the set of native tags the generator
   produces as first-class IR `Element`s (`a`, `label`, `div`, `span`, `p`, `ul`, `li`,

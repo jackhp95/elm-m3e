@@ -22,5 +22,5 @@ defects or requesting coverage, use the [issue tracker](https://github.com/jackh
 ## Note on generated code
 
 Most of `M3e.*` is generated from the `@m3e/web` Custom Elements Manifest plus
-`config/`. If something looks off in `packages/m3e/src/M3e/*`, the fix usually
+`config/`. If something looks off in `src/M3e/*`, the fix usually
 belongs in the generator (`elm-cem/`) or the config — mention that in your issue.

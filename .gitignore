@@ -9,7 +9,7 @@ dist/
 
 # Agent / session working artifacts and stale generator snapshots (see issue #82).
 # gen-sample/ was a hand-committed snapshot of generated modules that drifted
-# from packages/m3e/src; the rest are local agent/session scratch state.
+# from src; the rest are local agent/session scratch state.
 gen-sample/
 scratchpad/
 memory/

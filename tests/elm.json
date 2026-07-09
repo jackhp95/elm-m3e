@@ -1,8 +1,8 @@
 {
     "type": "application",
     "source-directories": [
-        "../packages/m3e/src",
-        "../packages/m3e-kit/src"
+        "../src",
+        "../docs/kit"
     ],
     "elm-version": "0.19.1",
     "dependencies": {

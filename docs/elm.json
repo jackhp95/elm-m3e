@@ -4,8 +4,8 @@
         "app",
         "src",
         ".elm-pages",
-        "../packages/m3e/src",
-        "../packages/m3e-kit/src"
+        "../src",
+        "kit"
     ],
     "elm-version": "0.19.1",
     "dependencies": {

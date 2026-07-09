@@ -49,5 +49,5 @@ body:
     attributes:
       label: Generated code
       options:
-        - label: I understand that `packages/m3e/src/M3e/*` is generated — if the bug is there, the fix likely belongs in the generator (elm-cem) or config.
+        - label: I understand that `src/M3e/*` is generated — if the bug is there, the fix likely belongs in the generator (elm-cem) or config.
           required: false

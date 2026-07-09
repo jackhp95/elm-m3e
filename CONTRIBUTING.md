@@ -1,17 +1,17 @@
 # Contributing to elm-m3e
 
 Thanks for your interest! This repo is a code-generation monorepo: the shippable
-package `jackhp95/elm-m3e` (nested at `packages/m3e/`) is a **generated artifact**,
-the userland Kit (`packages/m3e-kit/`) is copy-paste, and an elm-pages docs site
+package `jackhp95/elm-m3e` (the repo root) is a **generated artifact**,
+the userland Kit (`docs/kit/`) is copy-paste, and an elm-pages docs site
 plus a codegen-aware `elm-review` config round it out.
 
 ## Generated code — do not hand-edit
 
-The per-component modules under `packages/m3e/src/M3e/` are emitted by `elm-cem`
+The per-component modules under `src/M3e/` are emitted by `elm-cem`
 from the `@m3e/web` Custom Elements Manifest plus `config/slots.json`. **Do not
 hand-edit them** — change the generator (`elm-cem/`) or the config (`config/`) and
 regenerate. The only hand-written sources are the IR core (`M3e/Node.elm`,
-`M3e/Element.elm`, `M3e/Content.elm`) and the `packages/m3e-kit/` userland.
+`M3e/Element.elm`, `M3e/Content.elm`) and the `docs/kit/` userland.
 
 ## Setup
 
@@ -28,10 +28,10 @@ CI (`.github/workflows/ci.yml`) has three jobs. To reproduce them locally:
 ```bash
 # 1. Format-check the HAND-WRITTEN IR core only (generated modules are excluded by design)
 node_modules/.bin/elm-format --validate \
-  packages/m3e/src/M3e/Node.elm packages/m3e/src/M3e/Element.elm packages/m3e/src/M3e/Content.elm
+  src/M3e/Node.elm src/M3e/Element.elm src/M3e/Content.elm
 
 # 2. The real correctness proof — a green `elm make` over the package
-cd packages/m3e && ../../node_modules/.bin/elm make src/M3e.elm --output=/dev/null && cd ../..
+node_modules/.bin/elm make src/M3e.elm --output=/dev/null
 
 # 3. Tests
 node_modules/.bin/elm-test --compiler node_modules/.bin/elm

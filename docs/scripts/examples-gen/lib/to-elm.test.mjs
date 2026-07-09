@@ -166,7 +166,7 @@ test("skip on unknown m3e tag", () => {
 // NavMenuItem/TreeItem have a required `label` NAMED slot. In the current
 // library this is an ordinary Content slot HELPER (`M3e.NavMenuItem.label`) on a
 // 2-arg `view : List Attr -> List Content` — NOT a folded required-record field.
-// Confirmed against packages/m3e/src/M3e/NavMenuItem.elm (`label : ... -> Content`
+// Confirmed against src/M3e/NavMenuItem.elm (`label : ... -> Content`
 // at line 134, `view attributes content_`). The `slot="label"` child is still
 // consumed here (and still required) but emitted as `M3e.NavMenuItem.label (…)`.
 test("nav-menu-item required label sourced from slot=label child", () => {

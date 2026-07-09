@@ -3,7 +3,7 @@
 > Design notes captured while the generator mechanisms were being finished. They
 > record the **slot/DECL model** the library converged on; §8 (the escape /
 > extensibility gradient) is still cited from `Seam.elm`. Adoption itself has
-> since happened — the generated output now lives in `packages/m3e/src`; the
+> since happened — the generated output now lives in `src`; the
 > historical "where we are" note below is kept for the reasoning, not the status.
 
 ## 1. Where we were at the time (historical)

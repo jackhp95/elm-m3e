@@ -4,7 +4,7 @@
 set -uo pipefail
 
 TESTS_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(cd "$TESTS_DIR/../../.." && pwd)"
+REPO_ROOT="$(cd "$TESTS_DIR/../.." && pwd)"
 
 # Elm binary: prefer repo-local over PATH
 ELM="${REPO_ROOT}/node_modules/.bin/elm"

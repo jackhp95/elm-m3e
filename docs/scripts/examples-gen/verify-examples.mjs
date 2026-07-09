@@ -22,8 +22,8 @@ import { fileURLToPath } from "node:url";
 
 // docs/scripts/examples-gen/verify-examples.mjs -> elm-m3e root is three up.
 const M3E_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
-const LIB_SRC = `${M3E_ROOT}/packages/m3e/src`;
-const KIT_SRC = `${M3E_ROOT}/packages/m3e-kit/src`;
+const LIB_SRC = `${M3E_ROOT}/src`;
+const KIT_SRC = `${M3E_ROOT}/docs/kit`;
 const ELM_BIN = `${M3E_ROOT}/docs/node_modules/.bin/elm`;
 const SCRATCH = "/tmp/verify-examples";
 

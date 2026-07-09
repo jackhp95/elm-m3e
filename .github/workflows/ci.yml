@@ -51,25 +51,25 @@ jobs:
         run: npm ci
 
       # Validate formatting of the HAND-WRITTEN IR core only. The per-component
-      # modules under packages/m3e/src/M3e/ are a generated artifact (ADR-8) and
-      # are not elm-format-formatted, so they are deliberately excluded here.
+      # modules under src/M3e/ are a generated artifact (ADR-8) and are not
+      # elm-format-formatted, so they are deliberately excluded here.
       - name: elm-format --validate (hand-written IR core)
-        run: node_modules/.bin/elm-format --validate packages/m3e/src/M3e/Node.elm packages/m3e/src/M3e/Element.elm
+        run: node_modules/.bin/elm-format --validate src/M3e/Node.elm src/M3e/Element.elm
 
-      # The real correctness proof: a green `elm make` over the package. Validate
-      # the package in place (bare `elm make`) and build the root entrypoint.
+      # The real correctness proof: a green `elm make` over the package, which
+      # lives at the repo root (root elm.json is the published package).
       - name: Validate package (elm make)
-        run: cd packages/m3e && ../../node_modules/.bin/elm make src/M3e.elm --output=/dev/null
+        run: node_modules/.bin/elm make src/M3e.elm --output=/dev/null
 
-      - name: Build root entrypoint (elm make)
-        run: node_modules/.bin/elm make packages/m3e/src/M3e.elm --output=/dev/null
-
-      - name: elm-test
-        run: node_modules/.bin/elm-test --compiler node_modules/.bin/elm
+      # IR-core + slot unit tests live in the self-contained tests/ project
+      # (its elm.json points at ../src and ../docs/kit — the userland kit the
+      # tests use). Run from there so elm-test picks up tests/elm.json.
+      - name: elm-test (IR-core + slot unit tests)
+        run: cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm
 
       - name: elm-review
         # Run from docs/ so elm-review picks up docs/elm.json, which covers
-        # the docs app (app/) in addition to the library (../src, ../vendor/elm-m3e).
+        # the docs app (app/) in addition to the library (../src) and kit (kit/).
         # The review config lives in the repo root (../review relative to docs/).
         # `elm-pages gen` writes the generated router under docs/.elm-pages/;
         # without it elm-review can't see that Api/Effect/View/Shared are used by
@@ -110,7 +110,7 @@ jobs:
           # /tmp/m3e-docs-gen each run; caching its elm-stuff between runs
           # keeps `elm make --docs` fast.
           path: /tmp/m3e-docs-gen/elm-stuff
-          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/**/*.elm') }}
 
       - name: Install docs deps
         run: cd docs && pnpm install --frozen-lockfile
@@ -153,7 +153,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: /tmp/m3e-docs-gen/elm-stuff
-          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/**/*.elm') }}
 
       - name: Install docs deps
         run: cd docs && pnpm install --frozen-lockfile

@@ -235,7 +235,7 @@ function textLinkSlotChild(node, tag, field, oracle) {
 /**
  * Raw HTML attributes on a Native element, as `Native.attribute "n" "v"` exprs.
  * `Native.attribute` is the sanctioned `Seam.asAttribute (Html.Attributes.
- * attribute name value)` wrapper (m3e-kit `Native.elm`) carrying a fully-open
+ * attribute name value)` wrapper (the kit `Native.elm`) carrying a fully-open
  * capability row, so it composes onto any Native element (`div`/`input`/`img`/…)
  * regardless of that element's constrained attr row. This carries functional
  * attrs (`value`/`placeholder`/`type`/`src`/…) that were previously DROPPED,

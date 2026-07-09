@@ -1,6 +1,6 @@
 # `review/` — elm-review for `elm-m3e`
 
-The `elm-review` configuration for the `elm-m3e` library (`packages/m3e`, the
+The `elm-review` configuration for the `elm-m3e` library (the `M3e.*` package at `src/`, the
 generated Vocab-API wrapper over `@m3e/web`) and the `docs/` app. Alongside the
 standard `jfmengels/*` rule packs it holds the project's **codegen-aware** custom
 rules — see [ADR 0012](../docs/adr/0012-codegen-aware-elm-review.md) for the design.
@@ -9,7 +9,7 @@ rules — see [ADR 0012](../docs/adr/0012-codegen-aware-elm-review.md) for the d
 
 From the **`docs/`** directory (elm + elm-review live in the docs install), against
 `docs/elm.json` (whose source-dirs cover `app`, `src`, `.elm-pages`,
-`../packages/m3e/src`, `../packages/m3e-kit/src`):
+`../src`, `../docs/kit`):
 
 ```bash
 cd docs
@@ -42,7 +42,7 @@ cd review
 module generated from the CEM alongside the library (per-component valid enums,
 required slots, multi slots). The rule *logic* is hand-written and tested; a
 `@m3e/web` bump only regenerates the facts. `review/elm.json` lists
-`../packages/m3e/src` as a source dir so the config can import the facts (it has no
+`../src` as a source dir so the config can import the facts (it has no
 dependencies of its own, so nothing else from the library is pulled in).
 
 ### Two configs

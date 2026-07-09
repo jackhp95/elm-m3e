@@ -24,16 +24,22 @@ they came from the same machine.
 
 ## What's in the repo
 
+The published Elm package **is** the repo root (`elm.json` + `src/`); everything
+else is generator, docs, and tooling that consumers never download.
+
 ```
-packages/m3e/          THE library — generated M3e.* modules (components + IR core).
-                       A standalone Elm package (own elm.json, exposed-modules synced).
-packages/m3e-kit/      Userland producer kit (copyable, NOT in the package):
-                       Kit (text/link), Native (native-HTML IR), EscapeHatch, Seam.
+elm.json + src/        THE library — the package root. Generated M3e.* modules
+                       (components + IR core); this is what `elm install` ships.
 config/slots.json      The declarative config that shapes the generated top layer
                        (per-slot kinds/multi/required + aria/action/variant groups).
 elm-cem/               The library-agnostic generator (its own repo, cloned here to
-                       work; regenerates packages/m3e from the @m3e/web CEM + config).
+                       work; regenerates src/ from the @m3e/web CEM + config).
 docs/                  The elm-pages docs site + the design docs (read order below).
+docs/kit/              Userland producer kit (copyable, NOT in the package):
+                       Kit (text/link), Native (native-HTML IR), Seam.
+review/                The codegen-aware elm-review config.
+tests/                 IR-core + slot unit tests (self-contained elm-test project);
+                       tests/build-shape/ holds the ⑤ Build type-shape checks.
 ```
 
 ## Install
@@ -66,7 +72,7 @@ Elm.Main.init({ node: document.getElementById("root") });
 
 Each component is generated across **five surface families** — the enum
 `Html · Cem · Standard · Record · Build` in
-[`M3e.Review.Facts`](packages/m3e/src/M3e/Review/Facts.elm) — which present as
+[`M3e.Review.Facts`](src/M3e/Review/Facts.elm) — which present as
 **six** addressable call shapes (`Standard` covers both the barrel and the
 per-component `view`). See [ADR 0013](docs/adr/0013-top-shape-matrix-and-translation.md):
 
@@ -129,7 +135,7 @@ M3e.Record.TreeItem.view
 > semantic *seams* — the published package ships the seam *mechanism*, not text
 > producers. A consuming app defines a one-line `text` (the [Quickstart](#quickstart)
 > below shows one that needs only the published package) or copies `Kit.text` from
-> `packages/m3e-kit/` (copy-paste, not a dependency).
+> `docs/kit/` (copy-paste, not a dependency).
 
 - **Type-level (the MISI that matters):** kind + capability validity via extensible
   phantom rows. A wrong attribute or a wrong-kind slot child is a **compile error**.
@@ -147,7 +153,7 @@ M3e.Record.TreeItem.view
 
 A complete, compiling `Main.elm` that needs **only the published package**
 (`elm/browser` + `jackhp95/elm-m3e`). The `text` helper is the one-line seam a
-consuming app writes once (or copies from `packages/m3e-kit/`) to turn a `String`
+consuming app writes once (or copies from `docs/kit/`) to turn a `String`
 into slot-admissible content:
 
 ```elm
@@ -183,7 +189,7 @@ main =
 
 {-| The text seam: lift a String into slot-admissible text content. In a real app
 this (and its `link`/`label` friends) live in one small `Seam`/`Kit` adapter
-module — copy `packages/m3e-kit/src/Seam.elm` + `Kit.elm`.
+module — copy `docs/kit/Seam.elm` + `Kit.elm`.
 -}
 text : String -> M3e.Element.Element { s | text : M3e.Value.Supported } msg
 text s =
@@ -217,7 +223,7 @@ it "just works". The generator carries **no m3e opinions** — all m3e specifics
 ## Documentation site
 
 The docs are an [elm-pages](https://elm-pages.com) app that renders **the real
-library modules** (source-dirs point at `packages/m3e/src` + `packages/m3e-kit/src`),
+library modules** (source-dirs point at `src` + `docs/kit`),
 styled with Tailwind v4 + the
 [`tailwind-m3e-web`](https://github.com/jackhp95/tailwind-m3e-web) bridge.
 
@@ -237,14 +243,14 @@ Deploy (Netlify): **Base directory** = `docs`; build/publish come from
 The old IR-introspection unit suite was removed — the double-list makes those facts
 compile-time guarantees. Coverage now lives in four layers:
 
-- **The type system** — a green `elm make packages/m3e` proves the *closed-slot*
+- **The type system** — a green `elm make src/M3e.elm` proves the *closed-slot*
   invariants: named-slot inputs and kind-restricted default child lists are compile
   errors, as is a wrong enum value or an unadmitted attribute. (Open `any`-default
   slots accept any element by design — their slot-kind correctness is elm-review
   guidance, not a compile-time fact; see the elm-review layer below.) The generated
   `M3e.Build.*` shape carries positive/negative type-level checks in
-  [`packages/m3e/tests/BuildShapeTest.elm`](packages/m3e/tests/BuildShapeTest.elm)
-  and [`BuildShapeNegative.elm`](packages/m3e/tests/BuildShapeNegative.elm).
+  [`tests/build-shape/BuildShapeTest.elm`](tests/build-shape/BuildShapeTest.elm)
+  and [`BuildShapeNegative.elm`](tests/build-shape/BuildShapeNegative.elm).
 - **elm-review rules** — the repo's strongest coverage: the custom rules in `review/src`
   (`NoSeamOutsideAllowedModules`, `NoInternalImportOutsideAllowed`, `NoActionlessButton`,
   `NoProprietaryDsClasses`, `ExtractToSeam`, …) each ship a test file under
