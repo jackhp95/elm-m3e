@@ -19,7 +19,7 @@ jobs:
       - name: Fetch elm-review-cem rules (sibling)
         run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: docs/package.json
 
@@ -93,7 +93,7 @@ jobs:
       - name: Fetch elm-review-cem rules (sibling)
         run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: docs/package.json
 
@@ -139,7 +139,7 @@ jobs:
       - name: Fetch elm-review-cem rules (sibling)
         run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: docs/package.json
 
