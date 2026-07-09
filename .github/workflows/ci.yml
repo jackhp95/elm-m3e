@@ -30,19 +30,19 @@ jobs:
 
       # Cache elm-stuff to avoid recompiling the standard library every run.
       - name: Cache root elm-stuff
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: elm-stuff
           key: ${{ runner.os }}-elm-root-${{ hashFiles('elm.json') }}
 
       - name: Cache tests elm-stuff
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: tests/elm-stuff
           key: ${{ runner.os }}-elm-tests-${{ hashFiles('tests/elm.json') }}
 
       - name: Cache review elm-stuff
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: review/elm-stuff
           key: ${{ runner.os }}-elm-review-${{ hashFiles('review/elm.json', 'review/src/**/*.elm') }}
@@ -104,7 +104,7 @@ jobs:
           cache-dependency-path: docs/pnpm-lock.yaml
 
       - name: Cache scratch docs-gen elm-stuff
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           # The reference pipeline materializes a scratch package project at
           # /tmp/m3e-docs-gen each run; caching its elm-stuff between runs
@@ -150,7 +150,7 @@ jobs:
           cache-dependency-path: docs/pnpm-lock.yaml
 
       - name: Cache scratch docs-gen elm-stuff
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /tmp/m3e-docs-gen/elm-stuff
           key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('packages/m3e/src/**/*.elm') }}
