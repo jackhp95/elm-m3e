@@ -32,10 +32,11 @@ import M3e.Value as Value exposing (Supported)
   - `Raw` — the raw `<m3e-*>` HTML (always present)
 
 `M3e`, `M3e.Cem`, `M3e.Cem.Html` and `HTML` are verified for every example, so
-those four tabs are always offered. `M3e.Record` / `M3e.Build` are offered only
-when this example cleanly converts to that surface (its `record` / `build` field
-is non-null) — a composite gallery has no single-component record/build form, so
-those tabs are hidden rather than shown as a hollow duplicate of `M3e`.
+those four tabs are always offered. `M3e.Record` / `M3e.Build` are offered
+whenever `M3e` (`top`) is — when their own field is non-null they show a real
+translation, and when it's null they show an *identical-by-design* rationale
+(the example's content carried nothing for that surface to enforce). Only a
+composite with no single-component `top` form drops them entirely.
 
 -}
 type Layer
@@ -73,8 +74,9 @@ update (SelectLayer index layer) model =
 {-| A verified Usage example: its live-preview HTML and the derived Elm in each
 API surface. Every Elm surface is optional — `top`/`mid`/`bottom` (M3e /
 M3e.Cem / M3e.Cem.Html) and `record` (M3e.Record) / `build` (M3e.Build) are each
-present only when that surface compiled for this example (else `Nothing`, so the
-UI hides its tab). `html` is the one guaranteed surface — its live preview always
+present only when that surface compiled to a distinct form for this example (else
+`Nothing`; the UI hides the `top`/`mid`/`bottom` tab, but keeps `record`/`build`
+as an identical-by-design rationale tab). `html` is the one guaranteed surface — its live preview always
 renders. `section` groups examples under a sub-heading ("" = ungrouped).
 -}
 type alias UsageExample =
@@ -207,10 +209,24 @@ layersFor ex =
 
                 Nothing ->
                     []
+
+        -- Record/Build are offered whenever the top surface exists. When their
+        -- own field is present they show a real translation; when it's null they
+        -- show an identical-by-design rationale (see `codeFor`) instead of being
+        -- silently hidden. Only a null `top` (a composite with no single-component
+        -- form) drops them entirely.
+        recordBuild : Maybe String -> String -> Layer -> List ( String, Layer )
+        recordBuild field label layer =
+            case ( field, ex.top ) of
+                ( Nothing, Nothing ) ->
+                    []
+
+                _ ->
+                    [ ( label, layer ) ]
     in
     optional ex.top "M3e" Top
-        ++ optional ex.record "M3e.Record" Record
-        ++ optional ex.build "M3e.Build" Build
+        ++ recordBuild ex.record "M3e.Record" Record
+        ++ recordBuild ex.build "M3e.Build" Build
         ++ optional ex.mid "M3e.Cem" Middle
         ++ optional ex.bottom "M3e.Cem.Html" Bottom
         ++ [ ( "HTML", Raw ) ]
@@ -227,7 +243,7 @@ defaultLayerFor ex =
 
 {-| The per-example surface selector: a single-select `Tabs` bar whose selected
 tab is this example's current layer and whose clicks record a `SelectLayer` for
-this example's index only. The tabs are dynamic per example (four or six); `Tabs`
+this example's index only. The tabs are dynamic per example (four to six); `Tabs`
 paginates/scrolls them horizontally on narrow viewports natively, so there's no
 `overflow-x-auto` wrapper — that wrapper forces `overflow-y: auto` (CSS spec) and
 trips a spurious vertical scrollbar on the control's state-layer bleed.
@@ -248,9 +264,13 @@ layerTabs index current ex =
 
 
 {-| The code block for the selected surface. The Elm surfaces highlight as Elm;
-the raw `<m3e-*>` HTML surface highlights as plain markup. Every Elm surface is
-optional — `layersFor` only offers a tab whose field is present, so a `Nothing`
-is unreachable here; it falls back to the always-present HTML surface defensively.
+the raw `<m3e-*>` HTML surface highlights as plain markup.
+
+`Top`/`Middle`/`Bottom` are only offered by `layersFor` when their field is
+present, so their `Nothing` branch is defensive (falls back to HTML). `Record`
+and `Build` ARE offered with a null field — when this example's content had
+nothing for that surface to lift, the surface is identical to `M3e` by design, so
+we show a short rationale instead of a hollow duplicate.
 -}
 codeFor : Layer -> UsageExample -> Element { s | html : Supported } msg
 codeFor layer ex =
@@ -262,19 +282,26 @@ codeFor layer ex =
                     Doc.code_ Doc.Elm code
 
                 Nothing ->
-                    -- Unreachable: layersFor never offers a tab whose field is
-                    -- Nothing. Fall back to the always-present HTML surface.
                     Doc.code_ Doc.Xml ex.html
+
+        recordBuildCode : Maybe String -> String -> Element { s | html : Supported } msg
+        recordBuildCode field surface =
+            case field of
+                Just code ->
+                    Doc.code_ Doc.Elm code
+
+                Nothing ->
+                    identicalSurfaceNote surface
     in
     case layer of
         Top ->
             elmOrHtml ex.top
 
         Record ->
-            elmOrHtml ex.record
+            recordBuildCode ex.record "M3e.Record"
 
         Build ->
-            elmOrHtml ex.build
+            recordBuildCode ex.build "M3e.Build"
 
         Middle ->
             elmOrHtml ex.mid
@@ -284,6 +311,25 @@ codeFor layer ex =
 
         Raw ->
             Doc.code_ Doc.Xml ex.html
+
+
+{-| Shown on a `Record`/`Build` tab whose surface is identical to `M3e` for this
+example: the example's content carried no required slots or attributes for the
+record/pipeline surface to enforce, so the translator emitted no distinct form.
+We surface that fact rather than hiding the tab (a hidden tab reads as "this
+surface doesn't apply", which is the wrong lesson — it applies, it's just a no-op
+here).
+-}
+identicalSurfaceNote : String -> Element { s | html : Supported } msg
+identicalSurfaceNote surface =
+    Doc.message
+        (surface
+            ++ " is identical to the M3e tab for this example — its content has no required slots or attributes for the "
+            ++ surface
+            ++ " surface to enforce, so it would be a hollow duplicate of M3e. Reach for "
+            ++ surface
+            ++ " on an example whose composition it can hold a guarantee over."
+        )
 
 
 {-| Group indexed examples by `.section`, preserving first-seen order of both

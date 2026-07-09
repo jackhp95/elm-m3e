@@ -248,6 +248,20 @@
     letter-spacing: var(--md-sys-typescale-body-large-tracking);
   }
 
+  /* Global responsive-media reset. Replaced-content elements have an intrinsic
+     width (e.g. a horizontal <m3e-card>'s `<img slot="header">` is 480px) and
+     live in shadow flex slots that are `flex: 0 0 auto`, so without this they
+     overflow their container horizontally on narrow viewports. `height: auto`
+     preserves aspect ratio when the width is capped. Injected raw-corpus media
+     (Doc.rawPreview → innerHTML) has no Elm call site, so a global reset — not a
+     per-element setter — is the only lever. */
+  img,
+  video,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
   /* Match matraic's docs typography (their main.css): prose inherits body-large,
      inline code + code blocks are 0.875em with a subtle primary tint, blocks wrap.
      Content prose should NOT set a smaller text-body-* — let this base + the
