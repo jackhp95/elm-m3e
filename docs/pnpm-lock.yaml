@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@m3e/web':
-        specifier: ^2.5.13
-        version: 2.5.13(@floating-ui/utils@0.2.11)(lit@3.3.3)(tslib@2.8.1)
+        specifier: ^2.5.14
+        version: 2.5.14(@floating-ui/utils@0.2.11)(lit@3.3.3)(tslib@2.8.1)
       linkedom:
         specifier: ^0.18.13
         version: 0.18.13
@@ -448,8 +448,8 @@ packages:
   '@lit/reactive-element@2.1.2':
     resolution: {integrity: sha512-pbCDiVMnne1lYUIaYNN5wrwQXDtHaYtg7YEFPeW+hws6U47WeFvISGUWekPGKWOP1ygrs0ef0o1VJMk1exos5A==}
 
-  '@m3e/web@2.5.13':
-    resolution: {integrity: sha512-MqmYtA7WW7gvRNvhPeB9/NNh23DbSBUcTlHbJX4tMlwOyYI/O7+GJrBLILRf40jwA3Lt7bXYt9togqgvsIeEXA==}
+  '@m3e/web@2.5.14':
+    resolution: {integrity: sha512-4CQ45AnwAWVkztJmdXjGqquJ+ghdYmpAJnYOaTumZ3gPNfkGX7AV2S0vFFWU7FmpK3JPGY3FscCUGCv5xwJhGQ==}
     peerDependencies:
       lit: ^3.3.0
       tslib: ^2.8.1
@@ -2932,7 +2932,7 @@ snapshots:
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.6.0
 
-  '@m3e/web@2.5.13(@floating-ui/utils@0.2.11)(lit@3.3.3)(tslib@2.8.1)':
+  '@m3e/web@2.5.14(@floating-ui/utils@0.2.11)(lit@3.3.3)(tslib@2.8.1)':
     dependencies:
       '@floating-ui/dom': 1.7.6
       '@material/material-color-utilities': 0.4.0
