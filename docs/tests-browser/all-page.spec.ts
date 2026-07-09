@@ -15,8 +15,12 @@ test("/components/all reveals and renders many components", async ({ page }) => 
   // The kitchen sink stacks all 329 examples on one page (every component's
   // Usage section at once), so first paint + hydration genuinely takes longer
   // than the default 30s Playwright test timeout — this is real render cost,
-  // not a flaky wait.
-  test.setTimeout(90_000);
+  // not a flaky wait. Each Usage section now also mounts M3e.Record / M3e.Build
+  // rationale tabs (extra `m3e-tab` upgrades) for identical-by-design examples,
+  // so the stacked total is ~2200 custom-element upgrades. On the 2-core CI
+  // runner this exceeds the previous 90s budget; give it generous headroom
+  // (a fast dev machine hydrates the page in ~80s, CI is ~2–3× slower).
+  test.setTimeout(240_000);
 
   const errors: string[] = [];
   page.on("console", (m) => {
