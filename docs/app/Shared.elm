@@ -27,6 +27,7 @@ import Kit.Surface as Surface
 import M3e.Action as Action
 import M3e.AppBar as AppBar
 import M3e.Aria as Aria
+import M3e.Attributes as Attrs
 import M3e.ButtonSegment as ButtonSegment
 import M3e.DrawerContainer as DrawerContainer
 import M3e.Element as Element exposing (Element)
@@ -364,7 +365,7 @@ view _ page model toMsg pageView =
                     [ Seam.asAttribute (class "grid h-screen grid-rows-[auto_1fr]")
                     , Seam.asAttribute (attribute "dir" (directionAttr model.dir))
                     ]
-                    [ Seam.fromHtml (Html.map toMsg (appShellBar model))
+                    [ Seam.fromHtml (Html.map toMsg appShellBar)
                     , Seam.fromHtml (drawerShell toMsg model page (List.map Node.toHtml pageView.body))
                     ]
                 ]
@@ -395,13 +396,13 @@ directionAttr dir =
 -- TOP APP BAR
 
 
-appShellBar : Model -> Html Msg
-appShellBar model =
+appShellBar : Html Msg
+appShellBar =
     Html.header
         [ class "sticky top-0 z-30 border-b border-outline-variant bg-surface-container-low shadow-md-level1" ]
         [ AppBar.view
             [ AppBar.size Value.small
-            , Seam.asAttribute (Attr.id "docs-app-bar")
+            , Attrs.id "docs-app-bar"
             ]
             [ AppBar.title (Kit.text "elm-m3e")
             , AppBar.subtitle (Kit.text "Material 3 Expressive for Elm")
@@ -675,7 +676,7 @@ drawerShell toMsg model page body =
             normalizePath (UrlPath.toAbsolute page.path)
     in
     DrawerContainer.view
-        [ Seam.asAttribute (Attr.id "docs-drawer")
+        [ Attrs.id "docs-drawer"
         , DrawerContainer.startMode Value.auto
         , DrawerContainer.start (not (isMobile model) || model.showMenu)
         , DrawerContainer.endMode Value.auto

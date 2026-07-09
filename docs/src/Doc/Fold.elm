@@ -1,4 +1,4 @@
-module Doc.Fold exposing (Node(..), buildForest, defaultCollapseThreshold, serialize, viewWith)
+module Doc.Fold exposing (Node, buildForest, serialize, viewWith)
 
 {-| Auto-derived code folding for the docs' code blocks (stream B2).
 

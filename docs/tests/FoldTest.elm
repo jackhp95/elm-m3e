@@ -16,7 +16,6 @@ human-readable text. The serialization is `Doc.Fold.serialize`:
 -}
 
 import Doc.Fold as Fold
-import Platform
 
 
 port emit : String -> Cmd msg
