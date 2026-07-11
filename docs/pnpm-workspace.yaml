@@ -1,0 +1,8 @@
+allowBuilds:
+  '@parcel/watcher': true
+  elm: true
+  elm-format: true
+  esbuild: true
+  lamdera: true
+minimumReleaseAgeExclude:
+  - '@m3e/web@2.5.13'

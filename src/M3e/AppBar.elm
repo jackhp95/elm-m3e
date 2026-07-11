@@ -1,0 +1,188 @@
+module M3e.AppBar exposing
+    ( view, centered, for, size, leading, title
+    , subtitle, trailing, leadingIcon, trailingIcon
+    )
+
+{-| A bar, placed a the top of a screen, used to help users navigate through an application.
+
+**Component Info:**
+
+  - **Extends:** `LitElement`
+
+**Slots:**
+
+  - `leading`: Renders content positioned at the start of the bar.
+  - `subtitle`: Renders the subtitle of the bar.
+  - `title`: Renders the title of the bar.
+  - `trailing`: Renders one or more action buttons aligned to the end of the bar.
+  - `leading-icon`: Deprecated: use the `leading` slot.
+  - `trailing-icon`: Deprecated: use the `trailing` slot.
+
+<!-- elm-cem:docmeta category=Navigation -->
+
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Anatomy" -->
+```elm
+M3e.AppBar.view [] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Token.tonal ] [ M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] [] ]) ]
+```
+
+<!-- elm-cem:example title="Sizes" -->
+```elm
+M3e.AppBar.view [ M3e.AppBar.size M3e.Token.medium ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Token.tonal ] [ M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] [] ]) ]
+```
+
+<!-- elm-cem:example title="Sizes (2)" -->
+```elm
+M3e.AppBar.view [ M3e.AppBar.size M3e.Token.large ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Token.tonal ] [ M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] [] ]) ]
+```
+
+<!-- elm-cem:example title="Centered" -->
+```elm
+M3e.AppBar.view [ M3e.AppBar.centered True ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark" ] [ M3e.Icon.view [ M3e.Icon.name "bookmark" ] [] ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "help" ] [ M3e.Icon.view [ M3e.Icon.name "help" ] [] ]) ]
+```
+
+<!-- elm-cem:example title="Scroll effects" -->
+```elm
+Native.div [ Native.attribute "id" "scrollContainer" ] [ M3e.AppBar.view [ M3e.AppBar.for "scrollContainer" ] [ M3e.AppBar.leading (M3e.IconButton.view [ M3e.Aria.label "Back" ] [ M3e.Icon.view [ M3e.Icon.name "arrow_back" ] [] ]), M3e.AppBar.title (Native.span [] [ Kit.text "Top 10 hiking trails" ]), M3e.AppBar.subtitle (Native.span [] [ Kit.text "Discover popular trails" ]), M3e.AppBar.trailing (M3e.IconButton.view [ M3e.Aria.label "Bookmark", M3e.IconButton.variant M3e.Token.tonal ] [ M3e.Icon.view [ M3e.Icon.name "bookmark", M3e.Icon.filled True ] [] ]) ], Native.div [ Native.attribute "class" "scroll-item" ] [ Kit.text "Scroll down to see the elevation effect" ] ]
+```
+
+@docs view, centered, for, size, leading, title
+@docs subtitle, trailing, leadingIcon, trailingIcon
+
+-}
+
+import M3e.Element
+import M3e.Element.Internal
+import M3e.Html.AppBar
+import M3e.Html.Attr
+import M3e.Html.Attr.Internal
+import M3e.Node
+import M3e.Token
+
+
+{-| Build the `<m3e-app-bar>` element (lazy IR).
+-}
+view :
+    List
+        (M3e.Html.Attr.Attr
+            { centered : M3e.Token.Supported
+            , for : M3e.Token.Supported
+            , size : M3e.Token.Supported
+            , slot : M3e.Token.Supported
+            }
+            msg
+        )
+    -> List (M3e.Element.Element any msg)
+    -> M3e.Element.Element { s | appBar : M3e.Token.Supported } msg
+view attributes children =
+    M3e.Element.Internal.fromNode
+        (M3e.Node.fromComponent
+            (\erased ch ->
+                M3e.Html.AppBar.appBar
+                    (List.map M3e.Html.Attr.Internal.forget erased)
+                    ch
+            )
+            (List.map M3e.Html.Attr.Internal.forget attributes)
+            (List.map M3e.Element.toNode children)
+        )
+
+
+{-| Whether the title and subtitle are centered. (default: `false`)
+-}
+centered : Bool -> M3e.Html.Attr.Attr { c | centered : M3e.Token.Supported } msg
+centered =
+    M3e.Html.AppBar.centered
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`)
+-}
+for : String -> M3e.Html.Attr.Attr { c | for : M3e.Token.Supported } msg
+for =
+    M3e.Html.AppBar.for
+
+
+{-| The size of the bar. (default: `"small"`)
+-}
+size :
+    M3e.Token.Value
+        { large : M3e.Token.Supported
+        , medium : M3e.Token.Supported
+        , small : M3e.Token.Supported
+        }
+    -> M3e.Html.Attr.Attr { c | size : M3e.Token.Supported } msg
+size =
+    M3e.Html.AppBar.size
+
+
+{-| Place content in the `leading` slot.
+-}
+leading :
+    M3e.Element.Element
+        { icon : M3e.Token.Supported
+        , iconButton : M3e.Token.Supported
+        , button : M3e.Token.Supported
+        }
+        msg
+    -> M3e.Element.Element k msg
+leading el =
+    M3e.Element.Internal.placeSlot "leading" el
+
+
+{-| Place content in the `title` slot.
+-}
+title :
+    M3e.Element.Element
+        { text : M3e.Token.Supported
+        , html : M3e.Token.Supported
+        }
+        msg
+    -> M3e.Element.Element k msg
+title el =
+    M3e.Element.Internal.placeSlot "title" el
+
+
+{-| Place content in the `subtitle` slot.
+-}
+subtitle :
+    M3e.Element.Element
+        { text : M3e.Token.Supported
+        , html : M3e.Token.Supported
+        }
+        msg
+    -> M3e.Element.Element k msg
+subtitle el =
+    M3e.Element.Internal.placeSlot "subtitle" el
+
+
+{-| Place content in the `trailing` slot.
+-}
+trailing :
+    M3e.Element.Element
+        { iconButton : M3e.Token.Supported
+        , button : M3e.Token.Supported
+        , searchBar : M3e.Token.Supported
+        , html : M3e.Token.Supported
+        }
+        msg
+    -> M3e.Element.Element k msg
+trailing el =
+    M3e.Element.Internal.placeSlot "trailing" el
+
+
+{-| Place content in the `leading-icon` slot.
+-}
+leadingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
+leadingIcon el =
+    M3e.Element.Internal.placeSlot "leading-icon" el
+
+
+{-| Place content in the `trailing-icon` slot.
+-}
+trailingIcon : M3e.Element.Element any msg -> M3e.Element.Element k msg
+trailingIcon el =
+    M3e.Element.Internal.placeSlot "trailing-icon" el

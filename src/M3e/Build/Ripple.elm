@@ -1,0 +1,159 @@
+module M3e.Build.Ripple exposing
+    ( Builder, AttrCaps, SlotCaps, ripple, attr, centered
+    , disabled, for, radius, unbounded, build
+    )
+
+{-| The Build form for `<m3e-ripple>` — phantom-typed pipeline API. Import qualified: `import M3e.Build.Ripple as Ripple`.
+
+@docs Builder, AttrCaps, SlotCaps, ripple, attr, centered
+@docs disabled, for, radius, unbounded, build
+
+-}
+
+import M3e.Build.Internal
+import M3e.Element
+import M3e.Element.Internal
+import M3e.Html.Attr.Internal
+import M3e.Html.Ripple
+import M3e.Node
+import M3e.Token
+
+
+{-| Phantom-typed opaque builder for `<m3e-ripple>`.
+-}
+type alias Builder attrCaps slotCaps msg kind =
+    M3e.Build.Internal.Builder
+        { kind
+            | ripple : M3e.Token.Supported
+        }
+        attrCaps
+        slotCaps
+        msg
+
+
+{-| Per-component attribute capability row for the phantom-typed Builder.
+-}
+type alias AttrCaps =
+    { centered : M3e.Build.Internal.Available
+    , disabled : M3e.Build.Internal.Available
+    , for : M3e.Build.Internal.Available
+    , radius : M3e.Build.Internal.Available
+    , unbounded : M3e.Build.Internal.Available
+    }
+
+
+{-| Per-component slot capability row for the phantom-typed Builder.
+-}
+type alias SlotCaps =
+    {}
+
+
+{-| Seed a `Builder` for `<m3e-ripple>`.
+-}
+ripple : Builder AttrCaps SlotCaps msg kind
+ripple =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.fromComponent
+            (\erased_ ch_ ->
+                M3e.Html.Ripple.ripple
+                    (List.map M3e.Html.Attr.Internal.forget erased_)
+                    ch_
+            )
+            []
+            []
+        )
+
+
+{-| Inject an already-built universal `Attr` (e.g. from `M3e.Aria.*`) into the pipeline, appending it to the accumulated attrs. Unlike the typed per-attribute setters it consumes no phantom capability, so it can be applied any number of times.
+-}
+attr :
+    M3e.Html.Attr.Internal.Attr caps msg
+    -> Builder a s msg kind
+    -> Builder a s msg kind
+attr a_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+            (M3e.Html.Attr.Internal.forget a_)
+            (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the ripple always originates from the center of the element's bounds, rather
+than originating from the location of the click event. (default: `false`)
+-}
+centered :
+    Bool
+    -> Builder { a | centered : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | centered : M3e.Build.Internal.Used } s msg kind
+centered v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+            (M3e.Html.Attr.Internal.forget (M3e.Html.Ripple.centered v_))
+            (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether click events will not trigger the ripple.
+Ripples can be still controlled manually by using the `show` and 'hide' methods. (default: `false`)
+-}
+disabled :
+    Bool
+    -> Builder { a | disabled : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | disabled : M3e.Build.Internal.Used } s msg kind
+disabled v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+            (M3e.Html.Attr.Internal.forget (M3e.Html.Ripple.disabled v_))
+            (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The identifier of the interactive control to which this element is attached. (default: `null`)
+-}
+for :
+    String
+    -> Builder { a | for : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | for : M3e.Build.Internal.Used } s msg kind
+for v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+            (M3e.Html.Attr.Internal.forget (M3e.Html.Ripple.for v_))
+            (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| The radius, in pixels, of the ripple. (default: `null`)
+-}
+radius :
+    Float
+    -> Builder { a | radius : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | radius : M3e.Build.Internal.Used } s msg kind
+radius v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+            (M3e.Html.Attr.Internal.forget (M3e.Html.Ripple.radius v_))
+            (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Whether the ripple is visible outside the element's bounds. (default: `false`)
+-}
+unbounded :
+    Bool
+    -> Builder { a | unbounded : M3e.Build.Internal.Available } s msg kind
+    -> Builder { a | unbounded : M3e.Build.Internal.Used } s msg kind
+unbounded v_ b_ =
+    M3e.Build.Internal.wrap_
+        (M3e.Node.addAttr
+            (M3e.Html.Attr.Internal.forget (M3e.Html.Ripple.unbounded v_))
+            (M3e.Build.Internal.node_ b_)
+        )
+
+
+{-| Build the `<m3e-ripple>` element from a `Builder`.
+-}
+build :
+    Builder a s msg kind
+    -> M3e.Element.Element { ripple : M3e.Token.Supported } msg
+build b_ =
+    M3e.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)
