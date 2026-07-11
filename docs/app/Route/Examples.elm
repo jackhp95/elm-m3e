@@ -71,6 +71,9 @@ examples =
     , ( "mail", "Mail", "An email client — adaptive navigation, a message list beside a reading pane that stacks on mobile, labels as chips, and a compose FAB." )
     , ( "travel", "Travel", "A trip-planning app — a search hero, horizontally scrolling destination rails, category tabs, and richly-composed destination cards." )
     , ( "settings", "Settings", "A system settings surface — sectioned preference groups built from list items, switches, radios, sliders, and dividers." )
+    , ( "list-detail", "List-detail", "The canonical adaptive list-detail pattern — a contacts list beside a detail pane on desktop that reflows to a single column on mobile, with nav-rail↔nav-bar switching." )
+    , ( "supporting-pane", "Supporting pane", "The adaptive supporting-pane pattern — a wide primary region with a narrower supporting pane that sits beside it on expanded windows and reflows beneath on compact." )
+    , ( "feed", "Feed", "The adaptive feed pattern — a responsive card grid whose column count grows with the window size class, driven by a filter-chip toolbar." )
     ]
 
 

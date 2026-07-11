@@ -210,7 +210,7 @@ exampleFooter =
             , ( "divider", "Divider" )
             ]
         , prev = Just ( "/examples/travel", "Travel" )
-        , next = Nothing
+        , next = Just ( "/examples/list-detail", "List-detail" )
         }
 
 
