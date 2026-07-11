@@ -700,7 +700,10 @@ navSections =
             , ( "/guide/invalid-states", "Invalid states don't compile" )
             , ( "/guide/strictness", "The strictness dial" )
             , ( "/guide/accessible-by-construction", "Accessibility you can't forget" )
+            , ( "/guide/accessibility", "Accessibility reference" )
             , ( "/guide/composition-text-field", "Composition, not injection" )
+            , ( "/guide/theming", "Theming with tokens" )
+            , ( "/guide/motion", "Motion" )
             , ( "/guide/generated-and-inspectable", "Generated & inspectable" )
             , ( "/guide/the-layers", "The layer map" )
             , ( "/guide/seams", "Your own seam" )
@@ -737,6 +740,9 @@ navSections =
             , ( "/examples/mail", "Mail" )
             , ( "/examples/travel", "Travel" )
             , ( "/examples/settings", "Settings" )
+            , ( "/examples/list-detail", "List-detail" )
+            , ( "/examples/supporting-pane", "Supporting pane" )
+            , ( "/examples/feed", "Feed" )
             ]
       }
     ]
