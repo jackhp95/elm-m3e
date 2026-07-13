@@ -11,7 +11,6 @@ import Layout
 import M3e
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Heading as Heading
 import M3e.Kind
 import M3e.Token as Value
 import Pages.Url
@@ -120,9 +119,9 @@ swatch ( label, bg, role ) =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } msg
 pageHeading =
-    Heading.view { content = Markup.Atoms.text "Color" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-        []
+    M3e.heading
+        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+        [ Markup.Atoms.text "Color" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -185,7 +184,7 @@ forcedColorsCard : Element { s | card : M3e.Kind.Brand } msg
 forcedColorsCard =
     M3e.card
         [ M3e.variantOutlined ]
-        [ M3e.cardSlotHeader (Heading.view { content = Markup.Atoms.text "Test it" } [ Heading.variant Value.title ] [])
+        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text "Test it" ])
         , M3e.cardSlotContent
             (Kit.text "Enable Windows High Contrast or `forced-colors: active` in dev tools. The swatches above stay legible because every role respects the forced palette.")
         ]

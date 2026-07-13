@@ -17,7 +17,7 @@ import Kit.Surface as Surface
 import Layout
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Heading as Heading
+import M3e
 import M3e.Kind
 import M3e.Token as Value
 import Pages.Url
@@ -95,9 +95,9 @@ swatch ( shadow, label, token ) =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } msg
 pageHeading =
-    Heading.view { content = Markup.Atoms.text "Elevation" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-        []
+    M3e.heading
+        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+        [ Markup.Atoms.text "Elevation" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

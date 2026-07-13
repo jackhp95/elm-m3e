@@ -12,11 +12,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Button as Button
-import M3e.Record.Heading as Heading
 import M3e.Kind
 import M3e.Token as Value
 import Pages.Url
@@ -81,9 +78,9 @@ examples =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } msg
 pageHeading =
-    Heading.view { content = Markup.Atoms.text "Examples" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-        []
+    M3e.heading
+        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+        [ Markup.Atoms.text "Examples" ]
 
 
 exampleCard : ( String, String, String ) -> Element { s | card : M3e.Kind.Brand } msg
@@ -95,21 +92,12 @@ exampleCard ( slug, title, body ) =
     in
     M3e.card
         [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader (Heading.view { content = Markup.Atoms.text title } [ Heading.variant Value.title ] [])
+        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text title ])
         , M3e.cardSlotContent (Kit.paragraph Value.large [ Kit.onSurfaceVariant ] [ Kit.text body ])
         , M3e.cardSlotActions
-            (Button.view
-                { content = Kit.text ("Open " ++ title)
-                , action =
-                    Action.linkWith
-                        { href = exampleHref
-                        , target = Just "_blank"
-                        , rel = Just "noreferrer noopener"
-                        , download = Nothing
-                        }
-                }
-                [ Button.variant Value.filled ]
-                []
+            (M3e.button
+                [ M3e.variantFilled, M3e.attrHref exampleHref ]
+                [ Kit.text ("Open " ++ title) ]
             )
         ]
 

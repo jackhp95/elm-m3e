@@ -8,11 +8,8 @@ import Html
 import Kit
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Button as Button
-import M3e.Record.Heading as Heading
 import M3e.Kind
 import M3e.Token as Value
 import Native
@@ -94,7 +91,7 @@ demoBar scaleValue =
             (List.range 1 4
                 |> List.map
                     (\_ ->
-                        Button.view { content = Kit.text "Action", action = Action.none } [ Button.variant Value.filled ] []
+                        M3e.button [ M3e.variantFilled ] [ Kit.text "Action" ]
                     )
             )
         ]
@@ -102,9 +99,9 @@ demoBar scaleValue =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } msg
 pageHeading =
-    Heading.view { content = Markup.Atoms.text "Density" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-        []
+    M3e.heading
+        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+        [ Markup.Atoms.text "Density" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)
@@ -123,7 +120,7 @@ view _ _ =
                     ]
                 , M3e.card
                     [ M3e.variantOutlined ]
-                    [ M3e.cardSlotHeader (Heading.view { content = Markup.Atoms.text "Density scale, 0 to -3" } [ Heading.variant Value.title ] [])
+                    [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text "Density scale, 0 to -3" ])
                     , M3e.cardSlotContent
                         (Layout.div "space-y-6"
                             [ demoBar 0

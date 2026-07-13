@@ -17,11 +17,10 @@ import Kit
 import Layout
 import M3e
 import Markup.Element exposing (Element)
-import M3e.Record.Heading as Heading
-import M3e.Tab as Tab
 import M3e.Kind
 import M3e.Token as Value
 import Markup.Atoms
+import Native
 
 
 {-| Which API surface a Usage example is shown in, by module name:
@@ -122,9 +121,9 @@ usageBlocks offset model examples =
 
         _ ->
             [ Layout.div "space-y-6"
-                (Heading.view { content = Markup.Atoms.text "Usage" }
-                    [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
-                    []
+                (M3e.heading
+                    [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ]
+                    [ Markup.Atoms.text "Usage" ]
                     :: List.concatMap (sectionBlock model)
                         (groupBySection (List.indexedMap (\i ex -> ( offset + i, ex )) examples))
                 )
@@ -144,9 +143,9 @@ sectionBlock model ( section, examples ) =
                 []
 
             else
-                [ Heading.view { content = Markup.Atoms.text section }
-                    [ Heading.variant Value.title, Heading.size Value.large, Heading.level 3 ]
-                    []
+                [ M3e.heading
+                    [ M3e.variantTitle, M3e.sizeLarge, M3e.attrLevel 3 ]
+                    [ Markup.Atoms.text section ]
                 ]
     in
     heading ++ List.map (exampleBlock model) examples
@@ -257,7 +256,7 @@ layerTabs index current ex =
             (\( label, layer ) ->
                 M3e.tab
                     [ M3e.attrSelected (layer == current)
-                    , Tab.onClick (SelectLayer index layer)
+                    , Native.onClick (SelectLayer index layer)
                     ]
                     [ Markup.Atoms.text label ]
             )

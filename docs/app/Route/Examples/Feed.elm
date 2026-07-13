@@ -156,7 +156,7 @@ view _ _ model =
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 filter bar and the reflowing card grid, with a mobile bottom bar.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } Msg
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } Msg
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -175,7 +175,7 @@ screen model =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =

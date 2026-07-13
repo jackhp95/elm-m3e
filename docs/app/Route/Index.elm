@@ -21,11 +21,8 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Button as Button
-import M3e.Record.Heading as Heading
 import M3e.Kind
 import M3e.Token as Value
 import Native
@@ -110,9 +107,9 @@ view app _ =
 hero : Element { s | html : M3e.Kind.Brand } msg
 hero =
     Layout.section "space-y-5"
-        [ Heading.view { content = Markup.Atoms.text "Type-safe Material 3 Expressive for Elm" }
-            [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-            []
+        [ M3e.heading
+            [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+            [ Markup.Atoms.text "Type-safe Material 3 Expressive for Elm" ]
         , Layout.div "max-w-2xl"
             [ Kit.paragraph Value.large
                 [ Kit.onSurfaceVariant ]
@@ -122,8 +119,8 @@ hero =
                 ]
             ]
         , Layout.div "flex flex-wrap items-center gap-3 pt-2"
-            [ Button.view { content = Kit.text "Get started", action = Action.link "/getting-started/installation" } [ Button.variant Value.filled ] []
-            , Button.view { content = Kit.text "Browse the API reference", action = Action.link "/reference" } [ Button.variant Value.outlined ] []
+            [ M3e.button [ M3e.variantFilled, M3e.attrHref "/getting-started/installation" ] [ Kit.text "Get started" ]
+            , M3e.button [ M3e.variantOutlined, M3e.attrHref "/reference" ] [ Kit.text "Browse the API reference" ]
             ]
         , Layout.div "space-y-2 pt-4"
             [ Kit.labelText Value.small [ Kit.onSurfaceVariant ] [ Kit.text "Live theme — try the ⚙ settings in the app bar" ]
@@ -167,7 +164,7 @@ highlightCard : String -> String -> String -> Element { s | card : M3e.Kind.Bran
 highlightCard iconName title body =
     M3e.card
         [ M3e.variantElevated ]
-        [ M3e.cardSlotHeader (Heading.view { content = Markup.Atoms.text title } [ Heading.variant Value.title ] [])
+        [ M3e.cardSlotHeader (M3e.heading [ M3e.variantTitle ] [ Markup.Atoms.text title ])
         , M3e.cardSlotContent
             (Layout.div "flex gap-3"
                 [ Layout.span "shrink-0"

@@ -16,7 +16,7 @@ import Html.Attributes
 import Kit
 import Kit.Shape as Shape
 import Kit.Surface as Surface
-import M3e.Avatar as Avatar
+import M3e
 import Markup.Element exposing (Element)
 import M3e.Kind
 import M3e.Token as Value
@@ -29,7 +29,7 @@ import Seam
 -}
 initials : String -> Element { s | avatar : M3e.Kind.Brand } msg
 initials text =
-    Avatar.view [ Seam.asAttribute (Html.Attributes.class "flex") ]
+    M3e.avatar [ Seam.asAttribute (Html.Attributes.class "flex") ]
         [ Surface.view Surface.secondaryContainer
             [ Shape.corner Shape.full
             , Seam.asAttribute (Html.Attributes.class "flex h-10 w-10 items-center justify-center")

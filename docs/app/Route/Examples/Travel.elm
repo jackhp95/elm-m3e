@@ -29,15 +29,9 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Atoms
 import Markup.Kind
 import Markup.Element as Element exposing (Element)
-import M3e.NavItem as NavItem
-import M3e.Record.AssistChip as AssistChip
-import M3e.Record.IconButton as IconButton
-import M3e.Record.SearchBar as SearchBar
-import M3e.Tab as Tab
 import M3e.Kind
 import M3e.Token as Value
 import Native
@@ -216,7 +210,7 @@ view _ _ model =
 {-| Full-viewport chrome: a top app bar, a rail-or-main body, and a bottom bar
 that only appears on small screens.
 -}
-shell : Model -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } (PagesMsg Msg)
+shell : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } (PagesMsg Msg)
 shell model =
     Layout.div "flex h-screen w-full flex-col"
         [ appBar
@@ -233,7 +227,7 @@ shell model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -257,10 +251,9 @@ appBar =
         [ M3e.appBarSlotLeading (M3e.icon [ M3e.attrName "public" ] [])
         , M3e.appBarSlotTitle (Kit.text "Wander")
         , M3e.appBarSlotTrailing
-            (IconButton.view
-                { content = M3e.icon [ M3e.attrName "notifications" ] [], action = Action.none }
-                [ IconButton.variant Value.standard, M3e.ariaLabel "Notifications" ]
-                []
+            (M3e.iconButton
+                [ M3e.variantStandard, M3e.ariaLabel "Notifications" ]
+                [ M3e.icon [ M3e.attrName "notifications" ] [] ]
             )
         ]
 
@@ -283,7 +276,7 @@ railItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.
 railItem current ( dest, iconName, label ) =
     M3e.navItem
         [ M3e.attrSelected (dest == current)
-        , NavItem.onClick (PagesMsg.fromMsg (SetDest dest))
+        , Native.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName iconName ] [])
         , Kit.text label
@@ -304,7 +297,7 @@ barItem : Dest -> ( Dest, String, String ) -> Element { s | navItem : M3e.Kind.B
 barItem current ( dest, iconName, label ) =
     M3e.navItem
         [ M3e.attrSelected (dest == current)
-        , NavItem.onClick (PagesMsg.fromMsg (SetDest dest))
+        , Native.onClick (PagesMsg.fromMsg (SetDest dest))
         ]
         [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName iconName ] [])
         , Kit.text label
@@ -369,11 +362,11 @@ hero =
 
 searchBar : Element { s | html : M3e.Kind.Brand, searchBar : M3e.Kind.Brand } (PagesMsg Msg)
 searchBar =
-    SearchBar.view
-        { input = Native.node Html.input [] [] }
+    M3e.searchBar
         []
-        [ SearchBar.leading (M3e.icon [ M3e.attrName "search" ] [])
-        , SearchBar.trailing (M3e.icon [ M3e.attrName "tune" ] [])
+        [ M3e.searchBarSlotInput (Native.node Html.input [] [])
+        , M3e.searchBarSlotLeading (M3e.icon [ M3e.attrName "search" ] [])
+        , M3e.searchBarSlotTrailing (M3e.icon [ M3e.attrName "tune" ] [])
         ]
 
 
@@ -389,7 +382,7 @@ categoryTab : Category -> ( Category, String ) -> Element { s | tab : M3e.Kind.B
 categoryTab current ( category, label ) =
     M3e.tab
         [ M3e.attrSelected (category == current)
-        , Tab.onClick (PagesMsg.fromMsg (SetCategory category))
+        , Native.onClick (PagesMsg.fromMsg (SetCategory category))
         ]
         [ Kit.text label ]
 
@@ -444,7 +437,8 @@ media place =
 
 ratingChip : String -> Element { s | assistChip : M3e.Kind.Brand } (PagesMsg Msg)
 ratingChip rating =
-    AssistChip.view
-        { content = Markup.Atoms.text rating }
+    M3e.assistChip
         []
-        [ AssistChip.icon (M3e.icon [ M3e.attrName "star", M3e.attrFilled True ] []) ]
+        [ Markup.Atoms.text rating
+        , M3e.assistChipSlotIcon (M3e.icon [ M3e.attrName "star", M3e.attrFilled True ] [])
+        ]

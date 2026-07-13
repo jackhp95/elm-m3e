@@ -100,7 +100,7 @@ view _ _ =
 {-| The full-viewport shell: a desktop rail beside a column of AppBar + the
 primary/supporting body, with a mobile bottom bar.
 -}
-screen : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+screen : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 screen =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -116,7 +116,7 @@ screen =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =

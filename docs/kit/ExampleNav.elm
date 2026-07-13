@@ -45,16 +45,27 @@ footer :
     , prev : Maybe ( String, String )
     , next : Maybe ( String, String )
     }
-    -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+    -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 footer { builtFrom, prev, next } =
     Surface.view Surface.surfaceContainer
         [ Layout.class "w-full border-t border-outline-variant/40 px-4 md:px-6 py-4 flex flex-col gap-3" ]
-        [ builtFromRow builtFrom
+        [ backRow
+        , builtFromRow builtFrom
         , prevNextRow prev next
         ]
 
 
-builtFromRow : List ( String, String ) -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+{-| A quiet "back to the gallery" link. The examples now open in the SAME tab (the
+gallery cards no longer target `_blank`), so the browser Back button already returns
+here — this is the explicit in-page affordance for it.
+-}
+backRow : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
+backRow =
+    Layout.div "flex"
+        [ Kit.textLink "/examples" [ Kit.onSurfaceVariant ] [ Kit.text "← Back to examples" ] ]
+
+
+builtFromRow : List ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 builtFromRow builtFrom =
     Layout.div "flex flex-wrap items-baseline gap-x-2 gap-y-1"
         (Kit.labelText Value.large
@@ -64,7 +75,7 @@ builtFromRow builtFrom =
         )
 
 
-componentLink : ( String, String ) -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+componentLink : ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 componentLink ( slug, label ) =
     Kit.body Value.medium
         []
@@ -74,7 +85,7 @@ componentLink ( slug, label ) =
 prevNextRow :
     Maybe ( String, String )
     -> Maybe ( String, String )
-    -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+    -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 prevNextRow prev next =
     Layout.div "flex items-center justify-between gap-4"
         [ pagerSlot "← " prev
@@ -85,7 +96,7 @@ prevNextRow prev next =
 {-| One side of the prev/next pager. `prefix`/absence of `arrow` keeps the
 "previous" arrow leading and the "next" arrow trailing.
 -}
-pagerSlot : String -> Maybe ( String, String ) -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+pagerSlot : String -> Maybe ( String, String ) -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 pagerSlot leadingArrow slot =
     case slot of
         Nothing ->

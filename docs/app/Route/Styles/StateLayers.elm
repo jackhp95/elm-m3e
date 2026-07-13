@@ -13,11 +13,8 @@ import Head.Seo as Seo
 import Kit
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Button as Button
-import M3e.Record.Heading as Heading
 import M3e.Kind
 import M3e.Token as Value
 import Pages.Url
@@ -91,18 +88,18 @@ stateRow ( token, value, trigger ) =
 demoButtons : Element { s | html : M3e.Kind.Brand } msg
 demoButtons =
     Layout.div "flex flex-wrap gap-3 p-2"
-        [ Button.view { content = Kit.text "Filled", action = Action.none } [ Button.variant Value.filled ] []
-        , Button.view { content = Kit.text "Tonal", action = Action.none } [ Button.variant Value.tonal ] []
-        , Button.view { content = Kit.text "Outlined", action = Action.none } [ Button.variant Value.outlined ] []
-        , Button.view { content = Kit.text "Text", action = Action.none } [ Button.variant Value.text ] []
+        [ M3e.button [ M3e.variantFilled ] [ Kit.text "Filled" ]
+        , M3e.button [ M3e.variantTonal ] [ Kit.text "Tonal" ]
+        , M3e.button [ M3e.variantOutlined ] [ Kit.text "Outlined" ]
+        , M3e.button [ M3e.variantText ] [ Kit.text "Text" ]
         ]
 
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } msg
 pageHeading =
-    Heading.view { content = Markup.Atoms.text "State Layers" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-        []
+    M3e.heading
+        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+        [ Markup.Atoms.text "State Layers" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

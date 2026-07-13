@@ -25,11 +25,9 @@ import Layout
 import M3e
 import Markup.Kind
 import Markup.Element as Element exposing (Element)
-import M3e.NavItem as NavItem
-import M3e.Radio as Radio
-import M3e.Switch as Switch
 import M3e.Kind
 import M3e.Token as Value
+import Native
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatefulRoute)
 import Shared
@@ -178,7 +176,7 @@ view _ _ model =
 mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so only the
 content column scrolls.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } (PagesMsg Msg)
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } (PagesMsg Msg)
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -198,7 +196,7 @@ screen model =
 {-| The shared "Built from" + prev/next strip. Settings is the last example, so
 it has no next screen.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -259,7 +257,7 @@ navItem : String -> ( String, String, String ) -> Element { s | navItem : M3e.Ki
 navItem current ( section, name, iconName ) =
     M3e.navItem
         [ M3e.attrSelected (section == current)
-        , NavItem.onClick (PagesMsg.fromMsg (SelectSection section))
+        , Native.onClick (PagesMsg.fromMsg (SelectSection section))
         ]
         [ M3e.navItemSlotIcon (M3e.icon [ M3e.attrName iconName ] [])
         , Kit.text name
@@ -362,7 +360,7 @@ switchRow iconName label supporting on toggle =
             (M3e.switch
                 [ M3e.ariaLabel label
                 , M3e.attrChecked on
-                , Switch.onClick (PagesMsg.fromMsg toggle)
+                , Native.onClick (PagesMsg.fromMsg toggle)
                 ]
                 []
             )
@@ -382,7 +380,7 @@ themeRow theme label iconName current =
                 , M3e.attrName "theme"
                 , M3e.attrValue theme
                 , M3e.attrChecked (theme == current)
-                , Radio.onClick (PagesMsg.fromMsg (SetTheme theme))
+                , Native.onClick (PagesMsg.fromMsg (SetTheme theme))
                 ]
                 []
             )

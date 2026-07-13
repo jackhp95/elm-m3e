@@ -20,7 +20,6 @@ import Layout
 import M3e
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Heading as Heading
 import M3e.Shape as Shape
 import M3e.Kind
 import M3e.Token as Value
@@ -141,9 +140,9 @@ namedShapes =
 
 pageHeading : Element { s | heading : M3e.Kind.Brand } msg
 pageHeading =
-    Heading.view { content = Markup.Atoms.text "Shape" }
-        [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-        []
+    M3e.heading
+        [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+        [ Markup.Atoms.text "Shape" ]
 
 
 view : App Data ActionData RouteParams -> Shared.Model -> View (PagesMsg Msg)

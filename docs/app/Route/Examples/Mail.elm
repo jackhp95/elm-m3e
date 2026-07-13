@@ -30,13 +30,9 @@ import Kit.Avatar as Avatar
 import Kit.Surface as Surface exposing (Surface)
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Atoms
 import Markup.Kind
 import Markup.Element as Element exposing (Element)
-import M3e.Record.AssistChip as AssistChip
-import M3e.Record.Fab as Fab
-import M3e.Record.SearchBar as SearchBar
 import M3e.Kind
 import M3e.Token as Value
 import Native
@@ -203,7 +199,7 @@ view _ _ model =
 the nav rail beside a column of AppBar + two-pane body, plus the mobile bottom
 bar and the floating compose FAB.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } Msg
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } Msg
 screen model =
     Surface.view Surface.surface
         [ Layout.class "relative flex h-screen w-full overflow-hidden" ]
@@ -220,7 +216,7 @@ screen model =
 
 {-| The shared "Built from" + prev/next strip.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -295,16 +291,17 @@ topBar =
 
 searchBar : Element { s | searchBar : M3e.Kind.Brand } Msg
 searchBar =
-    SearchBar.view
-        { input =
-            Native.node Html.input
+    M3e.searchBar
+        []
+        [ M3e.searchBarSlotInput
+            (Native.node Html.input
                 [ Native.attribute "placeholder" "Search mail"
                 , Native.attribute "type" "search"
                 ]
                 []
-        }
-        []
-        [ SearchBar.leading (M3e.icon [ M3e.attrName "search" ] []) ]
+            )
+        , M3e.searchBarSlotLeading (M3e.icon [ M3e.attrName "search" ] [])
+        ]
 
 
 
@@ -412,10 +409,11 @@ readingPane message =
 
 labelChip : String -> Element { s | assistChip : M3e.Kind.Brand } msg
 labelChip name =
-    AssistChip.view
-        { content = Markup.Atoms.text name }
+    M3e.assistChip
         []
-        [ AssistChip.icon (M3e.icon [ M3e.attrName "label" ] []) ]
+        [ Markup.Atoms.text name
+        , M3e.assistChipSlotIcon (M3e.icon [ M3e.attrName "label" ] [])
+        ]
 
 
 
@@ -427,13 +425,12 @@ labelChip name =
 composeFab : Element { s | html : M3e.Kind.Brand } msg
 composeFab =
     Layout.div "absolute bottom-20 right-6 md:bottom-6"
-        [ Fab.view
-            { content = M3e.icon [ M3e.attrName "edit" ] []
-            , action = Action.none
-            }
-            [ Fab.variant Value.primaryContainer
-            , Fab.extended True
+        [ M3e.fab
+            [ M3e.variantPrimaryContainer
+            , M3e.attrExtended True
             , M3e.ariaLabel "Compose"
             ]
-            [ Fab.label (Kit.text "Compose") ]
+            [ M3e.icon [ M3e.attrName "edit" ] []
+            , M3e.fabSlotLabel (Kit.text "Compose")
+            ]
         ]

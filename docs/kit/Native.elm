@@ -49,7 +49,7 @@ import Seam
 a :
     List (Attr { download : Supported, href : Supported, rel : Supported, slot : Supported, target : Supported } msg)
     -> List (Element s msg)
-    -> Element { k | link : Markup.Kind.Shared } msg
+    -> Element { k | sharedLink : Markup.Kind.Shared } msg
 a =
     M3e.Native.a
 
@@ -131,7 +131,7 @@ img =
 label :
     List (Attr { for : Supported, slot : Supported } msg)
     -> List (Element s msg)
-    -> Element { k | label : Markup.Kind.Shared } msg
+    -> Element { k | sharedLabel : Markup.Kind.Shared } msg
 label =
     M3e.Native.label
 

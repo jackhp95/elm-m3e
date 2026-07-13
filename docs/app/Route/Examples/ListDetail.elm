@@ -154,7 +154,7 @@ view _ _ model =
 body, with a mobile bottom bar. `h-screen`/`overflow-hidden` pin the chrome so
 only the panes scroll.
 -}
-screen : Model -> Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } Msg
+screen : Model -> Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } Msg
 screen model =
     Surface.view Surface.surface
         [ Layout.class "flex h-screen w-full overflow-hidden" ]
@@ -168,7 +168,7 @@ screen model =
         ]
 
 
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =

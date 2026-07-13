@@ -20,10 +20,8 @@ import Html.Attributes exposing (attribute, class, href)
 import Kit
 import Layout
 import M3e
-import M3e.Card as Card
 import M3e.Kind
 import Markup.Atoms
-import M3e.Token as Value
 import Markup.Element exposing (Element)
 import Markdown.Parser
 import Markdown.Renderer
@@ -42,9 +40,9 @@ example's escaping menu/tooltip is free to overflow the card.
 -}
 showcase : Element { s | html : M3e.Kind.Brand } msg -> Element { r | card : M3e.Kind.Brand } msg
 showcase content =
-    Card.view
-        [ Card.variant Value.outlined, Seam.asAttribute (class "max-w-full") ]
-        [ Card.content content ]
+    M3e.card
+        [ M3e.variantOutlined, Seam.asAttribute (class "max-w-full") ]
+        [ M3e.cardSlotContent content ]
 
 
 {-| Render a raw HTML string as live DOM. The embedded `<m3e-*>` custom elements

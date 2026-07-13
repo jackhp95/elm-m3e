@@ -77,7 +77,7 @@ link =
 {-| An inline text link (`hover:underline`, tinted by the given color roles) —
 for links inside prose, as opposed to the unstyled navigation `link`.
 -}
-textLink : String -> List TextColor -> List (Element s msg) -> Element { k | link : Markup.Kind.Shared } msg
+textLink : String -> List TextColor -> List (Element s msg) -> Element { k | sharedLink : Markup.Kind.Shared } msg
 textLink href colors kids =
     Seam.asElement
         (Node.fromComponent

@@ -23,12 +23,8 @@ import Kit.Shape as Shape
 import Kit.Surface as Surface
 import Layout
 import M3e
-import M3e.Action as Action
 import Markup.Kind
 import Markup.Element as Element exposing (Element)
-import M3e.Progress as Progress
-import M3e.Record.Fab as Fab
-import M3e.Record.IconButton as IconButton
 import M3e.Kind
 import M3e.Token as Value
 import PagesMsg exposing (PagesMsg)
@@ -195,7 +191,7 @@ view _ _ _ =
 {-| The shared "Built from" + prev/next strip. Dashboard is the first example,
 so it has no previous screen.
 -}
-exampleFooter : Element { s | html : M3e.Kind.Brand, link : Markup.Kind.Shared } msg
+exampleFooter : Element { s | html : M3e.Kind.Brand, sharedLink : Markup.Kind.Shared } msg
 exampleFooter =
     ExampleNav.footer
         { builtFrom =
@@ -235,9 +231,9 @@ appBar =
 
 iconAction : String -> Element { s | iconButton : M3e.Kind.Brand } msg
 iconAction name =
-    IconButton.view { content = M3e.icon [ M3e.attrName name ] [], action = Action.none }
-        [ IconButton.variant Value.standard, M3e.ariaLabel name ]
-        []
+    M3e.iconButton
+        [ M3e.variantStandard, M3e.ariaLabel name ]
+        [ M3e.icon [ M3e.attrName name ] [] ]
 
 
 {-| The desktop side rail. Hidden on mobile via `hidden md:flex`.
@@ -281,12 +277,11 @@ barItem d =
 fab : Element { s | html : M3e.Kind.Brand } msg
 fab =
     Layout.div "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-20"
-        [ Fab.view
-            { content = M3e.icon [ M3e.attrName "add" ] []
-            , action = Action.none
-            }
-            [ Fab.variant Value.primary, Fab.extended True, M3e.ariaLabel "Add" ]
-            [ Fab.label (Kit.text "New report") ]
+        [ M3e.fab
+            [ M3e.variantPrimary, M3e.attrExtended True, M3e.ariaLabel "Add" ]
+            [ M3e.icon [ M3e.attrName "add" ] []
+            , M3e.fabSlotLabel (Kit.text "New report")
+            ]
         ]
 
 
@@ -404,7 +399,7 @@ budgetRow b =
             , Kit.labelText Value.large [ Kit.onSurfaceVariant ] [ Kit.text b.amount ]
             ]
         , M3e.linear
-            [ Progress.value b.used, Progress.max b.max ]
+            [ M3e.attrValueFloat b.used, M3e.attrMax b.max ]
             []
         ]
 

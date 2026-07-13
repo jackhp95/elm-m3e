@@ -21,7 +21,6 @@ import Layout
 import M3e
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Heading as Heading
 import M3e.Kind
 import M3e.Token as Value
 import PagesMsg exposing (PagesMsg)
@@ -149,9 +148,9 @@ header : Component -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Br
 header component =
     Layout.div "space-y-4"
         (Layout.div "flex flex-wrap items-center gap-3"
-            (Heading.view { content = Markup.Atoms.text component.name }
-                [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-                []
+            (M3e.heading
+                [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+                [ Markup.Atoms.text component.name ]
                 :: categoryChip component.category
             )
             :: summaryBlock component.summary
@@ -225,9 +224,9 @@ keep their `@docs` order within a group. Empty groups drop out.
 apiSection : List Doc.Data.Member -> Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, listItem : M3e.Kind.Brand } msg
 apiSection members =
     Layout.div "space-y-6"
-        (Heading.view { content = Markup.Atoms.text "API" }
-            [ Heading.variant Value.headline, Heading.size Value.small, Heading.level 2 ]
-            []
+        (M3e.heading
+            [ M3e.variantHeadline, M3e.sizeSmall, M3e.attrLevel 2 ]
+            [ Markup.Atoms.text "API" ]
             :: List.filterMap (apiGroup members) apiGroups
         )
 

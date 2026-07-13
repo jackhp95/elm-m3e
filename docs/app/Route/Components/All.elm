@@ -26,7 +26,7 @@ import Kit
 import Layout
 import Markup.Atoms
 import Markup.Element as Element exposing (Element)
-import M3e.Record.Heading as Heading
+import M3e
 import M3e.Kind
 import M3e.Token as Value
 import Pages.Url
@@ -125,9 +125,9 @@ view app _ model =
     let
         heading : Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand } Msg
         heading =
-            Heading.view { content = Markup.Atoms.text "All components" }
-                [ Heading.variant Value.display, Heading.size Value.small, Heading.level 1 ]
-                []
+            M3e.heading
+                [ M3e.variantDisplay, M3e.sizeSmall, M3e.attrLevel 1 ]
+                [ Markup.Atoms.text "All components" ]
 
         content : List (Element { s | html : M3e.Kind.Brand, heading : M3e.Kind.Brand, card : M3e.Kind.Brand, tabs : M3e.Kind.Brand } Msg)
         content =
@@ -241,9 +241,9 @@ stackedBlocks model d =
                     else
                         [ Layout.divWithId component.slug
                             "cv-auto space-y-6 scroll-mt-24"
-                            (Heading.view { content = Markup.Atoms.text component.name }
-                                [ Heading.variant Value.headline, Heading.size Value.medium, Heading.level 2 ]
-                                []
+                            (M3e.heading
+                                [ M3e.variantHeadline, M3e.sizeMedium, M3e.attrLevel 2 ]
+                                [ Markup.Atoms.text component.name ]
                                 :: Usage.usageBlocks offset model examples
                             )
                         ]
