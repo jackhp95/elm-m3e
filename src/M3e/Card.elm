@@ -1,0 +1,295 @@
+module M3e.Card exposing
+    ( view, actionable, inline, orientation, variant, href
+    , target, rel, download, name, value, type_
+    , disabledInteractive, disabled, onClick, header, content, actions
+    , footer
+    )
+
+{-| A content container for text, images (or other media), and actions in the context of a single subject.
+
+**Component Info:**
+
+  - **Extends:** `LitElement`
+
+**Events:**
+
+  - `click`: Dispatched when the element is clicked.
+
+**Slots:**
+
+  - `header`: Renders the header of the card.
+  - `content`: Renders the content of the card with padding.
+  - `actions`: Renders the actions of the card.
+  - `footer`: Renders the footer of the card.
+
+<!-- elm-cem:docmeta category=Containment -->
+
+
+## Examples
+
+
+### Examples
+
+<!-- elm-cem:example title="Anatomy" -->
+```elm
+M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [] [ M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ Kit.text "Action" ] ]), M3e.Card.footer (Native.div [] [ Kit.text "Card Footer" ]) ]
+```
+
+<!-- elm-cem:example title="Card Header" -->
+```elm
+M3e.Card.view [] [ M3e.Card.header (M3e.Heading.view [ M3e.Heading.variant M3e.Token.display, M3e.Heading.size M3e.Token.small ] [ Kit.text "Card Header" ]), M3e.Card.content (Native.div [] [ Kit.text "Card Content" ]), M3e.Card.actions (Native.div [ Native.attribute "end" "" ] [ M3e.Button.view [ M3e.Button.variant M3e.Token.filled ] [ Kit.text "Action" ] ]) ]
+```
+
+<!-- elm-cem:example title="Card Header (2)" -->
+```elm
+M3e.Card.view [] [ Kit.text "Card content" ]
+```
+
+<!-- elm-cem:example title="Variants" -->
+```elm
+[ M3e.Card.view [ M3e.Card.variant M3e.Token.filled ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Token.outlined ] [ M3e.Card.content (Native.div [] [ Kit.text "Outlined" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Token.elevated ] [ M3e.Card.content (Native.div [] [ Kit.text "Elevated" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Inline" -->
+```elm
+M3e.Card.view [ M3e.Card.inline True ] [ M3e.Card.content (Native.div [] [ Kit.text "Inline" ]) ]
+```
+
+<!-- elm-cem:example title="Orientation" -->
+```elm
+M3e.Card.view [ M3e.Attributes.class "image-card", M3e.Card.inline True, M3e.Card.orientation M3e.Token.horizontal ] [ M3e.Card.header (Native.img [ Native.attribute "src" "https://www.shutterstock.com/shutterstock/videos/1006393/thumb/1.jpg?ip=x480" ]), M3e.Card.content (Native.div [] [ Kit.text "Horizontal" ]) ]
+```
+
+<!-- elm-cem:example title="Actionable" -->
+```elm
+[ M3e.Card.view [ M3e.Card.variant M3e.Token.filled, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Filled Actionable" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Token.outlined, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Outlined Actionable" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Token.elevated, M3e.Card.actionable True ] [ M3e.Card.content (Native.div [] [ Kit.text "Elevated Actionable" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Disabling" -->
+```elm
+[ M3e.Card.view [ M3e.Card.variant M3e.Token.filled, M3e.Card.actionable True, M3e.Card.disabled True ] [ M3e.Card.content (Native.div [] [ Kit.text "Disabled" ]) ]
+    , Native.br
+    , M3e.Card.view [ M3e.Card.variant M3e.Token.filled, M3e.Card.actionable True, M3e.Card.disabledInteractive True ] [ M3e.Card.content (Native.div [] [ Kit.text "Disabled Interactive" ]) ]
+    ]
+```
+
+<!-- elm-cem:example title="Links" -->
+```elm
+M3e.Card.view [ M3e.Card.actionable True, M3e.Card.href "https://www.google.com", M3e.Card.target "_blank" ] [ M3e.Card.content (Native.div [] [ Kit.text "Google" ]) ]
+```
+
+@docs view, actionable, inline, orientation, variant, href
+@docs target, rel, download, name, value, type_
+@docs disabledInteractive, disabled, onClick, header, content, actions
+@docs footer
+
+-}
+
+import M3e.Html.Card
+import M3e.Kind
+import M3e.Token
+import Markup.Element
+import Markup.Element.Internal
+import Markup.Html.Attr
+import Markup.Html.Attr.Internal
+import Markup.Node
+
+
+{-| Build the `<m3e-card>` element (lazy IR).
+-}
+view :
+    List
+        (Markup.Html.Attr.Attr
+            { actionable : M3e.Token.Supported
+            , inline : M3e.Token.Supported
+            , orientation : M3e.Token.Supported
+            , variant : M3e.Token.Supported
+            , href : M3e.Token.Supported
+            , target : M3e.Token.Supported
+            , rel : M3e.Token.Supported
+            , download : M3e.Token.Supported
+            , name : M3e.Token.Supported
+            , value : M3e.Token.Supported
+            , type_ : M3e.Token.Supported
+            , disabledInteractive : M3e.Token.Supported
+            , disabled : M3e.Token.Supported
+            , onClick : M3e.Token.Supported
+            , slot : M3e.Token.Supported
+            }
+            msg
+        )
+    -> List (Markup.Element.Element any msg)
+    -> Markup.Element.Element { s | card : M3e.Kind.Brand } msg
+view attributes children =
+    Markup.Element.Internal.fromNode
+        (Markup.Node.fromComponent
+            (\erased ch ->
+                M3e.Html.Card.card
+                    (List.map Markup.Html.Attr.Internal.forget erased)
+                    ch
+            )
+            (List.map Markup.Html.Attr.Internal.forget attributes)
+            (List.map Markup.Element.toNode children)
+        )
+
+
+{-| Whether the card is "actionable" and will respond to use interaction. (default: `false`)
+-}
+actionable : Bool -> Markup.Html.Attr.Attr { c | actionable : M3e.Token.Supported } msg
+actionable =
+    M3e.Html.Card.actionable
+
+
+{-| Whether to present the card inline with surrounding content. (default: `false`)
+-}
+inline : Bool -> Markup.Html.Attr.Attr { c | inline : M3e.Token.Supported } msg
+inline =
+    M3e.Html.Card.inline
+
+
+{-| The orientation of the card. (default: `"vertical"`)
+-}
+orientation :
+    M3e.Token.Value
+        { horizontal : M3e.Token.Supported
+        , vertical : M3e.Token.Supported
+        }
+    -> Markup.Html.Attr.Attr { c | orientation : M3e.Token.Supported } msg
+orientation =
+    M3e.Html.Card.orientation
+
+
+{-| The appearance variant of the card. (default: `"filled"`)
+-}
+variant :
+    M3e.Token.Value
+        { elevated : M3e.Token.Supported
+        , filled : M3e.Token.Supported
+        , outlined : M3e.Token.Supported
+        }
+    -> Markup.Html.Attr.Attr { c | variant : M3e.Token.Supported } msg
+variant =
+    M3e.Html.Card.variant
+
+
+{-| The URL to which the link button points. (default: `""`)
+-}
+href : String -> Markup.Html.Attr.Attr { c | href : M3e.Token.Supported } msg
+href =
+    M3e.Html.Card.href
+
+
+{-| The target of the link button. (default: `""`)
+-}
+target : String -> Markup.Html.Attr.Attr { c | target : M3e.Token.Supported } msg
+target =
+    M3e.Html.Card.target
+
+
+{-| The relationship between the `target` of the link button and the document. (default: `""`)
+-}
+rel : String -> Markup.Html.Attr.Attr { c | rel : M3e.Token.Supported } msg
+rel =
+    M3e.Html.Card.rel
+
+
+{-| A value indicating whether the `target` of the link button will be downloaded,
+optionally specifying the new name of the file. (default: `null`)
+-}
+download : String -> Markup.Html.Attr.Attr { c | download : M3e.Token.Supported } msg
+download =
+    M3e.Html.Card.download
+
+
+{-| The name of the element, submitted as a pair with the element's `value`
+as part of form data, when the element is used to submit a form.
+-}
+name : String -> Markup.Html.Attr.Attr { c | name : M3e.Token.Supported } msg
+name =
+    M3e.Html.Card.name
+
+
+{-| The value associated with the element's name when it's submitted with form data.
+-}
+value : String -> Markup.Html.Attr.Attr { c | value : M3e.Token.Supported } msg
+value =
+    M3e.Html.Card.value
+
+
+{-| The type of the element. (default: `"button"`)
+-}
+type_ :
+    M3e.Token.Value
+        { button : M3e.Token.Supported
+        , reset : M3e.Token.Supported
+        , submit : M3e.Token.Supported
+        }
+    -> Markup.Html.Attr.Attr { c | type_ : M3e.Token.Supported } msg
+type_ =
+    M3e.Html.Card.type_
+
+
+{-| Whether the element is disabled and interactive. (default: `false`)
+-}
+disabledInteractive :
+    Bool
+    ->
+        Markup.Html.Attr.Attr
+            { c
+                | disabledInteractive : M3e.Token.Supported
+            }
+            msg
+disabledInteractive =
+    M3e.Html.Card.disabledInteractive
+
+
+{-| Whether the element is disabled. (default: `false`)
+-}
+disabled : Bool -> Markup.Html.Attr.Attr { c | disabled : M3e.Token.Supported } msg
+disabled =
+    M3e.Html.Card.disabled
+
+
+{-| Listen for `click` events.
+-}
+onClick : msg -> Markup.Html.Attr.Attr { c | onClick : M3e.Token.Supported } msg
+onClick =
+    M3e.Html.Card.onClick
+
+
+{-| Place content in the `header` slot.
+-}
+header : Markup.Element.Element any msg -> Markup.Element.Element k msg
+header el =
+    Markup.Element.Internal.placeSlot "header" el
+
+
+{-| Place content in the `content` slot.
+-}
+content : Markup.Element.Element any msg -> Markup.Element.Element k msg
+content el =
+    Markup.Element.Internal.placeSlot "content" el
+
+
+{-| Place content in the `actions` slot.
+-}
+actions : Markup.Element.Element any msg -> Markup.Element.Element k msg
+actions el =
+    Markup.Element.Internal.placeSlot "actions" el
+
+
+{-| Place content in the `footer` slot.
+-}
+footer : Markup.Element.Element any msg -> Markup.Element.Element k msg
+footer el =
+    Markup.Element.Internal.placeSlot "footer" el

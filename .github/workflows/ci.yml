@@ -1,0 +1,184 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  library:
+    name: Library — format, test, review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # The codegen-aware elm-review rules live in the sibling public repo
+      # jackhp95/elm-review-cem. The review config and the examples-gen pipeline
+      # both expect it at $REPO/../elm-review-cem (matches the local dev layout).
+      - name: Fetch elm-review-cem rules (sibling)
+        run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: docs/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+
+      # Cache elm-stuff to avoid recompiling the standard library every run.
+      - name: Cache root elm-stuff
+        uses: actions/cache@v6
+        with:
+          path: elm-stuff
+          key: ${{ runner.os }}-elm-root-${{ hashFiles('elm.json') }}
+
+      - name: Cache tests elm-stuff
+        uses: actions/cache@v6
+        with:
+          path: tests/elm-stuff
+          key: ${{ runner.os }}-elm-tests-${{ hashFiles('tests/elm.json') }}
+
+      - name: Cache review elm-stuff
+        uses: actions/cache@v6
+        with:
+          path: review/elm-stuff
+          key: ${{ runner.os }}-elm-review-${{ hashFiles('review/elm.json', 'review/src/**/*.elm') }}
+
+      - name: Install root deps (elm, elm-format, elm-test)
+        run: npm ci
+
+      # Validate formatting of the HAND-WRITTEN IR core only. The per-component
+      # modules under src/M3e/ are a generated artifact (ADR-8) and are not
+      # elm-format-formatted, so they are deliberately excluded here.
+      - name: elm-format --validate (hand-written IR core)
+        run: node_modules/.bin/elm-format --validate src/M3e/Node.elm src/M3e/Element.elm
+
+      # The real correctness proof: a green `elm make` over the package, which
+      # lives at the repo root (root elm.json is the published package).
+      - name: Validate package (elm make)
+        run: node_modules/.bin/elm make src/M3e.elm --output=/dev/null
+
+      # IR-core + slot unit tests live in the self-contained tests/ project
+      # (its elm.json points at ../src and ../docs/kit — the userland kit the
+      # tests use). Run from there so elm-test picks up tests/elm.json.
+      - name: elm-test (IR-core + slot unit tests)
+        run: cd tests && ../node_modules/.bin/elm-test --compiler ../node_modules/.bin/elm
+
+      - name: elm-review
+        # Run from docs/ so elm-review picks up docs/elm.json, which covers
+        # the docs app (app/) in addition to the library (../src) and kit (kit/).
+        # The review config lives in the repo root (../review relative to docs/).
+        # `elm-pages gen` writes the generated router under docs/.elm-pages/;
+        # without it elm-review can't see that Api/Effect/View/Shared are used by
+        # the router and reports false NoUnused errors. `gen` is the lightweight
+        # codegen step (no full build).
+        run: cd docs && pnpm install --frozen-lockfile && pnpm exec elm-pages gen && node_modules/.bin/elm-review --config ../review --compiler node_modules/.bin/elm
+
+  docs:
+    name: Docs — reference pipeline + production build
+    runs-on: ubuntu-latest
+    env:
+      # Pin the reference-pipeline scratch dir so the elm-stuff cache path below
+      # matches (extract-reference.mjs otherwise derives a per-worktree path).
+      M3E_DOCS_GEN_DIR: /tmp/m3e-docs-gen
+    steps:
+      - uses: actions/checkout@v7
+
+      # The codegen-aware elm-review rules live in the sibling public repo
+      # jackhp95/elm-review-cem. The review config and the examples-gen pipeline
+      # both expect it at $REPO/../elm-review-cem (matches the local dev layout).
+      - name: Fetch elm-review-cem rules (sibling)
+        run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: docs/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
+
+      - name: Cache scratch docs-gen elm-stuff
+        uses: actions/cache@v6
+        with:
+          # The reference pipeline materializes a scratch package project at
+          # /tmp/m3e-docs-gen each run; caching its elm-stuff between runs
+          # keeps `elm make --docs` fast.
+          path: /tmp/m3e-docs-gen/elm-stuff
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/**/*.elm') }}
+
+      - name: Install docs deps
+        run: cd docs && pnpm install --frozen-lockfile
+
+      # `elm make --docs` (the reference pipeline) is run by build:reference,
+      # which fails hard if any exposed value lacks a doc comment — locks in
+      # the F8 discipline.
+      - name: build:reference (elm make --docs pipeline)
+        run: cd docs && pnpm run build:reference
+
+      - name: Full production build (elm-pages + Netlify adapter)
+        run: cd docs && pnpm run build
+
+  harness:
+    name: Docs — Playwright runtime contract harness
+    runs-on: ubuntu-latest
+    env:
+      # Same pin as the docs job: keep the scratch dir at the cached path.
+      M3E_DOCS_GEN_DIR: /tmp/m3e-docs-gen
+    steps:
+      - uses: actions/checkout@v7
+
+      # The codegen-aware elm-review rules live in the sibling public repo
+      # jackhp95/elm-review-cem. The review config and the examples-gen pipeline
+      # both expect it at $REPO/../elm-review-cem (matches the local dev layout).
+      - name: Fetch elm-review-cem rules (sibling)
+        run: git clone --depth 1 https://github.com/jackhp95/elm-review-cem.git "$GITHUB_WORKSPACE/../elm-review-cem"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: docs/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
+
+      - name: Cache scratch docs-gen elm-stuff
+        uses: actions/cache@v6
+        with:
+          path: /tmp/m3e-docs-gen/elm-stuff
+          key: ${{ runner.os }}-elm-docs-gen-${{ hashFiles('src/**/*.elm') }}
+
+      - name: Install docs deps
+        run: cd docs && pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: cd docs && pnpm exec playwright install --with-deps chromium
+
+      # The harness's webServer boots `npm start` on :1239 itself, then asserts
+      # the runtime contract (shadow DOM / DOM properties / a11y / interaction)
+      # that Test.Html structurally cannot — see tests/README.md.
+      - name: Run contract harness
+        run: cd docs && pnpm run test:browser
+
+  skills:
+    name: Skills — frontmatter + link lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      # Dep-free mechanical guard for skills/: frontmatter lint (name/description/
+      # disable-model-invocation, <=500-line body budget) + intra-repo link
+      # resolution + evals.json JSON validity. Mirrors the sibling repos.
+      - name: check-skills
+        run: node skills/check-skills.mjs

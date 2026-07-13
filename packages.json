@@ -1,0 +1,138 @@
+{
+  "family": "elm-m3e",
+  "devRepo": "jackhp95/elm-m3e",
+  "licenseText": "BSD 3-Clause License\n\nCopyright (c) 2026 Jack Peterson\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its contributors\n   may be used to endorse or promote products derived from this software\n   without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+  "packages": [
+    {
+      "name": "jackhp95/elm-m3e-core",
+      "summary": "elm-m3e core: phantom-row types for Kind, Token, Element, Node, Html.Attr.",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/markup-core": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "exact": "M3e.Kind" },
+        { "prefix": "M3e.Html.Attr" },
+        { "prefix": "M3e.Element" },
+        { "prefix": "M3e.Node" },
+        { "prefix": "M3e.Token" },
+        { "exact": "M3e.Aria" },
+        { "exact": "M3e.Attributes" }
+      ]
+    },
+    {
+      "name": "jackhp95/elm-m3e-raw",
+      "summary": "Raw elm/html builders for elm-m3e components (M3e.Raw.*).",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/markup-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-core": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "prefix": "M3e.Raw." }
+      ]
+    },
+    {
+      "name": "jackhp95/elm-m3e-html",
+      "summary": "Middle-facet HTML attribute and event setters for elm-m3e (M3e.Html.*).",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/markup-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-raw": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "prefix": "M3e.Html." }
+      ]
+    },
+    {
+      "name": "jackhp95/elm-m3e-review-facts",
+      "summary": "elm-review facts for elm-m3e (M3e.Review.Facts). Install in review/ only.",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-review-cem": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "prefix": "M3e.Review." }
+      ]
+    },
+    {
+      "name": "jackhp95/elm-m3e-record",
+      "summary": "Record-facet constructors for elm-m3e components (M3e.Record.*).",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/markup-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-raw": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-html": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "prefix": "M3e.Record" }
+      ]
+    },
+    {
+      "name": "jackhp95/elm-m3e-build",
+      "summary": "Build-facet fluent constructors for elm-m3e components (M3e.Build.*).",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/markup-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-raw": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-html": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "prefix": "M3e.Build." }
+      ]
+    },
+    {
+      "name": "jackhp95/elm-m3e",
+      "summary": "elm-m3e standard facet - component builders, barrel, Action, Seam.",
+      "version": "1.0.0",
+      "elmVersion": "0.19.0 <= v < 0.20.0",
+      "deps": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0",
+        "elm/virtual-dom": "1.0.0 <= v < 2.0.0",
+        "jackhp95/markup-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-core": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-raw": "1.0.0 <= v < 2.0.0",
+        "jackhp95/elm-m3e-html": "1.0.0 <= v < 2.0.0"
+      },
+      "buckets": [
+        { "exact": "M3e" },
+        { "prefix": "M3e." }
+      ]
+    }
+  ]
+}

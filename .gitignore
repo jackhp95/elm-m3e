@@ -1,0 +1,29 @@
+node_modules/
+elm-stuff/
+dist/
+dist-packages/
+.DS_Store
+*.log
+
+.playwright-mcp/
+*.png
+
+# Agent / session working artifacts and stale generator snapshots (see issue #82).
+# gen-sample/ was a hand-committed snapshot of generated modules that drifted
+# from src; the rest are local agent/session scratch state.
+gen-sample/
+scratchpad/
+memory/
+.claude/
+
+# temporary working clone of the elm-cem generator (ADR 8 workflow; delete after push)
+/elm-cem/
+
+# working clone of the matraic m3e-docs wiki (regen input; not part of this repo)
+/m3e-docs/
+
+# also ignore node_modules symlinks (not just dirs)
+node_modules
+
+# elm publish doc-build artifact (write to /tmp instead)
+docs.json
