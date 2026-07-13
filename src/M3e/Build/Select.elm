@@ -250,7 +250,7 @@ onInput v_ b_ =
 {-| Place content in the `arrow` slot.
 -}
 arrow :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | arrow : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | arrow : M3e.Build.Internal.Used } msg kind
 arrow el_ b_ =

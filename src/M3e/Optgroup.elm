@@ -47,7 +47,7 @@ view attributes children =
 {-| Place content in the `label` slot.
 -}
 label :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 label el =
     Markup.Element.Internal.placeSlot "label" el

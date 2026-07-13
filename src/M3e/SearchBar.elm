@@ -87,7 +87,7 @@ onClear =
 -}
 leading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -107,7 +107,7 @@ input el =
 -}
 trailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -119,7 +119,7 @@ trailing el =
 {-| Place content in the `clear-icon` slot.
 -}
 clearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 clearIcon el =
     Markup.Element.Internal.placeSlot "clear-icon" el

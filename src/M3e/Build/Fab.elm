@@ -62,7 +62,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-fab>` with the required fields.
 -}
 fab :
-    { content : Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    { content : Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     , action :
         M3e.Action.Action
             { click : M3e.Token.Supported
@@ -270,7 +270,7 @@ variant v_ b_ =
 {-| Place content in the `label` slot.
 -}
 label :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | label : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | label : M3e.Build.Internal.Used } msg kind
 label el_ b_ =
@@ -284,7 +284,7 @@ label el_ b_ =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
 closeIcon el_ b_ =

@@ -257,7 +257,7 @@ child el_ b_ =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
 toggleIcon el_ b_ =

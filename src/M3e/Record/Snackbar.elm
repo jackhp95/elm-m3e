@@ -60,7 +60,7 @@ import Markup.Node
 {-| Build the `<m3e-snackbar>` element (lazy IR).
 -}
 view :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -139,7 +139,7 @@ onToggle =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 closeIcon el =
     Markup.Element.Internal.placeSlot "close-icon" el

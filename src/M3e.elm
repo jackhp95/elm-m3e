@@ -20,92 +20,103 @@ module M3e exposing
     , focusTrap, appBar, textOverflow, textHighlight, stateLayer, slide
     , scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing, elevation
     , collapsible, attrAction, attrActionable, attrActive, attrActiveDate, attrAlert
-    , attrAnchorOffset, ariaInvalid, attrAutoActivate, attrBufferValue, attrCascade, attrCaseSensitive
-    , attrCentered, attrChecked, attrClearLabel, attrClearable, attrCloseLabel, attrColor
-    , attrCompleted, attrConfirmLabel, attrContained, attrDate, attrDensity, attrDetent
-    , attrDetents, attrDisableClose, attrDisableHighlight, attrDisableHover, attrDisableRestoreFocus, attrDisabled
-    , attrDisabledInteractive, attrDiscrete, attrDismissLabel, attrDismissible, attrDownload, attrDuration
-    , attrEditable, attrElevated, attrEmphasized, attrEnd, attrEndDivider, attrExtended
-    , attrFilled, attrFirstPageLabel, attrFitAnchorWidth, attrFor, attrHandle, attrHandleLabel
-    , attrHideDelay, attrHideFriction, attrHideLoading, attrHideNoData, attrHidePageSize, attrHideRequiredMarker
-    , attrHideSearchIcon, attrHideSelectionIndicator, attrHideToggle, attrHideable, attrHref, attrIndeterminate
-    , attrInline, attrInset, attrInsetEnd, attrInsetStart, attrInvalid, attrInward
-    , attrItemLabel, attrItemsPerPageLabel, attrLabel, attrLabelled, attrLastPageLabel, attrLength
-    , attrLevel, attrLinear, attrLoaded, attrLoading, attrLoadingLabel, attrLowered
-    , attrTocIgnore, attrMax, attrMaxDate, attrMaxDepth, attrMaxRows, attrMin
-    , attrMinDate, attrMinRows, attrModal, attrMulti, attrNextMonthLabel, attrNextMultiYearLabel
-    , attrNextPageLabel, attrNextYearLabel, attrNoAnimate, attrNoDataLabel, attrNoFocusTrap, attrOpen
-    , attrOpticalSize, attrOptional, attrOvershootLimit, attrPageIndex, attrPageSizes, attrPanelClass
-    , attrPreviousMonthLabel, attrPreviousMultiYearLabel, attrPreviousPageLabel, attrPreviousYearLabel, attrRadius, attrRange
-    , attrRangeEnd, attrRangeStart, attrRel, attrRemovable, attrRemoveLabel, attrRequired
-    , attrReturnValue, attrSecondary, attrSelected, attrSelectedIndex, attrShowDelay, attrShowFirstLastButtons
-    , attrStart, attrStartAt, attrStartDivider, attrStep, attrStretch, attrStrongFocus
-    , attrSubmenu, attrTarget, attrTerm, attrThin, attrThreshold, attrToday
-    , attrToggle, attrUnbounded, attrVertical, attrWeight, attrWrap, attrWrapDetents
-    , attrName, attrValueFloat, attrValue, animationNone, animationPulse, animationWave
-    , contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage
-    , currentStep, currentTime, currentTrue, disablePaginationTrue, disablePaginationFalse, disablePaginationAuto
-    , dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver
-    , endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith
-    , floatLabelAlways, floatLabelAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAfter
-    , headerPositionBefore, headerPositionAbove, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever
-    , highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected
-    , labelPositionBelow, labelPositionEnd, modeAuto, modeDocked, modeFullscreen, modeBuffer
-    , modeDeterminate, modeIndeterminate, modeQuery, modeCompact, modeExpanded, modeContains
-    , modeEndsWith, modeStartsWith, motionExpressive, motionStandard, orientationAuto, orientationHorizontal
-    , orientationVertical, pageSizeAll, pageSizeVariantFilled, pageSizeVariantOutlined, positionAbove, positionAfter
-    , positionBefore, positionBelow, positionAboveAfter, positionAboveBefore, positionBelowAfter, positionBelowBefore
-    , positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark
-    , schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeRounded, shapeSquare, shapeAuto
-    , shapeCircular, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall
-    , startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear
-    , startViewYear, stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical
-    , togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, typeButton
-    , typeReset, typeSubmit, variantStandard, variantVibrant, variantContent, variantExpressive
-    , variantFidelity, variantFruitSalad, variantMonochrome, variantNeutral, variantRainbow, variantTonalSpot
-    , variantPrimary, variantSecondary, variantElevated, variantFilled, variantOutlined, variantTonal
-    , variantFlat, variantWavy, variantContained, variantUncontained, variantSegmented, variantRounded
-    , variantSharp, variantDisplay, variantHeadline, variantLabel, variantTitle, variantTertiary
-    , variantPrimaryContainer, variantSecondaryContainer, variantSurface, variantTertiaryContainer, variantAuto, variantDocked
-    , variantModal, variantConnected, variantText, widthDefault, widthNarrow, widthWide
-    , ariaLabel, ariaLabelledby, ariaDescribedby, ariaHidden, id, for
-    , class, style, onChange, onOpening, onOpened, onClosing
-    , onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle
-    , onValueChange, onQuery, onClear, onPage, onCancel, onRemove
-    , onInvalid, onActiveChange, onHighlight, slotLeading, slotTitle, slotSubtitle
-    , slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
-    , slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions
-    , slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText
-    , slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix
-    , slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput
-    , slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead
-    , slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon
-    , slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
-    , slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
-    , treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, tocSlotOverline
-    , tocSlotTitle, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabSlotIcon, stepSlotIcon
-    , stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotActions
-    , stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton
-    , snackbarSlotCloseIcon, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, buttonSegmentSlotIcon, searchViewSlotInput, searchViewSlotOpenLeading
-    , searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon
-    , searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon
-    , paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotArrow, selectSlotValue, navMenuItemGroupSlotLabel, navMenuItemSlotLabel
-    , navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navItemSlotIcon, navItemSlotSelectedIcon
-    , menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon, menuItemSlotTrailingIcon
-    , listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, expandableListItemSlotLeading, expandableListItemSlotOverline
-    , expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText
-    , listActionSlotTrailing, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listItemSlotLeading
-    , listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabMenuItemSlotIcon, fabSlotLabel, fabSlotCloseIcon
-    , expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd
-    , dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar
-    , inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon, filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon
-    , chipSlotTrailingIcon, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader
-    , richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon
-    , buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading
-    , autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix
-    , formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel
-    , appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
-    , slotDefault, child, children, control, linear, circular
+    , attrAnchorOffset, attrAutoActivate, attrBufferValue, attrCascade, attrCaseSensitive, attrCentered
+    , attrChecked, attrClearLabel, attrClearable, attrCloseLabel, attrColor, attrCompleted
+    , attrConfirmLabel, attrContained, attrDate, attrDensity, attrDetent, attrDetents
+    , attrDisableClose, attrDisableHighlight, attrDisableHover, attrDisableRestoreFocus, attrDisabled, attrDisabledInteractive
+    , attrDiscrete, attrDismissLabel, attrDismissible, attrDownload, attrDuration, attrEditable
+    , attrElevated, attrEmphasized, attrEnd, attrEndDivider, attrExtended, attrFilled
+    , attrFirstPageLabel, attrFitAnchorWidth, attrFor, attrHandle, attrHandleLabel, attrHideDelay
+    , attrHideFriction, attrHideLoading, attrHideNoData, attrHidePageSize, attrHideRequiredMarker, attrHideSearchIcon
+    , attrHideSelectionIndicator, attrHideToggle, attrHideable, attrHref, attrIndeterminate, attrInline
+    , attrInset, attrInsetEnd, attrInsetStart, attrInvalid, attrInward, attrItemLabel
+    , attrItemsPerPageLabel, attrLabel, attrLabelled, attrLastPageLabel, attrLength, attrLevel
+    , attrLinear, attrLoaded, attrLoading, attrLoadingLabel, attrLowered, attrTocIgnore
+    , attrMax, attrMaxDate, attrMaxDepth, attrMaxRows, attrMin, attrMinDate
+    , attrMinRows, attrModal, attrMulti, attrNextMonthLabel, attrNextMultiYearLabel, attrNextPageLabel
+    , attrNextYearLabel, attrNoAnimate, attrNoDataLabel, attrNoFocusTrap, attrOpen, attrOpticalSize
+    , attrOptional, attrOvershootLimit, attrPageIndex, attrPageSizes, attrPanelClass, attrPreviousMonthLabel
+    , attrPreviousMultiYearLabel, attrPreviousPageLabel, attrPreviousYearLabel, attrRadius, attrRange, attrRangeEnd
+    , attrRangeStart, attrRel, attrRemovable, attrRemoveLabel, attrRequired, attrReturnValue
+    , attrSecondary, attrSelected, attrSelectedIndex, attrShowDelay, attrShowFirstLastButtons, attrStart
+    , attrStartAt, attrStartDivider, attrStep, attrStretch, attrStrongFocus, attrSubmenu
+    , attrTarget, attrTerm, attrThin, attrThreshold, attrToday, attrToggle
+    , attrUnbounded, attrVertical, attrWeight, attrWrap, attrWrapDetents, attrName
+    , attrValueFloat, attrValue, animationNone, animationPulse, animationWave, contrastHigh
+    , contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep
+    , currentTime, currentTrue, disablePaginationTrue, disablePaginationFalse, disablePaginationAuto, dividersAbove
+    , dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush
+    , endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways
+    , floatLabelAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAfter, headerPositionBefore
+    , headerPositionAbove, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains
+    , highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow
+    , labelPositionEnd, modeAuto, modeDocked, modeFullscreen, modeBuffer, modeDeterminate
+    , modeIndeterminate, modeQuery, modeCompact, modeExpanded, modeContains, modeEndsWith
+    , modeStartsWith, motionExpressive, motionStandard, orientationAuto, orientationHorizontal, orientationVertical
+    , pageSizeAll, pageSizeVariantFilled, pageSizeVariantOutlined, positionAbove, positionAfter, positionBefore
+    , positionBelow, positionAboveAfter, positionAboveBefore, positionBelowAfter, positionBelowBefore, positionXAfter
+    , positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight
+    , scrollStrategyHide, scrollStrategyReposition, shapeRounded, shapeSquare, shapeAuto, shapeCircular
+    , sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto
+    , startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear
+    , stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter
+    , togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, typeButton, typeReset
+    , typeSubmit, variantStandard, variantVibrant, variantContent, variantExpressive, variantFidelity
+    , variantFruitSalad, variantMonochrome, variantNeutral, variantRainbow, variantTonalSpot, variantPrimary
+    , variantSecondary, variantElevated, variantFilled, variantOutlined, variantTonal, variantFlat
+    , variantWavy, variantContained, variantUncontained, variantSegmented, variantRounded, variantSharp
+    , variantDisplay, variantHeadline, variantLabel, variantTitle, variantTertiary, variantPrimaryContainer
+    , variantSecondaryContainer, variantSurface, variantTertiaryContainer, variantAuto, variantDocked, variantModal
+    , variantConnected, variantText, widthDefault, widthNarrow, widthWide, role
+    , ariaActivedescendant, ariaAtomic, ariaAutocomplete, ariaBraillelabel, ariaBrailleroledescription, ariaBusy
+    , ariaChecked, ariaColcount, ariaColindex, ariaColspan, ariaControls, ariaCurrent
+    , ariaDescribedby, ariaDescription, ariaDetails, ariaDisabled, ariaDropeffect, ariaErrormessage
+    , ariaExpanded, ariaFlowto, ariaGrabbed, ariaHaspopup, ariaHidden, ariaInvalid
+    , ariaKeyshortcuts, ariaLabel, ariaLabelledby, ariaLevel, ariaLive, ariaModal
+    , ariaMultiline, ariaMultiselectable, ariaOrientation, ariaOwns, ariaPlaceholder, ariaPosinset
+    , ariaPressed, ariaReadonly, ariaRelevant, ariaRequired, ariaRoledescription, ariaRowcount
+    , ariaRowindex, ariaRowspan, ariaSelected, ariaSetsize, ariaSort, ariaValuemax
+    , ariaValuemin, ariaValuenow, ariaValuetext, id, for, class
+    , style, accesskey, anchor, exportparts, is, lang
+    , nonce, part, title, virtualkeyboardpolicy, autofocus, headingreset
+    , inert, headingoffset, tabindex, onChange, onOpening, onOpened
+    , onClosing, onClosed, onClick, onBeforeinput, onInput, onBeforetoggle
+    , onToggle, onValueChange, onQuery, onClear, onPage, onCancel
+    , onRemove, onInvalid, onActiveChange, onHighlight, slotLeading, slotTitle
+    , slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading
+    , slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent
+    , slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline
+    , slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText
+    , slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon
+    , slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon
+    , slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
+    , slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton
+    , slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel
+    , slotOpenToggleIcon, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon
+    , tocSlotOverline, tocSlotTitle, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabSlotIcon
+    , stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError
+    , stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton
+    , splitButtonSlotTrailingButton, snackbarSlotCloseIcon, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, buttonSegmentSlotIcon, searchViewSlotInput
+    , searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon
+    , searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, paginatorSlotFirstPageIcon
+    , paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotArrow, selectSlotValue, navMenuItemGroupSlotLabel
+    , navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navItemSlotIcon
+    , navItemSlotSelectedIcon, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon
+    , menuItemSlotTrailingIcon, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, expandableListItemSlotLeading
+    , expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotLeading, listActionSlotOverline
+    , listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing
+    , listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabMenuItemSlotIcon, fabSlotLabel
+    , fabSlotCloseIcon, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart
+    , drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput
+    , inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon, filterChipSlotTrailingIcon, assistChipSlotIcon
+    , chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter
+    , calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected
+    , buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader
+    , autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel
+    , formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading
+    , optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon
+    , appBarSlotTrailingIcon, slotDefault, child, children, control, linear
+    , circular
     )
 
 {-| The one-import barrel. Re-exposes every component constructor plus the whole shared attribute/event vocabulary, so `import M3e exposing (..)` gives you every constructor together with `disabled`/`variant`/`onClick`/… . Token values stay in `M3e.Token` (re-exposing hundreds here would bloat the namespace). Each constructor takes `[attributes] [content]`; reach for the per-component `M3e.<Component>` modules when you want the strict, component-scoped types.
@@ -131,92 +142,103 @@ module M3e exposing
 @docs focusTrap, appBar, textOverflow, textHighlight, stateLayer, slide
 @docs scrollContainer, ripple, pseudoRadio, pseudoCheckbox, focusRing, elevation
 @docs collapsible, attrAction, attrActionable, attrActive, attrActiveDate, attrAlert
-@docs attrAnchorOffset, ariaInvalid, attrAutoActivate, attrBufferValue, attrCascade, attrCaseSensitive
-@docs attrCentered, attrChecked, attrClearLabel, attrClearable, attrCloseLabel, attrColor
-@docs attrCompleted, attrConfirmLabel, attrContained, attrDate, attrDensity, attrDetent
-@docs attrDetents, attrDisableClose, attrDisableHighlight, attrDisableHover, attrDisableRestoreFocus, attrDisabled
-@docs attrDisabledInteractive, attrDiscrete, attrDismissLabel, attrDismissible, attrDownload, attrDuration
-@docs attrEditable, attrElevated, attrEmphasized, attrEnd, attrEndDivider, attrExtended
-@docs attrFilled, attrFirstPageLabel, attrFitAnchorWidth, attrFor, attrHandle, attrHandleLabel
-@docs attrHideDelay, attrHideFriction, attrHideLoading, attrHideNoData, attrHidePageSize, attrHideRequiredMarker
-@docs attrHideSearchIcon, attrHideSelectionIndicator, attrHideToggle, attrHideable, attrHref, attrIndeterminate
-@docs attrInline, attrInset, attrInsetEnd, attrInsetStart, attrInvalid, attrInward
-@docs attrItemLabel, attrItemsPerPageLabel, attrLabel, attrLabelled, attrLastPageLabel, attrLength
-@docs attrLevel, attrLinear, attrLoaded, attrLoading, attrLoadingLabel, attrLowered
-@docs attrTocIgnore, attrMax, attrMaxDate, attrMaxDepth, attrMaxRows, attrMin
-@docs attrMinDate, attrMinRows, attrModal, attrMulti, attrNextMonthLabel, attrNextMultiYearLabel
-@docs attrNextPageLabel, attrNextYearLabel, attrNoAnimate, attrNoDataLabel, attrNoFocusTrap, attrOpen
-@docs attrOpticalSize, attrOptional, attrOvershootLimit, attrPageIndex, attrPageSizes, attrPanelClass
-@docs attrPreviousMonthLabel, attrPreviousMultiYearLabel, attrPreviousPageLabel, attrPreviousYearLabel, attrRadius, attrRange
-@docs attrRangeEnd, attrRangeStart, attrRel, attrRemovable, attrRemoveLabel, attrRequired
-@docs attrReturnValue, attrSecondary, attrSelected, attrSelectedIndex, attrShowDelay, attrShowFirstLastButtons
-@docs attrStart, attrStartAt, attrStartDivider, attrStep, attrStretch, attrStrongFocus
-@docs attrSubmenu, attrTarget, attrTerm, attrThin, attrThreshold, attrToday
-@docs attrToggle, attrUnbounded, attrVertical, attrWeight, attrWrap, attrWrapDetents
-@docs attrName, attrValueFloat, attrValue, animationNone, animationPulse, animationWave
-@docs contrastHigh, contrastMedium, contrastStandard, currentDate, currentLocation, currentPage
-@docs currentStep, currentTime, currentTrue, disablePaginationTrue, disablePaginationFalse, disablePaginationAuto
-@docs dividersAbove, dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver
-@docs endModePush, endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith
-@docs floatLabelAlways, floatLabelAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAfter
-@docs headerPositionBefore, headerPositionAbove, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever
-@docs highlightModeContains, highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected
-@docs labelPositionBelow, labelPositionEnd, modeAuto, modeDocked, modeFullscreen, modeBuffer
-@docs modeDeterminate, modeIndeterminate, modeQuery, modeCompact, modeExpanded, modeContains
-@docs modeEndsWith, modeStartsWith, motionExpressive, motionStandard, orientationAuto, orientationHorizontal
-@docs orientationVertical, pageSizeAll, pageSizeVariantFilled, pageSizeVariantOutlined, positionAbove, positionAfter
-@docs positionBefore, positionBelow, positionAboveAfter, positionAboveBefore, positionBelowAfter, positionBelowBefore
-@docs positionXAfter, positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark
-@docs schemeLight, scrollStrategyHide, scrollStrategyReposition, shapeRounded, shapeSquare, shapeAuto
-@docs shapeCircular, sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall
-@docs startModeAuto, startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear
-@docs startViewYear, stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical
-@docs togglePositionAfter, togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, typeButton
-@docs typeReset, typeSubmit, variantStandard, variantVibrant, variantContent, variantExpressive
-@docs variantFidelity, variantFruitSalad, variantMonochrome, variantNeutral, variantRainbow, variantTonalSpot
-@docs variantPrimary, variantSecondary, variantElevated, variantFilled, variantOutlined, variantTonal
-@docs variantFlat, variantWavy, variantContained, variantUncontained, variantSegmented, variantRounded
-@docs variantSharp, variantDisplay, variantHeadline, variantLabel, variantTitle, variantTertiary
-@docs variantPrimaryContainer, variantSecondaryContainer, variantSurface, variantTertiaryContainer, variantAuto, variantDocked
-@docs variantModal, variantConnected, variantText, widthDefault, widthNarrow, widthWide
-@docs ariaLabel, ariaLabelledby, ariaDescribedby, ariaHidden, id, for
-@docs class, style, onChange, onOpening, onOpened, onClosing
-@docs onClosed, onClick, onBeforeinput, onInput, onBeforetoggle, onToggle
-@docs onValueChange, onQuery, onClear, onPage, onCancel, onRemove
-@docs onInvalid, onActiveChange, onHighlight, slotLeading, slotTitle, slotSubtitle
-@docs slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData
-@docs slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions
-@docs slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText
-@docs slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix
-@docs slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput
-@docs slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead
-@docs slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon
-@docs slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton
-@docs slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
-@docs treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon, tocSlotOverline
-@docs tocSlotTitle, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabSlotIcon, stepSlotIcon
-@docs stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError, stepPanelSlotActions
-@docs stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton, splitButtonSlotTrailingButton
-@docs snackbarSlotCloseIcon, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, buttonSegmentSlotIcon, searchViewSlotInput, searchViewSlotOpenLeading
-@docs searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon, searchViewSlotClearIcon
-@docs searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, paginatorSlotFirstPageIcon, paginatorSlotPreviousPageIcon
-@docs paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotArrow, selectSlotValue, navMenuItemGroupSlotLabel, navMenuItemSlotLabel
-@docs navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navItemSlotIcon, navItemSlotSelectedIcon
-@docs menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon, menuItemSlotTrailingIcon
-@docs listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, expandableListItemSlotLeading, expandableListItemSlotOverline
-@docs expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotLeading, listActionSlotOverline, listActionSlotSupportingText
-@docs listActionSlotTrailing, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing, listItemSlotLeading
-@docs listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabMenuItemSlotIcon, fabSlotLabel, fabSlotCloseIcon
-@docs expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart, drawerContainerSlotEnd
-@docs dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput, inputChipSlotAvatar
-@docs inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon, filterChipSlotTrailingIcon, assistChipSlotIcon, chipSlotIcon
-@docs chipSlotTrailingIcon, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter, calendarSlotHeader
-@docs richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected, buttonSlotSelectedIcon
-@docs buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader, autocompleteSlotLoading
-@docs autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel, formFieldSlotSuffix
-@docs formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading, optgroupSlotLabel
-@docs appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon, appBarSlotTrailingIcon
-@docs slotDefault, child, children, control, linear, circular
+@docs attrAnchorOffset, attrAutoActivate, attrBufferValue, attrCascade, attrCaseSensitive, attrCentered
+@docs attrChecked, attrClearLabel, attrClearable, attrCloseLabel, attrColor, attrCompleted
+@docs attrConfirmLabel, attrContained, attrDate, attrDensity, attrDetent, attrDetents
+@docs attrDisableClose, attrDisableHighlight, attrDisableHover, attrDisableRestoreFocus, attrDisabled, attrDisabledInteractive
+@docs attrDiscrete, attrDismissLabel, attrDismissible, attrDownload, attrDuration, attrEditable
+@docs attrElevated, attrEmphasized, attrEnd, attrEndDivider, attrExtended, attrFilled
+@docs attrFirstPageLabel, attrFitAnchorWidth, attrFor, attrHandle, attrHandleLabel, attrHideDelay
+@docs attrHideFriction, attrHideLoading, attrHideNoData, attrHidePageSize, attrHideRequiredMarker, attrHideSearchIcon
+@docs attrHideSelectionIndicator, attrHideToggle, attrHideable, attrHref, attrIndeterminate, attrInline
+@docs attrInset, attrInsetEnd, attrInsetStart, attrInvalid, attrInward, attrItemLabel
+@docs attrItemsPerPageLabel, attrLabel, attrLabelled, attrLastPageLabel, attrLength, attrLevel
+@docs attrLinear, attrLoaded, attrLoading, attrLoadingLabel, attrLowered, attrTocIgnore
+@docs attrMax, attrMaxDate, attrMaxDepth, attrMaxRows, attrMin, attrMinDate
+@docs attrMinRows, attrModal, attrMulti, attrNextMonthLabel, attrNextMultiYearLabel, attrNextPageLabel
+@docs attrNextYearLabel, attrNoAnimate, attrNoDataLabel, attrNoFocusTrap, attrOpen, attrOpticalSize
+@docs attrOptional, attrOvershootLimit, attrPageIndex, attrPageSizes, attrPanelClass, attrPreviousMonthLabel
+@docs attrPreviousMultiYearLabel, attrPreviousPageLabel, attrPreviousYearLabel, attrRadius, attrRange, attrRangeEnd
+@docs attrRangeStart, attrRel, attrRemovable, attrRemoveLabel, attrRequired, attrReturnValue
+@docs attrSecondary, attrSelected, attrSelectedIndex, attrShowDelay, attrShowFirstLastButtons, attrStart
+@docs attrStartAt, attrStartDivider, attrStep, attrStretch, attrStrongFocus, attrSubmenu
+@docs attrTarget, attrTerm, attrThin, attrThreshold, attrToday, attrToggle
+@docs attrUnbounded, attrVertical, attrWeight, attrWrap, attrWrapDetents, attrName
+@docs attrValueFloat, attrValue, animationNone, animationPulse, animationWave, contrastHigh
+@docs contrastMedium, contrastStandard, currentDate, currentLocation, currentPage, currentStep
+@docs currentTime, currentTrue, disablePaginationTrue, disablePaginationFalse, disablePaginationAuto, dividersAbove
+@docs dividersAboveBelow, dividersBelow, dividersNone, endModeAuto, endModeOver, endModePush
+@docs endModeSide, filterContains, filterEndsWith, filterNone, filterStartsWith, floatLabelAlways
+@docs floatLabelAuto, gradeHigh, gradeLow, gradeMedium, headerPositionAfter, headerPositionBefore
+@docs headerPositionAbove, headerPositionBelow, hideSubscriptAlways, hideSubscriptAuto, hideSubscriptNever, highlightModeContains
+@docs highlightModeEndsWith, highlightModeStartsWith, iconsBoth, iconsNone, iconsSelected, labelPositionBelow
+@docs labelPositionEnd, modeAuto, modeDocked, modeFullscreen, modeBuffer, modeDeterminate
+@docs modeIndeterminate, modeQuery, modeCompact, modeExpanded, modeContains, modeEndsWith
+@docs modeStartsWith, motionExpressive, motionStandard, orientationAuto, orientationHorizontal, orientationVertical
+@docs pageSizeAll, pageSizeVariantFilled, pageSizeVariantOutlined, positionAbove, positionAfter, positionBefore
+@docs positionBelow, positionAboveAfter, positionAboveBefore, positionBelowAfter, positionBelowBefore, positionXAfter
+@docs positionXBefore, positionYAbove, positionYBelow, schemeAuto, schemeDark, schemeLight
+@docs scrollStrategyHide, scrollStrategyReposition, shapeRounded, shapeSquare, shapeAuto, shapeCircular
+@docs sizeExtraLarge, sizeExtraSmall, sizeLarge, sizeMedium, sizeSmall, startModeAuto
+@docs startModeOver, startModePush, startModeSide, startViewMonth, startViewMultiYear, startViewYear
+@docs stateContent, stateLoading, stateNoData, toggleDirectionHorizontal, toggleDirectionVertical, togglePositionAfter
+@docs togglePositionBefore, touchGesturesAuto, touchGesturesOff, touchGesturesOn, typeButton, typeReset
+@docs typeSubmit, variantStandard, variantVibrant, variantContent, variantExpressive, variantFidelity
+@docs variantFruitSalad, variantMonochrome, variantNeutral, variantRainbow, variantTonalSpot, variantPrimary
+@docs variantSecondary, variantElevated, variantFilled, variantOutlined, variantTonal, variantFlat
+@docs variantWavy, variantContained, variantUncontained, variantSegmented, variantRounded, variantSharp
+@docs variantDisplay, variantHeadline, variantLabel, variantTitle, variantTertiary, variantPrimaryContainer
+@docs variantSecondaryContainer, variantSurface, variantTertiaryContainer, variantAuto, variantDocked, variantModal
+@docs variantConnected, variantText, widthDefault, widthNarrow, widthWide, role
+@docs ariaActivedescendant, ariaAtomic, ariaAutocomplete, ariaBraillelabel, ariaBrailleroledescription, ariaBusy
+@docs ariaChecked, ariaColcount, ariaColindex, ariaColspan, ariaControls, ariaCurrent
+@docs ariaDescribedby, ariaDescription, ariaDetails, ariaDisabled, ariaDropeffect, ariaErrormessage
+@docs ariaExpanded, ariaFlowto, ariaGrabbed, ariaHaspopup, ariaHidden, ariaInvalid
+@docs ariaKeyshortcuts, ariaLabel, ariaLabelledby, ariaLevel, ariaLive, ariaModal
+@docs ariaMultiline, ariaMultiselectable, ariaOrientation, ariaOwns, ariaPlaceholder, ariaPosinset
+@docs ariaPressed, ariaReadonly, ariaRelevant, ariaRequired, ariaRoledescription, ariaRowcount
+@docs ariaRowindex, ariaRowspan, ariaSelected, ariaSetsize, ariaSort, ariaValuemax
+@docs ariaValuemin, ariaValuenow, ariaValuetext, id, for, class
+@docs style, accesskey, anchor, exportparts, is, lang
+@docs nonce, part, title, virtualkeyboardpolicy, autofocus, headingreset
+@docs inert, headingoffset, tabindex, onChange, onOpening, onOpened
+@docs onClosing, onClosed, onClick, onBeforeinput, onInput, onBeforetoggle
+@docs onToggle, onValueChange, onQuery, onClear, onPage, onCancel
+@docs onRemove, onInvalid, onActiveChange, onHighlight, slotLeading, slotTitle
+@docs slotSubtitle, slotTrailing, slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading
+@docs slotNoData, slotHeader, slotSeparator, slotSelected, slotSelectedIcon, slotContent
+@docs slotActions, slotFooter, slotCloseIcon, slotStart, slotEnd, slotOverline
+@docs slotSupportingText, slotToggleIcon, slotItems, slotLabel, slotPrefix, slotPrefixText
+@docs slotSuffix, slotSuffixText, slotHint, slotError, slotAvatar, slotRemoveIcon
+@docs slotInput, slotBadge, slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon
+@docs slotSubhead, slotClearIcon, slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing
+@docs slotSearchIcon, slotArrow, slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton
+@docs slotTrailingButton, slotDoneIcon, slotEditIcon, slotErrorIcon, slotStep, slotPanel
+@docs slotOpenToggleIcon, treeItemSlotLabel, treeItemSlotIcon, treeItemSlotSelectedIcon, treeItemSlotToggleIcon, treeItemSlotOpenToggleIcon
+@docs tocSlotOverline, tocSlotTitle, tabsSlotPanel, tabsSlotNextIcon, tabsSlotPrevIcon, tabSlotIcon
+@docs stepSlotIcon, stepSlotDoneIcon, stepSlotEditIcon, stepSlotErrorIcon, stepSlotHint, stepSlotError
+@docs stepPanelSlotActions, stepperSlotStep, stepperSlotPanel, splitPaneSlotStart, splitPaneSlotEnd, splitButtonSlotLeadingButton
+@docs splitButtonSlotTrailingButton, snackbarSlotCloseIcon, slideGroupSlotNextIcon, slideGroupSlotPrevIcon, buttonSegmentSlotIcon, searchViewSlotInput
+@docs searchViewSlotOpenLeading, searchViewSlotOpenTrailing, searchViewSlotClosedLeading, searchViewSlotClosedTrailing, searchViewSlotSearchIcon, searchViewSlotCloseIcon
+@docs searchViewSlotClearIcon, searchBarSlotLeading, searchBarSlotInput, searchBarSlotTrailing, searchBarSlotClearIcon, paginatorSlotFirstPageIcon
+@docs paginatorSlotPreviousPageIcon, paginatorSlotNextPageIcon, paginatorSlotLastPageIcon, selectSlotArrow, selectSlotValue, navMenuItemGroupSlotLabel
+@docs navMenuItemSlotLabel, navMenuItemSlotIcon, navMenuItemSlotBadge, navMenuItemSlotSelectedIcon, navMenuItemSlotToggleIcon, navItemSlotIcon
+@docs navItemSlotSelectedIcon, menuItemRadioSlotIcon, menuItemRadioSlotTrailingIcon, menuItemCheckboxSlotIcon, menuItemCheckboxSlotTrailingIcon, menuItemSlotIcon
+@docs menuItemSlotTrailingIcon, listOptionSlotLeading, listOptionSlotOverline, listOptionSlotSupportingText, listOptionSlotTrailing, expandableListItemSlotLeading
+@docs expandableListItemSlotOverline, expandableListItemSlotSupportingText, expandableListItemSlotToggleIcon, expandableListItemSlotItems, listActionSlotLeading, listActionSlotOverline
+@docs listActionSlotSupportingText, listActionSlotTrailing, listItemButtonSlotLeading, listItemButtonSlotOverline, listItemButtonSlotSupportingText, listItemButtonSlotTrailing
+@docs listItemSlotLeading, listItemSlotOverline, listItemSlotSupportingText, listItemSlotTrailing, fabMenuItemSlotIcon, fabSlotLabel
+@docs fabSlotCloseIcon, expansionPanelSlotActions, expansionPanelSlotHeader, expansionPanelSlotToggleIcon, expansionHeaderSlotToggleIcon, drawerContainerSlotStart
+@docs drawerContainerSlotEnd, dialogSlotHeader, dialogSlotActions, dialogSlotCloseIcon, suggestionChipSlotIcon, inputChipSetSlotInput
+@docs inputChipSlotAvatar, inputChipSlotIcon, inputChipSlotRemoveIcon, filterChipSlotIcon, filterChipSlotTrailingIcon, assistChipSlotIcon
+@docs chipSlotIcon, chipSlotTrailingIcon, cardSlotHeader, cardSlotContent, cardSlotActions, cardSlotFooter
+@docs calendarSlotHeader, richTooltipSlotSubhead, richTooltipSlotActions, iconButtonSlotSelected, buttonSlotIcon, buttonSlotSelected
+@docs buttonSlotSelectedIcon, buttonSlotTrailingIcon, breadcrumbSlotSeparator, breadcrumbItemSlotIcon, breadcrumbItemButtonSlotIcon, bottomSheetSlotHeader
+@docs autocompleteSlotLoading, autocompleteSlotNoData, formFieldSlotDefault, formFieldSlotPrefix, formFieldSlotPrefixText, formFieldSlotLabel
+@docs formFieldSlotSuffix, formFieldSlotSuffixText, formFieldSlotHint, formFieldSlotError, optionPanelSlotNoData, optionPanelSlotLoading
+@docs optgroupSlotLabel, appBarSlotLeading, appBarSlotTitle, appBarSlotSubtitle, appBarSlotTrailing, appBarSlotLeadingIcon
+@docs appBarSlotTrailingIcon, slotDefault, child, children, control, linear
+@docs circular
 
 -}
 
@@ -443,7 +465,7 @@ tocItem :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | tocItem : M3e.Kind.Brand } msg
 tocItem =
     M3e.TocItem.view
@@ -559,7 +581,7 @@ tab :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | tab : M3e.Kind.Brand } msg
 tab =
     M3e.Tab.view
@@ -639,7 +661,7 @@ step :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | step : M3e.Kind.Brand } msg
 step =
     M3e.Step.view
@@ -738,7 +760,7 @@ snackbar :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | snackbar : M3e.Kind.Brand } msg
 snackbar =
     M3e.Snackbar.view
@@ -884,7 +906,7 @@ buttonSegment :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | buttonSegment : M3e.Kind.Brand } msg
 buttonSegment =
     M3e.ButtonSegment.view
@@ -1167,7 +1189,7 @@ navItem :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | navItem : M3e.Kind.Brand } msg
 navItem =
     M3e.NavItem.view
@@ -1185,7 +1207,7 @@ menuItemRadio :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | menuItemRadio : M3e.Kind.Brand } msg
 menuItemRadio =
     M3e.MenuItemRadio.view
@@ -1221,7 +1243,7 @@ menuItemCheckbox :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | menuItemCheckbox : M3e.Kind.Brand } msg
 menuItemCheckbox =
     M3e.MenuItemCheckbox.view
@@ -1276,7 +1298,7 @@ menuItem :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , dialogTrigger : M3e.Kind.Brand
                 , dialogAction : M3e.Kind.Brand
                 , menuTrigger : M3e.Kind.Brand
@@ -1379,7 +1401,7 @@ listOption :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , html : M3e.Kind.Brand
                 }
                 msg
@@ -1431,7 +1453,7 @@ expandableListItem :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , html : M3e.Kind.Brand
                 }
                 msg
@@ -1459,7 +1481,7 @@ listAction :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , dialogTrigger : M3e.Kind.Brand
                 , dialogAction : M3e.Kind.Brand
                 , menuTrigger : M3e.Kind.Brand
@@ -1499,7 +1521,7 @@ listItemButton :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , html : M3e.Kind.Brand
                 }
                 msg
@@ -1542,7 +1564,7 @@ listItem :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , html : M3e.Kind.Brand
                 }
                 msg
@@ -1568,7 +1590,7 @@ icon :
             msg
         )
     -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | icon : Markup.Kind.Shared } msg
+    -> Markup.Element.Element { s | sharedIcon : Markup.Kind.Shared } msg
 icon =
     M3e.Icon.view
 
@@ -1587,7 +1609,7 @@ heading :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | heading : M3e.Kind.Brand } msg
 heading =
     M3e.Heading.view
@@ -1678,7 +1700,7 @@ fab :
             }
             msg
         )
-    -> List (Markup.Element.Element { icon : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | fab : M3e.Kind.Brand } msg
 fab =
     M3e.Fab.view
@@ -1738,7 +1760,7 @@ expansionHeader :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | expansionHeader : M3e.Kind.Brand } msg
 expansionHeader =
     M3e.ExpansionHeader.view
@@ -1943,7 +1965,7 @@ suggestionChip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | suggestionChip : M3e.Kind.Brand } msg
 suggestionChip =
     M3e.SuggestionChip.view
@@ -1986,7 +2008,7 @@ inputChip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | inputChip : M3e.Kind.Brand } msg
 inputChip =
     M3e.InputChip.view
@@ -2033,7 +2055,7 @@ filterChip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | filterChip : M3e.Kind.Brand } msg
 filterChip =
     M3e.FilterChip.view
@@ -2085,7 +2107,7 @@ assistChip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | assistChip : M3e.Kind.Brand } msg
 assistChip =
     M3e.AssistChip.view
@@ -2102,7 +2124,7 @@ chip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | chip : M3e.Kind.Brand } msg
 chip =
     M3e.Chip.view
@@ -2278,7 +2300,7 @@ tooltip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | tooltip : M3e.Kind.Brand } msg
 tooltip =
     M3e.Tooltip.view
@@ -2301,7 +2323,7 @@ richTooltip :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | richTooltip : M3e.Kind.Brand } msg
 richTooltip =
     M3e.RichTooltip.view
@@ -2317,7 +2339,7 @@ richTooltipAction :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | richTooltipAction : M3e.Kind.Brand } msg
 richTooltipAction =
     M3e.RichTooltipAction.view
@@ -2379,7 +2401,7 @@ iconButton :
     ->
         List
             (Markup.Element.Element
-                { icon : Markup.Kind.Shared
+                { sharedIcon : Markup.Kind.Shared
                 , menuTrigger : M3e.Kind.Brand
                 , dialogTrigger : M3e.Kind.Brand
                 , fabMenuTrigger : M3e.Kind.Brand
@@ -2431,8 +2453,8 @@ button :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
-                , icon : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
+                , sharedIcon : Markup.Kind.Shared
                 , menuTrigger : M3e.Kind.Brand
                 , dialogTrigger : M3e.Kind.Brand
                 , fabMenuTrigger : M3e.Kind.Brand
@@ -2490,8 +2512,8 @@ breadcrumbItem :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
-                , icon : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
+                , sharedIcon : Markup.Kind.Shared
                 }
                 msg
             )
@@ -2519,8 +2541,8 @@ breadcrumbItemButton :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
-                , icon : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
+                , sharedIcon : Markup.Kind.Shared
                 }
                 msg
             )
@@ -2541,7 +2563,7 @@ bottomSheetTrigger :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | bottomSheetTrigger : M3e.Kind.Brand } msg
 bottomSheetTrigger =
     M3e.BottomSheetTrigger.view
@@ -2580,7 +2602,7 @@ bottomSheet =
 -}
 bottomSheetAction :
     List (Markup.Html.Attr.Attr { slot : M3e.Token.Supported } msg)
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | bottomSheetAction : M3e.Kind.Brand } msg
 bottomSheetAction =
     M3e.BottomSheetAction.view
@@ -2598,7 +2620,7 @@ badge :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | badge : M3e.Kind.Brand } msg
 badge =
     M3e.Badge.view
@@ -2744,7 +2766,7 @@ option :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | option : M3e.Kind.Brand } msg
 option =
     M3e.Option.view
@@ -2788,7 +2810,7 @@ appBar =
 -}
 textOverflow :
     List (Markup.Html.Attr.Attr { slot : M3e.Token.Supported } msg)
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | textOverflow : M3e.Kind.Brand } msg
 textOverflow =
     M3e.TextOverflow.view
@@ -3020,15 +3042,6 @@ attrAnchorOffset :
     -> Markup.Html.Attr.Attr { c | anchorOffset : M3e.Token.Supported } msg
 attrAnchorOffset =
     M3e.Html.Shared.anchorOffset
-
-
-{-| Set the `aria-invalid` attribute.
--}
-ariaInvalid :
-    String
-    -> Markup.Html.Attr.Attr { c | ariaInvalid : M3e.Token.Supported } msg
-ariaInvalid =
-    M3e.Html.Shared.ariaInvalid
 
 
 {-| Whether the first option should be automatically activated. (default: `false`)
@@ -5137,6 +5150,188 @@ widthWide =
     M3e.Html.Shared.width M3e.Token.wide
 
 
+{-| Set `role` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+role : String -> Markup.Html.Attr.Attr capability msg
+role =
+    Markup.Aria.role
+
+
+{-| Set `aria-activedescendant` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaActivedescendant : String -> Markup.Html.Attr.Attr capability msg
+ariaActivedescendant =
+    Markup.Aria.activedescendant
+
+
+{-| Set `aria-atomic` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaAtomic : String -> Markup.Html.Attr.Attr capability msg
+ariaAtomic =
+    Markup.Aria.atomic
+
+
+{-| Set `aria-autocomplete` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaAutocomplete : String -> Markup.Html.Attr.Attr capability msg
+ariaAutocomplete =
+    Markup.Aria.autocomplete
+
+
+{-| Set `aria-braillelabel` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaBraillelabel : String -> Markup.Html.Attr.Attr capability msg
+ariaBraillelabel =
+    Markup.Aria.braillelabel
+
+
+{-| Set `aria-brailleroledescription` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaBrailleroledescription : String -> Markup.Html.Attr.Attr capability msg
+ariaBrailleroledescription =
+    Markup.Aria.brailleroledescription
+
+
+{-| Set `aria-busy` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaBusy : String -> Markup.Html.Attr.Attr capability msg
+ariaBusy =
+    Markup.Aria.busy
+
+
+{-| Set `aria-checked` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaChecked : String -> Markup.Html.Attr.Attr capability msg
+ariaChecked =
+    Markup.Aria.checked
+
+
+{-| Set `aria-colcount` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaColcount : String -> Markup.Html.Attr.Attr capability msg
+ariaColcount =
+    Markup.Aria.colcount
+
+
+{-| Set `aria-colindex` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaColindex : String -> Markup.Html.Attr.Attr capability msg
+ariaColindex =
+    Markup.Aria.colindex
+
+
+{-| Set `aria-colspan` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaColspan : String -> Markup.Html.Attr.Attr capability msg
+ariaColspan =
+    Markup.Aria.colspan
+
+
+{-| Set `aria-controls` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaControls : String -> Markup.Html.Attr.Attr capability msg
+ariaControls =
+    Markup.Aria.controls
+
+
+{-| Set `aria-current` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaCurrent : String -> Markup.Html.Attr.Attr capability msg
+ariaCurrent =
+    Markup.Aria.current
+
+
+{-| Set `aria-describedby` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaDescribedby : String -> Markup.Html.Attr.Attr capability msg
+ariaDescribedby =
+    Markup.Aria.describedby
+
+
+{-| Set `aria-description` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaDescription : String -> Markup.Html.Attr.Attr capability msg
+ariaDescription =
+    Markup.Aria.description
+
+
+{-| Set `aria-details` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaDetails : String -> Markup.Html.Attr.Attr capability msg
+ariaDetails =
+    Markup.Aria.details
+
+
+{-| Set `aria-disabled` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaDisabled : String -> Markup.Html.Attr.Attr capability msg
+ariaDisabled =
+    Markup.Aria.disabled
+
+
+{-| Set `aria-dropeffect` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaDropeffect : String -> Markup.Html.Attr.Attr capability msg
+ariaDropeffect =
+    Markup.Aria.dropeffect
+
+
+{-| Set `aria-errormessage` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaErrormessage : String -> Markup.Html.Attr.Attr capability msg
+ariaErrormessage =
+    Markup.Aria.errormessage
+
+
+{-| Set `aria-expanded` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaExpanded : String -> Markup.Html.Attr.Attr capability msg
+ariaExpanded =
+    Markup.Aria.expanded
+
+
+{-| Set `aria-flowto` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaFlowto : String -> Markup.Html.Attr.Attr capability msg
+ariaFlowto =
+    Markup.Aria.flowto
+
+
+{-| Set `aria-grabbed` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaGrabbed : String -> Markup.Html.Attr.Attr capability msg
+ariaGrabbed =
+    Markup.Aria.grabbed
+
+
+{-| Set `aria-haspopup` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaHaspopup : String -> Markup.Html.Attr.Attr capability msg
+ariaHaspopup =
+    Markup.Aria.haspopup
+
+
+{-| Set `aria-hidden` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaHidden : String -> Markup.Html.Attr.Attr capability msg
+ariaHidden =
+    Markup.Aria.hidden
+
+
+{-| Set `aria-invalid` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaInvalid : String -> Markup.Html.Attr.Attr capability msg
+ariaInvalid =
+    Markup.Aria.invalid
+
+
+{-| Set `aria-keyshortcuts` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaKeyshortcuts : String -> Markup.Html.Attr.Attr capability msg
+ariaKeyshortcuts =
+    Markup.Aria.keyshortcuts
+
+
 {-| Set `aria-label` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
 -}
 ariaLabel : String -> Markup.Html.Attr.Attr capability msg
@@ -5151,18 +5346,172 @@ ariaLabelledby =
     Markup.Aria.labelledby
 
 
-{-| Set `aria-describedby` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+{-| Set `aria-level` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
 -}
-ariaDescribedby : String -> Markup.Html.Attr.Attr capability msg
-ariaDescribedby =
-    Markup.Aria.describedby
+ariaLevel : String -> Markup.Html.Attr.Attr capability msg
+ariaLevel =
+    Markup.Aria.level
 
 
-{-| Set `aria-hidden` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+{-| Set `aria-live` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
 -}
-ariaHidden : String -> Markup.Html.Attr.Attr capability msg
-ariaHidden =
-    Markup.Aria.hidden
+ariaLive : String -> Markup.Html.Attr.Attr capability msg
+ariaLive =
+    Markup.Aria.live
+
+
+{-| Set `aria-modal` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaModal : String -> Markup.Html.Attr.Attr capability msg
+ariaModal =
+    Markup.Aria.modal
+
+
+{-| Set `aria-multiline` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaMultiline : String -> Markup.Html.Attr.Attr capability msg
+ariaMultiline =
+    Markup.Aria.multiline
+
+
+{-| Set `aria-multiselectable` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaMultiselectable : String -> Markup.Html.Attr.Attr capability msg
+ariaMultiselectable =
+    Markup.Aria.multiselectable
+
+
+{-| Set `aria-orientation` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaOrientation : String -> Markup.Html.Attr.Attr capability msg
+ariaOrientation =
+    Markup.Aria.orientation
+
+
+{-| Set `aria-owns` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaOwns : String -> Markup.Html.Attr.Attr capability msg
+ariaOwns =
+    Markup.Aria.owns
+
+
+{-| Set `aria-placeholder` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaPlaceholder : String -> Markup.Html.Attr.Attr capability msg
+ariaPlaceholder =
+    Markup.Aria.placeholder
+
+
+{-| Set `aria-posinset` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaPosinset : String -> Markup.Html.Attr.Attr capability msg
+ariaPosinset =
+    Markup.Aria.posinset
+
+
+{-| Set `aria-pressed` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaPressed : String -> Markup.Html.Attr.Attr capability msg
+ariaPressed =
+    Markup.Aria.pressed
+
+
+{-| Set `aria-readonly` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaReadonly : String -> Markup.Html.Attr.Attr capability msg
+ariaReadonly =
+    Markup.Aria.readonly
+
+
+{-| Set `aria-relevant` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaRelevant : String -> Markup.Html.Attr.Attr capability msg
+ariaRelevant =
+    Markup.Aria.relevant
+
+
+{-| Set `aria-required` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaRequired : String -> Markup.Html.Attr.Attr capability msg
+ariaRequired =
+    Markup.Aria.required
+
+
+{-| Set `aria-roledescription` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaRoledescription : String -> Markup.Html.Attr.Attr capability msg
+ariaRoledescription =
+    Markup.Aria.roledescription
+
+
+{-| Set `aria-rowcount` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaRowcount : String -> Markup.Html.Attr.Attr capability msg
+ariaRowcount =
+    Markup.Aria.rowcount
+
+
+{-| Set `aria-rowindex` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaRowindex : String -> Markup.Html.Attr.Attr capability msg
+ariaRowindex =
+    Markup.Aria.rowindex
+
+
+{-| Set `aria-rowspan` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaRowspan : String -> Markup.Html.Attr.Attr capability msg
+ariaRowspan =
+    Markup.Aria.rowspan
+
+
+{-| Set `aria-selected` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaSelected : String -> Markup.Html.Attr.Attr capability msg
+ariaSelected =
+    Markup.Aria.selected
+
+
+{-| Set `aria-setsize` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaSetsize : String -> Markup.Html.Attr.Attr capability msg
+ariaSetsize =
+    Markup.Aria.setsize
+
+
+{-| Set `aria-sort` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaSort : String -> Markup.Html.Attr.Attr capability msg
+ariaSort =
+    Markup.Aria.sort
+
+
+{-| Set `aria-valuemax` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaValuemax : String -> Markup.Html.Attr.Attr capability msg
+ariaValuemax =
+    Markup.Aria.valuemax
+
+
+{-| Set `aria-valuemin` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaValuemin : String -> Markup.Html.Attr.Attr capability msg
+ariaValuemin =
+    Markup.Aria.valuemin
+
+
+{-| Set `aria-valuenow` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaValuenow : String -> Markup.Html.Attr.Attr capability msg
+ariaValuenow =
+    Markup.Aria.valuenow
+
+
+{-| Set `aria-valuetext` on any component (universal accessibility setter, re-exposed from `M3e.Aria`).
+-}
+ariaValuetext : String -> Markup.Html.Attr.Attr capability msg
+ariaValuetext =
+    Markup.Aria.valuetext
 
 
 {-| Set the `id` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
@@ -5191,6 +5540,104 @@ class =
 style : List ( String, String ) -> Markup.Html.Attr.Attr capability msg
 style =
     Markup.Attributes.style
+
+
+{-| Set the `accesskey` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+accesskey : String -> Markup.Html.Attr.Attr capability msg
+accesskey =
+    Markup.Attributes.accesskey
+
+
+{-| Set the `anchor` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+anchor : String -> Markup.Html.Attr.Attr capability msg
+anchor =
+    Markup.Attributes.anchor
+
+
+{-| Set the `exportparts` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+exportparts : String -> Markup.Html.Attr.Attr capability msg
+exportparts =
+    Markup.Attributes.exportparts
+
+
+{-| Set the `is` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+is : String -> Markup.Html.Attr.Attr capability msg
+is =
+    Markup.Attributes.is
+
+
+{-| Set the `lang` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+lang : String -> Markup.Html.Attr.Attr capability msg
+lang =
+    Markup.Attributes.lang
+
+
+{-| Set the `nonce` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+nonce : String -> Markup.Html.Attr.Attr capability msg
+nonce =
+    Markup.Attributes.nonce
+
+
+{-| Set the `part` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+part : String -> Markup.Html.Attr.Attr capability msg
+part =
+    Markup.Attributes.part
+
+
+{-| Set the `title` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+title : String -> Markup.Html.Attr.Attr capability msg
+title =
+    Markup.Attributes.title
+
+
+{-| Set the `virtualkeyboardpolicy` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+virtualkeyboardpolicy : String -> Markup.Html.Attr.Attr capability msg
+virtualkeyboardpolicy =
+    Markup.Attributes.virtualkeyboardpolicy
+
+
+{-| Set the `autofocus` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+autofocus : Bool -> Markup.Html.Attr.Attr capability msg
+autofocus =
+    Markup.Attributes.autofocus
+
+
+{-| Set the `headingreset` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+headingreset : Bool -> Markup.Html.Attr.Attr capability msg
+headingreset =
+    Markup.Attributes.headingreset
+
+
+{-| Set the `inert` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+inert : Bool -> Markup.Html.Attr.Attr capability msg
+inert =
+    Markup.Attributes.inert
+
+
+{-| Set the `headingoffset` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+headingoffset : Int -> Markup.Html.Attr.Attr capability msg
+headingoffset =
+    Markup.Attributes.headingoffset
+
+
+{-| Set the `tabindex` attribute on any component (universal HTML setter, re-exposed from `M3e.Attributes`).
+-}
+tabindex : Int -> Markup.Html.Attr.Attr capability msg
+tabindex =
+    Markup.Attributes.tabindex
 
 
 {-| Listen for `change` events.
@@ -5368,8 +5815,8 @@ onHighlight =
 -}
 slotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
-        , text : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         , button : M3e.Kind.Brand
         , avatar : M3e.Kind.Brand
@@ -5385,7 +5832,7 @@ slotLeading =
 -}
 slotTitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -5398,7 +5845,7 @@ slotTitle =
 -}
 slotSubtitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -5411,8 +5858,8 @@ slotSubtitle =
 -}
 slotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
-        , text : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         , button : M3e.Kind.Brand
         , searchBar : M3e.Kind.Brand
@@ -5446,7 +5893,7 @@ slotTrailingIcon =
 -}
 slotIcon :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , loadingIndicator : M3e.Kind.Brand
         }
         msg
@@ -5487,8 +5934,8 @@ slotSeparator =
 -}
 slotSelected :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , icon : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedIcon : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -5499,7 +5946,7 @@ slotSelected =
 {-| Place content in the `selected-icon` slot. See `M3e.Html.Shared.slotSelectedIcon`.
 -}
 slotSelectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotSelectedIcon =
     M3e.Html.Shared.slotSelectedIcon
@@ -5529,7 +5976,7 @@ slotFooter =
 {-| Place content in the `close-icon` slot. See `M3e.Html.Shared.slotCloseIcon`.
 -}
 slotCloseIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotCloseIcon =
     M3e.Html.Shared.slotCloseIcon
@@ -5553,7 +6000,7 @@ slotEnd =
 -}
 slotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -5566,7 +6013,7 @@ slotOverline =
 -}
 slotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -5578,7 +6025,7 @@ slotSupportingText =
 {-| Place content in the `toggle-icon` slot. See `M3e.Html.Shared.slotToggleIcon`.
 -}
 slotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotToggleIcon =
     M3e.Html.Shared.slotToggleIcon
@@ -5652,7 +6099,7 @@ slotAvatar =
 {-| Place content in the `remove-icon` slot. See `M3e.Html.Shared.slotRemoveIcon`.
 -}
 slotRemoveIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotRemoveIcon =
     M3e.Html.Shared.slotRemoveIcon
@@ -5669,7 +6116,7 @@ slotInput =
 -}
 slotBadge :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , badge : M3e.Kind.Brand
         }
         msg
@@ -5681,7 +6128,7 @@ slotBadge =
 {-| Place content in the `first-page-icon` slot. See `M3e.Html.Shared.slotFirstPageIcon`.
 -}
 slotFirstPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotFirstPageIcon =
     M3e.Html.Shared.slotFirstPageIcon
@@ -5690,7 +6137,7 @@ slotFirstPageIcon =
 {-| Place content in the `previous-page-icon` slot. See `M3e.Html.Shared.slotPreviousPageIcon`.
 -}
 slotPreviousPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotPreviousPageIcon =
     M3e.Html.Shared.slotPreviousPageIcon
@@ -5699,7 +6146,7 @@ slotPreviousPageIcon =
 {-| Place content in the `next-page-icon` slot. See `M3e.Html.Shared.slotNextPageIcon`.
 -}
 slotNextPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotNextPageIcon =
     M3e.Html.Shared.slotNextPageIcon
@@ -5708,7 +6155,7 @@ slotNextPageIcon =
 {-| Place content in the `last-page-icon` slot. See `M3e.Html.Shared.slotLastPageIcon`.
 -}
 slotLastPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotLastPageIcon =
     M3e.Html.Shared.slotLastPageIcon
@@ -5717,7 +6164,7 @@ slotLastPageIcon =
 {-| Place content in the `subhead` slot. See `M3e.Html.Shared.slotSubhead`.
 -}
 slotSubhead :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotSubhead =
     M3e.Html.Shared.slotSubhead
@@ -5726,7 +6173,7 @@ slotSubhead =
 {-| Place content in the `clear-icon` slot. See `M3e.Html.Shared.slotClearIcon`.
 -}
 slotClearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotClearIcon =
     M3e.Html.Shared.slotClearIcon
@@ -5736,7 +6183,7 @@ slotClearIcon =
 -}
 slotOpenLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -5749,7 +6196,7 @@ slotOpenLeading =
 -}
 slotOpenTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -5762,7 +6209,7 @@ slotOpenTrailing =
 -}
 slotClosedLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -5775,7 +6222,7 @@ slotClosedLeading =
 -}
 slotClosedTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -5787,7 +6234,7 @@ slotClosedTrailing =
 {-| Place content in the `search-icon` slot. See `M3e.Html.Shared.slotSearchIcon`.
 -}
 slotSearchIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotSearchIcon =
     M3e.Html.Shared.slotSearchIcon
@@ -5796,7 +6243,7 @@ slotSearchIcon =
 {-| Place content in the `arrow` slot. See `M3e.Html.Shared.slotArrow`.
 -}
 slotArrow :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotArrow =
     M3e.Html.Shared.slotArrow
@@ -5812,7 +6259,7 @@ slotValue =
 {-| Place content in the `next-icon` slot. See `M3e.Html.Shared.slotNextIcon`.
 -}
 slotNextIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotNextIcon =
     M3e.Html.Shared.slotNextIcon
@@ -5821,7 +6268,7 @@ slotNextIcon =
 {-| Place content in the `prev-icon` slot. See `M3e.Html.Shared.slotPrevIcon`.
 -}
 slotPrevIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotPrevIcon =
     M3e.Html.Shared.slotPrevIcon
@@ -5848,7 +6295,7 @@ slotTrailingButton =
 {-| Place content in the `done-icon` slot. See `M3e.Html.Shared.slotDoneIcon`.
 -}
 slotDoneIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotDoneIcon =
     M3e.Html.Shared.slotDoneIcon
@@ -5857,7 +6304,7 @@ slotDoneIcon =
 {-| Place content in the `edit-icon` slot. See `M3e.Html.Shared.slotEditIcon`.
 -}
 slotEditIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotEditIcon =
     M3e.Html.Shared.slotEditIcon
@@ -5866,7 +6313,7 @@ slotEditIcon =
 {-| Place content in the `error-icon` slot. See `M3e.Html.Shared.slotErrorIcon`.
 -}
 slotErrorIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotErrorIcon =
     M3e.Html.Shared.slotErrorIcon
@@ -5897,7 +6344,7 @@ slotPanel =
 {-| Place content in the `open-toggle-icon` slot. See `M3e.Html.Shared.slotOpenToggleIcon`.
 -}
 slotOpenToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotOpenToggleIcon =
     M3e.Html.Shared.slotOpenToggleIcon
@@ -5907,8 +6354,8 @@ slotOpenToggleIcon =
 -}
 treeItemSlotLabel :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , link : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedLink : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -5919,7 +6366,7 @@ treeItemSlotLabel =
 {-| See `M3e.TreeItem.icon`.
 -}
 treeItemSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 treeItemSlotIcon =
     M3e.TreeItem.icon
@@ -5928,7 +6375,7 @@ treeItemSlotIcon =
 {-| See `M3e.TreeItem.selectedIcon`.
 -}
 treeItemSlotSelectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 treeItemSlotSelectedIcon =
     M3e.TreeItem.selectedIcon
@@ -5937,7 +6384,7 @@ treeItemSlotSelectedIcon =
 {-| See `M3e.TreeItem.toggleIcon`.
 -}
 treeItemSlotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 treeItemSlotToggleIcon =
     M3e.TreeItem.toggleIcon
@@ -5946,7 +6393,7 @@ treeItemSlotToggleIcon =
 {-| See `M3e.TreeItem.openToggleIcon`.
 -}
 treeItemSlotOpenToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 treeItemSlotOpenToggleIcon =
     M3e.TreeItem.openToggleIcon
@@ -5955,7 +6402,7 @@ treeItemSlotOpenToggleIcon =
 {-| See `M3e.Toc.overline`.
 -}
 tocSlotOverline :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 tocSlotOverline =
     M3e.Toc.overline
@@ -5964,7 +6411,7 @@ tocSlotOverline =
 {-| See `M3e.Toc.title`.
 -}
 tocSlotTitle :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 tocSlotTitle =
     M3e.Toc.title
@@ -5982,7 +6429,7 @@ tabsSlotPanel =
 {-| See `M3e.Tabs.nextIcon`.
 -}
 tabsSlotNextIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 tabsSlotNextIcon =
     M3e.Tabs.nextIcon
@@ -5991,7 +6438,7 @@ tabsSlotNextIcon =
 {-| See `M3e.Tabs.prevIcon`.
 -}
 tabsSlotPrevIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 tabsSlotPrevIcon =
     M3e.Tabs.prevIcon
@@ -6000,7 +6447,7 @@ tabsSlotPrevIcon =
 {-| See `M3e.Tab.icon`.
 -}
 tabSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 tabSlotIcon =
     M3e.Tab.icon
@@ -6009,7 +6456,7 @@ tabSlotIcon =
 {-| See `M3e.Step.icon`.
 -}
 stepSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 stepSlotIcon =
     M3e.Step.icon
@@ -6018,7 +6465,7 @@ stepSlotIcon =
 {-| See `M3e.Step.doneIcon`.
 -}
 stepSlotDoneIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 stepSlotDoneIcon =
     M3e.Step.doneIcon
@@ -6027,7 +6474,7 @@ stepSlotDoneIcon =
 {-| See `M3e.Step.editIcon`.
 -}
 stepSlotEditIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 stepSlotEditIcon =
     M3e.Step.editIcon
@@ -6036,7 +6483,7 @@ stepSlotEditIcon =
 {-| See `M3e.Step.errorIcon`.
 -}
 stepSlotErrorIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 stepSlotErrorIcon =
     M3e.Step.errorIcon
@@ -6045,7 +6492,7 @@ stepSlotErrorIcon =
 {-| See `M3e.Step.hint`.
 -}
 stepSlotHint :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 stepSlotHint =
     M3e.Step.hint
@@ -6054,7 +6501,7 @@ stepSlotHint =
 {-| See `M3e.Step.error`.
 -}
 stepSlotError :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 stepSlotError =
     M3e.Step.error
@@ -6120,7 +6567,7 @@ splitButtonSlotTrailingButton =
 {-| See `M3e.Snackbar.closeIcon`.
 -}
 snackbarSlotCloseIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 snackbarSlotCloseIcon =
     M3e.Snackbar.closeIcon
@@ -6129,7 +6576,7 @@ snackbarSlotCloseIcon =
 {-| See `M3e.SlideGroup.nextIcon`.
 -}
 slideGroupSlotNextIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slideGroupSlotNextIcon =
     M3e.SlideGroup.nextIcon
@@ -6138,7 +6585,7 @@ slideGroupSlotNextIcon =
 {-| See `M3e.SlideGroup.prevIcon`.
 -}
 slideGroupSlotPrevIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slideGroupSlotPrevIcon =
     M3e.SlideGroup.prevIcon
@@ -6147,7 +6594,7 @@ slideGroupSlotPrevIcon =
 {-| See `M3e.ButtonSegment.icon`.
 -}
 buttonSegmentSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 buttonSegmentSlotIcon =
     M3e.ButtonSegment.icon
@@ -6164,7 +6611,7 @@ searchViewSlotInput =
 -}
 searchViewSlotOpenLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -6177,7 +6624,7 @@ searchViewSlotOpenLeading =
 -}
 searchViewSlotOpenTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -6190,7 +6637,7 @@ searchViewSlotOpenTrailing =
 -}
 searchViewSlotClosedLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -6203,7 +6650,7 @@ searchViewSlotClosedLeading =
 -}
 searchViewSlotClosedTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -6215,7 +6662,7 @@ searchViewSlotClosedTrailing =
 {-| See `M3e.SearchView.searchIcon`.
 -}
 searchViewSlotSearchIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 searchViewSlotSearchIcon =
     M3e.SearchView.searchIcon
@@ -6224,7 +6671,7 @@ searchViewSlotSearchIcon =
 {-| See `M3e.SearchView.closeIcon`.
 -}
 searchViewSlotCloseIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 searchViewSlotCloseIcon =
     M3e.SearchView.closeIcon
@@ -6233,7 +6680,7 @@ searchViewSlotCloseIcon =
 {-| See `M3e.SearchView.clearIcon`.
 -}
 searchViewSlotClearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 searchViewSlotClearIcon =
     M3e.SearchView.clearIcon
@@ -6243,7 +6690,7 @@ searchViewSlotClearIcon =
 -}
 searchBarSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -6263,7 +6710,7 @@ searchBarSlotInput =
 -}
 searchBarSlotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -6275,7 +6722,7 @@ searchBarSlotTrailing =
 {-| See `M3e.SearchBar.clearIcon`.
 -}
 searchBarSlotClearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 searchBarSlotClearIcon =
     M3e.SearchBar.clearIcon
@@ -6284,7 +6731,7 @@ searchBarSlotClearIcon =
 {-| See `M3e.Paginator.firstPageIcon`.
 -}
 paginatorSlotFirstPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 paginatorSlotFirstPageIcon =
     M3e.Paginator.firstPageIcon
@@ -6293,7 +6740,7 @@ paginatorSlotFirstPageIcon =
 {-| See `M3e.Paginator.previousPageIcon`.
 -}
 paginatorSlotPreviousPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 paginatorSlotPreviousPageIcon =
     M3e.Paginator.previousPageIcon
@@ -6302,7 +6749,7 @@ paginatorSlotPreviousPageIcon =
 {-| See `M3e.Paginator.nextPageIcon`.
 -}
 paginatorSlotNextPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 paginatorSlotNextPageIcon =
     M3e.Paginator.nextPageIcon
@@ -6311,7 +6758,7 @@ paginatorSlotNextPageIcon =
 {-| See `M3e.Paginator.lastPageIcon`.
 -}
 paginatorSlotLastPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 paginatorSlotLastPageIcon =
     M3e.Paginator.lastPageIcon
@@ -6320,7 +6767,7 @@ paginatorSlotLastPageIcon =
 {-| See `M3e.Select.arrow`.
 -}
 selectSlotArrow :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 selectSlotArrow =
     M3e.Select.arrow
@@ -6337,7 +6784,7 @@ selectSlotValue =
 -}
 navMenuItemGroupSlotLabel :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , heading : M3e.Kind.Brand
         }
         msg
@@ -6350,8 +6797,8 @@ navMenuItemGroupSlotLabel =
 -}
 navMenuItemSlotLabel :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , link : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedLink : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -6362,7 +6809,7 @@ navMenuItemSlotLabel =
 {-| See `M3e.NavMenuItem.icon`.
 -}
 navMenuItemSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 navMenuItemSlotIcon =
     M3e.NavMenuItem.icon
@@ -6372,7 +6819,7 @@ navMenuItemSlotIcon =
 -}
 navMenuItemSlotBadge :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , badge : M3e.Kind.Brand
         }
         msg
@@ -6384,7 +6831,7 @@ navMenuItemSlotBadge =
 {-| See `M3e.NavMenuItem.selectedIcon`.
 -}
 navMenuItemSlotSelectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 navMenuItemSlotSelectedIcon =
     M3e.NavMenuItem.selectedIcon
@@ -6393,7 +6840,7 @@ navMenuItemSlotSelectedIcon =
 {-| See `M3e.NavMenuItem.toggleIcon`.
 -}
 navMenuItemSlotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 navMenuItemSlotToggleIcon =
     M3e.NavMenuItem.toggleIcon
@@ -6402,7 +6849,7 @@ navMenuItemSlotToggleIcon =
 {-| See `M3e.NavItem.icon`.
 -}
 navItemSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 navItemSlotIcon =
     M3e.NavItem.icon
@@ -6411,7 +6858,7 @@ navItemSlotIcon =
 {-| See `M3e.NavItem.selectedIcon`.
 -}
 navItemSlotSelectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 navItemSlotSelectedIcon =
     M3e.NavItem.selectedIcon
@@ -6420,7 +6867,7 @@ navItemSlotSelectedIcon =
 {-| See `M3e.MenuItemRadio.icon`.
 -}
 menuItemRadioSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 menuItemRadioSlotIcon =
     M3e.MenuItemRadio.icon
@@ -6429,7 +6876,7 @@ menuItemRadioSlotIcon =
 {-| See `M3e.MenuItemRadio.trailingIcon`.
 -}
 menuItemRadioSlotTrailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 menuItemRadioSlotTrailingIcon =
     M3e.MenuItemRadio.trailingIcon
@@ -6438,7 +6885,7 @@ menuItemRadioSlotTrailingIcon =
 {-| See `M3e.MenuItemCheckbox.icon`.
 -}
 menuItemCheckboxSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 menuItemCheckboxSlotIcon =
     M3e.MenuItemCheckbox.icon
@@ -6447,7 +6894,7 @@ menuItemCheckboxSlotIcon =
 {-| See `M3e.MenuItemCheckbox.trailingIcon`.
 -}
 menuItemCheckboxSlotTrailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 menuItemCheckboxSlotTrailingIcon =
     M3e.MenuItemCheckbox.trailingIcon
@@ -6456,7 +6903,7 @@ menuItemCheckboxSlotTrailingIcon =
 {-| See `M3e.MenuItem.icon`.
 -}
 menuItemSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 menuItemSlotIcon =
     M3e.MenuItem.icon
@@ -6465,7 +6912,7 @@ menuItemSlotIcon =
 {-| See `M3e.MenuItem.trailingIcon`.
 -}
 menuItemSlotTrailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 menuItemSlotTrailingIcon =
     M3e.MenuItem.trailingIcon
@@ -6475,9 +6922,9 @@ menuItemSlotTrailingIcon =
 -}
 listOptionSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6490,7 +6937,7 @@ listOptionSlotLeading =
 -}
 listOptionSlotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6503,7 +6950,7 @@ listOptionSlotOverline =
 -}
 listOptionSlotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6516,9 +6963,9 @@ listOptionSlotSupportingText =
 -}
 listOptionSlotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         , switch : M3e.Kind.Brand
         , radio : M3e.Kind.Brand
@@ -6534,9 +6981,9 @@ listOptionSlotTrailing =
 -}
 expandableListItemSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6549,7 +6996,7 @@ expandableListItemSlotLeading =
 -}
 expandableListItemSlotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6562,7 +7009,7 @@ expandableListItemSlotOverline =
 -}
 expandableListItemSlotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6574,7 +7021,7 @@ expandableListItemSlotSupportingText =
 {-| See `M3e.ExpandableListItem.toggleIcon`.
 -}
 expandableListItemSlotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 expandableListItemSlotToggleIcon =
     M3e.ExpandableListItem.toggleIcon
@@ -6591,9 +7038,9 @@ expandableListItemSlotItems =
 -}
 listActionSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6606,7 +7053,7 @@ listActionSlotLeading =
 -}
 listActionSlotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6619,7 +7066,7 @@ listActionSlotOverline =
 -}
 listActionSlotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6632,9 +7079,9 @@ listActionSlotSupportingText =
 -}
 listActionSlotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         , switch : M3e.Kind.Brand
         , radio : M3e.Kind.Brand
@@ -6650,9 +7097,9 @@ listActionSlotTrailing =
 -}
 listItemButtonSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6665,7 +7112,7 @@ listItemButtonSlotLeading =
 -}
 listItemButtonSlotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6678,7 +7125,7 @@ listItemButtonSlotOverline =
 -}
 listItemButtonSlotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6691,9 +7138,9 @@ listItemButtonSlotSupportingText =
 -}
 listItemButtonSlotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         , switch : M3e.Kind.Brand
         , radio : M3e.Kind.Brand
@@ -6709,9 +7156,9 @@ listItemButtonSlotTrailing =
 -}
 listItemSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6724,7 +7171,7 @@ listItemSlotLeading =
 -}
 listItemSlotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6737,7 +7184,7 @@ listItemSlotOverline =
 -}
 listItemSlotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -6750,9 +7197,9 @@ listItemSlotSupportingText =
 -}
 listItemSlotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         , switch : M3e.Kind.Brand
         , radio : M3e.Kind.Brand
@@ -6767,7 +7214,7 @@ listItemSlotTrailing =
 {-| See `M3e.FabMenuItem.icon`.
 -}
 fabMenuItemSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 fabMenuItemSlotIcon =
     M3e.FabMenuItem.icon
@@ -6776,7 +7223,7 @@ fabMenuItemSlotIcon =
 {-| See `M3e.Fab.label`.
 -}
 fabSlotLabel :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 fabSlotLabel =
     M3e.Fab.label
@@ -6785,7 +7232,7 @@ fabSlotLabel =
 {-| See `M3e.Fab.closeIcon`.
 -}
 fabSlotCloseIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 fabSlotCloseIcon =
     M3e.Fab.closeIcon
@@ -6808,7 +7255,7 @@ expansionPanelSlotHeader =
 {-| See `M3e.ExpansionPanel.toggleIcon`.
 -}
 expansionPanelSlotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 expansionPanelSlotToggleIcon =
     M3e.ExpansionPanel.toggleIcon
@@ -6817,7 +7264,7 @@ expansionPanelSlotToggleIcon =
 {-| See `M3e.ExpansionHeader.toggleIcon`.
 -}
 expansionHeaderSlotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 expansionHeaderSlotToggleIcon =
     M3e.ExpansionHeader.toggleIcon
@@ -6840,7 +7287,7 @@ drawerContainerSlotEnd =
 {-| See `M3e.Dialog.header`.
 -}
 dialogSlotHeader :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 dialogSlotHeader =
     M3e.Dialog.header
@@ -6856,7 +7303,7 @@ dialogSlotActions =
 {-| See `M3e.Dialog.closeIcon`.
 -}
 dialogSlotCloseIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 dialogSlotCloseIcon =
     M3e.Dialog.closeIcon
@@ -6865,7 +7312,7 @@ dialogSlotCloseIcon =
 {-| See `M3e.SuggestionChip.icon`.
 -}
 suggestionChipSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 suggestionChipSlotIcon =
     M3e.SuggestionChip.icon
@@ -6890,7 +7337,7 @@ inputChipSlotAvatar =
 {-| See `M3e.InputChip.icon`.
 -}
 inputChipSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 inputChipSlotIcon =
     M3e.InputChip.icon
@@ -6899,7 +7346,7 @@ inputChipSlotIcon =
 {-| See `M3e.InputChip.removeIcon`.
 -}
 inputChipSlotRemoveIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 inputChipSlotRemoveIcon =
     M3e.InputChip.removeIcon
@@ -6908,7 +7355,7 @@ inputChipSlotRemoveIcon =
 {-| See `M3e.FilterChip.icon`.
 -}
 filterChipSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 filterChipSlotIcon =
     M3e.FilterChip.icon
@@ -6917,7 +7364,7 @@ filterChipSlotIcon =
 {-| See `M3e.FilterChip.trailingIcon`.
 -}
 filterChipSlotTrailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 filterChipSlotTrailingIcon =
     M3e.FilterChip.trailingIcon
@@ -6926,7 +7373,7 @@ filterChipSlotTrailingIcon =
 {-| See `M3e.AssistChip.icon`.
 -}
 assistChipSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 assistChipSlotIcon =
     M3e.AssistChip.icon
@@ -6935,7 +7382,7 @@ assistChipSlotIcon =
 {-| See `M3e.Chip.icon`.
 -}
 chipSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 chipSlotIcon =
     M3e.Chip.icon
@@ -6944,7 +7391,7 @@ chipSlotIcon =
 {-| See `M3e.Chip.trailingIcon`.
 -}
 chipSlotTrailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 chipSlotTrailingIcon =
     M3e.Chip.trailingIcon
@@ -6988,7 +7435,7 @@ calendarSlotHeader =
 {-| See `M3e.RichTooltip.subhead`.
 -}
 richTooltipSlotSubhead :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 richTooltipSlotSubhead =
     M3e.RichTooltip.subhead
@@ -7004,7 +7451,7 @@ richTooltipSlotActions =
 {-| See `M3e.IconButton.selectedSlot`.
 -}
 iconButtonSlotSelected :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 iconButtonSlotSelected =
     M3e.IconButton.selectedSlot
@@ -7014,7 +7461,7 @@ iconButtonSlotSelected =
 -}
 buttonSlotIcon :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , loadingIndicator : M3e.Kind.Brand
         }
         msg
@@ -7027,8 +7474,8 @@ buttonSlotIcon =
 -}
 buttonSlotSelected :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , icon : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedIcon : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -7039,7 +7486,7 @@ buttonSlotSelected =
 {-| See `M3e.Button.selectedIcon`.
 -}
 buttonSlotSelectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 buttonSlotSelectedIcon =
     M3e.Button.selectedIcon
@@ -7048,7 +7495,7 @@ buttonSlotSelectedIcon =
 {-| See `M3e.Button.trailingIcon`.
 -}
 buttonSlotTrailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 buttonSlotTrailingIcon =
     M3e.Button.trailingIcon
@@ -7064,7 +7511,7 @@ breadcrumbSlotSeparator =
 {-| See `M3e.BreadcrumbItem.icon`.
 -}
 breadcrumbItemSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 breadcrumbItemSlotIcon =
     M3e.BreadcrumbItem.icon
@@ -7073,7 +7520,7 @@ breadcrumbItemSlotIcon =
 {-| See `M3e.BreadcrumbItemButton.icon`.
 -}
 breadcrumbItemButtonSlotIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 breadcrumbItemButtonSlotIcon =
     M3e.BreadcrumbItemButton.icon
@@ -7169,7 +7616,7 @@ optionPanelSlotLoading :
     Markup.Element.Element
         { circularProgressIndicator : M3e.Kind.Brand
         , loadingIndicator : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -7180,7 +7627,7 @@ optionPanelSlotLoading =
 {-| See `M3e.Optgroup.label`.
 -}
 optgroupSlotLabel :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 optgroupSlotLabel =
     M3e.Optgroup.label
@@ -7190,7 +7637,7 @@ optgroupSlotLabel =
 -}
 appBarSlotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         , button : M3e.Kind.Brand
         }
@@ -7204,7 +7651,7 @@ appBarSlotLeading =
 -}
 appBarSlotTitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -7217,7 +7664,7 @@ appBarSlotTitle =
 -}
 appBarSlotSubtitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg

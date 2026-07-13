@@ -209,7 +209,7 @@ onClick v_ b_ =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
 icon el_ b_ =
@@ -224,8 +224,8 @@ icon el_ b_ =
 -}
 child :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , icon : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedIcon : Markup.Kind.Shared
         }
         msg
     -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind

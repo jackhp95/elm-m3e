@@ -52,7 +52,7 @@ view :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | richTooltip : M3e.Kind.Brand } msg
 view attributes children =
     Markup.Element.Internal.fromNode
@@ -145,7 +145,7 @@ onToggle =
 {-| Place content in the `subhead` slot.
 -}
 subhead :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 subhead el =
     Markup.Element.Internal.placeSlot "subhead" el

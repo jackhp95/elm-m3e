@@ -50,7 +50,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-toc-item>` with the required fields.
 -}
 tocItem :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     -> Builder AttrCaps SlotCaps msg kind
 tocItem req_ =
     M3e.Build.Internal.wrap_

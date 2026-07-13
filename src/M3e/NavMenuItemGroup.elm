@@ -48,7 +48,7 @@ view attributes children =
 -}
 label :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , heading : M3e.Kind.Brand
         }
         msg

@@ -1,92 +1,92 @@
 module M3e.Html.Shared exposing
     ( action, actionable, active, activeDate, alert, anchorOffset
-    , animation, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive
-    , centered, checked, clearLabel, clearable, closeLabel, color
-    , completed, confirmLabel, contained, contrast, current, date
-    , density, detent, detents, disableClose, disableHighlight, disableHover
-    , disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel
-    , dismissible, dividers, download, duration, editable, elevated
-    , emphasized, end, endDivider, endMode, extended, filled
-    , filter, firstPageLabel, fitAnchorWidth, floatLabel, for, grade
-    , handle, handleLabel, headerPosition, hideDelay, hideFriction, hideLoading
-    , hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript
-    , hideToggle, hideable, highlightMode, href, icons, indeterminate
-    , inline, inset, insetEnd, insetStart, invalid, inward
-    , itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel
-    , length, level, linear, loaded, loading, loadingLabel
-    , lowered, tocIgnore, max, maxDate, maxDepth, maxRows
-    , min, minDate, minRows, modal, mode, motion
-    , multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate
-    , noDataLabel, noFocusTrap, open, opticalSize, optional, orientation
-    , overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
-    , position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel
-    , previousYearLabel, radius, range, rangeEnd, rangeStart, rel
-    , removable, removeLabel, required, returnValue, scheme, scrollStrategy
-    , secondary, selected, selectedIndex, shape, showDelay, showFirstLastButtons
-    , size, start, startAt, startDivider, startMode, startView
-    , state, step, stretch, strongFocus, submenu, target
-    , term, thin, threshold, today, toggle, toggleDirection
-    , togglePosition, touchGestures, type_, unbounded, variant, vertical
-    , weight, width, wrap, wrapDetents, name, valueFloat
-    , value, onChange, onOpening, onOpened, onClosing, onClosed
-    , onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
-    , onQuery, onClear, onPage, onCancel, onRemove, onInvalid
-    , onActiveChange, onHighlight, slotLeading, slotTitle, slotSubtitle, slotTrailing
-    , slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader
-    , slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter
-    , slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon
-    , slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText
-    , slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge
-    , slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon
-    , slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow
-    , slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon
-    , slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
+    , animation, autoActivate, bufferValue, cascade, caseSensitive, centered
+    , checked, clearLabel, clearable, closeLabel, color, completed
+    , confirmLabel, contained, contrast, current, date, density
+    , detent, detents, disableClose, disableHighlight, disableHover, disablePagination
+    , disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible
+    , dividers, download, duration, editable, elevated, emphasized
+    , end, endDivider, endMode, extended, filled, filter
+    , firstPageLabel, fitAnchorWidth, floatLabel, for, grade, handle
+    , handleLabel, headerPosition, hideDelay, hideFriction, hideLoading, hideNoData
+    , hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle
+    , hideable, highlightMode, href, icons, indeterminate, inline
+    , inset, insetEnd, insetStart, invalid, inward, itemLabel
+    , itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length
+    , level, linear, loaded, loading, loadingLabel, lowered
+    , tocIgnore, max, maxDate, maxDepth, maxRows, min
+    , minDate, minRows, modal, mode, motion, multi
+    , nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel
+    , noFocusTrap, open, opticalSize, optional, orientation, overshootLimit
+    , pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position
+    , positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel
+    , radius, range, rangeEnd, rangeStart, rel, removable
+    , removeLabel, required, returnValue, scheme, scrollStrategy, secondary
+    , selected, selectedIndex, shape, showDelay, showFirstLastButtons, size
+    , start, startAt, startDivider, startMode, startView, state
+    , step, stretch, strongFocus, submenu, target, term
+    , thin, threshold, today, toggle, toggleDirection, togglePosition
+    , touchGestures, type_, unbounded, variant, vertical, weight
+    , width, wrap, wrapDetents, name, valueFloat, value
+    , onChange, onOpening, onOpened, onClosing, onClosed, onClick
+    , onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
+    , onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
+    , onHighlight, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
+    , slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator
+    , slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+    , slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
+    , slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
+    , slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
+    , slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
+    , slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
+    , slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon
+    , slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
     )
 
 {-| Shared middle vocabulary: the component-agnostic, phantom-gated attribute, event, and slot setters — ONE polymorphic function per name, each carrying an OPEN capability row so it type-checks against any component that admits it. The loose counterpart to the strict per-component modules.
 
 @docs action, actionable, active, activeDate, alert, anchorOffset
-@docs animation, ariaInvalid, autoActivate, bufferValue, cascade, caseSensitive
-@docs centered, checked, clearLabel, clearable, closeLabel, color
-@docs completed, confirmLabel, contained, contrast, current, date
-@docs density, detent, detents, disableClose, disableHighlight, disableHover
-@docs disablePagination, disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel
-@docs dismissible, dividers, download, duration, editable, elevated
-@docs emphasized, end, endDivider, endMode, extended, filled
-@docs filter, firstPageLabel, fitAnchorWidth, floatLabel, for, grade
-@docs handle, handleLabel, headerPosition, hideDelay, hideFriction, hideLoading
-@docs hideNoData, hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript
-@docs hideToggle, hideable, highlightMode, href, icons, indeterminate
-@docs inline, inset, insetEnd, insetStart, invalid, inward
-@docs itemLabel, itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel
-@docs length, level, linear, loaded, loading, loadingLabel
-@docs lowered, tocIgnore, max, maxDate, maxDepth, maxRows
-@docs min, minDate, minRows, modal, mode, motion
-@docs multi, nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate
-@docs noDataLabel, noFocusTrap, open, opticalSize, optional, orientation
-@docs overshootLimit, pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass
-@docs position, positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel
-@docs previousYearLabel, radius, range, rangeEnd, rangeStart, rel
-@docs removable, removeLabel, required, returnValue, scheme, scrollStrategy
-@docs secondary, selected, selectedIndex, shape, showDelay, showFirstLastButtons
-@docs size, start, startAt, startDivider, startMode, startView
-@docs state, step, stretch, strongFocus, submenu, target
-@docs term, thin, threshold, today, toggle, toggleDirection
-@docs togglePosition, touchGestures, type_, unbounded, variant, vertical
-@docs weight, width, wrap, wrapDetents, name, valueFloat
-@docs value, onChange, onOpening, onOpened, onClosing, onClosed
-@docs onClick, onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange
-@docs onQuery, onClear, onPage, onCancel, onRemove, onInvalid
-@docs onActiveChange, onHighlight, slotLeading, slotTitle, slotSubtitle, slotTrailing
-@docs slotLeadingIcon, slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader
-@docs slotSeparator, slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter
-@docs slotCloseIcon, slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon
-@docs slotItems, slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText
-@docs slotHint, slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge
-@docs slotFirstPageIcon, slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon
-@docs slotOpenLeading, slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow
-@docs slotValue, slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon
-@docs slotEditIcon, slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
+@docs animation, autoActivate, bufferValue, cascade, caseSensitive, centered
+@docs checked, clearLabel, clearable, closeLabel, color, completed
+@docs confirmLabel, contained, contrast, current, date, density
+@docs detent, detents, disableClose, disableHighlight, disableHover, disablePagination
+@docs disableRestoreFocus, disabled, disabledInteractive, discrete, dismissLabel, dismissible
+@docs dividers, download, duration, editable, elevated, emphasized
+@docs end, endDivider, endMode, extended, filled, filter
+@docs firstPageLabel, fitAnchorWidth, floatLabel, for, grade, handle
+@docs handleLabel, headerPosition, hideDelay, hideFriction, hideLoading, hideNoData
+@docs hidePageSize, hideRequiredMarker, hideSearchIcon, hideSelectionIndicator, hideSubscript, hideToggle
+@docs hideable, highlightMode, href, icons, indeterminate, inline
+@docs inset, insetEnd, insetStart, invalid, inward, itemLabel
+@docs itemsPerPageLabel, label, labelPosition, labelled, lastPageLabel, length
+@docs level, linear, loaded, loading, loadingLabel, lowered
+@docs tocIgnore, max, maxDate, maxDepth, maxRows, min
+@docs minDate, minRows, modal, mode, motion, multi
+@docs nextMonthLabel, nextMultiYearLabel, nextPageLabel, nextYearLabel, noAnimate, noDataLabel
+@docs noFocusTrap, open, opticalSize, optional, orientation, overshootLimit
+@docs pageIndex, pageSize, pageSizeVariant, pageSizes, panelClass, position
+@docs positionX, positionY, previousMonthLabel, previousMultiYearLabel, previousPageLabel, previousYearLabel
+@docs radius, range, rangeEnd, rangeStart, rel, removable
+@docs removeLabel, required, returnValue, scheme, scrollStrategy, secondary
+@docs selected, selectedIndex, shape, showDelay, showFirstLastButtons, size
+@docs start, startAt, startDivider, startMode, startView, state
+@docs step, stretch, strongFocus, submenu, target, term
+@docs thin, threshold, today, toggle, toggleDirection, togglePosition
+@docs touchGestures, type_, unbounded, variant, vertical, weight
+@docs width, wrap, wrapDetents, name, valueFloat, value
+@docs onChange, onOpening, onOpened, onClosing, onClosed, onClick
+@docs onBeforeinput, onInput, onBeforetoggle, onToggle, onValueChange, onQuery
+@docs onClear, onPage, onCancel, onRemove, onInvalid, onActiveChange
+@docs onHighlight, slotLeading, slotTitle, slotSubtitle, slotTrailing, slotLeadingIcon
+@docs slotTrailingIcon, slotIcon, slotLoading, slotNoData, slotHeader, slotSeparator
+@docs slotSelected, slotSelectedIcon, slotContent, slotActions, slotFooter, slotCloseIcon
+@docs slotStart, slotEnd, slotOverline, slotSupportingText, slotToggleIcon, slotItems
+@docs slotLabel, slotPrefix, slotPrefixText, slotSuffix, slotSuffixText, slotHint
+@docs slotError, slotAvatar, slotRemoveIcon, slotInput, slotBadge, slotFirstPageIcon
+@docs slotPreviousPageIcon, slotNextPageIcon, slotLastPageIcon, slotSubhead, slotClearIcon, slotOpenLeading
+@docs slotOpenTrailing, slotClosedLeading, slotClosedTrailing, slotSearchIcon, slotArrow, slotValue
+@docs slotNextIcon, slotPrevIcon, slotLeadingButton, slotTrailingButton, slotDoneIcon, slotEditIcon
+@docs slotErrorIcon, slotStep, slotPanel, slotOpenToggleIcon
 
 -}
 
@@ -158,15 +158,6 @@ animation v_ =
     Markup.Html.Attr.Internal.attribute
         M3e.Raw.Shared.animation
         (M3e.Token.toString v_)
-
-
-{-| Set the `aria-invalid` attribute.
--}
-ariaInvalid :
-    String
-    -> Markup.Html.Attr.Attr { c | ariaInvalid : M3e.Token.Supported } msg
-ariaInvalid =
-    Markup.Html.Attr.Internal.attribute M3e.Raw.Shared.ariaInvalid
 
 
 {-| Whether the first option should be automatically activated. (default: `false`)
@@ -1926,8 +1917,8 @@ onHighlight =
 -}
 slotLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
-        , text : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         , button : M3e.Kind.Brand
         , avatar : M3e.Kind.Brand
@@ -1943,7 +1934,7 @@ slotLeading =
 -}
 slotTitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -1956,7 +1947,7 @@ slotTitle =
 -}
 slotSubtitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -1969,8 +1960,8 @@ slotSubtitle =
 -}
 slotTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
-        , text : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         , button : M3e.Kind.Brand
         , searchBar : M3e.Kind.Brand
@@ -2004,7 +1995,7 @@ slotTrailingIcon =
 -}
 slotIcon :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , loadingIndicator : M3e.Kind.Brand
         }
         msg
@@ -2045,8 +2036,8 @@ slotSeparator =
 -}
 slotSelected :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , icon : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedIcon : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -2057,7 +2048,7 @@ slotSelected =
 {-| Place content in the `selected-icon` slot: stamp `slot="selected-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotSelectedIcon`) form.
 -}
 slotSelectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotSelectedIcon =
     Markup.Element.Internal.placeSlot "selected-icon"
@@ -2087,7 +2078,7 @@ slotFooter =
 {-| Place content in the `close-icon` slot: stamp `slot="close-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotCloseIcon`) form.
 -}
 slotCloseIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotCloseIcon =
     Markup.Element.Internal.placeSlot "close-icon"
@@ -2111,7 +2102,7 @@ slotEnd =
 -}
 slotOverline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -2124,7 +2115,7 @@ slotOverline =
 -}
 slotSupportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -2136,7 +2127,7 @@ slotSupportingText =
 {-| Place content in the `toggle-icon` slot: stamp `slot="toggle-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotToggleIcon`) form.
 -}
 slotToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotToggleIcon =
     Markup.Element.Internal.placeSlot "toggle-icon"
@@ -2210,7 +2201,7 @@ slotAvatar =
 {-| Place content in the `remove-icon` slot: stamp `slot="remove-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotRemoveIcon`) form.
 -}
 slotRemoveIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotRemoveIcon =
     Markup.Element.Internal.placeSlot "remove-icon"
@@ -2227,7 +2218,7 @@ slotInput =
 -}
 slotBadge :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , badge : M3e.Kind.Brand
         }
         msg
@@ -2239,7 +2230,7 @@ slotBadge =
 {-| Place content in the `first-page-icon` slot: stamp `slot="first-page-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotFirstPageIcon`) form.
 -}
 slotFirstPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotFirstPageIcon =
     Markup.Element.Internal.placeSlot "first-page-icon"
@@ -2248,7 +2239,7 @@ slotFirstPageIcon =
 {-| Place content in the `previous-page-icon` slot: stamp `slot="previous-page-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotPreviousPageIcon`) form.
 -}
 slotPreviousPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotPreviousPageIcon =
     Markup.Element.Internal.placeSlot "previous-page-icon"
@@ -2257,7 +2248,7 @@ slotPreviousPageIcon =
 {-| Place content in the `next-page-icon` slot: stamp `slot="next-page-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotNextPageIcon`) form.
 -}
 slotNextPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotNextPageIcon =
     Markup.Element.Internal.placeSlot "next-page-icon"
@@ -2266,7 +2257,7 @@ slotNextPageIcon =
 {-| Place content in the `last-page-icon` slot: stamp `slot="last-page-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotLastPageIcon`) form.
 -}
 slotLastPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotLastPageIcon =
     Markup.Element.Internal.placeSlot "last-page-icon"
@@ -2275,7 +2266,7 @@ slotLastPageIcon =
 {-| Place content in the `subhead` slot: stamp `slot="subhead"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotSubhead`) form.
 -}
 slotSubhead :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotSubhead =
     Markup.Element.Internal.placeSlot "subhead"
@@ -2284,7 +2275,7 @@ slotSubhead =
 {-| Place content in the `clear-icon` slot: stamp `slot="clear-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotClearIcon`) form.
 -}
 slotClearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotClearIcon =
     Markup.Element.Internal.placeSlot "clear-icon"
@@ -2294,7 +2285,7 @@ slotClearIcon =
 -}
 slotOpenLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -2307,7 +2298,7 @@ slotOpenLeading =
 -}
 slotOpenTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -2320,7 +2311,7 @@ slotOpenTrailing =
 -}
 slotClosedLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -2333,7 +2324,7 @@ slotClosedLeading =
 -}
 slotClosedTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -2345,7 +2336,7 @@ slotClosedTrailing =
 {-| Place content in the `search-icon` slot: stamp `slot="search-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotSearchIcon`) form.
 -}
 slotSearchIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotSearchIcon =
     Markup.Element.Internal.placeSlot "search-icon"
@@ -2354,7 +2345,7 @@ slotSearchIcon =
 {-| Place content in the `arrow` slot: stamp `slot="arrow"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotArrow`) form.
 -}
 slotArrow :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotArrow =
     Markup.Element.Internal.placeSlot "arrow"
@@ -2370,7 +2361,7 @@ slotValue =
 {-| Place content in the `next-icon` slot: stamp `slot="next-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotNextIcon`) form.
 -}
 slotNextIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotNextIcon =
     Markup.Element.Internal.placeSlot "next-icon"
@@ -2379,7 +2370,7 @@ slotNextIcon =
 {-| Place content in the `prev-icon` slot: stamp `slot="prev-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotPrevIcon`) form.
 -}
 slotPrevIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotPrevIcon =
     Markup.Element.Internal.placeSlot "prev-icon"
@@ -2406,7 +2397,7 @@ slotTrailingButton =
 {-| Place content in the `done-icon` slot: stamp `slot="done-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotDoneIcon`) form.
 -}
 slotDoneIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotDoneIcon =
     Markup.Element.Internal.placeSlot "done-icon"
@@ -2415,7 +2406,7 @@ slotDoneIcon =
 {-| Place content in the `edit-icon` slot: stamp `slot="edit-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotEditIcon`) form.
 -}
 slotEditIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotEditIcon =
     Markup.Element.Internal.placeSlot "edit-icon"
@@ -2424,7 +2415,7 @@ slotEditIcon =
 {-| Place content in the `error-icon` slot: stamp `slot="error-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotErrorIcon`) form.
 -}
 slotErrorIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotErrorIcon =
     Markup.Element.Internal.placeSlot "error-icon"
@@ -2455,7 +2446,7 @@ slotPanel =
 {-| Place content in the `open-toggle-icon` slot: stamp `slot="open-toggle-icon"` onto an element. The generalized INPUT row is the UNION of every component's kinds for this slot, so an element valid in SOME component's version of the slot type-checks here (one valid in none is a compile error); the free OUTPUT row composes into a container's `List Element`. Cross-component misuse is caught by the codegen-aware `Cem.ValidSlotKind` review rule, which also upgrades this to the kind-precise per-component / specific-barrel (`<component>SlotOpenToggleIcon`) form.
 -}
 slotOpenToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 slotOpenToggleIcon =
     Markup.Element.Internal.placeSlot "open-toggle-icon"

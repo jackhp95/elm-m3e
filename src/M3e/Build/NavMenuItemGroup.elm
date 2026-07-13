@@ -78,7 +78,7 @@ attr a_ b_ =
 -}
 label :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , heading : M3e.Kind.Brand
         }
         msg

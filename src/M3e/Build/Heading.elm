@@ -53,7 +53,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-heading>` with the required fields.
 -}
 heading :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     -> Builder AttrCaps SlotCaps msg kind
 heading req_ =
     M3e.Build.Internal.wrap_

@@ -72,7 +72,7 @@ view :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | snackbar : M3e.Kind.Brand } msg
 view attributes children =
     Markup.Element.Internal.fromNode
@@ -134,7 +134,7 @@ onToggle =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 closeIcon el =
     Markup.Element.Internal.placeSlot "close-icon" el

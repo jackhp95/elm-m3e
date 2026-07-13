@@ -173,7 +173,7 @@ onClick v_ b_ =
 {-| Place content in the `(default)` slot.
 -}
 child :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | unnamed : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | unnamed : M3e.Build.Internal.Used } msg kind
 child el_ b_ =
@@ -187,7 +187,7 @@ child el_ b_ =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
 toggleIcon el_ b_ =

@@ -66,8 +66,8 @@ type alias SlotCaps =
 treeItem :
     { label :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , link : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedLink : Markup.Kind.Shared
             }
             msg
     }
@@ -232,7 +232,7 @@ onClick v_ b_ =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
 icon el_ b_ =
@@ -246,7 +246,7 @@ icon el_ b_ =
 {-| Place content in the `selected-icon` slot.
 -}
 selectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Used } msg kind
 selectedIcon el_ b_ =
@@ -262,7 +262,7 @@ selectedIcon el_ b_ =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
 toggleIcon el_ b_ =
@@ -276,7 +276,7 @@ toggleIcon el_ b_ =
 {-| Place content in the `open-toggle-icon` slot.
 -}
 openToggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | openToggleIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | openToggleIcon : M3e.Build.Internal.Used } msg kind
 openToggleIcon el_ b_ =

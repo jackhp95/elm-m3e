@@ -42,7 +42,7 @@ view :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | menuItemRadio : M3e.Kind.Brand } msg
 view attributes children =
     Markup.Element.Internal.fromNode
@@ -81,7 +81,7 @@ onClick =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 icon el =
     Markup.Element.Internal.placeSlot "icon" el
@@ -90,7 +90,7 @@ icon el =
 {-| Place content in the `trailing-icon` slot.
 -}
 trailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 trailingIcon el =
     Markup.Element.Internal.placeSlot "trailing-icon" el

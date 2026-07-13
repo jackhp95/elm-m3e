@@ -63,8 +63,8 @@ type alias SlotCaps =
 navMenuItem :
     { label :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , link : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedLink : Markup.Kind.Shared
             }
             msg
     }
@@ -225,7 +225,7 @@ onClick v_ b_ =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
 icon el_ b_ =
@@ -240,7 +240,7 @@ icon el_ b_ =
 -}
 badge :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , badge : M3e.Kind.Brand
         }
         msg
@@ -257,7 +257,7 @@ badge el_ b_ =
 {-| Place content in the `selected-icon` slot.
 -}
 selectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Used } msg kind
 selectedIcon el_ b_ =
@@ -273,7 +273,7 @@ selectedIcon el_ b_ =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | toggleIcon : M3e.Build.Internal.Used } msg kind
 toggleIcon el_ b_ =

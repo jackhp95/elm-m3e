@@ -210,7 +210,7 @@ panel el =
 {-| Place content in the `next-icon` slot.
 -}
 nextIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 nextIcon el =
     Markup.Element.Internal.placeSlot "next-icon" el
@@ -219,7 +219,7 @@ nextIcon el =
 {-| Place content in the `prev-icon` slot.
 -}
 prevIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 prevIcon el =
     Markup.Element.Internal.placeSlot "prev-icon" el

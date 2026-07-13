@@ -155,7 +155,7 @@ import Markup.Node
 view :
     { content :
         Markup.Element.Element
-            { icon : Markup.Kind.Shared
+            { sharedIcon : Markup.Kind.Shared
             , menuTrigger : M3e.Kind.Brand
             , dialogTrigger : M3e.Kind.Brand
             , fabMenuTrigger : M3e.Kind.Brand
@@ -385,7 +385,7 @@ onChange =
 {-| Place content in the `selected` slot.
 -}
 selectedSlot :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 selectedSlot el =
     Markup.Element.Internal.placeSlot "selected" el

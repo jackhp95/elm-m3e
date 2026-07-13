@@ -167,7 +167,7 @@ onToggle =
 -}
 openLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -180,7 +180,7 @@ openLeading el =
 -}
 openTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -193,7 +193,7 @@ openTrailing el =
 -}
 closedLeading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -206,7 +206,7 @@ closedLeading el =
 -}
 closedTrailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         }
         msg
@@ -218,7 +218,7 @@ closedTrailing el =
 {-| Place content in the `search-icon` slot.
 -}
 searchIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 searchIcon el =
     Markup.Element.Internal.placeSlot "search-icon" el
@@ -227,7 +227,7 @@ searchIcon el =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 closeIcon el =
     Markup.Element.Internal.placeSlot "close-icon" el
@@ -236,7 +236,7 @@ closeIcon el =
 {-| Place content in the `clear-icon` slot.
 -}
 clearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 clearIcon el =
     Markup.Element.Internal.placeSlot "clear-icon" el

@@ -176,7 +176,7 @@ onCancel =
 {-| Place content in the `header` slot.
 -}
 header :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 header el =
     Markup.Element.Internal.placeSlot "header" el
@@ -192,7 +192,7 @@ actions el =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 closeIcon el =
     Markup.Element.Internal.placeSlot "close-icon" el

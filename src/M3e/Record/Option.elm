@@ -28,7 +28,7 @@ import Markup.Node
 {-| Build the `<m3e-option>` element (lazy IR).
 -}
 view :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr

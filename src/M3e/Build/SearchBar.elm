@@ -128,7 +128,7 @@ onClear v_ b_ =
 {-| Place content in the `clear-icon` slot.
 -}
 clearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | clearIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg kind
 clearIcon el_ b_ =

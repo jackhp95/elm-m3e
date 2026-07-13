@@ -68,7 +68,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-step>` with the required fields.
 -}
 step :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     -> Builder AttrCaps SlotCaps msg kind
 step req_ =
     M3e.Build.Internal.wrap_
@@ -254,7 +254,7 @@ onClick v_ b_ =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
 icon el_ b_ =
@@ -268,7 +268,7 @@ icon el_ b_ =
 {-| Place content in the `done-icon` slot.
 -}
 doneIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | doneIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | doneIcon : M3e.Build.Internal.Used } msg kind
 doneIcon el_ b_ =
@@ -282,7 +282,7 @@ doneIcon el_ b_ =
 {-| Place content in the `edit-icon` slot.
 -}
 editIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | editIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | editIcon : M3e.Build.Internal.Used } msg kind
 editIcon el_ b_ =
@@ -296,7 +296,7 @@ editIcon el_ b_ =
 {-| Place content in the `error-icon` slot.
 -}
 errorIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | errorIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | errorIcon : M3e.Build.Internal.Used } msg kind
 errorIcon el_ b_ =
@@ -310,7 +310,7 @@ errorIcon el_ b_ =
 {-| Place content in the `hint` slot.
 -}
 hint :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | hint : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | hint : M3e.Build.Internal.Used } msg kind
 hint el_ b_ =
@@ -324,7 +324,7 @@ hint el_ b_ =
 {-| Place content in the `error` slot.
 -}
 error :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | error : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | error : M3e.Build.Internal.Used } msg kind
 error el_ b_ =

@@ -30,7 +30,7 @@ import Markup.Node as Node
 
 {-| The `<a>` HTML element (or anchor element), with its `href` attribute, creates a hyperlink to web pages, files, email addresses, locations in the same page, or anything else a URL can address. Stamps the `link` slot kind.
 -}
-a : List (Attr { download : Supported, href : Supported, rel : Supported, slot : Supported, target : Supported } msg) -> List (Element s msg) -> Element { k | link : Markup.Kind.Shared } msg
+a : List (Attr { download : Supported, href : Supported, rel : Supported, slot : Supported, target : Supported } msg) -> List (Element s msg) -> Element { k | sharedLink : Markup.Kind.Shared } msg
 a attrs children =
     Element.fromNode
         (Node.fromComponent
@@ -42,7 +42,7 @@ a attrs children =
 
 {-| The `<label>` HTML element represents a caption for an item in a user interface. Stamps the `label` slot kind.
 -}
-label : List (Attr { for : Supported, slot : Supported } msg) -> List (Element s msg) -> Element { k | label : Markup.Kind.Shared } msg
+label : List (Attr { for : Supported, slot : Supported } msg) -> List (Element s msg) -> Element { k | sharedLabel : Markup.Kind.Shared } msg
 label attrs children =
     Element.fromNode
         (Node.fromComponent

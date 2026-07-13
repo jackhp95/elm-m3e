@@ -59,7 +59,7 @@ view :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
                 , html : M3e.Kind.Brand
                 }
                 msg
@@ -124,9 +124,9 @@ onClosed =
 -}
 leading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -139,7 +139,7 @@ leading el =
 -}
 overline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -152,7 +152,7 @@ overline el =
 -}
 supportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -164,7 +164,7 @@ supportingText el =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 toggleIcon el =
     Markup.Element.Internal.placeSlot "toggle-icon" el

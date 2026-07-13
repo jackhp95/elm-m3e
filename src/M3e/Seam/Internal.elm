@@ -20,7 +20,7 @@ import Markup.Kind
 atom producers satisfy it without a crossing.
 -}
 type alias Label s msg =
-    Element { s | label : Markup.Kind.Shared } msg
+    Element { s | sharedLabel : Markup.Kind.Shared } msg
 
 
 {-| Re-stamp already-composed IR as `label`-kind content — a free phantom assertion (a crossing).
@@ -35,7 +35,7 @@ label =
 atom producers satisfy it without a crossing.
 -}
 type alias Link s msg =
-    Element { s | link : Markup.Kind.Shared } msg
+    Element { s | sharedLink : Markup.Kind.Shared } msg
 
 
 {-| Re-stamp already-composed IR as `link`-kind content — a free phantom assertion (a crossing).
@@ -50,7 +50,7 @@ link =
 atom producers satisfy it without a crossing.
 -}
 type alias Text s msg =
-    Element { s | text : Markup.Kind.Shared } msg
+    Element { s | sharedText : Markup.Kind.Shared } msg
 
 
 {-| Re-stamp already-composed IR as `text`-kind content — a free phantom assertion (a crossing).

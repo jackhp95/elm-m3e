@@ -202,7 +202,7 @@ onInput =
 {-| Place content in the `arrow` slot.
 -}
 arrow :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 arrow el =
     Markup.Element.Internal.placeSlot "arrow" el

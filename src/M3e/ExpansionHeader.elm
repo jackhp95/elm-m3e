@@ -47,7 +47,7 @@ view :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | expansionHeader : M3e.Kind.Brand } msg
 view attributes children =
     Markup.Element.Internal.fromNode
@@ -110,7 +110,7 @@ onClick =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 toggleIcon el =
     Markup.Element.Internal.placeSlot "toggle-icon" el

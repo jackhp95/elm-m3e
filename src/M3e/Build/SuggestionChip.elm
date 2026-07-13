@@ -57,7 +57,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-suggestion-chip>` with the required fields.
 -}
 suggestionChip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     , action :
         M3e.Action.Action
             { click : M3e.Token.Supported
@@ -222,7 +222,7 @@ variant v_ b_ =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
 icon el_ b_ =

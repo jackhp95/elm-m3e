@@ -48,8 +48,8 @@ import Markup.Node
 view :
     { label :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , link : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedLink : Markup.Kind.Shared
             }
             msg
     }
@@ -147,7 +147,7 @@ onClick =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 icon el =
     Markup.Element.Internal.placeSlot "icon" el
@@ -157,7 +157,7 @@ icon el =
 -}
 badge :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , badge : M3e.Kind.Brand
         }
         msg
@@ -169,7 +169,7 @@ badge el =
 {-| Place content in the `selected-icon` slot.
 -}
 selectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 selectedIcon el =
     Markup.Element.Internal.placeSlot "selected-icon" el
@@ -178,7 +178,7 @@ selectedIcon el =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 toggleIcon el =
     Markup.Element.Internal.placeSlot "toggle-icon" el

@@ -135,7 +135,7 @@ size v_ b_ =
 -}
 leading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , iconButton : M3e.Kind.Brand
         , button : M3e.Kind.Brand
         }
@@ -154,7 +154,7 @@ leading el_ b_ =
 -}
 title :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -172,7 +172,7 @@ title el_ b_ =
 -}
 subtitle :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg

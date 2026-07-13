@@ -175,7 +175,7 @@ onClick v_ b_ =
 -}
 child :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , dialogTrigger : M3e.Kind.Brand
         , dialogAction : M3e.Kind.Brand
         , menuTrigger : M3e.Kind.Brand
@@ -205,9 +205,9 @@ child el_ b_ =
 -}
 leading :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -225,7 +225,7 @@ leading el_ b_ =
 -}
 overline :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -243,7 +243,7 @@ overline el_ b_ =
 -}
 supportingText :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         }
         msg
@@ -263,9 +263,9 @@ supportingText el_ b_ =
 -}
 trailing :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , avatar : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         , html : M3e.Kind.Brand
         , switch : M3e.Kind.Brand
         , radio : M3e.Kind.Brand

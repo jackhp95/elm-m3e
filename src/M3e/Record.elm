@@ -50,8 +50,8 @@ import Markup.Kind
 treeItem :
     { label :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , link : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedLink : Markup.Kind.Shared
             }
             msg
     }
@@ -80,7 +80,7 @@ treeItem =
 {-| See `M3e.Record.TocItem`.
 -}
 tocItem :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -100,7 +100,7 @@ tocItem =
 {-| See `M3e.Record.Step`.
 -}
 step :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -183,7 +183,7 @@ splitButton =
 {-| See `M3e.Record.Snackbar`.
 -}
 snackbar :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -255,8 +255,8 @@ searchBar =
 navMenuItem :
     { label :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , link : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedLink : Markup.Kind.Shared
             }
             msg
     }
@@ -284,7 +284,7 @@ navMenuItem =
 {-| See `M3e.Record.Heading`.
 -}
 heading :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -306,7 +306,7 @@ heading =
 {-| See `M3e.Record.Fab`.
 -}
 fab :
-    { content : Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    { content : Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     , action :
         M3e.Action.Action
             { click : M3e.Token.Supported
@@ -377,7 +377,7 @@ expansionPanel =
 {-| See `M3e.Record.SuggestionChip`.
 -}
 suggestionChip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     , action :
         M3e.Action.Action
             { click : M3e.Token.Supported
@@ -419,7 +419,7 @@ suggestionChip =
 {-| See `M3e.Record.InputChip`.
 -}
 inputChip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -444,7 +444,7 @@ inputChip =
 {-| See `M3e.Record.FilterChip`.
 -}
 filterChip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -470,7 +470,7 @@ filterChip =
 {-| See `M3e.Record.AssistChip`.
 -}
 assistChip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -498,7 +498,7 @@ assistChip =
 {-| See `M3e.Record.Chip`.
 -}
 chip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -517,7 +517,7 @@ chip =
 {-| See `M3e.Record.Tooltip`.
 -}
 tooltip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -540,7 +540,7 @@ tooltip =
 {-| See `M3e.Record.RichTooltip`.
 -}
 richTooltip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -565,7 +565,7 @@ richTooltip =
 {-| See `M3e.Record.RichTooltipAction`.
 -}
 richTooltipAction :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -585,7 +585,7 @@ richTooltipAction =
 iconButton :
     { content :
         Markup.Element.Element
-            { icon : Markup.Kind.Shared
+            { sharedIcon : Markup.Kind.Shared
             , menuTrigger : M3e.Kind.Brand
             , dialogTrigger : M3e.Kind.Brand
             , fabMenuTrigger : M3e.Kind.Brand
@@ -653,8 +653,8 @@ iconButton =
 button :
     { content :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , icon : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedIcon : Markup.Kind.Shared
             , menuTrigger : M3e.Kind.Brand
             , dialogTrigger : M3e.Kind.Brand
             , fabMenuTrigger : M3e.Kind.Brand
@@ -719,7 +719,7 @@ button =
 {-| See `M3e.Record.Option`.
 -}
 option :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr

@@ -69,7 +69,7 @@ maxDepth =
 {-| Place content in the `overline` slot.
 -}
 overline :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 overline el =
     Markup.Element.Internal.placeSlot "overline" el
@@ -78,7 +78,7 @@ overline el =
 {-| Place content in the `title` slot.
 -}
 title :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 title el =
     Markup.Element.Internal.placeSlot "title" el

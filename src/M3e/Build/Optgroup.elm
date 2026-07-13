@@ -77,7 +77,7 @@ attr a_ b_ =
 {-| Place content in the `label` slot.
 -}
 label :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | label : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | label : M3e.Build.Internal.Used } msg kind
 label el_ b_ =

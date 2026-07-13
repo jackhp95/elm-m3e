@@ -72,8 +72,8 @@ type alias SlotCaps =
 button :
     { content :
         Markup.Element.Element
-            { text : Markup.Kind.Shared
-            , icon : Markup.Kind.Shared
+            { sharedText : Markup.Kind.Shared
+            , sharedIcon : Markup.Kind.Shared
             , menuTrigger : M3e.Kind.Brand
             , dialogTrigger : M3e.Kind.Brand
             , fabMenuTrigger : M3e.Kind.Brand
@@ -359,7 +359,7 @@ onChange v_ b_ =
 -}
 icon :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , loadingIndicator : M3e.Kind.Brand
         }
         msg
@@ -377,8 +377,8 @@ icon el_ b_ =
 -}
 selectedSlot :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , icon : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedIcon : Markup.Kind.Shared
         }
         msg
     -> Builder a { s | selected : M3e.Build.Internal.Available } msg kind
@@ -394,7 +394,7 @@ selectedSlot el_ b_ =
 {-| Place content in the `selected-icon` slot.
 -}
 selectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | selectedIcon : M3e.Build.Internal.Used } msg kind
 selectedIcon el_ b_ =
@@ -410,7 +410,7 @@ selectedIcon el_ b_ =
 {-| Place content in the `trailing-icon` slot.
 -}
 trailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
 trailingIcon el_ b_ =

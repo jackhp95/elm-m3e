@@ -163,8 +163,8 @@ view :
     ->
         List
             (Markup.Element.Element
-                { text : Markup.Kind.Shared
-                , icon : Markup.Kind.Shared
+                { sharedText : Markup.Kind.Shared
+                , sharedIcon : Markup.Kind.Shared
                 , menuTrigger : M3e.Kind.Brand
                 , dialogTrigger : M3e.Kind.Brand
                 , fabMenuTrigger : M3e.Kind.Brand
@@ -365,7 +365,7 @@ download =
 -}
 icon :
     Markup.Element.Element
-        { icon : Markup.Kind.Shared
+        { sharedIcon : Markup.Kind.Shared
         , loadingIndicator : M3e.Kind.Brand
         }
         msg
@@ -378,8 +378,8 @@ icon el =
 -}
 selectedSlot :
     Markup.Element.Element
-        { text : Markup.Kind.Shared
-        , icon : Markup.Kind.Shared
+        { sharedText : Markup.Kind.Shared
+        , sharedIcon : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg
@@ -390,7 +390,7 @@ selectedSlot el =
 {-| Place content in the `selected-icon` slot.
 -}
 selectedIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 selectedIcon el =
     Markup.Element.Internal.placeSlot "selected-icon" el
@@ -399,7 +399,7 @@ selectedIcon el =
 {-| Place content in the `trailing-icon` slot.
 -}
 trailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 trailingIcon el =
     Markup.Element.Internal.placeSlot "trailing-icon" el

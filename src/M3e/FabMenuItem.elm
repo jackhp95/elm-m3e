@@ -108,7 +108,7 @@ onClick =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 icon el =
     Markup.Element.Internal.placeSlot "icon" el

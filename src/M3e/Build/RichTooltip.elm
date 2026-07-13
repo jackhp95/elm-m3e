@@ -60,7 +60,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-rich-tooltip>` with the required fields.
 -}
 richTooltip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     -> Builder AttrCaps SlotCaps msg kind
 richTooltip req_ =
     M3e.Build.Internal.wrap_
@@ -231,7 +231,7 @@ onToggle v_ b_ =
 {-| Place content in the `subhead` slot.
 -}
 subhead :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | subhead : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | subhead : M3e.Build.Internal.Used } msg kind
 subhead el_ b_ =

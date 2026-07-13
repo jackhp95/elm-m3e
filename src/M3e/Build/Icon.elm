@@ -25,7 +25,7 @@ import Markup.Node
 type alias Builder attrCaps slotCaps msg kind =
     M3e.Build.Internal.Builder
         { kind
-            | icon : Markup.Kind.Shared
+            | sharedIcon : Markup.Kind.Shared
         }
         attrCaps
         slotCaps
@@ -176,6 +176,6 @@ weight v_ b_ =
 -}
 build :
     Builder a s msg kind
-    -> Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    -> Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
 build b_ =
     Markup.Element.Internal.fromNode (M3e.Build.Internal.node_ b_)

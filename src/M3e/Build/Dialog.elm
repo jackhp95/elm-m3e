@@ -249,7 +249,7 @@ onCancel v_ b_ =
 {-| Place content in the `header` slot.
 -}
 header :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | header : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | header : M3e.Build.Internal.Used } msg kind
 header el_ b_ =
@@ -277,7 +277,7 @@ actions el_ b_ =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
 closeIcon el_ b_ =

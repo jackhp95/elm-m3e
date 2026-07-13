@@ -169,7 +169,7 @@ vertical v_ b_ =
 {-| Place content in the `next-icon` slot.
 -}
 nextIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | nextIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | nextIcon : M3e.Build.Internal.Used } msg kind
 nextIcon el_ b_ =
@@ -183,7 +183,7 @@ nextIcon el_ b_ =
 {-| Place content in the `prev-icon` slot.
 -}
 prevIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | prevIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | prevIcon : M3e.Build.Internal.Used } msg kind
 prevIcon el_ b_ =

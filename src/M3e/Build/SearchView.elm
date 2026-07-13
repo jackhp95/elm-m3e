@@ -253,7 +253,7 @@ onToggle v_ b_ =
 {-| Place content in the `search-icon` slot.
 -}
 searchIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | searchIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | searchIcon : M3e.Build.Internal.Used } msg kind
 searchIcon el_ b_ =
@@ -267,7 +267,7 @@ searchIcon el_ b_ =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
 closeIcon el_ b_ =
@@ -281,7 +281,7 @@ closeIcon el_ b_ =
 {-| Place content in the `clear-icon` slot.
 -}
 clearIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | clearIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | clearIcon : M3e.Build.Internal.Used } msg kind
 clearIcon el_ b_ =

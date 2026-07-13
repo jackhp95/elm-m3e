@@ -63,7 +63,7 @@ view :
             msg
         )
     -> List (Markup.Element.Element any msg)
-    -> Markup.Element.Element { s | icon : Markup.Kind.Shared } msg
+    -> Markup.Element.Element { s | sharedIcon : Markup.Kind.Shared } msg
 view attributes children =
     Markup.Element.Internal.fromNode
         (Markup.Node.fromComponent

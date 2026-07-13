@@ -52,7 +52,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-chip>` with the required fields.
 -}
 chip :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     -> Builder AttrCaps SlotCaps msg kind
 chip req_ =
     M3e.Build.Internal.wrap_
@@ -115,7 +115,7 @@ variant v_ b_ =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | icon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | icon : M3e.Build.Internal.Used } msg kind
 icon el_ b_ =
@@ -129,7 +129,7 @@ icon el_ b_ =
 {-| Place content in the `trailing-icon` slot.
 -}
 trailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | trailingIcon : M3e.Build.Internal.Used } msg kind
 trailingIcon el_ b_ =

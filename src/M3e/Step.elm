@@ -63,7 +63,7 @@ view :
             }
             msg
         )
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | step : M3e.Kind.Brand } msg
 view attributes children =
     Markup.Element.Internal.fromNode
@@ -164,7 +164,7 @@ onClick =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 icon el =
     Markup.Element.Internal.placeSlot "icon" el
@@ -173,7 +173,7 @@ icon el =
 {-| Place content in the `done-icon` slot.
 -}
 doneIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 doneIcon el =
     Markup.Element.Internal.placeSlot "done-icon" el
@@ -182,7 +182,7 @@ doneIcon el =
 {-| Place content in the `edit-icon` slot.
 -}
 editIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 editIcon el =
     Markup.Element.Internal.placeSlot "edit-icon" el
@@ -191,7 +191,7 @@ editIcon el =
 {-| Place content in the `error-icon` slot.
 -}
 errorIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 errorIcon el =
     Markup.Element.Internal.placeSlot "error-icon" el
@@ -200,7 +200,7 @@ errorIcon el =
 {-| Place content in the `hint` slot.
 -}
 hint :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 hint el =
     Markup.Element.Internal.placeSlot "hint" el
@@ -209,7 +209,7 @@ hint el =
 {-| Place content in the `error` slot.
 -}
 error :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 error el =
     Markup.Element.Internal.placeSlot "error" el

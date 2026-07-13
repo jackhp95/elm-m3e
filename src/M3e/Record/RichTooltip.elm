@@ -38,7 +38,7 @@ import Markup.Node
 {-| Build the `<m3e-rich-tooltip>` element (lazy IR).
 -}
 view :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -150,7 +150,7 @@ onToggle =
 {-| Place content in the `subhead` slot.
 -}
 subhead :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 subhead el =
     Markup.Element.Internal.placeSlot "subhead" el

@@ -228,7 +228,7 @@ onPage =
 {-| Place content in the `first-page-icon` slot.
 -}
 firstPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 firstPageIcon el =
     Markup.Element.Internal.placeSlot "first-page-icon" el
@@ -237,7 +237,7 @@ firstPageIcon el =
 {-| Place content in the `previous-page-icon` slot.
 -}
 previousPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 previousPageIcon el =
     Markup.Element.Internal.placeSlot "previous-page-icon" el
@@ -246,7 +246,7 @@ previousPageIcon el =
 {-| Place content in the `next-page-icon` slot.
 -}
 nextPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 nextPageIcon el =
     Markup.Element.Internal.placeSlot "next-page-icon" el
@@ -255,7 +255,7 @@ nextPageIcon el =
 {-| Place content in the `last-page-icon` slot.
 -}
 lastPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 lastPageIcon el =
     Markup.Element.Internal.placeSlot "last-page-icon" el

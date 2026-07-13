@@ -201,7 +201,7 @@ header el =
 {-| Place content in the `toggle-icon` slot.
 -}
 toggleIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 toggleIcon el =
     Markup.Element.Internal.placeSlot "toggle-icon" el

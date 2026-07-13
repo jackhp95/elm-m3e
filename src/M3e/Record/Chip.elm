@@ -29,7 +29,7 @@ import Markup.Node
 {-| Build the `<m3e-chip>` element (lazy IR).
 -}
 view :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     ->
         List
             (Markup.Html.Attr.Attr
@@ -79,7 +79,7 @@ variant =
 {-| Place content in the `icon` slot.
 -}
 icon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 icon el =
     Markup.Element.Internal.placeSlot "icon" el
@@ -88,7 +88,7 @@ icon el =
 {-| Place content in the `trailing-icon` slot.
 -}
 trailingIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 trailingIcon el =
     Markup.Element.Internal.placeSlot "trailing-icon" el

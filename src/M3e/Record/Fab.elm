@@ -109,7 +109,7 @@ import Markup.Node
 {-| Build the `<m3e-fab>` element (lazy IR).
 -}
 view :
-    { content : Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    { content : Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     , action :
         M3e.Action.Action
             { click : M3e.Token.Supported
@@ -267,7 +267,7 @@ variant =
 {-| Place content in the `label` slot.
 -}
 label :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 label el =
     Markup.Element.Internal.placeSlot "label" el
@@ -276,7 +276,7 @@ label el =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Markup.Element.Element k msg
 closeIcon el =
     Markup.Element.Internal.placeSlot "close-icon" el

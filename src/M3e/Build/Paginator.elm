@@ -336,7 +336,7 @@ onPage v_ b_ =
 {-| Place content in the `first-page-icon` slot.
 -}
 firstPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | firstPageIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | firstPageIcon : M3e.Build.Internal.Used } msg kind
 firstPageIcon el_ b_ =
@@ -352,7 +352,7 @@ firstPageIcon el_ b_ =
 {-| Place content in the `previous-page-icon` slot.
 -}
 previousPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     ->
         Builder
             a
@@ -375,7 +375,7 @@ previousPageIcon el_ b_ =
 {-| Place content in the `next-page-icon` slot.
 -}
 nextPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | nextPageIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | nextPageIcon : M3e.Build.Internal.Used } msg kind
 nextPageIcon el_ b_ =
@@ -391,7 +391,7 @@ nextPageIcon el_ b_ =
 {-| Place content in the `last-page-icon` slot.
 -}
 lastPageIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | lastPageIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | lastPageIcon : M3e.Build.Internal.Used } msg kind
 lastPageIcon el_ b_ =

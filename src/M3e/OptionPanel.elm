@@ -140,7 +140,7 @@ loading :
     Markup.Element.Element
         { circularProgressIndicator : M3e.Kind.Brand
         , loadingIndicator : M3e.Kind.Brand
-        , text : Markup.Kind.Shared
+        , sharedText : Markup.Kind.Shared
         }
         msg
     -> Markup.Element.Element k msg

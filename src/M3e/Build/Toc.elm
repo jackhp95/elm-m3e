@@ -124,7 +124,7 @@ child el_ b_ =
 {-| Place content in the `overline` slot.
 -}
 overline :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | overline : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | overline : M3e.Build.Internal.Used } msg kind
 overline el_ b_ =
@@ -138,7 +138,7 @@ overline el_ b_ =
 {-| Place content in the `title` slot.
 -}
 title :
-    Markup.Element.Element { text : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedText : Markup.Kind.Shared } msg
     -> Builder a { s | title : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | title : M3e.Build.Internal.Used } msg kind
 title el_ b_ =

@@ -55,7 +55,7 @@ type alias SlotCaps =
 {-| Seed a `Builder` for `<m3e-snackbar>` with the required fields.
 -}
 snackbar :
-    { content : Markup.Element.Element { text : Markup.Kind.Shared } msg }
+    { content : Markup.Element.Element { sharedText : Markup.Kind.Shared } msg }
     -> Builder AttrCaps SlotCaps msg kind
 snackbar req_ =
     M3e.Build.Internal.wrap_
@@ -175,7 +175,7 @@ onToggle v_ b_ =
 {-| Place content in the `close-icon` slot.
 -}
 closeIcon :
-    Markup.Element.Element { icon : Markup.Kind.Shared } msg
+    Markup.Element.Element { sharedIcon : Markup.Kind.Shared } msg
     -> Builder a { s | closeIcon : M3e.Build.Internal.Available } msg kind
     -> Builder a { s | closeIcon : M3e.Build.Internal.Used } msg kind
 closeIcon el_ b_ =

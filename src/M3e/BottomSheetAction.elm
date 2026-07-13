@@ -25,7 +25,7 @@ import Markup.Node
 -}
 view :
     List (Markup.Html.Attr.Attr { slot : M3e.Token.Supported } msg)
-    -> List (Markup.Element.Element { text : Markup.Kind.Shared } msg)
+    -> List (Markup.Element.Element { sharedText : Markup.Kind.Shared } msg)
     -> Markup.Element.Element { s | bottomSheetAction : M3e.Kind.Brand } msg
 view attributes children =
     Markup.Element.Internal.fromNode
