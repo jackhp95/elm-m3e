@@ -55,6 +55,10 @@ sibling checkout `/Users/jack/Documents/code/elm-cem` — the exact path `packag
 > `diff -rq $TMP src` empty).
 
 ```bash
+# PATH prepend is REQUIRED: the generator shells out to `elm`, which lives in THIS
+# repo's node_modules/.bin (not elm-cem's). Without it the regen fails SILENTLY —
+# exit 0, zero files, a bare "Compilation failed." line.
+PATH="/Users/jack/Documents/code/elm-m3e/node_modules/.bin:$PATH" \
 node /Users/jack/Documents/code/elm-cem/bin/elm-cem.js \
   --flags-from=docs/node_modules/@m3e/web/dist/custom-elements.json \
   --config-from=config/slots.json \
