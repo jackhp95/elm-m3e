@@ -6,7 +6,8 @@
         ".elm-pages",
         "../src",
         "kit",
-        "../../elm-cem/markup/src"
+        "../../elm-html-intermediate-representation/src",
+        "../../elm-typed-html/src"
     ],
     "elm-version": "0.19.1",
     "dependencies": {
